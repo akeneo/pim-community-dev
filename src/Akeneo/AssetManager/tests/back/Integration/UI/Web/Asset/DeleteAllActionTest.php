@@ -41,6 +41,7 @@ class DeleteAllActionTest extends ControllerIntegrationTestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->markTestSkipped('Remove this class');
 
         $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');

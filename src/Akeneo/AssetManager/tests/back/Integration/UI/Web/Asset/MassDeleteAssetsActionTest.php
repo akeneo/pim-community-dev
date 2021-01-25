@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
+use Akeneo\AssetManager\Common\Fake\MassDeleteAssetsLauncherSpy;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
@@ -24,6 +25,7 @@ class MassDeleteAssetsActionTest extends ControllerIntegrationTestCase
     private const MASS_DELETE_ASSETS_ROUTE = 'akeneo_asset_manager_asset_mass_delete_rest';
 
     private WebClientHelper $webClientHelper;
+    private MassDeleteAssetsLauncherSpy $massDeleteAssetsLauncherSpy;
 
     public function setUp(): void
     {
@@ -45,25 +47,25 @@ class MassDeleteAssetsActionTest extends ControllerIntegrationTestCase
             self::MASS_DELETE_ASSETS_ROUTE,
             [
                 'assetFamilyIdentifier' => 'atmosphere',
-                'query' => [
-                    "page" => 0,
-                    "size" => 50,
-                    "locale" => "en_US",
-                    "channel" => "ecommerce",
-                    "filters" => [
-                        [
-                            "field" => "asset_family",
-                            "value" => "atmosphere",
-                            "context" => [],
-                            "operator" => "="
-                        ]
-                    ]
-                ]
             ],
             'DELETE',
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest'
-            ]
+            ],
+            [
+                "page" => 0,
+                "size" => 50,
+                "locale" => "en_US",
+                "channel" => "ecommerce",
+                "filters" => [
+                    [
+                        "field" => "asset_family",
+                        "value" => "atmosphere",
+                        "context" => [],
+                        "operator" => "="
+                    ]
+                ]
+            ],
         );
 
         $this->webClientHelper->assert202Accepted($this->client->getResponse());
@@ -134,24 +136,24 @@ class MassDeleteAssetsActionTest extends ControllerIntegrationTestCase
             self::MASS_DELETE_ASSETS_ROUTE,
             [
                 'assetFamilyIdentifier' => 'designer',
-                'query' => [
-                    "page" => 0,
-                    "size" => 50,
-                    "locale" => "en_US",
-                    "channel" => "ecommerce",
-                    "filters" => [
-                        [
-                            "field" => "asset_family",
-                            "value" => "atmosphere",
-                            "context" => [],
-                            "operator" => "="
-                        ]
-                    ]
-                ]
             ],
             'DELETE',
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ],
+            [
+                "page" => 0,
+                "size" => 50,
+                "locale" => "en_US",
+                "channel" => "ecommerce",
+                "filters" => [
+                    [
+                        "field" => "asset_family",
+                        "value" => "atmosphere",
+                        "context" => [],
+                        "operator" => "="
+                    ]
+                ]
             ]
         );
         $this->webClientHelper->assert400BadRequest($this->client->getResponse());
@@ -185,7 +187,7 @@ class MassDeleteAssetsActionTest extends ControllerIntegrationTestCase
     private function loadFixtures(): void
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_assetmanager_assets_delete_all', true);
+        $securityFacadeStub->setIsGranted('akeneo_assetmanager_asset_delete', true);
     }
 
     private function revokeDeletionRights(): void

@@ -96,7 +96,6 @@ class AssetCursor implements CursorInterface
      */
     public function rewind()
     {
-        $this->searchAfter = [];
         $this->items = $this->getNextItems($this->assetQuery);
         reset($this->items);
     }

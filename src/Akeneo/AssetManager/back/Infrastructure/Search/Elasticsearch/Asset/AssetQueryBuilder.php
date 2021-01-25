@@ -14,8 +14,8 @@ use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersByAssetFamilyAndCodesInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\AssetManager\Domain\Query\ValueKey\GetValueKeyForAttributeChannelAndLocaleInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\AssetManager\Infrastructure\Persistence\Sql\ValueKey\SqlGetValueKeyForAttributeChannelAndLocale;
 use Akeneo\Tool\Component\Elasticsearch\QueryString;
 
 /**
@@ -26,13 +26,13 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
     private const ATTRIBUTE_FILTER_FIELD = 'values.';
 
     private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale;
-    private SqlGetValueKeyForAttributeChannelAndLocale $getValueKeyForAttributeChannelAndLocale;
+    private GetValueKeyForAttributeChannelAndLocaleInterface $getValueKeyForAttributeChannelAndLocale;
     private AttributeRepositoryInterface $attributeRepository;
     private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes;
 
     public function __construct(
         FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale,
-        SqlGetValueKeyForAttributeChannelAndLocale $getValueKeyForAttributeChannelAndLocale,
+        GetValueKeyForAttributeChannelAndLocaleInterface $getValueKeyForAttributeChannelAndLocale,
         AttributeRepositoryInterface $attributeRepository,
         FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes
     ) {

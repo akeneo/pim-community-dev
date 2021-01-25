@@ -13,6 +13,7 @@ class MassDeleteAssetsLauncherSpy implements MassDeleteAssetsLauncherInterface
 {
     private ?AssetFamilyIdentifier $assetFamilyIdentifier;
     private ?AssetQuery $assetQuery;
+    private array $launches = [];
 
     public function launchForAssetFamilyAndQuery(AssetFamilyIdentifier $assetFamilyIdentifier, AssetQuery $assetQuery): void
     {

@@ -28,6 +28,8 @@ akeneo_assetmanager:
    jobs:
        asset_manager_execute_naming_convention:
            error: 'The naming convention failed on asset "{{ asset }}"'
+       asset_manager_mass_delete:
+           error: 'The mass delete failed on asset "{{ asset }}" with error "{{ error }}"'
 
 pim_import_export:
     widget:
