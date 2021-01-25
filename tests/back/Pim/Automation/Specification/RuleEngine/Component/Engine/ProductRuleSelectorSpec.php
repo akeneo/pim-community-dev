@@ -3,16 +3,15 @@
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Engine;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleSelector;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConditionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSet;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConditionInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -20,12 +19,10 @@ class ProductRuleSelectorSpec extends ObjectBehavior
 {
     function let(
         ProductQueryBuilderFactoryInterface $queryBuilderFactory,
-        ProductRepositoryInterface $repo,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->beConstructedWith(
             $queryBuilderFactory,
-            $repo,
             $eventDispatcher,
             RuleSubjectSet::class
         );

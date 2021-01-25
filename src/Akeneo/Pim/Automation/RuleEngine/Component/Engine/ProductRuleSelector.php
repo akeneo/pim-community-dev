@@ -15,7 +15,6 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\Engine;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConditionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
@@ -32,32 +31,16 @@ use Webmozart\Assert\Assert;
  */
 class ProductRuleSelector implements SelectorInterface
 {
-    /** @var string */
-    protected $subjectSetClass;
+    protected string $subjectSetClass;
+    protected ProductQueryBuilderFactoryInterface $queryBuilderFactory;
+    protected EventDispatcherInterface $eventDispatcher;
 
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $queryBuilderFactory;
-
-    /** @var ProductRepositoryInterface */
-    protected $repo;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /**
-     * @param ProductQueryBuilderFactoryInterface $queryBuilderFactory
-     * @param ProductRepositoryInterface          $repo
-     * @param EventDispatcherInterface            $eventDispatcher
-     * @param string                              $subjectSetClass     should implement RuleSubjectSetInterface
-     */
     public function __construct(
         ProductQueryBuilderFactoryInterface $queryBuilderFactory,
-        ProductRepositoryInterface $repo,
         EventDispatcherInterface $eventDispatcher,
-        $subjectSetClass
+        string $subjectSetClass
     ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
-        $this->repo = $repo;
         $this->eventDispatcher = $eventDispatcher;
         $this->subjectSetClass = $subjectSetClass;
     }
