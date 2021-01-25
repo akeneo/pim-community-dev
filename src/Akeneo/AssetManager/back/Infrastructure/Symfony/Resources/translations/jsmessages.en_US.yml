@@ -560,10 +560,12 @@ pim_datagrid:
     cells:
         type:
             asset_manager_execute_naming_convention: Execute Asset Family naming convention
+            asset_manager_mass_delete_assets: Execute Asset mass delete
 
 batch_jobs:
     default_steps:
         execute_naming_convention: Execute Asset Family naming convention
+        mass_delete_assets: Execute Asset mass delete
 
 job_execution:
     summary:

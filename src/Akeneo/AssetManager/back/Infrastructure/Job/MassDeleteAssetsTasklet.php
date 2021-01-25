@@ -24,6 +24,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -39,6 +40,7 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
     private JobRepositoryInterface $jobRepository;
     private int $batchSize;
     private AssetIndexerInterface $assetIndexer;
+    private JobStopper $jobStopper;
 
     public function __construct(
         DeleteAssetsHandler $deleteAssetsHandler,
@@ -46,6 +48,7 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
         Client $assetClient,
         JobRepositoryInterface $jobRepository,
         AssetIndexerInterface $assetIndexer,
+        JobStopper $jobStopper,
         int $batchSize
     ) {
         $this->deleteAssetsHandler = $deleteAssetsHandler;
@@ -54,6 +57,7 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
         $this->jobRepository = $jobRepository;
         $this->assetIndexer = $assetIndexer;
         $this->batchSize = $batchSize;
+        $this->jobStopper = $jobStopper;
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
@@ -65,10 +69,6 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
     {
         return true;
     }
-
-    /**
-     * @TODO make this tasklet stoppable
-     */
 
     public function execute(): void
     {
@@ -85,12 +85,26 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
         $assetCodesToDelete = [];
         foreach ($cursor as $assetIdentifier) {
             $assetCodesToDelete[] = $assetIdentifier;
+            sleep(10);
 
             if ($this->batchSize === count($assetCodesToDelete)) {
+                if ($this->jobStopper->isStopping($this->stepExecution)) {
+                    $this->jobStopper->stop($this->stepExecution);
+
+                    break;
+                }
                 $this->deleteAssets($assetFamilyIdentifier, $assetCodesToDelete);
 
                 $assetCodesToDelete = [];
             }
+        }
+
+        if ($this->jobStopper->isStopping($this->stepExecution)) {
+            $this->jobStopper->stop($this->stepExecution);
+
+            $this->assetIndexer->refresh();
+
+            return;
         }
 
         if (count($assetCodesToDelete) > 0) {
@@ -113,8 +127,9 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
                 'pim_asset_manager.jobs.asset_manager_mass_delete.error',
                 [
                     'assets' => (string) implode(', ', $assetCodesToDelete),
+                    'error' => $exception->getMessage()
                 ],
-                new DataInvalidItem(['asset_identifier' => (string) implode(', ', $assetCodesToDelete)])
+                new DataInvalidItem(['asset_identifier' => (string) implode(', ', $assetCodesToDelete), 'error' => $exception->getMessage()])
             );
         }
     }

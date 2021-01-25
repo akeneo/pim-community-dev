@@ -202,7 +202,6 @@ SQL;
         return $this->hydrateAsset($result);
     }
 
-
     public function deleteByAssetFamilyAndCodes(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): void
     {
         $identifiers = $this->findIdentifiersByAssetFamilyAndCodes->find($assetFamilyIdentifier, $assetCodes);

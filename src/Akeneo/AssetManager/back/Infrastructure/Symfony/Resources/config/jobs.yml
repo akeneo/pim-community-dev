@@ -91,6 +91,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - [ '@akeneo_assetmanager.step.mass_delete_assets' ]
+            - true
         tags:
             - { name: akeneo_batch.job, connector: 'internal', type: 'akeneo_assetmanager.mass_delete_assets' }
 
@@ -150,6 +151,7 @@ services:
             - '@akeneo_assetmanager.client.asset'
             - '@akeneo_batch.job_repository'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
+            - '@akeneo_batch.job.job_stopper'
             - 1000
         public: false
 

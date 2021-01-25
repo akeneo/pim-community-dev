@@ -125,6 +125,13 @@ class InMemoryAssetRepository implements AssetRepositoryInterface
         throw AssetNotFoundException::withAssetFamilyAndCode($assetFamilyIdentifier, $code);
     }
 
+    public function deleteByAssetFamilyAndCodes(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): void
+    {
+        foreach ($assetCodes as $assetCode) {
+            $this->deleteByAssetFamilyAndCode($assetFamilyIdentifier, $assetCode);
+        }
+    }
+
     public function deleteByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): void
     {
         foreach ($this->assets as $index => $asset) {
@@ -179,7 +186,7 @@ class InMemoryAssetRepository implements AssetRepositoryInterface
         $count = 0;
         foreach ($this->assets as $asset) {
             if ($asset->getAssetFamilyIdentifier()->equals($assetFamilyIdentifier)) {
-                $count ++;
+                $count++;
             }
         }
 
