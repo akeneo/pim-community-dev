@@ -1,0 +1,63 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {TagInput} from './TagInput.tsx';
+
+<Meta
+  title="Components/Inputs/TagInput"
+  component={TagInput}
+/>
+
+# TagInput
+
+## Usage
+
+Fill an input with a list of "tags".
+
+Tags are created when a separator is used (typed or pasted).
+
+Tags can be separated thanks to the following characters:
+- space
+- tab
+- line break
+- comma
+- semi-colon
+
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <TagInput onTagsUpdate={() => {}} allowDuplicates={false}/>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## With a list of existing tags
+
+<Canvas>
+  <Story name="existingTags">
+    {args => {
+      return (
+        <>
+          <TagInput defaultTags={['batman', 'superman', 'catwoman', 'joker']} allowDuplicates={false} onTagsUpdate={() => {}}/>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Duplicates can be allowed
+
+<Canvas>
+  <Story name="duplicatesAllowed">
+    {args => {
+      return (
+        <>
+          <TagInput defaultTags={['gucci', 'gucci', 'dior', 'dior']} allowDuplicates={false} onTagsUpdate={() => {}}/>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
