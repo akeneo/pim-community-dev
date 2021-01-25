@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Controller\Asset;
 
-use Akeneo\AssetManager\Application\Asset\MassDeleteAssets\MassDeleteAssetFamilyAssetsCommand;
-use Akeneo\AssetManager\Application\Asset\MassDeleteAssets\MassDeleteAssetFamilyAssetsHandler;
+use Akeneo\AssetManager\Application\Asset\MassDeleteAssets\MassDeleteAssetsCommand;
+use Akeneo\AssetManager\Application\Asset\MassDeleteAssets\MassDeleteAssetsHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -36,9 +37,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class MassDeleteAction
 {
-    /** @var MassDeleteAssetFamilyAssetsHandler */
-    private $deleteAllAssetsHandler;
-
+    /** @var MassDeleteAssetsHandler */
+    private $massDeleteAssetsHandler;
     /** @var SecurityFacade */
     private $securityFacade;
     /** @var CanEditAssetFamilyQueryHandler */
@@ -49,13 +49,13 @@ class MassDeleteAction
     private $assetIndexer;
 
     public function __construct(
-        MassDeleteAssetFamilyAssetsHandler $deleteAllAssetsHandler,
+        MassDeleteAssetsHandler $massDeleteAssetsHandler,
         SecurityFacade $securityFacade,
         CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage,
         AssetIndexerInterface $assetIndexer
     ) {
-        $this->deleteAllAssetsHandler = $deleteAllAssetsHandler;
+        $this->massDeleteAssetsHandler = $massDeleteAssetsHandler;
         $this->securityFacade = $securityFacade;
         $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
@@ -67,6 +67,7 @@ class MassDeleteAction
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
+
         if (!$this->isUserAllowedToMassDeleteAssets($request->get('assetFamilyIdentifier'))) {
             throw new AccessDeniedException();
         }
@@ -82,9 +83,9 @@ class MassDeleteAction
             );
         }
 
-        $command = new MassDeleteAssetFamilyAssetsCommand($assetFamilyIdentifier, $query);
+        $command = new MassDeleteAssetsCommand((string) $assetFamilyIdentifier, $query);
 
-        ($this->deleteAllAssetsHandler)($command);
+        ($this->massDeleteAssetsHandler)($command);
 
         $this->assetIndexer->refresh();
 
@@ -98,7 +99,7 @@ class MassDeleteAction
             $this->tokenStorage->getToken()->getUser()->getUsername()
         );
 
-        return $this->securityFacade->isGranted('akeneo_assetmanager_assets_delete_all')
+        return $this->securityFacade->isGranted('akeneo_assetmanager_asset_delete')
             && ($this->canEditAssetFamilyQueryHandler)($query);
     }
 

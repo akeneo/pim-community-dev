@@ -17,7 +17,6 @@ use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 
 /**
  * Command to mass delete assets from a family
- *
  * @author Julien Sanchez <julien@akeneo.com>
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  */

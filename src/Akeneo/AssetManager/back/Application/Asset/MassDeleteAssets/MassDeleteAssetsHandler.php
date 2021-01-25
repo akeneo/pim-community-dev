@@ -11,9 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Application\Asset\DeleteAllAssets;
+namespace Akeneo\AssetManager\Application\Asset\MassDeleteAssets;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 
 /**
@@ -22,7 +21,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  */
-class DeleteAllAssetFamilyAssetsHandler
+class MassDeleteAssetsHandler
 {
     private AssetRepositoryInterface $assetRepository;
 
@@ -31,10 +30,8 @@ class DeleteAllAssetFamilyAssetsHandler
         $this->assetRepository = $assetRepository;
     }
 
-    public function __invoke(DeleteAllAssetFamilyAssetsCommand $deleteAllAssetsCommand): void
+    public function __invoke(MassDeleteAssetsCommand $massDeleteAssetsCommand): void
     {
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($deleteAllAssetsCommand->assetFamilyIdentifier);
 
-        $this->assetRepository->deleteByAssetFamily($assetFamilyIdentifier);
     }
 }
