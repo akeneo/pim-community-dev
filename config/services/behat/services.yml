@@ -1,5 +1,14 @@
 imports:
 
+parameters:
+    akeneo_integration_tests.elasticsearch_index_names:
+        - '%product_and_product_model_index_name%'
+        - '%connection_error_index_name%'
+        - '%product_proposal_index_name%'
+        - '%published_product_index_name%'
+        - '%asset_index_name%'
+        - '%record_index_name%'
+
 services:
     _defaults:
         public: true
