@@ -150,7 +150,7 @@ services:
             - '@akeneo_assetmanager.client.asset'
             - '@akeneo_batch.job_repository'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
-            - 100
+            - 1000
         public: false
 
     akeneo_assetmanager.tasklet.execute_naming_convention:

@@ -66,7 +66,6 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
         return true;
     }
 
-
     /**
      * @TODO make this tasklet stoppable
      */
@@ -77,9 +76,10 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($normalizedAssetFamilyIdentifier);
 
         $normalizedQuery = $this->stepExecution->getJobParameters()->get('query');
+        $normalizedQuery['size'] = $this->batchSize;
         $assetQuery = AssetQuery::createFromNormalized($normalizedQuery);
 
-        $cursor = new AssetCursor($this->assetQueryBuilder, $this->assetClient, $assetQuery, $this->batchSize);
+        $cursor = new AssetCursor($this->assetQueryBuilder, $this->assetClient, $assetQuery);
         $this->stepExecution->setTotalItems($cursor->count());
 
         $assetCodesToDelete = [];
@@ -96,6 +96,8 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
         if (count($assetCodesToDelete) > 0) {
             $this->deleteAssets($assetFamilyIdentifier, $assetCodesToDelete);
         }
+
+        $this->assetIndexer->refresh();
     }
 
     private function deleteAssets(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodesToDelete)

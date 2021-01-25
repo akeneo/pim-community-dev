@@ -63,7 +63,8 @@ class MassDeleteAction
             throw new AccessDeniedException();
         }
 
-        $query = AssetQuery::createFromNormalized(json_decode($request->getContent(), true));
+        $normalizedQuery = json_decode($request->getContent(), true);
+        $query = AssetQuery::createFromNormalized($normalizedQuery);
         $assetFamilyIdentifier = $this->getAssetFamilyIdentifierOr404($assetFamilyIdentifier);
 
         if ($this->hasDesynchronizedIdentifiers($assetFamilyIdentifier, $query)) {
@@ -77,7 +78,7 @@ class MassDeleteAction
 
         ($this->massDeleteAssetsHandler)($command);
 
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+        return new JsonResponse(null, Response::HTTP_ACCEPTED);
     }
 
     private function isUserAllowedToMassDeleteAssets(string $assetFamilyIdentifier): bool

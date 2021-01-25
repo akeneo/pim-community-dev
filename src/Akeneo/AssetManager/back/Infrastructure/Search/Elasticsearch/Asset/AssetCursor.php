@@ -17,22 +17,18 @@ class AssetCursor implements CursorInterface
     private AssetQueryBuilderInterface $queryBuilder;
     private Client $assetClient;
     private AssetQuery $assetQuery;
-    private int $pageSize;
 
     private int $count;
     private ?array $items = null;
-    private array $searchAfter;
 
     public function __construct(
         AssetQueryBuilderInterface $queryBuilder,
         Client $assetClient,
-        AssetQuery $assetQuery,
-        int $pageSize
+        AssetQuery $assetQuery
     ) {
         $this->queryBuilder = $queryBuilder;
         $this->assetClient = $assetClient;
         $this->assetQuery = $assetQuery;
-        $this->pageSize = $pageSize;
     }
 
     /**

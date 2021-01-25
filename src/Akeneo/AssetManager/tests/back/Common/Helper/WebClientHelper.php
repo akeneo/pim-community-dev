@@ -105,6 +105,16 @@ HTML;
         Assert::assertSame(404, $response->getStatusCode());
     }
 
+    public function assert400BadRequest(Response $response): void
+    {
+        Assert::assertSame(400, $response->getStatusCode());
+    }
+
+    public function assert202Accepted(Response $response): void
+    {
+        Assert::assertSame(202, $response->getStatusCode());
+    }
+
     public function assert500ServerError(Response $response): void
     {
         Assert::assertSame(500, $response->getStatusCode());
