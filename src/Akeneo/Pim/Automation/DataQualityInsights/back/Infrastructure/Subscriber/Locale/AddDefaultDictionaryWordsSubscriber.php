@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Locale;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\TextCheckerDictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -34,12 +35,16 @@ final class AddDefaultDictionaryWordsSubscriber implements EventSubscriberInterf
 
     private TextCheckerDictionaryRepository $textCheckerDictionaryRepository;
 
+    private SupportedLocaleValidator $supportedLocaleValidator;
+
     public function __construct(
         FeatureFlag $dataQualityInsightsFeature,
-        TextCheckerDictionaryRepository $textCheckerDictionaryRepository
+        TextCheckerDictionaryRepository $textCheckerDictionaryRepository,
+        SupportedLocaleValidator $supportedLocaleValidator
     ) {
         $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;
         $this->textCheckerDictionaryRepository = $textCheckerDictionaryRepository;
+        $this->supportedLocaleValidator = $supportedLocaleValidator;
     }
 
     public static function getSubscribedEvents()
@@ -58,6 +63,16 @@ final class AddDefaultDictionaryWordsSubscriber implements EventSubscriberInterf
         }
 
         $localeCode = new LocaleCode($locale->getCode());
+
+        if (!$this->supportedLocaleValidator->isSupported($localeCode)) {
+            return;
+        }
+
+        // If the dictionary is not empty for the locale, we consider that the locale has already been activated.
+        if (!$this->textCheckerDictionaryRepository->isEmptyForLocale($localeCode)) {
+            return;
+        }
+
         $defaultWords = array_map(fn (string $word) => new TextCheckerDictionaryWord($localeCode, new DictionaryWord($word)), self::DEFAULT_WORDS);
 
         $this->textCheckerDictionaryRepository->saveAll($defaultWords);

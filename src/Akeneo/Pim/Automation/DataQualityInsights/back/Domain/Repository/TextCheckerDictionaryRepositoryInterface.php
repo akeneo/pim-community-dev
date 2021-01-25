@@ -24,7 +24,12 @@ interface TextCheckerDictionaryRepositoryInterface
 
     public function paginatedSearch(LocaleCode $localeCode, int $page, int $itemsPerPage, string $search): array;
 
-    public function exists(LocaleCode $localeCode, DictionaryWord $word): bool;
+    /**
+     * @param DictionaryWord[] $words
+     *
+     * @return DictionaryWord[] words that exist in the dictionary for the given locale.
+     */
+    public function filterExistingWords(LocaleCode $localeCode, array $words): array;
 
     public function save(Write\TextCheckerDictionaryWord $dictionaryWord): void;
 
@@ -34,4 +39,6 @@ interface TextCheckerDictionaryRepositoryInterface
     public function saveAll(array $dictionaryWords): void;
 
     public function deleteWord(int $wordId): void;
+
+    public function isEmptyForLocale(LocaleCode $localeCode): bool;
 }
