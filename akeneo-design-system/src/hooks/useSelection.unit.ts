@@ -10,7 +10,7 @@ test('It can generate a basic selection', () => {
   expect(isItemSelected('donald')).toBe(false);
   expect(isItemSelected('melania')).toBe(false);
   expect(selectedCount).toEqual(0);
-  expect(collection).toEqual([]);
+  expect(collection.collection).toEqual([]);
 
   void act(() => {
     onSelectionChange('donald', true);
@@ -22,7 +22,8 @@ test('It can generate a basic selection', () => {
   expect(isHalfItemSelected('melania')).toBe(false);
   expect(halfSelectionState).toBe('mixed');
   expect(halfSelectedCount).toEqual(1);
-  expect(halfCollection).toEqual(['donald']);
+  expect(halfCollection.collection).toEqual(['donald']);
+  expect(halfCollection.mode).toEqual('in');
 
   void act(() => {
     onSelectionChange('melania', true);
@@ -41,7 +42,8 @@ test('It can generate a basic selection', () => {
   expect(isCompleteItemSelected('melania')).toBe(true);
   expect(completeSelectionState).toBe(true);
   expect(completeSelectedCount).toEqual(2);
-  expect(completeCollection).toEqual(['donald', 'melania']);
+  expect(completeCollection.collection).toEqual(['donald', 'melania']);
+  expect(completeCollection.mode).toEqual('in');
 });
 
 test('It can handle unselection all', () => {
@@ -84,7 +86,7 @@ test('It can handle selection all', () => {
   expect(isEmptyItemSelected('melania')).toBe(true);
   expect(emptySelectionState).toBe(true);
   expect(emptySelectedCount).toBe(3);
-  expect(emptyCollection).toEqual([]);
+  expect(emptyCollection.collection).toEqual([]);
 
   void act(() => {
     onSelectionChange('donald', false);
@@ -100,7 +102,8 @@ test('It can handle selection all', () => {
   ] = result.current;
   expect(isUnselectedItemSelected('donald')).toBe(false);
   expect(unselectedSelectionState).toBe('mixed');
-  expect(unselectedCollection).toEqual(['donald']);
+  expect(unselectedCollection.collection).toEqual(['donald']);
+  expect(unselectedCollection.mode).toEqual('not_in');
   expect(unselectedCount).toEqual(2);
 });
 

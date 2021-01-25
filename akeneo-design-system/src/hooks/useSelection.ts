@@ -66,7 +66,7 @@ const useSelection = <Type = string>(totalCount: number) => {
     'in' === selection.mode ? selection.collection.length : totalCount - selection.collection.length;
 
   return [
-    selection.collection,
+    selection,
     currentSelectionState(selection, totalCount),
     isSelected,
     onSelectionChange,
@@ -76,3 +76,4 @@ const useSelection = <Type = string>(totalCount: number) => {
 };
 
 export {useSelection};
+export type {Selection};
