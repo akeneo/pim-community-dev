@@ -7,6 +7,7 @@ import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {Query, SearchResult, emptySearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {Selection} from 'akeneo-design-system';
 
 const MAX_RESULT = 500;
 const FIRST_PAGE_SIZE = 50;
@@ -46,6 +47,19 @@ export const createQuery = (
       context: {},
     },
   ],
+});
+
+export const addSelection = (query: Query, selection: Selection): Query => ({
+  ...query,
+  filters: [
+    ...query.filters,
+    {
+      field: 'code',
+      operator: selection.mode === 'in' ? 'IN' : 'NOT IN',
+      value: selection.collection,
+      context: {}
+    }
+  ]
 });
 
 let totalRequestCount = 0;

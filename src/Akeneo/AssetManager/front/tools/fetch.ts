@@ -29,8 +29,12 @@ export const putJSON = (url: string, data: {}) => {
   return promisify(promise);
 };
 
-export const deleteJSON = (url: any) => {
-  const promise = $.ajax({url, type: 'DELETE'});
+export const deleteJSON = (url: any, data: {} = {}) => {
+  const promise = $.ajax(url, {
+    method: 'DELETE',
+    data: JSON.stringify(data),
+    contentType: 'application/json',
+  });
 
   return promisify(promise);
 };
