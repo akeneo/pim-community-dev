@@ -1,0 +1,40 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Toolbar} from './Toolbar';
+import {Button, Checkbox} from '../../components';
+import {SpaceContainer, useSelection} from '../../storybook/PreviewGallery';
+
+<Meta title="Components/Toolbar" component={Toolbar} />
+
+# Toolbar
+
+## Usage
+
+The toolbar is useful to display actions on a selection.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const selection = useSelection();
+      return (
+        <SpaceContainer height={250}>
+          <SpaceContainer style={{flexGrow: 1}} />
+          <Toolbar {...args}>
+            <Toolbar.SelectionContainer>
+              <Checkbox {...selection} />
+            </Toolbar.SelectionContainer>
+            <Toolbar.LabelContainer>{selection.checked ? 'All selected' : 'Not selected'}</Toolbar.LabelContainer>
+            <Toolbar.ActionsContainer>
+              <Button level="secondary">Launch</Button>
+              <Button level="tertiary">Another one</Button>
+              <Button level="danger">Cancel</Button>
+            </Toolbar.ActionsContainer>
+          </Toolbar>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />

@@ -1,10 +1,10 @@
 import React from 'react';
-import {fireEvent, render} from 'storybook/test-util';
+import {fireEvent, render, screen} from 'storybook/test-util';
 import {Card, CardGrid} from './Card';
 import {Badge} from '../../components';
 
 test('it renders its children properly', () => {
-  const {getByText} = render(
+  render(
     <CardGrid>
       <Card src="some.jpg">
         <Badge>100%</Badge>Card text
@@ -12,19 +12,19 @@ test('it renders its children properly', () => {
     </CardGrid>
   );
 
-  expect(getByText('Card text')).toBeInTheDocument();
-  expect(getByText('100%')).toBeInTheDocument();
+  expect(screen.getByText('Card text')).toBeInTheDocument();
+  expect(screen.getByText('100%')).toBeInTheDocument();
 });
 
 test('it calls onSelect handler when clicked on', () => {
   const onSelect = jest.fn();
-  const {getByText} = render(
+  render(
     <Card src="some.jpg" isSelected={false} onSelect={onSelect}>
       Card text
     </Card>
   );
 
-  fireEvent.click(getByText('Card text'));
+  fireEvent.click(screen.getByText('Card text'));
 
   expect(onSelect).toBeCalledWith(true);
   expect(onSelect).toBeCalledTimes(1);
@@ -32,69 +32,75 @@ test('it calls onSelect handler when clicked on', () => {
 
 test('it calls onSelect handler only once when clicking on the Checkbox', () => {
   const onSelect = jest.fn();
-  const {getByRole} = render(
+  render(
     <Card src="some.jpg" isSelected={false} onSelect={onSelect}>
       Card text
     </Card>
   );
 
-  fireEvent.click(getByRole('checkbox'));
+  fireEvent.click(screen.getByRole('checkbox'));
 
   expect(onSelect).toBeCalledWith(true);
   expect(onSelect).toBeCalledTimes(1);
 });
 
+test('it does not call onSelect handler if onClick is defined when clicking on the label or the image', () => {
+  const onSelect = jest.fn();
+  const onClick = jest.fn();
+  render(
+    <Card src="some.jpg" isSelected={false} onSelect={onSelect} onClick={onClick}>
+      Card text
+    </Card>
+  );
+
+  fireEvent.click(screen.getByText('Card text'));
+  fireEvent.click(screen.getByRole('img'));
+
+  expect(onSelect).not.toBeCalled();
+  expect(onClick).toBeCalledTimes(2);
+});
+
+test('it calls onSelect handler if onClick is defined but checkbox is clicked', () => {
+  const onSelect = jest.fn();
+  const onClick = jest.fn();
+  render(
+    <Card src="some.jpg" isSelected={false} onSelect={onSelect} onClick={onClick}>
+      Card text
+    </Card>
+  );
+
+  fireEvent.click(screen.getByRole('checkbox'));
+
+  expect(onClick).not.toBeCalled();
+  expect(onSelect).toBeCalledTimes(1);
+});
+
 test('it does not display a Checkbox if no handler is provided', () => {
-  const {queryByRole} = render(
+  render(
     <Card src="some.jpg">
       <Badge>100%</Badge>Card text
     </Card>
   );
 
-  expect(queryByRole('checkbox')).not.toBeInTheDocument();
+  expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
 });
 
 test('it displays a Checkbox if a handler is provided', () => {
-  const {queryByRole} = render(
+  render(
     <Card src="some.jpg" onSelect={jest.fn()}>
       <Badge>100%</Badge>Card text
     </Card>
   );
 
-  expect(queryByRole('checkbox')).toBeInTheDocument();
-});
-
-test('it throws when trying to pass unsupported elements as children', () => {
-  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
-
-  const cardRender = () =>
-    render(
-      <Card src="some.jpg">
-        <div>Bad div</div>
-      </Card>
-    );
-
-  expect(cardRender).toThrowError();
-
-  mockConsole.mockRestore();
-});
-
-describe('Card supports forwardRef', () => {
-  const ref = {current: null};
-
-  render(
-    <Card src="some.jpg" ref={ref}>
-      My card
-    </Card>
-  );
-  expect(ref.current).not.toBe(null);
+  expect(screen.queryByRole('checkbox')).toBeInTheDocument();
 });
 
 describe('Card supports ...rest props', () => {
-  const {container} = render(
-    <Card src="some.jpg" data-my-attribute="my_value">
+  render(
+    <Card src="some.jpg" data-testid="my_value">
       My card
     </Card>
   );
-  expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+
+  expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
