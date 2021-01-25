@@ -61,6 +61,9 @@ Feature: Import records via files
     And there is a record with:
       | code  | entity_identifier | labels                                           |
       | ikea  | designer          | {"en_US": "Ikea shop", "fr_FR": "Magasin Ikea"}  |
+    And there is a record with:
+      | code  | entity_identifier | labels                               |
+      | 12345 | designer          | {"en_US": "12345", "fr_FR": "12345"} |
     And the value of the unlocalized unscoped name of the 'stark' record in 'designer' reference entity is '"Stark"'
     And the value of the unlocalized ecommerce scopable_number of the 'stark' record in 'designer' reference entity is '"10"'
     And the value of the en_US unscoped localizable_color of the 'stark' record in 'designer' reference entity is '"red"'
@@ -73,6 +76,7 @@ Feature: Import records via files
     And the value of the unlocalized unscoped multiple_colors of the 'ikea' record in 'designer' reference entity is '["blue","green"]'
     And the value of the unlocalized unscoped record_link of the 'ikea' record in 'designer' reference entity is '"nantes"'
     And the value of the unlocalized unscoped record_links of the 'ikea' record in 'designer' reference entity is '["paris","nantes"]'
+    And the value of the fr_FR ecommerce scopable_and_localizable_text of the '12345' record in 'designer' reference entity is '"12345"'
 
   @acceptance-back
   Scenario: Add warnings when import some records using a CSV file with wrong data
@@ -96,6 +100,9 @@ Feature: Import records via files
     And there is a record with:
       | code  | entity_identifier | labels                                           |
       | ikea  | designer          | {"en_US": "Ikea shop", "fr_FR": "Magasin Ikea"}  |
+    And there is a record with:
+      | code  | entity_identifier | labels                               |
+      | 12345 | designer          | {"en_US": "12345", "fr_FR": "12345"} |
     And the value of the unlocalized unscoped name of the 'stark' record in 'designer' reference entity is '"Stark"'
     And the value of the unlocalized ecommerce scopable_text of the 'stark' record in 'designer' reference entity is '"Value scopable_text-ecommerce"'
     And the value of the en_US unscoped localizable_text of the 'stark' record in 'designer' reference entity is '"Value localizable_text-en_US"'
@@ -104,6 +111,7 @@ Feature: Import records via files
     And there is no value for the unlocalized ecommerce scopable_text of the 'ikea' record in 'designer' reference entity
     And the value of the en_US unscoped localizable_text of the 'stark' record in 'designer' reference entity is '"Value localizable_text-en_US"'
     And there is no value for the fr_FR ecommerce scopable_and_localizable_text of the 'ikea' record in 'designer' reference entity
+    And the value of the en_US unscoped localizable_text of the '12345' record in 'designer' reference entity is '"12345"'
 
   @acceptance-back
   Scenario: Import some records using a valid archive file with csv and media
