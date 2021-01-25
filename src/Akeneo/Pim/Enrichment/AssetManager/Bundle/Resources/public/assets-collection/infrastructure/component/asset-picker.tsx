@@ -32,7 +32,7 @@ import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import MosaicResult from 'akeneoassetmanager/application/component/asset/list/mosaic';
 import {useFetchResult} from 'akeneoassetmanager/application/hooks/grid';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {useShortcut, Key} from 'akeneo-design-system';
+import {useShortcut, Key, useSelection} from 'akeneo-design-system';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {
@@ -145,13 +145,16 @@ export const AssetPicker = ({
 }: AssetPickerProps) => {
   const [isOpen, setOpen] = React.useState(false);
   const [filterCollection, setFilterCollection] = React.useState<Filter[]>([]);
-  const [selection, setSelection] = React.useState<AssetCode[]>([]);
+
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [searchResult, setSearchResult] = React.useState<SearchResult<ListAsset> | null>(null);
   const [context, setContext] = React.useState<Context>(initialContext);
+  const [selectedItems, selectionState, isItemSelected, onSelectionChange, onSelectAllChange] = useSelection<AssetCode>(
+    null === searchResult ? 0 : searchResult.matchesCount
+  );
 
   const resetModal = () => {
-    setSelection([]);
+    onSelectAllChange(false);
     setSearchValue('');
     setFilterCollection([]);
     setOpen(false);
@@ -173,7 +176,7 @@ export const AssetPicker = ({
     setSearchResult
   );
   const filterViews = useFilterViews(assetFamilyIdentifier, dataProvider);
-  const canAddAsset = canAddAssetToCollection(addAssetsToCollection(excludedAssetCollection, selection));
+  const canAddAsset = canAddAssetToCollection(addAssetsToCollection(excludedAssetCollection, selectedItems));
 
   useShortcut(Key.Escape, cancelModal);
 
@@ -203,7 +206,7 @@ export const AssetPicker = ({
               title={__('pim_common.confirm')}
               color="green"
               onClick={() => {
-                onAssetPick(selection);
+                onAssetPick(selectedItems);
                 resetModal();
               }}
             >
@@ -234,21 +237,25 @@ export const AssetPicker = ({
                 onContextChange={setContext}
               />
               <MosaicResult
-                selection={selection}
                 assetCollection={searchResult.items}
                 context={context}
+                selectionState={selectionState}
+                onSelectionChange={onSelectionChange}
+                isItemSelected={isItemSelected}
                 resultCount={searchResult.matchesCount}
                 hasReachMaximumSelection={!canAddAsset}
-                onSelectionChange={setSelection}
               />
             </Grid>
             <Basket
               dataProvider={dataProvider}
-              selection={selection}
+              selection={selectedItems}
               assetFamilyIdentifier={assetFamilyIdentifier}
               context={context}
-              onSelectionChange={(assetCodeCollection: AssetCode[]) => {
-                setSelection(assetCodeCollection);
+              onRemove={(assetCode: AssetCode) => {
+                onSelectionChange(assetCode, false);
+              }}
+              onRemoveAll={() => {
+                onSelectAllChange(false);
               }}
             />
           </Container>

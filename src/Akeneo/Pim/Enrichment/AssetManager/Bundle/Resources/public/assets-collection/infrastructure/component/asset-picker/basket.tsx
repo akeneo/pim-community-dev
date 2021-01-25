@@ -5,12 +5,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 import {Button} from 'akeneoassetmanager/application/component/app/button';
 import AssetItem from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/basket/asset-item';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import ListAsset, {
-  createEmptyAsset,
-  getAssetByCode,
-  removeAssetFromAssetCodeCollection,
-  emptyCollection,
-} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import ListAsset, {createEmptyAsset, getAssetByCode} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {AssetsIllustration, getColor, getFontSize} from 'akeneo-design-system';
 
@@ -19,7 +14,8 @@ type BasketProps = {
   selection: AssetCode[];
   assetFamilyIdentifier: AssetFamilyIdentifier;
   context: Context;
-  onSelectionChange: (assetCodeCollection: AssetCode[]) => void;
+  onRemove: (assetCode: AssetCode) => void;
+  onRemoveAll: () => void;
 };
 
 const Container = styled.div`
@@ -83,7 +79,7 @@ const useLoadAssetCollection = (
   return {assetCollection, setAssetCollection};
 };
 
-const Basket = ({dataProvider, assetFamilyIdentifier, selection, context, onSelectionChange}: BasketProps) => {
+const Basket = ({dataProvider, assetFamilyIdentifier, selection, context, onRemove, onRemoveAll}: BasketProps) => {
   const {assetCollection} = useLoadAssetCollection(selection, dataProvider, assetFamilyIdentifier, context);
 
   if (0 === selection.length) {
@@ -92,9 +88,7 @@ const Basket = ({dataProvider, assetFamilyIdentifier, selection, context, onSele
 
   return (
     <Container data-container="basket">
-      <Title>
-        {__('pim_asset_manager.asset_picker.basket.title', {assetCount: selection.length}, selection.length)}
-      </Title>
+      <Title>{__('pim_asset_manager.asset_selected', {assetCount: selection.length}, selection.length)}</Title>
       <List>
         {selection.map((assetCode: AssetCode) => {
           const asset = getAssetByCode(assetCollection, assetCode);
@@ -109,14 +103,7 @@ const Basket = ({dataProvider, assetFamilyIdentifier, selection, context, onSele
               />
             );
           }
-          return (
-            <AssetItem
-              asset={asset}
-              context={context}
-              onRemove={() => onSelectionChange(removeAssetFromAssetCodeCollection(selection, asset.code))}
-              key={assetCode}
-            />
-          );
+          return <AssetItem asset={asset} context={context} onRemove={() => onRemove(asset.code)} key={assetCode} />;
         })}
       </List>
       <Footer>
@@ -125,7 +112,7 @@ const Basket = ({dataProvider, assetFamilyIdentifier, selection, context, onSele
           color="outline"
           title={__('pim_asset_manager.asset_picker.basket.remove_all_assets')}
           tabIndex={1}
-          onClick={() => onSelectionChange(emptyCollection(selection))}
+          onClick={onRemoveAll}
         >
           {__('pim_asset_manager.asset_picker.basket.remove_all_assets')}
         </RemoveAllButton>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useCallback, useState} from 'react';
 import styled from 'styled-components';
 import SearchBar from 'akeneoassetmanager/application/component/asset/list/search-bar';
 import Mosaic from 'akeneoassetmanager/application/component/asset/list/mosaic';
@@ -14,7 +14,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 import {AssetFamilySelector} from 'akeneoassetmanager/application/component/library/asset-family-selector';
 import {HeaderView} from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {getLabel} from 'pimui/js/i18n';
-import {MultipleButton, Button, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
+import {MultipleButton, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {CreateModal} from 'akeneoassetmanager/application/component/asset/create';
@@ -39,7 +39,7 @@ import {getCompletenessFilter, updateCompletenessFilter} from 'akeneoassetmanage
 import notify from 'akeneoassetmanager/tools/notify';
 import {useRouter} from '@akeneo-pim-community/legacy-bridge';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
-import {AssetsIllustration, Information, Link} from 'akeneo-design-system';
+import {AssetsIllustration, Checkbox, Information, Link, Toolbar, Button, useSelection} from 'akeneo-design-system';
 
 const Header = styled.div`
   padding-left: 40px;
@@ -49,6 +49,8 @@ const Header = styled.div`
 
 const Content = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Container = styled.div`
@@ -61,8 +63,8 @@ const Grid = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  height: calc(100% - 136px);
   margin: 0 40px;
+  overflow-y: auto;
 `;
 
 const AssetCardPlaceholderGrid = styled.div`
@@ -111,7 +113,7 @@ const SecondaryActions = ({
 
 const useRoutes = () => {
   const {generate, redirect} = useRouter();
-  const redirectToAsset = React.useCallback((assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => {
+  const redirectToAsset = useCallback((assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => {
     clearImageLoadingQueue();
     redirect(
       generate('akeneo_asset_manager_asset_edit', {
@@ -121,7 +123,7 @@ const useRoutes = () => {
       })
     );
   }, []);
-  const redirectToAssetFamily = React.useCallback((identifier: AssetFamilyIdentifier) => {
+  const redirectToAssetFamily = useCallback((identifier: AssetFamilyIdentifier) => {
     clearImageLoadingQueue();
     redirect(
       generate('akeneo_asset_manager_asset_family_edit', {
@@ -159,16 +161,20 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
     `akeneo.asset_manager.grid.filter_collection_${currentAssetFamilyIdentifier}`,
     []
   );
-  const [excludedAssetCollection] = React.useState<AssetCode[]>([]);
-  const [selection, setSelection] = React.useState<AssetCode[]>([]);
+  const [excludedAssetCollection] = useState<AssetCode[]>([]);
   const [searchValue, setSearchValue] = useStoredState<string>('akeneo.asset_manager.grid.search_value', '');
-  const [searchResult, setSearchResult] = React.useState<SearchResult<ListAsset>>(emptySearchResult());
-  const [isInitialized, setIsInitialized] = React.useState<boolean>(false);
+  const [searchResult, setSearchResult] = useState<SearchResult<ListAsset>>(emptySearchResult());
+  const [isInitialized, setIsInitialized] = useState<boolean>(false);
   const [context, setContext] = useStoredState<Context>('akeneo.asset_manager.grid.context', initialContext);
-  const [isCreateAssetModalOpen, setCreateAssetModalOpen] = React.useState<boolean>(false);
-  const [isUploadModalOpen, setUploadModalOpen] = React.useState<boolean>(false);
-  const [isCreateAssetFamilyModalOpen, setCreateAssetFamilyModalOpen] = React.useState<boolean>(false);
-  const [isDeleteAllAssetsModalOpen, setDeleteAllAssetsModalOpen] = React.useState<boolean>(false);
+  const [isCreateAssetModalOpen, setCreateAssetModalOpen] = useState<boolean>(false);
+  const [isUploadModalOpen, setUploadModalOpen] = useState<boolean>(false);
+  const [isCreateAssetFamilyModalOpen, setCreateAssetFamilyModalOpen] = useState<boolean>(false);
+  const [isDeleteAllAssetsModalOpen, setDeleteAllAssetsModalOpen] = useState<boolean>(false);
+
+  const [, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] = useSelection<
+    AssetCode
+  >(searchResult.matchesCount);
+
   const channels = useChannels(dataProvider.channelFetcher);
   const locales = getLocales(channels, context.channel);
   const {assetFamily: currentAssetFamily, rights} = useAssetFamily(dataProvider, currentAssetFamilyIdentifier);
@@ -178,7 +184,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
       : getLabel(currentAssetFamily.labels, context.locale, currentAssetFamily.identifier);
 
   const completenessValue = getCompletenessFilter(filterCollection);
-  const handleCompletenessValueChange = React.useCallback(
+  const handleCompletenessValueChange = useCallback(
     (value: CompletenessValue) => {
       setFilterCollection(updateCompletenessFilter(filterCollection, value));
     },
@@ -204,7 +210,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
   const hasMediaLinkAsMainMedia =
     null !== currentAssetFamily && isMediaLinkAttribute(getAttributeAsMainMedia(currentAssetFamily));
 
-  const handleAssetFamilyChange = React.useCallback(
+  const handleAssetFamilyChange = useCallback(
     (assetFamilyIdentifier: AssetFamilyIdentifier) => {
       setCurrentAssetFamilyIdentifier(assetFamilyIdentifier);
       clearImageLoadingQueue();
@@ -212,7 +218,13 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
     [setCurrentAssetFamilyIdentifier]
   );
 
-  React.useEffect(scrollTop, [currentAssetFamilyIdentifier, filterCollection, searchValue, context]);
+  const canSelectAssets = rights.asset.edit || rights.asset.delete;
+  const isToolbarVisible = 0 < searchResult.matchesCount && !!selectionState && canSelectAssets;
+
+  useEffect(() => {
+    scrollTop();
+    onSelectAllChange(false);
+  }, [currentAssetFamilyIdentifier, filterCollection, searchValue, context]);
 
   return (
     <Container>
@@ -243,7 +255,11 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
               <ButtonContainer>
                 {null !== currentAssetFamilyIdentifier ? (
                   <>
-                    <Button color="outline" onClick={() => redirectToAssetFamily(currentAssetFamilyIdentifier)}>
+                    <Button
+                      ghost={true}
+                      level="tertiary"
+                      onClick={() => redirectToAssetFamily(currentAssetFamilyIdentifier)}
+                    >
                       {__(`pim_asset_manager.asset_family.button.${rights.assetFamily.edit ? 'edit' : 'view'}`)}
                     </Button>
                     <MultipleButton
@@ -285,7 +301,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                     </MultipleButton>
                   </>
                 ) : (
-                  <Button color="green" onClick={() => setCreateAssetFamilyModalOpen(true)}>
+                  <Button level="primary" onClick={() => setCreateAssetFamilyModalOpen(true)}>
                     {__('pim_asset_manager.asset_family.button.create')}
                   </Button>
                 )}
@@ -372,13 +388,13 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
               />
               <Mosaic
                 scrollContainerRef={scrollContainerRef}
-                selection={selection}
                 assetCollection={searchResult.items}
                 context={context}
                 resultCount={searchResult.matchesCount}
+                selectionState={selectionState}
                 hasReachMaximumSelection={false}
-                onSelectionChange={setSelection}
-                assetHasLink={true}
+                onSelectionChange={canSelectAssets ? onSelectionChange : undefined}
+                isItemSelected={isItemSelected}
                 onAssetClick={(assetCode: AssetCode) => {
                   if (null !== currentAssetFamilyIdentifier) {
                     redirectToAsset(currentAssetFamilyIdentifier, assetCode);
@@ -388,6 +404,18 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             </>
           )}
         </Grid>
+        <Toolbar isVisible={isToolbarVisible}>
+          <Toolbar.SelectionContainer>
+            <Checkbox checked={selectionState} onChange={onSelectAllChange} />
+          </Toolbar.SelectionContainer>
+          <Toolbar.LabelContainer>
+            {__('pim_asset_manager.asset_selected', {assetCount: selectedCount}, selectedCount)}
+          </Toolbar.LabelContainer>
+          <Toolbar.ActionsContainer>
+            <Button>Click</Button>
+            <Button level="danger">Click again</Button>
+          </Toolbar.ActionsContainer>
+        </Toolbar>
       </Content>
       {isCreateAssetModalOpen && null !== currentAssetFamily && (
         <CreateModal

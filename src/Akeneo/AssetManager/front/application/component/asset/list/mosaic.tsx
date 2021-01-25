@@ -1,31 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Context} from 'akeneoassetmanager/domain/model/context';
-import AssetCard, {AssetCardWithLink} from 'akeneoassetmanager/application/component/asset/list/mosaic/asset-card';
+import AssetCard from 'akeneoassetmanager/application/component/asset/list/mosaic/asset-card';
 import __ from 'akeneoassetmanager/tools/translator';
 import EmptyResult from 'akeneoassetmanager/application/component/asset/list/mosaic/empty-result';
-import ListAsset, {
-  isAssetInCollection,
-  addAssetToCollection,
-  removeAssetFromAssetCodeCollection,
-  ASSET_COLLECTION_LIMIT,
-} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import ListAsset, {ASSET_COLLECTION_LIMIT} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import {Helper} from 'akeneo-design-system';
+import {CardGrid, Helper} from 'akeneo-design-system';
 
 const Container = styled.div`
   height: 100%;
   overflow-y: auto;
   flex: 1;
+  padding-top: 20px;
 `;
-
-const Grid = styled.div`
-  margin-top: 20px;
-  display: grid;
-  grid-gap: 20px;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-`;
-
 const MoreResults = styled.div`
   margin-top: 20px;
 `;
@@ -35,26 +23,24 @@ const MAX_DISPLAYED_ASSETS = 500;
 const Mosaic = ({
   scrollContainerRef = React.useRef<null | HTMLDivElement>(null),
   context,
-  selection,
   onSelectionChange,
+  isItemSelected,
   assetCollection,
   hasReachMaximumSelection,
   resultCount,
   onAssetClick,
-  assetHasLink = false,
+  selectionState,
 }: {
   scrollContainerRef?: React.RefObject<HTMLDivElement>;
-  selection: AssetCode[];
   assetCollection: ListAsset[];
   context: Context;
   resultCount: number | null;
   hasReachMaximumSelection: boolean;
-  onSelectionChange: (selection: AssetCode[]) => void;
+  onSelectionChange?: (assetCode: AssetCode, newValue: boolean) => void;
+  isItemSelected: (assetCode: AssetCode) => boolean;
   onAssetClick?: (asset: AssetCode) => void;
-  assetHasLink?: boolean;
+  selectionState: 'mixed' | boolean;
 }) => {
-  const AssetCardComponent = assetHasLink ? AssetCardWithLink : AssetCard;
-
   return (
     <React.Fragment>
       {hasReachMaximumSelection && (
@@ -62,28 +48,23 @@ const Mosaic = ({
       )}
       {assetCollection.length > 0 ? (
         <Container data-container="mosaic" ref={scrollContainerRef}>
-          <Grid>
+          <CardGrid>
             {assetCollection.map((asset: ListAsset) => {
-              const isSelected = isAssetInCollection(asset.code, selection);
+              const isSelected = isItemSelected(asset.code);
 
               return (
-                <AssetCardComponent
+                <AssetCard
                   key={asset.code}
                   asset={asset}
                   context={context}
                   isSelected={isSelected}
                   isDisabled={hasReachMaximumSelection && !isSelected}
-                  onSelectionChange={(code: AssetCode, isChecked: boolean) => {
-                    const newSelection = isChecked
-                      ? addAssetToCollection(selection, code)
-                      : removeAssetFromAssetCodeCollection(selection, code);
-                    onSelectionChange(newSelection);
-                  }}
-                  onClick={onAssetClick}
+                  onSelectionChange={onSelectionChange}
+                  onClick={!selectionState ? onAssetClick : undefined}
                 />
               );
             })}
-          </Grid>
+          </CardGrid>
           <MoreResults>
             {null !== resultCount &&
             resultCount >= MAX_DISPLAYED_ASSETS &&

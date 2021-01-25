@@ -10,6 +10,7 @@ pim_asset_manager:
         message: Sorry, we do not display this embed item but it will be correctly saved
   result_counter: '{0} No result|{1} {{ count }} result|]1,Inf] {{ count }} results'
   asset_counter: '{0} No asset|{1} {{ count }} asset|]1,Inf] {{ count }} assets'
+  asset_selected: '{0} {{ assetCount }} asset selected|{1} {{ assetCount }} asset selected|]1,Inf] {{ assetCount }} assets selected'
   asset_collection:
     add_asset: 'Add asset'
     upload_asset: 'Upload asset'
@@ -45,7 +46,6 @@ pim_asset_manager:
     filter:
       title: Asset filters
     basket:
-      title: '{{ assetCount }} asset selected|{{ assetCount }} assets selected'
       empty_title: Your basket is empty
       remove_one_asset: Remove asset {{ assetName }} from asset selection
       remove_all_assets: Remove all
