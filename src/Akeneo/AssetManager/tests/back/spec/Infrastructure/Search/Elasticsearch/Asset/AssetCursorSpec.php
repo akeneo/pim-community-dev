@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset;
 
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\AssetQueryBuilderInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -15,11 +16,8 @@ use Prophecy\Argument;
  */
 class AssetCursorSpec extends ObjectBehavior
 {
-    function let(
-        AssetQueryBuilderInterface $queryBuilder,
-        Client $assetClient
-    ) {
-
+    function let(AssetQueryBuilderInterface $queryBuilder, Client $assetClient)
+    {
         $assetQuery = AssetQuery::createFromNormalized(
             [
                 'channel' => null,
@@ -37,9 +35,19 @@ class AssetCursorSpec extends ObjectBehavior
         );
     }
 
-    function it_can_fetch_a_first_page_of_assets($assetClient, $queryBuilder)
+    function it_can_fetch_a_first_page_of_assets(Client $assetClient, AssetQueryBuilderInterface $queryBuilder)
     {
-        $esQuery = [
+        $firstAssetQuery = AssetQuery::createFromNormalized(
+            [
+                'channel' => null,
+                'locale' => null,
+                'filters' => [],
+                'page' => 0,
+                'size' => 3,
+            ]
+        );
+
+        $firstElasticSearchQuery = [
             '_source' => 'code',
             'size'    => 3,
             'query'   => [
@@ -60,39 +68,47 @@ class AssetCursorSpec extends ObjectBehavior
             'track_total_hits' => true,
         ];
 
-        $queryBuilder->buildFromQuery(Argument::Any(), 'code')
-            ->willReturn($esQuery);
-        $assetClient->search($esQuery)
-            ->willReturn([
+        $queryBuilder->buildFromQuery($firstAssetQuery, 'code')->willReturn($firstElasticSearchQuery);
+        $assetClient->search($firstElasticSearchQuery)->willReturn([
+            'hits' => [
+                'total' => ['value' => 4],
                 'hits' => [
-                    'total' => ['value' => 4],
-                    'hits' => [
-                        [
-                            '_source' => ['code' => 'nice'],
-                        ],
-                        [
-                            '_source' => ['code' => 'cool'],
-                        ],
-                        [
-                            '_source' => ['code' => 'awesome'],
-                        ]
+                    [
+                        '_source' => ['code' => 'nice'],
+                    ],
+                    [
+                        '_source' => ['code' => 'cool'],
+                    ],
+                    [
+                        '_source' => ['code' => 'awesome'],
                     ]
                 ]
-            ], [
+            ]
+        ]);
+
+        $secondAssetQuery = AssetQuery::createWithSearchAfter($firstAssetQuery, AssetCode::fromString('awesome'));
+        $secondElasticSearchQuery = array_merge($firstElasticSearchQuery, ['search_after' => 'awesome']);
+        $queryBuilder->buildFromQuery($secondAssetQuery, 'code')->willReturn($secondElasticSearchQuery);
+        $assetClient->search($secondElasticSearchQuery)->willReturn([
+            'hits' => [
+                'total' => ['value' => 4],
                 'hits' => [
-                    'total' => ['value' => 4],
-                    'hits' => [
-                        [
-                            '_source' => ['code' => 'tricky'],
-                        ]
+                    [
+                        '_source' => ['code' => 'tricky'],
                     ]
                 ]
-            ], [
-                'hits' => [
-                    'total' => ['value' => 4],
-                    'hits' => []
-                ]
-            ]);
+            ]
+        ]);
+
+        $thirdQuery = AssetQuery::createWithSearchAfter($secondAssetQuery, AssetCode::fromString('tricky'));
+        $thirdElasticSearchQuery = array_merge($firstElasticSearchQuery, ['search_after' => 'tricky']);
+        $queryBuilder->buildFromQuery($thirdQuery, 'code')->willReturn($thirdElasticSearchQuery);
+        $assetClient->search($thirdElasticSearchQuery)->willReturn([
+            'hits' => [
+                'total' => ['value' => 4],
+                'hits' => []
+            ]
+        ]);
 
         $page1 = ['nice', 'cool', 'awesome'];
         $page2 = ['tricky'];
@@ -122,6 +138,16 @@ class AssetCursorSpec extends ObjectBehavior
 
     function it_can_count_total_items($assetClient, $queryBuilder)
     {
+        $assetQuery = AssetQuery::createFromNormalized(
+            [
+                'channel' => null,
+                'locale' => null,
+                'filters' => [],
+                'page' => 0,
+                'size' => 3,
+            ]
+        );
+
         $esQuery = [
             '_source' => 'code',
             'size'    => 3,
@@ -143,7 +169,7 @@ class AssetCursorSpec extends ObjectBehavior
             'track_total_hits' => true,
         ];
 
-        $queryBuilder->buildFromQuery(Argument::Any(), 'code')
+        $queryBuilder->buildFromQuery($assetQuery, 'code')
             ->willReturn($esQuery);
         $assetClient->search($esQuery)
             ->willReturn([

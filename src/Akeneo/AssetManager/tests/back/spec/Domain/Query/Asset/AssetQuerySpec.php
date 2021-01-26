@@ -89,23 +89,29 @@ class AssetQuerySpec extends ObjectBehavior
 
     function it_can_be_normalized()
     {
-        $this->normalize()->shouldReturn([
+        $normalizedQuery = [
             'channel' => 'ecommerce',
-            'locale' => 'en_US',
+            'locale'  => 'en_US',
             'filters' => [
                 [
-                    'field' => 'full_text',
+                    'field'    => 'full_text',
                     'operator' => '=',
-                    'value' => 'test'
+                    'value'    => 'test'
                 ],
                 [
-                    'field' => 'values.main_color_designers_fingerprint',
+                    'field'    => 'values.main_color_designers_fingerprint',
                     'operator' => '=',
-                    'value' => 'blue'
+                    'value'    => 'blue'
                 ]
             ],
-            'page' => 0,
-            'size' => 20
+            'page'    => 0,
+            'size'    => 20
+        ];
+
+        $this->beConstructedThrough('createFromNormalized', [
+            $normalizedQuery
         ]);
+
+        $this->normalize()->shouldReturn($normalizedQuery);
     }
 }
