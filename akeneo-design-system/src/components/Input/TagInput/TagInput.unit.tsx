@@ -108,27 +108,6 @@ test('it supports the removal of a tag using keyboard only', () => {
   userEvent.type(screen.getByTestId('tag-input'), '{backspace}');
 });
 
-test('it can display only 100 tags max', () => {
-  const TagInputContainer = () => {
-    const [tags, setTags] = useState<string[]>([]);
-    return <TagInput value={tags} onChange={setTags} />;
-  };
-
-  render(<TagInputContainer />);
-
-  const tags = Array.from(Array(115).keys()).join(' ');
-  userEvent.paste(screen.getByTestId('tag-input'), tags);
-
-  expect(screen.queryAllByTestId('tag')).toHaveLength(100);
-  expect(screen.queryByText('55')).toBeInTheDocument();
-  expect(screen.queryByText('99')).toBeInTheDocument();
-  expect(screen.queryByText('100')).not.toBeInTheDocument();
-  expect(screen.queryByText('110')).not.toBeInTheDocument();
-
-  userEvent.type(screen.getByTestId('tag-input'), 'newtag');
-  expect(screen.queryAllByDisplayValue('newtag')).toHaveLength(0);
-});
-
 test('it allows input to be easily focused by clicking anywhere on the component', () => {
   const TagInputContainer = () => {
     const [tags, setTags] = useState<string[]>([]);
