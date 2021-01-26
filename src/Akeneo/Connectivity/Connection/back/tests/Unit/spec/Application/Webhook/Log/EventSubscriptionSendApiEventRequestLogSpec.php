@@ -58,7 +58,7 @@ class EventSubscriptionSendApiEventRequestLogSpec extends ObjectBehavior
 
         $this->toLog()->shouldReturn([
             'type' => EventSubscriptionSendApiEventRequestLog::TYPE,
-            'duration' => 21289,
+            'duration_ms' => 21289,
             'headers' => [
                 'Content-Type' => 'application/json',
             ],
@@ -97,7 +97,7 @@ class EventSubscriptionSendApiEventRequestLogSpec extends ObjectBehavior
 
         $this->toLog()->shouldReturn([
             'type' => EventSubscriptionSendApiEventRequestLog::TYPE,
-            'duration' => 21289,
+            'duration_ms' => 21289,
             'headers' => [
                 'Content-Type' => 'application/json',
             ],
