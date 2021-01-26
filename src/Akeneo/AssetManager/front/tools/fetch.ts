@@ -1,5 +1,5 @@
 export const getJSON = (url: string) => {
-  return fetch(url);
+  return fetch(url).then(response => response.json());
 };
 
 export const postJSON = (url: string, data: {}) => {
@@ -9,7 +9,7 @@ export const postJSON = (url: string, data: {}) => {
     headers: {
       'Content-Type': 'application/json',
     },
-  });
+  }).then(response => response.json());
 };
 
 export const putJSON = async (url: string, data: {}) => {
@@ -19,17 +19,15 @@ export const putJSON = async (url: string, data: {}) => {
     headers: {
       'Content-Type': 'application/json',
     },
-  });
+  }).then(response => response.json());
 };
 
 export const deleteJSON = async (url: any, data: {} = {}) => {
-  const promise = fetch(url, {
+  return fetch(url, {
     method: 'DELETE',
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
     },
-  });
-
-  return promise;
+  }).then(response => response.json());
 };
