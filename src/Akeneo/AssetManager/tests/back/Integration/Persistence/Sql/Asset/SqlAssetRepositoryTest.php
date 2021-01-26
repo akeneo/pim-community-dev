@@ -513,6 +513,33 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
+    public function it_mass_deletes_assets_by_asset_family_identifier_and_codes()
+    {
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetCodesToDelete = [AssetCode::fromString('starck'), AssetCode::fromString('dyson')];
+        $assetCodeToKeep = AssetCode::fromString('michel');
+
+        foreach ([...$assetCodesToDelete, $assetCodeToKeep] as $assetCode) {
+            $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+            $asset = Asset::create(
+                $identifier,
+                $assetFamilyIdentifier,
+                $assetCode,
+                ValueCollection::fromValues([])
+            );
+            $this->repository->create($asset);
+        }
+
+        Assert::assertEquals(3, $this->repository->count());
+
+        $this->repository->deleteByAssetFamilyAndCodes($assetFamilyIdentifier, $assetCodesToDelete);
+        $this->eventDispatcherMock->assertEventDispatched(AssetDeletedEvent::class);
+        Assert::assertEquals(1, $this->repository->count());
+    }
+
+    /**
+     * @test
+     */
     public function it_deletes_a_asset_by_code_and_entity_identifier()
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
