@@ -24,26 +24,13 @@ type TagInputProps = {
    * Defines if the input is valid on not
    */
   invalid?: boolean;
-
-  /**
-   * The maximum number of tags allowed
-   */
-  maxTags?: number;
 };
 
-const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = [], maxTags = 100}) => {
+const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = []}) => {
   const [isLastTagSelected, setLastTagAsSelected] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLUListElement>(null);
   const inputContainerRef = useRef<HTMLLIElement>(null);
-
-  const updateTags = useCallback(
-    (updatedTags: string[]) => {
-      const truncatedTags = updatedTags.slice(0, Math.min(maxTags, updatedTags.length));
-      onChange(truncatedTags);
-    },
-    [onChange]
-  );
 
   const onChangeCreateTags = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -74,21 +61,21 @@ const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = []
   const createTags = useCallback(
     (newTags: string[]) => {
       newTags = arrayUnique(newTags);
-      updateTags(newTags);
+      onChange(newTags);
       if (inputRef && inputRef.current) {
         inputRef.current.value = '';
       }
     },
-    [inputRef, updateTags]
+    [inputRef, onChange]
   );
 
   const removeTag = useCallback(
     (tagIndexToRemove: number) => {
       const clonedTags = [...value];
       clonedTags.splice(tagIndexToRemove, 1);
-      updateTags(clonedTags);
+      onChange(clonedTags);
     },
-    [value, updateTags]
+    [value, onChange]
   );
 
   const focusOnInputField = useCallback(
@@ -118,12 +105,12 @@ const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = []
 
       if (isLastTagSelected) {
         const newTags = value.slice(0, value.length - 1);
-        updateTags(newTags);
+        onChange(newTags);
       }
 
       setLastTagAsSelected(!isLastTagSelected);
     },
-    [isLastTagSelected, setLastTagAsSelected, updateTags, value, inputRef]
+    [isLastTagSelected, setLastTagAsSelected, onChange, value, inputRef]
   );
 
   return (
@@ -149,7 +136,6 @@ const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = []
           onKeyDown={handleTagDeletion}
           onChange={onChangeCreateTags}
           onBlurCapture={onBlurCreateTag}
-          readOnly={value.length >= maxTags}
         />
       </Tag>
     </TagContainer>
@@ -202,6 +188,7 @@ const Tag = styled.li<AkeneoThemedProps & {isSelected: boolean}>`
 
     &::placeholder {
       color: ${getColor('grey', 100)};
+      font-family: 'Lato';
     }
   }
 `;

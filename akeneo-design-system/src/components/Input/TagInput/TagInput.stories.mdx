@@ -7,7 +7,6 @@ import {TagInput} from './TagInput.tsx';
   component={TagInput}
   args={{
       value: [],
-      allowDuplicates: false,
       placeholder: 'Placeholder',
       isInvalid: false,
   }}
@@ -49,7 +48,7 @@ Tags can be separated thanks to the following characters:
   <Story name="Existing value">
     {args => {
       return (
-        <TagInput value={['batman', 'superman', 'catwoman', 'joker']} allowDuplicates={false} onChange={() => {}}/>
+        <TagInput value={['batman', 'superman', 'catwoman', 'joker']} onChange={() => {}}/>
       );
     }}
   </Story>
