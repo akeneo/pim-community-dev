@@ -4,7 +4,7 @@ namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type;
 
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractTypeTestCase extends FormIntegrationTestCase
 {
@@ -67,7 +67,7 @@ abstract class AbstractTypeTestCase extends FormIntegrationTestCase
      */
     protected function createMockTranslator()
     {
-        $translator = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
+        $translator = $this->getMockForAbstractClass(TranslatorInterface::class);
         $translator->expects($this->any())
             ->method('trans')
             ->with($this->anything(), [])

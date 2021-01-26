@@ -70,10 +70,9 @@ pim_enrich.entity.product:
       locale_unavailable: This localizable field is not available for locale '{{ locale }}' and channel '{{ channel }}'
       to_fill_count: "{1}1 missing required attribute|]1, Inf[{{ count }} missing required attributes"
       add_attribute_option: Add attribute option
-      add_option: Add an option
     completeness:
       title: Completeness
-      complete: Complete
+      complete: Completeness
       no_family: No family defined. Please define a family to calculate the completeness of this product.
       no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
       missing_values: "{1}1 missing value|]1, Inf[{{ count }} missing values"
@@ -83,7 +82,6 @@ pim_enrich.entity.product:
       save_and_next: Save and next
       save_and_finish: Save and finish
     associations:
-      title: Associations
       none_exist: No association types exist.
       show_products: Display products
       show_groups: Display groups
@@ -91,7 +89,6 @@ pim_enrich.entity.product:
       association_type_selector: Association type
       target: Target
       manage: Add {{ associationType }} associations
-      manage_description: Select the products you want to associate with the current product
       add_associations: Add associations
     attribute_filter:
       display: Display
@@ -118,6 +115,8 @@ pim_enrich.entity.product:
       header_reply: '{{ user }} replies to the comment'
       delete_confirm: Are you sure you want to delete this comment?
       removed_author: Removed user
+    asset:
+      title: Assets
 pim_enrich.entity.product_model:
   label: product model
   uppercase_label: Product model
@@ -147,10 +146,10 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'variant axis'
       create: Add new
-      create_label: "Add a new {{ axes }}"
       required_label: '(variant axis)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variant product|]1, Inf[{{ complete }} / {{ total }} variant products"
+      label: Variant
     delete:
       confirm: Are you sure you want to delete this product model? All its children, product models and variant products, will be also deleted.
       confirm_for_products_and_product_models: Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted.
@@ -173,6 +172,13 @@ pim_enrich.entity.group:
       button: Create group
     delete:
       confirm: Are you sure you want to delete this group?
+pim_enrich.entity.role:
+  module:
+    delete:
+      confirm: Are you sure you want to delete this role?
+  flash:
+    delete:
+      success: Role successfully removed
 pim_enrich.entity.category:
   label: category
   uppercase_label: Category
@@ -254,7 +260,6 @@ pim_enrich.export.product:
     title: Global settings
 pim_enrich.mass_edit.product:
   title: Products bulk action
-  confirm: "{1}You are about to update a product with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, please confirm."
   step:
     select:
       label: Choose products
@@ -274,52 +279,46 @@ pim_enrich.mass_edit.product:
       select_attributes: Select attributes
     change_status:
       label: Change status
-      label_count: "{1}Change the status of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change the status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: The selected products will be enabled or disabled.
       field: To enable
     edit_common:
       label: Edit attributes values
-      label_count: "{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
+      no_update: Please select at least one field to update
     add_attribute_value:
       label: Add attributes values
-      label_count: "{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: Only the multivalued attributes belonging to the families of the products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The attributes values are added, the previous values are kept.
     change_family:
       label: Change family
-      label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: The family of the selected products will be changed to the chosen family
     add_to_group:
       label: Add to groups
-      label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
       description: Select the groups in which to add the selected products
       field: Groups
+      no_update: Please select a group before to continue
     add_to_category:
       label: Add to categories
-      label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
       description: The products will be classified into following categories, the existing classification is kept.
     move_to_category:
       label: Move between categories
-      label_count: "{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|]1, Inf[Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
       description: The products will be classified into following categories, the existing classification is lost.
     remove_from_category:
       label: Remove from categories
-      label_count: "{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|]1, Inf[Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
       description: The products will be removed from the following categories.
+      no_update: There is no category checked to remove the selected products from.
     add_to_existing_product_model:
       label: Add to an existing product model
-      label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
       description: The product model selected will gather the products and allows the enrichment of their common properties.
+      no_update: Please select a product model before to continue
     associate_to_product_and_product_model:
       label: Associate
-      label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|]1, Inf[Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
       description: The products selected in the grid will be associated to the selected products and product models for the chosen association type
       validate: Please add association before going to the next step
     change_parent_product_model:
       label: Change the parent product model
-      label_count: "{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
 pim_datagrid:
+  no_entities: "No {{ entityHint }} found"
   mass_action_group:
     bulk_actions:
       label: Bulk Actions
@@ -335,12 +334,12 @@ pim_datagrid:
       csv_grid_context: CSV (Grid context)
       xlsx_all: Excel (All attributes)
       xlsx_grid_context: Excel (Grid context)
+      configurator:
+        title: Select your action
+        all_attributes: All attributes
     mass_edit: Bulk actions
     sequential_edit: Sequential edit
     mass_delete: Mass delete
-    selected:
-      family: selected families
-      product: selected results
   view_selector:
     view: Views
   actions:
@@ -357,6 +356,20 @@ pim_datagrid:
   filters:
     label: Filters
     system: System
+    product_typology:
+      variant: 'Variant'
+    entity_type:
+      label: 'Variant'
+    family:
+      label: Family
+    groups:
+      label: Groups
+    enabled:
+      label: Status
+    completeness:
+      label: Complete
+    identifier:
+      label: Identifier
 batch_jobs:
   add_association:
     label: Associate

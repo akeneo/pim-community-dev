@@ -33,10 +33,10 @@ akeneo_data_quality_insights_dashboard_key_indicators:
         _feature: data_quality_insights
     methods: [GET]
 
-akeneo_data_quality_insights_product_axis_rates:
-    path: /data-quality-insights/product-axes-rates/{productId}
+akeneo_data_quality_insights_dashboard_quality_score_evolution:
+    path: /data-quality-insights/dashboard/quality-score-evolution/{channel}/{locale}
     defaults:
-        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductAxesRatesController
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardQualityScoreEvolutionController
         _feature: data_quality_insights
     methods: [GET]
 

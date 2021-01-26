@@ -20,9 +20,10 @@ services:
         tags:
             - { name: akeneo.pim.enrichment.product.grid.add_additional_product_properties }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\RegisterQualityScoreFilter:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\RegisterQualityScoreFilterAndColumn:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
 
@@ -61,6 +62,7 @@ services:
             - 'data_quality_insights_enrichment_quality'
             - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithGoodEnrichment::CODE
         tags:
+            - { name: pim_catalog.elasticsearch.query.product_filter, priority: 30 }
             - { name: pim_catalog.elasticsearch.query.product_and_product_model_filter, priority: 30 }
 
     akeneo.pim.automation.data_quality_insights.product_grid.filter.image_quality:
@@ -87,4 +89,5 @@ services:
             - 'data_quality_insights_images_quality'
             - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithImage::CODE
         tags:
+            - { name: pim_catalog.elasticsearch.query.product_filter, priority: 30 }
             - { name: pim_catalog.elasticsearch.query.product_and_product_model_filter, priority: 30 }

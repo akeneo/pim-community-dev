@@ -2,6 +2,8 @@ import React, {Ref, useCallback} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor} from '../../../theme';
 import {EraseIcon, LockIcon} from '../../../icons';
+import {InputProps} from '../InputProps';
+import {Override} from '../../../shared';
 
 const BooleanInputContainer = styled.div``;
 
@@ -88,35 +90,36 @@ const BooleanInputEraseIcon = styled(EraseIcon)`
 `;
 
 const IconContainer = styled.span`
-  color: 1px solid ${getColor('grey', 100)}}
+  color: 1px solid ${getColor('grey', 100)};
   vertical-align: middle;
   margin-left: 10px;
 `;
 const BooleanInputLockIcon = styled(LockIcon)``;
 
-type BooleanInputProps = (
-  | {
-      clearable?: true;
-      value: boolean | null;
-      onChange?: (value: boolean | null) => void;
-      clearLabel: string;
-    }
-  | {
-      clearable?: false;
-      value: boolean;
-      onChange?: (value: boolean) => void;
-      clearLabel?: string;
-    }
-) & {
-  readOnly: boolean;
-  yesLabel: string;
-  noLabel: string;
-};
+type BooleanInputProps = Override<
+  InputProps<boolean>,
+  (
+    | {
+        clearable?: true;
+        value: boolean | null;
+        onChange?: (value: boolean | null) => void;
+        clearLabel: string;
+      }
+    | {
+        clearable?: false;
+        value: boolean;
+        onChange?: (value: boolean) => void;
+        clearLabel?: string;
+      }
+  ) & {
+    readOnly: boolean;
+    yesLabel: string;
+    noLabel: string;
+  }
+>;
 
 /**
- * Toggle is used to quickly switch between two possible states. They are commonly used for "yes/no" switches.
- * The boolean can in some cases have a 3rd state, EMPTY. In this case, a clear button allows the user to empty the
- * value of the field.
+ * The BooleanInput is used to quickly switch between two possible states.
  */
 const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
   (
@@ -156,6 +159,7 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
         <YesButton
           value={value}
           readOnly={readOnly}
+          aria-readonly={readOnly}
           disabled={readOnly}
           onClick={() => {
             handleChange(true);

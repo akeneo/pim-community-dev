@@ -1,4 +1,15 @@
 akeneo_data_quality_insights:
   axis:
     enrichment: Verrijking
+  acl:
+    activation_attribute_group:
+      edit: Datakwaliteit inzichten activeren
+  acl_group:
+    dqi: Datakwaliteit inzichten
+  product_grid:
+    filter_label:
+      quality_score: Kwaliteitsscore
+      enrichment_quality: Verrijkingskwaliteit
+      images_quality: Afbeeldingskwaliteit
 Enrichment: Verrijking
+Quality Score: Kwaliteitsscore

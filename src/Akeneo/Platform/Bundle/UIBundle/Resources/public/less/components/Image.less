@@ -1,5 +1,4 @@
 @import '../base/variables';
-@import '../base/animations';
 
 .AknImage {
   @imageWidth: 140px;
@@ -29,33 +28,15 @@
     }
   }
 
-  &--dropping, &:hover {
-    .AknImage-uploaderIllustration {
-      .arrow {
-        transform: rotate(180deg);
-      }
-
-      .stars {
-        transform: scale(1.2);
-      }
-    }
-  }
-
   &-uploader {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
     width: 100%;
-    .uploadAnimation();
-
-    &Illustration {
-      width: 190px;
-      overflow: visible;
-    }
 
     &Helper {
-      margin: 24px 0;
+      margin-bottom: 24px;
     }
   }
 
@@ -95,9 +76,6 @@
       display: flex;
       align-items: end;
       color: white;
-
-      .trashAnimation;
-      .downloadAnimation;
 
       &:hover {
         cursor: pointer;

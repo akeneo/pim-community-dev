@@ -7,6 +7,7 @@ namespace Oro\Bundle\PimDataGridBundle\tests\Integration\Repository;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
+use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Webmozart\Assert\Assert;
@@ -46,6 +47,9 @@ class DatagridViewRepositoryIntegration extends TestCase
         $view6Id = $this->createDatagridView('view 6', 'product-grid', DatagridView::TYPE_PUBLIC, $juliaUser)->getId();
 
         $result = $this->datagridViewRepository->findDatagridViewBySearch($adminUser, 'product-grid');
+        Assert::isArray($result);
+        Assert::notEmpty($result);
+        Assert::isInstanceOf($result[0], DatagridView::class);
         Assert::same(array_map(function ($view) {
             return $view->getId();
         }, $result), [$view1Id, $view2Id, $view3Id, $view4Id, $view6Id]);
@@ -72,15 +76,18 @@ class DatagridViewRepositoryIntegration extends TestCase
         $juliaUser = $this->userRepository->findOneBy(['username' => 'julia']);
 
         $this->createDatagridView('view 1', 'product-grid', DatagridView::TYPE_PRIVATE, $adminUser)->getId();
-        $aliases = $this->datagridViewRepository->getDatagridViewTypeByUser($adminUser);
-        Assert::same($aliases, [['datagridAlias' => 'product-grid']]);
+        $this->createDatagridView('view 3', 'other-grid', DatagridView::TYPE_PRIVATE, $adminUser)->getId();
+        $this->createDatagridView('view 5', 'product-grid', DatagridView::TYPE_PRIVATE, $adminUser)->getId();
+        $aliases = $this->datagridViewRepository->getDatagridViewAliasesByUser($adminUser);
+        Assert::same($aliases, ['product-grid', 'other-grid']);
 
-        $aliases = $this->datagridViewRepository->getDatagridViewTypeByUser($juliaUser);
+        $aliases = $this->datagridViewRepository->getDatagridViewAliasesByUser($juliaUser);
         Assert::same($aliases, []);
 
         $this->createDatagridView('view 2', 'product-grid', DatagridView::TYPE_PUBLIC, $adminUser)->getId();
-        $aliases = $this->datagridViewRepository->getDatagridViewTypeByUser($juliaUser);
-        Assert::same($aliases, [['datagridAlias' => 'product-grid']]);
+        $this->createDatagridView('view 4', 'another-grid', DatagridView::TYPE_PUBLIC, $adminUser)->getId();
+        $aliases = $this->datagridViewRepository->getDatagridViewAliasesByUser($juliaUser);
+        Assert::same($aliases, ['product-grid', 'another-grid']);
     }
 
     private function createDatagridView(

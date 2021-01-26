@@ -30,7 +30,10 @@ const isProductEvaluationPending = (evaluation: ProductEvaluation | undefined, c
   const axisInProgress: any = Object.keys(evaluation).filter((axisCode: string) => {
     const axisEvaluation: Evaluation = _get(evaluation, [axisCode, channel, locale]);
 
-    return axisEvaluation.criteria.filter((criterion: CriterionEvaluationResult) => criterion.rate.value !== null).length === 0;
+    return (
+      axisEvaluation.criteria.filter((criterion: CriterionEvaluationResult) => criterion.rate.value !== null).length ===
+      0
+    );
   });
 
   return axisInProgress.length > 0;
@@ -55,8 +58,9 @@ const BaseDataQualityInsightsTabContent: FC<DataQualityInsightsTabContentProps> 
     }
   });
 
-  // @ts-ignore
-  const productEvaluation: ProductEvaluation | undefined = newEvaluation && convertEvaluationToLegacyFormat(axes, newEvaluation);
+  const productEvaluation: ProductEvaluation | undefined =
+    // @ts-ignore
+    newEvaluation && convertEvaluationToLegacyFormat(axes, newEvaluation);
 
   const hasEvaluation = channel && locale && !isProductEvaluationPending(productEvaluation, channel, locale);
   if (locale && channel && evaluatedGroups !== null && Object.keys(evaluatedGroups).length === 0 && !hasEvaluation) {

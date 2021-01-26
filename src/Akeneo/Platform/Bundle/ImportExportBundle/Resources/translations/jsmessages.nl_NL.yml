@@ -99,9 +99,6 @@ pim_import_export:
           with_header:
             title: Met koptekst
             help: Of de kolomnaam geprint moet worden
-          with_media:
-            title: Bestanden en afbeeldingen exporteren
-            help: Productbestanden en afbeeldingen al dan niet exporteren
           lines_per_file:
             title: Aantal regels per bestand
             help: Het maximum aantal regels per bestand definiëren
@@ -131,6 +128,15 @@ pim_import_export:
             help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren
           family_variant_column:
             title: Familie variant kolom
+          with_label:
+            title: Met labels
+            help: Definieer of het exportbestand de labels laat zien in plaats van codes
+          header_with_label:
+            title: Kopregels met labels
+            help: Bepaal of het exportbestand voor de headers labels toont in plaats van codes
+          file_locale:
+            title: Landinstelling bestand
+            help: Definieer de taal waarin labels worden weergegeven
       file_path: Bestandspad
   widget:
     last_operations:
@@ -168,6 +174,12 @@ pim_import_export:
     FAILED: Mislukt
     ABANDONED: Afgebroken
     UNKNOWN: Onbekend
+  tracking:
+    completed: "Gebruikte tijd: {{ duration }}"
+    in_progress: "Geschatte resterende tijd: {{ duration }}"
+    not_started: "In behandeling"
+    untrackable: Ontraceerbare stap
+    estimating: "Geschatte resterende tijd..."
 confirmation:
   remove:
     import_profile: Weet u zeker dat u dit importprofiel wilt verwijderen?

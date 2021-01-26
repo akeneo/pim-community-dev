@@ -6,13 +6,16 @@ import {
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
 } from '@akeneo-pim-community/data-quality-insights/src';
 import ReactDOM from 'react-dom';
+import {TimePeriod} from '@akeneo-pim-community/data-quality-insights';
 
 interface SectionConfig {
   align: string;
 }
+
 interface LocaleEvent {
   localeCode: string;
 }
+
 interface ScopeEvent {
   scopeCode: string;
 }
@@ -27,6 +30,8 @@ type DashboardFilterOnFamilyEvent = {
 
 type DashboardFilterOnCategoryEvent = {
   categoryCode: string;
+  categoryId: string;
+  rootCategoryId: string;
 };
 
 class BaseDashboard extends BaseView {
@@ -34,11 +39,13 @@ class BaseDashboard extends BaseView {
     align: 'left',
   };
 
-  protected timePeriod: string = 'weekly';
+  protected timePeriod: TimePeriod = 'weekly';
 
   protected familyCode: string | null = null;
 
   protected categoryCode: string | null = null;
+  protected categoryId: string | null = null;
+  protected rootCategoryId: string | null = null;
 
   protected readonly axes = [];
 
@@ -52,7 +59,7 @@ class BaseDashboard extends BaseView {
     window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD, ((
       event: CustomEvent<DashboardChangeTimePeriodEvent>
     ) => {
-      this.timePeriod = event.detail.timePeriod;
+      this.timePeriod = event.detail.timePeriod as TimePeriod;
       this.render();
     }) as EventListener);
 
@@ -61,6 +68,8 @@ class BaseDashboard extends BaseView {
     ) => {
       this.familyCode = event.detail.familyCode;
       this.categoryCode = null;
+      this.categoryId = null;
+      this.rootCategoryId = null;
       this.render();
     }) as EventListener);
 
@@ -68,6 +77,8 @@ class BaseDashboard extends BaseView {
       event: CustomEvent<DashboardFilterOnCategoryEvent>
     ) => {
       this.categoryCode = event.detail.categoryCode;
+      this.categoryId = event.detail.categoryId;
+      this.rootCategoryId = event.detail.rootCategoryId;
       this.familyCode = null;
       this.render();
     }) as EventListener);

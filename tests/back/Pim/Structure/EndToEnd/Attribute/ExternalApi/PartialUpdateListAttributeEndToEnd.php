@@ -63,6 +63,7 @@ JSON;
                 'scopable'               => false,
                 'labels'                 => [],
                 'auto_option_sorting'    => null,
+                'default_value'          => null,
             ],
             'picture' => [
                 'code'                   => 'picture',
@@ -92,6 +93,7 @@ JSON;
                 'scopable'               => false,
                 'labels'                 => [],
                 'auto_option_sorting'    => null,
+                'default_value'          => null,
             ]
         ];
 

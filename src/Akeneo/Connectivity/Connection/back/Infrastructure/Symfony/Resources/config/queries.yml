@@ -80,7 +80,12 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_connectivity.connection.persistence.query.get_connection_user_for_fake_subscription:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalGetConnectionUserForFakeSubscription
+    akeneo_connectivity.connection.persistence.query.count_active_event_subscriptions:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalCountActiveEventSubscriptionsQuery
+        arguments:
+            - '@database_connection'
+
+    akeneo_connectivity.connection.persistence.query.select_events_api_request_count_within_last_hour_query:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectEventsApiRequestCountWithinLastHourQuery
         arguments:
             - '@database_connection'

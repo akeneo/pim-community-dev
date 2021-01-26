@@ -133,30 +133,6 @@ class ReaderSpec extends ObjectBehavior
         $this->shouldThrow(InvalidItemFromViolationsException::class)->during('read');
     }
 
-    function it_rewinds_the_reader(
-        $fileIteratorFactory,
-        $stepExecution,
-        FileIteratorInterface $fileIterator,
-        JobParameters $jobParameters
-    ) {
-        $filePath = $this->getPath() . DIRECTORY_SEPARATOR  . 'with_media.csv';
-
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('enclosure')->willReturn('"');
-        $jobParameters->get('delimiter')->willReturn(';');
-        $jobParameters->get('filePath')->willReturn($filePath);
-
-        $fileIteratorFactory->create($filePath, [
-            'reader_options' => [
-                'fieldDelimiter' => ';',
-                'fieldEnclosure' => '"',
-            ]
-        ])->willReturn($fileIterator);
-        $fileIterator->rewind()->shouldBeCalled();
-
-        $this->rewind();
-    }
-
     private function getPath()
     {
         return __DIR__ . DIRECTORY_SEPARATOR .

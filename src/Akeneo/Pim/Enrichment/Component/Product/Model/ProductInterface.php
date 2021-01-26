@@ -7,6 +7,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
+use Akeneo\Tool\Component\StorageUtils\Model\StateUpdatedAware;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -28,7 +29,8 @@ interface ProductInterface extends
     EntityWithFamilyInterface,
     EntityWithFamilyVariantInterface,
     EntityWithAssociationsInterface,
-    EntityWithQuantifiedAssociationsInterface
+    EntityWithQuantifiedAssociationsInterface,
+    StateUpdatedAware
 {
     /**
      * Get the ID of the product
@@ -49,9 +51,9 @@ interface ProductInterface extends
     /**
      * @param string|null $identifierValue
      *
-     * @return ProductInterface
+     * @return self
      */
-    public function setIdentifier(?string $identifierValue): ProductInterface;
+    public function setIdentifier(?string $identifierValue): self;
 
     /**
      * Get the product groups
@@ -86,7 +88,7 @@ interface ProductInterface extends
     /**
      * Get groups code
      *
-     * @return array
+     * @return string[]
      */
     public function getGroupCodes();
 
@@ -141,8 +143,8 @@ interface ProductInterface extends
     /**
      * Get product label
      *
-     * @param string $locale
-     * @param string $scopeCode
+     * @param ?string $locale
+     * @param ?string $scopeCode
      *
      * @return mixed|string
      */
@@ -151,7 +153,7 @@ interface ProductInterface extends
     /**
      * Set family
      *
-     * @param FamilyInterface $family
+     * @param ?FamilyInterface $family
      *
      * @return ProductInterface
      */

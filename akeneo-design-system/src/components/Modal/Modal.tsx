@@ -6,7 +6,7 @@ import {IconButton} from '../../components';
 import {CloseIcon} from '../../icons';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
 import {useShortcut} from '../../hooks';
-import {Key} from '../../shared';
+import {Key, Override} from '../../shared';
 
 const ModalContainer = styled.div`
   ${CommonStyle}
@@ -23,6 +23,8 @@ const ModalContainer = styled.div`
   z-index: 2000;
   overflow: hidden;
   cursor: default;
+  padding: 20px 80px;
+  box-sizing: border-box;
 `;
 
 const ModalCloseButton = styled(IconButton)`
@@ -32,22 +34,22 @@ const ModalCloseButton = styled(IconButton)`
 `;
 
 const ModalContent = styled.div`
-  display: flex;
-  position: relative;
-`;
-
-const Separator = styled.div`
-  width: 1px;
-  height: 100%;
-  background-color: ${getColor('brand', 100)};
-  margin: 0 40px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
 `;
 
 const ModalChildren = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 20px 0;
+  padding: 20px 40px;
   min-width: 480px;
+  border-left: 1px solid ${getColor('brand', 100)};
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 40px;
 `;
 
 //TODO extract to Typography RAC-331
@@ -68,42 +70,56 @@ const Title = styled.div`
   margin-bottom: 10px;
 `;
 
-type ModalProps = {
-  /**
-   * Prop to display or hide the Modal.
-   */
-  isOpen: boolean;
+const BottomButtons = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+`;
 
-  /**
-   * Illustration to display.
-   */
-  illustration?: ReactElement<IllustrationProps>;
+const TopRightButtons = styled(BottomButtons)`
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  margin: 0;
+`;
 
-  /**
-   * Title of the close button.
-   */
-  closeTitle: string;
+type ModalProps = Override<
+  React.HTMLAttributes<HTMLDivElement>,
+  {
+    /**
+     * Illustration to display.
+     */
+    illustration?: ReactElement<IllustrationProps>;
 
-  /**
-   * The content of the modal.
-   */
-  children?: ReactNode;
+    /**
+     * Title of the close button.
+     */
+    closeTitle: string;
 
-  /**
-   * The handler to call when the Modal is closed.
-   */
-  onClose: () => void;
-};
+    /**
+     * The content of the modal.
+     */
+    children?: ReactNode;
+
+    /**
+     * The handler to call when the Modal is closed.
+     */
+    onClose: () => void;
+  }
+>;
 
 /**
  * The Modal Component is used to display a secondary window over the content.
  */
-const Modal = ({isOpen, onClose, illustration, closeTitle, children, ...rest}: ModalProps) => {
-  useShortcut(Key.Escape, onClose);
-
+const Modal: React.FC<ModalProps> & {
+  BottomButtons: typeof BottomButtons;
+  TopRightButtons: typeof TopRightButtons;
+} = ({onClose, illustration, closeTitle, children, ...rest}: ModalProps) => {
   const portalNode = document.createElement('div');
   portalNode.setAttribute('id', 'modal-root');
   const containerRef = useRef(portalNode);
+
+  useShortcut(Key.Escape, onClose);
 
   useEffect(() => {
     document.body.appendChild(containerRef.current);
@@ -113,17 +129,14 @@ const Modal = ({isOpen, onClose, illustration, closeTitle, children, ...rest}: M
     };
   }, []);
 
-  if (!isOpen) return null;
-
   return createPortal(
-    <ModalContainer {...rest}>
+    <ModalContainer role="dialog" {...rest}>
       <ModalCloseButton title={closeTitle} level="tertiary" ghost="borderless" icon={<CloseIcon />} onClick={onClose} />
       {undefined === illustration ? (
         children
       ) : (
         <ModalContent>
-          {React.cloneElement(illustration, {size: 220})}
-          <Separator />
+          <IconContainer>{React.cloneElement(illustration, {size: 220})}</IconContainer>
           <ModalChildren>{children}</ModalChildren>
         </ModalContent>
       )}
@@ -132,17 +145,7 @@ const Modal = ({isOpen, onClose, illustration, closeTitle, children, ...rest}: M
   );
 };
 
-Modal.BottomButtons = styled.div`
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-`;
-
-Modal.TopRightButtons = styled(Modal.BottomButtons)`
-  position: absolute;
-  top: 40px;
-  right: 40px;
-  margin: 0;
-`;
+Modal.BottomButtons = BottomButtons;
+Modal.TopRightButtons = TopRightButtons;
 
 export {Modal, SectionTitle, Title};

@@ -39,6 +39,7 @@ services:
         class: Akeneo\Channel\Bundle\Doctrine\Query\FindActivatedCurrencies
         arguments:
             - '@doctrine.orm.entity_manager'
+        tags: ['akeneo.pim.cached_query']
 
     akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\FetchProductAndProductModelRows'
@@ -341,6 +342,7 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindQuantifiedAssociationTypeCodes
         arguments:
             - '@database_connection'
+        tags: ['akeneo.pim.cached_query']
 
     akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_identifiers_query:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdMappingFromProductIdentifiersQuery'
@@ -361,3 +363,28 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdMappingFromProductModelIdsQuery'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.count_products_with_removed_attribute:
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\CountProductsWithRemovedAttribute
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute:
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\CountProductModelsWithRemovedAttribute
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo.pim.enrichment.product.query.count_products_and_product_models_with_inherited_removed_attribute:
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\CountProductsAndProductModelsWithInheritedRemovedAttribute
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo.pim.enrichment.product.query.get_product_identifiers_with_removed_attribute:
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductIdentifiersWithRemovedAttribute
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo.pim.enrichment.product.query.get_product_model_identifiers_with_removed_attribute:
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductModelIdentifiersWithRemovedAttribute
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'

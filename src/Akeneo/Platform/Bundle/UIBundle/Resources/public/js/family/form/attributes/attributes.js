@@ -115,6 +115,7 @@ define([
         FetcherRegistry.getFetcher('attribute-group').fetchByIdentifiers(attributeGroupsToFetch, {
           full_attributes: false,
           apply_filters: false,
+          options: {limit: -1},
         })
       ).then((channels, attributeGroups) => {
         this.channels = channels;

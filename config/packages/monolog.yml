@@ -1,9 +1,9 @@
 monolog:
   handlers:
-    quality:
+    event_api:
       type: stream
       path:  "php://stderr"
       level: info
-      channels: ['quality']
+      channels: ['event_api']
       formatter: 'monolog.formatter.json'
-  channels: ['quality']
+  channels: ['event_api']

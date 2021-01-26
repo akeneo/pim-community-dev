@@ -18,7 +18,7 @@ import {
 } from './component/ProductEditForm/TabContent/DataQualityInsights/Recommendation';
 import {followNotApplicableEnrichmentImageRecommendation} from './user-actions';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import QualityScorePortal from "./component/ProductEditForm/QualityScorePortal";
+import QualityScorePortal from './component/ProductEditForm/QualityScorePortal';
 
 interface ProductEditFormAppProps {
   catalogChannel: string;
@@ -53,7 +53,7 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
                   <Icon type={AssetCollectionIcon} />
                   <Recommendation
                     type={'not_applicable'}
-                    follow={() => followNotApplicableEnrichmentImageRecommendation(product.family)}
+                    follow={() => followNotApplicableEnrichmentImageRecommendation(product)}
                   >
                     <NotApplicableEnrichmentImageMessage />
                   </Recommendation>
@@ -63,7 +63,7 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
                 </Criterion>
               </AxisEvaluation>
             </DataQualityInsightsTabContent>
-            <QualityScorePortal/>
+            <QualityScorePortal />
           </AxesContextProvider>
         </Provider>
       </ThemeProvider>

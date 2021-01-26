@@ -1,9 +1,9 @@
-import React, {FC} from 'react';
+import styled from 'styled-components';
 
-type Props = {};
-
-const Cell: FC<Props> = ({children}) => {
-  return <>{children}</>;
+type Props = {
+  rowTitle?: boolean;
 };
+
+const Cell = styled.span<Props>``;
 
 export {Cell};

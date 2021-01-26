@@ -53,7 +53,6 @@ pim_enrich.entity.channel:
   property:
     category_tree: Category tree
     do_not_convert: Do not convert
-    label_conversion_units: Pick a conversion unit for each metric attribute that will be used during product export
   module:
     create:
       button: Create channel
@@ -63,9 +62,12 @@ pim_enrich.entity.locale:
   label: locale
   uppercase_label: Locale
   plural_label: Locales
-  page_title:
-    index: "]-Inf, 1]{{ count }} locale|]1, Inf[{{ count }} locales"
 pim_enrich.entity.currency:
   plural_label: Currencies
   page_title:
     index: "]-Inf, 1]{{ count }} currency|]1, Inf[{{ count }} currencies"
+flash:
+  currency:
+    error:
+      linked_to_channel: You cannot disable a currency linked to a channel
+    updated: Currency successfully updated

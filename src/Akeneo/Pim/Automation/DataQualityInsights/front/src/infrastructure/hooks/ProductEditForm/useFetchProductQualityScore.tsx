@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {fetchProductQualityScore} from '../../fetcher/ProductEditForm/fetchProductQualityScore';
 import {ProductEditFormState} from '../../store';
-import {ProductQualityScore} from "../../../domain";
+import {ProductQualityScore} from '../../../domain';
 
 const MAXIMUM_RETRIES = 10;
 const RETRY_MILLISECONDS_DELAY = 500;
@@ -42,7 +42,7 @@ const useFetchProductQualityScore = (channel: string | undefined, locale: string
       setNeedsUpdate(false);
       setRetries(0);
       setQualityScore(null);
-    }
+    };
   }, []);
 
   useEffect(() => {

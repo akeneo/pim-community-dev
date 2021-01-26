@@ -3,7 +3,6 @@
 namespace Oro\Bundle\PimDataGridBundle\Repository;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Datagrid view repository interface
@@ -15,25 +14,22 @@ use Doctrine\Common\Collections\ArrayCollection;
 interface DatagridViewRepositoryInterface
 {
     /**
-     * Get all datagrid view type for a given user
-     *
-     * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
-     *
-     * @return ArrayCollection
+     * Get all datagrid view aliases for a given user.
+     * Returns a list of aliases.
      */
-    public function getDatagridViewTypeByUser(UserInterface $user);
+    public function getDatagridViewAliasesByUser(UserInterface $user): array;
 
     /**
      * Search datagrid views for the given $user and grid $alias.
      * The search is applied on label with the given $term.
      * You can pass $options to add limit or page info.
      *
-     * @param UserInterface $user
-     * @param string        $alias
-     * @param string        $term
-     * @param array         $options
-     *
-     * @return ArrayCollection
+     * Returns a collection of DatagridView objects
      */
-    public function findDatagridViewBySearch(UserInterface $user, $alias, $term = '', array $options = []);
+    public function findDatagridViewBySearch(
+        UserInterface $user,
+        string $alias,
+        string $term = '',
+        array $options = []
+    ): array;
 }

@@ -73,7 +73,7 @@ pim_user:
       password_reset: Réinitialisation de mot de passe
       reset: Réinitialiser
       password_reset_email_sent: Un email vous a été envoyé. Il contient un lien pour réinitialiser votre mot de passe.
-      homepage: Aller à la page d'accueil
+      homepage: Retour à la page d’accueil
   group:
     tab:
       general.title: Général

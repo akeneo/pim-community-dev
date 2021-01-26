@@ -33,7 +33,6 @@ parameters:
     pim_catalog.validator.constraint.has_a_root_product_model_as_parent.class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ProductModelPositionInTheVariantTreeValidator
     pim_catalog.validator.constraint.family_same_family_than_parent.class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\SameFamilyThanParentValidator
     pim_catalog.validator.constraint.not_empty_family.class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyFamilyValidator
-    pim_catalog.validator.constraint.immutable_variant_axis_values.class:  Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ImmutableVariantAxesValuesValidator
     pim_catalog.validator.constraint.invalid_variant_product_parent.class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\VariantProductParentValidator
 
     pim_catalog.validator.extension_to_mimetype_mapping:
@@ -137,14 +136,6 @@ services:
         class: '%pim_catalog.validator.constraint.invalid_variant_product_parent.class%'
         tags:
             - { name: validator.constraint_validator, alias: pim_invalid_variant_product_parent }
-
-    pim_catalog.validator.constraint.immutable_variant_axis_values:
-        class: '%pim_catalog.validator.constraint.immutable_variant_axis_values.class%'
-        arguments:
-            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
-            - '@akeneo.pim.enrichment.factory.write_value_collection'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_immutable_variant_axis_values_validator }
 
     pim_catalog.validator.constraint.currency:
         class: '%pim_catalog.validator.constraint.currency.class%'

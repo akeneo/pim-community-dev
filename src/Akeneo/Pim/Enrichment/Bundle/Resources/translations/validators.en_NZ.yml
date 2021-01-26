@@ -1,6 +1,8 @@
 An identifier attribute already exists.: An identifier attribute already exists.
 Attribute code may contain only letters, numbers and underscore: Attribute code may contain only letters, numbers and underscore
 Attribute code may contain only letters (at least one), numbers and underscores: Attribute code may contain only letters (at least one), numbers and underscores
+Attribute code may not contain line-feed characters: Attribute code may not contain line-feed characters
+Attribute group code may contain only letters, numbers and underscores: Attribute group code may contain only letters, numbers and underscores
 This attribute type can't be used as a grid filter: This attribute type can't be used as a grid filter
 This code is not available: This code is not available
 This attribute type must be required: This attribute type must be required
@@ -13,9 +15,8 @@ Option code may contain only letters, numbers and underscores: Option code may c
 Option code may contain only letters (at least one), numbers and underscores: Option code may contain only letters (at least one), numbers and underscores
 This value should not be a decimal.: This value should not be a decimal.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'The file extension is not allowed (allowed extensions: %extensions%).'
-"The value %value% is already set on another product for the unique attribute %attribute%": The value %value% is already set on another product for the unique attribute %attribute%
 The same identifier is already set on another product: The same identifier is already set on another product
-regex.comma_or_semicolon.message: This field should not contain any comma or semicolon.
+regex.comma_or_semicolon_or_surrounding_space.message: This field should not contain any comma or semicolon or leading/trailing space
 file.extensions.message: 'The file extension is not allowed (allowed extensions: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": This type of value expects the use of {{ decimal_separator }} to separate decimals.
 "This type of value expects the use of dot (.) to separate decimals.": This type of value expects the use of a dot (.) to separate decimals.
@@ -24,8 +25,6 @@ file.extensions.message: 'The file extension is not allowed (allowed extensions:
 "This type of value expects the use of the format {{ date_format }} for dates.": This type of value expects the use of the format {{ date_format }} for dates.
 "The category \"%category%\" has to be a root category.": The category "%category%" has to be a root category.
 "The attribute \"%attributeCode%\" does not exist.": The attribute "%attributeCode%" does not exist.
-"The attribute \"%attributeCode%\" is not a metric attribute.": The attribute "%attributeCode%" is not a metric attribute.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": The unit "%unitCode%" does not exist or does not belong to the default metric family of the given attribute "%attributeCode%".
 "The currency \"%currency%\" has to be activated.": The currency "%currency%" has to be activated.
 product_model.code.not_blank.message: The product model code must not be empty.
 product_model.code.unique.message: The same code is already set on another product model.
@@ -40,6 +39,7 @@ pim_catalog:
     cannot_have_parent: 'The product model "%product_model%" cannot have a parent'
     attribute_does_not_belong_to_family: 'Attribute "%attribute%" does not belong to the family "%family%"'
     variant_product_invalid_family: 'The variant product family must be the same than its parent'
+    php_int_max_reached: 'The maximum number must be lower than %php_int_max%.'
     not_null_family: The family can't be "null" because your product with the identifier "%sku%" is a variant product.
     variant_product_has_parent: 'The variant product "%variant_product%" must have a parent'
     invalid_variant_product_parent: 'The variant product "%variant_product%" cannot have product model "%product_model%" as parent, (this product model can only have other product models as children)'
@@ -48,7 +48,6 @@ pim_catalog:
     family_variant_axes_unique: Variant axes must be unique, "%attributes%" are used several times in variant attributes sets
     family_variant_axes_immutable: 'Variant axes cannot be modified for the level "%level%"'
     family_variant_axes_attribute_type_unique: Variant axes "%axis%" cannot be unique or an identifier
-    family_variant_axes_attribute_type: Variant axes "%axis%" must be a boolean, a simple select, a simple reference data or a metric
     family_variant_axes_wrong_type: Variant axes "%axis%" cannot be localizable, not scopable and not locale specific
     family_variant_axes_number_of_axes: 'A variant attribute set cannot have more than %max_axes_number% axes'
     family_variant_no_axis: There should be at least one attribute defined as axis for the attribute set for level "%level%"

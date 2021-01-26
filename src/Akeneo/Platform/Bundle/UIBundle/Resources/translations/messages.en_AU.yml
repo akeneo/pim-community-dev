@@ -99,6 +99,7 @@ pim_enrich:
       comment: Comment products
       download: Download the product as PDF
       history: View product history
+      convert_variant_to_simple: Convert a variant product to a simple product
     product_model:
       create: Create a product model
       edit_attributes: Edit attributes of a product model
@@ -168,6 +169,7 @@ pim_enrich:
     job_tracker:
       index: View process tracker
       view_all_jobs: View all jobs in process tracker
+      stop_job: Stop an ongoing job
   acl_group:
     association_type: Association types
     attribute: Attributes
@@ -543,3 +545,8 @@ job_tracker:
     title: Process tracker
   filter:
     started_at: Started at
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: Powered by
+    powered_image_title: logo Akeneo

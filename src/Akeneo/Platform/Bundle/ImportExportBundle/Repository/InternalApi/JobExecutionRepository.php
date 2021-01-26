@@ -33,6 +33,7 @@ class JobExecutionRepository extends EntityRepository implements DatagridReposit
         $qb = $this->createQueryBuilder('e');
         $qb
             ->addSelect('e.id')
+            ->addSelect('j.type AS type')
             ->addSelect('e.status AS status')
             ->addSelect(
                 "CONCAT('pim_import_export.batch_status.', e.status) as statusLabel"

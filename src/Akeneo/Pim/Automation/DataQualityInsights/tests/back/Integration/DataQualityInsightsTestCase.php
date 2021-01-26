@@ -48,6 +48,24 @@ class DataQualityInsightsTestCase extends TestCase
         );
     }
 
+    protected function deleteAllProductCriterionEvaluations(): void
+    {
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_data_quality_insights_product_criteria_evaluation');
+    }
+
+    protected function deleteAllProductModelCriterionEvaluations(): void
+    {
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_data_quality_insights_product_model_criteria_evaluation');
+    }
+
+    protected function deleteProductModelCriterionEvaluations(int $productModelId): void
+    {
+        $this->get('database_connection')->executeQuery(
+            'DELETE FROM pim_data_quality_insights_product_model_criteria_evaluation WHERE product_id = :productId',
+            ['productId' => $productModelId]
+        );
+    }
+
     protected function createProduct(string $identifier, array $data = []): ProductInterface
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
@@ -101,6 +119,14 @@ class DataQualityInsightsTestCase extends TestCase
         return $productModel;
     }
 
+    protected function createProductModelWithoutEvaluations(string $code, string $familyVariant, array $data = []): ProductModelInterface
+    {
+        $productModel = $this->createProductModel($code, $familyVariant, $data);
+        $this->deleteProductModelCriterionEvaluations($productModel->getId());
+
+        return $productModel;
+    }
+
     protected function createSubProductModel(string $code, string $familyVariant, string $parent, array $data = []): ProductModelInterface
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
@@ -110,7 +136,7 @@ class DataQualityInsightsTestCase extends TestCase
             ->build();
 
         if (!empty($data)) {
-            $this->get('pim_catalog.updater.product')->update($productModel, $data);
+            $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
             $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
             Assert::count($errors, 0, $this->formatValidationErrorMessage('Invalid sub-product model', $errors));
         }
@@ -174,6 +200,8 @@ class DataQualityInsightsTestCase extends TestCase
         ];
         $data = array_merge($defaultData, $data);
 
+        $this->ensureAttributeGroupExists($defaultData['group']);
+
         $attribute = $this->get('akeneo_integration_tests.base.attribute.builder')->build($data, true);
         $this->get('pim_catalog.saver.attribute')->save($attribute);
 
@@ -204,6 +232,14 @@ class DataQualityInsightsTestCase extends TestCase
         $this->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
 
         return $attributeGroup;
+    }
+
+    protected function ensureAttributeGroupExists(string $code): void
+    {
+        $attributeGroup = $this->get('pim_catalog.repository.attribute_group')->findOneByIdentifier($code);
+        if (null === $attributeGroup) {
+            $this->createAttributeGroup($code);
+        }
     }
 
     protected function createAttributeOptions(string $attributeCode, array $optionsCodes): void
@@ -290,9 +326,18 @@ SQL;
         $errors = $this->get('validator')->validate($channel);
         Assert::count($errors, 0, $this->formatValidationErrorMessage('Invalid channel', $errors));
 
-        $this->get('pim_catalog.saver.channel')->save($channel);
+        $this->saveChannels([$channel]);
 
         return $channel;
+    }
+
+    protected function saveChannels(array $channels): void
+    {
+        $this->get('pim_catalog.saver.channel')->saveAll($channels);
+
+        // Kill background process to avoid a race condition during loading fixtures for the next integration test.
+        // @see DAPI-1477
+        exec('pkill -f "pim:catalog:remove-completeness-for-channel-and-locale"');
     }
 
     protected function getLocaleId(string $code): int

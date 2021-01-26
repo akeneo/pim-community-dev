@@ -8,11 +8,9 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValu
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Tool\Component\Batch\Item\RewindableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -98,9 +96,9 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         $this->stepExecution = $stepExecution;
     }
 
-    public function totalItems(): int
+    public function isTrackable(): bool
     {
-        return $this->computeProductsToProcess();
+        return true;
     }
 
     /**
@@ -109,56 +107,43 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     public function execute()
     {
         $this->initialize();
+        $familyCodes = $this->extractFamilyCodes();
+        if (empty($familyCodes)) {
+            return;
+        }
 
-        while (true) {
-            try {
-                $familyItem = $this->familyReader->read();
-                if (null === $familyItem) {
-                    break;
-                }
-            } catch (InvalidItemException $e) {
-                continue;
-            }
+        $products = $this->getProductsForFamilies($familyCodes);
+        $this->stepExecution->setTotalItems($products->count());
 
-            $family = $this->familyRepository->findOneByIdentifier($familyItem['code']);
-            if (null === $family) {
-                $this->stepExecution->incrementSummaryInfo('skip');
+        $skippedProducts = [];
+        $productsToSave = [];
+        foreach ($products as $product) {
+            if ($product->isVariant()) {
+                $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$product]);
 
-                continue;
-            }
+                if (!$this->isValid($product)) {
+                    $this->stepExecution->incrementSummaryInfo('skip');
+                    $this->stepExecution->incrementProcessedItems(1);
 
-            $skippedProducts = [];
-            $productsToSave = [];
-            $products = $this->getProductsForFamilies([$family->getCode()]);
-
-            foreach ($products as $product) {
-                if ($product->isVariant()) {
-                    $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$product]);
-
-                    if (!$this->isValid($product)) {
-                        $this->stepExecution->incrementSummaryInfo('skip');
-                        $this->stepExecution->incrementProcessedItems();
-
-                        $skippedProducts[] = $product;
-                    } else {
-                        $productsToSave[] = $product;
-                    }
+                    $skippedProducts[] = $product;
                 } else {
                     $productsToSave[] = $product;
                 }
-
-                if (0 === (count($productsToSave) + count($skippedProducts)) % $this->batchSize) {
-                    $this->saveProducts($productsToSave);
-                    $productsToSave = [];
-                    $skippedProducts = [];
-                    $this->cacheClearer->clear();
-                }
+            } else {
+                $productsToSave[] = $product;
             }
 
-            $this->saveProducts($productsToSave);
-
-            $this->cacheClearer->clear();
+            if (0 === (count($productsToSave) + count($skippedProducts)) % $this->batchSize) {
+                $this->saveProducts($productsToSave);
+                $productsToSave = [];
+                $skippedProducts = [];
+                $this->cacheClearer->clear();
+            }
         }
+
+        $this->saveProducts($productsToSave);
+
+        $this->cacheClearer->clear();
     }
 
     /**
@@ -204,21 +189,9 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         return $pqb->execute();
     }
 
-    /**
-     * Quentin raised some concerns regarding the ability to rewind the familyReader (which can be seen as a cursor)
-     * in a shared environment.
-     *
-     * @throws \Exception
-     */
-    private function computeProductsToProcess(): int
+    private function extractFamilyCodes(): array
     {
-        if (!$this->familyReader instanceof RewindableItemReaderInterface) {
-            return 0;
-        }
-        $this->familyReader->rewind();
-
         $familyCodes = [];
-        $totalProductsToProcess = 0;
         while (true) {
             try {
                 $familyItem = $this->familyReader->read();
@@ -228,22 +201,17 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
             } catch (InvalidItemException $e) {
                 continue;
             }
-            $familyCodes[] = $familyItem['code'];
 
-            if (\count($familyCodes) % 100 === 0) {
-                $totalProductsToProcess += $this->countProducts($familyCodes);
-                $familyCodes = [];
+            $family = $this->familyRepository->findOneByIdentifier($familyItem['code']);
+            if (null === $family) {
+                $this->stepExecution->incrementSummaryInfo('skip');
+
+                continue;
             }
+
+            $familyCodes[] = $family->getCode();
         }
-        $totalProductsToProcess += $this->countProducts($familyCodes);
 
-        $this->familyReader->rewind();
-
-        return $totalProductsToProcess;
-    }
-
-    private function countProducts(array $familyCodes): int
-    {
-        return $this->getProductsForFamilies($familyCodes)->count();
+        return $familyCodes;
     }
 }

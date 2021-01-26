@@ -8,3 +8,22 @@ parameters:
     pim_catalog.entity.value.price_collection.class: Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue
     pim_reference_data.value.reference_data.class: Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataValue
     pim_reference_data.value.reference_data_collection.class: Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue
+
+services:
+    pim_catalog.product_values.remove_values_from_products:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\RemoveValuesFromProducts
+        public: true
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@database_connection'
+            - '@event_dispatcher'
+            - '@pim_connector.doctrine.cache_clearer'
+
+    pim_catalog.product_values.remove_values_from_product_models:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\RemoveValuesFromProductModels
+        public: true
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@database_connection'
+            - '@event_dispatcher'
+            - '@pim_connector.doctrine.cache_clearer'

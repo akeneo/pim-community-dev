@@ -39,6 +39,7 @@ const KeyIndicators: FC<Props> = ({children, channel, locale, family, category})
                 ? {
                     ratioGood: parseFloat(keyIndicatorData.ratioGood.toString()),
                     totalToImprove: keyIndicatorData.totalToImprove,
+                    extraData: keyIndicatorData?.extraData,
                   }
                 : {}
             );

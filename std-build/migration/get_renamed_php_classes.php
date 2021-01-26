@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /**
  * This tools generate Rector configuration for moved classes and namespaces.
@@ -17,65 +17,7 @@ declare(strict_types = 1);
 
 use Symfony\Component\Process\Process;
 
-require dirname(__DIR__).'/../vendor/autoload.php';
-
-class RenamedClass
-{
-    private $oldFilePath;
-    private $newFilePath;
-
-    private $oldNamespace;
-    private $newNamespace;
-
-    private $oldClassname;
-    private $newClassname;
-
-    public function __construct(
-        string $oldFilePath,
-        string $newFilePath,
-        ?string $oldNamespace,
-        ?string $newNamespace,
-        ?string $oldClassname,
-        ?string $newClassname
-    ) {
-        if ($oldNamespace === $newNamespace && $oldClassname === $newClassname) {
-            throw new \LogicException(
-                sprintf(
-                    'File moved from %s to %s, but no changes on namespace and classname detected',
-                    $oldFilePath,
-                    $newFilePath
-                )
-            );
-        }
-
-        $this->oldFilePath = $oldFilePath;
-        $this->newFilePath = $newFilePath;
-
-        $this->oldNamespace = $oldNamespace;
-        $this->newNamespace = $newNamespace;
-
-        $this->oldClassname = $oldClassname;
-        $this->newClassname = $newClassname;
-    }
-
-    private function getOldFqcn(): string
-    {
-        return $this->oldNamespace . "\\" . $this->oldClassname;
-    }
-
-    private function getNewFqcn(): string
-    {
-        return $this->newNamespace . "\\" . $this->newClassname;
-    }
-
-    public function getRector(): string
-    {
-       return sprintf("'%s': '%s'",
-            $this->getOldFqcn(),
-            $this->getNewFqcn()
-        );
-    }
-}
+require dirname(__DIR__) . '/../vendor/autoload.php';
 
 if (!isset($argv[1])) {
     die(<<<USAGE
@@ -84,27 +26,17 @@ if (!isset($argv[1])) {
         $ get_renamed_php_classes.php <git_ref> [<additional_rector_config_file1> <additional_rector_config_file2> ...]
 
 USAGE
-);
+    );
 }
 
 $tag = $argv[1];
 
-$filesToAdd = [];
-
 $renamedClassRectors = [];
 
-if (isset($argv[2])) {
-    $filesToAdd = array_slice($argv, 2);
-
-    foreach ($filesToAdd as $fileToAdd) {
-        $lines = explode("\n", file_get_contents($fileToAdd));
-        foreach ($lines as $line) {
-            if (preg_match("/^            ('.+)$/", $line, $matches)) {
-                $renamedClassRectors[] = $matches[1];
-            }
-        }
-
-    }
+foreach (array_slice($argv, 2) as $fileToAdd) {
+    $renamedClassRectors = array_merge(
+            $renamedClassRectors,
+            require_once($fileToAdd));
 }
 
 $process = new Process(['git', '-c', 'diff.renameLimit=10000', 'diff', $tag]);
@@ -113,7 +45,7 @@ $process->run();
 
 $processOutput = $process->getOutput();
 
-$stream = fopen('php://memory','r+');
+$stream = fopen('php://memory', 'r+');
 fwrite($stream, $processOutput);
 rewind($stream);
 
@@ -165,8 +97,7 @@ while ($line = fgets($stream)) {
                         // So we need to get the namespace from the current file
                         $newNamespace = $oldNamespace = extractNamespaceFromFile($newFilePath);
                     }
-                    $renamedClass = new RenamedClass($oldFilePath, $newFilePath, $oldNamespace, $newNamespace, $oldClassname, $newClassname);
-                    $renamedClassRectors[] = $renamedClass->getRector();
+                    $renamedClassRectors[$oldNamespace . "\\" . $oldClassname] = $newNamespace . "\\" . $newClassname;
                 }
             }
             $oldFilePath = null;
@@ -181,21 +112,9 @@ while ($line = fgets($stream)) {
     }
 }
 
-echo <<<YAML
-imports:
-    - { resource: 'vendor/rector/rector/packages/**/config/config.yaml' }
-
-services:
-    Rector\\Renaming\\Rector\\Class_\\RenameClassRector:
-        \$oldToNewClasses:
-
-YAML;
-
-$renamedClassRectors = array_unique($renamedClassRectors);
-
-foreach ($renamedClassRectors as $renamedClassRector) {
-    echo '            '.$renamedClassRector."\n";
-}
+file_put_contents(
+    "renamed-classes.php",
+    "<?php \n return " . var_export($renamedClassRectors, true) . ";");
 
 function isRelevantPhpClass(string $filePath): bool
 {
@@ -226,7 +145,6 @@ function extractNamespaceFromFile(string $filePath): string
                 $filePath
             )
         );
-
     }
 
     return $matches[1];

@@ -5,6 +5,9 @@ datagrid:
             acl_resource: pim_importexport_import_execution_index
         options:
             entityHint: import report
+        actions:
+            view:
+                acl_resource: pim_importexport_import_execution_show
         properties:
             showLink:
-                route: pim_importexport_import_execution_show
+                route: pim_enrich_job_tracker_show

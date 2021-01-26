@@ -8,6 +8,7 @@ pim_menu:
     connection_settings: Verbindungen
     connection_settings_edit: Verbindungseinstellungen
     connection_monitoring: Überwachung
+    connection_webhook_edit: Ereignisabonnements
 pim_title:
   akeneo_connectivity_connection_settings_index: Verbindungen
   akeneo_connectivity_connection_settings_edit: Verbindungseinstellungen
@@ -16,8 +17,8 @@ pim_title:
   akeneo_connectivity_connection_audit_any: Verbindungs-Dashboard
   akeneo_connectivity_connection_error_management_dashboard: Verbindungs-Dashboard
   akeneo_connectivity_connection_error_management_connection_monitoring: Verbindungsüberwachung
-  akeneo_connectivity_connection_webhook_edit: Ereignisabonnement (BETA)
-  akeneo_connectivity_connection_webhook_regenerate_secret: Ereignisabonnement (BETA)
+  akeneo_connectivity_connection_webhook_edit: Ereignisabonnements
+  akeneo_connectivity_connection_webhook_regenerate_secret: Ereignisabonnements
 akeneo_connectivity.connection:
   connections: Verbindungen
   secondary_actions:
@@ -192,11 +193,12 @@ akeneo_connectivity.connection:
         message: Bitten Sie Ihren Administrator, einen zu erstellen.
         link: Erfahren Sie hier mehr über Verbindungen...
   webhook:
-    title: Ereignisabonnement (BETA)
-    event_subscription: Ereignisabonnement (BETA)
+    title: Ereignisabonnements
+    event_subscription: Ereignisabonnements
     helper:
-      message: Ihre verbundene App kann abonniert werden, um über Ereignisse im Akeneo PIM (z.B. wenn ein Produkt aktualisiert wird) auf einer von Ihnen gewählten URL benachrichtigt zu werden.
-      link: Erfahren Sie mehr über die Konfiguration von Event-Abonnements...
+      message: Sie können über Ereignisse im PIM für Produkte, die mit dieser verbundenen App synchronisiert werden, benachrichtigt werden. Sie müssen nur eine URL und den Ereignistyp(en) definieren, über den Sie den Überblick behalten möchten.
+      link: Erfahren Sie mehr über Eventabonnement-Konfiguration...
+      url.test_disabled: Bitte klicken Sie auf Speichern, um die URL testen zu können.
     form:
       url: URL
       secret: Passwort (Secret)
@@ -206,6 +208,7 @@ akeneo_connectivity.connection:
       wrong_url: Dieser Wert ist keine gültige URL.
       required: Dieses Feld ist erforderlich.
       not_found: Sie versuchen eine Verbindung zu aktualisieren, die nicht existiert.
+      limit_reached: Sie haben das Limit der aktiven Event-Abonnements erreicht.
     flash:
       success: Ereignisabonnement erfolgreich aktualisiert.
       error: Leider ist ein Fehler beim Bearbeiten des Ereignis-Abonnements aufgetreten.
@@ -218,6 +221,9 @@ akeneo_connectivity.connection:
       flash:
         success: Webhook Secret erfolgreich regeneriert.
         error: Beim erneuten Erzeugen des Webhook-Geheimnisses ist ein Fehler aufgetreten.
+    active_event_subscriptions_limit_reached:
+      message: Sie können bis zu {{ limit }} Verbindungen mit der Event-Abonnement-Funktion verbinden. Sie haben dieses Limit erreicht.
+      link: Erfahren Sie mehr über die Konfiguration von Event-Abonnements.
   error_management:
     connection_monitoring:
       title: Überwachung

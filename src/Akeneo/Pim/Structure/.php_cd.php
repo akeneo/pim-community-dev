@@ -48,7 +48,10 @@ $rules = [
 
         // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
-        'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface'
+        'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
+
+        // I don't think we should add install subscriber in platform instead of structure (discussed with Arnaud L.)
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents'
     ])->in('Akeneo\Pim\Structure\Bundle'),
     $builder->only([
         'Symfony\Component',

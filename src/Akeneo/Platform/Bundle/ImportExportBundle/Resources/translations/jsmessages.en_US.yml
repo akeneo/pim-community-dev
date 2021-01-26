@@ -53,6 +53,7 @@ pim_import_export:
     form:
         job_execution:
             title.details:    Execution details
+            refreshing: Execution details refreshing
             refreshBtn.title: Refresh
             button:
                 show_profile.title: Show profile
@@ -106,8 +107,8 @@ pim_import_export:
                         title: With header
                         help: Whether or not to print the column name
                     with_media:
-                        title: Export files and images
-                        help: Whether or not to export product files and images
+                        title: Export media
+                        help: Whether or not to export media
                     lines_per_file:
                         title: Number of lines per file
                         help: Define the limit number of lines per file
@@ -135,6 +136,9 @@ pim_import_export:
                     real_time_versioning:
                         title: Real time history update
                         help: Means that the product history is automatically updated, can be switched off to improve performances
+                    convert_variant_to_simple:
+                        title: Convert variant products to simple products
+                        help: Try to convert variant products to simple products when the "parent" column is empty. If set to "No", an empty "parent" column will be ignored
                     family_variant_column:
                         title: Family variant column
                     with_label:
@@ -164,6 +168,7 @@ pim_import_export:
                 compute_family_variant_structure_changes: Compute family variant structure changes
                 compute_completeness_of_products_family: Compute completeness of products family
                 mass_delete: Mass delete products
+                clean_removed_attribute_job: Cleaning removed attribute values
             header.view_all: View all
     batch_status:
         1: Completed

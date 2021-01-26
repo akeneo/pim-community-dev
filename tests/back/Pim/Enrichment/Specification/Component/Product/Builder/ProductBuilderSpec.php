@@ -42,7 +42,7 @@ class ProductBuilderSpec extends ObjectBehavior
 
     function it_creates_product_without_family($eventDispatcher)
     {
-        $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), ProductEvents::CREATE)->shouldBeCalled();
 
         $this->createProduct()->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
     }
@@ -65,7 +65,7 @@ class ProductBuilderSpec extends ObjectBehavior
         );
 
         $familyRepository->findOneByIdentifier('tshirt')->willReturn($tshirtFamily);
-        $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), ProductEvents::CREATE)->shouldBeCalled();
 
         $product = $this->createProduct('mysku', 'tshirt');
         $product->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);

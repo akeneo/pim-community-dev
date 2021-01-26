@@ -33,3 +33,16 @@ services:
         tags:
             - { name: 'console.command' }
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\MigrateProductCriterionEvaluationCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\InitializeProductsEvaluationsCommand:
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim.automation.data_quality_insights.product_criteria_evaluation_registry'
+            - '@akeneo.pim.automation.data_quality_insights.product_model_criteria_evaluation_registry'
+        tags:
+            - { name: 'console.command' }

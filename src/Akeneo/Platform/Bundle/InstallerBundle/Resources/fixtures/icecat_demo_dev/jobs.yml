@@ -262,6 +262,11 @@ jobs:
         alias:     add_to_existing_product_model
         label:     Add to existing product model
         type:      mass_edit
+    convert_to_simple_products:
+        connector: Akeneo Mass Edit Connector
+        alias:     convert_to_simple_products
+        label:     Convert to simple products
+        type:      mass_edit
     set_attribute_requirements:
         connector: Akeneo Mass Edit Connector
         alias:     set_attribute_requirements
@@ -716,3 +721,8 @@ jobs:
         alias:     remove_non_existing_product_values
         label:     Remove non existing product values
         type:      remove_non_existing_product_values
+    clean_removed_attribute_job:
+        connector: internal
+        alias:     clean_removed_attribute_job
+        label:     Cleaning removed attribute values job
+        type:      clean_removed_attribute_job

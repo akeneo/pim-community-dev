@@ -3,13 +3,15 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\FieldAdderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -21,13 +23,17 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
-        MissingAssociationAdder $missingAssociationAdder
+        MissingAssociationAdder $missingAssociationAdder,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
+        TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater
     ) {
         $this->beConstructedWith(
             $productRepository,
             $productModelRepository,
             $groupRepository,
             $missingAssociationAdder,
+            $associationTypeRepository,
+            $twoWayAssociationUpdater,
             ['associations']
         );
     }
@@ -81,7 +87,11 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             )
         )->during(
             'addFieldData',
-            [$product, 'associations', ['assoc_type_code' => ['products' => [], 'groups' => [2], 'product_models' => [],]]]
+            [
+                $product,
+                'associations',
+                ['assoc_type_code' => ['products' => [], 'groups' => [2], 'product_models' => [],]],
+            ]
         );
 
         $this->shouldThrow(
@@ -94,26 +104,34 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             )
         )->during(
             'addFieldData',
-            [$product, 'associations', ['assoc_type_code' => ['products' => 'string', 'groups' => [], 'product_models' => []]]]
+            [
+                $product,
+                'associations',
+                ['assoc_type_code' => ['products' => 'string', 'groups' => [], 'product_models' => []]],
+            ]
         );
     }
 
     function it_adds_product_associations(
         IdentifiableObjectRepositoryInterface $productRepository,
         MissingAssociationAdder $missingAssociationAdder,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
         ProductInterface $product,
-        AssociationInterface $xsellAssociation,
+        AssociationTypeInterface $associationType,
         ProductInterface $associated1,
         ProductInterface $associated2
     ) {
-        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $associationType->getCode()->willReturn('X_SELL');
+        $associationType->isTwoWay()->willReturn(false);
+        $associationType->isQuantified()->willReturn(false);
+        $associationTypeRepository->findOneByIdentifier('X_SELL')->willReturn($associationType);
 
         $productRepository->findOneByIdentifier('associated_1')->willReturn($associated1);
         $productRepository->findOneByIdentifier('associated_2')->willReturn($associated2);
 
-        $product->getAssociationForTypeCode('X_SELL')->willReturn($xsellAssociation);
-        $xsellAssociation->addProduct($associated1)->shouldBeCalled();
-        $xsellAssociation->addProduct($associated2)->shouldBeCalled();
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $product->addAssociatedProduct($associated1, 'X_SELL')->shouldBeCalled();
+        $product->addAssociatedProduct($associated2, 'X_SELL')->shouldBeCalled();
 
         $data = [
             'X_SELL' => [
@@ -127,19 +145,23 @@ class AssociationFieldAdderSpec extends ObjectBehavior
     function it_adds_product_model_associations(
         IdentifiableObjectRepositoryInterface $productModelRepository,
         MissingAssociationAdder $missingAssociationAdder,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
         ProductInterface $product,
-        AssociationInterface $xsellAssociation,
+        AssociationTypeInterface $associationType,
         ProductModelInterface $model1,
         ProductModelInterface $model2
     ) {
-        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $associationType->getCode()->willReturn('X_SELL');
+        $associationType->isTwoWay()->willReturn(false);
+        $associationType->isQuantified()->willReturn(false);
+        $associationTypeRepository->findOneByIdentifier('X_SELL')->willReturn($associationType);
 
         $productModelRepository->findOneByIdentifier('model_1')->willReturn($model1);
         $productModelRepository->findOneByIdentifier('model_2')->willReturn($model2);
 
-        $product->getAssociationForTypeCode('X_SELL')->willReturn($xsellAssociation);
-        $xsellAssociation->addProductModel($model1)->shouldBeCalled();
-        $xsellAssociation->addProductModel($model2)->shouldBeCalled();
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $product->addAssociatedProductModel($model1, 'X_SELL')->shouldBeCalled();
+        $product->addAssociatedProductModel($model2, 'X_SELL')->shouldBeCalled();
 
         $data = [
             'X_SELL' => [
@@ -153,19 +175,23 @@ class AssociationFieldAdderSpec extends ObjectBehavior
     function it_adds_group_associations(
         IdentifiableObjectRepositoryInterface $groupRepository,
         MissingAssociationAdder $missingAssociationAdder,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
         ProductInterface $product,
-        AssociationInterface $xsellAssociation,
+        AssociationTypeInterface $associationType,
         GroupInterface $blackFriday,
         GroupInterface $halloween
     ) {
-        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $associationType->getCode()->willReturn('X_SELL');
+        $associationType->isTwoWay()->willReturn(false);
+        $associationType->isQuantified()->willReturn(false);
+        $associationTypeRepository->findOneByIdentifier('X_SELL')->willReturn($associationType);
 
         $groupRepository->findOneByIdentifier('black_friday')->willReturn($blackFriday);
         $groupRepository->findOneByIdentifier('halloween')->willReturn($halloween);
 
-        $product->getAssociationForTypeCode('X_SELL')->willReturn($xsellAssociation);
-        $xsellAssociation->addGroup($blackFriday)->shouldBeCalled();
-        $xsellAssociation->addGroup($halloween)->shouldBeCalled();
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $product->addAssociatedGroup($blackFriday, 'X_SELL')->shouldBeCalled();
+        $product->addAssociatedGroup($halloween, 'X_SELL')->shouldBeCalled();
 
         $data = [
             'X_SELL' => [
@@ -181,9 +207,10 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
         MissingAssociationAdder $missingAssociationAdder,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
         ProductInterface $product,
-        AssociationInterface $xsellAssociation,
-        AssociationInterface $upsellAssociation,
+        AssociationTypeInterface $xsellType,
+        AssociationTypeInterface $upsellType,
         ProductInterface $assocProductOne,
         ProductInterface $assocProductTwo,
         ProductInterface $assocProductThree,
@@ -193,10 +220,15 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         GroupInterface $assocGroupOne,
         GroupInterface $assocGroupTwo
     ) {
-        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $xsellType->getCode()->willReturn('xsell');
+        $xsellType->isTwoWay()->willReturn(false);
+        $xsellType->isQuantified()->willReturn(false);
+        $associationTypeRepository->findOneByIdentifier('xsell')->willReturn($xsellType);
 
-        $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
-        $product->getAssociationForTypeCode('upsell')->willReturn($upsellAssociation);
+        $upsellType->getCode()->willReturn('upsell');
+        $upsellType->isTwoWay()->willReturn(false);
+        $upsellType->isQuantified()->willReturn(false);
+        $associationTypeRepository->findOneByIdentifier('upsell')->willReturn($upsellType);
 
         $productRepository->findOneByIdentifier('assocProductOne')->willReturn($assocProductOne);
         $productRepository->findOneByIdentifier('assocProductTwo')->willReturn($assocProductTwo);
@@ -209,15 +241,17 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         $groupRepository->findOneByIdentifier('assocGroupOne')->willReturn($assocGroupOne);
         $groupRepository->findOneByIdentifier('assocGroupTwo')->willReturn($assocGroupTwo);
 
-        $xsellAssociation->addProduct($assocProductOne)->shouldBeCalled();
-        $xsellAssociation->addProduct($assocProductTwo)->shouldBeCalled();
-        $xsellAssociation->addGroup($assocGroupOne)->shouldBeCalled();
-        $xsellAssociation->addProductModel($assocProductModelOne)->shouldBeCalled();
-        $xsellAssociation->addProductModel($assocProductModelTwo)->shouldBeCalled();
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
 
-        $upsellAssociation->addProduct($assocProductThree)->shouldBeCalled();
-        $upsellAssociation->addProductModel($assocProductModelThree)->shouldBeCalled();
-        $upsellAssociation->addGroup($assocGroupTwo)->shouldBeCalled();
+        $product->addAssociatedProduct($assocProductOne, 'xsell')->shouldBeCalled();
+        $product->addAssociatedProduct($assocProductTwo, 'xsell')->shouldBeCalled();
+        $product->addAssociatedProductModel($assocProductModelOne, 'xsell')->shouldBeCalled();
+        $product->addAssociatedProductModel($assocProductModelTwo, 'xsell')->shouldBeCalled();
+        $product->addAssociatedGroup($assocGroupOne, 'xsell')->shouldBeCalled();
+
+        $product->addAssociatedProduct($assocProductThree, 'upsell')->shouldBeCalled();
+        $product->addAssociatedProductModel($assocProductModelThree, 'upsell')->shouldBeCalled();
+        $product->addAssociatedGroup($assocGroupTwo, 'upsell')->shouldBeCalled();
 
         $this->addFieldData(
             $product,
@@ -226,47 +260,45 @@ class AssociationFieldAdderSpec extends ObjectBehavior
                 'xsell' => [
                     'products' => ['assocProductOne', 'assocProductTwo'],
                     'product_models' => ['assocProductModelOne', 'assocProductModelTwo'],
-                    'groups' => ['assocGroupOne']
+                    'groups' => ['assocGroupOne'],
                 ],
                 'upsell' => [
                     'products' => ['assocProductThree'],
                     'product_models' => ['assocProductModelThree'],
-                    'groups' => ['assocGroupTwo']
-                ]
+                    'groups' => ['assocGroupTwo'],
+                ],
             ]
         );
     }
 
     function it_adds_association_field_even_when_the_association_type_code_is_a_string_representing_an_integer(
-        $productRepository,
-        $groupRepository,
-        $missingAssociationAdder,
+        IdentifiableObjectRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $groupRepository,
+        MissingAssociationAdder $missingAssociationAdder,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
         ProductInterface $product,
-        AssociationInterface $assoc666,
+        AssociationTypeInterface $associationType,
         ProductInterface $assocProductOne,
-        ProductInterface $assocProductTwo,
-        GroupInterface $assocGroupOne,
-        GroupInterface $assocGroupTwo
+        GroupInterface $assocGroupOne
     ) {
-        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
-        $product->getAssociationForTypeCode('666')->willReturn($assoc666);
+        $associationType->getCode()->willReturn('666');
+        $associationType->isTwoWay()->willReturn(false);
+        $associationType->isQuantified()->willReturn(false);
+        $associationTypeRepository->findOneByIdentifier('666')->willReturn($associationType);
 
         $productRepository->findOneByIdentifier('assocProductOne')->willReturn($assocProductOne);
-        $productRepository->findOneByIdentifier('assocProductTwo')->willReturn($assocProductTwo);
-
         $groupRepository->findOneByIdentifier('assocGroupOne')->willReturn($assocGroupOne);
-        $groupRepository->findOneByIdentifier('assocGroupTwo')->willReturn($assocGroupTwo);
 
-        $assoc666->addProduct($assocProductOne)->shouldBeCalled();
-        $assoc666->addProduct($assocProductTwo)->shouldBeCalled();
-        $assoc666->addGroup($assocGroupOne)->shouldBeCalled();
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $product->addAssociatedProduct($assocProductOne, '666')->shouldBeCalled();
+        $product->addAssociatedGroup($assocGroupOne, '666')->shouldBeCalled();
 
         $this->addFieldData(
             $product,
             'associations',
             [
                 '666' => [
-                    'products' => ['assocProductOne', 'assocProductTwo'],
+                    'products' => ['assocProductOne'],
                     'groups' => ['assocGroupOne'],
                     'product_models' => [],
                 ],
@@ -275,18 +307,18 @@ class AssociationFieldAdderSpec extends ObjectBehavior
     }
 
     function it_fails_if_one_of_the_association_type_code_does_not_exist(
-        $missingAssociationAdder,
+        MissingAssociationAdder $missingAssociationAdder,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
         ProductInterface $product
     ) {
-        $product->getAssociations()->willReturn([]);
+        $associationTypeRepository->findOneByIdentifier('non valid association type code')->willReturn(null);
         $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
-        $product->getAssociationForTypeCode('non valid association type code')->willReturn(null);
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
                 'associations',
                 'association type code',
-                'The association type does not exist',
+                'The association type does not exist or is quantified',
                 AssociationFieldAdder::class,
                 'non valid association type code'
             )
@@ -295,22 +327,25 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             [
                 $product,
                 'associations',
-                ['non valid association type code' => ['groups' => [], 'products' => [], 'product_models' => []]]
+                ['non valid association type code' => ['groups' => [], 'products' => [], 'product_models' => []]],
             ]
         );
     }
 
     function it_fails_if_one_of_the_associated_product_does_not_exist(
-        $missingAssociationAdder,
-        $productRepository,
+        MissingAssociationAdder $missingAssociationAdder,
+        IdentifiableObjectRepositoryInterface $productRepository,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
         ProductInterface $product,
-        AssociationInterface $xsellAssociation
+        AssociationTypeInterface $associationType
     ) {
-        $product->getAssociations()->willReturn([$xsellAssociation]);
-        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
-        $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
-
+        $associationType->getCode()->willReturn('xsell');
+        $associationType->isTwoWay()->willReturn(false);
+        $associationType->isQuantified()->willReturn(false);
+        $associationTypeRepository->findOneByIdentifier('xsell')->willReturn($associationType);
         $productRepository->findOneByIdentifier('not existing product')->willReturn(null);
+
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
@@ -325,22 +360,58 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             [
                 $product,
                 'associations',
-                ['xsell' => ['groups' => [], 'products' => ['not existing product'], 'product_models' => []]]
+                ['xsell' => ['products' => ['not existing product']]],
+            ]
+        );
+    }
+
+    function it_fails_if_one_of_the_associated_product_models_does_not_exist(
+        MissingAssociationAdder $missingAssociationAdder,
+        IdentifiableObjectRepositoryInterface $productModelRepository,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
+        ProductInterface $product,
+        AssociationTypeInterface $associationType
+    ) {
+        $associationType->getCode()->willReturn('xsell');
+        $associationType->isTwoWay()->willReturn(false);
+        $associationType->isQuantified()->willReturn(false);
+        $associationTypeRepository->findOneByIdentifier('xsell')->willReturn($associationType);
+        $productModelRepository->findOneByIdentifier('not existing product model')->willReturn(null);
+
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'associations',
+                'product model identifier',
+                'The product model does not exist',
+                AssociationFieldAdder::class,
+                'not existing product model'
+            )
+        )->during(
+            'addFieldData',
+            [
+                $product,
+                'associations',
+                ['xsell' => ['product_models' => ['not existing product model']]],
             ]
         );
     }
 
     function it_fails_if_one_of_the_associated_group_does_not_exist(
-        $missingAssociationAdder,
-        $groupRepository,
+        MissingAssociationAdder $missingAssociationAdder,
+        IdentifiableObjectRepositoryInterface $groupRepository,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
         ProductInterface $product,
-        AssociationInterface $xsellAssociation
+        AssociationTypeInterface $associationType
     ) {
-        $product->getAssociations()->willReturn([$xsellAssociation]);
-        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
-        $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
-
+        $associationType->getCode()->willReturn('xsell');
+        $associationType->isTwoWay()->willReturn(false);
+        $associationType->isQuantified()->willReturn(false);
+        $associationTypeRepository->findOneByIdentifier('xsell')->willReturn($associationType);
         $groupRepository->findOneByIdentifier('not existing group')->willReturn(null);
+
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
@@ -355,7 +426,83 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             [
                 $product,
                 'associations',
-                ['xsell' => ['groups' => ['not existing group'], 'products' => [], 'product_models' => []]]
+                ['xsell' => ['groups' => ['not existing group']]],
+            ]
+        );
+    }
+
+    function it_adds_inversed_associations_for_a_product(
+        IdentifiableObjectRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $productModelRepository,
+        MissingAssociationAdder $missingAssociationAdder,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
+        TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater,
+        ProductInterface $product,
+        AssociationTypeInterface $twoWayType,
+        ProductInterface $assocProduct,
+        ProductModelInterface $assocProductModel
+    ) {
+        $twoWayType->getCode()->willReturn('TWOWAY');
+        $twoWayType->isTwoWay()->willReturn(true);
+        $twoWayType->isQuantified()->willReturn(false);
+        $associationTypeRepository->findOneByIdentifier('TWOWAY')->willReturn($twoWayType);
+
+        $productRepository->findOneByIdentifier('assocProduct')->willReturn($assocProduct);
+        $productModelRepository->findOneByIdentifier('assocProductModel')->willReturn($assocProductModel);
+
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $product->addAssociatedProduct($assocProduct, 'TWOWAY')->shouldBeCalled();
+        $product->addAssociatedProductModel($assocProductModel, 'TWOWAY')->shouldBeCalled();
+
+        $twoWayAssociationUpdater->createInversedAssociation($product, 'TWOWAY', $assocProduct)->shouldBeCalled();
+        $twoWayAssociationUpdater->createInversedAssociation($product, 'TWOWAY', $assocProductModel)->shouldBeCalled();
+
+        $this->addFieldData(
+            $product,
+            'associations',
+            [
+                'TWOWAY' => [
+                    'products' => ['assocProduct'],
+                    'product_models' => ['assocProductModel'],
+                ]
+            ]
+        );
+    }
+
+    function it_adds_inversed_associations_for_a_product_model(
+        IdentifiableObjectRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $productModelRepository,
+        MissingAssociationAdder $missingAssociationAdder,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
+        TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater,
+        ProductModelInterface $productModel,
+        AssociationTypeInterface $twoWayType,
+        ProductInterface $assocProduct,
+        ProductModelInterface $assocProductModel
+    ) {
+        $twoWayType->getCode()->willReturn('TWOWAY');
+        $twoWayType->isTwoWay()->willReturn(true);
+        $twoWayType->isQuantified()->willReturn(false);
+        $associationTypeRepository->findOneByIdentifier('TWOWAY')->willReturn($twoWayType);
+
+        $productRepository->findOneByIdentifier('assocProduct')->willReturn($assocProduct);
+        $productModelRepository->findOneByIdentifier('assocProductModel')->willReturn($assocProductModel);
+
+        $missingAssociationAdder->addMissingAssociations($productModel)->shouldBeCalled();
+        $productModel->addAssociatedProduct($assocProduct, 'TWOWAY')->shouldBeCalled();
+        $productModel->addAssociatedProductModel($assocProductModel, 'TWOWAY')->shouldBeCalled();
+
+        $twoWayAssociationUpdater->createInversedAssociation($productModel, 'TWOWAY', $assocProduct)->shouldBeCalled();
+        $twoWayAssociationUpdater->createInversedAssociation($productModel, 'TWOWAY', $assocProductModel)->shouldBeCalled();
+
+        $this->addFieldData(
+            $productModel,
+            'associations',
+            [
+                'TWOWAY' => [
+                    'products' => ['assocProduct'],
+                    'product_models' => ['assocProductModel'],
+                ]
             ]
         );
     }

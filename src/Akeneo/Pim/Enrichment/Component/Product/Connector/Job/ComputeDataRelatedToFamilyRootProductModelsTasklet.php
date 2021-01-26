@@ -8,11 +8,9 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValu
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Tool\Component\Batch\Item\RewindableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -115,50 +113,37 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
     public function execute()
     {
         $this->initialize();
-
-        while (true) {
-            try {
-                $familyItem = $this->familyReader->read();
-                if (null === $familyItem) {
-                    break;
-                }
-            } catch (InvalidItemException $e) {
-                continue;
-            }
-
-            $family = $this->familyRepository->findOneByIdentifier($familyItem['code']);
-            if (null === $family) {
-                $this->stepExecution->incrementSummaryInfo('skip');
-
-                continue;
-            }
-
-            $skippedProductModels = [];
-            $productModelsToSave = [];
-            $productModels = $this->getRootProductModelsForFamily([$family->getCode()]);
-
-            foreach ($productModels as $productModel) {
-                $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$productModel]);
-
-                if (!$this->isValid($productModel)) {
-                    $this->stepExecution->incrementSummaryInfo('skip');
-                    $this->stepExecution->incrementProcessedItems();
-
-                    $skippedProductModels[] = $productModel;
-                } else {
-                    $productModelsToSave[] = $productModel;
-                }
-
-                if (0 === (count($productModelsToSave) + count($skippedProductModels)) % $this->batchSize) {
-                    $this->saveProductsModel($productModelsToSave);
-                    $productModelsToSave = [];
-                    $skippedProductModels = [];
-                    $this->cacheClearer->clear();
-                }
-            }
-
-            $this->saveProductsModel($productModelsToSave);
+        $familyCodes = $this->extractFamilyCodes();
+        if (empty($familyCodes)) {
+            return;
         }
+
+        $productModels = $this->getRootProductModelsForFamily($familyCodes);
+        $this->stepExecution->setTotalItems($productModels->count());
+
+        $skippedProductModels = [];
+        $productModelsToSave = [];
+        foreach ($productModels as $productModel) {
+            $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$productModel]);
+
+            if (!$this->isValid($productModel)) {
+                $this->stepExecution->incrementSummaryInfo('skip');
+                $this->stepExecution->incrementProcessedItems(1);
+
+                $skippedProductModels[] = $productModel;
+            } else {
+                $productModelsToSave[] = $productModel;
+            }
+
+            if (0 === (count($productModelsToSave) + count($skippedProductModels)) % $this->batchSize) {
+                $this->saveProductsModel($productModelsToSave);
+                $productModelsToSave = [];
+                $skippedProductModels = [];
+                $this->cacheClearer->clear();
+            }
+        }
+
+        $this->saveProductsModel($productModelsToSave);
     }
 
     /**
@@ -167,11 +152,6 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
     public function initialize()
     {
         $this->cacheClearer->clear();
-    }
-
-    public function totalItems(): int
-    {
-        return $this->computeRootProductModelsToProcess();
     }
 
     /**
@@ -201,22 +181,10 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
-    /**
-     * Quentin raised some concerns regarding the ability to rewind the familyReader (which can be seen as a cursor)
-     * in a shared environment.
-     *
-     * @throws \Exception
-     */
-    private function computeRootProductModelsToProcess(): int
+    private function extractFamilyCodes(): array
     {
-        if (!$this->familyReader instanceof RewindableItemReaderInterface) {
-            return 0;
-        }
-
-        $this->familyReader->rewind();
-
         $familyCodes = [];
-        $totalProductsToProcess = 0;
+
         while (true) {
             try {
                 $familyItem = $this->familyReader->read();
@@ -226,25 +194,18 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
             } catch (InvalidItemException $e) {
                 continue;
             }
-            $familyCodes[] = $familyItem['code'];
 
-            if (\count($familyCodes) % 100 === 0) {
-                $totalProductsToProcess += $this->countRootProductModels($familyCodes);
-                $familyCodes = [];
+            $family = $this->familyRepository->findOneByIdentifier($familyItem['code']);
+            if (null === $family) {
+                $this->stepExecution->incrementSummaryInfo('skip');
+
+                continue;
             }
+
+            $familyCodes[] = $family->getCode();
         }
-        $totalProductsToProcess += $this->countRootProductModels($familyCodes);
 
-        $this->familyReader->rewind();
-
-        return $totalProductsToProcess;
-    }
-
-    private function countRootProductModels(array $familyCodes): int
-    {
-        $cursor = $this->getRootProductModelsForFamily($familyCodes);
-
-        return $cursor->count();
+        return $familyCodes;
     }
 
     private function getRootProductModelsForFamily(array $familyCodes): CursorInterface
@@ -254,5 +215,10 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
         $pqb->addFilter('parent', Operators::IS_EMPTY, null);
 
         return $pqb->execute();
+    }
+
+    public function isTrackable(): bool
+    {
+        return true;
     }
 }

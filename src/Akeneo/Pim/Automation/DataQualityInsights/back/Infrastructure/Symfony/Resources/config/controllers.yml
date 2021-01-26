@@ -5,7 +5,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardOverviewController:
         public: true
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetDashboardRatesQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetDashboardScoresQuery'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardWidgetFamiliesController:
         public: true
@@ -21,11 +21,6 @@ services:
         public: true
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.get_key_indicators'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductAxesRatesController:
-        public: true
-        arguments:
-            - '@akeneo.pim.automation.data_quality_insights.get_product_axes_rates'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductEvaluationController:
         public: true
@@ -57,3 +52,8 @@ services:
         public: true
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductScores'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardQualityScoreEvolutionController:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetCatalogProductScoreEvolutionQuery'

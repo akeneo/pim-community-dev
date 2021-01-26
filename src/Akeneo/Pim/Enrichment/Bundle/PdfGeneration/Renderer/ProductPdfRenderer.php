@@ -6,15 +6,14 @@ use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\PdfBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 /**
  * PDF renderer used to render PDF for a Product
@@ -25,40 +24,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ProductPdfRenderer implements RendererInterface
 {
-    /** @var string */
     const PDF_FORMAT = 'pdf';
-
     const THUMBNAIL_FILTER = 'pdf_thumbnail';
 
-    /** @var EngineInterface */
-    protected $templating;
-
-    /** @var PdfBuilderInterface */
-    protected $pdfBuilder;
-
-    /** @var DataManager */
-    protected $dataManager;
-
-    /** @var CacheManager */
-    protected $cacheManager;
-
-    /** @var FilterManager */
-    protected $filterManager;
-
-    /** @var AttributeRepository */
-    protected $attributeRepository;
-
-    /** @var string */
-    protected $template;
-
-    /** @var string|null */
-    protected $customFont;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $attributeOptionRepository;
+    protected Environment $templating;
+    protected PdfBuilderInterface $pdfBuilder;
+    protected DataManager $dataManager;
+    protected CacheManager $cacheManager;
+    protected FilterManager $filterManager;
+    protected IdentifiableObjectRepositoryInterface $attributeRepository;
+    protected string $template;
+    protected ?string $customFont;
+    private IdentifiableObjectRepositoryInterface $attributeOptionRepository;
 
     public function __construct(
-        EngineInterface $templating,
+        Environment $templating,
         PdfBuilderInterface $pdfBuilder,
         DataManager $dataManager,
         CacheManager $cacheManager,
@@ -90,14 +70,15 @@ class ProductPdfRenderer implements RendererInterface
 
         $imagePaths = $this->getImagePaths($object, $context['locale'], $context['scope']);
         $optionLabels = $this->getOptionLabels($object, $context['locale'], $context['scope']);
+
         $params = array_merge(
             $context,
             [
-                'product'           => $object,
+                'product' => $object,
                 'groupedAttributes' => $this->getGroupedAttributes($object),
-                'imagePaths'        => $imagePaths,
-                'customFont'        => $this->customFont,
-                'optionLabels'      => $optionLabels,
+                'imagePaths' => $imagePaths,
+                'customFont' => $this->customFont,
+                'optionLabels' => $optionLabels,
             ]
         );
 
@@ -124,9 +105,15 @@ class ProductPdfRenderer implements RendererInterface
     }
 
     /**
-     * get attributes grouped by attribute group
-     *
-     * @param ProductInterface $product
+     * Return true if the attribute should be rendered
+     */
+    protected function canRenderAttribute(?AttributeInterface $attribute): bool
+    {
+        return null !== $attribute;
+    }
+
+    /**
+     * Get attributes grouped by attribute group
      *
      * @return AttributeInterface[]
      */
@@ -141,7 +128,7 @@ class ProductPdfRenderer implements RendererInterface
 
         foreach ($attributeCodes as $attributeCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-            if (null !== $attribute) {
+            if ($this->canRenderAttribute($attribute)) {
                 $groupLabel = $attribute->getGroup()->getLabel();
                 if (!isset($groups[$groupLabel])) {
                     $groups[$groupLabel] = [];
@@ -157,13 +144,9 @@ class ProductPdfRenderer implements RendererInterface
     /**
      * Get all image paths
      *
-     * @param ProductInterface $product
-     * @param string           $locale
-     * @param string           $scope
-     *
      * @return string[]
      */
-    protected function getImagePaths(ProductInterface $product, $locale, $scope): array
+    protected function getImagePaths(ProductInterface $product, string $locale, string $scope): array
     {
         $imagePaths = [];
 
@@ -192,8 +175,11 @@ class ProductPdfRenderer implements RendererInterface
     /**
      * Get all option labels
      */
-    protected function getOptionLabels(ProductInterface $product, ?string $localeCode = null, ?string $scopeCode = null): array
-    {
+    protected function getOptionLabels(
+        ProductInterface $product,
+        ?string $localeCode = null,
+        ?string $scopeCode = null
+    ): array {
         $options = [];
 
         foreach ($this->getAttributeCodes($product) as $attributeCode) {
@@ -245,7 +231,7 @@ class ProductPdfRenderer implements RendererInterface
      * @param string[] $imagePaths
      * @param string   $filter
      */
-    protected function generateThumbnailsCache(array $imagePaths, $filter)
+    protected function generateThumbnailsCache(array $imagePaths, string $filter)
     {
         foreach ($imagePaths as $path) {
             if (!$this->cacheManager->isStored($path, $filter)) {
@@ -261,20 +247,17 @@ class ProductPdfRenderer implements RendererInterface
 
     /**
      * Options configuration (for the option resolver)
-     *
-     * @param OptionsResolver $resolver
      */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setRequired(['locale', 'scope', 'product'])
             ->setDefaults(
                 [
                     'renderingDate' => new \DateTime(),
-                    'filter'        => static::THUMBNAIL_FILTER,
+                    'filter' => static::THUMBNAIL_FILTER,
                 ]
             )
-            ->setDefined(['groupedAttributes', 'imagePaths', 'customFont', 'optionLabels'])
-        ;
+            ->setDefined(['groupedAttributes', 'imagePaths', 'customFont', 'optionLabels']);
     }
 }

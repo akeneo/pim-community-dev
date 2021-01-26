@@ -7,13 +7,13 @@ use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementInterface;
 use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementRegistry;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 
 class ViewElementExtensionSpec extends ObjectBehavior
 {
     function let(
         ViewElementRegistry $registry,
-        EngineInterface $templating,
+        Environment $templating,
         ViewElementInterface $buttonOne,
         ViewElementInterface $buttonTwo,
         ViewElementInterface $buttonThree

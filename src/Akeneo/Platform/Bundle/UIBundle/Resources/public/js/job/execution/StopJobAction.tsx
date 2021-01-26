@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {SyntheticEvent} from 'react';
 import {useRoute, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {Button, ButtonProps, ExportIllustration, Helper, Modal, SectionTitle, Title} from 'akeneo-design-system';
+import {Button, ButtonProps, ExportIllustration, Helper, Link, Modal, SectionTitle, Title} from 'akeneo-design-system';
 import {useToggleState} from '@akeneo-pim-community/shared';
 
 type StopJobActionProps = {
@@ -22,29 +22,40 @@ const StopJobAction = ({id, jobLabel, isStoppable, onStop, children, ...rest}: S
     onStop();
   };
 
+  const handleOpenConfirm = (e: SyntheticEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    openConfirm();
+  };
+
   if (!isStoppable || !isGranted('pim_importexport_stop_job')) return null;
 
   return (
     <>
-      <Modal
-        closeTitle={translate('pim_common.close')}
-        isOpen={isConfirmOpen}
-        onClose={closeConfirm}
-        illustration={<ExportIllustration />}
-      >
-        <SectionTitle>{translate('pim_title.pim_enrich_job_tracker_index')} /</SectionTitle>
-        <Title>{translate('pim_datagrid.action.stop.confirmation.title', {jobLabel})}</Title>
-        <Helper level="info">{translate('pim_datagrid.action.stop.confirmation.content')}</Helper>
-        <Modal.BottomButtons>
-          <Button level="tertiary" onClick={closeConfirm}>
-            {translate('pim_common.cancel')}
-          </Button>
-          <Button level="danger" onClick={handleStop}>
-            {translate('pim_datagrid.action.stop.confirmation.ok')}
-          </Button>
-        </Modal.BottomButtons>
-      </Modal>
-      <Button onClick={openConfirm} level="danger" {...rest}>
+      {isConfirmOpen && (
+        <Modal closeTitle={translate('pim_common.close')} onClose={closeConfirm} illustration={<ExportIllustration />}>
+          <SectionTitle color="brand">{translate('pim_title.pim_enrich_job_tracker_index')} /</SectionTitle>
+          <Title>{translate('pim_datagrid.action.stop.confirmation.title', {jobLabel})}</Title>
+          <Helper level="info">
+            {translate('pim_datagrid.action.stop.confirmation.content')}
+            <Link
+              href="https://help.akeneo.com/pim/serenity/articles/monitor-jobs.html#how-to-stop-your-jobs"
+              target="_blank"
+            >
+              {translate('pim_datagrid.action.stop.confirmation.link')}
+            </Link>
+          </Helper>
+          <Modal.BottomButtons>
+            <Button level="tertiary" onClick={closeConfirm}>
+              {translate('pim_common.cancel')}
+            </Button>
+            <Button level="danger" onClick={handleStop}>
+              {translate('pim_datagrid.action.stop.confirmation.ok')}
+            </Button>
+          </Modal.BottomButtons>
+        </Modal>
+      )}
+      <Button onClick={handleOpenConfirm} level="danger" {...rest}>
         {translate('pim_datagrid.action.stop.title')}
       </Button>
     </>

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Button} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {StopJobAction} from 'pimui/js/job/execution/StopJobAction';
 
 const ActionsContainer = styled.div`
@@ -16,15 +16,23 @@ type ActionsProps = {
   isStoppable: boolean;
   showLink: string;
   refreshCollection: () => void;
+  isVisible: boolean;
+  type: string;
 };
 
-const Actions = ({id, jobLabel, isStoppable, showLink, refreshCollection}: ActionsProps) => {
+const Actions = ({id, jobLabel, isStoppable, showLink, refreshCollection, type}: ActionsProps) => {
   const translate = useTranslate();
+  const security = useSecurity();
+
+  const isAllowedToViewJobDetails = security.isGranted('pim_importexport_' + type + '_execution_show');
+
   return (
-    <ActionsContainer>
-      <Button size="small" ghost={true} level="tertiary" href={`#${showLink}`}>
-        {translate('pim_datagrid.action.show.title')}
-      </Button>
+    <ActionsContainer className="AknGrid-onHoverElement">
+      {isAllowedToViewJobDetails && (
+        <Button size="small" ghost={true} level="tertiary" href={`#${showLink}`}>
+          {translate('pim_datagrid.action.show.title')}
+        </Button>
+      )}
       <StopJobAction
         id={id}
         jobLabel={jobLabel}

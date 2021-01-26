@@ -1,5 +1,76 @@
 # 4.0.x
 
+# 4.0.83 (2021-01-06)
+
+## Bug fixes
+
+- PIM-9611: Improve performance of product indexation by forcing a join due to statistics bias for low cardinality
+
+# 4.0.82 (2021-01-05)
+
+# 4.0.81 (2020-12-23)
+
+## Bug fixes
+
+- PIM-9605: Display the unit label instead of its code in the variant navigation component
+
+# 4.0.80 (2020-12-21)
+
+## Bug fixes
+
+- PIM-9601: Fix compute completeness memory usage
+
+# 4.0.79 (2020-12-18)
+
+## Bug fixes
+
+- PIM-9551: Purge logs when calling the command akeneo:batch:purge-job-execution
+- PIM-9602: Fix family dropdown on product model creation modal
+
+# 4.0.78 (2020-12-08)
+
+# 4.0.77 (2020-12-07)
+
+## Bug fixes
+
+- PIM-9513: Fix the use of an unexisting filter on the API so that it does not return an error 500
+- PIM-9586: [Backport] PIM-9571 Fix missing items on the invalid data file when importing product models
+- PIM-9592: Fix month to seconds conversion
+
+# 4.0.76 (2020-12-02)
+
+# 4.0.75 (2020-11-27)
+
+## Bug fixes
+
+- PIM-9575: Prepend hash to navigate actions URLs
+- PIM-9559: Dispatch event when clean removed attributes command is over
+- PIM-9573: Create remove_non_existing_product_values job instance at runtime
+
+# 4.0.74 (2020-11-25)
+
+## Bug fixes
+
+- PIM-9568: Fix performance issue when saving a big product group
+- RAC-388: Fix fatal error when an attribute is removed then re-created with the same code but another type.
+
+# 4.0.73 (2020-11-23)
+
+## Bug fixes
+
+- PIM-9565: Fix StandardToFlat boolean value converter
+- PIM-9550: Add attribute codes as an argument to the command "pim:product:clean-removed-attributes"
+
+# 4.0.72 (2020-11-16)
+
+# 4.0.71 (2020-11-12)
+
+# 4.0.70 (2020-11-09)
+
+## Bug fixes
+
+- PIM-9555: Fix PurgeJobExecutionCommand with 0 day option
+
 # 4.0.69 (2020-11-05)
 
 # 4.0.68 (2020-10-30)

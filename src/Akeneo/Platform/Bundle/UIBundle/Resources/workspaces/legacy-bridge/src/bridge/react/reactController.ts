@@ -3,7 +3,6 @@ import {mountReactElementRef, unmountReactElementRef} from './reactElementHelper
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
-
 abstract class ReactController extends BaseController {
   /**
    * Base React element to mount (and keep as ref between route changes).

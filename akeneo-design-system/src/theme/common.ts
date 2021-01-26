@@ -1,4 +1,4 @@
-import {css} from 'styled-components';
+import styled, {css} from 'styled-components';
 import {Color, FontSize, getColor, getFontSize, Palette} from './theme';
 
 const CommonStyle = css`
@@ -6,6 +6,7 @@ const CommonStyle = css`
   color: ${getColor('grey', 120)};
   font-size: ${getFontSize('default')};
   line-height: 20px;
+  box-sizing: border-box;
 `;
 
 const color: Color = {
@@ -80,4 +81,8 @@ const palette: Palette = {
   danger: 'red',
 };
 
-export {color, fontSize, palette, CommonStyle};
+const BrandedPath = styled.path`
+  fill: ${getColor('brand', 100)};
+`;
+
+export {color, fontSize, palette, CommonStyle, BrandedPath};

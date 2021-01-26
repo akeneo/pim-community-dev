@@ -20,6 +20,10 @@ yarn.lock: package.json
 node_modules: yarn.lock
 	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 $(YARN_RUN) install
 
+.PHONY: javascript-extensions
+javascript-extensions:
+	$(YARN_RUN) run update-extensions
+
 .PHONY: dsm
 dsm:
 	$(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system install --frozen-lockfile
@@ -36,17 +40,17 @@ css:
 	$(YARN_RUN) run less
 
 .PHONY: javascript-prod
-javascript-prod: dsm
+javascript-prod:
 	$(CMD_ON_PROJECT) rm -rf public/dist
 	$(YARN_RUN) run webpack
 
 .PHONY: javascript-dev
-javascript-dev: dsm
+javascript-dev:
 	$(CMD_ON_PROJECT) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev
 
 .PHONY: front
-front: assets css javascript-dev
+front: assets css dsm javascript-dev
 
 .PHONY: database
 database:
@@ -83,7 +87,10 @@ ifndef NO_DOCKER
 endif
 	$(MAKE) cache
 	$(MAKE) assets
+	$(MAKE) dsm
 	$(MAKE) javascript-prod
+	$(MAKE) css
+	$(MAKE) javascript-extensions
 	APP_ENV=prod $(MAKE) database O="--catalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal"
 
 .PHONY: pim-dev
@@ -94,7 +101,10 @@ ifndef NO_DOCKER
 endif
 	$(MAKE) cache
 	$(MAKE) assets
+	$(MAKE) dsm
 	$(MAKE) javascript-dev
+	$(MAKE) css
+	$(MAKE) javascript-extensions
 	APP_ENV=dev $(MAKE) database O="--catalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev"
 
 .PHONY: up
@@ -104,4 +114,3 @@ up:
 .PHONY: down
 down:
 	docker-compose down -v
-

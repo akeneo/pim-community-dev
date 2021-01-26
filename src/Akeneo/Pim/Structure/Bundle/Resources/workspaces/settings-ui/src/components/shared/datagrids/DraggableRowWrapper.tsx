@@ -32,16 +32,16 @@ const DraggableRowWrapper = <T extends {}>({
         <DraggableCell
           isDraggable={isReorderAllowed}
           isActive={isReorderActive}
-          onDragStart={event => {
+          onDragStart={(event: React.DragEvent) => {
             moveStart(event, data, index, rowRef.current);
           }}
-          onDragOver={event => {
+          onDragOver={(event: React.DragEvent) => {
             moveOver(event, data, index);
           }}
-          onDrop={event => {
+          onDrop={(event: React.DragEvent) => {
             moveDrop(event, handleDrop);
           }}
-          onDragEnd={event => {
+          onDragEnd={(event: React.DragEvent) => {
             moveEnd(event, handleDrop);
           }}
         >

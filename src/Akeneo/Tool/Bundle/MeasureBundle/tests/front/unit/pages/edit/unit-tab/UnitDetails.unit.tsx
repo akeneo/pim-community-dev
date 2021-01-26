@@ -95,7 +95,8 @@ test('It displays a details edit form', async () => {
 
   await waitFor(() => {
     expect(screen.getByText('measurements.unit.title')).toBeInTheDocument();
-    expect((screen.getByRole('unit-label-input-en_US') as HTMLInputElement).value).toEqual('Square Meter');
+    expect(screen.getByText('🇺🇸')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('Square Meter')).toBeInTheDocument();
   });
 });
 
@@ -121,7 +122,7 @@ test('It allows symbol edition', async () => {
   );
 
   await act(async () => {
-    const symbolInput = screen.getByRole('unit-symbol-input') as HTMLInputElement;
+    const symbolInput = screen.getByLabelText('measurements.unit.symbol');
     fireEvent.change(symbolInput, {target: {value: 'm^2'}});
   });
 
@@ -129,7 +130,7 @@ test('It allows symbol edition', async () => {
 });
 
 test('It allows convertion value edition', async () => {
-  let selectedUnitCode = 'SQUARE_METER';
+  let selectedUnitCode = 'SQUARE_FEET';
   let updatedMeasurementFamily = measurementFamily;
   const onMeasurementFamilyChange = newMeasurementFamily => {
     updatedMeasurementFamily = newMeasurementFamily;
@@ -150,11 +151,11 @@ test('It allows convertion value edition', async () => {
   );
 
   await act(async () => {
-    const operationValueInput = screen.getByRole('operation-value-input') as HTMLInputElement;
+    const operationValueInput = screen.getByPlaceholderText('measurements.unit.operation.placeholder');
     fireEvent.change(operationValueInput, {target: {value: '2'}});
   });
 
-  expect(updatedMeasurementFamily.units[0].convert_from_standard[0].value).toEqual('2');
+  expect(updatedMeasurementFamily.units[1].convert_from_standard[0].value).toEqual('2');
 });
 
 test('It allows label edition', async () => {
@@ -178,15 +179,15 @@ test('It allows label edition', async () => {
     />
   );
 
-  await waitFor(() => screen.getByRole('unit-label-input-en_US'));
+  await waitFor(() => screen.getByText('🇺🇸'));
 
   act(() => {
-    const labelInput = screen.getByRole('unit-label-input-en_US') as HTMLInputElement;
-    fireEvent.change(labelInput, {target: {value: 'square meter'}});
+    const labelInput = screen.getByDisplayValue('Square Meter');
+    fireEvent.change(labelInput, {target: {value: 'real square meter'}});
   });
 
   await waitFor(() => {
-    expect(updatedMeasurementFamily.units[0].labels['en_US']).toEqual('square meter');
+    expect(updatedMeasurementFamily.units[0].labels['en_US']).toEqual('real square meter');
   });
 });
 

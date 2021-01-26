@@ -9,8 +9,18 @@ services:
         arguments:
             - '@database_connection'
 
+    pim_analytics.query.active_event_subscription_count:
+        class: Akeneo\Platform\Bundle\AnalyticsBundle\Query\Sql\ActiveEventSubscriptionCount
+        arguments:
+            - '@database_connection'
+
     pim_analytics.query.media_count:
         class: Akeneo\Platform\Bundle\AnalyticsBundle\Query\ElasticsearchAndSql\MediaCount
         arguments:
             - '@database_connection'
             - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    pim_analytics.query.is_demo_catalog:
+        class: Akeneo\Platform\Bundle\AnalyticsBundle\Query\Sql\IsDemoCatalog
+        arguments:
+            - '@database_connection'

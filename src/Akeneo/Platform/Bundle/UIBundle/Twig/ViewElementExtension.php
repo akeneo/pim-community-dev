@@ -4,7 +4,7 @@ namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
 use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementInterface;
 use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementRegistry;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 
 /**
  * Twig extension to display view elements
@@ -15,21 +15,11 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
  */
 class ViewElementExtension extends \Twig_Extension
 {
-    /** @var ViewElementRegistry */
-    protected $registry;
+    protected ViewElementRegistry $registry;
+    protected Environment $templating;
+    protected bool $debug;
 
-    /** @var EngineInterface */
-    protected $templating;
-
-    /** @var bool */
-    protected $debug;
-
-    /**
-     * @param ViewElementRegistry $registry
-     * @param EngineInterface     $templating
-     * @param bool                $debug
-     */
-    public function __construct(ViewElementRegistry $registry, EngineInterface $templating, $debug = false)
+    public function __construct(ViewElementRegistry $registry, Environment $templating, bool $debug = false)
     {
         $this->registry = $registry;
         $this->templating = $templating;

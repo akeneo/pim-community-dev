@@ -50,7 +50,7 @@ services:
 
     pim_catalog.repository.locale:
         class: 'Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.locale.class%']
         tags:
             - { name: 'channel_repository' }
@@ -90,7 +90,7 @@ services:
     pim_catalog.repository.channel:
         public: true
         class: 'Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.channel.class%']
         tags:
             - { name: 'pim_repository' }
@@ -169,7 +169,7 @@ services:
 
     pim_catalog.repository.currency:
         class: 'Akeneo\Channel\Bundle\Doctrine\Repository\CurrencyRepository'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.currency.class%']
         tags:
             - { name: 'pim_repository' }

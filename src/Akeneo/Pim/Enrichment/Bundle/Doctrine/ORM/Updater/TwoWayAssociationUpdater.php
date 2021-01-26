@@ -1,9 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -28,100 +28,61 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
     }
 
     /**
-     * @inheritdoc
+     * In EE, products & associations are cloned for the Permission feature.
+     * Because of that, sometimes, we will have in the association 2 differents instances of the same product or model
+     * and Doctrine will throw an error saying it found a detached entity.
+     * To fix this, we look for cloned objects by comparing the identifier.
+     *
+     * {@inheritdoc}
      */
     public function createInversedAssociation(
-        AssociationInterface $association,
+        $owner,
+        string $associationTypeCode,
         EntityWithAssociationsInterface $associatedEntity
     ): void {
-        $associationType = $association->getAssociationType();
-        $owner = $association->getOwner();
-
-        /** @var AssociationInterface $inversedAssociation */
-        $inversedAssociation = $associatedEntity->getAssociationForType($associationType);
-        if (null === $inversedAssociation) {
+        if (!$associatedEntity->hasAssociationForTypeCode($associationTypeCode)) {
             $this->missingAssociationAdder->addMissingAssociations($associatedEntity);
-            $inversedAssociation = $associatedEntity->getAssociationForType($associationType);
         }
-
         if ($owner instanceof ProductInterface) {
-            $this->addInversedAssociatedProduct($inversedAssociation, $owner);
+            foreach ($associatedEntity->getAssociatedProducts($associationTypeCode) as $associatedProduct) {
+                if ($associatedProduct->getIdentifier() === $owner->getIdentifier() && $associatedProduct !== $owner) {
+                    $associatedEntity->removeAssociatedProduct($associatedProduct, $associationTypeCode);
+                    break;
+                }
+            }
+            $associatedEntity->addAssociatedProduct($owner, $associationTypeCode);
         } elseif ($owner instanceof ProductModelInterface) {
-            $this->addInversedAssociatedProductModel($inversedAssociation, $owner);
+            foreach ($associatedEntity->getAssociatedProductModels($associationTypeCode) as $associatedProductModel) {
+                if ($associatedProductModel->getCode() === $owner->getCode() && $associatedProductModel !== $owner) {
+                    $associatedEntity->removeAssociatedProductModel($associatedProductModel, $associationTypeCode);
+                    break;
+                }
+            }
+            $associatedEntity->addAssociatedProductModel($owner, $associationTypeCode);
         } else {
             throw new \LogicException(
                 sprintf(
                     'Inversed associations are only for the classes "%s" and "%s". "%s" given.',
                     ProductInterface::class,
                     ProductModelInterface::class,
-                    get_class($owner)
+                    get_class($associatedEntity)
                 )
             );
         }
     }
 
     /**
-     * In EE, products & associations are cloned for the Permission feature.
-     * Because of that, sometimes, we will have in the association 2 differents instances of the same product
-     * and Doctrine will throw an error saying it found a detached entity.
-     * To fix this, we look for cloned objects by comparing the identifier.
-     */
-    private function addInversedAssociatedProduct(
-        AssociationInterface $association,
-        ProductInterface $associatedProduct
-    ): void {
-        /** @var ProductInterface $product */
-        foreach ($association->getProducts() as $product) {
-            if ($product->getIdentifier() === $associatedProduct->getIdentifier()
-                && $product !== $associatedProduct) {
-                $association->removeProduct($product);
-            }
-        }
-
-        $association->addProduct($associatedProduct);
-    }
-
-    /**
-     * In EE, products & associations are cloned for the Permission feature.
-     * Because of that, sometimes, we will have in the association 2 differents instances of the same product model
-     * and Doctrine will throw an error saying it found a detached entity.
-     * To fix this, we look for cloned objects by comparing the identifier.
-     */
-    private function addInversedAssociatedProductModel(
-        AssociationInterface $association,
-        ProductModelInterface $associatedProductModel
-    ): void {
-        /** @var ProductModelInterface $productModel */
-        foreach ($association->getProductModels() as $productModel) {
-            if ($productModel->getCode() === $associatedProductModel->getCode()
-                && $productModel !== $associatedProductModel) {
-                $association->removeProductModel($productModel);
-            }
-        }
-
-        $association->addProductModel($associatedProductModel);
-    }
-
-    /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function removeInversedAssociation(
-        AssociationInterface $association,
+        $owner,
+        string $associationTypeCode,
         EntityWithAssociationsInterface $associatedEntity
     ): void {
-        $associationType = $association->getAssociationType();
-        $owner = $association->getOwner();
-
-        /** @var AssociationInterface $inversedAssociation */
-        $inversedAssociation = $associatedEntity->getAssociationForType($associationType);
-        if (null === $inversedAssociation) {
-            return;
-        }
-
         if ($owner instanceof ProductInterface) {
-            $inversedAssociation->removeProduct($owner);
+            $associatedEntity->removeAssociatedProduct($owner, $associationTypeCode);
         } elseif ($owner instanceof ProductModelInterface) {
-            $inversedAssociation->removeProductModel($owner);
+            $associatedEntity->removeAssociatedProductModel($owner, $associationTypeCode);
         } else {
             throw new \LogicException(
                 sprintf(
@@ -135,6 +96,6 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
 
         /** @var ObjectManager $em */
         $em = $this->registry->getManager();
-        $em->persist($inversedAssociation);
+        $em->persist($associatedEntity);
     }
 }

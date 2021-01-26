@@ -9,7 +9,7 @@ aliases:
 
   - &dockerCloudDeployer
       docker:
-        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:2.3
+        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:2.4
           auth:
             username: _json_key  # default username when using a JSON key file to authenticate
             password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
@@ -59,6 +59,9 @@ jobs:
         is_ee_built:
             type: boolean
             default: true
+        path_to_dsm:
+            type: string
+            default: akeneo-design-system
     machine:
       image: ubuntu-1604:201903-01
     steps:
@@ -107,13 +110,36 @@ jobs:
               docker/wait_docker_up.sh
               make check-requirements
       - run:
-          name: Install asset
+          name: Install assets
           command: make assets
       - run:
-          name: Build Javascript
+          name: Build css
+          command: make css
+      - run:
+          name: Create hash for DSM version
           command: |
-              make javascript-test
-              make javascript-dev
+            find << parameters.path_to_dsm >> -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
+            date +%F >> ~/akeneo-design-system.hash
+      - run:
+          name: Set DSM directory owner to circleci
+          command: sudo chown -R 1001:1001 << parameters.path_to_dsm >>
+      - restore_cache:
+          name: Restore DSM cache
+          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+      - run:
+          name: Set DSM directory owner to docker
+          command: sudo chown -R 1000:1000 << parameters.path_to_dsm >>
+      - run:
+          name: Build DSM
+          command: test -d << parameters.path_to_dsm >>/lib || make dsm
+      - save_cache:
+          name: Save DSM cache
+          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+          paths:
+            - << parameters.path_to_dsm >>/lib
+      - run:
+          name: Build Javascript
+          command: make javascript-dev
       - run:
             name: Change owner on project dir after installing when there is no cache
             command: sudo chmod -R 777 ../project
@@ -133,25 +159,25 @@ jobs:
                 command: sudo chown -R 1000:1000 ../project
           - run:
                 name: No legacy translation format
-                command: make find-legacy-translations
+                command: PIM_CONTEXT=test make find-legacy-translations
           - run:
                 name: Load archived docker image
                 command: docker load -i php-pim-image.tar
           - run:
                 name: Static tests
-                command: make static-back
+                command: PIM_CONTEXT=test make static-back
           - run:
                 name: Analyzes source code to flag programming errors, bugs, stylistic errors, and suspicious constructs
-                command: make lint-back
+                command: PIM_CONTEXT=test make lint-back
           - run:
                 name: Code Coupling Detection
-                command: make coupling-back
+                command: PIM_CONTEXT=test make coupling-back
           - run:
                 name: Unit tests
-                command: make unit-back
+                command: PIM_CONTEXT=test make unit-back
           - run:
                 name: Acceptance tests
-                command: make acceptance-back
+                command: PIM_CONTEXT=test make acceptance-back
           - store_test_results:
                 path: var/tests
           - store_artifacts:
@@ -162,7 +188,7 @@ jobs:
   test_back_phpunit:
       machine:
           image: ubuntu-1604:201903-01
-      parallelism: 10
+      parallelism: 20
       steps:
           - attach_workspace:
                 at: ~/
@@ -180,10 +206,10 @@ jobs:
                 command: APP_ENV=test make database
           - run:
                 name: PhpUnit Integration
-                command: make integration-back
+                command: PIM_CONTEXT=test make pim-integration-back
           - run:
                 name: PhpUnit End to end
-                command: make end-to-end-back
+                command: PIM_CONTEXT=test make end-to-end-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
@@ -194,7 +220,7 @@ jobs:
   test_back_behat_legacy:
     machine:
         image: ubuntu-1604:201903-01
-    parallelism: 20
+    parallelism: 40
     steps:
       - attach_workspace:
           at: ~/
@@ -221,7 +247,7 @@ jobs:
           command: APP_ENV=behat make database
       - run:
           name: End to end Behat tests
-          command: make end-to-end-legacy SUITE=$TESTSUITE
+          command: PIM_CONTEXT=test make end-to-end-legacy SUITE=$TESTSUITE
       - run:
           name: Gather Junit test result files in the same directory to improve the render of failing tests
           command: |
@@ -264,16 +290,10 @@ jobs:
             command: make javascript-dev-strict
         - run:
             name: Front linter
-            command: make lint-front
+            command: PIM_CONTEXT=test make lint-front
         - run:
             name: Front unit tests
-            command: make unit-front
-        - run:
-            name: Front acceptance tests
-            command: make acceptance-front
-        - run:
-            name: Front integration tests
-            command: make integration-front
+            command: PIM_CONTEXT=test make unit-front
 
   test_back_performance:
     machine:
@@ -317,10 +337,10 @@ jobs:
           - restore_persisted_env_vars
           - run:
               name: Build PROD PIM docker image
-              command: IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
+              command: PIM_CONTEXT=deployment IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
           - run:
               name: Push PROD PIM image on docker registry
-              command: make push-php-image-prod
+              command: PIM_CONTEXT=deployment make push-php-image-prod
 
   test_deploy:
       environment:
@@ -333,19 +353,19 @@ jobs:
           - restore_persisted_env_vars
           - run:
               name: Deploy PIM on kubernetes
-              command: make deploy-serenity
+              command: PIM_CONTEXT=deployment make deploy-serenity
           - run:
               name: Test PIM connexion on kubernetes
-              command: make test-prod
+              command: PIM_CONTEXT=deployment make test-prod
           - run:
               name: Prepare infrastructure artifacts
-              command: make prepare-infrastructure-artifacts
+              command: PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove env on kubernetes
-              command: make delete
+              command: PIM_CONTEXT=deployment make delete
               when: always
 
   test_upgrade_from_last_release:
@@ -361,26 +381,27 @@ jobs:
           - run:
                 name: Latest SaaS prod deployment on kubernetes
                 command: |
-                    export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
-                    LATEST_RELEASE=$(git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1)
+                    git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt
+                    LATEST_RELEASE=$(head -n 1 /tmp/pim-tags.txt)
                     echo $LATEST_RELEASE
-                    INSTANCE_NAME=pimup-$IMAGE_TAG IMAGE_TAG=$LATEST_RELEASE make deploy-serenity
+                    export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+                    INSTANCE_NAME=pimup-$IMAGE_TAG IMAGE_TAG=$LATEST_RELEASE PIM_CONTEXT=deployment make deploy-serenity
           - run:
                 name: Upgrade
                 command: |
-                    INSTANCE_NAME=pimup-$IMAGE_TAG make deploy-serenity
+                    INSTANCE_NAME=pimup-$IMAGE_TAG PIM_CONTEXT=deployment make deploy-serenity
           - run:
                 name: Production tests on upgraded env
-                command: INSTANCE_NAME=pimup-$IMAGE_TAG make test-prod
+                command: INSTANCE_NAME=pimup-$IMAGE_TAG PIM_CONTEXT=deployment make test-prod
           - run:
                 name: Prepare infrastructure artifacts
-                command: INSTANCE_NAME=pimup-$IMAGE_TAG make prepare-infrastructure-artifacts
+                command: INSTANCE_NAME=pimup-$IMAGE_TAG PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
                 when: on_fail
           - store_artifacts:
                 path: ~/artifacts/infra
           - run:
                 name: Remove upgraded env
-                command: INSTANCE_NAME_PREFIX=pimup make delete
+                command: INSTANCE_NAME_PREFIX=pimup PIM_CONTEXT=deployment make delete
                 when: always
 
   deploy_pr_environment:
@@ -399,16 +420,16 @@ jobs:
                     echo "This environment will be available at https://pimci-pr-${CIRCLE_PULL_REQUEST##*/}.dev.cloud.akeneo.com once deployed :) "
           - run:
                 name: Deploy PR environment
-                command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} ACTIVATE_MONITORING=false make deploy-serenity
+                command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} ACTIVATE_MONITORING=false PIM_CONTEXT=deployment make deploy-serenity
           - run:
               name: Prepare infrastructure artifacts
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make prepare-infrastructure-artifacts
+              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove env on kubernetes
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make delete
+              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete
               when: on_fail
 
   delete_pr_environment:
@@ -424,7 +445,7 @@ jobs:
                 command: |
                     if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
                     echo "remove env from 'deploy_pr_environment'"
-                    INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make delete-serenity
+                    INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete-serenity
 
   test_back_missing_structure_migrations:
       machine:
@@ -473,7 +494,7 @@ jobs:
                 command: APP_ENV=test make database
           - run:
                 name: PhpUnit Migration
-                command: make migration-back
+                command: PIM_CONTEXT=test make migration-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
@@ -510,42 +531,42 @@ jobs:
                 name: Add configuration files to run the bundle tests from the PIM
                 command: |
                     rm -f docker-compose.override.yml
-                    PIM_VERSION=master SETUP_FOR_CI=1 make setup-onboarder-parameters
-                    PIM_VERSION=master make setup-onboarder-tests
+                    PIM_VERSION=master SETUP_FOR_CI=1 PIM_CONTEXT=onboarder make setup-onboarder-parameters
+                    PIM_VERSION=master PIM_CONTEXT=onboarder make setup-onboarder-tests
                     docker-compose run --rm php php /usr/local/bin/composer dumpautoload
           - run:
                 name: Change owner of PIM as some files have been created with wrong owner
                 command: sudo chown -R 1000:1000 ~/project
           - run:
                 name: Execute static analysis
-                command: make test-static-analysis
+                command: PIM_CONTEXT=onboarder make test-static-analysis
           - run:
                 name: PHP coupling detector
-                command: make test-coupling-detector
+                command: PIM_CONTEXT=onboarder make test-coupling-detector
           - run:
                 name: Execute specifications
-                command: make test-spec
+                command: PIM_CONTEXT=onboarder make test-spec
           - run:
                 name: Install Akeneo PIM with Onboarder specific configuration (channel, attribute, ...)
-                command: ENVIRONMENT=test SETUP_FOR_CI=1 make onboarder-install
+                command: ENVIRONMENT=test SETUP_FOR_CI=1 PIM_CONTEXT=onboarder make onboarder-install
           - run:
                 name: Execute acceptance tests
-                command: make test-acceptance
+                command: PIM_CONTEXT=onboarder make test-acceptance
           - run:
                 name: Execute PHPUnit integration tests
-                command: make test-integration
+                command: PIM_CONTEXT=onboarder make test-integration
           - run:
                 name: Start Apache/FPM and Selenium for End to End tests
-                command: make up APP_ENV=behat C='fpm httpd selenium'
+                command: PIM_CONTEXT=onboarder make up APP_ENV=behat C='fpm httpd selenium'
           - run:
                 name: Execute end-to-end tests
-                command: make test-end-to-end
+                command: PIM_CONTEXT=onboarder make test-end-to-end
           - run:
               name: Restart FPM with Onboarder feature turned off
-              command: make up APP_ENV=behat FLAG_ONBOARDER_ENABLED=0 C='fpm'
+              command: PIM_CONTEXT=onboarder make up APP_ENV=behat FLAG_ONBOARDER_ENABLED=0 C='fpm'
           - run:
               name: Execute end-to-end "Onboarder feature disabled" tests
-              command: make test-end-to-end-onboarder-disabled
+              command: PIM_CONTEXT=onboarder make test-end-to-end-onboarder-disabled
           - store_test_results:
                 path: ~/project/pim/var/tests
           - store_artifacts:
@@ -567,6 +588,7 @@ workflows:
                 requires:
                     - ready_to_build?
           - build_dev:
+                path_to_dsm: vendor/akeneo/pim-community-dev/akeneo-design-system
                 requires:
                     - checkout_ee
           - build_prod:
@@ -606,39 +628,32 @@ workflows:
           - test_front_static_acceptance_and_integration:
                 requires:
                     - build_dev
-          - test_back_missing_structure_migrations:
+          - test_back_phpunit:
                 requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
+                    - build_dev
+          - test_back_performance:
+                requires:
+                    - build_dev
+          - test_onboarder_bundle:
+                requires:
+                    - build_dev
           - test_back_data_migrations:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
-          - test_back_phpunit:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-          - test_onboarder_bundle:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
+                    - test_back_phpunit
           - test_back_behat_legacy:
                 requires:
-                    - test_back_data_migrations
-                    - test_back_missing_structure_migrations
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
                     - test_back_phpunit
-                    - test_onboarder_bundle
-          - test_back_performance:
-                requires:
-                    - test_back_data_migrations
-                    - test_back_missing_structure_migrations
-                    - test_back_phpunit
-                    - test_onboarder_bundle
           - pull_request_success:
                 requires:
                     - test_back_behat_legacy
                     - test_back_performance
-                    - test_upgrade_from_last_release
+                    - test_back_data_migrations
+                    - test_onboarder_bundle
+
           - ready_to_build_only_ce?:
                 type: approval
                 filters:
@@ -664,23 +679,22 @@ workflows:
           - test_back_phpunit:
                 name: test_back_phpunit_ce
                 requires:
-                    - test_back_static_and_acceptance_ce
-                    - test_front_static_acceptance_and_integration_ce
+                    - build_dev_ce
           - test_back_data_migrations:
                 name: test_back_data_migrations_ce
                 requires:
-                    - test_back_static_and_acceptance_ce
-                    - test_front_static_acceptance_and_integration_ce
+                    - test_back_phpunit_ce
           - test_back_behat_legacy:
                 name: test_back_behat_legacy_ce
                 requires:
+                    - test_back_static_and_acceptance_ce
+                    - test_front_static_acceptance_and_integration_ce
                     - test_back_phpunit_ce
-                    - test_back_data_migrations_ce
 
   nightly:
       triggers:
           - schedule:
-                cron: "0 2 * * *"
+                cron: "0 23 * * *"
                 filters:
                     branches:
                         only:
@@ -688,14 +702,10 @@ workflows:
 
       jobs:
           - checkout_ce
-          - checkout_ee
           - build_dev:
                 is_ee_built: false
                 requires:
                     - checkout_ce
-          - build_prod:
-                requires:
-                    - checkout_ee
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -711,9 +721,6 @@ workflows:
           - test_back_data_migrations:
                 requires:
                     - build_dev
-          - test_upgrade_from_last_release:
-                requires:
-                    - build_prod
 
 commands:
   set_gcloud_config_dev:
@@ -739,7 +746,7 @@ commands:
           name: "Prepare terraform configuration."
           shell: "/bin/bash -eo pipefail"
           command: |
-            IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
+            IMAGE_TAG=$CIRCLE_SHA1 PIM_CONTEXT=deployment make create-ci-release-files
 
   restore_persisted_env_vars:
     description: "Restore env vars that have been persisted by the previous job."

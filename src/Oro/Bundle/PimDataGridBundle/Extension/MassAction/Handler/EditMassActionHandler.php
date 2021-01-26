@@ -43,7 +43,7 @@ class EditMassActionHandler implements MassActionHandlerInterface
     {
         // dispatch pre handler event
         $massActionEvent = new MassActionEvent($datagrid, $massAction, []);
-        $this->eventDispatcher->dispatch(MassActionEvents::MASS_EDIT_PRE_HANDLER, $massActionEvent);
+        $this->eventDispatcher->dispatch($massActionEvent, MassActionEvents::MASS_EDIT_PRE_HANDLER);
 
         $datasource = $datagrid->getDatasource();
         $datasource->setHydrator($this->hydrator);
@@ -53,7 +53,7 @@ class EditMassActionHandler implements MassActionHandlerInterface
 
         // dispatch post handler event
         $massActionEvent = new MassActionEvent($datagrid, $massAction, []);
-        $this->eventDispatcher->dispatch(MassActionEvents::MASS_EDIT_POST_HANDLER, $massActionEvent);
+        $this->eventDispatcher->dispatch($massActionEvent, MassActionEvents::MASS_EDIT_POST_HANDLER);
 
         return $objectIds;
     }

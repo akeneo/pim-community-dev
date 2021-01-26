@@ -17,30 +17,24 @@ final class QualityScoreSorter extends BaseFieldSorter
 {
     public function addFieldSorter($field, $direction, $locale = null, $channel = null): FieldSorterInterface
     {
-        $scoreField = sprintf('data_quality_insights.scores.%s.%s', $channel, $locale);
-        $enrichmentField = sprintf('rates.enrichment.%s.%s', $channel, $locale);
-        $consistencyField = sprintf('rates.consistency.%s.%s', $channel, $locale);
+        $field = sprintf('data_quality_insights.scores.%s.%s', $channel, $locale);
 
         switch ($direction) {
             case Directions::ASCENDING:
                 $order = 'ASC';
-                $nullValueReplacement = 99;
                 break;
             case Directions::DESCENDING:
                 $order = 'DESC';
-                $nullValueReplacement = 0;
                 break;
             default:
                 throw InvalidDirectionException::notSupported($direction, static::class);
         }
 
         $sortClause = [
-            '_script' => [
-                'type' => 'number',
-                'script' => [
-                    'source' => "if(doc.containsKey('$scoreField') && doc['$scoreField'].size() > 0) { return doc['$scoreField'].value } else { long avgScore = Math.round(((doc.containsKey('$enrichmentField') && doc['$enrichmentField'].size() > 0 ? Integer.parseInt(doc['$enrichmentField'].value) : 0) + (doc.containsKey('$consistencyField') && doc['$consistencyField'].size() > 0 ? Integer.parseInt(doc['$consistencyField'].value) : (doc.containsKey('$enrichmentField') && doc['$enrichmentField'].size() > 0 ? Integer.parseInt(doc['$enrichmentField'].value) : 0))) / 2); return avgScore > 0 ? avgScore : $nullValueReplacement;}"
-                ],
-                'order' => $order,
+            $field => [
+                'order'   => $order,
+                'missing' => '_last',
+                'unmapped_type' => 'keyword',
             ],
         ];
 

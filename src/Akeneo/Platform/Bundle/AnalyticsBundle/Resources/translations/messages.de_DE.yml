@@ -51,6 +51,16 @@ pim_analytics:
     server_version: Server-Version
     php_extensions: PHP-Erweiterungen
     email_domains: Zugeordnete E-Mail-Domains
+    api_connection: API-Verbindungen
+    nb_media_files_in_products: Anzahl der Mediendateien in den Produkten
+    nb_media_images_in_products: Anzahl der Medienbilder in den Produkten
+    is_demo_catalog: Demokatalog installiert
+    data_source.tracked: Anzahl der API-Quellverbindungen verfolgt
+    data_source.untracked: Anzahl der nicht verfolgten API-Quellenverbindungen
+    data_destination.tracked: Anzahl der API-Zielverbindungen verfolgt
+    data_destination.untracked: Anzahl der nicht verfolgten API-Zielverbindungen
+    other.tracked: Anzahl der anderen API-Verbindungen verfolgt
+    other.untracked: Anzahl der anderen nicht verfolgten API-Verbindungen 
   acl:
     system_info:
       index: Systeminformationen

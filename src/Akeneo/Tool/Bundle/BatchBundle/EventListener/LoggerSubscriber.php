@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Subscriber to log job execution result
@@ -115,7 +115,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     {
         $jobExecution = $event->getJobExecution();
 
-        $this->logger->debug(sprintf('Job execution was stopped: %s', $jobExecution));
+        $this->logger->info(sprintf('Job execution was stopped: %s', $jobExecution));
     }
 
     /**
@@ -238,7 +238,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     {
         $stepExecution = $event->getStepExecution();
 
-        $this->logger->debug(sprintf('Step execution complete: %s', $stepExecution));
+        $this->logger->info(sprintf('Step execution complete: %s', $stepExecution));
     }
 
     /**

@@ -52,6 +52,11 @@ pim_enrich.entity.product:
       select: Sélectionner
       all_visible: Tous les éléments visibles
       copy: Copier
+    convert_variant_to_simple:
+      label: Convertir en produit simple
+      dialog:
+        title: Confirmer la conversion
+        content: "Êtes-vous sûr de vouloir convertir ce produit variant en produit simple ? Toutes ses valeurs, catégories et associations initiales seront conservées."
     history:
       version: Version
       author: Auteur
@@ -165,7 +170,7 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'axe de variante'
       create: Créer
-      create_label: "Créer un nouveau variant sur l'/les axe(s) {{ axes }}"
+      title_create_label: "]-Inf, 1]Créer un nouveau variant sur l'axe {{ axes }}|]1, Inf[Créer un nouveau variant sur les axes {{ axes }}"
       required_label: '(axe de variante)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} produit variant|]1, Inf[{{ complete }} / {{ total }} produits variants"
@@ -241,7 +246,7 @@ pim_enrich.export.product:
         ALL: Pas de condition de date
         "SINCE LAST N DAYS": Produits mis à jour durant les n derniers jours (par ex. 6)
         ">": Produits mis à jours depuis cette date
-        "SINCE LAST JOB": Produits mis à jour depuis le dernier export
+        "SINCE LAST JOB": Produits mis à jour depuis le dernière export
     enabled:
       title: État
       help: "Choisir les produits à exporter selon leur statut. Par ex. : exporter les produits quel que soit leur statut."
@@ -340,6 +345,10 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Ajouter certains <span class=\"AknFullPage-title--highlight\">produits</span> à un modèle de produit existant|{1}Ajouter <span class=\"AknFullPage-title--highlight\">1 produit</span> à un modèle de produit existant|]1, Inf[Ajouter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à un modèle de produit existant"
       description: Le modèle de produit sélectionné va rassembler des produits et améliorer l'enrichissement de leurs propriétés communes.
       no_update: Veuillez sélectionner un modèle de produit avant de continuer
+    convert_to_simple_products:
+      label: Convertir en produits simples
+      label_count: "{0}Convertissez des <span class=\"AknFullPage-title--highlight\">produits</span> en produits simples |{1}Convertissez <span class=\"AknFullPage-title--highlight\">1 produit</span> en produit simple|]1, Inf[Convertir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> en produits simples"
+      description: Toutes les valeurs, catégories et associations initiales seront conservées.
     associate_to_product_and_product_model:
       label: Associer
       label_count: "{0}Associer certains <span class=\"AknFullPage-title--highlight\">produits</span> à d'autres produits ou modèles de produit|{1}Associer <span class=\"AknFullPage-title--highlight\">1 produit</span> à d'autres produits ou modèles de produit|]1, Inf[Associer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à d'autres produits ou modèles de produit"
@@ -375,8 +384,10 @@ pim_datagrid:
         all_attributes: Tous les attributs
         with_codes: Avec codes
         with_labels: Avec libellés
-      success_message: "Vous pouvez {{ job_link }}."
-      job_link_label: suivre l’avancement de votre export ici
+        without_media: Sans image
+        with_media: Avec images
+      flash:
+        message: "Vous pouvez suivre l'avancement de votre export ici."
     mass_edit: Actions de masse
     sequential_edit: Modification séquentielle
     mass_delete: Suppression massive
@@ -444,6 +455,9 @@ batch_jobs:
   add_to_existing_product_model:
     label: Ajouter à un modèle de produit existant
     perform.label: Ajouter à un modèle de produit existant
+  convert_to_simple_products:
+    label: Convertir en produits simples
+    perform.label: Convertir en produits simples
   csv_product_grid_context_quick_export:
     quick_export.label: Export rapide de la grille de produits en CSV
     quick_export_product_model.label: Export rapide de la grille de modèles de produit en CSV

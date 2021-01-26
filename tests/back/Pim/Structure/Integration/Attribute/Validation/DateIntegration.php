@@ -83,4 +83,9 @@ class DateIntegration extends AbstractAttributeTestCase
     {
         $this->assertDoesNotHaveAMaxFileSize('pim_catalog_date');
     }
+
+    public function testDateShouldNotHaveDefaultValue()
+    {
+        $this->assertDoesNotHaveDefaultValue('pim_catalog_date');
+    }
 }

@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionDataBuildErrorLog;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
+use Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -23,12 +26,16 @@ class WebhookEventBuilder
     /** @var iterable<EventDataBuilderInterface> */
     private iterable $eventDataBuilders;
 
+    private LoggerInterface $logger;
+
     /**
      * @param iterable<EventDataBuilderInterface> $eventDataBuilders
+     * @param LoggerInterface $logger
      */
-    public function __construct(iterable $eventDataBuilders)
+    public function __construct(iterable $eventDataBuilders, LoggerInterface $logger)
     {
         $this->eventDataBuilders = $eventDataBuilders;
+        $this->logger = $logger;
     }
 
     /**
@@ -40,19 +47,29 @@ class WebhookEventBuilder
     public function build(object $event, array $context = []): array
     {
         $context = $this->resolveOptions($context);
-
         $eventDataBuilder = $this->getEventDataBuilder($event);
+        $webhookEvents = [];
 
-        $eventDataCollection = $eventDataBuilder->build($event, $context['user']);
-
-        $events = [];
-        if ($event instanceof EventInterface) {
-            $events = [$event];
-        } else {
-            $events = $event->getEvents();
+        // TODO: Remove try/catch when BulkEvent refactoring is completed
+        try {
+            $eventDataCollection = $eventDataBuilder->build($event, $context['user']);
+            $events = $event instanceof EventInterface ? [$event] : $event->getEvents();
+            $webhookEvents = $this->buildWebhookEvents($events, $eventDataCollection, $context);
+        } catch (EventBuildingExceptionInterface $exception) {
+            $this->logger->warning(
+                json_encode(
+                    (new EventSubscriptionDataBuildErrorLog(
+                        $exception->getMessage(),
+                        $context['connection_code'],
+                        $context['user']->getId(),
+                        $event
+                    ))->toLog(),
+                    JSON_THROW_ON_ERROR
+                )
+            );
         }
 
-        return $this->buildWebhookEvents($events, $eventDataCollection, $context);
+        return $webhookEvents;
     }
 
     /**
@@ -63,9 +80,10 @@ class WebhookEventBuilder
     private function resolveOptions(array $options): array
     {
         $resolver = new OptionsResolver();
-        $resolver->setRequired(['user', 'pim_source']);
+        $resolver->setRequired(['user', 'pim_source', 'connection_code']);
         $resolver->setAllowedTypes('user', UserInterface::class);
         $resolver->setAllowedTypes('pim_source', 'string');
+        $resolver->setAllowedTypes('connection_code', 'string');
 
         return $resolver->resolve($options);
     }
@@ -98,13 +116,21 @@ class WebhookEventBuilder
             $data = $eventDataCollection->getEventData($event);
 
             if (null === $data) {
-                // TODO: Log event data not built.
-
-                continue;
+                throw new \LogicException(sprintf('Event %s should have event data', $event->getUuid()));
             }
 
             if ($data instanceof \Throwable) {
-                // TODO: Log error.
+                $this->logger->warning(
+                    json_encode(
+                        (new EventSubscriptionDataBuildErrorLog(
+                            $data->getMessage(),
+                            $context['connection_code'],
+                            $context['user']->getId(),
+                            $event
+                        ))->toLog(),
+                        JSON_THROW_ON_ERROR
+                    )
+                );
 
                 continue;
             }

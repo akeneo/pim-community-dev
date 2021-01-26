@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
@@ -77,6 +78,12 @@ class ComputeDataRelatedToFamilyRootProductModelsTaskletSpec extends ObjectBehav
         $this->initialize();
     }
 
+    function it_track_processed_items()
+    {
+        $this->shouldImplement(TrackableTaskletInterface::class);
+        $this->isTrackable()->shouldReturn(true);
+    }
+
     function it_computes_no_product_models_if_there_is_nothingmore__to_read_in_the_imported_file(
         $cacheClearer,
         $familyReader
@@ -135,6 +142,7 @@ class ComputeDataRelatedToFamilyRootProductModelsTaskletSpec extends ObjectBehav
         $cursor->valid()->willReturn(true, true, true, false);
         $cursor->current()->willReturn($productModel1, $productModel2, $productModel3);
         $cursor->next()->shouldBeCalled();
+        $cursor->count()->shouldBeCalled()->willReturn(3);
 
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$productModel1])->shouldBeCalled();
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$productModel2])->shouldBeCalled();
@@ -150,12 +158,13 @@ class ComputeDataRelatedToFamilyRootProductModelsTaskletSpec extends ObjectBehav
         $productModelSaver->saveAll([$productModel1, $productModel2])->shouldBeCalled();
         $productModelSaver->saveAll([$productModel3])->shouldBeCalled();
 
+        $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo(Argument::cetera())->shouldBeCalledTimes(2);
         $stepExecution->incrementSummaryInfo('process', 2)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldNotBeCalled();
-        $stepExecution->incrementProcessedItems(2)->shouldBeCalled();
-        $stepExecution->incrementProcessedItems(1)->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(2)->shouldBeCalledOnce();
+        $stepExecution->incrementProcessedItems(1)->shouldBeCalledOnce();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalledTimes(2);
         $cacheClearer->clear()->shouldBeCalledTimes(2);
@@ -196,6 +205,7 @@ class ComputeDataRelatedToFamilyRootProductModelsTaskletSpec extends ObjectBehav
         $cursor->valid()->willReturn(true, true, true, false);
         $cursor->current()->willReturn($productModel1, $productModel2, $productModel3);
         $cursor->next()->shouldBeCalled();
+        $cursor->count()->shouldBeCalled()->willReturn(3);
 
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$productModel1])->shouldBeCalled();
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$productModel2])->shouldBeCalled();
@@ -210,10 +220,10 @@ class ComputeDataRelatedToFamilyRootProductModelsTaskletSpec extends ObjectBehav
 
         $productModelSaver->saveAll([$productModel3])->shouldBeCalled();
 
+        $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(2);
-        $stepExecution->incrementProcessedItems(1)->shouldBeCalled();
-        $stepExecution->incrementProcessedItems()->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(1)->shouldBeCalledTimes(3);
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalledTimes(1);
         $cacheClearer->clear()->shouldBeCalledTimes(2);

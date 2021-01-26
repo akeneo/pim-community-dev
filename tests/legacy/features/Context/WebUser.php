@@ -1767,6 +1767,24 @@ class WebUser extends PimContext
     }
 
     /**
+     * @param string $label
+     * @param string $value
+     *
+     * @When /^I fill the input labelled '(.*)' with '(.*)'$/
+     */
+    public function iFillTheInputLabelledWith($label, $value)
+    {
+        $page = $this->getCurrentPage();
+
+        $label = $this->spin(function () use ($page, $label) {
+            return $page->find('css', sprintf('label:contains(%s)', $label));
+        }, sprintf("Can not find any label with content '%s'", $label));
+
+        $input = $page->findByID($label->getAttribute('for'));
+        $input->setValue($value);
+    }
+
+    /**
      * @param string $button
      *
      * @Given /^I should see the "([^"]*)" button$/

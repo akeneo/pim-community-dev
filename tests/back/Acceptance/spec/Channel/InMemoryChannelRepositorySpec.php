@@ -62,6 +62,17 @@ class InMemoryChannelRepositorySpec extends ObjectBehavior
         $this->findAll()->shouldReturn([$channel1, $channel2]);
     }
 
+    function it_gets_the_channel_codes()
+    {
+        $channel1 = $this->createChannel('ecommerce');
+        $this->save($channel1);
+
+        $channel2 = $this->createChannel('mobile');
+        $this->save($channel2);
+
+        $this->getChannelCodes()->shouldReturn(['ecommerce', 'mobile']);
+    }
+
     private function createChannel(string $code): ChannelInterface
     {
         $channel = new Channel();

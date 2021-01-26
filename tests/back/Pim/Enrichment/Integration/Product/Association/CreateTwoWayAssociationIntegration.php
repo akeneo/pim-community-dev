@@ -2,148 +2,250 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Association;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\ProductUpdater;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
-use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\Assert;
 
 class CreateTwoWayAssociationIntegration extends TestCase
 {
-    public function testInvertedAssociationAreAutomaticallyCreatedOnTwoWayAssociation()
+    /**
+     * @test
+     */
+    public function it_creates_inversed_associations_when_owner_is_a_product()
     {
-        $aProduct = $this->getEntityBuilder()->createProduct('a_product', '', []);
-        $aProductModel = $this->getEntityBuilder()->createProductModel('a_product_model', 'clothing_color_size', null, []);
-        $anotherProduct = $this->getEntityBuilder()->createProduct('another_product', '', [
-            'associations'  => [
-                "COMPATIBILITY" => [
-                    "products" => ["a_product"],
-                    "product_models" => ["a_product_model"],
+        $this->createProduct(
+            'test',
+            [
+                'associations' => [
+                    'COMPATIBILITY' => [
+                        'products' => ['product_1'],
+                        'product_models' => ['product_model_1'],
+                        'groups' => ['groupA'],
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
 
-        $productWithAssociation = $this->getEntityBuilder()->createProduct('a_product_with_associations', '', [
-            'associations'  => [
-                "COMPATIBILITY" => [
-                    "products" => ["another_product"],
-                    "product_models" => ["a_product_model"],
-                ],
-            ],
-        ]);
-
-        $this->getProductAssociationRepository()->clear();
-        $this->getProductModelAssociationRepository()->clear();
-        $productAssociations = $this->getProductAssociationRepository()->findByOwner($aProduct->getId());
-        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($productAssociations, ['another_product'], []);
-
-        $anotherProductAssociation = $this->getProductAssociationRepository()->findByOwner($anotherProduct->getId());
-        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($anotherProductAssociation, ['a_product', 'a_product_with_associations'], ['a_product_model']);
-
-        $productWithAssociationAssociation = $this->getProductAssociationRepository()->findByOwner($productWithAssociation->getId());
-        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($productWithAssociationAssociation, ['another_product'], ['a_product_model']);
-
-        $productModelAssociations = $this->getProductModelAssociationRepository()->findByOwner($aProductModel->getId());
-        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($productModelAssociations, ['another_product', 'a_product_with_associations'], []);
+        $this->clearUnitOfWork();
+        $this->assertAssociations(
+            $this->get('pim_catalog.repository.product')->findOneByIdentifier('test'),
+            'COMPATIBILITY',
+            ['product_1'],
+            ['product_model_1'],
+            ['groupA']
+        );
+        $this->assertAssociations(
+            $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1'),
+            'COMPATIBILITY',
+            ['test'],
+            [],
+            []
+        );
+        $this->assertAssociations(
+            $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('product_model_1'),
+            'COMPATIBILITY',
+            ['test'],
+            [],
+            []
+        );
     }
 
-    public function testAssociationsWasDeletedWhenAssociatedProductIsDeleted()
+    /**
+     * @test
+     */
+    public function it_creates_inversed_associations_when_owner_is_a_product_model()
     {
-        $product = $this->getEntityBuilder()->createProduct('a_product', '', []);
-        $productModel = $this->getEntityBuilder()->createProductModel('a_product_model', 'clothing_color_size', null, []);
-        $productWithAssociations = $this->getEntityBuilder()->createProduct('a_product_with_associations', '', [
-            'associations'  => [
-                "COMPATIBILITY" => [
-                    "products" => ["a_product"],
-                    "product_models" => ["a_product_model"],
+        $this->createProductModel(
+            [
+                'code' => 'test_pm',
+                'family_variant' => 'familyVariantA1',
+                'associations' => [
+                    'COMPATIBILITY' => [
+                        'products' => ['product_1'],
+                        'product_models' => ['product_model_1'],
+                        'groups' => ['groupA'],
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
 
-        $product = $this->getProductRepository()->findOneByIdentifier($product->getIdentifier());
-        $this->getProductRemover()->remove($product);
-        $this->getProductModelRemover()->remove($productModel);
-
-        $this->getProductAssociationRepository()->clear();
-        $productAssociations = $this->getProductAssociationRepository()->findByOwner($productWithAssociations->getId());
-        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($productAssociations, [], []);
+        $this->clearUnitOfWork();
+        $this->assertAssociations(
+            $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('test_pm'),
+            'COMPATIBILITY',
+            ['product_1'],
+            ['product_model_1'],
+            ['groupA']
+        );
+        $this->assertAssociations(
+            $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1'),
+            'COMPATIBILITY',
+            [],
+            ['test_pm'],
+            []
+        );
+        $this->assertAssociations(
+            $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('product_model_1'),
+            'COMPATIBILITY',
+            [],
+            ['test_pm'],
+            []
+        );
     }
 
-    public function testInvertedAssociationsWasDeletedWhenProductAssociationIsDeleted()
+    /**
+     * @test
+     */
+    public function it_removes_inversed_association_when_removing_associated_entities()
     {
-        $aProduct = $this->getEntityBuilder()->createProduct('a_product', '', []);
-        $aProductModel = $this->getEntityBuilder()->createProductModel('a_product_model', 'clothing_color_size', null, []);
-        $anotherProduct = $this->getEntityBuilder()->createProduct('another_product', '', [
-            'associations'  => [
-                "COMPATIBILITY" => [
-                    "products" => ["a_product"],
-                    "product_models" => ["a_product_model"],
+        $product = $this->createProduct(
+            'test',
+            [
+                'associations' => [
+                    'COMPATIBILITY' => [
+                        'products' => ['product_1', 'product_2'],
+                        'product_models' => ['product_model_1', 'product_model_2'],
+                        'groups' => ['groupA'],
+                    ],
                 ],
-            ],
-        ]);
-
-        $productWithAssociation = $this->getEntityBuilder()->createProduct('a_product_with_associations', '', [
-            'associations'  => [
-                "COMPATIBILITY" => [
-                    "products" => ["another_product"],
-                    "product_models" => ["a_product_model"],
+            ]
+        );
+        $this->get('pim_catalog.updater.product')->update(
+            $product,
+            [
+                'associations' => [
+                    'COMPATIBILITY' => [
+                        'products' => ['product_2'],
+                        'product_models' => ['product_model_2'],
+                        'groups' => [],
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
+        $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->getProductUpdater()->update($productWithAssociation, [
-            'associations'  => [
-                "COMPATIBILITY" => [
-                    "products" => [],
-                    "product_models" => [],
+        $productModel = $this->createProductModel(
+            [
+                'code' => 'test_pm',
+                'family_variant' => 'familyVariantA1',
+                'associations' => [
+                    'COMPATIBILITY' => [
+                        'products' => ['product_1', 'product_2'],
+                        'product_models' => ['product_model_1', 'product_model_2'],
+                        'groups' => ['groupA'],
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
+        $this->get('pim_catalog.updater.product_model')->update(
+            $productModel,
+            [
+                'associations' => [
+                    'COMPATIBILITY' => [
+                        'products' => ['product_1'],
+                        'product_models' => ['product_model_1'],
+                        'groups' => [],
+                    ],
+                ],
+            ]
+        );
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        $this->getProductSaver()->save($productWithAssociation);
+        $this->clearUnitOfWork();
+        $this->assertAssociations(
+            $this->get('pim_catalog.repository.product')->findOneByIdentifier('test'),
+            'COMPATIBILITY',
+            ['product_2'],
+            ['product_model_2'],
+            []
+        );
+        $this->assertAssociations(
+            $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('test_pm'),
+            'COMPATIBILITY',
+            ['product_1'],
+            ['product_model_1'],
+            []
+        );
 
-        $aProductAssociation = $this->getProductAssociationRepository()->findByOwner($aProduct->getId());
-        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($aProductAssociation, ['another_product'], []);
-
-        $aProductAssociation = $this->getProductAssociationRepository()->findByOwner($anotherProduct->getId());
-        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($aProductAssociation, ['a_product'], ['a_product_model']);
-
-        $productModelAssociations = $this->getProductModelAssociationRepository()->findByOwner($aProductModel->getId());
-        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($productModelAssociations, ['another_product'], []);
-
-        $productWithAssociationAssociations = $this->getProductAssociationRepository()->findByOwner($productWithAssociation);
-        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($productWithAssociationAssociations, [], []);
+        $this->assertAssociations(
+            $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1'),
+            'COMPATIBILITY',
+            [],
+            ['test_pm'],
+            []
+        );
+        $this->assertAssociations(
+            $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2'),
+            'COMPATIBILITY',
+            ['test'],
+            [],
+            []
+        );
+        $this->assertAssociations(
+            $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('product_model_1'),
+            'COMPATIBILITY',
+            [],
+            ['test_pm'],
+            []
+        );
+        $this->assertAssociations(
+            $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('product_model_2'),
+            'COMPATIBILITY',
+            ['test'],
+            [],
+            []
+        );
     }
 
-    private function assertContainsCompatibilityAssociationWithProductsAndProductModels(array $associations, $products, $productModels)
+    /**
+     * @test
+     */
+    public function it_deletes_inversed_associations_when_the_owner_is_deleted()
     {
-        $compatibilityAssociation = $this->extractCompatibilityAssociation($associations);
+        $product = $this->createProduct(
+            'test',
+            [
+                'associations' => [
+                    'COMPATIBILITY' => [
+                        'products' => ['product_1'],
+                    ],
+                ],
+            ]
+        );
+        $productModel = $this->createProductModel(
+            [
+                'code' => 'test_pm',
+                'family_variant' => 'familyVariantA1',
+                'associations' => [
+                    'COMPATIBILITY' => [
+                        'products' => ['product_1'],
+                    ],
+                ],
+            ]
+        );
 
-        $this->assertCount(count($products), $compatibilityAssociation->getProducts());
-        foreach ($compatibilityAssociation->getProducts() as $associationProduct) {
-            $this->assertContains($associationProduct->getIdentifier(), $products);
-        }
+        $this->assertAssociations(
+            $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1'),
+            'COMPATIBILITY',
+            ['test'],
+            ['test_pm'],
+            []
+        );
 
-        $this->assertCount(count($productModels), $compatibilityAssociation->getProductModels());
-        foreach ($compatibilityAssociation->getProductModels() as $associationProductModel) {
-            $this->assertContains($associationProductModel->getCode(), $productModels);
-        }
-    }
+        $this->get('pim_catalog.remover.product')->remove($product);
+        $this->get('pim_catalog.remover.product_model')->remove($productModel);
+        $this->clearUnitOfWork();
 
-    private function extractCompatibilityAssociation(array $associations): AssociationInterface
-    {
-        foreach ($associations as $association) {
-            if ($association->getAssociationType()->getCode() === "COMPATIBILITY") {
-                return $association;
-            }
-        }
-
-        $this->fail('No compatibility association was found');
+        $this->assertAssociations(
+            $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1'),
+            'COMPATIBILITY',
+            [],
+            [],
+            []
+        );
     }
 
     /**
@@ -151,46 +253,119 @@ class CreateTwoWayAssociationIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return $this->catalog->useFunctionalCatalog('catalog_modeling');
+        return $this->catalog->useTechnicalCatalog();
     }
 
-    private function getEntityBuilder(): EntityBuilder
+    protected function setUp(): void
     {
-        return $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
+        parent::setUp();
+
+        $associationType = $this->get('pim_catalog.factory.association_type')->create();
+        $this->get('pim_catalog.updater.association_type')->update(
+            $associationType,
+            [
+                'code' => 'COMPATIBILITY',
+                'is_two_way' => true,
+            ]
+        );
+        $this->get('pim_catalog.saver.association_type')->save($associationType);
+
+        $this->createProduct('product_1', []);
+        $this->createProduct('product_2', []);
+        $this->createProductModel(
+            [
+                'code' => 'product_model_1',
+                'family_variant' => 'familyVariantA1',
+            ]
+        );
+        $this->createProductModel(
+            [
+                'code' => 'product_model_2',
+                'family_variant' => 'familyVariantA1',
+            ]
+        );
     }
 
-    private function getProductAssociationRepository(): AssociationRepositoryInterface
+    private function createProduct(string $identifier, array $data): ProductInterface
     {
-        return $this->get('pim_catalog.repository.association');
+        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
+        $this->get('pim_catalog.updater.product')->update($product, $data);
+        $violations = $this->get('pim_catalog.validator.product')->validate($product);
+        Assert::assertCount(0, $violations, \sprintf('The product is invalid: %s', (string)$violations));
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        return $product;
     }
 
-    private function getProductRepository()
+    private function createProductModel(array $data): ProductModelInterface
     {
-        return $this->get('pim_api.repository.product');
+        $productModel = $this->get('pim_catalog.factory.product_model')->create();
+        $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
+        $violations = $this->get('pim_catalog.validator.product_model')->validate($productModel);
+        Assert::assertCount(0, $violations, \sprintf('The product model is invalid: %s', (string)$violations));
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
+
+        return $productModel;
     }
 
-    private function getProductModelAssociationRepository()
-    {
-        return $this->get('doctrine')->getManager()->getRepository(ProductModelAssociation::class);
+    private function assertAssociations(
+        EntityWithAssociationsInterface $entity,
+        string $associationTypeCode,
+        array $expectedAssociatedProductIdentifiers,
+        array $expectedAssociatedProductModelCodes,
+        array $expectedAssociatedGroupCodes
+    ): void {
+        $associatedProducts = $entity->getAssociatedProducts($associationTypeCode);
+        if (empty($expectedAssociatedProductIdentifiers)) {
+            Assert::assertTrue(
+                null === $associatedProducts || $associatedProducts->isEmpty(),
+                'Expected associated products to be empty, but they\'re not'
+            );
+        } else {
+            Assert::assertNotNull($associatedProducts);
+            Assert::assertEquals(
+                $expectedAssociatedProductIdentifiers,
+                $associatedProducts->map(
+                    fn (ProductInterface $product): string => $product->getIdentifier()
+                )->toArray()
+            );
+        }
+
+        $associatedProductModels = $entity->getAssociatedProductModels($associationTypeCode);
+        if (empty($expectedAssociatedProductModelCodes)) {
+            Assert::assertTrue(
+                null === $associatedProductModels || $associatedProductModels->isEmpty(),
+                'Expected associated product models to be empty, but they\'re not'
+            );
+        } else {
+            Assert::assertNotNull($associatedProductModels);
+            Assert::assertEquals(
+                $expectedAssociatedProductModelCodes,
+                $associatedProductModels->map(
+                    fn (ProductModelInterface $productModel): string => $productModel->getCode()
+                )->toArray()
+            );
+        }
+
+        $associatedGroups = $entity->getAssociatedGroups($associationTypeCode);
+        if (empty($expectedAssociatedGroupCodes)) {
+            Assert::assertTrue(
+                null === $associatedGroups || $associatedGroups->isEmpty(),
+                'Expected associated groups to be empty, but they\'re not'
+            );
+        } else {
+            Assert::assertNotNull($associatedGroups);
+            Assert::assertEquals(
+                $expectedAssociatedGroupCodes,
+                $associatedGroups->map(
+                    fn (GroupInterface $group): string => $group->getCode()
+                )->toArray()
+            );
+        }
     }
 
-    private function getProductRemover(): RemoverInterface
+    private function clearUnitOfWork(): void
     {
-        return $this->get('pim_catalog.remover.product');
-    }
-
-    private function getProductModelRemover(): RemoverInterface
-    {
-        return $this->get('pim_catalog.remover.product_model');
-    }
-
-    private function getProductUpdater(): ObjectUpdaterInterface
-    {
-        return $this->get('pim_catalog.updater.product');
-    }
-
-    private function getProductSaver(): SaverInterface
-    {
-        return $this->get('pim_catalog.saver.product');
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 }

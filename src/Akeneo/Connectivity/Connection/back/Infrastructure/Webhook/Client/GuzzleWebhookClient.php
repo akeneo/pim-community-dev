@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookRequestLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSendApiEventRequestLog;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
@@ -22,17 +22,9 @@ use Symfony\Component\Serializer\Encoder\EncoderInterface;
  */
 class GuzzleWebhookClient implements WebhookClient
 {
-    const HEADER_REQUEST_SIGNATURE = 'X-Akeneo-Request-Signature';
-    const HEADER_REQUEST_TIMESTAMP = 'X-Akeneo-Request-Timestamp';
-
-    /** @var ClientInterface */
-    private $client;
-
-    /** @var EncoderInterface */
-    private $encoder;
-
-    /** @var LoggerInterface */
-    private $logger;
+    private ClientInterface $client;
+    private EncoderInterface $encoder;
+    private LoggerInterface $logger;
 
     /** @var array{concurrency: ?int, timeout: ?float} */
     private $config;
@@ -61,15 +53,15 @@ class GuzzleWebhookClient implements WebhookClient
                 $body = $this->encoder->encode($webhookRequest->content(), 'json');
 
                 $timestamp = time();
-                $signature = Signature::createSignature($webhookRequest->secret(), $body, $timestamp);
+                $signature = Signature::createSignature($webhookRequest->secret(), $timestamp, $body);
 
                 $headers = [
                     'Content-Type' => 'application/json',
-                    self::HEADER_REQUEST_SIGNATURE => $signature,
-                    self::HEADER_REQUEST_TIMESTAMP => $timestamp,
+                    RequestHeaders::HEADER_REQUEST_SIGNATURE => $signature,
+                    RequestHeaders::HEADER_REQUEST_TIMESTAMP => $timestamp,
                 ];
 
-                $logs[] = new WebhookRequestLog($webhookRequest, $headers, microtime(true));
+                $logs[] = new EventSubscriptionSendApiEventRequestLog($webhookRequest, $headers, microtime(true));
 
                 $request = new Request('POST', $webhookRequest->url(), $headers, $body);
 
@@ -115,44 +107,5 @@ class GuzzleWebhookClient implements WebhookClient
 
         $promise = $pool->promise();
         $promise->wait();
-    }
-
-    public function bulkFakeSend(iterable $webhookRequests): void
-    {
-        $logs = [];
-
-        $guzzleRequests = function () use (&$webhookRequests, &$logs) {
-            foreach ($webhookRequests as $webhookRequest) {
-                $body = $this->encoder->encode($webhookRequest->content(), 'json');
-
-                $timestamp = time();
-                $signature = Signature::createSignature($webhookRequest->secret(), $body, $timestamp);
-
-                $headers = [
-                    'Content-Type' => 'application/json',
-                    self::HEADER_REQUEST_SIGNATURE => $signature,
-                    self::HEADER_REQUEST_TIMESTAMP => $timestamp,
-                ];
-
-                $logs[] = new WebhookRequestLog($webhookRequest, $headers, microtime(true));
-
-                $request = new Request('POST', $webhookRequest->url(), $headers, $body);
-
-                yield $request;
-            }
-        };
-
-        foreach ($guzzleRequests() as $index => $guzzleRequest) {
-            usleep(500000);
-            $webhookRequestLog = $logs[$index];
-            $webhookRequestLog->setSuccess(true);
-            $webhookRequestLog->setEndTime(microtime(true));
-            $webhookRequestLog->setResponse(null);
-            $this->logger->info(
-                json_encode(
-                    $webhookRequestLog->toLog()
-                )
-            );
-        }
     }
 }

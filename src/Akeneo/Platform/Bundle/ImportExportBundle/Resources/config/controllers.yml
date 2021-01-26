@@ -44,6 +44,7 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.filter.chained'
             - '@oneup_flysystem.jobs_storage_filesystem'
+            - '@oro_security.security_facade'
 
     pim_enrich.controller.rest.job_execution:
         public: true
@@ -66,3 +67,4 @@ services:
             - {'import': 'pim_importexport_import_profile_show', 'export': 'pim_importexport_export_profile_show'}
             - '@akeneo_batch.query.update_job_execution_status'
             - '@akeneo_batch.job.job_registry'
+            - '@logger'

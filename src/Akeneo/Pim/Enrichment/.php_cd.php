@@ -13,7 +13,9 @@ $rules = [
         'Doctrine',
         'Symfony\Component',
         'Symfony\Bundle',
+        'Symfony\Contracts',
         'Akeneo\Tool',
+        'Akeneo\Channel\Component\Query\PublicApi',
         'Akeneo\Pim\Enrichment\Component',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
@@ -21,6 +23,7 @@ $rules = [
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Liip\ImagineBundle',
         'Dompdf\Dompdf',
+        'Dompdf\Options',
         'Webmozart\Assert\Assert',
         'Psr\Log\LoggerInterface',
         // TODO the feature use the datagrid
@@ -28,6 +31,8 @@ $rules = [
         'Oro\Bundle\PimDataGridBundle',
         // TODO: dependencies related to the front end, remove twig screens
         'Twig_SimpleFunction', // used by the category tree
+        'Twig_Extension', // used by Twig extensions
+        'Twig\Environment', // used by Twig extensions
 
         // Event API
         'Akeneo\Platform\Component\EventQueue',
@@ -97,6 +102,7 @@ $rules = [
 
         // TIP-1017: Do not use public constants of AttributeTypes
         'Akeneo\Pim\Structure\Component\AttributeTypes',
+        'Akeneo\Pim\Structure\Bundle\Event\AttributeEvents',
 
         // TODO: : EASY PICK! API PaginatorInterface should catch ServerErrorResponseException and throw its own exception,
         'Elasticsearch\Common\Exceptions\BadRequest400Exception',
@@ -119,11 +125,14 @@ $rules = [
         // TIP-1022: Drop LocaleResolver
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
 
+        'Akeneo\Pim\Structure\Component\Query\InternalApi\GetAllBlacklistedAttributeCodesInterface',
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',
+        'Symfony\Contracts',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
+        'Doctrine\Inflector',
         'Webmozart\Assert\Assert',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Psr\Log\LoggerInterface',
@@ -138,6 +147,11 @@ $rules = [
 
         // Required for NonExistentValuesFilter on channels and locales
         'Akeneo\Channel\Component\Query\PublicApi',
+
+        // Required to add quality scores into external API normalized products.
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+        'Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQueryInterface',
+        'Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection',
 
         // TIP-915: PIM/Enrichment should not be linked to AttributeOption
         // TIP-916: Do not check if entities exist in PQB filters or sorters

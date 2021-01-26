@@ -120,24 +120,4 @@ class ReaderSpec extends ObjectBehavior
 
         $this->shouldThrow(InvalidItemFromViolationsException::class)->during('read');
     }
-
-    function it_rewinds(
-        $fileIteratorFactory,
-        $stepExecution,
-        FileIteratorInterface $fileIterator,
-        JobParameters $jobParameters
-    ) {
-        $filePath = __DIR__ . DIRECTORY_SEPARATOR .
-            DIRECTORY_SEPARATOR . 'features' .
-            DIRECTORY_SEPARATOR . 'Context' .
-            DIRECTORY_SEPARATOR . 'fixtures' .
-            DIRECTORY_SEPARATOR . 'product_with_carriage_return.xlsx';
-
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn($filePath);
-        $fileIteratorFactory->create($filePath, [])->willReturn($fileIterator);
-        $fileIterator->rewind()->shouldBeCalled();
-
-        $this->rewind();
-    }
 }

@@ -56,6 +56,7 @@ pim_analytics:
         api_connection: API connections
         nb_media_files_in_products: Number of media files in the products
         nb_media_images_in_products: Number of media images in the products
+        is_demo_catalog: Demo catalog installed
         data_source.tracked : Number of API source connections tracked
         data_source.untracked : Number of API source connections untracked
         data_destination.tracked : Number of API destination connections tracked

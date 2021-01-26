@@ -70,6 +70,9 @@ pim_enrich:
       description: Die folgenden Attribut-Anforderungen werden den ausgewählten Produktfamilien zugeordnet
       success_flash: Die Attribut-Anforderungen wurden den ausgewählten Produktfamilien zugeordnet
       launched_flash: Die Massenbearbeitung "setzen von Attributanforderungen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
+    convert_to_simple_products:
+      warning:
+        non_variant_product: Das "{{ identifier }}" Produkt ist bereits ein einfaches Produkt, es muss nicht konvertiert werden.
     mass_action:
       quick_export:
         launched_flash: Der Produkt-Export wird derzeit ausgeführt

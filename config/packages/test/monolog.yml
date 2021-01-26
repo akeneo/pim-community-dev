@@ -1,4 +1,4 @@
 monolog:
     handlers:
-        quality:
+        event_api:
             type: "null"

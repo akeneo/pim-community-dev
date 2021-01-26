@@ -175,8 +175,8 @@ class DatabaseCommand extends Command
         $entityManager->clear();
 
         $this->eventDispatcher->dispatch(
-            InstallerEvents::POST_DB_CREATE,
-            new InstallerEvent($this->commandExecutor)
+            new InstallerEvent($this->commandExecutor),
+            InstallerEvents::POST_DB_CREATE
         );
 
         // TODO: Should be in an event subscriber
@@ -186,17 +186,17 @@ class DatabaseCommand extends Command
 
         if (false === $input->getOption('withoutFixtures')) {
             $this->eventDispatcher->dispatch(
-                InstallerEvents::PRE_LOAD_FIXTURES,
-                new InstallerEvent($this->commandExecutor)
+                new InstallerEvent($this->commandExecutor),
+                InstallerEvents::PRE_LOAD_FIXTURES
             );
 
             $this->loadFixturesStep($input, $output);
 
             $this->eventDispatcher->dispatch(
-                InstallerEvents::POST_LOAD_FIXTURES,
                 new InstallerEvent($this->commandExecutor, null, [
                     'catalog' => $input->getOption('catalog')
-                ])
+                ]),
+                InstallerEvents::POST_LOAD_FIXTURES
             );
         }
 
@@ -249,6 +249,22 @@ class DatabaseCommand extends Command
                 `values` JSON NOT NULL
             ) COLLATE utf8mb4_unicode_ci, ENGINE = InnoDB;";
         $this->connection->exec($configTableSql);
+
+        $output->writeln('<info>Create messenger table</info>');
+        $messengerTableSql = "CREATE TABLE messenger_messages (
+                `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+                `headers` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+                `queue_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+                `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime)',
+                `available_at` datetime NOT NULL COMMENT '(DC2Type:datetime)',
+                `delivered_at` datetime DEFAULT NULL COMMENT '(DC2Type:datetime)',
+                PRIMARY KEY (`id`),
+                KEY `IDX_75EA56E0FB7336F0` (`queue_name`),
+                KEY `IDX_75EA56E0E3BD61CE` (`available_at`),
+                KEY `IDX_75EA56E016BA31DB` (`delivered_at`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;";
+        $this->connection->exec($messengerTableSql);
     }
 
     /**
@@ -284,10 +300,10 @@ class DatabaseCommand extends Command
             ];
 
             $this->eventDispatcher->dispatch(
-                InstallerEvents::PRE_LOAD_FIXTURE,
                 new InstallerEvent($this->commandExecutor, $jobInstance->getCode(), [
                     'catalog' => $catalog
-                ])
+                ]),
+                InstallerEvents::PRE_LOAD_FIXTURE
             );
             if ($input->getOption('verbose')) {
                 $output->writeln(
@@ -299,8 +315,8 @@ class DatabaseCommand extends Command
             }
             $this->commandExecutor->runCommand('akeneo:batch:job', $params);
             $this->eventDispatcher->dispatch(
-                InstallerEvents::POST_LOAD_FIXTURE,
-                new InstallerEvent($this->commandExecutor, $jobInstance->getCode())
+                new InstallerEvent($this->commandExecutor, $jobInstance->getCode()),
+                InstallerEvents::POST_LOAD_FIXTURE
             );
         }
         $output->writeln('');

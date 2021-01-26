@@ -7,6 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Sets the group field, for now, it handles groups
@@ -64,15 +65,7 @@ class GroupFieldSetter extends AbstractFieldSetter
                 $groups[] = $group;
             }
         }
-
-        $oldGroups = $product->getGroups();
-        foreach ($oldGroups as $group) {
-            $product->removeGroup($group);
-        }
-
-        foreach ($groups as $group) {
-            $product->addGroup($group);
-        }
+        $product->setGroups(new ArrayCollection($groups));
     }
 
     /**

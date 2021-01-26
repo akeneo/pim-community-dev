@@ -16,8 +16,15 @@ services:
             - '@akeneo_batch.job.job_instance_repository'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '%pim_catalog.job.remove_non_existing_product_values.job_name%'
+            - '@Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\InitDeletedAttributeSchemaSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'kernel.event_subscriber' }
 
     pim_enrich.form.type.attribute_option_value:
         class: 'Akeneo\Pim\Structure\Bundle\Form\Type\AttributeOptionValueType'

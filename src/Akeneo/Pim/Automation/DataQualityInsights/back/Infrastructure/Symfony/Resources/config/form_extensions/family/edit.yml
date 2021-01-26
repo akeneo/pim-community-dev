@@ -1,0 +1,6 @@
+extensions:
+  akeneo-data-quality-insights-family-edit-form-back-link:
+    module: akeneo/data-quality-insights/view/back-link
+    parent: pim-family-edit-form
+    targetZone: breadcrumb-back-link
+    feature: data_quality_insights

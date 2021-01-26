@@ -23,7 +23,6 @@ final class GetUpToDateLatestProductScoresQuery implements GetLatestProductScore
         HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
         GetLatestProductScoresQueryInterface $getLatestProductScoresQuery
     ) {
-
         $this->hasUpToDateEvaluationQuery = $hasUpToDateEvaluationQuery;
         $this->getLatestProductScoresQuery = $getLatestProductScoresQuery;
     }
@@ -41,6 +40,7 @@ final class GetUpToDateLatestProductScoresQuery implements GetLatestProductScore
     {
         $upToDateProducts = $this->hasUpToDateEvaluationQuery->forProductIds($productIds);
 
-        return empty($upToDateProducts) ? [] : $this->getLatestProductScoresQuery->byProductIds($upToDateProducts);;
+        return empty($upToDateProducts) ? [] : $this->getLatestProductScoresQuery->byProductIds($upToDateProducts);
+        ;
     }
 }

@@ -1,3 +1,4 @@
+import {Helper, Link} from 'akeneo-design-system';
 import React, {FC, useContext, useState} from 'react';
 import {useFormContext} from 'react-hook-form';
 import {useHistory} from 'react-router';
@@ -6,7 +7,7 @@ import {FormGroup, FormInput, ToggleButton} from '../../common/components';
 import {CopiableCredential} from '../../settings/components/credentials/CopiableCredential';
 import {RegenerateButton} from '../../settings/components/RegenerateButton';
 import {isErr} from '../../shared/fetch-result/result';
-import {TranslateContext} from '../../shared/translate';
+import {Translate, TranslateContext} from '../../shared/translate';
 import {useCheckReachability} from '../hooks/api/use-webhook-check-reachability';
 import {Webhook} from '../model/Webhook';
 import {WebhookReachability} from '../model/WebhookReachability';
@@ -14,9 +15,13 @@ import {TestUrlButton} from './TestUrlButton';
 
 type Props = {
     webhook: Webhook;
+    activeEventSubscriptionsLimit: {
+        limit: number;
+        current: number;
+    };
 };
 
-export const EditForm: FC<Props> = ({webhook}: Props) => {
+export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Props) => {
     const translate = useContext(TranslateContext);
     const history = useHistory();
 
@@ -31,7 +36,7 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
         clearError('url');
         setTestUrl({checking: true});
 
-        const result = await checkReachability(getValues('url'));
+        const result = await checkReachability(getValues('url'), getValues('secret'));
         if (isErr(result)) {
             throw new Error();
         }
@@ -43,17 +48,61 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
         }
     };
 
+    const isTestButtonDisabled = () =>
+        !getValues('url') || '' === getValues('url') || !getValues('secret') || '' === getValues('secret');
+
+    const isActiveEventSubscriptionsLimitReached = () =>
+        activeEventSubscriptionsLimit.current >= activeEventSubscriptionsLimit.limit;
+
     return (
         <>
-            <FormGroup label='akeneo_connectivity.connection.webhook.form.enabled'>
-                <ToggleButton name='enabled' ref={register} defaultChecked={webhook.enabled} />
+            <FormGroup
+                label='akeneo_connectivity.connection.webhook.form.enabled'
+                helpers={[
+                    isActiveEventSubscriptionsLimitReached() && (
+                        <Helper inline level='warning'>
+                            <Translate
+                                id='akeneo_connectivity.connection.webhook.active_event_subscriptions_limit_reached.message'
+                                placeholders={{limit: activeEventSubscriptionsLimit.limit.toString()}}
+                            />{' '}
+                            <Link
+                                href='https://help.akeneo.com/pim/serenity/articles/manage-your-connections.html#subscribe-to-events'
+                                target='_blank'
+                            >
+                                <Translate id='akeneo_connectivity.connection.webhook.active_event_subscriptions_limit_reached.link' />
+                            </Link>
+                        </Helper>
+                    ),
+                ]}
+            >
+                <ToggleButton
+                    name='enabled'
+                    ref={register}
+                    defaultChecked={webhook.enabled}
+                    disabled={false === webhook.enabled && isActiveEventSubscriptionsLimitReached()}
+                />
             </FormGroup>
 
             <FormGroup
                 controlId='url'
                 label='akeneo_connectivity.connection.webhook.form.url'
-                errors={errors?.url?.message && [errors?.url?.message]}
-                success={true === testUrl?.status?.success ? testUrl.status.message : undefined}
+                helpers={[
+                    errors?.url?.message && (
+                        <Helper inline level='error'>
+                            <Translate id={errors.url.message} />
+                        </Helper>
+                    ),
+                    true === testUrl?.status?.success && (
+                        <Helper inline level='info'>
+                            <Translate id={testUrl.status.message} />
+                        </Helper>
+                    ),
+                    isTestButtonDisabled() && (
+                        <Helper inline level='info'>
+                            <Translate id={'akeneo_connectivity.connection.webhook.helper.url.test_disabled'} />
+                        </Helper>
+                    ),
+                ]}
             >
                 <>
                     <FormInput
@@ -69,7 +118,7 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
                     />
                     <TestUrlButton
                         onClick={handleTestUrl}
-                        disabled={!getValues('url') || '' === getValues('url')}
+                        disabled={isTestButtonDisabled()}
                         loading={testUrl.checking}
                     />
                 </>

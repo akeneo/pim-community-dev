@@ -54,29 +54,6 @@ class UpdateProductModelIntegration extends TestCase
         $this->get('pim_catalog.updater.product_model')->update($productModel, ['family_variant' => 'shoes_size',]);
     }
 
-    public function testTheVariantAxisValuesCannotBeUpdated(): void
-    {
-        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('apollon_blue');
-        $this->get('pim_catalog.updater.product_model')->update($productModel, [
-            'values' => [
-                'color' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => 'black',
-                    ],
-                ],
-            ],
-        ]);
-
-        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
-        $this->assertEquals(1, $errors->count());
-        $this->assertEquals(
-            'Variant axis "color" cannot be modified, "[black]" given',
-            $errors->get(0)->getMessage()
-        );
-    }
-
     /**
      * {@inheritdoc}
      */

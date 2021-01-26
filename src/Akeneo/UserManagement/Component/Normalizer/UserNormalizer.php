@@ -116,11 +116,11 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
             ]
         ];
 
-        $types = $this->datagridViewRepo->getDatagridViewTypeByUser($user);
-        foreach ($types as $type) {
-            $defaultView = $user->getDefaultGridView($type['datagridAlias']);
+        $aliases = $this->datagridViewRepo->getDatagridViewAliasesByUser($user);
+        foreach ($aliases as $alias) {
+            $defaultView = $user->getDefaultGridView($alias);
             // Set default_product_grid_view, default_published_product_grid_view, etc.
-            $result[sprintf('default_%s_view', str_replace('-', '_', $type['datagridAlias']))]
+            $result[sprintf('default_%s_view', str_replace('-', '_', $alias))]
                 = $defaultView === null ? null : $defaultView->getId();
         }
 

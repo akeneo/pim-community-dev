@@ -50,7 +50,7 @@ class ValidDateRangeValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $violation
     ) {
         $date1 = new \DateTime();
-        $date1->setDate(2020, 12, 21);
+        $date1->add(new \DateInterval('P10D'));
 
         $date2 = new \DateTime();
 

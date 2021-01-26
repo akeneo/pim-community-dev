@@ -1,9 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
-import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
-import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
-import {MeasurementIllustration, Link, Button, Information} from 'akeneo-design-system';
+import {MeasurementIllustration, Link, Button, Information, Breadcrumb} from 'akeneo-design-system';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
 import {
   sortMeasurementFamily,
@@ -12,11 +10,17 @@ import {
 } from 'akeneomeasure/model/measurement-family';
 import {MeasurementFamilyTable} from 'akeneomeasure/pages/list/MeasurementFamilyTable';
 import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
-import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 import {TablePlaceholder} from 'akeneomeasure/pages/common/Table';
 import {Direction} from 'akeneomeasure/model/direction';
-import {SearchBar, NoDataSection, NoDataTitle, NoDataText, useToggleState} from '@akeneo-pim-community/shared';
-import {useTranslate, useUserContext, useSecurity, PimView} from '@akeneo-pim-community/legacy-bridge';
+import {
+  SearchBar,
+  NoDataSection,
+  NoDataTitle,
+  NoDataText,
+  useToggleState,
+  PageContent,
+} from '@akeneo-pim-community/shared';
+import {useTranslate, useUserContext, useSecurity, PimView, useRoute} from '@akeneo-pim-community/legacy-bridge';
 
 const useSorting = (
   defaultColumn: string
@@ -45,6 +49,7 @@ const List = () => {
   const [sortColumn, getSortDirection, toggleSortDirection] = useSorting('label');
   const [measurementFamilies] = useMeasurementFamilies();
   const [isCreateModalOpen, openCreateModal, closeCreateModal] = useToggleState(false);
+  const settingsHref = `#${useRoute('pim_enrich_attribute_index')}`;
 
   const handleModalClose = useCallback(
     (createdMeasurementFamilyCode?: MeasurementFamilyCode) => {
@@ -84,8 +89,8 @@ const List = () => {
         }
         breadcrumb={
           <Breadcrumb>
-            <BreadcrumbItem>{__('pim_menu.tab.settings')}</BreadcrumbItem>
-            <BreadcrumbItem>{__('pim_menu.item.measurements')}</BreadcrumbItem>
+            <Breadcrumb.Step href={settingsHref}>{__('pim_menu.tab.settings')}</Breadcrumb.Step>
+            <Breadcrumb.Step>{__('pim_menu.item.measurements')}</Breadcrumb.Step>
           </Breadcrumb>
         }
       >

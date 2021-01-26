@@ -332,7 +332,8 @@ JSON;
     "localizable": false,
     "scopable": false,
     "labels": {},
-    "auto_option_sorting": null
+    "auto_option_sorting": null,
+    "default_value": null
 }
 JSON;
 

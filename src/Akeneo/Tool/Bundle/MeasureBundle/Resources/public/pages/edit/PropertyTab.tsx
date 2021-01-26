@@ -1,11 +1,10 @@
-import React, {FormEvent, useRef} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {MeasurementFamily, setMeasurementFamilyLabel} from 'akeneomeasure/model/measurement-family';
 import {SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
-import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
-import {useAutoFocus, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
+import {ValidationError, filterErrors, TextField} from '@akeneo-pim-community/shared';
 import {useTranslate, useSecurity} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
@@ -24,43 +23,36 @@ const PropertyTab = ({
   errors: ValidationError[];
   onMeasurementFamilyChange: (measurementFamily: MeasurementFamily) => void;
 }) => {
-  const __ = useTranslate();
+  const translate = useTranslate();
   const locales = useUiLocales();
   const {isGranted} = useSecurity();
 
-  const firstFieldRef = useRef<HTMLInputElement | null>(null);
-  useAutoFocus(firstFieldRef);
-
   return (
     <Container>
-      <SubsectionHeader top={0}>{__('pim_common.general_properties')}</SubsectionHeader>
+      <SubsectionHeader top={0}>{translate('pim_common.general_properties')}</SubsectionHeader>
       <FormGroup>
         <TextField
-          id="measurements.family.properties.code"
-          label={__('pim_common.code')}
+          label={translate('pim_common.code')}
           value={measurementFamily.code}
           errors={filterErrors(errors, 'code')}
           required={true}
           readOnly={true}
         />
       </FormGroup>
-      <SubsectionHeader top={0}>{__('measurements.label_translations')}</SubsectionHeader>
+      <SubsectionHeader top={0}>{translate('measurements.label_translations')}</SubsectionHeader>
       <FormGroup>
         {null !== locales &&
           locales.map((locale, index) => (
             <TextField
-              ref={0 === index ? firstFieldRef : undefined}
-              id={`measurements.family.properties.label.${locale.code}`}
+              autoFocus={0 === index}
               label={locale.label}
               errors={filterErrors(errors, `labels[${locale.code}]`)}
               key={locale.code}
-              flag={locale.code}
+              locale={locale.code}
               readOnly={!isGranted('akeneo_measurements_measurement_family_edit_properties')}
               value={measurementFamily.labels[locale.code] || ''}
-              onChange={(event: FormEvent<HTMLInputElement>) =>
-                onMeasurementFamilyChange(
-                  setMeasurementFamilyLabel(measurementFamily, locale.code, event.currentTarget.value)
-                )
+              onChange={value =>
+                onMeasurementFamilyChange(setMeasurementFamilyLabel(measurementFamily, locale.code, value))
               }
             />
           ))}

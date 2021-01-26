@@ -2,3 +2,8 @@ pim_enrich_product_and_product_model_by_identifiers_rest_list:
     path: /
     defaults: { _controller: pim_enrich.controller.rest.product_and_product_model.get_from_identifier }
     methods: [POST]
+
+pim_enrich_count_items_with_attribute_value:
+    path: /count_items_with_attribute_value
+    defaults: { _controller: pim_enrich.controller.rest.count_impacted_items_by_attribute_deletion }
+    methods: [GET]

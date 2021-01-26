@@ -2,6 +2,7 @@ akeneo_communication_channel:
   link:
     title: News
   panel:
+    title: Annonces
     list:
       empty: Aucune news pour le moment. Mais revenez plus tard !
       error: Nous n'avons pas réussi à récupérer les news. Veuillez réessayer plus tard.

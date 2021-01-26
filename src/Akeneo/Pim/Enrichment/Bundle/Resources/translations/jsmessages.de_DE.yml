@@ -52,6 +52,11 @@ pim_enrich.entity.product:
       select: Auswählen
       all_visible: Alle sichtbaren
       copy: Kopie
+    convert_variant_to_simple:
+      label: In ein einfaches Produkt konvertieren
+      dialog:
+        title: Konvertierung bestätigen
+        content: "Sind Sie sicher, dass Sie diese Variante in ein einfaches Produkt umwandeln möchten? Alle alten Werte, Kategorien und Verknüpfungen werden gespeichert."
     history:
       version: Version
       author: Autor
@@ -165,7 +170,7 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'Variantenachse'
       create: Hinzufügen
-      create_label: "{{ axes }} hinzufügen"
+      title_create_label: "]-Inf, 1]Neuen {{ axes }} hinzufügen|]1, Inf[Neues {{ axes }} hinzufügen"
       required_label: '(variantenachse(n))'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} Produktvariante|]1, Inf[{{ complete }} / {{ total }} Produktvariante"
@@ -340,6 +345,10 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Füge <span class=\"AknFullPage-title--highlight\">Produkte</span> zu einem existierenden Produktmodell hinzu|{1}Füge <span class=\"AknFullPage-title--highlight\">1 Produkt</span> zu einem existierenden Produktmodell hinzu|]1, Inf[Füge <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zu einem bestehenden Produktmodell hinzu"
       description: Das ausgewählte Produktmodell wird die Produkte zusammenfassen und ermöglicht so das Anreichern der gemeinsamen Eigenschaften.
       no_update: Bitte wählen Sie ein Produktmodell, bevor Sie fortfahren
+    convert_to_simple_products:
+      label: In einfache Produkte umwandeln
+      label_count: "{0}Konvertieren <span class=\"AknFullPage-title--highlight\">Produkte</span> in einfache Produkte|{1}Konvertieren Sie <span class=\"AknFullPage-title--highlight\">1 Produkt</span> in ein einfaches Produkt|]1, Inf[Konvertieren <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> in einfache Produkte"
+      description: Alle früheren Werte, Kategorien und Verbindungen werden gespeichert.
     associate_to_product_and_product_model:
       label: Verbinden
       label_count: "{0}verknüpfen <span class=\"AknFullPage-title--highlight\">Produkte</span> mit Produkten oder Produktmodellen|{1} <span class=\"AknFullPage-title--highlight\">1 Produkt</span> mit Produkten oder Produktmodellen verknüpfen|]1, Inf[Verbinde <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> mit Produkten oder Produktmodellen"
@@ -375,8 +384,10 @@ pim_datagrid:
         all_attributes: Alle Attribute
         with_codes: Mit Codes
         with_labels: Mit Labels
-      success_message: "Du kannst {{ job_link }} folgen."
-      job_link_label: der Fortschritt der Ausführung hier
+        without_media: Ohne Medien
+        with_media: Mit Medien
+      flash:
+        message: "Sie können den Fortschritt Ihres Exports hier verfolgen."
     mass_edit: Massenbearbeitung
     sequential_edit: Sequentielle Bearbeitung
     mass_delete: Mehrauswahl löschen
@@ -444,6 +455,9 @@ batch_jobs:
   add_to_existing_product_model:
     label: Zu einem bestehenden Produktmodell hinzufügen
     perform.label: Zu einem bestehenden Produktmodell hinzufügen
+  convert_to_simple_products:
+    label: In einfache Produkte umwandeln
+    perform.label: In einfache Produkte umwandeln
   csv_product_grid_context_quick_export:
     quick_export.label: CSV Produkt-Schnellexport kontextabhängig
     quick_export_product_model.label: CSV Produktmodell Rasterkontext Schnell-Export

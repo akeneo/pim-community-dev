@@ -334,10 +334,8 @@ config:
           module: pim/controller/redirect
           aclResourceId: pim_importexport_export_profile_remove
         pim_enrich_locale_index:
-          module: pim/controller/common/index
+          module: pim/controller/locales/index
           aclResourceId: pim_enrich_locale_index
-          config:
-            entity: locale
         pim_enrich_attribute_index:
           module: pim/controller/common/index
           aclResourceId: pim_enrich_attribute_index
@@ -485,7 +483,6 @@ config:
     pim/form/system/config/tab/loading-message: pimui/js/form/system/tab/loading-message
 
     # Templates
-    pim/template/flash-message:              pimui/js/templates/flash-message.html
     pim/template/system/tab/loading-message: pimui/js/templates/system/tab/loading-message.html
 
     # Navigation
@@ -531,6 +528,7 @@ config:
     pim/controller/attribute/create:       pimui/js/controller/attribute/create
     pim/controller/mass-edit:              pimui/js/controller/mass-edit
     pim/controller/logout:                 pimui/js/controller/logout
+    pim/controller/locales/index:          akeneopimstructure/js/controller/LocalesSettings
 
     jstree/jquery.jstree.tree_selector: pimui/js/jstree/jquery.jstree.tree_selector
     jstree/nested_switch:               pimui/js/jstree/jquery.jstree.nested_switch
@@ -685,6 +683,7 @@ config:
     pim/product-edit-form/categories:                        pimui/js/product/form/categories
     pim/product-edit-form/associations:                      pimui/js/product/form/associations
     pim/product-edit-form/associated-product-row:            pimui/js/product/form/associated-product-row
+    pim/product-edit-form/associated-product-row-view:       pimui/js/product/form/associated-product-row-view
     pim/product-edit-form/locale-switcher:                   pimui/js/product/form/locale-switcher
     pim/product-edit-form/scope-switcher:                    pimui/js/product/form/scope-switcher
     pim/product-edit-form/completeness:                      pimui/js/product/form/completeness
@@ -704,6 +703,7 @@ config:
     pim/product-edit-form/attributes:                        pimui/js/product/form/attributes
     pim/product-edit-form/creation/identifier:               pimui/js/product/form/creation/identifier
     pim/product-edit-form/start-copy:                        pimui/js/product/form/start-copy
+    pim/product-edit-form/convert-to-simple-product:         pimui/js/product/form/convert-to-simple-product.ts
     pim/product-edit-form/variant-navigation:                pimui/js/product/form/variant-navigation
     pim/product-edit-form/attributes/variant-axes:           pimui/js/product/form/attributes/variant-axes
     pim/product-edit-form/product-and-product-model-picker:  pimui/js/product/form/product-and-product-model-picker
@@ -724,6 +724,7 @@ config:
     oro/datagrid/navigate-product-and-product-model-action: pimui/js/datagrid/action/navigate-product-and-product-model-action
     oro/datagrid/edit-in-modal-action:                      pimui/js/datagrid/action/edit-in-modal-action
     oro/datagrid/delete-product-action:                     pimui/js/datagrid/action/delete-product-action
+    oro/datagrid/delete-attribute-action:                   pimui/js/datagrid/action/delete-attribute-action
     oro/datagrid/toggle-product-action:                     pimui/js/datagrid/action/toggle-product-action
     oro/datagrid/react-cell:                                pimui/js/datagrid/reactCell
 
@@ -760,16 +761,7 @@ config:
     pim/job/common/edit/upload:                                  pimui/js/job/common/edit/upload
     pim/job/common/edit/upload-launch:                           pimui/js/job/common/edit/upload-launch
     pim/job/common/file-path:                                    pimui/js/job/common/file-path
-    pim/job/common/label:                                        pimui/js/job/common/label
     pim/job/common/grid:                                         pimui/js/job/common/grid
-    pim/job/execution/summary-table:                             pimui/js/job/execution/summary-table
-    pim/job/execution/auto-refresh:                              pimui/js/job/execution/auto-refresh
-    pim/job/execution/show-profile:                              pimui/js/job/execution/show-profile
-    pim/job/execution/stop-job:                                  pimui/js/job/execution/stop-job
-    pim/job/execution/download-archives-buttons:                 pimui/js/job/execution/download-archives-buttons
-    pim/job/execution/download-log:                              pimui/js/job/execution/download-log
-    pim/job/execution/progress:                                  pimui/js/job/execution/progress
-    pim/job/execution/status:                                    pimui/js/job/execution/status
     pim/job/product/edit/content:                                pimui/js/job/product/edit/content
 
     # Filters
@@ -801,6 +793,7 @@ config:
     pim/mass-edit-form/product/edit-common-attributes:                   pimui/js/mass-edit/form/product/edit-common-attributes
     pim/mass-edit-form/product/add-attribute-values:                     pimui/js/mass-edit/form/product/edit-common-attributes
     pim/mass-edit-form/product/update-entity-with-family-variant-parent: pimui/js/mass-edit/form/product/update-entity-with-family-variant-parent
+    pim/mass-edit-form/product/convert-to-simple-product:                pimui/js/mass-edit/form/product/convert-to-simple-product.ts
     pim/mass-edit-form/product/change-family:                            pimui/js/mass-edit/form/product/change-family
     pim/mass-edit-form/product/add-to-group:                             pimui/js/mass-edit/form/product/add-to-group
     pim/mass-edit-form/product/category:                                 pimui/js/mass-edit/form/product/category
@@ -840,6 +833,7 @@ config:
     pim/attribute-edit-form/save-form:                      pimui/js/attribute/form/save
     pim/attribute-edit-form/delete:                         pimui/js/attribute/form/delete
     pim/attribute-edit-form/properties/available-locales:   pimui/js/attribute/form/properties/available-locales
+    pim/attribute-edit-form/properties/default-bool-value:  pimui/js/attribute/form/properties/default-bool-value.ts
     pim/attribute-edit-form/properties/default-metric-unit: pimui/js/attribute/form/properties/default-metric-unit
     pim/attribute-edit-form/properties/group:               pimui/js/attribute/form/properties/group
     pim/attribute-edit-form/properties/is-locale-specific:  pimui/js/attribute/form/properties/is-locale-specific
@@ -948,7 +942,7 @@ config:
 
     # PEF fields
     pim/field:                  pimui/js/product/field/field
-    pim/boolean-field:          pimui/js/product/field/boolean-field
+    pim/boolean-field:          pimui/js/product/field/boolean-field.tsx
     pim/date-field:             pimui/js/product/field/date-field
     pim/media-field:            pimui/js/product/field/media-field
     pim/metric-field:           pimui/js/product/field/metric-field
@@ -1120,7 +1114,6 @@ config:
     pim/template/product/meta/updated:                   pimui/templates/product/meta/updated.html
     pim/template/product/scope-switcher:                 pimui/templates/product/scope-switcher.html
     pim/template/product/field/field:                    pimui/templates/product/field/field.html
-    pim/template/product/field/boolean:                  pimui/templates/product/field/boolean.html
     pim/template/product/field/date:                     pimui/templates/product/field/date.html
     pim/template/product/field/media:                    pimui/templates/product/field/media.html
     pim/template/product/field/metric:                   pimui/templates/product/field/metric.html
@@ -1171,8 +1164,6 @@ config:
     pim/template/menu/logo:                              pimui/templates/menu/logo.html
 
     pim/template/app:                                    pimui/templates/app.html
-    pim/template/common/flash:                           pimui/templates/common/flash.html
-    pim/template/common/breadcrumbs:                     pimui/templates/common/breadcrumbs.html
 
     pim/template/group/tab/properties/general:           pimui/templates/group/tab/properties/general.html
     pim/template/group/meta/product-count:               pimui/templates/group/meta/product-count.html
@@ -1232,11 +1223,6 @@ config:
     pim/template/grid/view-selector/remove-view: pimui/templates/grid/view-selector-remove-view.html
     pim/template/grid/view-selector/current: pimui/templates/grid/view-selector-current.html
     pim/template/grid/view-selector: pimui/templates/grid/view-selector.html
-
-    # Job execution
-    pim/template/job-execution/summary-table:             pimui/templates/job-execution/summary-table.html
-    pim/template/job-execution/auto-refresh:              pimui/templates/job-execution/auto-refresh.html
-    pim/template/job-execution/download-archives-buttons: pimui/templates/job-execution/download-archives-buttons.html
 
     # Attribute
     pim/template/attribute/tab/properties/group:        pimui/templates/attribute/tab/properties/group.html

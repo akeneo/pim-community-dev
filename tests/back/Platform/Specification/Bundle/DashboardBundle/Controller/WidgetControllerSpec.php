@@ -6,13 +6,13 @@ use Akeneo\Platform\Bundle\DashboardBundle\Controller\WidgetController;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\DashboardBundle\Widget\Registry;
 use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 class WidgetControllerSpec extends ObjectBehavior
 {
-    function let(Registry $registry, EngineInterface $templating)
+    function let(Registry $registry, Environment $templating)
     {
         $this->beConstructedWith($registry, $templating);
     }

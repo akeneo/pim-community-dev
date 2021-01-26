@@ -5,13 +5,16 @@ import * as Components from './components';
 <!-- If for some reason (not relevant, too small) you do not want your component
 to be featured on the Introduction Story, add its name to this list -->
 
-export const COMPONENTS_EXCLUDE = ['CardGrid', 'HighlightTitle', 'SectionTitle', 'Title'];
+export const COMPONENTS_EXCLUDE = ['CardGrid', 'HighlightTitle', 'SectionTitle', 'Title', 'AnimateMessageBar'];
 
 export const getComponentLink = componentName => {
   switch (componentName) {
     case 'Button':
     case 'IconButton':
       return `Components/Buttons/${componentName}`;
+    case 'BooleanInput':
+    case 'TextInput':
+      return `Components/Inputs/${componentName}`;
     default:
       return `Components/${componentName}`;
   }

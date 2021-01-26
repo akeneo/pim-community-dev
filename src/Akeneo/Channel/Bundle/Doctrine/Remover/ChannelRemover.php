@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * ChannelRemover used as service to remove given channel
@@ -20,28 +20,12 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class ChannelRemover implements RemoverInterface
 {
-    /** @var ObjectManager */
-    protected $objectManager;
+    protected ObjectManager $objectManager;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected ChannelRepositoryInterface $channelRepository;
+    protected TranslatorInterface $translator;
+    protected string $entityClass;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var string */
-    protected $entityClass;
-
-    /**
-     * @param ObjectManager               $objectManager
-     * @param EventDispatcherInterface    $eventDispatcher
-     * @param ChannelRepositoryInterface  $channelRepository
-     * @param TranslatorInterface         $translator
-     * @param string                      $entityClass
-     */
     public function __construct(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,

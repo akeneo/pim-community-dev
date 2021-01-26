@@ -40,9 +40,6 @@ class TaskletStep extends AbstractStep implements TrackableStepInterface
     protected function doExecute(StepExecution $stepExecution)
     {
         $this->tasklet->setStepExecution($stepExecution);
-        if ($this->isTrackable()) {
-            $stepExecution->setTotalItems($this->tasklet->totalItems());
-        }
         $this->tasklet->execute();
     }
 
@@ -64,6 +61,6 @@ class TaskletStep extends AbstractStep implements TrackableStepInterface
 
     public function isTrackable(): bool
     {
-        return $this->tasklet instanceof TrackableTaskletInterface;
+        return $this->tasklet instanceof TrackableTaskletInterface && $this->tasklet->isTrackable();
     }
 }

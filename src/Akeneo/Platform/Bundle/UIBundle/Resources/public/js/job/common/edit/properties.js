@@ -10,36 +10,35 @@ define([
   'underscore',
   'oro/translator',
   'pim/template/export/common/edit/properties',
-  'pim/form',
+  'pim/common/tab',
   'pim/common/property',
-], function (_, __, template, BaseForm, propertyAccessor) {
-  return BaseForm.extend({
+  'pim/edition',
+], function (_, __, template, BaseTab, propertyAccessor, pimEdition) {
+  return BaseTab.extend({
     template: _.template(template),
     errors: {},
-
-    /**
-     * {@inheritdoc}
-     */
-    initialize: function (config) {
-      this.config = config.config;
-
-      BaseForm.prototype.initialize.apply(this, arguments);
-    },
 
     /**
      * {@inherit}
      */
     configure: function () {
-      this.trigger('tab:register', {
-        code: this.config.tabCode ? this.config.tabCode : this.code,
-        label: __(this.config.tabTitle),
-      });
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.resetValidationErrors.bind(this));
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render.bind(this));
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.setValidationErrors.bind(this));
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render.bind(this));
 
-      return BaseForm.prototype.configure.apply(this, arguments);
+      return BaseTab.prototype.configure.apply(this, arguments);
+    },
+
+    /**
+     * {@inherit}
+     */
+    registerTab: function () {
+      this.trigger('tab:register', {
+        code: this.config.tabCode ? this.config.tabCode : this.code,
+        label: __(this.config.tabTitle),
+        isVisible: () => !(this.config.hideForCloudEdition && pimEdition.isCloudEdition()),
+      });
     },
 
     /**
@@ -55,7 +54,13 @@ define([
      * Remove validation error
      */
     resetValidationErrors: function () {
-      this.errors = {};
+      if (Object.entries(this.errors).length >= 0) {
+        this.getRoot().trigger(
+          'pim_enrich:form:form-tabs:remove-error',
+          this.config.tabCode ? this.config.tabCode : this.code
+        );
+        this.errors = {};
+      }
     },
 
     /**

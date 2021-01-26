@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\GroupType;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Prophecy\Argument;
@@ -69,20 +69,22 @@ class GroupSaverSpec extends ObjectBehavior
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), StorageEvents::PRE_SAVE)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), StorageEvents::POST_SAVE)->shouldBeCalled();
         $this->save($group);
     }
 
-    function it_saves_a_group_and_added_products(
+    function it_saves_a_new_group_with_products(
         $optionsResolver,
         $objectManager,
         $productSaver,
         $eventDispatcher,
         GroupInterface $group,
-        GroupType $type,
-        ProductInterface $addedProduct
+        GroupType $type
     ) {
+        $addedProduct = new Product();
+        $addedProduct->setId(42);
+
         $optionsResolver->resolveSaveOptions(['add_products' => [$addedProduct]])->willReturn(
             [
                 'flush'                   => true,
@@ -100,13 +102,13 @@ class GroupSaverSpec extends ObjectBehavior
 
         $productSaver->saveAll([$addedProduct])->shouldBeCalled();
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), StorageEvents::PRE_SAVE)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), StorageEvents::POST_SAVE)->shouldBeCalled();
 
         $this->save($group, ['add_products' => [$addedProduct]]);
     }
 
-    function it_saves_a_group_and_removed_products(
+    function it_saves_an_updated_group_with_removed_and_added_products(
         $optionsResolver,
         $objectManager,
         $productSaver,
@@ -114,9 +116,12 @@ class GroupSaverSpec extends ObjectBehavior
         $pqbFactory,
         GroupInterface $group,
         GroupType $type,
-        ProductInterface $removedProduct,
         ProductQueryBuilderInterface $pqb
     ) {
+        $productAlreadyInGroup = (new Product())->setId(42);
+        $addedProduct = (new Product())->setId(123);
+        $removedProduct = (new Product())->setId(456);
+
         $optionsResolver->resolveSaveOptions(['remove_products' => [$removedProduct]])->willReturn(
             [
                 'flush'                   => true,
@@ -126,9 +131,9 @@ class GroupSaverSpec extends ObjectBehavior
 
         $pqbFactory->create()->willReturn($pqb);
         $pqb->addFilter('groups', 'IN', ['foo'])->shouldBeCalled();
-        $pqb->execute()->willReturn([$removedProduct]);
+        $pqb->execute()->willReturn([$removedProduct, $productAlreadyInGroup]);
 
-        $group->getProducts()->willReturn(new ArrayCollection([]));
+        $group->getProducts()->willReturn(new ArrayCollection([$productAlreadyInGroup, $addedProduct]));
         $group->getType()->willReturn($type);
         $group->getCode()->willReturn('my_code');
         $group->getId()->willReturn(42);
@@ -137,10 +142,10 @@ class GroupSaverSpec extends ObjectBehavior
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
-        $productSaver->saveAll([$removedProduct])->shouldBeCalled();
+        $productSaver->saveAll([$addedProduct, $removedProduct])->shouldBeCalled();
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), StorageEvents::PRE_SAVE)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), StorageEvents::POST_SAVE)->shouldBeCalled();
 
         $this->save($group, ['remove_products' => [$removedProduct]]);
     }

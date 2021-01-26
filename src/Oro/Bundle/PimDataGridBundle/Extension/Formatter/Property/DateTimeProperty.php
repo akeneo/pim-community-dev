@@ -5,7 +5,7 @@ namespace Oro\Bundle\PimDataGridBundle\Extension\Formatter\Property;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Able to render datetime value
@@ -16,13 +16,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class DateTimeProperty extends FieldProperty
 {
-    /** @var PresenterInterface */
-    protected $presenter;
+    protected PresenterInterface $presenter;
 
-    /**
-     * @param TranslatorInterface $translator
-     * @param PresenterInterface  $presenter
-     */
     public function __construct(TranslatorInterface $translator, PresenterInterface $presenter)
     {
         parent::__construct($translator);

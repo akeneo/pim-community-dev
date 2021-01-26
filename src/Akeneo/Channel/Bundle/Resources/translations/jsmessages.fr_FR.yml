@@ -65,7 +65,14 @@ pim_enrich.entity.locale:
   uppercase_label: Locale
   plural_label: Locales
   page_title:
-    index: "]-Inf, 1]{{ count }} locale|]1, Inf[{{ count }} locales"
+    index: "]-Inf, 1]{{ count }} locale activée|]1, Inf[{{ count }} locales activées"
+  helper: "Pour activer ou désactiver une locale, rendez-vous sur l'un de vos <a href={{ href }}>canaux</a> et ajoutez ou supprimez celle-ci."
+  grid:
+    columns:
+      code: Locales activées
+    filters:
+      search_placeholder: Rechercher une locale activée
+    no_search_result: Désolé, il n’y a aucun résultat pour votre recherche.
 pim_enrich.entity.currency:
   plural_label: Devises
   page_title:

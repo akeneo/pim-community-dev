@@ -1,5 +1,12 @@
+import {useState} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor} from '../theme';
+
+const useSelection = () => {
+  const [checked, setChecked] = useState(false);
+
+  return {checked, onChange: () => setChecked(!checked)};
+};
 
 const StoryStyle = styled.div`
   ${CommonStyle}
@@ -60,4 +67,33 @@ const Content = styled.div<{width: number; height: number} & AkeneoThemedProps>`
   margin-top: 30px;
 `;
 
-export {StoryStyle, PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, Subtitle, Content};
+const MessageBarContainer = styled.div`
+  padding: 5px;
+  width: 600px;
+  height: 110px;
+  overflow: clip;
+`;
+
+const Scrollable = styled.div<{height: number}>`
+  overflow: auto;
+  height: ${({height}) => height}px;
+`;
+
+const SpaceContainer = styled.div<{width: number; height: number}>`
+  width: ${({width}) => `${width}px`};
+  height: ${({height}) => `${height}px`};
+`;
+
+export {
+  StoryStyle,
+  PreviewGrid,
+  PreviewCard,
+  PreviewContainer,
+  LabelContainer,
+  Subtitle,
+  Content,
+  MessageBarContainer,
+  Scrollable,
+  SpaceContainer,
+  useSelection,
+};

@@ -29,11 +29,7 @@ const isAxisGradingInProgress = (criteria: CriterionEvaluationResult[]) => {
   );
 };
 
-const AxisEvaluation: FC<AxisEvaluationProps> = ({
-  children,
-  evaluation = evaluationPlaceholder,
-  axis,
-}) => {
+const AxisEvaluation: FC<AxisEvaluationProps> = ({children, evaluation = evaluationPlaceholder, axis}) => {
   const criteria = evaluation.criteria || [];
   const axisHasError: boolean = isAxisInError(criteria);
   const axisGradingInProgress: boolean = isAxisGradingInProgress(criteria);

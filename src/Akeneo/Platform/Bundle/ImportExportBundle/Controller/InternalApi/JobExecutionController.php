@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @author    Alban Alnot <alban.alnot@consertotech.pro>
@@ -18,20 +18,11 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class JobExecutionController
 {
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var JobExecutionArchivist */
-    protected $archivist;
-
-    /** @var JobExecutionManager */
-    protected $jobExecutionManager;
-
-    /** @var JobExecutionRepository */
-    protected $jobExecutionRepo;
-
-    /** @var NormalizerInterface */
-    private $normalizer;
+    protected TranslatorInterface $translator;
+    protected JobExecutionArchivist $archivist;
+    protected JobExecutionManager $jobExecutionManager;
+    protected JobExecutionRepository $jobExecutionRepo;
+    private NormalizerInterface $normalizer;
 
     public function __construct(
         TranslatorInterface $translator,

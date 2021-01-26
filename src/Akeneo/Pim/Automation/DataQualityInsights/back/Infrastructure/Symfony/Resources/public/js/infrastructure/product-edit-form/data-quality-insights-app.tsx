@@ -95,12 +95,9 @@ class DataQualityInsightsApp extends BaseView {
       }
     );
 
-    window.addEventListener(
-      DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB,
-      () => {
-        this.redirectToDQITab();
-      }
-    );
+    window.addEventListener(DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB, () => {
+      this.redirectToDQITab();
+    });
 
     this.listenTo(this.getRoot(), 'column-tab:select-tab', ({target}: TabEvent) => {
       window.dispatchEvent(
@@ -159,7 +156,9 @@ class DataQualityInsightsApp extends BaseView {
   public redirectToDQITab() {
     const productData = this.getFormData();
     const tab =
-      productData.meta.model_type === 'product_model' ? PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME : PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME;
+      productData.meta.model_type === 'product_model'
+        ? PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME
+        : PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME;
 
     this.redirectToTab(tab);
   }

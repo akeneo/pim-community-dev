@@ -1,12 +1,17 @@
 <?php
+declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater;
 
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater\TwoWayAssociationUpdater;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
@@ -25,148 +30,157 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         $this->beConstructedWith($registry, $missingAssociationAdder);
     }
 
-    function it_create_missing_association_on_reverse_association_when_missing(
-        MissingAssociationAdder $missingAssociationAdder,
-        ProductInterface $product,
-        AssociationInterface $association,
-        AssociationInterface $inversedAssociation,
-        AssociationTypeInterface $associationType,
-        ProductInterface $associationOwner,
-        EntityManager $entityManager
-    ) {
-        $association->getAssociationType()->willReturn($associationType);
-        $association->getOwner()->willReturn($associationOwner);
-
-        $product->getAssociationForType($associationType)->willReturn(null, $inversedAssociation);
-        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
-        $inversedAssociation->getProducts()->willReturn(new ArrayCollection([]));
-
-        $inversedAssociation->addProduct($associationOwner)->shouldBeCalled();
-        $entityManager->persist($inversedAssociation);
-
-        $this->createInversedAssociation($association, $product);
+    public function it_is_a_two_way_association_updater(): void
+    {
+        $this->shouldHaveType(TwoWayAssociationUpdater::class);
+        $this->shouldImplement(TwoWayAssociationUpdaterInterface::class);
     }
 
+    public function it_adds_missing_association_and_associates_the_product(
+        $missingAssociationAdder,
+        ProductInterface $associatedProduct
+    ): void {
+        $owner = new Product();
 
-    function it_add_product_model_on_inversed_association_when_owner_is_product_model(
-        ProductInterface $product,
-        AssociationInterface $association,
-        AssociationInterface $inversedAssociation,
-        AssociationTypeInterface $associationType,
-        ProductModelInterface $associationOwner,
-        EntityManager $entityManager
-    ) {
-        $association->getAssociationType()->willReturn($associationType);
-        $association->getOwner()->willReturn($associationOwner);
+        $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(false);
+        $associatedProduct->getAssociatedProducts('xsell')->willReturn(new ArrayCollection());
 
-        $product->getAssociationForType($associationType)->willReturn($inversedAssociation);
-        $inversedAssociation->getProductModels()->willReturn(new ArrayCollection([]));
+        $missingAssociationAdder->addMissingAssociations($associatedProduct)->shouldBeCalled();
+        $associatedProduct->addAssociatedProduct($owner, 'xsell')->shouldBeCalled();
 
-        $inversedAssociation->addProductModel($associationOwner)->shouldBeCalled();
-        $entityManager->persist($inversedAssociation);
-
-        $this->createInversedAssociation($association, $product);
+        $this->createInversedAssociation($owner, 'xsell', $associatedProduct);
     }
 
-    function it_replace_product_from_association_when_association_already_contain_another_instance_of_the_product(
-        ProductInterface $product,
-        AssociationInterface $association,
-        AssociationInterface $inversedAssociation,
-        AssociationTypeInterface $associationType,
-        ProductInterface $associationOwner,
-        ProductInterface $associationOwnerClone,
-        EntityManager $entityManager
-    ) {
-        $associationOwner->getIdentifier()->willreturn('58');
-        $associationOwnerClone->getIdentifier()->willreturn('58');
+    public function it_associates_a_product(
+        $missingAssociationAdder,
+        ProductInterface $associatedProduct
+    ): void {
+        $owner = new Product();
+        $owner->setIdentifier('owner');
+        $clonedOwner = new Product();
+        $clonedOwner->setIdentifier('owner');
 
-        $association->getAssociationType()->willReturn($associationType);
-        $association->getOwner()->willReturn($associationOwnerClone);
+        $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(true);
+        $associatedProduct->getAssociatedProducts('xsell')->willReturn(new ArrayCollection([$clonedOwner]));
 
-        $product->getAssociationForType($associationType)->willReturn($inversedAssociation);
-        $inversedAssociation->getProducts()->willReturn(new ArrayCollection([$associationOwner->getWrappedObject()]));
+        $associatedProduct->removeAssociatedProduct($clonedOwner, 'xsell')->shouldBeCalled();
+        $associatedProduct->addAssociatedProduct($owner, 'xsell')->shouldBeCalled();
 
-        $inversedAssociation->removeProduct($associationOwner)->shouldBeCalled();
-        $inversedAssociation->addProduct($associationOwnerClone)->shouldBeCalled();
-        $entityManager->persist($inversedAssociation);
-
-        $this->createInversedAssociation($association, $product);
+        $this->createInversedAssociation($owner, 'xsell', $associatedProduct);
     }
 
-    function it_replace_product_model_from_association_when_association_already_contain_another_instance_of_the_product_model(
-        ProductInterface $product,
-        AssociationInterface $association,
-        AssociationInterface $inversedAssociation,
-        AssociationTypeInterface $associationType,
-        ProductModelInterface $associationOwner,
-        ProductModelInterface $associationOwnerClone,
-        EntityManager $entityManager
-    ) {
-        $associationOwner->getCode()->willreturn('58');
-        $associationOwnerClone->getCode()->willreturn('58');
+    public function it_adds_missing_association_and_associates_the_product_model(
+        $missingAssociationAdder,
+        ProductInterface $associatedProduct
+    ): void {
+        $owner = new ProductModel();
 
-        $association->getAssociationType()->willReturn($associationType);
-        $association->getOwner()->willReturn($associationOwnerClone);
+        $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(false);
+        $associatedProduct->getAssociatedProductModels('xsell')->willReturn(new ArrayCollection());
 
-        $product->getAssociationForType($associationType)->willReturn($inversedAssociation);
-        $inversedAssociation->getProductModels()->willReturn(new ArrayCollection([$associationOwner->getWrappedObject()]));
+        $missingAssociationAdder->addMissingAssociations($associatedProduct)->shouldBeCalled();
+        $associatedProduct->addAssociatedProductModel($owner, 'xsell')->shouldBeCalled();
 
-        $inversedAssociation->removeProductModel($associationOwner)->shouldBeCalled();
-        $inversedAssociation->addProductModel($associationOwnerClone)->shouldBeCalled();
-        $entityManager->persist($inversedAssociation);
-
-        $this->createInversedAssociation($association, $product);
+        $this->createInversedAssociation($owner, 'xsell', $associatedProduct);
     }
 
-    function it_does_nothing_when_inversed_association_does_not_exist(
-        AssociationInterface $association,
-        AssociationTypeInterface $associationType,
-        ProductInterface $associationOwner,
-        ProductInterface $product,
-        EntityManager $entityManager
-    ) {
-        $association->getAssociationType()->willReturn($associationType);
-        $association->getOwner()->willReturn($associationOwner);
+    public function it_associates_a_product_model(
+        $missingAssociationAdder,
+        ProductInterface $associatedProduct
+    ): void {
+        $owner = new ProductModel();
+        $owner->setCode('owner');
+        $clonedOwner = new ProductModel();
+        $clonedOwner->setCode('owner');
 
-        $product->getAssociationForType($associationType)->willReturn(null);
-        $entityManager->persist()->shouldNotBeCalled();
+        $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(true);
+        $associatedProduct->getAssociatedProductModels('xsell')->willReturn(new ArrayCollection([$clonedOwner]));
 
-        $this->removeInversedAssociation($association, $product);
+        $associatedProduct->removeAssociatedProductModel($clonedOwner, 'xsell')->shouldBeCalled();
+        $associatedProduct->addAssociatedProductModel($owner, 'xsell')->shouldBeCalled();
+
+        $this->createInversedAssociation($owner, 'xsell', $associatedProduct);
     }
 
-    function it_remove_inversed_association_when_association_with_product_exist(
-        AssociationInterface $association,
-        AssociationInterface $inversedAssociation,
-        AssociationTypeInterface $associationType,
-        ProductInterface $associationOwner,
-        ProductInterface $product,
-        EntityManager $entityManager
-    ) {
-        $association->getAssociationType()->willReturn($associationType);
-        $association->getOwner()->willReturn($associationOwner);
-        $product->getAssociationForType($associationType)->willReturn($inversedAssociation);
+    public function it_associates_only_product_or_product_model(
+        $missingAssociationAdder,
+        ProductInterface $associatedProduct,
+        EntityWithAssociationsInterface $owner
+    ): void {
+        $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(true);
+        $associatedProduct->addAssociatedProduct(Argument::cetera())->shouldNotBeCalled();
+        $associatedProduct->addAssociatedProductModel(Argument::cetera())->shouldNotBeCalled();
 
-        $inversedAssociation->removeProduct($associationOwner)->shouldBeCalled();
-        $entityManager->persist($inversedAssociation)->shouldBeCalled();
-
-        $this->removeInversedAssociation($association, $product);
+        $this
+            ->shouldThrow('\LogicException')
+            ->during('createInversedAssociation', [$owner, 'xsell', $associatedProduct]);
     }
 
-    function it_remove_inversed_association_when_association_with_product_model_exist(
-        AssociationInterface $association,
-        AssociationInterface $inversedAssociation,
-        AssociationTypeInterface $associationType,
-        ProductModelInterface $associationOwner,
-        ProductInterface $product,
-        EntityManager $entityManager
-    ) {
-        $association->getAssociationType()->willReturn($associationType);
-        $association->getOwner()->willReturn($associationOwner);
-        $product->getAssociationForType($associationType)->willReturn($inversedAssociation);
+    public function it_removes_the_product_from_the_inversed_association(
+        $entityManager,
+        ProductInterface $associatedProduct
+    ): void {
+        $owner = new Product();
 
-        $inversedAssociation->removeProductModel($associationOwner)->shouldBeCalled();
-        $entityManager->persist($inversedAssociation)->shouldBeCalled();
+        $associatedProduct->removeAssociatedProduct($owner, 'xsell')->shouldBeCalled();
+        $entityManager->persist($associatedProduct)->shouldBeCalled();
 
-        $this->removeInversedAssociation($association, $product);
+        $this->removeInversedAssociation($owner, 'xsell', $associatedProduct);
+    }
+
+    public function it_removes_a_product(
+        $missingAssociationAdder,
+        $entityManager,
+        ProductInterface $associatedProduct
+    ): void {
+        $owner = new Product();
+
+        $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(true);
+        $associatedProduct->removeAssociatedProduct($owner, 'xsell')->shouldBeCalled();
+        $entityManager->persist($associatedProduct)->shouldBeCalled();
+
+        $this->removeInversedAssociation($owner, 'xsell', $associatedProduct);
+    }
+
+    public function it_removes_the_product_model_from_the_inversed_association(
+        $entityManager,
+        ProductInterface $associatedProduct
+    ): void {
+        $owner = new ProductModel();
+
+        $associatedProduct->removeAssociatedProductModel($owner, 'xsell')->shouldBeCalled();
+        $entityManager->persist($associatedProduct)->shouldBeCalled();
+
+        $this->removeInversedAssociation($owner, 'xsell', $associatedProduct);
+    }
+
+    public function it_removes_a_product_model(
+        $missingAssociationAdder,
+        $entityManager,
+        ProductInterface $associatedProduct
+    ): void {
+        $owner = new ProductModel();
+
+        $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(true);
+        $associatedProduct->removeAssociatedProductModel($owner, 'xsell')->shouldBeCalled();
+        $entityManager->persist($associatedProduct)->shouldBeCalled();
+
+        $this->removeInversedAssociation($owner, 'xsell', $associatedProduct);
+    }
+
+    public function it_removes_only_product_or_product_model(
+        $missingAssociationAdder,
+        $entityManager,
+        ProductInterface $associatedProduct,
+        EntityWithAssociationsInterface $owner
+    ): void {
+        $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(true);
+        $associatedProduct->removeAssociatedProduct(Argument::cetera())->shouldNotBeCalled();
+        $associatedProduct->removeAssociatedProductModel(Argument::cetera())->shouldNotBeCalled();
+        $entityManager->persist($associatedProduct)->shouldNotBeCalled();
+
+        $this
+            ->shouldThrow('\LogicException')
+            ->during('removeInversedAssociation', [$owner, 'xsell', $associatedProduct]);
     }
 }

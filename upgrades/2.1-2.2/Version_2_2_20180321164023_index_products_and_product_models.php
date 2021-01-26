@@ -22,7 +22,7 @@ class Version_2_2_20180321164023_index_products_and_product_models extends Abstr
 
     public function postUp(Schema $schema)
     {
-        $kernel = new \AppKernel(getenv('SYMFONY_ENV') ?: 'prod', (bool) getenv('SYMFONY_DEBUG'));
+        $kernel = new \AppKernel($_ENV['SYMFONY_ENV'] ?? 'prod', (bool) ($_ENV['SYMFONY_DEBUG'] ?? false));
         $application = new Application($kernel);
         $application->setAutoExit(false);
         $application->run(new ArrayInput([

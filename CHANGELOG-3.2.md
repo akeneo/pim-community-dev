@@ -1,5 +1,33 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-9614: Fix missing overlay when the announcements panel is open
+
+## Improvement:
+
+- PIM-9483: Users with the ACL "View the associations of a product" can view associations of products, even if they are not owner
+
+# 3.2.79 (2020-12-17)
+
+## Improvement
+
+- PIM-9599: Fix @babel/types dependency to ^7.11.5
+
+# 3.2.78 (2020-12-02)
+
+## Bug fixes
+
+- RAC-384: Fix fatal error when an attribute is removed then re-created with the same code but another type.
+
+# 3.2.77 (2020-11-30)
+
+## Bug fixes
+
+- [Backport] Fix fatal error on display product model associations when they have more than 25 products associated
+- PIM-9578: Revert change on millibar conversion operation
+- PIM-9580: Fix conversion operation for ATM, PSI, TORR & MMHG
+
 # 3.2.76 (2020-10-22)
 
 ## Features:

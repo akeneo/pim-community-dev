@@ -12,7 +12,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\FormatterExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FormatterExtensionSpec extends ObjectBehavior
 {
@@ -104,6 +104,7 @@ class FormatterExtensionSpec extends ObjectBehavior
 
         $result->offsetSet('totalRecords', 10)->shouldBeCalled();
         $result->offsetSet('extra_key', 'extra key value')->shouldBeCalled();
+        $result->offsetSet('meta', [])->shouldBeCalled();
 
         $config->offsetGetOr(Configuration::COLUMNS_KEY, [])->willReturn([
             1234 => ['type' => 'property1']

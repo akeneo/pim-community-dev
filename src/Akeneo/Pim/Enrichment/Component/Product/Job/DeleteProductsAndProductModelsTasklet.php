@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CountProductModel
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -38,6 +39,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
     private CountProductModelsAndChildrenProductModelsInterface $countProductModelsAndChildrenProductModels;
     private CountVariantProductsInterface $countVariantProducts;
     private JobStopper $jobStopper;
+    private JobRepositoryInterface $jobRepository;
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -48,7 +50,8 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
         int $batchSize,
         CountProductModelsAndChildrenProductModelsInterface $countProductModelsAndChildrenProductModels,
         CountVariantProductsInterface $countVariantProducts,
-        JobStopper $jobStopper
+        JobStopper $jobStopper,
+        JobRepositoryInterface $jobRepository
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->productRemover = $productRemover;
@@ -59,6 +62,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
         $this->countProductModelsAndChildrenProductModels = $countProductModelsAndChildrenProductModels;
         $this->countVariantProducts = $countVariantProducts;
         $this->jobStopper = $jobStopper;
+        $this->jobRepository = $jobRepository;
     }
 
     /**
@@ -67,15 +71,6 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
     public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
-    }
-
-    public function totalItems(): int
-    {
-        $productsAndRootProductModels = $this->findSimpleProductsAndRootProductModels();
-        $subProductModels = $this->findSubProductModels();
-        $variantProducts = $this->findVariantProducts();
-
-        return $this->totalItemsToDelete($productsAndRootProductModels, $subProductModels, $variantProducts);
     }
 
     /**
@@ -89,7 +84,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
             );
         }
 
-
+        $this->stepExecution->setTotalItems($this->countTotalItemsToDelete());
         $this->stepExecution->addSummaryInfo('deleted_products', 0);
         $this->stepExecution->addSummaryInfo('deleted_product_models', 0);
 
@@ -110,6 +105,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
 
         $productQueryBuilder = $this->pqbFactory->create($options);
         $productQueryBuilder->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
+        $productQueryBuilder->addFilter('parent', Operators::IS_NOT_EMPTY, null);
 
         return $productQueryBuilder->execute();
     }
@@ -153,6 +149,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
                 $entitiesToRemove[] = $product;
             } else {
                 $this->stepExecution->incrementSummaryInfo('skip');
+                $this->stepExecution->incrementProcessedItems(1);
             }
 
             $loopCount++;
@@ -162,6 +159,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
                     return;
                 }
                 $this->doDelete($entitiesToRemove);
+                $this->jobRepository->updateStepExecution($this->stepExecution);
                 $entitiesToRemove = [];
             }
             $products->next();
@@ -170,6 +168,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
 
         if (!empty($entitiesToRemove)) {
             $this->doDelete($entitiesToRemove);
+            $this->jobRepository->updateStepExecution($this->stepExecution);
         }
     }
 
@@ -188,9 +187,11 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
 
         $this->productRemover->removeAll($products);
         $this->stepExecution->incrementSummaryInfo('deleted_products', $deletedProductsCount);
+        $this->stepExecution->incrementProcessedItems($deletedProductsCount);
 
         $this->productModelRemover->removeAll($productModels);
         $this->stepExecution->incrementSummaryInfo('deleted_product_models', $deletedProductModelsCount);
+        $this->stepExecution->incrementProcessedItems($deletedProductModelsCount);
 
         $this->cacheClearer->clear();
     }
@@ -272,11 +273,19 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
         );
     }
 
-    private function totalItemsToDelete(
-        CursorInterface $productsAndRootProductModels,
-        CursorInterface $subProductModels,
-        CursorInterface $variantProducts
-    ): int {
-        return $productsAndRootProductModels->count() + $subProductModels->count() + $variantProducts->count();
+    private function countTotalItemsToDelete(): int
+    {
+        $filters = $this->stepExecution->getJobParameters()->get('filters');
+        $options = ['filters' => $filters];
+
+        $productQueryBuilder = $this->pqbFactory->create($options);
+        $items = $productQueryBuilder->execute();
+
+        return $items->count();
+    }
+
+    public function isTrackable(): bool
+    {
+        return true;
     }
 }

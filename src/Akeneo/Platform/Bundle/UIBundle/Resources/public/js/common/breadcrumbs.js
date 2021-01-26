@@ -9,17 +9,15 @@
  */
 define([
   'jquery',
-  'underscore',
   'oro/translator',
   'pim/form',
-  'pim/template/common/breadcrumbs',
   'oro/mediator',
   'pim/form-registry',
   'pim/common/property',
-], function ($, _, __, BaseForm, template, mediator, FormRegistry, propertyAccessor) {
+  'react',
+  'akeneo-design-system',
+], function ($, __, BaseForm, mediator, FormRegistry, propertyAccessor, React, {Breadcrumb}) {
   return BaseForm.extend({
-    className: 'AknBreadcrumb',
-    template: _.template(template),
     events: {
       'click .breadcrumb-tab': 'redirectTab',
       'click .breadcrumb-item': 'redirectItem',
@@ -71,18 +69,18 @@ define([
             breadcrumbItem = {code: item, label: item, active: false};
           }
 
-          this.$el.empty().append(
-            this.template({
-              breadcrumbTab: breadcrumbTab,
-              breadcrumbItem: breadcrumbItem,
-            })
-          );
+          const tab = React.createElement(Breadcrumb.Step, {className: 'breadcrumb-tab'}, breadcrumbTab.label);
+          const children = [tab];
+
+          if (null !== breadcrumbItem) {
+            children.push(React.createElement(Breadcrumb.Step, {className: 'breadcrumb-item'}, breadcrumbItem.label));
+          }
+
+          this.renderReact(Breadcrumb, {children}, this.el);
 
           this.delegateEvents();
         }.bind(this)
       );
-
-      return this;
     },
 
     /**

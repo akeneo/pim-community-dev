@@ -30,9 +30,10 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         ObjectManager $objectManager,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         NormalizerInterface $productNormalizer,
-        FilterEntityWithValuesSubscriber $subscriber
+        FilterEntityWithValuesSubscriber $subscriber,
+        NormalizerInterface $internalApiNormalizer
     ) {
-        $this->beConstructedWith($objectManager, $pqbFactory, $productNormalizer, $subscriber);
+        $this->beConstructedWith($objectManager, $pqbFactory, $productNormalizer, $subscriber, $internalApiNormalizer);
 
         $this->setSortOrder(Directions::DESCENDING);
         $this->setParameters(['dataLocale' => 'a_locale']);
@@ -76,6 +77,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
     function it_gets_products_and_product_models_sorted_by_association_status(
         $pqbFactory,
         $productNormalizer,
+        NormalizerInterface $internalApiNormalizer,
         Datagrid $datagrid,
         ProductQueryBuilderInterface $pqb,
         ProductQueryBuilderInterface $pqbAsso,
@@ -282,9 +284,16 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             'completeness'  => null,
         ]);
 
+        $productSourceNormalized = [
+            'identifier' => 'current_product',
+        ];
+
+        $internalApiNormalizer->normalize($currentProduct, Argument::cetera())
+            ->willReturn($productSourceNormalized);
+
         $results = $this->getResults();
         $results->shouldBeArray();
-        $results->shouldHaveCount(2);
+        $results->shouldHaveCount(3);
         $results->shouldHaveKey('data');
         $results->shouldHaveKeyWithValue('totalRecords', 3);
         $results['data']->shouldBeArray();
@@ -293,6 +302,9 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $results['data'][0]->getValue('id')->shouldReturn('product-1');
         $results['data'][1]->getValue('id')->shouldReturn('product-2');
         $results['data'][2]->getValue('id')->shouldReturn('product-model-1');
+        $results['meta']->shouldBe([
+            'source' => $productSourceNormalized,
+        ]);
     }
 
     function it_gets_only_products_because_of_limit_reached(
@@ -492,7 +504,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
 
         $results = $this->getResults();
         $results->shouldBeArray();
-        $results->shouldHaveCount(2);
+        $results->shouldHaveCount(3);
         $results->shouldHaveKey('data');
         $results->shouldHaveKeyWithValue('totalRecords', 3);
         $results['data']->shouldBeArray();

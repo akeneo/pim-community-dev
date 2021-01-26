@@ -8,7 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Displays system information provided by the data collectors through command line.
@@ -21,11 +21,8 @@ class SystemInfoCommand extends Command
 {
     protected static $defaultName = 'pim:system:information';
 
-    /** @var TranslatorInterface */
-    private $translator;
-
-    /** @var ChainedDataCollector */
-    private $chainedDataCollector;
+    private TranslatorInterface $translator;
+    private ChainedDataCollector $chainedDataCollector;
 
     public function __construct(
         TranslatorInterface $translator,
@@ -54,7 +51,7 @@ class SystemInfoCommand extends Command
         $systemInfoStyle = new SystemInfoStyle($input, $output);
 
         $systemInfoStyle->title($this->translator->trans('pim_analytics.system_info.title'));
-        $systemInfoStyle->table([], $this->formatCollectedData($this->translator, $this->getCollectedData()));
+        $systemInfoStyle->table([], $this->formatCollectedData($this->getCollectedData()));
     }
 
     /**
@@ -69,13 +66,8 @@ class SystemInfoCommand extends Command
 
     /**
      * Formats the collected data to be ready to display by the Table component.
-     *
-     * @param TranslatorInterface $translator
-     * @param array               $collectedData
-     *
-     * @return array
      */
-    protected function formatCollectedData(TranslatorInterface $translator, array $collectedData)
+    protected function formatCollectedData(array $collectedData): array
     {
         $formattedData = [];
 
@@ -87,7 +79,7 @@ class SystemInfoCommand extends Command
             if (!empty($formattedData)) {
                 $formattedData[] = new TableSeparator();
             }
-            $formattedData[] = [$translator->trans('pim_analytics.info_type.'.$key), $data];
+            $formattedData[] = [$this->translator->trans('pim_analytics.info_type.'.$key), $data];
         }
 
         return $formattedData;

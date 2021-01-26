@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
@@ -95,24 +96,24 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
         Assert::assertNotNull($request);
 
-        $body = '[{"action":"product.created","event_id":"7abae2fe-759a-4fce-aa43-f413980671b3","event_date":"2020-01-01T00:00:00+00:00","author":"julia","author_type":"ui","pim_source":"staging.akeneo.com","data":["data_1"]}]';
+        $body = '{"events":[{"action":"product.created","event_id":"7abae2fe-759a-4fce-aa43-f413980671b3","event_datetime":"2020-01-01T00:00:00+00:00","author":"julia","author_type":"ui","pim_source":"staging.akeneo.com","data":["data_1"]}]}';
         Assert::assertEquals($body, (string)$request->getBody());
 
-        $timestamp = (int)$request->getHeader(GuzzleWebhookClient::HEADER_REQUEST_TIMESTAMP)[0];
-        $signature = Signature::createSignature('a_secret', $body, $timestamp);
-        Assert::assertEquals($signature, $request->getHeader(GuzzleWebhookClient::HEADER_REQUEST_SIGNATURE)[0]);
+        $timestamp = (int)$request->getHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP)[0];
+        $signature = Signature::createSignature('a_secret', $timestamp, $body);
+        Assert::assertEquals($signature, $request->getHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE)[0]);
 
         // Request 2
 
         $request = $this->findRequest($container, 'http://localhost/webhook2');
         Assert::assertNotNull($request);
 
-        $body = '[{"action":"product.created","event_id":"7abae2fe-759a-4fce-aa43-f413980671b3","event_date":"2020-01-01T00:00:00+00:00","author":"julia","author_type":"ui","pim_source":"staging.akeneo.com","data":["data_2"]}]';
+        $body = '{"events":[{"action":"product.created","event_id":"7abae2fe-759a-4fce-aa43-f413980671b3","event_datetime":"2020-01-01T00:00:00+00:00","author":"julia","author_type":"ui","pim_source":"staging.akeneo.com","data":["data_2"]}]}';
         Assert::assertEquals($body, (string)$request->getBody());
 
-        $timestamp = (int)$request->getHeader(GuzzleWebhookClient::HEADER_REQUEST_TIMESTAMP)[0];
-        $signature = Signature::createSignature('a_secret', $body, $timestamp);
-        Assert::assertEquals($signature, $request->getHeader(GuzzleWebhookClient::HEADER_REQUEST_SIGNATURE)[0]);
+        $timestamp = (int)$request->getHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP)[0];
+        $signature = Signature::createSignature('a_secret', $timestamp, $body);
+        Assert::assertEquals($signature, $request->getHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE)[0]);
     }
 
     private function findRequest(array $container, string $url): ?Request

@@ -35,6 +35,7 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Cache\LRUCachedGetAttributes'
         arguments:
             $getAttributes: '@akeneo.pim.structure.query.sql_get_attributes'
+        tags: ['akeneo.pim.cached_query']
 
     akeneo.pim.structure.query.sql_get_required_attributes_masks:
         class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql\SqlGetRequiredAttributesMasks'
@@ -103,5 +104,20 @@ services:
 
     akeneo.pim.structure.query.get_all_families_label_by_locale:
         class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\GetAllFamiliesLabelByLocaleQuery
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.is_attribute_code_blacklisted:
+        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\Attribute\IsAttributeCodeBlacklisted
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_blacklisted_attribute_job_execution_id:
+        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\Attribute\GetBlacklistedAttributeJobExecutionId
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_all_blacklisted_attribute_codes:
+        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\Attribute\GetAllBlacklistedAttributeCodes
         arguments:
             - '@database_connection'

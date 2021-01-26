@@ -99,11 +99,13 @@ pim_enrich:
       comment: Commenter les produits
       download: Télécharger le produit en PDF
       history: Afficher l'historique du produit
+      convert_variant_to_simple: Convertir un produit variant en produit simple
     product_model:
       create: Créer un modèle de produit
       edit_attributes: Modifier les attributs du modèle de produit
       categories_view: Afficher les catégories d'un modèle de produit
       history: Afficher l'historique d'un modèle de produit
+      remove: Supprimer un modèle de produit (y compris les enfants)
     category:
       list: Liste des catégories
       create: Créer une catégorie
@@ -543,3 +545,5 @@ job_tracker:
     title: Traqueur de processus
   filter:
     started_at: Démarré à
+pim_login:
+  logo_title: Akeneo PIM

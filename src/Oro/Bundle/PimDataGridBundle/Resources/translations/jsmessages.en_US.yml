@@ -36,7 +36,7 @@ pim_datagrid:
     create_view: Create view
     placeholder: Name of new view
     choose_label: Choose a label for the view
-    choose_type: I want to create a personal view
+    choose_type: I want to create a private view
     remove: Delete this view
     save_changes: Save this view
     default_view: Default view
@@ -79,7 +79,8 @@ pim_datagrid:
       title: Stop
       confirmation:
         title: Stop {{ jobLabel }}
-        content: Do you really want to stop this job?
+        content: "Do you really want to stop this job?\nIt won't revert the actions already performed.\nTo find out more, please check our article on "
+        link: How to stop a job.
         ok: Stop the job
 
   filters:

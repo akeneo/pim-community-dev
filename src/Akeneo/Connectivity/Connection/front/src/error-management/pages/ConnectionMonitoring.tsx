@@ -1,18 +1,20 @@
 import React, {FC, memo} from 'react';
 import {useHistory, useParams} from 'react-router';
-import {Breadcrumb, BreadcrumbItem, Loading, PageContent, PageHeader} from '../../common';
+import {Loading, PageContent, PageHeader} from '../../common';
 import {PimView} from '../../infrastructure/pim-view/PimView';
 import {FlowType} from '../../model/flow-type.enum';
-import {BreadcrumbRouterLink} from '../../shared/router';
+import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {ConnectionErrors} from '../components/ConnectionErrors';
 import {NotAuditableConnection} from '../components/NotAuditableConnection';
 import {NotDataSourceConnection} from '../components/NotDataSourceConnection';
 import {useConnection} from '../hooks/api/use-connection';
+import {Breadcrumb} from 'akeneo-design-system';
 
 const ConnectionMonitoring: FC = memo(() => {
     const history = useHistory();
     const {connectionCode} = useParams<{connectionCode: string}>();
+    const systemHref = `#${useRoute('oro_config_configuration_system')}`;
 
     const {loading, connection} = useConnection(connectionCode);
     if (loading || !connection) {
@@ -21,15 +23,15 @@ const ConnectionMonitoring: FC = memo(() => {
 
     const breadcrumb = (
         <Breadcrumb>
-            <BreadcrumbRouterLink route={'oro_config_configuration_system'}>
+            <Breadcrumb.Step href={systemHref}>
                 <Translate id='pim_menu.tab.system' />
-            </BreadcrumbRouterLink>
-            <BreadcrumbItem onClick={() => history.push('/connections')}>
+            </Breadcrumb.Step>
+            <Breadcrumb.Step href={history.createHref({pathname: '/connections'})}>
                 <Translate id='pim_menu.item.connection_settings' />
-            </BreadcrumbItem>
-            <BreadcrumbItem>
+            </Breadcrumb.Step>
+            <Breadcrumb.Step>
                 <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.title' />
-            </BreadcrumbItem>
+            </Breadcrumb.Step>
         </Breadcrumb>
     );
 

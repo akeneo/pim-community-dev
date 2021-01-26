@@ -157,17 +157,20 @@ pim_common:
   code: Code
   confirm: Confirm
   confirm_deletion: Confirm deletion
+  confirm_revocation: Confirm revocation
   create: Create
   created: Created
   delete: Delete
   done: Done
   edit: Edit
   entity_updated: There are unsaved changes.
+  export: Export
   from: From
   general_properties: General properties
   history: History
   label: Label
   label_translations: Label translations
+  Label or identifier: label or identifier
   less_than: Less than
   loading: Loading...
   media_upload: Drag and drop to upload or click here
@@ -236,15 +239,6 @@ pim_enrich.entity.fallback:
       leave: Are you sure you want to leave this page?
       discard_changes: You will lose changes to the {{ entity }} if you leave the page.
       discard_changes_title: Are you sure?
-pim_enrich.entity.api_connection:
-  flash:
-    create:
-      success: API connection successfully created
-    delete:
-      success: API connection successfully revoked
-      fail: Cannot revoke this API connection
-  page_title:
-    index: "]-Inf, 1]{{ count }} API connection|]1, Inf[{{ count }} API connections"
 pim_enrich.entity.job_execution:
   page_title:
     index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
@@ -291,8 +285,6 @@ pim_title:
   pim_enrich_mass_edit_action_perform: Mass Edit | Perform
   pim_enrich_job_tracker_index: Process tracker
   pim_enrich_job_tracker_show: Process tracker | Show job
-  pim_enrich_api_connection_index: API connections
-  pim_enrich_api_connection_create: API connections | Create
   pim_enrich_mass_edit_action: Mass Edit
   pim_analytics_system_info_index: System information
 pim_menu:
@@ -326,7 +318,6 @@ pim_menu:
     user_role: Roles
     info: System information
     job_tracker: Process tracker
-    api_connection: API connections
     catalog_volume: Catalog volume monitoring
   navigation:
     activity: Activity navigation

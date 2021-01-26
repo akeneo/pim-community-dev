@@ -549,7 +549,7 @@ JSON;
     {
       "code": "MONTH",
       "convert": {
-        "mul": "18748800"
+        "mul": "2628000"
       },
       "symbol": "month"
     },
@@ -1102,28 +1102,28 @@ JSON;
         {
             "code": "ATM",
             "convert": {
-                "mul": "0.986923"
+                "mul": "1.01325"
             },
             "symbol": "atm"
         },
         {
             "code": "PSI",
             "convert": {
-                "mul": "14.50376985373022"
+                "mul": "0.0689476"
             },
             "symbol": "PSI"
         },
         {
             "code": "TORR",
             "convert": {
-                "mul": "750.06375541921"
+                "mul": "0.00133322"
             },
             "symbol": "Torr"
         },
         {
             "code": "MMHG",
             "convert": {
-                "mul": "750.06375541921"
+                "mul": "0.00133322"
             },
             "symbol": "mmHg"
         }

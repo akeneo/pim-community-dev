@@ -77,3 +77,5 @@ parameters:
     webhook_concurrency: 5
     webhook_timeout: 0.5
     webhook_max_bulk_size: 10
+    webhook_active_event_subscriptions_limit: 3
+    webhook_requests_limit: 4000

@@ -7,8 +7,8 @@ services:
       APP_ENV: '${APP_ENV:-prod}'
       COMPOSER_HOME: '/var/www/.composer'
       PHP_IDE_CONFIG: 'serverName=pim-docker-cli'
-      XDEBUG_ENABLED: '${XDEBUG_ENABLED:-0}'
-      XDEBUG_CONFIG: 'remote_host=172.17.0.1'
+      XDEBUG_MODE: '${XDEBUG_MODE:-off}'
+      XDEBUG_CONFIG: 'client_host=172.17.0.1'
       BLACKFIRE_CLIENT_ID: '${BLACKFIRE_CLIENT_ID:-client_id}'
       BLACKFIRE_CLIENT_TOKEN: '${BLACKFIRE_CLIENT_TOKEN:-client_token}'
     volumes:
@@ -26,8 +26,8 @@ services:
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
       BEHAT_SCREENSHOT_PATH: '/srv/pim/var/tests/screenshots'
       PHP_IDE_CONFIG: 'serverName=pim-docker-web'
-      XDEBUG_ENABLED: '${XDEBUG_ENABLED:-0}'
-      XDEBUG_CONFIG: 'remote_host=172.17.0.1'
+      XDEBUG_MODE: '${XDEBUG_MODE:-off}'
+      XDEBUG_CONFIG: 'client_host=172.17.0.1'
       BLACKFIRE_CLIENT_ID: '${BLACKFIRE_CLIENT_ID:-client_id}'
       BLACKFIRE_CLIENT_TOKEN: '${BLACKFIRE_CLIENT_TOKEN:-client_token}'
     volumes:
@@ -74,7 +74,7 @@ services:
       - 'pim'
 
   mysql:
-    image: 'mysql:8.0.18'
+    image: 'mysql:8.0.22'
     command: '--default-authentication-plugin=mysql_native_password'
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
@@ -89,7 +89,7 @@ services:
       - 'pim'
 
   elasticsearch:
-    image: 'docker.elastic.co/elasticsearch/elasticsearch-oss:7.5.1'
+    image: 'docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.1'
     environment:
       ES_JAVA_OPTS: '${ES_JAVA_OPTS:--Xms512m -Xmx512m}'
       discovery.type: 'single-node'

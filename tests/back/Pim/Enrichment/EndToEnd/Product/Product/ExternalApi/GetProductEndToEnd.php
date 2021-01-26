@@ -198,6 +198,51 @@ class GetProductEndToEnd extends AbstractProductTestCase
         $this->assertSame('Product "not_found" does not exist or you do not have permission to access it.', $content['message']);
     }
 
+    public function test_it_gets_a_product_with_quality_scores()
+    {
+        $this->createProduct('product', [
+            'family'     => 'familyA',
+            'categories' => [],
+            'groups'     => [],
+            'values'     => [],
+        ]);
+
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/products/product?with_quality_scores=true');
+
+        $expectedProduct = [
+            'identifier'    => 'product',
+            'family'        => 'familyA',
+            'parent'        => null,
+            'groups'        => [],
+            'categories'    => [],
+            'enabled'       => true,
+            'values'        => [],
+            'created'       => '2016-06-14T13:12:50+02:00',
+            'updated'       => '2016-06-14T13:12:50+02:00',
+            'associations'  => [
+                'PACK'   => ['groups' => [], 'products' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'UPSELL' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'X_SELL' => ['groups' => [], 'products' => [], 'product_models' => []],
+            ],
+            'quantified_associations' => [],
+            'quality_scores' => [
+                ['scope' => 'tablet', 'locale' => 'de_DE', 'data' => 'E',],
+                ['scope' => 'tablet', 'locale' => 'en_US', 'data' => 'E',],
+                ['scope' => 'tablet', 'locale' => 'fr_FR', 'data' => 'E',],
+                ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'E',],
+                ['scope' => 'ecommerce_china', 'locale' => 'en_US', 'data' => 'E',],
+                ['scope' => 'ecommerce_china', 'locale' => 'zh_CN', 'data' => 'E',],
+            ],
+        ];
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertResponse($response, $expectedProduct);
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -1329,7 +1329,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "18748800"
+                        "value": "2628000"
                     }
                 ],
                 "symbol": "month"
@@ -2954,7 +2954,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "0.986923"
+                        "value": "1.01325"
                     }
                 ],
                 "symbol": "atm"
@@ -2980,7 +2980,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "14.50376985373022"
+                        "value": "0.0689476"
                     }
                 ],
                 "symbol": "PSI"
@@ -3006,7 +3006,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "750.06375541921"
+                        "value": "0.00133322"
                     }
                 ],
                 "symbol": "Torr"
@@ -3032,7 +3032,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "750.06375541921"
+                        "value": "0.00133322"
                     }
                 ],
                 "symbol": "mmHg"

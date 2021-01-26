@@ -40,12 +40,19 @@ datagrid:
                 component: pimimportexport/js/datagrid/Actions
                 props:
                     id: string
+                    type: string
                     jobLabel: string
                     isStoppable: boolean
                     showLink: string
                 data_name: id
+        actions:
+            view:
+                type: navigate
+                link: showLink
+                rowAction: true
         properties:
             id: ~
+            type: ~
             jobLabel: ~
             isStoppable: ~
             currentStep: ~

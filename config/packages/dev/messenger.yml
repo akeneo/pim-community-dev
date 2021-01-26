@@ -1,0 +1,14 @@
+framework:
+    messenger:
+        transports:
+            webhook:
+                dsn: doctrine://default
+                options:
+                    table_name: messenger_messages
+                    queue_name: default
+                    redeliver_timeout: 3600
+                    auto_setup: false
+                serializer: pim_enrich.messenger.serializer.business_event
+        routing:
+            'Akeneo\Platform\Component\EventQueue\Event': webhook
+            'Akeneo\Platform\Component\EventQueue\BulkEvent': webhook

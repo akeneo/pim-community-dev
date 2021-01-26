@@ -99,6 +99,7 @@ pim_enrich:
       comment: Produkte kommentieren
       download: Produkt als PDF herunterladen
       history: Produkthistorie ansehen
+      convert_variant_to_simple: Ein Variantenprodukt in ein einfaches Produkt umwandeln
     product_model:
       create: Produktmodell erstellen
       edit_attributes: Attribute eines Produktmodells bearbeiten
@@ -544,3 +545,8 @@ job_tracker:
     title: Prozess-Tracker
   filter:
     started_at: Gestartet am
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: Powered by
+    powered_image_title: logo Akeneo

@@ -9,15 +9,20 @@ type Props = {
 
 const QualityScoreBar: FC<Props> = ({currentScore}) => {
   return (
-    <Container currentScore={currentScore} onClick={() => window.dispatchEvent(new CustomEvent(DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB))}>
+    <Container
+      currentScore={currentScore}
+      onClick={() => window.dispatchEvent(new CustomEvent(DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB))}
+    >
       {['A', 'B', 'C', 'D', 'E'].map((score: string) => {
-        return score === currentScore ?
-          <SelectedScore key={`ranking-score-${currentScore}`} score={currentScore}/> :
-          <QualityScore key={`ranking-score-${score}`} score={score}/>;
+        return score === currentScore ? (
+          <SelectedScore key={`ranking-score-${currentScore}`} score={currentScore} />
+        ) : (
+          <QualityScore key={`ranking-score-${score}`} score={score} />
+        );
       })}
     </Container>
   );
-}
+};
 
 const Container = styled.div<Props>`
   display: flex;
@@ -36,11 +41,11 @@ const Container = styled.div<Props>`
   > :last-child {
     border-radius: 0 4px 4px 0;
   }
-  
+
   > :not(:first-child):not(:last-child) {
-    border-radius: 0;    
+    border-radius: 0;
   }
-  
+
   ${props => props.currentScore === null && NoScoreStyle}
 `;
 

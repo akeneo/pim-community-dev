@@ -12,7 +12,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Tool\Component\Batch\Item\RewindableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -66,21 +65,9 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, Tr
         $this->stepExecution = $stepExecution;
     }
 
-    public function totalItems(): int
+    public function isTrackable(): bool
     {
-        if (!$this->familyReader instanceof RewindableItemReaderInterface) {
-            return 0;
-        }
-
-        $familyCodes = $this->extractFamilyCodes();
-        $this->familyReader->rewind();
-        if (empty($familyCodes)) {
-            return 0;
-        }
-
-        $products = $this->getProductsForFamilies($familyCodes);
-
-        return $products->count();
+        return true;
     }
 
     /**
@@ -98,6 +85,8 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, Tr
         }
 
         $products = $this->getProductsForFamilies($familyCodes);
+        $this->stepExecution->setTotalItems($products->count());
+
         $productsToCompute = [];
         foreach ($products as $product) {
             Assert::isInstanceOf($product, ProductInterface::class);

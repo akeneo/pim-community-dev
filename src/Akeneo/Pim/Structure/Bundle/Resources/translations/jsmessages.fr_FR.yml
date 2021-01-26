@@ -201,6 +201,7 @@ pim_enrich.entity.attribute:
       regexp: Expression régulière
       url: URL
     wysiwyg_enabled: Éditeur de texte enrichi activé
+    default_value: Valeur par défaut
   module:
     add_attribute:
       no_available_attributes: Il n'y a plus d'attributs disponibles
@@ -213,6 +214,13 @@ pim_enrich.entity.attribute:
       validation: Paramètres de validation
     delete:
       confirm: Êtes-vous sûr(e) de vouloir supprimer cet attribut ?
+      product_count: '{0}0 produits|{1}1 produit|]1, Inf[{{ count }} produits'
+      product_model_count: '{0}0 modèles de produit|{1}1 modèle de produit|]1, Inf[{{ count }} modèles de produit'
+      used: ont actuellement des valeurs définies pour cet attribut, elles seront supprimées.
+      helper:
+        content: Si vous souhaitez modifier votre type d'attribut, pour le rendre localisable ou scopable, tout en gardant vos valeurs existantes pour cet attribut,
+        link: veuillez consulter cette page de notre Help Center.
+      type: 'Merci de saisir le code de l''attribut suivant : "{{ attributeCode }}"'
       confirm_from_family: Êtes-vous sûr(e) de vouloir supprimer cet attribut de la famille ?
       confirm_from_group: Êtes vous sûr(e) de vouloir retirer l'attribut {{ attribute }} de ce groupe d'attributs ?
       confirm_from_product: Êtes-vous sûr(e) de vouloir supprimer cet attribut du produit ?

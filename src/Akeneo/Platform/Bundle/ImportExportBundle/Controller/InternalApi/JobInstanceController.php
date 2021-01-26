@@ -21,6 +21,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use League\Flysystem\FilesystemInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -103,6 +104,9 @@ class JobInstanceController
     /** @var FilesystemInterface */
     protected $filesystem;
 
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param JobRegistry                           $jobRegistry
@@ -123,6 +127,7 @@ class JobInstanceController
      * @param EventDispatcherInterface              $eventDispatcher
      * @param CollectionFilterInterface             $inputFilter
      * @param string                                $uploadTmpDir
+     * @param SecurityFacade                        $securityFacade
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -143,7 +148,8 @@ class JobInstanceController
         JobInstanceFactory $jobInstanceFactory,
         EventDispatcherInterface $eventDispatcher,
         CollectionFilterInterface $inputFilter,
-        FilesystemInterface $filesystem
+        FilesystemInterface $filesystem,
+        SecurityFacade $securityFacade
     ) {
         $this->repository            = $repository;
         $this->jobRegistry           = $jobRegistry;
@@ -164,6 +170,7 @@ class JobInstanceController
         $this->eventDispatcher       = $eventDispatcher;
         $this->inputFilter           = $inputFilter;
         $this->filesystem            = $filesystem;
+        $this->securityFacade        = $securityFacade;
     }
 
     /**
@@ -464,9 +471,13 @@ class JobInstanceController
 
         $jobExecution = $this->launchJob($jobInstance);
 
+        if (!$this->securityFacade->isGranted(sprintf('pim_importexport_%s_execution_show', $jobInstance->getType()))) {
+            return new JsonResponse('', 200);
+        }
+
         return new JsonResponse([
             'redirectUrl' => '#' . $this->router->generate(
-                sprintf('pim_importexport_%s_execution_show', $jobInstance->getType()),
+                'pim_enrich_job_tracker_show',
                 ['id' => $jobExecution->getId()]
             )
         ], 200);

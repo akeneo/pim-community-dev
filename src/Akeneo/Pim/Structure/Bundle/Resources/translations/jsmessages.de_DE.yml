@@ -201,6 +201,7 @@ pim_enrich.entity.attribute:
       regexp: Regulärer Ausdruck
       url: URL
     wysiwyg_enabled: Rich-Text-Editor aktiviert
+    default_value: Standardwert
   module:
     add_attribute:
       no_available_attributes: Es gibt keine weiteren Attribute zum Hinzufügen
@@ -213,6 +214,13 @@ pim_enrich.entity.attribute:
       validation: Validierungsparameter
     delete:
       confirm: Möchten Sie dieses Attribut wirklich löschen?
+      product_count: '{0}0 Produkte|{1}1 Produkt|]1, Inf[{{ count }} Produkte'
+      product_model_count: '{0}0 Produktmodelle|{1}1 Produktmodell|]1, Inf[{{ count }} Produktmodelle'
+      used: zur Zeit haben Werte für dieses Attribut gesetzt, sie werden entfernt.
+      helper:
+        content: Wenn Sie Ihren Attributtyp ändern müssen, um ihn lokalisierbar oder skalierbar zu machen, während Sie den Zugriff auf Ihre vorhandenen Attributwerte behalten
+        link: wir gehen hier mit Ihnen durch die verschiedenen Schritte.
+      type: Bitte geben Sie "{{ attributeCode }} " ein
       confirm_from_family: Sind Sie sicher, dass Sie dieses Attribut aus der Familie löschen möchten?
       confirm_from_group: Soll das Attribut {{ attribute }} wirklich aus dieser Attributgruppe entfernt werden?
       confirm_from_product: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?

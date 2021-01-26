@@ -5,7 +5,7 @@ namespace Akeneo\Platform\Bundle\UIBundle\EventListener;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -71,10 +71,7 @@ class UserContextListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param GetResponseEvent $event
-     */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         if (HttpKernel::MASTER_REQUEST !== $event->getRequestType() || null === $this->tokenStorage->getToken()) {
             return;

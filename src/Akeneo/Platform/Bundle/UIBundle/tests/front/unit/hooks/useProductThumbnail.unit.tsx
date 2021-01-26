@@ -1,19 +1,6 @@
-import React from 'react';
-import '@testing-library/jest-dom/extend-expect';
-import {renderHook} from '@testing-library/react-hooks';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {renderHookWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {useProductThumbnail} from '../../../../Resources/public/js/product/form/quantified-associations/hooks/useProductThumbnail';
 import {ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models';
-
-const productWithoutImage = {
-  id: 1,
-  identifier: 'bag',
-  label: 'Nice bag',
-  document_type: ProductType.Product,
-  image: null,
-  completeness: 100,
-  variant_product_completenesses: null,
-};
 
 const productWithImage = {
   id: 2,
@@ -28,16 +15,29 @@ const productWithImage = {
   variant_product_completenesses: null,
 };
 
-const wrapper = ({children}) => <DependenciesProvider>{children}</DependenciesProvider>;
+const productWithoutImage = {...productWithImage, image: null};
+const productWithAssetManagerImage = {
+  ...productWithImage,
+  image: {
+    originalFileName: 'name.jpg',
+    filePath: '/rest/asset_manager/image_preview/nice-image.jpg',
+  },
+};
 
-test('It returns the image path if the product has an image', async () => {
-  const {result} = renderHook(() => useProductThumbnail(productWithImage), {wrapper});
+test('It returns the image path if the product has an image', () => {
+  const {result} = renderHookWithProviders(() => useProductThumbnail(productWithImage));
 
   expect(result.current).toEqual('pim_enrich_media_show');
 });
 
-test('It returns the placeholder path if the product has no image', async () => {
-  const {result} = renderHook(() => useProductThumbnail(productWithoutImage), {wrapper});
+test('It returns the placeholder path if the product has no image', () => {
+  const {result} = renderHookWithProviders(() => useProductThumbnail(productWithoutImage));
 
   expect(result.current).toEqual('/bundles/pimui/img/image_default.png');
+});
+
+test('It returns the ready-to-use filepath if the image is coming from the Asset Manager', () => {
+  const {result} = renderHookWithProviders(() => useProductThumbnail(productWithAssetManagerImage));
+
+  expect(result.current).toEqual('/rest/asset_manager/image_preview/nice-image.jpg');
 });

@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
@@ -20,6 +11,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjec
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 use PhpSpec\ObjectBehavior;
 
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class DashboardRatesProjectionSpec extends ObjectBehavior
 {
     public function it_returns_the_ranks_distributions_for_a_common_day()
@@ -113,26 +108,13 @@ final class DashboardRatesProjectionSpec extends ObjectBehavior
     private function buildRandomRanksDistributionCollection(): RanksDistributionCollection
     {
         return new RanksDistributionCollection([
-            "consistency" => [
-                "ecommerce" => [
-                    "en_US" => [
-                        "rank_1" => rand(1, 100),
-                        "rank_2" => rand(1, 100),
-                        "rank_3" => rand(1, 100),
-                        "rank_4" => rand(1, 100),
-                        "rank_5" => rand(1, 100)
-                    ],
-                ],
-            ],
-            "enrichment" => [
-                "ecommerce" => [
-                    "en_US" => [
-                        "rank_1" => rand(1, 100),
-                        "rank_2" => rand(1, 100),
-                        "rank_3" => rand(1, 100),
-                        "rank_4" => rand(1, 100),
-                        "rank_5" => rand(1, 100)
-                    ],
+            "ecommerce" => [
+                "en_US" => [
+                    "rank_1" => rand(1, 100),
+                    "rank_2" => rand(1, 100),
+                    "rank_3" => rand(1, 100),
+                    "rank_4" => rand(1, 100),
+                    "rank_5" => rand(1, 100)
                 ],
             ],
         ]);

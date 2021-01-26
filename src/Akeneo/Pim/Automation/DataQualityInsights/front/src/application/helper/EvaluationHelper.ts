@@ -11,15 +11,20 @@ const evaluationPlaceholder: Evaluation = {
 type NewProductEvaluation = {
   [channel: string]: {
     [locale: string]: CriterionEvaluationResult[];
-  }
+  };
 };
 
-const convertEvaluationToLegacyFormat = (axes: {[axis: string]: string[]}, productEvaluation: NewProductEvaluation): ProductEvaluation => {
+const convertEvaluationToLegacyFormat = (
+  axes: {[axis: string]: string[]},
+  productEvaluation: NewProductEvaluation
+): ProductEvaluation => {
   let result: ProductEvaluation = {};
   Object.keys(axes).forEach((axis: string) => {
     Object.entries(productEvaluation).forEach(([channel, criteriaByLocale]) => {
       Object.entries(criteriaByLocale).forEach(([locale, criteria]) => {
-        const filteredCriteria: CriterionEvaluationResult[] = criteria.filter((criterion) => axes[axis].includes(criterion.code));
+        const filteredCriteria: CriterionEvaluationResult[] = criteria.filter(criterion =>
+          axes[axis].includes(criterion.code)
+        );
         const resultByAxis = result[axis] || {};
         const resultByChannel = resultByAxis[channel] || {};
         result = {
@@ -31,10 +36,10 @@ const convertEvaluationToLegacyFormat = (axes: {[axis: string]: string[]}, produ
               [locale]: {
                 rate: null,
                 criteria: filteredCriteria,
-              }
-            }
-          }
-        }
+              },
+            },
+          },
+        };
       });
     });
   });

@@ -1,43 +1,28 @@
 parameters:
     akeneo.pim.automation.data_quality_insights.persistence.product_criterion_evaluation_table: 'pim_data_quality_insights_product_criteria_evaluation'
     akeneo.pim.automation.data_quality_insights.persistence.product_model_criterion_evaluation_table: 'pim_data_quality_insights_product_model_criteria_evaluation'
-    akeneo.pim.automation.data_quality_insights.persistence.product_axis_rate_table: 'pim_data_quality_insights_product_axis_rates'
-    akeneo.pim.automation.data_quality_insights.persistence.product_model_axis_rate_table: 'pim_data_quality_insights_product_model_axis_rates'
 
 services:
-      akeneo.pim.automation.data_quality_insights.repository.product_axis_rate:
-          class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductAxisRateRepository
-          arguments:
-              - '@database_connection'
-              - '%akeneo.pim.automation.data_quality_insights.persistence.product_axis_rate_table%'
-
       Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository:
           arguments:
               - '@database_connection'
 
-      akeneo.pim.automation.data_quality_insights.repository.product_model_axis_rate:
-          class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductAxisRateRepository
-          arguments:
-              - '@database_connection'
-              - '%akeneo.pim.automation.data_quality_insights.persistence.product_model_axis_rate_table%'
-
       Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository:
           arguments:
               - '@database_connection'
+              - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes'
 
       akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation:
           class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductCriterionEvaluationRepository
           arguments:
-              - '@database_connection'
               - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository'
 
       akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation:
           class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductModelCriterionEvaluationRepository
           arguments:
-              - '@database_connection'
               - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository'
 
-      Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository:
+      Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository:
           arguments:
               - '@database_connection'
 

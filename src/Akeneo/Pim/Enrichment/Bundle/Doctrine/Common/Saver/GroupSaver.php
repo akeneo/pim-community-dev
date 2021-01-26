@@ -88,13 +88,13 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($group, $options), StorageEvents::PRE_SAVE);
 
         $this->persistGroupAndSaveAssociatedProducts($group);
 
         $this->objectManager->flush();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
+        $this->eventDispatcher->dispatch(new GenericEvent($group), StorageEvents::POST_SAVE);
     }
 
     /**
@@ -108,12 +108,12 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
         $options = $this->optionsResolver->resolveSaveAllOptions($options);
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($groups, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($groups, $options), StorageEvents::PRE_SAVE_ALL);
 
         foreach ($groups as $group) {
             $this->validateGroup($group);
 
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group, $options));
+            $this->eventDispatcher->dispatch(new GenericEvent($group, $options), StorageEvents::PRE_SAVE);
 
             $this->persistGroupAndSaveAssociatedProducts($group);
         }
@@ -121,40 +121,42 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->flush();
 
         foreach ($groups as $group) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group, $options));
+            $this->eventDispatcher->dispatch(new GenericEvent($group, $options), StorageEvents::POST_SAVE);
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($groups, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($groups, $options), StorageEvents::POST_SAVE_ALL);
     }
 
     /**
      * Save associated products updated by the variant group update
+     * Only removed and added products will be saved.
      *
-     * @param  GroupInterface $group
+     * @todo Find a better solution than a database query to determine what are the products that have been removed or added
+     *       (it will certainly cause a BC-break)
      */
     protected function saveAssociatedProducts(GroupInterface $group)
     {
-        $productInGroup = $group->getProducts();
-        $productsToUpdate = $productInGroup->toArray();
-        $productToUpdateIds = array_map(function ($product) {
-            return $product->getId();
-        }, $productsToUpdate);
+        $productsToUpdate = [];
+        foreach ($group->getProducts() as $product) {
+            $productsToUpdate[$product->getId()] = $product;
+        }
 
         if (null !== $group->getId()) {
             $pqb = $this->productQueryBuilderFactory->create();
             $pqb->addFilter('groups', Operators::IN_LIST, [$group->getCode()]);
             $oldProducts = $pqb->execute();
             foreach ($oldProducts as $oldProduct) {
-                if (!in_array($oldProduct->getId(), $productToUpdateIds)) {
+                if (!isset($productsToUpdate[$oldProduct->getId()])) {
                     $oldProduct->removeGroup($group);
-                    $productsToUpdate[] = $oldProduct;
-                    $productToUpdateIds[] = $oldProduct->getId();
+                    $productsToUpdate[$oldProduct->getId()] = $oldProduct;
+                } else {
+                    unset($productsToUpdate[$oldProduct->getId()]);
                 }
             }
         }
 
         if (!empty($productsToUpdate)) {
-            $this->productSaver->saveAll($productsToUpdate);
+            $this->productSaver->saveAll(array_values($productsToUpdate));
         }
     }
 

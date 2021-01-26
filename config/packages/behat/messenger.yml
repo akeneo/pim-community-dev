@@ -1,0 +1,29 @@
+framework:
+    messenger:
+        transports:
+            # Producers
+            business_event:
+                dsn: 'gps:'
+                options:
+                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
+                    topic_name: '%env(PUBSUB_TOPIC_BUSINESS_EVENT)%'
+                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
+                retry_strategy:
+                    max_retries: 0
+                serializer: pim_enrich.messenger.serializer.business_event
+
+            # Consumers
+            webhook:
+                dsn: 'gps:'
+                options:
+                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
+                    topic_name: '%env(PUBSUB_TOPIC_BUSINESS_EVENT)%'
+                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_WEBHOOK)%'
+                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
+                retry_strategy:
+                    max_retries: 0
+                serializer: pim_enrich.messenger.serializer.business_event
+
+        routing:
+            'Akeneo\Platform\Component\EventQueue\Event': business_event
+            'Akeneo\Platform\Component\EventQueue\BulkEvent': business_event

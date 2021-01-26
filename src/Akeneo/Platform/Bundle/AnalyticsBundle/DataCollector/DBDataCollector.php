@@ -4,27 +4,15 @@ namespace Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
+use Akeneo\Tool\Component\Analytics\ActiveEventSubscriptionCountQuery;
 use Akeneo\Tool\Component\Analytics\ApiConnectionCountQuery;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
+use Akeneo\Tool\Component\Analytics\IsDemoCatalogQuery;
 use Akeneo\Tool\Component\Analytics\MediaCountQuery;
 
 /**
- * Collects the structure of the PIM catalog:
- * - number of channels
- * - number of products
- * - number of attributes
- * - number of locales
- * - number of families
- * - number of users
- * - number of categories
- * - number of categories tree
- * - max number of categories in one category
- * - max number of category levels
- * - number of product values
- * - average number of product values by product
- * - email domains
- * - number of api connection (tracked or not)
+ * It collect data about the volume of different axes in the PIM catalog.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -68,6 +56,10 @@ class DBDataCollector implements DataCollectorInterface
 
     private MediaCountQuery $mediaCountQuery;
 
+    private IsDemoCatalogQuery $isDemoCatalogQuery;
+
+    private ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery;
+
     public function __construct(
         CountQuery $channelCountQuery,
         CountQuery $productCountQuery,
@@ -86,7 +78,9 @@ class DBDataCollector implements DataCollectorInterface
         AverageMaxQuery $productValuePerFamilyAverageMaxQuery,
         EmailDomainsQuery $emailDomains,
         ApiConnectionCountQuery $apiConnectionCountQuery,
-        MediaCountQuery $mediaCountQuery
+        MediaCountQuery $mediaCountQuery,
+        IsDemoCatalogQuery $isDemoCatalogQuery,
+        ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery
     ) {
         $this->channelCountQuery = $channelCountQuery;
         $this->productCountQuery = $productCountQuery;
@@ -106,6 +100,8 @@ class DBDataCollector implements DataCollectorInterface
         $this->emailDomains = $emailDomains;
         $this->apiConnectionCountQuery = $apiConnectionCountQuery;
         $this->mediaCountQuery = $mediaCountQuery;
+        $this->isDemoCatalogQuery = $isDemoCatalogQuery;
+        $this->activeEventSubscriptionCountQuery = $activeEventSubscriptionCountQuery;
     }
 
     /**
@@ -134,6 +130,8 @@ class DBDataCollector implements DataCollectorInterface
             'api_connection' => $this->apiConnectionCountQuery->fetch(),
             'nb_media_files_in_products' => $this->mediaCountQuery->countFiles(),
             'nb_media_images_in_products' => $this->mediaCountQuery->countImages(),
+            'is_demo_catalog' => $this->isDemoCatalogQuery->fetch(),
+            'nb_active_event_subscription' => $this->activeEventSubscriptionCountQuery->fetch(),
         ];
     }
 }

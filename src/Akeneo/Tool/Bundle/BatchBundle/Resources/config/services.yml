@@ -87,6 +87,12 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
 
+    Akeneo\Tool\Bundle\BatchBundle\Storage\DeleteJobExecutionLogs:
+        arguments:
+            - '@Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\GetJobExecutionIds'
+            - '@filesystem'
+            - '%kernel.logs_dir%/batch'
+
     akeneo_batch.query.get_job_execution_status:
         class: 'Akeneo\Tool\Component\Batch\Query\SqlGetJobExecutionStatus'
         arguments:

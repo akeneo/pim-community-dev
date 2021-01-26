@@ -36,8 +36,6 @@ services:
             -
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.consolidate_dashboard_rates'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.purge_outdated_data'
-                - '@akeneo.pim.automation.data_quality_insights.connector.step.remove_evaluations_without_product'
-                - '@akeneo.pim.automation.data_quality_insights.connector.step.log_metrics'
             - true
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
@@ -84,22 +82,6 @@ services:
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PurgeOutdatedDataTasklet'
 
-    akeneo.pim.automation.data_quality_insights.connector.step.log_metrics:
-        class: '%pim_connector.step.tasklet.class%'
-        arguments:
-            - 'log_metrics'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\LogMetricsTasklet'
-
-    akeneo.pim.automation.data_quality_insights.connector.step.remove_evaluations_without_product:
-        class: '%pim_connector.step.tasklet.class%'
-        arguments:
-            - 'remove_evaluations_without_product'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\RemoveEvaluationsWithoutProductTasklet'
-
     #Tasklets
     akeneo.pim.automation.data_quality_insights.connector.tasklet.evaluate_products_and_product_models_criteria:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsAndProductModelsCriteriaTasklet
@@ -131,18 +113,6 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PurgeOutdatedDataTasklet:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData'
-            - '@logger'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\LogMetricsTasklet:
-        arguments:
-            - '@database_connection'
-            - '@logger'
-            - '@monolog.logger.quality'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\RemoveEvaluationsWithoutProductTasklet:
-        arguments:
-            - '@akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation'
-            - '@akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation'
             - '@logger'
 
     #Job parameters

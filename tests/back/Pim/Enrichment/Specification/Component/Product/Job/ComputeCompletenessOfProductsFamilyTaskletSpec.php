@@ -73,7 +73,7 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
         $cursor->next()->shouldBeCalled();
         $cursor->rewind()->shouldBeCalled();
 
-        $bulkProductSaver->saveAll([$product1, $product2, $product3])->shouldBeCalled();
+        $bulkProductSaver->saveAll([$product1, $product2, $product3], ['force_save' => true])->shouldBeCalled();
         $cacheClearer->clear()->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);

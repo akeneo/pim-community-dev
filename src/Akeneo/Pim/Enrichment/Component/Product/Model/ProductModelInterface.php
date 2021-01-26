@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
+use Akeneo\Tool\Component\StorageUtils\Model\StateUpdatedAware;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\Collection;
@@ -21,7 +22,8 @@ interface ProductModelInterface extends
     CategoryAwareInterface,
     EntityWithFamilyVariantInterface,
     EntityWithAssociationsInterface,
-    EntityWithQuantifiedAssociationsInterface
+    EntityWithQuantifiedAssociationsInterface,
+    StateUpdatedAware
 {
     /**
      * Gets the ID of the product model.
@@ -42,7 +44,7 @@ interface ProductModelInterface extends
      *
      * @param string $code
      */
-    public function setCode(string $code): void;
+    public function setCode(string $code): ProductModelInterface;
 
     /**
      * Gets the products of the product model.

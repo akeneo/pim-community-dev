@@ -5,8 +5,8 @@ import {
   getMeasurementFamilyLabel,
   getStandardUnitLabel,
 } from 'akeneomeasure/model/measurement-family';
-import {LabelCell, Row} from 'akeneomeasure/pages/common/Table';
 import {useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {Table} from 'akeneo-design-system';
 
 type MeasurementFamilyRowProps = {
   measurementFamily: MeasurementFamily;
@@ -18,12 +18,12 @@ const MeasurementFamilyRow = ({measurementFamily}: MeasurementFamilyRowProps) =>
   const measurementFamilyLabel = getMeasurementFamilyLabel(measurementFamily, locale);
 
   return (
-    <Row title={measurementFamilyLabel} onClick={() => history.push(`/${measurementFamily.code}`)}>
-      <LabelCell>{measurementFamilyLabel}</LabelCell>
-      <td>{measurementFamily.code}</td>
-      <td>{getStandardUnitLabel(measurementFamily, locale)}</td>
-      <td>{measurementFamily.units.length}</td>
-    </Row>
+    <Table.Row onClick={() => history.push(`/${measurementFamily.code}`)}>
+      <Table.Cell rowTitle={true}>{measurementFamilyLabel}</Table.Cell>
+      <Table.Cell>{measurementFamily.code}</Table.Cell>
+      <Table.Cell>{getStandardUnitLabel(measurementFamily, locale)}</Table.Cell>
+      <Table.Cell>{measurementFamily.units.length}</Table.Cell>
+    </Table.Row>
   );
 };
 
