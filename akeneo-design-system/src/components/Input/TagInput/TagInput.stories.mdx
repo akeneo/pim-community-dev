@@ -6,7 +6,7 @@ import {TagInput} from './TagInput.tsx';
   title="Components/Inputs/TagInput"
   component={TagInput}
   args={{
-      tags: [],
+      value: [],
       allowDuplicates: false,
       placeholder: 'Placeholder',
       isInvalid: false,
@@ -28,7 +28,6 @@ Tags can be separated thanks to the following characters:
 - comma
 - semi-colon
 
-
 ## Playground
 
 <Canvas>
@@ -36,7 +35,7 @@ Tags can be separated thanks to the following characters:
     {args => {
       const [tags, setTags] = useState([]);
       return (
-          <TagInput {...args} tags={tags} setTags={setTags}/>
+          <TagInput {...args} value={tags} onChange={setTags}/>
       );
     }}
   </Story>
@@ -47,23 +46,25 @@ Tags can be separated thanks to the following characters:
 ## With a list of existing tags
 
 <Canvas>
-  <Story name="existingTags">
+  <Story name="Existing value">
     {args => {
       return (
-        <TagInput tags={['batman', 'superman', 'catwoman', 'joker']} allowDuplicates={false} setTags={() => {}}/>
+        <TagInput value={['batman', 'superman', 'catwoman', 'joker']} allowDuplicates={false} onChange={() => {}}/>
       );
     }}
   </Story>
 </Canvas>
 
-## Duplicates can be allowed
-
+## Variation on invalid
 <Canvas>
-  <Story name="duplicatesAllowed">
-    {args => {
-      return (
-        <TagInput tags={['gucci', 'gucci', 'dior', 'dior']} allowDuplicates={false} setTags={() => {}}/>
-      );
-    }}
-  </Story>
+    <Story name="Variation on invalid">
+        {args => {
+            return (
+                <>
+                    <TagInput value={[]} onChange={() => {}} invalid={false}/>
+                    <TagInput value={[]} onChange={() => {}} invalid={true}/>
+                </>
+            );
+        }}
+    </Story>
 </Canvas>
