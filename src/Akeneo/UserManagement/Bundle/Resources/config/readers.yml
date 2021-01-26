@@ -9,17 +9,10 @@ services:
         arguments:
             - '@pim_user.repository.role'
 
-    pim_connector.processor.normalization.user_group:
-        class: '%pim_connector.processor.normalization.class%'
+    pim_connector.reader.database.user:
+        class: 'Akeneo\Tool\Component\Connector\Reader\Database\Reader'
         arguments:
-            - '@pim_user.normalizer.user_group'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-
-    pim_connector.processor.normalization.user_role:
-        class: '%pim_connector.processor.normalization.class%'
-        arguments:
-            - '@pim_user.normalizer.user_role'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_user.repository.user'
 
     pim_connector.reader.file.csv_user_group:
         class: '%pim_connector.reader.file.csv.class%'

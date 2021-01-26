@@ -22,6 +22,7 @@ class UserSpec extends ObjectBehavior
             'groups'         => 'Redactor',
             'enabled'        => '0',
             'timezone'       => '',
+            'product_grid_filters' => 'family,sku,name',
         ];
 
         $item = [
@@ -38,6 +39,7 @@ class UserSpec extends ObjectBehavior
             'groups'         => ['Redactor'],
             'enabled'        => false,
             'timezone'       => null,
+            'product_grid_filters' => ['family', 'sku', 'name'],
         ];
 
         $this->convert($item)->shouldReturn($expected);
