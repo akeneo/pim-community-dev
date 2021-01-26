@@ -53,9 +53,9 @@ services:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.dummy_item'
-            - '@pim_connector.processor.dummy_item'
-            - '@pim_connector.writer.dummy_item'
+            - '@pim_connector.reader.database.user'
+            - '@pim_connector.processor.normalization.user'
+            - '@pim_connector.writer.file.csv_user'
             - 100
             - '@akeneo_batch.job.job_stopper'
 
@@ -65,9 +65,9 @@ services:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.dummy_item'
-            - '@pim_connector.processor.dummy_item'
-            - '@pim_connector.writer.dummy_item'
+            - '@pim_connector.reader.database.user'
+            - '@pim_connector.processor.normalization.user'
+            - '@pim_connector.writer.file.xlsx_user'
             - 100
             - '@akeneo_batch.job.job_stopper'
 
