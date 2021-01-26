@@ -10,8 +10,7 @@ jest.mock('routing');
 
 describe('akeneoassetmanager/infrastructure/remover/asset', () => {
   it('It deletes a asset', async () => {
-    // @ts-ignore
-    fetch.deleteJSON = jest.fn().mockImplementationOnce(() => Promise.resolve());
+    jest.spyOn(fetch, 'deleteJSON').mockImplementation(() => Promise.resolve());
 
     await remover.remove('designer', 'starck');
 
@@ -19,8 +18,7 @@ describe('akeneoassetmanager/infrastructure/remover/asset', () => {
   });
 
   it('It deletes all asset family assets', async () => {
-    // @ts-ignore
-    fetch.deleteJSON = jest.fn().mockImplementationOnce(() => Promise.resolve());
+    jest.spyOn(fetch, 'deleteJSON').mockImplementation(() => Promise.resolve());
 
     await remover.removeAll('designer');
 
@@ -28,8 +26,7 @@ describe('akeneoassetmanager/infrastructure/remover/asset', () => {
   });
 
   it('It mass deletes asset from query', async () => {
-    // @ts-ignore
-    fetch.deleteJSON = jest.fn().mockImplementationOnce(() => Promise.resolve());
+    jest.spyOn(fetch, 'deleteJSON').mockImplementation(() => Promise.resolve());
     const query = createQuery(
       'packshot',
       [

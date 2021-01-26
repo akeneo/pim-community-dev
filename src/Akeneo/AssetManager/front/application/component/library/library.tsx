@@ -320,7 +320,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                           ? [
                               {
                                 label: translate('pim_asset_manager.asset.button.create'),
-                                action: () => openCreateAssetModalOpen,
+                                action: openCreateAssetModalOpen,
                               },
                             ]
                           : []),
@@ -519,7 +519,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           assetFamilyIdentifier={currentAssetFamilyIdentifier}
           selectedAssetCount={selectedCount}
           onConfirm={handleMassDelete}
-          onCancel={() => closeMassDeleteModal()}
+          onCancel={closeMassDeleteModal}
         />
       )}
     </Container>
