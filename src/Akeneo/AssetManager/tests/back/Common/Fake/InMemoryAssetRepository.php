@@ -132,15 +132,6 @@ class InMemoryAssetRepository implements AssetRepositoryInterface
         }
     }
 
-    public function deleteByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): void
-    {
-        foreach ($this->assets as $index => $asset) {
-            if ($asset->getAssetFamilyIdentifier()->equals($assetFamilyIdentifier)) {
-                unset($this->assets[$index]);
-            }
-        }
-    }
-
     public function count(): int
     {
         return count($this->assets);

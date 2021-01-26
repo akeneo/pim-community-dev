@@ -58,11 +58,6 @@ akeneo_assetmanager_asset_delete:
     label: akeneo_assetmanager.acl.asset.delete
     group_name: akeneo_assetmanager.acl_group.asset_manager
 
-akeneo_assetmanager_assets_delete_all:
-    type: action
-    label: akeneo_assetmanager.acl.asset.delete_all
-    group_name: akeneo_assetmanager.acl_group.asset_manager
-
 akeneo_assetmanager_attribute_create:
     type: action
     label: akeneo_assetmanager.acl.attribute.create

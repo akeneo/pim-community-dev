@@ -13,7 +13,6 @@ default:
                 - akeneo_assetmanager.tests.back.acceptance.context.create_asset_context
                 - akeneo_assetmanager.tests.back.acceptance.context.list_asset_context
                 - akeneo_assetmanager.tests.back.acceptance.context.delete_asset_context
-                - akeneo_assetmanager.tests.back.acceptance.context.delete_all_assets_context
                 - akeneo_assetmanager.tests.back.acceptance.context.create_attribute_context
                 - akeneo_assetmanager.tests.back.acceptance.context.append_attribute_option_context
                 - akeneo_assetmanager.tests.back.acceptance.context.edit_attribute_option_context

@@ -89,11 +89,6 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
 
-    akeneo_assetmanager.application.asset.delete_all_asset_family_assets_handler:
-        class: Akeneo\AssetManager\Application\Asset\DeleteAllAssets\DeleteAllAssetFamilyAssetsHandler
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
-
     akeneo_assetmanager.application.asset.search_asset:
         class: Akeneo\AssetManager\Application\Asset\SearchAsset\SearchAsset
         arguments:

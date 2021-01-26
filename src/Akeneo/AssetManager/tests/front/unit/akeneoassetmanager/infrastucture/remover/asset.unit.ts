@@ -17,14 +17,6 @@ describe('akeneoassetmanager/infrastructure/remover/asset', () => {
     expect(fetch.deleteJSON).toHaveBeenCalledWith('akeneo_asset_manager_asset_delete_rest');
   });
 
-  it('It deletes all asset family assets', async () => {
-    jest.spyOn(fetch, 'deleteJSON').mockImplementation(() => Promise.resolve());
-
-    await remover.removeAll('designer');
-
-    expect(fetch.deleteJSON).toHaveBeenCalledWith('akeneo_asset_manager_asset_delete_all_rest');
-  });
-
   it('It mass deletes asset from query', async () => {
     jest.spyOn(fetch, 'deleteJSON').mockImplementation(() => Promise.resolve());
     const query = createQuery(

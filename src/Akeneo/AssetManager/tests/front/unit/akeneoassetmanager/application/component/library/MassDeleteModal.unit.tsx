@@ -2,16 +2,11 @@ import '@testing-library/jest-dom';
 import React from 'react';
 import {fireEvent, screen, act} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
-import {MassDeleteModal} from "../../../../../../../front/application/component/library/MassDeleteModal";
+import {MassDeleteModal} from '../../../../../../../front/application/component/library/MassDeleteModal';
 
 test('it renders a confirm modal delete', async () => {
   renderWithProviders(
-    <MassDeleteModal
-      onCancel={jest.fn()}
-      onConfirm={jest.fn()}
-      assetFamilyIdentifier="foo"
-      selectedAssetCount={4}
-    />
+    <MassDeleteModal onCancel={jest.fn()} onConfirm={jest.fn()} assetFamilyIdentifier="foo" selectedAssetCount={4} />
   );
 
   expect(screen.getByText('pim_common.confirm_deletion')).toBeInTheDocument();

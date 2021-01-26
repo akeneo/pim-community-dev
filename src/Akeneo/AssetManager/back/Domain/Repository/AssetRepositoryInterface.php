@@ -46,8 +46,6 @@ interface AssetRepositoryInterface
      */
     public function deleteByAssetFamilyAndCode(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $code): void;
 
-    public function deleteByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): void;
-
     public function count(): int;
 
     public function countByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int;

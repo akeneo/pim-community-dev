@@ -24,14 +24,6 @@ export class AssetRemoverImplementation implements AssetRemover<AssetFamilyIdent
     ).catch(errorHandler);
   }
 
-  async removeAll(assetFamilyIdentifier: AssetFamilyIdentifier): Promise<ValidationError[] | null> {
-    return await deleteJSON(
-      routing.generate('akeneo_asset_manager_asset_delete_all_rest', {
-        assetFamilyIdentifier: denormalizeAssetFamilyIdentifier(assetFamilyIdentifier),
-      })
-    ).catch(errorHandler);
-  }
-
   async removeFromQuery(assetFamilyIdentifier: AssetFamilyIdentifier, query: Query): Promise<void> {
     return await deleteJSON(
       routing.generate('akeneo_asset_manager_asset_mass_delete_rest', {

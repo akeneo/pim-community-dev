@@ -224,26 +224,6 @@ SQL;
         }
     }
 
-    public function deleteByAssetFamily(
-        AssetFamilyIdentifier $assetFamilyIdentifier
-    ): void {
-        $sql = <<<SQL
-        DELETE FROM akeneo_asset_manager_asset
-        WHERE asset_family_identifier = :asset_family_identifier;
-SQL;
-        $this->sqlConnection->executeUpdate(
-            $sql,
-            [
-                'asset_family_identifier' => (string) $assetFamilyIdentifier,
-            ]
-        );
-
-        $this->eventDispatcher->dispatch(
-            new AssetFamilyAssetsDeletedEvent($assetFamilyIdentifier),
-            AssetFamilyAssetsDeletedEvent::class
-        );
-    }
-
     public function deleteByAssetFamilyAndCode(
         AssetFamilyIdentifier $assetFamilyIdentifier,
         AssetCode $code

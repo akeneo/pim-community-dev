@@ -94,31 +94,6 @@ const SearchBarPlaceholder = styled.div`
   width: 100%;
 `;
 
-const SecondaryActions = ({
-  canDeleteAllAssets,
-  onOpenDeleteAllAssetsModal,
-}: {
-  onOpenDeleteAllAssetsModal: () => void;
-  canDeleteAllAssets: boolean;
-}) => {
-  const translate = useTranslate();
-  if (!canDeleteAllAssets) return null;
-
-  return (
-    <div className="AknSecondaryActions AknDropdown AknButtonList-item">
-      <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
-      <div className="AknDropdown-menu AknDropdown-menu--right">
-        <div className="AknDropdown-menuTitle">{translate('pim_datagrid.actions.other')}</div>
-        <div>
-          <button tabIndex={-1} className="AknDropdown-menuLink" onClick={onOpenDeleteAllAssetsModal}>
-            {translate('pim_asset_manager.asset.button.delete_all')}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const useRoutes = () => {
   const {generate, redirect} = useRouter();
   const redirectToAsset = useCallback((assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => {
@@ -181,7 +156,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
   const [isCreateAssetFamilyModalOpen, openCreateAssetFamilyModal, closeCreateAssetFamilyModal] = useBooleanState(
     false
   );
-  const [, setDeleteAllAssetsModalOpen] = useState<boolean>(false);
   const notify = useNotify();
   const translate = useTranslate();
 
@@ -359,12 +333,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
               </ButtonContainer>
             )}
             context={context}
-            secondaryActions={() => (
-              <SecondaryActions
-                onOpenDeleteAllAssetsModal={() => setDeleteAllAssetsModalOpen(true)}
-                canDeleteAllAssets={rights.asset.deleteAll}
-              />
-            )}
             withLocaleSwitcher={true}
             withChannelSwitcher={true}
             isDirty={false}
