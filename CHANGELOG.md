@@ -5,6 +5,7 @@
 - PIM-9640: Fix asset and record imports in XLSX when sone cells contain only numeric characters
 - PIM-9646: Make the rule engine execution permission agnostic
 - PIM-9649: Fix PDF product renderer disregarding permissions on Attribute groups
+- PIM-9651: Concatenate rule does not keep anymore the trailing zeros on a decimal number
 
 ## Improvements
 
