@@ -341,7 +341,7 @@ pim_asset_manager:
     delete_all:
       confirm: Are you sure you want to delete all "{{ entityIdentifier }}" assets? If they are linked to products, the links to the products will be removed.
     mass_delete:
-      confirm: '[0,1]Are you sure you want to delete the {{ asset_count }} selected asset?|]1,Inf]Are you sure you want to delete the {{ asset_count }} selected assets?'
+      confirm: '[0,1]Are you sure you want to delete the {{ assetCount }} selected asset?|]1,Inf]Are you sure you want to delete the {{ assetCount }} selected assets?'
       extra_information: If they are linked to products, the links to the products will be removed.
       confirm_label: Please type "{{ assetFamilyIdentifier }}"
       title: Assets

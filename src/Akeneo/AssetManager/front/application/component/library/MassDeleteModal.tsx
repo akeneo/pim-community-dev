@@ -2,31 +2,32 @@ import React, {useState} from 'react';
 import {
   Button,
   DeleteIllustration,
-  Field, getColor,
+  Field,
+  getColor,
   Key,
   Modal,
   SectionTitle,
   TextInput,
   Title,
-  useShortcut
-} from "akeneo-design-system";
-import {useTranslate} from "@akeneo-pim-community/legacy-bridge/src";
-import AssetFamilyIdentifier from "../../../domain/model/asset-family/identifier";
-import styled from "styled-components";
+  useShortcut,
+} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import AssetFamilyIdentifier from '../../../domain/model/asset-family/identifier';
+import styled from 'styled-components';
 
 type MassDeleteModalProps = {
-  onConfirm: () => void,
-  onCancel: () => void,
-  selectedAssetCount: number,
-  assetFamilyIdentifier: AssetFamilyIdentifier
-}
+  onConfirm: () => void;
+  onCancel: () => void;
+  selectedAssetCount: number;
+  assetFamilyIdentifier: AssetFamilyIdentifier;
+};
 
 const Highlight = styled.span`
   color: ${getColor('brand', 100)};
   font-weight: bold;
 `;
 
-const SpacedField = styled(Field) `
+const SpacedField = styled(Field)`
   margin-top: 20px;
 `;
 
@@ -48,7 +49,7 @@ const MassDeleteModal = ({onConfirm, onCancel, assetFamilyIdentifier, selectedAs
       <SectionTitle color="brand">{translate('pim_asset_manager.asset.mass_delete.title')}</SectionTitle>
       <Title>{translate('pim_common.confirm_deletion')}</Title>
       <Highlight>
-        {translate('pim_asset_manager.asset.mass_delete.confirm', {asset_count: selectedAssetCount}, selectedAssetCount)}
+        {translate('pim_asset_manager.asset.mass_delete.confirm', {assetCount: selectedAssetCount}, selectedAssetCount)}
       </Highlight>
       {translate('pim_asset_manager.asset.mass_delete.extra_information')}
       <SpacedField label={translate('pim_asset_manager.asset.mass_delete.confirm_label', {assetFamilyIdentifier})}>
@@ -63,7 +64,7 @@ const MassDeleteModal = ({onConfirm, onCancel, assetFamilyIdentifier, selectedAs
         </Button>
       </Modal.BottomButtons>
     </Modal>
-  )
-}
+  );
+};
 
 export {MassDeleteModal};
