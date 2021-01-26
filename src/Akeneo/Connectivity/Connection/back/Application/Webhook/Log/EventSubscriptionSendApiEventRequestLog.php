@@ -140,7 +140,7 @@ class EventSubscriptionSendApiEventRequestLog
             throw new \RuntimeException();
         }
 
-        $duration_seconds = $this->endTime - $this->startTime;
+        $durationSeconds = $this->endTime - $this->startTime;
 
         return (int) round($duration_seconds * 1000);
     }
