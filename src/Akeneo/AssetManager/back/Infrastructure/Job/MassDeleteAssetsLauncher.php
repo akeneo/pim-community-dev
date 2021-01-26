@@ -23,8 +23,7 @@ use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
  */
 class MassDeleteAssetsLauncher implements MassDeleteAssetsLauncherInterface
 {
-    /** @var PublishJobToQueue */
-    private $publishJobToQueue;
+    private PublishJobToQueue $publishJobToQueue;
 
     public function __construct(PublishJobToQueue $publishJobToQueue)
     {
