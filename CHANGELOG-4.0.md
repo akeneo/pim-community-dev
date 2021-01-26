@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.87 (2021-01-26)
+
 ## Bug fixes
 
 - PIM-9644: Now using interface in Clean removed attributes command constructor
