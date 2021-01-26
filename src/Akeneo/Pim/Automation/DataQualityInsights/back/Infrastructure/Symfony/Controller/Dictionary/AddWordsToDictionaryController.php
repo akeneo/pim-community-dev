@@ -36,11 +36,14 @@ final class AddWordsToDictionaryController
     public function add(Request $request, string $localeCode)
     {
         $localeCode = new LocaleCode($localeCode);
-        $words = json_decode($request->getContent(), true);
+        $words = [];
+        foreach (json_decode($request->getContent(), true) as $word) {
+            try {
+                $words[] = new TextCheckerDictionaryWord($localeCode, new DictionaryWord($word));
+            } catch (\InvalidArgumentException $e) {}
+        }
 
-        $this->dictionaryRepository->saveAll(
-            array_map(fn ($word) => new TextCheckerDictionaryWord($localeCode, new DictionaryWord($word)), $words)
-        );
+        $this->dictionaryRepository->saveAll($words);
 
         return new JsonResponse(null, JsonResponse::HTTP_CREATED);
     }

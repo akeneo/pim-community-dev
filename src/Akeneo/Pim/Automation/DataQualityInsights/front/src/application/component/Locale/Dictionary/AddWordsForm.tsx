@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button} from 'akeneo-design-system';
+import {Button, Field} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {TagInput} from '../TagInput';
@@ -19,34 +19,36 @@ const AddWordsForm = () => {
   }
 
   return (
-    <Container>
-      {translate('akeneo_data_quality_insights.dictionary.add_words')}
-
-      <InputContainer>
-        <TextInputContainer>
-          <TagInput allowDuplicates={false} defaultTags={words} onTagsUpdate={(words: string[]) => setWords(words)}/>
-        </TextInputContainer>
-
-        <Button ghost level="tertiary" onClick={onAddWords}>
-          {translate('pim_common.add')}
-        </Button>
-      </InputContainer>
+    <Container className={'filter-box'}>
+      <Field label={translate('akeneo_data_quality_insights.dictionary.add_words')}>
+        <FieldContent>
+          <TagInputContainer>
+            <TagInput allowDuplicates={false} tags={words} setTags={setWords}/>
+          </TagInputContainer>
+          <Button ghost level="tertiary" onClick={onAddWords}>
+            {translate('pim_common.add')}
+          </Button>
+        </FieldContent>
+      </Field>
     </Container>
   );
 };
 
+const FieldContent = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const Container = styled.div`
   width: 550px;
   margin: 20px auto 0 auto;
+
+  > * {
+    max-width: inherit;
+  }
 `;
 
-const InputContainer = styled.div`
-  align-items: center;
-  display: flex;
-  margin-top: 5px;
-`;
-
-const TextInputContainer = styled.div`
+const TagInputContainer = styled.div`
   flex: 1;
   margin-right: 10px;
 `;

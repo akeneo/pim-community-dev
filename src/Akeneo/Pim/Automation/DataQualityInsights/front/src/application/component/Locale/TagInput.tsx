@@ -1,4 +1,4 @@
-import React, {useState, useRef, ChangeEvent, FC, RefObject, KeyboardEvent, useEffect} from 'react';
+import React, {useState, useRef, ChangeEvent, FC, RefObject, KeyboardEvent, useCallback} from 'react';
 import styled from 'styled-components';
 import {CloseIcon, getColor, AkeneoThemedProps} from 'akeneo-design-system';
 
@@ -9,83 +9,123 @@ type TagInputProps = {
   allowDuplicates: boolean;
 
   /**
-   * Default tags to display
+   * Tags to display
    */
-  defaultTags?: string[];
+  tags: string[];
 
   /**
    * Handle called when tags are updated
    */
-  onTagsUpdate: (tags: string[]) => void;
+  setTags: (tags: string[]) => void;
+
+  /**
+   * Placeholder displayed where there is no tag
+   */
+  placeholder?: string;
+
+  /**
+   * Defines if the input is valid on not.
+   */
+  isInvalid?: boolean;
 };
 
-const TagInput: FC<TagInputProps> = ({allowDuplicates, onTagsUpdate, defaultTags = []}) => {
-  const [tags, setTags] = useState<string[]>(defaultTags);
+const TagInput: FC<TagInputProps> = ({allowDuplicates, setTags, placeholder, isInvalid, tags = []}) => {
   const [isLastTagSelected, selectLastTag] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLUListElement>(null);
   const inputContainerRef = useRef<HTMLLIElement>(null);
 
-  const addTag = (event: ChangeEvent<HTMLInputElement>) => {
-    const tagsAsString = event.currentTarget.value;
-    if (tagsAsString !== '') {
-      let newTags = tagsAsString.split(/[\s,;]+/);
-      if (newTags.length === 1) {
-        return;
+  const updateTags = useCallback((updatedTags: string[]) => {
+    updatedTags = updatedTags.slice(0, Math.min(100, updatedTags.length));
+    setTags(updatedTags);
+  }, [setTags]);
+
+  const onChangeCreateTags = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const tagsAsString = event.currentTarget.value;
+      if (tagsAsString !== '') {
+        let newTags = tagsAsString.split(/[\s,;]+/);
+        if (newTags.length === 1) {
+          return;
+        }
+        newTags = newTags.filter((tag: string) => tag.trim() !== '');
+
+        createTags([...tags, ...newTags]);
       }
-      newTags = newTags.filter((tag: string) => tag.trim() !== '');
-      newTags = [...tags, ...newTags];
-      if (!allowDuplicates) {
-        newTags = arrayUnique(newTags);
-      }
-      setTags(newTags);
-      if (inputRef && inputRef.current) {
-        inputRef.current.value = '';
-      }
+    },
+    [tags]
+  );
+
+  const onBlurCreateTag = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    const inputCurrentValue = event.currentTarget.value.trim();
+    if (inputCurrentValue !== '') {
+      createTags([...tags, ...[inputCurrentValue]]);
     }
-  };
-
-  const removeTag = (tagIdToRemove: number) => {
-    const clonedTags = [...tags];
-    clonedTags.splice(tagIdToRemove, 1);
-    setTags(clonedTags);
-  };
-
-  const focusOnInputText = (event: MouseEvent, ref: RefObject<HTMLElement>) => {
-    if (ref && ref.current === event.target && inputRef && inputRef.current) {
-      inputRef.current.focus();
-    }
-  };
-
-  const handleTagDeletionUsingKeyboard = (event: KeyboardEvent) => {
-    if (!['Backspace', 'Delete'].includes(event.key)) {
-      selectLastTag(false);
-      return;
-    }
-
-    if (tags.length === 0 || (inputRef && inputRef.current && inputRef.current.value.trim() !== '')) {
-      return;
-    }
-
-    if (!isLastTagSelected) {
-      selectLastTag(true);
-    } else {
-      const newTags = tags.slice(0, tags.length - 1);
-      setTags(newTags);
-      selectLastTag(false);
-    }
-  };
-
-  useEffect(() => {
-    setTags(defaultTags);
-  }, [defaultTags]);
-
-  useEffect(() => {
-    onTagsUpdate(tags);
   }, [tags]);
 
+  const createTags = useCallback((newTags: string[]) => {
+    if (!allowDuplicates) {
+      newTags = arrayUnique(newTags);
+    }
+    updateTags(newTags);
+    if (inputRef && inputRef.current) {
+      inputRef.current.value = '';
+    }
+  }, [arrayUnique, inputRef, updateTags]);
+
+  const removeTag = useCallback(
+    (tagIdToRemove: number) => {
+      const clonedTags = [...tags];
+      clonedTags.splice(tagIdToRemove, 1);
+      updateTags(clonedTags);
+    },
+    [tags, updateTags]
+  );
+
+  const focusOnInputField = useCallback(
+    (event: MouseEvent, ref: RefObject<HTMLElement>) => {
+      if (ref && ref.current === event.target && inputRef && inputRef.current) {
+        inputRef.current.focus();
+      }
+    },
+    [inputRef]
+  );
+
+  const handleTagDeletionUsingKeyboard = useCallback(
+    (event: KeyboardEvent) => {
+      if (!['Backspace', 'Delete'].includes(event.key)) {
+        selectLastTag(false);
+
+        if (tags.length >= 100) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+
+        return;
+      }
+
+      if (tags.length === 0 || (inputRef && inputRef.current && inputRef.current.value.trim() !== '')) {
+        return;
+      }
+
+      if (!isLastTagSelected) {
+        selectLastTag(true);
+      } else {
+        const newTags = tags.slice(0, tags.length - 1);
+        updateTags(newTags);
+        selectLastTag(false);
+      }
+    },
+    [isLastTagSelected, selectLastTag, updateTags, tags, inputRef]
+  );
+
   return (
-    <TagContainer ref={containerRef} onClick={(event: MouseEvent) => focusOnInputText(event, containerRef)}>
+    <TagContainer
+      data-testid={'container'}
+      ref={containerRef}
+      isInvalid={isInvalid}
+      onClick={(event: MouseEvent) => focusOnInputField(event, containerRef)}
+    >
       {tags.map((tag, key) => {
         return (
           <Tag key={key} data-testid={'tag'} isSelected={key === tags.length - 1 && isLastTagSelected}>
@@ -94,13 +134,19 @@ const TagInput: FC<TagInputProps> = ({allowDuplicates, onTagsUpdate, defaultTags
           </Tag>
         );
       })}
-      <Tag key="inputer" ref={inputContainerRef} onClick={(event: any) => focusOnInputText(event, inputContainerRef)}>
+      <Tag
+        key="tag-input"
+        ref={inputContainerRef}
+        onClick={(event: MouseEvent) => focusOnInputField(event, inputContainerRef)}
+      >
         <input
           type="text"
           data-testid={'tag-input'}
           ref={inputRef}
+          placeholder={tags.length === 0 ? placeholder : ''}
           onKeyDownCapture={handleTagDeletionUsingKeyboard}
-          onChange={addTag}
+          onChange={onChangeCreateTags}
+          onBlurCapture={onBlurCreateTag}
         />
       </Tag>
     </TagContainer>
@@ -112,26 +158,31 @@ const arrayUnique = (array: string[]) => {
 };
 
 const RemoveTagIcon = styled(CloseIcon)<AkeneoThemedProps>`
-  width: 15px;
-  height: 15px;
-  color: ${getColor('grey', 100)};
-  margin-right: 3px;
+  width: 12px;
+  height: 12px;
+  color: ${getColor('grey', 120)};
+  margin-right: 2px;
   cursor: pointer;
 `;
 
-const TagContainer = styled.ul<AkeneoThemedProps>`
-  border: 1px ${getColor('grey', 80)} solid;
+const TagContainer = styled.ul<AkeneoThemedProps & {isInvalid: boolean}>`
+  border: 1px solid ${({isInvalid}) => (isInvalid ? getColor('red', 100) : getColor('grey', 80))};
   border-radius: 2px;
   padding: 5px;
   display: flex;
   flex-wrap: wrap;
-  min-height: 42px;
+  min-height: 45px;
   gap: 5px;
+  box-sizing: border-box;
+
+  &:focus-within {
+    box-shadow: 0 0 0 2px ${getColor('blue', 40)};
+  }
 `;
 
 const Tag = styled.li<AkeneoThemedProps & {isSelected: boolean}>`
   list-style-type: none;
-  padding: 4px;
+  padding: 4px 17px 4px 4px;
   border: 1px ${getColor('grey', 80)} solid;
   background-color: ${props => (props.isSelected ? getColor('grey', 40) : getColor('grey', 20))};
   display: flex;
@@ -149,6 +200,10 @@ const Tag = styled.li<AkeneoThemedProps & {isSelected: boolean}>`
     border: 0;
     outline: 0;
     color: ${getColor('grey', 120)};
+
+    &::placeholder {
+      color: ${getColor('grey', 100)};
+    }
   }
 `;
 
