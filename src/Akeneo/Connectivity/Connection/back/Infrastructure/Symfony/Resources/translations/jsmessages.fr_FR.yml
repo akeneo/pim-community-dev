@@ -198,6 +198,7 @@ akeneo_connectivity.connection:
     helper:
       message: L'application connectée grâce à la connexion courante peut recevoir des événements grâce à l'Events API du PIM. Pour cela, merci de remplir l'URL ci-dessous. 
       link: En savoir plus sur la configuration de la souscription aux événements...
+      url.test_disabled: Veuillez cliquer sur le bouton Enregistrer pour pouvoir tester l'URL.
     form:
       url: URL
       secret: Secret
