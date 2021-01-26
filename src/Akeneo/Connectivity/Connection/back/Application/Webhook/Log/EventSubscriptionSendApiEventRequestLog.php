@@ -73,6 +73,8 @@ class EventSubscriptionSendApiEventRequestLog
      *      name: string,
      *      timestamp: int|null,
      *  }>,
+     *  max_propagation_seconds?: int,
+     *  min_propagation_seconds?: int,
      * }
      */
     public function toLog(): array
@@ -94,9 +96,44 @@ class EventSubscriptionSendApiEventRequestLog
                     'timestamp' => $date ? $date->getTimestamp() : null,
                 ];
             }, $this->webhookRequest->apiEvents()),
-        ];
+        ] + $this->getPropagationSeconds();
     }
 
+    /**
+     * @return array{
+     *  max_propagation_seconds?: int,
+     *  min_propagation_seconds?: int,
+     * }
+     */
+    private function getPropagationSeconds(): array
+    {
+        $youngerEventTimestamp = null;
+        $olderEventTimestamp = null;
+        foreach ($this->webhookRequest->apiEvents() as $event) {
+            $date = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, $event->eventDateTime());
+            $timestamp = $date ? $date->getTimestamp() : null;
+
+            if (null === $youngerEventTimestamp) {
+                $youngerEventTimestamp = $timestamp;
+            }
+            if (null !== $timestamp) {
+                $youngerEventTimestamp = max($timestamp, $youngerEventTimestamp);
+            }
+
+            if (null === $olderEventTimestamp) {
+                $olderEventTimestamp = $timestamp;
+            }
+            if (null !== $timestamp) {
+                $olderEventTimestamp = min($timestamp, $olderEventTimestamp);
+            }
+        }
+        
+        return null !== $olderEventTimestamp && null !== $youngerEventTimestamp ? [
+            'max_propagation_seconds' => (int) $this->endTime - $olderEventTimestamp,
+            'min_propagation_seconds' => (int) $this->endTime - $youngerEventTimestamp,
+        ] : [];
+    }
+    
     private function getDuration(): int
     {
         if (null === $this->endTime) {
