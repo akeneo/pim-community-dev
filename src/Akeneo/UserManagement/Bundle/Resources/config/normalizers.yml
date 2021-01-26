@@ -17,4 +17,4 @@ services:
     pim_user.normalizer.user_group:
         class: Akeneo\UserManagement\Component\Normalizer\GroupNormalizer
         tags:
-            - { name: pim_internal_api_serializer.normalizer }
+            - { name: pim_standard_format_serializer.normalizer }

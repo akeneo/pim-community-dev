@@ -16,7 +16,7 @@ use Webmozart\Assert\Assert;
 final class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var string[] */
-    protected array $supportedFormats = ['array', 'standard', 'internal_api'];
+    protected array $supportedFormats = ['array', 'standard'];
 
     /**
      * {@inheritdoc}
