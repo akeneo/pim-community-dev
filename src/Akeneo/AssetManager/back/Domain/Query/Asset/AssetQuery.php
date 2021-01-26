@@ -156,7 +156,7 @@ class AssetQuery
         AssetQuery $assetQuery,
         AssetCode $searchAfterCode
     ): AssetQuery {
-        return new AssetQuery(
+        return new self(
             $assetQuery->channel,
             $assetQuery->locale,
             $assetQuery->filters,

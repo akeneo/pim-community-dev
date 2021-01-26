@@ -86,4 +86,26 @@ class AssetQuerySpec extends ObjectBehavior
         $this->hasFilter('values.*')->shouldReturn(true);
         $this->hasFilter('completeness')->shouldReturn(false);
     }
+
+    function it_can_be_normalized()
+    {
+        $this->normalize()->shouldReturn([
+            'channel' => 'ecommerce',
+            'locale' => 'en_US',
+            'filters' => [
+                [
+                    'field' => 'full_text',
+                    'operator' => '=',
+                    'value' => 'test'
+                ],
+                [
+                    'field' => 'values.main_color_designers_fingerprint',
+                    'operator' => '=',
+                    'value' => 'blue'
+                ]
+            ],
+            'page' => 0,
+            'size' => 20
+        ]);
+    }
 }
