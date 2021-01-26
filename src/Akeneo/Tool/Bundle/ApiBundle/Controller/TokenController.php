@@ -15,12 +15,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class TokenController
 {
-    /** @var OAuth2 */
-    protected $oauthServer;
+    // Maximum allowed request content size (in bytes)
+    protected const CONTENT_MAX_SIZE = 200;
 
-    /**
-     * @param OAuth2 $oauthServer
-     */
+    protected OAuth2 $oauthServer;
+
     public function __construct(OAuth2 $oauthServer)
     {
         $this->oauthServer = $oauthServer;
@@ -35,6 +34,10 @@ class TokenController
      */
     public function tokenAction(Request $request)
     {
+        if (self::CONTENT_MAX_SIZE < strlen($request->getContent())) {
+            throw new UnprocessableEntityHttpException('The request content size is too large');
+        }
+
         try {
             return $this->oauthServer->grantAccessToken($request);
         } catch (OAuth2ServerException $e) {
