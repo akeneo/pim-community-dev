@@ -87,6 +87,9 @@ batch_jobs:
     csv_group_type_import:
         label: Group type import in CSV
         import.label: Group type import
+    csv_user_group_import:
+        label: User group import in CSV
+        import.label: User group import
     xlsx_category_import:
         label: Category import in XLSX
         import.label: Category import
@@ -156,3 +159,6 @@ batch_jobs:
     xlsx_group_type_import:
         label: Group type import in XLSX
         import.label: Group type import
+    xlsx_user_group_import:
+        label: User group import in XLSX
+        import.label: User group import
