@@ -32,6 +32,7 @@ jobs:
           command: |
             cd /home/circleci/project
             git checkout ${CIRCLE_BRANCH} || git checkout master
+            echo "Current commit: $(git rev-parse --short HEAD)"
       - run:
           name: Require proper dev CE branch
           command: |
