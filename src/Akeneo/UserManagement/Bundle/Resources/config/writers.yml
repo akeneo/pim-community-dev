@@ -32,11 +32,23 @@ services:
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.user'
             - '@pim_connector.factory.flat_item_buffer'
-            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_user.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.xlsx_user:
         class: 'Akeneo\Tool\Component\Connector\Writer\File\Xlsx\Writer'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.user'
             - '@pim_connector.factory.flat_item_buffer'
-            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_user.writer.file.flat_item_buffer_flusher'
+
+    pim_user.writer.file.flat_item_buffer_flusher:
+        class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
+        arguments:
+            - '@pim_connector.writer.file.default.column_presenter'
+            - '@pim_user.writer.file.column_sorter'
+
+    pim_user.writer.file.column_sorter:
+        class: '%pim_connector.writer.file.default.column_sorter.class%'
+        arguments:
+            - '@pim_connector.array_converter.field_splitter'
+            - [ 'username', 'email' ]
