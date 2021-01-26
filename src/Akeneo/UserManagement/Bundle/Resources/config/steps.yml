@@ -22,6 +22,3 @@ services:
             - '@pim_connector.writer.file.xlsx_user_group'
             - 100
             - '@akeneo_batch.job.job_stopper'
-
-    # Writers
-
