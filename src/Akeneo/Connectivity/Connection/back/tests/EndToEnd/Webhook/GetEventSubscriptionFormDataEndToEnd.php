@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
@@ -57,7 +58,6 @@ class GetEventSubscriptionFormDataEndToEnd extends WebTestCase
                     'enabled' => true,
                     'secret' => 'secret',
                     'url' => 'http://test.com',
-                    'connectionImage' => null,
                 ],
                 'active_event_subscriptions_limit' => [
                     'limit' => 3,
