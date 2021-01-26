@@ -6,6 +6,7 @@ use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
@@ -16,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 class TokenController
 {
     // Maximum allowed request content size (in bytes)
-    protected const CONTENT_MAX_SIZE = 200;
+    protected const MAX_CONTENT_SIZE = 300;
 
     protected OAuth2 $oauthServer;
 
@@ -28,14 +29,17 @@ class TokenController
     /**
      * @param Request $request
      *
-     * @throws UnprocessableEntityHttpException
+     * @throws HttpException
      *
      * @return Response
      */
     public function tokenAction(Request $request)
     {
-        if (self::CONTENT_MAX_SIZE < strlen($request->getContent())) {
-            throw new UnprocessableEntityHttpException('The request content size is too large');
+        if (self::MAX_CONTENT_SIZE < strlen($request->getContent())) {
+            throw new HttpException(
+                Response::HTTP_REQUEST_ENTITY_TOO_LARGE,
+                sprintf('Request content exceeded the maximum allowed size of %s bytes', self::MAX_CONTENT_SIZE)
+            );
         }
 
         try {
