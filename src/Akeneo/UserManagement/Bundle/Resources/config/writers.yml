@@ -1,0 +1,14 @@
+services:
+    pim_connector.writer.file.csv_user_group:
+        class: '%pim_connector.writer.file.csv.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.user_group'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+
+    pim_connector.writer.file.xlsx_user_group:
+        class: '%pim_connector.writer.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.user_group'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
