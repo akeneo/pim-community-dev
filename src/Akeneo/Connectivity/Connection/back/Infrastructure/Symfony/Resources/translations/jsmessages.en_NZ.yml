@@ -77,6 +77,8 @@ akeneo_connectivity.connection:
   webhook:
     title: Event subscription
     event_subscription: Event subscription
+    helper:
+      url.test_disabled: Please, click on the Save button to be able to test the URL.
     form:
       secret: Secret
   runtime_error:
