@@ -8,7 +8,7 @@
 - PIM-9630: Fix SQL sort buffer size issue when the catalog has a very large number of categories
 - PIM-9636: Fix add posibility to contextualize translation when create a variant depending on number of axes
 - PIM-9631: fix attribute groups not displayed in family due to JS error
-
+- PIM-9649: Fix PDF product renderer disregarding permissions on Attribute groups
 ## New features
 
 ## Improvements

@@ -105,9 +105,15 @@ class ProductPdfRenderer implements RendererInterface
     }
 
     /**
-     * get attributes grouped by attribute group
-     *
-     * @param ProductInterface $product
+     * Return true if the attribute should be rendered
+     */
+    protected function canRenderAttribute(?AttributeInterface $attribute): bool
+    {
+        return null !== $attribute;
+    }
+
+    /**
+     * Get attributes grouped by attribute group
      *
      * @return AttributeInterface[]
      */
@@ -122,7 +128,7 @@ class ProductPdfRenderer implements RendererInterface
 
         foreach ($attributeCodes as $attributeCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-            if (null !== $attribute) {
+            if ($this->canRenderAttribute($attribute)) {
                 $groupLabel = $attribute->getGroup()->getLabel();
                 if (!isset($groups[$groupLabel])) {
                     $groups[$groupLabel] = [];
