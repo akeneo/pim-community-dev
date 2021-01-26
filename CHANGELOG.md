@@ -9,6 +9,8 @@
 - PIM-9636: Fix add posibility to contextualize translation when create a variant depending on number of axes
 - PIM-9631: fix attribute groups not displayed in family due to JS error
 - PIM-9649: Fix PDF product renderer disregarding permissions on Attribute groups
+- PIM-9650: Add translation key for mass delete action.
+
 ## New features
 
 ## Improvements
