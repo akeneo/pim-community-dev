@@ -120,6 +120,23 @@ jobs:
             filePathProductModel: /tmp/2_product_models_export_grid_context_%locale%_%scope%_%datetime%.xlsx
             linesPerFile: 10000
             with_media:   true
+    csv_user_group_export:
+        connector: Akeneo CSV Connector
+        alias: csv_user_group_export
+        label: Demo CSV user group export
+        type: export
+        configuration:
+            delimiter: ;
+            enclosure: '"'
+            withHeader: true
+    xlsx_user_group_export:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_user_group_export
+        label: Demo XLSX user group export
+        type: export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
     compute_completeness_of_products_family:
         connector: internal
         alias:     compute_completeness_of_products_family

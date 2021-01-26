@@ -62,6 +62,6 @@ services:
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
         arguments:
             -   csv_user_group_export: pim-job-instance-csv-base-export
-                xlsx_user_group_export: pim-job-instance-csv-base-export
+                xlsx_user_group_export: pim-job-instance-xlsx-base-export
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
