@@ -142,6 +142,6 @@ class EventSubscriptionSendApiEventRequestLog
 
         $durationSeconds = $this->endTime - $this->startTime;
 
-        return (int) round($duration_seconds * 1000);
+        return (int) round($durationSeconds * 1000);
     }
 }
