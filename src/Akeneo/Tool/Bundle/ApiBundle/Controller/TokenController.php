@@ -30,6 +30,7 @@ class TokenController
      * @param Request $request
      *
      * @throws HttpException
+     * @throws UnprocessableEntityHttpException
      *
      * @return Response
      */
