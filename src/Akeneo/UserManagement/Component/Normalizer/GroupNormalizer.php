@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Component\Normalizer;
 
-use Akeneo\UserManagement\Component\Model\Group;
-use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
@@ -24,7 +23,7 @@ final class GroupNormalizer implements NormalizerInterface, CacheableSupportsMet
      */
     public function normalize($group, $format = null, array $context = [])
     {
-        Assert::isInstanceOf($group, Group::class);
+        Assert::isInstanceOf($group, GroupInterface::class);
 
         return [
             'name' => $group->getName(),
@@ -34,9 +33,9 @@ final class GroupNormalizer implements NormalizerInterface, CacheableSupportsMet
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof UserInterface && in_array($format, $this->supportedFormats);
+        return $data instanceof GroupInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
