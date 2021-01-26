@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 test('it renders an empty input tag', () => {
   const TagInputContainer = () => {
     const [tags, setTags] = useState<string[]>([]);
-    return <TagInput allowDuplicates={false} tags={tags} setTags={setTags} />;
+    return <TagInput value={tags} onChange={setTags} />;
   };
 
   const result = render(<TagInputContainer />);
@@ -18,7 +18,7 @@ test('it renders an empty input tag', () => {
 test('it renders a tag input with default tags', () => {
   const TagInputContainer = () => {
     const [tags, setTags] = useState<string[]>(['gucci', 'samsung', 'apple']);
-    return <TagInput allowDuplicates={false} tags={tags} setTags={setTags} />;
+    return <TagInput value={tags} onChange={setTags} />;
   };
 
   const result = render(<TagInputContainer />);
@@ -29,7 +29,7 @@ test('it renders a tag input with default tags', () => {
 test('it allows tags to be created', () => {
   const TagInputContainer = () => {
     const [tags, setTags] = useState<string[]>([]);
-    return <TagInput allowDuplicates={false} tags={tags} setTags={setTags} />;
+    return <TagInput value={tags} onChange={setTags} />;
   };
 
   const result = render(<TagInputContainer />);
@@ -41,7 +41,7 @@ test('it allows tags to be created', () => {
 test('it supports the copy past of multiple tags', () => {
   const TagInputContainer = () => {
     const [tags, setTags] = useState<string[]>([]);
-    return <TagInput allowDuplicates={false} tags={tags} setTags={setTags} />;
+    return <TagInput value={tags} onChange={setTags} />;
   };
 
   const result = render(<TagInputContainer />);
@@ -53,7 +53,7 @@ test('it supports the copy past of multiple tags', () => {
 test('it accepts multiple separators', () => {
   const TagInputContainer = () => {
     const [tags, setTags] = useState<string[]>([]);
-    return <TagInput allowDuplicates={false} tags={tags} setTags={setTags} />;
+    return <TagInput value={tags} onChange={setTags} />;
   };
 
   const result = render(<TagInputContainer />);
@@ -68,34 +68,10 @@ dior,renault;porsche';
   expect(result.container.textContent).toBe(expectedTags(['gucci', 'samsung', 'apple', 'dior', 'renault', 'porsche']));
 });
 
-test('it can keep duplicated tags', () => {
-  const TagInputContainer = () => {
-    const [tags, setTags] = useState<string[]>([]);
-    return <TagInput allowDuplicates={true} tags={tags} setTags={setTags} />;
-  };
-
-  const result = render(<TagInputContainer />);
-
-  userEvent.paste(screen.getByTestId('tag-input'), 'gucci samsung apple samsung gucci');
-  expect(result.container.textContent).toBe(expectedTags(['gucci', 'samsung', 'apple', 'samsung', 'gucci']));
-});
-
-test('it can remove duplicated tags', () => {
-  const TagInputContainer = () => {
-    const [tags, setTags] = useState<string[]>([]);
-    return <TagInput allowDuplicates={false} tags={tags} setTags={setTags} />;
-  };
-
-  const result = render(<TagInputContainer />);
-
-  userEvent.paste(screen.getByTestId('tag-input'), 'gucci samsung apple samsung gucci');
-  expect(result.container.textContent).toBe(expectedTags(['gucci', 'samsung', 'apple']));
-});
-
 test('it handle a deletion of a tag using the mouse', () => {
   const TagInputContainer = () => {
     const [tags, setTags] = useState<string[]>([]);
-    return <TagInput allowDuplicates={true} tags={tags} setTags={setTags} />;
+    return <TagInput value={tags} onChange={setTags} />;
   };
 
   const result = render(<TagInputContainer />);
@@ -108,16 +84,12 @@ test('it handle a deletion of a tag using the mouse', () => {
   expect(result.container.textContent).toBe(expectedTags(['gucci']));
   userEvent.click(screen.getByTestId('remove-0'));
   expect(result.container.textContent).toBe(expectedTags([]));
-
-  userEvent.paste(screen.getByTestId('tag-input'), 'gucci samsung gucci gucci');
-  userEvent.click(screen.getByTestId('remove-2'));
-  expect(result.container.textContent).toBe(expectedTags(['gucci', 'samsung', 'gucci']));
 });
 
 test('it supports the removal of a tag using keyboard only', () => {
   const TagInputContainer = () => {
     const [tags, setTags] = useState<string[]>(['gucci', 'samsung', 'apple']);
-    return <TagInput allowDuplicates={false} tags={tags} setTags={setTags} />;
+    return <TagInput value={tags} onChange={setTags} />;
   };
 
   const result = render(<TagInputContainer />);
@@ -139,7 +111,7 @@ test('it supports the removal of a tag using keyboard only', () => {
 test('it can display only 100 tags max', () => {
   const TagInputContainer = () => {
     const [tags, setTags] = useState<string[]>([]);
-    return <TagInput allowDuplicates={false} tags={tags} setTags={setTags} />;
+    return <TagInput value={tags} onChange={setTags} />;
   };
 
   render(<TagInputContainer />);
@@ -160,20 +132,20 @@ test('it can display only 100 tags max', () => {
 test('it allows input to be easily focused by clicking anywhere on the component', () => {
   const TagInputContainer = () => {
     const [tags, setTags] = useState<string[]>([]);
-    return <TagInput allowDuplicates={false} tags={tags} setTags={setTags} />;
+    return <TagInput value={tags} onChange={setTags} />;
   };
 
   render(<TagInputContainer />);
 
   expect(screen.getByTestId('tag-input')).not.toHaveFocus();
-  userEvent.click(screen.getByTestId('container'));
+  userEvent.click(screen.getByTestId('tagInputContainer'));
   expect(screen.getByTestId('tag-input')).toHaveFocus();
 });
 
 test('it creates a tag if the input loses focus', () => {
   const TagInputContainer = () => {
     const [tags, setTags] = useState<string[]>([]);
-    return <TagInput allowDuplicates={false} tags={tags} setTags={setTags} />;
+    return <TagInput value={tags} onChange={setTags} />;
   };
 
   const result = render(<TagInputContainer />);

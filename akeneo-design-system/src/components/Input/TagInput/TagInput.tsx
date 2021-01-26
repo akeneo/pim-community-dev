@@ -1,24 +1,19 @@
-import React, {useState, useRef, ChangeEvent, FC, RefObject, KeyboardEvent, useCallback} from 'react';
+import React, {useState, useRef, ChangeEvent, FC, KeyboardEvent, useCallback} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {CloseIcon} from '../../../icons';
-import {Key} from '../../../shared';
+import {arrayUnique, Key} from '../../../shared';
 
 type TagInputProps = {
   /**
-   * Specifies if the component will accept duplicated tags or not
-   */
-  allowDuplicates: boolean;
-
-  /**
    * Tags to display
    */
-  tags: string[];
+  value: string[];
 
   /**
    * Handle called when tags are updated
    */
-  setTags: (tags: string[]) => void;
+  onChange: (tags: string[]) => void;
 
   /**
    * Placeholder displayed where there is no tag
@@ -26,148 +21,139 @@ type TagInputProps = {
   placeholder?: string;
 
   /**
-   * Defines if the input is valid on not.
+   * Defines if the input is valid on not
    */
-  isInvalid?: boolean;
+  invalid?: boolean;
+
+  /**
+   * The maximum number of tags allowed
+   */
+  maxTags?: number;
 };
 
-const MAX_TAGS = 100;
-
-const TagInput: FC<TagInputProps> = ({allowDuplicates, setTags, placeholder, isInvalid, tags = []}) => {
-  const [isLastTagSelected, selectLastTag] = useState<boolean>(false);
+const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = [], maxTags = 100}) => {
+  const [isLastTagSelected, setLastTagAsSelected] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLUListElement>(null);
   const inputContainerRef = useRef<HTMLLIElement>(null);
 
   const updateTags = useCallback(
     (updatedTags: string[]) => {
-      updatedTags = updatedTags.slice(0, Math.min(MAX_TAGS, updatedTags.length));
-      setTags(updatedTags);
+      const truncatedTags = updatedTags.slice(0, Math.min(maxTags, updatedTags.length));
+      onChange(truncatedTags);
     },
-    [setTags]
+    [onChange]
   );
 
   const onChangeCreateTags = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       const tagsAsString = event.currentTarget.value;
       if (tagsAsString !== '') {
-        let newTags = tagsAsString.split(/[\s,;]+/);
+        const newTags = tagsAsString.split(/[\s,;]+/);
         if (newTags.length === 1) {
           return;
         }
-        newTags = newTags.filter((tag: string) => tag.trim() !== '');
+        const newTagsWithoutEmpty = newTags.filter((tag: string) => tag.trim() !== '');
 
-        createTags([...tags, ...newTags]);
+        createTags([...value, ...newTagsWithoutEmpty]);
       }
     },
-    [tags]
+    [value]
   );
 
   const onBlurCreateTag = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       const inputCurrentValue = event.currentTarget.value.trim();
       if (inputCurrentValue !== '') {
-        createTags([...tags, ...[inputCurrentValue]]);
+        createTags([...value, ...[inputCurrentValue]]);
       }
     },
-    [tags]
+    [value]
   );
 
   const createTags = useCallback(
     (newTags: string[]) => {
-      if (!allowDuplicates) {
-        newTags = arrayUnique(newTags);
-      }
+      newTags = arrayUnique(newTags);
       updateTags(newTags);
       if (inputRef && inputRef.current) {
         inputRef.current.value = '';
       }
     },
-    [arrayUnique, inputRef, updateTags]
+    [inputRef, updateTags]
   );
 
   const removeTag = useCallback(
-    (tagIdToRemove: number) => {
-      const clonedTags = [...tags];
-      clonedTags.splice(tagIdToRemove, 1);
+    (tagIndexToRemove: number) => {
+      const clonedTags = [...value];
+      clonedTags.splice(tagIndexToRemove, 1);
       updateTags(clonedTags);
     },
-    [tags, updateTags]
+    [value, updateTags]
   );
 
   const focusOnInputField = useCallback(
-    (event: MouseEvent, ref: RefObject<HTMLElement>) => {
-      if (ref && ref.current === event.target && inputRef && inputRef.current) {
+    (event: MouseEvent) => {
+      if (
+        inputRef &&
+        inputRef.current &&
+        ((containerRef && containerRef.current === event.target) ||
+          (inputContainerRef && inputContainerRef.current === event.target))
+      ) {
         inputRef.current.focus();
       }
     },
-    [inputRef]
+    [inputRef, containerRef, inputContainerRef]
   );
 
-  const handleTagDeletionUsingKeyboard = useCallback(
+  const handleTagDeletion = useCallback(
     (event: KeyboardEvent) => {
-      if (![Key.Backspace.toString(), Key.Delete.toString()].includes(event.key)) {
-        selectLastTag(false);
+      const isDeleteKeyPressed = [Key.Backspace.toString(), Key.Delete.toString()].includes(event.key);
+      const tagsAreEmpty = value.length === 0;
+      const inputFieldIsNotEmpty = inputRef && inputRef.current && inputRef.current.value.trim() !== '';
 
-        if (tags.length >= MAX_TAGS) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-
+      if (!isDeleteKeyPressed || tagsAreEmpty || inputFieldIsNotEmpty) {
+        setLastTagAsSelected(false);
         return;
       }
 
-      if (tags.length === 0 || (inputRef && inputRef.current && inputRef.current.value.trim() !== '')) {
-        return;
-      }
-
-      if (!isLastTagSelected) {
-        selectLastTag(true);
-      } else {
-        const newTags = tags.slice(0, tags.length - 1);
+      if (isLastTagSelected) {
+        const newTags = value.slice(0, value.length - 1);
         updateTags(newTags);
-        selectLastTag(false);
       }
+
+      setLastTagAsSelected(!isLastTagSelected);
     },
-    [isLastTagSelected, selectLastTag, updateTags, tags, inputRef]
+    [isLastTagSelected, setLastTagAsSelected, updateTags, value, inputRef]
   );
 
   return (
-    <TagContainer
-      data-testid={'container'}
-      ref={containerRef}
-      isInvalid={isInvalid}
-      onClick={(event: MouseEvent) => focusOnInputField(event, containerRef)}
-    >
-      {tags.map((tag, key) => {
+    <TagContainer data-testid={'tagInputContainer'} ref={containerRef} isInvalid={invalid} onClick={focusOnInputField}>
+      {value.map((tag, index) => {
         return (
-          <Tag key={key} data-testid={'tag'} isSelected={key === tags.length - 1 && isLastTagSelected}>
-            <RemoveTagIcon onClick={() => removeTag(key)} data-testid={`remove-${key}`} />
+          <Tag
+            key={`${tag.toLowerCase()}-${index}`}
+            data-testid="tag"
+            isSelected={index === value.length - 1 && isLastTagSelected}
+          >
+            <RemoveTagIcon onClick={() => removeTag(index)} data-testid={`remove-${index}`} />
             {tag}
           </Tag>
         );
       })}
-      <Tag
-        key="tag-input"
-        ref={inputContainerRef}
-        onClick={(event: MouseEvent) => focusOnInputField(event, inputContainerRef)}
-      >
+      <Tag ref={inputContainerRef} onClick={focusOnInputField}>
         <input
           type="text"
-          data-testid={'tag-input'}
+          data-testid="tag-input"
           ref={inputRef}
-          placeholder={tags.length === 0 ? placeholder : ''}
-          onKeyDownCapture={handleTagDeletionUsingKeyboard}
+          placeholder={value.length === 0 ? placeholder : ''}
+          onKeyDown={handleTagDeletion}
           onChange={onChangeCreateTags}
           onBlurCapture={onBlurCreateTag}
+          readOnly={value.length >= maxTags}
         />
       </Tag>
     </TagContainer>
   );
-};
-
-const arrayUnique = (array: string[]) => {
-  return Array.from(new Set(array));
 };
 
 const RemoveTagIcon = styled(CloseIcon)<AkeneoThemedProps>`
@@ -184,7 +170,7 @@ const TagContainer = styled.ul<AkeneoThemedProps & {isInvalid: boolean}>`
   padding: 5px;
   display: flex;
   flex-wrap: wrap;
-  min-height: 45px;
+  min-height: 40px;
   gap: 5px;
   box-sizing: border-box;
 
@@ -195,7 +181,7 @@ const TagContainer = styled.ul<AkeneoThemedProps & {isInvalid: boolean}>`
 
 const Tag = styled.li<AkeneoThemedProps & {isSelected: boolean}>`
   list-style-type: none;
-  padding: 4px 17px 4px 4px;
+  padding: 3px 17px 3px 4px;
   border: 1px ${getColor('grey', 80)} solid;
   background-color: ${({isSelected}) => (isSelected ? getColor('grey', 40) : getColor('grey', 20))};
   display: flex;
