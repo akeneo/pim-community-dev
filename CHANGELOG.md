@@ -4,6 +4,7 @@
 - PIM-9629: Fix filtering issue on product value "identifier" via the API for published products
 - PIM-9640: Fix asset and record imports in XLSX when sone cells contain only numeric characters
 - PIM-9646: Make the rule engine execution permission agnostic
+- PIM-9649: Fix PDF product renderer disregarding permissions on Attribute groups
 
 ## Improvements
 
