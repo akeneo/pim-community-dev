@@ -16,14 +16,14 @@ const AddWordsForm = () => {
       setWords([]);
       search('', 1);
     }
-  }
+  };
 
   return (
     <Container className={'filter-box'}>
       <Field label={translate('akeneo_data_quality_insights.dictionary.add_words')}>
         <FieldContent>
           <TagInputContainer>
-            <TagInput allowDuplicates={false} tags={words} setTags={setWords}/>
+            <TagInput allowDuplicates={false} tags={words} setTags={setWords} />
           </TagInputContainer>
           <Button ghost level="tertiary" onClick={onAddWords}>
             {translate('pim_common.add')}

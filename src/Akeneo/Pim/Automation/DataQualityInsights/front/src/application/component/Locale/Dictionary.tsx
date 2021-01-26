@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import styled from "styled-components";
+import styled from 'styled-components';
 import {Helper, Link} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {AddWordsForm} from './Dictionary/AddWordsForm';
@@ -21,7 +21,10 @@ const Dictionary: FC = () => {
       <Helper level="info">
         {translate('akeneo_data_quality_insights.dictionary.helper.content')}
         <> </>
-        <PimHelperLink href="https://help.akeneo.com/pim/serenity/articles/manage-your-data-quality.html#manage-your-dictionary" target="_blank">
+        <PimHelperLink
+          href="https://help.akeneo.com/pim/serenity/articles/manage-your-data-quality.html#manage-your-dictionary"
+          target="_blank"
+        >
           {translate('akeneo_data_quality_insights.dictionary.helper.link_label')}
         </PimHelperLink>
       </Helper>

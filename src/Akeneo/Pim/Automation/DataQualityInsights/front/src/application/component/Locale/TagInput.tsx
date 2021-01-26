@@ -35,10 +35,13 @@ const TagInput: FC<TagInputProps> = ({allowDuplicates, setTags, placeholder, isI
   const containerRef = useRef<HTMLUListElement>(null);
   const inputContainerRef = useRef<HTMLLIElement>(null);
 
-  const updateTags = useCallback((updatedTags: string[]) => {
-    updatedTags = updatedTags.slice(0, Math.min(100, updatedTags.length));
-    setTags(updatedTags);
-  }, [setTags]);
+  const updateTags = useCallback(
+    (updatedTags: string[]) => {
+      updatedTags = updatedTags.slice(0, Math.min(100, updatedTags.length));
+      setTags(updatedTags);
+    },
+    [setTags]
+  );
 
   const onChangeCreateTags = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -56,22 +59,28 @@ const TagInput: FC<TagInputProps> = ({allowDuplicates, setTags, placeholder, isI
     [tags]
   );
 
-  const onBlurCreateTag = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    const inputCurrentValue = event.currentTarget.value.trim();
-    if (inputCurrentValue !== '') {
-      createTags([...tags, ...[inputCurrentValue]]);
-    }
-  }, [tags]);
+  const onBlurCreateTag = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const inputCurrentValue = event.currentTarget.value.trim();
+      if (inputCurrentValue !== '') {
+        createTags([...tags, ...[inputCurrentValue]]);
+      }
+    },
+    [tags]
+  );
 
-  const createTags = useCallback((newTags: string[]) => {
-    if (!allowDuplicates) {
-      newTags = arrayUnique(newTags);
-    }
-    updateTags(newTags);
-    if (inputRef && inputRef.current) {
-      inputRef.current.value = '';
-    }
-  }, [arrayUnique, inputRef, updateTags]);
+  const createTags = useCallback(
+    (newTags: string[]) => {
+      if (!allowDuplicates) {
+        newTags = arrayUnique(newTags);
+      }
+      updateTags(newTags);
+      if (inputRef && inputRef.current) {
+        inputRef.current.value = '';
+      }
+    },
+    [arrayUnique, inputRef, updateTags]
+  );
 
   const removeTag = useCallback(
     (tagIdToRemove: number) => {
