@@ -105,7 +105,7 @@ type CheckboxProps = Override<
     /**
      * The handler called when clicking on Checkbox.
      */
-    onChange?: (value: CheckboxChecked, event: SyntheticEvent) => void;
+    onChange?: (value: boolean, event: SyntheticEvent) => void;
 
     /**
      * Label of the checkbox.
