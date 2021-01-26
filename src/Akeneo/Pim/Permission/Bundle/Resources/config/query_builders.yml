@@ -38,3 +38,22 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@pimee_catalog.query.product_and_product_model_query_builder_factory.product_and_product_model_cursor_with_permissions'
             - '@pim_catalog.query.product_query_builder_resolver'
+
+    pim_catalog.query.product_and_product_model_query_builder_factory.without_permission:
+        class: '%pim_catalog.query.elasticsearch.product_and_model_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_and_product_model_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_and_product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_and_product_model_cursor.without_permission'
+            - '@pim_catalog.query.product_query_builder_resolver'
+
+    pim_catalog.factory.product_and_product_model_cursor.without_permission:
+        class: '%pim_catalog.elasticsearch.cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.repository.product_without_permission'
+            - '@pim_catalog.repository.product_model_without_permission'
+            - '%pim_job_product_batch_size%'
+            - 'pim_catalog_product'

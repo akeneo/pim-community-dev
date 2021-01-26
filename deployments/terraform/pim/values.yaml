@@ -99,7 +99,7 @@ pim:
       replicas: 1
     webhook-consumer-process:
       enabled: true
-      pimCommand: "messenger:consume webhook --time-limit=600 --memory-limit=384M"
+      pimCommand: "messenger:consume webhook --time-limit=3600 --memory-limit=384M"
       replicas: 1
   replicas: 2
   extraLabels: {}

@@ -3,6 +3,7 @@
 - PIM-9617: Configure clean_removed_attribute_job to be run on a single daemon
 - PIM-9629: Fix filtering issue on product value "identifier" via the API for published products
 - PIM-9640: Fix asset and record imports in XLSX when sone cells contain only numeric characters
+- PIM-9646: Make the rule engine execution permission agnostic
 
 ## Improvements
 
@@ -16,3 +17,4 @@
 - Replace `Symfony\Component\Translation\TranslatorInterface` by `Symfony\Contracts\Translation\TranslatorInterface` in all codebase
 - Change parameter of `UnknownUserExceptionListener::onKernelException()` method from `Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent` to ` Symfony\Component\HttpKernel\Event\ExceptionEvent`
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ProductDraftController` to remove `Symfony\Component\Translation\TranslatorInterface $translator` parameter
+- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleSelector` to remove `ProductRepositoryInterface $repo`

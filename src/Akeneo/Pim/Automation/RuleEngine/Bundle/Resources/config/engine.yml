@@ -17,8 +17,7 @@ services:
     pimee_catalog_rule.selector.product:
         class: '%pimee_catalog_rule.selector.product.class%'
         arguments:
-            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
-            - '@pim_catalog.repository.product'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory.without_permission'
             - '@event_dispatcher'
             - '%akeneo_rule_engine.model.rule_subject_set.class%'
 
@@ -47,8 +46,8 @@ services:
     pimee_catalog_rule.applier.product.saver:
         class: '%pimee_catalog_rule.applier.product.saver.class%'
         arguments:
-            - '@pim_catalog.saver.product'
-            - '@pim_catalog.saver.product_model'
+            - '@pim_catalog.saver.product_without_permission'
+            - '@pim_catalog.saver.product_model_without_permission'
             - '@pim_versioning.manager.version'
             - '@pim_versioning.context.version'
             - '@translator'
