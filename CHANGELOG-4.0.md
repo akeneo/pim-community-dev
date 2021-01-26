@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9644: Now using interface in Clean removed attributes command constructor
+
 ## Improvements
 
 - PIM-9623: String filter is now able to filter on codes with spaces
