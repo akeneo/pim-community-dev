@@ -49,6 +49,30 @@ services:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
 
     # Import jobs
+    pim_connector.job.csv_user_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'csv_user_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.csv_user_export.export'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.xlsx_user_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'xlsx_user_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.xlsx_user_export.export'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
+
     pim_connector.job.csv_user_group_import:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
@@ -82,6 +106,7 @@ services:
             -
                 - 'csv_user_group_export'
                 - 'csv_user_role_export'
+                - 'csv_user_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -91,6 +116,7 @@ services:
             -
                 - 'xlsx_user_group_export'
                 - 'xlsx_user_role_export'
+                - 'xlsx_user_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -117,6 +143,7 @@ services:
             -
                 - 'csv_user_group_export'
                 - 'csv_user_role_export'
+                - 'csv_user_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
@@ -126,6 +153,7 @@ services:
             -
                 - 'xlsx_user_group_export'
                 - 'xlsx_user_role_export'
+                - 'xlsx_user_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
