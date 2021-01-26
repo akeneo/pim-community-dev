@@ -149,7 +149,7 @@ export const AssetPicker = ({
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [searchResult, setSearchResult] = React.useState<SearchResult<ListAsset> | null>(null);
   const [context, setContext] = React.useState<Context>(initialContext);
-  const [selectedItems, selectionState, isItemSelected, onSelectionChange, onSelectAllChange] = useSelection<AssetCode>(
+  const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange] = useSelection<AssetCode>(
     null === searchResult ? 0 : searchResult.matchesCount
   );
 
@@ -176,7 +176,7 @@ export const AssetPicker = ({
     setSearchResult
   );
   const filterViews = useFilterViews(assetFamilyIdentifier, dataProvider);
-  const canAddAsset = canAddAssetToCollection(addAssetsToCollection(excludedAssetCollection, selectedItems));
+  const canAddAsset = canAddAssetToCollection(addAssetsToCollection(excludedAssetCollection, selection.collection));
 
   useShortcut(Key.Escape, cancelModal);
 
@@ -206,7 +206,7 @@ export const AssetPicker = ({
               title={__('pim_common.confirm')}
               color="green"
               onClick={() => {
-                onAssetPick(selectedItems);
+                onAssetPick(selection.collection);
                 resetModal();
               }}
             >
@@ -248,7 +248,7 @@ export const AssetPicker = ({
             </Grid>
             <Basket
               dataProvider={dataProvider}
-              selection={selectedItems}
+              selection={selection.collection}
               assetFamilyIdentifier={assetFamilyIdentifier}
               context={context}
               onRemove={(assetCode: AssetCode) => {

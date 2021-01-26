@@ -2,6 +2,7 @@
 
 import remover from 'akeneoassetmanager/infrastructure/remover/asset';
 import * as fetch from 'akeneoassetmanager/tools/fetch';
+import {createQuery} from 'akeneoassetmanager/application/hooks/grid';
 
 jest.mock('pim/router', () => {});
 jest.mock('pim/security-context', () => {}, {virtual: true});
@@ -24,5 +25,31 @@ describe('akeneoassetmanager/infrastructure/remover/asset', () => {
     await remover.removeAll('designer');
 
     expect(fetch.deleteJSON).toHaveBeenCalledWith('akeneo_asset_manager_asset_delete_all_rest');
+  });
+
+  it('It mass deletes asset from query', async () => {
+    // @ts-ignore
+    fetch.deleteJSON = jest.fn().mockImplementationOnce(() => Promise.resolve());
+    const query = createQuery(
+      'packshot',
+      [
+        {
+          field: 'code',
+          value: ['red', 'blue'],
+          operator: 'IN',
+          context: {},
+        },
+      ],
+      '',
+      [],
+      'en_US',
+      'ecommerce',
+      0,
+      50
+    );
+
+    await remover.removeFromQuery('designer', query);
+
+    expect(fetch.deleteJSON).toHaveBeenCalledWith('akeneo_asset_manager_asset_mass_delete_rest', query);
   });
 });

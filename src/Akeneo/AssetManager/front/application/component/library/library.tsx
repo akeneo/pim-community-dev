@@ -140,6 +140,7 @@ const useRoutes = () => {
       })
     );
   }, []);
+
   return {redirectToAsset, redirectToAssetFamily};
 };
 
