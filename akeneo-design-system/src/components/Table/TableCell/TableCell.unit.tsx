@@ -1,7 +1,7 @@
 import React from 'react';
 import {Table} from '../Table';
 import {render, screen} from '../../../storybook/test-util';
-import {Image} from '../..';
+import {Image} from '../../Image/Image';
 
 test('it renders its children properly', () => {
   render(

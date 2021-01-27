@@ -1,6 +1,6 @@
 import React, {isValidElement, ReactNode, Ref} from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
+import {AkeneoThemedProps, getColor, getFontSize, PlaceholderStyle} from '../../theme';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
 
 const Container = styled.div`
@@ -65,8 +65,15 @@ const Information = React.forwardRef<HTMLDivElement, InformationProps>(
   }
 );
 
+// TODO RAC-331 Replace with Typography component
 const HighlightTitle = styled.span<AkeneoThemedProps>`
   color: ${getColor('brand', 100)};
 `;
+
+Object.assign(Information, {
+  Skeleton: styled(Information)`
+    ${PlaceholderStyle}
+  `,
+});
 
 export {Information, HighlightTitle};

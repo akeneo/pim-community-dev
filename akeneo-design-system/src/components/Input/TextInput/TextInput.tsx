@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {InputProps} from '../InputProps';
 import {LockIcon} from '../../../icons';
 import {Override} from '../../../shared';
-import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
+import {AkeneoThemedProps, getColor, getFontSize, PlaceholderStyle} from '../../../theme';
 
 const TextInputContainer = styled.div`
   position: relative;
@@ -110,6 +110,12 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
     );
   }
 );
+
+Object.assign(TextInput, {
+  Skeleton: styled(TextInput)`
+    ${PlaceholderStyle}
+  `,
+});
 
 export {TextInput};
 export type {TextInputProps};

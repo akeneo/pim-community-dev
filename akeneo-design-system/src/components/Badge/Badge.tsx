@@ -1,6 +1,6 @@
 import React, {Ref} from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
+import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level, PlaceholderStyle} from '../../theme';
 
 const BadgeContainer = styled.span<BadgeProps & AkeneoThemedProps>`
   display: inline-block;
@@ -48,6 +48,12 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
     );
   }
 );
+
+Object.assign(Badge, {
+  Skeleton: styled(Badge)`
+    ${PlaceholderStyle}
+  `,
+});
 
 export {Badge};
 export type {BadgeProps};

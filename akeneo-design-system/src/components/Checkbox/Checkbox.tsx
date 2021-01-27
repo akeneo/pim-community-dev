@@ -1,9 +1,9 @@
 import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css, keyframes} from 'styled-components';
-import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
+import {AkeneoThemedProps, getColor, getFontSize, PlaceholderStyle} from '../../theme';
 import {CheckIcon, CheckPartialIcon} from '../../icons';
 import {useId, useShortcut} from '../../hooks';
-import {Key, Override} from '../../shared';
+import {Key, Override, SkeletonableForwardRef} from '../../shared';
 
 const checkTick = keyframes`
   to {
@@ -78,7 +78,7 @@ const LabelContainer = styled.label<{readOnly: boolean} & AkeneoThemedProps>`
   color: ${getColor('grey140')};
   font-weight: 400;
   font-size: ${getFontSize('big')};
-  padding-left: 10px;
+  margin-left: 10px;
 
   ${props =>
     props.readOnly &&
@@ -117,11 +117,11 @@ type CheckboxProps = Override<
 /**
  * The checkboxes are applied when users can select all, several, or none of the options from a given list.
  */
-const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
+const Checkbox: SkeletonableForwardRef<HTMLDivElement, CheckboxProps> = React.forwardRef<HTMLDivElement, CheckboxProps>(
   (
     {checked = false, onChange, readOnly = false, children, title, ...rest}: CheckboxProps,
     forwardedRef: Ref<HTMLDivElement>
-  ): React.ReactElement => {
+  ) => {
     const checkboxId = useId('checkbox_');
     const labelId = useId('label_');
 
@@ -174,7 +174,13 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
       </Container>
     );
   }
-);
+) as SkeletonableForwardRef<HTMLDivElement, CheckboxProps>;
+
+Checkbox.Skeleton = styled(Checkbox)`
+  * {
+    ${PlaceholderStyle}
+  }
+`;
 
 export {Checkbox};
 export type {CheckboxChecked};

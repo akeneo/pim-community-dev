@@ -1,6 +1,6 @@
 import styled, {css} from 'styled-components';
 import React, {ReactNode, Ref} from 'react';
-import {AkeneoThemedProps, getColor} from '../../theme';
+import {AkeneoThemedProps, getColor, PlaceholderStyle} from '../../theme';
 
 const LinkContainer = styled.a<{disabled: boolean; decorated: boolean} & AkeneoThemedProps>`
   ${({decorated, disabled}) =>
@@ -84,6 +84,12 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
     );
   }
 );
+
+Object.assign(Link, {
+  Skeleton: styled(Link)`
+    ${PlaceholderStyle}
+  `,
+});
 
 export {Link};
 export type {LinkProps};

@@ -1,6 +1,6 @@
 import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColorForLevel, getFontSize, Level} from '../../theme';
+import {AkeneoThemedProps, getColorForLevel, getFontSize, Level, PlaceholderStyle} from '../../theme';
 import {Override} from '../../shared';
 
 type ButtonSize = 'small' | 'default';
@@ -190,6 +190,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     );
   }
 );
+
+Object.assign(Button, {
+  Skeleton: styled(Button)`
+    ${PlaceholderStyle}
+  `,
+});
 
 export {Button};
 export type {ButtonProps, ButtonSize};
