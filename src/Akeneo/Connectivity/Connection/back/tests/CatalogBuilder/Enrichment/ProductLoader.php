@@ -52,7 +52,8 @@ class ProductLoader
         $family = isset($data['family']) ? $data['family'] : null;
 
         $product = $this->builder->createProduct($identifier, $family);
-        $this->update($product, $data);
+
+        $this->save($product);
 
         return $product;
     }
@@ -61,11 +62,15 @@ class ProductLoader
     {
         $this->updater->update($product, $data);
 
+        $this->save($product);
+    }
+
+    private function save(ProductInterface $product): void
+    {
         $constraints = $this->validator->validate($product);
-        Assert::assertCount(0, $constraints, 'The validation from the product creation failed.');
+        Assert::assertCount(0, $constraints, 'The validation from the product failed.');
 
         $this->saver->save($product);
-
         $this->client->refreshIndex();
     }
 }
