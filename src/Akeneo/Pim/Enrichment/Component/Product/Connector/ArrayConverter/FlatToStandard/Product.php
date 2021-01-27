@@ -233,7 +233,7 @@ class Product implements ArrayConverterInterface
             }
         }
 
-        return $mappedItem;
+        return $this->filterQualityScoreFields($mappedItem);
     }
 
     /**
@@ -395,5 +395,11 @@ class Product implements ArrayConverterInterface
         }
 
         return $result;
+    }
+
+    private function filterQualityScoreFields(array $mappedItem): array
+    {
+        // @fixme Use constant or external service
+        return array_filter($mappedItem, fn ($field) => 0 !== strpos($field, 'quality_score-'), ARRAY_FILTER_USE_KEY);
     }
 }
