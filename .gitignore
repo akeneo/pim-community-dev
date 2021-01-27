@@ -34,6 +34,7 @@ yarn-error.log
 coverage/*
 .phpunit.result.cache
 akeneo-design-system/lib
+measurements/lib
 
 ###> symfony/framework-bundle ###
 /.env.local
