@@ -38,6 +38,11 @@ services:
             - { name: pim_catalog.elasticsearch.query.product_filter, priority: 30 }
             - { name: pim_catalog.elasticsearch.query.product_and_product_model_filter, priority: 30 }
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\QualityScoreMultiLocalesFilter:
+        tags:
+            - { name: pim_catalog.elasticsearch.query.product_filter, priority: 30 }
+            - { name: pim_catalog.elasticsearch.query.product_and_product_model_filter, priority: 30 }
+
     akeneo.pim.automation.data_quality_insights.product_grid.filter.enrichment_quality:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\KeyIndicatorFilter
         arguments:

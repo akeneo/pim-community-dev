@@ -33,39 +33,9 @@ class QualityScoreFilter extends AbstractFieldFilter implements FieldFilterInter
             throw InvalidPropertyTypeException::arrayExpected($field, static::class, $values);
         }
 
-        $values = array_map(fn($value) => intval($value), $values);
-
-        file_put_contents('/srv/pim/var/logs/export.txt', json_encode($values) . PHP_EOL, FILE_APPEND);
-        file_put_contents('/srv/pim/var/logs/export.txt', json_encode($locale) . PHP_EOL, FILE_APPEND);
-        file_put_contents('/srv/pim/var/logs/export.txt', json_encode($channel) . PHP_EOL, FILE_APPEND);
-
-
-        $ratesEnrichmentField = sprintf('rates.enrichment.%s.%s', $channel, $locale);
-        $ratesConsistencyField = sprintf('rates.consistency.%s.%s', $channel, $locale);
-        $avgRatesConditions = implode(' || ', array_map(fn ($scoreValue) => sprintf("avgRates == %d", $scoreValue), $values));
-
         $clause = [
-            'bool' => [
-                'should' => [
-                    [
-                        'terms' => [sprintf('data_quality_insights.scores.%s.%s', $channel, $locale) => $values]
-                    ],
-                    [
-                        'bool' => [
-                            'must_not' => [
-                                ['exists' => ['field' => 'data_quality_insights.scores']]
-                            ],
-                            'must' => [
-                                [
-                                    'script' => ['script' =>[
-                                        'lang' => 'painless',
-                                        'source' => "long avgRates = Math.round(((doc.containsKey('$ratesEnrichmentField') && doc['$ratesEnrichmentField'].size() > 0 ? Integer.parseInt(doc['$ratesEnrichmentField'].value) : 0) + (doc.containsKey('$ratesConsistencyField') && doc['$ratesConsistencyField'].size() > 0 ? Integer.parseInt(doc['$ratesConsistencyField'].value) : (doc.containsKey('$ratesEnrichmentField') && doc['$ratesEnrichmentField'].size() > 0 ? Integer.parseInt(doc['$ratesEnrichmentField'].value) : 0))) / 2); $avgRatesConditions"
-                                    ]]
-                                ]
-                            ],
-                        ]
-                    ]
-                ],
+            'terms' => [
+                sprintf('data_quality_insights.scores.%s.%s', $channel, $locale) => $values
             ],
         ];
 
