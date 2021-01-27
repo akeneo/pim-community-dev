@@ -20,6 +20,7 @@ type Color = {
   green100: string;
   green120: string;
   green140: string;
+  green10: string;
   green20: string;
   green40: string;
   green60: string;
