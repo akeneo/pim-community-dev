@@ -17,7 +17,7 @@ define(['jquery', 'backbone', 'pim/base-fetcher', 'routing', 'oro/mediator', 'pi
      * @return {Promise}
      */
     fetch: function (identifier, options = {}) {
-      const {cached = false, silent = false, ...routeParams} = options;
+      const {silent = false, ...routeParams} = options;
 
       return $.getJSON(Routing.generate(this.options.urls.get, {...routeParams, id: identifier}))
         .then(function (product) {
