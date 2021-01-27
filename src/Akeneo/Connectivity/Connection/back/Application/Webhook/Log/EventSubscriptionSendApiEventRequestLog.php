@@ -61,7 +61,7 @@ class EventSubscriptionSendApiEventRequestLog
     /**
      * @return array{
      *  type: string,
-     *  duration: int,
+     *  duration_ms: int,
      *  headers: array<string, int|string>,
      *  message: string,
      *  success: bool,
@@ -73,13 +73,15 @@ class EventSubscriptionSendApiEventRequestLog
      *      name: string,
      *      timestamp: int|null,
      *  }>,
+     *  max_propagation_seconds?: int,
+     *  min_propagation_seconds?: int,
      * }
      */
     public function toLog(): array
     {
         return [
             'type' => self::TYPE,
-            'duration' => $this->getDuration(),
+            'duration_ms' => $this->getDurationMs(),
             'headers' => $this->headers,
             'message' => $this->message,
             'success' => $this->success,
@@ -94,17 +96,52 @@ class EventSubscriptionSendApiEventRequestLog
                     'timestamp' => $date ? $date->getTimestamp() : null,
                 ];
             }, $this->webhookRequest->apiEvents()),
-        ];
+        ] + $this->getPropagationSeconds();
     }
 
-    private function getDuration(): int
+    /**
+     * @return array{
+     *  max_propagation_seconds?: int,
+     *  min_propagation_seconds?: int,
+     * }
+     */
+    private function getPropagationSeconds(): array
+    {
+        $youngerEventTimestamp = null;
+        $olderEventTimestamp = null;
+        foreach ($this->webhookRequest->apiEvents() as $event) {
+            $date = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, $event->eventDateTime());
+            $timestamp = $date ? $date->getTimestamp() : null;
+
+            if (null === $youngerEventTimestamp) {
+                $youngerEventTimestamp = $timestamp;
+            }
+            if (null !== $timestamp) {
+                $youngerEventTimestamp = max($timestamp, $youngerEventTimestamp);
+            }
+
+            if (null === $olderEventTimestamp) {
+                $olderEventTimestamp = $timestamp;
+            }
+            if (null !== $timestamp) {
+                $olderEventTimestamp = min($timestamp, $olderEventTimestamp);
+            }
+        }
+        
+        return null !== $olderEventTimestamp && null !== $youngerEventTimestamp ? [
+            'max_propagation_seconds' => (int) $this->endTime - $olderEventTimestamp,
+            'min_propagation_seconds' => (int) $this->endTime - $youngerEventTimestamp,
+        ] : [];
+    }
+    
+    private function getDurationMs(): int
     {
         if (null === $this->endTime) {
             throw new \RuntimeException();
         }
 
-        $duration = $this->endTime - $this->startTime;
+        $durationSeconds = $this->endTime - $this->startTime;
 
-        return (int) round($duration * 1000);
+        return (int) round($durationSeconds * 1000);
     }
 }

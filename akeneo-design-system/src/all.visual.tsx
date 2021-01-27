@@ -4,7 +4,7 @@ import {toMatchImageSnapshot} from 'jest-image-snapshot';
 
 expect.extend({toMatchImageSnapshot});
 
-const EXCLUDE = ['Components/Modal', 'Components/Dropdown'];
+const EXCLUDE = ['Components/Modal'];
 
 type StoriesDump = {
   stories: {

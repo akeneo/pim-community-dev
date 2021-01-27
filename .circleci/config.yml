@@ -9,7 +9,7 @@ aliases:
 
   - &dockerCloudDeployer
       docker:
-        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:2.3
+        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:2.4
           auth:
             username: _json_key  # default username when using a JSON key file to authenticate
             password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
@@ -32,6 +32,7 @@ jobs:
           command: |
             cd /home/circleci/project
             git checkout ${CIRCLE_BRANCH} || git checkout master
+            echo "Current commit: $(git rev-parse --short HEAD)"
       - run:
           name: Require proper dev CE branch
           command: |
@@ -702,14 +703,10 @@ workflows:
 
       jobs:
           - checkout_ce
-          - checkout_ee
           - build_dev:
                 is_ee_built: false
                 requires:
                     - checkout_ce
-          - build_prod:
-                requires:
-                    - checkout_ee
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -725,9 +722,6 @@ workflows:
           - test_back_data_migrations:
                 requires:
                     - build_dev
-          - test_upgrade_from_last_release:
-                requires:
-                    - build_prod
 
 commands:
   set_gcloud_config_dev:

@@ -1,6 +1,7 @@
 pim_notification:
     types:
         settings: Settings
+        mass_delete: Deletion
 flash:
     comment:
         create:

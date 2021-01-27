@@ -7,6 +7,9 @@
 - PIM-9622: Fix query that can generate a MySQL memory allocation error
 - PIM-9630: Fix SQL sort buffer size issue when the catalog has a very large number of categories
 - PIM-9636: Fix add posibility to contextualize translation when create a variant depending on number of axes
+- PIM-9631: fix attribute groups not displayed in family due to JS error
+- PIM-9649: Fix PDF product renderer disregarding permissions on Attribute groups
+- PIM-9650: Add translation key for mass delete action.
 
 ## New features
 
