@@ -7,6 +7,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets\FindAllAssetIdentifiers;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets\RefreshAllAssets;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets\RefreshAsset;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\CountAssets;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Symfony\Component\Console\Command\Command;
@@ -37,16 +38,23 @@ class RefreshAssetsCommand extends Command
     /** @var RefreshAsset */
     private $refreshAsset;
 
+    /** @TODO pull up Replace by Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface */
+    /** @var CountAssets|null */
+    private $countAssets;
+
+    /** @TODO pull up remove optionnal parameter */
     public function __construct(
         FindAllAssetIdentifiers $findAllAssetIdentifiers,
         RefreshAsset $refreshAsset,
-        Connection $sqlConnection
+        Connection $sqlConnection,
+        CountAssets $countAssets = null
     ) {
         parent::__construct(self::REFRESH_ASSETS_COMMAND_NAME);
 
         $this->sqlConnection = $sqlConnection;
         $this->findAllAssetIdentifiers = $findAllAssetIdentifiers;
         $this->refreshAsset = $refreshAsset;
+        $this->countAssets = $countAssets;
     }
 
     /**
@@ -72,7 +80,7 @@ class RefreshAssetsCommand extends Command
             $output->writeln('Please use the flag --all to refresh all assets');
         }
 
-        $totalAssets = $this->getTotalAssets();
+        $totalAssets = $this->countAssets ? $this->countAssets->all() : $this->getLegacyAssetsCount();
         $progressBar = new ProgressBar($output, $totalAssets);
         $progressBar->start();
 
@@ -88,7 +96,8 @@ class RefreshAssetsCommand extends Command
         $progressBar->finish();
     }
 
-    private function getTotalAssets(): int
+    /** @TODO pull up remove this function */
+    private function getLegacyAssetsCount(): int
     {
         $stmt = $this->sqlConnection->executeQuery('SELECT COUNT(*) FROM akeneo_asset_manager_asset;');
         $result = $stmt->fetch(\PDO::FETCH_COLUMN);
