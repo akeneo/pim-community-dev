@@ -130,7 +130,7 @@ class MassDeleteAssetsTaskletSpec extends ObjectBehavior
             ]
         ]);
 
-        $secondQuery = AssetQuery::createWithSearchAfter($firstQuery, AssetCode::fromString('awesome'));
+        $secondQuery = AssetQuery::createNextQuery($firstQuery, AssetCode::fromString('awesome'));
         $secondElasticSearchQuery = array_merge($firstElasticSearchQuery, ['search_after' => 'awesome']);
         $assetQueryBuilder->buildFromQuery($secondQuery, 'code')->willReturn($secondElasticSearchQuery);
         $assetClient->search($secondElasticSearchQuery)->willReturn([
@@ -236,7 +236,7 @@ class MassDeleteAssetsTaskletSpec extends ObjectBehavior
             ],
         ]);
 
-        $secondQuery = AssetQuery::createWithSearchAfter($firstQuery, AssetCode::fromString('awesome'));
+        $secondQuery = AssetQuery::createNextQuery($firstQuery, AssetCode::fromString('awesome'));
         $secondElasticSearchQuery = array_merge($firstElasticSearchQuery, ['search_after' => 'awesome']);
         $assetQueryBuilder->buildFromQuery($secondQuery, 'code')->willReturn($secondElasticSearchQuery);
         $assetClient->search($secondElasticSearchQuery)->willReturn([
@@ -251,7 +251,7 @@ class MassDeleteAssetsTaskletSpec extends ObjectBehavior
         ]);
 
 
-        $thirdQuery = AssetQuery::createWithSearchAfter($secondQuery, AssetCode::fromString('tricky'));
+        $thirdQuery = AssetQuery::createNextQuery($secondQuery, AssetCode::fromString('tricky'));
         $thirdElasticSearchQuery = array_merge($firstElasticSearchQuery, ['search_after' => 'tricky']);
         $assetQueryBuilder->buildFromQuery($thirdQuery, 'code')->willReturn($thirdElasticSearchQuery);
         $assetClient->search($thirdElasticSearchQuery)->willReturn([

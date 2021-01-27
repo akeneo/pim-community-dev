@@ -18,7 +18,8 @@ describe('akeneoassetmanager/infrastructure/remover/asset', () => {
   });
 
   it('It mass deletes asset from query', async () => {
-    jest.spyOn(fetch, 'deleteJSON').mockImplementation(() => Promise.resolve());
+    jest.spyOn(global, 'fetch').mockImplementation(() => Promise.resolve(new Response('{}')));
+
     const query = createQuery(
       'packshot',
       [
@@ -39,6 +40,9 @@ describe('akeneoassetmanager/infrastructure/remover/asset', () => {
 
     await remover.removeFromQuery('designer', query);
 
-    expect(fetch.deleteJSON).toHaveBeenCalledWith('akeneo_asset_manager_asset_mass_delete_rest', query);
+    expect(global.fetch).toHaveBeenCalledWith('akeneo_asset_manager_asset_mass_delete_rest', {
+      body: query,
+
+    });
   });
 });

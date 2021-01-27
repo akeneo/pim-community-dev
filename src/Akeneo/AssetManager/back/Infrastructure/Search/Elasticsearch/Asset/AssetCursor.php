@@ -107,6 +107,7 @@ class AssetCursor implements CursorInterface
     private function getNextItems(AssetQuery $assetQuery): array
     {
         $elasticSearchQuery = $this->queryBuilder->buildFromQuery($assetQuery, 'code');
+
         $matches = $this->assetClient->search($elasticSearchQuery);
 
         $this->count = $matches['hits']['total']['value'];
@@ -124,6 +125,6 @@ class AssetCursor implements CursorInterface
     private function nextPage()
     {
         $searchAfterCode = AssetCode::fromString($this->items[count($this->items) - 1]);
-        $this->assetQuery = AssetQuery::createWithSearchAfter($this->assetQuery, $searchAfterCode);
+        $this->assetQuery = AssetQuery::createNextQuery($this->assetQuery, $searchAfterCode);
     }
 }

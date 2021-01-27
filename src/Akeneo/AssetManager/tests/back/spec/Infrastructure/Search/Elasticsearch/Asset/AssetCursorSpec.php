@@ -86,7 +86,7 @@ class AssetCursorSpec extends ObjectBehavior
             ]
         ]);
 
-        $secondAssetQuery = AssetQuery::createWithSearchAfter($firstAssetQuery, AssetCode::fromString('awesome'));
+        $secondAssetQuery = AssetQuery::createNextQuery($firstAssetQuery, AssetCode::fromString('awesome'));
         $secondElasticSearchQuery = array_merge($firstElasticSearchQuery, ['search_after' => 'awesome']);
         $queryBuilder->buildFromQuery($secondAssetQuery, 'code')->willReturn($secondElasticSearchQuery);
         $assetClient->search($secondElasticSearchQuery)->willReturn([
@@ -100,7 +100,7 @@ class AssetCursorSpec extends ObjectBehavior
             ]
         ]);
 
-        $thirdQuery = AssetQuery::createWithSearchAfter($secondAssetQuery, AssetCode::fromString('tricky'));
+        $thirdQuery = AssetQuery::createNextQuery($secondAssetQuery, AssetCode::fromString('tricky'));
         $thirdElasticSearchQuery = array_merge($firstElasticSearchQuery, ['search_after' => 'tricky']);
         $queryBuilder->buildFromQuery($thirdQuery, 'code')->willReturn($thirdElasticSearchQuery);
         $assetClient->search($thirdElasticSearchQuery)->willReturn([

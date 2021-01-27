@@ -15,6 +15,8 @@ namespace Akeneo\AssetManager\Infrastructure\Job;
 
 use Akeneo\AssetManager\Application\Asset\DeleteAssets\DeleteAssetsCommand;
 use Akeneo\AssetManager\Application\Asset\DeleteAssets\DeleteAssetsHandler;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
@@ -76,9 +78,18 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($normalizedAssetFamilyIdentifier);
 
         $normalizedQuery = $this->stepExecution->getJobParameters()->get('query');
-        $normalizedQuery['size'] = $this->batchSize;
-        $normalizedQuery['page'] = 0;
-        $assetQuery = AssetQuery::createFromNormalized($normalizedQuery);
+        $channel = ChannelReference::createfromNormalized($normalizedQuery['channel']);
+        $locale = LocaleReference::createfromNormalized($normalizedQuery['locale']);
+        $filters = $normalizedQuery['filters'];
+
+        $assetQuery = AssetQuery::createWithSearchAfter(
+            $assetFamilyIdentifier,
+            $channel,
+            $locale,
+            $this->batchSize,
+            null,
+            $filters
+        );
 
         $cursor = new AssetCursor($this->assetQueryBuilder, $this->assetClient, $assetQuery);
         $this->stepExecution->setTotalItems($cursor->count());
@@ -126,8 +137,8 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
             $this->stepExecution->addWarning(
                 'pim_asset_manager.jobs.asset_manager_mass_delete.error',
                 [
-                    'assets' => (string) implode(', ', $assetCodesToDelete),
-                    'error' => $exception->getMessage()
+                    '{{ assets }}' => (string) implode(', ', $assetCodesToDelete),
+                    '{{ error }}' => $exception->getMessage()
                 ],
                 new DataInvalidItem(['asset_identifier' => (string) implode(', ', $assetCodesToDelete), 'error' => $exception->getMessage()])
             );

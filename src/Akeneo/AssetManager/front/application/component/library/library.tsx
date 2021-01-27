@@ -187,8 +187,8 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
       filterCollection,
       searchValue,
       [],
-      context.locale,
       context.channel,
+      context.locale,
       0,
       50
     );

@@ -30,13 +30,13 @@ export class AssetRemoverImplementation implements AssetRemover<AssetFamilyIdent
     });
 
     return await fetch(url, {
-        method: 'DELETE',
-        body: JSON.stringify(query),
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-      });
+      method: 'DELETE',
+      body: JSON.stringify(query),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+    });
   }
 }
 

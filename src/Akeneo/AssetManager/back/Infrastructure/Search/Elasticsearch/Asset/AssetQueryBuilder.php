@@ -80,7 +80,7 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
 
         if ($assetQuery->isPaginatedUsingSearchAfter()) {
             if (null !== $assetQuery->getSearchAfterCode()) {
-                $query['search_after'] = [$assetQuery->getSearchAfterCode()];
+                $query['search_after'] = [strtolower($assetQuery->getSearchAfterCode())];
             }
             $query['sort'] = ['code' => 'asc'];
         }

@@ -153,6 +153,33 @@ class AssetQuery
     }
 
     public static function createWithSearchAfter(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        ChannelReference $channel,
+        LocaleReference $locale,
+        int $size,
+        ?AssetCode $searchAfterCode,
+        array $filters
+    ): AssetQuery {
+        $filters[] = [
+            'field'    => 'asset_family',
+            'operator' => '=',
+            'value'    => (string) $assetFamilyIdentifier
+        ];
+
+        return new AssetQuery(
+            $channel,
+            $locale,
+            $filters,
+            ChannelReference::noReference(),
+            LocaleIdentifierCollection::empty(),
+            self::PAGINATE_USING_SEARCH_AFTER,
+            $size,
+            null,
+            $searchAfterCode
+        );
+    }
+
+    public static function createNextQuery(
         AssetQuery $assetQuery,
         AssetCode $searchAfterCode
     ): AssetQuery {
