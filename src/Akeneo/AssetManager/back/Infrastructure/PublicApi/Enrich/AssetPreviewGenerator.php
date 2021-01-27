@@ -68,7 +68,7 @@ class AssetPreviewGenerator
         $attribute = $this->attributeRepository->getByIdentifier($attributeAsMainMediaIdentifier);
 
         $channelReference = $attribute->hasValuePerChannel()
-            ? ChannelReference::createfromNormalized($channelCode)
+            ? ChannelReference::createFromNormalized($channelCode)
             : ChannelReference::noReference();
 
         $localeReference = $attribute->hasValuePerLocale()

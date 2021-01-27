@@ -78,7 +78,7 @@ class RawSourceExistValidator extends ConstraintValidator
         try {
             Source::create(
                 $attribute,
-                ChannelReference::createfromNormalized($source['channel']),
+                ChannelReference::createFromNormalized($source['channel']),
                 LocaleReference::createFromNormalized($source['locale'])
             );
         } catch (\Exception $e) {

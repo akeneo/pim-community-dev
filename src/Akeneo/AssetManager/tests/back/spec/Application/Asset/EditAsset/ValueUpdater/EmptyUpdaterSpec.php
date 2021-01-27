@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
@@ -63,15 +64,15 @@ class EmptyUpdaterSpec extends ObjectBehavior
 
         $value = Value::create(
             $editEmptyValueCommand->attribute->getIdentifier(),
-            ChannelReference::createfromNormalized($editEmptyValueCommand->channel),
-            LocaleReference::createfromNormalized($editEmptyValueCommand->locale),
+            ChannelReference::createFromNormalized($editEmptyValueCommand->channel),
+            LocaleReference::createFromNormalized($editEmptyValueCommand->locale),
             EmptyData::create()
         );
 
         $getTransformationsSource->forAttribute(
             $textAttribute,
-            ChannelReference::createfromNormalized('ecommerce'),
-            LocaleReference::createfromNormalized('fr_FR')
+            ChannelReference::createFromNormalized('ecommerce'),
+            LocaleReference::createFromNormalized('fr_FR')
         )->willReturn([]);
 
         $this->__invoke($asset, $editEmptyValueCommand);

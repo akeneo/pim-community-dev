@@ -113,7 +113,7 @@ class AssetQuery
         }
 
         return new AssetQuery(
-            ChannelReference::createfromNormalized($normalizedQuery['channel']),
+            ChannelReference::createFromNormalized($normalizedQuery['channel']),
             LocaleReference::createFromNormalized($normalizedQuery['locale']),
             $normalizedQuery['filters'],
             ChannelReference::noReference(),

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Query\Asset;
@@ -12,7 +13,8 @@ use PhpSpec\ObjectBehavior;
 
 class AssetQuerySpec extends ObjectBehavior
 {
-    public function let() {
+    public function let()
+    {
         $normalizedQuery = [
             'channel' => 'ecommerce',
             'locale'  => 'en_US',
@@ -38,7 +40,7 @@ class AssetQuerySpec extends ObjectBehavior
 
         $this->beConstructedThrough('createPaginatedQueryUsingSearchAfter', [
             AssetFamilyIdentifier::fromString('designer'),
-            ChannelReference::createfromNormalized($normalizedQuery['channel']),
+            ChannelReference::createFromNormalized($normalizedQuery['channel']),
             LocaleIdentifierCollection::fromNormalized([$normalizedQuery['locale']]),
             20,
             null,

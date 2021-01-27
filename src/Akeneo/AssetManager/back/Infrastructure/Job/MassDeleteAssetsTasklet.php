@@ -78,8 +78,8 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($normalizedAssetFamilyIdentifier);
 
         $normalizedQuery = $this->stepExecution->getJobParameters()->get('query');
-        $channel = ChannelReference::createfromNormalized($normalizedQuery['channel']);
-        $locale = LocaleReference::createfromNormalized($normalizedQuery['locale']);
+        $channel = ChannelReference::createFromNormalized($normalizedQuery['channel']);
+        $locale = LocaleReference::createFromNormalized($normalizedQuery['locale']);
         $filters = $normalizedQuery['filters'];
 
         $assetQuery = AssetQuery::createWithSearchAfter(
