@@ -15,8 +15,7 @@ fos_rest:
             - { path: '^/api', priorities: ['json'], fallback_format: json, prefer_extension: true }
             - { path: '', stop: true }
     body_listener:
-        decoders:
-            json: fos_rest.decoder.json
+        service: pim_api.listener.api_body_listener
     routing_loader:
         default_format: json
     exception:
