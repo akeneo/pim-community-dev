@@ -37,6 +37,7 @@ final class QualityScoreMultiLocalesFilter extends AbstractFieldFilter implement
         }
 
         $values = array_map(fn($value) => intval($value), $values);
+        $applyOnAllSelectedLocales = $options['on_all_selected_locales'] ?? false;
 
         $locales = $this->getLocalesFromOptions($options);
         $terms = [];
@@ -48,7 +49,7 @@ final class QualityScoreMultiLocalesFilter extends AbstractFieldFilter implement
 
         $clause = [
             'bool' => [
-                'should' => $terms,
+                $applyOnAllSelectedLocales ? 'must' : 'should' => $terms,
             ],
         ];
 

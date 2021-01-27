@@ -63,7 +63,10 @@ define([
                 field: this.getField(),
                 operator: 'IN',
                 value: cleanedValues,
-                context: {locales: this.getParentForm().getFilters().structure.locales},
+                context: {
+                    locales: this.getParentForm().getFilters().structure.locales,
+                    on_all_selected_locales: false
+                },
             });
         },
     });
