@@ -1,0 +1,92 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {TagInput} from './TagInput.tsx';
+
+<Meta
+  title="Components/Inputs/TagInput"
+  component={TagInput}
+  args={{
+      value: [],
+      placeholder: 'Placeholder',
+      invalid: false,
+  }}
+/>
+
+# TagInput
+
+## Usage
+
+Fill an input with a list of "tags".
+
+Tags are created when a separator is used (typed or pasted).
+
+Tags can be separated thanks to the following characters:
+- space
+- tab
+- line break
+- comma
+- semi-colon
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [tags, setTags] = useState([]);
+      return (
+          <TagInput {...args} value={tags} onChange={setTags}/>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## With a list of existing tags
+
+<Canvas>
+  <Story name="Existing value">
+    {args => {
+      return (
+        <TagInput value={['batman', 'superman', 'catwoman', 'joker']} onChange={() => {}}/>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With a high number of tags
+
+<Canvas>
+  <Story name="With a high number of tags">
+    {args => {
+      return (
+        <TagInput value={Array.from(Array(30).keys()).map(tag => `tag-${tag}`)} onChange={() => {}}/>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on invalid
+<Canvas>
+    <Story name="Variation on invalid">
+        {args => {
+            return (
+                <>
+                    <TagInput value={[]} onChange={() => {}} invalid={false}/>
+                    <TagInput value={[]} onChange={() => {}} invalid={true}/>
+                </>
+            );
+        }}
+    </Story>
+</Canvas>
+
+## Variation on readonly
+<Canvas>
+    <Story name="Variation on readonly">
+        {args => {
+            return (
+                <TagInput value={['gucci', 'dior']} onChange={() => {}} readOnly/>
+            );
+        }}
+    </Story>
+</Canvas>
