@@ -35,7 +35,7 @@ class EventSubscriptionRequestsLimitReachedLog
      *  type: string,
      *  message: string,
      *  limit: int,
-     *  retry_after: int,
+     *  retry_after_seconds: int,
      *  limit_reset: string
      * }
      */
@@ -45,7 +45,7 @@ class EventSubscriptionRequestsLimitReachedLog
             'type' => self::TYPE,
             'message' => self::MESSAGE,
             'limit' => $this->limit,
-            'retry_after' => $this->delayUntilNextRequest,
+            'retry_after_seconds' => $this->delayUntilNextRequest,
             'limit_reset' => $this->now
                 ->add(new \DateInterval('PT' . $this->delayUntilNextRequest . 'S'))
                 ->format(\DateTimeInterface::ATOM)

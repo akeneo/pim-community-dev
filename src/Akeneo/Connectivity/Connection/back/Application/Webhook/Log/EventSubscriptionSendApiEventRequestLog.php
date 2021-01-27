@@ -61,7 +61,7 @@ class EventSubscriptionSendApiEventRequestLog
     /**
      * @return array{
      *  type: string,
-     *  duration: int,
+     *  duration_ms: int,
      *  headers: array<string, int|string>,
      *  message: string,
      *  success: bool,
@@ -81,7 +81,7 @@ class EventSubscriptionSendApiEventRequestLog
     {
         return [
             'type' => self::TYPE,
-            'duration' => $this->getDuration(),
+            'duration_ms' => $this->getDurationMs(),
             'headers' => $this->headers,
             'message' => $this->message,
             'success' => $this->success,
@@ -134,14 +134,14 @@ class EventSubscriptionSendApiEventRequestLog
         ] : [];
     }
     
-    private function getDuration(): int
+    private function getDurationMs(): int
     {
         if (null === $this->endTime) {
             throw new \RuntimeException();
         }
 
-        $duration = $this->endTime - $this->startTime;
+        $durationSeconds = $this->endTime - $this->startTime;
 
-        return (int) round($duration * 1000);
+        return (int) round($durationSeconds * 1000);
     }
 }
