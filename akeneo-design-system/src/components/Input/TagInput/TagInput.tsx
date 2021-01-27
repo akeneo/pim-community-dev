@@ -2,31 +2,35 @@ import React, {useState, useRef, ChangeEvent, FC, KeyboardEvent, useCallback} fr
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {CloseIcon} from '../../../icons';
-import {arrayUnique, Key} from '../../../shared';
+import {arrayUnique, Key, Override} from '../../../shared';
+import {InputProps} from '../InputProps';
 
-type TagInputProps = {
-  /**
-   * Tags to display
-   */
-  value: string[];
+type TagInputProps = Override<
+  Override<React.InputHTMLAttributes<HTMLInputElement>, InputProps<string[]>>,
+  {
+    /**
+     * Tags to display
+     */
+    value: string[];
 
-  /**
-   * Handle called when tags are updated
-   */
-  onChange: (tags: string[]) => void;
+    /**
+     * Handle called when tags are updated
+     */
+    onChange: (tags: string[]) => void;
 
-  /**
-   * Placeholder displayed where there is no tag
-   */
-  placeholder?: string;
+    /**
+     * Placeholder displayed where there is no tag
+     */
+    placeholder?: string;
 
-  /**
-   * Defines if the input is valid on not
-   */
-  invalid?: boolean;
-};
+    /**
+     * Defines if the input is valid on not
+     */
+    invalid?: boolean;
+  }
+>;
 
-const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = []}) => {
+const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = [], readOnly, ...inputProps}) => {
   const [isLastTagSelected, setLastTagAsSelected] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLUListElement>(null);
@@ -114,20 +118,27 @@ const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = []
   );
 
   return (
-    <TagContainer data-testid={'tagInputContainer'} ref={containerRef} isInvalid={invalid} onClick={focusOnInputField}>
+    <TagContainer
+      data-testid={'tagInputContainer'}
+      ref={containerRef}
+      invalid={invalid}
+      onClick={focusOnInputField}
+      readOnly={readOnly}
+    >
       {value.map((tag, index) => {
         return (
           <Tag
             key={`${tag.toLowerCase()}-${index}`}
             data-testid="tag"
             isSelected={index === value.length - 1 && isLastTagSelected}
+            readOnly={readOnly}
           >
-            <RemoveTagIcon onClick={() => removeTag(index)} data-testid={`remove-${index}`} />
+            {!readOnly && <RemoveTagIcon onClick={() => removeTag(index)} data-testid={`remove-${index}`} />}
             {tag}
           </Tag>
         );
       })}
-      <Tag ref={inputContainerRef} onClick={focusOnInputField}>
+      <InputContainer ref={inputContainerRef} onClick={focusOnInputField}>
         <input
           type="text"
           data-testid="tag-input"
@@ -136,8 +147,11 @@ const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = []
           onKeyDown={handleTagDeletion}
           onChange={onChangeCreateTags}
           onBlurCapture={onBlurCreateTag}
+          aria-invalid={invalid}
+          readOnly={readOnly}
+          {...inputProps}
         />
-      </Tag>
+      </InputContainer>
     </TagContainer>
   );
 };
@@ -150,8 +164,8 @@ const RemoveTagIcon = styled(CloseIcon)<AkeneoThemedProps>`
   cursor: pointer;
 `;
 
-const TagContainer = styled.ul<AkeneoThemedProps & {isInvalid: boolean}>`
-  border: 1px solid ${({isInvalid}) => (isInvalid ? getColor('red', 100) : getColor('grey', 80))};
+const TagContainer = styled.ul<AkeneoThemedProps & {invalid: boolean}>`
+  border: 1px solid ${({invalid}) => (invalid ? getColor('red', 100) : getColor('grey', 80))};
   border-radius: 2px;
   padding: 5px;
   display: flex;
@@ -159,32 +173,36 @@ const TagContainer = styled.ul<AkeneoThemedProps & {isInvalid: boolean}>`
   min-height: 40px;
   gap: 5px;
   box-sizing: border-box;
+  background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
 
   &:focus-within {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};
   }
 `;
 
-const Tag = styled.li<AkeneoThemedProps & {isSelected: boolean}>`
+const Tag = styled.li<AkeneoThemedProps & {isSelected: boolean; readOnly: boolean}>`
   list-style-type: none;
-  padding: 3px 17px 3px 4px;
+  padding: ${({readOnly}) => (readOnly ? '3px 17px 3px 17px' : '3px 17px 3px 4px')};
   border: 1px ${getColor('grey', 80)} solid;
   background-color: ${({isSelected}) => (isSelected ? getColor('grey', 40) : getColor('grey', 20))};
   display: flex;
   align-items: center;
-  color: ${getColor('grey', 120)};
+`;
 
-  :last-child {
-    background-color: ${getColor('white')};
-    border: 0;
-    flex: 1;
-    padding: 0;
-  }
+const InputContainer = styled.li<AkeneoThemedProps>`
+  list-style-type: none;
+  color: ${getColor('grey', 120)};
+  border: 0;
+  flex: 1;
+  padding: 0;
+  align-items: center;
+  display: flex;
 
   > input {
     border: 0;
     outline: 0;
     color: ${getColor('grey', 120)};
+    background-color: transparent;
 
     &::placeholder {
       color: ${getColor('grey', 100)};
