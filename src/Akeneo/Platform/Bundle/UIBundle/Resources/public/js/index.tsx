@@ -3,9 +3,8 @@ import ReactDOM from 'react-dom';
 import styled, {ThemeProvider} from 'styled-components';
 import {HashRouter as Router, Switch, Route, useLocation} from 'react-router-dom';
 import {dependencies, DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {UnsavedChangesContext} from 'akeneomeasure/context/unsaved-changes-context';
 import {pimTheme} from 'akeneo-design-system';
-import {Index as Measurements} from 'akeneomeasure';
+import {Index as Measurements} from '@akeneo-pim-community/raccoon';
 import {TranslateProvider} from '@akeneo-pim-community/legacy';
 
 const fetcherRegistry = require('pim/fetcher-registry');
@@ -104,24 +103,22 @@ const App = () => {
         <Container>
           <DependenciesProvider>
             <TranslateProvider value={dependencies.translate}>
-              <UnsavedChangesContext.Provider value={unsavedChanges}>
-                <ThemeProvider theme={pimTheme}>
-                  <div ref={menuRef}></div>
-                  <Content id="container" className="AknDefault-container">
-                    <Suspense fallback={<div>Chargement...</div>}>
-                      <Switch>
-                        <Route path="/configuration/measurement">
-                          <Measurements />
-                        </Route>
-                        <Route path="/raccoon" component={Test} />
-                        <Route path="*">
-                          <BackboneRouter />
-                        </Route>
-                      </Switch>
-                    </Suspense>
-                  </Content>
-                </ThemeProvider>
-              </UnsavedChangesContext.Provider>
+              <ThemeProvider theme={pimTheme}>
+                <div ref={menuRef}></div>
+                <Content id="container" className="AknDefault-container">
+                  <Suspense fallback={<div>Chargement...</div>}>
+                    <Switch>
+                      <Route path="/configuration/measurement">
+                        <Measurements />
+                      </Route>
+                      <Route path="/raccoon" component={Test} />
+                      <Route path="*">
+                        <BackboneRouter />
+                      </Route>
+                    </Switch>
+                  </Suspense>
+                </Content>
+              </ThemeProvider>
             </TranslateProvider>
           </DependenciesProvider>
         </Container>
