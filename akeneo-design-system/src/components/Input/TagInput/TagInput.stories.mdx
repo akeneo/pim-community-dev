@@ -8,7 +8,7 @@ import {TagInput} from './TagInput.tsx';
   args={{
       value: [],
       placeholder: 'Placeholder',
-      isInvalid: false,
+      invalid: false,
   }}
 />
 
@@ -62,6 +62,19 @@ Tags can be separated thanks to the following characters:
                 <>
                     <TagInput value={[]} onChange={() => {}} invalid={false}/>
                     <TagInput value={[]} onChange={() => {}} invalid={true}/>
+                </>
+            );
+        }}
+    </Story>
+</Canvas>
+
+## Variation on readonly
+<Canvas>
+    <Story name="Variation on readonly">
+        {args => {
+            return (
+                <>
+                    <TagInput value={['gucci', 'dior']} onChange={() => {}} readOnly/>
                 </>
             );
         }}

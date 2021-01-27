@@ -139,6 +139,19 @@ test('it creates a tag if the input loses focus', () => {
   expect(result.container.textContent).toBe(expectedTags(['gucci', 'dior']));
 });
 
+test('it prevents readonly tags to be deleted', () => {
+  const TagInputContainer = () => {
+    const [tags, setTags] = useState<string[]>(['gucci', 'samsung', 'apple']);
+    return <TagInput value={tags} onChange={setTags} readOnly />;
+  };
+
+  render(<TagInputContainer />);
+
+  expect(screen.queryByTestId('remove-0')).not.toBeInTheDocument();
+  expect(screen.queryByTestId('remove-1')).not.toBeInTheDocument();
+  expect(screen.queryByTestId('remove-2')).not.toBeInTheDocument();
+});
+
 const expectedTags = (tags: string[]) => {
   expect(screen.queryAllByTestId('tag')).toHaveLength(tags.length);
 
