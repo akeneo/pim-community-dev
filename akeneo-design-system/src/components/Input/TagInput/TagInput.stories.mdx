@@ -54,6 +54,18 @@ Tags can be separated thanks to the following characters:
   </Story>
 </Canvas>
 
+## With a high number of tags
+
+<Canvas>
+  <Story name="With a high number of tags">
+    {args => {
+      return (
+        <TagInput value={Array.from(Array(30).keys()).map(tag => `tag-${tag}`)} onChange={() => {}}/>
+      );
+    }}
+  </Story>
+</Canvas>
+
 ## Variation on invalid
 <Canvas>
     <Story name="Variation on invalid">
@@ -73,9 +85,7 @@ Tags can be separated thanks to the following characters:
     <Story name="Variation on readonly">
         {args => {
             return (
-                <>
-                    <TagInput value={['gucci', 'dior']} onChange={() => {}} readOnly/>
-                </>
+                <TagInput value={['gucci', 'dior']} onChange={() => {}} readOnly/>
             );
         }}
     </Story>
