@@ -1,33 +1,36 @@
-export const getJSON = (url: string) => {
-  return fetch(url).then(response => response.json());
+import * as $ from 'jquery';
+import promisify from 'akeneoassetmanager/tools/promisify';
+
+export const getJSON = (...args: any[]) => {
+  const promise = $.getJSON.apply($, args);
+
+  return promisify(promise);
 };
 
 export const postJSON = (url: string, data: {}) => {
-  return fetch(url, {
-    body: JSON.stringify(data),
+  const promise = $.ajax(url, {
+    data: JSON.stringify(data),
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }).then(response => response.json());
+    contentType: 'application/json',
+    dataType: 'json',
+  });
+
+  return promisify(promise);
 };
 
-export const putJSON = async (url: string, data: {}) => {
-  return fetch(url, {
+export const putJSON = (url: string, data: {}) => {
+  const promise = $.ajax(url, {
+    data: JSON.stringify(data),
     method: 'PUT',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }).then(response => response.json());
+    contentType: 'application/json',
+    dataType: 'json',
+  });
+
+  return promisify(promise);
 };
 
-export const deleteJSON = async (url: any, data: {} = {}) => {
-  return fetch(url, {
-    method: 'DELETE',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }).then(response => response.json());
+export const deleteJSON = (url: any) => {
+  const promise = $.ajax({url, type: 'DELETE'});
+
+  return promisify(promise);
 };

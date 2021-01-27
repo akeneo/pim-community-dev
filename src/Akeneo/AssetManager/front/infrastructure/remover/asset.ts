@@ -24,13 +24,19 @@ export class AssetRemoverImplementation implements AssetRemover<AssetFamilyIdent
     ).catch(errorHandler);
   }
 
-  async removeFromQuery(assetFamilyIdentifier: AssetFamilyIdentifier, query: Query): Promise<void> {
-    return await deleteJSON(
-      routing.generate('akeneo_asset_manager_asset_mass_delete_rest', {
-        assetFamilyIdentifier: denormalizeAssetFamilyIdentifier(assetFamilyIdentifier),
-      }),
-      query
-    ).catch(errorHandler);
+  async removeFromQuery(assetFamilyIdentifier: AssetFamilyIdentifier, query: Query): Promise<Response> {
+    const url = routing.generate('akeneo_asset_manager_asset_mass_delete_rest', {
+      assetFamilyIdentifier: denormalizeAssetFamilyIdentifier(assetFamilyIdentifier),
+    });
+
+    return await fetch(url, {
+        method: 'DELETE',
+        body: JSON.stringify(query),
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+      });
   }
 }
 
