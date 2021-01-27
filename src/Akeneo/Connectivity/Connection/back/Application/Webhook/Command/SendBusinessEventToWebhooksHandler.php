@@ -18,6 +18,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsA
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
+use Monolog\Handler\BufferHandler;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -36,6 +37,7 @@ final class SendBusinessEventToWebhooksHandler
     private CacheClearerInterface $cacheClearer;
     private string $pimSource;
     private ?\Closure $getTimeCallable;
+    private BufferHandler $logBuffer;
 
     public function __construct(
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
@@ -46,7 +48,8 @@ final class SendBusinessEventToWebhooksHandler
         EventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
         string $pimSource,
-        ?callable $getTimeCallable = null
+        ?callable $getTimeCallable = null,
+        BufferHandler $logBuffer
     ) {
         $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
         $this->webhookUserAuthenticator = $webhookUserAuthenticator;
@@ -57,6 +60,7 @@ final class SendBusinessEventToWebhooksHandler
         $this->cacheClearer = $cacheClearer;
         $this->pimSource = $pimSource;
         $this->getTimeCallable = null !== $getTimeCallable ? \Closure::fromCallable($getTimeCallable) : null;
+        $this->logBuffer = $logBuffer;
     }
 
     public function handle(SendBusinessEventToWebhooksCommand $command): void
@@ -132,6 +136,7 @@ final class SendBusinessEventToWebhooksHandler
         $this->client->bulkSend($requests());
 
         $this->cacheClearer->clear();
+        $this->logBuffer->flush();
     }
 
     /**

@@ -100,10 +100,12 @@ services:
             - '@akeneo_connectivity.connection.webhook.webhook_user_authenticator'
             - '@akeneo_connectivity.connection.webhook.webhook_client'
             - '@akeneo_connectivity.connection.webhook.webhook_event_builder'
-            - '@monolog.logger.event_api'
+            - '@monolog.logger.events_api'
             - '@akeneo_connectivity.connection.persistence.repository.events_api_request_count'
             - '@akeneo_connectivity.connection.webhook.cache_clearer'
             - '%env(AKENEO_PIM_URL)%'
+            - null
+            - '@monolog.handler.events_api_elasticsearch_buffer'
 
     akeneo_connectivity.connection.application.webhook.handler.update_connection_webhook:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookHandler

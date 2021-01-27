@@ -8,6 +8,7 @@ parameters:
     index_hosts: '%env(APP_INDEX_HOSTS)%'
     product_and_product_model_index_name: '%env(APP_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME)%'
     connection_error_index_name: '%env(APP_CONNECTION_ERROR_INDEX_NAME)%'
+    events_api_log_index_name: '%env(APP_EVENTS_API_LOG_INDEX_NAME)%'
 
 imports:
     - { resource: pim_parameters.yml }

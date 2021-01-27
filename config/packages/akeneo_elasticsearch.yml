@@ -9,3 +9,8 @@ akeneo_elasticsearch:
             service_name: "akeneo_connectivity.client.connection_error"
             index_name: "%connection_error_index_name%"
             configuration_files: "%connection_error_elasticsearch_index_configuration_file%"
+        -
+            service_name: "akeneo_connectivity.client.events_api_log"
+            index_name: "%events_api_log_index_name%"
+            configuration_files:
+                - "%pim_ce_dev_src_folder_location%/src/Akeneo/Connectivity/Connection/back/Infrastructure/Symfony/Resources/elasticsearch/events_api_log.yml"

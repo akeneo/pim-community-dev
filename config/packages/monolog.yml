@@ -1,9 +1,22 @@
 monolog:
-  handlers:
-    event_api:
-      type: stream
-      path:  "php://stderr"
-      level: info
-      channels: ['event_api']
-      formatter: 'monolog.formatter.json'
-  channels: ['event_api']
+    channels: ['events_api']
+
+    handlers:
+        event_api_stderr:
+            type: stream
+            path: 'php://stderr'
+            level: info
+            channels: ['events_api']
+            formatter: 'monolog.formatter.json'
+
+        events_api_elasticsearch:
+            type: service
+            id: akeneo_connectivity.connection.events_api.monolog.handler.elasticsearch
+
+        events_api_elasticsearch_buffer:
+            type: buffer
+            handler: events_api_elasticsearch
+            buffer_size: 100
+            flush_on_overflow: true
+            level: info
+            channels: ['events_api']

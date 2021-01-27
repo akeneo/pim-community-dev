@@ -23,6 +23,6 @@ services:
             - '@akeneo_connectivity.connection.webhook.get_delay_until_next_request'
             - '%webhook_requests_limit%'
             - '@akeneo_connectivity.connection.webhook.sleep'
-            - '@monolog.logger.event_api'
+            - '@monolog.logger.events_api'
         tags:
             - { name: kernel.event_subscriber }
