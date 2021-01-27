@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\QualityScoreConverter;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
 
@@ -58,6 +59,11 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
             case 'values':
                 foreach ($data as $code => $attribute) {
                     $convertedItem = $convertedItem + $this->valueConverter->convertAttribute($code, $attribute);
+                }
+                break;
+            case 'quality_scores':
+                if (is_array($data)) {
+                    $convertedItem = $this->convertQualityScores($data, $convertedItem);
                 }
                 break;
             case 'identifier':
@@ -180,6 +186,19 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 $propertyName = sprintf('%s-%s', $associationTypeCode, $entityType);
                 $convertedItem[$propertyName] = implode(',', array_column($quantifiedLinks, 'identifier'));
                 $convertedItem[sprintf('%s-quantity', $propertyName)] = implode('|', array_column($quantifiedLinks, 'quantity'));
+            }
+        }
+
+        return $convertedItem;
+    }
+
+    // @fixme To extract to a dedicated service? Does it worth it? (and there's no interface for that)
+    private function convertQualityScores(array $scores, array $convertedItem): array
+    {
+        foreach ($scores as $channel => $localeScores) {
+            foreach ($localeScores as $locale => $score) {
+                // @fixme How to be sure that the code "quality_score" is not already for an attribute?
+                $convertedItem[sprintf('quality_score-%s-%s', $channel, $locale)] = $score;
             }
         }
 

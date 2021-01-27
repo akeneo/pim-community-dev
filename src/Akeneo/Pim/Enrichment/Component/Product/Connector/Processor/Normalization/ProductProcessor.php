@@ -3,7 +3,9 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\FilterValues;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -44,18 +46,23 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var FillMissingValuesInterface */
     protected $fillMissingProductModelValues;
 
+    private ?GetProductsWithQualityScoresInterface $getProductsWithQualityScores;
+
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         BulkMediaFetcher $mediaFetcher,
-        FillMissingValuesInterface $fillMissingProductModelValues
+        FillMissingValuesInterface $fillMissingProductModelValues,
+        // @fixme Nullable to manage that product models don't have scores
+        ?GetProductsWithQualityScoresInterface $getProductsWithQualityScores = null
     ) {
         $this->normalizer          = $normalizer;
         $this->channelRepository   = $channelRepository;
         $this->attributeRepository = $attributeRepository;
         $this->mediaFetcher        = $mediaFetcher;
         $this->fillMissingProductModelValues = $fillMissingProductModelValues;
+        $this->getProductsWithQualityScores = $getProductsWithQualityScores;
     }
 
     /**
@@ -99,6 +106,11 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
                 },
                 ARRAY_FILTER_USE_KEY
             );
+        }
+
+        // @fixme Find a better way to manage that product models don't have scores ?
+        if ($product instanceof ProductInterface && null !== $this->getProductsWithQualityScores && $this->hasFilterOnQualityScore($parameters)) {
+            $productStandard = $this->getProductsWithQualityScores->fromNormalizedProduct($productStandard, $structure['scope'] ?? null, $structure['locales'] ?? []);
         }
 
         return $productStandard;
@@ -170,5 +182,17 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     {
         return isset($parameters->get('filters')['structure']['attributes'])
             && !empty($parameters->get('filters')['structure']['attributes']);
+    }
+
+    private function hasFilterOnQualityScore(JobParameters $parameters): bool
+    {
+        foreach ($parameters->get('filters')['data'] ?? [] as $filter) {
+            // @fixme Use a constant ? or a parameter ?
+            if ($filter['field'] ?? null === 'quality_score_multi_locales') {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

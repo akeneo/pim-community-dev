@@ -12,4 +12,6 @@ interface GetProductsWithQualityScoresInterface
     public function fromConnectorProduct(ConnectorProduct $product): ConnectorProduct;
 
     public function fromConnectorProductList(ConnectorProductList $connectorProductList, ?string $channel = null, array $locales = []): ConnectorProductList;
+
+    public function fromNormalizedProduct(array $normalizedProduct, ?string $channel = null, array $locales = []): array;
 }

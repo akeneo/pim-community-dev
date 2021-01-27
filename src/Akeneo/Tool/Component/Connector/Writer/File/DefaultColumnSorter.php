@@ -35,11 +35,14 @@ class DefaultColumnSorter implements ColumnSorterInterface
     public function sort(array $unsortedColumns, array $context = [])
     {
         $mainColumns = [];
+        $trailingColumns = [];
         $additionalColumns = [];
 
         foreach ($unsortedColumns as $column) {
             if ($this->isInOrderConf($column)) {
                 $mainColumns[] = $column;
+            } else if ($this->isTrailingColumn($column)) {
+                $trailingColumns[] = $column;
             } else {
                 $additionalColumns[] = $column;
             }
@@ -47,8 +50,9 @@ class DefaultColumnSorter implements ColumnSorterInterface
 
         usort($mainColumns, [$this, 'compare']);
         natcasesort($additionalColumns);
+        natcasesort($trailingColumns);
 
-        return array_merge($mainColumns, $additionalColumns);
+        return array_merge($mainColumns, $additionalColumns, $trailingColumns);
     }
 
     /**
@@ -88,5 +92,11 @@ class DefaultColumnSorter implements ColumnSorterInterface
         $splitedColumn = $this->fieldSplitter->splitFieldName($column);
 
         return is_array($splitedColumn) ? $splitedColumn[0] : $column;
+    }
+
+    // @fixme Find a better way to put the quality score columns at the end?
+    private function isTrailingColumn(string $column): bool
+    {
+        return 0 === strpos($column, 'quality_score-');
     }
 }
