@@ -50,10 +50,11 @@ const CreateMeasurementFamily = ({isOpen, onClose}: CreateMeasurementFamilyProps
     }
   }, [form, locale, saveMeasurementFamily, notify, translate, handleClose, setErrors]);
 
+  if (!isOpen) return null;
+
   return (
     <Modal
       closeTitle={translate('pim_common.close')}
-      isOpen={isOpen}
       onClose={() => handleClose()}
       illustration={<MeasurementIllustration />}
     >
