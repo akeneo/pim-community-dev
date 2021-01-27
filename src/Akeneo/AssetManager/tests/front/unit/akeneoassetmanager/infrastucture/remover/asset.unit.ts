@@ -41,8 +41,12 @@ describe('akeneoassetmanager/infrastructure/remover/asset', () => {
     await remover.removeFromQuery('designer', query);
 
     expect(global.fetch).toHaveBeenCalledWith('akeneo_asset_manager_asset_mass_delete_rest', {
-      body: query,
-
+      body: JSON.stringify(query),
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
     });
   });
 });

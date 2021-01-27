@@ -125,6 +125,6 @@ class AssetCursor implements CursorInterface
     private function nextPage()
     {
         $searchAfterCode = AssetCode::fromString($this->items[count($this->items) - 1]);
-        $this->assetQuery = AssetQuery::createNextQuery($this->assetQuery, $searchAfterCode);
+        $this->assetQuery = AssetQuery::createNextWithSearchAfter($this->assetQuery, $searchAfterCode);
     }
 }

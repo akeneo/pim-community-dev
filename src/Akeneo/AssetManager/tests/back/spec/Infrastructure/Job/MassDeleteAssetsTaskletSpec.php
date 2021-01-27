@@ -16,6 +16,9 @@ namespace spec\Akeneo\AssetManager\Infrastructure\Job;
 use Akeneo\AssetManager\Application\Asset\DeleteAssets\DeleteAssetsCommand;
 use Akeneo\AssetManager\Application\Asset\DeleteAssets\DeleteAssetsHandler;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\AssetQueryBuilderInterface;
@@ -111,7 +114,14 @@ class MassDeleteAssetsTaskletSpec extends ObjectBehavior
             'track_total_hits' => true,
         ];
 
-        $firstQuery = AssetQuery::createFromNormalized($normalizedQuery);
+        $firstQuery = AssetQuery::createWithSearchAfter(
+            AssetFamilyIdentifier::fromString('packshot'),
+            ChannelReference::createFromNormalized($normalizedQuery['channel']),
+            LocaleReference::createFromNormalized($normalizedQuery['locale']),
+            3,
+            null,
+            $normalizedQuery['filters']
+        );
         $assetQueryBuilder->buildFromQuery($firstQuery, 'code')->willReturn($firstElasticSearchQuery);
         $assetClient->search($firstElasticSearchQuery)->willReturn([
             'hits' => [
@@ -130,7 +140,7 @@ class MassDeleteAssetsTaskletSpec extends ObjectBehavior
             ]
         ]);
 
-        $secondQuery = AssetQuery::createNextQuery($firstQuery, AssetCode::fromString('awesome'));
+        $secondQuery = AssetQuery::createNextWithSearchAfter($firstQuery, AssetCode::fromString('awesome'));
         $secondElasticSearchQuery = array_merge($firstElasticSearchQuery, ['search_after' => 'awesome']);
         $assetQueryBuilder->buildFromQuery($secondQuery, 'code')->willReturn($secondElasticSearchQuery);
         $assetClient->search($secondElasticSearchQuery)->willReturn([
@@ -217,7 +227,14 @@ class MassDeleteAssetsTaskletSpec extends ObjectBehavior
             'track_total_hits' => true,
         ];
 
-        $firstQuery = AssetQuery::createFromNormalized($normalizedQuery);
+        $firstQuery = AssetQuery::createWithSearchAfter(
+            AssetFamilyIdentifier::fromString('packshot'),
+            ChannelReference::createFromNormalized($normalizedQuery['channel']),
+            LocaleReference::createFromNormalized($normalizedQuery['locale']),
+            3,
+            null,
+            $normalizedQuery['filters']
+        );
         $assetQueryBuilder->buildFromQuery($firstQuery, 'code')->willReturn($firstElasticSearchQuery);
         $assetClient->search($firstElasticSearchQuery)->willReturn([
             'hits' => [
@@ -236,7 +253,7 @@ class MassDeleteAssetsTaskletSpec extends ObjectBehavior
             ],
         ]);
 
-        $secondQuery = AssetQuery::createNextQuery($firstQuery, AssetCode::fromString('awesome'));
+        $secondQuery = AssetQuery::createNextWithSearchAfter($firstQuery, AssetCode::fromString('awesome'));
         $secondElasticSearchQuery = array_merge($firstElasticSearchQuery, ['search_after' => 'awesome']);
         $assetQueryBuilder->buildFromQuery($secondQuery, 'code')->willReturn($secondElasticSearchQuery);
         $assetClient->search($secondElasticSearchQuery)->willReturn([
@@ -251,7 +268,7 @@ class MassDeleteAssetsTaskletSpec extends ObjectBehavior
         ]);
 
 
-        $thirdQuery = AssetQuery::createNextQuery($secondQuery, AssetCode::fromString('tricky'));
+        $thirdQuery = AssetQuery::createNextWithSearchAfter($secondQuery, AssetCode::fromString('tricky'));
         $thirdElasticSearchQuery = array_merge($firstElasticSearchQuery, ['search_after' => 'tricky']);
         $assetQueryBuilder->buildFromQuery($thirdQuery, 'code')->willReturn($thirdElasticSearchQuery);
         $assetClient->search($thirdElasticSearchQuery)->willReturn([

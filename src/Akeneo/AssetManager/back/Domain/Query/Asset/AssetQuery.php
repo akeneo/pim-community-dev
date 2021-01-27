@@ -179,7 +179,7 @@ class AssetQuery
         );
     }
 
-    public static function createNextQuery(
+    public static function createNextWithSearchAfter(
         AssetQuery $assetQuery,
         AssetCode $searchAfterCode
     ): AssetQuery {
