@@ -40,7 +40,7 @@ const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = []
     (event: ChangeEvent<HTMLInputElement>) => {
       const tagsAsString = event.currentTarget.value;
       if (tagsAsString !== '') {
-        const newTags = tagsAsString.split(/[\s,;]+/);
+        const newTags = tagsAsString.split(/[\s,;]+/); // matching spaces, tabs, line breaks, coma and semi-colon
         if (newTags.length === 1) {
           return;
         }
@@ -119,7 +119,7 @@ const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = []
 
   return (
     <TagContainer
-      data-testid={'tagInputContainer'}
+      data-testid="tagInputContainer"
       ref={containerRef}
       invalid={invalid}
       onClick={focusOnInputField}
