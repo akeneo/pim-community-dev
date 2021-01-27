@@ -1,5 +1,5 @@
 import {Theme} from '../theme';
-import {color, fontSize, palette} from '../common';
+import {color, fontSize, palette, scoringPalette} from '../common';
 
 const onboarderTheme: Theme = {
   name: 'Onboarder',
@@ -15,6 +15,7 @@ const onboarderTheme: Theme = {
   },
   fontSize,
   palette,
+  scoringPalette,
 };
 
 export {onboarderTheme};

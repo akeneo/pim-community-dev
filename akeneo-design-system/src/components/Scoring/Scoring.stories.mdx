@@ -1,0 +1,46 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Scoring} from './Scoring.tsx';
+
+<Meta
+  title="Components/Scoring"
+  component={Scoring}
+  argTypes={{
+    activeScore: {control: {type: 'select', options: ['a', 'b', 'c', 'd', 'e']}},
+  }}
+/>
+
+# Scoring
+
+## Usage
+
+Scoring are introduced as new components inside Akeneo to highlight to the users the level of quality of their product data. This components is specifically link to this usage. A stands for the best score and E for the worst score. This components is based on the US notation system. The colors are used to support the understanding of the score you have.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Scoring {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on Score
+
+<Canvas>
+  <Story name="Score">
+    {args => {
+      return (
+        <>
+          <Scoring {...args} activeScore="a" />
+          <Scoring {...args} activeScore="b" />
+          <Scoring {...args} activeScore="c" />
+          <Scoring {...args} activeScore="d" />
+          <Scoring {...args} activeScore="e" />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

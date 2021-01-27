@@ -1,5 +1,5 @@
 import styled, {css} from 'styled-components';
-import {Color, FontSize, getColor, getFontSize, Palette} from './theme';
+import {Color, FontSize, getColor, getFontSize, Palette, ScoringPalette} from './theme';
 
 const CommonStyle = css`
   font-family: 'Lato';
@@ -82,8 +82,16 @@ const palette: Palette = {
   danger: 'red',
 };
 
+const scoringPalette: ScoringPalette = {
+  a: 'green',
+  b: 'green',
+  c: 'yellow',
+  d: 'red',
+  e: 'red',
+};
+
 const BrandedPath = styled.path`
   fill: ${getColor('brand', 100)};
 `;
 
-export {color, fontSize, palette, CommonStyle, BrandedPath};
+export {color, fontSize, palette, scoringPalette, CommonStyle, BrandedPath};
