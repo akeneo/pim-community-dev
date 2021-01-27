@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * This subscriber will watch the API auth route and throw a 413 if the request content size is too large.
+ * This subscriber will watch the API auth path and throw a 413 if the request content size is too large.
  * This is to mitigate DDoS attacks on this unrestricted endpoint.
  */
 final class CheckRequestContentSizeSubscriber implements EventSubscriberInterface
@@ -18,7 +18,7 @@ final class CheckRequestContentSizeSubscriber implements EventSubscriberInterfac
     // Maximum allowed request content size (in bytes)
     private const MAX_CONTENT_SIZE = 300;
 
-    private const API_AUTH_ROUTE = 'fos_oauth_server_token';
+    private const API_AUTH_PATH = '/api/oauth/v1/token';
 
     /**
      * {@inheritdoc}
@@ -34,7 +34,7 @@ final class CheckRequestContentSizeSubscriber implements EventSubscriberInterfac
     {
         $request = $event->getRequest();
 
-        if (self::API_AUTH_ROUTE !== $request->get('_route')) {
+        if (false === strpos($request->getPathInfo(), self::API_AUTH_PATH)) {
             return;
         }
 
