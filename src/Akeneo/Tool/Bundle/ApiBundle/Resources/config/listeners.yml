@@ -1,6 +1,0 @@
-services:
-    pim_api.listener.api_body_listener:
-        class: Akeneo\Tool\Bundle\ApiBundle\Listener\ApiBodyListener
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 10 }
-        arguments: ['@fos_rest.decoder_provider']

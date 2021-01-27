@@ -4,10 +4,8 @@ namespace Akeneo\Tool\Bundle\ApiBundle\Controller;
 
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
@@ -17,11 +15,12 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class TokenController
 {
-    // Maximum allowed request content size (in bytes)
-    protected const MAX_CONTENT_SIZE = 300;
+    /** @var OAuth2 */
+    protected $oauthServer;
 
-    protected OAuth2 $oauthServer;
-
+    /**
+     * @param OAuth2 $oauthServer
+     */
     public function __construct(OAuth2 $oauthServer)
     {
         $this->oauthServer = $oauthServer;
@@ -30,26 +29,13 @@ class TokenController
     /**
      * @param Request $request
      *
-     * @throws HttpException
      * @throws UnprocessableEntityHttpException
      *
      * @return Response
      */
     public function tokenAction(Request $request)
     {
-        $content = $request->getContent();
-
-        if (self::MAX_CONTENT_SIZE < strlen($content)) {
-            throw new HttpException(
-                Response::HTTP_REQUEST_ENTITY_TOO_LARGE,
-                sprintf('Request content exceeded the maximum allowed size of %s bytes', self::MAX_CONTENT_SIZE)
-            );
-        }
-
         try {
-            $parameters = json_decode($content, true) ?? [];
-            $request->request = new ParameterBag($parameters);
-
             return $this->oauthServer->grantAccessToken($request);
         } catch (OAuth2ServerException $e) {
             $grantType = $request->request->get('grant_type');

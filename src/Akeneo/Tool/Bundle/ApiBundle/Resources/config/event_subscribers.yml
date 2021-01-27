@@ -9,3 +9,8 @@ services:
             - '@pim_api.negotiator.content_type_negotiator'
         tags:
             - { name: kernel.event_subscriber, event: kernel.request, method: onKernelRequest }
+
+    pim_api.event_subscriber.check_request_content_size:
+        class: Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\CheckRequestContentSizeSubscriber
+        tags:
+            - { name: kernel.event_subscriber, event: kernel.request, method: onKernelRequest, priority: 9 }
