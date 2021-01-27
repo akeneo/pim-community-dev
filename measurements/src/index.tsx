@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {Index} from './feature';
 import {pimTheme} from 'akeneo-design-system';
+import translations from './translations.json';
+import routes from './routes.json';
 
 const value = {
   notify: (_level: NotificationLevel, message: string) => {
@@ -22,10 +24,9 @@ const value = {
     },
   },
   security: {isGranted: (_acl: string) => true},
-  translate: (id: string) => {
-    const elements = id.split('.');
-
-    return elements[elements.length - 1];
+  translate: (id: string): string => {
+    // @ts-ignore
+    return translations.messages[`jsmessages:${id}`] ? translations.messages[`jsmessages:${id}`] : id;
   },
   user: {
     get: (data: string) => {

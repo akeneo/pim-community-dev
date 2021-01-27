@@ -26,10 +26,11 @@
   },
   "proxy": "http://pcd.test:8080",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "pre-script": "cp ../public/js/translation/en_US.js ./src/translations.json && cp ../public/js/routes.js ./src/routes.json && sed -i '' 's/fos.Router.setData(//g' ./src/routes.json && sed -i '' 's/);//g' ./src/routes.json",
+    "start": "yarn pre-script && react-scripts start",
+    "build": "yarn pre-script && react-scripts build",
+    "test": "yarn pre-script && react-scripts test",
+    "eject": "yarn pre-script && react-scripts eject",
     "lib:build": "tsc -p ./lib.tsconfig.json"
   },
   "eslintConfig": {
