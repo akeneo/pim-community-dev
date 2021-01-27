@@ -12,12 +12,26 @@ const value = {
     console.log('notify', message);
   },
   router: {
-    generate: (route: string, _parameters?: RouteParams) => {
-      if (route === 'pim_enrich_measures_rest_index') {
-        return '/configuration/measures/rest';
+    generate: (route: string, parameters: RouteParams = {}) => {
+      // @ts-ignore
+      const routeConf = routes.routes[route];
+      if (undefined === routeConf) {
+        throw new Error(`Route ${route}, not found`);
       }
 
-      return route;
+      return routeConf.tokens
+        .map((token: any) => {
+          switch (token[0]) {
+            case 'text':
+              return token[1];
+            case 'variable':
+              return token[1] + parameters[token[3]];
+            default:
+              throw new Error(`Unexpected token type: ${token[0]}`);
+          }
+        })
+        .reverse()
+        .join('');
     },
     redirect: (fragment: string, _options?: object) => {
       console.log('redirect', fragment);
