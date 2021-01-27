@@ -10,6 +10,7 @@
 - PIM-9631: fix attribute groups not displayed in family due to JS error
 - PIM-9649: Fix PDF product renderer disregarding permissions on Attribute groups
 - PIM-9650: Add translation key for mass delete action.
+- PIM-9642: Refresh product image when switching channel or locale
 
 ## New features
 

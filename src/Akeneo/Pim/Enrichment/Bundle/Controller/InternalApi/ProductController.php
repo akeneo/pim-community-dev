@@ -176,14 +176,18 @@ class ProductController
      *
      * @return JsonResponse
      */
-    public function getAction($id)
+    public function getAction(Request $request, string $id)
     {
         $product = $this->findProductOr404($id);
+
+        $context = $this->getNormalizationContext();
+        $context['locale'] = $request->get('locale') ?? $context['locale'];
+        $context['channel'] = $request->get('channel') ?? $context['channel'];
 
         $normalizedProduct = $this->normalizer->normalize(
             $product,
             'internal_api',
-            $this->getNormalizationContext()
+            $context
         );
 
         return new JsonResponse($normalizedProduct);

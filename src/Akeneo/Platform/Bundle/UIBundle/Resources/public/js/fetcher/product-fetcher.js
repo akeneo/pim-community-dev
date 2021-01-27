@@ -16,13 +16,17 @@ define(['jquery', 'backbone', 'pim/base-fetcher', 'routing', 'oro/mediator', 'pi
      *
      * @return {Promise}
      */
-    fetch: function (identifier) {
-      return $.getJSON(Routing.generate(this.options.urls.get, {id: identifier}))
+    fetch: function (identifier, options = {}) {
+      const {cached = false, silent = false, ...routeParams} = options;
+
+      return $.getJSON(Routing.generate(this.options.urls.get, {...routeParams, id: identifier}))
         .then(function (product) {
           const cacheInvalidator = new CacheInvalidator();
           cacheInvalidator.checkStructureVersion(product);
 
-          mediator.trigger('pim_enrich:form:product:post_fetch', product);
+          if (!silent) {
+            mediator.trigger('pim_enrich:form:product:post_fetch', product);
+          }
 
           return product;
         })
