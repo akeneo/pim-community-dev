@@ -16,5 +16,6 @@ export * from './MessageBar/MessageBar';
 export * from './Modal/Modal';
 export * from './Pagination/Pagination';
 export * from './ProgressBar/ProgressBar';
+export * from './Scoring/Scoring';
 export * from './Table/Table';
 export * from './Toolbar/Toolbar';

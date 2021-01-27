@@ -73,14 +73,25 @@ type Palette = {
   danger: string;
 };
 
+type ScoringPalette = {
+  a: string;
+  b: string;
+  c: string;
+  d: string;
+  e: string;
+};
+
 type Theme = {
   name: string;
   palette: Palette;
+  scoringPalette: ScoringPalette;
   fontSize: FontSize;
   color: Color;
 };
 
 type Level = 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+
+type Score = 'a' | 'b' | 'c' | 'd' | 'e';
 
 const getColor = (color: string, gradient?: number): ((props: AkeneoThemedProps) => string) => ({
   theme,
@@ -90,10 +101,14 @@ const getColorForLevel = (level: Level, gradient: number): ((props: AkeneoThemed
   theme,
 }: AkeneoThemedProps): string => theme.color[`${theme.palette[level]}${gradient}`] as string;
 
+const getColorForScoring = (score: Score, gradient: number): ((props: AkeneoThemedProps) => string) => ({
+  theme,
+}: AkeneoThemedProps): string => theme.color[`${theme.scoringPalette[score]}${gradient}`] as string;
+
 const getFontSize = (fontSize: keyof FontSize): ((props: AkeneoThemedProps) => string) => ({
   theme,
 }: AkeneoThemedProps): string => theme.fontSize[fontSize];
 
 export type AkeneoThemedProps<P = Record<string, unknown>> = ThemedStyledProps<P, Theme>;
-export type {Theme, FontSize, Color, Level, Palette};
-export {getColor, getColorForLevel, getFontSize};
+export type {Theme, FontSize, Color, Level, Score, Palette, ScoringPalette};
+export {getColor, getColorForLevel, getColorForScoring, getFontSize};
