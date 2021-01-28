@@ -67,7 +67,6 @@
         "doctrine/migrations": "1.8.1",
         "doctrine/orm": "2.7.0",
         "doctrine/persistence": "1.2.0",
-        "doctrine/reflection": "1.0.0",
         "dompdf/dompdf" : "0.8.6",
         "elasticsearch/elasticsearch": "7.9.1",
         "friendsofsymfony/jsrouting-bundle": "2.1.1",
