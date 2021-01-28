@@ -506,7 +506,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
         $this->repository->deleteByAssetFamily($assetFamilyIdentifier);
         $this->eventDispatcherMock->assertEventDispatched(AssetFamilyAssetsDeletedEvent::class);
 
-        $this->refreshAssetIndex();
+        $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
         Assert::assertEquals(1, $this->repository->count());
     }
 
