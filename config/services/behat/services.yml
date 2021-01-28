@@ -1,8 +1,5 @@
 parameters:
     comm_panel_api_url: 'http://localhost:8088' # avoid to call the external service in the CI
-    akeneo_integration_tests.elasticsearch_index_names:
-        - '%product_and_product_model_index_name%'
-        - '%connection_error_index_name%'
 
 services:
     _defaults:
@@ -58,4 +55,3 @@ services:
             - '%env(APP_DATABASE_PASSWORD)%'
             - '%kernel.cache_dir%/sql-dump/'
             - '%index_hosts%'
-            - '%akeneo_integration_tests.elasticsearch_index_names%'

@@ -24,7 +24,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use Webmozart\Assert\Assert;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
@@ -96,9 +95,6 @@ class FixturesLoader implements FixturesLoaderInterface
     /** @var MeasurementInstaller */
     private $measurementInstaller;
 
-    /** @var string[] */
-    private array $indexNames;
-
     public function __construct(
         KernelInterface $kernel,
         DatabaseSchemaHandler $databaseSchemaHandler,
@@ -119,10 +115,8 @@ class FixturesLoader implements FixturesLoaderInterface
         string $databaseUser,
         string $databasePassword,
         string $sqlDumpDirectory,
-        string $elasticsearchHost,
-        array $indexNames
+        string $elasticsearchHost
     ) {
-        Assert::allString($indexNames);
         $this->kernel = $kernel;
         $this->databaseSchemaHandler = $databaseSchemaHandler;
         $this->systemUserAuthenticator = $systemUserAuthenticator;
@@ -149,7 +143,6 @@ class FixturesLoader implements FixturesLoaderInterface
         $clientBuilder->setHosts([$elasticsearchHost]);
         $this->nativeElasticsearchClient = $clientBuilder->build();
         $this->measurementInstaller = $measurementInstaller;
-        $this->indexNames = $indexNames;
     }
 
     public function __destruct()
@@ -178,7 +171,7 @@ class FixturesLoader implements FixturesLoaderInterface
             $this->dumpDatabase($dumpFile);
         }
 
-        $this->nativeElasticsearchClient->indices()->refresh(['index' => $this->indexNames]);
+        $this->nativeElasticsearchClient->indices()->refresh(['index' => $this->getIndexNames()]);
         $this->clearAclCache();
 
         $this->systemUserAuthenticator->createSystemUser();
@@ -452,7 +445,8 @@ class FixturesLoader implements FixturesLoaderInterface
 
     private function deleteAllDocumentsInElasticsearch(): void
     {
-        $this->nativeElasticsearchClient->indices()->refresh(['index' => $this->indexNames]);
+        $indexNames = $this->getIndexNames();
+        $this->nativeElasticsearchClient->indices()->refresh(['index' => $indexNames]);
 
         $this->nativeElasticsearchClient->deleteByQuery([
             'body' => [
@@ -460,8 +454,16 @@ class FixturesLoader implements FixturesLoaderInterface
                     'match_all' => new \stdClass()
                 ],
             ],
-            'index' => $this->indexNames,
+            'index' => $indexNames,
             'refresh' => true
         ]);
+    }
+
+    private function getIndexNames(): array
+    {
+        return array_map(
+            fn (Client $client) => $client->getIndexName(),
+            $this->clientRegistry->getClients()
+        );
     }
 }
