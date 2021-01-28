@@ -108,6 +108,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
         if (!is_array($targets)) {
             $targets = [$targets];
         }
+
         foreach ($targets as $target) {
             if (Constraint::PROPERTY_CONSTRAINT === $target) {
                 $metadata->addPropertyConstraint('data', $constraint);
