@@ -19,7 +19,7 @@ Feature: Lists all assets of an asset family
   Scenario: Search assets of an asset family with no results
     Given a list of assets
     When the user search for "search"
-    Then there should be no result on a total of 4 assets
+    Then there should be no result on a total of 3 assets
 
   @acceptance-back
   Scenario: Search assets of an asset family by their code
