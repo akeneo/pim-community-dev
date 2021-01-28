@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.88 (2021-01-28)
+
 ## Bug fixes
 RAC-473: Fix slow COUNT query on asset manager
 
