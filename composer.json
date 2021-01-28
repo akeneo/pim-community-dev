@@ -49,7 +49,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "4.0.88",
+        "akeneo/pim-community-dev": "4.0.x-dev@dev",
         "guzzlehttp/guzzle": "6.3.3",
         "hslavich/oneloginsaml-bundle": "1.4.1",
         "justinrainbow/json-schema": "^5.2",
