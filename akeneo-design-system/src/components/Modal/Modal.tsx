@@ -1,12 +1,13 @@
 import React, {ReactElement, ReactNode, useEffect, useRef} from 'react';
 import {createPortal} from 'react-dom';
 import styled from 'styled-components';
-import {AkeneoThemedProps, CommonStyle, getColor, getFontSize} from '../../theme';
+import {CommonStyle, getColor} from '../../theme';
 import {IconButton} from '../../components';
 import {CloseIcon} from '../../icons';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
 import {useShortcut} from '../../hooks';
 import {Key, Override} from '../../shared';
+import {SectionTitle, Title} from '../../typography';
 
 const ModalContainer = styled.div`
   ${CommonStyle}
@@ -52,21 +53,15 @@ const IconContainer = styled.div`
   padding-right: 40px;
 `;
 
-//TODO extract to Typography RAC-331
-const SectionTitle = styled.div<{size?: 'big' | 'small' | 'default'; color?: string} & AkeneoThemedProps>`
+const ModalSectionTitle = styled(SectionTitle)`
+  display: block;
   height: 20px;
-  color: ${({color}) => getColor(color ?? 'grey', 120)};
-  font-size: ${({size}) => getFontSize(size ?? 'default')};
-  text-transform: uppercase;
 `;
 
-//TODO extract to Typography RAC-331
-const Title = styled.div`
+const ModalTitle = styled(Title)`
   display: flex;
   align-items: center;
   height: 40px;
-  color: ${getColor('grey', 140)};
-  font-size: ${getFontSize('title')};
   margin-bottom: 10px;
 `;
 
@@ -114,6 +109,8 @@ type ModalProps = Override<
 const Modal: React.FC<ModalProps> & {
   BottomButtons: typeof BottomButtons;
   TopRightButtons: typeof TopRightButtons;
+  Title: typeof ModalTitle;
+  SectionTitle: typeof ModalSectionTitle;
 } = ({onClose, illustration, closeTitle, children, ...rest}: ModalProps) => {
   const portalNode = document.createElement('div');
   portalNode.setAttribute('id', 'modal-root');
@@ -147,5 +144,7 @@ const Modal: React.FC<ModalProps> & {
 
 Modal.BottomButtons = BottomButtons;
 Modal.TopRightButtons = TopRightButtons;
+Modal.Title = ModalTitle;
+Modal.SectionTitle = ModalSectionTitle;
 
-export {Modal, SectionTitle, Title};
+export {Modal};

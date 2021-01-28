@@ -84,6 +84,14 @@ const SpaceContainer = styled.div<{width: number; height: number}>`
   height: ${({height}) => `${height}px`};
 `;
 
+const ColorPill = styled.div<{color: string, gradient: number} & AkeneoThemedProps>`
+  width: 26px;
+  height: 26px;
+  margin: 5px;
+  border-radius: 100%;
+  background-color: ${({color, gradient}) => getColor(color, gradient)}
+`
+
 export {
   StoryStyle,
   PreviewGrid,
@@ -95,5 +103,6 @@ export {
   MessageBarContainer,
   Scrollable,
   SpaceContainer,
+  ColorPill,
   useSelection,
 };

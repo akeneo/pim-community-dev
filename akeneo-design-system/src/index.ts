@@ -7,3 +7,4 @@ export * from './theme';
 export * from './theme/onboarder';
 export * from './theme/pim';
 export * from './theme/shared-catalogs';
+export * from './typography';

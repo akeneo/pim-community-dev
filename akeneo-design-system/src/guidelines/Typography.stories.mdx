@@ -1,0 +1,289 @@
+import {Meta, Story, ArgsTable, Canvas, Source} from '@storybook/addon-docs/blocks';
+import styled from 'styled-components';
+import {Title, SectionTitle, Body, Caption, Metric} from '../typography';
+import {Table} from '../components';
+import {ColorPill} from '../storybook/PreviewGallery';
+
+<Meta title="Guidelines/Typography" />
+
+# Typography
+
+In Akeneo products, we use the [Lato open source typeface](https://www.latofonts.com/)
+
+## Usage
+
+Typography guides the users to read and understand the hierarchy of information. Good typographic usage and proper use of character styles make it possible to manage the display of the content, keeping it useful, simple, and effective.
+
+### Scale
+
+The font scale enables you to indicate content hierarchy. These sizes and styles are designed to balance content with better readability.
+
+### Font weight
+
+The weight of the font is an essential typographic variable that can increase and differentiate the hierarchy of content. Combinations of weight and font size must be carefully balanced. A bold weight will always be more important than a lighter font of the same size. However, a lighter font may have a higher hierarchical rank than a bold font if its size is much bigger than the one in bold.
+
+### Type color
+
+The color of the characters must be carefully considered. Readability and accessibility must be at the top of your mind. Keep the neutral type color in the body text.
+
+## Title
+
+Use the title style to summarize the content that follows the title. Careful linking of titles makes the hierarchy of content clear and improves readability. There can only be one title-regular on the same page.
+
+<Canvas>
+  <Story name="Title" parameters={{docs: {source:{code: `//To use a Title, you have two options:\n
+// Add it's style to an existing styled component
+const MyTitle = styled.h1\`
+  $\{getTitleStyle({size: 'big', color: 'brand'})\};\n
+  // other properties
+  padding: 10px;
+\`
+// Or use the provided component directly
+<Title size="big" color="brand">My awesome title</Title>
+`}}}}>
+    {() => {
+      return (
+        <Table>
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell>
+                <Title size="big" color="brand">Big title</Title>
+              </Table.Cell>
+              <Table.Cell>28px</Table.Cell>
+              <Table.Cell>Regular (400)</Table.Cell>
+              <Table.Cell><ColorPill color="brand" gradient={100} /><ColorPill color="grey" gradient={140} /></Table.Cell>
+              <Table.Cell><pre>{`$\{getTitleStyle(
+  {color: "brand" | "grey", size: "big"}
+)\}`}</pre></Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>
+                <Title size="regular" color="brand">Regular title</Title>
+              </Table.Cell>
+              <Table.Cell>17px</Table.Cell>
+              <Table.Cell>Semibold (600)</Table.Cell>
+              <Table.Cell><ColorPill color="brand" gradient={100} /><ColorPill color="grey" gradient={140} /></Table.Cell>
+              <Table.Cell><pre>{`$\{getTitleStyle(
+  {color: "brand" | "grey", size: "regular"}
+)\}`}</pre></Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>
+                <Title size="small" color="brand">Small title</Title>
+              </Table.Cell>
+              <Table.Cell>15px</Table.Cell>
+              <Table.Cell>Bold (700)</Table.Cell>
+              <Table.Cell><ColorPill color="brand" gradient={100} /><ColorPill color="grey" gradient={140} /></Table.Cell>
+              <Table.Cell>
+                <pre>{`$\{getTitleStyle(
+  {color: "brand" | "grey", size: "small"}
+)\}`}</pre>
+              </Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Section Title
+
+Use the Section title style to summarize a section content that follows the title. There can be several sections on the same page.
+
+<Canvas>
+  <Story name="Section Title" parameters={{docs: {source:{code: `//To use a Section Title, you have two options:\n
+// Add it's style to an existing styled component
+const MySectionTitle = styled.h2\`
+  $\{getSectionTitleStyle({size: 'big', color: 'brand'})\};\n
+  // other properties
+  padding: 10px;
+\`
+// Or use the provided component directly
+<SectionTitle size="big" color="grey">My awesome section title</SectionTitle>
+`}}}}>
+    {() => {
+      return (
+        <Table>
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell>
+                <SectionTitle size="big">Big section title</SectionTitle>
+              </Table.Cell>
+              <Table.Cell>15px</Table.Cell>
+              <Table.Cell>Regular (400)</Table.Cell>
+              <Table.Cell><ColorPill color="grey" gradient={140} /></Table.Cell>
+              <Table.Cell><pre>{`$\{getSectionTitleStyle(
+  {size: "big"}
+)\}`}</pre></Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>
+                <SectionTitle size="regular" color="grey">Regular section title</SectionTitle>
+              </Table.Cell>
+              <Table.Cell>13px</Table.Cell>
+              <Table.Cell>Regular (400)</Table.Cell>
+              <Table.Cell><ColorPill color="grey" gradient={140} /><ColorPill color="brand" gradient={100} /></Table.Cell>
+              <Table.Cell><pre>{`$\{getSectionTitleStyle(
+  {color: "brand" | "grey", size: "regular"}
+)\}`}</pre></Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>
+                <SectionTitle size="small">Small section title</SectionTitle>
+              </Table.Cell>
+              <Table.Cell>11px</Table.Cell>
+              <Table.Cell>Regular (400)</Table.Cell>
+              <Table.Cell><ColorPill color="grey" gradient={100} /></Table.Cell>
+              <Table.Cell>
+                <pre>{`$\{getSectionTitleStyle(
+  {size: "small"}
+)\}`}</pre>
+              </Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Body
+
+**Big:** this concerns short texts with no more than one line and is commonly used in components such as labels.
+
+**Regular :** this style is commonly used for long paragraphs of more than four lines. It's the right size for a comfortable and long read. Use this option for a longer body typo in components such as the helpers or structured lists. Always align-left this typo.
+
+<Canvas>
+  <Story name="Body" parameters={{docs: {source:{code: `//To use a Body, you have two options:\n
+// Add it's style to an existing styled component
+const MyBody = styled.div\`
+  $\{getBodyStyle({size: 'regular', color: 'grey', weight: 'regular', gradient: 120})\};\n
+  // other properties
+  padding: 10px;
+\`
+// Or use the provided component directly
+<Body size="regular" color="grey" weight="regular" gradient={120}>My awesome body</Body>
+`}}}}>
+    {() => {
+      return (
+        <Table>
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell>
+                <Body size="big">Big body</Body>
+              </Table.Cell>
+              <Table.Cell>15px</Table.Cell>
+              <Table.Cell>Regular (400)</Table.Cell>
+              <Table.Cell><ColorPill color="grey" gradient={140} /></Table.Cell>
+              <Table.Cell><pre>{`$\{getBodyStyle(
+  {size: "big"}
+)\}`}</pre></Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>
+                <Body size="regular" color="grey">Regular body</Body>
+              </Table.Cell>
+              <Table.Cell>13px</Table.Cell>
+              <Table.Cell>Regular (400), Semibold (600)</Table.Cell>
+              <Table.Cell><ColorPill color="grey" gradient={140} /><ColorPill color="brand" gradient={100} /><ColorPill color="grey" gradient={120} /><ColorPill color="grey" gradient={100} /></Table.Cell>
+              <Table.Cell><pre>{`$\{getBodyStyle({
+  color: "brand" | "grey",
+  size: "regular",
+  weight: "regular" | "semibold",
+  gradient: 140 | 120 | 100
+})\}`}</pre></Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Caption
+
+Use Caption for small helpers.
+
+<Canvas>
+  <Story name="Caption" parameters={{docs: {source:{code: `//To use a Caption, you have two options:\n
+// Add it's style to an existing styled component
+const MyCaption = styled.span\`
+  $\{getCaptionStyle()\};\n
+  // other properties
+  padding: 10px;
+\`
+// Or use the provided component directly
+<Caption>My awesome caption</Caption>
+`}}}}>
+    {() => {
+      return (
+        <Table>
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell>
+                <Caption>Caption</Caption>
+              </Table.Cell>
+              <Table.Cell>11px</Table.Cell>
+              <Table.Cell>Regular (400)</Table.Cell>
+              <Table.Cell><ColorPill color="grey" gradient={120} /></Table.Cell>
+              <Table.Cell><pre>{`$\{getCaptionStyle()\}`}</pre></Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Metric
+
+**Big :** This concerne metrics in dashboard or in "card / figure"
+
+**Small :** This concerne metrics in dashboard or in "Key / figure"
+
+<Canvas>
+  <Story name="Metric" parameters={{docs: {source:{code: `//To use a Metric, you have two options:\n
+// Add it's style to an existing styled component
+const MyMetric = styled.h1\`
+  $\{getMetricStyle({size: 'big', color: 'green'})\};\n
+  // other properties
+  padding: 10px;
+\`
+// Or use the provided component directly
+<Metric size="big" color="green">My awesome caption</Metric>
+`}}}}>
+    {() => {
+      return (
+        <Table>
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell>
+                <Metric size="big" color="green">Big metric</Metric>
+              </Table.Cell>
+              <Table.Cell>22px</Table.Cell>
+              <Table.Cell>Bold (700)</Table.Cell>
+              <Table.Cell><ColorPill color="green" gradient={120} /><ColorPill color="yellow" gradient={120} /><ColorPill color="red" gradient={100} /></Table.Cell>
+              <Table.Cell><pre>{`$\{getMetricStyle({
+    color: "green" | "yellow" | "red",
+    size: "big"
+})\}`}</pre></Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>
+                <Metric size="small" color="brand">Small metric</Metric>
+              </Table.Cell>
+              <Table.Cell>16px</Table.Cell>
+              <Table.Cell>Semibold (600)</Table.Cell>
+              <Table.Cell><ColorPill color="brand" gradient={100} /></Table.Cell>
+              <Table.Cell><pre>{`$\{getMetricStyle({
+    color: "brand",
+    size: "small"
+})\}`}</pre></Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      );
+    }}
+  </Story>
+</Canvas>
