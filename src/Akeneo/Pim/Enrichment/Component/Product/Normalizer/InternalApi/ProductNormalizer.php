@@ -177,12 +177,11 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
             ) : null;
 
         $scopeCode = $context['channel'] ?? null;
-        $localeCode = $context['locale'] ?? null;
         $normalizedProduct['parent_associations'] = $this->parentAssociationsNormalizer->normalize($product, $format, $context);
         $completenesses = $this->getCompletenesses($product);
 
-        $productImageScope = $scopeCode ?? $this->catalogContext->getScopeCode();
-        $productImageLocale = $localeCode ?? $this->catalogContext->getLocaleCode();
+        $productImageScope = $context['catalogScope'] ?? $this->catalogContext->getScopeCode();
+        $productImageLocale = $context['catalogLocale'] ?? $this->catalogContext->getLocaleCode();
 
         $normalizedProduct['meta'] = [
             'form'              => $this->formProvider->getForm($product),

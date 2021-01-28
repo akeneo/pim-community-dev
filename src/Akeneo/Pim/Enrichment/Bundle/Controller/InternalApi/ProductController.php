@@ -181,8 +181,8 @@ class ProductController
         $product = $this->findProductOr404($id);
 
         $context = $this->getNormalizationContext();
-        $context['locale'] = $request->get('locale') ?? $context['locale'];
-        $context['channel'] = $request->get('channel') ?? $context['channel'];
+        $context['catalogLocale'] = $request->get('catalogLocale');
+        $context['catalogScope'] = $request->get('catalogScope');
 
         $normalizedProduct = $this->normalizer->normalize(
             $product,

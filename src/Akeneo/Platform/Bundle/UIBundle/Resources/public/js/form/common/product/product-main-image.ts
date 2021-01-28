@@ -14,9 +14,13 @@ class ProductMainImage extends MainImage {
 
   private async updateImagePath() {
     const {meta} = this.getFormData();
-    const locale = UserContext.get('catalogLocale');
-    const channel = UserContext.get('catalogScope');
-    const product = await FetcherRegistry.getFetcher(meta.model_type).fetch(meta.id, {silent: true, locale, channel});
+    const catalogLocale = UserContext.get('catalogLocale');
+    const catalogScope = UserContext.get('catalogScope');
+    const product = await FetcherRegistry.getFetcher(meta.model_type).fetch(meta.id, {
+      silent: true,
+      catalogLocale,
+      catalogScope,
+    });
 
     this.imagePath = product?.meta?.image?.filePath ?? null;
     this.render();
