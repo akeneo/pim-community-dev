@@ -181,6 +181,9 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         $normalizedProduct['parent_associations'] = $this->parentAssociationsNormalizer->normalize($product, $format, $context);
         $completenesses = $this->getCompletenesses($product);
 
+        $productImageScope = $scopeCode ?? $this->catalogContext->getScopeCode();
+        $productImageLocale = $localeCode ?? $this->catalogContext->getLocaleCode();
+
         $normalizedProduct['meta'] = [
             'form'              => $this->formProvider->getForm($product),
             'id'                => $product->getId(),
@@ -190,7 +193,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'completenesses'    => $this->completenessCollectionNormalizer->normalize($completenesses),
             'required_missing_attributes' => $this->missingRequiredAttributesNormalizer->normalize($completenesses),
-            'image'             => $this->normalizeImage($product->getImage(), $scopeCode, $localeCode),
+            'image'             => $this->normalizeImage($product->getImage(), $productImageScope, $productImageLocale),
             'quantified_associations_for_this_level' => $this->quantifiedAssociationsNormalizer->normalizeWithoutParentsAssociations($product, 'standard', $context),
             'parent_quantified_associations' => $this->quantifiedAssociationsNormalizer->normalizeOnlyParentsAssociations($product, 'standard', $context),
         ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);
