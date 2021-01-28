@@ -35,7 +35,6 @@ class MassDeleteAssetsLauncher implements MassDeleteAssetsLauncherInterface
 
     public function launchForAssetFamilyAndQuery(AssetFamilyIdentifier $assetFamilyIdentifier, AssetQuery $assetQuery): void
     {
-
         $token = $this->tokenStorage->getToken();
         $username = null !== $token ? $token->getUsername() : null;
 

@@ -159,14 +159,9 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
   const notify = useNotify();
   const translate = useTranslate();
 
-  const [
-    selection,
-    selectionState,
-    isItemSelected,
-    onSelectionChange,
-    onSelectAllChange,
-    selectedCount,
-  ] = useSelection<AssetCode>(searchResult.matchesCount);
+  const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] = useSelection<
+    AssetCode
+  >(searchResult.matchesCount);
 
   const channels = useChannels(dataProvider.channelFetcher);
   const locales = getLocales(channels, context.channel);
