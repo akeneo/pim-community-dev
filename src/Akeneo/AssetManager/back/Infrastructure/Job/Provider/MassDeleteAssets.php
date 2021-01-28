@@ -38,7 +38,8 @@ class MassDeleteAssets implements ConstraintCollectionProviderInterface, Default
                                 ->addViolation();
                         }
                     }),
-                    'asset_family_identifier' => new Type(['type' => 'string'])
+                    'asset_family_identifier' => new Type(['type' => 'string']),
+                    'user_to_notify' => new Type(['type' => 'string'])
                 ],
                 'allowMissingFields' => false,
             ]

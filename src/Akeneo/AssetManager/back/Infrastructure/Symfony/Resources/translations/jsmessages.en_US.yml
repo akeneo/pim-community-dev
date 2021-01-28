@@ -579,3 +579,5 @@ batch_jobs:
 job_execution:
     summary:
         assets: Assets
+
+pim_notification.types.asset_manager_mass_delete_assets: Mass delete assets

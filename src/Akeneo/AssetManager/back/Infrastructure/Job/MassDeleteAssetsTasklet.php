@@ -135,7 +135,7 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
             $this->jobRepository->updateStepExecution($this->stepExecution);
         } catch (\Exception $exception) {
             $this->stepExecution->addWarning(
-                'pim_asset_manager.jobs.asset_manager_mass_delete.error',
+                'akeneo_assetmanager.jobs.asset_manager_mass_delete.error',
                 [
                     '{{ assets }}' => (string) implode(', ', $assetCodesToDelete),
                     '{{ error }}' => $exception->getMessage()

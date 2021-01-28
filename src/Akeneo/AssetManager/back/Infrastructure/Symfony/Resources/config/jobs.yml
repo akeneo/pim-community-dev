@@ -14,6 +14,7 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Job\MassDeleteAssetsLauncher
         arguments:
             - '@akeneo_batch_queue.queue.publish_job_to_queue'
+            - '@security.token_storage'
 
     akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_identifiers_launcher:
         class: Akeneo\AssetManager\Infrastructure\Job\ComputeTransformationFromAssetIdentifiersLauncher
