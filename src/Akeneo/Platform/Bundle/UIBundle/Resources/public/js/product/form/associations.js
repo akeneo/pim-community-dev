@@ -24,3 +24,4 @@ define(['pim/product-edit-form/associations', 'pim/security-context'], function(
     },
   });
 });
+

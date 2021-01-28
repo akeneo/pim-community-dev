@@ -174,6 +174,8 @@ services:
 
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets:
         class: Akeneo\AssetManager\Common\Fake\InMemoryCountAssets
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
 
     Akeneo\AssetManager\Infrastructure\Clock:
         class: Akeneo\AssetManager\Common\Fake\InMemoryClock
