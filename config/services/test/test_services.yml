@@ -1,12 +1,3 @@
-parameters:
-    akeneo_integration_tests.elasticsearch_index_names:
-        - '%product_and_product_model_index_name%'
-        - '%connection_error_index_name%'
-        - '%product_proposal_index_name%'
-        - '%published_product_index_name%'
-        - '%asset_index_name%'
-        - '%record_index_name%'
-
 services:
     akeneo_integration_tests.loader.reference_data_loader:
         class: '%akeneo_integration_tests.loader.reference_data_loader.class%'
