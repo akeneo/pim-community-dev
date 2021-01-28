@@ -32,12 +32,6 @@ echo " Akeneo\Platform\Bundle\MonitoringBundle\AkeneoMonitoringBundle::class => 
 echo "];"  >> $TARGET_DIR/config/bundles.php
 echo "    monitoring_authentication_token: '%env(MONITORING_AUTHENTICATION_TOKEN)%'" >> $TARGET_DIR/config/services/pim_parameters.yml
 
-# Switch PFID prefix to grth instead of srnt
-sed -i -e 's/"srnt-/"grth-/' $TARGET_DIR/deployments/terraform/main.tf
-sed -i -e 's/"srnt-/"grth-/' $TARGET_DIR/deployments/terraform/monitoring/main.tf
-sed -i -e 's/= srnt-/= grth-/' $TARGET_DIR/make-file/deployment.mk
-sed -i -e 's/= srnt-/= grth-/' $TARGET_DIR/make-file/deploy_3.2.mk
-
 # Set the version and its label
 sed -i -e "s/ VERSION = 'master'/ VERSION = '$GROWTH_RELEASE_NAME'/" $TARGET_DIR/src/Akeneo/Platform/CommunityVersion.php
 sed -i -e "s/ VERSION_CODENAME = 'Community master'/ VERSION_CODENAME = 'Growth Edition'/" $TARGET_DIR/src/Akeneo/Platform/CommunityVersion.php

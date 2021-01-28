@@ -804,6 +804,9 @@ jobs:
                   echo export IMAGE_TAG=$IMAGE_TAG >> persisted_env_vars
                   echo export GROWTH_RELEASE_NAME=$GROWTH_RELEASE_NAME >> persisted_env_vars
                   echo export TYPE="grth" >> persisted_env_vars
+                  echo export PRODUCT_REFERENCE_TYPE="growth_edition_instance" >> persisted_env_vars
+                  echo export PRODUCT_REFERENCE_CODE="growth_edition_sandbox" >> persisted_env_vars
+
           - persist_to_workspace:
               root: ~/
               paths:
