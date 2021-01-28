@@ -24,10 +24,11 @@ class PimApiExtension extends Extension
 
         $container->setParameter('pim_api.configuration', $config);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('controllers.yml');
         $loader->load('checkers.yml');
         $loader->load('converters.yml');
+        $loader->load('event_listeners.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('hateoas.yml');
         $loader->load('negotiators.yml');
