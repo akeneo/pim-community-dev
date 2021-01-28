@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Paramètres
+    mass_delete: Suppression
 flash:
   comment:
     create:
