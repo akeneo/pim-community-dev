@@ -272,9 +272,12 @@ clone_serenity:
 
 .PHONY: clone_flexibility
 clone_flexibility:
-	INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME_PREFIX=pimflex  make create-ci-release-files && \
-	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PED_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/clone_flexibility.sh
+	INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(PED_TAG) INSTANCE_NAME_PREFIX=pimflex  make create-ci-release-files && \
+	docker run -v $(PWD):/root/project -ti  -e ENV_NAME=dev -e GCLOUD_SERVICE_KEY -e SOURCE_PFID=$(SOURCE_PFID) -e PED_TAG -e INSTANCE_NAME=$(INSTANCE_NAME) eu.gcr.io/akeneo-cloud/cloud-deployer:2.8 /root/project/deployments/bin/clone_flexibility.sh
 
+.PHONY: test_upgrade_from_flexibility_clone
+test_upgrade_from_flexibility_clone:
+	FLEXIBILITY_CUSTOMER_LIST=$(FLEXIBILITY_CUSTOMER_LIST) bash $(PWD)/deployments/bin/clone_flexibility.sh 
 
 .PHONY: test_upgrade_from_serenity_customer_db
 test_upgrade_from_serenity_customer_db:
