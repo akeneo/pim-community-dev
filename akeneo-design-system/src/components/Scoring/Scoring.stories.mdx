@@ -5,7 +5,7 @@ import {Scoring} from './Scoring.tsx';
   title="Components/Scoring"
   component={Scoring}
   argTypes={{
-    activeScore: {control: {type: 'select', options: ['a', 'b', 'c', 'd', 'e']}},
+    score: {control: {type: 'select', options: ['a', 'b', 'c', 'd', 'e']}},
   }}
   args={{
     bar: true,
@@ -37,11 +37,11 @@ Scoring are introduced as new components inside Akeneo to highlight to the users
     {args => {
       return (
         <>
-          <Scoring {...args} activeScore="a" bar={false} />
-          <Scoring {...args} activeScore="b" bar={false} />
-          <Scoring {...args} activeScore="c" bar={false} />
-          <Scoring {...args} activeScore="d" bar={false} />
-          <Scoring {...args} activeScore="e" bar={false} />
+          <Scoring {...args} score="a" bar={false} />
+          <Scoring {...args} score="b" bar={false} />
+          <Scoring {...args} score="c" bar={false} />
+          <Scoring {...args} score="d" bar={false} />
+          <Scoring {...args} score="e" bar={false} />
         </>
       );
     }}
@@ -56,11 +56,11 @@ Scoring are introduced as new components inside Akeneo to highlight to the users
       return (
         <>
           <Scoring {...args} bar />
-          <Scoring {...args} activeScore="a" bar={true} />
-          <Scoring {...args} activeScore="b" bar={true} />
-          <Scoring {...args} activeScore="c" bar={true} />
-          <Scoring {...args} activeScore="d" bar={true} />
-          <Scoring {...args} activeScore="e" bar={true} />
+          <Scoring {...args} score="a" bar={true} />
+          <Scoring {...args} score="b" bar={true} />
+          <Scoring {...args} score="c" bar={true} />
+          <Scoring {...args} score="d" bar={true} />
+          <Scoring {...args} score="e" bar={true} />
         </>
       );
     }}

@@ -1,8 +1,8 @@
-import React, {Ref} from 'react';
+import React, { Ref } from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps, Score} from '../../theme';
-import {ScoreBar} from './Bar/ScoreBar';
-import {ScoreCell} from './Cell/ScoreCell';
+import { AkeneoThemedProps, Score } from '../../theme';
+import { ScoreBar } from './Bar/ScoreBar';
+import { ScoreCell } from './Cell/ScoreCell';
 
 const ScoringContainer = styled.div<ScoringProps & AkeneoThemedProps>`
   display: flex;
@@ -14,7 +14,7 @@ type ScoringProps = {
   /**
    * Defines if Score should be highlighted.
    */
-  activeScore?: Score;
+  score?: Score;
   /**
    * Defines if Score should be a cell or a bar.
    */
@@ -25,14 +25,14 @@ type ScoringProps = {
  * This component highlight to the users the level of quality of their product data.
  */
 const Scoring = React.forwardRef<HTMLDivElement, ScoringProps>(
-  ({activeScore, bar, ...rest}: ScoringProps, forwardedRef: Ref<HTMLDivElement>) => {
+  ({ score, bar, ...rest }: ScoringProps, forwardedRef: Ref<HTMLDivElement>) => {
     console.log('bar: ', bar);
     return (
       <ScoringContainer ref={forwardedRef} {...rest}>
-        {bar ? <ScoreBar activeScore={activeScore} /> : <ScoreCell score={activeScore} />}
+        {bar ? <ScoreBar score={score} /> : <ScoreCell score={score} />}
       </ScoringContainer>
     );
   }
 );
 
-export {Scoring};
+export { Scoring };

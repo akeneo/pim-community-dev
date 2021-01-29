@@ -1,20 +1,20 @@
-import React, {Ref} from 'react';
+import React, { Ref } from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps, getColorForScoring, getFontSize, Score} from '../../../theme';
+import { AkeneoThemedProps, getColorForScoring, getFontSize, Score } from '../../../theme';
 
-const ScoreCellContainer = styled.div<{score: Score} & ScoreCellProps & AkeneoThemedProps>`
+const ScoreCellContainer = styled.div<{ score: Score } & ScoreCellProps & AkeneoThemedProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${({score}) => getColorForScoring(score, score === 'a' || score === 'c' || score === 'd' ? 20 : 60)};
+  background: ${({ score }) => getColorForScoring(score, score === 'a' || score === 'c' || score === 'd' ? 20 : 60)};
   border-radius: 4px;
   width: 20px;
   height: 20px;
 `;
 
-const ScoreCellWrapper = styled.p<{score: Score} & ScoreCellProps & AkeneoThemedProps>`
+const ScoreCellWrapper = styled.p<{ score: Score } & ScoreCellProps & AkeneoThemedProps>`
   font-size: ${getFontSize('default')};
-  color: ${({score}) =>
+  color: ${({ score }) =>
     getColorForScoring(score, score === 'a' || score === 'c' ? 120 : score === 'b' || score === 'e' ? 140 : 100)};
   margin: 0;
   font-weight: 900;
@@ -32,7 +32,7 @@ type ScoreCellProps = {
  * This component highlight to the users the level of quality of their product data.
  */
 const ScoreCell = React.forwardRef<HTMLDivElement, ScoreCellProps>(
-  ({score, ...rest}: ScoreCellProps, forwardedRef: Ref<HTMLDivElement>) => {
+  ({ score, ...rest }: ScoreCellProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (
       <div ref={forwardedRef} {...rest}>
         {score && (
@@ -45,4 +45,4 @@ const ScoreCell = React.forwardRef<HTMLDivElement, ScoreCellProps>(
   }
 );
 
-export {ScoreCell};
+export { ScoreCell };
