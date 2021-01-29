@@ -1,7 +1,8 @@
-import React, {ReactNode, Ref, SyntheticEvent} from 'react';
+import React, {isValidElement, ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColorForLevel, getFontSize, Level} from '../../theme';
 import {Override} from '../../shared';
+import {IconProps} from '../../icons';
 
 type ButtonSize = 'small' | 'default';
 
@@ -107,7 +108,9 @@ const ContainerStyle = css<
     size: ButtonSize;
   } & AkeneoThemedProps
 >`
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   border-width: 1px;
   font-size: ${getFontSize('default')};
   font-weight: 400;
@@ -116,7 +119,6 @@ const ContainerStyle = css<
   border-style: ${({ghost}) => (ghost ? 'solid' : 'none')};
   padding: ${({size}) => (size === 'small' ? '0 10px' : '0 15px')};
   height: ${({size}) => (size === 'small' ? '24px' : '32px')};
-  line-height: ${({size}) => (size === 'small' ? 24 : 32) - 2}px;
   outline-color: ${({level}) => getColorForLevel(level, 100)};
   cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
   font-family: inherit;
@@ -156,10 +158,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }: ButtonProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
-    if (undefined !== href && undefined !== onClick) {
-      throw new Error('Button cannot have both `href` and `onClick` props');
-    }
-
     const handleAction = (event: SyntheticEvent) => {
       if (disabled || undefined === onClick) return;
 
@@ -185,7 +183,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         href={disabled ? undefined : href}
         {...rest}
       >
-        {children}
+        {React.Children.map(children, child => {
+          if (isValidElement<IconProps>(child)) {
+            return React.cloneElement(child, {size: child.props.size ?? 18});
+          }
+
+          return child;
+        })}
       </Component>
     );
   }
