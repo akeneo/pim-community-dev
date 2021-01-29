@@ -1,0 +1,6 @@
+services:
+    pim_api.event_listener.check_api_request_content_size:
+        class: Akeneo\Tool\Bundle\ApiBundle\EventListener\CheckApiRequestContentSizeListener
+        tags:
+            # Priority 11 because we need to be above FOSRestBundle's BodyListener at 10 and below Router at 32
+            - { name: kernel.event_listener, event: kernel.request, priority: 11 }
