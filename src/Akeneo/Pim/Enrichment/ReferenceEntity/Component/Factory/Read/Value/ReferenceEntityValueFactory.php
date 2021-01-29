@@ -60,12 +60,14 @@ final class ReferenceEntityValueFactory implements ValueFactory
         try {
             RecordCode::fromString($data);
         } catch (\InvalidArgumentException $e) {
-            throw InvalidPropertyException::validEntityCodeExpected(
+            $message = 'Property "%s" expects a valid %s. %s.';
+
+            throw new InvalidPropertyException(
                 $attribute->code(),
-                'code',
-                $e->getMessage(),
+                $data,
                 static::class,
-                $data
+                sprintf($message, $attribute->code(), 'code', $e->getMessage()),
+                InvalidPropertyException::VALID_ENTITY_CODE_EXPECTED_CODE
             );
         }
 

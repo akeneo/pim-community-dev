@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -32,12 +33,20 @@ class ThereShouldBeLessAssetsThanLimitValidator extends ConstraintValidator
     /** @var int */
     private $assetsLimit;
 
+    /**
+     * @var CountAssetsInterface|null $countAssets
+     */
+    private $countAssets;
+
+    /** @TODO pull up remove optionnal parameter */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
-        int $assetsLimit
+        int $assetsLimit,
+        CountAssetsInterface $countAssets = null
     ) {
         $this->assetRepository = $assetRepository;
         $this->assetsLimit = $assetsLimit;
+        $this->countAssets = $countAssets;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -73,10 +82,14 @@ class ThereShouldBeLessAssetsThanLimitValidator extends ConstraintValidator
         }
     }
 
+    /** @TODO pull up remove countByAssetFamily call */
     private function validateCommand(CreateAssetCommand $command): void
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier);
-        $total = $this->assetRepository->countByAssetFamily($assetFamilyIdentifier);
+
+        $total = $this->countAssets
+            ? $this->countAssets->forAssetFamily($assetFamilyIdentifier)
+            : $this->assetRepository->countByAssetFamily($assetFamilyIdentifier);
 
         if ($total >= $this->assetsLimit) {
             $this->context->buildViolation(ThereShouldBeLessAssetsThanLimit::ERROR_MESSAGE)
