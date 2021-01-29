@@ -184,11 +184,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...rest}
       >
         {React.Children.map(children, child => {
-          if (!isValidElement<IconProps>(child)) {
-            return child;
+          if (isValidElement<IconProps>(child)) {
+            return React.cloneElement(child, {size: child.props.size ?? 18});
           }
 
-          return React.cloneElement(child, {size: child.props.size ?? 18});
+          return child;
         })}
       </Component>
     );
