@@ -60,7 +60,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
 
         if (isset($options['identifiers'])) {
             $qb->andWhere('f.code IN (:identifiers)')
-                ->setParameter('identifiers', $options['identifiers']);
+               ->setParameter('identifiers', $options['identifiers']);
         }
 
         if ($limit) {
