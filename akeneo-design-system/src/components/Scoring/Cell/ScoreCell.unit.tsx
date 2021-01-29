@@ -1,9 +1,9 @@
 import React from 'react';
-import { ScoreCell } from './ScoreCell';
-import { render, screen } from '../../../storybook/test-util';
+import {ScoreCell} from './ScoreCell';
+import {render, screen} from '../../../storybook/test-util';
 
 test('it renders its children properly', () => {
-  render(<ScoreCell score='a' />);
+  render(<ScoreCell score="a" />);
 
   expect(screen.getByText('a')).toBeInTheDocument();
 });
@@ -12,7 +12,7 @@ test('it renders its children properly', () => {
 // If you add required props to your Component, these tests will fail
 // and you will need to add these required props here as well
 test('ScoreCell supports forwardRef', () => {
-  const ref = { current: null };
+  const ref = {current: null};
 
   render(<ScoreCell ref={ref} />);
   expect(ref.current).not.toBe(null);

@@ -1,9 +1,9 @@
-import React, { Ref } from 'react';
-import styled, { css } from 'styled-components';
-import { AkeneoThemedProps, getFontSize, Score } from '../../../theme';
-import { ScoreCell } from '../Cell/ScoreCell';
+import React, {Ref} from 'react';
+import styled, {css} from 'styled-components';
+import {AkeneoThemedProps, getFontSize, Score} from '../../../theme';
+import {ScoreCell} from '../Cell/ScoreCell';
 
-const ScoreBarContainer = styled.div<{ score: Score } & ScoreBarProps & AkeneoThemedProps>`
+const ScoreBarContainer = styled.div<{score: Score} & ScoreBarProps & AkeneoThemedProps>`
   display: flex;
   position: relative;
   top: 1px;
@@ -26,16 +26,16 @@ const SelectedScore = styled(ScoreCell)`
   }
 `;
 
-const UnselectedScore = styled(ScoreCell) <{ score: Score }>`
+const UnselectedScore = styled(ScoreCell)<{score: Score}>`
   width: 20px;
   height: 20px;
 
   > :first-child {
-    border-radius: ${({ score }) => (score === 'a' ? '4px 0 0 4px' : '0')};
+    border-radius: ${({score}) => (score === 'a' ? '4px 0 0 4px' : '0')};
   }
   > :last-child {
     border-radius: 0 4px 4px 0;
-    border-radius: ${({ score }) => (score === 'e' ? '0 4px 4px 0' : '0')};
+    border-radius: ${({score}) => (score === 'e' ? '0 4px 4px 0' : '0')};
   }
 
   > :not(:first-child):not(:last-child) {
@@ -54,7 +54,7 @@ type ScoreBarProps = {
  * This component highlight to the users the level of quality of their product data.
  */
 const ScoreBar = React.forwardRef<HTMLDivElement, ScoreBarProps>(
-  ({ score, ...rest }: ScoreBarProps, forwardedRef: Ref<HTMLDivElement>) => {
+  ({score, ...rest}: ScoreBarProps, forwardedRef: Ref<HTMLDivElement>) => {
     const scores: Score[] = ['a', 'b', 'c', 'd', 'e'];
     return (
       <ScoreBarContainer ref={forwardedRef} {...rest} currentScore={score}>
@@ -62,12 +62,12 @@ const ScoreBar = React.forwardRef<HTMLDivElement, ScoreBarProps>(
           return s === score ? (
             <SelectedScore key={`ranking-score-${s}`} score={score} />
           ) : (
-              <UnselectedScore key={`ranking-score-${s}`} score={s} />
-            );
+            <UnselectedScore key={`ranking-score-${s}`} score={s} />
+          );
         })}
       </ScoreBarContainer>
     );
   }
 );
 
-export { ScoreBar };
+export {ScoreBar};

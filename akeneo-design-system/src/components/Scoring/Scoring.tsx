@@ -1,8 +1,8 @@
-import React, { Ref } from 'react';
+import React, {Ref} from 'react';
 import styled from 'styled-components';
-import { AkeneoThemedProps, Score } from '../../theme';
-import { ScoreBar } from './Bar/ScoreBar';
-import { ScoreCell } from './Cell/ScoreCell';
+import {AkeneoThemedProps, Score} from '../../theme';
+import {ScoreBar} from './Bar/ScoreBar';
+import {ScoreCell} from './Cell/ScoreCell';
 
 const ScoringContainer = styled.div<ScoringProps & AkeneoThemedProps>`
   display: flex;
@@ -25,7 +25,7 @@ type ScoringProps = {
  * This component highlight to the users the level of quality of their product data.
  */
 const Scoring = React.forwardRef<HTMLDivElement, ScoringProps>(
-  ({ score, bar, ...rest }: ScoringProps, forwardedRef: Ref<HTMLDivElement>) => {
+  ({score, bar, ...rest}: ScoringProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (
       <ScoringContainer ref={forwardedRef} {...rest}>
         {bar ? <ScoreBar score={score} /> : <ScoreCell score={score} />}
@@ -34,4 +34,4 @@ const Scoring = React.forwardRef<HTMLDivElement, ScoringProps>(
   }
 );
 
-export { Scoring };
+export {Scoring};

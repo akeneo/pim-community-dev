@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, screen } from '../../storybook/test-util';
-import { Scoring } from './Scoring';
+import {render, screen} from '../../storybook/test-util';
+import {Scoring} from './Scoring';
 
 test('it renders its children properly', () => {
   render(<Scoring bar />);
@@ -13,7 +13,7 @@ test('it renders its children properly', () => {
 });
 
 test('it renders its children properly', () => {
-  render(<Scoring score='a' />);
+  render(<Scoring score="a" />);
 
   expect(screen.getByText('a')).toBeInTheDocument();
 });
@@ -22,7 +22,7 @@ test('it renders its children properly', () => {
 // If you add required props to your Component, these tests will fail
 // and you will need to add these required props here as well
 test('Scoring supports forwardRef', () => {
-  const ref = { current: null };
+  const ref = {current: null};
 
   render(<Scoring ref={ref} />);
   expect(ref.current).not.toBe(null);
