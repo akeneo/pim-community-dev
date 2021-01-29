@@ -60,9 +60,9 @@ const ScoreBar = React.forwardRef<HTMLDivElement, ScoreBarProps>(
       <ScoreBarContainer ref={forwardedRef} {...rest} currentScore={score}>
         {scores.map((s: Score) => {
           return s === score ? (
-            <SelectedScore key={`ranking-score-${score}`} score={score} />
+            <SelectedScore key={`ranking-score-${s}`} score={score} />
           ) : (
-              <UnselectedScore key={`ranking-score-${score}`} score={s} />
+              <UnselectedScore key={`ranking-score-${s}`} score={s} />
             );
         })}
       </ScoreBarContainer>

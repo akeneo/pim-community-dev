@@ -26,7 +26,6 @@ type ScoringProps = {
  */
 const Scoring = React.forwardRef<HTMLDivElement, ScoringProps>(
   ({ score, bar, ...rest }: ScoringProps, forwardedRef: Ref<HTMLDivElement>) => {
-    console.log('bar: ', bar);
     return (
       <ScoringContainer ref={forwardedRef} {...rest}>
         {bar ? <ScoreBar score={score} /> : <ScoreCell score={score} />}
