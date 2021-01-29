@@ -17,4 +17,3 @@ define(['pim/product-edit-form/associated-product-row', 'pim/security-context'],
     },
   });
 });
-
