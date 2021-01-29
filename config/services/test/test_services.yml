@@ -10,7 +10,7 @@ parameters:
 
 imports:
     # Akeneo/Connectivity/Connection
-    - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/Integration/Resources/config/loaders.yml }
+    - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/CatalogBuilder/Resources/config/loaders.yml }
     # Akeneo/Platform/CommunicationChannel
     - { resource: ../../../src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Integration/Resources/config/in_memory.yml }
 

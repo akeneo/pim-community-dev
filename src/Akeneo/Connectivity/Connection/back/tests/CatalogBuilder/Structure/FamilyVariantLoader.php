@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment;
+namespace Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
