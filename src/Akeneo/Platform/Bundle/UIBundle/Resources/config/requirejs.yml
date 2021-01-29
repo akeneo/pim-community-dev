@@ -770,6 +770,7 @@ config:
     pim/filter/product/enabled:            pimui/js/filter/product/enabled
     pim/filter/product/updated:            pimui/js/filter/product/updated
     pim/filter/product/completeness:       pimui/js/filter/product/completeness
+    pim/filter/product/quality-score:      pimui/js/filter/product/quality-score
     pim/filter/product/category:           pimui/js/filter/product/category
     pim/filter/product/category/selector:  pimui/js/filter/product/category/selector
     pim/filter/attribute/identifier:       pimui/js/filter/attribute/identifier
@@ -1201,6 +1202,7 @@ config:
     pim/template/filter/product/enabled:            pimui/templates/filter/product/enabled.html
     pim/template/filter/product/updated:            pimui/templates/filter/product/updated.html
     pim/template/filter/product/completeness:       pimui/templates/filter/product/completeness.html
+    pim/template/filter/product/quality-score:      pimui/templates/filter/product/quality-score.html
     pim/template/filter/product/category/selector:  pimui/templates/filter/product/category/selector.html
     pim/template/filter/product/category:           pimui/templates/filter/product/category.html
     pim/template/filter/product/identifier:         pimui/templates/filter/product/identifier.html

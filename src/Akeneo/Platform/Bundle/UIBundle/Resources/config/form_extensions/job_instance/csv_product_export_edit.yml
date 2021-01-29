@@ -301,6 +301,9 @@ extensions:
                     field: completeness
                     view: akeneo-product-completeness-filter
                 -
+                    field: quality_score_multi_locales
+                    view: akeneo-product-quality-score-filter
+                -
                     field: updated
                     view: akeneo-product-updated-filter
                 -
