@@ -72,6 +72,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.processor.bulk_media_fetcher'
             - '@pim_catalog.product_model.fill_missing_values'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
 
     pim_connector.processor.normalization.product_model:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor'
@@ -81,6 +82,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.processor.bulk_media_fetcher'
             - '@pim_catalog.product_model.fill_missing_values'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
 
     pim_connector.processor.attribute_filter.product_model:
         class: 'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductModelAttributeFilter'
