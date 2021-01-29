@@ -62,6 +62,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
         $this->eventDispatcherMock->reset();
 
         $this->resetDB();
+        $this->get('akeneo_assetmanager.client.asset')->resetIndex();
         $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
         $this->loadFixtures();
     }
@@ -413,6 +414,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
     public function it_counts_the_assets()
     {
         $this->assertEquals(0, $this->repository->count());
+
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
         $assetCode = AssetCode::fromString('asset_identifier');
@@ -425,6 +427,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
         );
 
         $this->repository->create($asset);
+        $this->refreshAssetIndex();
 
         $this->assertEquals(1, $this->repository->count());
 
@@ -438,7 +441,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
         );
 
         $this->repository->create($asset);
-
+        $this->refreshAssetIndex();
         $this->assertEquals(2, $this->repository->count());
     }
 
@@ -489,6 +492,8 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
 
         $this->repository->deleteByAssetFamilyAndCodes($assetFamilyIdentifier, $assetCodesToDelete);
         $this->eventDispatcherMock->assertEventDispatched(AssetDeletedEvent::class);
+
+        $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
         Assert::assertEquals(1, $this->repository->count());
     }
 
@@ -566,7 +571,9 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
                 ),
             ])
         );
+
         $this->repository->create($starck);
+        $this->refreshAssetIndex();
         $this->assertSame(1, $this->repository->countByAssetFamily($assetFamilyIdentifier));
 
         $bob = Asset::create(
@@ -583,6 +590,14 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
             ])
         );
         $this->repository->create($bob);
+        $this->refreshAssetIndex();
         $this->assertSame(2, $this->repository->countByAssetFamily($assetFamilyIdentifier));
+    }
+
+    private function refreshAssetIndex()
+    {
+        $this
+            ->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator')
+            ->flushEvents();
     }
 }

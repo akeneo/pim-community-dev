@@ -129,6 +129,7 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
             - '%asset_manager_asset_limit_per_asset_family%'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.there_should_be_less_assets_than_limit' }
 

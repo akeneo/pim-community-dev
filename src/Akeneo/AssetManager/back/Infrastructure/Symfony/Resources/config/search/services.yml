@@ -42,6 +42,14 @@ services:
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_normalizer'
             - '%akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer.batch_size%'
 
+    akeneo_assetmanager.infrastructure.elasticsearch.update_index_mapping:
+        class: Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\UpdateIndexMappingWrapper
+        public: true
+        arguments:
+            - '@akeneo_elasticsearch.client_builder'
+            - '%index_hosts%'
+            - '@akeneo_assetmanager.client.asset'
+
     # Normalizers
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset_normalizer:
         class: Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\AssetNormalizer
