@@ -74,15 +74,21 @@ Cards should be displayed in a grid, therefore, a `CardGrid` component is also a
       return (
         <CardGrid>
           <Card {...args} src="https://picsum.photos/seed/akenea/200">
-            <Badge level="danger">0%</Badge>
+            <Card.BadgeContainer>
+              <Badge level="danger">0%</Badge>
+            </Card.BadgeContainer>
             Card not complete
           </Card>
           <Card {...args} src="https://picsum.photos/seed/akeneb/200">
-            <Badge level="warning">50%</Badge>
+            <Card.BadgeContainer>
+              <Badge level="warning">50%</Badge>
+            </Card.BadgeContainer>
             Card almost complete
           </Card>
           <Card {...args} src="https://picsum.photos/seed/akenec/200">
-            <Badge level="primary">100%</Badge>
+            <Card.BadgeContainer>
+              <Badge level="primary">100%</Badge>
+            </Card.BadgeContainer>
             Card complete
           </Card>
         </CardGrid>
@@ -131,7 +137,9 @@ Here the `fit` prop is also set to `contain`.
             This is a big Card
           </Card>
           <Card {...args} src="https://picsum.photos/seed/akenee/200">
-            <Badge level="primary">100%</Badge>
+            <Card.BadgeContainer>
+              <Badge level="primary">100%</Badge>
+            </Card.BadgeContainer>
             This one even has a Badge
           </Card>
           <Card
@@ -148,7 +156,9 @@ Here the `fit` prop is also set to `contain`.
             isSelected={secondSelected}
             onSelect={isSelected => setSecondSelected(isSelected)}
           >
-            <Badge level="warning">75%</Badge>
+            <Card.BadgeContainer>
+              <Badge level="warning">75%</Badge>
+            </Card.BadgeContainer>
             Badge &amp; selectable 🤩
           </Card>
         </CardGrid>

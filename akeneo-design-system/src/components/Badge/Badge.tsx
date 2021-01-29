@@ -1,4 +1,5 @@
-import React, {Ref} from 'react';
+import React, {ReactNode, Ref} from 'react';
+import {Override} from '../../shared';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
 
@@ -24,17 +25,20 @@ const BadgeContainer = styled.span<BadgeProps & AkeneoThemedProps>`
   `}
 `;
 
-type BadgeProps = {
-  /**
-   * Level of the Badge defining it's color and outline.
-   */
-  level?: Level;
+type BadgeProps = Override<
+  React.HTMLAttributes<HTMLSpanElement>,
+  {
+    /**
+     * Level of the Badge defining it's color and outline.
+     */
+    level?: Level;
 
-  /**
-   * Children of the Badge, can only be string for a Badge.
-   */
-  children?: string;
-};
+    /**
+     * Children of the Badge.
+     */
+    children?: ReactNode;
+  }
+>;
 
 /**
  * Badges are used for items that must be: tagged, categorized, organized by keywords, or to highlight information.
