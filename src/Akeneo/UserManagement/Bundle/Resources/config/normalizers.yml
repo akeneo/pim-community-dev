@@ -18,3 +18,8 @@ services:
         class: Akeneo\UserManagement\Component\Normalizer\GroupNormalizer
         tags:
             - { name: pim_standard_format_serializer.normalizer }
+
+    pim_user.normalizer.user_role:
+        class: Akeneo\UserManagement\Component\Normalizer\RoleNormalizer
+        tags:
+            - { name: pim_standard_format_serializer.normalizer }

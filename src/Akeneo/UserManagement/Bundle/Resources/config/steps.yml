@@ -23,6 +23,30 @@ services:
             - 100
             - '@akeneo_batch.job.job_stopper'
 
+    pim_connector.step.csv_user_role_export.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.user_role'
+            - '@pim_connector.processor.normalization.user_role'
+            - '@pim_connector.writer.file.csv_user_role'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
+
+    pim_connector.step.xlsx_user_role_export.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.user_role'
+            - '@pim_connector.processor.normalization.user_role'
+            - '@pim_connector.writer.file.user_role'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
+
     pim_connector.step.csv_user_group_import.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
