@@ -7,6 +7,9 @@ import {Scoring} from './Scoring.tsx';
   argTypes={{
     activeScore: {control: {type: 'select', options: ['a', 'b', 'c', 'd', 'e']}},
   }}
+  args={{
+    bar: true,
+  }}
 />
 
 # Scoring
@@ -27,18 +30,37 @@ Scoring are introduced as new components inside Akeneo to highlight to the users
 
 <ArgsTable story="Standard" />
 
-## Variation on Score
+## Variation on Score cell
 
 <Canvas>
-  <Story name="Score">
+  <Story name="ScoreCell">
     {args => {
       return (
         <>
-          <Scoring {...args} activeScore="a" />
-          <Scoring {...args} activeScore="b" />
-          <Scoring {...args} activeScore="c" />
-          <Scoring {...args} activeScore="d" />
-          <Scoring {...args} activeScore="e" />
+          <Scoring {...args} activeScore="a" bar={false} />
+          <Scoring {...args} activeScore="b" bar={false} />
+          <Scoring {...args} activeScore="c" bar={false} />
+          <Scoring {...args} activeScore="d" bar={false} />
+          <Scoring {...args} activeScore="e" bar={false} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on Score bar
+
+<Canvas>
+  <Story name="ScoreBar">
+    {args => {
+      return (
+        <>
+          <Scoring {...args} bar />
+          <Scoring {...args} activeScore="a" bar={true} />
+          <Scoring {...args} activeScore="b" bar={true} />
+          <Scoring {...args} activeScore="c" bar={true} />
+          <Scoring {...args} activeScore="d" bar={true} />
+          <Scoring {...args} activeScore="e" bar={true} />
         </>
       );
     }}

@@ -91,7 +91,7 @@ type Theme = {
 
 type Level = 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
 
-type Score = 'a' | 'b' | 'c' | 'd' | 'e';
+type Score = keyof ScoringPalette;
 
 const getColor = (color: string, gradient?: number): ((props: AkeneoThemedProps) => string) => ({
   theme,
