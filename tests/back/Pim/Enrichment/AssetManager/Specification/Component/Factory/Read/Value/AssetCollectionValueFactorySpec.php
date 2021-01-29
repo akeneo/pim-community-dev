@@ -63,6 +63,7 @@ class AssetCollectionValueFactorySpec extends ObjectBehavior
             false,
             null,
             null,
+            null,
             'asset_collection',
             []
         );
