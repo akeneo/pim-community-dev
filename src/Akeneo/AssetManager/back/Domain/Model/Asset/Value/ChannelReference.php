@@ -29,7 +29,7 @@ class ChannelReference
 
     public static function fromChannelIdentifier(ChannelIdentifier $identifier): self
     {
-        return new self($identifier) ;
+        return new self($identifier);
     }
 
     public static function noReference(): self
@@ -37,7 +37,7 @@ class ChannelReference
         return new self(null);
     }
 
-    public static function createfromNormalized(?string $normalizedReference): self
+    public static function createFromNormalized(?string $normalizedReference): self
     {
         if (null === $normalizedReference) {
             return ChannelReference::noReference();

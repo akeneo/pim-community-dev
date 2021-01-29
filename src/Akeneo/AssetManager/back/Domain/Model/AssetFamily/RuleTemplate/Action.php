@@ -104,7 +104,7 @@ class Action
             Field::createFromNormalized($field),
             $this->type,
             ItemCollection::createFromNormalized($items),
-            ChannelReference::createfromNormalized($channelCompiled),
+            ChannelReference::createFromNormalized($channelCompiled),
             LocaleReference::createFromNormalized($localeCompiled)
         );
     }

@@ -2,7 +2,6 @@ import React from 'react';
 import {screen, fireEvent} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import Mosaic from 'akeneoassetmanager/application/component/asset/list/mosaic';
-import {getAssetEditUrl} from 'akeneoassetmanager/tools/media-url-generator';
 
 const context = {locale: 'en_US', channel: 'ecommerce'};
 const assetCollection = [
@@ -63,76 +62,85 @@ const assetCollection = [
 ];
 
 test('It displays an empty mosaic', () => {
-  renderWithProviders(<Mosaic selection={[]} assetCollection={[]} context={context} onSelectionChange={() => {}} />);
+  renderWithProviders(
+    <Mosaic
+      isItemSelected={jest.fn()}
+      selection={[]}
+      assetCollection={[]}
+      context={context}
+      onSelectionChange={() => {}}
+    />
+  );
 
   expect(screen.getByText('pim_asset_manager.asset_picker.no_result.title')).toBeInTheDocument();
 });
 
 test('It displays an asset collection', () => {
-  const {container} = renderWithProviders(
-    <Mosaic selection={[]} assetCollection={assetCollection} context={context} onSelectionChange={() => {}} />
-  );
-
-  expect(container.querySelectorAll('[data-asset]').length).toEqual(3);
-});
-
-test('It displays selected assets', () => {
-  const selection = ['iphone7_pack', 'SELECTED_ASSET_NOT_IN_RESULTS'];
-
-  const {container} = renderWithProviders(
-    <Mosaic selection={selection} assetCollection={assetCollection} context={context} onSelectionChange={() => {}} />
-  );
-
-  expect(container.querySelectorAll('[data-selected="true"]').length).toEqual(1);
-});
-
-test('it can add an asset to the selection', () => {
-  let newSelection = null;
-  const {container} = renderWithProviders(
+  renderWithProviders(
     <Mosaic
+      isItemSelected={jest.fn()}
       selection={[]}
       assetCollection={assetCollection}
       context={context}
-      onSelectionChange={selectedAssets => {
-        newSelection = selectedAssets;
-      }}
+      onSelectionChange={() => {}}
     />
   );
 
-  const firstCard = container.querySelector('[data-checked]');
-  fireEvent.click(firstCard);
+  expect(screen.getByText('YOLO GOAT')).toBeInTheDocument();
+  expect(screen.getByText('[iphone8_pack]')).toBeInTheDocument();
+  expect(screen.getByText('[iphone7_pack]')).toBeInTheDocument();
+});
 
-  expect(newSelection).toEqual([assetCollection[0].code]);
+test('It displays selected assets', () => {
+  const isItemSelected = jest.fn((assetCode: string) => assetCode === 'iphone7_pack');
+
+  renderWithProviders(
+    <Mosaic
+      isItemSelected={isItemSelected}
+      assetCollection={assetCollection}
+      context={context}
+      onSelectionChange={() => {}}
+    />
+  );
+
+  expect(isItemSelected).toHaveBeenCalledTimes(3);
+  expect(isItemSelected).toHaveBeenCalledWith('iphone7_pack');
+  expect(isItemSelected).toHaveBeenCalledWith('iphone8_pack');
+  expect(isItemSelected).toHaveBeenCalledWith('Philips22PDL4906H_pack');
+  expect(screen.getByLabelText('[iphone7_pack]')).toHaveAttribute('aria-checked', 'true');
+});
+
+test('it can add an asset to the selection', () => {
+  const onSelectionChange = jest.fn();
+
+  renderWithProviders(
+    <Mosaic
+      isItemSelected={jest.fn()}
+      assetCollection={assetCollection}
+      context={context}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  fireEvent.click(screen.getByLabelText('[iphone7_pack]'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith('iphone7_pack', true);
 });
 
 test('it can remove an asset from the selection', () => {
-  let newSelection = null;
-  const initialSelection = [assetCollection[0].code];
-  const {container} = renderWithProviders(
+  const isItemSelected = jest.fn((assetCode: string) => assetCode === 'iphone7_pack');
+  const onSelectionChange = jest.fn();
+
+  renderWithProviders(
     <Mosaic
-      selection={initialSelection}
+      isItemSelected={isItemSelected}
       assetCollection={assetCollection}
       context={context}
-      onSelectionChange={selectedAssets => {
-        newSelection = selectedAssets;
-      }}
+      onSelectionChange={onSelectionChange}
     />
   );
 
-  const firstCard = container.querySelector('[data-checked]');
-  fireEvent.click(firstCard);
+  fireEvent.click(screen.getByLabelText('[iphone7_pack]'));
 
-  expect(newSelection).toEqual([]);
-});
-
-test('it can show the assets as links', () => {
-  getAssetEditUrl = jest.fn().mockImplementation(asset => '#' + asset.code);
-
-  const {container} = renderWithProviders(
-    <Mosaic selection={[]} assetCollection={assetCollection} context={context} assetHasLink={true} />
-  );
-
-  const link = container.querySelector('a[href$="#' + assetCollection[0].code + '"]');
-  expect(link).not.toBeNull();
-  fireEvent.click(link);
+  expect(onSelectionChange).toHaveBeenCalledWith('iphone7_pack', false);
 });

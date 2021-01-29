@@ -13,7 +13,6 @@ type AssetFamilyRights = {
     upload: boolean;
     create: boolean;
     edit: boolean;
-    deleteAll: boolean;
     delete: boolean;
   };
   assetFamily: {
@@ -52,10 +51,6 @@ export const useAssetFamily = (
       create: assetCreate,
       upload: assetCreate && null !== attributeAsMainMedia && attributeAsMainMedia.type === MEDIA_FILE_ATTRIBUTE_TYPE,
       edit: securityContext.isGranted('akeneo_assetmanager_asset_edit') && assetFamilyEdit,
-      deleteAll:
-        securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
-        securityContext.isGranted('akeneo_assetmanager_assets_delete_all') &&
-        assetFamilyEdit,
       delete:
         securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
         securityContext.isGranted('akeneo_assetmanager_asset_delete') &&

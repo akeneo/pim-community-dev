@@ -282,6 +282,9 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
 
+    akeneo_assetmanager.infrastructure.job.mass_delete_launcher:
+        class: 'Akeneo\AssetManager\Common\Fake\MassDeleteAssetsLauncherSpy'
+
     akeneo_assetmanager.infrastructure.job.naming_convention_launcher:
         class: Akeneo\AssetManager\Common\Fake\NamingConventionLauncherSpy
 

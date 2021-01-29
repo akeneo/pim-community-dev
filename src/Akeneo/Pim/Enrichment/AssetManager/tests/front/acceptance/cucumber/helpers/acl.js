@@ -185,7 +185,6 @@ const allAcls = [
   'akeneo_assetmanager_asset_edit',
   'akeneo_assetmanager_asset_list_product',
   'akeneo_assetmanager_asset_delete',
-  'akeneo_assetmanager_assets_delete_all',
   'akeneo_assetmanager_attribute_create',
   'akeneo_assetmanager_attribute_delete',
   'akeneo_assetmanager_attribute_edit',

@@ -76,13 +76,19 @@ class FilterAssetsTest extends SearchIntegrationTestCase
         $this->flushAssetsToIndexCache();
 
         $searchResultEcommerceEnUS = $this->searchAssets(
-            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['red']]
+            'ecommerce',
+            'en_US',
+            ['main_color_designers_fingerprint' => ['red']]
         );
         $searchResultMobileFrFR = $this->searchAssets(
-            'mobile', 'fr_FR', ['main_color_designers_fingerprint' => ['red']]
+            'mobile',
+            'fr_FR',
+            ['main_color_designers_fingerprint' => ['red']]
         );
         $emptySearchResult = $this->searchAssets(
-            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['blue']]
+            'ecommerce',
+            'en_US',
+            ['main_color_designers_fingerprint' => ['blue']]
         );
 
         $this->assertContains('stark', $searchResultEcommerceEnUS->normalize()['identifiers']);
@@ -100,14 +106,18 @@ class FilterAssetsTest extends SearchIntegrationTestCase
         $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchAssets(
-            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['red']]
+            'ecommerce',
+            'en_US',
+            ['main_color_designers_fingerprint' => ['red']]
         );
         $identifiers = $searchResultEcommerceEnUS->normalize()['identifiers'];
         $this->assertContains('stark', $identifiers);
 
         $this->expectException('\LogicException');
         $this->searchAssets(
-            'mobile', 'fr_FR', ['main_color_designers_fingerprint' => ['red']]
+            'mobile',
+            'fr_FR',
+            ['main_color_designers_fingerprint' => ['red']]
         );
     }
 
@@ -121,13 +131,19 @@ class FilterAssetsTest extends SearchIntegrationTestCase
         $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchAssets(
-            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['red', 'blue']]
+            'ecommerce',
+            'en_US',
+            ['main_color_designers_fingerprint' => ['red', 'blue']]
         );
         $searchResultMobileFrFR = $this->searchAssets(
-            'mobile', 'fr_FR', ['main_color_designers_fingerprint' => ['blue', 'green']]
+            'mobile',
+            'fr_FR',
+            ['main_color_designers_fingerprint' => ['blue', 'green']]
         );
         $emptySearchResult = $this->searchAssets(
-            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['green']]
+            'ecommerce',
+            'en_US',
+            ['main_color_designers_fingerprint' => ['green']]
         );
 
         $this->assertContains('stark', $searchResultEcommerceEnUS->normalize()['identifiers']);
@@ -145,14 +161,18 @@ class FilterAssetsTest extends SearchIntegrationTestCase
         $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchAssets(
-            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['red', 'blue']]
+            'ecommerce',
+            'en_US',
+            ['main_color_designers_fingerprint' => ['red', 'blue']]
         );
         $identifiers = $searchResultEcommerceEnUS->normalize()['identifiers'];
         $this->assertContains('stark', $identifiers);
 
         $this->expectException('\LogicException');
         $this->searchAssets(
-            'mobile', 'fr_FR', ['main_color_designers_fingerprint' => ['red']]
+            'mobile',
+            'fr_FR',
+            ['main_color_designers_fingerprint' => ['red']]
         );
     }
 
@@ -235,7 +255,7 @@ class FilterAssetsTest extends SearchIntegrationTestCase
                 ValueCollection::fromValues([
                     Value::create(
                         $this->attributeIdentifier,
-                        (null !== $channel) ? ChannelReference::createfromNormalized($channel) : ChannelReference::noReference(),
+                        (null !== $channel) ? ChannelReference::createFromNormalized($channel) : ChannelReference::noReference(),
                         (null !== $locale) ? LocaleReference::createFromNormalized($locale) : LocaleReference::noReference(),
                         OptionData::createFromNormalize($optionCode)
                     ),
@@ -257,7 +277,7 @@ class FilterAssetsTest extends SearchIntegrationTestCase
                 ValueCollection::fromValues([
                     Value::create(
                         $this->attributeIdentifier,
-                        (null !== $channel) ? ChannelReference::createfromNormalized($channel) : ChannelReference::noReference(),
+                        (null !== $channel) ? ChannelReference::createFromNormalized($channel) : ChannelReference::noReference(),
                         (null !== $locale) ? LocaleReference::createFromNormalized($locale) : LocaleReference::noReference(),
                         OptionCollectionData::createFromNormalize($optionCodes)
                     ),

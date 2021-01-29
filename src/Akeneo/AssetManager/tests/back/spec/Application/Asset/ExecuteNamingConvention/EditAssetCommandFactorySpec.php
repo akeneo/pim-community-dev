@@ -105,8 +105,8 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
         $namingConvention->getSource()->willReturn($source);
         $source->isAssetCode()->willReturn(false);
         $source->getProperty()->willReturn('image');
-        $source->getChannelReference()->willReturn(ChannelReference::createfromNormalized(null));
-        $source->getLocaleReference()->willReturn(LocaleReference::createfromNormalized(null));
+        $source->getChannelReference()->willReturn(ChannelReference::createFromNormalized(null));
+        $source->getLocaleReference()->willReturn(LocaleReference::createFromNormalized(null));
 
         $attributeRepository->getByCodeAndAssetFamilyIdentifier(AttributeCode::fromString('image'), $assetFamilyIdentifier)
             ->willReturn($attribute);
@@ -156,8 +156,8 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
         $namingConvention->getSource()->willReturn($source);
         $source->isAssetCode()->willReturn(false);
         $source->getProperty()->willReturn('image');
-        $source->getChannelReference()->willReturn(ChannelReference::createfromNormalized(null));
-        $source->getLocaleReference()->willReturn(LocaleReference::createfromNormalized(null));
+        $source->getChannelReference()->willReturn(ChannelReference::createFromNormalized(null));
+        $source->getLocaleReference()->willReturn(LocaleReference::createFromNormalized(null));
 
         $attributeRepository->getByCodeAndAssetFamilyIdentifier(AttributeCode::fromString('image'), $assetFamilyIdentifier)
             ->willReturn($attribute);
@@ -207,8 +207,8 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
         $namingConvention->getSource()->willReturn($source);
         $source->isAssetCode()->willReturn(false);
         $source->getProperty()->willReturn('image');
-        $source->getChannelReference()->willReturn(ChannelReference::createfromNormalized(null));
-        $source->getLocaleReference()->willReturn(LocaleReference::createfromNormalized(null));
+        $source->getChannelReference()->willReturn(ChannelReference::createFromNormalized(null));
+        $source->getLocaleReference()->willReturn(LocaleReference::createFromNormalized(null));
 
         $attributeRepository->getByCodeAndAssetFamilyIdentifier(AttributeCode::fromString('image'), $assetFamilyIdentifier)
             ->willReturn($attribute);
@@ -259,8 +259,8 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
         $namingConvention->abortAssetCreationOnError()->willReturn(false);
         $source->isAssetCode()->willReturn(false);
         $source->getProperty()->willReturn('image');
-        $source->getChannelReference()->willReturn(ChannelReference::createfromNormalized(null));
-        $source->getLocaleReference()->willReturn(LocaleReference::createfromNormalized(null));
+        $source->getChannelReference()->willReturn(ChannelReference::createFromNormalized(null));
+        $source->getLocaleReference()->willReturn(LocaleReference::createFromNormalized(null));
 
         $attributeRepository->getByCodeAndAssetFamilyIdentifier(AttributeCode::fromString('image'), $assetFamilyIdentifier)
             ->willReturn($attribute);

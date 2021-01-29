@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
@@ -45,7 +46,8 @@ class MediaLinkUpdaterSpec extends ObjectBehavior
         $this->supports($editTextValueCommand)->shouldReturn(true);
     }
 
-    function it_edits_the_media_link_value_of_a_asset(Asset $asset) {
+    function it_edits_the_media_link_value_of_a_asset(Asset $asset)
+    {
         $mediaLinkAttribute = $this->mediaLinkAttribute();
 
         $editTextValueCommand = new EditMediaLinkValueCommand(
@@ -56,8 +58,8 @@ class MediaLinkUpdaterSpec extends ObjectBehavior
         );
         $value = Value::create(
             $editTextValueCommand->attribute->getIdentifier(),
-            ChannelReference::createfromNormalized($editTextValueCommand->channel),
-            LocaleReference::createfromNormalized($editTextValueCommand->locale),
+            ChannelReference::createFromNormalized($editTextValueCommand->channel),
+            LocaleReference::createFromNormalized($editTextValueCommand->locale),
             MediaLinkData::createFromNormalize($editTextValueCommand->mediaLink)
         );
 

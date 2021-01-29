@@ -79,7 +79,7 @@ class Target implements TransformationReference
 
         return new self(
             AttributeCode::fromString($normalizedTarget['attribute']),
-            ChannelReference::createfromNormalized($normalizedTarget['channel']),
+            ChannelReference::createFromNormalized($normalizedTarget['channel']),
             LocaleReference::createFromNormalized($normalizedTarget['locale'])
         );
     }

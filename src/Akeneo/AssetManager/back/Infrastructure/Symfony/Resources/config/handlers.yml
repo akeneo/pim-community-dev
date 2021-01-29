@@ -79,13 +79,13 @@ services:
                 - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
                 - '@akeneo_file_storage.file_storage.file.file_storer'
 
-    akeneo_assetmanager.application.asset.delete_asset_handler:
-        class: Akeneo\AssetManager\Application\Asset\DeleteAsset\DeleteAssetHandler
+    akeneo_assetmanager.application.asset.delete_assets_handler:
+        class: Akeneo\AssetManager\Application\Asset\DeleteAssets\DeleteAssetsHandler
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
 
-    akeneo_assetmanager.application.asset.delete_all_asset_family_assets_handler:
-        class: Akeneo\AssetManager\Application\Asset\DeleteAllAssets\DeleteAllAssetFamilyAssetsHandler
+    akeneo_assetmanager.application.asset.delete_asset_handler:
+        class: Akeneo\AssetManager\Application\Asset\DeleteAsset\DeleteAssetHandler
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
 
@@ -118,6 +118,11 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'
+
+    akeneo_assetmanager.application.asset.mass_delete.mass_delete_assets_handler:
+        class: Akeneo\AssetManager\Application\Asset\MassDeleteAssets\MassDeleteAssetsHandler
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.job.mass_delete_launcher'
 
     Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAllAssetFamilyAssetsHandler:
         arguments:

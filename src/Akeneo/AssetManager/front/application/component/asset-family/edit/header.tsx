@@ -16,7 +16,7 @@ interface OwnProps {
   label: string;
   image: File | null;
   primaryAction: (defaultFocus: React.RefObject<any>) => JSX.Element | null;
-  secondaryActions: () => JSX.Element | null;
+  secondaryActions?: () => JSX.Element | null;
   withLocaleSwitcher: boolean;
   withChannelSwitcher: boolean;
   isDirty: boolean;
@@ -99,7 +99,7 @@ export class HeaderView extends React.Component<HeaderProps> {
                     />
                   </div>
                   <div className="AknTitleContainer-actionsContainer AknButtonList">
-                    {secondaryActions()}
+                    {secondaryActions && secondaryActions()}
                     <div className="AknTitleContainer-rightButton">{primaryAction(this.defaultFocus)}</div>
                   </div>
                 </div>
