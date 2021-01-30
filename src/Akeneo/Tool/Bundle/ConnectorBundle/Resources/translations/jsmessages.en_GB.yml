@@ -12,6 +12,11 @@ batch_jobs:
     compute_family_variant_structure_changes: Compute family variant structure changes
     compute_completeness_of_products_family: Compute completeness of products family
     delete_products_and_product_models: Mass delete products
+    clean_attribute:
+      register_clean_job: Adding code to blacklist
+      clean_product_model: Cleaning product models
+      clean_product: Cleaning products
+      remove_attribute_codes_from_blacklist: Removing code from blacklist
   csv_product_export:
     label: Product export in CSV
     export.label: Product export
