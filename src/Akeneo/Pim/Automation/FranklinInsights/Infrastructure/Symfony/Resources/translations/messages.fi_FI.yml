@@ -18,8 +18,10 @@ job_execution.summary:
   subscribed: tilattu
   unsubscribed: tilaus peruttu
   unsubscription_skipped_not_subscribed: ohitettu (ei tilattu)
+  identifiers_mapping_validation: Tunnisteiden yhdistämisen validointi
 pim_datagrid:
   cells:
     type:
       franklin_insights_fetch_products: Franklin Insights
+      franklin_insights: Franklin Insights
 Franklin subscription: Franklin tilaus

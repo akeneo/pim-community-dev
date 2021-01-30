@@ -66,3 +66,4 @@ pim_notification:
     project_created: Uusi projekti sinulle
     project_finished: Projekti valmis
     project_calculation: Projektin muodostaminen
+    project_due_date: Projektin määräpäivä

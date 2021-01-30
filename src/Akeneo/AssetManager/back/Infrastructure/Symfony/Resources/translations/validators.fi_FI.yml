@@ -4,9 +4,36 @@ pim_asset_manager:
       code:
         pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
         should_be_unique: 'Asetti perhe "%asset_family_identifier%" on jo olemassa'
+      assets:
+        should_have_no_asset: 'Tätä assettiperhettä ei voi poistaa, koska assetteja on olemassa tälle assettiperheelle'
+      asset_family_attributes:
+        should_not_be_linked: 'Et voi poistaa tätä perhettä, koska assettiperheen attribuutteja liittyy tähän perheeseen'
+      asset_family_permissions:
+        at_least_one_user_group_should_have_edit_permission: 'Vähintään yhdellä käyttäjäryhmällä on oltava muokkausoikeudet tähän assettiperheeseen'
+      rule_template:
+        extrapolated_attribute_type_should_be_supported: 'Attribuutti "%attribute_code%", jonka tyyppi on "%attribute_type%", ei ole tuettu. Ainoastaan seuraavat attribuuttityypit on tuettuja tässä kentässä: %supported_attribute_type%'
+        assignmement_attribute_does_not_exist: 'tuotteen attribuuttia "{{ %product_attribute_code% }}" ei ole olemassa'
+        assignmement_attribute_is_not_an_asset_collection: 'tuotteen attribuutti "{{ %product_attribute_code% }}" ei ole tyypiltään assetti'
+      attribute_as_main_media:
+        not_found: 'Attribuuttia "%attribute_as_main_media%", joka on asetettu päämediaksi assettiperheelle, ei ole olemassa'
+        invalid_type: 'Assettiperheelle asetetun päämedia -attribuutin on oltava tyyppiä: %valid_attribute_as_main_media_types%'
+      transformation:
+        limit_reached: 'Muunnoksien enimmäismäärä {{ %limit% }} on saavutettu'
+        same_operation_twice: 'Toimintoa "{{ %operation_type% }}" ei voi määrittää kahdesti samalla muunnoksella'
+        source_can_not_be_a_target: 'Lähdeattribuutti "{{ %attribute_code% }}" ei voi olla muunnoksen kohdeattribuutti.'
+        source_should_be_media_file: 'Lähdeattribuutin on oltava mediatiedosto -tyyppiä.'
+        target_should_be_media_file: 'Kohdeattribuutin on oltava mediatiedosto -tyyppiä.'
+        filename_is_not_unique: 'Muunnos tiedostonimen etuliitteellä "{{ %filename_prefix% }}" ja jälkiliitteellä "{{ %filename_suffix% }}" on jo olemassa lähdeattribuutille "{{ %attribute_code%}}"'
+        target_is_not_unique: 'Kahdella muunnoksella ei voi olla sama kohde.'
+        code_is_not_unique: 'Et voi määritellä kahta muunnosta samalla koodilla "{{ %transformation_code%}}"'
+        filename_prefix_suffix_empty: 'Sinulla täytyy olla vähintään joko ominaisuus filename_prefix tai filename_suffix ja yksi niistä ei saa olla tyhjä merkkijono.'
+        empty_operation_list: 'Tarvitaan vähintään yksi muunnostoiminto.'
+      naming_convention:
+        property_should_exist: 'Ominaisuutta "%property%" ei ole tässä assettiperheessä'
   asset:
     validation:
       code:
+        pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
         should_be_unique: 'Assetti koodilla "%code%" on jo olemassa'
         should_exist: 'Assettia ei löydy'
       text:
@@ -15,6 +42,7 @@ pim_asset_manager:
         extension_not_allowed: '"%file_extension%" tiedostot eivät ole sallittuja tälle attribuutille. Sallitut tiedostot ovat: %allowed_file_extensions%'
         file_size_exceeded: 'Tiedosto ylittää suurimman sallitun kokorajoituksen tälle attribuutille.'
         should_exist: 'Tiedostoa "%file_path%" ei löydy.'
+        target_readonly: 'Et voi päivittää arvoa "%attribute_code%", joka on muunnoksen kohde.'
       asset:
         should_exist: 'Assettia "%asset_code%" ei löydy.'
       asset_collection:
@@ -24,11 +52,15 @@ pim_asset_manager:
         should_be_integer: 'Arvon on oltava kokonaisluku'
         integer_too_long: 'Kokonaisluku on liian suuri'
         should_be_numeric: 'Arvon on oltava numero, jossa on oikea desimaalierotin'
+      main_media:
+        not_main_media_attribute: 'Odotettu attribuutin päämedia on "%main_media_attribute%", "%attribute%" annettu.'
   attribute:
     validation:
       options:
         should_exist: 'Valintaa ei löydy.'
         duplicated: 'Valinta "%option_code%" on jo olemassa'
+        code:
+          pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
       max_length:
         should_be_an_integer: 'Arvon on oltava kokonaisluku.'
       max_file_size:
@@ -46,3 +78,8 @@ pim_asset_manager:
         should_not_be_empty: 'Etuliite ei voi olla tyhjä merkkijono.'
       suffix:
         should_not_be_empty: 'Jälkiliite ei voi olla tyhjä merkkijono.'
+      media_file:
+        cannot_contain_extension_separator: 'Päätteet eivät voi sisältää erotinmerkkiä ".", "%wrong_extension%" annettu.'
+        should_only_contain_lowercase_letters_and_numbers: 'Päätteen pitäisi sisältää vain pieniä kirjaimia ja numeroita, "%wrong_extension%" annettu.'
+        cannot_be_longer_than_max: 'Päätteet eivät voi olla pidempiä kuin %expected_length% merkkiä. Annettu %actual_length% pituus'
+        there_cannot_be_duplicated_extensions: 'Ei voi olla päällekkäisiä päätteitä: %duplicates% löytyi.'

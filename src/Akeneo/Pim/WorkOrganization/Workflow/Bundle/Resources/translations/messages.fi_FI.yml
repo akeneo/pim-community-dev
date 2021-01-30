@@ -1,6 +1,7 @@
 pimee_workflow:
   product_draft:
     author: Tekijä
+    source: Lähde
     created: Ehdotettu
     changes: Muutokset
     locale: Lokaation konteksti
