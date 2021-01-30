@@ -1,0 +1,154 @@
+pim_menu.item:
+  connection_settings: Yhteydet
+  connection_audit: Yhteyksien hallinta
+pim_title:
+  akeneo_connectivity_connection_settings_index: Yhteydet
+  akeneo_connectivity_connection_settings_any: Yhteydet
+  akeneo_connectivity_connection_audit_index: Yhteyksien hallinta
+  akeneo_connectivity_connection_audit_any: Yhteyksien hallinta
+akeneo_connectivity.connection:
+  connections: Yhteydet
+  secondary_actions:
+    title: Muut toiminnot
+  connection:
+    code: Koodi
+    label: Nimike
+    flow_type: Tietovirran tyyppi
+    image: Kuva
+    client_id: Asiakastunnus
+    secret: Salausavain
+    username: Käyttäjänimi
+    password: Salasana
+    user_role_id: Rooli
+    user_group_id: Ryhmä
+    constraint:
+      code:
+        required: Yhteyden tunnus tarvitaan
+        invalid: Yhteyden tunnus voi sisältää vain kirjaimia, numeroita ja alaviivoja
+        too_short: Yhteyden tunnus on liian lyhyt. Sen tulee olla vähintään 3 merkkiä pitkä.
+        too_long: Yhteyden tunnus on liian pitkä. Sen tulee olla enintään 100 merkkiä pitkä.
+        must_be_unique: Yhteyden tunnuksen on oltava yksilöllinen.
+      label:
+        required: Yhteyden nimi on pakollinen.
+        too_short: Yhteyden nimi on liian lyhyt. Sen tulee olla vähintään 3 merkkiä pitkä.
+        too_long: Yhteyden nimi on liian pitkä. Sen tulee olla enintään 100 merkkiä pitkä.
+      flow_type:
+        invalid: Tietovirran tyyppi voi olla vain 'tietolähde', 'kohde' tai 'muu'.
+      image:
+        must_exist: Kuvaa ei löytynyt. Yritä uudelleen.
+  flow_type:
+    data_source: Tietolähde | Tietolähteet
+    data_destination: Kohde | Kohteet
+    other: Muu | Muut
+  connection_count: '{{ count }} yhteys | {{ count }} yhteyttä'
+  no_connection:
+    title: Yhteyttä ei ole vielä ilmoitettu.
+    message: Lisää ensimmäinen klikkaamalla yläpuolella olevaa ”Luo” -painiketta tai
+    message_link: Klikkaa tästä
+  create_connection:
+    title: Luo uusi yhteys
+    description: Voit luoda jopa 50 yhteyttä.
+    flash:
+      success: Yhteys onnistuneesti luotu.
+      error: Pahoittelut, tapahtui virhe luotaessa yhteyttä.
+  edit_connection:
+    subtitle: Asetukset
+    flash:
+      success: Yhteys päivitetty onnistuneesti.
+      error: Valitettavasti yhteyttä muokattaessa tapahtui virhe.
+    image_uploader:
+      extension_not_allowed: Valitettavasti lähettämäsi tiedoston tyyppi ei ole sallittu.
+    credentials:
+      title: Tunnistetiedot
+      helper:
+        message: 'Tässä ovat tunnistetiedot, joita voit käyttää {{ label }} yhteydessä.'
+        link: Lue lisää...
+      password_helper:
+        message: Jos olet unohtanut salasanasi, voit luoda uuden salasanan täältä.
+        link: Lisätietoa...
+      clear_password_helper:
+        message: Varmista, että tallennat tämän salasanas jonnekin, koska emme näytä sitä sinulle enää uudestaan.
+        link: Lisätietoa...
+      action:
+        copy: Kopioi leikepöydälle
+        regenerate: Luo uudelleen
+      flash:
+        copied: '{{ name }} kopioitu leikepöydälle'
+    permissions:
+      title: Käyttöoikeudet
+      helper:
+        message: 'Tässä osiossa voit määrittää käyttöoikeudet sinun {{ label }} yhteyteesi.'
+        link: Lue lisää yhteyden käyttöoikeuksista...
+      user_role_helper:
+        message: Oletusarvo `{{ role }}` ei ole paras valinta yhteyteesi. Suosittelemme, että valitset roolin, joka on räätälöity yhteystarpeidesi mukaan.
+        link: Lisää tietoa täältä...
+      user_group_helper:
+        message: Suosittelemme, että valitset ryhmän, joka on räätälöity yhteystarpeisiisi.
+        link: Lisää tietoa täältä...
+  regenerate_secret:
+    title: Vahvista uudelleenluonti
+    description: Oletko varma, että haluat luoda uudelleen yhteyden salausavaimen? Etkö ole varma vaikutuksista?
+    link: Tässä on mitä tapahtuu.
+    action:
+      regenerate: Luo uudelleen
+    flash:
+      success: Yhteyden salausavain uudelleenluotu onnistuneesti.
+      error: Pahoittelut, tapahtui virhe uudelleenluotaessa yhteyden salausavainta.
+  regenerate_password:
+    title: Vahvista uudelleenluonti
+    description: Oletko varma, että haluat luoda uudelleen yhteyden salasanan? Etkö ole varma vaikutuksista?
+    link: Tässä on mitä tapahtuu.
+    action:
+      regenerate: Luo uudelleen
+    flash:
+      success: Yhteyden salasana uudelleenluotu onnistuneesti.
+      error: Pahoittelut, tapahtui virhe uudelleenluotaessa yhteyden salasanaa.
+  delete_connection:
+    title: Vahvista poisto
+    description: Oletko varma, että haluat poistaa yhteyden? Etkö ole varma vaikutuksista?
+    link: Tässä on mitä tapahtuu.
+    flash:
+      success: Yhteys poistettu onnistuneesti.
+  helper:
+    title: '👋 Tervetuloa ominaisuuteen, joka yhdistää PIMisi oikein!'
+    description: PIM ilman integraatioita on tavallaan hyödytön, eikö? Yhteyksien ansiosta voit määrittää kaikki tietovirrat, jotka tuodaan sisään ja viedään PIMin ulkopuolelle.
+    link: Haluaisitko tietää lisää? Selvitä, mikä on yhteys ja miten siitä saadaan kaikki irti täällä!
+  flow_type_helper:
+    message: Mietitkö mikä tietovirta on?
+    link: Voimme auttaa sinua juuri täällä!
+  edit_image:
+    upload_helper: Muuta kuvaasi, vedä ja pudota tai
+    remove_helper: Poista kuva
+    click_here: klikkaa tästä
+    flash:
+      extension_not_allowed: Valitettavasti lähettämäsi tiedoston tyyppi ei ole sallittu.
+  dashboard:
+    helper:
+      title: '👋 Tervetuloa yhteyksien hallintaan!'
+      description: Täällä, voit seurata kaikkia tietovirtoja, jotka on kerätty PIMiin yhteyksien kautta, sekä kaikkia tietovirtoja, jotka on jaettu kohteisiin yhteyksiesi kautta.
+      link: Haluatko tietää lisää? Ole hyvä!
+    user_survey:
+      title: Haluatko lisää tietoja tähän yhteyksien hallintaan?
+      content: Palautteesi on meille todella kallisarvoinen. Auta meitä valitsemaan seuraava sovellus vastaamalla tähän yhden kysymyksen kyselyyn!
+      button: Mennään!
+    connection_selector:
+      title: Tietolähteet
+      all: Kaikki
+    charts:
+      number_of_products_created: Luotujen tuotteiden määrä
+      number_of_products_updated: Päivitettyjen tuotteiden määrä
+      legend:
+        during_the_last_seven_days: Viimeisten seitsemän päivän aikana
+        today: Tänään
+    no_connection:
+      title: Haluatko nähdä hienoja kaavioita yhteyksistäsi?
+      message_with_permission:
+        message: Luo ja aloita ensimmäisen yhteytesi seuranta
+        link: täältä.
+      message_without_permission:
+        message: Pyydä järjestelmänvalvojaasi luomaan sellaisen.
+        link: Lue lisää yhteyksistä täältä...
+  runtime_error:
+    error_message: Voi ei! Tapahtui virhe...
+    reload_helper: Päivitä sivu ja yritä uudelleen
+    reload_button: Lataa uudelleen

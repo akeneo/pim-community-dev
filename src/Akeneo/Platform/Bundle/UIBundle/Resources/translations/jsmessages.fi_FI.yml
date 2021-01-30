@@ -1,8 +1,8 @@
+#ORO messages
 "Yes, I Agree": "Kyllä, hyväksyn"
 "Yes, do it": "Kyllä, tee se"
 "Ok, got it.": "OK."
 "Edit": "Muokkaa"
-"Unexpected error occurred. Please contact system administrator.": "Odottamaton virhe. Ota yhteyttä järjestelmänvalvojaan."
 "Yes, revoke": "Kyllä, poista"
 "Revoke Confirmation": "Poiston vahvistus"
 Prev: Edellinen
@@ -20,10 +20,12 @@ Second: Sekunti
 Millisecond: Millisekunti
 Microsecond: Mikrosekunti
 "Time Zone": "Aikavyöhyke"
+#PIM messages
 Localized value: Paikallinen arvo
 Columns: Sarakkeet
 Datagrid Configuration: Datagrid-kokoonpano
-Action: Toimi
+#Filters
+Action: Toiminto
 Unit: Yksikkö
 Currency: Valuutta
 jstree:
@@ -34,6 +36,7 @@ jstree:
     unclassified: Luokittelemattomat tuotteet
   no_tree: Ei puuta käytettävissä
   include_sub: Sisällytä alakategoriat
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Sunnuntai
@@ -64,7 +67,7 @@ datetimepicker:
     February: Helmikuu
     March: Maaliskuu
     April: Huhtikuu
-    May: Toukokuu
+    May: Touko
     June: Kesäkuu
     July: Heinäkuu
     August: Elokuu
@@ -77,7 +80,7 @@ datetimepicker:
     Feb: Helmi
     Mar: Maalis
     Apr: Huhti
-    May: Toukokuu
+    May: Touko
     Jun: Kesä
     Jul: Heinä
     Aug: Elo
@@ -85,10 +88,11 @@ datetimepicker:
     Oct: Loka
     Nov: Marras
     Dec: Joulu
+#ORO
 oro_config:
   form:
     config:
-      title: Järjestelmän asetukset
+      title: Järjestelmäasetukset
       tab:
         system:
           title: Järjestelmä
@@ -111,6 +115,33 @@ pim_ui:
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Paikalliset muutoksesi menetetään. Oletko varma, että haluat päivittää sivun?"
 "navigation.message.content.outdated": "{{ title }} sivun sisältö on vanhentunut, ole hyvä ja <a href='#' data-action='page-refresh'> päivitä sivu</a>"
 "Content of pinned page is outdated": "Valitsemasi sivun sisältö on päivittämätön"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
 pim_common:
   actions: Toiminnot
   add: Lisää
@@ -118,7 +149,7 @@ pim_common:
   after: Jälkeen
   all: Kaikki
   and: ja
-  apply: Valitse
+  apply: Käytä
   before: Ennen
   by: tehnyt
   cancel: Peruuta
@@ -132,14 +163,14 @@ pim_common:
   done: Valmis
   edit: Muokkaa
   entity_updated: Tallentamattomia muutoksia löytyy.
-  from: Lähettäjä
+  from: Alkaen
   general_properties: Yleiset ominaisuudet
   history: Historia
   label: Nimike
   label_translations: Nimikkeiden käännökset
   Label or identifier: nimike tai tunniste
   less_than: Vähemmän kuin
-  loading: Ladataan...
+  loading: Lataa...
   media_upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
   more_than: Enemmän kuin
   next: Seuraava
@@ -157,7 +188,7 @@ pim_common:
   search: Etsi
   select2:
     search: Hae...
-    no_match: Vastaavuuksia ei löydy
+    no_match: Ei hakutuloksia
     load_more: Ladataan lisää tuloksia...
   status: Status
   to: mihin
@@ -179,7 +210,7 @@ pim_common:
     STARTS WITH: Alkaa
     ENDS WITH: Päättyy
 error:
-  exception: Voi ei! {{ status_code }} virhe tapahtui...
+  exception: Voi pahus! {{ status_code }} virhe tapahtui...
   forbidden: Käyttö estetty. Et saa käyttää tätä sivua
 alert:
   attribute_option:
@@ -204,20 +235,8 @@ pim_enrich.entity.fallback:
       item_placeholder: Oletko varma, että haluat poistaa tämän {{ itemName }}? Et voi peruuttaa tätä toimintoa.
     edit:
       leave: Oletko varma että haluat poistua sivulta?
-      discard_changes: Menetät muutokset tähän {{ entity }}, jos poistut sivulta.
+      discard_changes: Käsittelemäsi {{ entity }} on muuttunut. Menetät muutokset siihen, jos poistut sivulta.
       discard_changes_title: Oletko varma?
-pim_enrich.entity.api_connection:
-  flash:
-    create:
-      success: API -yhteyden luominen onnistui
-    delete:
-      success: API -yhteys poistettu onnistuneesti
-      fail: API -yhteyttä ei voi poistaa
-  page_title:
-    index: "]-Inf, 1]{{ count }} API -yhteys|]1, Inf[{{ count }} API -yhteyttä"
-  module:
-    revoke:
-      confirm: Haluatko varmasti poistaa tämän API -yhteyden?
 pim_enrich.entity.job_execution:
   page_title:
     index: "]-Inf, 1]{{ count }} operaatio|]1, Inf[{{ count }} operaatiota"
@@ -252,7 +271,7 @@ pim_title:
   pim_enrich_channel_create: Kanavat | Luo
   pim_enrich_channel_edit: Kanava {{ channel.label }} | Muokkaa
   pim_enrich_currency_index: Valuutat
-  pim_enrich_locale_index: Alueet
+  pim_enrich_locale_index: Lokaatiot
   pim_enrich_group_index: Ryhmät
   pim_enrich_group_edit: Ryhmä {{ group.label }} | Muokkaa
   pim_enrich_associationtype_index: Assosiaatiotyypit
@@ -263,9 +282,7 @@ pim_title:
   pim_enrich_mass_edit_action_configure: Massamuokkaus | Määritä
   pim_enrich_mass_edit_action_perform: Massamuokkas | Suorita
   pim_enrich_job_tracker_index: Prosessiseurain
-  pim_enrich_job_tracker_show: Prosessin tracker | Näytä työ
-  pim_enrich_api_connection_index: API -yhteydet
-  pim_enrich_api_connection_create: API -yhteydet| Luo
+  pim_enrich_job_tracker_show: Prosessiseurain | Näytä työ
   pim_enrich_mass_edit_action: Massamuokkaus
   pim_analytics_system_info_index: Järjestelmätiedot
 pim_menu:
@@ -299,7 +316,6 @@ pim_menu:
     user_role: Roolit
     info: Järjestelmätiedot
     job_tracker: Prosessiseurain
-    api_connection: API -yhteydet
     catalog_volume: Katalogin koon seuranta
   navigation:
     activity: Tapahtumanavigaatio
@@ -317,3 +333,11 @@ pim_notification:
     export: Vienti
     quick_export: Nopea vienti
     mass_edit: Massamuokkaus
+akeneo_communication_channel:
+  link:
+    title: Ilmoitukset
+  panel:
+    title: Ilmoitukset
+    list:
+      empty: Ei uutisia tällä hetkellä. Pysy kuulolla!
+      error: Emme voineet noutaa uutisia. Yritä myöhemmin uudelleen.

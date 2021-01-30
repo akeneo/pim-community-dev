@@ -18,6 +18,7 @@ pim_measure:
     Pressure: Paine
     Energy: Energia
     CaseBox: Pakkaus
+    Brightness: Kirkkaus
   units:
     #Area
     ACRE: Eekkeri
@@ -148,7 +149,6 @@ pim_measure:
     GALLON: Gallona
     LITER: Litra
     MILLILITER: Millilitra
-    OUNCE: Unssi
     PINT: Pintti
     #Weight
     DENIER: Denier
@@ -159,6 +159,7 @@ pim_measure:
     MARC: Marc
     MILLIGRAM: Milligramma
     ONCE: Unssi
+    OUNCE: Unssi
     POUND: Pauna
     TON: Tonni
     #Pressure
@@ -170,8 +171,14 @@ pim_measure:
     PSI: Paunaa per neliötuuma
     TORR: Torri
     MMHG: elohopeamillimetri
+    #Energy
+    CALORIE: kalori
     KILOCALORIE: Kilokalori
+    JOULE: joule
     KILOJOULE: kilojoule
     #CaseBox
     PIECE: Kappale
     DOZEN: Tusina
+    #Brightness
+    LUMEN: Luumen
+    NIT: Nt
