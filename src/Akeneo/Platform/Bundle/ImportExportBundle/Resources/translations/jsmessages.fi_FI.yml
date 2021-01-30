@@ -143,6 +143,7 @@ pim_import_export:
         import: Tuonti
         export: Vienti
         mass_edit: Massamuokkaus
+        mass_edit_rule: Sääntöjen asetukset
         quick_export: Nopea vienti
         compute_family_variant_structure_changes: Laske varianttiperheen rakenteen muutokset
         compute_completeness_of_products_family: Laske perheiden valmiusaste
