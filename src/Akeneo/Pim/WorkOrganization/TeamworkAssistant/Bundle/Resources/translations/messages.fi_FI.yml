@@ -27,6 +27,9 @@ teamwork_assistant:
     owner_todo: Työjono (projektin tilanne)
     owner_in_progress: Työnalla (projektin tilanne)
     owner_done: Valmis (projektin tilanne)
+  user:
+    deletion:
+      user_is_project_owner: Tämä käyttäjä on yhä yhden tai useamman projektin omistaja. Poista kaikki tämän käyttäjän projektit.
 job_execution:
   summary:
     processed_products: Käsitellyt tuotteet
