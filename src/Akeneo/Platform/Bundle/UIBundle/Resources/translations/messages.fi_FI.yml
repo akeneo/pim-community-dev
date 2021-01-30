@@ -238,7 +238,7 @@ info:
     disable: Poista käytöstä
     disabled: Poistettu käytöstä
   group:
-    axis: 'Variaatioakseli: %attributes%'
+    axis: 'Varianttiulottuvuus: %attributes%'
     select products: Valitse tuotteet joiden tulisi kuulua tähän ryhmään.
     selectable products: Seuraavilla valittavilla tuotteilla on määritelty arvo jokaiselle akselille.
     no group types: Mitään ryhmätyyppekä ei ole, aloita luomalla sellainen
