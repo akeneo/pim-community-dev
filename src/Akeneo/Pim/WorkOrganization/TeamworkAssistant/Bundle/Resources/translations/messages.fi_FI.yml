@@ -13,11 +13,11 @@ teamwork_assistant:
     message: Sinulle on uusia tuotteita rikastettavaksi projektissa ”%project_label%”. Määräpäivä on ”%due_date%”.
     project_finished:
       contributor: Onneksi olkoon! 100 % tuotteista on valmiina projektissa "%project_label%".
-      owner: '%project_label% määräpäiväksi "%due_date%" on valmis.'
+      owner: '<strong>%due_date%</strong> päättyvä projekti <strong>%project_label%</strong>  on valmis.'
       show: Näytä
     due_date:
       contributor: Projektin "%project_label%" tuottesta on %percent% prosenttia valmiina. Älä unohda rikastaa loppuja tuotteita määräpäivään "%due_date%" mennessä.
-      owner: '%project_label% määräpäiväksi "%due_date%" ei ole 100 % valmis.'
+      owner: '<strong>%due_date%</strong>  päättyvä projekti <strong>%project_label%</strong> ei ole 100% valmis.'
       start: Aloitus
   datagrid:
     project_completeness: Projektin edistyminen
@@ -27,6 +27,9 @@ teamwork_assistant:
     owner_todo: Työjono (projektin tilanne)
     owner_in_progress: Työnalla (projektin tilanne)
     owner_done: Valmis (projektin tilanne)
+  user:
+    deletion:
+      user_is_project_owner: Tämä käyttäjä on yhä yhden tai useamman projektin omistaja. Poista kaikki tämän käyttäjän projektit.
 job_execution:
   summary:
     processed_products: Käsitellyt tuotteet

@@ -1,0 +1,81 @@
+akeneo_data_quality_insights:
+  title: Tuotetietojen laatu
+  dqi_dashboard:
+    menu: Tuotetietojen laatu
+    title: Yhteenveto tuotetietojen laadusta
+    helper:
+      title: Esittelyssä Data Quality Akeneossa
+      description: Tuotetiedon laadun yhteenvedon avulla voit mitata tuotevalikoiman tietojen laatua. Voit myös keskittyä kategoriaan tai perheeseen.
+      help_center: Katso lisätietoja ohjekeskuksestamme.
+    no_data_title: Valitettavasti meillä ei ole vielä tarpeeksi dataa tietojen laadun yleiskatsauksen näyttämiseksi.
+    no_data_subtitle: Tule takaisin myöhemmin.
+    time_period:
+      label: Ajanjakso
+      daily: Päivittäinen
+      weekly: Viikoittain
+      monthly: Kuukausittainen
+    legend:
+      excellent: Erinomainen
+      good: Hyvä
+      average: Keskimääräinen
+      below_average: Keskimääräistä huonompi
+      to_improve: Parannettavaa
+    category_modal_filter:
+      subtitle: Suodata kategorioittain
+      message: Valitse kategoriat, jotka haluat lisätä yhteenvetoon
+    widgets:
+      family_modal:
+        subtitle: Lisää attribuuttiperheitä
+        message: Valitse attribuuttiperheet, jotka haluat lisätä yhteenvetoon
+        max_families_msg: Pahoittelut, et voi lisätä enempää kuin {{ count }} attribuuttiperhettä yhteenvetoon
+      category_modal:
+        subtitle: Lisää kategorioita
+        message: Valitse kategoriat, jotka haluat lisätä yhteenvetoon
+        max_categories_msg: Pahoittelut, et voi lisätä enempää kuin {{ count }} kategoriaa yhteenvetoon
+      add_families: Lisää attribuuttiperheitä
+      add_categories: Lisää kategorioita
+      title: Otsikko
+      no_family_helper_msg: Valitse ne attribuuttiperheet, joiden tuotetietojen laatua haluat mitata
+      no_category_helper_msg: Valitse ne kategoriat, joiden tuotetietojen laatua haluat mitata
+      see_in_grid: Näytä ruudukossa
+    time_axis:
+      day: päivä
+  product_evaluation:
+    criteria:
+      completeness_of_required_attributes:
+        recommendation: Vaaditut attribuutit, joilla on puuttuu arvot
+      completeness_of_non_required_attributes:
+        recommendation: Ei-vaaditut attribuutit, joilla on puuttuu arvot
+      consistency_spelling:
+        recommendation: Attribuutit, joissa kirjoitusvirheitä
+    axis:
+      enrichment:
+        title: Rikastus
+        attributes_link: Näytä kaikki puuttuvat attribuutit
+        success: Tuotetietojesi rikastus on valmis. Onneksi olkoon!
+      consistency:
+        title: Yhtenäisyys
+        attributes_link: Näytä kaikki parannettavissa olevat attribuutit
+        success: Tuotetietosi ovat täysin yhtenäiset. Onneksi olkoon!
+    messages:
+      error:
+        axis_error: Virheen vuoksi arvosanaa ei voitu laskea täysin. Yritä myöhemmin uudelleen.
+        criterion_error: Arvosanaa ei voitu laskea.
+      success:
+        criterion: Kaikki hyvin.
+      grading_in_progress: Arvostelu käynnissä
+      axis_grading_in_progress: Arvostelu käynnissä. Ole hyvä ja palaa myöhemmin.
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: Kaikki puuttuvat attribuutit
+      all_improvable_attributes: Kaikki parannettavissa olevat attribuutit
+    spellcheck_popover:
+      title: Korjaukset
+      original_text_title: Alkuperäinen
+      suggestions_title: Ehdotukset
+      ignore_all_suggestions_button_label: Ohita
+    title_suggestion_popover:
+      title: Ehdotukset
+      ignore_all_suggestions_button_label: Ohita
+pim_title:
+  akeneo_data_quality_insights_dashboard: Tuotetietojen laatu

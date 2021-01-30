@@ -1,21 +1,19 @@
-#pim_title:
-#akeneo_asset_manager_asset_family_index: Create a new entity
-#akeneo_asset_manager_asset_family_edit: Edit an asset family
-#akeneo_asset_manager_asset_edit: Edit an asset
+pim_title:
+  akeneo_asset_manager_asset_family_edit: Muokkaa assettiperhettä
+  akeneo_asset_manager_asset_edit: Muokkaa assettia
 pim_asset_manager:
+  result_counter: '{0} Ei tuloksia{1} {{ count }} tulos]1,Inf] {{ count }} tulosta'
+  asset_counter: '{0} Ei assetteja|{1} {{ count }} assetti|]1,Inf] {{ count }} assettia'
   asset_collection:
     add_asset: 'Lisää assetti'
     add_asset_title: 'Avaa assettivalitsin lisätäksesi assetteja kokoelmaan'
     no_asset_in_collection: 'Pahoittelut, tässä kokoelmassa ei ole assetteja.'
     helper:
-      title: 'Tervetuloa uuteen assettien hallintaan!'
-      text: 'Perheellä {{ family }} ei ole assettikokoelmaa! Miten assettikokoelma lisätään?'
       link: 'Miten assettikokoelma lisätään?'
-    no_asset:
-      title: 'Pahoittelut, tällä tuotteella ei ole assetteja'
-      text: 'Perheellä {{ family }} ei ole assettikokoelmia!'
     notification:
       product_rule: 'Tämä kokoelma voidaan päivittää säännöllä:'
+    edit_asset: Muokkaa assettia
+    remove_asset: Poista assetti
     remove_one_asset: Poista assetti {{ assetName }} kokoelmasta
     remove_all_assets: Poista kaikki assetit
     other_actions: Muut toiminnot
@@ -35,143 +33,234 @@ pim_asset_manager:
       empty_title: Korisi on tyhjä
       remove_one_asset: Poista assetti {{ assetName }} assettivalikoimasta
       remove_all_assets: Poista kaikki
+  asset_preview:
+    previous: Edellinen assetti
+    next: Seuraava assetti
+    empty_main_media: Tällä assetilla ei ole medialiitettä.
+    edit_asset: Muokkaa assettia
+    download: Lataa
+    copy_url: Kopioi URL-osoite
+    error: Esikatselukuvan muodostamisessa tapahtui virhe
+  breadcrumb:
+    products: Tuotteet
+  app:
+    image:
+      wide:
+        remove: Poista tiedosto
+        download: Lataa tiedosto
+        upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
+      small:
+        remove: Poista
+        download: Lataa
+        upload: Vedä ja pudota tuodaksesi
+  grid:
+    counter: '{{ resultCount }} tulosta'
+    counter_empty: '0 tulosta'
   asset_family:
-    #validation:
-    #code:
-    #pattern: 'This field may only contain letters, numbers and underscores.'
-    #should_be_unique: 'This code already exists for this entity.'
-    #limit_reached: 'You cannot create the asset family "{{ %asset_family_label% }}" because you have reached the limit of {{ %limit% }} asset families'
-    #button:
-    #save: Save
-    #save_permission: Save
-    #create: Create
-    #permission:
-    #title: Entity permissions
+    column:
+      title: Asettinavigaatio
+      selector:
+        title: Assettiperheet
+        no_data: Assettiperhettä ei ole saatavilla
+    validation:
+      code:
+        pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
+        should_be_unique: 'Assettiperhe on jo olemassa koodilla "{{ %asset_family_identifier% }}"'
+        limit_reached: 'Et voi luoda assettiperhettä "{{ %asset_family_label% }}", koska assettiperheiden enimmäismäärä {{ %limit% }} on saavutettu'
+      transformation:
+        limit_reached: 'Muunnoksien enimmäismäärä {{ %limit% }} on saavutettu'
+        same_operation_twice: 'Toimintoa "{{ %operation_type% }}" ei voi määrittää kahdesti samalla muunnoksella'
+        source_can_not_be_a_target: 'Lähdeattribuutti "{{ %attribute_code% }}" ei voi olla muunnoksen kohdeattribuutti.'
+        attribute_reference_should_exist: 'Attribuuttia "{{ %attribute_code% }}" ei ole olemassa tälle assettiperheelle'
+        filename_is_not_unique: 'Muunnos tiedostonimen etuliitteellä "{{ %filename_prefix% }}" ja jälkiliitteellä "{{ %filename_suffix% }}" on jo olemassa lähdeattribuutille "{{ %attribute_code%}}"'
+        code_is_not_unique: 'Et voi määritellä kahta muunnosta samalla koodilla "{{ %transformation_code%}}"'
+      rule_template:
+        extrapolated_attribute_should_exist: 'Attribuuttia "{{ %attribute_code% }}" ei ole olemassa tälle assettiperheelle'
+        extrapolated_attribute_type_should_be_supported: 'Attribuutti "%attribute_code%", jonka tyyppi on "%attribute_type%", ei ole tuettu. Ainoastaan seuraavat attribuuttityypit on tuettuja tässä kentässä: %supported_attribute_type%'
+        assignmement_attribute_does_not_exist: 'tuotteen attribuuttia "{{ %product_attribute_code% }}" ei ole olemassa'
+        assignmement_attribute_is_not_an_asset_collection: 'tuotteen attribuutti "{{ %product_attribute_code% }}" ei ole tyypiltään assetti'
+    button:
+      save: Tallenna
+      save_permission: Tallenna
+      create: Luo assettiperhe
+      edit: Muokkaa assettiperhettä
+      view: Näytä assettiperhe
+    permission:
+      title: Assettiperheen käyttöoikeudet
     title: Assetit
-  #breadcrumb: Asset Families
-  #img: The main image of the asset family named "{{ label }}"
-  #tab:
-  #assets: Assets
-  #attribute: Attributes
-  #properties: Properties
-  #permission: Permissions
-  #properties:
-  #title: Entity properties
-  #identifier: Code
-  #label: Label
-  #image: Image
-  #attribute:
-  #title: Asset attributes
-  #attribute:
-  #error:
-  #render_list: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute'
-  #render_edit: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
-  #module:
-  #delete:
-  #button: Delete entity
-  #confirm: Are you sure you want to delete this entity?
-  #index:
-  #grid:
-  #count: '{0} No Asset Family|{1} {{ count }} Asset Family|]1,Inf] {{ count }} Asset Families'
-  #help:
-  #title: 'Welcome to the Asset Families!'
-  #description_part_one: Enrich relevant information related to products (e.g. brands, manufacturers, colors, materials, ingredients...).
-  #description_part_two: It will enable you to provide a better Product Experience to your customers.
-  #description_part_three: Click on the “Create” button to create your 1st asset family, set its attributes and assets.
-  #description_part_four: Then, to link to products, create a product attribute type related to this asset family.
-  #description_part_five: For more details, we invite you to browse this article.
-  #create:
-  #header:
-  #title: Create
-  #subtitle: Asset Families
-  #title: Create a new entity
-  #input:
-  #label: Label
-  #code: Code (required)
-  #confirm: Save
-  #delete:
-  #message: Are you sure you want to delete the entity "{{ assetFamilyLabel }}"?
-  #title: Attribute
-  #notification:
-  #save:
-  #success: Asset family successfully updated.
-  #fail: An error occured during the save of the asset family
-  #create:
-  #success: Asset family successfully created.
-  #fail: An error occured during the creation of the asset family
-  #delete:
-  #success: Asset family successfully deleted.
-  #fail: An error occured during the deletion of the asset family
-  #permission:
-  #notification:
-  #save:
-  #success: Asset family permissions successfully updated.
-  #fail: At least one user group should have edit permission on this entity
-  #no_data:
-  #title: You have no user group
-  #subtitle: To manage permission on asset family you need to have at least one user group.
-  #link: Clic here to add your first user group
+    breadcrumb: Assettiperheet
+    img: Assettiperheen  "{{ label }}" päämedialiite
+    tab:
+      assets: Assetit
+      attribute: Attribuutit
+      properties: Ominaisuudet
+      permission: Käyttöoikeudert
+      transformations: Muunnokset
+    transformations:
+      help:
+        title: 'Tervetuloa uuteen assettien hallintaan!'
+        description: 'Voit määritellä tässä jopa 10 muunnosta assettiperheelle.'
+        link: 'Jos haluat tutustua uuden Asset Managerin muunnoksiin, klikkaa tästä'
+      subsection: 'Muunnoksen ominaisuudet'
+    product_link_rules:
+      help:
+        title: 'Tervetuloa uuteen assettien hallintaan!'
+        description: 'Voit määritellä tässä jopa 2 tuotelinkityssääntöä assettiperheelle'
+        link: 'Jos haluat tutustua Product Link Rules -ominaisuuteen, klikkaa tästä'
+      execute_rules:
+        cancel: Peruuta
+    properties:
+      title: Assettiperheen ominaisuudet
+      identifier: Koodi
+      label: Nimike
+      media_file: Mediatiedosto
+      attribute_as_main_media: Attribuutti päämediana
+    attribute:
+      title: Assetin attribuutit
+      attribute:
+        error:
+          render_list: 'Attribuutin "{{ %attribute_code% }}" renderöinnin aikana tapahtui virhe'
+          render_edit: 'Attribuutin "{{ %attribute_code% }}" lisäominaisuuksien näyttämisessä tapahtui virhe'
+    module:
+      delete:
+        button: Poista assettiperhe
+        confirm: Oletko varma, että haluat poistaa tämän assettiperheen?
+    index:
+      grid:
+        count: '{0} Ei assettiperheitä,{1} {{ count }} assettiperhe ]1,Inf] {{ count }} assettiperhettä'
+        help:
+          title: 'Tervetuloa assettiperheisiin!'
+          description_part_one: Rikasta tuotteisiin liittyvää informaatiota, kuten brändejä, valmistajia, värejä, materiaaleja, ainesosia, ...
+          description_part_two: Se mahdollistaa paremman tuotekokemuksen tarjoamisen asiakkaille.
+          description_part_three: Klikkaa “Luo”-painiketta luodaksesi ensimmäisen assettiperheesi, asettaaksesi sen attribuutit ja assetit.
+          description_part_four: Sen jälkeen, linkittääksesi tuotteita, luo tähän assettiperheeseen liitetty tuoteattribuutti.
+          description_part_five: Saadaksesi lisätietoja, tutustu tähän artikkeliin.
+    create:
+      header:
+        title: Luo
+      subtitle: Assettiperheet
+      title: Luo uusi assettiperhe
+      input:
+        label: Nimike
+        code: Koodi (pakollinen)
+      confirm: Tallenna
+    delete:
+      message: Oletko varma, että haluat poistaa assettiperheen "{{ assetFamilyLabel }}"?
+      title: Attribuutti
+    notification:
+      save:
+        success: Assettiperheen päivittäminen onnistui.
+        fail: Assettiperheen tallentamisen aikana tapahtui virhe
+      create:
+        success: Assettiperhe luotu onnistuneesti.
+        fail: Assettiperheen luomisen aikana tapahtui virhe
+      delete:
+        success: Assettiperhe poistettu onnistuneesti.
+        fail: Assettiperheen poistamisen aikana tapahtui virhe
+      compute_transformations:
+        success: Muunnokset on käynnistetty. Kun työ on valmis, näet uudet muunnokset päivitettynä assetillesi.
+        fail: Tapahtui virhe, kun yritettiin tehdä muunnoksia
+    helper:
+      no_asset_family:
+        link: Saadaksesi lisätietoja, tutustu tähän artikkeliin.
+    no_data:
+      no_asset:
+        link: Klikkaa tästä lisätäksesi assetin
+      no_asset_family:
+        title: Pahoittelut, ei yhtään assettiperhettä!
+        link: Klikkaa tästä lisätäksesi assettiperheen
+  permission:
+    notification:
+      save:
+        success: Assettiperheen käyttöoikeudet päivitetty onnistuneesti.
+        fail: Vähintään yhdellä käyttäjäryhmällä on oltava oikeudet tähän assettiperheeseen
+    no_data:
+      title: Käyttäjäryhmiä ei ole
+      subtitle: Voidaksesi määritellä assettiperheen käyttöoikeudet, vähintään yksi käyttäjäryhmä on oltava olemassa.
+      link: Klikkaa tästä lisätäksesi ensimmäisen käyttäjäryhmäsi
   asset:
-    #validation:
-    #limit_reached: 'You cannot create the asset "{{ %asset_label% }}" because you have reached the limit of {{ %limit% }} assets for this asset family'
-    #code:
-    #pattern: 'This field may only contain letters, numbers and underscores.'
-    #should_be_unique: 'This code already exists for this entity.'
-    #no_data:
-    #title: There are no asset for {{ entityLabel }}
-    #subtitle: Click on the button "Add new" to create the first asset
-    #no_result:
-    #title: There are no result for your search
-    #subtitle: Try again with new search criteria.
+    img: Assettiperheen  "{{ label }}" päämedialiite
+    validation:
+      limit_reached: 'Assettia "{{ %asset_label% }}" ei voi luoda, koska assettien enimmäismäärä {{ %limit% }} on saavutettu tälle assettiperheelle'
+      code:
+        pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
+        should_be_unique: 'Tämä koodi on jo olemassa toisella assetilla.'
+    no_data:
+      subtitle: Klikkaa painiketta "Lisää uusi" luodaksesi ensimmäisen assetin
+    no_result:
+      subtitle: Yritä uudelleen uusilla hakuehdoilla.
     selector:
       no_value: Klikkaa tästä valitaksesi assetin.
-    #error:
-    #value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
-    #button:
-    #save: Save
-    #create: Add new
-    #delete: Delete
-    #delete_all: Delete all assets
-    #back: Back to list
-    #product:
-    #attribute: Product attribute
-    #counter: '{{ totalCount }} result|{{ totalCount }} results'
-    #dropdown:
-    #attribute: Product attribute
-    #title: Products
-    #no_attribute:
-    #title: There is no product attribute linked to the asset family "{{ entityLabel }}"
-    #subtitle: "To start linking products to this asset family you can create a new one: "
-    #link: Create a new product attribute
-    #not_enough_items:
-    #title: Damn! You can see only {{ productCount }}/{{ totalCount }} products.
-    #subtitle:
-    #usable_in_grid: To discover all the products linked, just click below!
-    #not_usable_in_grid: To discover all the products linked, the product attribute must be set as "usable in grid".
-    #button: View all products
-    #no_product:
-    #title: There are no products linked for the product attribute "{{ entityLabel }}"
-    #subtitle: "Start linking products to this attribute to see them here"
-    #enrich:
-    #title: Asset attributes
-    #code: Code
-    #label: Label
-    #title: Assets
-    #create:
-    #header:
-    #title: Create
-    #subtitle: Asset Families
-    #title: Add new {{ entityLabel }}
-    #input:
-    #label: Label
-    #code: Code (required)
-    #create_another: Create another asset
-    #confirm: Save
-    #delete:
-    #message: Are you sure you want to delete the asset "{{ assetLabel }}"? If it's linked to products or assets, the links will be removed.
-    #title: Asset
-    #delete_all:
-    #confirm: Are you sure you want to delete all "{{ entityIdentifier }}" assets? If they are linked to products, the links to the products will be removed.
+      error:
+        value: Hups, näyttää siltä, että "{{ fieldName }}"-kentän näyttäminen epäonnistui. Katso lisätietoja kehittäjäkonsolista.
+    button:
+      save: Tallenna
+      create: Luo assetti
+      mass_upload: Massatuonti
+      delete: Poista
+      delete_all: Poista kaikki assetit
+      back: Takaisin listaan
+      launch_transformations: Käynnistä muunnokset
+      fullscreen: Kokoruutu
+    product:
+      attribute: Tuotteen attribuutti
+      counter: '{{ totalCount }} tulos|{{ totalCount }} tulosta'
+      dropdown:
+        attribute: Tuotteen attribuutti
+      title: Tuotteet
+      no_attribute:
+        title: Tuotteen attribuutteja ei ole linkitetty assettiperheeseen "{{ entityLabel }}"
+        subtitle: 'Linkittääksesi tuotteita tähän assettiperheeseen, voit luoda uuden: '
+        link: Luo uusi tuotteen attribuutti
+      not_enough_items:
+        button: Näytä kaikki tuotteet
+      no_product:
+        title: Tätä assettia ei ole linkitetty mihinkään tuotteeseen "{{ entityLabel }}" -attribuutin kautta
+        subtitle: 'Aloita tuotteiden linkittäminen tähän attribuuttiin nähdäksesi ne täällä'
+    enrich:
+      title: Assetin attribuutit
+      code: Koodi
+      label: Nimike
+      edit_subsection: Muokkaa assettia
+    title: Assetit
+    create:
+      header:
+        title: Luo
+      subtitle: Assettiperheet
+      title: Lisää uusi assetti {{ entityLabel }}
+      input:
+        label: Nimike
+        code: Koodi (pakollinen)
+        create_another: Luo uusi assetti
+      confirm: Tallenna
+    upload:
+      line_count: '[0,1]{{ count }} tiedosto]1,Inf] {{ count }} tiedostoa'
+      title: Tuo assetteja
+      lines: TIedostot
+      remove: Poista
+      remove_all: Poista kaikki
+      confirm: Luo
+      drop_or_click_here: Vedä ja pudota tiedostot tai klikkaa tästä
+      will_appear_here: Lataa assetteja ja ne tulevat näkyviin tänne!
+      discard_changes: Menetät assetit, jos suljet tämän ikkunan luomatta niitä.
+      list:
+        asset: Assetti
+        filename: Tiedostonimi
+        code: Koodi (pakollinen)
+        locale: Lokaali (pakollinen)
+        channel: Kanava (pakollinen)
+        status: Tila
+      status:
+        waiting_for_upload: ei ladattu
+        upload_in_progress: käynnissä
+        uploaded: ladattu
+        valid: valmis luomaan
+        invalid: virhe
+        created: luotu
+    delete:
+      title: Assetti
+    delete_all:
+      confirm: Oletko varma, että haluat poistaa kaikki "{{ entityIdentifier }}" assetit? Jos ne on linkitetty tuotteisiin, linkit poistetaan.
     grid:
       search: Esti otsikolla, koodilla tai tekstiattribuutilla
       filter:
@@ -188,49 +277,174 @@ pim_asset_manager:
       more_result:
         title: Ei ollut se!
         description: Selasit {{ maxDisplayedAssets }} ensimmäistä tulosta {{ total }}:sta assetista. Nähdäksesi enemmän, yritä tarkentaa hakuehtoja.
-  #column:
-  #code: Code
-  #image: Image
-  #label: Label
-  #complete: Complete
-  #action: Actions
-  #completeness:
-  #title_no_required: No attribute required
-  #title_non_complete: 0 out of {{ required }} attributes complete
-  #title_ongoing: '{{ complete }} out of {{ required }} attributes complete'
-  #title_complete: All {{ required }} attributes complete
-  #tab:
-  #enrich: Enrich
-  #product: Products
-  #notification:
-  #save:
-  #success: Asset successfully updated.
-  #fail: An error occured during the save of the asset
-  #validation_error: The asset could not be updated
-  #create:
-  #success: Asset successfully created.
-  #fail: An error occured during the creation of the asset
-  #delete:
-  #success: Asset "{{ code }}" successfully deleted.
-  #fail: An error occured during the deletion of the asset
-  #delete_all:
-  #success: All "{{ entityIdentifier }}" assets successfully deleted.
-  #fail: An error occured during the deletion of all this asset family's assets
-  #completeness:
-  #label: Complete
+      column:
+        code: Koodi
+        image: Kuva
+        label: Nimike
+        complete: Valmis
+        action: Toiminnot
+      completeness:
+        title_no_required: Attribuuttia ei vaadita
+        title_non_complete: 0 vaadittua attribuuttia {{ required }}:sta valmiina
+        title_ongoing: '{{ complete }} vaadittua attribuuttia {{ required }}:sta valmiina'
+        title_complete: Kaikki ({{ required }}) vaaditut attribuutit valmiina
+    tab:
+      enrich: Rikasta
+      product: Tuotteet
+    notification:
+      save:
+        success: Assetti päivitetty onnistuneesti.
+        fail: Assetin tallennuksen aikana tapahtui virhe
+        validation_error: Assettia ei voitu päivittää
+      create:
+        success: Assetti luotu onnistuneesti.
+        fail: Assetin luomisen aikana tapahtui virhe
+      delete:
+        success: Assetti "{{ code }}" onnistuneesti poistettu.
+        fail: Assetin poistamisen aikana tapahtui virhe
+      delete_all:
+        success: Kaikki "{{ entityIdentifier }}" assetit onnistuneesti poistettu.
+        fail: Tämän assettiperheen kaikkien assettien poistamisen yhteydessä tapahtui virhe.
+    completeness:
+      label: Valmis
   attribute:
-    #validation:
-    #limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this asset family'
-    #default:
-    #code: Code
-    #label: Label
-    #image: Image
-    #type:
-    #text: Text
-    #image: Image
-    #asset: Asset single link
-    #asset_collection: Asset multiple links
-    #option: Single option
-    #option_collection: Multiple options
-    #number: Number
+    validation:
+      limit_reached: 'Et voi luoda attribuuttia "{{ %attribute_label% }}", koska attribuuttien enimmäismäärä {{ %limit% }} on saavutettu tälle assettiperheelle'
+    default:
+      code: Koodi
+      label: Nimike
+      media_file: Mediatiedosto
+    type:
+      text: Teksti
+      media_file: Mediatiedosto
+      asset: Assetin yksinkertainen valinta
+      asset_collection: Assetit
+      option: Yksinkertainen valinta
+      option_collection: Monivalinta
+      number: Numero
+      media_link: Medialinkki
     is_required: vaadittu täyteen valmiusasteeseen
+    is_read_only: Vain näyttäminen käyttöliittymässä
+    media_type_preview: Mediatyypin esikatselu
+    no_data:
+      title: Attribuutteja ei ole assettiperheelle {{ entityLabel }}
+      subtitle: Valitse "Lisää attribuutti", määritelläksesi ensimmäisen attribuutin
+    button:
+      add: Lisää attribuutti
+    create:
+      header:
+        title: Luo
+      subtitle: Assettiperheet
+      title: Lisää uusi assettiattribuutti
+      description: Seuraavia parametreja, nimikettä lukuunottamatta, ei voi päivittää attribuutin luonnin jälkeen
+      input:
+        code: Koodi (pakollinen)
+        label: Nimike
+        type: Attribuuttityyppi
+        asset_type: Assettiperhe linkille (pakollinen)
+        value_per_locale: Lokalisoitavissa
+        value_per_channel: Kanavakohtainen
+      placeholder:
+        asset_type: Valitse linkitetty assettiperhe
+      confirm: Tallenna
+    edit:
+      delete: Poista attribuutti
+      title: Muokkaa attribuuttia {{ code }}
+      save: Tallenna
+      cancel: Peruuta
+      input:
+        code: Koodi (pakollinen)
+        label: Nimike
+        type: Attribuuttityyppi
+        value_per_locale: Lokalisoitavissa
+        value_per_channel: Kanavakohtainen
+        is_required: Vaadittu täyteen valmiusasteeseen
+        is_read_only: Vain näyttäminen käyttöliittymässä
+        max_length: Maksimimerkkimäärä
+        textarea: Tekstialue
+        is_rich_text_editor: Tekstimuotoilueditori
+        max_file_size: Suurin tiedostokoko (Mt)
+        allowed_extensions: Sallitut tiedostomuodot
+        validation_rule: Validointisääntö
+        regular_expression: Säännöllinen lauseke
+        min_value: Minimiarvo
+        max_value: Maksimiarvo
+        manage_options:
+          confirmation:
+            discard_changes: Menetät muutokset, jotka on tehty vaihtoehtojen listalle, jos poistut sivulta
+          quick_edit:
+            label: Hallitse valintoja
+          option:
+            label:
+              placeholder: Anna valinnan nimike tähän
+        options:
+          validation_rule:
+            none: Ei mitään
+            email: Sähköposti
+            regular_expression: Säännöllinen lauseke
+            url: URL-osoite
+        decimals_allowed: Desimaaliarvot sallittu
+        prefix: Etuliite
+        suffix: Jälkiliite
+        media_type: Mediatyyppi
+    delete:
+      message: Oletko varma, että haluat poistaa attribuutin "{{ attributeLabel }}"?
+      title: Attribuutti
+    notification:
+      list:
+        fail: Attribuuttilistan päivityksen aikana tapahtui virhe
+      save:
+        success: Attribuutin päivittäminen onnistui.
+        fail: Attribuutin tallennuksen aikana tapahtui virhe
+        validation_error: Attribuuttia ei voitu päivittää
+      create:
+        success: Attribuutin luominen onnistui.
+        fail: Attribuutin luomisessa tapahtui virhe
+        validation_error: Attribuuttia ei voitu luoda
+      delete:
+        success: Attribuutin poistaminen onnistui.
+        fail: Attribuutin poistamisessa tapahtui virhe
+    options:
+      no_value: Klikkaa tästä tehdäksesi valinnan.
+      sub_title: Assettiperheet
+      helper:
+        title: Nimikkeiden käännökset
+    media_link:
+      reload: Päivitä medialinkin pikkukuva
+    media_file:
+      placeholder: Vedä ja pudota tuodaksesi tai klikkaa tästä
+    used_as_transformation_target: Tämä kenttä ei ole muokattavissa, koska se on muunnoksen kohde.
+  modal:
+    delete:
+      subtitle: Vahvista poisto
+      button:
+        cancel: Peruuta
+        confirm: Poista
+pim_enrich:
+  confirmation:
+    discard_changes: 'Menetät muutokset "{{ entity }}" -entiteettiin, jos poistut sivulta.'
+  entity:
+    attribute:
+      property:
+        type:
+          pim_catalog_asset_collection: Assetit
+        section:
+          type_specific: Tyyppikohtaiset parametrit
+permission:
+  mass_action: Vahvista {{ rightLevel }} oikeudet kaikkiin ryhmiin
+#Analytics
+pim_catalog_volume:
+  section:
+    asset_family:
+      title: Assettiperheiden lukumäärä
+      hint: Jos käytät assettiperheitä, seuraavat ulottuvuudet auttavat seuraamaan lukumääriä.
+  axis:
+    count_asset_family: Assettiperheet
+    average_max_assets_per_asset_family: Assettia assettiperhettä kohti
+    average_max_attributes_per_asset_family: Attribuuttia assettiperhettä kohti
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_compute_transformations: "Muodosta assetin muunnokset"
+        asset_manager_link_assets_to_products: "Linkitä assetit tuotteisiin"

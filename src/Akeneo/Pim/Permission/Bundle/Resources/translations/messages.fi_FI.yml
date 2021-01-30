@@ -75,7 +75,7 @@ pim_enrich:
 pimee_enrich:
   attribute_group:
     tab:
-      permission.title: Käyttöoikeudert
+      permission.title: Käyttöoikeudet
   acl.product_ownership.title: Omistajuus
   attributes:
     empty: ei mitään
