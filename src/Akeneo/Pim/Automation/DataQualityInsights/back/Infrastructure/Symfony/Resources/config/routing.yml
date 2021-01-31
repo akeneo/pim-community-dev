@@ -92,6 +92,13 @@ akeneo_data_quality_insights_get_locales_dictionary_info:
 akeneo_data_quality_insights_add_words_to_dictionary:
     path: /data-quality-insights/locale-dictionary-words/{localeCode}
     defaults:
-        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dictionary\AddWordsToDictionaryController::add
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dictionary\AddWordsToDictionaryController::addWordsToSingleLocale
+        _feature: dictionary
+    methods: [ POST ]
+
+akeneo_data_quality_insights_add_words_to_locales_dictionaries:
+    path: /data-quality-insights/locale-dictionary-words
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dictionary\AddWordsToDictionaryController::addWordsToMultipleLocales
         _feature: dictionary
     methods: [ POST ]
