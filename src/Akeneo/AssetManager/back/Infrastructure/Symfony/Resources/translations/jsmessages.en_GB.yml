@@ -45,7 +45,6 @@ pim_asset_manager:
     filter:
       title: Asset filters
     basket:
-      title: '{{ assetCount }} asset selected|{{ assetCount }} assets selected'
       empty_title: Your basket is empty
       remove_one_asset: Remove asset {{ assetName }} from asset selection
       remove_all_assets: Remove all
@@ -339,6 +338,8 @@ pim_asset_manager:
       title: Asset
     delete_all:
       confirm: Are you sure you want to delete all "{{ entityIdentifier }}" assets? If they are linked to products, the links to the products will be removed.
+    mass_delete:
+      title: Assets
     grid:
       search: Search on label, code and text attributes
       filter:
