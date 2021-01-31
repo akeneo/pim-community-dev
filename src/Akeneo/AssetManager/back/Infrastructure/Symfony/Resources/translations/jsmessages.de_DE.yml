@@ -45,7 +45,6 @@ pim_asset_manager:
     filter:
       title: Asset-Filter
     basket:
-      title: '{{ assetCount }} Aktiva ausgewählt|{{ assetCount }} Aktiva ausgewählt'
       empty_title: Dein Warenkorb ist leer
       remove_one_asset: Asset {{ assetName }} aus der Asset-Auswahl entfernen
       remove_all_assets: Alle entfernen
@@ -339,6 +338,8 @@ pim_asset_manager:
       title: Asset
     delete_all:
       confirm: Sind Sie sicher, dass Sie alle "{{ entityIdentifier }}" Assets löschen möchten? Wenn sie mit Produkten verlinkt sind, werden die Verknüpfungen zu den Produkten entfernt.
+    mass_delete:
+      title: Assets
     grid:
       search: Suche nach Label-, Code- und Textattributen
       filter:
