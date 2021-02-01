@@ -157,6 +157,9 @@ batch_jobs:
     xlsx_user_group_export:
         label: User group export in XLSX
         export.label: User group export
+    xlsx_user_role_export:
+        label: User role export in XLSX
+        export.label: User role export
     xlsx_attribute_group_import:
         label: Attribute group import in XLSX
         import.label: Attribute group import
@@ -166,6 +169,3 @@ batch_jobs:
     xlsx_user_group_import:
         label: User group import in XLSX
         import.label: User group import
-    xlsx_user_role_import:
-        label: User role import in XLSX
-        import.label: User role import
