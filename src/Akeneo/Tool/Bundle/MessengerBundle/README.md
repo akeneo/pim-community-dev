@@ -99,7 +99,7 @@ From the Symfony Messenger point of view, this is three independent queues. But 
 Define a Command to purge the table defined by the Doctrine Transport.
 
 ```sh
-bin/console akeneo:messenger:doctrine:purge-messages --retention-time=7200 <table-name> <queue-name>
+bin/console akeneo:messenger:doctrine:purge-messages <table-name> <queue-name>
 ```
 
 The goal is to be able to remove Messages that are too old (default to 2 hours).
