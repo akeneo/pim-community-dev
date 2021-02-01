@@ -3,7 +3,7 @@
 
 * **Events API**
 
-    Public API that define the API Event requests sent to an external application in reaction to PIM Event.
+    Public API that defines the API Event requests sent to an external application in reaction to PIM Events.
 
 * **Connection**
 
