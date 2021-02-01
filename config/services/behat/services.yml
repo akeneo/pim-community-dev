@@ -55,3 +55,13 @@ services:
             - '%env(APP_DATABASE_PASSWORD)%'
             - '%kernel.cache_dir%/sql-dump/'
             - '%index_hosts%'
+
+    akeneo_integration_tests.event_dispatcher_observer:
+        class: 'Akeneo\Test\IntegrationTestsBundle\EventDispatcher\EventDispatcherObserver'
+        decorates: event_dispatcher
+        decoration_inner_name: event_dispatcher.inner
+        arguments:
+            - '@event_dispatcher.inner'
+            - '@debug.stopwatch'
+            - '@logger'
+            - '@request_stack'

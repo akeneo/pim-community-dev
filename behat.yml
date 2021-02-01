@@ -52,6 +52,7 @@ contexts: &context
             - '@pim_catalog.validator.product'
             - '@doctrine.orm.entity_manager'
             - '@pim_versioning.repository.version'
+            - '@akeneo_integration_tests.event_dispatcher_observer'
     -   Pim\Behat\Context\Domain\Enrich\VariantNavigationContext:
             - 'Context\FeatureContext'
     -   Pim\Behat\Context\Domain\Spread\ExportBuilderContext:

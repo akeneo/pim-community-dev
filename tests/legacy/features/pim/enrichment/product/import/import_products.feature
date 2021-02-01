@@ -65,6 +65,7 @@ Feature: Import products coming from an external application
       """
     When the products are imported via the job csv_footwear_product_import
     Then there should be 1 product
+    And the PIM should be notified of the creation of 1 products
     And the english localizable value name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est"
 

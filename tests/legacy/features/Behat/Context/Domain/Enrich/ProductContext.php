@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Pim\Behat\Context\Domain\Enrich;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Test\IntegrationTestsBundle\EventDispatcher\EventDispatcherObserver;
 use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -25,39 +27,22 @@ use Webmozart\Assert\Assert;
  */
 class ProductContext implements Context
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $productRepository;
+    private IdentifiableObjectRepositoryInterface $productRepository;
+    private ObjectUpdaterInterface $productUpdater;
+    private SaverInterface $productSaver;
+    private ValidatorInterface $validator;
+    private EntityManagerInterface $entityManager;
+    private VersionRepositoryInterface $versionRepository;
+    private EventDispatcherObserver $eventDispatcher;
 
-    /** @var ObjectUpdaterInterface */
-    private $productUpdater;
-
-    /** @var SaverInterface|BulkSaverInterface */
-    private $productSaver;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var VersionRepositoryInterface */
-    private $versionRepository;
-
-    /**
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param ObjectUpdaterInterface                $productUpdater
-     * @param SaverInterface                        $productSaver
-     * @param ValidatorInterface                    $validator
-     * @param EntityManagerInterface                $entityManager
-     * @param VersionRepositoryInterface            $versionRepository
-     */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
         ObjectUpdaterInterface $productUpdater,
         SaverInterface $productSaver,
         ValidatorInterface $validator,
         EntityManagerInterface $entityManager,
-        VersionRepositoryInterface $versionRepository
+        VersionRepositoryInterface $versionRepository,
+        EventDispatcherObserver $eventDispatcher
     ) {
         $this->productRepository = $productRepository;
         $this->productUpdater = $productUpdater;
@@ -65,6 +50,7 @@ class ProductContext implements Context
         $this->validator = $validator;
         $this->entityManager = $entityManager;
         $this->versionRepository = $versionRepository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -114,7 +100,7 @@ class ProductContext implements Context
     }
 
     /**
-     * @param string    $identifier
+     * @param string $identifier
      * @param TableNode $expectedVersion
      *
      * @Then the last version of the product :identifier should be:
@@ -146,9 +132,9 @@ class ProductContext implements Context
     /**
      * @param string $identifier
      *
+     * @return ProductInterface
      * @throws \InvalidArgumentException
      *
-     * @return ProductInterface
      */
     private function findProduct(string $identifier): ProductInterface
     {
@@ -181,5 +167,19 @@ class ProductContext implements Context
                 )
             );
         }
+    }
+
+    /**
+     * @Then /^the PIM should be notified of the creation of (\d+) products$/
+     */
+    public function thePIMShouldBeNotifiedOfTheCreationOfProducts(int $expectedEventsCount): void
+    {
+        Assert::same(
+            $expectedEventsCount,
+            $this->eventDispatcher->getStorageEventCount(
+                StorageEvents::POST_SAVE,
+                Product::class
+            )
+        );
     }
 }
