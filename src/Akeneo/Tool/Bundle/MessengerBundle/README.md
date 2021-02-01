@@ -1,6 +1,6 @@
 # Akeneo Messenger Bundle
 
-This bundle provide the missing pieces to integrate [Symfony Messenger](https://symfony.com/doc/4.4/messenger.html) with the PIM.
+This bundle provides the missing pieces to integrate [Symfony Messenger](https://symfony.com/doc/4.4/messenger.html) with the PIM.
 
 ## Messenger Transport for Google Pub/Sub
 
