@@ -22,6 +22,7 @@ define(['underscore', 'pim/form', 'pim/template/form/main-image', 'pim/media-url
      */
     initialize: function (config) {
       this.config = config.config;
+      this.imagePath = null;
 
       BaseForm.prototype.initialize.apply(this, arguments);
     },
@@ -56,7 +57,7 @@ define(['underscore', 'pim/form', 'pim/template/form/main-image', 'pim/media-url
         return this.config.path;
       }
 
-      const filePath = _.result(this.getFormData().meta.image, 'filePath', null);
+      const filePath = this.imagePath ?? _.result(this.getFormData().meta.image, 'filePath', null);
 
       if (filePath === null && undefined !== this.config.fallbackPath) {
         return this.config.fallbackPath;
