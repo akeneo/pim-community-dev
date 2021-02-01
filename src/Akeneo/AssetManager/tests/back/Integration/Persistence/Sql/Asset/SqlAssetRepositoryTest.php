@@ -427,7 +427,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
         );
 
         $this->repository->create($asset);
-        $this->refreshAssetIndex();
+        $this->flushAssetEvent();
 
         $this->assertEquals(1, $this->repository->count());
 
@@ -441,7 +441,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
         );
 
         $this->repository->create($asset);
-        $this->refreshAssetIndex();
+        $this->flushAssetEvent();
         $this->assertEquals(2, $this->repository->count());
     }
 
@@ -488,6 +488,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
             $this->repository->create($asset);
         }
 
+        $this->flushAssetEvent();
         Assert::assertEquals(3, $this->repository->count());
 
         $this->repository->deleteByAssetFamilyAndCodes($assetFamilyIdentifier, $assetCodesToDelete);
@@ -549,10 +550,9 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
             ->load();
     }
 
-    private function refreshAssetIndex()
+    private function flushAssetEvent(): void
     {
-        $this
-            ->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator')
-            ->flushEvents();
+        $indexAssetsEventAggregator = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator');
+        $indexAssetsEventAggregator->flushEvents();
     }
 }
