@@ -64,7 +64,7 @@ class InMemoryAssetFamilyRepository implements AssetFamilyRepositoryInterface
     public function getByIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): AssetFamily
     {
         foreach ($this->assetFamilies as $identifier => $assetFamily) {
-            if (strtolower($identifier) === strtolower((string) $assetFamilyIdentifier)) {
+            if (strtolower((string) $identifier) === strtolower((string) $assetFamilyIdentifier)) {
                 return $assetFamily;
             }
         }
@@ -97,7 +97,7 @@ class InMemoryAssetFamilyRepository implements AssetFamilyRepositoryInterface
         }
 
         foreach (array_keys($this->assetFamilies) as $assetFamilyIdentifier) {
-            if (strtolower($assetFamilyIdentifier) === strtolower((string)$identifier)) {
+            if (strtolower((string) $assetFamilyIdentifier) === strtolower((string) $identifier)) {
                 return true;
             }
         }
