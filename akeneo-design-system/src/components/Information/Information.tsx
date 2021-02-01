@@ -2,13 +2,12 @@ import React, {isValidElement, ReactNode, Ref} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
+import {getBodyStyle, getTitleStyle} from '../../typography';
 
 const Container = styled.div`
   align-items: center;
   display: flex;
-  font-weight: 400;
   padding-right: 15px;
-  color: ${getColor('grey120')};
   min-height: 100px;
   background-color: ${getColor('blue10')};
 `;
@@ -21,12 +20,19 @@ const IconContainer = styled.span`
 `;
 
 const HelperTitle = styled.div`
-  color: ${getColor('grey140')};
-  font-size: ${getFontSize('bigger')};
-  font-weight: 700;
+  ${getTitleStyle({
+    size: 'regular',
+    color: 'grey',
+  })}
 `;
 
 const ContentContainer = styled.div`
+  ${getBodyStyle({
+    size: 'regular',
+    color: 'grey',
+    gradient: 120,
+    weight: 'semibold',
+  })}
   padding: 10px 0px 10px 0px;
 `;
 

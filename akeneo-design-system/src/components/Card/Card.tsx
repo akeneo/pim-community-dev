@@ -1,8 +1,9 @@
 import React, {Ref, ReactNode, isValidElement, ReactElement} from 'react';
 import styled from 'styled-components';
 import {Badge, BadgeProps, Checkbox} from '../../components';
-import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
+import {AkeneoThemedProps, getColor} from '../../theme';
 import {Override} from '../../shared';
+import {getBodyStyle} from '../../typography';
 
 type CardGridProps = {
   size?: 'normal' | 'big';
@@ -35,8 +36,14 @@ const CardContainer = styled.div<CardProps & AkeneoThemedProps>`
   flex-direction: column;
   width: 100%;
   line-height: 20px;
-  font-size: ${getFontSize('default')};
-  color: ${getColor('grey120')};
+
+  ${getBodyStyle({
+    size: 'regular',
+    color: 'grey',
+    gradient: 120,
+    weight: 'regular',
+  })}
+
   cursor: ${({onClick}) => (undefined !== onClick ? 'pointer' : 'default')};
 
   img {

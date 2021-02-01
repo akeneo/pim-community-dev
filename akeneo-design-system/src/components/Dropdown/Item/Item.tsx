@@ -5,14 +5,21 @@ import {Image} from '../../../components/Image/Image';
 import {Checkbox} from '../../../components/Checkbox/Checkbox';
 import {Link} from '../../../components/Link/Link';
 import {Key, Override} from '../../../shared';
+import {getBodyStyle} from 'typography';
 
 const ItemLabel = styled.span`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   flex: 1;
-  color: ${getColor('grey', 120)};
   line-height: 34px;
+
+  ${getBodyStyle({
+    size: 'regular',
+    color: 'grey',
+    gradient: 120,
+    weight: 'regular',
+  })}
 `;
 
 const ItemContainer = styled.div<{tall: boolean} & AkeneoThemedProps>`
@@ -25,25 +32,48 @@ const ItemContainer = styled.div<{tall: boolean} & AkeneoThemedProps>`
   cursor: pointer;
 
   a {
-    color: ${getColor('grey', 120)};
+    ${getBodyStyle({
+      size: 'regular',
+      color: 'grey',
+      gradient: 120,
+      weight: 'regular',
+    })}
   }
-
   &:focus ${ItemLabel} {
-    color: ${getColor('grey', 120)};
+    ${getBodyStyle({
+      size: 'regular',
+      color: 'grey',
+      gradient: 120,
+      weight: 'regular',
+    })}
   }
   &:hover {
     background: ${getColor('grey', 20)};
   }
   &:hover ${ItemLabel} {
-    color: ${getColor('brand', 140)};
+    ${getBodyStyle({
+      size: 'regular',
+      color: 'brand',
+      gradient: 140,
+      weight: 'regular',
+    })}
   }
   &:active ${ItemLabel} {
-    color: ${getColor('brand', 100)};
+    ${getBodyStyle({
+      size: 'regular',
+      color: 'brand',
+      gradient: 140,
+      weight: 'bold',
+    })}
     font-style: italic;
-    font-weight: 700;
   }
   &:disabled ${ItemLabel} {
-    color: ${getColor('grey', 100)};
+    ${getBodyStyle({
+      size: 'regular',
+      color: 'grey',
+      gradient: 100,
+      weight: 'regular',
+    })}
   }
 `;
 

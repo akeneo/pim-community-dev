@@ -1,12 +1,14 @@
 import styled from 'styled-components';
-import {getColor, getFontSize} from '../../../theme';
 import {Override} from '../../../shared';
 import React, {ReactNode, Ref} from 'react';
+import {getSectionTitleStyle} from 'typography';
 
 const TitleContainer = styled.div`
-  font-size: ${getFontSize('small')};
-  text-transform: uppercase;
-  color: ${getColor('brand', 100)};
+  ${getSectionTitleStyle({
+    size: 'small',
+    color: 'brand',
+  })}
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

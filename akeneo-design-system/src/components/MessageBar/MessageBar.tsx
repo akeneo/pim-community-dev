@@ -3,6 +3,7 @@ import styled, {keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {CheckIcon, CloseIcon, DangerIcon, IconProps, InfoIcon} from '../../icons';
 import {useAutoFocus} from '../../hooks';
+import {getCaptionStyle} from '../../typography';
 
 type MessageBarLevel = 'info' | 'success' | 'warning' | 'error';
 
@@ -35,7 +36,9 @@ const Progress = styled.svg.attrs(({ratio}: {ratio: number; level: MessageBarLev
 
 const Content = styled.div`
   padding: 10px 20px;
-  font-size: ${getFontSize('small')};
+
+  ${getCaptionStyle()}
+
   border-left: 1px solid;
   flex: 1;
   line-height: 1.5;

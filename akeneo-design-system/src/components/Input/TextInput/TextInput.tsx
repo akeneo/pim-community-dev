@@ -4,6 +4,7 @@ import {InputProps} from '../InputProps';
 import {LockIcon} from '../../../icons';
 import {Override} from '../../../shared';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
+import {getBodyStyle, getCaptionStyle} from '../../../typography';
 
 const TextInputContainer = styled.div`
   position: relative;
@@ -17,8 +18,14 @@ const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedP
   border: 1px solid ${({invalid}) => (invalid ? getColor('red', 100) : getColor('grey', 80))};
   border-radius: 2px;
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
-  color: ${getColor('grey', 140)};
-  font-size: ${getFontSize('default')};
+
+  ${getBodyStyle({
+    size: 'regular',
+    color: 'grey',
+    gradient: 140,
+    weight: 'regular',
+  })}
+
   line-height: 40px;
   padding: 0 15px;
   box-sizing: border-box;
@@ -29,7 +36,12 @@ const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedP
   }
 
   &::placeholder {
-    color: ${getColor('grey', 100)};
+    ${getBodyStyle({
+      size: 'regular',
+      color: 'grey',
+      gradient: 100,
+      weight: 'regular',
+    })}
   }
 `;
 
@@ -42,9 +54,8 @@ const ReadOnlyIcon = styled(LockIcon)`
 `;
 
 const CharacterLeftLabel = styled.div`
-  font-size: ${getFontSize('small')};
   align-self: flex-end;
-  color: ${getColor('grey', 100)};
+  ${getCaptionStyle()}
 `;
 
 type TextInputProps = Override<

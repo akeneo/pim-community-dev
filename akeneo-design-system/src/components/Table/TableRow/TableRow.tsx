@@ -4,28 +4,6 @@ import {AkeneoThemedProps, getColor} from '../../../theme';
 import {Checkbox} from '../..';
 import {SelectableContext} from '../SelectableContext';
 
-type TableRowProps = {
-  /**
-   * Content of the row
-   */
-  children?: ReactNode;
-
-  /**
-   * Function called when the user clicks on the row checkbox, required when table is selectable
-   */
-  onSelectToggle?: (isSelected: boolean) => void;
-
-  /**
-   * Define if the row is selected, required when table is selectable
-   */
-  isSelected?: boolean;
-
-  /**
-   * Function called when the user clicks on the row
-   */
-  onClick?: (event: SyntheticEvent) => void;
-};
-
 const RowContainer = styled.tr<{isSelected: boolean; isClickable: boolean} & AkeneoThemedProps>`
   ${({isSelected}) =>
     isSelected &&
@@ -62,6 +40,28 @@ const CheckboxContainer = styled.td<{isVisible: boolean}>`
   opacity: ${({isVisible}) => (isVisible ? 1 : 0)};
   cursor: auto;
 `;
+
+type TableRowProps = {
+  /**
+   * Content of the row
+   */
+  children?: ReactNode;
+
+  /**
+   * Function called when the user clicks on the row checkbox, required when table is selectable
+   */
+  onSelectToggle?: (isSelected: boolean) => void;
+
+  /**
+   * Define if the row is selected, required when table is selectable
+   */
+  isSelected?: boolean;
+
+  /**
+   * Function called when the user clicks on the row
+   */
+  onClick?: (event: SyntheticEvent) => void;
+};
 
 const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
   ({isSelected, onSelectToggle, onClick, children, ...rest}: TableRowProps, forwardedRef: Ref<HTMLTableRowElement>) => {

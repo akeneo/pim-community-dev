@@ -2,9 +2,15 @@ import React, {ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {Image} from '../..';
+import {getBodyStyle} from '../../../typography';
 
 const TableCellContainer = styled.td<{rowTitle: boolean} & AkeneoThemedProps>`
-  color: ${getColor('grey', 140)};
+  ${getBodyStyle({
+    size: 'regular',
+    color: 'grey',
+    gradient: 140,
+    weight: 'regular',
+  })}
   border-bottom: 1px solid ${getColor('grey', 60)};
   padding: 15px 10px;
   max-width: 15vw;
@@ -16,7 +22,12 @@ const TableCellContainer = styled.td<{rowTitle: boolean} & AkeneoThemedProps>`
   ${props =>
     props.rowTitle &&
     css`
-      color: ${getColor('brand', 100)};
+      ${getBodyStyle({
+        size: 'regular',
+        color: 'brand',
+        gradient: 100,
+        weight: 'regular',
+      })}
       font-style: italic;
     `}
 `;

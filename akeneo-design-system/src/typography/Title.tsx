@@ -24,9 +24,9 @@ const getTitleSizeStyle = (size: 'small' | 'regular' | 'big') => {
 type TitleProps = {
   size: 'small' | 'regular' | 'big';
   color: 'brand' | 'grey';
-} & AkeneoThemedProps;
+};
 
-const getTitleStyle = ({size = 'regular', color = 'grey'}: TitleProps) => () => {
+const getTitleStyle = ({size, color}: TitleProps) => () => {
   const gradient = 'brand' === color ? 100 : 140;
 
   return css`
@@ -35,8 +35,8 @@ const getTitleStyle = ({size = 'regular', color = 'grey'}: TitleProps) => () => 
   `;
 };
 
-const Title = styled.span<{color: 'grey' | 'brand', size: 'small' | 'regular' | 'big'} & AkeneoThemedProps>`
+const Title = styled.span<{color: 'grey' | 'brand'; size: 'small' | 'regular' | 'big'} & AkeneoThemedProps>`
   ${getTitleStyle}
 `;
 
-export {Title, getTitleStyle}
+export {Title, getTitleStyle};

@@ -4,6 +4,77 @@ import {AkeneoThemedProps, getColor} from '../../../theme';
 import {CloseIcon} from '../../../icons';
 import {arrayUnique, Key, Override} from '../../../shared';
 import {InputProps} from '../InputProps';
+import {getBodyStyle} from 'typography';
+
+const RemoveTagIcon = styled(CloseIcon)<AkeneoThemedProps>`
+  width: 12px;
+  height: 12px;
+  color: ${getColor('grey', 120)};
+  margin-right: 2px;
+  cursor: pointer;
+`;
+
+const TagContainer = styled.ul<AkeneoThemedProps & {invalid: boolean}>`
+  border: 1px solid ${({invalid}) => (invalid ? getColor('red', 100) : getColor('grey', 80))};
+  border-radius: 2px;
+  padding: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 40px;
+  gap: 5px;
+  box-sizing: border-box;
+  background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
+
+  &:focus-within {
+    box-shadow: 0 0 0 2px ${getColor('blue', 40)};
+  }
+`;
+
+const Tag = styled.li<AkeneoThemedProps & {isSelected: boolean; readOnly: boolean}>`
+  list-style-type: none;
+  padding: ${({readOnly}) => (readOnly ? '3px 17px 3px 17px' : '3px 17px 3px 4px')};
+  border: 1px ${getColor('grey', 80)} solid;
+  background-color: ${({isSelected}) => (isSelected ? getColor('grey', 40) : getColor('grey', 20))};
+  display: flex;
+  align-items: center;
+`;
+
+const InputContainer = styled.li<AkeneoThemedProps>`
+  ${getBodyStyle({
+    size: 'regular',
+    color: 'grey',
+    gradient: 120,
+    weight: 'regular',
+  })}
+  list-style-type: none;
+  border: 0;
+  flex: 1;
+  padding: 0;
+  align-items: center;
+  display: flex;
+
+  > input {
+    border: 0;
+    outline: 0;
+    ${getBodyStyle({
+      size: 'regular',
+      color: 'grey',
+      gradient: 120,
+      weight: 'regular',
+    })}
+    background-color: transparent;
+
+    &::placeholder {
+      ${getBodyStyle({
+        size: 'regular',
+        color: 'grey',
+        gradient: 100,
+        weight: 'regular',
+      })}
+      font-family: 'Lato';
+    }
+  }
+`;
 
 type TagInputProps = Override<
   Override<React.InputHTMLAttributes<HTMLInputElement>, InputProps<string[]>>,
@@ -155,60 +226,5 @@ const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = []
     </TagContainer>
   );
 };
-
-const RemoveTagIcon = styled(CloseIcon)<AkeneoThemedProps>`
-  width: 12px;
-  height: 12px;
-  color: ${getColor('grey', 120)};
-  margin-right: 2px;
-  cursor: pointer;
-`;
-
-const TagContainer = styled.ul<AkeneoThemedProps & {invalid: boolean}>`
-  border: 1px solid ${({invalid}) => (invalid ? getColor('red', 100) : getColor('grey', 80))};
-  border-radius: 2px;
-  padding: 5px;
-  display: flex;
-  flex-wrap: wrap;
-  min-height: 40px;
-  gap: 5px;
-  box-sizing: border-box;
-  background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
-
-  &:focus-within {
-    box-shadow: 0 0 0 2px ${getColor('blue', 40)};
-  }
-`;
-
-const Tag = styled.li<AkeneoThemedProps & {isSelected: boolean; readOnly: boolean}>`
-  list-style-type: none;
-  padding: ${({readOnly}) => (readOnly ? '3px 17px 3px 17px' : '3px 17px 3px 4px')};
-  border: 1px ${getColor('grey', 80)} solid;
-  background-color: ${({isSelected}) => (isSelected ? getColor('grey', 40) : getColor('grey', 20))};
-  display: flex;
-  align-items: center;
-`;
-
-const InputContainer = styled.li<AkeneoThemedProps>`
-  list-style-type: none;
-  color: ${getColor('grey', 120)};
-  border: 0;
-  flex: 1;
-  padding: 0;
-  align-items: center;
-  display: flex;
-
-  > input {
-    border: 0;
-    outline: 0;
-    color: ${getColor('grey', 120)};
-    background-color: transparent;
-
-    &::placeholder {
-      color: ${getColor('grey', 100)};
-      font-family: 'Lato';
-    }
-  }
-`;
 
 export {TagInput};

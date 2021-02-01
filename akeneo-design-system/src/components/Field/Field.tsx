@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {Helper, HelperProps, InputProps, Locale, LocaleProps} from '../../components';
 import {getColor} from '../../theme';
 import {useId} from '../../hooks';
+import {getBodyStyle} from 'typography';
 
 const FieldContainer = styled.div`
   display: flex;
@@ -16,6 +17,13 @@ const LabelContainer = styled.div`
   line-height: 16px;
   margin-bottom: 8px;
   max-width: 460px;
+
+  ${getBodyStyle({
+    size: 'regular',
+    color: 'grey',
+    gradient: 120,
+    weight: 'regular',
+  })}
 `;
 
 const Label = styled.label`

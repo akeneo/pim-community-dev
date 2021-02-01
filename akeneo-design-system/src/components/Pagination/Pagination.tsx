@@ -1,6 +1,16 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
+import {getBodyStyle} from '../../typography';
 import {PAGINATION_SEPARATOR, PaginationItem} from './PaginationItem';
+
+const PaginationContainer = styled.div`
+  height: 44px;
+  margin: 10px 0 10px 0;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+`;
 
 type PaginationProps = {
   /**
@@ -58,15 +68,6 @@ const Pagination: FC<PaginationProps> = ({currentPage, totalItems, itemsPerPage 
     </PaginationContainer>
   );
 };
-
-const PaginationContainer = styled.div`
-  height: 44px;
-  margin: 10px 0 10px 0;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-`;
 
 function computePages(currentPage: number, numberOfPages: number) {
   if (numberOfPages <= MAX_PAGINATION_ITEMS_WITHOUT_SEPARATOR) {

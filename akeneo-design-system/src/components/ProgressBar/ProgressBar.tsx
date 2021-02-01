@@ -2,6 +2,7 @@ import React, {Ref} from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
 import {useId} from '../../hooks';
+import {getBodyStyle} from 'typography';
 
 const ProgressBarContainer = styled.div`
   overflow: hidden;
@@ -22,7 +23,13 @@ const Header = styled.div`
 `;
 
 const Title = styled.div`
-  color: ${getColor('grey140')};
+  ${getBodyStyle({
+    size: 'regular',
+    color: 'grey',
+    gradient: 140,
+    weight: 'regular',
+  })}
+
   padding-right: 20px;
   white-space: nowrap;
   overflow: hidden;
@@ -37,7 +44,12 @@ const Title = styled.div`
 `;
 
 const ProgressLabel = styled.div`
-  color: ${getColor('grey120')};
+  ${getBodyStyle({
+    size: 'regular',
+    color: 'grey',
+    gradient: 120,
+    weight: 'regular',
+  })}
   flex-grow: 0;
   flex-basis: auto;
   flex-shrink: 1;

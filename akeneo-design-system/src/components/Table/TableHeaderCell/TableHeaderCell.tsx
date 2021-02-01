@@ -2,6 +2,39 @@ import React, {ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {ArrowDownIcon, ArrowUpIcon} from '../../../icons';
+import {getBodyStyle} from '../../../typography';
+
+const HeaderCellContainer = styled.th<{isSortable: boolean; isSorted: boolean} & AkeneoThemedProps>`
+  background: linear-gradient(to top, ${getColor('grey', 120)} 1px, ${getColor('white')} 0px);
+  height: 44px;
+  text-align: left;
+  color: ${({isSorted}) => getColor(isSorted ? 'brand' : 'grey', 100)};
+  font-weight: normal;
+  box-sizing: content-box;
+
+  ${({isSortable}) =>
+    isSortable &&
+    css`
+      cursor: pointer;
+    `};
+`;
+
+const HeaderCellContentContainer = styled.span`
+  ${getBodyStyle({
+    size: 'regular',
+    color: 'grey',
+    gradient: 140,
+    weight: 'regular',
+  })}
+
+  padding: 0 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  + svg {
+    vertical-align: middle;
+  }
+`;
 
 type TableSortDirection = 'descending' | 'ascending' | 'none';
 
@@ -26,32 +59,6 @@ type TableHeaderCellProps = {
    */
   children?: ReactNode;
 };
-
-const HeaderCellContainer = styled.th<{isSortable: boolean; isSorted: boolean} & AkeneoThemedProps>`
-  background: linear-gradient(to top, ${getColor('grey', 120)} 1px, ${getColor('white')} 0px);
-  height: 44px;
-  text-align: left;
-  color: ${({isSorted}) => getColor(isSorted ? 'brand' : 'grey', 100)};
-  font-weight: normal;
-  box-sizing: content-box;
-
-  ${({isSortable}) =>
-    isSortable &&
-    css`
-      cursor: pointer;
-    `};
-`;
-
-const HeaderCellContentContainer = styled.span`
-  color: ${getColor('grey', 140)};
-  padding: 0 10px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  + svg {
-    vertical-align: middle;
-  }
-`;
 
 const TableHeaderCell = React.forwardRef<HTMLTableHeaderCellElement, TableHeaderCellProps>(
   (

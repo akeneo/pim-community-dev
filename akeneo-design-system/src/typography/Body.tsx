@@ -1,16 +1,16 @@
 import styled, {css} from 'styled-components';
-import {getColor, AkeneoThemedProps, getFontSize} from '../theme';
+import {getColor, AkeneoThemedProps, getFontSize, getFontWeight} from '../theme';
 
 type BodyProps =
-  ({
+  | {
       size: 'big';
       color: 'grey';
       gradient: 140 | 120;
-      weight: 400;
+      weight: 'regular';
     }
   | ({
       size: 'regular';
-      weight: 'regular' | 'semibold';
+      weight: 'regular' | 'semibold' | 'bold';
     } & (
       | {
           color: 'grey';
@@ -20,10 +20,10 @@ type BodyProps =
           color: 'brand';
           gradient: 140;
         }
-    ))) & AkeneoThemedProps;
+    ));
 
-const getBodyStyle = ({size = 'regular', color = 'grey', gradient = 140, weight = 'regular'}: BodyProps) => () => {
-  const fontWeight = 'regular' === weight ? 400 : 600;
+const getBodyStyle = ({size, color, gradient, weight}: BodyProps) => () => {
+  const fontWeight = getFontWeight(weight);
 
   return css`
     color: ${getColor(color, gradient)};
@@ -36,4 +36,4 @@ const Body = styled.span<BodyProps & AkeneoThemedProps>`
   ${getBodyStyle}
 `;
 
-export {Body, getBodyStyle}
+export {Body, getBodyStyle};

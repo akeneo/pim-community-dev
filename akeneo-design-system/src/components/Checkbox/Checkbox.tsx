@@ -1,9 +1,10 @@
 import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css, keyframes} from 'styled-components';
-import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
+import {AkeneoThemedProps, getColor} from '../../theme';
 import {CheckIcon, CheckPartialIcon} from '../../icons';
 import {useId, useShortcut} from '../../hooks';
 import {Key, Override} from '../../shared';
+import {getBodyStyle} from '../../typography';
 
 const checkTick = keyframes`
   to {
@@ -75,16 +76,23 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
 `;
 
 const LabelContainer = styled.label<{readOnly: boolean} & AkeneoThemedProps>`
-  color: ${getColor('grey140')};
-  font-weight: 400;
-  font-size: ${getFontSize('big')};
+  ${getBodyStyle({
+    size: 'big',
+    color: 'grey',
+    gradient: 140,
+    weight: 'regular',
+  })}
+
   padding-left: 10px;
 
   ${props =>
     props.readOnly &&
-    css`
-      color: ${getColor('grey100')};
-    `}
+    getBodyStyle({
+      size: 'big',
+      color: 'grey',
+      gradient: 100,
+      weight: 'regular',
+    })}
 `;
 
 type CheckboxChecked = boolean | 'mixed';
