@@ -4,7 +4,7 @@ This bundle provides the missing pieces to integrate [Symfony Messenger](https:/
 
 ## Messenger Transport for Google Pub/Sub
 
-The Transport require the library ["google/cloud-pubsub"](https://packagist.org/packages/google/cloud-pubsub).
+The Transport requires the library ["google/cloud-pubsub"](https://packagist.org/packages/google/cloud-pubsub).
 
 It follows the official Symfony documentation on [creating a custom Transport](https://symfony.com/doc/4.4/messenger/custom-transport.html).
 
