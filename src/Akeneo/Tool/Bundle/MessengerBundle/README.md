@@ -34,7 +34,7 @@ framework:
 
 ### Queue with multiple subscribers
 
-Google Pub/Sub use a [subscription model](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) and it means that one Topic can have more than one Subscription.
+Google Pub/Sub uses a [subscription model](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) and it means that one Topic can have more than one Subscription.
 
 To be able to handle this, we recommend having multiple transport definitions with one that serves as Producer only while the other ones are Consumers.
 
@@ -79,7 +79,7 @@ framework:
       'My\Event': my_producer
 ```
 
-From the Symfony Messenger point of view, this is three independent queues. But from Pub/Sub point of view, all messages sent to the producer will be dispatched to the consumers.
+From the Symfony Messenger point of view, these are three independent queues. But from Pub/Sub point of view, all messages sent to the producer will be dispatched to the consumers.
 
 ### Transport Options
 
@@ -102,4 +102,4 @@ Define a Command to purge the table defined by the Doctrine Transport.
 bin/console akeneo:messenger:doctrine:purge-messages <table-name> <queue-name>
 ```
 
-The goal is to remove old messages (default retention time is 2 hours).
+The goal is to remove old messages (the default retention time is 2 hours).
