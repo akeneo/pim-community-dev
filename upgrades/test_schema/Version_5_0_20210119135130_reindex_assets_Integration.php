@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Pim\Upgrade\test_schema;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\Platform\EnterpriseVersion;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Elasticsearch\Client;
@@ -26,7 +27,7 @@ final class Version_5_0_20210119135130_reindex_assets_Integration extends TestCa
     private const MIGRATION_LABEL = '_5_0_20210119135130_reindex_assets';
 
     /** @test */
-    public function it_reindex_all_assets_using_a_new_index()
+    public function it_reindex_all_assets_using_a_new_index_in_tagged_version_only()
     {
         $assetAliasName = $this->getParameter('asset_index_name');
         $client = $this->getClient();
@@ -41,9 +42,14 @@ final class Version_5_0_20210119135130_reindex_assets_Integration extends TestCa
         $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
 
         $indexNameAfterMigration = $this->getIndexNameFromAlias($client, $assetAliasName);
-        self::assertNotNull($indexNameBeforeMigration);
-        self::assertNotEquals($indexNameBeforeMigration, $indexNameAfterMigration);
-        self::assertGreaterThan(0, $this->getAssetsCountInIndex($client, $assetAliasName));
+        if (EnterpriseVersion::EDITION === 'Serenity') {
+            self::assertNotNull($indexNameBeforeMigration);
+            self::assertEquals($indexNameBeforeMigration, $indexNameAfterMigration);
+        } else {
+            self::assertNotNull($indexNameBeforeMigration);
+            self::assertNotEquals($indexNameBeforeMigration, $indexNameAfterMigration);
+            self::assertGreaterThan(0, $this->getAssetsCountInIndex($client, $assetAliasName));
+        }
     }
 
     private function getClient(): Client
