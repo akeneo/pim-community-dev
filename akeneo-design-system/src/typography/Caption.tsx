@@ -1,7 +1,7 @@
-import styled, {css} from 'styled-components';
+import styled, {css, FlattenInterpolation} from 'styled-components';
 import {getColor, AkeneoThemedProps, getFontSize} from '../theme';
 
-const getCaptionStyle = () => {
+const getCaptionStyle = (): FlattenInterpolation<any> => {
   return css`
     color: ${getColor('grey', 120)};
     font-weight: 400;
@@ -13,4 +13,4 @@ const Caption = styled.span<AkeneoThemedProps>`
   ${getCaptionStyle}
 `;
 
-export {Caption, getCaptionStyle}
+export {Caption, getCaptionStyle};

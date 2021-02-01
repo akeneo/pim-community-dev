@@ -1,4 +1,4 @@
-import styled, {css} from 'styled-components';
+import styled, {css, FlattenInterpolation} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../theme';
 
 const getTitleSizeStyle = (size: 'small' | 'regular' | 'big') => {
@@ -26,7 +26,7 @@ type TitleProps = {
   color: 'brand' | 'grey';
 } & AkeneoThemedProps;
 
-const getTitleStyle = ({size = 'regular', color = 'grey'}: TitleProps) => () => {
+const getTitleStyle = ({size = 'regular', color = 'grey'}: TitleProps): FlattenInterpolation<any> => {
   const gradient = 'brand' === color ? 100 : 140;
 
   return css`
@@ -35,8 +35,8 @@ const getTitleStyle = ({size = 'regular', color = 'grey'}: TitleProps) => () => 
   `;
 };
 
-const Title = styled.span<{color: 'grey' | 'brand', size: 'small' | 'regular' | 'big'} & AkeneoThemedProps>`
+const Title = styled.span<{color: 'grey' | 'brand'; size: 'small' | 'regular' | 'big'} & AkeneoThemedProps>`
   ${getTitleStyle}
 `;
 
-export {Title, getTitleStyle}
+export {Title, getTitleStyle};

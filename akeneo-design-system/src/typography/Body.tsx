@@ -1,28 +1,39 @@
-import styled, {css} from 'styled-components';
+import styled, {css, FlattenInterpolation} from 'styled-components';
 import {getColor, AkeneoThemedProps, getFontSize} from '../theme';
 
-type BodyProps =
-  ({
+type BodyProps = (
+  | {
       size: 'big';
-      color: 'grey';
-      gradient: 140 | 120;
-      weight: 400;
+      color?: 'grey';
+      gradient?: 120 | 140;
+      weight?: 'regular';
     }
   | ({
       size: 'regular';
-      weight: 'regular' | 'semibold';
+      weight?: 'regular' | 'semibold';
     } & (
       | {
-          color: 'grey';
-          gradient: 100 | 120 | 140;
+          color?: 'grey';
+          gradient?: 100 | 120 | 140;
         }
       | {
-          color: 'brand';
-          gradient: 140;
+          color?: 'brand';
+          gradient?: 140;
         }
-    ))) & AkeneoThemedProps;
+    ))
+) &
+  AkeneoThemedProps;
 
-const getBodyStyle = ({size = 'regular', color = 'grey', gradient = 140, weight = 'regular'}: BodyProps) => () => {
+const getBodyStyle = ({
+  size = 'regular',
+  color = 'grey',
+  weight = 'regular',
+  gradient,
+}: BodyProps): FlattenInterpolation<any> => {
+  if (undefined === gradient) {
+    gradient = 'big' === size ? 120 : 'grey' === color ? 100 : 140;
+  }
+
   const fontWeight = 'regular' === weight ? 400 : 600;
 
   return css`
@@ -36,4 +47,4 @@ const Body = styled.span<BodyProps & AkeneoThemedProps>`
   ${getBodyStyle}
 `;
 
-export {Body, getBodyStyle}
+export {Body, getBodyStyle};
