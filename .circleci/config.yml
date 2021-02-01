@@ -825,8 +825,7 @@ jobs:
           - run:
               name: Prepare the Terraform module with the upgrade script
               command: |
-                mkdir -p /home/circleci/project/deployments/terraform/ge/
-                cp -r /home/circleci/project/growth_edition/deployments /home/circleci/project/deployments/terraform/ge/
+                cp -r /home/circleci/project/growth_edition/deployments /home/circleci/project/deployments/terraform/
           - run:
               name: Push Terraform modules to GCS
               command: BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/
