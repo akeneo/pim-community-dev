@@ -38,7 +38,7 @@ export KUBECONFIG=.kubeconfig
 
 LIST_PV_NAME=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .metadata.name] | unique | .[]')
 
-if [ -n "${PV_NAME}" ]; then
+if [ -n "${LIST_PV_NAME}" ]; then
   RETRY=10
   while ((${RETRY}>0))
   do
