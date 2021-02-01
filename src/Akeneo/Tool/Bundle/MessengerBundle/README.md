@@ -102,4 +102,4 @@ Define a Command to purge the table defined by the Doctrine Transport.
 bin/console akeneo:messenger:doctrine:purge-messages <table-name> <queue-name>
 ```
 
-The goal is to be able to remove Messages that are too old (default to 2 hours).
+The goal is to remove old messages (default retention time is 2 hours).
