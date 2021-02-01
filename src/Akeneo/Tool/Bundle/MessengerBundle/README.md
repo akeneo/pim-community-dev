@@ -36,7 +36,7 @@ framework:
 
 Google Pub/Sub use a [subscription model](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) and it means that one Topic can have more than one Subscription.
 
-To be able to handle this, we recommends to have multiple transport definitions with one that serve as Producer only while the other ones are Consumers.
+To be able to handle this, we recommend having multiple transport definitions with one that serves as Producer only while the other ones are Consumers.
 
 ```yml
 framework:
