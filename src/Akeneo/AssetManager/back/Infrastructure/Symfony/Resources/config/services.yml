@@ -44,7 +44,6 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.cli.all_assets_identifiers'
             - '@akeneo_assetmanager.infrastructure.persistence.sql.asset.refresh_assets.refresh_asset'
-            - '@doctrine.dbal.default_connection'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
         tags:
             - { name: 'console.command'}

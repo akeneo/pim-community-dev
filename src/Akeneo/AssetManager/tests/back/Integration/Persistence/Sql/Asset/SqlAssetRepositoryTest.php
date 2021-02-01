@@ -549,51 +549,6 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
             ->load();
     }
 
-    /**
-     * @test
-     */
-    public function it_counts_the_assets_by_asset_family()
-    {
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
-        $this->assertSame(0, $this->repository->countByAssetFamily($assetFamilyIdentifier));
-
-        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
-        $starck = Asset::create(
-            $this->repository->nextIdentifier($assetFamilyIdentifier, AssetCode::fromString('starck')),
-            $assetFamilyIdentifier,
-            AssetCode::fromString('starck'),
-            ValueCollection::fromValues([
-                Value::create(
-                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
-                    ChannelReference::noReference(),
-                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-                    TextData::fromString('Philippe Starck')
-                ),
-            ])
-        );
-
-        $this->repository->create($starck);
-        $this->refreshAssetIndex();
-        $this->assertSame(1, $this->repository->countByAssetFamily($assetFamilyIdentifier));
-
-        $bob = Asset::create(
-            $this->repository->nextIdentifier($assetFamilyIdentifier, AssetCode::fromString('bob')),
-            $assetFamilyIdentifier,
-            AssetCode::fromString('bob'),
-            ValueCollection::fromValues([
-                Value::create(
-                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
-                    ChannelReference::noReference(),
-                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-                    TextData::fromString('Bob')
-                ),
-            ])
-        );
-        $this->repository->create($bob);
-        $this->refreshAssetIndex();
-        $this->assertSame(2, $this->repository->countByAssetFamily($assetFamilyIdentifier));
-    }
-
     private function refreshAssetIndex()
     {
         $this

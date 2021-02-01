@@ -27,22 +27,14 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ThereShouldBeLessAssetsThanLimitValidator extends ConstraintValidator
 {
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
+    private int $assetsLimit;
+    private CountAssetsInterface $countAssets;
 
-    /** @var int */
-    private $assetsLimit;
-
-    /**
-     * @var CountAssetsInterface|null $countAssets
-     */
-    private $countAssets;
-
-    /** @TODO pull up remove optionnal parameter */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
         int $assetsLimit,
-        CountAssetsInterface $countAssets = null
+        CountAssetsInterface $countAssets
     ) {
         $this->assetRepository = $assetRepository;
         $this->assetsLimit = $assetsLimit;
@@ -82,14 +74,11 @@ class ThereShouldBeLessAssetsThanLimitValidator extends ConstraintValidator
         }
     }
 
-    /** @TODO pull up remove countByAssetFamily call */
     private function validateCommand(CreateAssetCommand $command): void
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($command->assetFamilyIdentifier);
 
-        $total = $this->countAssets
-            ? $this->countAssets->forAssetFamily($assetFamilyIdentifier)
-            : $this->assetRepository->countByAssetFamily($assetFamilyIdentifier);
+        $total = $this->countAssets->forAssetFamily($assetFamilyIdentifier);
 
         if ($total >= $this->assetsLimit) {
             $this->context->buildViolation(ThereShouldBeLessAssetsThanLimit::ERROR_MESSAGE)

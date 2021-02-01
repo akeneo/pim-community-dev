@@ -36,33 +36,20 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
+    private FindAttributesDetailsInterface $findAttributesDetails;
+    private FindActivatedLocalesInterface $findActivatedLocales;
+    private ConnectorTransformationCollectionHydrator $transformationCollectionHydrator;
+    private ConnectorProductLinkRulesHydrator $productLinkRulesHydrator;
+    private CountAssetsInterface $assetsCount;
 
-    /** @var FindAttributesDetailsInterface */
-    private $findAttributesDetails;
-
-    /** @var FindActivatedLocalesInterface  */
-    private $findActivatedLocales;
-
-    /** @var ConnectorTransformationCollectionHydrator */
-    private $transformationCollectionHydrator;
-
-    /** @var ConnectorProductLinkRulesHydrator */
-    private $productLinkRulesHydrator;
-
-    /** @TODO pull up Replace by Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface */
-    /** @var CountAssetsInterface|null */
-    private $assetsCount;
-
-    /** @TODO pull up remove optionnal parameter */
     public function __construct(
         Connection $sqlConnection,
         FindAttributesDetailsInterface $findAttributesDetails,
         FindActivatedLocalesInterface $findActivatedLocales,
         ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
         ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
-        CountAssetsInterface $assetsCount = null
+        CountAssetsInterface $assetsCount
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->findAttributesDetails = $findAttributesDetails;
@@ -86,9 +73,7 @@ class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
         }
 
         $attributesDetails = $this->findAttributesDetails->find($identifier);
-        $assetCount = $this->assetsCount
-            ? $this->assetsCount->forAssetFamily($identifier)
-            : $this->fetchLegacyAssetCount($identifier);
+        $assetCount = $this->assetsCount->forAssetFamily($identifier);
 
         return $this->hydrateAssetFamilyDetails(
             $result['identifier'],
@@ -161,7 +146,7 @@ SQL;
             $file = new FileInfo();
             $file->setKey($fileKey);
             $file->setOriginalFilename($originalFilename);
-            $entityImage=Image::fromFileInfo($file);
+            $entityImage = Image::fromFileInfo($file);
         }
 
         $labelsByActivatedLocales = $this->getLabelsByActivatedLocales($labels, $activatedLocales);
@@ -194,21 +179,5 @@ SQL;
         }
 
         return $filteredLabels;
-    }
-
-    /** @TODO pull up remove this function */
-    private function fetchLegacyAssetCount(AssetFamilyIdentifier $identifier): int
-    {
-        $query = <<<SQL
-            SELECT count(*) FROM akeneo_asset_manager_asset WHERE asset_family_identifier = :identifier
-SQL;
-
-        $statement = $this->sqlConnection->executeQuery($query, [
-            'identifier' => (string) $identifier,
-        ]);
-
-        $count = $statement->fetchColumn();
-
-        return intval($count);
     }
 }

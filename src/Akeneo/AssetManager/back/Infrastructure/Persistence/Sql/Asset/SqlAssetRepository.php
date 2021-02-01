@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersByAssetFamilyAndCodesInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeyCollectionInterface;
@@ -47,12 +48,8 @@ class SqlAssetRepository implements AssetRepositoryInterface
     private EventDispatcherInterface $eventDispatcher;
     private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes;
     private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
+    private CountAssetsInterface $countAssets;
 
-    /** @TODO pull up Replace by Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface */
-    /** @var CountAssets|null */
-    private $countAssets;
-
-    /** @TODO pull up remove optionnal parameter */
     public function __construct(
         Connection $sqlConnection,
         AssetHydratorInterface $assetHydrator,
@@ -61,7 +58,7 @@ class SqlAssetRepository implements AssetRepositoryInterface
         EventDispatcherInterface $eventDispatcher,
         FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes,
         FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
-        CountAssets $countAssets = null
+        CountAssetsInterface $countAssets
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->assetHydrator = $assetHydrator;
@@ -73,18 +70,9 @@ class SqlAssetRepository implements AssetRepositoryInterface
         $this->countAssets = $countAssets;
     }
 
-    /** @TODO pull up remove SELECT COUNT(*) query */
     public function count(): int
     {
-        if ($this->countAssets) {
-            return $this->countAssets->all();
-        }
-
-        $sql = 'SELECT COUNT(*) FROM akeneo_asset_manager_asset';
-        $statement = $this->sqlConnection->executeQuery($sql);
-        $count = (int) $statement->fetchColumn();
-
-        return $count;
+        return $this->countAssets->all();
     }
 
     public function create(Asset $asset): void
@@ -278,27 +266,6 @@ SQL;
             (string) $code,
             Uuid::uuid4()->toString()
         );
-    }
-
-    /** @TODO pull up remove SELECT COUNT(*) query */
-    public function countByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int
-    {
-        if ($this->countAssets) {
-            return $this->countAssets->forAssetFamily($assetFamilyIdentifier);
-        }
-
-        $fetch = <<<SQL
-        SELECT COUNT(*)
-        FROM akeneo_asset_manager_asset
-        WHERE asset_family_identifier = :asset_family_identifier;
-SQL;
-        $statement = $this->sqlConnection->executeQuery(
-            $fetch,
-            ['asset_family_identifier' => $assetFamilyIdentifier,]
-        );
-        $count = $statement->fetchColumn();
-
-        return intval($count);
     }
 
     private function getAssetFamilyIdentifier($result): AssetFamilyIdentifier
