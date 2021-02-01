@@ -79,7 +79,7 @@ framework:
       'My\Event': my_producer
 ```
 
-From the Symfony Messenger point of view, this is three independant queues. But from Pub/Sub point of view, all messages sent to the producer will be dispatched to the consumers.
+From the Symfony Messenger point of view, this is three independent queues. But from Pub/Sub point of view, all messages sent to the producer will be dispatched to the consumers.
 
 ### Transport Options
 
