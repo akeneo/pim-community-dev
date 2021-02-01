@@ -43,7 +43,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.database.user_role'
             - '@pim_connector.processor.normalization.user_role'
-            - '@pim_connector.writer.file.user_role'
+            - '@pim_connector.writer.file.xlsx_user_role'
             - 100
             - '@akeneo_batch.job.job_stopper'
 
