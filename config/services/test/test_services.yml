@@ -242,3 +242,13 @@ services:
             $attributeRemover: '@pim_catalog.remover.attribute'
             $entityValidator: '@validator'
             $productAndProductModelEsClient: '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo_integration_tests.event_dispatcher_observer:
+        class: 'Akeneo\Test\IntegrationTestsBundle\EventDispatcher\EventDispatcherObserver'
+        decorates: event_dispatcher
+        decoration_inner_name: event_dispatcher.inner
+        arguments:
+            - '@event_dispatcher.inner'
+            - '@debug.stopwatch'
+            - '@logger'
+            - '@request_stack'
