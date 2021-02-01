@@ -27,10 +27,6 @@ security:
             security:                       false
             anonymous:                      true
 
-        liip_imagine:
-            pattern:                        ^/media
-            security:                       false
-
         login:
             pattern:                        ^/user/(login|reset-request|send-email|check-email)$
             provider:                       chain_provider
