@@ -46,7 +46,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var FillMissingValuesInterface */
     protected $fillMissingProductModelValues;
 
-    private GetProductsWithQualityScoresInterface $getProductsWithQualityScores;
+    private ?GetProductsWithQualityScoresInterface $getProductsWithQualityScores;
 
     public function __construct(
         NormalizerInterface $normalizer,
@@ -54,7 +54,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         AttributeRepositoryInterface $attributeRepository,
         BulkMediaFetcher $mediaFetcher,
         FillMissingValuesInterface $fillMissingProductModelValues,
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores
+        ?GetProductsWithQualityScoresInterface $getProductsWithQualityScores = null
     ) {
         $this->normalizer          = $normalizer;
         $this->channelRepository   = $channelRepository;
@@ -107,7 +107,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             );
         }
 
-        if ($product instanceof ProductInterface && $this->hasFilterOnQualityScore($parameters)) {
+        if (null !== $this->getProductsWithQualityScores && $product instanceof ProductInterface && $this->hasFilterOnQualityScore($parameters)) {
             $productStandard = $this->getProductsWithQualityScores->fromNormalizedProduct(
                 $product->getIdentifier(),
                 $productStandard,
