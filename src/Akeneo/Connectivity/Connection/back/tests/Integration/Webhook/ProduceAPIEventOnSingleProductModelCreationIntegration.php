@@ -3,12 +3,12 @@
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\ProductModelUpdater;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -18,7 +18,7 @@ class ProduceAPIEventOnSingleProductModelCreationIntegration extends TestCase
 {
     private SimpleFactoryInterface $productModelFactory;
     private SaverInterface $productModelSaver;
-    private ProductModelUpdater $productModelUpdater;
+    private ObjectUpdaterInterface $productModelUpdater;
 
     protected function setUp(): void
     {
