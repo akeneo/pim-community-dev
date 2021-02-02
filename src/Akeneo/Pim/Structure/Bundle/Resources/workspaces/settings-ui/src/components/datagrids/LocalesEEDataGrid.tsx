@@ -31,7 +31,7 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale, getDictionaryTotal
     debouncedSearch(searchValue);
   };
 
-  const localeColumnWidth = FeatureFlags.isEnabled('dictionary') ? '380px' : undefined;
+  const localeColumnWidth = FeatureFlags.isEnabled('data_quality_insights') ? '380px' : undefined;
 
   return (
     <>
@@ -47,10 +47,10 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale, getDictionaryTotal
           subtitle={translate('pim_datagrid.no_results_subtitle')}
         />
       ) : (
-        <LocalesTable>
+        <LocalesTable isDqiFeatureActive={FeatureFlags.isEnabled('data_quality_insights')}>
           <Table
             className={'grid'}
-            isSelectable={FeatureFlags.isEnabled('dictionary')}
+            isSelectable={FeatureFlags.isEnabled('data_quality_insights')}
             displayCheckbox={!!selectionState}
           >
             <Table.Header>
@@ -58,7 +58,7 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale, getDictionaryTotal
               <Table.HeaderCell width={localeColumnWidth}>
                 {translate('pim_enrich.entity.locale.grid.columns.code')}
               </Table.HeaderCell>
-              {FeatureFlags.isEnabled('dictionary') && (
+              {FeatureFlags.isEnabled('data_quality_insights') && (
                 <Table.HeaderCell>
                   {translate('pimee_enrich.entity.locale.grid.columns.dictionary_words_count.title')}
                 </Table.HeaderCell>
@@ -79,7 +79,7 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale, getDictionaryTotal
                     <Table.Cell rowTitle width={localeColumnWidth}>
                       {locale.code}
                     </Table.Cell>
-                    {FeatureFlags.isEnabled('dictionary') && (
+                    {FeatureFlags.isEnabled('data_quality_insights') && (
                       <Table.Cell>
                         {totalWords === undefined ? (
                           <Badge level={'tertiary'}>
@@ -120,8 +120,9 @@ const LocalesSearchBar = styled(SearchBar)`
   }
 `;
 
-const LocalesTable = styled.div`
+const LocalesTable = styled.div<{isDqiFeatureActive: boolean}>`
   margin-right: 40px;
+  margin-left: ${({isDqiFeatureActive}) => (isDqiFeatureActive ? '0' : '40px')};
 `;
 
 export {LocalesEEDataGrid};

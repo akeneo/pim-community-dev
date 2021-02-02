@@ -18,7 +18,7 @@ const useLocalesDictionaryInfo = (locales: Locale[]): LocalesDictionaryInfoState
 
   const load = useCallback(
     async (localesList: Locale[]) => {
-      if (!FeatureFlags.isEnabled('dictionary')) {
+      if (!FeatureFlags.isEnabled('data_quality_insights')) {
         setLocalesDictionaryInfo({});
         return;
       }
