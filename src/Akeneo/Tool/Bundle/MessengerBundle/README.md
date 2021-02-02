@@ -96,7 +96,7 @@ From the Symfony Messenger point of view, these are three independent queues. Bu
 
 ## Purge Command for the Doctrine Transport table
 
-Define a Command to purge the table defined by the Doctrine Transport.
+Define a Command to purge the table configured on the Doctrine Transport.
 
 ```sh
 bin/console akeneo:messenger:doctrine:purge-messages <table-name> <queue-name>
