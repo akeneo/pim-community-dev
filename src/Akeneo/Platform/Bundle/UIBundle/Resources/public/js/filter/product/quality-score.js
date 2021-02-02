@@ -32,6 +32,13 @@ define([
             'change [name="filter-value"]': 'updateState',
             'change [name="filter-operator"]': 'updateState',
         },
+        scoreChoices: [
+            {id: 1, text: 'a'},
+            {id: 2, text: 'b'},
+            {id: 3, text: 'c'},
+            {id: 4, text: 'd'},
+            {id: 5, text: 'e'},
+        ],
 
         /**
          * {@inheritdoc}
@@ -79,7 +86,7 @@ define([
                 field: this.getField(),
                 isEditable: this.isEditable(),
                 value: this.getValue(),
-                scoreChoices: ['a', 'b', 'c', 'd', 'e'],
+                scoreChoices: this.scoreChoices,
                 shortname: this.shortname,
             });
         },
