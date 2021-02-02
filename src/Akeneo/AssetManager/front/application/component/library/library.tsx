@@ -8,7 +8,7 @@ import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {SearchResult, emptySearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
-import {useFetchResult, createQuery, addSelection} from 'akeneoassetmanager/application/hooks/grid';
+import {useFetchResult, createQuery} from 'akeneoassetmanager/application/hooks/grid';
 import FilterCollection, {useFilterViews} from 'akeneoassetmanager/application/component/asset/list/filter-collection';
 import {AssetFamilySelector} from 'akeneoassetmanager/application/component/library/asset-family-selector';
 import {HeaderView} from 'akeneoassetmanager/application/component/asset-family/edit/header';
@@ -21,7 +21,6 @@ import {CreateAssetFamilyModal} from 'akeneoassetmanager/application/component/a
 import {useStoredState} from 'akeneoassetmanager/application/hooks/state';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import {useChannels} from 'akeneoassetmanager/application/hooks/channel';
-import {NoDataSection, NoDataTitle, NoDataText} from 'akeneoassetmanager/platform/component/common/no-data';
 import {Column} from 'akeneoassetmanager/application/component/app/column';
 import AssetFetcher from 'akeneoassetmanager/domain/fetcher/asset';
 import {ChannelFetcher} from 'akeneoassetmanager/application/hooks/channel';
@@ -33,20 +32,15 @@ import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/ty
 import {useScroll} from 'akeneoassetmanager/application/hooks/scroll';
 import {CompletenessValue} from 'akeneoassetmanager/application/component/asset/list/completeness-filter';
 import {getCompletenessFilter, updateCompletenessFilter} from 'akeneoassetmanager/tools/filters/completeness';
-import {useRouter, useNotify, NotificationLevel, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useNotify, NotificationLevel, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
-import {
-  AssetsIllustration,
-  Checkbox,
-  Information,
-  Link,
-  Toolbar,
-  Button,
-  Selection,
-  useSelection,
-  useBooleanState,
-} from 'akeneo-design-system';
+import {Checkbox, Toolbar, Button, useSelection, useBooleanState} from 'akeneo-design-system';
 import {MassDelete} from 'akeneoassetmanager/application/component/asset/list/mass/mass-delete';
+import {useSelectionQuery} from 'akeneoassetmanager/application/component/library/hooks/useSelectionQuery';
+import {useRoutes} from 'akeneoassetmanager/application/component/library/hooks/useRoutes';
+import {NoAssetFamily} from 'akeneoassetmanager/application/component/library/NoAssetFamily';
+import {NoAsset} from 'akeneoassetmanager/application/component/library/NoAsset';
+import {AssetLibraryPlaceholder} from 'akeneoassetmanager/application/component/library/AssetLibraryPlaceholder';
 
 const Header = styled.div`
   padding-left: 40px;
@@ -74,51 +68,6 @@ const Grid = styled.div`
   overflow-y: auto;
 `;
 
-const AssetCardPlaceholderGrid = styled.div`
-  margin-top: 20px;
-  display: grid;
-  grid-gap: 20px;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-`;
-
-const AssetCardPlaceholder = styled.div`
-  width: 100%;
-  padding-top: 100%; /* 1:1 Aspect Ratio */
-  position: relative;
-  margin-bottom: 6px;
-  min-height: 140px;
-`;
-
-const SearchBarPlaceholder = styled.div`
-  height: 45px;
-  width: 100%;
-`;
-
-const useRoutes = () => {
-  const {generate, redirect} = useRouter();
-  const redirectToAsset = useCallback((assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => {
-    clearImageLoadingQueue();
-    redirect(
-      generate('akeneo_asset_manager_asset_edit', {
-        assetCode,
-        assetFamilyIdentifier,
-        tab: 'enrich',
-      })
-    );
-  }, []);
-  const redirectToAssetFamily = useCallback((identifier: AssetFamilyIdentifier) => {
-    clearImageLoadingQueue();
-    redirect(
-      generate('akeneo_asset_manager_asset_family_edit', {
-        identifier,
-        tab: 'attribute',
-      })
-    );
-  }, []);
-
-  return {redirectToAsset, redirectToAssetFamily};
-};
-
 export type AssetAttributeFetcher = {
   fetchAll: (assetFamilyIdentifier: AssetFamilyIdentifier) => Promise<NormalizedAttribute[]>;
 };
@@ -133,31 +82,6 @@ export type LibraryDataProvider = {
 type LibraryProps = {
   dataProvider: LibraryDataProvider;
   initialContext: Context;
-};
-
-const useSelectionQuery = (
-  currentAssetFamilyIdentifier: string | null,
-  filterCollection: Filter[],
-  searchValue: string,
-  context: Context,
-  selection: Selection<AssetCode>
-) => {
-  if (null === currentAssetFamilyIdentifier) {
-    return null;
-  }
-
-  const query = createQuery(
-    currentAssetFamilyIdentifier,
-    filterCollection,
-    searchValue,
-    [],
-    context.channel,
-    context.locale,
-    0,
-    50
-  );
-
-  return addSelection(query, selection);
 };
 
 const Library = ({dataProvider, initialContext}: LibraryProps) => {
@@ -346,56 +270,11 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
         </Header>
         <Grid>
           {!isInitialized ? (
-            <>
-              <div className={`AknLoadingPlaceHolderContainer`}>
-                <SearchBarPlaceholder />
-              </div>
-              <AssetCardPlaceholderGrid className={`AknLoadingPlaceHolderContainer`}>
-                {undefined !== currentAssetFamily?.assetCount &&
-                  [...Array(Math.min(currentAssetFamily.assetCount, 50))].map((_e, i) => (
-                    <AssetCardPlaceholder key={i} />
-                  ))}
-              </AssetCardPlaceholderGrid>
-            </>
+            <AssetLibraryPlaceholder assetFamily={currentAssetFamily} />
           ) : null === currentAssetFamilyIdentifier ? (
-            <>
-              <Information
-                illustration={<AssetsIllustration />}
-                title={`👋 ${translate('pim_asset_manager.asset_family.helper.title')}`}
-              >
-                <p>{translate('pim_asset_manager.asset_family.helper.no_asset_family.text')}</p>
-                <Link href="https://help.akeneo.com/pim/v4/articles/what-about-assets.html" target="_blank">
-                  {translate('pim_asset_manager.asset_family.helper.no_asset_family.link')}
-                </Link>
-              </Information>
-              <NoDataSection>
-                <AssetsIllustration size={256} />
-                <NoDataTitle>{translate('pim_asset_manager.asset_family.no_data.no_asset_family.title')}</NoDataTitle>
-                <NoDataText>
-                  <Link onClick={openCreateAssetFamilyModal}>
-                    {translate('pim_asset_manager.asset_family.no_data.no_asset_family.link')}
-                  </Link>
-                </NoDataText>
-              </NoDataSection>
-            </>
+            <NoAssetFamily onCreateAssetFamily={openCreateAssetFamilyModal} />
           ) : 0 === searchResult.totalCount ? (
-            <>
-              <Information
-                illustration={<AssetsIllustration />}
-                title={`👋 ${translate('pim_asset_manager.asset_family.helper.title')}`}
-              >
-                {translate('pim_asset_manager.asset_family.helper.no_asset.text', {family: currentAssetFamilyLabel})}
-              </Information>
-              <NoDataSection>
-                <AssetsIllustration size={256} />
-                <NoDataTitle>{translate('pim_asset_manager.asset_family.no_data.no_asset.title')}</NoDataTitle>
-                <NoDataText>
-                  <Link onClick={openCreateAssetModalOpen}>
-                    {translate('pim_asset_manager.asset_family.no_data.no_asset.link')}
-                  </Link>
-                </NoDataText>
-              </NoDataSection>
-            </>
+            <NoAsset assetFamilyLabel={currentAssetFamilyLabel} onCreateAsset={openCreateAssetModalOpen} />
           ) : (
             <>
               <SearchBar
