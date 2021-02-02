@@ -15,7 +15,6 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset;
 
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
-use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;

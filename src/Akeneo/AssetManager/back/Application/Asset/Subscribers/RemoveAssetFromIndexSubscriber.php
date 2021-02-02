@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\Asset\Subscribers;
 
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
-use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetsDeletedEvent;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -32,7 +33,7 @@ class RemoveAssetFromIndexSubscriber implements EventSubscriberInterface
     {
         return [
             AssetDeletedEvent::class => 'whenAssetDeleted',
-            AssetFamilyAssetsDeletedEvent::class => 'whenAllAssetsDeleted',
+            AssetsDeletedEvent::class => 'whenMultipleAssetsDeleted',
         ];
     }
 
@@ -44,10 +45,16 @@ class RemoveAssetFromIndexSubscriber implements EventSubscriberInterface
         );
     }
 
-    public function whenAllAssetsDeleted(AssetFamilyAssetsDeletedEvent $assetDeletedEvent): void
+    public function whenMultipleAssetsDeleted(AssetsDeletedEvent $assetsDeletedEvent): void
     {
-        $this->assetIndexer->removeByAssetFamilyIdentifier(
-            (string) $assetDeletedEvent->getAssetFamilyIdentifier()
+        $normalizedAssetCode = array_map(
+            fn(AssetCode $assetCode) => $assetCode->normalize(),
+            $assetsDeletedEvent->getAssetCodes()
+        );
+
+        $this->assetIndexer->removeAssetByAssetFamilyIdentifierAndCodes(
+            (string) $assetsDeletedEvent->getAssetFamilyIdentifier(),
+            $normalizedAssetCode
         );
     }
 }
