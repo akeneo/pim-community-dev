@@ -42,11 +42,11 @@ import {
   Link,
   Toolbar,
   Button,
+  Selection,
   useSelection,
   useBooleanState,
 } from 'akeneo-design-system';
-import {MassDeleteModal} from './MassDeleteModal';
-import assetRemover from 'akeneoassetmanager/infrastructure/remover/asset';
+import {MassDelete} from 'akeneoassetmanager/application/component/asset/list/mass/mass-delete';
 
 const Header = styled.div`
   padding-left: 40px;
@@ -135,6 +135,31 @@ type LibraryProps = {
   initialContext: Context;
 };
 
+const useSelectionQuery = (
+  currentAssetFamilyIdentifier: string | null,
+  filterCollection: Filter[],
+  searchValue: string,
+  context: Context,
+  selection: Selection<AssetCode>
+) => {
+  if (null === currentAssetFamilyIdentifier) {
+    return null;
+  }
+
+  const query = createQuery(
+    currentAssetFamilyIdentifier,
+    filterCollection,
+    searchValue,
+    [],
+    context.channel,
+    context.locale,
+    0,
+    50
+  );
+
+  return addSelection(query, selection);
+};
+
 const Library = ({dataProvider, initialContext}: LibraryProps) => {
   const [currentAssetFamilyIdentifier, setCurrentAssetFamilyIdentifier] = useStoredState<AssetFamilyIdentifier | null>(
     'akeneo.asset_manager.grid.current_asset_family',
@@ -152,16 +177,20 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
   const [context, setContext] = useStoredState<Context>('akeneo.asset_manager.grid.context', initialContext);
   const [isCreateAssetModalOpen, openCreateAssetModalOpen, closeCreateAssetModalOpen] = useBooleanState(false);
   const [isUploadModalOpen, openUploadModal, closeUploadModal] = useBooleanState(false);
-  const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
   const [isCreateAssetFamilyModalOpen, openCreateAssetFamilyModal, closeCreateAssetFamilyModal] = useBooleanState(
     false
   );
   const notify = useNotify();
   const translate = useTranslate();
 
-  const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] = useSelection<
-    AssetCode
-  >(searchResult.matchesCount);
+  const [
+    selection,
+    selectionState,
+    isItemSelected,
+    onSelectionChange,
+    onSelectAllChange,
+    selectedCount,
+  ] = useSelection<AssetCode>(searchResult.matchesCount);
 
   const channels = useChannels(dataProvider.channelFetcher);
   const locales = getLocales(channels, context.channel);
@@ -179,38 +208,13 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
     [filterCollection, setFilterCollection]
   );
 
-  const handleMassDelete = useCallback(() => {
-    if (currentAssetFamilyIdentifier === null) return;
-
-    const query = createQuery(
-      currentAssetFamilyIdentifier,
-      filterCollection,
-      searchValue,
-      [],
-      context.channel,
-      context.locale,
-      0,
-      50
-    );
-
-    const queryWithSelection = addSelection(query, selection);
-    try {
-      assetRemover.removeFromQuery(currentAssetFamilyIdentifier, queryWithSelection);
-      notify(NotificationLevel.SUCCESS, translate('pim_asset_manager.asset.notification.mass_delete.success'));
-      onSelectAllChange(false);
-      closeMassDeleteModal();
-    } catch (error) {
-      notify(NotificationLevel.ERROR, translate('pim_asset_manager.asset.notification.mass_delete.fail', {error}));
-    }
-  }, [
-    selection,
-    onSelectAllChange,
-    closeMassDeleteModal,
+  const selectionQuery = useSelectionQuery(
     currentAssetFamilyIdentifier,
     filterCollection,
     searchValue,
     context,
-  ]);
+    selection
+  );
 
   const updateResults = useFetchResult(createQuery)(
     true,
@@ -386,7 +390,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 <AssetsIllustration size={256} />
                 <NoDataTitle>{translate('pim_asset_manager.asset_family.no_data.no_asset.title')}</NoDataTitle>
                 <NoDataText>
-                  <Link onClick={() => openCreateAssetModalOpen}>
+                  <Link onClick={openCreateAssetModalOpen}>
                     {translate('pim_asset_manager.asset_family.no_data.no_asset.link')}
                   </Link>
                 </NoDataText>
@@ -431,9 +435,14 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           </Toolbar.LabelContainer>
           <Toolbar.ActionsContainer>
             {rights.asset.delete && (
-              <Button level="danger" onClick={openMassDeleteModal}>
-                {translate('pim_common.delete')}
-              </Button>
+              <MassDelete
+                selectionQuery={selectionQuery}
+                onConfirm={() => {
+                  onSelectAllChange(false);
+                }}
+                assetFamily={currentAssetFamily}
+                selectedCount={selectedCount}
+              />
             )}
           </Toolbar.ActionsContainer>
         </Toolbar>
@@ -479,14 +488,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             handleAssetFamilyChange(assetFamilyIdentifier);
             redirectToAssetFamily(assetFamilyIdentifier);
           }}
-        />
-      )}
-      {isMassDeleteModalOpen && null !== currentAssetFamily && null !== currentAssetFamilyIdentifier && (
-        <MassDeleteModal
-          assetFamilyIdentifier={currentAssetFamilyIdentifier}
-          selectedAssetCount={selectedCount}
-          onConfirm={handleMassDelete}
-          onCancel={closeMassDeleteModal}
         />
       )}
     </Container>
