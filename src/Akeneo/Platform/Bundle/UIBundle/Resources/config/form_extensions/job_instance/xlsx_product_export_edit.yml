@@ -287,6 +287,9 @@ extensions:
                     field: enabled
                     view: akeneo-product-enabled-filter
                 -
+                    field: quality_score_multi_locales
+                    view: akeneo-product-quality-score-filter
+                -
                     field: completeness
                     view: akeneo-product-completeness-filter
                 -
