@@ -189,7 +189,8 @@ const Tag = styled.li<AkeneoThemedProps & {isSelected: boolean; readOnly: boolea
   background-color: ${({isSelected}) => (isSelected ? getColor('grey', 40) : getColor('grey', 20))};
   display: flex;
   align-items: center;
-  height: 22px;
+  height: 30px;
+  box-sizing: border-box;
 `;
 
 const InputContainer = styled.li<AkeneoThemedProps>`
