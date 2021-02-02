@@ -544,19 +544,19 @@ jobs:
                 name: Deploy PR environment
                 command: |
                     if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
-                    echo "This environment will be available at https://pimci-pr-${CIRCLE_PULL_REQUEST##*/}.dev.cloud.akeneo.com once deployed :) "
+                    echo "This environment will be available at https://asset-limit-pr-${CIRCLE_PULL_REQUEST##*/}.dev.cloud.akeneo.com once deployed :) "
           - run:
                 name: Deploy PR environment
-                command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} ACTIVATE_MONITORING=false PIM_CONTEXT=deployment make deploy-serenity
+                command: ENV_NAME=dev INSTANCE_NAME_PREFIX=asset-limit-pr INSTANCE_NAME=asset-limit-pr-${CIRCLE_PULL_REQUEST##*/} ACTIVATE_MONITORING=false PIM_CONTEXT=deployment make deploy-serenity
           - run:
               name: Prepare infrastructure artifacts
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
+              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=asset-limit-pr INSTANCE_NAME=asset-limit-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove env on kubernetes
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete
+              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=asset-limit-pr INSTANCE_NAME=asset-limit-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete
               when: on_fail
 
   test_upgrade_from_serenity_customer_db:
@@ -613,7 +613,7 @@ jobs:
                 command: |
                     if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
                     echo "remove env from 'deploy_pr_environment'"
-                    INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete-serenity
+                    INSTANCE_NAME=asset-limit-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete-serenity
 
 
   test_back_missing_structure_migrations:
