@@ -48,7 +48,5 @@ interface AssetRepositoryInterface
 
     public function count(): int;
 
-    public function countByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int;
-
     public function nextIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $code): AssetIdentifier;
 }

@@ -24,6 +24,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family_and_codes'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_value_keys_by_attribute_type'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
 
     akeneo_assetmanager.infrastructure.persistence.repository.asset_family_permission:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamilyPermission\SqlAssetFamilyPermissionRepository
@@ -54,6 +55,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales'
             - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorTransformationCollectionHydrator'
             - '@akeneo_assetmanager.infrastructure.persistence.asset_family.hydrator.connector_product_link_rules'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_asset_items_for_identifiers_and_query:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetItemsForIdentifiersAndQuery

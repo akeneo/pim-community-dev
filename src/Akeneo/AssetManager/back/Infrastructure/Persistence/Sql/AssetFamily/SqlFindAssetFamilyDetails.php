@@ -19,6 +19,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyDetailsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesDetailsInterface;
@@ -35,33 +36,27 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var FindAttributesDetailsInterface */
-    private $findAttributesDetails;
-
-    /** @var FindActivatedLocalesInterface  */
-    private $findActivatedLocales;
-
-    /** @var ConnectorTransformationCollectionHydrator */
-    private $transformationCollectionHydrator;
-
-    /** @var ConnectorProductLinkRulesHydrator */
-    private $productLinkRulesHydrator;
+    private Connection $sqlConnection;
+    private FindAttributesDetailsInterface $findAttributesDetails;
+    private FindActivatedLocalesInterface $findActivatedLocales;
+    private ConnectorTransformationCollectionHydrator $transformationCollectionHydrator;
+    private ConnectorProductLinkRulesHydrator $productLinkRulesHydrator;
+    private CountAssetsInterface $assetsCount;
 
     public function __construct(
         Connection $sqlConnection,
         FindAttributesDetailsInterface $findAttributesDetails,
         FindActivatedLocalesInterface $findActivatedLocales,
         ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
-        ConnectorProductLinkRulesHydrator $productLinkRulesHydrator
+        ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
+        CountAssetsInterface $assetsCount
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->findAttributesDetails = $findAttributesDetails;
         $this->findActivatedLocales = $findActivatedLocales;
         $this->transformationCollectionHydrator = $transformationCollectionHydrator;
         $this->productLinkRulesHydrator = $productLinkRulesHydrator;
+        $this->assetsCount = $assetsCount;
     }
 
     /**
@@ -78,11 +73,12 @@ class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
         }
 
         $attributesDetails = $this->findAttributesDetails->find($identifier);
+        $assetCount = $this->assetsCount->forAssetFamily($identifier);
 
         return $this->hydrateAssetFamilyDetails(
             $result['identifier'],
             $result['labels'],
-            $result['asset_count'],
+            $assetCount,
             $result['file_key'],
             $result['original_filename'],
             $attributesDetails,
@@ -106,9 +102,7 @@ class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
             COALESCE(am.naming_convention, '{}') as naming_convention,
             am.rule_templates,
             fi.file_key,
-            fi.original_filename, (
-                SELECT count(*) FROM akeneo_asset_manager_asset WHERE asset_family_identifier = :identifier
-            ) as asset_count
+            fi.original_filename
         FROM akeneo_asset_manager_asset_family as am
         LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = am.image
         WHERE am.identifier = :identifier;
@@ -131,7 +125,7 @@ SQL;
     private function hydrateAssetFamilyDetails(
         string $identifier,
         string $normalizedLabels,
-        string $assetCount,
+        int $assetCount,
         ?string $fileKey,
         ?string $originalFilename,
         array $attributesDetails,
@@ -146,14 +140,13 @@ SQL;
 
         $labels = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($normalizedLabels, $platform);
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
-        $assetCount = Type::getType(Type::INTEGER)->convertToPHPValue($assetCount, $platform);
 
         $entityImage = Image::createEmpty();
         if (null !== $fileKey && null !== $originalFilename) {
             $file = new FileInfo();
             $file->setKey($fileKey);
             $file->setOriginalFilename($originalFilename);
-            $entityImage=Image::fromFileInfo($file);
+            $entityImage = Image::fromFileInfo($file);
         }
 
         $labelsByActivatedLocales = $this->getLabelsByActivatedLocales($labels, $activatedLocales);

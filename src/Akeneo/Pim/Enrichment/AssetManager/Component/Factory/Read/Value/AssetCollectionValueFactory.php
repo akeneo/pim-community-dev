@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
@@ -65,6 +66,20 @@ final class AssetCollectionValueFactory implements ValueFactory
                     sprintf('array key "%s" expects a string as value, "%s" given', $key, gettype($value)),
                     static::class,
                     $data
+                );
+            }
+
+            try {
+                AssetCode::fromString($value);
+            } catch (\Exception $e) {
+                $message = 'Property "%s" expects a valid %s. %s.';
+
+                throw new InvalidPropertyException(
+                    $attribute->code(),
+                    $value,
+                    static::class,
+                    sprintf($message, $attribute->code(), 'code', $e->getMessage()),
+                    InvalidPropertyException::VALID_ENTITY_CODE_EXPECTED_CODE
                 );
             }
         }
