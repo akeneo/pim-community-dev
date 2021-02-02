@@ -1,9 +1,0 @@
-parameters:
-    env(FLAG_DICTIONARY_ENABLED): 0
-
-services:
-    akeneo.pim.automation.dictionary.feature:
-        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
-        arguments:
-            - '%env(bool:FLAG_DICTIONARY_ENABLED)%'
-        public: true

@@ -46,10 +46,10 @@ describe('useLocalesDictionaryInfo', () => {
     expect(fetchLocalesDictionaryInfo).toHaveBeenCalledWith(['en_US', 'fr_FR', 'de_DE']);
 
     expect(result.current.localesDictionaryInfo).toEqual(fetchedData);
-    expect(result.current.getDictionaryTotalWords(localeA)).toBe(0);
-    expect(result.current.getDictionaryTotalWords(localeB)).toBeUndefined();
-    expect(result.current.getDictionaryTotalWords(localeC)).toBe(1234);
-    expect(result.current.getDictionaryTotalWords(localeF)).toBeUndefined();
+    expect(result.current.getDictionaryTotalWords(localeA.code)).toBe(0);
+    expect(result.current.getDictionaryTotalWords(localeB.code)).toBeUndefined();
+    expect(result.current.getDictionaryTotalWords(localeC.code)).toBe(1234);
+    expect(result.current.getDictionaryTotalWords(localeF.code)).toBeUndefined();
   });
 
   test('it does not load dictionary info when dictionary feature is disabled', async () => {

@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
-import {Button, Field} from 'akeneo-design-system';
+import React, {useState, KeyboardEvent} from 'react';
+import {Button, Field, TagInput} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {TagInput} from '../TagInput';
 import {useDictionaryState} from '../../../../infrastructure';
 
 const AddWordsForm = () => {
@@ -23,7 +22,17 @@ const AddWordsForm = () => {
       <Field label={translate('akeneo_data_quality_insights.dictionary.add_words')}>
         <FieldContent>
           <TagInputContainer>
-            <TagInput allowDuplicates={false} tags={words} setTags={setWords} />
+            <TagInput
+              value={words}
+              onChange={setWords}
+              onKeyDownCapture={async (event: KeyboardEvent) => {
+                if (event.key === 'Enter') {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  await onAddWords();
+                }
+              }}
+            />
           </TagInputContainer>
           <Button ghost level="tertiary" onClick={onAddWords}>
             {translate('pim_common.add')}
