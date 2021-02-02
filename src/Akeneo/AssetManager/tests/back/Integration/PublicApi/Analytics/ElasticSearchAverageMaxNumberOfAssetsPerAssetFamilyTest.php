@@ -63,6 +63,14 @@ class ElasticSearchAverageMaxNumberOfAssetsPerAssetFamilyTest extends SqlIntegra
         $this->assertEquals('3', $volume->getAverageVolume());
     }
 
+    public function it_returns_empty_average_and_max_number_when_no_asset_family()
+    {
+        $volume = $this->averageMaxNumberOfAssetsPerAssetFamily->fetch();
+
+        $this->assertEquals(0, $volume->getMaxVolume());
+        $this->assertEquals(0, $volume->getAverageVolume());
+    }
+
     private function loadAssetsForAssetFamily(int $numberOfAssetsPerAssetFamiliestoLoad): void
     {
         $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');

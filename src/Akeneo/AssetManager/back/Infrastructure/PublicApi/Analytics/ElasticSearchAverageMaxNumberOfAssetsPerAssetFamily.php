@@ -37,8 +37,8 @@ class ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily
         );
 
         $volume = new AverageMaxVolumes(
-            (int) max($assetCount),
-            (int) ceil(array_sum($assetCount) / count($assetCount))
+            empty($assetCount) ? 0 : (int) max($assetCount),
+            empty($assetCount) ? 0 : (int) ceil(array_sum($assetCount) / count($assetCount))
         );
 
         return $volume;

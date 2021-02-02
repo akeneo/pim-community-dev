@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Subscribers;
 
+use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetsDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AttributeOptionsDeletedEvent;
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -29,6 +31,7 @@ class RefreshAssetsSubscriber implements EventSubscriberInterface
 //        To activate when we improve the refresh performances
 //        return [
 //            AssetDeletedEvent::class => 'onEvent',
+//            AssetsDeletedEvent::class => 'onEvent',
 //            AttributeOptionsDeletedEvent::class => 'onEvent',
 //        ];
         return [];
