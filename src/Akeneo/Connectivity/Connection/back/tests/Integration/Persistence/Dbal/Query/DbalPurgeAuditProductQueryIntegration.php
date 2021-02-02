@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
 
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditLoader;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;

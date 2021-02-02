@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures;
+namespace Akeneo\Connectivity\Connection\Tests\CatalogBuilder;
 
 use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\Types\Types;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment;
+namespace Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;

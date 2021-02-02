@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures;
+namespace Akeneo\Connectivity\Connection\Tests\CatalogBuilder;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepository;
