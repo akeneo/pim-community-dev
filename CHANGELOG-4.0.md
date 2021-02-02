@@ -1,5 +1,13 @@
 # 4.0.x
 
+# 4.0.90 (2021-02-02)
+
+## Bug fixes
+
+- PIM-9652: Fix the list of proposals in the activity's dashboard.
+
+# 4.0.89 (2021-01-29)
+
 # 4.0.88 (2021-01-28)
 
 ## Bug fixes
