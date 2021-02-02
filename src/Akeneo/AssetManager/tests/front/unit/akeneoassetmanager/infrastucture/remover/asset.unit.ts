@@ -2,6 +2,7 @@
 
 import remover from 'akeneoassetmanager/infrastructure/remover/asset';
 import * as fetch from 'akeneoassetmanager/tools/fetch';
+import {createQuery} from 'akeneoassetmanager/application/hooks/grid';
 
 jest.mock('pim/router', () => {});
 jest.mock('pim/security-context', () => {}, {virtual: true});
@@ -9,20 +10,43 @@ jest.mock('routing');
 
 describe('akeneoassetmanager/infrastructure/remover/asset', () => {
   it('It deletes a asset', async () => {
-    // @ts-ignore
-    fetch.deleteJSON = jest.fn().mockImplementationOnce(() => Promise.resolve());
+    jest.spyOn(fetch, 'deleteJSON').mockImplementation(() => Promise.resolve());
 
     await remover.remove('designer', 'starck');
 
     expect(fetch.deleteJSON).toHaveBeenCalledWith('akeneo_asset_manager_asset_delete_rest');
   });
 
-  it('It deletes all asset family assets', async () => {
-    // @ts-ignore
-    fetch.deleteJSON = jest.fn().mockImplementationOnce(() => Promise.resolve());
+  it('It mass deletes asset from query', async () => {
+    jest.spyOn(global, 'fetch').mockImplementation(() => Promise.resolve(new Response('{}')));
 
-    await remover.removeAll('designer');
+    const query = createQuery(
+      'packshot',
+      [
+        {
+          field: 'code',
+          value: ['red', 'blue'],
+          operator: 'IN',
+          context: {},
+        },
+      ],
+      '',
+      [],
+      'en_US',
+      'ecommerce',
+      0,
+      50
+    );
 
-    expect(fetch.deleteJSON).toHaveBeenCalledWith('akeneo_asset_manager_asset_delete_all_rest');
+    await remover.removeFromQuery('designer', query);
+
+    expect(global.fetch).toHaveBeenCalledWith('akeneo_asset_manager_asset_mass_delete_rest', {
+      body: JSON.stringify(query),
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+    });
   });
 });

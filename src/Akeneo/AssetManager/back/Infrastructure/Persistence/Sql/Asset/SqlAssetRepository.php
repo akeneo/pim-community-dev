@@ -39,26 +39,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class SqlAssetRepository implements AssetRepositoryInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var AssetHydratorInterface */
-    private $assetHydrator;
-
-    /** @var FindValueKeyCollectionInterface */
-    private $findValueKeyCollection;
-
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $findAttributesIndexedByIdentifier;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
-    /** @var FindIdentifiersByAssetFamilyAndCodesInterface */
-    private $findIdentifiersByAssetFamilyAndCodes;
-
-    /** @var FindValueKeysByAttributeTypeInterface */
-    private $findValueKeysByAttributeType;
+    private Connection $sqlConnection;
+    private AssetHydratorInterface $assetHydrator;
+    private FindValueKeyCollectionInterface $findValueKeyCollection;
+    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
+    private EventDispatcherInterface $eventDispatcher;
+    private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes;
+    private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
 
     public function __construct(
         Connection $sqlConnection,
@@ -202,24 +189,39 @@ SQL;
         return $this->hydrateAsset($result);
     }
 
-    public function deleteByAssetFamily(
-        AssetFamilyIdentifier $assetFamilyIdentifier
-    ): void {
+    public function deleteByAssetFamilyAndCodes(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): void
+    {
+        $identifiers = $this->findIdentifiersByAssetFamilyAndCodes->find($assetFamilyIdentifier, $assetCodes);
+
         $sql = <<<SQL
         DELETE FROM akeneo_asset_manager_asset
-        WHERE asset_family_identifier = :asset_family_identifier;
+        WHERE code IN (:codes) AND asset_family_identifier = :asset_family_identifier;
 SQL;
         $this->sqlConnection->executeUpdate(
             $sql,
             [
+                'codes' => $assetCodes,
                 'asset_family_identifier' => (string) $assetFamilyIdentifier,
+            ],
+            [
+                'codes' => Connection::PARAM_STR_ARRAY
             ]
         );
 
-        $this->eventDispatcher->dispatch(
-            new AssetFamilyAssetsDeletedEvent($assetFamilyIdentifier),
-            AssetFamilyAssetsDeletedEvent::class
-        );
+        foreach ($assetCodes as $assetCode) {
+            if (!array_key_exists($assetCode->normalize(), $identifiers)) {
+                continue;
+            }
+
+            $this->eventDispatcher->dispatch(
+                new AssetDeletedEvent(
+                    $identifiers[$assetCode->normalize()],
+                    $assetCode,
+                    $assetFamilyIdentifier
+                ),
+                AssetDeletedEvent::class
+            );
+        }
     }
 
     public function deleteByAssetFamilyAndCode(
@@ -232,7 +234,7 @@ SQL;
         DELETE FROM akeneo_asset_manager_asset
         WHERE code = :code AND asset_family_identifier = :asset_family_identifier;
 SQL;
-        $affectedRows = $this->sqlConnection->executeUpdate(
+        $affectedRowsCount = $this->sqlConnection->executeUpdate(
             $sql,
             [
                 'code' => (string) $code,
@@ -240,7 +242,7 @@ SQL;
             ]
         );
 
-        if (0 === $affectedRows) {
+        if (0 === $affectedRowsCount) {
             throw new AssetNotFoundException();
         }
 

@@ -468,45 +468,27 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_deletes_assets_by_asset_family_identifier()
+    public function it_mass_deletes_assets_by_asset_family_identifier_and_codes()
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
-        $assetCode = AssetCode::fromString('starck');
+        $assetCodesToDelete = [AssetCode::fromString('starck'), AssetCode::fromString('dyson')];
+        $assetCodeToKeep = AssetCode::fromString('michel');
 
-        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
-        $asset = Asset::create(
-            $identifier,
-            $assetFamilyIdentifier,
-            $assetCode,
-            ValueCollection::fromValues([])
-        );
-        $this->repository->create($asset);
-
-        $assetCode = AssetCode::fromString('dyson');
-        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
-        $asset = Asset::create(
-            $identifier,
-            $assetFamilyIdentifier,
-            $assetCode,
-            ValueCollection::fromValues([])
-        );
-        $this->repository->create($asset);
-
-        $assetFamilyIdentifierBrand = AssetFamilyIdentifier::fromString('brand');
-        $assetCode = AssetCode::fromString('bar');
-        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifierBrand, $assetCode);
-        $asset = Asset::create(
-            $identifier,
-            $assetFamilyIdentifierBrand,
-            $assetCode,
-            ValueCollection::fromValues([])
-        );
-        $this->repository->create($asset);
+        foreach ([...$assetCodesToDelete, $assetCodeToKeep] as $assetCode) {
+            $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+            $asset = Asset::create(
+                $identifier,
+                $assetFamilyIdentifier,
+                $assetCode,
+                ValueCollection::fromValues([])
+            );
+            $this->repository->create($asset);
+        }
 
         Assert::assertEquals(3, $this->repository->count());
 
-        $this->repository->deleteByAssetFamily($assetFamilyIdentifier);
-        $this->eventDispatcherMock->assertEventDispatched(AssetFamilyAssetsDeletedEvent::class);
+        $this->repository->deleteByAssetFamilyAndCodes($assetFamilyIdentifier, $assetCodesToDelete);
+        $this->eventDispatcherMock->assertEventDispatched(AssetDeletedEvent::class);
         Assert::assertEquals(1, $this->repository->count());
     }
 

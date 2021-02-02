@@ -78,11 +78,9 @@ class AssetQuery
         ?AssetCode $searchAfterCode
     ) {
         foreach ($filters as $filter) {
-            if (!(
-                key_exists('field', $filter) &&
+            if (!(key_exists('field', $filter) &&
                 key_exists('operator', $filter) &&
-                key_exists('value', $filter)
-            )) {
+                key_exists('value', $filter))) {
                 throw new \InvalidArgumentException('AssetQuery expect an array of filters with a field, value, operator and context');
             }
         }
@@ -106,18 +104,16 @@ class AssetQuery
 
     public static function createFromNormalized(array $normalizedQuery): AssetQuery
     {
-        if (!(
-            key_exists('channel', $normalizedQuery) &&
+        if (!(key_exists('channel', $normalizedQuery) &&
             key_exists('locale', $normalizedQuery) &&
             key_exists('filters', $normalizedQuery) &&
             key_exists('page', $normalizedQuery) &&
-            key_exists('size', $normalizedQuery)
-        )) {
+            key_exists('size', $normalizedQuery))) {
             throw new \InvalidArgumentException('AssetQuery expect a channel, a locale, filters, a page and a size');
         }
 
         return new AssetQuery(
-            ChannelReference::createfromNormalized($normalizedQuery['channel']),
+            ChannelReference::createFromNormalized($normalizedQuery['channel']),
             LocaleReference::createFromNormalized($normalizedQuery['locale']),
             $normalizedQuery['filters'],
             ChannelReference::noReference(),
@@ -140,7 +136,7 @@ class AssetQuery
         $filters[] = [
             'field'    => 'asset_family',
             'operator' => '=',
-            'value'    => (string)$assetFamilyIdentifier
+            'value'    => (string) $assetFamilyIdentifier
         ];
 
         return new AssetQuery(
@@ -154,6 +150,61 @@ class AssetQuery
             null,
             $searchAfterCode
         );
+    }
+
+    public static function createWithSearchAfter(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        ChannelReference $channel,
+        LocaleReference $locale,
+        int $size,
+        ?AssetCode $searchAfterCode,
+        array $filters
+    ): AssetQuery {
+        $filters[] = [
+            'field'    => 'asset_family',
+            'operator' => '=',
+            'value'    => (string) $assetFamilyIdentifier
+        ];
+
+        return new AssetQuery(
+            $channel,
+            $locale,
+            $filters,
+            ChannelReference::noReference(),
+            LocaleIdentifierCollection::empty(),
+            self::PAGINATE_USING_SEARCH_AFTER,
+            $size,
+            null,
+            $searchAfterCode
+        );
+    }
+
+    public static function createNextWithSearchAfter(
+        AssetQuery $assetQuery,
+        AssetCode $searchAfterCode
+    ): AssetQuery {
+        return new self(
+            $assetQuery->channel,
+            $assetQuery->locale,
+            $assetQuery->filters,
+            $assetQuery->channelReferenceValuesFilter,
+            $assetQuery->localeIdentifiersValuesFilter,
+            self::PAGINATE_USING_SEARCH_AFTER,
+            $assetQuery->size,
+            null,
+            $searchAfterCode
+        );
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'channel' => $this->channel->normalize(),
+            'locale' => $this->locale->normalize(),
+            'filters' => $this->filters,
+            'page' => $this->page,
+            'size' => $this->size
+        ];
     }
 
     public function getFilters(): array

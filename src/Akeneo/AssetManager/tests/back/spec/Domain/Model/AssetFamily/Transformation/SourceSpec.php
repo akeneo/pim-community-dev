@@ -220,7 +220,7 @@ class SourceSpec extends ObjectBehavior
 
         $comparedSource = Source::create(
             $this->createMediaFileAttribute(true, true),
-            ChannelReference::createfromNormalized('ecommerce'),
+            ChannelReference::createFromNormalized('ecommerce'),
             LocaleReference::createFromNormalized('en_US')
         );
 

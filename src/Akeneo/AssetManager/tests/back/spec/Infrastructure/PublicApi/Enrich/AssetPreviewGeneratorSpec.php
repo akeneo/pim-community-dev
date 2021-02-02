@@ -31,7 +31,8 @@ class AssetPreviewGeneratorSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         ImagePreviewUrlGenerator $imagePreviewUrlGenerator
     ) {
-        $this->beConstructedWith($assetRepository,
+        $this->beConstructedWith(
+            $assetRepository,
             $assetFamilyRepository,
             $attributeRepository,
             $imagePreviewUrlGenerator
@@ -72,7 +73,7 @@ class AssetPreviewGeneratorSpec extends ObjectBehavior
 
         $asset->findValue(ValueKey::create(
             $attributeIdentifier->getWrappedObject(),
-            ChannelReference::createfromNormalized('mobile'),
+            ChannelReference::createFromNormalized('mobile'),
             LocaleReference::noReference()
         ))->willReturn($value);
 

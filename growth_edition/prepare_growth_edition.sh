@@ -43,4 +43,5 @@ yq d --inplace $TARGET_DIR/deployments/terraform/pim/values.yaml 'pim.jobs.proje
 yq d --inplace $TARGET_DIR/deployments/terraform/pim/values.yaml 'pim.jobs.project-notify-before-due-date'
 yq d --inplace $TARGET_DIR/deployments/terraform/pim/values.yaml 'pim.jobs.reference-entity-refresh-records'
 yq d --inplace $TARGET_DIR/deployments/terraform/pim/values.yaml 'pim.jobs.sso-log-rotate'
+yq d --inplace $TARGET_DIR/deployments/terraform/pim/values.yaml 'pim.jobs.asset-manager-update-mapping'
 yq w --inplace $TARGET_DIR/deployments/terraform/pim/values.yaml 'global.extraLabels.type' grth

@@ -1,7 +1,7 @@
 'use strict';
 
 import '@testing-library/jest-dom/extend-expect';
-import {useFetchResult, createQuery} from 'akeneoassetmanager/application/hooks/grid';
+import {useFetchResult, createQuery, addSelection} from 'akeneoassetmanager/application/hooks/grid';
 import {emptySearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import {renderHook, act} from '@testing-library/react-hooks';
 
@@ -137,5 +137,108 @@ describe('Test grid fetching hook', () => {
 
     await flushPromises();
     expect(handleReceivedSearchResults).toHaveBeenCalledTimes(2);
+  });
+
+  test('It can add the selection to a query', () => {
+    const query = createQuery(
+      'packshot',
+      [
+        {
+          field: 'tag',
+          value: ['red', 'blue'],
+          operator: 'IN',
+          context: {},
+        },
+      ],
+      '',
+      [],
+      'en_US',
+      'ecommerce',
+      0,
+      50
+    );
+
+    expect(query.filters).toEqual([
+      {
+        field: 'tag',
+        value: ['red', 'blue'],
+        operator: 'IN',
+        context: {},
+      },
+      {
+        field: 'asset_family',
+        operator: '=',
+        value: 'packshot',
+        context: {},
+      },
+      {
+        field: 'full_text',
+        operator: '=',
+        value: '',
+        context: {},
+      },
+    ]);
+
+    const updatedInQuery = addSelection(query, {
+      mode: 'in',
+      collection: ['packshot1', 'packshot2'],
+    });
+    expect(updatedInQuery.filters).toEqual([
+      {
+        field: 'tag',
+        value: ['red', 'blue'],
+        operator: 'IN',
+        context: {},
+      },
+      {
+        field: 'asset_family',
+        operator: '=',
+        value: 'packshot',
+        context: {},
+      },
+      {
+        field: 'full_text',
+        operator: '=',
+        value: '',
+        context: {},
+      },
+      {
+        field: 'code',
+        value: ['packshot1', 'packshot2'],
+        operator: 'IN',
+        context: {},
+      },
+    ]);
+
+    const updatedNotInQuery = addSelection(query, {
+      mode: 'not_in',
+      collection: ['packshot1', 'packshot2'],
+    });
+    expect(updatedNotInQuery.filters).toEqual([
+      {
+        field: 'tag',
+        value: ['red', 'blue'],
+        operator: 'IN',
+        context: {},
+      },
+      {
+        field: 'asset_family',
+        operator: '=',
+        value: 'packshot',
+        context: {},
+      },
+      {
+        field: 'full_text',
+        operator: '=',
+        value: '',
+        context: {},
+      },
+      {
+        field: 'code',
+        value: ['packshot1', 'packshot2'],
+        operator: 'NOT IN',
+        context: {},
+      },
+    ]);
   });
 });

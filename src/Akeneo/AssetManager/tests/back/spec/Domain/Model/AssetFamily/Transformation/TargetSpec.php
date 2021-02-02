@@ -220,7 +220,7 @@ class TargetSpec extends ObjectBehavior
 
         $comparedTarget = Target::create(
             $this->createMediaFileAttribute(true, true),
-            ChannelReference::createfromNormalized('ecommerce'),
+            ChannelReference::createFromNormalized('ecommerce'),
             LocaleReference::createFromNormalized('en_US')
         );
 

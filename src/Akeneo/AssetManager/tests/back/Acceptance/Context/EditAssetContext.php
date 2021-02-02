@@ -121,16 +121,16 @@ final class EditAssetContext implements Context
     private const INVALID_IMAGE_EXISTS = '/files/not_found.png';
     private const FILE_TOO_BIG = 'too_big.jpeg';
     private const FILE_TOO_BIG_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
-    . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::FILE_TOO_BIG;
+        . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::FILE_TOO_BIG;
     private const UPDATED_DUMMY_FILE_FILEPATH = InMemoryFileStorer::FILES_PATH . self::UPDATED_DUMMY_FILENAME;
     private const WRONG_IMAGE_SIZE = 20000;
     private const WRONG_EXTENSION = 'gif';
     private const WRONG_EXTENSION_FILENAME = 'wrong_extension.gif';
     private const WRONG_EXTENSION_FILE_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
-    . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::WRONG_EXTENSION_FILENAME;
+        . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::WRONG_EXTENSION_FILENAME;
     private const GOOD_EXTENSION_FILENAME = 'dummy_filename.png';
     private const GOOD_EXTENSION_FILE_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
-    . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::GOOD_EXTENSION_FILENAME;
+        . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::GOOD_EXTENSION_FILENAME;
 
     /** @var AssetFamilyRepositoryInterface */
     private $assetFamilyRepository;
@@ -973,8 +973,11 @@ final class EditAssetContext implements Context
         );
         $value = $asset->findValue(
             ValueKey::create(
-                AttributeIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE,
-                    self::FINGERPRINT),
+                AttributeIdentifier::create(
+                    self::ASSET_FAMILY_IDENTIFIER,
+                    self::TEXT_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
                 ChannelReference::noReference(),
                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode(self::FRENCH_LOCALE_CODE))
             )
@@ -2081,8 +2084,8 @@ final class EditAssetContext implements Context
         return $asset->findValue(
             ValueKey::create(
                 $attribute->getIdentifier(),
-                ChannelReference::createfromNormalized($scopeCode === 'unscoped' ? null : $scopeCode),
-                LocaleReference::createfromNormalized($localeCode === 'unlocalized' ? null : $localeCode)
+                ChannelReference::createFromNormalized($scopeCode === 'unscoped' ? null : $scopeCode),
+                LocaleReference::createFromNormalized($localeCode === 'unlocalized' ? null : $localeCode)
             )
         );
     }
