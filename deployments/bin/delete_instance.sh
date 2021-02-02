@@ -46,8 +46,8 @@ if [ -n "${LIST_PV_NAME}" ]; then
       if [ -n "${PV_NAME}" ]; then
           PD_NAME=$(kubectl get pv "${PV_NAME}" -o jsonpath='{..spec.gcePersistentDisk.pdName}')
         if [ -n "${PD_NAME}" ]; then
-          IS_DISK_IS_DETACHED=$(gcloud --project=${GOOGLE_PROJECT_ID}  compute disks list  --filter="(name=(${PD_NAME}) AND zone:europe-west3-a AND NOT users:*)" --format="value(name)" )
-            if [ -z "$IS_DISK_IS_DETACHED" ]; then break; fi
+          IS_DISK_DETACHED=$(gcloud --project=${GOOGLE_PROJECT_ID}  compute disks list  --filter="(name=(${PD_NAME}) AND zone:europe-west3-a AND NOT users:*)" --format="value(name)" )
+            if [ -z "$IS_DISK_DETACHED" ]; then break; fi
         fi
       fi
     done <<< $LIST_PV_NAME
@@ -55,7 +55,7 @@ if [ -n "${LIST_PV_NAME}" ]; then
     ((RETRY--))
     sleep 5
   done
-  if ((${RETRY}>0)); then echo "2.5 - All disk are detached"; else echo "2.5 - Some disks still attached, bye bye";exit 1; fi
+  if ((${RETRY}>0)); then echo "2.5 - All disk are detached"; else echo "2.5 - Some disks still attached"; fi
 fi
 
 terraform destroy ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE}
