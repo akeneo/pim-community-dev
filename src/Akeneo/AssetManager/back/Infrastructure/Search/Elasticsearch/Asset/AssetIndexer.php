@@ -72,7 +72,7 @@ class AssetIndexer implements AssetIndexerInterface
                     'must' =>
                         [
                             ['term' => ['asset_family_code' => $assetFamilyIdentifier]],
-                            ['terms' => ['code' => $assetCode]],
+                            ['term' => ['code' => $assetCode]],
                         ],
                 ],
             ],
