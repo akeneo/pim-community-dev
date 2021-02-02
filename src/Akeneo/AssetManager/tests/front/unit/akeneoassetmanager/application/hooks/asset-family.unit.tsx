@@ -13,7 +13,6 @@ jest.mock('akeneoassetmanager/tools/security-context', () => ({
       case 'akeneo_assetmanager_asset_family_edit':
         return true;
       case 'akeneo_assetmanager_asset_family_create':
-      case 'akeneo_assetmanager_assets_delete_all':
         return false;
     }
   },
@@ -85,7 +84,6 @@ describe('Test asset family hooks', () => {
     expect(result.current.rights.asset.create).toEqual(true);
     expect(result.current.rights.asset.upload).toEqual(true);
     expect(result.current.rights.asset.delete).toEqual(true);
-    expect(result.current.rights.asset.deleteAll).toEqual(false);
   });
 
   test('It can fetch the rights of the Asset Family', async () => {
@@ -100,6 +98,5 @@ describe('Test asset family hooks', () => {
     expect(result.current.rights.asset.create).toEqual(false);
     expect(result.current.rights.asset.upload).toEqual(false);
     expect(result.current.rights.asset.delete).toEqual(false);
-    expect(result.current.rights.asset.deleteAll).toEqual(false);
   });
 });

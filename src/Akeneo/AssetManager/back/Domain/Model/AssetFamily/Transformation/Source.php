@@ -79,7 +79,7 @@ class Source implements TransformationReference
 
         return new self(
             AttributeCode::fromString($normalizedSource['attribute']),
-            ChannelReference::createfromNormalized($normalizedSource['channel']),
+            ChannelReference::createFromNormalized($normalizedSource['channel']),
             LocaleReference::createFromNormalized($normalizedSource['locale'])
         );
     }

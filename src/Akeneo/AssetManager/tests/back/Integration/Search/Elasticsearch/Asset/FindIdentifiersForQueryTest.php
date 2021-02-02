@@ -399,7 +399,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
     public function updated_date_filter()
     {
         $before = [
-            'identifier'            => 'before',
+            'identifier' => 'before',
             'asset_family_code' => 'date_asset_family',
             'code' => 'before',
             'asset_code_label_search' => ['fr_FR' => 'before_ref'],
@@ -409,7 +409,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
         ];
 
         $after = [
-            'identifier'            => 'after',
+            'identifier' => 'after',
             'asset_family_code' => 'date_asset_family',
             'code' => 'after',
             'asset_code_label_search' => ['fr_FR' => 'after_fre'],

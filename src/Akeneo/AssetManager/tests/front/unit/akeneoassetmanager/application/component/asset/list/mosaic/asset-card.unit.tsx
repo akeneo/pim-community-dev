@@ -27,12 +27,11 @@ loadImage.mockImplementation(
 
 describe('Test Asset create modal component', () => {
   test('It displays an unselected asset card', async () => {
-    const isSelected = false;
-    const {container} = renderWithProviders(
+    renderWithProviders(
       <AssetCard
         asset={asset}
         context={{locale: 'en_US', channel: 'ecommerce'}}
-        isSelected={isSelected}
+        isSelected={false}
         onSelectionChange={() => {}}
       />
     );
@@ -41,16 +40,17 @@ describe('Test Asset create modal component', () => {
       await flushPromises();
     });
 
-    const image = screen.getByTestId('asset-card-image') as HTMLImageElement;
+    const image = screen.getByRole('img') as HTMLImageElement;
 
     expect(image.src).toEqual('http://localhost/akeneo_asset_manager_image_preview');
-    expect(container.querySelector('[data-checked="false"]')).toBeInTheDocument();
+    expect(screen.getByRole('checkbox')).toBeInTheDocument();
+    expect(screen.getByRole('checkbox')).toHaveAttribute('aria-checked', 'false');
     expect(screen.getByText(asset.labels.en_US)).toBeInTheDocument();
   });
 
   test('It displays selected asset card', async () => {
     const isSelected = true;
-    const {container} = renderWithProviders(
+    renderWithProviders(
       <AssetCard
         asset={asset}
         context={{locale: 'en_US', channel: 'ecommerce'}}
@@ -63,10 +63,11 @@ describe('Test Asset create modal component', () => {
       await flushPromises();
     });
 
-    const image = screen.getByTestId('asset-card-image') as HTMLImageElement;
+    const image = screen.getByRole('img') as HTMLImageElement;
 
     expect(image.src).toEqual('http://localhost/akeneo_asset_manager_image_preview');
-    expect(container.querySelector('[data-checked="true"]')).toBeInTheDocument();
+    expect(screen.getByRole('checkbox')).toBeInTheDocument();
+    expect(screen.getByRole('checkbox')).toHaveAttribute('aria-checked', 'true');
     expect(screen.getByText(asset.labels.en_US)).toBeInTheDocument();
   });
 
@@ -111,14 +112,14 @@ describe('Test Asset create modal component', () => {
 
     await act(async () => {
       await flushPromises();
-      fireEvent.click(screen.getByTestId('asset-card-image'));
+      fireEvent.click(screen.getByRole('img'));
     });
 
     expect(isSelected).toEqual(true);
     expect(selectedCode).toEqual(asset.code);
   });
 
-  test('it cannot be selected if there is an on change property', async () => {
+  test('it calls onClick when clicking on the image', async () => {
     let isSelected = false;
     let selectedCode = null;
     let assetCode = '';
@@ -140,7 +141,7 @@ describe('Test Asset create modal component', () => {
 
     await act(async () => {
       await flushPromises();
-      fireEvent.click(screen.getByTestId('asset-card-image'));
+      fireEvent.click(screen.getByRole('img'));
     });
 
     expect(isSelected).toEqual(false);
@@ -174,7 +175,7 @@ describe('Test Asset create modal component', () => {
       await flushPromises();
     });
 
-    const image = screen.queryByTestId('asset-card-image');
+    const image = screen.queryByRole('img');
 
     expect(image).toBeInTheDocument();
     expect(image).toHaveAttribute(

@@ -2,15 +2,15 @@
 set -eo pipefail
 set -x
 
-if [ "${SOURCE_PFID}" == "" ]; then
+if [[ "${SOURCE_PFID}" == "" ]]; then
       echo "ERR : You must choose a prod source instance"
       exit 9
 fi
-if [ "${SOURCE_PED_TAG}" == "" ]; then
+if [[ "${SOURCE_PED_TAG}" == "" ]]; then
       echo "ERR : You must choose a prod source version for PED deployment"
       exit 9
 fi
-if [ "${INSTANCE_NAME}" == "" ]; then
+if [[ "${INSTANCE_NAME}" == "" ]]; then
       echo "ERR : You must choose an instance name for the duplicate instance"
       exit 9
 fi

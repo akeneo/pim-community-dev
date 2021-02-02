@@ -98,36 +98,6 @@ module.exports = async function(cucumber) {
     });
   });
 
-  When('the user deletes all the asset family assets', async function() {
-    await showAssetTab(this.page);
-
-    const requestContract = getRequestContract('Asset/DeleteAll/ok.json');
-    await listenRequest(this.page, requestContract);
-
-    const header = await await getElement(this.page, 'Header');
-    header.clickOnDeleteButton();
-
-    const modalPage = await await getElement(this.page, 'Modal');
-    await modalPage.confirmDeletion();
-  });
-
-  When('the user cannot delete all the asset family assets', async function() {
-    await showAssetTab(this.page);
-
-    const requestContract = getRequestContract('Asset/DeleteAll/error.json');
-    await listenRequest(this.page, requestContract);
-
-    this.page.once('dialog', async dialog => {
-      await dialog.accept();
-    });
-
-    const header = await await getElement(this.page, 'Header');
-    header.clickOnDeleteButton();
-
-    const modalPage = await await getElement(this.page, 'Modal');
-    await modalPage.confirmDeletion();
-  });
-
   Then('the user should see the successfull deletion notification', async function() {
     const assetsPage = await await getElement(this.page, 'Assets');
     const hasSuccessNotification = await assetsPage.hasSuccessNotification();

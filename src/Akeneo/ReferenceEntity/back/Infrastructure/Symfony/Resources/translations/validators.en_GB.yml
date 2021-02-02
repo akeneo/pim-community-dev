@@ -39,12 +39,16 @@ pim_reference_entity:
         should_exist: 'The records "%record_codes%" were not found.'
       limit_reached: 'You cannot create the record "%record_label%" because you have reached the limit of %limit% records for this reference entity'
       channel:
+        is_expected: 'The "%attribute_code%" attribute of the "%reference_entity_identifier%" reference entity requires one value per channel.'
         is_not_expected: 'A channel is not expected for attribute "%attribute_code%" because it has not a value per channel.'
         should_exist: 'The channel "%channel_identifier%" does not exist.'
       locale:
+        is_expected: 'The "%attribute_code%" attribute of the "%reference_entity_identifier%" reference entity requires one value per locale.'
         is_not_expected: 'A locale is not expected for attribute "%attribute_code%" because it has not a value per locale.'
         is_not_activated: 'The locale "%locale_identifier%" is not activated.'
         is_not_activated_for_channel: 'The locale "%locale_identifier%" is not activated for the channel "%channel_identifier%".'
+      channel_and_locale:
+        are_expected: 'The “"%attribute_code%" attribute of the "%reference_entity_identifier%" reference entity requires one value per channel and one per locale'
       number:
         should_be_string: 'This field should be a string'
         should_be_integer: 'This field should be an integer'

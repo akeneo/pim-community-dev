@@ -4,7 +4,7 @@ set -eo pipefail
 set -x
 
 # How to:
-#  cd /Terraform/dir/path ; TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/delete_instance.sh
+#  cd /Terraform/dir/path ;TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/delete_clone_flexibility.sh
 
 if [[ ${INSTANCE_NAME} == "" ]]; then
         echo "ERR : You must choose an instance name for the instance to delete"

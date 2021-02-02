@@ -58,8 +58,8 @@ class OptionCollectionUpdaterSpec extends ObjectBehavior
 
         $value = Value::create(
             $attribute->getIdentifier(),
-            ChannelReference::createfromNormalized('mobile'),
-            LocaleReference::createfromNormalized('en_US'),
+            ChannelReference::createFromNormalized('mobile'),
+            LocaleReference::createFromNormalized('en_US'),
             OptionCollectionData::createFromNormalize(['18-25', '26-40'])
         );
 

@@ -77,11 +77,12 @@ test('It can display all the items in the basket', async () => {
     ReactDOM.render(
       <ThemeProvider theme={akeneoTheme}>
         <Basket
+          onRemove={jest.fn()}
+          onRemoveAll={jest.fn()}
           dataProvider={dataProvider}
           selection={actualSelection}
           assetFamilyIdentifier={assetFamilyIdentifier}
           context={context}
-          onSelectionChange={() => setSelection()}
         />
       </ThemeProvider>,
       container
@@ -98,11 +99,12 @@ test('It can display an empty basket', async () => {
     ReactDOM.render(
       <ThemeProvider theme={akeneoTheme}>
         <Basket
+          onRemove={jest.fn()}
+          onRemoveAll={jest.fn()}
           dataProvider={dataProvider}
           selection={actualSelection}
           assetFamilyIdentifier={assetFamilyIdentifier}
           context={context}
-          onSelectionChange={() => setSelection()}
         />
       </ThemeProvider>,
       container
@@ -113,19 +115,19 @@ test('It can display an empty basket', async () => {
 });
 
 test('It can remove an item from the basket', async () => {
-  let actualSelection = ['iphone7_pack', 'iphone8_pack'];
+  const actualSelection = ['iphone7_pack', 'iphone8_pack'];
+  const onRemove = jest.fn();
 
   await act(async () => {
     ReactDOM.render(
       <ThemeProvider theme={akeneoTheme}>
         <Basket
+          onRemove={onRemove}
+          onRemoveAll={jest.fn()}
           dataProvider={dataProvider}
           selection={actualSelection}
           assetFamilyIdentifier={assetFamilyIdentifier}
           context={context}
-          onSelectionChange={assetCodeCollection => {
-            actualSelection = assetCodeCollection;
-          }}
         />
       </ThemeProvider>,
       container
@@ -139,7 +141,7 @@ test('It can remove an item from the basket', async () => {
     fireEvent.click(removeItemButton);
   });
 
-  expect(actualSelection).toEqual(['iphone7_pack']);
+  expect(onRemove).toHaveBeenCalledWith('iphone8_pack');
 });
 
 test('It does nothing when we try to remove an undefined asset', async () => {
@@ -149,13 +151,12 @@ test('It does nothing when we try to remove an undefined asset', async () => {
     ReactDOM.render(
       <ThemeProvider theme={akeneoTheme}>
         <Basket
+          onRemove={jest.fn()}
+          onRemoveAll={jest.fn()}
           dataProvider={dataProvider}
           selection={actualSelection}
           assetFamilyIdentifier={assetFamilyIdentifier}
           context={context}
-          onSelectionChange={assetCodeCollection => {
-            actualSelection = assetCodeCollection;
-          }}
         />
       </ThemeProvider>,
       container
@@ -173,19 +174,19 @@ test('It does nothing when we try to remove an undefined asset', async () => {
 });
 
 test('It can remove all the items from the basket', async () => {
-  let actualSelection = ['iphone7_pack', 'iphone8_pack'];
+  const actualSelection = ['iphone7_pack', 'iphone8_pack'];
+  const onRemoveAll = jest.fn();
 
   await act(async () => {
     ReactDOM.render(
       <ThemeProvider theme={akeneoTheme}>
         <Basket
+          onRemove={jest.fn()}
+          onRemoveAll={onRemoveAll}
           dataProvider={dataProvider}
           selection={actualSelection}
           assetFamilyIdentifier={assetFamilyIdentifier}
           context={context}
-          onSelectionChange={assetCodeCollection => {
-            actualSelection = assetCodeCollection;
-          }}
         />
       </ThemeProvider>,
       container
@@ -201,5 +202,5 @@ test('It can remove all the items from the basket', async () => {
     fireEvent.click(removeAllButton);
   });
 
-  expect(actualSelection).toEqual([]);
+  expect(onRemoveAll).toHaveBeenCalled();
 });

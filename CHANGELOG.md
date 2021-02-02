@@ -6,6 +6,7 @@
 - PIM-9646: Make the rule engine execution permission agnostic
 - PIM-9649: Fix PDF product renderer disregarding permissions on Attribute groups
 - PIM-9651: Concatenate rule does not keep anymore the trailing zeros on a decimal number
+- PIM-9654: Allow single quote in DQI Word Dictionary
 
 ## Improvements
 

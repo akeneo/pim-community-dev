@@ -537,8 +537,8 @@ class ExecuteNamingConventionContext implements Context
 
         return ValueKey::create(
             $attribute->getIdentifier(),
-            ChannelReference::createfromNormalized($channel),
-            LocaleReference::createfromNormalized($locale)
+            ChannelReference::createFromNormalized($channel),
+            LocaleReference::createFromNormalized($locale)
         );
     }
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -eo pipefail
-set -x
+set +x
 
 # How to:
 #  cd /Terraform/dir/path ; TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/delete_instance.sh
@@ -35,6 +35,29 @@ echo "2 - removing deployment and terraform resources"
 export KUBECONFIG=.kubeconfig
 (helm list "${PFID}" | grep "${PFID}") && helm delete --purge ${PFID} || true
 (kubectl get ns ${PFID} | grep "$PFID") && kubectl delete ns ${PFID} || true
+
+LIST_PV_NAME=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .metadata.name] | unique | .[]')
+
+if [ -n "${LIST_PV_NAME}" ]; then
+  RETRY=10
+  while ((${RETRY}>0))
+  do
+    while read PV_NAME; do
+      if [ -n "${PV_NAME}" ]; then
+          PD_NAME=$(kubectl get pv "${PV_NAME}" -o jsonpath='{..spec.gcePersistentDisk.pdName}')
+        if [ -n "${PD_NAME}" ]; then
+          IS_DISK_DETACHED=$(gcloud --project=${GOOGLE_PROJECT_ID}  compute disks list  --filter="(name=(${PD_NAME}) AND zone:europe-west3-a AND NOT users:*)" --format="value(name)" )
+            if [ -z "$IS_DISK_DETACHED" ]; then break; fi
+        fi
+      fi
+    done <<< $LIST_PV_NAME
+    if [ -n "$IS_DISK_DETACHED" ]; then break; fi
+    ((RETRY--))
+    sleep 5
+  done
+  if ((${RETRY}>0)); then echo "2.5 - All disk are detached"; else echo "2.5 - Some disks still attached"; fi
+fi
+
 terraform destroy ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE}
 
 echo "3 - Removing shared state files"
@@ -47,7 +70,6 @@ sleep 30
 gsutil rm -r gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}
 
 echo "5 - Delete disks"
-LIST_PV_NAME=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .metadata.name] | unique | .[]')
 
 while read PV_NAME; do
   if [ -n "${PV_NAME}" ]; then

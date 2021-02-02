@@ -359,7 +359,7 @@ class FindAssetsByIdentifiersTest extends SqlIntegrationTestCase
                 $type = $value['type'];
                 return Value::create(
                     AttributeIdentifier::fromString($value['attribute']),
-                    ChannelReference::createfromNormalized($value['channel']),
+                    ChannelReference::createFromNormalized($value['channel']),
                     LocaleReference::createFromNormalized($value['locale']),
                     $type::createFromNormalize($value['data'])
                 );
