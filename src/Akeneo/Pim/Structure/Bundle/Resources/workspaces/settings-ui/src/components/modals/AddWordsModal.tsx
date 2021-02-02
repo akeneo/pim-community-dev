@@ -30,11 +30,11 @@ const AddWordsModal: FC<AddWordsModalProps> = ({localesCount, closeModal}) => {
       closeModal();
       notify(
         NotificationLevel.ERROR,
-        '',
+        translate('pimee_enrich.entity.locale.grid.modal.no_supported_locales.title'),
         // @ts-ignore
         <NotificationContent
           dangerouslySetInnerHTML={{
-            __html: translate('pimee_enrich.entity.locale.grid.modal.no_supported_locales', {
+            __html: translate('pimee_enrich.entity.locale.grid.modal.no_supported_locales.content', {
               link: 'https://help.akeneo.com/pim/serenity/articles/improve-data-quality.html#improve-data-quality',
             }),
           }}
