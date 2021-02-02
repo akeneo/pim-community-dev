@@ -22,13 +22,17 @@ const AddWordsForm = () => {
       <Field label={translate('akeneo_data_quality_insights.dictionary.add_words')}>
         <FieldContent>
           <TagInputContainer>
-            <TagInput value={words} onChange={setWords} onKeyDownCapture={async (event: KeyboardEvent) => {
-              if (event.key === 'Enter') {
-                event.preventDefault();
-                event.stopPropagation();
-                await onAddWords();
-              }
-            }} />
+            <TagInput
+              value={words}
+              onChange={setWords}
+              onKeyDownCapture={async (event: KeyboardEvent) => {
+                if (event.key === 'Enter') {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  await onAddWords();
+                }
+              }}
+            />
           </TagInputContainer>
           <Button ghost level="tertiary" onClick={onAddWords}>
             {translate('pim_common.add')}
