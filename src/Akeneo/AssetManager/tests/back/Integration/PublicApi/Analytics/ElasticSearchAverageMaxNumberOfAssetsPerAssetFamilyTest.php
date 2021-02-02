@@ -21,7 +21,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
-use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAssetsPerAssetFamily;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -29,9 +29,9 @@ use Ramsey\Uuid\Uuid;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlAverageMaxNumberOfAssetsPerAssetFamilyTest extends SqlIntegrationTestCase
+class ElasticSearchAverageMaxNumberOfAssetsPerAssetFamilyTest extends SqlIntegrationTestCase
 {
-    /** @var SqlAverageMaxNumberOfAssetsPerAssetFamily */
+    /** @var ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily */
     private $averageMaxNumberOfAssetsPerAssetFamily;
 
     public function setUp(): void
@@ -40,6 +40,7 @@ class SqlAverageMaxNumberOfAssetsPerAssetFamilyTest extends SqlIntegrationTestCa
 
         $this->averageMaxNumberOfAssetsPerAssetFamily = $this->get('akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_assets_per_asset_family');
         $this->resetDB();
+        $this->get('akeneo_assetmanager.client.asset')->resetIndex();
     }
 
     private function resetDB(): void
@@ -59,7 +60,7 @@ class SqlAverageMaxNumberOfAssetsPerAssetFamilyTest extends SqlIntegrationTestCa
         $volume = $this->averageMaxNumberOfAssetsPerAssetFamily->fetch();
 
         $this->assertEquals('4', $volume->getMaxVolume());
-        $this->assertEquals('2', $volume->getAverageVolume());
+        $this->assertEquals('3', $volume->getAverageVolume());
     }
 
     private function loadAssetsForAssetFamily(int $numberOfAssetsPerAssetFamiliestoLoad): void
@@ -85,10 +86,18 @@ class SqlAverageMaxNumberOfAssetsPerAssetFamilyTest extends SqlIntegrationTestCa
                 )
             );
         }
+
+        $this->flushAssetEvents();
     }
 
     private function getRandomIdentifier(): string
     {
         return str_replace('-', '_', Uuid::uuid4()->toString());
+    }
+
+    private function flushAssetEvents()
+    {
+        $indexAssetsEventAggregator = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator');
+        $indexAssetsEventAggregator->flushEvents();
     }
 }

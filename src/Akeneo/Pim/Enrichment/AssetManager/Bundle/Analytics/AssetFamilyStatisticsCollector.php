@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Enrichment\AssetManager\Bundle\Analytics;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerAssetFamily\SqlLocalizableOnly;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerAssetFamily\SqlScopableAndLocalizable;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerAssetFamily\SqlScopableOnly;
-use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAssetsPerAssetFamily;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAttributesPerAssetFamily;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfValuesPerAsset;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlCountAssetFamilies;
@@ -22,7 +22,7 @@ class AssetFamilyStatisticsCollector implements DataCollectorInterface
     /** @var SqlCountAssetFamilies */
     private $countAssetFamilies;
 
-    /** @var SqlAverageMaxNumberOfAssetsPerAssetFamily */
+    /** @var ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily */
     private $averageMaxNumberOfAssetsPerAssetFamily;
 
     /** @var SqlAverageMaxNumberOfValuesPerAsset */
@@ -42,7 +42,7 @@ class AssetFamilyStatisticsCollector implements DataCollectorInterface
 
     public function __construct(
         SqlCountAssetFamilies $countAssetFamilies,
-        SqlAverageMaxNumberOfAssetsPerAssetFamily $averageMaxNumberOfAssetsPerAssetFamily,
+        ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily $averageMaxNumberOfAssetsPerAssetFamily,
         SqlAverageMaxNumberOfValuesPerAsset $averageMaxNumberOfValuesPerAsset,
         SqlAverageMaxNumberOfAttributesPerAssetFamily $averageMaxNumberOfAttributesPerAssetFamily,
         SqlLocalizableOnly $localizableOnly,
