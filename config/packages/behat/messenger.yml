@@ -1,14 +1,30 @@
 framework:
     messenger:
         transports:
-            webhook:
-                dsn: doctrine://default
+            # Producers
+            business_event:
+                dsn: 'gps:'
                 options:
-                    table_name: messenger_messages
-                    queue_name: default
-                    redeliver_timeout: 3600
-                    auto_setup: false
+                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
+                    topic_name: '%env(PUBSUB_TOPIC_BUSINESS_EVENT)%'
+                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_BUSINESS_EVENT)%'
+                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
+                retry_strategy:
+                    max_retries: 0
                 serializer: pim_enrich.messenger.serializer.business_event
+
+            # Consumers
+            webhook:
+                dsn: 'gps:'
+                options:
+                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
+                    topic_name: '%env(PUBSUB_TOPIC_BUSINESS_EVENT)%'
+                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_WEBHOOK)%'
+                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
+                retry_strategy:
+                    max_retries: 0
+                serializer: pim_enrich.messenger.serializer.business_event
+
         routing:
-            'Akeneo\Platform\Component\EventQueue\Event': webhook
-            'Akeneo\Platform\Component\EventQueue\BulkEvent': webhook
+            'Akeneo\Platform\Component\EventQueue\Event': business_event
+            'Akeneo\Platform\Component\EventQueue\BulkEvent': business_event
