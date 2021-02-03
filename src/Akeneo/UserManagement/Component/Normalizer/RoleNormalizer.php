@@ -17,9 +17,12 @@ use Webmozart\Assert\Assert;
  */
 final class RoleNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
+    private const ACL_EXTENSION_KEY = 'action';
+
     protected array $supportedFormats = ['array', 'standard'];
 
     private AclManager $aclManager;
+    private ?array $cacheIndexedAclIds = null;
 
     public function __construct(AclManager $aclManager)
     {
@@ -38,7 +41,16 @@ final class RoleNormalizer implements NormalizerInterface, CacheableSupportsMeth
         );
 
         $permissions = [];
+        $indexedAclIds = $this->getIndexedAclIds();
         foreach ($privileges as $privilege) {
+            if (static::ACL_EXTENSION_KEY !== $privilege->getExtensionKey()) {
+                continue;
+            }
+
+            if (!array_key_exists($privilege->getIdentity()->getId(), $indexedAclIds)) {
+                continue;
+            }
+
             $permissionsForPrivilege = array_map(
                 fn(AclPermission $aclPermission) => [
                     'name' => $aclPermission->getName(),
@@ -75,5 +87,21 @@ final class RoleNormalizer implements NormalizerInterface, CacheableSupportsMeth
     public function hasCacheableSupportsMethod(): bool
     {
         return true;
+    }
+
+    private function getIndexedAclIds(): array
+    {
+        if (null === $this->cacheIndexedAclIds) {
+            $this->cacheIndexedAclIds = [];
+            foreach ($this->aclManager->getAllExtensions() as $extension) {
+                $extensionKey = $extension->getExtensionKey();
+
+                foreach ($extension->getClasses() as $aclClassInfo) {
+                    $this->cacheIndexedAclIds[sprintf('%s:%s', $extensionKey, $aclClassInfo->getClassName())] = true;
+                }
+            }
+        }
+
+        return $this->cacheIndexedAclIds;
     }
 }

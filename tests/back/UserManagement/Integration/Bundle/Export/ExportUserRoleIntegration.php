@@ -53,7 +53,6 @@ final class ExportUserRoleIntegration extends TestCase
         self::assertStringContainsString('User', $lines[3]);
 
         $permissionsForAdministrator = $this->getPermissions($lines[1]);
-        self::assertContains('action:(root)', $permissionsForAdministrator);
         self::assertContains('action:oro_config_system', $permissionsForAdministrator);
         self::assertContains('action:pim_enrich_product_create', $permissionsForAdministrator);
     }
