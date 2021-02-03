@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\EventListener;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\POC\ContentSecurityProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -15,12 +16,11 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class AddContentSecurityPolicyListener implements EventSubscriberInterface
 {
-    /** @var string */
-    private $generatedNonce;
+    private ContentSecurityProvider $contentSecurityPolicyProvider;
 
-    public function __construct(ScriptNonceGenerator $nonceGenerator)
+    public function __construct(ContentSecurityProvider $contentSecurityPolicyProvider)
     {
-        $this->generatedNonce = $nonceGenerator->getGeneratedNonce();
+        $this->contentSecurityPolicyProvider = $contentSecurityPolicyProvider;
     }
 
     public static function getSubscribedEvents(): array
@@ -32,32 +32,11 @@ class AddContentSecurityPolicyListener implements EventSubscriberInterface
 
     public function addCspHeaders(ResponseEvent $event): void
     {
-        $policyList = [
-            "default-src 'self' *.akeneo.com 'unsafe-inline';",
-            "script-src 'self' 'unsafe-eval' 'nonce-%s';",
-            "img-src 'self' data: ;",
-            "frame-src * ;",
-            "font-src 'self' data: ;"
-        ];
+        $policy = $this->contentSecurityPolicyProvider->getPolicy();
 
-        $policy =  sprintf(
-            implode(' ', $policyList),
-            $this->generatedNonce
-        );
-
-        $appcuesCspList = [
-            "frame-src    'self' https://*.appcues.com;",
-            "style-src    'self' https://*.appcues.com https://*.appcues.net https://fonts.googleapis.com 'unsafe-inline';",
-            "script-src   'self' https://*.appcues.com https://*.appcues.net;",
-            "img-src      'self' res.cloudinary.com twemoji.maxcdn.com;",
-            "connect-src  https://*.appcues.com *.appcues.net ws:;"
-        ];
-
-        $policy .= implode(' ', $appcuesCspList);
-/*
         $response = $event->getResponse();
         $response->headers->set('Content-Security-Policy', $policy);
         $response->headers->set('X-Content-Security-Policy', $policy);
-        $response->headers->set('X-WebKit-CSP', $policy);*/
+        $response->headers->set('X-WebKit-CSP', $policy);
     }
 }

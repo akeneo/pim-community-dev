@@ -7,11 +7,6 @@ type HeapAgent = {
   track: (event: string, options?: object) => void;
 };
 
-type PendoAgent = {
-  initialize: (options: object) => void;
-  identify: (identity: object) => void;
-};
-
 type AppcuesAgent = {
   identify: (uid: string | number, options: object) => void;
   page: () => void;
@@ -19,14 +14,11 @@ type AppcuesAgent = {
 
 class PimOnBoarding {
   private heap: HeapAgent;
-  private pendo: PendoAgent;
   private appcues: AppcuesAgent;
 
   public constructor() {
     // @ts-ignore
     this.heap = window.heap;
-    // @ts-ignore
-    this.pendo = window.pendo;
     // @ts-ignore
     this.appcues = window.Appcues;
   }
@@ -48,7 +40,6 @@ class PimOnBoarding {
   public async registerUser() {
     setTimeout(() => {
       this.registerUserWithHeap();
-      this.registerUserWithPendo();
       this.registerUserWithAppcues();
     }, 100);
   }
@@ -64,18 +55,6 @@ class PimOnBoarding {
       firstName: UserContext.get('first_name'),
       lastName: UserContext.get('last_name'),
       role: UserContext.get('roles').join(', '),
-    });
-  }
-
-  private registerUserWithPendo() {
-    this.pendo.identify({
-      visitor: {
-        id: UserContext.get('username'), // Required if user is logged in
-        email: UserContext.get('email'),
-        first_name: UserContext.get('first_name'),
-        last_name: UserContext.get('last_name'),
-        role: UserContext.get('roles').join(', '),
-      },
     });
   }
 

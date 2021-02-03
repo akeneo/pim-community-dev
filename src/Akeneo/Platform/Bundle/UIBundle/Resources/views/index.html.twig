@@ -7,44 +7,9 @@
 
         <link rel="stylesheet" href="{{asset('css/pim.css', 'frontend')}}"/>
 
-        <script src="//fast.appcues.com/86340.js"></script>
-        <script>
-            (function(apiKey){
-                (function(p,e,n,d,o){var v,w,x,y,z;o=p[d]=p[d]||{};o._q=o._q||[];
-                    v=['initialize','identify','updateOptions','pageLoad','track'];for(w=0,x=v.length;w<x;++w)(function(m){
-                        o[m]=o[m]||function(){o._q[m===v[0]?'unshift':'push']([m].concat([].slice.call(arguments,0)));};})(v[w]);
-                    y=e.createElement(n);y.async=!0;y.src='https://cdn.pendo.io/agent/static/'+apiKey+'/pendo.js';
-                    z=e.getElementsByTagName(n)[0];z.parentNode.insertBefore(y,z);})(window,document,'script','pendo');
-
-                // Call this whenever information about your visitors becomes available
-                // Please use Strings, Numbers, or Bools for value types.
-                pendo.initialize({
-                    account: {
-                        id:           'testaymeric1234' // Highly recommended
-                        // name:         // Optional
-                        // is_paying:    // Recommended if using Pendo Feedback
-                        // monthly_value:// Recommended if using Pendo Feedback
-                        // planLevel:    // Optional
-                        // planPrice:    // Optional
-                        // creationDate: // Optional
-
-                        // You can add any additional account level key-values here,
-                        // as long as it's not one of the above reserved names.
-                    }
-                });
-            })('a37dbc7a-345f-4359-419c-f892ef31558a');
-        </script>
-
-        <script type="text/javascript">
-            window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=document.createElement("script");r.type="text/javascript",r.async=!0,r.src="https://cdn.heapanalytics.com/js/heap-"+e+".js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(r,a);for(var n=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","resetIdentity","removeEventProperty","setEventProperties","track","unsetEventProperty"],o=0;o<p.length;o++)heap[p[o]]=n(p[o])};
-            heap.load("2875170433");
-
-            // heap.identify('testaymeric');
-        </script>
-
+        {{ external_javascript_dependencies() | raw }}
         <script type="text/javascript" src="{{asset('dist/vendor.min.js', 'frontend')}} "></script>
         <script type="text/javascript" src="{{asset('dist/main.min.js', 'frontend')}} "></script>
-
     </head>
     <body>
         <div class="app">

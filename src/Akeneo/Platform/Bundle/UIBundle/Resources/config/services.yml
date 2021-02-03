@@ -58,7 +58,7 @@ services:
     security.event_listener.add_csp:
         class: Akeneo\Platform\Bundle\UIBundle\EventListener\AddContentSecurityPolicyListener
         arguments:
-            - '@security.script_nonce_generator'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\POC\ContentSecurityProvider'
         tags:
             - { name: kernel.event_subscriber }
 
