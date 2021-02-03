@@ -30,11 +30,13 @@ class EventDispatcherObserver extends TraceableEventDispatcher
 
     private function incrementStorageEvents(string $eventName, GenericEvent $event): void
     {
-        if (!isset($this->storageEvents[$eventName][get_class($event->getSubject())])) {
-            $this->storageEvents[$eventName][get_class($event->getSubject())] = 0;
+        $className = get_class($event->getSubject());
+
+        if (!isset($this->storageEvents[$eventName][$className])) {
+            $this->storageEvents[$eventName][$className] = 0;
         }
 
-        $this->storageEvents[$eventName][get_class($event->getSubject())] += 1;
+        $this->storageEvents[$eventName][$className] += 1;
     }
 
     public function getStorageEventCount(string $eventName, string $className): int
