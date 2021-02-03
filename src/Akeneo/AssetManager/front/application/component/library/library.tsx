@@ -10,7 +10,7 @@ import {SearchResult, emptySearchResult} from 'akeneoassetmanager/domain/fetcher
 import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {useFetchResult, createQuery} from 'akeneoassetmanager/application/hooks/grid';
 import FilterCollection, {useFilterViews} from 'akeneoassetmanager/application/component/asset/list/filter-collection';
-import {AssetFamilySelector} from 'akeneoassetmanager/application/component/library/asset-family-selector';
+import {AssetFamilySelector} from 'akeneoassetmanager/application/component/library/AssetFamilySelector';
 import {HeaderView} from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {getLabel} from 'pimui/js/i18n';
 import {MultipleButton, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
@@ -35,12 +35,15 @@ import {getCompletenessFilter, updateCompletenessFilter} from 'akeneoassetmanage
 import {useNotify, NotificationLevel, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import {Checkbox, Toolbar, Button, useSelection, useBooleanState} from 'akeneo-design-system';
-import {MassDelete} from 'akeneoassetmanager/application/component/asset/list/mass/mass-delete';
+import {MassDelete} from 'akeneoassetmanager/application/component/library/MassDelete/MassDelete';
 import {useSelectionQuery} from 'akeneoassetmanager/application/component/library/hooks/useSelectionQuery';
 import {useRoutes} from 'akeneoassetmanager/application/component/library/hooks/useRoutes';
-import {NoAssetFamily} from 'akeneoassetmanager/application/component/library/NoAssetFamily';
-import {NoAsset} from 'akeneoassetmanager/application/component/library/NoAsset';
-import {AssetLibraryPlaceholder} from 'akeneoassetmanager/application/component/library/AssetLibraryPlaceholder';
+import {
+  NoAssetFamily,
+  NoAsset,
+  AssetLibraryPlaceholder,
+} from 'akeneoassetmanager/application/component/library/components';
+import {MassEdit} from 'akeneoassetmanager/application/component/library/MassEdit/MassEdit';
 
 const Header = styled.div`
   padding-left: 40px;
@@ -167,7 +170,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
     [setCurrentAssetFamilyIdentifier]
   );
 
-  const canSelectAssets = rights.asset.delete; //TODO add check when doing mass edit
+  const canSelectAssets = rights.asset.delete || rights.asset.edit;
   const isToolbarVisible = 0 < searchResult.matchesCount && !!selectionState && canSelectAssets;
 
   useEffect(() => {
@@ -313,6 +316,17 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             {translate('pim_asset_manager.asset_selected', {assetCount: selectedCount}, selectedCount)}
           </Toolbar.LabelContainer>
           <Toolbar.ActionsContainer>
+            {rights.asset.edit && (
+              <MassEdit
+                selectionQuery={selectionQuery}
+                onConfirm={() => {
+                  onSelectAllChange(false);
+                }}
+                context={context}
+                assetFamily={currentAssetFamily}
+                selectedCount={selectedCount}
+              />
+            )}
             {rights.asset.delete && (
               <MassDelete
                 selectionQuery={selectionQuery}

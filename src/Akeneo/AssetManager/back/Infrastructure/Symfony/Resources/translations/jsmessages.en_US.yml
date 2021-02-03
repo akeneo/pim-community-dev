@@ -345,6 +345,8 @@ pim_asset_manager:
       extra_information: If they are linked to products, the links to the products will be removed.
       confirm_label: Please type "{{ assetFamilyIdentifier }}"
       title: Assets
+    mass_edit:
+      attribute_selected: "{0}No attribute selected|{1}One attribute selected|]1,Inf[{{ count }} attributes selected"
 
     grid:
       search: Search on label, code and text attributes

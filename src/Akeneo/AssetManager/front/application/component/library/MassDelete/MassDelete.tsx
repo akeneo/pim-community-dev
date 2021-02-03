@@ -4,7 +4,7 @@ import {Button, useBooleanState} from 'akeneo-design-system';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import assetRemover from 'akeneoassetmanager/infrastructure/remover/asset';
-import {MassDeleteModal} from 'akeneoassetmanager/application/component/library/MassDeleteModal';
+import {MassDeleteModal} from 'akeneoassetmanager/application/component/library/MassDelete/MassDeleteModal';
 
 const MassDelete = ({
   selectionQuery,
