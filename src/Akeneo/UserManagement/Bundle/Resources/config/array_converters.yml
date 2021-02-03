@@ -20,3 +20,10 @@ services:
 
     pim_connector.array_converter.standard_to_flat.user:
         class: 'Akeneo\UserManagement\Component\Connector\ArrayConverter\StandardToFlat\User'
+
+    pim_connector.array_converter.standard_to_flat.user_group:
+        class: '%pim_connector.array_converter.dummy.class%'
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+            - [ 'name' ]
+            - [ 'name' ]

@@ -14,6 +14,7 @@ $rules = [
         'Doctrine\Common',
         'Doctrine\Inflector',
         'Akeneo\Tool',
+        'Webmozart\Assert\Assert',
         // TODO: The feature uses the datagrid
         'Oro\Bundle\PimDataGridBundle',
 
