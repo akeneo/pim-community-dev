@@ -32,209 +32,51 @@
 import React, {useState} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {
-  arrayUnique,
-  ArrowDownIcon,
   Button,
-  CloseIcon,
-  Dropdown,
-  IconButton,
+  getColor,
   Modal,
   SectionTitle as UppercaseTitle,
-  Table,
-  Title,
-  useBooleanState,
-  uuid,
+  Title
 } from 'akeneo-design-system';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import Data from 'akeneoassetmanager/domain/model/asset/data';
-import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import {Context} from 'akeneoassetmanager/domain/model/context';
-import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import styled from 'styled-components';
 import Spacer from 'akeneoassetmanager/application/component/app/spacer';
 import {ValidationError} from 'akeneoassetmanager/platform/model/validation-error';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
-import {getLabel} from 'pimui/js/i18n';
-
-type Updater = {
-  id: string;
-  channel: ChannelReference;
-  locale: LocaleReference;
-  attribute: NormalizedAttribute;
-  data: Data;
-  action: 'set' | 'add';
-};
-
-type AddAttributeDropdownProps = {
-  attributes: NormalizedAttribute[];
-  locale: string;
-  alreadyUsed: string[];
-  onAdd: (attribute: NormalizedAttribute) => void;
-};
-const AddAttributeDropdown = ({attributes, locale, alreadyUsed, onAdd}: AddAttributeDropdownProps) => {
-  const [isOpen, open, close] = useBooleanState(false);
-
-  return (
-    <Dropdown>
-      <Button level="tertiary" ghost onClick={open}>
-        Add attribute <ArrowDownIcon />
-      </Button>
-      {isOpen && (
-        <Dropdown.Overlay onClose={close}>
-          <Dropdown.Header>
-            <Dropdown.Title>Attributes</Dropdown.Title>
-          </Dropdown.Header>
-          <Dropdown.ItemCollection>
-            {attributes
-              .filter(attribute => !attribute.is_read_only)
-              .map(attribute => {
-                return (
-                  <Dropdown.Item
-                    key={attribute.identifier}
-                    onClick={() => {
-                      onAdd(attribute);
-                      close();
-                    }}
-                  >
-                    {getLabel(attribute.labels, locale, attribute.code)}{' '}
-                    {alreadyUsed.includes(attribute.identifier) && 'already used'}
-                  </Dropdown.Item>
-                );
-              })}
-          </Dropdown.ItemCollection>
-        </Dropdown.Overlay>
-      )}
-    </Dropdown>
-  );
-};
-
-type UpdaterRowProps = {
-  updater: Updater;
-  locale: string;
-  onRemove: (updater: Updater) => void;
-  onChange: (updater: Updater) => void;
-  readOnly: boolean;
-  errors: ValidationError[];
-};
-const UpdaterRow = ({updater, locale, readOnly, errors, onRemove}: UpdaterRowProps) => {
-  const translate = useTranslate();
-
-  return (
-    <Table.Row>
-      <Table.Cell>{getLabel(updater.attribute.labels, locale, updater.attribute.code)}</Table.Cell>
-      <Table.Cell>
-        {JSON.stringify(updater.data)}
-        {readOnly ? 'readonly' : 'editable'}
-        {errors.map(error => JSON.stringify(error)).join(', ')}
-      </Table.Cell>
-      <Table.Cell>
-        {updater.channel}
-        {updater.locale}
-        {updater.action}
-      </Table.Cell>
-      <Table.Cell>
-        <IconButton
-          level="tertiary"
-          icon={<CloseIcon />}
-          ghost="borderless"
-          title={translate('pim_common.remove')}
-          onClick={() => onRemove(updater)}
-        />
-      </Table.Cell>
-    </Table.Row>
-  );
-};
-
-type UpdaterCollectionProps = {
-  updaterCollection: Updater[];
-  locale: string;
-  readOnly: boolean;
-  errors: ValidationError[];
-  onRemove: (updater: Updater) => void;
-  onChange: (updater: Updater) => void;
-};
-const UpdaterCollection = ({
-  updaterCollection,
-  locale,
-  readOnly,
-  errors,
-  onRemove,
-  onChange,
-}: UpdaterCollectionProps) => {
-  return (
-    <Table>
-      <Table.Body>
-        {updaterCollection.map((updater, _index) => (
-          <UpdaterRow
-            key={updater.id}
-            updater={updater}
-            locale={locale}
-            readOnly={readOnly}
-            errors={errors}
-            onChange={onChange}
-            onRemove={onRemove}
-          />
-        ))}
-      </Table.Body>
-    </Table>
-  );
-};
-
-const useUpdaterCollection = () => {
-  const [updaterCollection, setUpdaterCollection] = useState<Updater[]>([]);
-
-  const addUpdater = (attribute: NormalizedAttribute, context: Context) => {
-    setUpdaterCollection(updaterCollection => [
-      ...updaterCollection,
-      {
-        id: uuid(),
-        channel: attribute.value_per_channel ? context.channel : null,
-        locale: attribute.value_per_locale ? context.locale : null,
-        attribute: attribute,
-        data: null,
-        action: 'set',
-      },
-    ]);
-  };
-
-  const removeUpdater = (idToDelete: string) => {
-    setUpdaterCollection(updaterCollection => updaterCollection.filter(updater => updater.id !== idToDelete));
-  };
-
-  const setUpdater = (updaterToSet: Updater) => {
-    setUpdaterCollection(updaterCollection =>
-      updaterCollection.map(updater => (updater.id === updaterToSet.id ? updaterToSet : updater))
-    );
-  };
-
-  return [
-    updaterCollection,
-    addUpdater,
-    removeUpdater,
-    setUpdater,
-    arrayUnique(updaterCollection.map(updater => updater.attribute.identifier)),
-  ] as const;
-};
+import Separator from '../../app/separator';
+import {useUpdaterCollection} from './useUpdaterCollection';
+import {AddAttributeDropdown} from './components/AttributeDropdown';
+import {UpdaterCollection} from './components/UpdaterCollection';
+import {normalizeUpdaterCollection, Updater} from './model/updater';
 
 const Container = styled.div`
   width: 100%;
-  max-height: calc(100vh - 160px);
+  max-height: 100vh;
+  margin-top: 80px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-y: auto;
 `;
+
 const SectionTitle = styled.div`
   display: flex;
+  width: 100%;
+  align-items: center;
 `;
 const EmptyUpdaterCollection = styled.span``;
 const Header = styled.div`
   position: sticky;
-  top: 80px;
+  top: 0;
+  background: ${getColor('white')};
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 `;
-const Label = styled.span``;
 
 type MassEditModalProps = {
   assetFamily: AssetFamily;
@@ -242,19 +84,6 @@ type MassEditModalProps = {
   selectedAssetCount: number;
   onConfirm: () => void;
   onCancel: () => void;
-};
-
-const normalizeUpdater = (updater: Updater) => {
-  return {
-    channel: updater.channel,
-    locale: updater.locale,
-    attribute: updater.attribute.identifier,
-    data: updater.data,
-    action: updater.action,
-  };
-};
-const normalizeUpdaterCollection = (updaterCollection: Updater[]) => {
-  return updaterCollection.map(updater => normalizeUpdater(updater));
 };
 
 const massEditLauncher = {
@@ -317,17 +146,18 @@ const MassEditModal = ({assetFamily, context, selectedAssetCount, onCancel, onCo
       </Modal.TopRightButtons>
       <Container>
         <Header>
-          <UppercaseTitle color="brand">{translate('pim_asset_manager.asset.mass_edit.title')}</UppercaseTitle>
-          <Title>{translate('pim_common.confirm_edition')}</Title>
+          <UppercaseTitle color="brand">{translate('pim_asset_manager.asset.mass_edit.subtitle')}</UppercaseTitle>
+          <Title>{translate('pim_asset_manager.asset.mass_edit.title', {count: selectedAssetCount}, selectedAssetCount)}</Title>
           {translate('pim_asset_manager.asset.mass_edit.extra_information')}
           <SectionTitle>
-            <Label>{translate('Attributes')}</Label>
+            <UppercaseTitle>{translate('Attributes')}</UppercaseTitle>
             <Spacer />
             {translate(
               'pim_asset_manager.asset.mass_edit.attribute_selected',
               {count: usedAttributeIdentifiers.length},
               usedAttributeIdentifiers.length
             )}
+            <Separator />
             <AddAttributeDropdown
               onAdd={attribute => {
                 addUpdater(attribute, context);

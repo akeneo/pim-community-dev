@@ -346,8 +346,10 @@ pim_asset_manager:
       confirm_label: Please type "{{ assetFamilyIdentifier }}"
       title: Assets
     mass_edit:
-      attribute_selected: "{0}No attribute selected|{1}One attribute selected|]1,Inf[{{ count }} attributes selected"
-
+      subtitle: Asset bulk action
+      title: "[0, 1]Edit attributes values of {{ count }} asset|]1,Inf] Edit attributes values of {{ count }} assets"
+      attribute_selected: "{0}No attribute selected|{1}One attribute selected|]1,Inf]{{ count }} attributes selected"
+      extra_information: "Only the attributes belonging to the assets family of the selected assets will be edited with the following data."
     grid:
       search: Search on label, code and text attributes
       filter:
