@@ -66,7 +66,7 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
                                 placeholders={{limit: activeEventSubscriptionsLimit.limit.toString()}}
                             />{' '}
                             <Link
-                                href='https://help.akeneo.com/pim/serenity/articles/manage-your-connections.html#subscribe-to-events'
+                                href='https://help.akeneo.com/pim/serenity/articles/manage-event-subscription.html#activation'
                                 target='_blank'
                             >
                                 <Translate id='akeneo_connectivity.connection.webhook.active_event_subscriptions_limit_reached.link' />
