@@ -105,7 +105,7 @@ type CheckboxProps = Override<
     /**
      * The handler called when clicking on Checkbox.
      */
-    onChange?: (value: CheckboxChecked, event: SyntheticEvent) => void;
+    onChange?: (value: boolean, event: SyntheticEvent) => void;
 
     /**
      * Label of the checkbox.
@@ -119,7 +119,7 @@ type CheckboxProps = Override<
  */
 const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
   (
-    {checked = false, onChange, readOnly = false, children, title, ...rest}: CheckboxProps,
+    {checked = false, onChange, readOnly = false, children, title, 'aria-label': ariaLabel, ...rest}: CheckboxProps,
     forwardedRef: Ref<HTMLDivElement>
   ): React.ReactElement => {
     const checkboxId = useId('checkbox_');
@@ -162,6 +162,7 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
           aria-checked={isChecked}
           tabIndex={readOnly ? -1 : 0}
           onClick={handleChange}
+          aria-label={ariaLabel}
           {...forProps}
         >
           {isMixed ? <CheckPartialIcon size={18} /> : <TickIcon size={20} />}

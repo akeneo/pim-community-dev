@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
@@ -32,14 +33,16 @@ class ProductProcessorSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         BulkMediaFetcher $mediaFetcher,
         StepExecution $stepExecution,
-        FillMissingValuesInterface $fillMissingProductModelValues
+        FillMissingValuesInterface $fillMissingProductModelValues,
+        GetProductsWithQualityScoresInterface $getProductsWithQualityScores
     ) {
         $this->beConstructedWith(
             $normalizer,
             $channelRepository,
             $attributeRepository,
             $mediaFetcher,
-            $fillMissingProductModelValues
+            $fillMissingProductModelValues,
+            $getProductsWithQualityScores
         );
 
         $this->setStepExecution($stepExecution);
@@ -272,5 +275,89 @@ class ProductProcessorSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $this->process($product)->shouldReturn($productStandard);
+    }
+
+    public function it_processes_product_with_filter_on_quality_score(
+        $normalizer,
+        $channelRepository,
+        $stepExecution,
+        $mediaFetcher,
+        $attributeRepository,
+        $getProductsWithQualityScores,
+        ChannelInterface $channel,
+        LocaleInterface $locale,
+        ProductInterface $product,
+        JobParameters $jobParameters,
+        AttributeInterface $attribute
+    ) {
+        $product->getIdentifier()->willReturn('a_product');
+        $attributeRepository->findMediaAttributeCodes()->willReturn(['picture']);
+        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
+        $attribute->isLocaleSpecific()->willReturn(false);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
+        $jobParameters->get('filters')->willReturn(
+            [
+                'structure' => ['scope' => 'mobile', 'locales' => ['en_US', 'fr_FR']],
+                'data' => [['field' => 'quality_score_multi_locales']]
+            ]
+        );
+        $jobParameters->has('with_media')->willReturn(true);
+        $jobParameters->get('with_media')->willReturn(false);
+
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
+        $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
+        $channel->getCode()->willReturn('foobar');
+        $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
+
+        $normalizer->normalize($product, 'standard')->willReturn([
+            'enabled'    => true,
+            'categories' => ['cat1', 'cat2'],
+            'values' => [
+                'picture' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'a/b/c/d/e/f/little_cat.jpg'
+                    ]
+                ],
+                'size' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'M'
+                    ]
+                ]
+            ]
+        ]);
+
+        $mediaFetcher->fetchAll(Argument::cetera())->shouldNotBeCalled();
+        $mediaFetcher->getErrors()->shouldNotBeCalled();
+
+        $normalizedProductWithQualityScores = [
+            'enabled'    => true,
+            'categories' => ['cat1', 'cat2'],
+            'values' => [
+                'size' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'M'
+                    ]
+                ]
+            ],
+            'quality_scores' => [
+                'mobile' => [
+                    'en_US' => 'A',
+                    'de_DE' => 'B',
+                ]
+            ]
+        ];
+
+        $getProductsWithQualityScores->fromNormalizedProduct('a_product', Argument::any(), 'mobile', ['en_US', 'fr_FR'])
+            ->willReturn($normalizedProductWithQualityScores);
+
+        $this->process($product)->shouldBeLike($normalizedProductWithQualityScores);
     }
 }

@@ -902,6 +902,7 @@ config:
     pim/form/common/creation/type:                       pimui/js/form/common/creation/type
     pim/form/common/creation/job:                        pimui/js/form/common/creation/job
     pim/form/common/product/create-button:               pimui/js/form/common/product/create-button
+    pim/form/common/product/product-main-image:          pimui/js/form/common/product/product-main-image
     pim/form/common/section:                             pimui/js/form/common/section.ts
     pim/form/user/login-details:                         pimui/js/form/user/login-details
     pim/form/common/exclusif-boolean: pimui/js/form/common/exclusif-boolean
