@@ -81,6 +81,17 @@ class FamilyRepositoryIntegration extends TestCase
         Assert::assertSame('tshirt', $firstPage[0]->getCode());
     }
 
+    public function test_it_is_able_to_search_family_by_identifiers(): void
+    {
+        $this->loadFixtures();
+
+        $results = $this->familyRepository->getWithVariants(null, ['identifiers' => ['tshirt', 'jacket']], 2);
+        Assert::assertCount(2, $results);
+        Assert::assertContainsOnlyInstancesOf(FamilyInterface::class, $results);
+        Assert::assertSame('jacket', $results[0]->getCode());
+        Assert::assertSame('tshirt', $results[1]->getCode());
+    }
+
     private function loadFixtures(): void
     {
         $this->createAttribute([

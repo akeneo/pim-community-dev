@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
 
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoader;
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\WebhookLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\CountActiveEventSubscriptionsQuery;
 use Akeneo\Test\Integration\Configuration;
