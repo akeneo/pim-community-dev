@@ -80,8 +80,8 @@ function assertDatagridState(columns: string, filters: string) {
   expect(DatagridState.set).toHaveBeenCalledWith('product-grid', {
     columns: columns,
     filters: filters,
-    view: '0',
-    initialViewState: '',
+    view: 0,
+    initialViewState: filters,
     scope: 'ecommerce',
   });
 }

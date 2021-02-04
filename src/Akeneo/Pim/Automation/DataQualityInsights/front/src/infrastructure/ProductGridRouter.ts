@@ -1,5 +1,6 @@
 const Router = require('pim/router');
 const DatagridState = require('pim/datagrid/state');
+const userContext = require('pim/user-context');
 
 const PRODUCT_GRID_QUALITY_SCORE_COLUMN = 'data_quality_insights_score';
 
@@ -65,8 +66,8 @@ const redirectToFilteredProductGrid = (
   DatagridState.set('product-grid', {
     columns: productGridColumns.join(','),
     filters: gridFilters,
-    view: '0',
-    initialViewState: '',
+    view: userContext.get('default_product_grid_view') ? userContext.get('default_product_grid_view') : 0,
+    initialViewState: gridFilters,
     scope: channelCode,
   });
 
