@@ -199,6 +199,8 @@ class AssociationTypeController
      * @param Request $request
      *
      * @return Response
+     *
+     * @AclAncestor("pim_enrich_associationtype_create")
      */
     public function createAction(Request $request)
     {
