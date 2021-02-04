@@ -1,8 +1,15 @@
 # 5.0.x
 
+# 5.0.4 (2021-02-02)
+
+# 5.0.3 (2021-01-29)
+
+# 5.0.2 (2021-01-29)
+
 ## Bug fixes
 
 - PIM-9629: Fix filtering issue on product value "identifier" via the API for published products
+- PIM-9584: Fix case insensitive links between products and assets
 
 # 5.0.1 (2021-01-08)
 

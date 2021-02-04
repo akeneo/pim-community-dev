@@ -26,7 +26,7 @@ javascript-extensions:
 
 .PHONY: dsm
 dsm:
-	$(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system install --frozen-lockfile
+	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 $(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system install --frozen-lockfile
 	$(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system run lib:build
 
 .PHONY: assets

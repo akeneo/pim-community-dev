@@ -1,5 +1,38 @@
 # 4.0.x
 
+# 4.0.90 (2021-02-02)
+
+## Bug fixes
+
+- PIM-9652: Fix the list of proposals in the activity's dashboard.
+
+# 4.0.89 (2021-01-29)
+
+# 4.0.88 (2021-01-28)
+
+## Bug fixes
+RAC-473: Fix slow COUNT query on asset manager
+
+# 4.0.87 (2021-01-26)
+
+# 4.0.86 (2021-01-22)
+
+## Bug fixes
+
+- PIM-9641: Return a proper error when the asset or record code are not well formatted in product update API
+
+# 4.0.85 (2021-01-19)
+
+## Improvements
+
+- PIM-9624: Improve DQI evaluations purge
+
+## Bug fixes
+
+- PIM-9638: Fix security issue in Symfony < 4.4.13 (see https://symfony.com/blog/cve-2020-15094-prevent-rce-when-calling-untrusted-remote-with-cachinghttpclient)
+
+# 4.0.84 (2021-01-14)
+
 # 4.0.83 (2021-01-06)
 
 # 4.0.82 (2021-01-05)

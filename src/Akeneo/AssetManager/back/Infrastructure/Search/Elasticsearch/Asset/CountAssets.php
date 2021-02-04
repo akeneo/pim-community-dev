@@ -22,34 +22,29 @@ class CountAssets implements CountAssetsInterface
         $this->assetClient = $assetClient;
     }
 
+    public function all(): int
+    {
+        $matches = $this->assetClient->count([]);
+
+        return $matches['count'];
+    }
+
     public function forAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int
     {
         $elasticSearchQuery = $this->getElasticSearchQuery($assetFamilyIdentifier);
-        $matches = $this->assetClient->search($elasticSearchQuery);
+        $matches = $this->assetClient->count($elasticSearchQuery);
 
-        return $matches['hits']['total']['value'];
+        return $matches['count'];
     }
 
     private function getElasticSearchQuery(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
         return [
-            '_source' => '_id',
-            'query'   => [
-                'constant_score' => [
-                    'filter' => [
-                        'bool' => [
-                            'filter' => [
-                                [
-                                    'term' => [
-                                        'asset_family_code' => (string) $assetFamilyIdentifier,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
+            'query' => [
+                'term' => [
+                    'asset_family_code' => (string) $assetFamilyIdentifier,
                 ],
             ],
-            'track_total_hits' => true,
         ];
     }
 }

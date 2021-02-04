@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersByAssetFamilyAndCodesInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeyCollectionInterface;
@@ -27,6 +28,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysByAttributeTypeInter
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetHydratorInterface;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\CountAssets;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
@@ -46,6 +48,7 @@ class SqlAssetRepository implements AssetRepositoryInterface
     private EventDispatcherInterface $eventDispatcher;
     private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes;
     private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
+    private CountAssetsInterface $countAssets;
 
     public function __construct(
         Connection $sqlConnection,
@@ -54,7 +57,8 @@ class SqlAssetRepository implements AssetRepositoryInterface
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
         EventDispatcherInterface $eventDispatcher,
         FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        CountAssetsInterface $countAssets
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->assetHydrator = $assetHydrator;
@@ -63,15 +67,12 @@ class SqlAssetRepository implements AssetRepositoryInterface
         $this->eventDispatcher = $eventDispatcher;
         $this->findIdentifiersByAssetFamilyAndCodes = $findIdentifiersByAssetFamilyAndCodes;
         $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
+        $this->countAssets = $countAssets;
     }
 
     public function count(): int
     {
-        $sql = 'SELECT COUNT(*) FROM akeneo_asset_manager_asset';
-        $statement = $this->sqlConnection->executeQuery($sql);
-        $count = (int) $statement->fetchColumn();
-
-        return $count;
+        return $this->countAssets->all();
     }
 
     public function create(Asset $asset): void
@@ -265,22 +266,6 @@ SQL;
             (string) $code,
             Uuid::uuid4()->toString()
         );
-    }
-
-    public function countByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int
-    {
-        $fetch = <<<SQL
-        SELECT COUNT(*)
-        FROM akeneo_asset_manager_asset
-        WHERE asset_family_identifier = :asset_family_identifier;
-SQL;
-        $statement = $this->sqlConnection->executeQuery(
-            $fetch,
-            ['asset_family_identifier' => $assetFamilyIdentifier,]
-        );
-        $count = $statement->fetchColumn();
-
-        return intval($count);
     }
 
     private function getAssetFamilyIdentifier($result): AssetFamilyIdentifier

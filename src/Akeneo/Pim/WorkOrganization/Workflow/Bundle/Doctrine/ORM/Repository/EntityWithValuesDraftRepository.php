@@ -16,6 +16,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
@@ -212,16 +213,27 @@ class EntityWithValuesDraftRepository extends EntityRepository implements Entity
         Assert::implementsInterface($user, AkeneoUserInterface::class);
         $qb = $this->createQueryBuilder('entity_with_values_draft');
 
-        return $qb
+        $qb
             ->join('entity_with_values_draft.entityWithValues', 'entity_with_values')
-            ->leftJoin('entity_with_values.categories', 'category')
-            ->innerJoin('AkeneoPimPermissionBundle:ProductCategoryAccess', 'a', 'WITH', 'a.category = category')
-            ->where($qb->expr()->eq('a.ownItems', true))
-            ->andWhere($qb->expr()->in('a.userGroup', ':userGroups'))
+            ->leftJoin('entity_with_values.categories', 'categories')
+            ->leftJoin('AkeneoPimPermissionBundle:ProductCategoryAccess', 'productaccess', 'WITH', 'productaccess.category = categories')
+            ->leftJoin('entity_with_values.parent', 'parent')
+            ->leftJoin('parent.categories', 'parent_categories')
+            ->leftJoin('AkeneoPimPermissionBundle:ProductCategoryAccess', 'parentaccess', 'WITH', 'parentaccess.category = parent_categories')
+            ->leftJoin('parent.parent', 'root')
+            ->leftJoin('root.categories', 'root_categories')
+            ->leftJoin('AkeneoPimPermissionBundle:ProductCategoryAccess', 'rootaccess', 'WITH', 'rootaccess.category = root_categories')
+            ->andWhere($qb->expr()->orX(
+                $qb->expr()->andX($qb->expr()->in('productaccess.userGroup', ':userGroups'), $qb->expr()->eq('productaccess.ownItems', true)),
+                $qb->expr()->andX($qb->expr()->in('parentaccess.userGroup', ':userGroups'), $qb->expr()->eq('parentaccess.ownItems', true)),
+                $qb->expr()->andX($qb->expr()->in('rootaccess.userGroup', ':userGroups'), $qb->expr()->eq('rootaccess.ownItems', true))
+            ))
             ->andWhere($qb->expr()->eq('entity_with_values_draft.status', EntityWithValuesDraftInterface::READY))
             ->orderBy('entity_with_values_draft.createdAt', 'desc')
             ->setParameter('userGroups', $user->getGroups()->toArray())
             ->distinct(true);
+
+        return $qb;
     }
 
     /**
