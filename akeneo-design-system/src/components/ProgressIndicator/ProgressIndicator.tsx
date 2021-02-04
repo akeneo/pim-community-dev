@@ -11,9 +11,9 @@ const StepCircle = styled.div<{completed: boolean} & AkeneoThemedProps>`
   height: 32px;
   width: 32px;
   color: ${getColor('white')};
-  background-color: ${({completed}) => completed ? getColor('green', 100) : getColor('white')};
+  background-color: ${({completed}) => (completed ? getColor('green', 100) : getColor('white'))};
   border-radius: 50%;
-  border: 1px solid ${({completed}) => completed ? 'transparent' : getColor('grey', 80)};
+  border: 1px solid ${({completed}) => (completed ? 'transparent' : getColor('grey', 80))};
 `;
 
 // TODO RAC-331: Typography caption in uppercase
@@ -35,8 +35,8 @@ const StepContainer = styled.li<{completed: boolean} & AkeneoThemedProps>`
     content: ' ';
     width: calc(100% - 34px);
     border-bottom-width: 1px;
-    border-bottom-style: ${({completed}) => completed ? 'solid' : 'dashed'};
-    border-bottom-color: ${({completed}) => completed ? getColor('green', 100) : getColor('grey', 80)};
+    border-bottom-style: ${({completed}) => (completed ? 'solid' : 'dashed')};
+    border-bottom-color: ${({completed}) => (completed ? getColor('green', 100) : getColor('grey', 80))};
     position: relative;
     left: -50%;
     top: 17px;
@@ -65,40 +65,38 @@ type ProgressIndicatorStepProps = Override<
      * The label of the step
      */
     children: ReactNode;
-  }>;
+  }
+>;
 
 const ProgressIndicatorStep = React.forwardRef<HTMLLIElement, ProgressIndicatorStepProps>(
   ({completed = false, children, ...rest}: ProgressIndicatorStepProps, forwardedRef: Ref<HTMLLIElement>) => {
-  return (
-    <StepContainer completed={completed} ref={forwardedRef} {...rest}>
-      <StepCircle aria-hidden completed={completed}>
-        {completed && (
-          <CheckIcon size={24} />
-        )}
-      </StepCircle>
-      <StepLabel>{children}</StepLabel>
-    </StepContainer>
-  );
-});
+    return (
+      <StepContainer completed={completed} ref={forwardedRef} {...rest}>
+        <StepCircle aria-hidden completed={completed}>
+          {completed && <CheckIcon size={24} />}
+        </StepCircle>
+        <StepLabel>{children}</StepLabel>
+      </StepContainer>
+    );
+  }
+);
 
 type ProgressIndicatorProps = Override<
-  React.HTMLAttributes<HTMLUListElement>, {
-  /**
-   * The progress steps
-   */
-  children?: ReactNode;
-}>;
+  React.HTMLAttributes<HTMLUListElement>,
+  {
+    /**
+     * The progress steps
+     */
+    children?: ReactNode;
+  }
+>;
 
 /**
  * Progress indicator display progress through a sequence of logical and numbered steps
  */
 /* @TODO StepIndicator or Stepper ? */
 const ProgressIndicator = ({children, ...rest}: ProgressIndicatorProps) => {
-  return (
-    <ProgressIndicatorContainer {...rest}>
-      {children}
-    </ProgressIndicatorContainer>
-  );
+  return <ProgressIndicatorContainer {...rest}>{children}</ProgressIndicatorContainer>;
 };
 
 ProgressIndicatorStep.displayName = 'ProgressIndicator.Step';
