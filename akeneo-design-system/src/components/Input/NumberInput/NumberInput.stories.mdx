@@ -1,10 +1,10 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
-import {TextInput} from './TextInput.tsx';
+import {NumberInput} from './NumberInput.tsx';
 
 <Meta
-  title="Components/Inputs/TextInput"
-  component={TextInput}
+  title="Components/Inputs/NumberInput"
+  component={NumberInput}
   argTypes={{
     readOnly: {
       control: {type: 'boolean'},
@@ -14,20 +14,20 @@ import {TextInput} from './TextInput.tsx';
     },
     onChange: {
       description: 'The handler called when the value of the input changes.',
-      table: {type: {summary: '(newValue: string) => void'}},
+      table: {type: {summary: '(newValue: number) => void'}},
     },
   }}
   args={{
     value: '',
-    placeholder: 'Please enter a value in the TextInput',
+    placeholder: 'Please enter a value in the NumberInput',
   }}
 />
 
-# TextInput (Beta)
+# NumberInput (Beta)
 
 ## Usage
 
-Text input allows the user to enter content and data when the expected user input is a single line of text.
+Number input allows the user to enter content and data when the expected user input is only numbers.
 
 ### Placeholder text
 
@@ -39,7 +39,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
   <Story name="Standard">
     {args => {
       const [value, setValue] = useState(args.value);
-      return <TextInput {...args} value={value} onChange={setValue} />;
+      return <NumberInput {...args} value={value} onChange={setValue} />;
     }}
   </Story>
 </Canvas>
@@ -53,8 +53,8 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
     {args => {
       return (
         <>
-          <TextInput {...args} readOnly={false} />
-          <TextInput {...args} readOnly={true} />
+          <NumberInput {...args} readOnly={false} />
+          <NumberInput {...args} readOnly={true} />
         </>
       );
     }}
@@ -68,28 +68,9 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
     {args => {
       return (
         <>
-          <TextInput {...args} invalid={false} />
-          <TextInput {...args} invalid={true} />
+          <NumberInput {...args} invalid={false} />
+          <NumberInput {...args} invalid={true} />
         </>
-      );
-    }}
-  </Story>
-</Canvas>
-
-## Variation on character left label
-
-<Canvas>
-  <Story name="Character left label">
-    {args => {
-      const [value, setValue] = useState('');
-      const handleChange = newValue => setValue(newValue);
-      return (
-        <TextInput
-          placeholder="Type here to update the character left label"
-          value={value}
-          onChange={handleChange}
-          characterLeftLabel={`${250 - value.length} characters left`}
-        />
       );
     }}
   </Story>
