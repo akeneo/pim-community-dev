@@ -243,12 +243,9 @@ services:
             $entityValidator: '@validator'
             $productAndProductModelEsClient: '@akeneo_elasticsearch.client.product_and_product_model'
 
-    akeneo_integration_tests.event_dispatcher_observer:
-        class: 'Akeneo\Test\IntegrationTestsBundle\EventDispatcher\EventDispatcherObserver'
-        decorates: event_dispatcher
-        decoration_inner_name: event_dispatcher.inner
+    akeneo_integration_tests.message_bus_observer:
+        class: Symfony\Component\Messenger\TraceableMessageBus
+        decorates: messenger.default_bus
+        decoration_inner_name: messenger.default_bus.inner
         arguments:
-            - '@event_dispatcher.inner'
-            - '@debug.stopwatch'
-            - '@logger'
-            - '@request_stack'
+            - '@messenger.default_bus.inner'
