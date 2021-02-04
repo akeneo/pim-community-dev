@@ -17,7 +17,7 @@ const AddAttributeDropdown = ({attributes, locale, alreadyUsed, onAdd}: AddAttri
 
   return (
     <Dropdown>
-      <Button level="tertiary" ghost onClick={open}>
+      <Button size="small" level="tertiary" ghost onClick={open}>
         {translate('Add attributes')} <ArrowDownIcon />
       </Button>
       {isOpen && (

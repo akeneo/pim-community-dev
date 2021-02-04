@@ -4,6 +4,9 @@ import {ValidationError} from 'akeneoassetmanager/platform/model/validation-erro
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {getLabel} from 'pimui/js/i18n';
 import {Updater} from '../model/updater';
+import {getFieldView} from '../../../../configuration/value';
+import {useConfig} from '../../../../hooks/useConfig';
+import EditionValue from '../../../../../domain/model/asset/edition-value';
 
 type UpdaterRowProps = {
   updater: Updater;
@@ -13,15 +16,27 @@ type UpdaterRowProps = {
   readOnly: boolean;
   errors: ValidationError[];
 };
-const UpdaterRow = ({updater, locale, readOnly, errors, onRemove}: UpdaterRowProps) => {
+
+const UpdaterRow = ({updater, locale, readOnly, errors, onChange, onRemove}: UpdaterRowProps) => {
   const translate = useTranslate();
+  const config = useConfig('value');
+  const InputView = getFieldView(config)(updater);
+  const handleChange = (editionValue: EditionValue) => {
+    onChange({...updater, data: editionValue.data})
+  }
 
   return (
     <Table.Row>
       <Table.Cell>{getLabel(updater.attribute.labels, locale, updater.attribute.code)}</Table.Cell>
       <Table.Cell>
-        {JSON.stringify(updater.data)}
-        {readOnly ? 'readonly' : 'editable'}
+        <InputView
+          canEditData={!readOnly}
+          channel={updater.channel}
+          locale={updater.channel}
+          onChange={handleChange}
+          onSubmit={() => {}}
+          value={updater}
+        />
         {errors.map(error => JSON.stringify(error)).join(', ')}
       </Table.Cell>
       <Table.Cell>

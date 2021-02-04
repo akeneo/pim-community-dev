@@ -54,24 +54,33 @@ import {normalizeUpdaterCollection, Updater} from './model/updater';
 const Container = styled.div`
   width: 100%;
   max-height: 100vh;
-  margin-top: 80px;
+  padding-top: 40px;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const Content = styled.div`
+  flex-grow: 1;
   overflow-y: auto;
+  width: 100%;
+`;
+
+const Progress = styled.div`
+  height: 80px; //TODO: to validate
 `;
 
 const SectionTitle = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
+  border-bottom: 1px solid ${getColor('grey', 140)};
 `;
+
 const EmptyUpdaterCollection = styled.span``;
+
 const Header = styled.div`
-  position: sticky;
-  top: 0;
-  background: ${getColor('white')};
   width: 100%;
   align-items: center;
   display: flex;
@@ -168,18 +177,21 @@ const MassEditModal = ({assetFamily, context, selectedAssetCount, onCancel, onCo
             />
           </SectionTitle>
         </Header>
-        {0 === updaterCollection.length ? (
-          <EmptyUpdaterCollection>Is empty</EmptyUpdaterCollection>
-        ) : (
-          <UpdaterCollection
-            updaterCollection={updaterCollection}
-            locale={context.locale}
-            readOnly={step == 'confirm'}
-            errors={errors}
-            onRemove={updater => removeUpdater(updater.id)}
-            onChange={updater => setUpdater(updater)}
-          />
-        )}
+        <Content>
+          {0 === updaterCollection.length ? (
+            <EmptyUpdaterCollection>Is empty</EmptyUpdaterCollection>
+          ) : (
+            <UpdaterCollection
+              updaterCollection={updaterCollection}
+              locale={context.locale}
+              readOnly={step == 'confirm'}
+              errors={errors}
+              onRemove={updater => removeUpdater(updater.id)}
+              onChange={updater => setUpdater(updater)}
+            />
+          )}
+        </Content>
+        <Progress>{step}</Progress>
       </Container>
     </Modal>
   );

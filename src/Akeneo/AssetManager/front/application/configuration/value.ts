@@ -140,6 +140,7 @@ export const getFilterViews = (config: ValueConfig) => (attributes: NormalizedAt
  * This loader looks at the requirejs.yml file and find every configuration related to this module. It transform it
  * into a javascript object and add it automatically to the file on the fly.
  */
+export const getValueConfig = () => __moduleConfig as ValueConfig;
 export const getDataFieldView = getFieldView(__moduleConfig as ValueConfig);
 export const getDataFilterView = getFilterView(__moduleConfig as ValueConfig);
 export const hasDataFilterView = hasFilterView(__moduleConfig as ValueConfig);
