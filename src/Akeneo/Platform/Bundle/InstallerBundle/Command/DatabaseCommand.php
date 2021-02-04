@@ -16,6 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
 /**
@@ -340,7 +341,10 @@ class DatabaseCommand extends Command
 
     private function getLatestMigration(InputInterface $input): string
     {
-        $params = ['bin/console', 'doctrine:migrations:latest'];
+        $executable = new PhpExecutableFinder();
+        $php = $executable->find();
+        
+        $params = [$php, 'bin/console', 'doctrine:migrations:latest'];
 
         $params[] = '--no-debug';
 
