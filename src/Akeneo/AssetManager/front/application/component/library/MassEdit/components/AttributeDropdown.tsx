@@ -21,7 +21,7 @@ const AddAttributeDropdown = ({attributes, locale, alreadyUsed, onAdd}: AddAttri
         {translate('Add attributes')} <ArrowDownIcon />
       </Button>
       {isOpen && (
-        <Dropdown.Overlay verticalPosition='down' onClose={close}>
+        <Dropdown.Overlay verticalPosition="down" onClose={close}>
           <Dropdown.Header>
             <Dropdown.Title>{translate('Attributes')}</Dropdown.Title>
           </Dropdown.Header>

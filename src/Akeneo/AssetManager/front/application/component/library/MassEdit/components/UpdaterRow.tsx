@@ -22,8 +22,8 @@ const UpdaterRow = ({updater, locale, readOnly, errors, onChange, onRemove}: Upd
   const config = useConfig('value');
   const InputView = getFieldView(config)(updater);
   const handleChange = (editionValue: EditionValue) => {
-    onChange({...updater, data: editionValue.data})
-  }
+    onChange({...updater, data: editionValue.data});
+  };
 
   return (
     <Table.Row>
@@ -57,4 +57,4 @@ const UpdaterRow = ({updater, locale, readOnly, errors, onChange, onRemove}: Upd
   );
 };
 
-export {UpdaterRow}
+export {UpdaterRow};

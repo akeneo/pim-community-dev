@@ -31,13 +31,7 @@
 
 import React, {useState} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {
-  Button,
-  getColor,
-  Modal,
-  SectionTitle as UppercaseTitle,
-  Title
-} from 'akeneo-design-system';
+import {Button, getColor, Modal, SectionTitle as UppercaseTitle, Title} from 'akeneo-design-system';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import styled from 'styled-components';
@@ -156,7 +150,9 @@ const MassEditModal = ({assetFamily, context, selectedAssetCount, onCancel, onCo
       <Container>
         <Header>
           <UppercaseTitle color="brand">{translate('pim_asset_manager.asset.mass_edit.subtitle')}</UppercaseTitle>
-          <Title>{translate('pim_asset_manager.asset.mass_edit.title', {count: selectedAssetCount}, selectedAssetCount)}</Title>
+          <Title>
+            {translate('pim_asset_manager.asset.mass_edit.title', {count: selectedAssetCount}, selectedAssetCount)}
+          </Title>
           {translate('pim_asset_manager.asset.mass_edit.extra_information')}
           <SectionTitle>
             <UppercaseTitle>{translate('Attributes')}</UppercaseTitle>

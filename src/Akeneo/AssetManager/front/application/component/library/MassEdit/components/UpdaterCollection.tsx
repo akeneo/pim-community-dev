@@ -14,13 +14,13 @@ type UpdaterCollectionProps = {
 };
 
 const UpdaterCollection = ({
-                             updaterCollection,
-                             locale,
-                             readOnly,
-                             errors,
-                             onRemove,
-                             onChange,
-                           }: UpdaterCollectionProps) => {
+  updaterCollection,
+  locale,
+  readOnly,
+  errors,
+  onRemove,
+  onChange,
+}: UpdaterCollectionProps) => {
   return (
     <Table>
       <Table.Body>
