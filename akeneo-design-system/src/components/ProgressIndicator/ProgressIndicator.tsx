@@ -1,19 +1,22 @@
-import React, {Ref, ReactNode} from 'react';
+import React, {Ref, ReactNode, isValidElement} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
 import {CheckIcon} from '../../icons';
 
-const StepCircle = styled.div<{completed: boolean} & AkeneoThemedProps>`
+type StepState = 'done' | 'inprogress' | 'todo';
+
+const StepCircle = styled.div<{state: StepState} & AkeneoThemedProps>`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 32px;
   width: 32px;
   color: ${getColor('white')};
-  background-color: ${({completed}) => (completed ? getColor('green', 100) : getColor('white'))};
+  background-color: ${({state}) =>
+    state === 'todo' ? getColor('white') : state === 'inprogress' ? getColor('green', 100) : getColor('green', 100)};
   border-radius: 50%;
-  border: 1px solid ${({completed}) => (completed ? 'transparent' : getColor('grey', 80))};
+  border: 1px solid ${({state}) => (state !== 'todo' ? 'transparent' : getColor('grey', 80))};
 `;
 
 // TODO RAC-331: Typography caption in uppercase
@@ -24,7 +27,7 @@ const StepLabel = styled.div`
   text-transform: uppercase;
 `;
 
-const StepContainer = styled.li<{completed: boolean} & AkeneoThemedProps>`
+const StepContainer = styled.li<{state: StepState} & AkeneoThemedProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,8 +38,8 @@ const StepContainer = styled.li<{completed: boolean} & AkeneoThemedProps>`
     content: ' ';
     width: calc(100% - 34px);
     border-bottom-width: 1px;
-    border-bottom-style: ${({completed}) => (completed ? 'solid' : 'dashed')};
-    border-bottom-color: ${({completed}) => (completed ? getColor('green', 100) : getColor('grey', 80))};
+    border-bottom-style: ${({state}) => ('todo' === state ? 'dashed' : 'solid')};
+    border-bottom-color: ${({state}) => ('todo' !== state ? getColor('green', 100) : getColor('grey', 80))};
     position: relative;
     left: -50%;
     top: 17px;
@@ -53,13 +56,18 @@ const ProgressIndicatorContainer = styled.ul`
   }
 `;
 
-type ProgressIndicatorStepProps = Override<
+type StepProps = Override<
   React.HTMLAttributes<HTMLLIElement>,
   {
     /**
      * Mark the step as completed
      */
-    completed?: boolean;
+    current?: boolean;
+
+    /**
+     * @private
+     */
+    state: StepState;
 
     /**
      * The label of the step
@@ -68,12 +76,12 @@ type ProgressIndicatorStepProps = Override<
   }
 >;
 
-const ProgressIndicatorStep = React.forwardRef<HTMLLIElement, ProgressIndicatorStepProps>(
-  ({completed = false, children, ...rest}: ProgressIndicatorStepProps, forwardedRef: Ref<HTMLLIElement>) => {
+const Step = React.forwardRef<HTMLLIElement, StepProps>(
+  ({state, children, ...rest}: StepProps, forwardedRef: Ref<HTMLLIElement>) => {
     return (
-      <StepContainer completed={completed} ref={forwardedRef} {...rest}>
-        <StepCircle aria-hidden completed={completed}>
-          {completed && <CheckIcon size={24} />}
+      <StepContainer state={state} ref={forwardedRef} {...rest}>
+        <StepCircle aria-hidden aria-current={'inprogress' === state} state={state}>
+          {'done' === state && <CheckIcon size={24} />}
         </StepCircle>
         <StepLabel>{children}</StepLabel>
       </StepContainer>
@@ -96,10 +104,28 @@ type ProgressIndicatorProps = Override<
  */
 /* @TODO StepIndicator or Stepper ? */
 const ProgressIndicator = ({children, ...rest}: ProgressIndicatorProps) => {
-  return <ProgressIndicatorContainer {...rest}>{children}</ProgressIndicatorContainer>;
+  const currentStepIndex = React.Children.toArray(children).reduce((result, child, index) => {
+    return isValidElement(child) && child.type === Step && child.props.current === true ? index : result;
+  }, 0);
+
+  const decoratedChildren = React.Children.map(children, (child, index) => {
+    if (!(isValidElement(child) && child.type === Step)) {
+      throw new Error('ProgressIndicator only accepts `ProgressIndicator.Step` elements as children');
+    }
+
+    return React.cloneElement(child, {
+      state: index > currentStepIndex ? 'todo' : index < currentStepIndex ? 'done' : 'inprogress',
+    });
+  });
+
+  return (
+    <ProgressIndicatorContainer aria-label="progress" {...rest}>
+      {decoratedChildren}
+    </ProgressIndicatorContainer>
+  );
 };
 
-ProgressIndicatorStep.displayName = 'ProgressIndicator.Step';
-ProgressIndicator.Step = ProgressIndicatorStep;
+Step.displayName = 'ProgressIndicator.Step';
+ProgressIndicator.Step = Step;
 
 export {ProgressIndicator};

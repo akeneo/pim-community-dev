@@ -1,17 +1,19 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
-import {ProgressIndicator} from './ProgressIndicator.tsx';
+import {ProgressIndicator} from './ProgressIndicator';
+import {Button} from '../Button/Button';
+import {useProgress} from '../../hooks';
 
 <Meta
   title="Components/Progress indicator"
   component={ProgressIndicator}
   subcomponents={{
-      'ProgressIndicator': ProgressIndicator,
-      'ProgressIndicator.Step': ProgressIndicator.Step
+    ProgressIndicator: ProgressIndicator,
+    'ProgressIndicator.Step': ProgressIndicator.Step,
   }}
   argTypes={{
     numberOfSteps: {control: {type: 'number', min: 1, max: 10}},
     completedStep: {control: {type: 'number', min: 1, max: 10}},
-    children: {table: {disable:true}}
+    children: {table: {disable: true}},
   }}
   args={{numberOfSteps: 3, completedStep: 1}}
 />
@@ -27,19 +29,22 @@ Progress indicator display progress through a sequence of logical and numbered s
 <Canvas>
   <Story name="Standard">
     {args => {
+      const steps = ['chose', 'edit', 'confirm'];
+      const [isCurrent, next, previous] = useProgress(steps);
       return (
-        <ProgressIndicator>
-          {Array.from(Array(args.numberOfSteps)).map((_x, i) => {
-            return (
-              <ProgressIndicator.Step
-                  key={i}
-                  completed={i < args.completedStep}
-              >
-                  Step {i + 1}
-              </ProgressIndicator.Step>
-            )
-          })}
-        </ProgressIndicator>
+        <>
+          <Button onClick={previous}>Previous</Button>
+          <Button onClick={next}>Next</Button>
+          <ProgressIndicator>
+            {steps.map((step, i) => {
+              return (
+                <ProgressIndicator.Step key={step} current={isCurrent(step)}>
+                  {step}
+                </ProgressIndicator.Step>
+              );
+            })}
+          </ProgressIndicator>
+        </>
       );
     }}
   </Story>
