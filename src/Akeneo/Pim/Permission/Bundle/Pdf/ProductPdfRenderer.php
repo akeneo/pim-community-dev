@@ -58,6 +58,7 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         string $template,
         IdentifiableObjectRepositoryInterface $attributeOptionRepository,
         ?string $customFont = null,
+        // @todo @pull-up To remove on master (already fixed with PIM-9649)
         ?AuthorizationCheckerInterface $authorizationChecker = null
     ) {
         parent::__construct(
@@ -102,6 +103,7 @@ class ProductPdfRenderer extends PimProductPdfRenderer
     protected function canRenderAttribute(?AttributeInterface $attribute): bool
     {
         return parent::canRenderAttribute($attribute) && (
+            // @todo @pull-up Sanity check to remove on master (already fixed with PIM-9649)
             null === $this->authorizationChecker ||
             $this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute->getGroup())
         );
