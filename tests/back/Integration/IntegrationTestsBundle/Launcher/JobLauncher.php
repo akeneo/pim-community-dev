@@ -183,14 +183,16 @@ class JobLauncher
         string $content,
         string $username = null,
         array $fixturePaths = [],
-        array $config = []
+        array $config = [],
+        string $format = 'csv'
     ) : void {
+        Assert::stringNotEmpty($format);
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
 
         $importDirectoryPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::IMPORT_DIRECTORY;
         $fixturesDirectoryPath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'fixtures';
-        $filePath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'import.csv';
+        $filePath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'import.' . $format;
 
         $fs = new Filesystem();
         $fs->remove($importDirectoryPath);
