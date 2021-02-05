@@ -38,7 +38,7 @@ trait AssertEventCountTrait
             $expectedCount,
             $count,
             sprintf(
-                'Expecting to have %s event of type "%s", but got %s.',
+                'Expecting to have %d event(s) of type "%s", but got %d.',
                 $expectedCount,
                 $eventClassName,
                 $count
