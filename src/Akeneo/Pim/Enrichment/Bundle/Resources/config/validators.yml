@@ -120,6 +120,11 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: reference_data_options_exist_validator }
 
+    pim_catalog.validator.constraint.duplicate_options:
+        class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\DuplicateOptionsValidator
+        tags:
+            - { name: validator.constraint_validator, alias: duplicate_options_validator }
+
     pim_catalog.validator.constraint.not_empty_variant_axes:
         class: '%pim_catalog.validator.constraint.not_empty_variant_axes.class%'
         arguments:
