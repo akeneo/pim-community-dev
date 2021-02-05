@@ -282,6 +282,11 @@ services:
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
+    pim_catalog.validator.constraint_guesser.options:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\OptionsGuesser'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
     # Validator ClassMetadata factory
     pim_catalog.validator.mapping.product_value_metadata_factory:
         public: false
