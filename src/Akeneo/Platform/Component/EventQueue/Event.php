@@ -56,7 +56,8 @@ abstract class Event implements EventInterface
      *  type: string,
      *  uuid: string,
      *  author: string,
-        timestamp: int,
+     *  author_type: string,
+     *  timestamp: int,
      * }
      */
     public function toLog(): array
@@ -65,6 +66,7 @@ abstract class Event implements EventInterface
             'type' => $this->getName(),
             'uuid' => $this->uuid,
             'author' => $this->author->name(),
+            'author_type' => $this->author->type(),
             'timestamp' => $this->timestamp,
         ];
     }
