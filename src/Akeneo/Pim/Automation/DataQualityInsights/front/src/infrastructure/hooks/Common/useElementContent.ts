@@ -18,7 +18,7 @@ const useElementContent = (element: HTMLElement): ElementContentState => {
 
   useEffect(() => {
     handleRefresh();
-  }, [element]);
+  }, [element, handleRefresh]);
 
   useEffect(() => {
     let text = content;

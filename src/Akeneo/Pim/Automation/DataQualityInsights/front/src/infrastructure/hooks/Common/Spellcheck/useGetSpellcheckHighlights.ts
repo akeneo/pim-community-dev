@@ -1,4 +1,4 @@
-import {useLayoutEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 
 import {createHighlight, HighlightElement, MistakeElement} from '../../../../application/helper';
 import EditorElement from '../../../../application/helper/EditorHighlight/EditorElement';
@@ -24,28 +24,31 @@ const useGetSpellcheckHighlights = (getContentRef: () => HTMLElement | null, ana
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {isMounted} = useMountedState();
 
-  useLayoutEffect(() => {
-    if (analysis.length > 0) {
-      const element = getContentRef();
-
-      if (element !== null) {
-        (async () => {
-          setIsLoading(true);
-          const result = await generateHighlights(uuidV5(element.id, HIGHLIGHT_UUID_NAMESPACE), analysis, element);
-
-          if (isMounted()) {
-            setHighlights(result);
-          }
-
-          setIsLoading(false);
-        })();
-      } else {
-        setHighlights([]);
-      }
-    } else {
+  const load = async (analysis: MistakeElement[]) => {
+    if (analysis.length === 0) {
       setHighlights([]);
+      return;
     }
-  }, [getContentRef, analysis]);
+
+    const element = getContentRef();
+    if (element === null) {
+      setHighlights([]);
+      return;
+    }
+
+    setIsLoading(true);
+    const result = await generateHighlights(uuidV5(element.id, HIGHLIGHT_UUID_NAMESPACE), analysis, element);
+
+    if (isMounted()) {
+      setHighlights(result);
+    }
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    (async () => load(analysis))();
+  }, [analysis]);
 
   return {
     highlights,
