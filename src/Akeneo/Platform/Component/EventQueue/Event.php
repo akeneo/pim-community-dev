@@ -50,4 +50,22 @@ abstract class Event implements EventInterface
     {
         return $this->uuid;
     }
+
+    /**
+     * @return array{
+     *  type: string,
+     *  uuid: string,
+     *  author: string,
+        timestamp: int,
+     * }
+     */
+    public function toLog(): array
+    {
+        return [
+            'type' => $this->getName(),
+            'uuid' => $this->uuid,
+            'author' => $this->author->name(),
+            'timestamp' => $this->timestamp,
+        ];
+    }
 }

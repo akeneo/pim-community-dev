@@ -89,6 +89,14 @@ final class DispatchProductModelCreatedAndUpdatedEventSubscriber implements Even
 
         try {
             $this->messageBus->dispatch(new BulkEvent($this->events));
+            foreach ($this->events as $event) {
+                $this->logger->info(
+                    json_encode(
+                        $event->toLog(),
+                        JSON_THROW_ON_ERROR
+                    )
+                );
+            }
         } catch (TransportException $e) {
             $this->logger->critical($e->getMessage());
         }
