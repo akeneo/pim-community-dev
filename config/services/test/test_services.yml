@@ -242,3 +242,10 @@ services:
             $attributeRemover: '@pim_catalog.remover.attribute'
             $entityValidator: '@validator'
             $productAndProductModelEsClient: '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo_integration_tests.message_bus_observer:
+        class: Symfony\Component\Messenger\TraceableMessageBus
+        decorates: messenger.default_bus
+        decoration_inner_name: messenger.default_bus.inner
+        arguments:
+            - '@messenger.default_bus.inner'
