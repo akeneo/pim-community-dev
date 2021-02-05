@@ -14,8 +14,8 @@ final class ImportUserGroupIntegration extends TestCase
     private const CSV_IMPORT_JOB_CODE = 'csv_user_group_import';
     private const XLSX_IMPORT_JOB_CODE = 'xlsx_user_group_import';
 
-    protected JobLauncher $jobLauncher;
-    protected GroupRepositoryInterface $groupRepository;
+    private JobLauncher $jobLauncher;
+    private GroupRepositoryInterface $groupRepository;
 
     /**
      * {@inheritdoc}
