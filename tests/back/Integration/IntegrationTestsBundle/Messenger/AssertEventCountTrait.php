@@ -34,6 +34,15 @@ trait AssertEventCountTrait
             }
         }
 
-        $this->assertSame($expectedCount, $count);
+        $this->assertSame(
+            $expectedCount,
+            $count,
+            sprintf(
+                'Expecting to have %d event(s) of type "%s", but got %d.',
+                $expectedCount,
+                $eventClassName,
+                $count
+            )
+        );
     }
 }
