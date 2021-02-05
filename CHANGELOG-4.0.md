@@ -4,6 +4,7 @@
 
 - PIM-9665: [Backport] PIM-9533: Update wysiwyg editor's style in order to differentiate new paragraphs from mere line breaks
 - PIM-9663: Fix PDF product renderer disregarding permissions on attribute groups (backport of PIM-9649)
+- PIM-9669: [Backport] PIM-9610: Force displaying years with 4 digits in dates for every locale
 
 # 4.0.90 (2021-02-02)
 
