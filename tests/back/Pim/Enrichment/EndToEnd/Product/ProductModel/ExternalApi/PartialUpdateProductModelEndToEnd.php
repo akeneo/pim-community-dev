@@ -2,11 +2,15 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateProductModelEndToEnd extends AbstractProductModelTestCase
 {
+    use AssertEventCountTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -79,6 +83,7 @@ JSON;
             $response->headers->get('location')
         );
         $this->assertSame('', $response->getContent());
+        $this->assertEventCount(0, ProductUpdated::class);
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false');
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
@@ -370,6 +375,7 @@ JSON;
             $response->headers->get('location')
         );
         $this->assertSame('', $response->getContent());
+        $this->assertEventCount(0, ProductUpdated::class);
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false');
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
