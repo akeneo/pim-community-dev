@@ -191,7 +191,6 @@ akeneo_connectivity.connection:
         link: Erfahren Sie hier mehr über Verbindungen...
   webhook:
     helper:
-      message: Sie können über Ereignisse im PIM für Produkte, die mit dieser verbundenen App synchronisiert werden, benachrichtigt werden. Sie müssen nur eine URL und den Ereignistyp(en) definieren, über den Sie den Überblick behalten möchten.
       link: Erfahren Sie mehr über Eventabonnement-Konfiguration...
       url.test_disabled: Bitte klicken Sie auf Speichern, um die URL testen zu können.
     form:
