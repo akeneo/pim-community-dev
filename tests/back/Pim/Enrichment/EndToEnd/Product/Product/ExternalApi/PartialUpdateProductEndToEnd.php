@@ -749,6 +749,9 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_associations');
+
+        $this->assertEventCount(1, ProductUpdated::class);
+
     }
 
     public function testProductPartialUpdateWithTheAssociationsDeletedOnGroups()

@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
@@ -381,6 +382,7 @@ JSON;
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
         $this->assertSame($standardizedProduct['values']['a_number_float'][0]['data'], '15.3000');
 
+        $this->assertEventCount(1, ProductModelUpdated::class);
     }
 
     public function testSubProductModelCreation()
