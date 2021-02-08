@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {Helper, MeasurementIllustration, Button, Modal, Title, SectionTitle} from 'akeneo-design-system';
+import {Helper, MeasurementIllustration, Button, Modal} from 'akeneo-design-system';
 import {Subsection, SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {useCreateMeasurementFamilySaver} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-saver';
@@ -57,8 +57,8 @@ const CreateMeasurementFamily = ({isOpen, onClose}: CreateMeasurementFamilyProps
       onClose={() => handleClose()}
       illustration={<MeasurementIllustration />}
     >
-      <SectionTitle color="brand">{translate('measurements.title.measurement')}</SectionTitle>
-      <Title>{translate('measurements.family.add_new_measurement_family')}</Title>
+      <Modal.SectionTitle color="brand">{translate('measurements.title.measurement')}</Modal.SectionTitle>
+      <Modal.Title>{translate('measurements.family.add_new_measurement_family')}</Modal.Title>
       <Subsection>
         <SubsectionHeader>{translate('pim_common.properties')}</SubsectionHeader>
         <FormGroup>
