@@ -68,7 +68,7 @@ return (
             </Button>
           </div>
           <ProgressIndicator>
-            {steps.map((step, i) => {
+            {steps.map((step) => {
               return (
                 <ProgressIndicator.Step key={step} current={isCurrent(step)}>
                   {step}
@@ -83,3 +83,21 @@ return (
 </Canvas>
 
 <ArgsTable story="Standard" />
+
+## States
+
+<Canvas>
+  <Story name="States">
+    <ProgressIndicator>
+      <ProgressIndicator.Step>
+        Before current step
+      </ProgressIndicator.Step>
+      <ProgressIndicator.Step current={true}>
+        Current step
+      </ProgressIndicator.Step>
+      <ProgressIndicator.Step>
+        After current step
+      </ProgressIndicator.Step>
+    </ProgressIndicator>
+  </Story>
+</Canvas>
