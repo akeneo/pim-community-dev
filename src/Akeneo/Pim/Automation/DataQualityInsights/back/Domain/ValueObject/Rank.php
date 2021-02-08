@@ -55,7 +55,7 @@ final class Rank implements \JsonSerializable
         $ranksByLetter = array_flip(self::LETTERS_MAPPING);
 
         if (!isset($ranksByLetter[$letter])) {
-            throw new \InvalidArgumentException(sprintf('The letter "%s" does not correspond to any rank.', $letter));
+            throw new \InvalidArgumentException(sprintf('The letter "%s" does not match any rank.', $letter));
         }
 
         return self::fromInt($ranksByLetter[$letter]);
