@@ -57,4 +57,5 @@ config:
         pim/user/fields/default-grid-views:               pimuser/js/fields/default-grid-views.ts
         pim/user/fields/product-grid-filters:             pimuser/js/fields/product-grid-filters.ts
         pim/user-edit-form/delete:                        pimuser/js/form/delete
+        pim/user-edit-form/duplicate:                     pimuser/js/form/duplicate-secondary-action.tsx
         pim/remover/user:                                 pimuser/js/remover/user
