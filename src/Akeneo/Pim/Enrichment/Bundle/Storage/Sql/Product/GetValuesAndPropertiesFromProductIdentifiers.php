@@ -72,8 +72,12 @@ SQL;
                 'identifier' => Type::getType(Type::STRING)->convertToPHPValue($row['identifier'], $platform),
                 'is_enabled' => Type::getType(Type::BOOLEAN)->convertToPHPValue($row['is_enabled'], $platform),
                 'product_model_code' => Type::getType(Type::STRING)->convertToPHPValue($row['product_model_code'], $platform),
-                'created' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue($row['created'], $platform),
-                'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue($row['updated'], $platform),
+                'created' => \DateTimeImmutable::createFromMutable(
+                    Type::getType(Type::DATETIME)->convertToPhpValue($row['created'], $platform)
+                ),
+                'updated' => \DateTimeImmutable::createFromMutable(
+                    Type::getType(Type::DATETIME)->convertToPhpValue($row['updated'], $platform)
+                ),
                 'family_code' => Type::getType(Type::STRING)->convertToPHPValue($row['family_code'], $platform),
                 'group_codes' => $groupCodes,
                 'raw_values' => json_decode($row['raw_values'], true)

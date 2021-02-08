@@ -91,8 +91,12 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
                 'identifier' => 'productA',
                 'is_enabled' => true,
                 'product_model_code' => null,
-                'created' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::CREATED, $platform),
-                'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::UPDATED, $platform),
+                'created' => \DateTimeImmutable::createFromMutable(
+                    Type::getType(Type::DATETIME)->convertToPhpValue(self::CREATED, $platform)
+                ),
+                'updated' => \DateTimeImmutable::createFromMutable(
+                    Type::getType(Type::DATETIME)->convertToPhpValue(self::UPDATED, $platform)
+                ),
                 'family_code' => 'family',
                 'group_codes' => [],
                 'raw_values' => [
@@ -125,8 +129,12 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
                 'identifier' => 'VariantProductA',
                 'is_enabled' => true,
                 'product_model_code' => 'SubProductModel',
-                'created' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::CREATED, $platform),
-                'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::UPDATED, $platform),
+                'created' => \DateTimeImmutable::createFromMutable(
+                    Type::getType(Type::DATETIME)->convertToPhpValue(self::CREATED, $platform)
+                ),
+                'updated' => \DateTimeImmutable::createFromMutable(
+                    Type::getType(Type::DATETIME)->convertToPhpValue(self::UPDATED, $platform)
+                ),
                 'family_code' => 'FamilyWithVariant',
                 'group_codes' => [],
                 'raw_values' => [
