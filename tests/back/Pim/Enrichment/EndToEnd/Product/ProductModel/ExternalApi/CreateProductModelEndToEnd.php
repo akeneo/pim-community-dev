@@ -2,11 +2,15 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateProductModelEndToEnd extends AbstractProductModelTestCase
 {
+    use AssertEventCountTrait;
+
     public function testSubProductModelCreation()
     {
         $client = $this->createAuthenticatedClient();
@@ -670,6 +674,8 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertSameProductModels($expectedProductModel, 'root_product_model');
+
+        $this->assertEventCount(1, ProductModelCreated::class);
     }
 
     public function testRootProductModelCreationImportWithNoVariantFamily()
