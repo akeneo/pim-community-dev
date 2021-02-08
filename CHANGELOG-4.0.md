@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9663: Fix PDF product renderer disregarding permissions on attribute groups (backport of PIM-9649)
+
 # 4.0.90 (2021-02-02)
 
 ## Bug fixes
