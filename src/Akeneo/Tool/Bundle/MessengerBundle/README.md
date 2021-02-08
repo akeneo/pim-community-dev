@@ -12,7 +12,7 @@ The environment variable `SRNT_GOOGLE_APPLICATION_CREDENTIALS` must be defined w
 
 ### Simple queue configuration
 
-For a simple configuration of a Pub/Sub Topic with only one Subscription:
+For a simple configuration of a Pub/Sub topic with only one subscription:
 
 ```yml
 framework:
@@ -24,9 +24,6 @@ framework:
           project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
           topic_name: '%env(PUBSUB_TOPIC)%'
           subscription_name: '%env(PUBSUB_SUBSCRIPTION)%'
-        retry_strategy:
-          max_retries: 0
-        serializer: pim_enrich.messenger.serializer.business_event
 
     routing:
       'My\Event': my_queue
@@ -34,7 +31,7 @@ framework:
 
 ### Queue with multiple subscribers
 
-Google Pub/Sub use a [subscription model](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) and it means that one Topic can have more than one Subscription.
+Google Pub/Sub use a [subscription model](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) and it means that one topic can have more than one subscription.
 
 To be able to handle this, we recommends to have multiple transport definitions with one that serve as Producer only while the other ones are Consumers.
 
@@ -49,9 +46,6 @@ framework:
         options:
           project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
           topic_name: '%env(PUBSUB_TOPIC)%'
-        retry_strategy:
-          max_retries: 0
-        serializer: pim_enrich.messenger.serializer.business_event
 
       # Consumers
 
@@ -61,9 +55,6 @@ framework:
           project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
           topic_name: '%env(PUBSUB_TOPIC)%'
           subscription_name: '%env(PUBSUB_SUBSCRIPTION_1)%'
-        retry_strategy:
-          max_retries: 0
-        serializer: pim_enrich.messenger.serializer.business_event
 
       my_second_consumer:
         dsn: 'gps:'
@@ -71,9 +62,6 @@ framework:
           project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
           topic_name: '%env(PUBSUB_TOPIC)%'
           subscription_name: '%env(PUBSUB_SUBSCRIPTION_2)%'
-        retry_strategy:
-          max_retries: 0
-        serializer: pim_enrich.messenger.serializer.business_event
 
     routing:
       'My\Event': my_producer
@@ -91,7 +79,7 @@ From the Symfony Messenger point of view, this is three independant queues. But 
 
 - `auto_setup: ?bool`
 
-  Default to `false`, but can be enabled to make the Transport create the Topic and Subscription for you.
+  Default to `false`, but can be enabled to make the Transport create the topic and subscription for you.
   This is useful when using the in-memory [Pub/Sub emulator](https://cloud.google.com/pubsub/docs/emulator) (enabled when the environment variable `PUBSUB_EMULATOR_HOST` is defined).
 
 ## Purge Command for the Doctrine Transport table
