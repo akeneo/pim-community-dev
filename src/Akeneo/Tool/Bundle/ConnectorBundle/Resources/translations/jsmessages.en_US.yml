@@ -52,6 +52,9 @@ batch_jobs:
     csv_user_role_export:
         label: User role export in CSV
         export.label: User role export
+    csv_user_export:
+        label: User export in CSV
+        export.label: User export
     csv_product_import:
         label: Product import in CSV
         import.label: Product import
@@ -161,6 +164,9 @@ batch_jobs:
     xlsx_user_role_export:
         label: User role export in XLSX
         export.label: User role export
+    xlsx_user_export:
+        label: User export in XLSX
+        export.label: User export
     xlsx_attribute_group_import:
         label: Attribute group import in XLSX
         import.label: Attribute group import
