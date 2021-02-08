@@ -18,6 +18,7 @@ test('it renders its children properly', () => {
   expect(screen.getByText('General parameters')).toBeInTheDocument();
   expect(screen.getByText('10 results')).toBeInTheDocument();
   expect(screen.getByText('Action')).toBeInTheDocument();
+  expect(screen.getByTitle('More')).toBeInTheDocument();
 });
 
 test('SectionTitle supports ...rest props', () => {
