@@ -60,14 +60,15 @@ type StepProps = Override<
   React.HTMLAttributes<HTMLLIElement>,
   {
     /**
-     * Mark the step as completed
+     * Set to true if the step is the current step in the progress indicator
      */
     current?: boolean;
 
     /**
+     * This property is handheld by the ProgressIndicator component. You should not set it yourself.
      * @private
      */
-    state: StepState;
+    state?: StepState;
 
     /**
      * The label of the step
@@ -78,9 +79,18 @@ type StepProps = Override<
 
 const Step = React.forwardRef<HTMLLIElement, StepProps>(
   ({state, children, ...rest}: StepProps, forwardedRef: Ref<HTMLLIElement>) => {
+    if (undefined === state) {
+      throw new Error('ProgressIndicator.Step cannot be used outside a ProgressIndicator component');
+    }
+
     return (
-      <StepContainer state={state} ref={forwardedRef} {...rest}>
-        <StepCircle aria-hidden aria-current={'inprogress' === state} state={state}>
+      <StepContainer
+        aria-current={'inprogress' === state ? 'step' : undefined}
+        state={state}
+        ref={forwardedRef}
+        {...rest}
+      >
+        <StepCircle aria-hidden state={state}>
           {'done' === state && <CheckIcon size={24} />}
         </StepCircle>
         <StepLabel>{children}</StepLabel>
@@ -102,10 +112,9 @@ type ProgressIndicatorProps = Override<
 /**
  * Progress indicator display progress through a sequence of logical and numbered steps
  */
-/* @TODO StepIndicator or Stepper ? */
 const ProgressIndicator = ({children, ...rest}: ProgressIndicatorProps) => {
   const currentStepIndex = React.Children.toArray(children).reduce((result, child, index) => {
-    return isValidElement(child) && child.type === Step && child.props.current === true ? index : result;
+    return isValidElement<StepProps>(child) && child.type === Step && child.props.current === true ? index : result;
   }, 0);
 
   const decoratedChildren = React.Children.map(children, (child, index) => {

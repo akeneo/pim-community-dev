@@ -7,15 +7,14 @@ import {useProgress} from '../../hooks';
   title="Components/Progress indicator"
   component={ProgressIndicator}
   subcomponents={{
-    ProgressIndicator: ProgressIndicator,
     'ProgressIndicator.Step': ProgressIndicator.Step,
   }}
   argTypes={{
-    numberOfSteps: {control: {type: 'number', min: 1, max: 10}},
-    completedStep: {control: {type: 'number', min: 1, max: 10}},
-    children: {table: {disable: true}},
+    current: {
+      name: '<ProgressIndicator current>',
+      description: 'Define the current step of the progress',
+    },
   }}
-  args={{numberOfSteps: 3, completedStep: 1}}
 />
 
 # Progress indicator
@@ -27,14 +26,47 @@ Progress indicator display progress through a sequence of logical and numbered s
 ## Playground
 
 <Canvas>
-  <Story name="Standard">
+  <Story
+    name="Standard"
+    parameters={{
+      docs: {
+        source: {
+          code: `import {useProgress, ProgressIndicator} from 'akeneo-design-system';\n
+//Step codes needs to be unique
+const steps = ['choose', 'edit', 'confirm'];
+const [isCurrent, next, previous] = useProgress(steps);
+return (
+  <>
+    <Button onClick={previous}>Previous</Button>
+    <Button onClick={next}>Next</Button>
+    <ProgressIndicator>
+      {steps.map((step) => (
+        <ProgressIndicator.Step key={step} current={isCurrent(step)}>
+          {/* Here we used the step code, but you can also use a translator like {translate(\`my_translation_path.$\{step}\`)}*/}
+          {step}
+        </ProgressIndicator.Step>
+      ))}
+    </ProgressIndicator>
+  </>
+);
+`,
+        },
+      },
+    }}
+  >
     {args => {
-      const steps = ['chose', 'edit', 'confirm'];
+      const steps = ['choose', 'edit', 'confirm'];
       const [isCurrent, next, previous] = useProgress(steps);
       return (
         <>
-          <Button onClick={previous}>Previous</Button>
-          <Button onClick={next}>Next</Button>
+          <div style={{display: 'flex', justifyContent: 'space-evenly'}}>
+            <Button level="secondary" onClick={previous}>
+              Previous
+            </Button>
+            <Button level="secondary" onClick={next}>
+              Next
+            </Button>
+          </div>
           <ProgressIndicator>
             {steps.map((step, i) => {
               return (
