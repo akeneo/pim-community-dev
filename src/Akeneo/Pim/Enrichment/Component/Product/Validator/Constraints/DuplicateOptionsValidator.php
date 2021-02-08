@@ -20,7 +20,7 @@ final class DuplicateOptionsValidator extends ConstraintValidator
         if (!is_array($value) || \count($value) <= 1) {
             return;
         }
-        Assert::allStringNotEmpty($value);
+        Assert::allString($value);
 
         $dataLowercase = \array_map('strtolower', $value);
         $uniqueDataLowercase = \array_unique($dataLowercase, SORT_STRING);

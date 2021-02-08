@@ -52,6 +52,11 @@ class DuplicateOptionsValidatorSpec extends ObjectBehavior
         $this->validate(['red'], new DuplicateOptions());
     }
 
+    function it_throws_an_exception_if_one_of_the_values_is_not_a_string()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [['test', 1, null], new DuplicateOptions()]);
+    }
+
     function it_does_not_build_a_violation_if_there_are_no_duplicates(ExecutionContextinterface $context): void
     {
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
