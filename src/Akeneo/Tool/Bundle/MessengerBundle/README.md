@@ -1,10 +1,10 @@
 # Akeneo Messenger Bundle
 
-This bundle provide the missing pieces to integrate [Symfony Messenger](https://symfony.com/doc/4.4/messenger.html) with the PIM.
+This bundle provides the missing pieces to integrate [Symfony Messenger](https://symfony.com/doc/4.4/messenger.html) with the PIM.
 
 ## Messenger Transport for Google Pub/Sub
 
-The Transport require the library ["google/cloud-pubsub"](https://packagist.org/packages/google/cloud-pubsub).
+The Transport requires the library ["google/cloud-pubsub"](https://packagist.org/packages/google/cloud-pubsub).
 
 It follows the official Symfony documentation on [creating a custom Transport](https://symfony.com/doc/4.4/messenger/custom-transport.html).
 
@@ -31,9 +31,9 @@ framework:
 
 ### Queue with multiple subscribers
 
-Google Pub/Sub use a [subscription model](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) and it means that one topic can have more than one subscription.
+Google Pub/Sub uses a [subscription model](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) and it means that one topic can have more than one subscription.
 
-To be able to handle this, we recommends to have multiple transport definitions with one that serve as Producer only while the other ones are Consumers.
+To be able to handle this, we recommend having multiple transport definitions with one that serves as Producer only while the other ones are Consumers.
 
 ```yml
 framework:
@@ -67,7 +67,7 @@ framework:
       'My\Event': my_producer
 ```
 
-From the Symfony Messenger point of view, this is three independant queues. But from Pub/Sub point of view, all messages sent to the producer will be dispatched to the consumers.
+From the Symfony Messenger point of view, these are three independent queues. But from Pub/Sub point of view, all messages sent to the producer will be dispatched to the consumers.
 
 ### Transport Options
 
@@ -84,10 +84,10 @@ From the Symfony Messenger point of view, this is three independant queues. But 
 
 ## Purge Command for the Doctrine Transport table
 
-Define a Command to purge the table defined by the Doctrine Transport.
+Define a Command to purge the table configured on the Doctrine Transport.
 
 ```sh
-bin/console akeneo:messenger:doctrine:purge-messages --retention-time=7200 <table-name> <queue-name>
+bin/console akeneo:messenger:doctrine:purge-messages <table-name> <queue-name>
 ```
 
-The goal is to be able to remove Messages that are to old (default to 2 hours).
+The goal is to remove old messages (the default retention time is 2 hours).
