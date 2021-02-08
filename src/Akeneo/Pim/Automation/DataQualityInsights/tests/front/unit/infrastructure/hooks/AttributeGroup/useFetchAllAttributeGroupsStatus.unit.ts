@@ -23,7 +23,7 @@ describe('useFetchAllAttributeGroupsStatus', () => {
 
     expect(result.current.status).toEqual({});
 
-    await act(async() => result.current.load());
+    await act(async () => result.current.load());
 
     expect(result.current.status).toEqual({erp: true, technical: true, marketing: true});
   });
