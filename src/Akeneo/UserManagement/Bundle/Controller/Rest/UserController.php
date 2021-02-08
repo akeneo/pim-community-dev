@@ -284,6 +284,9 @@ class UserController
         return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));
     }
 
+    /**
+     * @AclAncestor("pim_user_user_create")
+     */
     public function duplicateAction(Request $request, int $identifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
@@ -294,9 +297,8 @@ class UserController
         $targetUser = $baseUser->duplicate();
 
         $content = \json_decode($request->getContent(), true);
-        unset($content['password_repeat']);
-
         $passwordViolations = $this->validatePasswordCreate($content);
+        unset($content['password_repeat']);
         $this->updater->update($targetUser, $content);
         $violations = $this->validator->validate($targetUser);
         if ($violations->count() > 0 || $passwordViolations->count() > 0) {
