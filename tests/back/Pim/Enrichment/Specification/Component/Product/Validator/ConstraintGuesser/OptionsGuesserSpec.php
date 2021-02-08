@@ -26,6 +26,7 @@ class OptionsGuesserSpec extends ObjectBehavior
 
     function it_guesses_constraints(AttributeInterface $attribute): void
     {
-        $this->guessConstraints($attribute)->shouldBeLike([new DuplicateOptions()]);
+        $attribute->getCode()->shouldBeCalled()->willReturn('colors');
+        $this->guessConstraints($attribute)->shouldBeLike([new DuplicateOptions(['attributeCode' => 'colors'])]);
     }
 }

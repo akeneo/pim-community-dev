@@ -29,7 +29,7 @@ class OptionsGuesser implements ConstraintGuesserInterface
     public function guessConstraints(AttributeInterface $attribute): array
     {
         return [
-            new DuplicateOptions(),
+            new DuplicateOptions(['attributeCode' => $attribute->getCode()]),
         ];
     }
 }

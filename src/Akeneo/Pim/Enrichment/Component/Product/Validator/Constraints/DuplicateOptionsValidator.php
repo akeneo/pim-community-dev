@@ -38,8 +38,9 @@ final class DuplicateOptionsValidator extends ConstraintValidator
                 [
                     '{{ duplicate_options }}' => \implode(', ', $duplicateOptions),
                     '%count%' => count($duplicateOptions),
+                    '%attribute_code%' => $constraint->attributeCode,
                 ]
-            )->addViolation();
+            )->setCode(DuplicateOptions::DUPLICATE_ATTRIBUTE_OPTIONS)->addViolation();
         }
     }
 }

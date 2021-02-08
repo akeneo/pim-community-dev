@@ -10,13 +10,14 @@ use Akeneo\Pim\Enrichment\Component\Error\Documentation\HrefMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\Documentation\RouteMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AttributeOptionsExist;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\DuplicateOptions;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class AttributeOptionDoesNotExist implements DocumentationBuilderInterface
+final class AttributeOptionValidation implements DocumentationBuilderInterface
 {
     public function support($object): bool
     {
@@ -24,6 +25,7 @@ final class AttributeOptionDoesNotExist implements DocumentationBuilderInterface
             switch ($object->getCode()) {
                 case AttributeOptionsExist::ATTRIBUTE_OPTION_DOES_NOT_EXIST:
                 case AttributeOptionsExist::ATTRIBUTE_OPTIONS_DO_NOT_EXIST:
+                case DuplicateOptions::DUPLICATE_ATTRIBUTE_OPTIONS:
                     return true;
             }
         }
