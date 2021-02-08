@@ -52,7 +52,7 @@ class RemoveAssetFromIndexSubscriber implements EventSubscriberInterface
             $assetsDeletedEvent->getAssetCodes()
         );
 
-        $this->assetIndexer->removeAssetByAssetFamilyIdentifierAndCodes(
+        $this->assetIndexer->removeByAssetFamilyIdentifierAndCodes(
             (string) $assetsDeletedEvent->getAssetFamilyIdentifier(),
             $normalizedAssetCode
         );

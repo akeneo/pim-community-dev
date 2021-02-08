@@ -69,7 +69,7 @@ class AssetIndexerSpy implements AssetIndexerInterface
     ) {
     }
 
-    public function removeAssetByAssetFamilyIdentifierAndCodes(
+    public function removeByAssetFamilyIdentifierAndCodes(
         string $assetFamilyIdentifier,
         array $assetCodes
     ) {

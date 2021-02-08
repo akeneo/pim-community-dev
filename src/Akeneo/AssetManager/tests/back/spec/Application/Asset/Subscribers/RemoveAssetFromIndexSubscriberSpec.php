@@ -52,7 +52,7 @@ class RemoveAssetFromIndexSubscriberSpec extends ObjectBehavior
     ) {
         $assetCodes = [AssetCode::fromString('packshot_1'), AssetCode::fromString('packshot_2')];
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
-        $assetIndexer->removeAssetByAssetFamilyIdentifierAndCodes('designer', ['packshot_1', 'packshot_2'])->shouldBeCalled();
+        $assetIndexer->removeByAssetFamilyIdentifierAndCodes('designer', ['packshot_1', 'packshot_2'])->shouldBeCalled();
 
         $this->whenMultipleAssetsDeleted(new AssetsDeletedEvent($assetFamilyIdentifier, $assetCodes));
     }

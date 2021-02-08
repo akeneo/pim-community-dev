@@ -81,7 +81,7 @@ class AssetIndexer implements AssetIndexerInterface
         $this->assetClient->deleteByQuery($queryBody);
     }
 
-    public function removeAssetByAssetFamilyIdentifierAndCodes(string $assetFamilyIdentifier, array $assetCodes)
+    public function removeByAssetFamilyIdentifierAndCodes(string $assetFamilyIdentifier, array $assetCodes)
     {
         $queryBody = [
             'query' => [

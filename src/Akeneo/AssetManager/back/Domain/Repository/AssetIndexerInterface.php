@@ -35,10 +35,7 @@ interface AssetIndexerInterface
         string $assetCode
     );
 
-    /**
-     * Remove several assets from the index
-     */
-    public function removeAssetByAssetFamilyIdentifierAndCodes(string $assetFamilyIdentifier, array $assetCodes);
+    public function removeByAssetFamilyIdentifierAndCodes(string $assetFamilyIdentifier, array $assetCodes);
 
     public function refresh();
 }
