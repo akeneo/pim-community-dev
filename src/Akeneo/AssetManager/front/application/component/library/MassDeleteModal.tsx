@@ -1,14 +1,5 @@
 import React, {useState} from 'react';
-import {
-  Button,
-  DeleteIllustration,
-  Field,
-  getColor,
-  Key,
-  Modal,
-  TextInput,
-  useShortcut,
-} from 'akeneo-design-system';
+import {Button, DeleteIllustration, Field, getColor, Key, Modal, TextInput, useShortcut} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import AssetFamilyIdentifier from '../../../domain/model/asset-family/identifier';
 import styled from 'styled-components';
