@@ -91,7 +91,7 @@ class DuplicateOptionsValidatorSpec extends ObjectBehavior
         $this->validate($value, $constraint);
     }
 
-    function it_builds_the_right_violation_if_an_option_appears_more_tha_twice(
+    function it_builds_the_right_violation_if_an_option_appears_more_than_twice(
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ): void {
