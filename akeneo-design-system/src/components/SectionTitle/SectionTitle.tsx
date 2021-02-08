@@ -32,7 +32,7 @@ const Separator = styled.div`
 const Information = styled.div`
   font-size: ${getFontSize('default')};
   font-weight: normal;
-  color: ${getColor('purple', 100)};
+  color: ${getColor('brand', 100)};
 `;
 
 type SectionTitleProps = React.HTMLAttributes<HTMLDivElement>;
