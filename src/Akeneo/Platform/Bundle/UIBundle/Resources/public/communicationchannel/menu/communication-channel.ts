@@ -19,6 +19,7 @@ class CommunicationChannel extends Backbone.View<any> {
     return super.initialize();
   }
 
+  // @ts-ignore
   render(): Backbone.View {
     const template = _.template(CommunicationChannelTemplate);
     this.$el.empty().append(

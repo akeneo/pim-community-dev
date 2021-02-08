@@ -1,5 +1,7 @@
 # 3.2.x
 
+- AOB-1300: Fix Onboarder bundle front build
+
 # Technical Improvements
 
 - PIM-9648: Mitigate DDoS risk on API auth endpoint by rejecting too large content

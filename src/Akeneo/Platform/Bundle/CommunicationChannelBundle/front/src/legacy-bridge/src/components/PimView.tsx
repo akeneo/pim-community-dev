@@ -26,6 +26,7 @@ const PimView = ({viewName, className}: Props) => {
       return;
     }
     viewBuilder.build(viewName).then((view: View) => {
+      // @ts-ignore
       view.setElement(el.current).render();
       setView(view);
     });

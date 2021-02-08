@@ -15,6 +15,7 @@ abstract class ReactView extends BaseView {
     return BaseView.prototype.render.apply(this, arguments);
   }
 
+  // @ts-ignore
   remove(): BaseView {
     // @ts-ignore
     unmountReactElementRef(this.$el.get(0));
