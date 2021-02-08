@@ -45,4 +45,9 @@ trait AssertEventCountTrait
             )
         );
     }
+
+    public function clearMessageBusObserver(): void
+    {
+        $this->get('akeneo_integration_tests.message_bus_observer')->reset();
+    }
 }
