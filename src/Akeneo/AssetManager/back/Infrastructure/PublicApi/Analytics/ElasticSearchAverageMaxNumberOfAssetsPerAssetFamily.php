@@ -32,7 +32,7 @@ class ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily
         ]);
 
         $assetCount = array_map(
-            fn($assetFamilyData) => $assetFamilyData['doc_count'],
+            fn ($assetFamilyData) => $assetFamilyData['doc_count'],
             $response['aggregations']['by_asset_family_code']['buckets']
         );
 

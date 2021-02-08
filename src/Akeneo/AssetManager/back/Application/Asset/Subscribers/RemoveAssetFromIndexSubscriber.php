@@ -48,7 +48,7 @@ class RemoveAssetFromIndexSubscriber implements EventSubscriberInterface
     public function whenMultipleAssetsDeleted(AssetsDeletedEvent $assetsDeletedEvent): void
     {
         $normalizedAssetCode = array_map(
-            fn(AssetCode $assetCode) => $assetCode->normalize(),
+            fn (AssetCode $assetCode) => $assetCode->normalize(),
             $assetsDeletedEvent->getAssetCodes()
         );
 
