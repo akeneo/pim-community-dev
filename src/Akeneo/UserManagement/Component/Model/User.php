@@ -1123,6 +1123,51 @@ class User implements UserInterface
         return $this->properties[$propertyName] ?? null;
     }
 
+    public function duplicate(): UserInterface
+    {
+        $duplicated = new self();
+        $duplicated->setEnabled($this->enabled ?? false);
+        if ($this->timezone) {
+            $duplicated->setTimezone($this->timezone);
+        }
+
+        $duplicated->setPhone($this->phone);
+        $duplicated->setEmailNotifications($this->emailNotifications);
+        if ($this->uiLocale) {
+            $duplicated->setUiLocale($this->uiLocale);
+        }
+
+        if ($this->catalogLocale) {
+            $duplicated->setCatalogLocale($this->catalogLocale);
+        }
+
+        if ($this->catalogScope) {
+            $duplicated->setCatalogScope($this->catalogScope);
+        }
+
+        if ($this->defaultTree) {
+            $duplicated->setDefaultTree($this->defaultTree);
+        }
+
+        $duplicated->setRoles($this->roles);
+        $duplicated->setGroups($this->groups->toArray());
+        foreach ($this->defaultGridViews as $datagridView) {
+            if ($datagridView->isPublic()) {
+                $duplicated->setDefaultGridView($datagridView->getDatagridAlias(), $datagridView);
+            }
+        }
+
+        if ($this->isApiUser()) {
+            $duplicated->defineAsApiUser();
+        }
+
+        foreach ($this->properties as $key => $value) {
+            $duplicated->addProperty($key, $value);
+        }
+
+        return $duplicated;
+    }
+
     private function getInflector(): Inflector
     {
         return new Inflector(new NoopWordInflector(), new NoopWordInflector());

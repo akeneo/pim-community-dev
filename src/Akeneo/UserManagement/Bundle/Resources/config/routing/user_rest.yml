@@ -16,7 +16,7 @@ pim_user_user_rest_post:
     methods: [POST]
     requirements:
         identifier: '\d+'
-        
+
 pim_user_user_rest_profile:
     path: /{identifier}/profile
     defaults: { _controller: pim_user.controller.user_rest:updateProfileAction }
@@ -33,5 +33,12 @@ pim_user_user_rest_delete:
     path: /{identifier}
     defaults: { _controller: pim_user.controller.user_rest:deleteAction }
     methods: [DELETE]
+    requirements:
+        identifier: '\d+'
+
+pim_user_user_rest_duplicate:
+    path: /{identifier}/duplicate
+    defaults: { _controller: pim_user.controller.user_rest:duplicateAction }
+    methods: [POST]
     requirements:
         identifier: '\d+'
