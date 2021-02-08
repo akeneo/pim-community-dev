@@ -25,4 +25,4 @@ const AttributeGroupsStatusProvider: FC = ({children}) => {
   );
 };
 
-export {AttributeGroupsStatusProvider, useAttributeGroupsStatusContext};
+export {AttributeGroupsStatusProvider, useAttributeGroupsStatusContext, AttributeGroupsStatusContext};
