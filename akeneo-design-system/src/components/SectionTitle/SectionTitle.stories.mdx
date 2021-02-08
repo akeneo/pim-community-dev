@@ -1,11 +1,19 @@
-import {Meta, Story, Canvas} from '@storybook/addon-docs/blocks';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {SectionTitle} from './SectionTitle.tsx';
 import {Button, IconButton} from "../../components";
 import {MoreIcon} from "../../icons";
 
 <Meta
   title="Components/Section title"
-  component={SectionTitle}
+  subcomponents={{
+    'SectionTitle': SectionTitle
+  }}
+  argTypes={{
+    text: {control: {type: 'text'}, description: 'Define the section title text'},
+  }}
+  args={{
+    text: 'General parameters',
+  }}
 />
 
 # SectionTitle
@@ -22,11 +30,17 @@ Use this component only for title, not for description or help message.
 
 <Canvas>
   <Story name="Standard">
-    <SectionTitle>
-      <SectionTitle.Title>General parameters</SectionTitle.Title>
-    </SectionTitle>
+    {args => {
+      return (
+        <SectionTitle>
+          <SectionTitle.Title>{args.text}</SectionTitle.Title>
+        </SectionTitle>
+      )
+    }}
   </Story>
 </Canvas>
+
+<ArgsTable story="Standard" />
 
 ## With actions
 <Canvas>

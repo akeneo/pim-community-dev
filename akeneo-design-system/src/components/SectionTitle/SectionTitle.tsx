@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import styled from 'styled-components';
 import {getColor, getFontSize} from '../../theme';
 import {Button, ButtonProps, IconButton, IconButtonProps} from '..';
+import {Override} from '../../shared';
 
 const SectionTitleContainer = styled.div`
   display: flex;
@@ -17,6 +18,9 @@ const Title = styled.h2`
   font-size: ${getFontSize('big')};
   font-weight: 400;
   text-transform: uppercase;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 const Spacer = styled.div`
@@ -35,7 +39,15 @@ const Information = styled.div`
   color: ${getColor('brand', 100)};
 `;
 
-type SectionTitleProps = React.HTMLAttributes<HTMLDivElement>;
+type SectionTitleProps = Override<
+  React.HTMLAttributes<HTMLDivElement>,
+  {
+    /**
+     * The content of the section title.
+     */
+    children?: ReactNode;
+  }
+>;
 
 /**
  * It identify the function of the group
