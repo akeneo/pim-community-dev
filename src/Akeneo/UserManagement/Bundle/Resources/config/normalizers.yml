@@ -23,5 +23,6 @@ services:
         class: Akeneo\UserManagement\Component\Normalizer\RoleNormalizer
         arguments:
             - '@oro_security.acl.manager'
+            - '@oro_security.normalizer.acl_privilege'
         tags:
             - { name: pim_standard_format_serializer.normalizer }

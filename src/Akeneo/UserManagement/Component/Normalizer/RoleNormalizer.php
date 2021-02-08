@@ -5,7 +5,6 @@ namespace Akeneo\UserManagement\Component\Normalizer;
 
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
-use Oro\Bundle\SecurityBundle\Model\AclPermission;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
@@ -22,22 +21,24 @@ final class RoleNormalizer implements NormalizerInterface, CacheableSupportsMeth
     protected array $supportedFormats = ['array', 'standard'];
 
     private AclManager $aclManager;
+    private NormalizerInterface $aclPrivilegeNormalizer;
     private ?array $cacheIndexedAclIds = null;
 
-    public function __construct(AclManager $aclManager)
+    public function __construct(AclManager $aclManager, NormalizerInterface $aclPrivilegeNormalizer)
     {
         $this->aclManager = $aclManager;
+        $this->aclPrivilegeNormalizer = $aclPrivilegeNormalizer;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($role, $format = null, array $context = [])
+    public function normalize($aclPrivilege, $format = null, array $context = [])
     {
-        Assert::isInstanceOf($role, RoleInterface::class);
+        Assert::isInstanceOf($aclPrivilege, RoleInterface::class);
 
         $privileges = $this->aclManager->getPrivilegeRepository()->getPrivileges(
-            $this->aclManager->getSid($role)
+            $this->aclManager->getSid($aclPrivilege)
         );
 
         $permissions = [];
@@ -51,24 +52,11 @@ final class RoleNormalizer implements NormalizerInterface, CacheableSupportsMeth
                 continue;
             }
 
-            $permissionsForPrivilege = array_map(
-                fn(AclPermission $aclPermission) => [
-                    'name' => $aclPermission->getName(),
-                    'access_level' => $aclPermission->getAccessLevel(),
-                ],
-                $privilege->getPermissions()->toArray()
-            );
-            $permissions[] = [
-                'id' => $privilege->getIdentity()->getId(),
-                'name' => $privilege->getIdentity()->getName(),
-                'group' => $privilege->getGroup(),
-                'type' => $privilege->getExtensionKey(),
-                'permissions' => $permissionsForPrivilege,
-            ];
+            $permissions[] = $this->aclPrivilegeNormalizer->normalize($privilege, $format, $context);
         }
 
         return [
-            'label' => $role->getLabel(),
+            'label' => $aclPrivilege->getLabel(),
             'permissions' => $permissions,
         ];
     }

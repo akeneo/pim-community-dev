@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class RoleNormalizerSpec extends ObjectBehavior
 {
-    function let(AclManager $aclManager, AclExtensionInterface $extension)
+    function let(AclManager $aclManager, NormalizerInterface $aclPrivilegeNormalizer, AclExtensionInterface $extension)
     {
         $aclManager->getAllExtensions()->willReturn([$extension]);
         $extension->getExtensionKey()->willReturn('action');
@@ -27,7 +27,7 @@ class RoleNormalizerSpec extends ObjectBehavior
             new ActionMetadata('name2'),
         ]);
 
-        $this->beConstructedWith($aclManager);
+        $this->beConstructedWith($aclManager, $aclPrivilegeNormalizer);
     }
 
     function it_is_a_normalizer()
@@ -36,8 +36,11 @@ class RoleNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(NormalizerInterface::class);
     }
 
-    function it_normalizes_a_role(AclManager $aclManager, AclPrivilegeRepository $aclPrivilegeRepository)
-    {
+    function it_normalizes_a_role(
+        AclManager $aclManager,
+        NormalizerInterface $aclPrivilegeNormalizer,
+        AclPrivilegeRepository $aclPrivilegeRepository
+    ) {
         $role = new Role('Administrator');
         $format = 'standard';
 
@@ -45,10 +48,33 @@ class RoleNormalizerSpec extends ObjectBehavior
         $sid = new RoleSecurityIdentity($role);
         $aclManager->getSid($role)->willReturn($sid);
         $aclManager->getPrivilegeRepository()->willReturn($aclPrivilegeRepository);
-        $aclPrivilegeRepository->getPrivileges($sid)->willReturn($this->buildAclPrivileges());
+        $aclPrivileges = $this->buildAclPrivileges();
+        $aclPrivilegeRepository->getPrivileges($sid)->willReturn($aclPrivileges);
+
+        $aclPrivilegeNormalizer->normalize($aclPrivileges[0], 'array', [])->willReturn([
+            'id' => 'action:name1',
+            'name' => 'name1',
+            'group' => 'group1',
+            'type' => 'action',
+            'permissions' => [
+                'EXECUTE' => ['name' => 'EXECUTE', 'access_level' => 1],
+            ],
+        ]);
+        $aclPrivilegeNormalizer->normalize($aclPrivileges[1], 'array', [])->willReturn([
+            'id' => 'action:name2',
+            'name' => 'name2',
+            'group' => 'group2',
+            'type' => 'action',
+            'permissions' => [
+                'VIEW' => ['name' => 'VIEW', 'access_level' => 1],
+                'CREATE' => ['name' => 'CREATE', 'access_level' => 0],
+            ],
+        ]);
+        $aclPrivilegeNormalizer->normalize($aclPrivileges[2], 'array', [])->shouldNotBeCalled();
+
 
         $this->supportsNormalization($role, $format)->shouldBe(true);
-        $this->normalize($role)->shouldBe(['label' => 'Administrator', 'permissions' => [
+        $this->normalize($role, 'array')->shouldBe(['label' => 'Administrator', 'permissions' => [
             [
                 'id' => 'action:name1',
                 'name' => 'name1',
@@ -87,7 +113,6 @@ class RoleNormalizerSpec extends ObjectBehavior
     function buildAclPrivileges(): array
     {
         $aclPermission = new AclPermission('EXECUTE', 1);
-
         $aclPrivilege1 = new AclPrivilege();
         $aclPrivilege1->setIdentity(new AclPrivilegeIdentity('action:name1', 'name1'));
         $aclPrivilege1->setGroup('group1');
@@ -103,6 +128,13 @@ class RoleNormalizerSpec extends ObjectBehavior
         $aclPrivilege2->addPermission($aclPermission1);
         $aclPrivilege2->addPermission($aclPermission2);
 
-        return [$aclPrivilege1, $aclPrivilege2];
+        $aclPermission = new AclPermission('EXECUTE', 1);
+        $aclPrivilege3 = new AclPrivilege();
+        $aclPrivilege3->setIdentity(new AclPrivilegeIdentity('other:name1', 'name1'));
+        $aclPrivilege3->setGroup('group1');
+        $aclPrivilege3->setExtensionKey('other');
+        $aclPrivilege3->addPermission($aclPermission);
+
+        return [$aclPrivilege1, $aclPrivilege2, $aclPrivilege3];
     }
 }
