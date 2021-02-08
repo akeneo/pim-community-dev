@@ -13,7 +13,7 @@ const checkTick = keyframes`
 
 const uncheckTick = keyframes`
   to {
-    stroke-dashoffset: 17px;
+    stroke-dashoffset: 27px;
   }
 `;
 
@@ -24,7 +24,7 @@ const Container = styled.div`
 const TickIcon = styled(CheckIcon)`
   animation: ${uncheckTick} 0.2s ease-in forwards;
   opacity: 0;
-  stroke-dasharray: 17px;
+  stroke-dasharray: 27px;
   stroke-dashoffset: 0;
   transition-delay: 0.2s;
   transition: opacity 0.1s ease-out;
@@ -51,7 +51,7 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
       ${TickIcon} {
         animation-delay: 0.2s;
         animation: ${checkTick} 0.2s ease-out forwards;
-        stroke-dashoffset: 17px;
+        stroke-dashoffset: 27px;
         opacity: 1;
         transition-delay: 0s;
       }
@@ -165,7 +165,7 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
           aria-label={ariaLabel}
           {...forProps}
         >
-          {isMixed ? <CheckPartialIcon size={18} /> : <TickIcon size={20} />}
+          {isMixed ? <CheckPartialIcon size={18} /> : <TickIcon size={18} />}
         </CheckboxContainer>
         {children ? (
           <LabelContainer onClick={handleChange} id={labelId} readOnly={readOnly} htmlFor={checkboxId}>
