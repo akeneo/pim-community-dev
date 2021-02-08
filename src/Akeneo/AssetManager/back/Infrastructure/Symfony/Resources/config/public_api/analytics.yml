@@ -5,9 +5,9 @@ services:
             - '@database_connection'
 
     akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_assets_per_asset_family:
-        class: Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAssetsPerAssetFamily
+        class: Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily
         arguments:
-            - '@database_connection'
+            - '@akeneo_assetmanager.client.asset'
 
     akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_values_per_asset:
         class: Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfValuesPerAsset

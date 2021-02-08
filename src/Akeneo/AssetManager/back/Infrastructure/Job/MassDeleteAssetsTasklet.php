@@ -112,7 +112,6 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
 
         if ($this->jobStopper->isStopping($this->stepExecution)) {
             $this->jobStopper->stop($this->stepExecution);
-
             $this->assetIndexer->refresh();
 
             return;

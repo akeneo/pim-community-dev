@@ -61,18 +61,17 @@ class AssetIndexerSpy implements AssetIndexerInterface
     }
 
     /**
-     * Remove all assets belonging to an asset family
-     */
-    public function removeByAssetFamilyIdentifier(string $assetFamilyIdentifier)
-    {
-    }
-
-    /**
      * Remove a asset from the index
      */
     public function removeAssetByAssetFamilyIdentifierAndCode(
         string $assetFamilyIdentifier,
         string $assetCode
+    ) {
+    }
+
+    public function removeByAssetFamilyIdentifierAndCodes(
+        string $assetFamilyIdentifier,
+        array $assetCodes
     ) {
     }
 }

@@ -15,7 +15,7 @@ In this Port, we have separated the communication with the others Bounded Contex
 - Get the max volumes average : `Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AverageMaxVolumes`
 - Get the volume of an axis of limitation : `Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\CountVolume`
 - Get the max number of attributes average per asset family : `Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAttributesPerAssetFamily`
-- Get the max number of assets average per asset family : `Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAssetsPerAssetFamily`
+- Get the max number of assets average per asset family : `Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily`
 - Get the max number of values average per asset family : `Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfValuesPerAsset`
 - Get the number of asset families : `Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlCountAssetFamilies`
 
