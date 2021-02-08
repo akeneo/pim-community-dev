@@ -18,3 +18,4 @@ export * from './Pagination/Pagination';
 export * from './ProgressBar/ProgressBar';
 export * from './Table/Table';
 export * from './Toolbar/Toolbar';
+export * from './SectionTitle/SectionTitle';
