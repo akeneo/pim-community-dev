@@ -29,12 +29,11 @@ const AddWordsForm = () => {
                 if (event.key === 'Enter') {
                   event.preventDefault();
                   event.stopPropagation();
-                  await onAddWords();
                 }
               }}
             />
           </TagInputContainer>
-          <Button ghost level="tertiary" onClick={onAddWords}>
+          <Button ghost level="tertiary" onClick={onAddWords} disabled={words.length === 0}>
             {translate('pim_common.add')}
           </Button>
         </FieldContent>

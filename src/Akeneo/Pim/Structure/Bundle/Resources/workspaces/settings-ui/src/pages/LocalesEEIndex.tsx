@@ -77,7 +77,7 @@ const LocalesEEIndex: FC = () => {
           />
         </div>
         <LocalesGridDictionariesProvider refreshDictionaryInfo={refresh} localesDictionaryInfo={localesDictionaryInfo}>
-          <LocaleToolbar />
+          <LocaleToolbar getDictionaryTotalWords={getDictionaryTotalWords} />
         </LocalesGridDictionariesProvider>
       </PageContent>
     </LocaleSelectionProvider>

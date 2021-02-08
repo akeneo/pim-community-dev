@@ -61,7 +61,7 @@ const AddWordsModal: FC<AddWordsModalProps> = ({localesCount, closeModal}) => {
   return (
     <Modal closeTitle="Close" onClose={closeModal} illustration={<LocaleIllustration />}>
       <Modal.TopRightButtons>
-        <Button level="primary" onClick={addWordsToSelectedLocales}>
+        <Button level="primary" onClick={addWordsToSelectedLocales} disabled={words.length === 0}>
           {translate('pim_common.save')}
         </Button>
       </Modal.TopRightButtons>
