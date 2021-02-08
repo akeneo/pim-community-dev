@@ -617,6 +617,8 @@ class JobInstanceController
     /**
      * Create an import profile
      *
+     * @AclAncestor("pim_importexport_import_profile_create")
+     *
      * @param Request $request
      *
      * @return JsonResponse
@@ -628,6 +630,8 @@ class JobInstanceController
 
     /**
      * Create an export profile
+     *
+     * @AclAncestor("pim_importexport_export_profile_create")
      *
      * @param Request $request
      *
