@@ -42,30 +42,26 @@ type SectionTitleProps = React.HTMLAttributes<HTMLDivElement>;
  */
 const SectionTitle = ({children, ...rest}: SectionTitleProps) => {
   const decoratedChildren = React.Children.map(children, child => {
-    if (React.isValidElement<IconButtonProps>(child) && (child.type === IconButton)) {
+    if (React.isValidElement<IconButtonProps>(child) && child.type === IconButton) {
       return React.cloneElement(child, {
         level: 'tertiary',
         size: 'small',
-        ghost: 'borderless'
+        ghost: 'borderless',
       });
     }
 
-    if (React.isValidElement<ButtonProps>(child) && (child.type === Button)) {
+    if (React.isValidElement<ButtonProps>(child) && child.type === Button) {
       return React.cloneElement(child, {
         level: 'tertiary',
         size: 'small',
-        ghost: true
+        ghost: true,
       });
     }
 
     return child;
   });
 
-  return (
-    <SectionTitleContainer {...rest}>
-      {decoratedChildren}
-    </SectionTitleContainer>
-  );
+  return <SectionTitleContainer {...rest}>{decoratedChildren}</SectionTitleContainer>;
 };
 
 SectionTitle.Title = Title;
