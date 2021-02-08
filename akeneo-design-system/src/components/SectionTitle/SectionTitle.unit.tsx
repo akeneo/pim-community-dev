@@ -11,7 +11,7 @@ test('it renders its children properly', () => {
       <SectionTitle.Information>10 results</SectionTitle.Information>
       <SectionTitle.Separator />
       <Button>Action</Button>
-      <IconButton icon={<MoreIcon />} title='More'/>
+      <IconButton icon={<MoreIcon />} title="More" />
     </SectionTitle>
   );
 
