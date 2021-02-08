@@ -14,6 +14,7 @@
 - PIM-9642: Refresh product image when switching channel or locale
 - PIM-9667: Prevent import of duplicate options in multiselect attributes
 - PIM-9658: Add missing backend permission checks
+- PIM 9657: Make open filters close when opening a new one.
 
 ## New features
 
