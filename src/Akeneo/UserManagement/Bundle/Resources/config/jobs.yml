@@ -1,5 +1,4 @@
 services:
-    # Export jobs
     pim_connector.job.csv_user_group_export:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
@@ -172,16 +171,3 @@ services:
                 - 'xlsx_user_group_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
-
-    # Providers
-    pim_user.provider.form.job_instance:
-        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
-        arguments:
-            -   csv_user_group_export: pim-job-instance-csv-base-export
-                csv_user_role_export: pim-job-instance-csv-base-export
-                xlsx_user_group_export: pim-job-instance-xlsx-base-export
-                xlsx_user_role_export: pim-job-instance-xlsx-base-export
-                csv_user_group_import: pim-job-instance-csv-base-import
-                xlsx_user_group_import: pim-job-instance-xlsx-base-import
-        tags:
-            - { name: pim_enrich.provider.form, priority: 100 }
