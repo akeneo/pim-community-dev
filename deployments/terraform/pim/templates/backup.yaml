@@ -22,6 +22,9 @@ spec:
 {{- range $k, $v := until (atoi (quote .Values.elasticsearch.data.replicas) | default 2) }}
       - data-elasticsearch-data-{{ $k }}    
 {{- end }} 
+{{- range $k, $v := until (atoi (quote .Values.elasticsearch.master.replicas) | default 2) }}
+      - data-elasticsearch-master-{{ $k }}    
+{{- end }} 
     retentionPolicy:
 {{ toYaml .Values.backup.snapshot.retentionPolicy | indent 6 }}
 {{- end }}
