@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.91 (2021-02-09)
+
 ## Bug fixes
 
 - PIM-9665: [Backport] PIM-9533: Update wysiwyg editor's style in order to differentiate new paragraphs from mere line breaks
