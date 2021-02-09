@@ -102,9 +102,9 @@ services:
             - 'import'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.dummy_item'
-            - '@pim_connector.processor.dummy_item'
-            - '@pim_connector.writer.dummy_item'
+            - '@pim_connector.reader.file.csv_user'
+            - '@pim_connector.processor.denormalization.user'
+            - '@pim_connector.writer.database.user'
             - 100
             - '@akeneo_batch.job.job_stopper'
 
@@ -114,8 +114,8 @@ services:
             - 'import'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.dummy_item'
-            - '@pim_connector.processor.dummy_item'
-            - '@pim_connector.writer.dummy_item'
+            - '@pim_connector.reader.file.xlsx_user'
+            - '@pim_connector.processor.denormalization.user'
+            - '@pim_connector.writer.database.user'
             - 100
             - '@akeneo_batch.job.job_stopper'
