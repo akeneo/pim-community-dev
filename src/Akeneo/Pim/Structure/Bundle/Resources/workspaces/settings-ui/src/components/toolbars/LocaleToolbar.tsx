@@ -1,17 +1,27 @@
-import React, {FC} from 'react';
+import React, {FC, useCallback} from 'react';
 import {ArrowDownIcon, Button, Checkbox, Dropdown, IconButton, Toolbar, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {AddWordsModal} from '../modals/AddWordsModal';
 import styled from 'styled-components';
 import {useLocaleSelection} from '../../hooks/locales/useLocaleSelection';
 
-type LocaleToolbarProps = {};
+type LocaleToolbarProps = {
+  getDictionaryTotalWords: (localeCode: string) => number | undefined;
+};
 
-const LocaleToolbar: FC<LocaleToolbarProps> = () => {
+const LocaleToolbar: FC<LocaleToolbarProps> = ({getDictionaryTotalWords}) => {
   const translate = useTranslate();
   const [isToolbarOpen, openToolbar, closeToolbar] = useBooleanState();
   const [isModalOpen, openModal, closeModal] = useBooleanState();
-  const {selectionState, selectedCount, onSelectAllChange} = useLocaleSelection();
+  const {selectionState, selectedCount, onSelectAllChange, selectedLocales} = useLocaleSelection();
+
+  const isAddWordsButtonEnabled = useCallback(() => {
+    const enabledLocales = selectedLocales.filter(
+      (localeCode: string) => getDictionaryTotalWords(localeCode) !== undefined
+    );
+
+    return enabledLocales.length > 0;
+  }, [selectedLocales, getDictionaryTotalWords]);
 
   return (
     <Container isVisible={!!selectionState}>
@@ -57,7 +67,7 @@ const LocaleToolbar: FC<LocaleToolbarProps> = () => {
         {translate('pimee_enrich.entity.locale.grid.items_selected', {count: selectedCount}, selectedCount)}
       </Toolbar.LabelContainer>
       <Toolbar.ActionsContainer>
-        <Button level="secondary" onClick={openModal}>
+        <Button level="secondary" onClick={openModal} disabled={!isAddWordsButtonEnabled()}>
           {translate('pimee_enrich.entity.locale.grid.add_words')}
         </Button>
       </Toolbar.ActionsContainer>
