@@ -27,18 +27,15 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ThereShouldBeLessAssetsThanLimitValidator extends ConstraintValidator
 {
-    private AssetRepositoryInterface $assetRepository;
     private int $assetsLimit;
     private CountAssetsInterface $countAssets;
 
     public function __construct(
-        AssetRepositoryInterface $assetRepository,
-        int $assetsLimit,
-        CountAssetsInterface $countAssets
+        CountAssetsInterface $countAssets,
+        int $assetsLimit
     ) {
-        $this->assetRepository = $assetRepository;
-        $this->assetsLimit = $assetsLimit;
         $this->countAssets = $countAssets;
+        $this->assetsLimit = $assetsLimit;
     }
 
     public function validate($command, Constraint $constraint): void

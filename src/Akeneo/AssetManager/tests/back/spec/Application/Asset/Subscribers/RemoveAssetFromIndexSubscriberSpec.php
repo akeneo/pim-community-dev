@@ -6,7 +6,7 @@ namespace spec\Akeneo\AssetManager\Application\Asset\Subscribers;
 
 use Akeneo\AssetManager\Application\Asset\Subscribers\RemoveAssetFromIndexSubscriber;
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
-use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetsDeletedEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -33,7 +33,7 @@ class RemoveAssetFromIndexSubscriberSpec extends ObjectBehavior
     {
         $this::getSubscribedEvents()->shouldReturn([
             AssetDeletedEvent::class => 'whenAssetDeleted',
-            AssetFamilyAssetsDeletedEvent::class => 'whenAllAssetsDeleted',
+            AssetsDeletedEvent::class => 'whenMultipleAssetsDeleted',
         ]);
     }
 
@@ -47,12 +47,13 @@ class RemoveAssetFromIndexSubscriberSpec extends ObjectBehavior
         $this->whenAssetDeleted(new AssetDeletedEvent($assetIdentifier, $assetCode, $assetFamilyIdentifier));
     }
 
-    function it_triggers_the_unindexation_of_all_entity_assets_when_they_are_deleted(
+    function it_triggers_the_unindexation_of_multiple_assets_when_they_are_deleted(
         AssetIndexerInterface $assetIndexer
     ) {
+        $assetCodes = [AssetCode::fromString('packshot_1'), AssetCode::fromString('packshot_2')];
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
-        $assetIndexer->removeByAssetFamilyIdentifier('designer')->shouldBeCalled();
+        $assetIndexer->removeByAssetFamilyIdentifierAndCodes('designer', ['packshot_1', 'packshot_2'])->shouldBeCalled();
 
-        $this->whenAllAssetsDeleted(new AssetFamilyAssetsDeletedEvent($assetFamilyIdentifier));
+        $this->whenMultipleAssetsDeleted(new AssetsDeletedEvent($assetFamilyIdentifier, $assetCodes));
     }
 }

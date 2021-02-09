@@ -146,7 +146,7 @@ const DisplayValues = ({
 }: DisplayValuesProps) => (
   <>
     {values.map((value: Value) => {
-      const assetCollectionTitle = `${getAttributeGroupLabel(attributeGroups, value.attribute.group, context.locale)} / 
+      const assetCollectionTitle = `${getAttributeGroupLabel(attributeGroups, value.attribute.group, context.locale)} /
       ${getAttributeLabel(value.attribute, context.locale)}`;
 
       return (

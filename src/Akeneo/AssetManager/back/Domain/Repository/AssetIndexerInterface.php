@@ -28,17 +28,14 @@ interface AssetIndexerInterface
     public function indexByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): void;
 
     /**
-     * Remove all assets belonging to an asset family
-     */
-    public function removeByAssetFamilyIdentifier(string $assetFamilyIdentifier);
-
-    /**
      * Remove a asset from the index
      */
     public function removeAssetByAssetFamilyIdentifierAndCode(
         string $assetFamilyIdentifier,
         string $assetCode
     );
+
+    public function removeByAssetFamilyIdentifierAndCodes(string $assetFamilyIdentifier, array $assetCodes);
 
     public function refresh();
 }

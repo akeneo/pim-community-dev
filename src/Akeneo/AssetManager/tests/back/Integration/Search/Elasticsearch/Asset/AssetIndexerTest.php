@@ -134,9 +134,9 @@ class AssetIndexerTest extends SearchIntegrationTestCase
     /**
      * @test
      */
-    public function it_deletes_all_asset_family_assets()
+    public function it_deletes_multiple_assets_by_asset_family_and_codes()
     {
-        $this->assetIndexer->removeByAssetFamilyIdentifier('designer');
+        $this->assetIndexer->removeByAssetFamilyIdentifierAndCodes('designer', ['stark', 'coco']);
 
         $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'stark');
         $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'coco');

@@ -15,7 +15,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset;
 
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
-use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetsDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
@@ -492,7 +492,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
         Assert::assertEquals(3, $this->repository->count());
 
         $this->repository->deleteByAssetFamilyAndCodes($assetFamilyIdentifier, $assetCodesToDelete);
-        $this->eventDispatcherMock->assertEventDispatched(AssetDeletedEvent::class);
+        $this->eventDispatcherMock->assertEventDispatched(AssetsDeletedEvent::class);
 
         $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
         Assert::assertEquals(1, $this->repository->count());

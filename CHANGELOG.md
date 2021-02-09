@@ -7,10 +7,12 @@
 - PIM-9649: Fix PDF product renderer disregarding permissions on Attribute groups
 - PIM-9651: Concatenate rule does not keep anymore the trailing zeros on a decimal number
 - PIM-9654: Allow single quote in DQI Word Dictionary
+- PIM-9655: Fix multiple spellcheck calls on multi-select attributes
 
 ## Improvements
 
 - PIM-9619: Improve error message when creating a new project with a name already used
+- RAC-509: Upgrade asset limit by asset family to 10 millions
 
 ## New features
 
@@ -21,3 +23,7 @@
 - Change parameter of `UnknownUserExceptionListener::onKernelException()` method from `Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent` to ` Symfony\Component\HttpKernel\Event\ExceptionEvent`
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ProductDraftController` to remove `Symfony\Component\Translation\TranslatorInterface $translator` parameter
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleSelector` to remove `ProductRepositoryInterface $repo`
+- Remove class `Akeneo/AssetManager/back/Domain/Event/AssetFamilyAssetsDeletedEvent`
+- Update `Akeneo/AssetManager/back/Domain/Repository/AssetIndexerInterface.php` to:
+    - remove the `removeByAssetFamilyIdentifier` method
+

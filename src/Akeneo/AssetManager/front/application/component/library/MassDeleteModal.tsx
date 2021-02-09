@@ -1,16 +1,5 @@
 import React, {useState} from 'react';
-import {
-  Button,
-  DeleteIllustration,
-  Field,
-  getColor,
-  Key,
-  Modal,
-  SectionTitle,
-  TextInput,
-  Title,
-  useShortcut,
-} from 'akeneo-design-system';
+import {Button, DeleteIllustration, Field, getColor, Key, Modal, TextInput, useShortcut} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import AssetFamilyIdentifier from '../../../domain/model/asset-family/identifier';
 import styled from 'styled-components';
@@ -46,8 +35,8 @@ const MassDeleteModal = ({onConfirm, onCancel, assetFamilyIdentifier, selectedAs
 
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={onCancel} illustration={<DeleteIllustration />}>
-      <SectionTitle color="brand">{translate('pim_asset_manager.asset.mass_delete.title')}</SectionTitle>
-      <Title>{translate('pim_common.confirm_deletion')}</Title>
+      <Modal.SectionTitle color="brand">{translate('pim_asset_manager.asset.mass_delete.title')}</Modal.SectionTitle>
+      <Modal.Title>{translate('pim_common.confirm_deletion')}</Modal.Title>
       <Highlight>
         {translate('pim_asset_manager.asset.mass_delete.confirm', {assetCount: selectedAssetCount}, selectedAssetCount)}
       </Highlight>

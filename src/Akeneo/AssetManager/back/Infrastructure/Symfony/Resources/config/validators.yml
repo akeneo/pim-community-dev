@@ -127,9 +127,8 @@ services:
     akeneo_assetmanager.infrastructure.validation.asset.there_should_be_less_assets_than_limit:
         class: Akeneo\AssetManager\Infrastructure\Validation\Asset\ThereShouldBeLessAssetsThanLimitValidator
         arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
-            - '%asset_manager_asset_limit_per_asset_family%'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
+            - '%asset_manager_asset_limit_per_asset_family%'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.there_should_be_less_assets_than_limit' }
 

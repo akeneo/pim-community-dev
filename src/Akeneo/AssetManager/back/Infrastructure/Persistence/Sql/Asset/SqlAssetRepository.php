@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
-use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetsDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\DomainEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
@@ -209,20 +209,17 @@ SQL;
             ]
         );
 
-        foreach ($assetCodes as $assetCode) {
-            if (!array_key_exists($assetCode->normalize(), $identifiers)) {
-                continue;
-            }
+        $assetCodeDeleted = array_filter($assetCodes, function ($assetCode) use ($identifiers) {
+            return array_key_exists($assetCode->normalize(), $identifiers);
+        });
 
-            $this->eventDispatcher->dispatch(
-                new AssetDeletedEvent(
-                    $identifiers[$assetCode->normalize()],
-                    $assetCode,
-                    $assetFamilyIdentifier
-                ),
-                AssetDeletedEvent::class
-            );
-        }
+        $this->eventDispatcher->dispatch(
+            new AssetsDeletedEvent(
+                $assetFamilyIdentifier,
+                $assetCodeDeleted,
+            ),
+            AssetsDeletedEvent::class
+        );
     }
 
     public function deleteByAssetFamilyAndCode(
