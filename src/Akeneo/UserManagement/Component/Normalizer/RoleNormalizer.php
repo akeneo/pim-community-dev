@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\UserManagement\Component\Normalizer;
 
 use Akeneo\UserManagement\Component\Model\RoleInterface;
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -33,30 +34,34 @@ final class RoleNormalizer implements NormalizerInterface, CacheableSupportsMeth
     /**
      * {@inheritdoc}
      */
-    public function normalize($aclPrivilege, $format = null, array $context = [])
+    public function normalize($role, $format = null, array $context = [])
     {
-        Assert::isInstanceOf($aclPrivilege, RoleInterface::class);
+        Assert::isInstanceOf($role, RoleInterface::class);
 
         $privileges = $this->aclManager->getPrivilegeRepository()->getPrivileges(
-            $this->aclManager->getSid($aclPrivilege)
+            $this->aclManager->getSid($role)
         );
 
         $permissions = [];
         $indexedAclIds = $this->getIndexedAclIds();
         foreach ($privileges as $privilege) {
-            if (static::ACL_EXTENSION_KEY !== $privilege->getExtensionKey()) {
-                continue;
-            }
-
             if (!array_key_exists($privilege->getIdentity()->getId(), $indexedAclIds)) {
                 continue;
             }
 
-            $permissions[] = $this->aclPrivilegeNormalizer->normalize($privilege, $format, $context);
+            $aclPermissions = $privilege->getPermissions();
+            if (count($aclPermissions) > 1) {
+                continue;
+            }
+
+            $aclPermission = $aclPermissions->current();
+            if ($aclPermission->getAccessLevel() !== AccessLevel::NONE_LEVEL) {
+                $permissions[] = $this->aclPrivilegeNormalizer->normalize($privilege, $format, $context);
+            }
         }
 
         return [
-            'label' => $aclPrivilege->getLabel(),
+            'label' => $role->getLabel(),
             'permissions' => $permissions,
         ];
     }
@@ -83,6 +88,9 @@ final class RoleNormalizer implements NormalizerInterface, CacheableSupportsMeth
             $this->cacheIndexedAclIds = [];
             foreach ($this->aclManager->getAllExtensions() as $extension) {
                 $extensionKey = $extension->getExtensionKey();
+                if ($extensionKey !== static::ACL_EXTENSION_KEY) {
+                    continue;
+                }
 
                 foreach ($extension->getClasses() as $aclClassInfo) {
                     $this->cacheIndexedAclIds[sprintf('%s:%s', $extensionKey, $aclClassInfo->getClassName())] = true;

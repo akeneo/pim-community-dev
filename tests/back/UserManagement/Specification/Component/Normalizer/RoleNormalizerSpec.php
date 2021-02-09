@@ -25,6 +25,7 @@ class RoleNormalizerSpec extends ObjectBehavior
         $extension->getClasses()->willReturn([
             new ActionMetadata('name1'),
             new ActionMetadata('name2'),
+            new ActionMetadata('name3'),
         ]);
 
         $this->beConstructedWith($aclManager, $aclPrivilegeNormalizer);
@@ -71,6 +72,7 @@ class RoleNormalizerSpec extends ObjectBehavior
             ],
         ]);
         $aclPrivilegeNormalizer->normalize($aclPrivileges[2], 'array', [])->shouldNotBeCalled();
+        $aclPrivilegeNormalizer->normalize($aclPrivileges[3], 'array', [])->shouldNotBeCalled();
 
 
         $this->supportsNormalization($role, $format)->shouldBe(true);
@@ -82,16 +84,6 @@ class RoleNormalizerSpec extends ObjectBehavior
                 'type' => 'action',
                 'permissions' => [
                     'EXECUTE' => ['name' => 'EXECUTE', 'access_level' => 1],
-                ],
-            ],
-            [
-                'id' => 'action:name2',
-                'name' => 'name2',
-                'group' => 'group2',
-                'type' => 'action',
-                'permissions' => [
-                    'VIEW' => ['name' => 'VIEW', 'access_level' => 1],
-                    'CREATE' => ['name' => 'CREATE', 'access_level' => 0],
                 ],
             ],
         ]]);
@@ -113,28 +105,40 @@ class RoleNormalizerSpec extends ObjectBehavior
     function buildAclPrivileges(): array
     {
         $aclPermission = new AclPermission('EXECUTE', 1);
-        $aclPrivilege1 = new AclPrivilege();
-        $aclPrivilege1->setIdentity(new AclPrivilegeIdentity('action:name1', 'name1'));
-        $aclPrivilege1->setGroup('group1');
-        $aclPrivilege1->setExtensionKey('action');
-        $aclPrivilege1->addPermission($aclPermission);
+        $authorizedPrivilege = new AclPrivilege();
+        $authorizedPrivilege->setIdentity(new AclPrivilegeIdentity('action:name1', 'name1'));
+        $authorizedPrivilege->setGroup('group1');
+        $authorizedPrivilege->setExtensionKey('action');
+        $authorizedPrivilege->addPermission($aclPermission);
 
         $aclPermission1 = new AclPermission('VIEW', 1);
         $aclPermission2 = new AclPermission('CREATE', 0);
-        $aclPrivilege2 = new AclPrivilege();
-        $aclPrivilege2->setIdentity(new AclPrivilegeIdentity('action:name2', 'name2'));
-        $aclPrivilege2->setGroup('group2');
-        $aclPrivilege2->setExtensionKey('action');
-        $aclPrivilege2->addPermission($aclPermission1);
-        $aclPrivilege2->addPermission($aclPermission2);
+        $privilegeWithMultiplePermissions = new AclPrivilege();
+        $privilegeWithMultiplePermissions->setIdentity(new AclPrivilegeIdentity('action:name2', 'name2'));
+        $privilegeWithMultiplePermissions->setGroup('group2');
+        $privilegeWithMultiplePermissions->setExtensionKey('action');
+        $privilegeWithMultiplePermissions->addPermission($aclPermission1);
+        $privilegeWithMultiplePermissions->addPermission($aclPermission2);
 
         $aclPermission = new AclPermission('EXECUTE', 1);
-        $aclPrivilege3 = new AclPrivilege();
-        $aclPrivilege3->setIdentity(new AclPrivilegeIdentity('other:name1', 'name1'));
-        $aclPrivilege3->setGroup('group1');
-        $aclPrivilege3->setExtensionKey('other');
-        $aclPrivilege3->addPermission($aclPermission);
+        $nonActionPrivilege = new AclPrivilege();
+        $nonActionPrivilege->setIdentity(new AclPrivilegeIdentity('other:name1', 'name1'));
+        $nonActionPrivilege->setGroup('group1');
+        $nonActionPrivilege->setExtensionKey('other');
+        $nonActionPrivilege->addPermission($aclPermission);
 
-        return [$aclPrivilege1, $aclPrivilege2, $aclPrivilege3];
+        $aclPermission = new AclPermission('EXECUTE', 0);
+        $unauthorizedPrivilege = new AclPrivilege();
+        $unauthorizedPrivilege->setIdentity(new AclPrivilegeIdentity('action:name3', 'name3'));
+        $unauthorizedPrivilege->setGroup('group1');
+        $unauthorizedPrivilege->setExtensionKey('action');
+        $unauthorizedPrivilege->addPermission($aclPermission);
+
+        return [
+            $authorizedPrivilege,
+            $privilegeWithMultiplePermissions,
+            $nonActionPrivilege,
+            $unauthorizedPrivilege,
+        ];
     }
 }
