@@ -31,15 +31,13 @@
 
 import React, {useState} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {Button, getColor, Modal, SectionTitle as UppercaseTitle, Title} from 'akeneo-design-system';
+import {Button, getColor, Modal, ProgressIndicator, SectionTitle, useProgress} from 'akeneo-design-system';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import styled from 'styled-components';
-import Spacer from 'akeneoassetmanager/application/component/app/spacer';
 import {ValidationError} from 'akeneoassetmanager/platform/model/validation-error';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
-import Separator from '../../app/separator';
 import {useUpdaterCollection} from './useUpdaterCollection';
 import {AddAttributeDropdown} from './components/AttributeDropdown';
 import {UpdaterCollection} from './components/UpdaterCollection';
@@ -61,17 +59,6 @@ const Content = styled.div`
   width: 100%;
 `;
 
-const Progress = styled.div`
-  height: 80px; //TODO: to validate
-`;
-
-const SectionTitle = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-  border-bottom: 1px solid ${getColor('grey', 140)};
-`;
-
 const EmptyUpdaterCollection = styled.span``;
 
 const Header = styled.div`
@@ -79,6 +66,12 @@ const Header = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
+`;
+
+const Footer = styled.div`
+  width: 100%;
+  background-color: ${getColor('white')};
+  height: 80px;
 `;
 
 type MassEditModalProps = {
@@ -112,7 +105,7 @@ const massEditLauncher = {
 const MassEditModal = ({assetFamily, context, selectedAssetCount, onCancel, onConfirm}: MassEditModalProps) => {
   const translate = useTranslate();
   const [updaterCollection, addUpdater, removeUpdater, setUpdater, usedAttributeIdentifiers] = useUpdaterCollection();
-  const [step, setStep] = useState<'edit' | 'confirm'>('edit');
+  const [isCurrentStep, nextStep, previousStep] = useProgress(['edit', 'confirm']);
   const [errors, setErrors] = useState<ValidationError[]>([]);
 
   const handleMoveToConfirmStep = async () => {
@@ -124,23 +117,23 @@ const MassEditModal = ({assetFamily, context, selectedAssetCount, onCancel, onCo
       return;
     }
 
-    setStep('confirm');
+    nextStep();
   };
 
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={onCancel}>
       <Modal.TopRightButtons>
-        {'edit' === step && (
+        {isCurrentStep('edit') && (
           <>
             <Button level="tertiary" onClick={onCancel}>
               {translate('pim_common.cancel')}
             </Button>
-            <Button onClick={handleMoveToConfirmStep}>{translate('pim_common.next')}</Button>
+            <Button onClick={() => handleMoveToConfirmStep()}>{translate('pim_common.next')}</Button>
           </>
         )}
-        {'confirm' === step && (
+        {isCurrentStep('confirm') && (
           <>
-            <Button level="tertiary" onClick={() => setStep('edit')}>
+            <Button level="tertiary" onClick={previousStep}>
               {translate('pim_common.previous')}
             </Button>
             <Button onClick={onConfirm}>{translate('pim_common.confirm')}</Button>
@@ -149,28 +142,34 @@ const MassEditModal = ({assetFamily, context, selectedAssetCount, onCancel, onCo
       </Modal.TopRightButtons>
       <Container>
         <Header>
-          <UppercaseTitle color="brand">{translate('pim_asset_manager.asset.mass_edit.subtitle')}</UppercaseTitle>
-          <Title>
+          <Modal.SectionTitle color="brand">{translate('pim_asset_manager.asset.mass_edit.subtitle')}</Modal.SectionTitle>
+          <Modal.Title>
             {translate('pim_asset_manager.asset.mass_edit.title', {count: selectedAssetCount}, selectedAssetCount)}
-          </Title>
+          </Modal.Title>
           {translate('pim_asset_manager.asset.mass_edit.extra_information')}
           <SectionTitle>
-            <UppercaseTitle>{translate('Attributes')}</UppercaseTitle>
-            <Spacer />
-            {translate(
-              'pim_asset_manager.asset.mass_edit.attribute_selected',
-              {count: usedAttributeIdentifiers.length},
-              usedAttributeIdentifiers.length
+            <SectionTitle.Title>{translate('Attributes')}</SectionTitle.Title>
+            <SectionTitle.Spacer />
+            <SectionTitle.Information>
+              {translate(
+                'pim_asset_manager.asset.mass_edit.attribute_selected',
+                {count: usedAttributeIdentifiers.length},
+                usedAttributeIdentifiers.length
+              )}
+            </SectionTitle.Information>
+            {isCurrentStep('edit') && (
+              <>
+                <SectionTitle.Separator />
+                <AddAttributeDropdown
+                  onAdd={attribute => {
+                    addUpdater(attribute, context);
+                  }}
+                  locale={context.locale}
+                  attributes={assetFamily.attributes}
+                  alreadyUsed={usedAttributeIdentifiers}
+                />
+              </>
             )}
-            <Separator />
-            <AddAttributeDropdown
-              onAdd={attribute => {
-                addUpdater(attribute, context);
-              }}
-              locale={context.locale}
-              attributes={assetFamily.attributes}
-              alreadyUsed={usedAttributeIdentifiers}
-            />
           </SectionTitle>
         </Header>
         <Content>
@@ -180,14 +179,23 @@ const MassEditModal = ({assetFamily, context, selectedAssetCount, onCancel, onCo
             <UpdaterCollection
               updaterCollection={updaterCollection}
               locale={context.locale}
-              readOnly={step == 'confirm'}
+              readOnly={isCurrentStep('confirm')}
               errors={errors}
               onRemove={updater => removeUpdater(updater.id)}
               onChange={updater => setUpdater(updater)}
             />
           )}
         </Content>
-        <Progress>{step}</Progress>
+        <Footer>
+          <ProgressIndicator>
+            <ProgressIndicator.Step current={isCurrentStep('edit')}>
+              {translate('pim_common.edit')}
+            </ProgressIndicator.Step>
+            <ProgressIndicator.Step current={isCurrentStep('confirm')}>
+              {translate('pim_common.confirm')}
+            </ProgressIndicator.Step>
+          </ProgressIndicator>
+        </Footer>
       </Container>
     </Modal>
   );
