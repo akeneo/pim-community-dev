@@ -38,10 +38,12 @@ import styled from 'styled-components';
 import {ValidationError} from 'akeneoassetmanager/platform/model/validation-error';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
-import {useUpdaterCollection} from './useUpdaterCollection';
-import {AddAttributeDropdown} from './components/AttributeDropdown';
-import {UpdaterCollection} from './components/UpdaterCollection';
-import {normalizeUpdaterCollection, Updater} from './model/updater';
+import {useUpdaterCollection} from 'akeneoassetmanager/application/component/library/MassEdit/useUpdaterCollection';
+import {AddAttributeDropdown} from 'akeneoassetmanager/application/component/library/MassEdit/components/AttributeDropdown';
+import {UpdaterCollection} from 'akeneoassetmanager/application/component/library/MassEdit/components/UpdaterCollection';
+import {normalizeUpdaterCollection, Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
+import Locale from 'akeneoassetmanager/domain/model/locale';
+import Channel from 'akeneoassetmanager/domain/model/channel';
 
 const Container = styled.div`
   width: 100%;
@@ -80,6 +82,8 @@ type MassEditModalProps = {
   selectedAssetCount: number;
   onConfirm: () => void;
   onCancel: () => void;
+  locales: Locale[];
+  channels: Channel[];
 };
 
 const massEditLauncher = {
@@ -102,7 +106,14 @@ const massEditLauncher = {
   },
 };
 
-const MassEditModal = ({assetFamily, context, selectedAssetCount, onCancel, onConfirm}: MassEditModalProps) => {
+const MassEditModal = ({
+  assetFamily,
+  context,
+  selectedAssetCount,
+  onCancel,
+  onConfirm,
+  channels
+}: MassEditModalProps) => {
   const translate = useTranslate();
   const [updaterCollection, addUpdater, removeUpdater, setUpdater, usedAttributeIdentifiers] = useUpdaterCollection();
   const [isCurrentStep, nextStep, previousStep] = useProgress(['edit', 'confirm']);
@@ -183,6 +194,7 @@ const MassEditModal = ({assetFamily, context, selectedAssetCount, onCancel, onCo
               errors={errors}
               onRemove={updater => removeUpdater(updater.id)}
               onChange={updater => setUpdater(updater)}
+              channels={channels}
             />
           )}
         </Content>

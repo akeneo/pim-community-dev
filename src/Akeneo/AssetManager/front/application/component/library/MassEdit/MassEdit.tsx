@@ -5,20 +5,25 @@ import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {MassEditModal} from 'akeneoassetmanager/application/component/library/MassEdit/MassEditModal';
 import {Context} from 'akeneoassetmanager/domain/model/context';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import Locale from 'akeneoassetmanager/domain/model/locale';
 
+type MassEditProps = {
+  selectionQuery: Query | null;
+  assetFamily: AssetFamily | null;
+  context: Context;
+  selectedCount: number;
+  onConfirm: () => void;
+  channels: Channel[];
+}
 const MassEdit = ({
   selectionQuery,
   assetFamily,
   context,
   onConfirm,
   selectedCount,
-}: {
-  selectionQuery: Query | null;
-  assetFamily: AssetFamily | null;
-  context: Context;
-  selectedCount: number;
-  onConfirm: () => void;
-}) => {
+  channels,
+}: MassEditProps) => {
   const translate = useTranslate();
   const [isMassEditModalOpen, openMassEditModal, closeMassEditModal] = useBooleanState(false);
   const notify = useNotify();
@@ -49,6 +54,7 @@ const MassEdit = ({
           context={context}
           onConfirm={handleMassEdit}
           onCancel={closeMassEditModal}
+          channels={channels}
         />
       )}
     </>

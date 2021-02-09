@@ -320,6 +320,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 context={context}
                 assetFamily={currentAssetFamily}
                 selectedCount={selectedCount}
+                channels={channels}
               />
             )}
             {rights.asset.delete && (

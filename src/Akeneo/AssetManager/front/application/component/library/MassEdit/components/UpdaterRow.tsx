@@ -1,12 +1,23 @@
 import React from 'react';
-import {CloseIcon, IconButton, Table} from 'akeneo-design-system';
+import {CloseIcon, getColor, getFontSize, IconButton, Table} from 'akeneo-design-system';
 import {ValidationError} from 'akeneoassetmanager/platform/model/validation-error';
+import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
+import {getFieldView} from 'akeneoassetmanager/application/configuration/value';
+import {useConfig} from 'akeneoassetmanager/application/hooks/useConfig';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
+import Channel from 'akeneoassetmanager/domain/model/channel';
+import Locale from 'akeneoassetmanager/domain/model/locale';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {getLabel} from 'pimui/js/i18n';
-import {Updater} from '../model/updater';
-import {getFieldView} from '../../../../configuration/value';
-import {useConfig} from '../../../../hooks/useConfig';
-import EditionValue from '../../../../../domain/model/asset/edition-value';
+import styled from 'styled-components';
+
+/** @TODO RAC-331 use body style bold */
+const AttributeName = styled.div`
+  font-size: ${getFontSize('default')};
+  font-weight: 700;
+  color: ${getColor('brand', 100)};
+  font-style: italic;
+`;
 
 type UpdaterRowProps = {
   updater: Updater;
@@ -15,9 +26,26 @@ type UpdaterRowProps = {
   onChange: (updater: Updater) => void;
   readOnly: boolean;
   errors: ValidationError[];
+  channels: Channel[];
 };
 
-const UpdaterRow = ({updater, locale, readOnly, errors, onChange, onRemove}: UpdaterRowProps) => {
+const ChannelDropdown = ({}) => {
+
+}
+
+const LocaleDropdown = ({}) => {
+
+}
+
+const UpdaterRow = ({
+  updater,
+  locale,
+  readOnly,
+  errors,
+  onChange,
+  onRemove,
+  channels,
+}: UpdaterRowProps) => {
   const translate = useTranslate();
   const config = useConfig('value');
   const InputView = getFieldView(config)(updater);
@@ -27,7 +55,9 @@ const UpdaterRow = ({updater, locale, readOnly, errors, onChange, onRemove}: Upd
 
   return (
     <Table.Row>
-      <Table.Cell>{getLabel(updater.attribute.labels, locale, updater.attribute.code)}</Table.Cell>
+      <Table.Cell>
+        <AttributeName>{getLabel(updater.attribute.labels, locale, updater.attribute.code)}</AttributeName>
+      </Table.Cell>
       <Table.Cell>
         <InputView
           canEditData={!readOnly}

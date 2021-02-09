@@ -1,8 +1,8 @@
 import {useState} from 'react';
-import {NormalizedAttribute} from '../../../../domain/model/attribute/attribute';
-import {Context} from '../../../../domain/model/context';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {Context} from 'akeneoassetmanager/domain/model/context';
 import {arrayUnique, uuid} from 'akeneo-design-system';
-import {Updater} from './model/updater';
+import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
 
 const useUpdaterCollection = () => {
   const [updaterCollection, setUpdaterCollection] = useState<Updater[]>([]);

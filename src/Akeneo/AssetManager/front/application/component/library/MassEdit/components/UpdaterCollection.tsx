@@ -1,8 +1,10 @@
 import {ValidationError} from 'akeneoassetmanager/platform/model/validation-error';
 import {Table} from 'akeneo-design-system';
 import React from 'react';
-import {UpdaterRow} from './UpdaterRow';
-import {Updater} from '../model/updater';
+import {UpdaterRow} from 'akeneoassetmanager/application/component/library/MassEdit/components/UpdaterRow';
+import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
+import Locale from 'akeneoassetmanager/domain/model/locale';
+import Channel from 'akeneoassetmanager/domain/model/channel';
 
 type UpdaterCollectionProps = {
   updaterCollection: Updater[];
@@ -11,6 +13,7 @@ type UpdaterCollectionProps = {
   errors: ValidationError[];
   onRemove: (updater: Updater) => void;
   onChange: (updater: Updater) => void;
+  channels: Channel[];
 };
 
 const UpdaterCollection = ({
@@ -20,6 +23,7 @@ const UpdaterCollection = ({
   errors,
   onRemove,
   onChange,
+  channels,
 }: UpdaterCollectionProps) => {
   return (
     <Table>
@@ -33,6 +37,7 @@ const UpdaterCollection = ({
             errors={errors}
             onChange={onChange}
             onRemove={onRemove}
+            channels={channels}
           />
         ))}
       </Table.Body>
