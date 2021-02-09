@@ -1,13 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import styled, {FlattenSimpleInterpolation} from 'styled-components';
-import {DeleteIcon, Key} from 'akeneo-design-system';
+import {DeleteIcon, Key, Checkbox} from 'akeneo-design-system';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
-import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
 import {
   attributeEditionAdditionalPropertyUpdated,
   attributeEditionCancel,
@@ -200,84 +199,52 @@ class Edit extends React.Component<EditProps> {
               </div>
               <div className="AknFieldContainer AknFieldContainer--packed" data-code="valuePerChannel">
                 <div className="AknFieldContainer-header">
-                  <label
-                    className="AknFieldContainer-label"
-                    htmlFor="pim_asset_manager.attribute.edit.input.value_per_channel"
+                  <Checkbox
+                    id="pim_asset_manager.attribute.edit.input.value_per_channel"
+                    checked={this.props.attribute.valuePerChannel}
+                    readOnly
                   >
-                    <Checkbox
-                      id="pim_asset_manager.attribute.edit.input.value_per_channel"
-                      value={this.props.attribute.valuePerChannel}
-                      readOnly
-                    />
                     {__('pim_asset_manager.attribute.edit.input.value_per_channel')}
-                  </label>
+                  </Checkbox>
                 </div>
                 {getErrorsView(this.props.errors, 'valuePerChannel')}
               </div>
               <div className="AknFieldContainer AknFieldContainer--packed" data-code="valuePerLocale">
                 <div className="AknFieldContainer-header">
-                  <label
-                    className="AknFieldContainer-label"
-                    htmlFor="pim_asset_manager.attribute.edit.input.value_per_locale"
+                  <Checkbox
+                    id="pim_asset_manager.attribute.edit.input.value_per_locale"
+                    checked={this.props.attribute.valuePerLocale}
+                    readOnly
                   >
-                    <Checkbox
-                      id="pim_asset_manager.attribute.edit.input.value_per_locale"
-                      value={this.props.attribute.valuePerLocale}
-                      readOnly
-                    />
                     {__('pim_asset_manager.attribute.edit.input.value_per_locale')}
-                  </label>
+                  </Checkbox>
                 </div>
                 {getErrorsView(this.props.errors, 'valuePerLocale')}
               </div>
               <div className="AknFieldContainer AknFieldContainer--packed" data-code="isRequired">
                 <div className="AknFieldContainer-header">
-                  <label
-                    className="AknFieldContainer-label AknFieldContainer-label--inline"
-                    htmlFor="pim_asset_manager.attribute.edit.input.is_required"
+                  <Checkbox
+                    id="pim_asset_manager.attribute.edit.input.is_required"
+                    checked={this.props.attribute.isRequired}
+                    onChange={this.props.events.onIsRequiredUpdated}
+                    readOnly={!this.props.rights.attribute.edit}
                   >
-                    <Checkbox
-                      id="pim_asset_manager.attribute.edit.input.is_required"
-                      value={this.props.attribute.isRequired}
-                      onChange={this.props.events.onIsRequiredUpdated}
-                      readOnly={!this.props.rights.attribute.edit}
-                    />
-                    <span
-                      onClick={() => {
-                        if (this.props.rights.attribute.edit) {
-                          this.props.events.onIsRequiredUpdated(!this.props.attribute.isRequired);
-                        }
-                      }}
-                    >
-                      {__('pim_asset_manager.attribute.edit.input.is_required')}
-                    </span>
-                  </label>
+                    {__('pim_asset_manager.attribute.edit.input.is_required')}
+                  </Checkbox>
                 </div>
                 {getErrorsView(this.props.errors, 'isRequired')}
               </div>
 
               <div className="AknFieldContainer AknFieldContainer--packed" data-code="isReadOnly">
                 <div className="AknFieldContainer-header">
-                  <label
-                    className="AknFieldContainer-label AknFieldContainer-label--inline"
-                    htmlFor="pim_asset_manager.attribute.edit.input.is_read_only"
+                  <Checkbox
+                    id="pim_asset_manager.attribute.edit.input.is_read_only"
+                    checked={this.props.attribute.isReadOnly}
+                    onChange={this.props.events.onIsReadOnlyUpdated}
+                    readOnly={!this.props.rights.attribute.edit}
                   >
-                    <Checkbox
-                      id="pim_asset_manager.attribute.edit.input.is_read_only"
-                      value={this.props.attribute.isReadOnly}
-                      onChange={this.props.events.onIsReadOnlyUpdated}
-                      readOnly={!this.props.rights.attribute.edit}
-                    />
-                    <span
-                      onClick={() => {
-                        if (this.props.rights.attribute.edit) {
-                          this.props.events.onIsReadOnlyUpdated(!this.props.attribute.isReadOnly);
-                        }
-                      }}
-                    >
-                      {__('pim_asset_manager.attribute.edit.input.is_read_only')}
-                    </span>
-                  </label>
+                    {__('pim_asset_manager.attribute.edit.input.is_read_only')}
+                  </Checkbox>
                 </div>
                 {getErrorsView(this.props.errors, 'isReadOnly')}
               </div>
