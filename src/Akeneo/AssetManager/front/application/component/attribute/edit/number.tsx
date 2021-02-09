@@ -2,7 +2,6 @@ import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
-import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
 import {NumberAdditionalProperty, NumberAttribute} from 'akeneoassetmanager/domain/model/attribute/type/number';
 import {
   minValueStringValue,
@@ -12,7 +11,7 @@ import {
   maxValueStringValue,
   createMaxValueFromString,
 } from 'akeneoassetmanager/domain/model/attribute/type/number/max-value';
-import {Key} from 'akeneo-design-system';
+import {Key, Checkbox} from 'akeneo-design-system';
 import {unformatNumber, formatNumberForUILocale} from 'akeneoassetmanager/tools/format-number';
 
 const NumberView = ({
@@ -42,26 +41,14 @@ const NumberView = ({
     <React.Fragment>
       <div className="AknFieldContainer AknFieldContainer--packed" data-code="decimalsAllowed">
         <div className="AknFieldContainer-header">
-          <label
-            className="AknFieldContainer-label AknFieldContainer-label--inline"
-            htmlFor="pim_asset_manager.attribute.edit.input.decimals_allowed"
+          <Checkbox
+            readOnly={!rights.attribute.edit}
+            id="pim_asset_manager.attribute.edit.input.decimals_allowed"
+            checked={attribute.decimalsAllowed}
+            onChange={(decimalsAllowed: boolean) => onAdditionalPropertyUpdated('decimals_allowed', decimalsAllowed)}
           >
-            <Checkbox
-              readOnly={!rights.attribute.edit}
-              id="pim_asset_manager.attribute.edit.input.decimals_allowed"
-              value={attribute.decimalsAllowed}
-              onChange={(decimalsAllowed: boolean) => onAdditionalPropertyUpdated('decimals_allowed', decimalsAllowed)}
-            />
-            <span
-              onClick={() => {
-                if (rights.attribute.edit) {
-                  onAdditionalPropertyUpdated('decimals_allowed', !attribute.decimalsAllowed);
-                }
-              }}
-            >
-              {__('pim_asset_manager.attribute.edit.input.decimals_allowed')}
-            </span>
-          </label>
+            {__('pim_asset_manager.attribute.edit.input.decimals_allowed')}
+          </Checkbox>
         </div>
         {getErrorsView(errors, 'decimalsAllowed')}
       </div>
