@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Context;
 
@@ -7,7 +8,6 @@ use Behat\Behat\Context\Context;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
 /**
@@ -19,7 +19,7 @@ class ConnectivityContext implements Context, KernelAwareContext
     private KernelInterface $kernel;
     private static string $kernelRootDir;
     private TransportInterface $transport;
-    private ?array $envelopes = null;
+    private array $envelopes = [];
 
     public function __construct(TransportInterface $transport)
     {
@@ -36,13 +36,19 @@ class ConnectivityContext implements Context, KernelAwareContext
     }
 
     /**
-     * @Given /^(\d+) events of type "([^"]*)" have been raised$/
+     * @Given /^(\d+) event(?:s|) of type "([^"]*)" should have been raised$/
      */
-    public function eventsOfTypeHaveBeenRaised(int $expectedCount, string $type): void
+    public function eventsOfTypeShouldHaveBeenRaised(int $expectedCount, string $type): void
     {
-        if (null === $this->envelopes) {
-            /** @var Envelope[] envelopes */
-            $this->envelopes = $this->transport->get();
+        while (true) {
+            $envelopes = $this->transport->get();
+            if (empty($envelopes)) {
+                break;
+            }
+            foreach ($envelopes as $envelope) {
+                $this->transport->ack($envelope);
+                $this->envelopes[] = $envelope;
+            }
         }
 
         $count = 0;
@@ -52,7 +58,7 @@ class ConnectivityContext implements Context, KernelAwareContext
                 continue;
             }
             foreach ($payload->getEvents() as $event) {
-                if ($type === $event->getName()) {
+                if ($event->getName() === $type) {
                     $count++;
                 }
             }
@@ -61,4 +67,3 @@ class ConnectivityContext implements Context, KernelAwareContext
         Assert::assertEquals($expectedCount, $count);
     }
 }
-
