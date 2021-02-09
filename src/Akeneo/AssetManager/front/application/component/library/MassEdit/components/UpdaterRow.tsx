@@ -1,6 +1,6 @@
 import React from 'react';
 import {CloseIcon, getColor, getFontSize, IconButton, Table, useId} from 'akeneo-design-system';
-import {ValidationError} from 'akeneoassetmanager/platform/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
 import {getFieldView} from 'akeneoassetmanager/application/configuration/value';
 import {useConfig} from 'akeneoassetmanager/application/hooks/useConfig';
@@ -42,10 +42,6 @@ type UpdaterRowProps = {
   errors: ValidationError[];
   channels: Channel[];
 };
-
-const ChannelDropdown = ({}) => {};
-
-const LocaleDropdown = ({}) => {};
 
 const UpdaterRow = ({updater, locale, readOnly, errors, onChange, onRemove, channels}: UpdaterRowProps) => {
   const translate = useTranslate();

@@ -35,16 +35,14 @@ import {Button, getColor, Modal, ProgressIndicator, SectionTitle, useProgress} f
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import styled from 'styled-components';
-import {ValidationError} from 'akeneoassetmanager/platform/model/validation-error';
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {useUpdaterCollection} from './useUpdaterCollection';
 import {AddAttributeDropdown} from './components/AttributeDropdown';
 import {EmptyUpdaterCollection} from './components/EmptyUpdaterCollection';
 import {UpdaterCollection} from './components/UpdaterCollection';
-import {normalizeUpdaterCollection, Updater} from './model/updater';
-import Locale from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
+import massEditLauncher from 'akeneoassetmanager/infrastructure/mass-edit-launcher';
+import {Updater} from './model/updater';
 
 const Container = styled.div`
   width: 100%;
@@ -79,30 +77,9 @@ type MassEditModalProps = {
   assetFamily: AssetFamily;
   context: Context;
   selectedAssetCount: number;
-  onConfirm: () => void;
+  onConfirm: (updaterCollection: Updater[]) => void;
   onCancel: () => void;
-  locales: Locale[];
   channels: Channel[];
-};
-
-const massEditLauncher = {
-  validate: async (
-    _assetFamilyIdentifier: AssetFamilyIdentifier,
-    updaterCollection: Updater[]
-  ): Promise<ValidationError[]> => {
-    const _normalizedUpdaterCollection = normalizeUpdaterCollection(updaterCollection);
-
-    return Promise.resolve([]);
-  },
-  launch: async (
-    _assetFamilyIdentifier: AssetFamilyIdentifier,
-    _query: Query,
-    updaterCollection: Updater[]
-  ): Promise<void> => {
-    const _normalizedUpdaterCollection = normalizeUpdaterCollection(updaterCollection);
-
-    return Promise.resolve();
-  },
 };
 
 const MassEditModal = ({
@@ -118,6 +95,10 @@ const MassEditModal = ({
   const steps = ['edit', 'confirm'];
   const [isCurrentStep, nextStep, previousStep] = useProgress(steps);
   const [errors, setErrors] = useState<ValidationError[]>([]);
+
+  const handleConfirm = () => {
+    onConfirm(updaterCollection);
+  }
 
   const handleEscape = () => {
     if (updaterCollection.length > 0 && !confirm(translate('pim_ui.flash.unsaved_changes'))) {
@@ -155,7 +136,7 @@ const MassEditModal = ({
             <Button level="tertiary" onClick={previousStep}>
               {translate('pim_common.previous')}
             </Button>
-            <Button onClick={onConfirm}>{translate('pim_common.confirm')}</Button>
+            <Button onClick={handleConfirm}>{translate('pim_common.confirm')}</Button>
           </>
         )}
       </Modal.TopRightButtons>

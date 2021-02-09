@@ -6,7 +6,8 @@ import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-fa
 import {MassEditModal} from 'akeneoassetmanager/application/component/library/MassEdit/MassEditModal';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-import Locale from 'akeneoassetmanager/domain/model/locale';
+import massEditLauncher from 'akeneoassetmanager/infrastructure/mass-edit-launcher';
+import {Updater} from './model/updater';
 
 type MassEditProps = {
   selectionQuery: Query | null;
@@ -28,11 +29,11 @@ const MassEdit = ({
   const [isMassEditModalOpen, openMassEditModal, closeMassEditModal] = useBooleanState(false);
   const notify = useNotify();
 
-  const handleMassEdit = useCallback(() => {
+  const handleMassEdit = useCallback((updaterCollection: Updater[]) => {
     if (selectionQuery === null || assetFamily === null) return;
 
     try {
-      // assetRemover.removeFromQuery(assetFamily.code, selectionQuery);
+      massEditLauncher.launch(assetFamily.code, selectionQuery, updaterCollection);
       notify(NotificationLevel.SUCCESS, translate('pim_asset_manager.asset.notification.mass_edit.success'));
       closeMassEditModal();
 

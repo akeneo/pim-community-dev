@@ -1,9 +1,8 @@
-import {ValidationError} from 'akeneoassetmanager/platform/model/validation-error';
+import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {Table} from 'akeneo-design-system';
 import React from 'react';
 import {UpdaterRow} from 'akeneoassetmanager/application/component/library/MassEdit/components/UpdaterRow';
 import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
-import Locale from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 
 type UpdaterCollectionProps = {
