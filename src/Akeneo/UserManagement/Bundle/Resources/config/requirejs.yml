@@ -59,3 +59,4 @@ config:
         pim/user-edit-form/delete:                        pimuser/js/form/delete
         pim/user-edit-form/duplicate:                     pimuser/js/form/duplicate-secondary-action.tsx
         pim/remover/user:                                 pimuser/js/remover/user
+        oro/datagrid/duplicate-user-action:               pimuser/js/datagrid/action/duplicate-user-action.tsx
