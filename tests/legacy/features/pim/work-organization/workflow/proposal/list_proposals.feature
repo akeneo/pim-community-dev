@@ -44,41 +44,6 @@ Feature: List proposals
     And I collapse the column
     And I should be able to sort the rows by author and proposed at
 
-  Scenario: Successfully filter proposals in the grid
-    Given I am logged in as "Peter"
-    When I am on the proposals page
-    Then the grid should contain 1 elements
-    Given the following product category accesses:
-      | product category | user group | access |
-      | 2014_collection  | IT support | own    |
-    When I am on the proposals page
-    And I reload the page
-    Then the grid should contain 3 elements
-    And I filter by "author" with operator "in list" and value "Sandra,Mary"
-    Then the grid should contain 2 elements
-    And I should see entities "sweater, tshirt"
-    And I filter by "label_or_identifier" with operator "equals" and value "tshirt"
-    Then the grid should contain 1 elements
-    And I should see entities "tshirt"
-
-  @skip @jira https://akeneo.atlassian.net/browse/DAPI-729
-  Scenario: Successfully apply multiple filters on proposal grid
-    Given I am logged in as "Peter"
-    When I am on the proposals page
-    Then the grid should contain 1 elements
-    Given the following product category accesses:
-      | product category | user group | access |
-      | 2014_collection  | IT support | own    |
-    When I am on the proposals page
-    And I reload the page
-    Then the grid should contain 3 elements
-    And I show the filter "name"
-    And I filter by "name" with operator "is not empty" and value ""
-    And I show the filter "price"
-    And I filter by "price" with operator "is not empty" and value ""
-    Then the grid should contain 1 element
-    And I should see entities "jacket"
-
   Scenario: Successfully approve or reject a proposal
     Given I am logged in as "Peter"
     And the following product category accesses:
