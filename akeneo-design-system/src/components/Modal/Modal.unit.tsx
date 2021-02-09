@@ -36,7 +36,7 @@ test('it calls the onClose handler when clicking on the close button', () => {
   expect(onClose).toBeCalledTimes(1);
 });
 
-test('it calls the onClose handler when hitting the Escape key', () => {
+test('it calls the onClose handler when hitting the Escape key and onEscape is not given', () => {
   const onClose = jest.fn();
 
   render(
@@ -49,4 +49,21 @@ test('it calls the onClose handler when hitting the Escape key', () => {
   fireEvent.keyDown(document, {key: 'Escape', code: 'Escape'});
 
   expect(onClose).toBeCalledTimes(1);
+});
+
+test('it calls the onEscape handler when hitting the Escape key', () => {
+  const onClose = jest.fn();
+  const onEscape = jest.fn();
+
+  render(
+    <Modal closeTitle="Close" onClose={onClose} onEscape={onEscape}>
+      <Modal.SectionTitle>With a section Title</Modal.SectionTitle>
+      Modal content
+    </Modal>
+  );
+
+  fireEvent.keyDown(document, {key: 'Escape', code: 'Escape'});
+
+  expect(onEscape).toBeCalledTimes(1);
+  expect(onClose).not.toBeCalled();
 });
