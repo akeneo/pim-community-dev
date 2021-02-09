@@ -17,7 +17,6 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 class ConnectivityContext implements Context, KernelAwareContext
 {
     private KernelInterface $kernel;
-    private static string $kernelRootDir;
     private TransportInterface $transport;
     private array $envelopes = [];
 
@@ -32,7 +31,6 @@ class ConnectivityContext implements Context, KernelAwareContext
     public function setKernel(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
-        self::$kernelRootDir = $kernel->getRootDir();
     }
 
     /**
