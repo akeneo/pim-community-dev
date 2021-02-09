@@ -140,6 +140,9 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssetManagerContext:
                     - 'Context\EnterpriseFeatureContext'
+                - Context\ConnectivityContext:
+                    - '@messenger.transport.business_event'
+
         all:
             paths:
                 - tests/legacy/features
