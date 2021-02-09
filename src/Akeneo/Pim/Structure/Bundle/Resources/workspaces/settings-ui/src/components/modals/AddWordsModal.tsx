@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react';
-import {Button, Field, LocaleIllustration, Modal, SectionTitle, TagInput, Title, getColor} from 'akeneo-design-system';
+import {Button, Field, LocaleIllustration, Modal, TagInput, getColor} from 'akeneo-design-system';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
 import {useLocalesGridDictionariesState} from '../../hooks';
@@ -65,8 +65,8 @@ const AddWordsModal: FC<AddWordsModalProps> = ({localesCount, closeModal}) => {
           {translate('pim_common.save')}
         </Button>
       </Modal.TopRightButtons>
-      <SectionTitle color="brand">{translate('pim_enrich.entity.locale.plural_label')}</SectionTitle>
-      <Title>{translate('pimee_enrich.entity.locale.grid.modal.title', {count: localesCount.toString()})}</Title>
+      <Modal.SectionTitle color="brand">{translate('pim_enrich.entity.locale.plural_label')}</Modal.SectionTitle>
+      <Modal.Title>{translate('pimee_enrich.entity.locale.grid.modal.title', {count: localesCount.toString()})}</Modal.Title>
 
       <Subtitle>{translate('pimee_enrich.entity.locale.grid.modal.subtitle')}</Subtitle>
 
