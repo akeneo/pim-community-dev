@@ -1,18 +1,17 @@
 import React from 'react';
-import {CloseIcon, getColor, getFontSize, IconButton, Table} from 'akeneo-design-system';
+import {CloseIcon, getColor, getFontSize, IconButton, Table, useId} from 'akeneo-design-system';
 import {ValidationError} from 'akeneoassetmanager/platform/model/validation-error';
 import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
 import {getFieldView} from 'akeneoassetmanager/application/configuration/value';
 import {useConfig} from 'akeneoassetmanager/application/hooks/useConfig';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-import Locale from 'akeneoassetmanager/domain/model/locale';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {getLabel} from 'pimui/js/i18n';
 import styled from 'styled-components';
 
 /** @TODO RAC-331 use body style bold */
-const AttributeName = styled.div`
+const AttributeName = styled.label`
   font-size: ${getFontSize('default')};
   font-weight: 700;
   color: ${getColor('brand', 100)};
@@ -56,13 +55,16 @@ const UpdaterRow = ({updater, locale, readOnly, errors, onChange, onRemove, chan
     onChange({...updater, data: editionValue.data});
   };
 
+  const id = useId('updater_row_');
+
   return (
     <Table.Row>
       <Table.Cell>
-        <AttributeName>{getLabel(updater.attribute.labels, locale, updater.attribute.code)}</AttributeName>
+        <AttributeName htmlFor={id}>{getLabel(updater.attribute.labels, locale, updater.attribute.code)}</AttributeName>
       </Table.Cell>
       <InputCell>
         <InputView
+          id={id}
           canEditData={!readOnly}
           channel={updater.channel}
           locale={updater.channel}

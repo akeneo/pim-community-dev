@@ -8,7 +8,8 @@ import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 export class InvalidArgument extends Error {}
 
-export type ViewGenerator = React.SFC<{
+export type ViewGenerator = React.FC<{
+  id?: string;
   value: EditionValue;
   channel: ChannelReference;
   locale: LocaleReference;
@@ -29,7 +30,7 @@ export type FilterViewProps = {
   };
 };
 
-export type FilterView = React.SFC<FilterViewProps>;
+export type FilterView = React.FC<FilterViewProps>;
 
 type ValueConfig = {
   [type: string]: {

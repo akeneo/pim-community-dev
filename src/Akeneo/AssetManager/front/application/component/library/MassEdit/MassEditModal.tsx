@@ -119,6 +119,14 @@ const MassEditModal = ({
   const [isCurrentStep, nextStep, previousStep] = useProgress(steps);
   const [errors, setErrors] = useState<ValidationError[]>([]);
 
+  const handleEscape = () => {
+    if (updaterCollection.length > 0 && !confirm(translate('pim_ui.flash.unsaved_changes'))) {
+      return;
+    }
+
+    onCancel();
+  }
+
   const handleMoveToConfirmStep = async () => {
     setErrors([]);
     const errors = await massEditLauncher.validate(assetFamily.identifier, updaterCollection);
@@ -132,7 +140,7 @@ const MassEditModal = ({
   };
 
   return (
-    <Modal closeTitle={translate('pim_common.close')} onClose={onCancel}>
+    <Modal closeTitle={translate('pim_common.close')} onClose={onCancel} onEscape={handleEscape}>
       <Modal.TopRightButtons>
         {isCurrentStep('edit') && (
           <>

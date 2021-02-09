@@ -32,6 +32,10 @@ const ValueLabel = styled.label`
   }
 `;
 
+const InputContainer = styled.div`
+  max-width: 460px;
+`;
+
 export default (
   asset: EditionAsset,
   channel: ChannelReference,
@@ -103,7 +107,7 @@ export default (
             </span>
           </span>
         </div>
-        <div className="AknFieldContainer-inputContainer">
+        <InputContainer className="AknFieldContainer-inputContainer">
           <ErrorBoundary
             errorMessage={__('pim_asset_manager.asset.error.value', {
               fieldName: attributeLabel,
@@ -118,7 +122,7 @@ export default (
               canEditData={canEditData}
             />
           </ErrorBoundary>
-        </div>
+        </InputContainer>
         {isTransformationTarget && (
           <Helper inline={true}>{__('pim_asset_manager.attribute.used_as_transformation_target')}</Helper>
         )}

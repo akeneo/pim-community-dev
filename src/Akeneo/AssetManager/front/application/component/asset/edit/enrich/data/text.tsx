@@ -8,15 +8,17 @@ import {
 } from 'akeneoassetmanager/domain/model/asset/data/text';
 import {isTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import RichTextEditor from 'akeneoassetmanager/application/component/app/rich-text-editor';
-import {Key} from 'akeneo-design-system';
+import {Key, TextInput} from 'akeneo-design-system';
 import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
 
 const View = ({
+  id,
   value,
   onChange,
   onSubmit,
   canEditData,
 }: {
+  id?: string;
   value: EditionValue;
   onChange: (value: EditionValue) => void;
   onSubmit: () => void;
@@ -37,6 +39,10 @@ const View = ({
     onChange(newValue);
   };
 
+  if (id === undefined) {
+    id = `pim_asset_manager.asset.enrich.${value.attribute.code}`;
+  }
+
   return (
     <React.Fragment>
       {value.attribute.is_textarea ? (
@@ -44,7 +50,7 @@ const View = ({
           <RichTextEditor value={textDataStringValue(value.data)} onChange={onValueChange} readOnly={!canEditData} />
         ) : (
           <textarea
-            id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
+            id={id}
             className={`AknTextareaField AknTextareaField--light
             ${value.attribute.value_per_locale ? 'AknTextareaField--localizable' : ''}
             ${!canEditData ? 'AknTextField--disabled' : ''}`}
@@ -56,21 +62,18 @@ const View = ({
           />
         )
       ) : (
-        <input
-          id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
+        <TextInput
+          id={id}
           autoComplete="off"
-          className={`AknTextField AknTextField--narrow AknTextField--light
-          ${value.attribute.value_per_locale ? 'AknTextField--localizable' : ''}
-          ${!canEditData ? 'AknTextField--disabled' : ''}`}
+          readOnly={!canEditData}
           value={textDataStringValue(value.data)}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            onValueChange(event.currentTarget.value);
+          onChange={(newValue: string) => {
+            onValueChange(newValue);
           }}
           onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
             if (Key.Enter === event.key) onSubmit();
           }}
           disabled={!canEditData}
-          readOnly={!canEditData}
         />
       )}
     </React.Fragment>
