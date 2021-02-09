@@ -38,10 +38,11 @@ import styled from 'styled-components';
 import {ValidationError} from 'akeneoassetmanager/platform/model/validation-error';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
-import {useUpdaterCollection} from 'akeneoassetmanager/application/component/library/MassEdit/useUpdaterCollection';
-import {AddAttributeDropdown} from 'akeneoassetmanager/application/component/library/MassEdit/components/AttributeDropdown';
-import {UpdaterCollection} from 'akeneoassetmanager/application/component/library/MassEdit/components/UpdaterCollection';
-import {normalizeUpdaterCollection, Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
+import {useUpdaterCollection} from './useUpdaterCollection';
+import {AddAttributeDropdown} from './components/AttributeDropdown';
+import {EmptyUpdaterCollection} from './components/EmptyUpdaterCollection';
+import {UpdaterCollection} from './components/UpdaterCollection';
+import {normalizeUpdaterCollection, Updater} from './model/updater';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 
@@ -60,8 +61,6 @@ const Content = styled.div`
   overflow-y: auto;
   width: 100%;
 `;
-
-const EmptyUpdaterCollection = styled.span``;
 
 const Header = styled.div`
   width: 100%;
@@ -112,11 +111,12 @@ const MassEditModal = ({
   selectedAssetCount,
   onCancel,
   onConfirm,
-  channels
+  channels,
 }: MassEditModalProps) => {
   const translate = useTranslate();
   const [updaterCollection, addUpdater, removeUpdater, setUpdater, usedAttributeIdentifiers] = useUpdaterCollection();
-  const [isCurrentStep, nextStep, previousStep] = useProgress(['edit', 'confirm']);
+  const steps = ['edit', 'confirm'];
+  const [isCurrentStep, nextStep, previousStep] = useProgress(steps);
   const [errors, setErrors] = useState<ValidationError[]>([]);
 
   const handleMoveToConfirmStep = async () => {
@@ -153,7 +153,9 @@ const MassEditModal = ({
       </Modal.TopRightButtons>
       <Container>
         <Header>
-          <Modal.SectionTitle color="brand">{translate('pim_asset_manager.asset.mass_edit.subtitle')}</Modal.SectionTitle>
+          <Modal.SectionTitle color="brand">
+            {translate('pim_asset_manager.asset.mass_edit.subtitle')}
+          </Modal.SectionTitle>
           <Modal.Title>
             {translate('pim_asset_manager.asset.mass_edit.title', {count: selectedAssetCount}, selectedAssetCount)}
           </Modal.Title>
@@ -185,7 +187,7 @@ const MassEditModal = ({
         </Header>
         <Content>
           {0 === updaterCollection.length ? (
-            <EmptyUpdaterCollection>Is empty</EmptyUpdaterCollection>
+            <EmptyUpdaterCollection />
           ) : (
             <UpdaterCollection
               updaterCollection={updaterCollection}
@@ -200,12 +202,11 @@ const MassEditModal = ({
         </Content>
         <Footer>
           <ProgressIndicator>
-            <ProgressIndicator.Step current={isCurrentStep('edit')}>
-              {translate('pim_common.edit')}
-            </ProgressIndicator.Step>
-            <ProgressIndicator.Step current={isCurrentStep('confirm')}>
-              {translate('pim_common.confirm')}
-            </ProgressIndicator.Step>
+            {steps.map(step => (
+              <ProgressIndicator.Step key={step} current={isCurrentStep(step)}>
+                {translate(`pim_common.${step}`)}
+              </ProgressIndicator.Step>
+            ))}
           </ProgressIndicator>
         </Footer>
       </Container>

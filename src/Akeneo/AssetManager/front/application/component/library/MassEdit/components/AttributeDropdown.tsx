@@ -27,7 +27,7 @@ const AddAttributeDropdown = ({attributes, locale, alreadyUsed, onAdd}: AddAttri
           </Dropdown.Header>
           <Dropdown.ItemCollection>
             {attributes
-              .filter(attribute => !attribute.is_read_only)
+              .filter(attribute => !attribute.is_read_only && attribute.type === 'text')
               .map(attribute => {
                 return (
                   <Dropdown.Item

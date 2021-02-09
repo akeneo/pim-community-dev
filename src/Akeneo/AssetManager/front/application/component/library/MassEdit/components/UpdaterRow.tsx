@@ -19,6 +19,21 @@ const AttributeName = styled.div`
   font-style: italic;
 `;
 
+const InputCell = styled(Table.Cell)`
+  width: 400px;
+`;
+const ContextCell = styled(Table.Cell)`
+  width: 380px;
+`;
+const RemoveCell = styled(Table.Cell)`
+  width: 84px;
+
+  & > div {
+    display: flex;
+    justify-content: center;
+  }
+`;
+
 type UpdaterRowProps = {
   updater: Updater;
   locale: string;
@@ -29,23 +44,11 @@ type UpdaterRowProps = {
   channels: Channel[];
 };
 
-const ChannelDropdown = ({}) => {
+const ChannelDropdown = ({}) => {};
 
-}
+const LocaleDropdown = ({}) => {};
 
-const LocaleDropdown = ({}) => {
-
-}
-
-const UpdaterRow = ({
-  updater,
-  locale,
-  readOnly,
-  errors,
-  onChange,
-  onRemove,
-  channels,
-}: UpdaterRowProps) => {
+const UpdaterRow = ({updater, locale, readOnly, errors, onChange, onRemove, channels}: UpdaterRowProps) => {
   const translate = useTranslate();
   const config = useConfig('value');
   const InputView = getFieldView(config)(updater);
@@ -58,7 +61,7 @@ const UpdaterRow = ({
       <Table.Cell>
         <AttributeName>{getLabel(updater.attribute.labels, locale, updater.attribute.code)}</AttributeName>
       </Table.Cell>
-      <Table.Cell>
+      <InputCell>
         <InputView
           canEditData={!readOnly}
           channel={updater.channel}
@@ -68,21 +71,23 @@ const UpdaterRow = ({
           value={updater}
         />
         {errors.map(error => JSON.stringify(error)).join(', ')}
-      </Table.Cell>
-      <Table.Cell>
+      </InputCell>
+      <ContextCell>
         {updater.channel}
         {updater.locale}
         {updater.action}
-      </Table.Cell>
-      <Table.Cell>
-        <IconButton
-          level="tertiary"
-          icon={<CloseIcon />}
-          ghost="borderless"
-          title={translate('pim_common.remove')}
-          onClick={() => onRemove(updater)}
-        />
-      </Table.Cell>
+      </ContextCell>
+      <RemoveCell>
+        {!readOnly && (
+          <IconButton
+            level="tertiary"
+            icon={<CloseIcon />}
+            ghost="borderless"
+            title={translate('pim_common.remove')}
+            onClick={() => onRemove(updater)}
+          />
+        )}
+      </RemoveCell>
     </Table.Row>
   );
 };
