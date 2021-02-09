@@ -2,11 +2,11 @@
 
 This bundle provides the missing pieces to integrate [Symfony Messenger](https://symfony.com/doc/4.4/messenger.html) with the PIM.
 
-## Messenger Transport for Google Pub/Sub
+## Messenger transport for Google Pub/Sub
 
-The Transport requires the library ["google/cloud-pubsub"](https://packagist.org/packages/google/cloud-pubsub).
+The transport requires the library ["google/cloud-pubsub"](https://packagist.org/packages/google/cloud-pubsub).
 
-It follows the official Symfony documentation on [creating a custom Transport](https://symfony.com/doc/4.4/messenger/custom-transport.html).
+It follows the official Symfony documentation on [creating a custom transport](https://symfony.com/doc/4.4/messenger/custom-transport.html).
 
 The environment variable `SRNT_GOOGLE_APPLICATION_CREDENTIALS` must be defined with the file path of the JSON file that contains your [service account key](https://cloud.google.com/docs/authentication/getting-started#setting_the_environment_variable).
 
@@ -75,19 +75,19 @@ From the Symfony Messenger point of view, these are three independent queues. Bu
 
 - `subscription_name: ?string`
 
-  Optional, but if the option is not defined you won't be able to receive messages from this Transport.
+  Optional, but if the option is not defined you won't be able to receive messages from this transport.
 
 - `auto_setup: ?bool`
 
-  Default to `false`, but can be enabled to make the Transport create the topic and subscription for you.
+  Default to `false`, but can be enabled to make the transport create the topic and subscription for you.
   This is useful when using the in-memory [Pub/Sub emulator](https://cloud.google.com/pubsub/docs/emulator) (enabled when the environment variable `PUBSUB_EMULATOR_HOST` is defined).
 
-## Purge Command for the Doctrine Transport table
+## Purge command for the Doctrine transport table
 
-Define a Command to purge the table configured on the Doctrine Transport.
+Define a command to purge the Doctrine transport database table of outdated messages.
 
 ```sh
 bin/console akeneo:messenger:doctrine:purge-messages <table-name> <queue-name>
 ```
 
-The goal is to remove old messages (the default retention time is 2 hours).
+The retention time can be specified with the option `--retention-time=<seconds>`, which has a default value of 7200 seconds (or 2 hour).
