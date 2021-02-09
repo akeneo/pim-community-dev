@@ -11,13 +11,11 @@ use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -194,8 +192,6 @@ class FamilyController
     /**
      * Removes given family
      *
-     * @AclAncestor("pim_enrich_family_remove")
-     *
      * @param Request $request
      * @param string  $code
      *
@@ -205,6 +201,9 @@ class FamilyController
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
+        }
+        if (!$this->securityFacade->isGranted('pim_enrich_family_remove')) {
+            throw new AccessDeniedException();
         }
 
         $family = $this->getFamily($code);
@@ -329,6 +328,9 @@ class FamilyController
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
+        }
+        if (!$this->securityFacade->isGranted('pim_enrich_family_create')) {
+            throw new AccessDeniedException();
         }
 
         $family = $this->familyFactory->create();

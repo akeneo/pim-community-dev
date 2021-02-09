@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {Meta, Story, Canvas} from '@storybook/addon-docs/blocks';
 import {Content} from '../../storybook/PreviewGallery';
-import {Button, Modal, SectionTitle, Title} from '../../components';
+import {Button, Modal} from '../../components';
 import {AddingValueIllustration, DeleteIllustration} from '../../illustrations';
 
 <Meta title="Patterns/Overlays" />
@@ -26,8 +26,8 @@ Overlays interrupt the user workflow by design. They are the most effective when
         <>
           {isOpen && (
             <Modal closeTitle="Close" onClose={close} illustration={<DeleteIllustration />}>
-              <SectionTitle color="brand">Products</SectionTitle>
-              <Title>Confirm deletion</Title>
+              <Modal.SectionTitle color="brand">Products</Modal.SectionTitle>
+              <Modal.Title>Confirm deletion</Modal.Title>
               Are you sure you want to delete this product?
               <Modal.BottomButtons>
                 <Button level="tertiary" onClick={close}>
@@ -70,8 +70,8 @@ Overlays are composed of distinct areas: a header, the body, and sometimes an il
         <>
           {isOpen && (
             <Modal closeTitle="Close" onClose={close}>
-              <SectionTitle color="brand">Entity type</SectionTitle>
-              <Title>Title of Overlay</Title>
+              <Modal.SectionTitle color="brand">Entity type</Modal.SectionTitle>
+              <Modal.Title>Title of Overlay</Modal.Title>
               Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum
               ultrices diam.
               <Content width={900} height={400}>
@@ -106,8 +106,8 @@ Overlays are composed of distinct areas: a header, the body, and sometimes an il
         <>
           {isOpen && (
             <Modal closeTitle="Close" onClose={close} illustration={<AddingValueIllustration />}>
-              <SectionTitle color="brand">Entity type</SectionTitle>
-              <Title>Title of Overlay</Title>
+              <Modal.SectionTitle color="brand">Entity type</Modal.SectionTitle>
+              <Modal.Title>Title of Overlay</Modal.Title>
               Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum
               ultrices diam.
               <Content width={600} height={300}>

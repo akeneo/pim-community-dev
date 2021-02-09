@@ -3,6 +3,7 @@
 
 ## Bug fixes
 
+- PIM-9672: Error 500 on the API when inputing [null] on an array
 - PIM-9595: Avoid 403 error when launching import with no view rights on import details
 - PIM-9622: Fix query that can generate a MySQL memory allocation error
 - PIM-9630: Fix SQL sort buffer size issue when the catalog has a very large number of categories
@@ -11,6 +12,9 @@
 - PIM-9649: Fix PDF product renderer disregarding permissions on Attribute groups
 - PIM-9650: Add translation key for mass delete action.
 - PIM-9642: Refresh product image when switching channel or locale
+- PIM-9667: Prevent import of duplicate options in multiselect attributes
+- PIM-9658: Add missing backend permission checks
+- PIM 9657: Make open filters close when opening a new one.
 - PIM-9671: Provide a data quality insight status context for attribute groups
 
 ## New features
