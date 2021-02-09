@@ -29,13 +29,13 @@
 
     For example, for a `product.created` event, it will contains the whole Product data with the permissions of the Connection applied to it.
 
-* **Event Type**
+* **API Event Type**
 
     Event Type identify each kind of API Event offered through the Events API.
 
     For example `product.updated`, `product.removed`, `product_model.created`.
 
-* **Request**
+* **Events API request**
 
     Request sent to an Event Subscription URL, it contains a collection of API Events as well as the required headers to valid the Request authenticity (signature, timestamp).
 
