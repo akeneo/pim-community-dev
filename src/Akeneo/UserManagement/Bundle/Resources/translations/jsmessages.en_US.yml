@@ -108,3 +108,10 @@ pim_user_management:
             module:
                 create:
                     button: Create group
+    form:
+        error:
+            required: This field is required.
+        duplication:
+            notification:
+                success: The user is duplicated successfully
+                failure: User duplication failure

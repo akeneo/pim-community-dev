@@ -67,6 +67,11 @@ type FieldProps = {
   channel?: string | null;
 
   /**
+   * The required label to display when field is required within the form.
+   */
+  requiredLabel?: string;
+
+  /**
    * Children of the Field, can only be an Input or Helpers, other children will not be displayed.
    */
   children: FieldChild;
@@ -76,7 +81,7 @@ type FieldProps = {
  * The Field component is used to display information around an Input component.
  */
 const Field = React.forwardRef<HTMLDivElement, FieldProps>(
-  ({label, locale, channel, incomplete = false, children, ...rest}: FieldProps, forwardedRef: Ref<HTMLDivElement>) => {
+  ({label, locale, channel, incomplete = false, requiredLabel, children, ...rest}: FieldProps, forwardedRef: Ref<HTMLDivElement>) => {
     const inputId = useId('input_');
     const labelId = useId('label_');
 
@@ -98,6 +103,8 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
           {incomplete && <IncompleteBadge />}
           <Label htmlFor={inputId} id={labelId}>
             {label}
+            &nbsp;
+            {requiredLabel && <em>{requiredLabel}</em>}
           </Label>
           {channel && <Channel>{channel}</Channel>}
           {locale && ('string' === typeof locale ? <Locale code={locale} /> : locale)}

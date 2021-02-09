@@ -1,1 +1,1 @@
-export * from './user-duplicate';
+export * from './apps';
