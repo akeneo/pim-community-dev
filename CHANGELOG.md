@@ -8,6 +8,7 @@
 - PIM-9651: Concatenate rule does not keep anymore the trailing zeros on a decimal number
 - PIM-9654: Allow single quote in DQI Word Dictionary
 - PIM-9655: Fix multiple spellcheck calls on multi-select attributes
+- PIM-9671: Do not process spell checking on attributes with data quality analysis disabled on group
 
 ## Improvements
 

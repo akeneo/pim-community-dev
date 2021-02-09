@@ -7,6 +7,7 @@ import {
   PRODUCT_ATTRIBUTES_TAB_NAME,
   PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
 } from '@akeneo-pim-community/data-quality-insights/src/application/constant';
+import {AttributeGroupsStatusProvider} from '@akeneo-pim-community/data-quality-insights/src/application';
 import {AttributeToImproveContextListener} from '@akeneo-pim-community/data-quality-insights/src/application/listener';
 import {showDataQualityInsightsAttributeToImproveAction} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/reducer';
 import TabContentWithPortalDecorator from '@akeneo-pim-community/data-quality-insights/src/application/component/TabContentWithPortalDecorator';
@@ -21,12 +22,12 @@ export interface AttributesTabContentProps {
 
 const BaseAttributesTabContent: FunctionComponent<AttributesTabContentProps> = () => {
   return (
-    <>
+    <AttributeGroupsStatusProvider>
       <TextAttributesContextListener />
       <AttributeToImproveContextListener />
 
       <SpellcheckProductValuesList />
-    </>
+    </AttributeGroupsStatusProvider>
   );
 };
 
