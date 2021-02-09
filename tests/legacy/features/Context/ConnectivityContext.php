@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Context;
@@ -31,6 +32,22 @@ class ConnectivityContext implements Context, KernelAwareContext
     public function setKernel(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
+    }
+
+    /**
+     * @BeforeScenario @purge-messenger
+     */
+    public function purgeMessengerEvents()
+    {
+        while (true) {
+            $envelopes = $this->transport->get();
+            if (empty($envelopes)) {
+                break;
+            }
+            foreach ($envelopes as $envelope) {
+                $this->transport->ack($envelope);
+            }
+        }
     }
 
     /**
