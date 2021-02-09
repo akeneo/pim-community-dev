@@ -142,7 +142,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\ConnectivityContext:
                     - '@messenger.transport.business_event'
-
         all:
             paths:
                 - tests/legacy/features
@@ -286,6 +285,8 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Akeneo\Connectivity\Connection\Tests\EndToEnd\Context\SettingsContext:
                       - 'Context\EnterpriseFeatureContext'
+                - Context\ConnectivityContext:
+                     - '@messenger.transport.business_event'
         chipmunk:
             paths:
                 - tests/legacy/features/pim/enrichment/
@@ -429,6 +430,8 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssetManagerContext:
                     - 'Context\EnterpriseFeatureContext'
+                - Context\ConnectivityContext:
+                    - '@messenger.transport.business_event'
         raccoon:
             paths:
                 - vendor/akeneo/pim-community-dev/tests/legacy/features/user-management/
@@ -711,6 +714,8 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssetManagerContext:
                     - 'Context\EnterpriseFeatureContext'
+                - Context\ConnectivityContext:
+                    - '@messenger.transport.business_event'
         connectivity:
             paths:
                 - vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/tests/features/
