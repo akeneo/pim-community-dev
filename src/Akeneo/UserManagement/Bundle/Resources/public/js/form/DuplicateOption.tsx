@@ -7,7 +7,7 @@ type DuplicateActionProps = {
   userId: number;
 };
 
-const DuplicateAction = ({userId}: DuplicateActionProps) => {
+const DuplicateOption = ({userId}: DuplicateActionProps) => {
   const translate = useTranslate();
   const router = useRouter();
   const [isModalOpen, openModal, closeModal] = useToggleState(false);
@@ -28,4 +28,4 @@ const DuplicateAction = ({userId}: DuplicateActionProps) => {
   );
 };
 
-export {DuplicateAction};
+export {DuplicateOption};
