@@ -44,6 +44,9 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
                 fn (RoleInterface $role): string => $role->getRole()
             )->getValues(),
             'product_grid_filters' => $user->getProductGridFilters(),
+            'default_product_grid_view' => $user->getDefaultGridView('product-grid') ?
+                $user->getDefaultGridView('product-grid')->getLabel() :
+                null,
         ];
     }
 
