@@ -7,10 +7,9 @@ namespace Oro\Bundle\PimDataGridBundle\tests\Integration\Repository;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
-use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
-use Webmozart\Assert\Assert;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author Pierre Allard <pierre.allard@akeneo.com>
@@ -47,12 +46,13 @@ class DatagridViewRepositoryIntegration extends TestCase
         $view6Id = $this->createDatagridView('view 6', 'product-grid', DatagridView::TYPE_PUBLIC, $juliaUser)->getId();
 
         $result = $this->datagridViewRepository->findDatagridViewBySearch($adminUser, 'product-grid');
-        Assert::isArray($result);
-        Assert::notEmpty($result);
-        Assert::isInstanceOf($result[0], DatagridView::class);
-        Assert::same(array_map(function ($view) {
-            return $view->getId();
-        }, $result), [$view1Id, $view2Id, $view3Id, $view4Id, $view6Id]);
+        Assert::assertIsArray($result);
+        Assert::assertNotEmpty($result);
+        Assert::assertInstanceOf(DatagridView::class, $result[0]);
+        Assert::assertSame(
+            [$view1Id, $view2Id, $view3Id, $view4Id, $view6Id],
+            array_map(fn ($view) => $view->getId(), $result)
+        );
     }
 
     public function test_that_it_filters_by_ids(): void
@@ -65,9 +65,10 @@ class DatagridViewRepositoryIntegration extends TestCase
         $result = $this->datagridViewRepository->findDatagridViewBySearch($user, 'product-grid', '', [
             'identifiers' => [$view1Id, $view2Id]
         ]);
-        Assert::same(array_map(function ($view) {
-            return $view->getId();
-        }, $result), [$view1Id, $view2Id]);
+        Assert::assertSame(
+            [$view1Id, $view2Id],
+            array_map(fn ($view) => $view->getId(), $result)
+        );
     }
 
     public function test_it_returns_view_aliases_for_a_given_user(): void
@@ -79,15 +80,39 @@ class DatagridViewRepositoryIntegration extends TestCase
         $this->createDatagridView('view 3', 'other-grid', DatagridView::TYPE_PRIVATE, $adminUser)->getId();
         $this->createDatagridView('view 5', 'product-grid', DatagridView::TYPE_PRIVATE, $adminUser)->getId();
         $aliases = $this->datagridViewRepository->getDatagridViewAliasesByUser($adminUser);
-        Assert::same($aliases, ['product-grid', 'other-grid']);
+        Assert::assertSame(['product-grid', 'other-grid'], $aliases);
 
         $aliases = $this->datagridViewRepository->getDatagridViewAliasesByUser($juliaUser);
-        Assert::same($aliases, []);
+        Assert::assertSame([], $aliases);
 
         $this->createDatagridView('view 2', 'product-grid', DatagridView::TYPE_PUBLIC, $adminUser)->getId();
         $this->createDatagridView('view 4', 'another-grid', DatagridView::TYPE_PUBLIC, $adminUser)->getId();
         $aliases = $this->datagridViewRepository->getDatagridViewAliasesByUser($juliaUser);
-        Assert::same($aliases, ['product-grid', 'another-grid']);
+        Assert::assertSame(['product-grid', 'another-grid'], $aliases);
+    }
+
+    public function test_it_finds_a_private_view_by_label_and_user(): void
+    {
+        $julia = $this->userRepository->findOneBy(['username' => 'julia']);
+        $admin = $this->userRepository->findOneBy(['username' => 'admin']);
+
+        $myView = $this->createDatagridView('My nice view', 'product-grid', DatagridView::TYPE_PRIVATE, $julia);
+
+        Assert::assertSame($myView, $this->datagridViewRepository->findByLabelAndUser('My nice view', $julia));
+        Assert::assertNull($this->datagridViewRepository->findByLabelAndUser('My nice view', $admin));
+        Assert::assertNull($this->datagridViewRepository->findByLabelAndUser('My nice view', null));
+    }
+
+    public function test_it_finds_a_public_view_by_label_for_any_user()
+    {
+        $julia = $this->userRepository->findOneBy(['username' => 'julia']);
+        $admin = $this->userRepository->findOneBy(['username' => 'admin']);
+
+        $myView = $this->createDatagridView('My nice view', 'product-grid', DatagridView::TYPE_PUBLIC, $julia);
+
+        Assert::assertSame($myView, $this->datagridViewRepository->findByLabelAndUser('My nice view', $julia));
+        Assert::assertSame($myView, $this->datagridViewRepository->findByLabelAndUser('My nice view', $admin));
+        Assert::assertSame($myView, $this->datagridViewRepository->findByLabelAndUser('My nice view', null));
     }
 
     private function createDatagridView(

@@ -13,6 +13,9 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Connector\Processor\Denormalization\UserProcessor;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
+use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -26,9 +29,10 @@ class UserProcessorSpec extends ObjectBehavior
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
+        DatagridViewRepositoryInterface $gridViewRepository,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($repository, $factory, $updater, $validator, $objectDetacher);
+        $this->beConstructedWith($repository, $factory, $updater, $validator, $objectDetacher, $gridViewRepository);
         $this->setStepExecution($stepExecution);
     }
 
@@ -81,5 +85,32 @@ class UserProcessorSpec extends ObjectBehavior
         $validator->validate($user)->shouldBeCalled()->willReturn(new ConstraintViolationList([]));
 
         $this->process($item)->shouldReturn($user);
+    }
+
+    function it_sets_the_product_grid_view(
+        IdentifiableObjectRepositoryInterface $repository,
+        ObjectUpdaterInterface $updater,
+        ValidatorInterface $validator,
+        DatagridViewRepositoryInterface $gridViewRepository,
+        StepExecution $stepExecution,
+        UserInterface $julia,
+        DatagridView $productGridView
+    ) {
+        $repository->getIdentifierProperties()->willReturn(['username']);
+        $repository->findOneByIdentifier('julia')->willReturn($julia);
+        $stepExecution->getExecutionContext()->willReturn(new ExecutionContext());
+        $productGridView->getId()->willReturn(42);
+        $gridViewRepository->findByLabelAndUser('My product grid view', $julia)->willReturn($productGridView);
+
+        $updater->update($julia, [
+            'username' => 'julia',
+            'default_product_grid_view' => 42,
+        ])->shouldBeCalled();
+        $validator->validate($julia)->shouldBeCalled()->willReturn(new ConstraintViolationList([]));
+
+        $this->process([
+            'username' => 'julia',
+            'default_product_grid_view' => 'My product grid view',
+        ])->shouldReturn($julia);
     }
 }
