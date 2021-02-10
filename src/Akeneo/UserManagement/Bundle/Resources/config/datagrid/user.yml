@@ -92,7 +92,7 @@ datagrid:
                 rowAction:     true
             duplicate:
                 launcherOptions:
-                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                    className: AknIconButton AknIconButton--small AknIconButton--copy
                 type:          duplicate-user
                 label:         pim_common.duplicate
                 propertyName:  id
