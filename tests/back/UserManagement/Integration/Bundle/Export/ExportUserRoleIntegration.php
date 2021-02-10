@@ -12,7 +12,7 @@ final class ExportUserRoleIntegration extends TestCase
     private const CSV_EXPORT_JOB_CODE = 'csv_user_role_export';
     private const XLSX_EXPORT_JOB_CODE = 'xlsx_user_role_export';
 
-    protected JobLauncher $jobLauncher;
+    private JobLauncher $jobLauncher;
 
     /**
      * {@inheritdoc}

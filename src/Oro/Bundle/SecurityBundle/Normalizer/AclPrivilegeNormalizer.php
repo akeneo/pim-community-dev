@@ -16,7 +16,7 @@ use Webmozart\Assert\Assert;
  */
 final class AclPrivilegeNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    protected array $supportedFormats = ['array', 'standard'];
+    private array $supportedFormats = ['array', 'standard'];
 
     /**
      * {@inheritdoc}

@@ -19,7 +19,7 @@ final class RoleNormalizer implements NormalizerInterface, CacheableSupportsMeth
 {
     private const ACL_EXTENSION_KEY = 'action';
 
-    protected array $supportedFormats = ['array', 'standard'];
+    private array $supportedFormats = ['array', 'standard'];
 
     private AclManager $aclManager;
     private NormalizerInterface $aclPrivilegeNormalizer;
