@@ -66,7 +66,9 @@ const AddWordsModal: FC<AddWordsModalProps> = ({localesCount, closeModal}) => {
         </Button>
       </Modal.TopRightButtons>
       <Modal.SectionTitle color="brand">{translate('pim_enrich.entity.locale.plural_label')}</Modal.SectionTitle>
-      <Modal.Title>{translate('pimee_enrich.entity.locale.grid.modal.title', {count: localesCount.toString()})}</Modal.Title>
+      <Modal.Title>
+        {translate('pimee_enrich.entity.locale.grid.modal.title', {count: localesCount.toString()})}
+      </Modal.Title>
 
       <Subtitle>{translate('pimee_enrich.entity.locale.grid.modal.subtitle')}</Subtitle>
 
