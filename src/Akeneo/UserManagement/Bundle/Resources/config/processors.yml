@@ -25,3 +25,4 @@ services:
       - '@pim_user.updater.user'
       - '@validator'
       - '@akeneo_storage_utils.doctrine.object_detacher'
+      - '@pim_datagrid.repository.datagrid_view'
