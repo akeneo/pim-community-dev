@@ -27,8 +27,8 @@ define([
       this.$el.empty()
         .html(this.getTemplate({label: image.originalFilename, src}));
 
-      this.$el.find('img').one("error", function () {
-         $(this).attr("src", MediaUrlGenerator.getMediaShowUrl(null, 'thumbnail_small'));
+      this.$el.find('img').one('error', function () {
+         $(this).attr('src', MediaUrlGenerator.getMediaShowUrl(null, 'thumbnail_small'));
       });
 
       return this;
