@@ -1,6 +1,5 @@
 import React from 'react';
 import {UpdaterRow} from './UpdaterRow';
-export {screen} from '@testing-library/dom';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
 import {view as TextInput} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/text';
