@@ -1,29 +1,27 @@
 import React from 'react';
-import {useTranslate, useRouter} from '@akeneo-pim-community/legacy-bridge';
 import {useToggleState} from '@akeneo-pim-community/shared';
 import {DuplicateUserApp} from '@akeneo-pim-community/user-ui';
+
+const Router = require('pim/router');
+const translate = require('oro/translator');
 
 type DuplicateActionProps = {
   userId: number;
 };
 
 const DuplicateOption = ({userId}: DuplicateActionProps) => {
-  const translate = useTranslate();
-  const router = useRouter();
-  const [isModalOpen, openModal, closeModal] = useToggleState(false);
+  const [isAppOpened, openApp, closeApp] = useToggleState(false);
 
   const onDuplicateSuccess = (duplicatedUserId: string) => {
-    router.redirect(router.generate('pim_user_edit', {identifier: duplicatedUserId}));
+    Router.redirect(Router.generate('pim_user_edit', {identifier: duplicatedUserId}));
   };
 
   return (
     <>
-      <button className="AknDropdown-menuLink duplicate" onClick={openModal}>
+      <button className="AknDropdown-menuLink duplicate" onClick={openApp}>
         {translate('pim_common.duplicate')}
       </button>
-      {isModalOpen && (
-        <DuplicateUserApp userId={userId} onCancel={closeModal} onDuplicateSuccess={onDuplicateSuccess} />
-      )}
+      {isAppOpened && <DuplicateUserApp userId={userId} onCancel={closeApp} onDuplicateSuccess={onDuplicateSuccess} />}
     </>
   );
 };
