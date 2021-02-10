@@ -6,7 +6,9 @@
     "lib:build": "tsc -p ./tsconfig.json"
   },
   "peerDependencies": {
-    "react": "^16.13.1",
+    "react": "^16.13.1"
+  },
+  "dependencies": {
     "@akeneo-pim-community/legacy": "link:../legacy"
   },
   "devDependencies": {

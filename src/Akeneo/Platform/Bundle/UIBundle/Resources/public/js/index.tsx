@@ -4,7 +4,7 @@ import styled, {ThemeProvider} from 'styled-components';
 import {HashRouter as Router, Switch, Route, useLocation} from 'react-router-dom';
 import {dependencies, DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {pimTheme} from 'akeneo-design-system';
-import {TranslateProvider} from '@akeneo-pim-community/legacy';
+// import {TranslateProvider} from '@akeneo-pim-community/legacy';
 
 const fetcherRegistry = require('pim/fetcher-registry');
 const dateContext = require('pim/date-context');
@@ -56,7 +56,9 @@ const unsavedChanges = {
     unsavedChanges.hasUnsavedChanges = newValue;
   },
 };
-const {Index: Measurements} = React.lazy(() => import(/* webpackChunkName: "measurements" */ '@akeneo-pim-community/measurements/lib/index'));
+const Measurements = React.lazy(
+  () => import(/* webpackChunkName: "measurements" */ '@akeneo-pim-community/measurements/lib/index')
+);
 
 const App = () => {
   const menuRef = useRef<HTMLDivElement>(null);
@@ -100,23 +102,19 @@ const App = () => {
         </div>
         <Container>
           <DependenciesProvider>
-            <TranslateProvider value={dependencies.translate}>
-              <ThemeProvider theme={pimTheme}>
-                <div ref={menuRef}></div>
-                <Content id="container" className="AknDefault-container">
-                  <Suspense fallback={<div>Chargement...</div>}>
-                    <Switch>
-                      <Route path="/configuration/measurement">
-                        <Measurements />
-                      </Route>
-                      <Route path="*">
-                        <BackboneRouter />
-                      </Route>
-                    </Switch>
-                  </Suspense>
-                </Content>
-              </ThemeProvider>
-            </TranslateProvider>
+            <ThemeProvider theme={pimTheme}>
+              <div ref={menuRef}></div>
+              <Content id="container" className="AknDefault-container">
+                <Suspense fallback={<div>Chargement...</div>}>
+                  <Switch>
+                    <Route path="/configuration/measurement" component={Measurements} />
+                    <Route path="*">
+                      <BackboneRouter />
+                    </Route>
+                  </Switch>
+                </Suspense>
+              </Content>
+            </ThemeProvider>
           </DependenciesProvider>
         </Container>
         <div id="overlay" className="AknOverlay"></div>

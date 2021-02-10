@@ -77,138 +77,123 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@types/react/index.d.ts": {
-        "version": "277e380acf34d4f66398100a66ac29213ea43674f114906f007204f29cc9a8b7",
-        "signature": "277e380acf34d4f66398100a66ac29213ea43674f114906f007204f29cc9a8b7",
+        "version": "cf77444d61a8abc44f343c194889e121d43a3cd5fa928e06cad35fdb5422c89c",
+        "signature": "cf77444d61a8abc44f343c194889e121d43a3cd5fa928e06cad35fdb5422c89c",
         "affectsGlobalScope": true
       },
-      "./node_modules/@akeneo-pim-community/legacy/lib/provider/dependenciesprovider.type.d.ts": {
+      "../legacy/lib/provider/dependenciesprovider.type.d.ts": {
         "version": "afbaf4e3583cb1755f556b5fc787af03329f62348b16706b5cc47483f6d66ae8",
         "signature": "afbaf4e3583cb1755f556b5fc787af03329f62348b16706b5cc47483f6d66ae8",
         "affectsGlobalScope": false
       },
-      "./node_modules/@akeneo-pim-community/legacy/lib/provider/dependenciesprovider.d.ts": {
+      "../legacy/node_modules/@types/react/index.d.ts": {
+        "version": "cf77444d61a8abc44f343c194889e121d43a3cd5fa928e06cad35fdb5422c89c",
+        "signature": "cf77444d61a8abc44f343c194889e121d43a3cd5fa928e06cad35fdb5422c89c",
+        "affectsGlobalScope": true
+      },
+      "../legacy/lib/provider/dependenciesprovider.d.ts": {
         "version": "1fa05d57f8998fa5e26d6c0feda11da4ed0e42807be18e51968d86f5787d4f25",
         "signature": "1fa05d57f8998fa5e26d6c0feda11da4ed0e42807be18e51968d86f5787d4f25",
         "affectsGlobalScope": false
       },
-      "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts": {
+      "../legacy/lib/provider/index.d.ts": {
         "version": "5f4e6bc0ab450849b1121873f1819aa9f4d9dc99002d6691c4d1333f7ad410f3",
         "signature": "5f4e6bc0ab450849b1121873f1819aa9f4d9dc99002d6691c4d1333f7ad410f3",
         "affectsGlobalScope": false
       },
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usedependenciescontext.d.ts": {
+      "../legacy/lib/hooks/usedependenciescontext.d.ts": {
         "version": "c9cfa6ce6c49abbe1db44ccb1e91d78190243680b87d52501a00883b14def5cb",
         "signature": "c9cfa6ce6c49abbe1db44ccb1e91d78190243680b87d52501a00883b14def5cb",
         "affectsGlobalScope": false
       },
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usenotify.d.ts": {
+      "../legacy/lib/hooks/usenotify.d.ts": {
         "version": "036e6fa7038978b81aa97b0b0f179eab577514595803aa4819b22a7a3f93fa56",
         "signature": "036e6fa7038978b81aa97b0b0f179eab577514595803aa4819b22a7a3f93fa56",
         "affectsGlobalScope": false
       },
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/useroute.d.ts": {
+      "../legacy/lib/hooks/useroute.d.ts": {
         "version": "e9f643127fa113a1ddcdf691e29f2402b90062df9ba4d44edd1de219388c4034",
         "signature": "e9f643127fa113a1ddcdf691e29f2402b90062df9ba4d44edd1de219388c4034",
         "affectsGlobalScope": false
       },
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/userouter.d.ts": {
+      "../legacy/lib/hooks/userouter.d.ts": {
         "version": "a01a0588f5fd1a27a321a5bb361d90a84ca2ce3ee28965ac1735ff4b32652a93",
         "signature": "a01a0588f5fd1a27a321a5bb361d90a84ca2ce3ee28965ac1735ff4b32652a93",
         "affectsGlobalScope": false
       },
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usesecurity.d.ts": {
+      "../legacy/lib/hooks/usesecurity.d.ts": {
         "version": "042c5987b1878381f7367cb19469929aa78331afbd0b25bed1f6703fe236644e",
         "signature": "042c5987b1878381f7367cb19469929aa78331afbd0b25bed1f6703fe236644e",
         "affectsGlobalScope": false
       },
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usetranslate.d.ts": {
+      "../legacy/lib/hooks/usetranslate.d.ts": {
         "version": "544b83100f74b7c1bde8fa77c69393a001b9538b37b7e9a74d32e8f180fa78e5",
         "signature": "544b83100f74b7c1bde8fa77c69393a001b9538b37b7e9a74d32e8f180fa78e5",
         "affectsGlobalScope": false
       },
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/useusercontext.d.ts": {
+      "../legacy/lib/hooks/useusercontext.d.ts": {
         "version": "01d946d166edc2f9ce33e3da8d51eb109129af6ab8cf7356affb29f26f8fa578",
         "signature": "01d946d166edc2f9ce33e3da8d51eb109129af6ab8cf7356affb29f26f8fa578",
         "affectsGlobalScope": false
       },
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/useviewbuilder.d.ts": {
+      "../legacy/lib/hooks/useviewbuilder.d.ts": {
         "version": "a63d9399acf54dad142094190a14683d3ce1a47e46ad73f3bc45d814b242e944",
         "signature": "a63d9399acf54dad142094190a14683d3ce1a47e46ad73f3bc45d814b242e944",
         "affectsGlobalScope": false
       },
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usemediator.d.ts": {
+      "../legacy/lib/hooks/usemediator.d.ts": {
         "version": "8f9d12844f10d8e3459bde8ff2ac83d2276f1120ff1785c4edb57e3e6671410a",
         "signature": "8f9d12844f10d8e3459bde8ff2ac83d2276f1120ff1785c4edb57e3e6671410a",
         "affectsGlobalScope": false
       },
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/index.d.ts": {
+      "../legacy/lib/hooks/index.d.ts": {
         "version": "d19282a670be8eafb1b947064e04d1a0f6e8b405fabc0e4d3f132da2f286a6f2",
         "signature": "d19282a670be8eafb1b947064e04d1a0f6e8b405fabc0e4d3f132da2f286a6f2",
         "affectsGlobalScope": false
       },
-      "./node_modules/@akeneo-pim-community/legacy/lib/index.d.ts": {
+      "../legacy/lib/index.d.ts": {
         "version": "c712885d18211e625f2d30bf6968698418fc207312ef3d719ce5921d8079d54f",
         "signature": "c712885d18211e625f2d30bf6968698418fc207312ef3d719ce5921d8079d54f",
         "affectsGlobalScope": false
       },
-      "../akeneo-design-system/node_modules/@types/react/global.d.ts": {
+      "../../../../node_modules/@types/react/global.d.ts": {
         "version": "ecf78e637f710f340ec08d5d92b3f31b134a46a4fcf2e758690d8c46ce62cba6",
         "signature": "ecf78e637f710f340ec08d5d92b3f31b134a46a4fcf2e758690d8c46ce62cba6",
         "affectsGlobalScope": true
       },
-      "../akeneo-design-system/node_modules/csstype/index.d.ts": {
+      "../../../../node_modules/csstype/index.d.ts": {
         "version": "2421504d4ad8486abdb522b7bcdd4caafbcf4a320cdf7b19e780df258c639d7f",
         "signature": "2421504d4ad8486abdb522b7bcdd4caafbcf4a320cdf7b19e780df258c639d7f",
         "affectsGlobalScope": false
       },
-      "../akeneo-design-system/node_modules/@types/prop-types/index.d.ts": {
+      "../../../../node_modules/@types/prop-types/index.d.ts": {
         "version": "a7e32dcb90bf0c1b7a1e4ac89b0f7747cbcba25e7beddc1ebf17be1e161842ad",
         "signature": "a7e32dcb90bf0c1b7a1e4ac89b0f7747cbcba25e7beddc1ebf17be1e161842ad",
         "affectsGlobalScope": false
       },
-      "../akeneo-design-system/node_modules/@types/react/index.d.ts": {
-        "version": "5eec5df7493ec6ad30cd641228d5ec7a5cc46d86e04a7f5d4f3cc239c6fa05bc",
-        "signature": "5eec5df7493ec6ad30cd641228d5ec7a5cc46d86e04a7f5d4f3cc239c6fa05bc",
+      "../../../../node_modules/@types/react/index.d.ts": {
+        "version": "666fe380406dec2e0d3f05a0089b6a9f5a363dfd8e902a09552e2d27a50a8ea4",
+        "signature": "666fe380406dec2e0d3f05a0089b6a9f5a363dfd8e902a09552e2d27a50a8ea4",
         "affectsGlobalScope": true
       },
-      "../akeneo-design-system/lib/components/link/link.d.ts": {
-        "version": "25f1bd9125e7a9db96a3f5f208fd5cf9aa52f4e505c858a3085870cd0da606d7",
-        "signature": "25f1bd9125e7a9db96a3f5f208fd5cf9aa52f4e505c858a3085870cd0da606d7",
-        "affectsGlobalScope": false
-      },
-      "../akeneo-design-system/node_modules/@types/hoist-non-react-statics/index.d.ts": {
+      "../../../../node_modules/@types/hoist-non-react-statics/index.d.ts": {
         "version": "bfe1b52cf71aea9bf8815810cc5d9490fa9617313e3d3c2ee3809a28b80d0bb4",
         "signature": "bfe1b52cf71aea9bf8815810cc5d9490fa9617313e3d3c2ee3809a28b80d0bb4",
         "affectsGlobalScope": false
       },
-      "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts": {
+      "../../../../node_modules/@types/styled-components/index.d.ts": {
         "version": "6839e1779e1f61e0ed62b1ca3ff7e74dc70479a5455077a38434d0e404103c28",
         "signature": "6839e1779e1f61e0ed62b1ca3ff7e74dc70479a5455077a38434d0e404103c28",
         "affectsGlobalScope": true
       },
-      "../akeneo-design-system/lib/components/breadcrumb/breadcrumb.d.ts": {
-        "version": "153d1015c82803654a9575638409c323ebcf4409995a2c48eea74570116df86a",
-        "signature": "153d1015c82803654a9575638409c323ebcf4409995a2c48eea74570116df86a",
-        "affectsGlobalScope": false
-      },
-      "../akeneo-design-system/lib/components/card/card.d.ts": {
-        "version": "7301c7f4547e7c74ca24adca9040230ef942c672b2cb95536eca24b0af5893e0",
-        "signature": "7301c7f4547e7c74ca24adca9040230ef942c672b2cb95536eca24b0af5893e0",
-        "affectsGlobalScope": false
-      },
-      "../akeneo-design-system/lib/components/checkbox/checkbox.d.ts": {
-        "version": "05d97719a7614f54e6f39192bd5af094a7f03d8daefa580f8032ee4277ebf6b7",
-        "signature": "05d97719a7614f54e6f39192bd5af094a7f03d8daefa580f8032ee4277ebf6b7",
-        "affectsGlobalScope": false
-      },
       "../akeneo-design-system/lib/theme/theme.d.ts": {
-        "version": "4a2d269847866d73dc18087f91e8f49c9f5861c04338baddac7ad95dd5b606f6",
-        "signature": "4a2d269847866d73dc18087f91e8f49c9f5861c04338baddac7ad95dd5b606f6",
+        "version": "3c8f5d10b6acb8324aad043706f908c443ecacd1587208221566f3833cde2309",
+        "signature": "3c8f5d10b6acb8324aad043706f908c443ecacd1587208221566f3833cde2309",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/theme/common.d.ts": {
-        "version": "5c3c386288e32d34a0f80be97e3b7a2e8ed8030d466997b632f2f536992c9019",
-        "signature": "5c3c386288e32d34a0f80be97e3b7a2e8ed8030d466997b632f2f536992c9019",
+        "version": "632c26c424773025e9ffc3ac93e907e2d8f159fbf5b5a5f5da387aa94356c5aa",
+        "signature": "632c26c424773025e9ffc3ac93e907e2d8f159fbf5b5a5f5da387aa94356c5aa",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/theme/themes.d.ts": {
@@ -226,9 +211,24 @@
         "signature": "bde2b3eddf161bcd2d7b30c8dd845e07f8c4fe49a6469b1a492a622b99d6eb72",
         "affectsGlobalScope": false
       },
+      "../akeneo-design-system/lib/components/link/link.d.ts": {
+        "version": "7450163f6f7926110b9d3672a3816287cd3eb31981ae543fd37a8c1d949c1d83",
+        "signature": "7450163f6f7926110b9d3672a3816287cd3eb31981ae543fd37a8c1d949c1d83",
+        "affectsGlobalScope": false
+      },
+      "../akeneo-design-system/lib/components/breadcrumb/breadcrumb.d.ts": {
+        "version": "eadb74a361aba21eaf85b9ee802e92d9560069dea390d3313dfdc9ba5228283d",
+        "signature": "eadb74a361aba21eaf85b9ee802e92d9560069dea390d3313dfdc9ba5228283d",
+        "affectsGlobalScope": false
+      },
+      "../akeneo-design-system/lib/shared/flag.d.ts": {
+        "version": "6051629e129567b313ebee5aa08be9f3fc7d6ff4a7e1ef8d16007735d8a8de5a",
+        "signature": "6051629e129567b313ebee5aa08be9f3fc7d6ff4a7e1ef8d16007735d8a8de5a",
+        "affectsGlobalScope": false
+      },
       "../akeneo-design-system/lib/shared/key.d.ts": {
-        "version": "b78bc56d3cd84961601804215502b02b41301a6e4e445e09a2069914c3621ef4",
-        "signature": "b78bc56d3cd84961601804215502b02b41301a6e4e445e09a2069914c3621ef4",
+        "version": "eccfb4f79c6ee06af508d1166288f17816499873d559c697837c642650e1a79c",
+        "signature": "eccfb4f79c6ee06af508d1166288f17816499873d559c697837c642650e1a79c",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/shared/override.d.ts": {
@@ -242,18 +242,33 @@
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/shared/index.d.ts": {
-        "version": "4e1ef3a23587dcf472de904022246096d45a957a97b7ed34049ab35be9d8126b",
-        "signature": "4e1ef3a23587dcf472de904022246096d45a957a97b7ed34049ab35be9d8126b",
+        "version": "e6d9ce037bb8c7222f1b34dbfb2d168fb1f8925fe4bf5ba3f7a119d4cb2b4fe5",
+        "signature": "e6d9ce037bb8c7222f1b34dbfb2d168fb1f8925fe4bf5ba3f7a119d4cb2b4fe5",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/components/button/button.d.ts": {
-        "version": "ac23f166099908b4026653bf97f410d9a5f3af3443263622eb01742564e029d6",
-        "signature": "ac23f166099908b4026653bf97f410d9a5f3af3443263622eb01742564e029d6",
+        "version": "68c845d748a7e4b41a7ad1819340cd4f1d25eea8087d638c8d6ee23e29636d25",
+        "signature": "68c845d748a7e4b41a7ad1819340cd4f1d25eea8087d638c8d6ee23e29636d25",
+        "affectsGlobalScope": false
+      },
+      "../akeneo-design-system/lib/components/card/card.d.ts": {
+        "version": "67a5e33b2e2dfe916d4ec4c3741051a5e1543daef87118ee171dfb9ba264abb6",
+        "signature": "67a5e33b2e2dfe916d4ec4c3741051a5e1543daef87118ee171dfb9ba264abb6",
+        "affectsGlobalScope": false
+      },
+      "../akeneo-design-system/lib/components/checkbox/checkbox.d.ts": {
+        "version": "44bdae0a44bea5aab64b759b361ee2f31c53f78cdbe0de118b375b5c0b28e1e3",
+        "signature": "44bdae0a44bea5aab64b759b361ee2f31c53f78cdbe0de118b375b5c0b28e1e3",
+        "affectsGlobalScope": false
+      },
+      "../akeneo-design-system/lib/components/field/field.d.ts": {
+        "version": "da77d7211a3667c377feb412236fa5056115b142b9dca9c05a16d10b3090a9b5",
+        "signature": "da77d7211a3667c377feb412236fa5056115b142b9dca9c05a16d10b3090a9b5",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/icons/iconprops.d.ts": {
-        "version": "e0b43ce3e7ccac6ab81c496c9862af3e4fe6ac789c9996066fde15f587a1f61f",
-        "signature": "e0b43ce3e7ccac6ab81c496c9862af3e4fe6ac789c9996066fde15f587a1f61f",
+        "version": "b7432695f8c63d85fccff7f404d1a668928b463026fb644a3d7587a7ae107bde",
+        "signature": "b7432695f8c63d85fccff7f404d1a668928b463026fb644a3d7587a7ae107bde",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/icons/activityicon.d.ts": {
@@ -411,6 +426,11 @@
         "signature": "fa0a44229ff0c46316450f9650386644b7d6cabe9582a1f28ff1d58132acbd6a",
         "affectsGlobalScope": false
       },
+      "../akeneo-design-system/lib/icons/checkroundicon.d.ts": {
+        "version": "ba7434e6b3dbb90284f476cc04f9c95c5ee3e243373ecf3dd8d182add026eb24",
+        "signature": "ba7434e6b3dbb90284f476cc04f9c95c5ee3e243373ecf3dd8d182add026eb24",
+        "affectsGlobalScope": false
+      },
       "../akeneo-design-system/lib/icons/clockicon.d.ts": {
         "version": "fa1730da5f44048a91f7e05ceeff78fc208c34eb347aa4b4bd6f48d4a2ad5544",
         "signature": "fa1730da5f44048a91f7e05ceeff78fc208c34eb347aa4b4bd6f48d4a2ad5544",
@@ -467,8 +487,8 @@
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/icons/deleteicon.d.ts": {
-        "version": "7e5283c9ae359dfe2f8797c3ba8540a8abad60314c6938adf0831f07595ee3c3",
-        "signature": "7e5283c9ae359dfe2f8797c3ba8540a8abad60314c6938adf0831f07595ee3c3",
+        "version": "68672eda14cad9bf89bad552c9d762734a4962f759c09b1abdb5dec291871138",
+        "signature": "68672eda14cad9bf89bad552c9d762734a4962f759c09b1abdb5dec291871138",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/icons/dialogicon.d.ts": {
@@ -477,8 +497,8 @@
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/icons/downloadicon.d.ts": {
-        "version": "5b355f9b3d5d72d3f895f19aefffaf0781031b7f7ac7338268d25de276ac5692",
-        "signature": "5b355f9b3d5d72d3f895f19aefffaf0781031b7f7ac7338268d25de276ac5692",
+        "version": "4dc72a0bf2e57318e109ed15e926ee663b6314a8d6bb301aa7e3f891640710fc",
+        "signature": "4dc72a0bf2e57318e109ed15e926ee663b6314a8d6bb301aa7e3f891640710fc",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/icons/dragdropicon.d.ts": {
@@ -802,18 +822,18 @@
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/icons/index.d.ts": {
-        "version": "87cc4e80155a5ee7f74922150f63efdd52ca0e4e368af21b0b0578f3fd10701f",
-        "signature": "87cc4e80155a5ee7f74922150f63efdd52ca0e4e368af21b0b0578f3fd10701f",
+        "version": "706d978cfed4c36ff11c1ba5c6305e84a9dfb1af75fd163d0d27b205d888c724",
+        "signature": "706d978cfed4c36ff11c1ba5c6305e84a9dfb1af75fd163d0d27b205d888c724",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/components/helper/helper.d.ts": {
-        "version": "2448c37b9c61d8e0967d755b3073214b5da77a0bc415846a30ad9a5f37882366",
-        "signature": "2448c37b9c61d8e0967d755b3073214b5da77a0bc415846a30ad9a5f37882366",
+        "version": "9a4a58081bc526ad5cd38eacd31f2ef0c2e525e041e1684a7e700f8ba35932d7",
+        "signature": "9a4a58081bc526ad5cd38eacd31f2ef0c2e525e041e1684a7e700f8ba35932d7",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/components/iconbutton/iconbutton.d.ts": {
-        "version": "f316a0b04565b0b2dac8e7430015528cd72c3d48317fbae073e1668c5c926c54",
-        "signature": "f316a0b04565b0b2dac8e7430015528cd72c3d48317fbae073e1668c5c926c54",
+        "version": "9677ca9508999163a6df3ee46d0fad57039f560638c84b9c8dd820136d45a8df",
+        "signature": "9677ca9508999163a6df3ee46d0fad57039f560638c84b9c8dd820136d45a8df",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/components/image/image.d.ts": {
@@ -821,14 +841,34 @@
         "signature": "9966801d02673af5e9add90f4aa5e585dc04dcedc61bc1dfb95007b32e5deebe",
         "affectsGlobalScope": false
       },
+      "../akeneo-design-system/lib/components/input/inputprops.d.ts": {
+        "version": "7236664285a8417f209f3a25f4a156f18f4dcd5905a32fbac36b85ca1077a82c",
+        "signature": "7236664285a8417f209f3a25f4a156f18f4dcd5905a32fbac36b85ca1077a82c",
+        "affectsGlobalScope": false
+      },
       "../akeneo-design-system/lib/components/input/booleaninput/booleaninput.d.ts": {
-        "version": "4a32917e200ae59a7bcc2232109f5a579de2e918d66d198be2f5fcb61cc27157",
-        "signature": "4a32917e200ae59a7bcc2232109f5a579de2e918d66d198be2f5fcb61cc27157",
+        "version": "448bcc544de12d861caefa25142df3920e5e1bcc38661ce39b9167ba794d3076",
+        "signature": "448bcc544de12d861caefa25142df3920e5e1bcc38661ce39b9167ba794d3076",
+        "affectsGlobalScope": false
+      },
+      "../akeneo-design-system/lib/components/input/textinput/textinput.d.ts": {
+        "version": "d25481d0649547d220108030fe86d194a8cd2640e072a41297a0a8a5b19c99bb",
+        "signature": "d25481d0649547d220108030fe86d194a8cd2640e072a41297a0a8a5b19c99bb",
+        "affectsGlobalScope": false
+      },
+      "../akeneo-design-system/lib/components/input/index.d.ts": {
+        "version": "a6d0357d2dc021ad24bb1805dd42ee80d5ebb8b8e14c6fd3a464d14d7e91a17b",
+        "signature": "a6d0357d2dc021ad24bb1805dd42ee80d5ebb8b8e14c6fd3a464d14d7e91a17b",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/components/information/information.d.ts": {
         "version": "36a70c33a0ef5f1dc9e1bcd35e378bc39e98440b86725aee1857ad42cff306fe",
         "signature": "36a70c33a0ef5f1dc9e1bcd35e378bc39e98440b86725aee1857ad42cff306fe",
+        "affectsGlobalScope": false
+      },
+      "../akeneo-design-system/lib/components/locale/locale.d.ts": {
+        "version": "09f26457125f18e23c66213324741743e813f7bd07c8afb70f7ef2368626129b",
+        "signature": "09f26457125f18e23c66213324741743e813f7bd07c8afb70f7ef2368626129b",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/components/messagebar/messagebar.d.ts": {
@@ -837,13 +877,13 @@
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts": {
-        "version": "7533a8a576a47f0819c63eb7ea1494b190982793a327e735fc04267b2ba09051",
-        "signature": "7533a8a576a47f0819c63eb7ea1494b190982793a327e735fc04267b2ba09051",
+        "version": "4abaa2bb785964f402085a7dc2b37701de274a607fa5186eacfa85ca74557d83",
+        "signature": "4abaa2bb785964f402085a7dc2b37701de274a607fa5186eacfa85ca74557d83",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/components/modal/modal.d.ts": {
-        "version": "cfd4234946f3d697de94e67e588fbeccb8c6922048642a5d86b6967d44f0c3b2",
-        "signature": "cfd4234946f3d697de94e67e588fbeccb8c6922048642a5d86b6967d44f0c3b2",
+        "version": "a487a6fad94920281d157d81ca7a975807f4d16832ef72bb26f1617d4c86e04e",
+        "signature": "a487a6fad94920281d157d81ca7a975807f4d16832ef72bb26f1617d4c86e04e",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/components/progressbar/progressbar.d.ts": {
@@ -852,13 +892,33 @@
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/components/table/table.d.ts": {
-        "version": "ad05e11326c1bb7946f93d47a0a7feb0481b6bac3967d993de25a2d592dfb252",
-        "signature": "ad05e11326c1bb7946f93d47a0a7feb0481b6bac3967d993de25a2d592dfb252",
+        "version": "eb8fb3571cf53ab7c66b37db8274ef7169665ead4febb9b88db7999c327350fa",
+        "signature": "eb8fb3571cf53ab7c66b37db8274ef7169665ead4febb9b88db7999c327350fa",
+        "affectsGlobalScope": false
+      },
+      "../akeneo-design-system/lib/components/dropdown/dropdown.d.ts": {
+        "version": "7087bdb7e260faac3565e24789df4dd8c12c4ac31a27b54bd549c9bfea9a79ae",
+        "signature": "7087bdb7e260faac3565e24789df4dd8c12c4ac31a27b54bd549c9bfea9a79ae",
+        "affectsGlobalScope": false
+      },
+      "../akeneo-design-system/lib/components/pagination/pagination.d.ts": {
+        "version": "26cb360b05ae61e1ceb9e79bcb3badc60f28079aa4b27cefc8b688032b868441",
+        "signature": "26cb360b05ae61e1ceb9e79bcb3badc60f28079aa4b27cefc8b688032b868441",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/components/index.d.ts": {
-        "version": "02d3a0295cfbefc8fdb56b7544e320792d30dad899b787c835631834b22e19ae",
-        "signature": "02d3a0295cfbefc8fdb56b7544e320792d30dad899b787c835631834b22e19ae",
+        "version": "2d3e1cc7db2a57935f1a221aa907293153dce5a9fe2844d3ea00ac9d85aed011",
+        "signature": "2d3e1cc7db2a57935f1a221aa907293153dce5a9fe2844d3ea00ac9d85aed011",
+        "affectsGlobalScope": false
+      },
+      "../akeneo-design-system/lib/hooks/useautofocus.d.ts": {
+        "version": "d6db8ec343f08d8baa64e30f69744f115addabb77c64845f8cbfa63ad79fac9a",
+        "signature": "d6db8ec343f08d8baa64e30f69744f115addabb77c64845f8cbfa63ad79fac9a",
+        "affectsGlobalScope": false
+      },
+      "../akeneo-design-system/lib/hooks/useid.d.ts": {
+        "version": "7775e7f33908c980fe53e71649e58111f4cd87e948d7b8d2cfe74d96f1c76ad1",
+        "signature": "7775e7f33908c980fe53e71649e58111f4cd87e948d7b8d2cfe74d96f1c76ad1",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/hooks/useshortcut.d.ts": {
@@ -871,14 +931,14 @@
         "signature": "64631f7fb52718b8a1d54fffa4b37f33e3115c25e8bb16d1174526e78f836ead",
         "affectsGlobalScope": false
       },
-      "../akeneo-design-system/lib/hooks/useautofocus.d.ts": {
-        "version": "d6db8ec343f08d8baa64e30f69744f115addabb77c64845f8cbfa63ad79fac9a",
-        "signature": "d6db8ec343f08d8baa64e30f69744f115addabb77c64845f8cbfa63ad79fac9a",
+      "../akeneo-design-system/lib/hooks/usebooleanstate.d.ts": {
+        "version": "1bf41efa64508da9fb05d287bfba359b0ed338de2bed03a0dce53081d4a3b47f",
+        "signature": "1bf41efa64508da9fb05d287bfba359b0ed338de2bed03a0dce53081d4a3b47f",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/hooks/index.d.ts": {
-        "version": "1a6cd0310fa10e6008659bfcbf04cc1dacba0bc1e8ac4e49dfff671d9d7c8716",
-        "signature": "1a6cd0310fa10e6008659bfcbf04cc1dacba0bc1e8ac4e49dfff671d9d7c8716",
+        "version": "f40a1d4c4a4422e0fbced52d205a33de437308634cee380aae32c495306961b3",
+        "signature": "f40a1d4c4a4422e0fbced52d205a33de437308634cee380aae32c495306961b3",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/illustrations/addingvalueillustration.d.ts": {
@@ -929,6 +989,11 @@
       "../akeneo-design-system/lib/illustrations/cityillustration.d.ts": {
         "version": "b86324c59b9d047a73b86233de62d2b0f26bf43504fca5bc539b8186cb1dbc5a",
         "signature": "b86324c59b9d047a73b86233de62d2b0f26bf43504fca5bc539b8186cb1dbc5a",
+        "affectsGlobalScope": false
+      },
+      "../akeneo-design-system/lib/illustrations/clienterrorillustration.d.ts": {
+        "version": "f6656a86028d30db268696f6760a52a2b67169004f5d437d202c115149e0c991",
+        "signature": "f6656a86028d30db268696f6760a52a2b67169004f5d437d202c115149e0c991",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/illustrations/codingillustration.d.ts": {
@@ -1022,8 +1087,8 @@
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/illustrations/importillustration.d.ts": {
-        "version": "b124dbb7b3a2f646414dfe279d96e06e40b6c7777ca558a5a41a9af379a96394",
-        "signature": "b124dbb7b3a2f646414dfe279d96e06e40b6c7777ca558a5a41a9af379a96394",
+        "version": "4c6ef74ab2b6209a6b8d003d10b9c9aa8345bd4a49787d78b4505c9efd7cafb7",
+        "signature": "4c6ef74ab2b6209a6b8d003d10b9c9aa8345bd4a49787d78b4505c9efd7cafb7",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/illustrations/importxlsxillustration.d.ts": {
@@ -1111,6 +1176,11 @@
         "signature": "46258ad6dbaa9c50ec9d24602d860c919516c944c2350553a95e63106c4ee877",
         "affectsGlobalScope": false
       },
+      "../akeneo-design-system/lib/illustrations/servererrorillustration.d.ts": {
+        "version": "60a479a7d9a350709a0831ec223e528b3e4991199418d3cdf6aca468be08dc5f",
+        "signature": "60a479a7d9a350709a0831ec223e528b3e4991199418d3cdf6aca468be08dc5f",
+        "affectsGlobalScope": false
+      },
       "../akeneo-design-system/lib/illustrations/serverillustration.d.ts": {
         "version": "95a480fe616c690ba17a84eb220c23ccb710613cb6e901598f119e7cb819abf9",
         "signature": "95a480fe616c690ba17a84eb220c23ccb710613cb6e901598f119e7cb819abf9",
@@ -1162,8 +1232,8 @@
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/illustrations/index.d.ts": {
-        "version": "806c2434b7c26689b10596167ed7ce189086d14d857113e3ce4f6254ff53fafd",
-        "signature": "806c2434b7c26689b10596167ed7ce189086d14d857113e3ce4f6254ff53fafd",
+        "version": "c09ba74b3ed08898db0765e6af0a15bb946a04e67859464e068c35e4d35a6a15",
+        "signature": "c09ba74b3ed08898db0765e6af0a15bb946a04e67859464e068c35e4d35a6a15",
         "affectsGlobalScope": false
       },
       "../akeneo-design-system/lib/theme/onboarder/index.d.ts": {
@@ -1195,11 +1265,6 @@
         "version": "1dd332e1b51d51a6f5dca22911ad32bcaf26965f7bcf3367ae092e974d58ee68",
         "signature": "870856ec1d866731f386b88514da6e1e79984ac0a3298ed619d6f3439e1fe4ac",
         "affectsGlobalScope": false
-      },
-      "../node_modules/@types/styled-components/index.d.ts": {
-        "version": "6839e1779e1f61e0ed62b1ca3ff7e74dc70479a5455077a38434d0e404103c28",
-        "signature": "6839e1779e1f61e0ed62b1ca3ff7e74dc70479a5455077a38434d0e404103c28",
-        "affectsGlobalScope": true
       },
       "./src/components/nodata.tsx": {
         "version": "f6d11ba5a8ec6dbf1109153d54031aab7813ce960e3fbfa28b19073282ef3cea",
@@ -1389,39 +1454,59 @@
       "configFilePath": "./tsconfig.json"
     },
     "referencedMap": {
+      "../../../../node_modules/@types/hoist-non-react-statics/index.d.ts": [
+        "../../../../node_modules/@types/react/index.d.ts"
+      ],
+      "../../../../node_modules/@types/react/index.d.ts": [
+        "../../../../node_modules/@types/react/global.d.ts",
+        "./node_modules/@types/prop-types/index.d.ts",
+        "./node_modules/csstype/index.d.ts"
+      ],
+      "../../../../node_modules/@types/styled-components/index.d.ts": [
+        "../../../../node_modules/@types/hoist-non-react-statics/index.d.ts",
+        "../../../../node_modules/@types/react/index.d.ts",
+        "./node_modules/csstype/index.d.ts"
+      ],
       "../akeneo-design-system/lib/components/badge/badge.d.ts": [
-        "../akeneo-design-system/lib/theme/index.d.ts",
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../akeneo-design-system/lib/theme/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/breadcrumb/breadcrumb.d.ts": [
-        "../akeneo-design-system/lib/components/link/link.d.ts",
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts",
-        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../../../../node_modules/@types/styled-components/index.d.ts",
+        "../akeneo-design-system/lib/components/link/link.d.ts"
       ],
       "../akeneo-design-system/lib/components/button/button.d.ts": [
+        "../../../../node_modules/@types/react/index.d.ts",
         "../akeneo-design-system/lib/shared/index.d.ts",
-        "../akeneo-design-system/lib/theme/index.d.ts",
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+        "../akeneo-design-system/lib/theme/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/card/card.d.ts": [
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts",
-        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../../../../node_modules/@types/styled-components/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/checkbox/checkbox.d.ts": [
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts"
+      ],
+      "../akeneo-design-system/lib/components/dropdown/dropdown.d.ts": [
+        "../../../../node_modules/@types/react/index.d.ts"
+      ],
+      "../akeneo-design-system/lib/components/field/field.d.ts": [
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../akeneo-design-system/lib/components/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/helper/helper.d.ts": [
-        "../akeneo-design-system/lib/icons/index.d.ts",
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../akeneo-design-system/lib/icons/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/iconbutton/iconbutton.d.ts": [
+        "../../../../node_modules/@types/react/index.d.ts",
         "../akeneo-design-system/lib/components/button/button.d.ts",
         "../akeneo-design-system/lib/icons/index.d.ts",
-        "../akeneo-design-system/lib/shared/index.d.ts",
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+        "../akeneo-design-system/lib/shared/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/image/image.d.ts": [
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/index.d.ts": [
         "../akeneo-design-system/lib/components/badge/badge.d.ts",
@@ -1429,56 +1514,81 @@
         "../akeneo-design-system/lib/components/button/button.d.ts",
         "../akeneo-design-system/lib/components/card/card.d.ts",
         "../akeneo-design-system/lib/components/checkbox/checkbox.d.ts",
+        "../akeneo-design-system/lib/components/dropdown/dropdown.d.ts",
+        "../akeneo-design-system/lib/components/field/field.d.ts",
         "../akeneo-design-system/lib/components/helper/helper.d.ts",
         "../akeneo-design-system/lib/components/iconbutton/iconbutton.d.ts",
         "../akeneo-design-system/lib/components/image/image.d.ts",
         "../akeneo-design-system/lib/components/information/information.d.ts",
-        "../akeneo-design-system/lib/components/input/booleaninput/booleaninput.d.ts",
+        "../akeneo-design-system/lib/components/input/index.d.ts",
         "../akeneo-design-system/lib/components/link/link.d.ts",
+        "../akeneo-design-system/lib/components/locale/locale.d.ts",
         "../akeneo-design-system/lib/components/messagebar/messagebar.d.ts",
         "../akeneo-design-system/lib/components/modal/modal.d.ts",
+        "../akeneo-design-system/lib/components/pagination/pagination.d.ts",
         "../akeneo-design-system/lib/components/progressbar/progressbar.d.ts",
         "../akeneo-design-system/lib/components/table/table.d.ts"
       ],
       "../akeneo-design-system/lib/components/information/information.d.ts": [
-        "../akeneo-design-system/lib/theme/theme.d.ts",
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts",
-        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../../../../node_modules/@types/styled-components/index.d.ts",
+        "../akeneo-design-system/lib/theme/theme.d.ts"
       ],
       "../akeneo-design-system/lib/components/input/booleaninput/booleaninput.d.ts": [
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../akeneo-design-system/lib/components/input/inputprops.d.ts"
+      ],
+      "../akeneo-design-system/lib/components/input/index.d.ts": [
+        "../akeneo-design-system/lib/components/input/booleaninput/booleaninput.d.ts",
+        "../akeneo-design-system/lib/components/input/inputprops.d.ts",
+        "../akeneo-design-system/lib/components/input/textinput/textinput.d.ts"
+      ],
+      "../akeneo-design-system/lib/components/input/textinput/textinput.d.ts": [
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../akeneo-design-system/lib/components/input/inputprops.d.ts",
+        "../akeneo-design-system/lib/shared/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/link/link.d.ts": [
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts"
+      ],
+      "../akeneo-design-system/lib/components/locale/locale.d.ts": [
+        "../../../../node_modules/@types/react/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/messagebar/messagebar.d.ts": [
-        "../akeneo-design-system/lib/icons/index.d.ts",
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../akeneo-design-system/lib/icons/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/modal/modal.d.ts": [
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../../../../node_modules/@types/styled-components/index.d.ts",
         "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts",
-        "../akeneo-design-system/lib/theme/theme.d.ts",
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts",
-        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
+        "../akeneo-design-system/lib/shared/index.d.ts",
+        "../akeneo-design-system/lib/theme/theme.d.ts"
+      ],
+      "../akeneo-design-system/lib/components/pagination/pagination.d.ts": [
+        "../../../../node_modules/@types/react/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/progressbar/progressbar.d.ts": [
-        "../akeneo-design-system/lib/theme/index.d.ts",
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../akeneo-design-system/lib/theme/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/table/table.d.ts": [
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../akeneo-design-system/lib/shared/index.d.ts"
       ],
       "../akeneo-design-system/lib/hooks/index.d.ts": [
         "../akeneo-design-system/lib/hooks/useautofocus.d.ts",
+        "../akeneo-design-system/lib/hooks/usebooleanstate.d.ts",
+        "../akeneo-design-system/lib/hooks/useid.d.ts",
         "../akeneo-design-system/lib/hooks/useshortcut.d.ts",
         "../akeneo-design-system/lib/hooks/usetheme.d.ts"
       ],
       "../akeneo-design-system/lib/hooks/useautofocus.d.ts": [
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts"
       ],
       "../akeneo-design-system/lib/hooks/useshortcut.d.ts": [
-        "../akeneo-design-system/lib/shared/index.d.ts",
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../akeneo-design-system/lib/shared/index.d.ts"
       ],
       "../akeneo-design-system/lib/hooks/usetheme.d.ts": [
         "../akeneo-design-system/lib/theme/index.d.ts"
@@ -1576,6 +1686,9 @@
       "../akeneo-design-system/lib/icons/checkpartialicon.d.ts": [
         "../akeneo-design-system/lib/icons/iconprops.d.ts"
       ],
+      "../akeneo-design-system/lib/icons/checkroundicon.d.ts": [
+        "../akeneo-design-system/lib/icons/iconprops.d.ts"
+      ],
       "../akeneo-design-system/lib/icons/clockicon.d.ts": [
         "../akeneo-design-system/lib/icons/iconprops.d.ts"
       ],
@@ -1610,12 +1723,14 @@
         "../akeneo-design-system/lib/icons/iconprops.d.ts"
       ],
       "../akeneo-design-system/lib/icons/deleteicon.d.ts": [
+        "../../../../node_modules/@types/styled-components/index.d.ts",
         "../akeneo-design-system/lib/icons/iconprops.d.ts"
       ],
       "../akeneo-design-system/lib/icons/dialogicon.d.ts": [
         "../akeneo-design-system/lib/icons/iconprops.d.ts"
       ],
       "../akeneo-design-system/lib/icons/downloadicon.d.ts": [
+        "../../../../node_modules/@types/styled-components/index.d.ts",
         "../akeneo-design-system/lib/icons/iconprops.d.ts"
       ],
       "../akeneo-design-system/lib/icons/dragdropicon.d.ts": [
@@ -1688,7 +1803,8 @@
         "../akeneo-design-system/lib/icons/iconprops.d.ts"
       ],
       "../akeneo-design-system/lib/icons/iconprops.d.ts": [
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../akeneo-design-system/lib/shared/index.d.ts"
       ],
       "../akeneo-design-system/lib/icons/idicon.d.ts": [
         "../akeneo-design-system/lib/icons/iconprops.d.ts"
@@ -1725,6 +1841,7 @@
         "../akeneo-design-system/lib/icons/categoryicon.d.ts",
         "../akeneo-design-system/lib/icons/checkicon.d.ts",
         "../akeneo-design-system/lib/icons/checkpartialicon.d.ts",
+        "../akeneo-design-system/lib/icons/checkroundicon.d.ts",
         "../akeneo-design-system/lib/icons/clockicon.d.ts",
         "../akeneo-design-system/lib/icons/closeicon.d.ts",
         "../akeneo-design-system/lib/icons/codeicon.d.ts",
@@ -1955,6 +2072,9 @@
       "../akeneo-design-system/lib/illustrations/cityillustration.d.ts": [
         "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
       ],
+      "../akeneo-design-system/lib/illustrations/clienterrorillustration.d.ts": [
+        "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
+      ],
       "../akeneo-design-system/lib/illustrations/codingillustration.d.ts": [
         "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
       ],
@@ -2007,12 +2127,14 @@
         "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
       ],
       "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts": [
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../akeneo-design-system/lib/shared/index.d.ts"
       ],
       "../akeneo-design-system/lib/illustrations/importcsvillustration.d.ts": [
         "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
       ],
       "../akeneo-design-system/lib/illustrations/importillustration.d.ts": [
+        "../../../../node_modules/@types/styled-components/index.d.ts",
         "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
       ],
       "../akeneo-design-system/lib/illustrations/importxlsxillustration.d.ts": [
@@ -2032,6 +2154,7 @@
         "../akeneo-design-system/lib/illustrations/attributesillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/channelsillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/cityillustration.d.ts",
+        "../akeneo-design-system/lib/illustrations/clienterrorillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/codingillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/currenciesillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/defaultpictureillustration.d.ts",
@@ -2068,6 +2191,7 @@
         "../akeneo-design-system/lib/illustrations/projectillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/proposalsillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/rulesillustration.d.ts",
+        "../akeneo-design-system/lib/illustrations/servererrorillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/serverillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/settingsillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/statusillustration.d.ts",
@@ -2124,6 +2248,9 @@
       "../akeneo-design-system/lib/illustrations/rulesillustration.d.ts": [
         "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
       ],
+      "../akeneo-design-system/lib/illustrations/servererrorillustration.d.ts": [
+        "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
+      ],
       "../akeneo-design-system/lib/illustrations/serverillustration.d.ts": [
         "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
       ],
@@ -2166,13 +2293,14 @@
         "../akeneo-design-system/lib/theme/shared-catalogs/index.d.ts"
       ],
       "../akeneo-design-system/lib/shared/index.d.ts": [
+        "../akeneo-design-system/lib/shared/flag.d.ts",
         "../akeneo-design-system/lib/shared/key.d.ts",
         "../akeneo-design-system/lib/shared/override.d.ts",
         "../akeneo-design-system/lib/shared/uuid.d.ts"
       ],
       "../akeneo-design-system/lib/theme/common.d.ts": [
-        "../akeneo-design-system/lib/theme/theme.d.ts",
-        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
+        "../../../../node_modules/@types/styled-components/index.d.ts",
+        "../akeneo-design-system/lib/theme/theme.d.ts"
       ],
       "../akeneo-design-system/lib/theme/index.d.ts": [
         "../akeneo-design-system/lib/theme/common.d.ts",
@@ -2189,75 +2317,62 @@
         "../akeneo-design-system/lib/theme/theme.d.ts"
       ],
       "../akeneo-design-system/lib/theme/theme.d.ts": [
-        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
+        "../../../../node_modules/@types/styled-components/index.d.ts"
       ],
       "../akeneo-design-system/lib/theme/themes.d.ts": [
         "../akeneo-design-system/lib/theme/theme.d.ts"
       ],
-      "../akeneo-design-system/node_modules/@types/hoist-non-react-statics/index.d.ts": [
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+      "../legacy/lib/hooks/index.d.ts": [
+        "../legacy/lib/hooks/usedependenciescontext.d.ts",
+        "../legacy/lib/hooks/usemediator.d.ts",
+        "../legacy/lib/hooks/usenotify.d.ts",
+        "../legacy/lib/hooks/useroute.d.ts",
+        "../legacy/lib/hooks/userouter.d.ts",
+        "../legacy/lib/hooks/usesecurity.d.ts",
+        "../legacy/lib/hooks/usetranslate.d.ts",
+        "../legacy/lib/hooks/useusercontext.d.ts",
+        "../legacy/lib/hooks/useviewbuilder.d.ts"
       ],
-      "../akeneo-design-system/node_modules/@types/react/index.d.ts": [
-        "../akeneo-design-system/node_modules/@types/react/global.d.ts",
-        "./node_modules/@types/prop-types/index.d.ts",
-        "./node_modules/csstype/index.d.ts"
+      "../legacy/lib/hooks/usedependenciescontext.d.ts": [
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts": [
-        "../akeneo-design-system/node_modules/@types/hoist-non-react-statics/index.d.ts",
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts",
-        "./node_modules/csstype/index.d.ts"
+      "../legacy/lib/hooks/usemediator.d.ts": [
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "../node_modules/@types/styled-components/index.d.ts": [
-        "../akeneo-design-system/node_modules/@types/hoist-non-react-statics/index.d.ts",
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts",
-        "./node_modules/csstype/index.d.ts"
+      "../legacy/lib/hooks/usenotify.d.ts": [
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/index.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usedependenciescontext.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usemediator.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usenotify.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/useroute.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/userouter.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usesecurity.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usetranslate.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/useusercontext.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/useviewbuilder.d.ts"
+      "../legacy/lib/hooks/userouter.d.ts": [
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usedependenciescontext.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
+      "../legacy/lib/hooks/usesecurity.d.ts": [
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usemediator.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
+      "../legacy/lib/hooks/usetranslate.d.ts": [
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usenotify.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
+      "../legacy/lib/hooks/useusercontext.d.ts": [
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/userouter.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
+      "../legacy/lib/hooks/useviewbuilder.d.ts": [
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usesecurity.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
+      "../legacy/lib/index.d.ts": [
+        "../legacy/lib/hooks/index.d.ts",
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usetranslate.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
-      ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/useusercontext.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
-      ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/useviewbuilder.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
-      ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/index.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/index.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
-      ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/provider/dependenciesprovider.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/dependenciesprovider.type.d.ts",
+      "../legacy/lib/provider/dependenciesprovider.d.ts": [
+        "../legacy/lib/provider/dependenciesprovider.type.d.ts",
         "./node_modules/@types/react/index.d.ts"
       ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/dependenciesprovider.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/dependenciesprovider.type.d.ts"
+      "../legacy/lib/provider/index.d.ts": [
+        "../legacy/lib/provider/dependenciesprovider.d.ts",
+        "../legacy/lib/provider/dependenciesprovider.type.d.ts"
+      ],
+      "../legacy/node_modules/@types/react/index.d.ts": [
+        "../legacy/node_modules/@types/react/global.d.ts",
+        "./node_modules/@types/prop-types/index.d.ts",
+        "./node_modules/csstype/index.d.ts"
       ],
       "./node_modules/@types/react/index.d.ts": [
         "./node_modules/@types/prop-types/index.d.ts",
@@ -2273,24 +2388,24 @@
       ],
       "./src/components/inputerrors.tsx": [
         "../akeneo-design-system/lib/index.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/index.d.ts",
+        "../legacy/lib/index.d.ts",
         "./node_modules/@types/react/index.d.ts",
         "./src/models/validation-error.ts"
       ],
       "./src/components/loadingplaceholder.tsx": [
-        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
+        "../../../../node_modules/@types/styled-components/index.d.ts"
       ],
       "./src/components/nodata.tsx": [
-        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
+        "../../../../node_modules/@types/styled-components/index.d.ts"
       ],
       "./src/components/page/header/actions.tsx": [
-        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
+        "../../../../node_modules/@types/styled-components/index.d.ts"
       ],
       "./src/components/page/header/breadcrumb.tsx": [
-        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
+        "../../../../node_modules/@types/styled-components/index.d.ts"
       ],
       "./src/components/page/header/illustration.tsx": [
-        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts",
+        "../../../../node_modules/@types/styled-components/index.d.ts",
         "./node_modules/@types/react/index.d.ts"
       ],
       "./src/components/page/header/index.ts": [
@@ -2302,10 +2417,10 @@
         "./src/components/page/header/useractions.tsx"
       ],
       "./src/components/page/header/state.tsx": [
-        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
+        "../../../../node_modules/@types/styled-components/index.d.ts"
       ],
       "./src/components/page/header/title.tsx": [
-        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts",
+        "../../../../node_modules/@types/styled-components/index.d.ts",
         "./node_modules/@types/react/index.d.ts",
         "./src/components/loadingplaceholder.tsx"
       ],
@@ -2317,17 +2432,17 @@
         "./src/components/page/pageheader.tsx"
       ],
       "./src/components/page/pagecontent.tsx": [
-        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
+        "../../../../node_modules/@types/styled-components/index.d.ts"
       ],
       "./src/components/page/pageheader.tsx": [
-        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts",
+        "../../../../node_modules/@types/styled-components/index.d.ts",
         "./node_modules/@types/react/index.d.ts",
         "./src/components/page/header/index.ts"
       ],
       "./src/components/searchbar.tsx": [
+        "../../../../node_modules/@types/styled-components/index.d.ts",
         "../akeneo-design-system/lib/index.d.ts",
-        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/index.d.ts",
+        "../legacy/lib/index.d.ts",
         "./node_modules/@types/react/index.d.ts",
         "./src/hooks/index.ts"
       ],
@@ -2380,39 +2495,59 @@
       ]
     },
     "exportedModulesMap": {
+      "../../../../node_modules/@types/hoist-non-react-statics/index.d.ts": [
+        "../../../../node_modules/@types/react/index.d.ts"
+      ],
+      "../../../../node_modules/@types/react/index.d.ts": [
+        "../../../../node_modules/@types/prop-types/index.d.ts",
+        "../../../../node_modules/@types/react/global.d.ts",
+        "../../../../node_modules/csstype/index.d.ts"
+      ],
+      "../../../../node_modules/@types/styled-components/index.d.ts": [
+        "../akeneo-design-system/node_modules/@types/hoist-non-react-statics/index.d.ts",
+        "../akeneo-design-system/node_modules/@types/react/index.d.ts",
+        "./node_modules/csstype/index.d.ts"
+      ],
       "../akeneo-design-system/lib/components/badge/badge.d.ts": [
-        "../akeneo-design-system/lib/theme/index.d.ts",
-        "../node_modules/@types/react/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../akeneo-design-system/lib/theme/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/breadcrumb/breadcrumb.d.ts": [
         "../akeneo-design-system/lib/components/link/link.d.ts",
-        "../node_modules/@types/react/index.d.ts",
-        "../node_modules/@types/styled-components/index.d.ts"
+        "../akeneo-design-system/node_modules/@types/react/index.d.ts",
+        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/button/button.d.ts": [
+        "../../../../node_modules/@types/react/index.d.ts",
         "../akeneo-design-system/lib/shared/index.d.ts",
-        "../akeneo-design-system/lib/theme/index.d.ts",
-        "../node_modules/@types/react/index.d.ts"
+        "../akeneo-design-system/lib/theme/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/card/card.d.ts": [
-        "../node_modules/@types/react/index.d.ts",
-        "../node_modules/@types/styled-components/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../../../../node_modules/@types/styled-components/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/checkbox/checkbox.d.ts": [
-        "../node_modules/@types/react/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts"
+      ],
+      "../akeneo-design-system/lib/components/dropdown/dropdown.d.ts": [
+        "../../../../node_modules/@types/react/index.d.ts"
+      ],
+      "../akeneo-design-system/lib/components/field/field.d.ts": [
+        "../akeneo-design-system/lib/components/index.d.ts",
+        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/helper/helper.d.ts": [
         "../akeneo-design-system/lib/icons/index.d.ts",
-        "../node_modules/@types/react/index.d.ts"
+        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/iconbutton/iconbutton.d.ts": [
+        "../../../../node_modules/@types/react/index.d.ts",
         "../akeneo-design-system/lib/components/button/button.d.ts",
         "../akeneo-design-system/lib/icons/index.d.ts",
-        "../akeneo-design-system/lib/shared/index.d.ts",
-        "../node_modules/@types/react/index.d.ts"
+        "../akeneo-design-system/lib/shared/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/image/image.d.ts": [
-        "../node_modules/@types/react/index.d.ts"
+        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/index.d.ts": [
         "../akeneo-design-system/lib/components/badge/badge.d.ts",
@@ -2420,56 +2555,81 @@
         "../akeneo-design-system/lib/components/button/button.d.ts",
         "../akeneo-design-system/lib/components/card/card.d.ts",
         "../akeneo-design-system/lib/components/checkbox/checkbox.d.ts",
+        "../akeneo-design-system/lib/components/dropdown/dropdown.d.ts",
+        "../akeneo-design-system/lib/components/field/field.d.ts",
         "../akeneo-design-system/lib/components/helper/helper.d.ts",
         "../akeneo-design-system/lib/components/iconbutton/iconbutton.d.ts",
         "../akeneo-design-system/lib/components/image/image.d.ts",
         "../akeneo-design-system/lib/components/information/information.d.ts",
-        "../akeneo-design-system/lib/components/input/booleaninput/booleaninput.d.ts",
+        "../akeneo-design-system/lib/components/input/index.d.ts",
         "../akeneo-design-system/lib/components/link/link.d.ts",
+        "../akeneo-design-system/lib/components/locale/locale.d.ts",
         "../akeneo-design-system/lib/components/messagebar/messagebar.d.ts",
         "../akeneo-design-system/lib/components/modal/modal.d.ts",
+        "../akeneo-design-system/lib/components/pagination/pagination.d.ts",
         "../akeneo-design-system/lib/components/progressbar/progressbar.d.ts",
         "../akeneo-design-system/lib/components/table/table.d.ts"
       ],
       "../akeneo-design-system/lib/components/information/information.d.ts": [
         "../akeneo-design-system/lib/theme/theme.d.ts",
-        "../node_modules/@types/react/index.d.ts",
-        "../node_modules/@types/styled-components/index.d.ts"
+        "../akeneo-design-system/node_modules/@types/react/index.d.ts",
+        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/input/booleaninput/booleaninput.d.ts": [
-        "../node_modules/@types/react/index.d.ts"
+        "../akeneo-design-system/lib/components/input/inputprops.d.ts",
+        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+      ],
+      "../akeneo-design-system/lib/components/input/index.d.ts": [
+        "../akeneo-design-system/lib/components/input/booleaninput/booleaninput.d.ts",
+        "../akeneo-design-system/lib/components/input/inputprops.d.ts",
+        "../akeneo-design-system/lib/components/input/textinput/textinput.d.ts"
+      ],
+      "../akeneo-design-system/lib/components/input/textinput/textinput.d.ts": [
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../akeneo-design-system/lib/components/input/inputprops.d.ts",
+        "../akeneo-design-system/lib/shared/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/link/link.d.ts": [
-        "../node_modules/@types/react/index.d.ts"
+        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+      ],
+      "../akeneo-design-system/lib/components/locale/locale.d.ts": [
+        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/messagebar/messagebar.d.ts": [
         "../akeneo-design-system/lib/icons/index.d.ts",
-        "../node_modules/@types/react/index.d.ts"
+        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/modal/modal.d.ts": [
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../../../../node_modules/@types/styled-components/index.d.ts",
         "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts",
-        "../akeneo-design-system/lib/theme/theme.d.ts",
-        "../node_modules/@types/react/index.d.ts",
-        "../node_modules/@types/styled-components/index.d.ts"
+        "../akeneo-design-system/lib/shared/index.d.ts",
+        "../akeneo-design-system/lib/theme/theme.d.ts"
+      ],
+      "../akeneo-design-system/lib/components/pagination/pagination.d.ts": [
+        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/progressbar/progressbar.d.ts": [
         "../akeneo-design-system/lib/theme/index.d.ts",
-        "../node_modules/@types/react/index.d.ts"
+        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
       ],
       "../akeneo-design-system/lib/components/table/table.d.ts": [
-        "../node_modules/@types/react/index.d.ts"
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../akeneo-design-system/lib/shared/index.d.ts"
       ],
       "../akeneo-design-system/lib/hooks/index.d.ts": [
         "../akeneo-design-system/lib/hooks/useautofocus.d.ts",
+        "../akeneo-design-system/lib/hooks/usebooleanstate.d.ts",
+        "../akeneo-design-system/lib/hooks/useid.d.ts",
         "../akeneo-design-system/lib/hooks/useshortcut.d.ts",
         "../akeneo-design-system/lib/hooks/usetheme.d.ts"
       ],
       "../akeneo-design-system/lib/hooks/useautofocus.d.ts": [
-        "../node_modules/@types/react/index.d.ts"
+        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
       ],
       "../akeneo-design-system/lib/hooks/useshortcut.d.ts": [
         "../akeneo-design-system/lib/shared/index.d.ts",
-        "../node_modules/@types/react/index.d.ts"
+        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
       ],
       "../akeneo-design-system/lib/hooks/usetheme.d.ts": [
         "../akeneo-design-system/lib/theme/index.d.ts"
@@ -2567,6 +2727,9 @@
       "../akeneo-design-system/lib/icons/checkpartialicon.d.ts": [
         "../akeneo-design-system/lib/icons/iconprops.d.ts"
       ],
+      "../akeneo-design-system/lib/icons/checkroundicon.d.ts": [
+        "../akeneo-design-system/lib/icons/iconprops.d.ts"
+      ],
       "../akeneo-design-system/lib/icons/clockicon.d.ts": [
         "../akeneo-design-system/lib/icons/iconprops.d.ts"
       ],
@@ -2601,13 +2764,15 @@
         "../akeneo-design-system/lib/icons/iconprops.d.ts"
       ],
       "../akeneo-design-system/lib/icons/deleteicon.d.ts": [
-        "../akeneo-design-system/lib/icons/iconprops.d.ts"
+        "../akeneo-design-system/lib/icons/iconprops.d.ts",
+        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
       ],
       "../akeneo-design-system/lib/icons/dialogicon.d.ts": [
         "../akeneo-design-system/lib/icons/iconprops.d.ts"
       ],
       "../akeneo-design-system/lib/icons/downloadicon.d.ts": [
-        "../akeneo-design-system/lib/icons/iconprops.d.ts"
+        "../akeneo-design-system/lib/icons/iconprops.d.ts",
+        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
       ],
       "../akeneo-design-system/lib/icons/dragdropicon.d.ts": [
         "../akeneo-design-system/lib/icons/iconprops.d.ts"
@@ -2679,7 +2844,8 @@
         "../akeneo-design-system/lib/icons/iconprops.d.ts"
       ],
       "../akeneo-design-system/lib/icons/iconprops.d.ts": [
-        "../node_modules/@types/react/index.d.ts"
+        "../akeneo-design-system/lib/shared/index.d.ts",
+        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
       ],
       "../akeneo-design-system/lib/icons/idicon.d.ts": [
         "../akeneo-design-system/lib/icons/iconprops.d.ts"
@@ -2716,6 +2882,7 @@
         "../akeneo-design-system/lib/icons/categoryicon.d.ts",
         "../akeneo-design-system/lib/icons/checkicon.d.ts",
         "../akeneo-design-system/lib/icons/checkpartialicon.d.ts",
+        "../akeneo-design-system/lib/icons/checkroundicon.d.ts",
         "../akeneo-design-system/lib/icons/clockicon.d.ts",
         "../akeneo-design-system/lib/icons/closeicon.d.ts",
         "../akeneo-design-system/lib/icons/codeicon.d.ts",
@@ -2946,6 +3113,9 @@
       "../akeneo-design-system/lib/illustrations/cityillustration.d.ts": [
         "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
       ],
+      "../akeneo-design-system/lib/illustrations/clienterrorillustration.d.ts": [
+        "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
+      ],
       "../akeneo-design-system/lib/illustrations/codingillustration.d.ts": [
         "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
       ],
@@ -2998,13 +3168,15 @@
         "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
       ],
       "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts": [
-        "../node_modules/@types/react/index.d.ts"
+        "../akeneo-design-system/lib/shared/index.d.ts",
+        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
       ],
       "../akeneo-design-system/lib/illustrations/importcsvillustration.d.ts": [
         "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
       ],
       "../akeneo-design-system/lib/illustrations/importillustration.d.ts": [
-        "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
+        "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts",
+        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
       ],
       "../akeneo-design-system/lib/illustrations/importxlsxillustration.d.ts": [
         "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
@@ -3023,6 +3195,7 @@
         "../akeneo-design-system/lib/illustrations/attributesillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/channelsillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/cityillustration.d.ts",
+        "../akeneo-design-system/lib/illustrations/clienterrorillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/codingillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/currenciesillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/defaultpictureillustration.d.ts",
@@ -3059,6 +3232,7 @@
         "../akeneo-design-system/lib/illustrations/projectillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/proposalsillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/rulesillustration.d.ts",
+        "../akeneo-design-system/lib/illustrations/servererrorillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/serverillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/settingsillustration.d.ts",
         "../akeneo-design-system/lib/illustrations/statusillustration.d.ts",
@@ -3115,6 +3289,9 @@
       "../akeneo-design-system/lib/illustrations/rulesillustration.d.ts": [
         "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
       ],
+      "../akeneo-design-system/lib/illustrations/servererrorillustration.d.ts": [
+        "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
+      ],
       "../akeneo-design-system/lib/illustrations/serverillustration.d.ts": [
         "../akeneo-design-system/lib/illustrations/illustrationprops.d.ts"
       ],
@@ -3157,13 +3334,14 @@
         "../akeneo-design-system/lib/theme/shared-catalogs/index.d.ts"
       ],
       "../akeneo-design-system/lib/shared/index.d.ts": [
+        "../akeneo-design-system/lib/shared/flag.d.ts",
         "../akeneo-design-system/lib/shared/key.d.ts",
         "../akeneo-design-system/lib/shared/override.d.ts",
         "../akeneo-design-system/lib/shared/uuid.d.ts"
       ],
       "../akeneo-design-system/lib/theme/common.d.ts": [
-        "../akeneo-design-system/lib/theme/theme.d.ts",
-        "../node_modules/@types/styled-components/index.d.ts"
+        "../../../../node_modules/@types/styled-components/index.d.ts",
+        "../akeneo-design-system/lib/theme/theme.d.ts"
       ],
       "../akeneo-design-system/lib/theme/index.d.ts": [
         "../akeneo-design-system/lib/theme/common.d.ts",
@@ -3180,75 +3358,62 @@
         "../akeneo-design-system/lib/theme/theme.d.ts"
       ],
       "../akeneo-design-system/lib/theme/theme.d.ts": [
-        "../node_modules/@types/styled-components/index.d.ts"
+        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
       ],
       "../akeneo-design-system/lib/theme/themes.d.ts": [
         "../akeneo-design-system/lib/theme/theme.d.ts"
       ],
-      "../akeneo-design-system/node_modules/@types/hoist-non-react-statics/index.d.ts": [
-        "../akeneo-design-system/node_modules/@types/react/index.d.ts"
+      "../legacy/lib/hooks/index.d.ts": [
+        "../legacy/lib/hooks/usedependenciescontext.d.ts",
+        "../legacy/lib/hooks/usemediator.d.ts",
+        "../legacy/lib/hooks/usenotify.d.ts",
+        "../legacy/lib/hooks/useroute.d.ts",
+        "../legacy/lib/hooks/userouter.d.ts",
+        "../legacy/lib/hooks/usesecurity.d.ts",
+        "../legacy/lib/hooks/usetranslate.d.ts",
+        "../legacy/lib/hooks/useusercontext.d.ts",
+        "../legacy/lib/hooks/useviewbuilder.d.ts"
       ],
-      "../akeneo-design-system/node_modules/@types/react/index.d.ts": [
-        "../akeneo-design-system/node_modules/@types/react/global.d.ts",
-        "../node_modules/csstype/index.d.ts",
-        "./node_modules/@types/prop-types/index.d.ts"
+      "../legacy/lib/hooks/usedependenciescontext.d.ts": [
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts": [
-        "../node_modules/@types/hoist-non-react-statics/index.d.ts",
-        "../node_modules/@types/react/index.d.ts",
-        "../node_modules/csstype/index.d.ts"
+      "../legacy/lib/hooks/usemediator.d.ts": [
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "../node_modules/@types/styled-components/index.d.ts": [
-        "../node_modules/@types/hoist-non-react-statics/index.d.ts",
-        "../node_modules/@types/react/index.d.ts",
-        "../node_modules/csstype/index.d.ts"
+      "../legacy/lib/hooks/usenotify.d.ts": [
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/index.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usedependenciescontext.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usemediator.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usenotify.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/useroute.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/userouter.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usesecurity.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usetranslate.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/useusercontext.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/useviewbuilder.d.ts"
+      "../legacy/lib/hooks/userouter.d.ts": [
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usedependenciescontext.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
+      "../legacy/lib/hooks/usesecurity.d.ts": [
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usemediator.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
+      "../legacy/lib/hooks/usetranslate.d.ts": [
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usenotify.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
+      "../legacy/lib/hooks/useusercontext.d.ts": [
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/userouter.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
+      "../legacy/lib/hooks/useviewbuilder.d.ts": [
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usesecurity.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
+      "../legacy/lib/index.d.ts": [
+        "../legacy/lib/hooks/index.d.ts",
+        "../legacy/lib/provider/index.d.ts"
       ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usetranslate.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
+      "../legacy/lib/provider/dependenciesprovider.d.ts": [
+        "../../../../node_modules/@types/react/index.d.ts",
+        "../legacy/lib/provider/dependenciesprovider.type.d.ts"
       ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/useusercontext.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
+      "../legacy/lib/provider/index.d.ts": [
+        "../legacy/lib/provider/dependenciesprovider.d.ts",
+        "../legacy/lib/provider/dependenciesprovider.type.d.ts"
       ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/useviewbuilder.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
-      ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/index.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/hooks/index.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts"
-      ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/provider/dependenciesprovider.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/dependenciesprovider.type.d.ts",
-        "./node_modules/@types/react/index.d.ts"
-      ],
-      "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts": [
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/dependenciesprovider.d.ts",
-        "./node_modules/@akeneo-pim-community/legacy/lib/provider/dependenciesprovider.type.d.ts"
+      "../legacy/node_modules/@types/react/index.d.ts": [
+        "../legacy/node_modules/@types/react/global.d.ts",
+        "./node_modules/@types/prop-types/index.d.ts",
+        "./node_modules/csstype/index.d.ts"
       ],
       "./node_modules/@types/react/index.d.ts": [
         "./node_modules/@types/prop-types/index.d.ts",
@@ -3266,16 +3431,16 @@
         "./src/models/validation-error.ts"
       ],
       "./src/components/loadingplaceholder.tsx": [
-        "../node_modules/@types/styled-components/index.d.ts"
+        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
       ],
       "./src/components/nodata.tsx": [
-        "../node_modules/@types/styled-components/index.d.ts"
+        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
       ],
       "./src/components/page/header/actions.tsx": [
-        "../node_modules/@types/styled-components/index.d.ts"
+        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
       ],
       "./src/components/page/header/breadcrumb.tsx": [
-        "../node_modules/@types/styled-components/index.d.ts"
+        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
       ],
       "./src/components/page/header/illustration.tsx": [
         "./node_modules/@types/react/index.d.ts"
@@ -3289,7 +3454,7 @@
         "./src/components/page/header/useractions.tsx"
       ],
       "./src/components/page/header/state.tsx": [
-        "../node_modules/@types/styled-components/index.d.ts"
+        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
       ],
       "./src/components/page/header/title.tsx": [
         "./node_modules/@types/react/index.d.ts"
@@ -3302,7 +3467,7 @@
         "./src/components/page/pageheader.tsx"
       ],
       "./src/components/page/pagecontent.tsx": [
-        "../node_modules/@types/styled-components/index.d.ts"
+        "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts"
       ],
       "./src/components/page/pageheader.tsx": [
         "./node_modules/@types/react/index.d.ts",
@@ -3352,24 +3517,39 @@
       ]
     },
     "semanticDiagnosticsPerFile": [
+      "../../../../node_modules/@types/hoist-non-react-statics/index.d.ts",
+      "../../../../node_modules/@types/prop-types/index.d.ts",
+      "../../../../node_modules/@types/react/global.d.ts",
+      "../../../../node_modules/@types/react/index.d.ts",
+      "../../../../node_modules/@types/styled-components/index.d.ts",
+      "../../../../node_modules/csstype/index.d.ts",
       "../akeneo-design-system/lib/components/badge/badge.d.ts",
       "../akeneo-design-system/lib/components/breadcrumb/breadcrumb.d.ts",
       "../akeneo-design-system/lib/components/button/button.d.ts",
       "../akeneo-design-system/lib/components/card/card.d.ts",
       "../akeneo-design-system/lib/components/checkbox/checkbox.d.ts",
+      "../akeneo-design-system/lib/components/dropdown/dropdown.d.ts",
+      "../akeneo-design-system/lib/components/field/field.d.ts",
       "../akeneo-design-system/lib/components/helper/helper.d.ts",
       "../akeneo-design-system/lib/components/iconbutton/iconbutton.d.ts",
       "../akeneo-design-system/lib/components/image/image.d.ts",
       "../akeneo-design-system/lib/components/index.d.ts",
       "../akeneo-design-system/lib/components/information/information.d.ts",
       "../akeneo-design-system/lib/components/input/booleaninput/booleaninput.d.ts",
+      "../akeneo-design-system/lib/components/input/index.d.ts",
+      "../akeneo-design-system/lib/components/input/inputprops.d.ts",
+      "../akeneo-design-system/lib/components/input/textinput/textinput.d.ts",
       "../akeneo-design-system/lib/components/link/link.d.ts",
+      "../akeneo-design-system/lib/components/locale/locale.d.ts",
       "../akeneo-design-system/lib/components/messagebar/messagebar.d.ts",
       "../akeneo-design-system/lib/components/modal/modal.d.ts",
+      "../akeneo-design-system/lib/components/pagination/pagination.d.ts",
       "../akeneo-design-system/lib/components/progressbar/progressbar.d.ts",
       "../akeneo-design-system/lib/components/table/table.d.ts",
       "../akeneo-design-system/lib/hooks/index.d.ts",
       "../akeneo-design-system/lib/hooks/useautofocus.d.ts",
+      "../akeneo-design-system/lib/hooks/usebooleanstate.d.ts",
+      "../akeneo-design-system/lib/hooks/useid.d.ts",
       "../akeneo-design-system/lib/hooks/useshortcut.d.ts",
       "../akeneo-design-system/lib/hooks/usetheme.d.ts",
       "../akeneo-design-system/lib/icons/activityicon.d.ts",
@@ -3403,6 +3583,7 @@
       "../akeneo-design-system/lib/icons/categoryicon.d.ts",
       "../akeneo-design-system/lib/icons/checkicon.d.ts",
       "../akeneo-design-system/lib/icons/checkpartialicon.d.ts",
+      "../akeneo-design-system/lib/icons/checkroundicon.d.ts",
       "../akeneo-design-system/lib/icons/clockicon.d.ts",
       "../akeneo-design-system/lib/icons/closeicon.d.ts",
       "../akeneo-design-system/lib/icons/codeicon.d.ts",
@@ -3493,6 +3674,7 @@
       "../akeneo-design-system/lib/illustrations/attributesillustration.d.ts",
       "../akeneo-design-system/lib/illustrations/channelsillustration.d.ts",
       "../akeneo-design-system/lib/illustrations/cityillustration.d.ts",
+      "../akeneo-design-system/lib/illustrations/clienterrorillustration.d.ts",
       "../akeneo-design-system/lib/illustrations/codingillustration.d.ts",
       "../akeneo-design-system/lib/illustrations/currenciesillustration.d.ts",
       "../akeneo-design-system/lib/illustrations/defaultpictureillustration.d.ts",
@@ -3531,6 +3713,7 @@
       "../akeneo-design-system/lib/illustrations/projectillustration.d.ts",
       "../akeneo-design-system/lib/illustrations/proposalsillustration.d.ts",
       "../akeneo-design-system/lib/illustrations/rulesillustration.d.ts",
+      "../akeneo-design-system/lib/illustrations/servererrorillustration.d.ts",
       "../akeneo-design-system/lib/illustrations/serverillustration.d.ts",
       "../akeneo-design-system/lib/illustrations/settingsillustration.d.ts",
       "../akeneo-design-system/lib/illustrations/statusillustration.d.ts",
@@ -3542,6 +3725,7 @@
       "../akeneo-design-system/lib/illustrations/usingillustration.d.ts",
       "../akeneo-design-system/lib/illustrations/viewsillustration.d.ts",
       "../akeneo-design-system/lib/index.d.ts",
+      "../akeneo-design-system/lib/shared/flag.d.ts",
       "../akeneo-design-system/lib/shared/index.d.ts",
       "../akeneo-design-system/lib/shared/key.d.ts",
       "../akeneo-design-system/lib/shared/override.d.ts",
@@ -3553,27 +3737,21 @@
       "../akeneo-design-system/lib/theme/shared-catalogs/index.d.ts",
       "../akeneo-design-system/lib/theme/theme.d.ts",
       "../akeneo-design-system/lib/theme/themes.d.ts",
-      "../akeneo-design-system/node_modules/@types/hoist-non-react-statics/index.d.ts",
-      "../akeneo-design-system/node_modules/@types/prop-types/index.d.ts",
-      "../akeneo-design-system/node_modules/@types/react/global.d.ts",
-      "../akeneo-design-system/node_modules/@types/react/index.d.ts",
-      "../akeneo-design-system/node_modules/@types/styled-components/index.d.ts",
-      "../akeneo-design-system/node_modules/csstype/index.d.ts",
-      "../node_modules/@types/styled-components/index.d.ts",
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/index.d.ts",
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usedependenciescontext.d.ts",
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usemediator.d.ts",
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usenotify.d.ts",
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/useroute.d.ts",
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/userouter.d.ts",
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usesecurity.d.ts",
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/usetranslate.d.ts",
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/useusercontext.d.ts",
-      "./node_modules/@akeneo-pim-community/legacy/lib/hooks/useviewbuilder.d.ts",
-      "./node_modules/@akeneo-pim-community/legacy/lib/index.d.ts",
-      "./node_modules/@akeneo-pim-community/legacy/lib/provider/dependenciesprovider.d.ts",
-      "./node_modules/@akeneo-pim-community/legacy/lib/provider/dependenciesprovider.type.d.ts",
-      "./node_modules/@akeneo-pim-community/legacy/lib/provider/index.d.ts",
+      "../legacy/lib/hooks/index.d.ts",
+      "../legacy/lib/hooks/usedependenciescontext.d.ts",
+      "../legacy/lib/hooks/usemediator.d.ts",
+      "../legacy/lib/hooks/usenotify.d.ts",
+      "../legacy/lib/hooks/useroute.d.ts",
+      "../legacy/lib/hooks/userouter.d.ts",
+      "../legacy/lib/hooks/usesecurity.d.ts",
+      "../legacy/lib/hooks/usetranslate.d.ts",
+      "../legacy/lib/hooks/useusercontext.d.ts",
+      "../legacy/lib/hooks/useviewbuilder.d.ts",
+      "../legacy/lib/index.d.ts",
+      "../legacy/lib/provider/dependenciesprovider.d.ts",
+      "../legacy/lib/provider/dependenciesprovider.type.d.ts",
+      "../legacy/lib/provider/index.d.ts",
+      "../legacy/node_modules/@types/react/index.d.ts",
       "./node_modules/@types/prop-types/index.d.ts",
       "./node_modules/@types/react/global.d.ts",
       "./node_modules/@types/react/index.d.ts",
@@ -3624,5 +3802,5 @@
       "./src/tools/keyboard.ts"
     ]
   },
-  "version": "4.1.3"
+  "version": "4.1.4"
 }

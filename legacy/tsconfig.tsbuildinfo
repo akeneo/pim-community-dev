@@ -67,8 +67,8 @@
         "affectsGlobalScope": true
       },
       "./node_modules/csstype/index.d.ts": {
-        "version": "ea58e4cbcf3d760a15f9300978a360c46360f544b355c737b60c733a385b8858",
-        "signature": "ea58e4cbcf3d760a15f9300978a360c46360f544b355c737b60c733a385b8858",
+        "version": "2421504d4ad8486abdb522b7bcdd4caafbcf4a320cdf7b19e780df258c639d7f",
+        "signature": "2421504d4ad8486abdb522b7bcdd4caafbcf4a320cdf7b19e780df258c639d7f",
         "affectsGlobalScope": false
       },
       "./node_modules/@types/prop-types/index.d.ts": {
@@ -77,8 +77,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@types/react/index.d.ts": {
-        "version": "277e380acf34d4f66398100a66ac29213ea43674f114906f007204f29cc9a8b7",
-        "signature": "277e380acf34d4f66398100a66ac29213ea43674f114906f007204f29cc9a8b7",
+        "version": "cf77444d61a8abc44f343c194889e121d43a3cd5fa928e06cad35fdb5422c89c",
+        "signature": "cf77444d61a8abc44f343c194889e121d43a3cd5fa928e06cad35fdb5422c89c",
         "affectsGlobalScope": true
       },
       "./src/provider/dependenciesprovider.type.ts": {
@@ -341,5 +341,5 @@
       "./src/provider/index.ts"
     ]
   },
-  "version": "4.1.3"
+  "version": "4.1.4"
 }
