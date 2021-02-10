@@ -44,8 +44,8 @@ define(['underscore', 'pim/form', 'pim/template/form/main-image', 'pim/media-url
 
       this.el.src = this.getPath();
 
-      this.$el.one("error", function () {
-         $(this).attr("src", MediaUrlGenerator.getMediaShowUrl(null, 'thumbnail_small'));
+      this.$el.one('error', function () {
+         $(this).attr('src', MediaUrlGenerator.getMediaShowUrl(null, 'thumbnail_small'));
       });
 
       return BaseForm.prototype.render.apply(this, arguments);
