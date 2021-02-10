@@ -126,7 +126,7 @@ const Modal: React.FC<ModalProps> & {
   portalNode.setAttribute('id', 'modal-root');
   const containerRef = useRef(portalNode);
 
-  useShortcut(Key.Escape, onEscape ? onEscape : onClose);
+  useShortcut(Key.Escape, onEscape ?? onClose);
 
   useEffect(() => {
     document.body.appendChild(containerRef.current);
