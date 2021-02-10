@@ -10,6 +10,7 @@ use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Normalizer\Standard\UserNormalizer;
 use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -36,7 +37,7 @@ class UserNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($user, 'array')->shouldBe(true);
     }
 
-    function it_normalizes_a_user(UserInterface $user, FileInfoInterface $avatar)
+    function it_normalizes_a_user(UserInterface $user, FileInfoInterface $avatar, DatagridView $productGridView)
     {
         $role = new Role();
         $role->setRole('ROLE_ADMIN');
@@ -66,6 +67,8 @@ class UserNormalizerSpec extends ObjectBehavior
         $user->getGroupNames()->willReturn(['IT support']);
         $user->getRolesCollection()->willReturn(new ArrayCollection([$role]));
         $user->getProductGridFilters()->willReturn(['family', 'name']);
+        $productGridView->getLabel()->willReturn('Incomplete accessories ecommerce');
+        $user->getDefaultGridView('product-grid')->willReturn($productGridView);
 
         $this->normalize($user, 'standard')->shouldReturn(
             [
@@ -87,6 +90,7 @@ class UserNormalizerSpec extends ObjectBehavior
                 'groups' => ['IT support'],
                 'roles' => ['ROLE_ADMIN'],
                 'product_grid_filters'=> ['family', 'name'],
+                'default_product_grid_view' => 'Incomplete accessories ecommerce',
             ]
         );
     }
