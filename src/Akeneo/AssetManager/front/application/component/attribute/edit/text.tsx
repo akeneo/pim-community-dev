@@ -13,8 +13,7 @@ import {
   regularExpressionStringValue,
   ValidationRuleOption,
 } from 'akeneoassetmanager/domain/model/attribute/type/text';
-import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
-import {Key} from 'akeneo-design-system';
+import {Key, Checkbox} from 'akeneo-design-system';
 
 const AttributeValidationRuleItemView = ({
   isOpen,
@@ -113,52 +112,30 @@ const TextView = ({
       </div>
       <div className="AknFieldContainer AknFieldContainer--packed" data-code="isTextarea">
         <div className="AknFieldContainer-header">
-          <label
-            className="AknFieldContainer-label AknFieldContainer-label--inline"
-            htmlFor="pim_asset_manager.attribute.edit.input.textarea"
+          <Checkbox
+            readOnly={!rights.attribute.edit}
+            id="pim_asset_manager.attribute.edit.input.textarea"
+            checked={attribute.isTextarea}
+            onChange={(isTextarea: boolean) => onAdditionalPropertyUpdated('is_textarea', isTextarea)}
           >
-            <Checkbox
-              readOnly={!rights.attribute.edit}
-              id="pim_asset_manager.attribute.edit.input.textarea"
-              value={attribute.isTextarea}
-              onChange={(isTextarea: boolean) => onAdditionalPropertyUpdated('is_textarea', isTextarea)}
-            />
-            <span
-              onClick={() => {
-                if (rights.attribute.edit) {
-                  onAdditionalPropertyUpdated('is_textarea', !attribute.isTextarea);
-                }
-              }}
-            >
-              {__('pim_asset_manager.attribute.edit.input.textarea')}
-            </span>
-          </label>
+            {__('pim_asset_manager.attribute.edit.input.textarea')}
+          </Checkbox>
         </div>
         {getErrorsView(errors, 'isTextarea')}
       </div>
       {attribute.isTextarea && (
         <div className="AknFieldContainer AknFieldContainer--packed" data-code="isRichTextEditor">
           <div className="AknFieldContainer-header">
-            <label
-              className="AknFieldContainer-label AknFieldContainer-label--inline"
-              htmlFor="pim_asset_manager.attribute.edit.input.is_rich_text_editor"
+            <Checkbox
+              id="pim_asset_manager.attribute.edit.input.is_rich_text_editor"
+              readOnly={!rights.attribute.edit}
+              checked={attribute.isRichTextEditor}
+              onChange={(isRichTextEditor: boolean) =>
+                onAdditionalPropertyUpdated('is_rich_text_editor', isRichTextEditor)
+              }
             >
-              <Checkbox
-                id="pim_asset_manager.attribute.edit.input.is_rich_text_editor"
-                readOnly={!rights.attribute.edit}
-                value={attribute.isRichTextEditor}
-                onChange={(isrichTextEditor: boolean) =>
-                  onAdditionalPropertyUpdated('is_rich_text_editor', isrichTextEditor)
-                }
-              />
-              <span
-                onClick={() => {
-                  onAdditionalPropertyUpdated('is_rich_text_editor', !attribute.isRichTextEditor);
-                }}
-              >
-                {__('pim_asset_manager.attribute.edit.input.is_rich_text_editor')}
-              </span>
-            </label>
+              {__('pim_asset_manager.attribute.edit.input.is_rich_text_editor')}
+            </Checkbox>
           </div>
           {getErrorsView(errors, 'richTextEditor')}
         </div>

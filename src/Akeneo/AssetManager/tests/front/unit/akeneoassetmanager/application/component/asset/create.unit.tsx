@@ -62,14 +62,14 @@ describe('Test Asset create modal component', () => {
   test('I can choose to create another asset by checking the createAnother checkbox', () => {
     renderWithProviders(<CreateModal assetFamily={assetFamily} locale={localeCode} />);
 
-    const checkbox = document.getElementById('pim_asset_manager.asset.create.input.create_another');
+    const checkbox = screen.getByLabelText('pim_asset_manager.asset.create.input.create_another');
     const checkboxLabel = screen.getByText('pim_asset_manager.asset.create.input.create_another');
 
-    expect(checkbox.getAttribute('data-checked')).toBe('false');
+    expect(checkbox).toHaveAttribute('aria-checked', 'false');
     fireEvent.click(checkbox);
-    expect(checkbox.getAttribute('data-checked')).toBe('true');
+    expect(checkbox).toHaveAttribute('aria-checked', 'true');
     fireEvent.click(checkboxLabel);
-    expect(checkbox.getAttribute('data-checked')).toBe('false');
+    expect(checkbox).toHaveAttribute('aria-checked', 'false');
   });
 
   test('I can set a code & a label', () => {
