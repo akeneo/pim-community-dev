@@ -36,6 +36,8 @@ import {attributeListUpdated} from 'akeneoassetmanager/domain/event/attribute/li
 import {getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {pimTheme, Key} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {getValueConfig} from 'akeneoassetmanager/application/configuration/value';
+import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -92,9 +94,11 @@ class AssetFamilyEditController extends BaseController {
         ReactDOM.render(
           <Provider store={this.store}>
             <DependenciesProvider>
-              <ThemeProvider theme={pimTheme}>
-                <AssetFamilyView />
-              </ThemeProvider>
+              <ConfigProvider config={{value: getValueConfig()}}>
+                <ThemeProvider theme={pimTheme}>
+                  <AssetFamilyView />
+                </ThemeProvider>
+              </ConfigProvider>
             </DependenciesProvider>
           </Provider>,
           this.el

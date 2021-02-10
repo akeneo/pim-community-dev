@@ -35,7 +35,7 @@ const RemoveCell = styled(Table.Cell)`
 
 type UpdaterRowProps = {
   updater: Updater;
-  locale: string;
+  uiLocale: string;
   onRemove: (updater: Updater) => void;
   onChange: (updater: Updater) => void;
   readOnly: boolean;
@@ -43,7 +43,7 @@ type UpdaterRowProps = {
   channels: Channel[];
 };
 
-const UpdaterRow = ({updater, locale, readOnly, errors, onChange, onRemove, channels}: UpdaterRowProps) => {
+const UpdaterRow = ({updater, uiLocale, readOnly, errors, onChange, onRemove, channels}: UpdaterRowProps) => {
   const translate = useTranslate();
   const config = useConfig('value');
   const InputView = getFieldView(config)(updater);
@@ -56,14 +56,16 @@ const UpdaterRow = ({updater, locale, readOnly, errors, onChange, onRemove, chan
   return (
     <Table.Row>
       <Table.Cell>
-        <AttributeName htmlFor={id}>{getLabel(updater.attribute.labels, locale, updater.attribute.code)}</AttributeName>
+        <AttributeName htmlFor={id}>
+          {getLabel(updater.attribute.labels, uiLocale, updater.attribute.code)}
+        </AttributeName>
       </Table.Cell>
       <InputCell>
         <InputView
           id={id}
           canEditData={!readOnly}
           channel={updater.channel}
-          locale={updater.channel}
+          locale={updater.locale}
           onChange={handleChange}
           onSubmit={() => {}}
           value={updater}

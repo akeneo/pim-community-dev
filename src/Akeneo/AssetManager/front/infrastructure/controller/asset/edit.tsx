@@ -28,6 +28,8 @@ import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/
 import {ThemeProvider} from 'styled-components';
 import {pimTheme, Key} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {getValueConfig} from 'akeneoassetmanager/application/configuration/value';
+import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -82,7 +84,9 @@ class AssetEditController extends BaseController {
           <Provider store={this.store}>
             <DependenciesProvider>
               <ThemeProvider theme={pimTheme}>
-                <AssetView />
+                <ConfigProvider config={{value: getValueConfig()}}>
+                  <AssetView />
+                </ConfigProvider>
               </ThemeProvider>
             </DependenciesProvider>
           </Provider>,
@@ -91,7 +95,7 @@ class AssetEditController extends BaseController {
 
         promise.resolve();
       })
-      .catch(function(error: any) {
+      .catch(function (error: any) {
         if (error.request) {
           promise.reject(error.request);
         }

@@ -31,11 +31,11 @@ const UpdaterCollection = ({
           <UpdaterRow
             key={updater.id}
             updater={updater}
-            locale={locale}
             readOnly={readOnly}
             errors={errors}
             onChange={onChange}
             onRemove={onRemove}
+            uiLocale={locale}
             channels={channels}
           />
         ))}

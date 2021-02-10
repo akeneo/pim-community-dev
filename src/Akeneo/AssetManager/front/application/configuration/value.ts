@@ -146,3 +146,5 @@ export const getDataFieldView = getFieldView(__moduleConfig as ValueConfig);
 export const getDataFilterView = getFilterView(__moduleConfig as ValueConfig);
 export const hasDataFilterView = hasFilterView(__moduleConfig as ValueConfig);
 export const getDataFilterViews = getFilterViews(__moduleConfig as ValueConfig);
+
+export type {ValueConfig};

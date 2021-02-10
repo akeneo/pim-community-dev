@@ -2,7 +2,7 @@
 
 import '@testing-library/jest-dom/extend-expect';
 import {act} from '@testing-library/react';
-import {useAssetFamilyList} from 'akeneoassetmanager/application/component/library/asset-family-selector';
+import {useAssetFamilyList} from 'akeneoassetmanager/application/component/library/AssetFamilySelector';
 import {renderHook} from '@testing-library/react-hooks';
 
 describe('Test file-drop-zone component', () => {
