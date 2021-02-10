@@ -4,7 +4,6 @@ import styled, {ThemeProvider} from 'styled-components';
 import {HashRouter as Router, Switch, Route, useLocation} from 'react-router-dom';
 import {dependencies, DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {pimTheme} from 'akeneo-design-system';
-import {Index as Measurements} from '@akeneo-pim-community/raccoon';
 import {TranslateProvider} from '@akeneo-pim-community/legacy';
 
 const fetcherRegistry = require('pim/fetcher-registry');
@@ -57,8 +56,7 @@ const unsavedChanges = {
     unsavedChanges.hasUnsavedChanges = newValue;
   },
 };
-
-const Test = React.lazy(() => import(/* webpackChunkName: "raccoon" */ '@akeneo-pim-community/raccoon/lib/Test'));
+const {Index: Measurements} = React.lazy(() => import(/* webpackChunkName: "measurements" */ '@akeneo-pim-community/measurements/lib/index'));
 
 const App = () => {
   const menuRef = useRef<HTMLDivElement>(null);
@@ -111,7 +109,6 @@ const App = () => {
                       <Route path="/configuration/measurement">
                         <Measurements />
                       </Route>
-                      <Route path="/raccoon" component={Test} />
                       <Route path="*">
                         <BackboneRouter />
                       </Route>

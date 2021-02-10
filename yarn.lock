@@ -2,21 +2,17 @@
 # yarn lockfile v1
 
 
-"@akeneo-pim-community/legacy@file:legacy":
-  version "1.0.0"
-
 "@akeneo-pim-community/legacy@link:legacy":
   version "0.0.0"
   uid ""
 
-"@akeneo-pim-community/raccoon@link:measurements":
+"@akeneo-pim-community/measurements@link:measurements":
   version "0.0.0"
   uid ""
 
-"@akeneo-pim-community/shared@file:shared":
-  version "1.0.0"
-  dependencies:
-    "@akeneo-pim-community/legacy" "file:../../../../../../Library/Caches/Yarn/v6/npm-@akeneo-pim-community-shared-1.0.0-50975251-c34c-46da-a514-cce7fcbae3f8-1611762040704/node_modules/@akeneo-pim-community/legacy"
+"@akeneo-pim-community/shared@link:shared":
+  version "0.0.0"
+  uid ""
 
 "@babel/code-frame@7.10.4":
   version "7.10.4"
@@ -2487,13 +2483,6 @@ ajv@^7.0.2:
     json-schema-traverse "^1.0.0"
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
-
-"akeneo-design-system@file:akeneo-design-system":
-  version "0.0.0"
-  dependencies:
-    react "^16.13.1"
-    react-dom "^16.13.1"
-    styled-components "^5.1.1"
 
 "akeneo-design-system@link:akeneo-design-system":
   version "0.0.0"
@@ -11125,7 +11114,7 @@ react-dev-utils@^11.0.1:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
-react-dom@^16.13.1, react-dom@^16.14.0:
+react-dom@^16.14.0:
   version "16.14.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.14.0.tgz#7ad838ec29a777fb3c75c3a190f661cf92ab8b89"
   integrity sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==
@@ -11295,7 +11284,7 @@ react-test-renderer@^16.0.0-0, react-test-renderer@^16.8.0:
     react-is "^16.8.6"
     scheduler "^0.19.1"
 
-react@^16.13.1, react@^16.14.0:
+react@^16.14.0:
   version "16.14.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
   integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==

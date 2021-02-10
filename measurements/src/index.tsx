@@ -2,7 +2,7 @@ import {DependenciesContext, NotificationLevel, RouteParams} from '@akeneo-pim-c
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
-import {Index} from './feature';
+import Index from './feature';
 import {pimTheme} from 'akeneo-design-system';
 import translations from './translations.json';
 import routes from './routes.json';

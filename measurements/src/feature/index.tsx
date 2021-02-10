@@ -43,4 +43,4 @@ const Index = () => {
   );
 };
 
-export {Index};
+export default Index;
