@@ -1,0 +1,61 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {BreadcrumbOctopus, Item, Separator} from './BreadcrumbOctopus.tsx';
+
+<Meta
+  title="Components/BreadcrumbOctopus"
+  component={BreadcrumbOctopus}
+  argTypes={{
+    level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
+  }}
+  args={{level: 'primary', children: 'BreadcrumbOctopus text'}}
+/>
+
+# BreadcrumbOctopus
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <BreadcrumbOctopus {...args}>
+        <Item gradient={120}>First</Item>
+        <Separator/>
+        <Item gradient={120}>Second</Item>
+        <Separator/>
+        <Item gradient={100}>Last</Item>
+      </BreadcrumbOctopus>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <BreadcrumbOctopus {...args} level="primary">
+            Primary
+          </BreadcrumbOctopus>
+          <BreadcrumbOctopus {...args} level="warning">
+            Warning
+          </BreadcrumbOctopus>
+          <BreadcrumbOctopus {...args} level="danger">
+            Danger
+          </BreadcrumbOctopus>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
