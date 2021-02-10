@@ -58,7 +58,7 @@ services:
     security.event_listener.add_csp:
         class: Akeneo\Platform\Bundle\UIBundle\EventListener\AddContentSecurityPolicyListener
         arguments:
-            - '@security.script_nonce_generator'
+            - '@Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\ContentSecurityPolicyProvider'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -68,3 +68,17 @@ services:
             - '@serializer.normalizer.object'
         tags:
             - { name: serializer.normalizer, priority: 90 }
+
+    Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\AkeneoContentSecurityPolicyProvider:
+        arguments:
+            - '@security.script_nonce_generator'
+        tags:
+            - { name: akeneo.pim.security.content_security_policy_provider }
+
+    Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\ContentSecurityPolicyProvider:
+        arguments:
+            - !tagged akeneo.pim.security.content_security_policy_provider
+
+    Akeneo\Platform\Bundle\UIBundle\Provider\ExternalJavascriptDependenciesProvider:
+        arguments:
+            - !tagged akeneo.pim.security.external_dependency_provider
