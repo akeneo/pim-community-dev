@@ -1,31 +1,28 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
-import {BreadcrumbOctopus, Item, Separator} from './BreadcrumbOctopus.tsx';
+import {BreadcrumbOctopus} from './BreadcrumbOctopus.tsx';
 
-<Meta
-  title="Components/BreadcrumbOctopus"
-  component={BreadcrumbOctopus}
-/>
+<Meta title="Components/BreadcrumbOctopus" component={BreadcrumbOctopus} />
 
 # BreadcrumbOctopus
 
-## Usage
+Breadcrumbs are an important navigation component that shows content hierarchy. They allow users to be aware of their current location in the hierarchical structure of the application. Breadcrumbs enable users to quickly move up to a parent level.
 
-TODO
+# Usage
 
-### TODO
-
-TODO
+Breadcrumbs are very effective for products and experience with a large amount of content organized in a multi-level hierarchy. Breadcrumbs should be considered secondary navigation and should never completely replace the main navigation. The last level is always the current page, this one is not clickable.
 
 ## Playground
 
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <BreadcrumbOctopus color={args.color}>
-        <Item>First</Item>
-        <Item>Second</Item>
-        <Item>Last</Item>
-      </BreadcrumbOctopus>;
+      return (
+        <BreadcrumbOctopus color={args.color}>
+          <BreadcrumbOctopus.Item href="http://akeneo.com">First</BreadcrumbOctopus.Item>
+          <BreadcrumbOctopus.Item>Second</BreadcrumbOctopus.Item>
+          <BreadcrumbOctopus.Item>Last</BreadcrumbOctopus.Item>
+        </BreadcrumbOctopus>
+      );
     }}
   </Story>
 </Canvas>
