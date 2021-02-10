@@ -50,7 +50,7 @@ const CreateUserForm = ({userId, onCancel, onSuccess, onError}: CreateUserFormPr
   };
 
   return (
-    <FormContainer onSubmit={handleSubmit(onSubmit)} data-testid='form-create-user'>
+    <FormContainer onSubmit={handleSubmit(onSubmit)} data-testid="form-create-user">
       {['username', 'password', 'password_repeat', 'first_name', 'last_name', 'email'].map(
         (fieldName: string, key: number) => (
           <Field

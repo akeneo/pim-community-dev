@@ -4,7 +4,7 @@ import {DuplicateOption} from './DuplicateOption';
 
 class DuplicateSecondaryAction extends ReactView {
   reactElementToMount() {
-    return <DuplicateOption userId={this.getFormData().meta.id} />;
+    return <DuplicateOption userId={this.getFormData().meta.id} userCode={this.getFormData().code} />;
   }
 }
 

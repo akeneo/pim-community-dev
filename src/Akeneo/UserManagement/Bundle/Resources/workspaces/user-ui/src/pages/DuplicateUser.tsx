@@ -5,11 +5,12 @@ import {CreateUserForm} from '../components';
 
 type DuplicateUserProps = {
   userId: number;
+  userCode: string;
   onCancel: () => void;
   onDuplicateSuccess: (userId: string) => void;
 };
 
-const DuplicateUser = ({userId, onCancel, onDuplicateSuccess}: DuplicateUserProps) => {
+const DuplicateUser = ({userId, userCode, onCancel, onDuplicateSuccess}: DuplicateUserProps) => {
   const translate = useTranslate();
   const notify = useNotify();
 
@@ -26,7 +27,7 @@ const DuplicateUser = ({userId, onCancel, onDuplicateSuccess}: DuplicateUserProp
       <SectionTitle color={'brand'} size={'bigger'}>
         {translate('pim_menu.item.user')}
       </SectionTitle>
-      <Title>{translate('pim_common.duplicate')}</Title>
+      <Title>{translate('pim_user_management.form.duplication.title', {username: userCode})}</Title>
       <CreateUserForm userId={userId} onCancel={onCancel} onSuccess={onSuccess} onError={onError} />
     </Modal>
   );

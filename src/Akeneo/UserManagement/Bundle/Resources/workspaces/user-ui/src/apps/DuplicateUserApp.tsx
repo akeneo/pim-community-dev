@@ -6,15 +6,21 @@ import {DuplicateUser} from '../pages';
 
 type DuplicateUserAppProps = {
   userId: number;
+  userCode: string;
   onCancel: () => void;
   onDuplicateSuccess: (userId: string) => void;
 };
 
-const DuplicateUserApp = ({userId, onCancel, onDuplicateSuccess}: DuplicateUserAppProps) => {
+const DuplicateUserApp = ({userId, userCode, onCancel, onDuplicateSuccess}: DuplicateUserAppProps) => {
   return (
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
-        <DuplicateUser userId={userId} onCancel={onCancel} onDuplicateSuccess={onDuplicateSuccess} />
+        <DuplicateUser
+          userId={userId}
+          userCode={userCode}
+          onCancel={onCancel}
+          onDuplicateSuccess={onDuplicateSuccess}
+        />
       </ThemeProvider>
     </DependenciesProvider>
   );

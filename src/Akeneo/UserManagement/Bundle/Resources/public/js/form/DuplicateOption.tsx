@@ -7,9 +7,10 @@ const translate = require('oro/translator');
 
 type DuplicateActionProps = {
   userId: number;
+  userCode: string;
 };
 
-const DuplicateOption = ({userId}: DuplicateActionProps) => {
+const DuplicateOption = ({userId, userCode}: DuplicateActionProps) => {
   const [isAppOpened, openApp, closeApp] = useToggleState(false);
 
   const onDuplicateSuccess = (duplicatedUserId: string) => {
@@ -21,7 +22,14 @@ const DuplicateOption = ({userId}: DuplicateActionProps) => {
       <button className="AknDropdown-menuLink duplicate" onClick={openApp}>
         {translate('pim_common.duplicate')}
       </button>
-      {isAppOpened && <DuplicateUserApp userId={userId} onCancel={closeApp} onDuplicateSuccess={onDuplicateSuccess} />}
+      {isAppOpened && (
+        <DuplicateUserApp
+          userId={userId}
+          userCode={userCode}
+          onCancel={closeApp}
+          onDuplicateSuccess={onDuplicateSuccess}
+        />
+      )}
     </>
   );
 };

@@ -26,6 +26,7 @@ class DuplicateUserAction extends AbstractAction {
       <>
         <DuplicateUserApp
           userId={this.model.get(this.propertyName)}
+          userCode={this.model.get('username')}
           onCancel={closeApp}
           onDuplicateSuccess={onDuplicateSuccess}
         />

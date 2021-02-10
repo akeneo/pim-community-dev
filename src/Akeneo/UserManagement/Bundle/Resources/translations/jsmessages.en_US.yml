@@ -112,6 +112,7 @@ pim_user_management:
         error:
             required: This field is required.
         duplication:
+            title: "Duplicate {{ username }}"
             notification:
                 success: The user is duplicated successfully
                 failure: User duplication failure

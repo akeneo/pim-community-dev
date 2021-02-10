@@ -60,10 +60,7 @@ describe('CreateUserForm', () => {
   });
 
   test('it successfully submit the form', async () => {
-    fetchMock.mockResponses([
-      JSON.stringify({meta: {id: 99}}),
-      {status: 200},
-    ]);
+    fetchMock.mockResponses([JSON.stringify({meta: {id: 99}}), {status: 200}]);
 
     const onCancel = jest.fn();
     const onSuccess = jest.fn();
@@ -71,12 +68,24 @@ describe('CreateUserForm', () => {
 
     renderDataGridWithProviders(1, onCancel, onSuccess, onError);
 
-    const inputUsername = (await screen.findByLabelText('pim_user_management.entity.user.properties.username')) as HTMLInputElement;
-    const inputPassword = (await screen.findByLabelText('pim_user_management.entity.user.properties.password')) as HTMLInputElement;
-    const inputPasswordRepeat = (await screen.findByLabelText('pim_user_management.entity.user.properties.password_repeat')) as HTMLInputElement;
-    const inputFirstName = (await screen.findByLabelText('pim_user_management.entity.user.properties.first_name')) as HTMLInputElement;
-    const inputLastName = (await screen.findByLabelText('pim_user_management.entity.user.properties.last_name')) as HTMLInputElement;
-    const inputEmail = (await screen.findByLabelText('pim_user_management.entity.user.properties.email')) as HTMLInputElement;
+    const inputUsername = (await screen.findByLabelText(
+      'pim_user_management.entity.user.properties.username'
+    )) as HTMLInputElement;
+    const inputPassword = (await screen.findByLabelText(
+      'pim_user_management.entity.user.properties.password'
+    )) as HTMLInputElement;
+    const inputPasswordRepeat = (await screen.findByLabelText(
+      'pim_user_management.entity.user.properties.password_repeat'
+    )) as HTMLInputElement;
+    const inputFirstName = (await screen.findByLabelText(
+      'pim_user_management.entity.user.properties.first_name'
+    )) as HTMLInputElement;
+    const inputLastName = (await screen.findByLabelText(
+      'pim_user_management.entity.user.properties.last_name'
+    )) as HTMLInputElement;
+    const inputEmail = (await screen.findByLabelText(
+      'pim_user_management.entity.user.properties.email'
+    )) as HTMLInputElement;
 
     await act(async () => {
       await userEvent.type(inputUsername, 'username');
@@ -94,10 +103,12 @@ describe('CreateUserForm', () => {
 
   test('it displays errors returning by backend', async () => {
     fetchMock.mockResponses([
-      JSON.stringify({values: [
+      JSON.stringify({
+        values: [
           {path: 'password_repeat', message: 'passwords do not match'},
           {path: 'email', message: 'email is not valid'},
-      ]}),
+        ],
+      }),
       {status: 400},
     ]);
 
@@ -107,12 +118,24 @@ describe('CreateUserForm', () => {
 
     renderDataGridWithProviders(1, onCancel, onSuccess, onError);
 
-    const inputUsername = (await screen.findByLabelText('pim_user_management.entity.user.properties.username')) as HTMLInputElement;
-    const inputPassword = (await screen.findByLabelText('pim_user_management.entity.user.properties.password')) as HTMLInputElement;
-    const inputPasswordRepeat = (await screen.findByLabelText('pim_user_management.entity.user.properties.password_repeat')) as HTMLInputElement;
-    const inputFirstName = (await screen.findByLabelText('pim_user_management.entity.user.properties.first_name')) as HTMLInputElement;
-    const inputLastName = (await screen.findByLabelText('pim_user_management.entity.user.properties.last_name')) as HTMLInputElement;
-    const inputEmail = (await screen.findByLabelText('pim_user_management.entity.user.properties.email')) as HTMLInputElement;
+    const inputUsername = (await screen.findByLabelText(
+      'pim_user_management.entity.user.properties.username'
+    )) as HTMLInputElement;
+    const inputPassword = (await screen.findByLabelText(
+      'pim_user_management.entity.user.properties.password'
+    )) as HTMLInputElement;
+    const inputPasswordRepeat = (await screen.findByLabelText(
+      'pim_user_management.entity.user.properties.password_repeat'
+    )) as HTMLInputElement;
+    const inputFirstName = (await screen.findByLabelText(
+      'pim_user_management.entity.user.properties.first_name'
+    )) as HTMLInputElement;
+    const inputLastName = (await screen.findByLabelText(
+      'pim_user_management.entity.user.properties.last_name'
+    )) as HTMLInputElement;
+    const inputEmail = (await screen.findByLabelText(
+      'pim_user_management.entity.user.properties.email'
+    )) as HTMLInputElement;
 
     await act(async () => {
       await userEvent.type(inputUsername, 'username');
