@@ -74,3 +74,11 @@ services:
             - '@database_connection'
         tags:
             - { name: console.command }
+
+    Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\ActivateCommand:
+        arguments:
+            - '@akeneo_authentication.sso.configuration.create_or_update_handler'
+            - '@validator'
+            - '@akeneo_authentication.sso.configuration.service_provider_default_configuration'
+        tags:
+            - { name: console.command }

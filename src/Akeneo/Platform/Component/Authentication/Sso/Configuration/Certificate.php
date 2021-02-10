@@ -20,6 +20,8 @@ namespace Akeneo\Platform\Component\Authentication\Sso\Configuration;
  */
 final class Certificate
 {
+    public const EXPIRATION_WARNING_IN_DAYS = 30;
+
     /** @var string */
     private $certificate;
 

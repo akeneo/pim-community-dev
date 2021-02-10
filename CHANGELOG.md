@@ -12,7 +12,8 @@
 
 ## Improvements
 
-- PIM-9619: Improve error message when creating a new project with a name already used
+- PIM-9619: Improve error message when creating a new project with a name already used 
+- PLG-45: Activate SSO authentication from a command CLI
 - RAC-509: Upgrade asset limit by asset family to 10 millions
 
 ## New features
