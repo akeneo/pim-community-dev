@@ -58,6 +58,9 @@ Akeneo\UserManagement\Component\Model\User:
                 message: "The phone has to respect the international format (eg: +33755667788)."
             - Length:
                 max: 20
+        timezone:
+            - NotBlank: ~
+            - Timezone: ~
 
 Akeneo\UserManagement\Component\Model\Role:
     constraints:
