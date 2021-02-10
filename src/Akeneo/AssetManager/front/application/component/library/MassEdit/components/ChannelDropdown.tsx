@@ -4,17 +4,21 @@ import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {getLabel} from 'pimui/js/i18n';
 import React from 'react';
 
-const ChannelDropdown = ({
-  channel,
-  uiLocale,
-  onChange,
-  channels,
-}: {
+type ChannelDropdownProps = {
+  readOnly: boolean;
   channel: ChannelCode;
   uiLocale: LocaleCode;
   onChange: (newChannel: ChannelCode) => void;
   channels: Channel[];
-}) => {
+};
+
+const ChannelDropdown = ({
+  readOnly,
+  channel,
+  uiLocale,
+  onChange,
+  channels,
+}: ChannelDropdownProps) => {
   const [isOpen, open, close] = useBooleanState();
   const currentChannel = channels.find(channelItem => channelItem.code === channel);
 
@@ -24,7 +28,7 @@ const ChannelDropdown = ({
 
   return (
     <Dropdown>
-      <Button onClick={open}>
+      <Button disabled={readOnly} onClick={open}>
         {getLabel(currentChannel.labels, uiLocale, currentChannel.code)} <ArrowDownIcon />
       </Button>
       {isOpen && (

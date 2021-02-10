@@ -36,7 +36,7 @@ import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-fa
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import styled from 'styled-components';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
-import {useUpdaterCollection} from './useUpdaterCollection';
+import {useUpdaterCollection} from './hooks/useUpdaterCollection';
 import {AddAttributeDropdown} from './components/AttributeDropdown';
 import {EmptyUpdaterCollection} from './components/EmptyUpdaterCollection';
 import {UpdaterCollection} from './components/UpdaterCollection';
@@ -166,7 +166,7 @@ const MassEditModal = ({
                   onAdd={attribute => {
                     addUpdater(attribute, context);
                   }}
-                  locale={context.locale}
+                  uiLocale={context.locale}
                   attributes={assetFamily.attributes}
                   alreadyUsed={usedAttributeIdentifiers}
                 />

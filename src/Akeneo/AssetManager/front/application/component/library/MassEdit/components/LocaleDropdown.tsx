@@ -2,15 +2,19 @@ import {ArrowDownIcon, Button, Dropdown, Locale as LocaleLabel, useBooleanState}
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import React from 'react';
 
-const LocaleDropdown = ({
-  locale,
-  onChange,
-  locales,
-}: {
+type LocaleDropdownProps = {
+  readOnly: boolean;
   locale: LocaleCode;
   onChange: (newLocale: LocaleCode) => void;
   locales: Locale[];
-}) => {
+};
+
+const LocaleDropdown = ({
+  readOnly,
+  locale,
+  onChange,
+  locales,
+}: LocaleDropdownProps) => {
   const [isOpen, open, close] = useBooleanState();
   const currentLocale = locales.find(localeItem => localeItem.code === locale);
 
@@ -20,7 +24,7 @@ const LocaleDropdown = ({
 
   return (
     <Dropdown>
-      <Button onClick={open}>
+      <Button disabled={readOnly} onClick={open}>
         <LocaleLabel code={currentLocale.code} languageLabel={currentLocale.language} /> <ArrowDownIcon />
       </Button>
       {isOpen && (

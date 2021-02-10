@@ -21,6 +21,7 @@ const normalizeUpdater = (updater: Updater) => {
     action: updater.action,
   };
 };
+
 const normalizeUpdaterCollection = (updaterCollection: Updater[]) => {
   return updaterCollection.map(updater => normalizeUpdater(updater));
 };

@@ -3,15 +3,16 @@ import {ArrowDownIcon, Button, Dropdown, useBooleanState} from 'akeneo-design-sy
 import {getLabel} from 'pimui/js/i18n';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 type AddAttributeDropdownProps = {
   attributes: NormalizedAttribute[];
-  locale: string;
+  uiLocale: LocaleCode;
   alreadyUsed: string[];
   onAdd: (attribute: NormalizedAttribute) => void;
 };
 
-const AddAttributeDropdown = ({attributes, locale, alreadyUsed, onAdd}: AddAttributeDropdownProps) => {
+const AddAttributeDropdown = ({attributes, uiLocale, alreadyUsed, onAdd}: AddAttributeDropdownProps) => {
   const [isOpen, open, close] = useBooleanState(false);
   const translate = useTranslate();
 
@@ -37,7 +38,7 @@ const AddAttributeDropdown = ({attributes, locale, alreadyUsed, onAdd}: AddAttri
                       close();
                     }}
                   >
-                    {getLabel(attribute.labels, locale, attribute.code)}{' '}
+                    {getLabel(attribute.labels, uiLocale, attribute.code)}{' '}
                     {alreadyUsed.includes(attribute.identifier) && 'already used'}
                   </Dropdown.Item>
                 );

@@ -1,5 +1,5 @@
 import React from 'react';
-import {arrayUnique, CloseIcon, getColor, getFontSize, IconButton, Table, useId} from 'akeneo-design-system';
+import {CloseIcon, getColor, getFontSize, IconButton, Table, useId} from 'akeneo-design-system';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
 import {getFieldView} from 'akeneoassetmanager/application/configuration/value';
@@ -10,9 +10,10 @@ import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {getLabel} from 'pimui/js/i18n';
 import styled from 'styled-components';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
+import {getLocaleFromChannel, getLocalesFromChannel} from 'akeneoassetmanager/application/reducer/structure';
 import {LocaleDropdown} from './LocaleDropdown';
 import {ChannelDropdown} from './ChannelDropdown';
+import {getErrorsView} from '../../../app/validation-error';
 
 /** @TODO RAC-331 use body style bold */
 const AttributeName = styled.label`
@@ -54,28 +55,18 @@ const UpdaterRow = ({updater, uiLocale, readOnly, errors, onChange, onRemove, ch
   const handleDataChange = (editionValue: EditionValue) => {
     onChange({...updater, data: editionValue.data});
   };
+
   const handleLocaleChange = (newLocale: LocaleCode) => {
     onChange({...updater, locale: newLocale});
   };
+
   const handleChannelChange = (newChannel: ChannelCode) => {
-    const channelLocales = getLocales(channels, newChannel);
-    const locale =
-      channelLocales.find(locale => locale.code === updater.locale) === undefined
-        ? channelLocales[0].code
-        : updater.locale;
+    const locale = getLocaleFromChannel(channels, newChannel, updater.locale);
 
     onChange({...updater, channel: newChannel, locale});
   };
 
-  const locales =
-    null !== updater.channel
-      ? getLocales(channels, updater.channel)
-      : arrayUnique(
-          channels.reduce((result, current) => {
-            return [...result, ...current.locales];
-          }, []),
-          (first, second) => first.code === second.code
-        );
+  const locales = getLocalesFromChannel(updater.channel);
   const id = useId('updater_row_input_');
 
   return (
@@ -85,7 +76,7 @@ const UpdaterRow = ({updater, uiLocale, readOnly, errors, onChange, onRemove, ch
           {getLabel(updater.attribute.labels, uiLocale, updater.attribute.code)}
         </AttributeName>
       </Table.Cell>
-      <InputCell expanded={true}>
+      <InputCell>
         <InputView
           id={id}
           canEditData={!readOnly}
@@ -95,11 +86,12 @@ const UpdaterRow = ({updater, uiLocale, readOnly, errors, onChange, onRemove, ch
           onSubmit={() => {}}
           value={updater}
         />
-        {errors.map(error => JSON.stringify(error)).join(', ')}
+        {getErrorsView(errors, '', () => () => true)}
       </InputCell>
       <ContextCell>
         {null !== updater.channel && (
           <ChannelDropdown
+            readOnly={readOnly}
             channel={updater.channel}
             uiLocale={uiLocale}
             onChange={handleChannelChange}
@@ -107,9 +99,8 @@ const UpdaterRow = ({updater, uiLocale, readOnly, errors, onChange, onRemove, ch
           />
         )}
         {null !== updater.locale && (
-          <LocaleDropdown locale={updater.locale} onChange={handleLocaleChange} locales={locales} />
+          <LocaleDropdown readOnly={readOnly} locale={updater.locale} onChange={handleLocaleChange} locales={locales} />
         )}
-        {updater.action}
       </ContextCell>
       <RemoveCell>
         {!readOnly && (
