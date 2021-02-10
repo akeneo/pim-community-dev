@@ -4,10 +4,6 @@ import {BreadcrumbOctopus, Item, Separator} from './BreadcrumbOctopus.tsx';
 <Meta
   title="Components/BreadcrumbOctopus"
   component={BreadcrumbOctopus}
-  argTypes={{
-    level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
-  }}
-  args={{level: 'primary', children: 'BreadcrumbOctopus text'}}
 />
 
 # BreadcrumbOctopus
@@ -25,12 +21,10 @@ TODO
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <BreadcrumbOctopus {...args}>
-        <Item gradient={120}>First</Item>
-        <Separator/>
-        <Item gradient={120}>Second</Item>
-        <Separator/>
-        <Item gradient={100}>Last</Item>
+      return <BreadcrumbOctopus color={args.color}>
+        <Item>First</Item>
+        <Item>Second</Item>
+        <Item>Last</Item>
       </BreadcrumbOctopus>;
     }}
   </Story>
@@ -39,23 +33,3 @@ TODO
 <ArgsTable story="Standard" />
 
 ## Variation on level
-
-<Canvas>
-  <Story name="Level">
-    {args => {
-      return (
-        <>
-          <BreadcrumbOctopus {...args} level="primary">
-            Primary
-          </BreadcrumbOctopus>
-          <BreadcrumbOctopus {...args} level="warning">
-            Warning
-          </BreadcrumbOctopus>
-          <BreadcrumbOctopus {...args} level="danger">
-            Danger
-          </BreadcrumbOctopus>
-        </>
-      );
-    }}
-  </Story>
-</Canvas>

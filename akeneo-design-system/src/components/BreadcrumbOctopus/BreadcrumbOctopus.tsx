@@ -1,14 +1,14 @@
-import React, {Ref, ReactNode} from 'react';
+import React, {Ref, ReactNode, ReactElement, forwardRef} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from "../../theme";
 
 //TODO be sure to select the appropriate container element here
 const BreadcrumbOctopusContainer = styled.div<{level: string}>``;
-const Item = styled.span<{gradient:number} & AkeneoThemedProps>`
+const Item = styled.span<{gradient:number, color: string} & AkeneoThemedProps>`
   font-size: ${getFontSize('default')};
   text-transform: uppercase;
   color: ${(props) => {
-      return getColor('grey', props.gradient)
+      return getColor(props.color, props.gradient)
   }};
 `;
 const Separator = styled.span`
@@ -21,9 +21,9 @@ const Separator = styled.span`
 
 type BreadcrumbOctopusProps = {
   /**
-   * TODO.
+   *      The color of the breadcrumb
    */
-  level?: 'primary' | 'warning' | 'danger';
+  color?: 'green' | 'blue' | 'red';
 
   /**
    * TODO.
@@ -34,11 +34,26 @@ type BreadcrumbOctopusProps = {
 /**
  * TODO.
  */
-const BreadcrumbOctopus = React.forwardRef<HTMLDivElement, BreadcrumbOctopusProps>(
-  ({level = 'primary', children, ...rest}: BreadcrumbOctopusProps, forwardedRef: Ref<HTMLDivElement>) => {
+const BreadcrumbOctopus = forwardRef<HTMLDivElement, BreadcrumbOctopusProps>(
+  ({color = 'blue', children, ...rest}: BreadcrumbOctopusProps, forwardedRef: Ref<HTMLDivElement>) => {
+    const decoratedChildren = React.Children.map(children, (child, index) => {
+        if (!(React.isValidElement(child) && child.type === Item)) {
+            throw new Error('pas bien');
+        }
+
+        const isLast = React.Children.count(children) === index + 1;
+
+        return isLast ? React.cloneElement(child, {color, gradient: 100}) : (
+            <>
+                {React.cloneElement(child, {color, gradient: 120})}
+                <Separator/>
+            </>
+        );
+    })
+
     return (
-      <BreadcrumbOctopusContainer level={level} ref={forwardedRef} {...rest}>
-        {children}
+      <BreadcrumbOctopusContainer ref={forwardedRef} {...rest}>
+        {decoratedChildren}
       </BreadcrumbOctopusContainer>
     );
   }
