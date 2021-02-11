@@ -26,3 +26,4 @@ services:
       - '@validator'
       - '@akeneo_storage_utils.doctrine.object_detacher'
       - '@pim_datagrid.repository.datagrid_view'
+      - '@akeneo_file_storage.file_storage.file.file_storer'

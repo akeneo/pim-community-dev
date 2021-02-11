@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Akeneo\UserManagement\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\Processor;
+use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -21,6 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UserProcessor extends Processor
 {
     private DatagridViewRepositoryInterface $gridViewRepository;
+    private FileStorerInterface $fileStorer;
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -28,10 +31,12 @@ class UserProcessor extends Processor
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
-        DatagridViewRepositoryInterface $gridViewRepository
+        DatagridViewRepositoryInterface $gridViewRepository,
+        FileStorerInterface $fileStorer
     ) {
         parent::__construct($repository, $factory, $updater, $validator, $objectDetacher);
         $this->gridViewRepository = $gridViewRepository;
+        $this->fileStorer = $fileStorer;
     }
 
     /**
@@ -53,6 +58,18 @@ class UserProcessor extends Processor
             $defaultProductGridView = $this->gridViewRepository->findByLabelAndUser($itemDefaultProductGridView, $user);
             if (null !== $defaultProductGridView) {
                 $item['default_product_grid_view'] = $defaultProductGridView->getId();
+            }
+        }
+
+        if (isset($item['avatar']['filePath'])) {
+            try {
+                $file = $this->fileStorer->store(
+                    new \SplFileInfo($item['avatar']['filePath']),
+                    'catalogStorage'
+                );
+                $item['avatar']['filePath'] = $file->getKey();
+            } catch (InvalidFile $e) {
+                throw InvalidPropertyException::validPathExpected('avatar', self::class, $item['avatar']['filePath']);
             }
         }
 

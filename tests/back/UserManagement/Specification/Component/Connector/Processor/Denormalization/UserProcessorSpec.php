@@ -7,6 +7,8 @@ use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -30,9 +32,19 @@ class UserProcessorSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
         DatagridViewRepositoryInterface $gridViewRepository,
+        FileStorerInterface $fileStorer,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($repository, $factory, $updater, $validator, $objectDetacher, $gridViewRepository);
+        $this->beConstructedWith(
+            $repository,
+            $factory,
+            $updater,
+            $validator,
+            $objectDetacher,
+            $gridViewRepository,
+            $fileStorer
+        );
+        $stepExecution->getExecutionContext()->willReturn(new ExecutionContext());
         $this->setStepExecution($stepExecution);
     }
 
@@ -60,12 +72,10 @@ class UserProcessorSpec extends ObjectBehavior
         SimpleFactoryInterface $factory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
-        StepExecution $stepExecution,
         UserInterface $user
     ) {
         $repository->getIdentifierProperties()->willReturn(['username']);
         $repository->findOneByIdentifier('admin')->willReturn(null);
-        $stepExecution->getExecutionContext()->willReturn(new ExecutionContext());
 
         $item = [
             'username' => 'admin',
@@ -74,14 +84,19 @@ class UserProcessorSpec extends ObjectBehavior
         ];
 
         $factory->create()->shouldBeCalled()->willReturn($user);
-        $updater->update($user, Argument::that(
-            function ($argument) use ($item): bool {
-                $passwordIsSet = \is_array($argument) && isset($argument['password']) && '' !== $argument['password'];
-                unset($argument['password']);
+        $updater->update(
+            $user,
+            Argument::that(
+                function ($argument) use ($item): bool {
+                    $passwordIsSet = \is_array(
+                            $argument
+                        ) && isset($argument['password']) && '' !== $argument['password'];
+                    unset($argument['password']);
 
-                return $passwordIsSet && $argument === $item;
-            }
-        ))->shouldBeCalled();
+                    return $passwordIsSet && $argument === $item;
+                }
+            )
+        )->shouldBeCalled();
         $validator->validate($user)->shouldBeCalled()->willReturn(new ConstraintViolationList([]));
 
         $this->process($item)->shouldReturn($user);
@@ -92,25 +107,60 @@ class UserProcessorSpec extends ObjectBehavior
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         DatagridViewRepositoryInterface $gridViewRepository,
-        StepExecution $stepExecution,
         UserInterface $julia,
         DatagridView $productGridView
     ) {
         $repository->getIdentifierProperties()->willReturn(['username']);
         $repository->findOneByIdentifier('julia')->willReturn($julia);
-        $stepExecution->getExecutionContext()->willReturn(new ExecutionContext());
         $productGridView->getId()->willReturn(42);
         $gridViewRepository->findByLabelAndUser('My product grid view', $julia)->willReturn($productGridView);
 
+        $updater->update(
+            $julia,
+            [
+                'username' => 'julia',
+                'default_product_grid_view' => 42,
+            ]
+        )->shouldBeCalled();
+        $validator->validate($julia)->shouldBeCalled()->willReturn(new ConstraintViolationList([]));
+
+        $this->process(
+            [
+                'username' => 'julia',
+                'default_product_grid_view' => 'My product grid view',
+            ]
+        )->shouldReturn($julia);
+    }
+
+    function it_stores_the_avatar_file(
+        IdentifiableObjectRepositoryInterface $repository,
+        ObjectUpdaterInterface $updater,
+        ValidatorInterface $validator,
+        FileStorerInterface $fileStorer,
+        UserInterface $julia,
+        FileInfoInterface $fileInfo
+    ) {
+        $repository->getIdentifierProperties()->willReturn(['username']);
+        $repository->findOneByIdentifier('julia')->willReturn($julia);
+
+        $fileStorer->store(Argument::type(\SplFileInfo::class), 'catalogStorage')->shouldBeCalled()->willReturn($fileInfo);
+        $fileInfo->getKey()->willReturn('a/b/c/123456789avatar.png');
+
         $updater->update($julia, [
             'username' => 'julia',
-            'default_product_grid_view' => 42,
+            'avatar' => [
+                'filePath' => 'a/b/c/123456789avatar.png',
+            ]
         ])->shouldBeCalled();
         $validator->validate($julia)->shouldBeCalled()->willReturn(new ConstraintViolationList([]));
 
-        $this->process([
-            'username' => 'julia',
-            'default_product_grid_view' => 'My product grid view',
-        ])->shouldReturn($julia);
+        $this->process(
+            [
+                'username' => 'julia',
+                'avatar' => [
+                    'filePath' => '/tmp/files/avatar.png',
+                ],
+            ]
+        )->shouldReturn($julia);
     }
 }

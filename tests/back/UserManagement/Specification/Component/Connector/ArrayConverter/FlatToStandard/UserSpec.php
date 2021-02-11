@@ -143,4 +143,22 @@ class UserSpec extends ObjectBehavior
             ]
         );
     }
+
+    function it_converts_an_avatar_filepath(FieldsRequirementChecker $checker)
+    {
+        $fields = [
+            'username' => 'julia',
+            'avatar' => 'files/image/avatar.png',
+        ];
+
+        $checker->checkFieldsPresence($fields, ['username'])->shouldBeCalled();
+        $checker->checkFieldsFilling($fields, ['username'])->shouldBeCalled();
+
+        $this->convert($fields)->shouldReturn(
+            [
+                'username' => 'julia',
+                'avatar' => ['filePath' => 'files/image/avatar.png'],
+            ]
+        );
+    }
 }
