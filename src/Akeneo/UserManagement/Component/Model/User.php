@@ -1125,7 +1125,7 @@ class User implements UserInterface
 
     public function duplicate(): UserInterface
     {
-        $duplicated = new self();
+        $duplicated = new static();
         $duplicated->setEnabled($this->enabled ?? false);
         if ($this->timezone) {
             $duplicated->setTimezone($this->timezone);

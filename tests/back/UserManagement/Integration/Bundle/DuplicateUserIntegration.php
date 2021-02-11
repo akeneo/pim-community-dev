@@ -67,7 +67,7 @@ final class DuplicateUserIntegration extends ControllerIntegrationTestCase
         self::assertSame('en_US', $duplicatedUser->getCatalogLocale()->getCode());
     }
 
-    public function test_it_is_forbidden_when_logged_user_has_not_the_permission(): void
+    public function test_it_is_forbidden_when_logged_user_does_not_have_the_permission(): void
     {
         $user = $this->createUserWithGroupsAndRoles('test1', ['Redactor'], ['ROLE_USER']);
         $this->revokePermissionForRole('ROLE_USER', 'pim_user_user_create');
