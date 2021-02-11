@@ -1,13 +1,14 @@
 # Events API Ubiquitous Language
 
-
 * **Events API**
 
     Public API that defines the API Event requests sent to an external application in reaction to PIM Events.
 
 * **Connection**
 
-    Configuration of the credentials and permissions required to work with the PIM Rest API and Events API.
+    Connections allow our customers to plug third-parties into Akeneo PIM.
+
+    It contains the credentials to use the REST API: a Client ID, a secret, and the username and password, customers should use to call the REST API
 
 * **Event Subscription**
 
@@ -18,7 +19,6 @@
 * **PIM Event**
 
     Lifecycle event of the PIM entities.
-
 
 * **API Event**
 
