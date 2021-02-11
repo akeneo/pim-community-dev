@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.92 (2021-02-11)
+
 ## Improvements
 
 - PIM-9666: improve asset transformation computing process
