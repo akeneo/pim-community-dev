@@ -45,17 +45,16 @@ export const getLocales = (channels: Channel[], channelCode: string) => {
 
 const localeExist = (channelLocales: Locale[], locale: LocaleCode) => {
   return channelLocales.find(currentLocale => currentLocale.code === locale) !== undefined;
-}
+};
 
 const getLocaleFromChannel = (channels: Channel[], channelCode: ChannelCode, localeCode: LocaleCode) => {
   const channelLocales = getLocales(channels, channelCode);
-
-  return localeExist(channelLocales, localeCode) ? channelLocales[0].code : localeCode;
-}
+  return !localeExist(channelLocales, localeCode) ? channelLocales[0].code : localeCode;
+};
 
 const getLocalesFromChannel = (channels: Channel[], channelCode: ChannelCode | null) => {
   if (null !== channelCode) {
-    return getLocales(channels, channelCode)
+    return getLocales(channels, channelCode);
   }
 
   return arrayUnique(
@@ -64,6 +63,6 @@ const getLocalesFromChannel = (channels: Channel[], channelCode: ChannelCode | n
     }, []),
     (first, second) => first.code === second.code
   );
-}
+};
 
 export {getLocalesFromChannel, getLocaleFromChannel};
