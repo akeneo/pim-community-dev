@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, SectionTitle, Title, UsersIllustration} from 'akeneo-design-system';
+import {Modal, UsersIllustration} from 'akeneo-design-system';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {CreateUserForm} from '../components';
 
@@ -24,10 +24,10 @@ const DuplicateUser = ({userId, userCode, onCancel, onDuplicateSuccess}: Duplica
 
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={onCancel} illustration={<UsersIllustration />}>
-      <SectionTitle color={'brand'} size={'bigger'}>
+      <Modal.SectionTitle color={'brand'} size={'bigger'}>
         {translate('pim_menu.item.user')}
-      </SectionTitle>
-      <Title>{translate('pim_user_management.form.duplication.title', {username: userCode})}</Title>
+      </Modal.SectionTitle>
+      <Modal.Title>{translate('pim_user_management.form.duplication.title', {username: userCode})}</Modal.Title>
       <CreateUserForm userId={userId} onCancel={onCancel} onSuccess={onSuccess} onError={onError} />
     </Modal>
   );

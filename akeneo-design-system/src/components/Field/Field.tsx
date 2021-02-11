@@ -81,7 +81,10 @@ type FieldProps = {
  * The Field component is used to display information around an Input component.
  */
 const Field = React.forwardRef<HTMLDivElement, FieldProps>(
-  ({label, locale, channel, incomplete = false, requiredLabel, children, ...rest}: FieldProps, forwardedRef: Ref<HTMLDivElement>) => {
+  (
+    {label, locale, channel, incomplete = false, requiredLabel, children, ...rest}: FieldProps,
+    forwardedRef: Ref<HTMLDivElement>
+  ) => {
     const inputId = useId('input_');
     const labelId = useId('label_');
 

@@ -12,5 +12,5 @@ use Oro\Bundle\DataGridBundle\Extension\Action\Actions\NavigateAction;
  */
 final class DuplicateUserAction extends NavigateAction
 {
-    protected $requiredOptions = ['propertyName'];
+    protected $requiredOptions = [];
 }
