@@ -197,6 +197,8 @@ class ProductController
      * @param Request $request
      *
      * @return Response
+     *
+     * @AClAncestor("pim_enrich_product_create")
      */
     public function createAction(Request $request)
     {

@@ -1,0 +1,77 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {NumberInput} from './NumberInput.tsx';
+
+<Meta
+  title="Components/Inputs/NumberInput"
+  component={NumberInput}
+  argTypes={{
+    readOnly: {
+      control: {type: 'boolean'},
+      description:
+        'Defines if the input should be read only. If defined so, the user cannot change the value of the input.',
+      table: {type: {summary: 'boolean'}},
+    },
+    onChange: {
+      description: 'The handler called when the value of the input changes.',
+      table: {type: {summary: '(newValue: number) => void'}},
+    },
+  }}
+  args={{
+    value: '',
+    placeholder: 'Please enter a value in the NumberInput',
+  }}
+/>
+
+# NumberInput (Beta)
+
+## Usage
+
+Number input allows the user to enter content and data when the expected user input is only numbers.
+
+### Placeholder text
+
+The placeholder text provides tips or examples of items to enter. Placeholder text disappears when the user begins entering data.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [value, setValue] = useState(args.value);
+      return <NumberInput {...args} value={value} onChange={setValue} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on readOnly
+
+<Canvas>
+  <Story name="ReadOnly">
+    {args => {
+      return (
+        <>
+          <NumberInput {...args} readOnly={false} />
+          <NumberInput {...args} readOnly={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on invalid
+
+<Canvas>
+  <Story name="Invalid">
+    {args => {
+      return (
+        <>
+          <NumberInput {...args} invalid={false} />
+          <NumberInput {...args} invalid={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

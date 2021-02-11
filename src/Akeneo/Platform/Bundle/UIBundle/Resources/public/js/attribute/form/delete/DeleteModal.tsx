@@ -9,9 +9,7 @@ import {
   Key,
   Link,
   Modal,
-  SectionTitle,
   TextInput,
-  Title,
   useShortcut,
 } from 'akeneo-design-system';
 import {NotificationLevel, useNotify, useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
@@ -114,8 +112,8 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
 
   return (
     <Modal onClose={onCancel} closeTitle={translate('pim_common.close')} illustration={<DeleteIllustration />}>
-      <SectionTitle color="brand">{translate('pim_enrich.entity.attribute.plural_label')}</SectionTitle>
-      <Title>{translate('pim_common.confirm_deletion')}</Title>
+      <Modal.SectionTitle color="brand">{translate('pim_enrich.entity.attribute.plural_label')}</Modal.SectionTitle>
+      <Modal.Title>{translate('pim_common.confirm_deletion')}</Modal.Title>
       {translate('pim_enrich.entity.attribute.module.delete.confirm')}
       {(0 < productCount || 0 < productModelCount) && (
         <p>
