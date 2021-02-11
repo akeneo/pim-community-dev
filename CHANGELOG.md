@@ -10,6 +10,8 @@
 - PIM-9654: Allow single quote in DQI Word Dictionary
 - PIM-9655: Fix multiple spellcheck calls on multi-select attributes
 - PIM-9671: Do not process spell checking on attributes with data quality analysis disabled on group
+- PIM-9659: Asset Manager - Fix missing warning message when changing page via the breadcrumb with unsaved changes.
+- PIM-9676: Reference Entities - Fix missing warning message when changing page via the breadcrumb with unsaved changes.
 
 ## Improvements
 
