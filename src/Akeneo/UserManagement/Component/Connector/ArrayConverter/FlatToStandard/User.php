@@ -101,6 +101,9 @@ class User implements ArrayConverterInterface
             case 'enabled':
                 $convertedItem[$field] = $this->convertBoolean((string)$data);
                 break;
+            case 'avatar':
+                $convertedItem['avatar'] = ['filePath' => $data];
+                break;
             default:
                 $convertedItem[$field] = $data;
                 break;
