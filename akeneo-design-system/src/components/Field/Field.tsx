@@ -103,8 +103,11 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
           {incomplete && <IncompleteBadge />}
           <Label htmlFor={inputId} id={labelId}>
             {label}
-            &nbsp;
-            {requiredLabel && <em>{requiredLabel}</em>}
+            {requiredLabel && (
+              <>
+                &nbsp;<em>{requiredLabel}</em>
+              </>
+            )}
           </Label>
           {channel && <Channel>{channel}</Channel>}
           {locale && ('string' === typeof locale ? <Locale code={locale} /> : locale)}
