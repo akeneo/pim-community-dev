@@ -237,10 +237,6 @@ class UserController
     }
 
     /**
-     * @param Request $request
-     *
-     * @return Response
-     *
      * @AclAncestor("pim_user_user_create")
      */
     public function createAction(Request $request): Response
