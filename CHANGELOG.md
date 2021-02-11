@@ -19,6 +19,8 @@
 
 ## New features
 
+- DAPI-1443: Add possibility to export products depending on their Quality Score
+
 ## Improvements
 
 # Technical Improvements
