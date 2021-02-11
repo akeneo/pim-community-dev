@@ -764,7 +764,8 @@ jobs:
           - run:
               name: Get last good CE build revision
               command: |
-                  CE_COMMIT_HASH=$(growth_edition/get_last_good_ce_revision.sh)
+                  docker-compose run --rm -u www-data:www-data php bash -c 'cd growth_edition/last_good_ce && composer install'
+                  CE_COMMIT_HASH=$(docker-compose run --rm -u www-data:www-data php php growth_edition/last_good_ce/get_last_good_ce_revision.php)
                   IMAGE_TAG=$(echo growth-$CE_COMMIT_HASH | cut -b 1-40)
                   GROWTH_RELEASE_NAME=growth-v$(date +%Y%m%d%H%M%S)
 
@@ -1119,6 +1120,26 @@ workflows:
                     - test_back_behat_legacy
                     - test_back_data_migrations
                     - test_deploy
+
+  on_demand_growth_edition_release:
+      jobs:
+           - ready_to_build?:
+                type: approval
+                filters:
+                    branches:
+                        only: master
+           - checkout:
+                requires:
+                    - ready_to_build?
+           - prepare_growth_edition:
+                requires:
+                    - checkout
+           - test_deploy:
+                requires:
+                    - prepare_growth_edition
+           - release_growth_edition:
+                    requires:
+                        - test_deploy
 
 commands:
   set_gcloud_config_dev:
