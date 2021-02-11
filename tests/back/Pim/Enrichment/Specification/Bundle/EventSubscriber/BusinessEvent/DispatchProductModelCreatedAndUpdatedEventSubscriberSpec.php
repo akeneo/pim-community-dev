@@ -215,6 +215,21 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         Assert::assertCount(0, $messageBus->messages);
     }
 
+    function it_does_nothing_if_the_save_has_been_forced($security)
+    {
+        $messageBus = $this->getMessageBus();
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+
+        $productModel = new ProductModel();
+        $productModel->setCode('product_model_code');
+
+        $this->createAndDispatchProductModelEvents(new GenericEvent(
+            $productModel,
+            ['is_new' => false, 'force_save' => true]
+        ));
+        Assert::assertCount(0, $messageBus->messages);
+    }
+
     function it_logs_an_error_if_the_event_bus_transport_raise_an_exception($security, LoggerInterface $logger)
     {
         $messageBus = new class () implements MessageBusInterface
