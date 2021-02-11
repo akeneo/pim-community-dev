@@ -92,7 +92,13 @@ final class DispatchProductCreatedAndUpdatedEventSubscriber implements EventSubs
             foreach ($this->events as $event) {
                 $this->logger->info(
                     json_encode(
-                        $event->toLog(),
+                        [
+                            'type' => $event->getName(),
+                            'uuid' => $event->getUuid(),
+                            'author' => $event->getAuthor()->name(),
+                            'author_type' => $event->getAuthor()->type(),
+                            'timestamp' => $event->getTimestamp(),
+                        ],
                         JSON_THROW_ON_ERROR
                     )
                 );
