@@ -5,7 +5,8 @@
   "peerDependencies": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "babel-loader": "8.1.0"
+    "babel-loader": "8.1.0",
+    "eslint": "^7.11.0"
   },
   "dependencies": {
     "@akeneo-pim-community/legacy": "link:../legacy",
@@ -36,7 +37,7 @@
     "eject": "yarn prepare && react-scripts eject",
     "lib:build": "tsc -p ./lib.tsconfig.json",
     "translation:build": "cp ../public/js/translation/en_US.js ./src/translations.json",
-    "route:build": "cp ../public/js/routes.js ./src/routes.json && sed -i '' 's/fos.Router.setData(//g' ./src/routes.json && sed -i '' 's/);//g' ./src/routes.json",
+    "route:build": "cp ../public/js/routes.js ./src/routes.json && sed -i 's/fos.Router.setData(//g' ./src/routes.json && sed -i 's/);//g' ./src/routes.json",
     "dependencies:build": "yarn --cwd=../legacy run lib:build && yarn --cwd=../shared run lib:build && yarn --cwd=../akeneo-design-system run lib:build"
   },
   "eslintConfig": {

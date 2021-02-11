@@ -9,7 +9,10 @@
     "react": "^16.13.1"
   },
   "dependencies": {
-    "@akeneo-pim-community/legacy": "link:../legacy"
+    "@akeneo-pim-community/legacy": "link:../legacy",
+    "styled-components": "^5.1.1",
+    "@types/styled-components": "^5.1.2",
+    "akeneo-design-system": "link:../akeneo-design-system"
   },
   "devDependencies": {
     "@types/react": "^16.13.1",
