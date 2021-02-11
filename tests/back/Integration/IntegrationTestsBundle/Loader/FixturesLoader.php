@@ -171,7 +171,7 @@ class FixturesLoader implements FixturesLoaderInterface
             $this->dumpDatabase($dumpFile);
         }
 
-        $this->nativeElasticsearchClient->indices()->refresh(['index' => '_all']);
+        $this->nativeElasticsearchClient->indices()->refresh(['index' => $this->getIndexNames()]);
         $this->clearAclCache();
 
         $this->systemUserAuthenticator->createSystemUser();
@@ -445,7 +445,8 @@ class FixturesLoader implements FixturesLoaderInterface
 
     private function deleteAllDocumentsInElasticsearch(): void
     {
-        $this->nativeElasticsearchClient->indices()->refresh(['index' => '_all']);
+        $indexNames = $this->getIndexNames();
+        $this->nativeElasticsearchClient->indices()->refresh(['index' => $indexNames]);
 
         $this->nativeElasticsearchClient->deleteByQuery([
             'body' => [
@@ -453,8 +454,16 @@ class FixturesLoader implements FixturesLoaderInterface
                     'match_all' => new \stdClass()
                 ],
             ],
-            'index' => '_all',
+            'index' => $indexNames,
             'refresh' => true
         ]);
+    }
+
+    private function getIndexNames(): array
+    {
+        return array_map(
+            fn (Client $client) => $client->getIndexName(),
+            $this->clientRegistry->getClients()
+        );
     }
 }

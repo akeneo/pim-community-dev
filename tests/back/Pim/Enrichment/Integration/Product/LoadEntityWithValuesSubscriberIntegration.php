@@ -2,10 +2,13 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Test\Integration\TestCase;
+use PHPUnit\Framework\Assert;
 
 /**
  * Integration tests to verify a product is well loaded from database with its product values.
@@ -123,6 +126,31 @@ SQL;
         );
         $product = $this->findProductByIdentifier('product_invalid_multi_reference_data');
         $this->assertProductHasValues($expectedValues, $product);
+    }
+
+    public function test_it_does_not_load_duplicate_multiselect_options()
+    {
+        // save a product without validation to get duplicate options in database
+        $productWithDuplicateOptions = $this->get('pim_catalog.builder.product')->createProduct(
+            'product_with_duplicate_options'
+        );
+        $productWithDuplicateOptions->addValue(
+            OptionsValue::value('a_multi_select', ['optionA', 'OPTIONA', 'optionb', 'OptionB'])
+        );
+        $this->get('pim_catalog.saver.product')->save($productWithDuplicateOptions);
+        $rawValuesInDb = $this->get('database_connection')->executeQuery(
+            'SELECT JSON_EXTRACT(raw_values, "$.a_multi_select") from pim_catalog_product where identifier = :identifier',
+            ['identifier' => 'product_with_duplicate_options'],
+        )->fetchColumn();
+        Assert::assertEquals(
+            ['optionA', 'OPTIONA', 'optionb', 'OptionB'],
+            \json_decode($rawValuesInDb, true)['<all_channels>']['<all_locales>'] ?? null
+        );
+
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_duplicate_options');
+
+        Assert::assertSame(['optionA', 'optionB'], $product->getValue('a_multi_select')->getData());
     }
 
     /**

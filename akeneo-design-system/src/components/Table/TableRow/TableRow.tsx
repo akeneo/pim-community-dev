@@ -61,6 +61,10 @@ const CheckboxContainer = styled.td<{isVisible: boolean}>`
   background: none !important;
   opacity: ${({isVisible}) => (isVisible ? 1 : 0)};
   cursor: auto;
+
+  > div {
+    justify-content: center;
+  }
 `;
 
 const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(

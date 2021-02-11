@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder;
 
 use Akeneo\Pim\Enrichment\Component\Error\Documentation\DocumentationCollection;
-use Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\AttributeOptionDoesNotExist;
+use Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\AttributeOptionValidation;
 use Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AttributeOptionsExist;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\DuplicateOptions;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -15,11 +16,11 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class AttributeOptionDoesNotExistSpec extends ObjectBehavior
+class AttributeOptionValidationSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->beAnInstanceOf(AttributeOptionDoesNotExist::class);
+        $this->beAnInstanceOf(AttributeOptionValidation::class);
     }
 
     function it_is_a_documentation_builder()
@@ -37,6 +38,13 @@ class AttributeOptionDoesNotExistSpec extends ObjectBehavior
     function it_supports_the_error_attribute_options_do_not_exist(ConstraintViolationInterface $constraintViolation)
     {
         $constraintViolation->getCode()->willReturn(AttributeOptionsExist::ATTRIBUTE_OPTIONS_DO_NOT_EXIST);
+
+        $this->support($constraintViolation)->shouldReturn(true);
+    }
+
+    function it_supports_the_duplicate_attribute_options_error(ConstraintViolationInterface $constraintViolation)
+    {
+        $constraintViolation->getCode()->willReturn(DuplicateOptions::DUPLICATE_ATTRIBUTE_OPTIONS);
 
         $this->support($constraintViolation)->shouldReturn(true);
     }

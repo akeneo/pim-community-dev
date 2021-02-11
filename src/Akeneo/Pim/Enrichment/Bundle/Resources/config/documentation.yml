@@ -4,7 +4,7 @@ services:
         arguments:
             - !tagged_iterator pim_enrich.error.documentation_builder
 
-    Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\AttributeOptionDoesNotExist:
+    Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\AttributeOptionValidation:
         tags: [pim_enrich.error.documentation_builder]
 
     Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\DefaultAttributeValidation:

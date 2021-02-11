@@ -1,5 +1,5 @@
 import React from 'react';
-import {DeleteIllustration, Button, Modal, SectionTitle, Title} from 'akeneo-design-system';
+import {DeleteIllustration, Button, Modal} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 type ConfirmModalProps = {
@@ -16,8 +16,8 @@ const ConfirmDeleteModal = ({isOpen, description, onConfirm, onCancel}: ConfirmM
 
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={onCancel} illustration={<DeleteIllustration />}>
-      <SectionTitle color="brand">{translate('measurements.title.measurement')}</SectionTitle>
-      <Title>{translate('pim_common.confirm_deletion')}</Title>
+      <Modal.SectionTitle color="brand">{translate('measurements.title.measurement')}</Modal.SectionTitle>
+      <Modal.Title>{translate('pim_common.confirm_deletion')}</Modal.Title>
       {description}
       <Modal.BottomButtons>
         <Button level="tertiary" onClick={onCancel}>
