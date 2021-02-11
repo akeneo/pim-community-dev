@@ -12,6 +12,7 @@
 - PIM-9671: Do not process spell checking on attributes with data quality analysis disabled on group
 - PIM-9659: Asset Manager - Fix missing warning message when changing page via the breadcrumb with unsaved changes.
 - PIM-9676: Reference Entities - Fix missing warning message when changing page via the breadcrumb with unsaved changes.
+- PIM-9668: Asset attribute - Fix Text area + Rich text editor modes turn text attributes into infinite extendable fields when not using spaces
 
 ## Improvements
 
