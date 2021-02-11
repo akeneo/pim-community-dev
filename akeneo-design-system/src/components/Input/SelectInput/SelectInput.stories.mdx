@@ -1,14 +1,10 @@
+import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {SelectInput} from './SelectInput.tsx';
+import {SpaceContainer} from '../../../storybook/PreviewGallery.tsx';
+import {Locale} from '../../../components';
 
-<Meta
-  title="Components/SelectInput"
-  component={SelectInput}
-  argTypes={{
-    level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
-  }}
-  args={{level: 'primary', children: 'SelectInput text'}}
-/>
+<Meta title="Components/SelectInput" component={SelectInput} />
 
 # SelectInput
 
@@ -37,17 +33,24 @@ TODO
 <Canvas>
   <Story name="Level">
     {args => {
+      const [value, setValue] = useState(null);
       return (
-        <>
-          <SelectInput {...args} value="Value1" placeholder="Placeholder">
-            <SelectInput.Option value="value1">Value</SelectInput.Option>
-            <SelectInput.Option value="value2" selected>Value1</SelectInput.Option>
-            <SelectInput.Option value="value3">Value2</SelectInput.Option>
-            <SelectInput.Option>Value3</SelectInput.Option>
-            <SelectInput.Option>Value4</SelectInput.Option>
-            <SelectInput.Option>Value5</SelectInput.Option>
+        <SpaceContainer height={400}>
+          <SelectInput {...args} value={value} onChange={setValue} placeholder="Placeholder">
+            <SelectInput.Option value="en_US" title="English (United States)">
+              <Locale code="en_US" />
+            </SelectInput.Option>
+            <SelectInput.Option value="fr_FR" title="French (France)">
+              <Locale code="fr_FR" />
+            </SelectInput.Option>
+            <SelectInput.Option value="de_DE" title="German (Germany)">
+              <Locale code="de_DE" />
+            </SelectInput.Option>
+            <SelectInput.Option value="es_ES" title="Spanish (Spain)">
+              <Locale code="es_ES" />
+            </SelectInput.Option>
           </SelectInput>
-        </>
+        </SpaceContainer>
       );
     }}
   </Story>
