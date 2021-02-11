@@ -1,0 +1,15 @@
+parameters:
+    env(FLAG_TRIAL_EDITION_ENABLED): 'false'
+
+services:
+    akeneo.pim.automation.trial_edition.feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        arguments:
+            - '%env(bool:FLAG_TRIAL_EDITION_ENABLED)%'
+        public: true
+
+    Akeneo\Pim\TrialEdition\Infrastructure\ExternalJavascriptDependencies\ExternalDependenciesFeatureFlag:
+        arguments:
+            - '@akeneo.pim.automation.trial_edition.feature'
+            - '%kernel.environment%'
+        public: true
