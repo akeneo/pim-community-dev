@@ -69,22 +69,22 @@ describe('CreateUserForm', () => {
     renderDataGridWithProviders(1, onCancel, onSuccess, onError);
 
     const inputUsername = (await screen.findByLabelText(
-      'pim_user_management.entity.user.properties.username'
+      'pim_user_management.entity.user.properties.username pim_common.required_label'
     )) as HTMLInputElement;
     const inputPassword = (await screen.findByLabelText(
-      'pim_user_management.entity.user.properties.password'
+      'pim_user_management.entity.user.properties.password pim_common.required_label'
     )) as HTMLInputElement;
     const inputPasswordRepeat = (await screen.findByLabelText(
-      'pim_user_management.entity.user.properties.password_repeat'
+      'pim_user_management.entity.user.properties.password_repeat pim_common.required_label'
     )) as HTMLInputElement;
     const inputFirstName = (await screen.findByLabelText(
-      'pim_user_management.entity.user.properties.first_name'
+      'pim_user_management.entity.user.properties.first_name pim_common.required_label'
     )) as HTMLInputElement;
     const inputLastName = (await screen.findByLabelText(
-      'pim_user_management.entity.user.properties.last_name'
+      'pim_user_management.entity.user.properties.last_name pim_common.required_label'
     )) as HTMLInputElement;
     const inputEmail = (await screen.findByLabelText(
-      'pim_user_management.entity.user.properties.email'
+      'pim_user_management.entity.user.properties.email pim_common.required_label'
     )) as HTMLInputElement;
 
     await act(async () => {
@@ -119,22 +119,22 @@ describe('CreateUserForm', () => {
     renderDataGridWithProviders(1, onCancel, onSuccess, onError);
 
     const inputUsername = (await screen.findByLabelText(
-      'pim_user_management.entity.user.properties.username'
+      'pim_user_management.entity.user.properties.username pim_common.required_label'
     )) as HTMLInputElement;
     const inputPassword = (await screen.findByLabelText(
-      'pim_user_management.entity.user.properties.password'
+      'pim_user_management.entity.user.properties.password pim_common.required_label'
     )) as HTMLInputElement;
     const inputPasswordRepeat = (await screen.findByLabelText(
-      'pim_user_management.entity.user.properties.password_repeat'
+      'pim_user_management.entity.user.properties.password_repeat pim_common.required_label'
     )) as HTMLInputElement;
     const inputFirstName = (await screen.findByLabelText(
-      'pim_user_management.entity.user.properties.first_name'
+      'pim_user_management.entity.user.properties.first_name pim_common.required_label'
     )) as HTMLInputElement;
     const inputLastName = (await screen.findByLabelText(
-      'pim_user_management.entity.user.properties.last_name'
+      'pim_user_management.entity.user.properties.last_name pim_common.required_label'
     )) as HTMLInputElement;
     const inputEmail = (await screen.findByLabelText(
-      'pim_user_management.entity.user.properties.email'
+      'pim_user_management.entity.user.properties.email pim_common.required_label'
     )) as HTMLInputElement;
 
     await act(async () => {

@@ -21,7 +21,7 @@ type CreateUserFormProps = {
 };
 
 const CreateUserForm = ({userId, onCancel, onSuccess, onError}: CreateUserFormProps) => {
-  const {register, handleSubmit, errors} = useForm();
+  const {register, handleSubmit, errors, watch} = useForm();
   const router = useRouter();
   const translate = useTranslate();
   const [backendErrors, setBackendErrors] = React.useState<BackendErrors>({});
@@ -47,6 +47,15 @@ const CreateUserForm = ({userId, onCancel, onSuccess, onError}: CreateUserFormPr
         });
       }
     }
+  };
+
+  const allInputsAreFilled = (): boolean => {
+    const watchAllFields = watch();
+
+    return (
+      Object.keys(watchAllFields).length > 0 &&
+      Object.values(watchAllFields).reduce((result: boolean, value: any) => result && value !== '', true)
+    );
   };
 
   return (
@@ -79,7 +88,9 @@ const CreateUserForm = ({userId, onCancel, onSuccess, onError}: CreateUserFormPr
         <Button onClick={onCancel} level={'tertiary'}>
           {translate('pim_common.cancel')}
         </Button>
-        <Button type="submit">{translate('pim_common.confirm')}</Button>
+        <Button type="submit" disabled={!allInputsAreFilled()}>
+          {translate('pim_common.confirm')}
+        </Button>
       </Modal.BottomButtons>
     </FormContainer>
   );
