@@ -53,6 +53,10 @@ final class DispatchProductModelCreatedAndUpdatedEventSubscriber implements Even
 
     public function createAndDispatchProductModelEvents(GenericEvent $postSaveEvent): void
     {
+        if ($postSaveEvent->hasArgument('force_save') && true === $postSaveEvent->getArgument('force_save')) {
+            return;
+        }
+
         /** @var ProductModelInterface */
         $productModel = $postSaveEvent->getSubject();
         if (false === $productModel instanceof ProductModelInterface) {
