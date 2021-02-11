@@ -723,6 +723,23 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
+    csv_user_role_export:
+        connector: Akeneo CSV Connector
+        alias: csv_user_role_export
+        label: Demo CSV user role export
+        type: export
+        configuration:
+            delimiter: ;
+            enclosure: '"'
+            withHeader: true
+    xlsx_user_role_export:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_user_role_export
+        label: Demo XLSX user role export
+        type: export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
     csv_user_group_import:
         connector: Akeneo CSV Connector
         alias: csv_user_group_import
