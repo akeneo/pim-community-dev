@@ -1,4 +1,5 @@
 services:
+    # Export jobs
     pim_connector.job.csv_user_group_export:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
@@ -23,6 +24,31 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
 
+    pim_connector.job.csv_user_role_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'csv_user_role_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.csv_user_role_export.export'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.xlsx_user_role_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'xlsx_user_role_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.xlsx_user_role_export.export'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
+
+    # Import jobs
     pim_connector.job.csv_user_group_import:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
@@ -55,6 +81,7 @@ services:
         arguments:
             -
                 - 'csv_user_group_export'
+                - 'csv_user_role_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -63,6 +90,7 @@ services:
         arguments:
             -
                 - 'xlsx_user_group_export'
+                - 'xlsx_user_role_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -88,6 +116,7 @@ services:
         arguments:
             -
                 - 'csv_user_group_export'
+                - 'csv_user_role_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
@@ -96,6 +125,7 @@ services:
         arguments:
             -
                 - 'xlsx_user_group_export'
+                - 'xlsx_user_role_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
@@ -120,7 +150,9 @@ services:
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
         arguments:
             -   csv_user_group_export: pim-job-instance-csv-base-export
+                csv_user_role_export: pim-job-instance-csv-base-export
                 xlsx_user_group_export: pim-job-instance-xlsx-base-export
+                xlsx_user_role_export: pim-job-instance-xlsx-base-export
                 csv_user_group_import: pim-job-instance-csv-base-import
                 xlsx_user_group_import: pim-job-instance-xlsx-base-import
         tags:
