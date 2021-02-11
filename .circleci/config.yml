@@ -723,6 +723,36 @@ workflows:
                 requires:
                     - build_dev
 
+  on_demand:
+        jobs:
+          - ready_to_build?:
+                type: approval
+                filters:
+                    branches:
+                        only: master
+          - checkout_ce:
+                requires:
+                    - ready_to_build?
+          - build_dev:
+                is_ee_built: false
+                requires:
+                    - checkout_ce
+          - test_back_static_and_acceptance:
+                requires:
+                    - build_dev
+          - test_front_static_acceptance_and_integration:
+                requires:
+                    - build_dev
+          - test_back_phpunit:
+                requires:
+                    - build_dev
+          - test_back_behat_legacy:
+                requires:
+                    - build_dev
+          - test_back_data_migrations:
+                requires:
+                    - build_dev
+
 commands:
   set_gcloud_config_dev:
     description: "Authenticate on GCP services and set config and key to be used by other tools that need to authenticate."

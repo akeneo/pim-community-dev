@@ -1,8 +1,8 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
-import {ProgressBar} from './ProgressBar.tsx';
+import {ProgressBar} from './ProgressBar';
 
 <Meta
-  title="Components/ProgressBar"
+  title="Components/Progress bar"
   component={ProgressBar}
   argTypes={{
     percent: {control: {type: 'range', min: 0, max: 100, step: 1}},
@@ -15,7 +15,7 @@ import {ProgressBar} from './ProgressBar.tsx';
   }}
 />
 
-# ProgressBar
+# Progress bar
 
 ## Usage
 One of the most important rules in UI / UX design is visibility of system state. The goal behind this rule is pretty obvious: To minimize user stress, you need to provide them with feedback on what is going on with the app within a reasonable amount of time. Don't let users guess, tell them what's going on. And one of the most common forms of this type of feedback is a progress indicator.

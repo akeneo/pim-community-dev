@@ -68,6 +68,8 @@ export $(cat .env)
 
 echo "Use the database akeneo_pim_test..."
 echo "APP_DATABASE_NAME=akeneo_pim_test" >> .env.test.local
+echo "APP_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME=akeneo_pim_product_and_product_model_test" >> .env.test.local
+echo "APP_CONNECTION_ERROR_INDEX_NAME=akeneo_connectivity_connection_error_test" >> .env.test.local
 
 echo "Clean cache..."
 APP_ENV=test make cache
@@ -104,6 +106,8 @@ export $(cat .env)
 
 echo "Use the database akeneo_pim_test..."
 echo "APP_DATABASE_NAME=akeneo_pim_test" >> .env.test.local
+echo "APP_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME=akeneo_pim_product_and_product_model_test" >> .env.test.local
+echo "APP_CONNECTION_ERROR_INDEX_NAME=akeneo_connectivity_connection_error_test" >> .env.test.local
 
 echo "Clean cache..."
 APP_ENV=test make cache
