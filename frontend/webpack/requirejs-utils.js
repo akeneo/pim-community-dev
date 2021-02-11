@@ -21,7 +21,7 @@ const getFrontModules = (sourceDir, originalDir, bundle) => (dir, modules) => {
         } else {
             const filePath = (dir + file).substring(originalDir.length);
             const fileInfo = path.parse(filePath);
-            if (['.ts', '.tsx'].includes(fileInfo.ext)) {
+            if (['.ts', '.tsx'].includes(fileInfo.ext) && fileInfo.name.indexOf('.unit') === -1) {
                 modules[`${fileInfo.dir.substring(1)}/${fileInfo.name}`] =
                     `${sourceDir}/${originalDir.substring(2)}${fileInfo.dir}/${fileInfo.base.replace(fileInfo.ext, '')}`;
             }
