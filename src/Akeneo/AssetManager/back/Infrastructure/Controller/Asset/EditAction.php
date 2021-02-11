@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Controller\Asset;
 
+use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\EventAggregatorInterface as ComputeTransformationEventAggregatorInterface;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommandFactory;
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
@@ -60,6 +61,12 @@ class EditAction
     /** @var IndexAssetEventAggregator */
     private $indexAssetEventAggregator;
 
+    /**
+     * @todo pullup: remove null (and in rest of class)
+     * @var ComputeTransformationEventAggregatorInterface|null
+     */
+    private $computeTransformationEventAggregator;
+
     public function __construct(
         EditAssetCommandFactory $editAssetCommandFactory,
         EditAssetHandler $editAssetHandler,
@@ -67,7 +74,8 @@ class EditAction
         CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer,
-        EventAggregatorInterface $indexAssetEventAggregator
+        EventAggregatorInterface $indexAssetEventAggregator,
+        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator = null
     ) {
         $this->editAssetCommandFactory = $editAssetCommandFactory;
         $this->editAssetHandler = $editAssetHandler;
@@ -76,6 +84,7 @@ class EditAction
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
         $this->indexAssetEventAggregator = $indexAssetEventAggregator;
+        $this->computeTransformationEventAggregator = $computeTransformationEventAggregator;
     }
 
     public function __invoke(Request $request): Response
@@ -107,6 +116,9 @@ class EditAction
         }
 
         $this->indexAssetEventAggregator->flushEvents();
+        if (null !== $this->computeTransformationEventAggregator) {
+            $this->computeTransformationEventAggregator->flushEvents();
+        }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }

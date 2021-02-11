@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Writer\Database;
 
+use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\EventAggregatorInterface as ComputeTransformationEventAggregatorInterface;
 use Akeneo\AssetManager\Application\Asset\CreateAndEditAsset\CreateAndEditAssetCommand;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
@@ -28,16 +29,20 @@ final class AssetWriter implements ItemWriterInterface, StepExecutionAwareInterf
     private CreateAssetHandler $createAssetHandler;
     private EditAssetHandler $editAssetHandler;
     private EventAggregatorInterface $eventAggregator;
+    /** @pull-up master: remove null here and in the rest of the file */
+    private ?ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator;
     private ?StepExecution $stepExecution = null;
 
     public function __construct(
         CreateAssetHandler $createAssetHandler,
         EditAssetHandler $editAssetHandler,
-        EventAggregatorInterface $eventAggregator
+        EventAggregatorInterface $eventAggregator,
+        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator = null
     ) {
         $this->createAssetHandler = $createAssetHandler;
         $this->editAssetHandler = $editAssetHandler;
         $this->eventAggregator = $eventAggregator;
+        $this->computeTransformationEventAggregator = $computeTransformationEventAggregator;
     }
 
     /**
@@ -80,5 +85,8 @@ final class AssetWriter implements ItemWriterInterface, StepExecutionAwareInterf
     public function flush(): void
     {
         $this->eventAggregator->flushEvents();
+        if (null !== $this->computeTransformationEventAggregator) {
+            $this->computeTransformationEventAggregator->flushEvents();
+        }
     }
 }
