@@ -64,6 +64,7 @@ const unitConfig = {
       lines: 100,
     },
   },
+  setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
   setupFiles: [`${__dirname}/enzyme.js`, `${__dirname}/mocks.js`, `${__dirname}/fetchMock.ts`],
 };
 
