@@ -13,21 +13,18 @@
 
     Represents the configuration of a Connection to be able to send API Events through the Events API.
 
-    The configuration includes a destination URL and a "secret" (to verify the requests authenticity).
+    The subscription includes a destination URL and a "secret" (to verify the requests authenticity).
 
 * **PIM Event**
 
     Lifecycle event of the PIM entities.
 
-    Like `product.created` for the creation of a new Product.
 
 * **API Event**
 
-    Event sent by the Events API to an Event Subscription while respecting the Connection permissions.
+    Event sent by the Events API to an Event Subscription.
 
-    It contains the PIM Event informations as well as the full event data following the Events API specifications.
-
-    For example, for a `product.created` event, it will contains the whole Product data with the permissions of the Connection applied to it.
+    > For example, for a `product.created` event, it will contains the whole Product data with the permissions of the Connection applied to it.
 
 * **API Event Type**
 
@@ -35,13 +32,9 @@
 
     For example `product.updated`, `product.removed`, `product_model.created`.
 
-* **Events API request**
+* **Events API Request**
 
     Request sent to an Event Subscription URL, it contains a collection of API Events as well as the required headers to valid the Request authenticity (signature, timestamp).
-
-* **Bulk**
-
-    Group of related object, like the **PIM Events Bulk**.
 
 * **Queue**
 
