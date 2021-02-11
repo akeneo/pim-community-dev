@@ -1,0 +1,54 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {SelectInput} from './SelectInput.tsx';
+
+<Meta
+  title="Components/SelectInput"
+  component={SelectInput}
+  argTypes={{
+    level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
+  }}
+  args={{level: 'primary', children: 'SelectInput text'}}
+/>
+
+# SelectInput
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <SelectInput {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <SelectInput {...args} value="Value1" placeholder="Placeholder">
+            <SelectInput.Option value="value1">Value</SelectInput.Option>
+            <SelectInput.Option value="value2" selected>Value1</SelectInput.Option>
+            <SelectInput.Option value="value3">Value2</SelectInput.Option>
+            <SelectInput.Option>Value3</SelectInput.Option>
+            <SelectInput.Option>Value4</SelectInput.Option>
+            <SelectInput.Option>Value5</SelectInput.Option>
+          </SelectInput>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
