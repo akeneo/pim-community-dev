@@ -28,6 +28,7 @@ const InputCell = styled(Table.Cell)`
 `;
 const ContextCell = styled(Table.Cell)`
   width: 380px;
+  overflow: visible;
 `;
 const RemoveCell = styled(Table.Cell)`
   width: 84px;
@@ -61,12 +62,12 @@ const UpdaterRow = ({updater, uiLocale, readOnly, errors, onChange, onRemove, ch
   };
 
   const handleChannelChange = (newChannel: ChannelCode) => {
-    const locale = getLocaleFromChannel(channels, newChannel, updater.locale);
+    const locale = null === updater.locale ? null : getLocaleFromChannel(channels, newChannel, updater.locale);
 
     onChange({...updater, channel: newChannel, locale});
   };
 
-  const locales = getLocalesFromChannel(updater.channel);
+  const locales = getLocalesFromChannel(channels, updater.channel);
   const id = useId('updater_row_input_');
 
   return (

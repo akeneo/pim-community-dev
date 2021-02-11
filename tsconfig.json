@@ -4,5 +4,6 @@
     "baseUrl": "./public/bundles",
     "resolveJsonModule": true
   },
+  "exclude": ["**/*.unit.*"],
   "include": ["public/bundles", "vendor/akeneo/pim-community-dev/frontend/types.d.ts", "frontend/types.d.ts"]
 }

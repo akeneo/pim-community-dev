@@ -14,23 +14,20 @@ const StyledPimView = styled.div<{rendered: boolean}>`
   transition: opacity 0.5s linear;
 `;
 
-export const PimView: React.FunctionComponent<Props> = ({
-  viewName,
-  className,
-}) => {
+export const PimView: React.FunctionComponent<Props> = ({viewName, className}) => {
   const el = useRef<HTMLDivElement>(null);
   const [view, setView] = useState<View | null>(null);
 
   const {viewBuilder} = useApplicationContext();
   useEffect(() => {
     if (!viewBuilder) {
-      throw new Error(
-        '[ApplicationContext]: ViewBuilder has not been properly initiated'
-      );
+      throw new Error('[ApplicationContext]: ViewBuilder has not been properly initiated');
     }
     viewBuilder.build(viewName).then((view: View) => {
-      view.setElement(el.current).render();
-      setView(view);
+      if (null !== el.current) {
+        view.setElement(el.current).render();
+        setView(view);
+      }
     });
   }, [viewBuilder, viewName]);
 
@@ -41,7 +38,5 @@ export const PimView: React.FunctionComponent<Props> = ({
     [view]
   );
 
-  return (
-    <StyledPimView className={className} ref={el} rendered={null !== view} />
-  );
+  return <StyledPimView className={className} ref={el} rendered={null !== view} />;
 };

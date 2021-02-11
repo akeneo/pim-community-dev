@@ -1,34 +1,3 @@
-/**
- * Features:
- * - Steps (edit, confirm)
- * - Validation (asking for back to validate)
- * - Attribute/locale/channel/action selection
- * - Attribute/locale/channel/action removable
- * - Update model
- *
- * Workflow:
- * - Add attribute
- *   - change context if needed (channel and locales cannot be empty if value per locale or value per channel)
- *   - change the action type if needed (same here)
- *   - change value (or leave it blank)
- *   - remove (or not) a line
- *   - add (or not) a line
- * - Next step
- * - Validation
- * - Fix error if needed
- * - Confirm step (everything is read only)
- * - Close modal
- * - Notification
- *
- * Requirements:
- * - Grid context (for default locale/channel)
- * - Family (for attribute list)
- * - List of locales and channel
- *
- * Questions:
- * - Are we sure error will be properly mapped to frontend collection
- */
-
 import React, {useState} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {Button, getColor, Modal, ProgressIndicator, SectionTitle, useProgress} from 'akeneo-design-system';
@@ -37,7 +6,7 @@ import {Context} from 'akeneoassetmanager/domain/model/context';
 import styled from 'styled-components';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {useUpdaterCollection} from './hooks/useUpdaterCollection';
-import {AddAttributeDropdown} from './components/AttributeDropdown';
+import {AddAttributeDropdown} from './components/AddAttributeDropdown';
 import {EmptyUpdaterCollection} from './components/EmptyUpdaterCollection';
 import {UpdaterCollection} from './components/UpdaterCollection';
 import Channel from 'akeneoassetmanager/domain/model/channel';
@@ -98,7 +67,7 @@ const MassEditModal = ({
 
   const handleConfirm = () => {
     onConfirm(updaterCollection);
-  }
+  };
 
   const handleEscape = () => {
     if (updaterCollection.length > 0 && !confirm(translate('pim_ui.flash.unsaved_changes'))) {
@@ -106,7 +75,7 @@ const MassEditModal = ({
     }
 
     onCancel();
-  }
+  };
 
   const handleMoveToConfirmStep = async () => {
     setErrors([]);
