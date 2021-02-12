@@ -85,7 +85,7 @@ define([
       return this.templateOperator({
         __: __,
         field: this.getField(),
-        isEditable: this.isEditable(),
+        isEditable: this.isEditable() && this.getValue() !== undefined && this.getValue().length > 0,
         operator: this.getOperator(),
         operatorChoices: this.config.operators,
         shortname: this.shortname,
@@ -164,6 +164,8 @@ define([
           locales: this.getParentForm().getFilters().structure.locales,
         },
       });
+
+      this.render();
     },
   });
 });
