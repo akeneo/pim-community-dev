@@ -3,7 +3,7 @@ import {FormContext, useForm, useFormContext} from 'react-hook-form';
 import {useHistory, useParams} from 'react-router';
 import styled from 'styled-components';
 import defaultImageUrl from '../../common/assets/illustrations/NewAPI.svg';
-import {ApplyButton, PageContent, PageHeader, Section} from '../../common/components';
+import {ApplyButton, PageContent, PageHeader} from '../../common/components';
 import {Loading} from '../../common/components/Loading';
 import {PimView} from '../../infrastructure/pim-view/PimView';
 import {useMediaUrlGenerator} from '../../settings/use-media-url-generator';
@@ -15,7 +15,7 @@ import {EventSubscriptionHelper} from '../components/EventSubscriptionHelper';
 import {useUpdateWebhook} from '../hooks/api/use-update-webhook';
 import {useFetchEventSubscriptionFormData} from '../hooks/api/use-fetch-event-subscription-form-data';
 import {Webhook} from '../model/Webhook';
-import {Breadcrumb} from 'akeneo-design-system';
+import {Breadcrumb, SectionTitle} from 'akeneo-design-system';
 import {useFetchConnection} from '../hooks/api/use-fetch-connection';
 
 export type FormInput = {
@@ -97,7 +97,11 @@ export const EditConnectionWebhook: FC = () => {
 
                 <PageContent>
                     <Layout>
-                        <Section title={<Translate id='akeneo_connectivity.connection.webhook.event_subscription' />} />
+                        <SectionTitle>
+                            <SectionTitle.Title>
+                                <Translate id='akeneo_connectivity.connection.webhook.event_subscription' />
+                            </SectionTitle.Title>
+                        </SectionTitle>
                         <EventSubscriptionHelper />
                         <EditForm webhook={eventSubscription} activeEventSubscriptionsLimit={eventSubscriptionsLimit} />
                     </Layout>

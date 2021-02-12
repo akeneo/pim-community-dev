@@ -1,8 +1,8 @@
-import {Helper} from 'akeneo-design-system';
+import {Helper, SectionTitle} from 'akeneo-design-system';
 import {useFormikContext} from 'formik';
 import React from 'react';
 import styled from 'styled-components';
-import {Checkbox, FormGroup, FormInput, Section} from '../../common';
+import {Checkbox, FormGroup, FormInput} from '../../common';
 import {Connection} from '../../model/connection';
 import {FlowType} from '../../model/flow-type.enum';
 import {Translate} from '../../shared/translate';
@@ -31,7 +31,11 @@ export const ConnectionEditForm = ({connection}: Props) => {
 
     return (
         <>
-            <Section title={<Translate id='akeneo_connectivity.connection.edit_connection.subtitle' />} />
+            <SectionTitle>
+                <SectionTitle.Title>
+                    <Translate id='akeneo_connectivity.connection.edit_connection.subtitle' />
+                </SectionTitle.Title>
+            </SectionTitle>
 
             <br />
 
