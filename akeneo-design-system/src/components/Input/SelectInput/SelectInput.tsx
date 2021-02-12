@@ -10,15 +10,19 @@
  */
 
 /**
- * Au click on ouvre la dropdown
- * Je clique sur un element on ferme en changeant la value du select
- * Je click en dehors ça ferme le dropdown
- * Je fait joue joue avec mon keyboard ça change d'item selection
+ * Au click on ouvre la dropdown DONE
+ * Je clique sur un element on ferme en changeant la value du select DONE
+ * Je click en dehors ça ferme le dropdown DONE
+ * Je fait joue joue avec mon keyboard ça change d'item selection DONE
  * on affiche la croix uniquement au hover
  * Lorsqu'on click sur la croix on clear la value
- * Lorsque je recherche uniquement les matchs s'affichents
- * On peut chercher par label et par code
+ * Lorsque je recherche uniquement les matchs s'affichents DONE
+ * On peut chercher par label et par code DONE
  * Si pas de result qu'affiche t'on
+ *
+ * position up/down
+ * check duplicates on options
+ * see if we should allow no values
  */
 
 import React, {ReactNode, useState, useRef, isValidElement, ReactElement} from 'react';
@@ -100,7 +104,6 @@ const Overlay = styled.div<
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.3);
   padding: 0 0 10px 0;
   position: absolute;
-  // opacity: ${({visible}) => (visible ? 1 : 0)}; //TODO add visibility back
   transition: opacity 0.15s ease-in-out;
   z-index: 2;
   left: 0;
@@ -130,7 +133,7 @@ const OptionCollection = styled.div`
 `;
 
 type SelectInputProps = Override<
-  Override<React.InputHTMLAttributes<HTMLDivElement>, InputProps<string>>,
+  Override<React.InputHTMLAttributes<HTMLDivElement>, InputProps<string | null>>,
   {
     /**
      * TODO.
@@ -141,38 +144,35 @@ type SelectInputProps = Override<
   }
 >;
 
-const getChildValue = (child: ReactElement) =>
-  undefined !== child.props.value ? child.props.value : child.props.children;
-
 const SelectInput = ({placeholder, value, children, onChange, readOnly, ...rest}: SelectInputProps) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [dropdownIsOpen, openOverlay, closeOverlay] = useBooleanState();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const filteredChildren = React.Children.toArray(children).filter((child): child is ReactElement => {
+  const validChildren = React.Children.toArray(children).filter((child): child is ReactElement => {
     if (!isValidElement(child)) return false;
 
-    if (undefined === child.props.value && typeof child.props.children !== 'string') {
-      throw new Error('An option that is not a string, should have a defined value');
-    }
+    return true;
+  });
 
-    const label = typeof child.props.children === 'string' ? child.props.children : '';
+  const filteredChildren = validChildren.filter(child => {
+    const content = typeof child.props.children === 'string' ? child.props.children : '';
     const title = child.props.title ?? '';
-    const optionValue = getChildValue(child) + label + title;
+    const optionValue = value + content + title;
 
     return -1 !== optionValue.toLowerCase().indexOf(searchValue.toLowerCase());
   });
 
   const valueOption =
-    filteredChildren.find(child => {
-      const childrenValue = getChildValue(child);
+    validChildren.find(child => {
+      const childrenValue = child.props.value;
 
       return value === childrenValue;
     }) ?? value;
 
   const handleEnter = () => {
     if (filteredChildren.length > 0 && onChange) {
-      const value = getChildValue(filteredChildren[0]);
+      const value = filteredChildren[0].props.value;
 
       onChange(value);
       handleBlur();
@@ -199,6 +199,7 @@ const SelectInput = ({placeholder, value, children, onChange, readOnly, ...rest}
   };
 
   useShortcut(Key.Enter, handleEnter, inputRef);
+  useShortcut(Key.Escape, handleBlur, inputRef);
 
   return (
     <SelectInputContainer {...rest}>
@@ -211,6 +212,7 @@ const SelectInput = ({placeholder, value, children, onChange, readOnly, ...rest}
           placeholder={null === value ? placeholder : ''}
           onChange={handleSearch}
           onFocus={handleFocus}
+          data-testid="select_input"
         />
       </InputContainer>
       <OverlayContainer>
@@ -223,10 +225,12 @@ const SelectInput = ({placeholder, value, children, onChange, readOnly, ...rest}
                   <span>Empty result</span>
                 ) : (
                   filteredChildren.map(child => {
-                    const value = undefined !== child.props.value ? child.props.value : String(child.props.children);
+                    const value = child.props.value;
 
                     return (
-                      <OptionContainer onClick={handleOptionClick(value)}>{React.cloneElement(child)}</OptionContainer>
+                      <OptionContainer key={value} onClick={handleOptionClick(value)}>
+                        {React.cloneElement(child)}
+                      </OptionContainer>
                     );
                   })
                 )}
@@ -239,7 +243,7 @@ const SelectInput = ({placeholder, value, children, onChange, readOnly, ...rest}
   );
 };
 
-const Option = styled.span``;
+const Option = styled.span<{value: string}>``;
 
 SelectInput.Option = Option;
 
