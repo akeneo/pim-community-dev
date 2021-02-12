@@ -35,22 +35,6 @@ class ConnectivityContext implements Context, KernelAwareContext
     }
 
     /**
-     * @BeforeScenario @purge-messenger
-     */
-    public function purgeMessengerEvents()
-    {
-        while (true) {
-            $envelopes = $this->transport->get();
-            if (empty($envelopes)) {
-                break;
-            }
-            foreach ($envelopes as $envelope) {
-                $this->transport->ack($envelope);
-            }
-        }
-    }
-
-    /**
      * @Given /^(\d+) event(?:s|) of type "([^"]*)" should have been raised$/
      */
     public function eventsOfTypeShouldHaveBeenRaised(int $expectedCount, string $type): void

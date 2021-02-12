@@ -5,7 +5,6 @@ Feature: Create product and save a new product value
   I need to be able to create a product, add attributes and save
 
   @jira https://akeneo.atlassian.net/browse/PIM-5666
-  @purge-messenger
   Scenario: Successfully create a product, fill in product values with 0 and save
     Given a "footwear" catalog configuration
     And the following attributes:

@@ -22,6 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -32,68 +33,28 @@ use Symfony\Component\Process\Process;
  */
 class FixturesLoader implements FixturesLoaderInterface
 {
-    /** @var KernelInterface */
-    private $kernel;
-
-    /** @var DatabaseSchemaHandler */
-    private $databaseSchemaHandler;
-
-    /** @var SystemUserAuthenticator */
-    private $systemUserAuthenticator;
-
-    /** @var Application */
-    private $cli;
-
-    /** @var ReferenceDataLoader */
-    private $referenceDataLoader;
-
-    /** @var Filesystem */
-    private $archivistFilesystem;
-
-    /** @var DoctrineJobRepository */
-    private $doctrineJobRepository;
-
-    /** @var FixtureJobLoader */
-    private $fixtureJobLoader;
-
-    /** @var AclManager */
-    private $aclManager;
-
-    /** @var ProductIndexerInterface */
-    private $productIndexer;
-
-    /** @var ProductModelIndexerInterface */
-    private $productModelIndexer;
-
-    /** @var ClientRegistry */
-    private $clientRegistry;
-
-    /** @var Client */
-    private $esClient;
-
-    /** @var Connection */
-    private $dbConnection;
-
-    /** @var string */
-    private $databaseHost;
-
-    /** @var string */
-    private $databaseName;
-
-    /** @var string */
-    private $databaseUser;
-
-    /** @var string */
-    private $databasePassword;
-
-    /** @var string */
-    private $sqlDumpDirectory;
-
-    /** @var \Elasticsearch\Client */
-    private $nativeElasticsearchClient;
-
-    /** @var MeasurementInstaller */
-    private $measurementInstaller;
+    private KernelInterface $kernel;
+    private DatabaseSchemaHandler $databaseSchemaHandler;
+    private SystemUserAuthenticator $systemUserAuthenticator;
+    private Application $cli;
+    private ReferenceDataLoader $referenceDataLoader;
+    private Filesystem $archivistFilesystem;
+    private DoctrineJobRepository $doctrineJobRepository;
+    private FixtureJobLoader $fixtureJobLoader;
+    private AclManager $aclManager;
+    private ProductIndexerInterface $productIndexer;
+    private ProductModelIndexerInterface $productModelIndexer;
+    private ClientRegistry $clientRegistry;
+    private Client $esClient;
+    private Connection $dbConnection;
+    private string $databaseHost;
+    private string $databaseName;
+    private string $databaseUser;
+    private string $databasePassword;
+    private string $sqlDumpDirectory;
+    private \Elasticsearch\Client $nativeElasticsearchClient;
+    private MeasurementInstaller $measurementInstaller;
+    private TransportInterface $transport;
 
     public function __construct(
         KernelInterface $kernel,
@@ -110,6 +71,7 @@ class FixturesLoader implements FixturesLoaderInterface
         Client $esClient,
         Connection $dbConnection,
         MeasurementInstaller $measurementInstaller,
+        TransportInterface $transport,
         string $databaseHost,
         string $databaseName,
         string $databaseUser,
@@ -143,6 +105,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $clientBuilder->setHosts([$elasticsearchHost]);
         $this->nativeElasticsearchClient = $clientBuilder->build();
         $this->measurementInstaller = $measurementInstaller;
+        $this->transport = $transport;
     }
 
     public function __destruct()
@@ -169,6 +132,7 @@ class FixturesLoader implements FixturesLoaderInterface
         } else {
             $this->loadData($configuration);
             $this->dumpDatabase($dumpFile);
+            $this->purgeMessengerEvents();
         }
 
         $this->nativeElasticsearchClient->indices()->refresh(['index' => '_all']);
@@ -176,6 +140,19 @@ class FixturesLoader implements FixturesLoaderInterface
 
         $this->systemUserAuthenticator->createSystemUser();
 
+    }
+
+    protected function purgeMessengerEvents()
+    {
+        while (true) {
+            $envelopes = $this->transport->get();
+            if (empty($envelopes)) {
+                break;
+            }
+            foreach ($envelopes as $envelope) {
+                $this->transport->ack($envelope);
+            }
+        }
     }
 
     protected function loadData(Configuration $configuration): void
