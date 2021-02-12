@@ -767,8 +767,8 @@ jobs:
           - run:
               name: Get last good CE build revision
               command: |
-                  docker-compose run --rm -u www-data:www-data php bash -c 'cd growth_edition/last_good_ce && composer install'
-                  CE_COMMIT_HASH=$(docker-compose run --rm -u www-data:www-data php php growth_edition/last_good_ce/get_last_good_ce_revision.php)
+                  docker run --rm -v $PWD/growth_edition/last_good_ce:/app composer composer install
+                  CE_COMMIT_HASH=$(docker run --rm -v $PWD/growth_edition/last_good_ce:/app composer php get_last_good_ce_revision.php)
                   IMAGE_TAG=$(echo growth-$CE_COMMIT_HASH | cut -b 1-40)
                   GROWTH_RELEASE_NAME=growth-v$(date +%Y%m%d%H%M%S)
 
