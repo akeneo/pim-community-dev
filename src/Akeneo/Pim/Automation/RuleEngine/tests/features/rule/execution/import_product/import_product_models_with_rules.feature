@@ -55,7 +55,7 @@ Feature: Import product models with rules
             scope: ecommerce
       """
 
-  @integration-back
+  @integration-back @purge-messenger
   Scenario: Apply rules on product models imported in CSV
     Given the following CSV file to import:
       """
@@ -77,6 +77,7 @@ Feature: Import product models with rules
     And the en_US ecommerce description of "black_bag" should be "A useless description"
     And the en_US ecommerce description of "red_bag" should be "The original description"
     And the en_US ecommerce description of "white_bag" should be "A useless description"
+    And 6 events of type "product_model.updated" should have been raised
 
   @integration-back
   Scenario: Apply rules on product models imported in XLSX
