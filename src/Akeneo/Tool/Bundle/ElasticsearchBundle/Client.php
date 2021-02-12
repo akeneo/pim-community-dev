@@ -80,7 +80,7 @@ class Client
     {
         $params = [
             'index' => $this->indexName,
-            'id' => $this->idPrefix.$id,
+            'id' => $this->idPrefix . $id,
             'body' => $body,
         ];
 
@@ -185,7 +185,7 @@ class Client
     {
         $params = [
             'index' => $this->indexName,
-            'id' => $this->idPrefix.$id,
+            'id' => $this->idPrefix . $id,
         ];
 
         return $this->client->get($params);
@@ -204,6 +204,33 @@ class Client
         ];
 
         return $this->client->search($params);
+    }
+
+    /**
+     * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/search_operations.html#_scrolling}
+     */
+    public function scroll(array $body): \Generator
+    {
+        $scroll = '30s';
+
+        $params = [
+            'scroll' => $scroll,
+            'size' => 2,
+            'index' => $this->indexName,
+            'body' => $body
+        ];
+
+        $response = $this->client->search($params);
+        while (isset($response['hits']['hits']) && count($response['hits']['hits']) > 0) {
+            yield $response;
+
+            $response = $this->client->scroll([
+                'body' => [
+                    'scroll_id' => $response['_scroll_id'],
+                    'scroll'    => $scroll
+                ]
+            ]);
+        }
     }
 
     /**
@@ -245,7 +272,7 @@ class Client
     {
         $params = [
             'index' => $this->indexName,
-            'id' => $this->idPrefix.$id,
+            'id' => $this->idPrefix . $id,
         ];
 
         return $this->client->delete($params);
@@ -264,7 +291,7 @@ class Client
             $params['body'][] = [
                 'delete' => [
                     '_index' => $this->indexName,
-                    '_id' => $this->idPrefix.$identifier,
+                    '_id' => $this->idPrefix . $identifier,
                 ],
             ];
         }
