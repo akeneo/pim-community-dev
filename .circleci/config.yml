@@ -570,15 +570,18 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
-                name: Duplicate PROD environment and Upgrade
+                name: Duplicate PROD environment
                 command: |
                     ssh-keyscan github.com >> ~/.ssh/known_hosts
                     LIST_SOURCE_PFID=( srnt-nature-et-decouvertes srnt-invivo )
                     RANDOM_SOURCE_PFID=$(( $RANDOM % 2 ))
                     SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
-                    SOURCE_PED_TAG=$(cd /root/project; git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt; head -n 1 /tmp/pim-tags.txt )
                     INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40)
-                    ENV_NAME=dev SOURCE_PFID=${SOURCE_PFID} SOURCE_PED_TAG=${SOURCE_PED_TAG} INSTANCE_NAME=${INSTANCE_NAME} PIM_CONTEXT=deployment make test_upgrade_from_serenity_customer_db
+                    INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=${CIRCLE_SHA1} INSTANCE_NAME_PREFIX=pimci-duplic ENV_NAME=dev SOURCE_PFID=${SOURCE_PFID} PIM_CONTEXT=deployment  make clone_serenity
+          - run:
+                name: Upgrade the duplicate environment
+                command: |
+                    INSTANCE_NAME_PREFIX=pimci-duplic IMAGE_TAG=${CIRCLE_SHA1} INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40) PIM_CONTEXT=deployment  make create-ci-release-files get_mysql_parameters_disk deploy
           - run:
               name: Prepare infrastructure artifacts
               command: INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40) PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
@@ -807,7 +810,6 @@ jobs:
                   echo export TYPE="grth" >> persisted_env_vars
                   echo export PRODUCT_REFERENCE_TYPE="growth_edition_instance" >> persisted_env_vars
                   echo export PRODUCT_REFERENCE_CODE="growth_edition_sandbox" >> persisted_env_vars
-
           - persist_to_workspace:
               root: ~/
               paths:
@@ -987,6 +989,24 @@ workflows:
       jobs:
           - checkout
           - delete_pr_environments_hourly:
+                requires:
+                    - checkout
+
+  nightly-beta:
+      triggers:
+          - schedule:
+                cron: "0 4 * * *"
+                filters:
+                    branches:
+                        only:
+                            - master
+
+      jobs:
+          - checkout
+          - build_prod:
+                requires:
+                    - checkout
+          - test_upgrade_from_serenity_customer_db:
                 requires:
                     - checkout
 

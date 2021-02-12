@@ -11,6 +11,7 @@
           "mysql_disk_size": "${MYSQL_DISK_SIZE}",
           "mysql_disk_description": "${MYSQL_DISK_DESCRIPTION}",
           "mysql_disk_name": "${MYSQL_DISK_NAME}",
+          "mysql_source_snapshot": "${MYSQL_SOURCE_SNAPSHOT}",
           "papo_project_code": "NOT_ON_PAPO_${PFID}",
           "product_reference_code": "${PRODUCT_REFERENCE_CODE}",
           "product_reference_type": "${PRODUCT_REFERENCE_TYPE}",
