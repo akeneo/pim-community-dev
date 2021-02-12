@@ -13,6 +13,9 @@ const useShortcut = <NodeType extends HTMLElement>(
   callback: (args?: any) => unknown,
   externalRef: Ref<NodeType> = null
 ): Ref<NodeType> => {
+  const internalRef = useRef<NodeType>(null);
+  const ref = null === externalRef ? internalRef : externalRef;
+
   const memoizedCallback = useCallback(
     (event: KeyboardEvent) => {
       if (key === event.key) {
@@ -23,11 +26,8 @@ const useShortcut = <NodeType extends HTMLElement>(
 
       return false;
     },
-    [key, callback]
+    [key, callback, ref]
   );
-
-  const internalRef = useRef<NodeType>(null);
-  const ref = null === externalRef ? internalRef : externalRef;
 
   useEffect(() => {
     if (typeof ref !== 'function' && null !== ref.current) {
