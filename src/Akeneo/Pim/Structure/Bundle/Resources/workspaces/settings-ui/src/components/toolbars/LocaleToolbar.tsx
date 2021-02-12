@@ -1,4 +1,4 @@
-import React, {FC, useCallback} from 'react';
+import React, {FC} from 'react';
 import {ArrowDownIcon, Button, Checkbox, Dropdown, IconButton, Toolbar, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {AddWordsModal} from '../modals/AddWordsModal';
@@ -15,13 +15,9 @@ const LocaleToolbar: FC<LocaleToolbarProps> = ({getDictionaryTotalWords}) => {
   const [isModalOpen, openModal, closeModal] = useBooleanState();
   const {selectionState, selectedCount, onSelectAllChange, selectedLocales} = useLocaleSelection();
 
-  const isAddWordsButtonEnabled = useCallback(() => {
-    const enabledLocales = selectedLocales.filter(
-      (localeCode: string) => getDictionaryTotalWords(localeCode) !== undefined
-    );
-
-    return enabledLocales.length > 0;
-  }, [selectedLocales, getDictionaryTotalWords]);
+  const selectedSupportedLocales = selectedLocales.filter(
+    (localeCode: string) => getDictionaryTotalWords(localeCode) !== undefined
+  );
 
   return (
     <Container isVisible={!!selectionState}>
@@ -67,12 +63,12 @@ const LocaleToolbar: FC<LocaleToolbarProps> = ({getDictionaryTotalWords}) => {
         {translate('pimee_enrich.entity.locale.grid.items_selected', {count: selectedCount}, selectedCount)}
       </Toolbar.LabelContainer>
       <Toolbar.ActionsContainer>
-        <Button level="secondary" onClick={openModal} disabled={!isAddWordsButtonEnabled()}>
+        <Button level="secondary" onClick={openModal} disabled={selectedSupportedLocales.length === 0}>
           {translate('pimee_enrich.entity.locale.grid.add_words')}
         </Button>
       </Toolbar.ActionsContainer>
 
-      {isModalOpen && <AddWordsModal localesCount={selectedCount} closeModal={closeModal} />}
+      {isModalOpen && <AddWordsModal localesCount={selectedSupportedLocales.length} closeModal={closeModal} />}
     </Container>
   );
 };
