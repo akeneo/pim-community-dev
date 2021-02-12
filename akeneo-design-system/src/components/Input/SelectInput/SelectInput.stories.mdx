@@ -21,8 +21,22 @@ TODO
 <Canvas>
   <Story name="Standard">
     {args => {
-      const [value, setValue] = useState(args.value);
-      return <SelectInput {...args} value={value} onChange={setValue}/>;
+      const [value, setValue] = useState('en_US');
+      return (
+        <SpaceContainer height={150}>
+          <SelectInput {...args} value={value} onChange={setValue}>
+            <SelectInput.Option value="en_US" title="English (United States)">
+              <Locale code="en_US" languageLabel="English" />
+            </SelectInput.Option>
+            <SelectInput.Option value="fr_FR" title="French (France)">
+              <Locale code="fr_FR" languageLabel="French" />
+            </SelectInput.Option>
+            <SelectInput.Option value="de_DE" title="German (Germany)">
+              <Locale code="de_DE" languageLabel="German" />
+            </SelectInput.Option>
+          </SelectInput>
+        </SpaceContainer>
+      );
     }}
   </Story>
 </Canvas>
@@ -30,38 +44,77 @@ TODO
 <ArgsTable story="Standard" />
 
 ## Variation on readOnly
+
 <Canvas>
   <Story name="readOnly">
     {args => {
-      const [value, setValue] = useState(null);
+      const [value, setValue] = useState('en_US');
       return (
-        <SelectInput {...args} readOnly={true} value={value} onChange={setValue} placeholder="Placeholder" emptyResultLabel='Not matches found'>
-          <SelectInput.Option value="en_US" title="English (United States)">
-            <Locale code="en_US" languageLabel="English" />
-          </SelectInput.Option>
-          <SelectInput.Option value="fr_FR" title="French (France)">
-            <Locale code="fr_FR" languageLabel="French" />
-          </SelectInput.Option>
-          <SelectInput.Option value="de_DE" title="German (Germany)">
-            <Locale code="de_DE" languageLabel="German" />
-          </SelectInput.Option>
-          <SelectInput.Option value="es_ES" title="Spanish (Spain)">
-            <Locale code="es_ES" languageLabel="Spanish" />
-          </SelectInput.Option>
-        </SelectInput>
+        <>
+          <SelectInput
+            {...args}
+            readOnly={true}
+            value={value}
+            onChange={setValue}
+            placeholder="Placeholder"
+            emptyResultLabel="Not matches found"
+          >
+            <SelectInput.Option value="en_US" title="English (United States)">
+              <Locale code="en_US" languageLabel="English" />
+            </SelectInput.Option>
+            <SelectInput.Option value="fr_FR" title="French (France)">
+              <Locale code="fr_FR" languageLabel="French" />
+            </SelectInput.Option>
+            <SelectInput.Option value="de_DE" title="German (Germany)">
+              <Locale code="de_DE" languageLabel="German" />
+            </SelectInput.Option>
+            <SelectInput.Option value="es_ES" title="Spanish (Spain)">
+              <Locale code="es_ES" languageLabel="Spanish" />
+            </SelectInput.Option>
+          </SelectInput>
+          <SelectInput
+            {...args}
+            readOnly={true}
+            value={null}
+            onChange={setValue}
+            placeholder="Placeholder"
+            emptyResultLabel="Not matches found"
+          >
+            <SelectInput.Option value="en_US" title="English (United States)">
+              <Locale code="en_US" languageLabel="English" />
+            </SelectInput.Option>
+            <SelectInput.Option value="fr_FR" title="French (France)">
+              <Locale code="fr_FR" languageLabel="French" />
+            </SelectInput.Option>
+            <SelectInput.Option value="de_DE" title="German (Germany)">
+              <Locale code="de_DE" languageLabel="German" />
+            </SelectInput.Option>
+            <SelectInput.Option value="es_ES" title="Spanish (Spain)">
+              <Locale code="es_ES" languageLabel="Spanish" />
+            </SelectInput.Option>
+          </SelectInput>
+        </>
       );
     }}
   </Story>
 </Canvas>
 
 ## Variation on invalid
+
 <Canvas>
   <Story name="invalid">
     {args => {
       const [value, setValue] = useState(null);
       return (
         <SpaceContainer height={150}>
-          <SelectInput {...args} invalid={true} value={value} onChange={setValue} placeholder="Placeholder" emptyResultLabel='Not matches found'>
+          <SelectInput
+            {...args}
+            invalid={true}
+            value={value}
+            onChange={setValue}
+            placeholder="Placeholder"
+            emptyResultLabel="Not matches found"
+          >
             <SelectInput.Option value="en_US" title="English (United States)">
               <Locale code="en_US" languageLabel="English" />
             </SelectInput.Option>
@@ -82,13 +135,20 @@ TODO
 </Canvas>
 
 ## Variation on large select input
+
 <Canvas>
   <Story name="large">
     {args => {
       const [value, setValue] = useState(null);
       return (
         <SpaceContainer height={350}>
-          <SelectInput {...args} value={value} onChange={setValue} placeholder="Placeholder" emptyResultLabel='Not matches found'>
+          <SelectInput
+            {...args}
+            value={value}
+            onChange={setValue}
+            placeholder="Placeholder"
+            emptyResultLabel="Not matches found"
+          >
             <SelectInput.Option value="en_US" title="English (United States)">
               <Locale code="en_US" languageLabel="English" />
             </SelectInput.Option>
