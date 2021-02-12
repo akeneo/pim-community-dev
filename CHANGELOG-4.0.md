@@ -1,5 +1,7 @@
 # 4.0.x
 
+- PIM-9674: Fix Flash message missing when editing and saving an asset attribute at the family level
+
 # 4.0.92 (2021-02-11)
 
 ## Improvements
