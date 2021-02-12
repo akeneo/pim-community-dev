@@ -25,7 +25,7 @@
  * see if we should allow no values
  */
 
-import React, {ReactNode, useState, useRef, isValidElement, ReactElement} from 'react';
+import React, {ReactNode, useState, useRef, isValidElement, ReactElement, KeyboardEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {InputProps} from '../InputProps';
@@ -281,11 +281,6 @@ const SelectInput = ({
 
   useShortcut(Key.Enter, handleEnter, inputRef);
   useShortcut(Key.Escape, handleBlur, inputRef);
-  const clearButtonRef = useShortcut<HTMLButtonElement>(
-    Key.Enter,
-    handleClear,
-    useShortcut<HTMLButtonElement>(Key.Space, handleClear)
-  );
 
   return (
     <SelectInputContainer readOnly={readOnly} value={value} {...rest}>
@@ -308,7 +303,6 @@ const SelectInput = ({
           <ActionContainer>
             {!dropdownIsOpen && null !== value && (
               <IconButton
-                ref={clearButtonRef}
                 ghost="borderless"
                 level="tertiary"
                 size="small"
@@ -316,6 +310,11 @@ const SelectInput = ({
                 title={clearSelectLabel}
                 onClick={handleClear}
                 tabIndex={0}
+                onKeyDown={(event: KeyboardEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+                  if ([Key.Enter, Key.Space].includes(event.key as Key)) {
+                    handleClear();
+                  }
+                }}
               />
             )}
             <IconButton
@@ -325,6 +324,12 @@ const SelectInput = ({
               icon={<ArrowDownIcon />}
               title={openSelectLabel}
               onClick={openOverlay}
+              tabIndex={0}
+              onKeyDown={(event: KeyboardEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+                if ([Key.Enter, Key.Space].includes(event.key as Key)) {
+                  openOverlay();
+                }
+              }}
             />
           </ActionContainer>
         )}
