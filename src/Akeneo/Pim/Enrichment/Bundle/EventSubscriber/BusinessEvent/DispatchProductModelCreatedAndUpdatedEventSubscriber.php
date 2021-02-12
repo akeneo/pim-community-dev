@@ -93,11 +93,14 @@ final class DispatchProductModelCreatedAndUpdatedEventSubscriber implements Even
                 $this->logger->info(
                     json_encode(
                         [
-                            'type' => $event->getName(),
-                            'uuid' => $event->getUuid(),
-                            'author' => $event->getAuthor()->name(),
-                            'author_type' => $event->getAuthor()->type(),
-                            'timestamp' => $event->getTimestamp(),
+                            'type' => 'event_api.dispatch_event',
+                            'event' => [
+                                'name' => $event->getName(),
+                                'uuid' => $event->getUuid(),
+                                'author' => $event->getAuthor()->name(),
+                                'author_type' => $event->getAuthor()->type(),
+                                'timestamp' => $event->getTimestamp(),
+                            ]
                         ],
                         JSON_THROW_ON_ERROR
                     )
