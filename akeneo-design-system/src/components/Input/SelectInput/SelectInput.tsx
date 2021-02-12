@@ -27,22 +27,37 @@
 
 import React, {ReactNode, useState, useRef, isValidElement, ReactElement} from 'react';
 import styled, {css} from 'styled-components';
-import {Key, Override} from '../../../shared';
+import {arrayUnique, Key, Override} from '../../../shared';
 import {InputProps} from '../InputProps';
-import {TextInput} from '../../../components';
+import {IconButton, TextInput} from '../../../components';
 import {useBooleanState, useShortcut} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
+import {ArrowDownIcon, CloseIcon} from '../../../icons';
 
 //TODO be sure to select the appropriate container element here
 const SelectInputContainer = styled.div`
-  & input[type='text'] {
+  & input[type="text"] {
     background: transparent;
-    z-index: 2;
+    cursor: pointer;
+    
+    &:focus {
+      z-index: 2;
+    }
   }
 `;
 
 const InputContainer = styled.div`
   position: relative;
+`;
+
+const ActionContainer = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `;
 
 const ValueOptionContainer = styled.div`
@@ -53,6 +68,19 @@ const ValueOptionContainer = styled.div`
   display: flex;
   align-items: center;
   padding: 0 20px;
+`;
+
+const EmptyResultContainer = styled.div<{tall: boolean} & AkeneoThemedProps>`
+  background: ${getColor('white')};
+  height: 20px;
+  padding: 0 20px;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: ${getColor('grey', 100)};
+  line-height: 20px;
+  text-align: center;
 `;
 
 const OptionContainer = styled.div<{tall: boolean} & AkeneoThemedProps>`
@@ -80,7 +108,6 @@ const OptionContainer = styled.div<{tall: boolean} & AkeneoThemedProps>`
   }
   &:active {
     color: ${getColor('brand', 100)};
-    font-style: italic;
     font-weight: 700;
   }
   &:disabled {
@@ -102,7 +129,7 @@ const Overlay = styled.div<
 >`
   background: ${getColor('white')};
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.3);
-  padding: 0 0 10px 0;
+  padding: 10px 0 10px 0;
   position: absolute;
   transition: opacity 0.15s ease-in-out;
   z-index: 2;
@@ -130,34 +157,61 @@ const Backdrop = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
 
 const OptionCollection = styled.div`
   max-height: 320px;
+  overflow-y: auto;
 `;
+
+const Option = styled.span<{value: string}>``;
 
 type SelectInputProps = Override<
   Override<React.InputHTMLAttributes<HTMLDivElement>, InputProps<string | null>>,
   {
     /**
-     * TODO.
+     * The placeholder displayed when no option is selected
      */
     placeholder?: string;
 
+    /**
+     * The text displayed when no result was found.
+     */
+    emptyResultLabel: string;
+
+    /**
+     * Defines if the input is valid on not.
+     */
+    invalid?: boolean;
+
+    /**
+     * The options
+     */
     children: ReactNode;
   }
 >;
 
-const SelectInput = ({placeholder, value, children, onChange, readOnly, ...rest}: SelectInputProps) => {
+const SelectInput = ({id, placeholder, invalid, value, emptyResultLabel, children, onChange, readOnly, ...rest}: SelectInputProps) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [dropdownIsOpen, openOverlay, closeOverlay] = useBooleanState();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const validChildren = React.Children.toArray(children).filter((child): child is ReactElement => {
-    if (!isValidElement(child)) return false;
+  const validChildren = React.Children.toArray(children).filter(
+    (child): child is ReactElement<{value: string} & React.HTMLAttributes<HTMLSpanElement>> => {
 
-    return true;
+    return isValidElement<{value: string}>(child);
   });
+
+  validChildren.reduce<string[]>((optionCodes: string[], child) => {
+    if (optionCodes.includes(child.props.value)) {
+      throw new Error(`Duplicate option value ${child.props.value}`);
+    }
+
+    optionCodes.push(child.props.value);
+
+    return optionCodes;
+  }, []);
 
   const filteredChildren = validChildren.filter(child => {
     const content = typeof child.props.children === 'string' ? child.props.children : '';
     const title = child.props.title ?? '';
+    const value = child.props.value;
     const optionValue = value + content + title;
 
     return -1 !== optionValue.toLowerCase().indexOf(searchValue.toLowerCase());
@@ -171,10 +225,10 @@ const SelectInput = ({placeholder, value, children, onChange, readOnly, ...rest}
     }) ?? value;
 
   const handleEnter = () => {
-    if (filteredChildren.length > 0 && onChange) {
+    if (filteredChildren.length > 0) {
       const value = filteredChildren[0].props.value;
 
-      onChange(value);
+      onChange?.(value);
       handleBlur();
     }
   };
@@ -188,14 +242,18 @@ const SelectInput = ({placeholder, value, children, onChange, readOnly, ...rest}
   };
 
   const handleOptionClick = (value: string) => () => {
-    onChange && onChange(value);
+    onChange?.(value);
     handleBlur();
+  };
+
+  const handleClear = () => {
+    onChange?.(null);
   };
 
   const handleBlur = () => {
     setSearchValue('');
     closeOverlay();
-    inputRef.current && inputRef.current.blur();
+    inputRef.current?.blur();
   };
 
   useShortcut(Key.Enter, handleEnter, inputRef);
@@ -206,14 +264,24 @@ const SelectInput = ({placeholder, value, children, onChange, readOnly, ...rest}
       <InputContainer>
         {null !== value && '' === searchValue && <ValueOptionContainer>{valueOption}</ValueOptionContainer>}
         <TextInput
+          id={id}
           ref={inputRef}
           value={searchValue}
           readOnly={readOnly}
+          invalid={invalid}
           placeholder={null === value ? placeholder : ''}
           onChange={handleSearch}
           onFocus={handleFocus}
           data-testid="select_input"
         />
+        {!readOnly && (
+          <ActionContainer>
+            {!dropdownIsOpen && null !== value && (
+              <IconButton ghost="borderless" level="tertiary" size="small" icon={<CloseIcon />} title={""} onClick={handleClear}/>
+            )}
+            <IconButton ghost="borderless" level="tertiary" size="small" icon={<ArrowDownIcon />} title={""} onClick={openOverlay}/>
+          </ActionContainer>
+        )}
       </InputContainer>
       <OverlayContainer>
         {dropdownIsOpen && (
@@ -222,7 +290,7 @@ const SelectInput = ({placeholder, value, children, onChange, readOnly, ...rest}
             <Overlay onClose={handleBlur}>
               <OptionCollection>
                 {filteredChildren.length === 0 ? (
-                  <span>Empty result</span>
+                  <EmptyResultContainer>{emptyResultLabel}</EmptyResultContainer>
                 ) : (
                   filteredChildren.map(child => {
                     const value = child.props.value;
@@ -242,8 +310,6 @@ const SelectInput = ({placeholder, value, children, onChange, readOnly, ...rest}
     </SelectInputContainer>
   );
 };
-
-const Option = styled.span<{value: string}>``;
 
 SelectInput.Option = Option;
 
