@@ -209,13 +209,11 @@ class Client
     /**
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/search_operations.html#_scrolling}
      */
-    public function scroll(array $body): \Generator
+    public function scroll(array $body, int $size = 50, string $scroll = '30s'): \Generator
     {
-        $scroll = '30s';
-
         $params = [
             'scroll' => $scroll,
-            'size' => 2,
+            'size' => $size,
             'index' => $this->indexName,
             'body' => $body
         ];
