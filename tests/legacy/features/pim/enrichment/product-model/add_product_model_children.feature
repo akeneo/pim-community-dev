@@ -75,7 +75,7 @@ Feature: Add children to product model
     And I confirm the child creation
     Then I should be on the product model "apollon_black" edit page
 
-  @critical @purge-messenger
+  @critical
   Scenario: Successfully add a variant product to a root product model
     Given I am on the "amor" product model page
     When I open the variant navigation children selector for level 1

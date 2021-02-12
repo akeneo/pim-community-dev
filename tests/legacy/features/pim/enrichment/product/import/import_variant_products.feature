@@ -6,7 +6,6 @@ Feature: Import variant products through CSV import
   Background:
     Given the "catalog_modeling" catalog configuration
 
-  @purge-messenger
   Scenario: Create new variant products through CSV import
     Given the following CSV file to import:
       """

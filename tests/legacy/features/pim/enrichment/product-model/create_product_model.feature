@@ -9,7 +9,7 @@ Feature: Create a product model
     And I am logged in as "Julia"
     And I am on the products grid
 
-  @critical @purge-messenger
+  @critical
   Scenario: Create a product model with a single level variant
     When I create a product model
     And I should see the Code, Family and Variant fields
