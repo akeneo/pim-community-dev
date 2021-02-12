@@ -1,6 +1,6 @@
 import React from 'react';
 import {Breadcrumb} from 'akeneo-design-system';
-import {useRoute, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useRoute, useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 type AssetFamilyBreadcrumbProps = {
   assetFamilyLabel: string;
@@ -31,10 +31,14 @@ const AssetBreadcrumb = ({assetFamilyIdentifier, assetCode}: AssetBreadcrumbProp
     tab: 'attribute',
   })}`;
 
+  const router = useRouter();
+
   return (
     <Breadcrumb>
-      <Breadcrumb.Step href={indexHref}>{translate('pim_asset_manager.asset_family.breadcrumb')}</Breadcrumb.Step>
-      <Breadcrumb.Step href={assetFamilyHref}>{assetFamilyIdentifier}</Breadcrumb.Step>
+      <Breadcrumb.Step onClick={() => router.redirect(indexHref)}>
+        {translate('pim_asset_manager.asset_family.breadcrumb')}
+      </Breadcrumb.Step>
+      <Breadcrumb.Step onClick={() => router.redirect(assetFamilyHref)}>{assetFamilyIdentifier}</Breadcrumb.Step>
       <Breadcrumb.Step>{assetCode}</Breadcrumb.Step>
     </Breadcrumb>
   );

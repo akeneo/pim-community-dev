@@ -1,6 +1,6 @@
 import React from 'react';
 import {Breadcrumb} from 'akeneo-design-system';
-import {useRoute, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useRoute, useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 type RefEntityBreadcrumbProps = {
   referenceEntityIdentifier: string;
@@ -15,9 +15,13 @@ const RefEntityBreadcrumb = ({referenceEntityIdentifier, recordCode}: RefEntityB
     tab: 'attribute',
   })}`;
 
+  const router = useRouter();
+
   const children = [
-    <Breadcrumb.Step href={indexHref}>{translate('pim_reference_entity.reference_entity.breadcrumb')}</Breadcrumb.Step>,
-    <Breadcrumb.Step href={referenceEntityHref}>{referenceEntityIdentifier}</Breadcrumb.Step>,
+    <Breadcrumb.Step onClick={() => router.redirect(indexHref)}>
+      {translate('pim_reference_entity.reference_entity.breadcrumb')}
+    </Breadcrumb.Step>,
+    <Breadcrumb.Step onClick={() => router.redirect(referenceEntityHref)}>{referenceEntityIdentifier}</Breadcrumb.Step>,
   ];
 
   if (undefined !== recordCode) {

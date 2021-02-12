@@ -17,3 +17,8 @@ akeneo_elasticsearch:
             service_name: "akeneo_assetmanager.client.asset"
             index_name: "%asset_index_name%"
             configuration_files: "%asset_index_configuration%"
+            activate_dual_indexation_with_service: "akeneo_assetmanager.client.asset_temporary"
+        -
+            service_name: "akeneo_assetmanager.client.asset_temporary"
+            index_name: "%asset_index_name%_temporary"
+            configuration_files: "%asset_index_configuration%"

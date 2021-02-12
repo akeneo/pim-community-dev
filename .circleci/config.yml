@@ -570,15 +570,18 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
-                name: Duplicate PROD environment and Upgrade
+                name: Duplicate PROD environment
                 command: |
                     ssh-keyscan github.com >> ~/.ssh/known_hosts
                     LIST_SOURCE_PFID=( srnt-nature-et-decouvertes srnt-invivo )
                     RANDOM_SOURCE_PFID=$(( $RANDOM % 2 ))
                     SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
-                    SOURCE_PED_TAG=$(cd /root/project; git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt; head -n 1 /tmp/pim-tags.txt )
                     INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40)
-                    ENV_NAME=dev SOURCE_PFID=${SOURCE_PFID} SOURCE_PED_TAG=${SOURCE_PED_TAG} INSTANCE_NAME=${INSTANCE_NAME} PIM_CONTEXT=deployment make test_upgrade_from_serenity_customer_db
+                    INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=${CIRCLE_SHA1} INSTANCE_NAME_PREFIX=pimci-duplic ENV_NAME=dev SOURCE_PFID=${SOURCE_PFID} PIM_CONTEXT=deployment  make clone_serenity
+          - run:
+                name: Upgrade the duplicate environment
+                command: |
+                    INSTANCE_NAME_PREFIX=pimci-duplic IMAGE_TAG=${CIRCLE_SHA1} INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40) PIM_CONTEXT=deployment  make create-ci-release-files get_mysql_parameters_disk deploy
           - run:
               name: Prepare infrastructure artifacts
               command: INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40) PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
@@ -764,7 +767,8 @@ jobs:
           - run:
               name: Get last good CE build revision
               command: |
-                  CE_COMMIT_HASH=$(growth_edition/get_last_good_ce_revision.sh)
+                  docker run --rm -v $PWD/growth_edition/last_good_ce:/app composer composer install
+                  CE_COMMIT_HASH=$(docker run --rm -v $PWD/growth_edition/last_good_ce:/app composer php get_last_good_ce_revision.php)
                   IMAGE_TAG=$(echo growth-$CE_COMMIT_HASH | cut -b 1-40)
                   GROWTH_RELEASE_NAME=growth-v$(date +%Y%m%d%H%M%S)
 
@@ -806,7 +810,6 @@ jobs:
                   echo export TYPE="grth" >> persisted_env_vars
                   echo export PRODUCT_REFERENCE_TYPE="growth_edition_instance" >> persisted_env_vars
                   echo export PRODUCT_REFERENCE_CODE="growth_edition_sandbox" >> persisted_env_vars
-
           - persist_to_workspace:
               root: ~/
               paths:
@@ -989,6 +992,24 @@ workflows:
                 requires:
                     - checkout
 
+  nightly-beta:
+      triggers:
+          - schedule:
+                cron: "0 4 * * *"
+                filters:
+                    branches:
+                        only:
+                            - master
+
+      jobs:
+          - checkout
+          - build_prod:
+                requires:
+                    - checkout
+          - test_upgrade_from_serenity_customer_db:
+                requires:
+                    - checkout
+
   nightly:
       triggers:
           - schedule:
@@ -1119,6 +1140,26 @@ workflows:
                     - test_back_behat_legacy
                     - test_back_data_migrations
                     - test_deploy
+
+  on_demand_growth_edition_release:
+      jobs:
+           - ready_to_build?:
+                type: approval
+                filters:
+                    branches:
+                        only: master
+           - checkout:
+                requires:
+                    - ready_to_build?
+           - prepare_growth_edition:
+                requires:
+                    - checkout
+           - test_deploy:
+                requires:
+                    - prepare_growth_edition
+           - release_growth_edition:
+                    requires:
+                        - test_deploy
 
 commands:
   set_gcloud_config_dev:

@@ -10,10 +10,10 @@ PFID ?= $(TYPE)-$(INSTANCE_NAME)
 CI ?= false
 ACTIVATE_MONITORING ?= true
 
-PRODUCT_REFERENCE_TYPE ?= serenity_instance
-PRODUCT_REFERENCE_CODE ?= serenity_dev
-TEST_AUTO ?= false
 ENV_NAME ?= dev
+TEST_AUTO ?= false
+PRODUCT_REFERENCE_TYPE ?= serenity_instance
+PRODUCT_REFERENCE_CODE ?= serenity_$(ENV_NAME)
 GOOGLE_PROJECT_ID ?= akecld-saas-$(ENV_NAME)
 GOOGLE_CLUSTER_REGION ?= europe-west3
 GOOGLE_CLUSTER_ZONE ?= europe-west3-a
@@ -27,6 +27,8 @@ HELM_REPO_PROD := akeneo-charts
 DEPLOYMENTS_INSTANCES_DIR ?= $(PWD)/deployments/instances
 INSTANCE_DIR ?= $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
 MYSQL_DISK_SIZE ?= 10
+MYSQL_DISK_DESCRIPTION ?=
+MYSQL_SOURCE_SNAPSHOT ?=
 MAX_DNS_TEST_TIMEOUT ?= 300
 ONBOARDER_PIM_GEN_FILE ?=
 WITH_SUPPLIERS ?= false
@@ -177,16 +179,18 @@ ifeq ($(INSTANCE_NAME_PREFIX),pimci-duplic)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.daemons.default.resources.limits.memory "2048Mi"
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.daemons.default.resources.requests.memory "2048Mi"
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.daemons.default.resources.requests.cpu "200m"
-	yq w -i $(INSTANCE_DIR)/values.yaml mysql.common.persistentDisks[0] $(PFID)
-	yq w -i $(INSTANCE_DIR)/values.yaml mysql.mysql.userPassword test
-	yq w -i $(INSTANCE_DIR)/values.yaml mysql.mysql.rootPassword test
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultAdminUser.email "adminakeneo"
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultAdminUser.login "adminakeneo"
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultAdminUser.password "adminakeneo"
 endif
 ifeq (${USE_ONBOARDER_CATALOG},true)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog "vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/onboarder"
 endif
+
+.PHONY: get_mysql_parameters_disk
+get_mysql_parameters_disk:
+	MYSQL_DISK_SIZE=`gcloud compute disks describe --zone=$(GOOGLE_COMPUTE_ZONE) --project=$(GOOGLE_PROJECT_ID) $(PFID)-mysql --format=json |jq -r '.sizeGb'`; \
+	MYSQL_SOURCE_SNAPSHOT=`gcloud compute disks describe --zone=$(GOOGLE_COMPUTE_ZONE) --project=$(GOOGLE_PROJECT_ID) $(PFID)-mysql --format=json |jq -r '.sourceSnapshot'`; \
+	yq w -j -P -i $(INSTANCE_DIR)/main.tf.json 'module.pim.mysql_source_snapshot' "$${MYSQL_SOURCE_SNAPSHOT}"; \
+	yq w -j -P -i $(INSTANCE_DIR)/main.tf.json 'module.pim.mysql_disk_size' "$${MYSQL_DISK_SIZE}"; \
+	yq w -j -P -i $(INSTANCE_DIR)/main.tf.json 'module.pim.mysql_disk_name' "$(PFID)-mysql";
 
 .PHONY: activate-onboarder-feature
 activate-onboarder-feature:
@@ -227,9 +231,9 @@ endif
 	PRODUCT_REFERENCE_CODE=$(PRODUCT_REFERENCE_CODE) \
 	MYSQL_DISK_SIZE=$(MYSQL_DISK_SIZE) \
 	MYSQL_DISK_NAME=$(PFID)-mysql \
+	MYSQL_SOURCE_SNAPSHOT=$(MYSQL_SOURCE_SNAPSHOT) \
 	envsubst < $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp
-
 
 .PHONY: change-terraform-source-version
 change-terraform-source-version: #Doc: change terraform source to deploy infra with a custom git version
@@ -267,8 +271,8 @@ delete_pr_environments_hourly:
 
 .PHONY: clone_serenity
 clone_serenity:
-	PRODUCT_REFERENCE_TYPE=serenity_instance_clone INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files && \
-	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PED_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/clone_serenity.sh
+	PRODUCT_REFERENCE_TYPE=serenity_instance_clone INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic PIM_CONTEXT=deployment make create-ci-release-files && \
+	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/clone_serenity.sh
 
 .PHONY: clone_flexibility
 clone_flexibility:
@@ -277,12 +281,7 @@ clone_flexibility:
 
 .PHONY: test_upgrade_from_flexibility_clone
 test_upgrade_from_flexibility_clone:
-	FLEXIBILITY_CUSTOMER_LIST=$(FLEXIBILITY_CUSTOMER_LIST) bash $(PWD)/deployments/bin/clone_flexibility.sh 
-
-.PHONY: test_upgrade_from_serenity_customer_db
-test_upgrade_from_serenity_customer_db:
-	INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME_PREFIX=pimci-duplic ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PED_TAG=$(SOURCE_PED_TAG) make clone_serenity && \
-	INSTANCE_NAME_PREFIX=pimci-duplic INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$${CIRCLE_SHA1} make deploy-serenity
+	FLEXIBILITY_CUSTOMER_LIST=$(FLEXIBILITY_CUSTOMER_LIST) bash $(PWD)/deployments/bin/clone_flexibility.sh
 
 .PHONY: php-image-prod
 php-image-prod: #Doc: pull docker image for pim-enterprise-dev with the prod tag

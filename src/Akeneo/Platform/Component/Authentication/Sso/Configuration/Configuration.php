@@ -21,6 +21,8 @@ namespace Akeneo\Platform\Component\Authentication\Sso\Configuration;
  */
 final class Configuration
 {
+    public const DEFAULT_CODE = 'authentication_sso';
+
     /** @var Code */
     private $code;
 

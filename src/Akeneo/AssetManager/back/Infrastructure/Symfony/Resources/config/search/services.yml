@@ -35,6 +35,13 @@ services:
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_normalizer'
             - '%akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer.batch_size%'
 
+    akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer_temporary:
+        class: Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\AssetIndexer
+        arguments:
+            - '@akeneo_assetmanager.client.asset_temporary'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_normalizer'
+            - '%akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer.batch_size%'
+
     # Normalizers
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset_normalizer:
         class: Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\AssetNormalizer
