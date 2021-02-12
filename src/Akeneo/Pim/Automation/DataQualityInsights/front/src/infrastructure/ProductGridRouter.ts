@@ -42,16 +42,14 @@ const buildFilters = (
   if (familyCode) {
     filters = filters.concat([`f[family][value][]=${familyCode}`, 'f[family][type]=in']);
   }
-  if (categoryId) {
-    filters = filters.concat([
-      `f[category][value][treeId]=${rootCategoryId}`,
-      `f[category][value][categoryId]=${categoryId}`,
-      'f[category][type]=1',
-    ]);
-  }
   if (keyIndicator) {
     filters = filters.concat([`f[${keyIndicator}][value]=0`]);
   }
+  filters = filters.concat([
+    `f[category][value][treeId]=${rootCategoryId}`,
+    `f[category][value][categoryId]=${categoryId}`,
+    'f[category][type]=1',
+  ]);
 
   return filters.join('&');
 };
