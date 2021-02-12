@@ -3,6 +3,7 @@
 
 ## Bug fixes
 
+- PIM-9678: The time counter is still running despite the job failed
 - PIM-9672: Error 500 on the API when inputing [null] on an array
 - PIM-9595: Avoid 403 error when launching import with no view rights on import details
 - PIM-9622: Fix query that can generate a MySQL memory allocation error
