@@ -7,10 +7,12 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "akeneo-design-system": "file:../lib",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "immer": "^8.0.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
     "react-scripts": "3.4.3",
     "styled-components": "^5.2.0"
+
   },
   "scripts": {
     "start": "react-scripts start",
