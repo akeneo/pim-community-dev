@@ -1,5 +1,5 @@
-import {useEffect, useState} from 'react';
-import {fetchLocaleDictionary} from '../../../fetcher';
+import {useCallback, useEffect, useState} from 'react';
+import {addWordsToLocaleDictionary, deleteWordFromLocaleDictionary, fetchLocaleDictionary} from '../../../fetcher';
 import {Word} from '../../../../domain';
 
 type DictionaryState = {
@@ -8,7 +8,9 @@ type DictionaryState = {
   totalWords: number;
   itemsPerPage: number;
   currentPage: number;
-  setCurrentPage: (page: number) => void;
+  search: (searchValue: string, pageNumber: number) => void;
+  deleteWord: (wordId: number) => void;
+  addWords: (words: string[]) => void;
 };
 
 const useLocaleDictionary = (localeCode: string, page: number, itemsPerPage: number): DictionaryState => {
@@ -16,13 +18,27 @@ const useLocaleDictionary = (localeCode: string, page: number, itemsPerPage: num
   const [totalWords, setTotalWords] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(page);
 
-  useEffect(() => {
-    (async () => {
-      const data = await fetchLocaleDictionary(localeCode, currentPage, itemsPerPage);
+  const search = useCallback(
+    async (searchValue: string, pageNumber: number) => {
+      const data = await fetchLocaleDictionary(localeCode, pageNumber, itemsPerPage, searchValue);
+      setCurrentPage(pageNumber);
       setDictionary(data.results);
       setTotalWords(data.total);
-    })();
-  }, [localeCode, currentPage, itemsPerPage]);
+    },
+    [localeCode, currentPage, itemsPerPage]
+  );
+
+  const deleteWord = async (wordId: number) => {
+    await deleteWordFromLocaleDictionary(wordId);
+  };
+
+  const addWords = async (words: string[]) => {
+    await addWordsToLocaleDictionary(localeCode, words);
+  };
+
+  useEffect(() => {
+    search('', 1);
+  }, []);
 
   return {
     localeCode,
@@ -30,7 +46,9 @@ const useLocaleDictionary = (localeCode: string, page: number, itemsPerPage: num
     totalWords,
     itemsPerPage,
     currentPage,
-    setCurrentPage,
+    search,
+    deleteWord,
+    addWords,
   };
 };
 

@@ -58,3 +58,11 @@ services:
             - '@logger'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Locale\AddDefaultDictionaryWordsSubscriber:
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\TextCheckerDictionaryRepository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'
+        tags:
+            - { name: kernel.event_subscriber }

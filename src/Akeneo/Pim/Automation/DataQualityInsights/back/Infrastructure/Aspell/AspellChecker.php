@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\TextChecker
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\Result\AspellGlobalOffsetCalculator;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\Result\AspellLineNumberCalculator;
@@ -85,14 +86,10 @@ class AspellChecker implements TextChecker
     {
         $results = new TextCheckResultCollection();
 
-        $userGeneratedDictionary = $this->getUserGeneratedDictionary($localeCode);
+        $ignoredWords = !empty($issues) ? $this->getUserIgnoredWords($localeCode, $issues) : [];
 
         foreach ($issues as $issue) {
-            if (in_array($issue->word, $userGeneratedDictionary)) {
-                continue;
-            }
-
-            if (in_array(strtolower($issue->word), $this->getDefaultIgnoredWords())) {
+            if (in_array($issue->word, $ignoredWords)) {
                 continue;
             }
 
@@ -127,24 +124,18 @@ class AspellChecker implements TextChecker
         return $results;
     }
 
-    private function getUserGeneratedDictionary(LocaleCode $localeCode): array
+    private function getUserIgnoredWords(LocaleCode $localeCode, array $issues): array
     {
-        $userGeneratedDictionary = [];
-
-        $userGeneratedIgnoredWords = $this->textCheckerDictionaryRepository->findByLocaleCode($localeCode);
-
-        foreach ($userGeneratedIgnoredWords as $textCheckerDictionaryWord) {
-            $userGeneratedDictionary[] = strval($textCheckerDictionaryWord->getWord());
+        $wordsWithIssue = [];
+        foreach ($issues as $issue) {
+            try {
+                $wordsWithIssue[] = new DictionaryWord($issue->word);
+            } catch (\InvalidArgumentException $e) {
+            }
         }
 
-        return $userGeneratedDictionary;
-    }
+        $ignoredWords = $this->textCheckerDictionaryRepository->filterExistingWords($localeCode, $wordsWithIssue);
 
-    private function getDefaultIgnoredWords(): array
-    {
-        return [
-            'sku', 'upc', 'asin', 'ean', 'mpn', 'gtin', 'jan', 'isbn', 'erp',
-            'xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl',
-        ];
+        return array_map('strval', $ignoredWords);
     }
 }

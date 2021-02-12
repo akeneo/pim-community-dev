@@ -71,6 +71,34 @@ akeneo_data_quality_insights_get_spellcheck_supported_locales:
 akeneo_data_quality_insights_get_locale_dictionary_words:
     path: /data-quality-insights/locale-dictionary-words/{localeCode}
     defaults:
-        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetLocaleDictionaryWordsController
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dictionary\GetLocaleDictionaryWordsController
         _feature: data_quality_insights
     methods: [ GET ]
+
+akeneo_data_quality_insights_delete_locale_dictionary_word:
+    path: /data-quality-insights/locale-dictionary-words/{wordId}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dictionary\DeleteWordFromDictionaryController::delete
+        _feature: data_quality_insights
+    methods: [ DELETE ]
+
+akeneo_data_quality_insights_get_locales_dictionary_info:
+    path: /data-quality-insights/locales-dictionary-info
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetLocalesDictionaryInfoController
+        _feature: data_quality_insights
+    methods: [ POST ]
+
+akeneo_data_quality_insights_add_words_to_dictionary:
+    path: /data-quality-insights/locale-dictionary-words/{localeCode}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dictionary\AddWordsToDictionaryController::addWordsToSingleLocale
+        _feature: data_quality_insights
+    methods: [ POST ]
+
+akeneo_data_quality_insights_add_words_to_locales_dictionaries:
+    path: /data-quality-insights/locale-dictionary-words
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dictionary\AddWordsToDictionaryController::addWordsToMultipleLocales
+        _feature: data_quality_insights
+    methods: [ POST ]

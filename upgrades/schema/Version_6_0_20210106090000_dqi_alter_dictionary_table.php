@@ -14,7 +14,7 @@ final class Version_6_0_20210106090000_dqi_alter_dictionary_table extends Abstra
     {
         $this->addSql(<<<SQL
 ALTER TABLE pimee_data_quality_insights_text_checker_dictionary
-	ADD id INT AUTO_INCREMENT NOT NULL,
+	ADD id INT AUTO_INCREMENT NOT NULL FIRST,
 	ADD PRIMARY KEY (id);
 SQL);
     }
