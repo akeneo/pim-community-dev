@@ -2,7 +2,7 @@ pim_title:
   akeneo_asset_manager_asset_family_edit: Muokkaa assettiperhettä
   akeneo_asset_manager_asset_edit: Muokkaa assettia
 pim_asset_manager:
-  result_counter: '{0} Ei tuloksia{1} {{ count }} tulos]1,Inf] {{ count }} tulosta'
+  result_counter: '{0} Ei tuloksia|{1} {{ count }} tulos|]1,Inf] {{ count }} tulosta'
   asset_counter: '{0} Ei assetteja|{1} {{ count }} assetti|]1,Inf] {{ count }} assettia'
   asset_collection:
     add_asset: 'Lisää assetti'
