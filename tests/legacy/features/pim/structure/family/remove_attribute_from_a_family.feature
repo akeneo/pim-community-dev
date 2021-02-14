@@ -32,7 +32,6 @@ Feature: Remove attribute from a family
     But I should not see the text "Material"
     And I am on the "braided-hat-m" product page
     Then I should not see the Material field
-    And 0 event of type "product.updated" should have been raised
 
   Scenario: Impossible to remove some attributes from a family (used as label, used as image, used as axis)
     Given I am on the "shoes" family page
