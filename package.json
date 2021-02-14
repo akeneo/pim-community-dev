@@ -63,7 +63,7 @@
     "@babel/core": "^7.11.0",
     "@babel/preset-env": "^7.3.4",
     "@babel/types": "~7.11.5",
-    "@types/backbone": "^1.3.42",
+    "@types/backbone": "1.4.8",
     "@types/node": "11.9.5",
     "@types/underscore": "~1.9.4",
     "@types/react-dom": "^16.8.0",
