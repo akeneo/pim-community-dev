@@ -6,7 +6,7 @@ Feature: Create product models through CSV import
   Background:
     Given the "catalog_modeling" catalog configuration
 
-  @critical
+  @critical @purge-messenger
   Scenario: Julia imports new root products models in CSV
     Given the following CSV file to import:
       """

@@ -6,6 +6,7 @@ Feature: Create product models through XLSX import
   Background:
     Given the "catalog_modeling" catalog configuration
 
+  @purge-messenger
   Scenario: Julia imports new root products models in XLSX
     Given the following XLSX file to import:
       """

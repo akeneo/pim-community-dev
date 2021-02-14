@@ -33,28 +33,71 @@ use Symfony\Component\Process\Process;
  */
 class FixturesLoader implements FixturesLoaderInterface
 {
-    private KernelInterface $kernel;
-    private DatabaseSchemaHandler $databaseSchemaHandler;
-    private SystemUserAuthenticator $systemUserAuthenticator;
-    private Application $cli;
-    private ReferenceDataLoader $referenceDataLoader;
-    private Filesystem $archivistFilesystem;
-    private DoctrineJobRepository $doctrineJobRepository;
-    private FixtureJobLoader $fixtureJobLoader;
-    private AclManager $aclManager;
-    private ProductIndexerInterface $productIndexer;
-    private ProductModelIndexerInterface $productModelIndexer;
-    private ClientRegistry $clientRegistry;
-    private Client $esClient;
-    private Connection $dbConnection;
-    private string $databaseHost;
-    private string $databaseName;
-    private string $databaseUser;
-    private string $databasePassword;
-    private string $sqlDumpDirectory;
-    private \Elasticsearch\Client $nativeElasticsearchClient;
-    private MeasurementInstaller $measurementInstaller;
-    private TransportInterface $transport;
+    /** @var KernelInterface */
+    private $kernel;
+
+    /** @var DatabaseSchemaHandler */
+    private $databaseSchemaHandler;
+
+    /** @var SystemUserAuthenticator */
+    private $systemUserAuthenticator;
+
+    /** @var Application */
+    private $cli;
+
+    /** @var ReferenceDataLoader */
+    private $referenceDataLoader;
+
+    /** @var Filesystem */
+    private $archivistFilesystem;
+
+    /** @var DoctrineJobRepository */
+    private $doctrineJobRepository;
+
+    /** @var FixtureJobLoader */
+    private $fixtureJobLoader;
+
+    /** @var AclManager */
+    private $aclManager;
+
+    /** @var ProductIndexerInterface */
+    private $productIndexer;
+
+    /** @var ProductModelIndexerInterface */
+    private $productModelIndexer;
+
+    /** @var ClientRegistry */
+    private $clientRegistry;
+
+    /** @var Client */
+    private $esClient;
+
+    /** @var Connection */
+    private $dbConnection;
+
+    /** @var string */
+    private $databaseHost;
+
+    /** @var string */
+    private $databaseName;
+
+    /** @var string */
+    private $databaseUser;
+
+    /** @var string */
+    private $databasePassword;
+
+    /** @var string */
+    private $sqlDumpDirectory;
+
+    /** @var \Elasticsearch\Client */
+    private $nativeElasticsearchClient;
+
+    /** @var MeasurementInstaller */
+    private $measurementInstaller;
+
+    /** @var TransportInterface */
+    private $transport;
 
     public function __construct(
         KernelInterface $kernel,
@@ -144,11 +187,7 @@ class FixturesLoader implements FixturesLoaderInterface
 
     protected function purgeMessengerEvents()
     {
-        while (true) {
-            $envelopes = $this->transport->get();
-            if (empty($envelopes)) {
-                break;
-            }
+        while (!empty($envelopes = $this->transport->get())) {
             foreach ($envelopes as $envelope) {
                 $this->transport->ack($envelope);
             }
