@@ -86,7 +86,6 @@ akeneo_data_quality_insights:
     filter_label:
       spelling_quality: Spelling quality
   dictionary:
-    helper: The dictionary allows you to register words that will be ignored by Data Quality Insight. <a href="{{ link }}" target="_blank">More info on our helpcenter</a>.
     words: Words
     searchPlaceholder: Search a word
     add_words: Add words here

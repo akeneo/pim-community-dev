@@ -86,7 +86,6 @@ akeneo_data_quality_insights:
     filter_label:
       spelling_quality: Rechtschreibqualität
   dictionary:
-    helper: Im Wörterbuch können Sie Wörter registrieren, die von den Qualitätsansichten ignoriert werden. <a href="{{ link }}" target="_blank">Weitere Informationen finden Sie in unserem Hilfecenter</a>.
     words: Wörter
     searchPlaceholder: Ein Wort suchen
     add_words: Wörter hier hinzufügen
