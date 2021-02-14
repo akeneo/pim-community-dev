@@ -32,3 +32,4 @@ Feature: Create product and save a new product value
       | rate_sale | 0           |
       | tmp_price | 0.00 EUR    |
       | weight    | 0.0000 GRAM |
+    And 1 event of type "product.created" should have been raised
