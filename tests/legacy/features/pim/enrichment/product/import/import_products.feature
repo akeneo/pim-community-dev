@@ -9,7 +9,7 @@ Feature: Import products coming from an external application
       | code  | label-en_US | type    |
       | CROSS | Bag Cross   | RELATED |
 
-  @critical @validate-migration
+  @critical @validate-migration @purge-messenger
   Scenario: Successfully import a csv file of products
     Given the following CSV file to import:
       """

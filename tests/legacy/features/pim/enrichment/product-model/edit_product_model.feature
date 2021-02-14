@@ -12,7 +12,7 @@ Feature: Edit a product model
     And I edit the "amor" product model
     Then I should see the text "Clothing by color/size"
 
-  @critical
+  @critical @purge-messenger
   Scenario: Successfully edit and save a root product model
     Given I am logged in as "Mary"
     And I edit the "amor" product model
@@ -24,7 +24,7 @@ Feature: Edit a product model
     And the product Model name should be "Heritage jacket navy chilly tiki"
     And 0 event of type "product.updated" should have been raised
 
-  @critical
+  @critical @purge-messenger
   Scenario: Successfully edit and save a sub product model
     Given I am logged in as "Mary"
     And I edit the "apollon_blue" product model
