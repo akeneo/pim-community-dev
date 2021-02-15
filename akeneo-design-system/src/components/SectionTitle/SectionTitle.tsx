@@ -5,6 +5,7 @@ import {Button, ButtonProps, IconButton, IconButtonProps} from '..';
 import {Override} from '../../shared';
 
 const SectionTitleContainer = styled.div`
+  width: 100%;
   display: flex;
   gap: 10px;
   align-items: center;
