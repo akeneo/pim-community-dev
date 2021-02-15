@@ -1,15 +1,12 @@
-import * as React from 'react';
-import '@testing-library/jest-dom/extend-expect';
-import {act, fireEvent} from '@testing-library/react';
-import {ThemeProvider} from 'styled-components';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import React from 'react';
+import {act, fireEvent, screen} from '@testing-library/react';
 import FilterCollection, {
   useFilterViews,
   sortFilterViewsByAttributeOrder,
 } from 'akeneoassetmanager/application/component/asset/list/filter-collection';
 import {denormalize} from 'akeneoassetmanager/domain/model/attribute/type/option';
-import * as ReactDOM from 'react-dom';
 import {renderHook} from '@testing-library/react-hooks';
+import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
 const attributes = [
   {
@@ -51,62 +48,47 @@ const dataProvider = {
   },
 };
 
-let container;
 describe('Tests filter collection', () => {
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-  });
-
-  afterEach(() => {
-    document.body.removeChild(container);
-    container = null;
-  });
-
   it('It displays a filter collection in order of the attribute order', async () => {
     const FilterView = ({attribute}) => <div data-code={attribute.code}></div>;
 
+    const {container} = renderWithProviders(
+      <FilterCollection
+        orderedFilterViews={[
+          {view: FilterView, attribute: denormalize(attributes[1])},
+          {view: FilterView, attribute: denormalize(attributes[0])},
+        ]}
+        dataProvider={dataProvider}
+        filterViewsProvider={{}}
+        filterCollection={[]}
+        assetFamilyIdentifier={'packshot'}
+        context={{channel: 'ecommerce', locale: 'locale'}}
+        onFilterCollectionChange={filterCollection => {}}
+      />
+    );
+
     await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <FilterCollection
-            orderedFilterViews={[
-              {view: FilterView, attribute: denormalize(attributes[1])},
-              {view: FilterView, attribute: denormalize(attributes[0])},
-            ]}
-            dataProvider={dataProvider}
-            filterViewsProvider={{}}
-            filterCollection={[]}
-            assetFamilyIdentifier={'packshot'}
-            context={{channel: 'ecommerce', locale: 'locale'}}
-            onFilterCollectionChange={filterCollection => {}}
-          />
-        </ThemeProvider>,
-        container
-      );
+      const filters = [].slice.call(container.querySelectorAll('[data-code]'));
+      expect(filters.map(({dataset}) => dataset.code)).toEqual(['created_by', 'shooted_by']);
     });
-    const filters = [].slice.call(container.querySelectorAll('[data-code]'));
-    expect(filters.map(({dataset}) => dataset.code)).toEqual(['created_by', 'shooted_by']);
   });
 
   it('It displays an empty filter collection', async () => {
+    const {container} = renderWithProviders(
+      <FilterCollection
+        orderedFilterViews={[]}
+        dataProvider={dataProvider}
+        filterViewsProvider={{getFilterViews: () => []}}
+        filterCollection={[]}
+        assetFamilyIdentifier={'packshot'}
+        context={{channel: 'ecommerce', locale: 'locale'}}
+        onFilterCollectionChange={filterCollection => {}}
+      />
+    );
+
     await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <FilterCollection
-            orderedFilterViews={[]}
-            dataProvider={dataProvider}
-            filterViewsProvider={{getFilterViews: () => []}}
-            filterCollection={[]}
-            assetFamilyIdentifier={'packshot'}
-            context={{channel: 'ecommerce', locale: 'locale'}}
-            onFilterCollectionChange={filterCollection => {}}
-          />
-        </ThemeProvider>,
-        container
-      );
+      expect(container.childNodes[0].childNodes.length).toEqual(0);
     });
-    expect(container.childNodes[0].childNodes.length).toEqual(0);
   });
 
   it('It updates the filter collection', async () => {
@@ -114,7 +96,7 @@ describe('Tests filter collection', () => {
     const expectedFilterCollection = [{field: attributes[0].code, operator: '=', value: 'nice'}];
     const ClickableFilterView = ({onFilterUpdated}) => (
       <div
-        className="my-filter"
+        data-testid="my-filter"
         onClick={() => {
           onFilterUpdated(expectedFilterCollection[0]);
         }}
@@ -125,25 +107,22 @@ describe('Tests filter collection', () => {
 
     let actualFilterCollection = [{field: attributes[0].code, operator: 'IN', value: []}];
     await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <FilterCollection
-            orderedFilterViews={[{view: ClickableFilterView, attribute: denormalize(attributes[0])}]}
-            dataProvider={dataProvider}
-            filterViewsProvider={{}}
-            filterCollection={actualFilterCollection}
-            assetFamilyIdentifier={'packshot'}
-            context={{channel: 'ecommerce', locale: 'locale'}}
-            onFilterCollectionChange={filterCollection => {
-              actualFilterCollection = filterCollection;
-            }}
-          />
-        </ThemeProvider>,
-        container
+      renderWithProviders(
+        <FilterCollection
+          orderedFilterViews={[{view: ClickableFilterView, attribute: denormalize(attributes[0])}]}
+          dataProvider={dataProvider}
+          filterViewsProvider={{}}
+          filterCollection={actualFilterCollection}
+          assetFamilyIdentifier={'packshot'}
+          context={{channel: 'ecommerce', locale: 'locale'}}
+          onFilterCollectionChange={filterCollection => {
+            actualFilterCollection = filterCollection;
+          }}
+        />
       );
     });
 
-    fireEvent.click(container.querySelector('.my-filter'));
+    fireEvent.click(screen.getByTestId('my-filter'));
 
     expect(actualFilterCollection).toEqual(expectedFilterCollection);
   });
@@ -176,7 +155,7 @@ describe('Tests filter collection', () => {
   });
 
   test('I get an empty collection view if the asset family is null', () => {
-    const {result, waitForNextUpdate} = renderHook(() => useFilterViews(null, dataProvider));
+    const {result} = renderHook(() => useFilterViews(null, dataProvider));
 
     expect(result.current).toBe(null);
   });

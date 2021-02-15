@@ -1,18 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import {ArrowDownIcon, getColor, AkeneoThemedProps, useShortcut, Key} from 'akeneo-design-system';
-
-type ButtonProps = {
-  buttonSize?: 'micro' | 'medium' | 'default';
-  color: 'green' | 'blue' | 'red' | 'grey' | 'outline';
-  isDisabled?: boolean;
-};
+import {ArrowDownIcon, AkeneoThemedProps, useShortcut, Key, Button, ButtonProps} from 'akeneo-design-system';
 
 export const ButtonContainer = styled.div`
   display: flex;
-  > :not(:first-child) {
-    margin-left: 10px;
-  }
+  gap: 10px;
+  align-items: center;
 `;
 
 export const TransparentButton = styled.button`
@@ -24,72 +17,6 @@ export const TransparentButton = styled.button`
   &:hover {
     cursor: pointer;
   }
-`;
-
-export const Button = React.forwardRef((props: ButtonProps & any, ref) => (
-  <StyledButton ref={ref} {...props} onClick={props.isDisabled ? undefined : props.onClick} />
-));
-
-const StyledButton = styled.div<ButtonProps>`
-  text-align: center;
-  cursor: pointer;
-  text-transform: uppercase;
-  white-space: nowrap;
-
-  ${(props: AkeneoThemedProps<ButtonProps>) => {
-    switch (props.buttonSize) {
-      case 'micro':
-        return `
-          padding: 0 10px;
-          height: 20px;
-          line-height: 19px;
-          border-radius: 10px;
-          font-size: ${props.theme.fontSize.small};
-          min-width: 60px;
-        `;
-      case 'medium':
-        return `
-          padding: 0 15px;
-          height: 24px;
-          line-height: 23px;
-          border-radius: 16px;
-          font-size: ${props.theme.fontSize.default};
-          min-width: 70px;
-        `;
-      default:
-        return `
-          padding: 0 15px;
-          height: 32px;
-          line-height: 30px;
-          border-radius: 16px;
-          font-size: ${props.theme.fontSize.default};
-          min-width: 70px;
-        `;
-    }
-  }}
-
-  ${(props: AkeneoThemedProps<ButtonProps>) => {
-    if ('outline' === props.color) {
-      return `
-        color: ${props.theme.color.grey120};
-        background-color: white;
-        border: 1px solid ${props.theme.color.grey80};
-        `;
-    }
-
-    return `
-      color: white;
-      background-color: ${(props.theme.color as any)[props.color + '100']};
-      border: 1px solid transparent;
-    `;
-  }}
-
-  ${(props: AkeneoThemedProps<ButtonProps>) =>
-    props.isDisabled &&
-    `
-      cursor: not-allowed;
-      opacity: 0.5;
-  `}
 `;
 
 const Backdrop = styled.div`
@@ -116,10 +43,6 @@ const Container = styled.div`
   position: relative;
 `;
 
-const StyledMultipleButton = styled(Button)`
-  display: flex;
-`;
-
 const Item = styled.div<{isDisabled?: boolean}>`
   color: ${(props: AkeneoThemedProps<void>) => props.theme.color.grey120};
   font-size: ${(props: AkeneoThemedProps<void>) => props.theme.fontSize.default};
@@ -132,13 +55,6 @@ const Item = styled.div<{isDisabled?: boolean}>`
   opacity: ${props => (props.isDisabled ? 0.5 : 1)};
 `;
 
-const DownButton = styled.span`
-  display: flex;
-  align-items: center;
-  padding-left: 15px;
-  color: ${getColor('white')};
-`;
-
 type Item = {
   label: string;
   title?: string;
@@ -148,9 +64,10 @@ type Item = {
 
 type MultipleButtonProps = {
   items: Item[];
-  children: React.ReactNode;
+  children: string;
 } & ButtonProps;
 
+//TODO Replace this with DSM Dropdown
 export const MultipleButton = ({items, children, ...props}: MultipleButtonProps) => {
   const [isOpen, setOpen] = React.useState(false);
   useShortcut(Key.Escape, () => setOpen(false));
@@ -168,12 +85,10 @@ export const MultipleButton = ({items, children, ...props}: MultipleButtonProps)
     <Container>
       {1 < items.length ? (
         <>
-          <StyledMultipleButton {...props} onClick={() => setOpen(true)}>
-            <span>{children}</span>
-            <DownButton>
-              <ArrowDownIcon size={18} />
-            </DownButton>
-          </StyledMultipleButton>
+          <Button {...props} onClick={() => setOpen(true)}>
+            {children}
+            <ArrowDownIcon />
+          </Button>
           {isOpen && (
             <>
               <Backdrop onClick={() => setOpen(false)} />

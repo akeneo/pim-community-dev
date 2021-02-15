@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import {Button} from 'akeneoassetmanager/application/component/app/button';
+import {useShortcut, Key, Button, getColor, getFontSize, useSelection} from 'akeneo-design-system';
 import __ from 'akeneoassetmanager/tools/translator';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
@@ -31,8 +31,6 @@ import ListAsset, {
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import MosaicResult from 'akeneoassetmanager/application/component/asset/list/mosaic';
 import {useFetchResult} from 'akeneoassetmanager/application/hooks/grid';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {useShortcut, Key, useSelection} from 'akeneo-design-system';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {
@@ -65,7 +63,7 @@ const FilterContainer = styled.div`
   width: 300px;
   padding-right: 20px;
   padding-left: 30px;
-  border-right: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
+  border-right: 1px solid ${getColor('grey', 80)};
   overflow-y: auto;
   height: 100%;
 `;
@@ -73,9 +71,9 @@ const FilterContainer = styled.div`
 const FilterTitle = styled.div`
   padding-bottom: 10px;
   padding-top: 4px;
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey100};
+  color: ${getColor('grey', 100)};
   text-transform: uppercase;
-  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
+  font-size: ${getFontSize('default')};
   background-color: white;
 `;
 
@@ -135,7 +133,7 @@ const dataProvider = {
   },
 };
 
-export const AssetPicker = ({
+const AssetPicker = ({
   assetFamilyIdentifier,
   initialContext,
   onAssetPick,
@@ -181,12 +179,13 @@ export const AssetPicker = ({
   useShortcut(Key.Escape, cancelModal);
 
   return (
-    <React.Fragment>
+    <>
       <Button
         title={__('pim_asset_manager.asset_collection.add_asset_title')}
-        buttonSize="medium"
-        color="outline"
-        isDisabled={!canAddAsset}
+        size="small"
+        level="tertiary"
+        ghost={true}
+        disabled={!canAddAsset}
         onClick={() => setOpen(true)}
       >
         {__('pim_asset_manager.asset_collection.add_asset')}
@@ -261,6 +260,8 @@ export const AssetPicker = ({
           </Container>
         </ScrollableModal>
       ) : null}
-    </React.Fragment>
+    </>
   );
 };
+
+export {AssetPicker};

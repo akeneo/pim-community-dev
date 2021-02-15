@@ -10,7 +10,6 @@ import {uploadFile} from 'akeneoassetmanager/application/asset-upload/utils/file
 
 jest.mock('akeneoassetmanager/application/component/app/select2');
 jest.mock('akeneoassetmanager/tools/notify', () => jest.fn());
-
 jest.mock('akeneoassetmanager/application/asset-upload/saver/asset', () => ({
   create: jest.fn().mockImplementation(() => Promise.resolve(null)),
 }));
@@ -154,7 +153,7 @@ describe('Test modal component', () => {
       // Wait for the line to be Valid (uploaded & completed)
       await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.' + LineStatus.Valid));
 
-      const removeLineButton = screen.getByLabelText('pim_asset_manager.asset.upload.remove');
+      const removeLineButton = screen.getByTitle('pim_asset_manager.asset.upload.remove');
       fireEvent.click(removeLineButton);
 
       // There should be a way to test if the dispatch has been called there
@@ -216,7 +215,7 @@ describe('Test modal component', () => {
       // Wait for the line to be Invalid (uploaded failed)
       await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.' + LineStatus.Invalid));
 
-      const retryUploadButton = screen.getByLabelText('pim_asset_manager.asset.upload.retry');
+      const retryUploadButton = screen.getByTitle('pim_asset_manager.asset.upload.retry');
       fireEvent.click(retryUploadButton);
 
       // There should be a way to test if the dispatch has been called there

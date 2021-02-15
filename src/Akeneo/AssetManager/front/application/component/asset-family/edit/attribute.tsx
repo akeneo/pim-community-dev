@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
+import {Key, Button} from 'akeneo-design-system';
 import __ from 'akeneoassetmanager/tools/translator';
 import {attributeCreationStart} from 'akeneoassetmanager/domain/event/attribute/create';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
@@ -15,12 +16,10 @@ import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/ap
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {getAttributeIcon} from 'akeneoassetmanager/application/configuration/attribute';
-import {Key} from 'akeneo-design-system';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {EditOptionState} from 'akeneoassetmanager/application/reducer/attribute/type/option';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import {StickyHeader} from 'akeneoassetmanager/application/component/asset-family/edit/permission';
-import {Button} from 'akeneoassetmanager/application/component/app/button';
 
 const securityContext = require('pim/security-context');
 
@@ -221,7 +220,7 @@ class AttributesView extends React.Component<CreateProps> {
           image={assetFamily.image}
           primaryAction={(defaultFocus: React.RefObject<any>) =>
             rights.attribute.create ? (
-              <Button color="blue" onClick={events.onAttributeCreationStart} ref={defaultFocus} tabIndex={0}>
+              <Button level="secondary" onClick={events.onAttributeCreationStart} ref={defaultFocus} tabIndex={0}>
                 {__('pim_asset_manager.attribute.button.add')}
               </Button>
             ) : null

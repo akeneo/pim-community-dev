@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {JsonEditor as Editor} from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
+import {AssetsIllustration, Information, Link, Button} from 'akeneo-design-system';
 import __ from 'akeneoassetmanager/tools/translator';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
@@ -18,9 +19,8 @@ import Ajv from 'ajv';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
-import {Button, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
+import {ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import schema from 'akeneoassetmanager/infrastructure/model/asset-family/transformations.schema.json';
-import {AssetsIllustration, Information, Link} from 'akeneo-design-system';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
 const securityContext = require('pim/security-context');
@@ -101,11 +101,11 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
           image={null}
           primaryAction={(defaultFocus: React.RefObject<any>) => (
             <ButtonContainer>
-              <Button color="outline" onClick={events.onLaunchComputeTransformations}>
+              <Button ghost={true} level="tertiary" onClick={events.onLaunchComputeTransformations}>
                 {__('pim_asset_manager.asset.button.launch_transformations')}
               </Button>
               {rights.assetFamily.edit && (
-                <Button color="green" onClick={events.onSaveEditForm} ref={defaultFocus}>
+                <Button onClick={events.onSaveEditForm} ref={defaultFocus}>
                   {__('pim_asset_manager.asset_family.button.save')}
                 </Button>
               )}

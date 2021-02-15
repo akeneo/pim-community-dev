@@ -1,15 +1,14 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import {CloseIcon, getColor, getFontSize, IconButton} from 'akeneo-design-system';
 import {Context} from 'akeneoassetmanager/domain/model/context';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import __ from 'akeneoassetmanager/tools/translator';
-import {RemoveButton} from 'akeneoassetmanager/application/component/app/remove-button';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import ListAsset, {
   getListAssetMainMediaThumbnail,
   getAssetLabel,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.li`
   padding: 10px 0;
@@ -18,7 +17,7 @@ const Container = styled.li`
   align-items: center;
 
   :not(:last-child) {
-    border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
+    border-bottom: 1px solid ${getColor('grey', 80)};
   }
 `;
 
@@ -38,7 +37,7 @@ const AssetDetails = styled.div`
 const AssetCode = styled.div`
   margin-bottom: 2px;
   line-height: 13px;
-  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.small};
+  font-size: ${getFontSize('small')};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -46,7 +45,7 @@ const AssetCode = styled.div`
 
 const AssetLabel = styled.div`
   line-height: 16px;
-  color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
+  color: ${getColor('brand', 100)};
   font-weight: bolditalic;
   font-style: italic;
   overflow: hidden;
@@ -62,12 +61,13 @@ const AssetItem = ({
 }: {
   asset: ListAsset;
   context: Context;
-  onRemove: () => void;
+  onRemove?: () => void;
   isLoading?: boolean;
 }) => {
   const label = getAssetLabel(asset, context.locale);
   const previewUrl = getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
   const [, , refreshedUrl] = useRegenerate(previewUrl);
+  const translate = useTranslate();
 
   return (
     <Container
@@ -80,8 +80,11 @@ const AssetItem = ({
         <AssetCode title={asset.code}>{asset.code}</AssetCode>
         <AssetLabel title={label}>{label}</AssetLabel>
       </AssetDetails>
-      <RemoveButton
-        title={__('pim_asset_manager.asset_picker.basket.remove_one_asset', {
+      <IconButton
+        icon={<CloseIcon />}
+        level="tertiary"
+        ghost="borderless"
+        title={translate('pim_asset_manager.asset_picker.basket.remove_one_asset', {
           assetName: label,
         })}
         onClick={onRemove}

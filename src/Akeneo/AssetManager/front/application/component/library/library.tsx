@@ -288,7 +288,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                       {translate(`pim_asset_manager.asset_family.button.${rights.assetFamily.edit ? 'edit' : 'view'}`)}
                     </Button>
                     <MultipleButton
-                      color="green"
                       items={[
                         ...(rights.asset.create
                           ? [

@@ -33,22 +33,6 @@ test('It should open a more button by clicking it', () => {
   expect(screen.getByText('pim_asset_manager.asset_collection.dismiss_other_actions')).toBeInTheDocument();
 });
 
-test('It should open a more button with the keyboard', () => {
-  renderWithProviders(<MoreButton elements={actions} />);
-  expect(screen.queryByText('pim_asset_manager.asset_collection.other_actions')).toBeNull();
-
-  fireEvent.keyPress(screen.getByTitle('pim_asset_manager.asset_collection.open_other_actions'), {
-    key: ' ',
-    keyCode: 32,
-    charCode: 32,
-  });
-
-  expect(screen.getByText('pim_asset_manager.asset_collection.other_actions')).toBeInTheDocument();
-  expect(screen.getByText('my nice action')).toBeInTheDocument();
-  expect(screen.getByText('my second nice action')).toBeInTheDocument();
-  expect(screen.getByText('pim_asset_manager.asset_collection.dismiss_other_actions')).toBeInTheDocument();
-});
-
 test('It should dismiss more button', () => {
   renderWithProviders(<MoreButton elements={actions} />);
 

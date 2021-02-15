@@ -57,6 +57,7 @@ import {
   AttributeGroupCollection,
 } from 'akeneoassetmanager/platform/model/structure/attribute-group';
 import {AssetsIllustration, Information, Link, LockIcon} from 'akeneo-design-system';
+import {ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 
 type ListStateProps = {
   attributes: Attribute[];
@@ -177,7 +178,7 @@ const DisplayValues = ({
               </>
             )}
             {value.editable && (
-              <>
+              <ButtonContainer>
                 <MassUploader
                   dataProvider={dataProvider}
                   assetFamilyIdentifier={value.attribute.referenceDataName}
@@ -204,7 +205,7 @@ const DisplayValues = ({
                     },
                   ]}
                 />
-              </>
+              </ButtonContainer>
             )}
           </SectionTitle>
           <RuleNotification attributeCode={value.attribute.code} ruleRelations={ruleRelations} />

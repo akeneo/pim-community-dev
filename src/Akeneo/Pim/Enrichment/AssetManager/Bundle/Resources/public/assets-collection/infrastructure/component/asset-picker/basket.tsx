@@ -1,13 +1,12 @@
-import React from 'react';
-import {Context} from 'akeneoassetmanager/domain/model/context';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import __ from 'akeneoassetmanager/tools/translator';
-import {Button} from 'akeneoassetmanager/application/component/app/button';
+import {AssetsIllustration, getColor, getFontSize, Button} from 'akeneo-design-system';
+import {Context} from 'akeneoassetmanager/domain/model/context';
 import AssetItem from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/basket/asset-item';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import ListAsset, {createEmptyAsset, getAssetByCode} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import {AssetsIllustration, getColor, getFontSize} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 type BasketProps = {
   dataProvider: any;
@@ -43,11 +42,8 @@ const List = styled.ul`
 const Footer = styled.div`
   border-top: 1px solid ${getColor('grey', 80)};
   padding-top: 10px;
-`;
-
-const RemoveAllButton = styled(Button)`
-  max-width: max-content;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
 `;
 
 const IllustrationContainer = styled.div`
@@ -61,9 +57,9 @@ const useLoadAssetCollection = (
   assetFamilyIdentifier: AssetFamilyIdentifier,
   context: Context
 ) => {
-  const [assetCollection, setAssetCollection] = React.useState<ListAsset[]>([]);
+  const [assetCollection, setAssetCollection] = useState<ListAsset[]>([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (0 === selection.length) {
       setAssetCollection([]);
       return;
@@ -81,53 +77,44 @@ const useLoadAssetCollection = (
 
 const Basket = ({dataProvider, assetFamilyIdentifier, selection, context, onRemove, onRemoveAll}: BasketProps) => {
   const {assetCollection} = useLoadAssetCollection(selection, dataProvider, assetFamilyIdentifier, context);
+  const translate = useTranslate();
 
   if (0 === selection.length) {
-    return <EmptyResult />;
+    return (
+      <Container>
+        <Title>{translate('pim_asset_manager.asset_picker.basket.empty_title')}</Title>
+        <IllustrationContainer>
+          <AssetsIllustration size={128} />
+        </IllustrationContainer>
+      </Container>
+    );
   }
 
   return (
     <Container data-container="basket">
-      <Title>{__('pim_asset_manager.asset_selected', {assetCount: selection.length}, selection.length)}</Title>
+      <Title>{translate('pim_asset_manager.asset_selected', {assetCount: selection.length}, selection.length)}</Title>
       <List>
         {selection.map((assetCode: AssetCode) => {
           const asset = getAssetByCode(assetCollection, assetCode);
           if (undefined === asset) {
-            return (
-              <AssetItem
-                asset={createEmptyAsset(assetCode)}
-                context={context}
-                onRemove={() => {}}
-                isLoading={true}
-                key={assetCode}
-              />
-            );
+            return <AssetItem asset={createEmptyAsset(assetCode)} context={context} isLoading={true} key={assetCode} />;
           }
           return <AssetItem asset={asset} context={context} onRemove={() => onRemove(asset.code)} key={assetCode} />;
         })}
       </List>
       <Footer>
-        <RemoveAllButton
-          buttonSize="default"
-          color="outline"
-          title={__('pim_asset_manager.asset_picker.basket.remove_all_assets')}
+        <Button
+          ghost={true}
+          level="tertiary"
+          title={translate('pim_asset_manager.asset_picker.basket.remove_all_assets')}
           tabIndex={1}
           onClick={onRemoveAll}
         >
-          {__('pim_asset_manager.asset_picker.basket.remove_all_assets')}
-        </RemoveAllButton>
+          {translate('pim_asset_manager.asset_picker.basket.remove_all_assets')}
+        </Button>
       </Footer>
     </Container>
   );
 };
-
-const EmptyResult = () => (
-  <Container>
-    <Title>{__('pim_asset_manager.asset_picker.basket.empty_title')}</Title>
-    <IllustrationContainer>
-      <AssetsIllustration size={128} />
-    </IllustrationContainer>
-  </Container>
-);
 
 export default Basket;

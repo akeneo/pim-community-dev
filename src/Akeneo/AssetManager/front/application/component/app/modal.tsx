@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import {Button, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
+import {ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {AssetCategoriesIllustration, Key, useShortcut} from 'akeneo-design-system';
+import {AssetCategoriesIllustration, Key, useShortcut, Button} from 'akeneo-design-system';
 
 export const Modal = styled.div`
   display: flex;
@@ -85,10 +85,10 @@ export const ConfirmModal = ({
               <div className="AknFullPage-description">{content}</div>
             </div>
             <ButtonContainer>
-              <Button color="grey" onClick={onCancel}>
+              <Button level="tertiary" onClick={onCancel}>
                 {cancelButtonText}
               </Button>
-              <Button color="blue" onClick={onConfirm}>
+              <Button level="secondary" onClick={onConfirm}>
                 {confirmButtonText}
               </Button>
             </ButtonContainer>
