@@ -87,7 +87,7 @@ const UpdaterRow = ({updater, uiLocale, readOnly, errors, onChange, onRemove, ch
           onSubmit={() => {}}
           value={updater}
         />
-        {getErrorsView(errors, '', () => () => true)}
+        {getErrorsView(errors, `updaters.${updater.id}`)}
       </InputCell>
       <ContextCell>
         {null !== updater.channel && (

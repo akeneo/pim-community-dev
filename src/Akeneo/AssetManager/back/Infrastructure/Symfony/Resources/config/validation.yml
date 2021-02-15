@@ -80,7 +80,7 @@ Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand:
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetValueCommands: ~
 
-Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\MassEditAssetsCommand:
+Akeneo\AssetManager\Application\Asset\MassEditAssets\MassEditAssetsCommand:
     properties:
         assetFamilyIdentifier:
             - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~

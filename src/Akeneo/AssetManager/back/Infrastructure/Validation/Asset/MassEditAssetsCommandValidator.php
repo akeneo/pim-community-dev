@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
-use Akeneo\AssetManager\Application\Asset\MassEditAssets\MassEditAssetsCommand;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Akeneo\AssetManager\Application\Asset\MassEditAssets\MassEditAssetsCommand;
+use Akeneo\AssetManager\Infrastructure\Validation\Asset\MassEditAssetsCommand as ConstraintClass;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -45,7 +46,7 @@ class MassEditAssetsCommandValidator extends ConstraintValidator
         }
 
         foreach ($updaters as $updater) {
-            $violations = $this->validator->validate($updater->command);
+            $violations = $this->validator->validate($updater['command']);
             foreach ($violations as $violation) {
                 $this->context->buildViolation($violation->getMessage())
                     ->setParameters($violation->getParameters())
@@ -81,7 +82,7 @@ class MassEditAssetsCommandValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof MassEditAssetsCommand) {
+        if (!$constraint instanceof ConstraintClass) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }

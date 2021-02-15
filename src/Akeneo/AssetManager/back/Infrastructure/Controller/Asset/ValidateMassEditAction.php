@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -59,19 +60,22 @@ class ValidateMassEditAction
     private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
     private TokenStorageInterface $tokenStorage;
     private ValidatorInterface $validator;
+    private NormalizerInterface $normalizer;
 
     public function __construct(
         EditAssetCommandFactory $editAssetCommandFactory,
         SecurityFacade $securityFacade,
         CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        NormalizerInterface $normalizer
     ) {
         $this->editAssetCommandFactory = $editAssetCommandFactory;
         $this->securityFacade = $securityFacade;
         $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
         $this->validator = $validator;
+        $this->normalizer = $normalizer;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response
@@ -97,7 +101,7 @@ class ValidateMassEditAction
         $normalizedCommand = json_decode($request->getContent(), true);
         $query = AssetQuery::createFromNormalized($normalizedCommand['query']);
         $type = $normalizedCommand['type'];
-        $action = $normalizedCommand['action'];
+        $normalizedUpdaters = $normalizedCommand['updaters'];
         $assetFamilyIdentifier = $this->getAssetFamilyIdentifierOr404($assetFamilyIdentifier);
 
         if ($this->hasDesynchronizedIdentifiers($assetFamilyIdentifier, $query)) {
@@ -114,7 +118,7 @@ class ValidateMassEditAction
             );
         }
 
-        $command = $this->createCommand((string) $assetFamilyIdentifier, $query->normalize(), $action);
+        $command = $this->createCommand((string) $assetFamilyIdentifier, $query->normalize(), $normalizedUpdaters);
 
         $violations = $this->validator->validate($command);
 
@@ -158,17 +162,19 @@ class ValidateMassEditAction
         return (string) $routeAssetFamilyIdentifier !== $query->getFilter('asset_family')['value'];
     }
 
-    private function createCommand(string $assetFamilyIdentifier, array $query, array $action): MassEditAssetsCommand
+    private function createCommand(string $assetFamilyIdentifier, array $query, array $normalizedUpdaters): MassEditAssetsCommand
     {
         $updaters = array_map(function ($updater) use ($assetFamilyIdentifier) {
             $fakeEditAssetCommand = $this->editAssetCommandFactory->create([
                 'asset_family_identifier' => $assetFamilyIdentifier,
                 'code' => 'FAKE_CODE_FOR_MASS_EDIT_VALIDATION_' . microtime(),
                 'values' => [
-                    'attribute' => $updater['attribute'],
-                    'channel' => $updater['channel'],
-                    'locale' => $updater['locale'],
-                    'data' => $updater['data'],
+                    [
+                        'attribute' => $updater['attribute'],
+                        'channel' => $updater['channel'],
+                        'locale' => $updater['locale'],
+                        'data' => $updater['data'],
+                    ]
                 ]
             ]);
 
@@ -177,7 +183,7 @@ class ValidateMassEditAction
                 'id' => $updater['id'],
                 'command' => $fakeEditAssetCommand->editAssetValueCommands[0]
             ];
-        }, $action);
+        }, $normalizedUpdaters);
 
         return new MassEditAssetsCommand($assetFamilyIdentifier, $query, $updaters);
     }

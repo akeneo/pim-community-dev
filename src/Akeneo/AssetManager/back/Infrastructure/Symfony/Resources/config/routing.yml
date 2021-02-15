@@ -82,7 +82,7 @@ akeneo_asset_manager_asset_mass_delete_rest:
     defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset.mass_delete }
     methods: [DELETE]
 
-akeneo_asset_manager_asset_mass_validate_edit_rest:
+akeneo_asset_manager_asset_validate_mass_edit_rest:
     path: '/rest/asset_manager/{assetFamilyIdentifier}/assets/validate'
     defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset.validate_mass_edit }
     methods: [POST]

@@ -10,8 +10,9 @@ import {AddAttributeDropdown} from './components/AddAttributeDropdown';
 import {EmptyUpdaterCollection} from './components/EmptyUpdaterCollection';
 import {UpdaterCollection} from './components/UpdaterCollection';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-import massEditLauncher from 'akeneoassetmanager/infrastructure/mass-edit-launcher';
 import {Updater} from './model/updater';
+import {useMassEdit} from './hooks/useMassEdit';
+import {Query} from '../../../../domain/fetcher/fetcher';
 
 const Container = styled.div`
   width: 100%;
@@ -45,6 +46,7 @@ const Footer = styled.div`
 type MassEditModalProps = {
   assetFamily: AssetFamily;
   context: Context;
+  selectionQuery: Query;
   selectedAssetCount: number;
   onConfirm: (updaterCollection: Updater[]) => void;
   onCancel: () => void;
@@ -53,6 +55,7 @@ type MassEditModalProps = {
 
 const MassEditModal = ({
   assetFamily,
+  selectionQuery,
   context,
   selectedAssetCount,
   onCancel,
@@ -60,6 +63,7 @@ const MassEditModal = ({
   channels,
 }: MassEditModalProps) => {
   const translate = useTranslate();
+  const [validateMassEdit] = useMassEdit();
   const [updaterCollection, addUpdater, removeUpdater, setUpdater, usedAttributeIdentifiers] = useUpdaterCollection();
   const steps = ['edit', 'confirm'];
   const [isCurrentStep, nextStep, previousStep] = useProgress(steps);
@@ -79,7 +83,7 @@ const MassEditModal = ({
 
   const handleMoveToConfirmStep = async () => {
     setErrors([]);
-    const errors = await massEditLauncher.validate(assetFamily.identifier, updaterCollection);
+    const errors = await validateMassEdit(assetFamily.identifier, selectionQuery, updaterCollection);
     if (errors.length) {
       setErrors(errors);
 

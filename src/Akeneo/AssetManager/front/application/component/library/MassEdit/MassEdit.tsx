@@ -6,8 +6,8 @@ import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-fa
 import {MassEditModal} from 'akeneoassetmanager/application/component/library/MassEdit/MassEditModal';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-import massEditLauncher from 'akeneoassetmanager/infrastructure/mass-edit-launcher';
 import {Updater} from './model/updater';
+import {useMassEdit} from './hooks/useMassEdit';
 
 type MassEditProps = {
   selectionQuery: Query | null;
@@ -28,12 +28,12 @@ const MassEdit = ({
   const translate = useTranslate();
   const [isMassEditModalOpen, openMassEditModal, closeMassEditModal] = useBooleanState(false);
   const notify = useNotify();
-
-  const handleMassEdit = useCallback((updaterCollection: Updater[]) => {
+  const [,launchMassEdit] = useMassEdit();
+  const handleMassEdit = useCallback(async (updaterCollection: Updater[]) => {
     if (selectionQuery === null || assetFamily === null) return;
 
     try {
-      massEditLauncher.launch(assetFamily.code, selectionQuery, updaterCollection);
+      await launchMassEdit(assetFamily.code, selectionQuery, updaterCollection);
       notify(NotificationLevel.SUCCESS, translate('pim_asset_manager.asset.notification.mass_edit.success'));
       closeMassEditModal();
 
@@ -43,6 +43,8 @@ const MassEdit = ({
     }
   }, [selectionQuery, closeMassEditModal, assetFamily]);
 
+  if (null === selectionQuery) return;
+
   return (
     <>
       <Button level="secondary" onClick={openMassEditModal}>
@@ -51,6 +53,7 @@ const MassEdit = ({
       {isMassEditModalOpen && null !== assetFamily && (
         <MassEditModal
           assetFamily={assetFamily}
+          selectionQuery={selectionQuery}
           selectedAssetCount={selectedCount}
           context={context}
           onConfirm={handleMassEdit}

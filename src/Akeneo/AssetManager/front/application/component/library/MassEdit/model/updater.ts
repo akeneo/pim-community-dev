@@ -14,6 +14,7 @@ type Updater = {
 
 const normalizeUpdater = (updater: Updater) => {
   return {
+    id: updater.id,
     channel: updater.channel,
     locale: updater.locale,
     attribute: updater.attribute.identifier,
