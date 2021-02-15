@@ -47,7 +47,8 @@ class UserNormalizerSpec extends ObjectBehavior
         $salesTree->setCode('sales');
         $print = new Channel();
         $print->setCode('print');
-        $avatar->getKey()->willReturn('a/b/c/avatar.png');
+        $avatar->getKey()->willReturn('a/b/c/123456avatar.png');
+        $avatar->getOriginalFilename()->willReturn('avatar.png');
 
         $user->getUsername()->willReturn('johndoe');
         $user->isEnabled()->willReturn(true);
@@ -81,7 +82,10 @@ class UserNormalizerSpec extends ObjectBehavior
                 'name_suffix' => null,
                 'phone' => '+330000000',
                 'email' => 'john.doe@example.null',
-                'avatar' => 'a/b/c/avatar.png',
+                'avatar' => [
+                    'filePath' => 'a/b/c/123456avatar.png',
+                    'originalFilename' => 'avatar.png',
+                ],
                 'catalog_default_locale' => 'en_US',
                 'catalog_default_scope' => 'print',
                 'default_category_tree' => 'sales',
