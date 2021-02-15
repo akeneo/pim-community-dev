@@ -28,18 +28,20 @@ services:
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.csv_user:
-        class: 'Akeneo\Tool\Component\Connector\Writer\File\Csv\Writer'
+        class: 'Akeneo\UserManagement\Component\Connector\Writer\File\CsvUserWriter'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.user'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_user.writer.file.flat_item_buffer_flusher'
+            - '@filesystem'
 
     pim_connector.writer.file.xlsx_user:
-        class: 'Akeneo\Tool\Component\Connector\Writer\File\Xlsx\Writer'
+        class: 'Akeneo\UserManagement\Component\Connector\Writer\File\XlsxUserWriter'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.user'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_user.writer.file.flat_item_buffer_flusher'
+            - '@filesystem'
 
     pim_user.writer.file.flat_item_buffer_flusher:
         class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
