@@ -4,7 +4,8 @@ define([
   'oro/datagrid/string-cell',
   'pim/media-url-generator',
   'pim/template/datagrid/cell/image-cell',
-], function (_, StringCell, MediaUrlGenerator, template) {
+  'jquery',
+], function (_, StringCell, MediaUrlGenerator, template, $) {
   'use strict';
 
   /**
@@ -25,6 +26,10 @@ define([
 
       const src = MediaUrlGenerator.getMediaShowUrl(image.filePath, 'thumbnail_small');
       this.$el.empty().html(this.getTemplate({label: image.originalFilename, src}));
+
+      this.$el.find('img').one('error', function () {
+        $(this).attr('src', MediaUrlGenerator.getMediaShowUrl(null, 'thumbnail_small'));
+      });
 
       return this;
     },
