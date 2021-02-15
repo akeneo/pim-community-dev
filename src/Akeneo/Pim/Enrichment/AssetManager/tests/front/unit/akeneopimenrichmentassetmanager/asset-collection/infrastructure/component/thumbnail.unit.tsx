@@ -214,3 +214,24 @@ test('It triggers event on click by clicking', () => {
   fireEvent.click(screen.getByTestId('overlay'));
   expect(clicked).toEqual(true);
 });
+
+test('It displays a fallback image when error happens', () => {
+  renderWithProviders(
+    <Thumbnail
+      asset={sideViewAsset}
+      context={{
+        locale: 'en_US',
+        channel: 'ecommerce',
+      }}
+      readonly={false}
+      assetCollection={assets}
+      onRemove={() => {}}
+      onMove={() => {}}
+    />
+  );
+
+  const thumbnail = screen.getByTestId('thumbnail-preview');
+  expect(thumbnail).toBeInTheDocument();
+  fireEvent.error(thumbnail);
+  expect(thumbnail.getAttribute('src')).toEqual('/media/show/undefined/thumbnail_small');
+});

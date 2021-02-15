@@ -163,7 +163,16 @@ export const Thumbnail = ({
           )}
         </Overlay>
       )}
-      <Img src={refreshedUrl} />
+      <Img
+        src={refreshedUrl}
+        onError={ev => {
+          const thumbnailPreviewUrl = '/media/show/undefined/thumbnail_small';
+          if (ev.currentTarget.src !== thumbnailPreviewUrl) {
+            ev.currentTarget.src = thumbnailPreviewUrl;
+          }
+        }}
+        data-testid={'thumbnail-preview'}
+      />
     </Container>
   );
 };
