@@ -1,30 +1,3 @@
-/**
- * <SelectInput {...args} value="Value1" placeholder="Placeholder" noResult={<NoResult>}>
- <SelectInput.Option value="value1">Value</SelectInput.Option>
- <SelectInput.Option value="value2" selected>Value1</SelectInput.Option>
- <SelectInput.Option value="value3">Value2</SelectInput.Option>
- <SelectInput.Option>Value3</SelectInput.Option>
- <SelectInput.Option>Value4</SelectInput.Option>
- <SelectInput.Option>Value5</SelectInput.Option>
- </SelectInput>
- */
-
-/**
- * Au click on ouvre la dropdown DONE
- * Je clique sur un element on ferme en changeant la value du select DONE
- * Je click en dehors ça ferme le dropdown DONE
- * Je fait joue joue avec mon keyboard ça change d'item selection DONE
- * on affiche la croix uniquement au hover
- * Lorsqu'on click sur la croix on clear la value
- * Lorsque je recherche uniquement les matchs s'affichents DONE
- * On peut chercher par label et par code DONE
- * Si pas de result qu'affiche t'on
- *
- * position up/down
- * check duplicates on options
- * see if we should allow no values
- */
-
 import React, {ReactNode, useState, useRef, isValidElement, ReactElement, KeyboardEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {Key, Override} from '../../../shared';
@@ -71,9 +44,9 @@ const SelectedOptionContainer = styled.div<{readOnly: boolean} & AkeneoThemedPro
   box-sizing: border-box;
 `;
 
-const OptionContainer = styled.div<{tall: boolean} & AkeneoThemedProps>`
+const OptionContainer = styled.div`
   background: ${getColor('white')};
-  height: ${({tall}) => (tall ? '44px' : '34px')};
+  height: 34px;
   padding: 0 20px;
   align-items: center;
   gap: 10px;
@@ -116,27 +89,13 @@ const EmptyResultContainer = styled.div<{tall: boolean} & AkeneoThemedProps>`
   text-align: center;
 `;
 
-const Backdrop = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
-`;
-
 type VerticalPosition = 'up' | 'down';
 
 const OverlayContainer = styled.div`
   position: relative;
 `;
 
-const Overlay = styled.div<
-  {
-    visible: boolean;
-    verticalPosition: VerticalPosition;
-  } & AkeneoThemedProps
->`
+const Overlay = styled.div<{verticalPosition: VerticalPosition} & AkeneoThemedProps>`
   background: ${getColor('white')};
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.3);
   padding: 10px 0 10px 0;
@@ -149,11 +108,20 @@ const Overlay = styled.div<
   ${({verticalPosition}) =>
     'up' === verticalPosition
       ? css`
-          bottom: 6px;
+          bottom: 46px;
         `
       : css`
           top: 6px;
         `};
+`;
+
+const Backdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
 `;
 
 const OptionCollection = styled.div`
@@ -165,9 +133,22 @@ const Option = styled.span<{value: string}>``;
 
 type SelectInputProps = Override<
   Override<React.InputHTMLAttributes<HTMLDivElement>, InputProps<string | null>>,
-  {
+  (
+    | {
+        readOnly: true;
+      }
+    | {
+        readOnly?: boolean;
+        onChange: (newValue: string | null) => void;
+      }
+  ) & {
     /**
-     * The placeholder displayed when no option is selected
+     * The props value of the selected option.
+     */
+    value: string | null;
+
+    /**
+     * The placeholder displayed when no option is selected.
      */
     placeholder?: string;
 
@@ -192,23 +173,33 @@ type SelectInputProps = Override<
     invalid?: boolean;
 
     /**
-     * The options
+     * The options.
      */
     children: ReactNode;
+
+    /**
+     * Force the vertical position of the overlay.
+     */
+    verticalPosition?: VerticalPosition;
   }
 >;
 
+/**
+ * Select input allows the user to select content and data when the expected user input is composed of one.
+ */
 const SelectInput = ({
   id,
   placeholder,
   invalid,
   value,
   emptyResultLabel,
-  clearSelectLabel = '',
-  openSelectLabel = '',
   children,
   onChange,
-  readOnly,
+  clearSelectLabel = '',
+  openSelectLabel = '',
+  readOnly = false,
+  verticalPosition = 'down',
+  'aria-labelledby': ariaLabelledby,
   ...rest
 }: SelectInputProps) => {
   const [searchValue, setSearchValue] = useState<string>('');
@@ -260,8 +251,13 @@ const SelectInput = ({
     setSearchValue(value);
   };
 
-  const handleFocus = () => {
-    openOverlay();
+  const handleClick = () => {
+    if (dropdownIsOpen) {
+      setSearchValue('');
+      closeOverlay();
+    } else {
+      openOverlay();
+    }
   };
 
   const handleOptionClick = (value: string) => () => {
@@ -296,7 +292,8 @@ const SelectInput = ({
           invalid={invalid}
           placeholder={null === value ? placeholder : ''}
           onChange={handleSearch}
-          onFocus={handleFocus}
+          onClick={handleClick}
+          aria-labelledby={ariaLabelledby}
           data-testid="select_input"
         />
         {!readOnly && (
@@ -338,7 +335,7 @@ const SelectInput = ({
         {dropdownIsOpen && !readOnly && (
           <>
             <Backdrop data-testid="backdrop" onClick={handleBlur} />
-            <Overlay onClose={handleBlur}>
+            <Overlay verticalPosition={verticalPosition} onClose={handleBlur}>
               <OptionCollection>
                 {filteredChildren.length === 0 ? (
                   <EmptyResultContainer>{emptyResultLabel}</EmptyResultContainer>
