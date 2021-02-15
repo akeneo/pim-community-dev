@@ -17,6 +17,8 @@
 - PIM-9658: Add missing backend permission checks
 - PIM 9657: Make open filters close when opening a new one.
 - PIM-9671: Provide a data quality insight status context for attribute groups
+- PIM-9670: Fix attribute filter "Group" issue when several attribute groups have the same label
+- PIM-9664: Display Ziggy as asset image when the preview cannot be generated
 
 ## New features
 

@@ -1,12 +1,12 @@
 pim_menu.item:
-  measurements: Messungen
+  measurements: Maßeinheiten
 pim_title:
-  akeneo_measurements_settings_index: Messungen
-  akeneo_measurements_settings_any: Messungen
+  akeneo_measurements_settings_index: Maßeinheiten
+  akeneo_measurements_settings_any: Maßeinheiten
 measurements:
   label_translations: Label-Übersetzungen in UI-Gebietsschema
   helper:
-    title: Willkommen bei den Messungen!
+    title: Willkommen zu den Maßeinheiten!
     text: Hier können Sie Ihre eigenen Messfamilien mit deren Einheiten erstellen oder die vorhandenen Messfamilien um Einheiten erweitern.
     link: Möchten Sie mehr wissen? Hier geht's!
   search:

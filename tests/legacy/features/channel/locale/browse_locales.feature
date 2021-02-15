@@ -10,6 +10,5 @@ Feature: Browse locales
 
   Scenario: Successfully view locales
     When I am on the locales page
-    Then I should see the columns Activated locales
     And the grid should contain 2 elements
     And I should see entity en_US and fr_FR
