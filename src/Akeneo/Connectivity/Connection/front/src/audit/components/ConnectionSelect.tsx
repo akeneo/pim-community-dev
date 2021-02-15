@@ -22,10 +22,10 @@ export const ConnectionSelect = ({connections, onChange, label}: Props) => {
     }, {} as {[code: string]: {label: string; imageSrc?: string}});
 
     return (
-        <>
+        <span>
             <Label>{label}</Label>
             <Select data={data} onChange={onChange} dropdownTitle={label} />
-        </>
+        </span>
     );
 };
 
