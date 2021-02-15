@@ -1,6 +1,6 @@
+import React from 'react';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {Table} from 'akeneo-design-system';
-import React from 'react';
 import {UpdaterRow} from 'akeneoassetmanager/application/component/library/MassEdit/components/UpdaterRow';
 import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
 import Channel from 'akeneoassetmanager/domain/model/channel';
@@ -27,7 +27,7 @@ const UpdaterCollection = ({
   return (
     <Table>
       <Table.Body>
-        {updaterCollection.map((updater, _index) => (
+        {updaterCollection.map(updater => (
           <UpdaterRow
             key={updater.id}
             updater={updater}

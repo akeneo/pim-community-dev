@@ -67,9 +67,7 @@ const View = ({
           autoComplete="off"
           readOnly={!canEditData}
           value={textDataStringValue(value.data)}
-          onChange={(newValue: string) => {
-            onValueChange(newValue);
-          }}
+          onChange={onValueChange}
           onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
             if (Key.Enter === event.key) onSubmit();
           }}

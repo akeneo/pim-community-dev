@@ -351,8 +351,8 @@ pim_asset_manager:
       attribute_selected: "{0}No attribute selected|{1}One attribute selected|]1,Inf]{{ count }} attributes selected"
       extra_information: "Only the attributes belonging to the assets family of the selected assets will be edited with the following data."
       empty_selection:
-        title: You attribute selection is empty, please add attributes to edit.
-        body: You don't know what an mass action is?
+        title: Your attribute selection is empty, please add attributes to edit.
+        body: You don't know what a mass action is?
         link: This article may help you.
     grid:
       search: Search on label, code and text attributes

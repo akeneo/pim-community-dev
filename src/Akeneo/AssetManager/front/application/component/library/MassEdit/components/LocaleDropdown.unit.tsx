@@ -93,3 +93,16 @@ test('it call onChange handler when user click on another locale', () => {
 
   expect(handleOnChange).toHaveBeenCalledWith('de_DE')
 });
+
+test('it return nothing when locale is not found', () => {
+  renderWithProviders(
+    <LocaleDropdown
+      readOnly={false}
+      locales={locales}
+      locale="unknown_locale"
+      onChange={() => {}}
+    />
+  );
+
+  expect(screen.queryByText('unknown_locale')).not.toBeInTheDocument();
+});

@@ -69,7 +69,7 @@ const MassEditModal = ({
     onConfirm(updaterCollection);
   };
 
-  const handleEscape = () => {
+  const handleClose = () => {
     if (updaterCollection.length > 0 && !confirm(translate('pim_ui.flash.unsaved_changes'))) {
       return;
     }
@@ -90,14 +90,14 @@ const MassEditModal = ({
   };
 
   return (
-    <Modal closeTitle={translate('pim_common.close')} onClose={onCancel} onEscape={handleEscape}>
+    <Modal closeTitle={translate('pim_common.close')} onClose={handleClose}>
       <Modal.TopRightButtons>
         {isCurrentStep('edit') && (
           <>
             <Button level="tertiary" onClick={onCancel}>
               {translate('pim_common.cancel')}
             </Button>
-            <Button onClick={() => handleMoveToConfirmStep()}>{translate('pim_common.next')}</Button>
+            <Button onClick={handleMoveToConfirmStep}>{translate('pim_common.next')}</Button>
           </>
         )}
         {isCurrentStep('confirm') && (

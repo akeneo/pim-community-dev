@@ -151,3 +151,17 @@ test('it call onChange handler when user click on another channel', () => {
 
   expect(handleOnChange).toHaveBeenCalledWith('mobile')
 });
+
+test('it return nothing when locale is not found', () => {
+  renderWithProviders(
+    <ChannelDropdown
+      readOnly={false}
+      uiLocale="en_US"
+      channels={channels}
+      channel="unknown_channel"
+      onChange={() => {}}
+    />
+  );
+
+  expect(screen.queryByText('unknown_channel')).not.toBeInTheDocument();
+});

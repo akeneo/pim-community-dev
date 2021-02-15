@@ -26,6 +26,7 @@ const Body = styled.span`
 
 const EmptyUpdaterCollection = () => {
   const translate = useTranslate();
+
   return (
     <EmptyUpdaterCollectionContainer>
       <RulesIllustration size={128} />

@@ -3,6 +3,7 @@ import {
   hasFilterView,
   getFilterView,
   getFilterViews,
+  getValueConfig
 } from 'akeneoassetmanager/application/configuration/value';
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 

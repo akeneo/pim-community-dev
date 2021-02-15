@@ -1,8 +1,8 @@
+import React from 'react';
 import {ArrowDownIcon, Button, Dropdown, useBooleanState} from 'akeneo-design-system';
 import Channel, {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {getLabel} from 'pimui/js/i18n';
-import React from 'react';
 
 type ChannelDropdownProps = {
   readOnly: boolean;

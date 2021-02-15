@@ -1,6 +1,6 @@
+import React from 'react';
 import {ArrowDownIcon, Button, Dropdown, Locale as LocaleLabel, useBooleanState} from 'akeneo-design-system';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import React from 'react';
 
 type LocaleDropdownProps = {
   readOnly: boolean;
