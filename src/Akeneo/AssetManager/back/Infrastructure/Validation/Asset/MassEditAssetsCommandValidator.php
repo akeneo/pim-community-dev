@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2021 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
-use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
+use Akeneo\AssetManager\Application\Asset\MassEditAssets\MassEditAssetsCommand;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -22,10 +22,9 @@ use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  */
-class EditAssetValueCommandsValidator extends ConstraintValidator
+class MassEditAssetsCommandValidator extends ConstraintValidator
 {
     /** @var ValidatorInterface */
     private $validator;
@@ -35,34 +34,34 @@ class EditAssetValueCommandsValidator extends ConstraintValidator
         $this->validator = $validator;
     }
 
-    public function validate($editAssetCommand, Constraint $constraint)
+    public function validate($massEditAssetsCommand, Constraint $constraint)
     {
         $this->checkConstraintType($constraint);
-        $this->checkCommandType($editAssetCommand);
-        $editAssetValueCommands = $editAssetCommand->editAssetValueCommands;
+        $this->checkCommandType($massEditAssetsCommand);
+        $updaters = $massEditAssetsCommand->updaters;
 
-        if (!$this->isArray($editAssetValueCommands)) {
+        if (!$this->isArray($updaters)) {
             return;
         }
 
-        foreach ($editAssetValueCommands as $editValueCommand) {
-            $violations = $this->validator->validate($editValueCommand);
+        foreach ($updaters as $updater) {
+            $violations = $this->validator->validate($updater->command);
             foreach ($violations as $violation) {
                 $this->context->buildViolation($violation->getMessage())
                     ->setParameters($violation->getParameters())
-                    ->atPath(sprintf('values.%s', $violation->getPropertyPath()))
+                    ->atPath(sprintf('updaters.%s', $updater['id']))
                     ->setCode($violation->getCode())
                     ->setPlural($violation->getPlural())
-                    ->setInvalidValue($editValueCommand)
+                    ->setInvalidValue($updater)
                     ->addViolation();
             }
         }
     }
 
-    private function isArray($editAssetValueCommands): bool
+    private function isArray($updaters): bool
     {
         $validator = Validation::createValidator();
-        $violations = $validator->validate($editAssetValueCommands, new Assert\Type('array'));
+        $violations = $validator->validate($updaters, new Assert\Type('array'));
         $hasViolations = $violations->count() > 0;
 
         if ($hasViolations) {
@@ -82,7 +81,7 @@ class EditAssetValueCommandsValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof EditAssetValueCommands) {
+        if (!$constraint instanceof MassEditAssetsCommand) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }
@@ -92,11 +91,11 @@ class EditAssetValueCommandsValidator extends ConstraintValidator
      */
     private function checkCommandType($command)
     {
-        if (!$command instanceof EditAssetCommand) {
+        if (!$command instanceof MassEditAssetsCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
-                    EditTextValueCommand::class,
+                    MassEditAssetsCommand::class,
                     get_class($command)
                 )
             );

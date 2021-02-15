@@ -192,6 +192,15 @@ services:
             - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
             - '@security.token_storage'
 
+    akeneo_assetmanager.infrastructure.action.asset.validate_mass_edit:
+        class: Akeneo\AssetManager\Infrastructure\Controller\Asset\ValidateMassEditAction
+        arguments:
+            - '@akeneo_assetmanager.application.factory.asset.connector.edit_asset_command_factory'
+            - '@oro_security.security_facade'
+            - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+            - '@security.token_storage'
+            - '@validator'
+
     akeneo_assetmanager.infrastructure.action.image_preview:
         class: Akeneo\AssetManager\Infrastructure\Controller\Asset\ImagePreviewAction
         arguments:

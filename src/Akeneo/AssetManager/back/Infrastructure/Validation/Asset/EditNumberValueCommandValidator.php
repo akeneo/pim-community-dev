@@ -210,7 +210,7 @@ class EditNumberValueCommandValidator extends ConstraintValidator
      *
      * @return bool
      */
-    private function isTooLong(EditNumberValueCommand $command) :bool
+    private function isTooLong(EditNumberValueCommand $command): bool
     {
         return ((string) ((int) $command->number)) !== (string) $command->number;
     }

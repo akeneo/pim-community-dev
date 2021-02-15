@@ -11,21 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Application\Asset\MassDeleteAssets;
+namespace Akeneo\AssetManager\Application\Asset\MassEditAssets;
 
 /**
- * Command to mass delete assets from a family
+ * Command to mass edit assets from a family
+ *
  * @author Julien Sanchez <julien@akeneo.com>
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  */
-class MassDeleteAssetsCommand
+class MassEditAssetsCommand
 {
     public string $assetFamilyIdentifier;
     public array $query;
+    public array $updaters;
 
-    public function __construct(string $assetFamilyIdentifier, array $query)
+    public function __construct(string $assetFamilyIdentifier, array $query, array $updaters)
     {
         $this->assetFamilyIdentifier = $assetFamilyIdentifier;
         $this->query = $query;
+        $this->updaters = $updaters;
     }
 }
