@@ -1,16 +1,6 @@
 version: 2.1
 
 jobs:
-  checkout:
-    docker:
-      - image: alpine/git
-    steps:
-      - checkout
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project
-
   build_dev:
     parameters:
         is_pull_request:
@@ -19,8 +9,7 @@ jobs:
     machine:
       image: ubuntu-1604:201903-01
     steps:
-      - attach_workspace:
-            at: ~/
+      - checkout
       - run:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
@@ -332,12 +321,9 @@ workflows:
                     branches:
                         ignore:
                             - "4.0"
-          - checkout:
-                requires:
-                    - wait_for_user_approval
           - build_dev:
                 requires:
-                    - checkout
+                    - wait_for_user_approval
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -350,12 +336,12 @@ workflows:
           - test_back_phpunit:
                 requires:
                     - build_dev
-          - test_back_data_migrations:
-                requires:
-                    - test_back_missing_structure_migrations
           - test_back_performance:
                 requires:
-                    - test_back_missing_structure_migrations
+                    - build_dev
+          - test_back_data_migrations:
+                requires:
+                    - build_dev
           - back_behat_legacy:
                 requires:
                     - test_back_missing_structure_migrations
@@ -371,11 +357,8 @@ workflows:
                             - "4.0"
 
       jobs:
-          - checkout
           - build_dev:
                 is_pull_request: false
-                requires:
-                    - checkout
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -410,13 +393,10 @@ workflows:
                 filters:
                     branches:
                         only: "4.0"
-          - checkout:
-                requires:
-                    - ready_to_build?
           - build_dev:
                 is_pull_request: false
                 requires:
-                    - checkout
+                    - ready_to_build?
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
