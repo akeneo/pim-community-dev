@@ -2,19 +2,20 @@ import React from 'react';
 import {Modal, UsersIllustration} from 'akeneo-design-system';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {CreateUserForm} from '../components';
+import {UserCode, UserId} from '../models';
 
 type DuplicateUserProps = {
-  userId: number;
-  userCode: string;
+  userId: UserId;
+  userCode: UserCode;
   onCancel: () => void;
-  onDuplicateSuccess: (userId: string) => void;
+  onDuplicateSuccess: (userId: UserId) => void;
 };
 
 const DuplicateUser = ({userId, userCode, onCancel, onDuplicateSuccess}: DuplicateUserProps) => {
   const translate = useTranslate();
   const notify = useNotify();
 
-  const onSuccess = (newUserId: string): void => {
+  const onSuccess = (newUserId: UserId): void => {
     notify(NotificationLevel.SUCCESS, translate('pim_user_management.form.duplication.notification.success'));
     onDuplicateSuccess(newUserId);
   };

@@ -3,12 +3,13 @@ import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {DuplicateUser} from '../pages';
+import {UserCode, UserId} from '../models';
 
 type DuplicateUserAppProps = {
-  userId: number;
-  userCode: string;
+  userId: UserId;
+  userCode: UserCode;
   onCancel: () => void;
-  onDuplicateSuccess: (userId: string) => void;
+  onDuplicateSuccess: (userId: UserId) => void;
 };
 
 const DuplicateUserApp = ({userId, userCode, onCancel, onDuplicateSuccess}: DuplicateUserAppProps) => {

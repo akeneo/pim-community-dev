@@ -7,11 +7,12 @@ import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {CreateUserForm} from '../../../../src/components';
+import {UserId} from '../../../../src/models';
 
 const renderDataGridWithProviders = (
-  userId: number,
+  userId: UserId,
   onCancel: () => void,
-  onSuccess: (userId: string) => void,
+  onSuccess: (userId: UserId) => void,
   onError: () => void
 ) => {
   return render(

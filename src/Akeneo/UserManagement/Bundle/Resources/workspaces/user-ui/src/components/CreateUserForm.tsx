@@ -4,6 +4,7 @@ import {Button, Field, Helper, Modal, TextInput} from 'akeneo-design-system';
 import {useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
 import {duplicateUser} from '../infrastructure/UserDuplicater';
+import {UserId} from '../models';
 
 const FormContainer = styled.form`
   & > * {
@@ -14,9 +15,9 @@ const FormContainer = styled.form`
 type BackendErrors = {[key: string]: string[]};
 
 type CreateUserFormProps = {
-  userId: number;
+  userId: UserId;
   onCancel: () => void;
-  onSuccess: (userId: string) => void;
+  onSuccess: (userId: UserId) => void;
   onError: () => void;
 };
 
