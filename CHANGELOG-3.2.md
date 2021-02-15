@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+PIM-9683: freeze the library version of the Backbone types definition to avoid BC
+
 # 3.2.80 (2021-01-04)
 
 ## Improvements:
