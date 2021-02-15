@@ -83,7 +83,7 @@ class BatchLogHandler extends StreamHandler
     /**
      * {@inheritdoc}
      */
-    public function write(array $record): void
+    public function write(array $record)
     {
         if (null === $this->url) {
             $this->url = $this->getRealPath($this->generateLogFilename());

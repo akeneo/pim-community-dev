@@ -2,4 +2,3 @@ monolog:
     handlers:
         event_api:
             type: "null"
-            process_psr_3_messages: false
