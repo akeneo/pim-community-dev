@@ -581,6 +581,18 @@ class FixturesContext extends BaseFixturesContext
 
             $this->createProduct($product);
         }
+
+        $this->purgeMessengerEvents();
+    }
+
+    private function purgeMessengerEvents()
+    {
+        $transport = $this->getContainer()->get('messenger.transport.business_event');
+        while (!empty($envelopes = $transport->get())) {
+            foreach ($envelopes as $envelope) {
+                $transport->ack($envelope);
+            }
+        }
     }
 
     /**
