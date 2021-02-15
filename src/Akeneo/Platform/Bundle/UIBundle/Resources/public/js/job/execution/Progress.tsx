@@ -53,7 +53,7 @@ const getStepExecutionTrackingTitle = (step: StepExecutionTracking): string => {
   return translate(key);
 };
 
-const getStepExecutionTrackingProgressLabel = (jobStatus: string|undefined, step: StepExecutionTracking): string => {
+const getStepExecutionTrackingProgressLabel = (jobStatus: string | undefined, step: StepExecutionTracking): string => {
   const translate = useTranslate();
 
   switch (step.status) {
@@ -86,7 +86,7 @@ const getStepExecutionTrackingProgressLabel = (jobStatus: string|undefined, step
   }
 };
 
-const JobExecutionProgress = ({jobStatus, steps}: {jobStatus: string|undefined, steps: StepExecutionTracking[]}) => {
+const JobExecutionProgress = ({jobStatus, steps}: {jobStatus: string | undefined; steps: StepExecutionTracking[]}) => {
   return (
     <Container>
       {steps.map((step: StepExecutionTracking, index: number) => (

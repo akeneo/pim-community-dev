@@ -220,9 +220,9 @@ const ExecutionDetail = () => {
         <PageHeader.Title>{jobExecution?.jobInstance.label}</PageHeader.Title>
         <PageHeader.Content>
           {jobExecution && <Status tracking={jobExecution.tracking} />}
-          {jobExecution?.tracking && <JobExecutionProgress
-              jobStatus={jobExecution?.status}
-              steps={jobExecution.tracking.steps} />}
+          {jobExecution?.tracking && (
+            <JobExecutionProgress jobStatus={jobExecution?.status} steps={jobExecution.tracking.steps} />
+          )}
         </PageHeader.Content>
       </PageHeader>
       <PageContent>{jobExecution && <SummaryTable jobExecution={jobExecution} />}</PageContent>
