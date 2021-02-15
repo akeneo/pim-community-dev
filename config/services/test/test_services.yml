@@ -52,6 +52,7 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@database_connection'
             - '@akeneo_measure.installer.measurement_installer'
+            - '@messenger.transport.business_event'
             - '%env(APP_DATABASE_HOST)%'
             - '%env(APP_DATABASE_NAME)%'
             - '%env(APP_DATABASE_USER)%'
