@@ -1,5 +1,8 @@
 # 5.0.x
 
+## Bug fixes
+DAPI-1490: Fix redirect to product grid from DQI dashboard when a default view is activated on the user profile
+
 # 5.0.4 (2021-02-02)
 
 # 5.0.3 (2021-01-29)
