@@ -23,7 +23,15 @@ test('it renders its children properly', () => {
   );
 
   const input = screen.getByRole('textbox');
-  fireEvent.focus(input);
+  fireEvent.click(input);
+
+  expect(screen.queryByText('German')).toBeInTheDocument();
+
+  fireEvent.click(screen.getByRole('textbox'));
+  expect(screen.queryByText('German')).not.toBeInTheDocument();
+
+  fireEvent.click(screen.getByRole('textbox'));
+  expect(screen.queryByText('German')).toBeInTheDocument();
 
   const germanOption = screen.getByText('German');
   expect(germanOption).toBeInTheDocument();
@@ -51,7 +59,7 @@ test('it handles search', () => {
   );
 
   const input = screen.getByRole('textbox');
-  fireEvent.focus(input);
+  fireEvent.click(input);
   fireEvent.change(input, {target: {value: 'Français'}});
 
   const germanOption = screen.queryByText('German');
@@ -61,7 +69,7 @@ test('it handles search', () => {
   fireEvent.keyDown(input, {key: 'Enter', code: 'Enter'});
   expect(onChange).toHaveBeenCalledWith('fr_FR');
 
-  fireEvent.focus(input);
+  fireEvent.click(input);
   fireEvent.change(input, {target: {value: 'Spain'}});
 
   const spainOption = screen.getByText('Spanish');
@@ -90,7 +98,7 @@ test('it handles empty cases', () => {
   );
 
   const input = screen.getByRole('textbox');
-  fireEvent.focus(input);
+  fireEvent.click(input);
   fireEvent.change(input, {target: {value: 'France 3'}});
 
   const germanOption = screen.queryByText('German');
@@ -173,8 +181,9 @@ test('it handles keyboard events', () => {
 });
 
 test('SelectInput supports ...rest props', () => {
+  const onChange = jest.fn();
   render(
-    <SelectInput value="noice" data-testid="my_value" emptyResultLabel="Empty result">
+    <SelectInput value="noice" data-testid="my_value" emptyResultLabel="Empty result" onChange={onChange}>
       Noice
     </SelectInput>
   );
