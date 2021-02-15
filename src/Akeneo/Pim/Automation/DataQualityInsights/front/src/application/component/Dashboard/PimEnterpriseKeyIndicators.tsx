@@ -7,9 +7,9 @@ import {redirectToProductGridFilteredByKeyIndicator} from '@akeneo-pim-community
 import {
   redirectToAttributeGridFilteredByFamilyAndKeyIndicator,
   redirectToAttributeGridFilteredByKeyIndicator,
-} from '../../../infrastructure/navigation/AttributeGridRouter';
+  useGetSpellcheckSupportedLocales,
+} from '../../../infrastructure';
 import {AssetCollectionIcon, EditIcon, SettingsIcon} from 'akeneo-design-system';
-import {useGetSpellcheckSupportedLocales} from '../../../infrastructure';
 import {KeyIndicatorExtraData} from '@akeneo-pim-community/data-quality-insights/src/domain';
 
 type Props = {

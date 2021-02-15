@@ -43,7 +43,7 @@ describe('followAttributeOptionSpellingCriterion', () => {
     expect(backLink.route).toBe('pim_enrich_product_edit');
     expect(backLink.routeParams.id).toBe(1234);
 
-    expect(redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes).toHaveBeenCalledWith(4321);
+    expect(redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes).toHaveBeenCalledWith('a_family');
   });
 
   test('it initializes back link data with product model information before redirecting to the attribute options list', () => {
@@ -58,6 +58,6 @@ describe('followAttributeOptionSpellingCriterion', () => {
     expect(backLink.route).toBe('pim_enrich_product_model_edit');
     expect(backLink.routeParams.id).toBe(1234);
 
-    expect(redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes).toHaveBeenCalledWith(4321);
+    expect(redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes).toHaveBeenCalledWith('a_family');
   });
 });

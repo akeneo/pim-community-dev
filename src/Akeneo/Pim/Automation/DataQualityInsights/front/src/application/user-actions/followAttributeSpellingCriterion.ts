@@ -28,7 +28,7 @@ const followAttributeSpellingCriterion = (
       displayLinkRoutes: ['pim_enrich_attribute_index', 'pim_enrich_attribute_edit'],
     })
   );
-  redirectToAttributeGridFilteredByFamilyAndQuality(family.meta.id);
+  redirectToAttributeGridFilteredByFamilyAndQuality(family.code);
 };
 
 const checkFollowingAttributeSpellingCriterionActive = (criterionEvaluation: CriterionEvaluationResult) => {

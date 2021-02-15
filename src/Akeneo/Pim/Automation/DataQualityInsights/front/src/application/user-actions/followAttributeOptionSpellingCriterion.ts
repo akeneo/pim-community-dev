@@ -30,7 +30,7 @@ const followAttributeOptionSpellingCriterion = (
     })
   );
 
-  redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes(family.meta.id);
+  redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes(family.code);
 };
 
 const checkFollowingAttributeOptionSpellingCriterionActive = (criterionEvaluation: CriterionEvaluationResult) => {
