@@ -2,13 +2,12 @@ monolog:
     handlers:
         main:
             type:         fingers_crossed
-            action_level: warning
+            action_level: info
             handler:      nested
             buffer_size:  1000
         nested:
             type:  stream
             path:  "php://stderr"
-            level: warning
             formatter: 'monolog.formatter.json'
-        console:
-            type:  console
+            channels: ['!security']
+            bubble: false
