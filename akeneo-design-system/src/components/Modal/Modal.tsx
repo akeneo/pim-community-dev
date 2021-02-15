@@ -105,11 +105,6 @@ type ModalProps = Override<
      * The handler to call when the Modal is closed.
      */
     onClose: () => void;
-
-    /**
-     * The handler to call when user use escape key (by default onClose is called).
-     */
-    onEscape?: () => void;
   }
 >;
 
@@ -121,12 +116,12 @@ const Modal: React.FC<ModalProps> & {
   TopRightButtons: typeof TopRightButtons;
   SectionTitle: typeof SectionTitle;
   Title: typeof Title;
-} = ({onClose, onEscape, illustration, closeTitle, children, ...rest}: ModalProps) => {
+} = ({onClose, illustration, closeTitle, children, ...rest}: ModalProps) => {
   const portalNode = document.createElement('div');
   portalNode.setAttribute('id', 'modal-root');
   const containerRef = useRef(portalNode);
 
-  useShortcut(Key.Escape, onEscape ?? onClose);
+  useShortcut(Key.Escape, onClose);
 
   useEffect(() => {
     document.body.appendChild(containerRef.current);
