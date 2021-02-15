@@ -82,6 +82,7 @@ const CreateUserForm = ({userId, onCancel, onSuccess, onError}: CreateUserFormPr
               onChange={() => {}}
               ref={register({required: true})}
               invalid={!!errors[fieldName] || Object.prototype.hasOwnProperty.call(backendErrors, fieldName)}
+              required={true}
             />
             {errors[fieldName] && <Helper level="error">{translate('pim_user_management.form.error.required')}</Helper>}
             {(backendErrors[fieldName] ?? []).map((errorMessage: string, key: number) => (
