@@ -3,8 +3,8 @@ import {redirectToFilteredAttributeGrid} from '@akeneo-pim-community/data-qualit
 const Router = require('pim/router');
 const DatagridState = require('pim/datagrid/state');
 
-export const redirectToAttributeGridFilteredByFamilyAndQuality = (familyCode: string) => {
-  const gridFilters = `i=1&p=25&s[label]=-1&f[family][value][]=${familyCode}&f[quality][value]=to_improve&t=attribute-grid`;
+export const redirectToAttributeGridFilteredByFamilyAndQuality = (familyCode: string, locale: string) => {
+  const gridFilters = `i=1&p=25&s[label]=-1&f[family][value][]=${familyCode}&f[quality][value]=to_improve&t=attribute-grid&f[quality][value]=${locale}`;
   DatagridState.set('attribute-grid', {
     filters: gridFilters,
   });
@@ -12,8 +12,11 @@ export const redirectToAttributeGridFilteredByFamilyAndQuality = (familyCode: st
   window.location.href = '#' + Router.generate('pim_enrich_attribute_index');
 };
 
-export const redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes = (familyCode: string) => {
-  const gridFilters = `i=1&p=25&s[label]=-1&f[family][value][]=${familyCode}&f[quality][value]=to_improve&t=attribute-grid&f[type][value][]=pim_catalog_multiselect&f[type][value][]=pim_catalog_simpleselect`;
+export const redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes = (
+  familyCode: string,
+  locale: string
+) => {
+  const gridFilters = `i=1&p=25&s[label]=-1&f[family][value][]=${familyCode}&f[quality][value]=to_improve&t=attribute-grid&f[type][value][]=pim_catalog_multiselect&f[type][value][]=pim_catalog_simpleselect&f[quality][value]=${locale}`;
   DatagridState.set('attribute-grid', {
     filters: gridFilters,
   });

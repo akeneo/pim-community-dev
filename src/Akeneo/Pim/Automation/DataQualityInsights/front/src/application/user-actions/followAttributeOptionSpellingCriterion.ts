@@ -14,7 +14,8 @@ const translate = require('oro/translator');
 const followAttributeOptionSpellingCriterion = (
   criterionEvaluation: CriterionEvaluationResult,
   family: Family | null,
-  product: Product
+  product: Product,
+  locale: string
 ) => {
   if (family === null || criterionEvaluation.status !== CRITERION_DONE || criterionEvaluation.rate.value === MAX_RATE) {
     return;
@@ -30,7 +31,7 @@ const followAttributeOptionSpellingCriterion = (
     })
   );
 
-  redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes(family.code);
+  redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes(family.code, locale);
 };
 
 const checkFollowingAttributeOptionSpellingCriterionActive = (criterionEvaluation: CriterionEvaluationResult) => {
