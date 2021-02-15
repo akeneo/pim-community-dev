@@ -6,11 +6,12 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['underscore', 'pim/form', 'pim/template/form/main-image', 'pim/media-url-generator'], function (
+define(['underscore', 'pim/form', 'pim/template/form/main-image', 'pim/media-url-generator', 'jquery'], function (
   _,
   BaseForm,
   template,
-  MediaUrlGenerator
+  MediaUrlGenerator,
+  $
 ) {
   return BaseForm.extend({
     tagName: 'img',
@@ -43,6 +44,10 @@ define(['underscore', 'pim/form', 'pim/template/form/main-image', 'pim/media-url
       }
 
       this.el.src = this.getPath();
+
+      this.$el.one('error', function () {
+        $(this).attr('src', MediaUrlGenerator.getMediaShowUrl(null, 'thumbnail_small'));
+      });
 
       return BaseForm.prototype.render.apply(this, arguments);
     },
