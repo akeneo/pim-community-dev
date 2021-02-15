@@ -38,7 +38,14 @@ const CreateUserForm = ({userId, onCancel, onSuccess, onError}: CreateUserFormPr
       if (null !== response) {
         response.json().then((data: any) => {
           const newBackendErrors: BackendErrors = {};
-          data.values.forEach((errorValue: {path: string; message: string}) => {
+          if (typeof data.values === 'undefined' || !Array.isArray(data.values)) {
+            console.error('Unable to hadnle the HTTP response.');
+          }
+
+          data.values.forEach((errorValue: any) => {
+            if (typeof errorValue.path === 'undefined' || typeof errorValue.message === 'undefined') {
+              return;
+            }
             if (!Object.prototype.hasOwnProperty.call(newBackendErrors, errorValue.path)) {
               newBackendErrors[errorValue.path] = [];
             }

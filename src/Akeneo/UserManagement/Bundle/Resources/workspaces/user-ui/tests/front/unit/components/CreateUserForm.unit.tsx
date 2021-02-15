@@ -153,7 +153,7 @@ describe('CreateUserForm', () => {
     expect(await screen.findByText('email is not valid')).toBeInTheDocument();
   });
 
-  test('it firs the cancel action', async () => {
+  test('it fires the cancel action', async () => {
     const onCancel = jest.fn();
     const onSuccess = jest.fn();
     const onError = jest.fn();

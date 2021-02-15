@@ -23,14 +23,12 @@ class DuplicateUserAction extends AbstractAction {
     };
 
     ReactDOM.render(
-      <>
-        <DuplicateUserApp
-          userId={this.model.get('id')}
-          userCode={this.model.get('username')}
-          onCancel={closeApp}
-          onDuplicateSuccess={onDuplicateSuccess}
-        />
-      </>,
+      <DuplicateUserApp
+        userId={this.model.get('id')}
+        userCode={this.model.get('username')}
+        onCancel={closeApp}
+        onDuplicateSuccess={onDuplicateSuccess}
+      />,
       container
     );
   }
