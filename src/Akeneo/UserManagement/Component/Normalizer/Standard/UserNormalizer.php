@@ -23,6 +23,12 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
     {
         /** @var UserInterface $user */
         Assert::isInstanceOf($user, UserInterface::class);
+
+        $normalizedAvatar = $user->getAvatar() ? [
+            'filePath' => $user->getAvatar()->getKey(),
+            'originalFilename' => $user->getAvatar()->getOriginalFilename(),
+        ] : null;
+
         return [
             'username' => $user->getUsername(),
             'enabled' => $user->isEnabled(),
@@ -33,7 +39,7 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
             'name_suffix' => $user->getNameSuffix(),
             'phone' => $user->getPhone(),
             'email' => $user->getEmail(),
-            'avatar' => $user->getAvatar() ? $user->getAvatar()->getKey() : null,
+            'avatar' => $normalizedAvatar,
             'catalog_default_locale' => $user->getCatalogLocale()->getCode(),
             'catalog_default_scope' => $user->getCatalogScope()->getCode(),
             'default_category_tree' => $user->getDefaultTree()->getCode(),
