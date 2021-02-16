@@ -182,11 +182,7 @@ test('it handles keyboard events', () => {
 
 test('SelectInput supports ...rest props', () => {
   const onChange = jest.fn();
-  render(
-    <SelectInput value="noice" data-testid="my_value" emptyResultLabel="Empty result" onChange={onChange}>
-      Noice
-    </SelectInput>
-  );
+  render(<SelectInput value="noice" data-testid="my_value" emptyResultLabel="Empty result" onChange={onChange} />);
   expect(screen.getByRole('textbox')).toBeInTheDocument();
 });
 
