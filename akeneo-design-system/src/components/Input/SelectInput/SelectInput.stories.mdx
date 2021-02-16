@@ -12,13 +12,25 @@ import {Locale} from '../../../components';
     emptyResultLabel: 'No result found',
     value: null
   }}
+  argTypes={{
+    readOnly: {
+      control: {type: 'boolean'},
+      description:
+          'Defines if the input should be read only. If defined so, the user cannot change the value of the input.',
+      table: {type: {summary: 'boolean'}},
+    },
+    onChange: {
+      description: 'The handler called when the value of the input changes.',
+      table: {type: {summary: '(newValue: string | null) => void'}},
+    },
+  }}
 />
 
 # Select input (Beta)
 
 ## Usage
 
-Select input allows the user to select content and data when the expected user input is composed of one.
+Select input allows the user to select content and data when the expected user input is composed of one option value.
 
 ### Placeholder text
 
@@ -31,7 +43,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
     {args => {
       const [value, setValue] = useState(null);
       return (
-        <SpaceContainer height={150}>
+        <SpaceContainer height={170}>
           <SelectInput {...args} value={value} onChange={setValue}>
             <SelectInput.Option value="en_US" title="English (United States)">
               <Locale code="en_US" languageLabel="English" />
@@ -58,7 +70,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
     {args => {
       const [value, setValue] = useState(null);
       return (
-        <SpaceContainer height={200}>
+        <>
           <SelectInput
             {...args}
             readOnly={true}
@@ -99,7 +111,8 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
               <Locale code="es_ES" languageLabel="Spanish" />
             </SelectInput.Option>
           </SelectInput>
-        </SpaceContainer>
+          <SpaceContainer height={100} />
+        </>
       );
     }}
   </Story>
@@ -112,7 +125,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
       const [validValue, setValidValue] = useState(null);
       const [invalidValue, setInvalidValue] = useState(null);
       return (
-        <SpaceContainer height="200">
+        <>
           <SelectInput {...args} value={invalidValue} onChange={setInvalidValue} invalid={true} placeholder="Invalid input value">
             <SelectInput.Option value="en_US" title="English (United States)">
               <Locale code="en_US" languageLabel="English" />
@@ -141,7 +154,8 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
               <Locale code="es_ES" languageLabel="Spanish" />
             </SelectInput.Option>
           </SelectInput>
-        </SpaceContainer>
+          <SpaceContainer height={100} />
+        </>
       );
     }}
   </Story>
@@ -154,7 +168,8 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
       const [upValue, setUpValue] = useState(null);
       const [downValue, setDownValue] = useState(null);
       return (
-        <SpaceContainer height="200" style={{marginTop: '150px'}}>
+        <>
+          <SpaceContainer height={120} />
           <SelectInput {...args} value={upValue} onChange={setUpValue} verticalPosition="up" placeholder="Up input">
             <SelectInput.Option value="en_US" title="English (United States)">
               <Locale code="en_US" languageLabel="English" />
@@ -183,7 +198,8 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
               <Locale code="es_ES" languageLabel="Spanish" />
             </SelectInput.Option>
           </SelectInput>
-        </SpaceContainer>
+          <SpaceContainer height={100} />
+        </>
       );
     }}
   </Story>
@@ -195,7 +211,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
     {args => {
       const [value, setValue] = useState(null);
       return (
-        <SpaceContainer height={350}>
+        <>
           <SelectInput {...args} value={value} onChange={setValue} emptyResultLabel="Not matches found">
             <SelectInput.Option value="en_US" title="English (United States)">
               <Locale code="en_US" languageLabel="English" />
@@ -240,7 +256,8 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
               <Locale code="bs_BS" languageLabel="Bahamas" />
             </SelectInput.Option>
           </SelectInput>
-        </SpaceContainer>
+          <SpaceContainer height={300} />
+        </>
       );
     }}
   </Story>
