@@ -153,8 +153,6 @@ define([
     },
 
     _onClickCriteriaSelector: function (e) {
-      e.stopPropagation();
-      $('body').trigger('click');
       if (!this.popupCriteriaShowed) {
         this._showCriteria();
         this.$(this.criteriaValueSelectors.value).select2('open');

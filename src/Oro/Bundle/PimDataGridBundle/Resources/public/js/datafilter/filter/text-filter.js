@@ -103,16 +103,8 @@ define([
       }
 
       AbstractFilter.prototype.initialize.apply(this, arguments);
-    },
 
-    /**
-     * Makes sure the criteria popup dialog is closed
-     */
-    ensurePopupCriteriaClosed: function () {
-      if (this.popupCriteriaShowed) {
-        this._hideCriteria();
-        this.setValue(this._formatRawValue(this._readDOMValue()));
-      }
+      document.addEventListener('mousedown', this._onClickOutsideCloseCriteria.bind(this));
     },
 
     /**
@@ -136,18 +128,14 @@ define([
     _onClickUpdateCriteria: function (e) {
       this._hideCriteria();
       this.setValue(this._formatRawValue(this._readDOMValue()));
-      $('#select2-drop-mask').hide();
     },
 
     /**
      * Handle click on criteria selector
      *
-     * @param {Event} e
      * @protected
      */
-    _onClickCriteriaSelector: function (e) {
-      e.stopPropagation();
-      $('body').trigger('click');
+    _onClickCriteriaSelector: function () {
       if (!this.popupCriteriaShowed) {
         this._showCriteria();
       } else {
@@ -173,6 +161,24 @@ define([
     _onClickDisableFilter: function (e) {
       e.preventDefault();
       this.disable();
+    },
+
+    /**
+     * Closes the criteria if the user clicks on the rest of the document.
+     *
+     * @param {Event} event
+     */
+    _onClickOutsideCloseCriteria(event) {
+      if (false === this.popupCriteriaShowed) {
+        return;
+      }
+
+      if (true === this.el.contains(event.target)) {
+        return;
+      }
+
+      this._hideCriteria();
+      this.setValue(this._formatRawValue(this._readDOMValue()));
     },
 
     /**
@@ -235,7 +241,6 @@ define([
      * @return {*}
      */
     remove: function () {
-      $('body').off('click', this._clickOutsideCriteriaCallback);
       AbstractFilter.prototype.remove.call(this);
       return this;
     },
@@ -250,35 +255,7 @@ define([
       this._updateCriteriaSelectorPosition();
       this._focusCriteria();
       this._setButtonPressed(this.$(this.criteriaSelector), true);
-      setTimeout(
-        _.bind(function () {
-          this.popupCriteriaShowed = true;
-        }, this),
-        100
-      );
-
-      this.outsideEventListener = this.outsideClickListener.bind(this);
-      document.addEventListener('click', this.outsideEventListener);
-    },
-
-    /**
-     * Closes the criteria if the user clicks on the rest of the document.
-     *
-     * The condition is a combination of:
-     * - The click is outside of the criteria Selector,
-     * - The click is in the app (this is due to select2 it removes its full position layer, leading to a
-     *   event.target == body),
-     * - The popup is open.
-     *
-     * @param {Event} event
-     */
-    outsideClickListener(event) {
-      if (!$(event.target).closest(this.criteriaSelector).length && this.popupCriteriaShowed) {
-        this._hideCriteria();
-        this.setValue(this._formatRawValue(this._readDOMValue()));
-
-        document.removeEventListener('mousedown', this.outsideEventListener);
-      }
+      this.popupCriteriaShowed = true;
     },
 
     /**
@@ -289,12 +266,7 @@ define([
     _hideCriteria: function () {
       this.$(this.criteriaSelector).hide();
       this._setButtonPressed(this.$(this.criteriaSelector), false);
-      setTimeout(
-        _.bind(function () {
-          this.popupCriteriaShowed = false;
-        }, this),
-        100
-      );
+      this.popupCriteriaShowed = false;
     },
 
     /**

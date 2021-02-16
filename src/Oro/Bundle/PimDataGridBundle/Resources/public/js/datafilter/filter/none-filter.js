@@ -77,15 +77,6 @@ define(['jquery', 'underscore', 'oro/translator', 'oro/datafilter/abstract-filte
     },
 
     /**
-     * Makes sure the criteria popup dialog is closed
-     */
-    ensurePopupCriteriaClosed: function () {
-      if (this.popupCriteriaShowed) {
-        this._hideCriteria();
-      }
-    },
-
-    /**
      * Handle click on criteria selector
      *
      * @param {Event} e
