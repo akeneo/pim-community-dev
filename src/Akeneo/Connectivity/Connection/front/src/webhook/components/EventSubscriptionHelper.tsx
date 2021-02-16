@@ -9,7 +9,7 @@ export const EventSubscriptionHelper: FC = () => (
             <Translate id='akeneo_connectivity.connection.webhook.helper.message' />
             &nbsp;
             <HelperLink
-                href='https://help.akeneo.com/pim/serenity/articles/manage-your-connections.html#subscribe-to-events'
+                href='https://help.akeneo.com/pim/serenity/articles/manage-event-subscription.html'
                 target='_blank'
                 rel='noopener noreferrer'
             >

@@ -55,6 +55,17 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
         return new ConnectorProductList($connectorProductList->totalNumberOfProducts(), $productsWithQualityScores);
     }
 
+    public function fromNormalizedProduct(string $productIdentifier, array $normalizedProduct, ?string $channel = null, array $locales = []): array
+    {
+        if ($this->dataQualityInsightsFeature->isEnabled()) {
+            $productScores = $this->getLatestProductScoresByIdentifiersQuery->byProductIdentifier($productIdentifier);
+            $productScores = $this->filterProductQualityScores($productScores, $channel, $locales);
+            $normalizedProduct['quality_scores'] = $productScores->toArrayLetter();
+        }
+
+        return $normalizedProduct;
+    }
+
     private function returnProductsWithEmptyQualityScores(ConnectorProductList $connectorProductList): ConnectorProductList
     {
         return new ConnectorProductList(

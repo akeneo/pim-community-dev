@@ -4,7 +4,7 @@ import {useToggleState, useStorageState} from '@akeneo-pim-community/shared';
 import {Form, FormValue} from './Form';
 import {Select} from './Select';
 import {Option} from './Option';
-import {FileXlsxIcon, FileCsvIcon, Modal, Button, Title, SectionTitle} from 'akeneo-design-system';
+import {FileXlsxIcon, FileCsvIcon, Modal, Button} from 'akeneo-design-system';
 
 type QuickExportConfiguratorProps = {
   showWithLabelsSelect: boolean;
@@ -53,11 +53,11 @@ const QuickExportConfigurator = ({
               {translate('pim_common.export')}
             </Button>
           </Modal.TopRightButtons>
-          <SectionTitle color="brand">
+          <Modal.SectionTitle color="brand">
             {translate('pim_datagrid.mass_action.quick_export.configurator.subtitle')}&nbsp;|&nbsp;
             {translate('pim_common.result_count', {itemsCount: productCount.toString()}, productCount)}
-          </SectionTitle>
-          <Title>{translate('pim_datagrid.mass_action.quick_export.configurator.title')}</Title>
+          </Modal.SectionTitle>
+          <Modal.Title>{translate('pim_datagrid.mass_action.quick_export.configurator.title')}</Modal.Title>
           <Form value={formValue} onChange={setFormValue}>
             <Select name="type">
               <Option value="csv" title={translate('pim_datagrid.mass_action.quick_export.configurator.csv')}>

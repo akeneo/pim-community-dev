@@ -1,4 +1,4 @@
-import styled, {css} from 'styled-components';
+import styled, {css, keyframes} from 'styled-components';
 import {Color, FontSize, getColor, getFontSize, Palette} from './theme';
 
 const CommonStyle = css`
@@ -7,6 +7,31 @@ const CommonStyle = css`
   font-size: ${getFontSize('default')};
   line-height: 20px;
   box-sizing: border-box;
+`;
+
+const loadingBreath = keyframes`
+  0% {background-position:0 50%}
+  50% {background-position:100% 50%}
+  100% {background-position:0 50%}
+`;
+
+const placeholderStyle = css`
+  animation: ${loadingBreath} 2s infinite;
+  background: linear-gradient(270deg, #fdfdfd, #eee);
+  background-size: 400% 400%;
+  border: none;
+  color: transparent;
+  border-radius: 3px;
+  cursor: default;
+  outline: none;
+  :hover,
+  :last-child,
+  ::placeholder {
+    color: transparent;
+  }
+  > * {
+    opacity: 0;
+  }
 `;
 
 const color: Color = {
@@ -18,6 +43,7 @@ const color: Color = {
   blue100: '#5992c7',
   blue120: '#47749f',
   blue140: '#355777',
+  green10: '#f0f7f1',
   green20: '#e1f0e3',
   green40: '#c2e1c7',
   green60: '#a3d1ab',
@@ -85,4 +111,4 @@ const BrandedPath = styled.path`
   fill: ${getColor('brand', 100)};
 `;
 
-export {color, fontSize, palette, CommonStyle, BrandedPath};
+export {color, fontSize, palette, CommonStyle, BrandedPath, placeholderStyle};

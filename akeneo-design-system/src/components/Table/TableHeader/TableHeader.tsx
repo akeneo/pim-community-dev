@@ -1,16 +1,22 @@
 import React, {ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
+import {AkeneoThemedProps, getColor} from '../../../theme';
 import {SelectableContext} from '../SelectableContext';
 
-const TableHead = styled.thead<{sticky?: number}>`
+const TableHead = styled.thead<{sticky?: number} & AkeneoThemedProps>`
   ${({sticky}) =>
     undefined !== sticky &&
     css`
       th {
         position: sticky;
         top: ${sticky}px;
+        background-color: ${getColor('white')};
       }
     `}
+`;
+
+const SelectColumn = styled.th`
+  width: 40px;
 `;
 
 type TableHeaderProps = {
@@ -33,7 +39,7 @@ const TableHeader = React.forwardRef<HTMLTableSectionElement, TableHeaderProps>(
       <TableHead sticky={sticky} ref={forwardedRef}>
         <tr {...rest}>
           {/* Add new column for checkbox to be displayed properly in the tbody */}
-          {isSelectable && <th />}
+          {isSelectable && <SelectColumn />}
           {children}
         </tr>
       </TableHead>

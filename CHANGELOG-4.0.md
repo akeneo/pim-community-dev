@@ -1,5 +1,40 @@
 # 4.0.x
 
+# 4.0.90 (2021-02-02)
+
+# 4.0.89 (2021-01-29)
+
+# 4.0.88 (2021-01-28)
+
+# 4.0.87 (2021-01-26)
+
+## Bug fixes
+
+- PIM-9644: Now using interface in Clean removed attributes command constructor
+
+## Improvements
+
+- PIM-9623: String filter is now able to filter on codes with spaces
+
+# 4.0.86 (2021-01-22)
+
+## Bug fixes
+
+- PIM-9639: Fix sequential edit when selecting All with a filter on parent
+
+# 4.0.85 (2021-01-19)
+
+## Bug fixes
+
+- PIM-9638: Fix security issue in Symfony < 4.4.13 (see https://symfony.com/blog/cve-2020-15094-prevent-rce-when-calling-untrusted-remote-with-cachinghttpclient)
+- PIM-9635: Fix case insensitive attribute option code in product validation
+
+# 4.0.84 (2021-01-14)
+
+## Bug fixes
+
+- PIM-9627: Empty Family field when creating a product model with family not present in first page
+
 # 4.0.83 (2021-01-06)
 
 ## Bug fixes

@@ -37,6 +37,12 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
         )->shouldBeLike(
             new ConnectorProductList(1, [$productWithQualityScore])
         );
+
+        $normalizedProduct = [
+            'enabled'    => true,
+            'categories' => ['cat1', 'cat2'],
+        ];
+        $this->fromNormalizedProduct('a_product', $normalizedProduct, 'ecommerce', ['en_US', 'fr_FR'])->shouldBe($normalizedProduct);
     }
 
     function it_return_a_new_connector_product_with_quality_scores(
@@ -183,6 +189,34 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
                 $this->buildConnectorProduct('pdt_6', new ChannelLocaleRateCollection()),
             ])
         );
+    }
+
+    public function it_returns_a_normalized_product_with_quality_scores(
+        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        FeatureFlag $dataQualityInsightsFeature
+    ) {
+        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
+
+        $normalizedProduct = ['identifier' => 'identifier_5'];
+        $normalizedQualityScores = [
+            'ecommerce' => ['en_US' => 95, 'fr_FR' => 76, 'de_DE' => 83],
+            'mobile' => ['en_US' => 65, 'fr_FR' => 54, 'de_DE' => 73],
+        ];
+
+        $qualityScores = ChannelLocaleRateCollection::fromArrayInt($normalizedQualityScores);
+        $getLatestProductScoresByIdentifiersQuery->byProductIdentifier('identifier_5')->willReturn($qualityScores);
+
+        $normalizedProductWithQualityScores = array_merge($normalizedProduct, [
+            'quality_scores' => [
+                'ecommerce' => [
+                    'en_US' => 'A',
+                    'fr_FR' => 'C'
+                ]
+            ]
+        ]);
+
+        $this->fromNormalizedProduct('identifier_5', $normalizedProduct, 'ecommerce', ['en_US', 'fr_FR'])
+            ->shouldBeLike($normalizedProductWithQualityScores);
     }
 
     private function buildConnectorProduct($identifier, $qualityScore): ConnectorProduct

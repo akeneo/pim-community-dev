@@ -32,12 +32,6 @@ const StyledTag = styled.div`
           color: #763e9e;
           border: 1px solid #9452ba;
         `;
-      case 'update':
-        return `
-          background-color: #f3eef9;
-          color: #763e9e;
-          border: 1px solid #9452ba;
-        `;
       case 'announcement':
         return `
           background-color: #f0f7fc;
