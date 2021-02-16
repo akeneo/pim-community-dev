@@ -62,4 +62,5 @@ Feature: Add products and variant products to many groups at once via a form
     And I confirm mass edit
     And I wait for the "add_to_group" job to finish
     Then "bageneo" group should contain "bag_white_large, bag_white_small, bag_red_small and bag_red_large"
+    And 0 events of type "product_model.updated" should have been raised
     And 4 events of type "product.updated" should have been raised
