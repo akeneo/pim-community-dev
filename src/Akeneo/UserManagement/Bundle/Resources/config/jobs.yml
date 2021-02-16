@@ -1,4 +1,5 @@
 services:
+    ## Export jobs
     pim_connector.job.csv_user_group_export:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
@@ -47,7 +48,6 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
 
-    # Import jobs
     pim_connector.job.csv_user_export:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
@@ -72,6 +72,7 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
 
+    # Import jobs
     pim_connector.job.csv_user_group_import:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
@@ -98,7 +99,7 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
 
-    # Job defaults
+    # Job default values
     pim_user.job.job_parameters.default_values_provider.simple_csv_export:
         class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport'
         arguments:
