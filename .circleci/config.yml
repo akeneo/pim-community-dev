@@ -291,19 +291,13 @@ workflows:
                     - build_dev
           - test_back_data_migrations:
                 requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-                    - test_back_phpunit
+                    - build_dev
           - test_back_missing_structure_migrations:
                 requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-                    - test_back_phpunit
+                    - build_dev
           - back_behat_legacy:
                 requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-                    - test_back_phpunit
+                    - build_dev
 
   nightly:
       triggers:

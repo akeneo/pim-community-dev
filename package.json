@@ -102,6 +102,7 @@
     "yamljs": "0.3.0"
   },
   "dependencies": {
+    "@types/backbone": "1.4.8",
     "babel-polyfill": "6.26.0",
     "backbone": "0.9.10",
     "css-loader": "^3.3.0",
