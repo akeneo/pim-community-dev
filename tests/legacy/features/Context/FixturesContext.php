@@ -258,6 +258,8 @@ class FixturesContext extends BaseFixturesContext
         foreach ($table->getHash() as $data) {
             $this->createProduct($data);
         }
+
+        $this->purgeMessengerEvents();
     }
 
     /**
