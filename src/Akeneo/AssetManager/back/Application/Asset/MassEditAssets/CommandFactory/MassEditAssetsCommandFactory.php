@@ -26,7 +26,8 @@ class MassEditAssetsCommandFactory
 {
     private EditAssetCommandFactory $editAssetCommandFactory;
 
-    public function __construct(EditAssetCommandFactory $editAssetCommandFactory) {
+    public function __construct(EditAssetCommandFactory $editAssetCommandFactory)
+    {
         $this->editAssetCommandFactory = $editAssetCommandFactory;
     }
 
@@ -36,7 +37,7 @@ class MassEditAssetsCommandFactory
         array $normalizedUpdaters
     ): MassEditAssetsCommand {
         if (!$this->isValidUpdaters($normalizedUpdaters)) {
-            throw new BadRequestHttpException('Impossible to create a command of mass asset edition.');
+            throw new \InvalidArgumentException('Impossible to create a command of mass asset edition.');
         }
 
         $updaters = array_map(function ($normalizedUpdater) use ($assetFamilyIdentifier) {
@@ -66,12 +67,14 @@ class MassEditAssetsCommandFactory
     private function isValidUpdaters(array $normalizedUpdaters): bool
     {
         foreach ($normalizedUpdaters as $normalizedUpdater) {
-            if (!array_key_exists('attribute', $normalizedUpdater)
+            if (
+                !array_key_exists('attribute', $normalizedUpdater)
                 || !array_key_exists('channel', $normalizedUpdater)
                 || !array_key_exists('locale', $normalizedUpdater)
                 || !array_key_exists('data', $normalizedUpdater)
                 || !array_key_exists('action', $normalizedUpdater)
-                || !array_key_exists('id', $normalizedUpdater)) {
+                || !array_key_exists('id', $normalizedUpdater)
+            ) {
                 return false;
             }
         }

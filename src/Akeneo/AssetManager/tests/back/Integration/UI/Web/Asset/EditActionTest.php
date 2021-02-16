@@ -58,17 +58,10 @@ class EditActionTest extends ControllerIntegrationTestCase
 {
     private const ASSET_EDIT_ROUTE = 'akeneo_asset_manager_asset_edit_rest';
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
-
-    /** @var InMemoryFileExists */
-    private $fileExists;
-
-    /** @var InMemoryFindFileDataByFileKey */
-    private $findFileData;
-
-    /** @var FixturesLoader */
-    private $fixturesLoader;
+    private WebClientHelper $webClientHelper;
+    private InMemoryFileExists $fileExists;
+    private InMemoryFindFileDataByFileKey $findFileData;
+    private FixturesLoader $fixturesLoader;
 
     public function setUp(): void
     {
@@ -123,8 +116,10 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_if_the_identifier_provided_in_the_route_is_different_from_the_body()
     {
-        $this->webClientHelper->assertRequest($this->client,
-            'Asset/Edit/unsynchronised_asset_identifier.json');
+        $this->webClientHelper->assertRequest(
+            $this->client,
+            'Asset/Edit/unsynchronised_asset_identifier.json'
+        );
     }
 
     /**
@@ -132,8 +127,10 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_if_the_asset_family_identifier_provided_in_the_route_is_different_from_the_body()
     {
-        $this->webClientHelper->assertRequest($this->client,
-            'Asset/Edit/unsynchronised_asset_family_identifier.json');
+        $this->webClientHelper->assertRequest(
+            $this->client,
+            'Asset/Edit/unsynchronised_asset_family_identifier.json'
+        );
     }
 
     /**

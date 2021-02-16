@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Controller\Asset;
 
 use Akeneo\AssetManager\Application\Asset\MassEditAssets\CommandFactory\MassEditAssetsCommandFactory;
-use Akeneo\AssetManager\Application\Asset\MassEditAssets\MassEditAssetsCommand;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -92,11 +91,15 @@ class ValidateMassEditAction
             );
         }
 
-        $command = $this->massEditAssetsCommandFactory->create(
-            $assetFamilyIdentifier,
-            $query,
-            $normalizedUpdaters
-        );
+        try {
+            $command = $this->massEditAssetsCommandFactory->create(
+                $assetFamilyIdentifier,
+                $query,
+                $normalizedUpdaters
+            );
+        } catch (\InvalidArgumentException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
 
         $violations = $this->validator->validate($command);
 
