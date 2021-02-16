@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -69,6 +70,34 @@ class GetProductsWithQualityScoresWithPermissionsSpec extends ObjectBehavior
         $this->fromConnectorProductList(new ConnectorProductList(2, [$connectorProduct1, $connectorProduct2]))->shouldBeLike(
             new ConnectorProductList(2, [$expectedConnectorProduct1, $expectedConnectorProduct2])
         );
+    }
+
+    public function it_applies_permissions_on_quality_scores_of_a_normalized_product(
+        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
+        GetAllViewableLocalesForUser $getAllViewableLocalesForUser
+    ) {
+        $normalizedProduct = [
+            'enabled'    => true,
+            'categories' => ['cat1', 'cat2'],
+        ];
+        $normalizedProductWithScores = array_merge($normalizedProduct, [
+            'quality_scores' => [
+                'ecommerce' => [
+                    'fr_FR' => 'C'
+                ]
+            ]
+        ]);
+
+        $getAllViewableLocalesForUser->fetchAll(1)->willReturn(['fr_FR', 'it_IT']);
+
+        $getProductsWithQualityScores->fromNormalizedProduct('a_product', $normalizedProduct, 'ecommerce', ['fr_FR'])
+            ->willReturn($normalizedProductWithScores);
+
+        $this->fromNormalizedProduct('a_product', $normalizedProduct, 'ecommerce', ['en_US', 'fr_FR'])
+            ->shouldReturn($normalizedProductWithScores);
+
+        $this->fromNormalizedProduct('without_granted_locales', $normalizedProduct, 'ecommerce', ['en_US', 'de_DE'])
+            ->shouldReturn($normalizedProduct);
     }
 
     private function buildConnectorProduct($identifier, $qualityScore): ConnectorProduct

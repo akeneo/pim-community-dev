@@ -62,6 +62,15 @@ final class GetProductsWithQualityScoresWithPermissions implements GetProductsWi
         return new ConnectorProductList($connectorProductList->totalNumberOfProducts(), $filteredProducts);
     }
 
+    public function fromNormalizedProduct(string $productIdentifier, array $normalizedProduct, ?string $channel = null, array $locales = []): array
+    {
+        $grantedLocales = array_values(array_intersect($locales, $this->getUserGrandtedLocales()));
+
+        return empty($grantedLocales)
+            ? $normalizedProduct
+            : $this->getProductsWithQualityScores->fromNormalizedProduct($productIdentifier, $normalizedProduct, $channel, $grantedLocales);
+    }
+
     private function filterQualityScoresByGrantedLocales(?ChannelLocaleRateCollection $qualityScores)
     {
         if ($qualityScores === null) {

@@ -23,6 +23,8 @@
 
 ## New features
 
+- DAPI-1443: Add possibility to export products depending on their Quality Score
+
 ## BC Breaks
 
 - Replace `Symfony\Bundle\FrameworkBundle\Templating\EngineInterface` by `Twig\Environment` in all codebase
