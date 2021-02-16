@@ -7,6 +7,14 @@ extensions:
         config:
             url: pim_enrich_family_rest_index
 
+
+    akeneo-product-quality-score-filter:
+        module: pim/filter/product/quality-score
+        config:
+            operators:
+                - IN AT LEAST ONE LOCALE
+                - IN ALL LOCALES
+
     akeneo-product-completeness-filter:
         module: pim/filter/product/completeness
         config:

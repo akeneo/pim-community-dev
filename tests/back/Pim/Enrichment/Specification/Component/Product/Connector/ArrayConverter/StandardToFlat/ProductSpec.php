@@ -2,22 +2,20 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat;
 
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use PhpSpec\ObjectBehavior;
 
 class ProductSpec extends ObjectBehavior
 {
     function let(
         ProductValueConverter $valueConverter,
-        AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $identifierAttribute
     ) {
-        $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
         $identifierAttribute->getCode()->willReturn('sku');
 
-        $this->beConstructedWith($valueConverter, $attributeRepository);
+        $this->beConstructedWith($valueConverter);
     }
 
     function it_converts_from_standard_to_flat_format($valueConverter)
@@ -69,6 +67,8 @@ class ProductSpec extends ObjectBehavior
             'sku'                                => '10699783',
             'weight-de_DE-print'                 => '100',
             'weight-de_DE-print-unit'            => 'KILOGRAM',
+            sprintf('%s-de_DE-print', GetProductsWithQualityScoresInterface::FLAT_FIELD_PREFIX) => 'A',
+            sprintf('%s-en_US-print', GetProductsWithQualityScoresInterface::FLAT_FIELD_PREFIX) => 'B',
         ];
 
         $item = [
@@ -132,6 +132,12 @@ class ProductSpec extends ObjectBehavior
                     ]
                 ]
             ],
+            'quality_scores' => [
+                'print' => [
+                    'de_DE' => 'A',
+                    'en_US' => 'B',
+                ]
+            ]
         ];
 
         $this->convert($item)->shouldReturn($expected);
