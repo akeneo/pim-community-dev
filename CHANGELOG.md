@@ -3,6 +3,8 @@
 
 ## Bug fixes
 
+- PIM-9678: The time counter is still running despite the job failed
+- PIM-9672: Error 500 on the API when inputing [null] on an array
 - PIM-9595: Avoid 403 error when launching import with no view rights on import details
 - PIM-9622: Fix query that can generate a MySQL memory allocation error
 - PIM-9630: Fix SQL sort buffer size issue when the catalog has a very large number of categories
@@ -11,10 +13,17 @@
 - PIM-9649: Fix PDF product renderer disregarding permissions on Attribute groups
 - PIM-9650: Add translation key for mass delete action.
 - PIM-9642: Refresh product image when switching channel or locale
+- PIM-9667: Prevent import of duplicate options in multiselect attributes
+- PIM-9658: Add missing backend permission checks
+- PIM 9657: Make open filters close when opening a new one.
+- PIM-9671: Provide a data quality insight status context for attribute groups
+- PIM-9670: Fix attribute filter "Group" issue when several attribute groups have the same label
+- PIM-9664: Display Ziggy as asset image when the preview cannot be generated
 
 ## New features
 
-- DAPI-1480: Add the ability to filter products on Quality Score through the API
+- DAPI-1443: Add possibility to export products depending on their Quality Score
+- DAPI-1480: Add possibility to filter products on Quality Score through the API
 
 ## Improvements
 

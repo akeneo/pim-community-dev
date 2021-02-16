@@ -1,6 +1,6 @@
 import React, {SyntheticEvent} from 'react';
 import {useRoute, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {Button, ButtonProps, ExportIllustration, Helper, Link, Modal, SectionTitle, Title} from 'akeneo-design-system';
+import {Button, ButtonProps, ExportIllustration, Helper, Link, Modal} from 'akeneo-design-system';
 import {useToggleState} from '@akeneo-pim-community/shared';
 
 type StopJobActionProps = {
@@ -34,8 +34,8 @@ const StopJobAction = ({id, jobLabel, isStoppable, onStop, children, ...rest}: S
     <>
       {isConfirmOpen && (
         <Modal closeTitle={translate('pim_common.close')} onClose={closeConfirm} illustration={<ExportIllustration />}>
-          <SectionTitle color="brand">{translate('pim_title.pim_enrich_job_tracker_index')} /</SectionTitle>
-          <Title>{translate('pim_datagrid.action.stop.confirmation.title', {jobLabel})}</Title>
+          <Modal.SectionTitle color="brand">{translate('pim_title.pim_enrich_job_tracker_index')} /</Modal.SectionTitle>
+          <Modal.Title>{translate('pim_datagrid.action.stop.confirmation.title', {jobLabel})}</Modal.Title>
           <Helper level="info">
             {translate('pim_datagrid.action.stop.confirmation.content')}
             <Link

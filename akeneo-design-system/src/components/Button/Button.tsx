@@ -1,6 +1,6 @@
 import React, {isValidElement, ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColorForLevel, getFontSize, Level} from '../../theme';
+import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
 import {Override} from '../../shared';
 import {IconProps} from '../../icons';
 
@@ -70,7 +70,7 @@ const getColorStyle = ({
   if (ghost) {
     return css`
       color: ${getColorForLevel(level, disabled ? 80 : 120)};
-      background-color: white;
+      background-color: ${getColor('white')};
       border-color: ${getColorForLevel(level, disabled ? 60 : 100)};
 
       &:hover:not([disabled]) {
@@ -87,7 +87,7 @@ const getColorStyle = ({
   }
 
   return css`
-    color: white;
+    color: ${getColor('white')};
     background-color: ${getColorForLevel(level, disabled ? 40 : 100)};
 
     &:hover:not([disabled]) {
@@ -100,7 +100,7 @@ const getColorStyle = ({
   `;
 };
 
-const ContainerStyle = css<
+const Container = styled.button<
   {
     level: Level;
     ghost: boolean;
@@ -119,21 +119,17 @@ const ContainerStyle = css<
   border-style: ${({ghost}) => (ghost ? 'solid' : 'none')};
   padding: ${({size}) => (size === 'small' ? '0 10px' : '0 15px')};
   height: ${({size}) => (size === 'small' ? '24px' : '32px')};
-  outline-color: ${({level}) => getColorForLevel(level, 100)};
   cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
   font-family: inherit;
   transition: background-color 0.1s ease;
+  outline-style: none;
+  text-decoration: none;
+
+  &:focus {
+    box-shadow: 0 0 0 2px ${getColor('blue', 40)};
+  }
 
   ${getColorStyle}
-`;
-
-const ButtonContainer = styled.button`
-  ${ContainerStyle}
-`;
-
-const LinkContainer = styled.a`
-  text-decoration: none;
-  ${ContainerStyle}
 `;
 
 /**
@@ -164,10 +160,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       onClick(event);
     };
 
-    const Component = undefined !== href ? LinkContainer : ButtonContainer;
-
     return (
-      <Component
+      <Container
+        as={undefined !== href ? 'a' : 'button'}
         level={level}
         ghost={ghost}
         disabled={disabled}
@@ -190,7 +185,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
           return child;
         })}
-      </Component>
+      </Container>
     );
   }
 );

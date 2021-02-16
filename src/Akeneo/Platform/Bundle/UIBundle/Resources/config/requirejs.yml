@@ -770,6 +770,7 @@ config:
     pim/filter/product/enabled:            pimui/js/filter/product/enabled
     pim/filter/product/updated:            pimui/js/filter/product/updated
     pim/filter/product/completeness:       pimui/js/filter/product/completeness
+    pim/filter/product/quality-score:      pimui/js/filter/product/quality-score
     pim/filter/product/category:           pimui/js/filter/product/category
     pim/filter/product/category/selector:  pimui/js/filter/product/category/selector
     pim/filter/attribute/identifier:       pimui/js/filter/attribute/identifier
@@ -1213,6 +1214,9 @@ config:
     pim/template/filter/attribute/select:           pimui/templates/filter/attribute/select.html
     pim/template/filter/attribute/media:            pimui/templates/filter/attribute/media.html
     pim/template/filter/attribute/date:             pimui/templates/filter/attribute/date.html
+    pim/template/filter/product/quality-score: pimui/templates/filter/product/quality-score/select-score.html
+    pim/template/filter/product/quality-score-operator: pimui/templates/filter/product/quality-score/select-operator.html
+    pim/template/filter/product/quality-score-filter: pimui/templates/filter/product/quality-score/filter.html
 
     # Grid view selector
     pim/template/grid/view-selector/create-view-inputs: pimui/templates/grid/view-selector-create-view-inputs.html

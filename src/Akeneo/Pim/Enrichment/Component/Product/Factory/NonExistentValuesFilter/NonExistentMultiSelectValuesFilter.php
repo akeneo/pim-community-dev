@@ -111,6 +111,6 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
             }
         }
 
-        return $result;
+        return \array_unique($result);
     }
 }
