@@ -172,7 +172,7 @@ type SelectInputProps = Override<
     /**
      * The options.
      */
-    children: ReactNode;
+    children?: ReactNode;
 
     /**
      * Force the vertical position of the overlay.
