@@ -6,16 +6,20 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
 use Akeneo\Pim\Enrichment\Bundle\Product\RemoveValuesFromProductModels;
 use Akeneo\Pim\Enrichment\Bundle\Product\RemoveValuesFromProducts;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Common\EntityBuilder;
 use Akeneo\Test\Common\EntityWithValue\Builder;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use Doctrine\DBAL\Connection;
 
 class RemoveValuesFromProductsAndProductModelsIntegration extends TestCase
 {
+    use AssertEventCountTrait;
+
     /**
      * @test
      */
@@ -49,6 +53,8 @@ class RemoveValuesFromProductsAndProductModelsIntegration extends TestCase
             ->forAttributeCodes($attributeCodes, $productIdentifiers);
 
         $this->assertEquals(0, $this->getProductWithAttributeValuesCount($attributeCodes, $productIdentifiers));
+
+        $this->assertEventCount(4, ProductUpdated::class);
     }
 
     /**
