@@ -770,7 +770,7 @@ jobs:
     xlsx_user_group_import:
         connector: Akeneo XLSX Connector
         alias: xlsx_user_group_import
-        label: XLSX Demo user group import
+        label: Demo XLSX user group import
         type: import
         configuration:
             filePath: /tmp/user_group.xlsx
@@ -788,7 +788,7 @@ jobs:
     xlsx_user_import:
         connector: Akeneo XLSX Connector
         alias: xlsx_user_import
-        label: XLSX Demo user import
+        label: Demo XLSX user import
         type: import
         configuration:
             filePath: /tmp/user.xlsx
