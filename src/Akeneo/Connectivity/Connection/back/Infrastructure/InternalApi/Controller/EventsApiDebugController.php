@@ -27,7 +27,7 @@ class EventsApiDebugController
             'query' => [
                 'match_all' => new \stdClass()
             ]
-        ], 2);
+        ], 1000);
 
         $disposition = HeaderUtils::makeDisposition(
             HeaderUtils::DISPOSITION_ATTACHMENT,
