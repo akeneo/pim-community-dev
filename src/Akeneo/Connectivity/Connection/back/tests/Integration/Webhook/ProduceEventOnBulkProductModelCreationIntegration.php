@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
-use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -14,8 +15,10 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProduceAPIEventOnBulkProductModelCreationIntegration extends TestCase
+class ProduceEventOnBulkProductModelCreationIntegration extends TestCase
 {
+    use AssertEventCountTrait;
+
     private SimpleFactoryInterface $productModelFactory;
     private BulkSaverInterface $productModelSaver;
     private ObjectUpdaterInterface $productModelUpdater;
@@ -43,16 +46,7 @@ class ProduceAPIEventOnBulkProductModelCreationIntegration extends TestCase
         }
         $this->productModelSaver->saveAll($productModels);
 
-        $transport = self::$container->get('messenger.transport.business_event');
-
-        $envelopes = $transport->get();
-        $this->assertCount(1, $envelopes);
-
-        /** @var BulkEvent */
-        $bulkEvent = $envelopes[0]->getMessage();
-        $this->assertInstanceOf(BulkEvent::class, $bulkEvent);
-        $this->assertCount($count, $bulkEvent->getEvents());
-        $this->assertContainsOnlyInstancesOf(ProductModelCreated::class, $bulkEvent->getEvents());
+        $this->assertEventCount($count, ProductModelCreated::class);
     }
 
     protected function getConfiguration(): Configuration
