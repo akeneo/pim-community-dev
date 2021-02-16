@@ -17,6 +17,7 @@ const AttributeItem = styled(Dropdown.Item)<{isAlreadyUsed: boolean} & AkeneoThe
   ${({isAlreadyUsed}) => isAlreadyUsed && css`
     color: ${getColor('brand', 100)};
     font-style: italic;
+    font-weight: 700;
   `}
 `;
 

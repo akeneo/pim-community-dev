@@ -26,10 +26,17 @@ const AttributeName = styled.label`
 const InputCell = styled(Table.Cell)`
   width: 400px;
 `;
+
 const ContextCell = styled(Table.Cell)`
   width: 380px;
   overflow: visible;
 `;
+
+const InputField = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const RemoveCell = styled(Table.Cell)`
   width: 84px;
 
@@ -78,16 +85,18 @@ const UpdaterRow = ({updater, uiLocale, readOnly, errors, onChange, onRemove, ch
         </AttributeName>
       </Table.Cell>
       <InputCell>
-        <InputView
-          id={id}
-          canEditData={!readOnly}
-          channel={updater.channel}
-          locale={updater.locale}
-          onChange={handleDataChange}
-          onSubmit={() => {}}
-          value={updater}
-        />
-        {getErrorsView(errors, `updaters.${updater.id}`)}
+        <InputField>
+          <InputView
+            id={id}
+            canEditData={!readOnly}
+            channel={updater.channel}
+            locale={updater.locale}
+            onChange={handleDataChange}
+            onSubmit={() => {}}
+            value={updater}
+          />
+          {getErrorsView(errors, `updaters.${updater.id}`)}
+        </InputField>
       </InputCell>
       <ContextCell>
         {null !== updater.channel && (

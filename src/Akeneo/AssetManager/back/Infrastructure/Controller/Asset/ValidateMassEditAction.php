@@ -88,16 +88,6 @@ class ValidateMassEditAction
             throw new AccessDeniedException();
         }
 
-
-
-        /**
-         * {
-         *  query: {...}
-         *  type: 'delete' | 'edit' | ...
-         *  action: {...}
-         * }
-         */
-
         $normalizedCommand = json_decode($request->getContent(), true);
         $query = AssetQuery::createFromNormalized($normalizedCommand['query']);
         $type = $normalizedCommand['type'];
