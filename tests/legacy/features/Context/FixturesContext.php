@@ -2647,4 +2647,15 @@ class FixturesContext extends BaseFixturesContext
     {
         return $this->getContainer()->get('akeneo_elasticsearch.client.user');
     }
+
+    private function purgeMessengerEvents()
+    {
+        $transport = $this->getContainer()->get('messenger.transport.business_event');
+
+        while (!empty($envelopes = $transport->get())) {
+            foreach ($envelopes as $envelope) {
+                $transport->ack($envelope);
+            }
+        }
+    }
 }
