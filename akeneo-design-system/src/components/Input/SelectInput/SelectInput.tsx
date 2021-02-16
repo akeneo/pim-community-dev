@@ -51,7 +51,6 @@ const OptionContainer = styled.div`
   align-items: center;
   gap: 10px;
   cursor: pointer;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -63,8 +62,6 @@ const OptionContainer = styled.div`
   }
   &:hover {
     background: ${getColor('grey', 20)};
-  }
-  &:hover {
     color: ${getColor('brand', 140)};
   }
   &:active {
@@ -76,7 +73,7 @@ const OptionContainer = styled.div`
   }
 `;
 
-const EmptyResultContainer = styled.div<{tall: boolean} & AkeneoThemedProps>`
+const EmptyResultContainer = styled.div`
   background: ${getColor('white')};
   height: 20px;
   padding: 0 20px;
@@ -185,7 +182,7 @@ type SelectInputProps = Override<
 >;
 
 /**
- * Select input allows the user to select content and data when the expected user input is composed of one.
+ * Select input allows the user to select content and data when the expected user input is composed of one option value.
  */
 const SelectInput = ({
   id,
