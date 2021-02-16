@@ -14,7 +14,7 @@ export type ViewGenerator = React.FC<{
   channel: ChannelReference;
   locale: LocaleReference;
   onChange: (value: EditionValue) => void;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   canEditData: boolean;
 }>;
 /**

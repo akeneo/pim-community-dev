@@ -19,7 +19,7 @@ const View = ({
 }: {
   value: EditionValue;
   onChange: (value: EditionValue) => void;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   canEditData: boolean;
 }) => {
   if (!isNumberData(value.data) || !isNumberAttribute(value.attribute)) {
@@ -51,7 +51,7 @@ const View = ({
           onValueChange(event.currentTarget.value);
         }}
         onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-          if (Key.Enter === event.key) onSubmit();
+          if (Key.Enter === event.key) onSubmit?.();
         }}
         disabled={!canEditData}
         readOnly={!canEditData}

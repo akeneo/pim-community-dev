@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Controller\Asset;
 
-use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommandFactory;
+use Akeneo\AssetManager\Application\Asset\MassEditAssets\CommandFactory\MassEditAssetsCommandFactory;
 use Akeneo\AssetManager\Application\Asset\MassEditAssets\MassEditAssetsCommand;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
@@ -24,27 +24,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-
-/**
- * - MassEdit create from normalized with edit actions
- * - MassEdit validator calling other
- */
-
-
-/**
- * $updaters.each((updater) => {
- *  return { //Updater command
- *   type: updater['type'],
- *   command: $this->factory->createEditCommand($updater['data']);
- *  }
- * })
- */
-
 
 /**
  * Edit assets for a given selection
@@ -53,29 +38,29 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ValidateMassEditAction
 {
-    const MASS_ACTION_TYPE = 'edit';
+    private const MASS_ACTION_TYPE = 'edit';
 
-    private EditAssetCommandFactory $editAssetCommandFactory;
     private SecurityFacade $securityFacade;
     private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
     private TokenStorageInterface $tokenStorage;
     private ValidatorInterface $validator;
     private NormalizerInterface $normalizer;
+    private MassEditAssetsCommandFactory $massEditAssetsCommandFactory;
 
     public function __construct(
-        EditAssetCommandFactory $editAssetCommandFactory,
+        MassEditAssetsCommandFactory $massEditAssetsCommandFactory,
         SecurityFacade $securityFacade,
         CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage,
         ValidatorInterface $validator,
         NormalizerInterface $normalizer
     ) {
-        $this->editAssetCommandFactory = $editAssetCommandFactory;
         $this->securityFacade = $securityFacade;
         $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
         $this->validator = $validator;
         $this->normalizer = $normalizer;
+        $this->massEditAssetsCommandFactory = $massEditAssetsCommandFactory;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response
@@ -88,10 +73,9 @@ class ValidateMassEditAction
             throw new AccessDeniedException();
         }
 
-        $normalizedCommand = json_decode($request->getContent(), true);
-        $query = AssetQuery::createFromNormalized($normalizedCommand['query']);
-        $type = $normalizedCommand['type'];
-        $normalizedUpdaters = $normalizedCommand['updaters'];
+        $query = AssetQuery::createFromNormalized($request->request->get('query'));
+        $type = $request->request->get('type');
+        $normalizedUpdaters = $this->getUpdatersOr400($request);
         $assetFamilyIdentifier = $this->getAssetFamilyIdentifierOr404($assetFamilyIdentifier);
 
         if ($this->hasDesynchronizedIdentifiers($assetFamilyIdentifier, $query)) {
@@ -103,12 +87,16 @@ class ValidateMassEditAction
 
         if (self::MASS_ACTION_TYPE !== $type) {
             return new JsonResponse(
-                'Only edit action type are supported',
+                'Only edit action type is supported',
                 Response::HTTP_BAD_REQUEST
             );
         }
 
-        $command = $this->createCommand((string) $assetFamilyIdentifier, $query->normalize(), $normalizedUpdaters);
+        $command = $this->massEditAssetsCommandFactory->create(
+            $assetFamilyIdentifier,
+            $query,
+            $normalizedUpdaters
+        );
 
         $violations = $this->validator->validate($command);
 
@@ -152,29 +140,14 @@ class ValidateMassEditAction
         return (string) $routeAssetFamilyIdentifier !== $query->getFilter('asset_family')['value'];
     }
 
-    private function createCommand(string $assetFamilyIdentifier, array $query, array $normalizedUpdaters): MassEditAssetsCommand
+    private function getUpdatersOr400(Request $request): array
     {
-        $updaters = array_map(function ($updater) use ($assetFamilyIdentifier) {
-            $fakeEditAssetCommand = $this->editAssetCommandFactory->create([
-                'asset_family_identifier' => $assetFamilyIdentifier,
-                'code' => 'FAKE_CODE_FOR_MASS_EDIT_VALIDATION_' . microtime(),
-                'values' => [
-                    [
-                        'attribute' => $updater['attribute'],
-                        'channel' => $updater['channel'],
-                        'locale' => $updater['locale'],
-                        'data' => $updater['data'],
-                    ]
-                ]
-            ]);
+        $updaters = $request->request->get('updaters');
 
-            return [
-                'action' => $updater['action'],
-                'id' => $updater['id'],
-                'command' => $fakeEditAssetCommand->editAssetValueCommands[0]
-            ];
-        }, $normalizedUpdaters);
+        if (!is_array($updaters)) {
+            throw new BadRequestHttpException('Updaters should be an array');
+        }
 
-        return new MassEditAssetsCommand($assetFamilyIdentifier, $query, $updaters);
+        return $updaters;
     }
 }

@@ -92,7 +92,6 @@ const UpdaterRow = ({updater, uiLocale, readOnly, errors, onChange, onRemove, ch
             channel={updater.channel}
             locale={updater.locale}
             onChange={handleDataChange}
-            onSubmit={() => {}}
             value={updater}
           />
           {getErrorsView(errors, `updaters.${updater.id}`)}

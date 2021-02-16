@@ -24,7 +24,6 @@ test('It renders the text attribute', () => {
       value={textValue}
       locale={null}
       onChange={() => {}}
-      onSubmit={() => {}}
       canEditData={true}
     />
   );
@@ -41,7 +40,6 @@ test('It renders the placeholder when the value is empty', () => {
       value={emptyValue}
       locale={null}
       onChange={() => {}}
-      onSubmit={() => {}}
       canEditData={true}
     />
   );
@@ -56,8 +54,7 @@ test('It does not render if the data is not a text data', () => {
       value={otherValue}
       locale={null}
       onChange={() => {}}
-      onSubmit={() => {}}
-      canEditData={true}
+=     canEditData={true}
     />
   );
 
@@ -72,8 +69,7 @@ test('It can change the text value', () => {
       value={editionValue}
       locale={null}
       onChange={change}
-      onSubmit={() => {}}
-      canEditData={true}
+=     canEditData={true}
     />
   );
 
@@ -85,7 +81,7 @@ test('It can change the text value', () => {
 });
 
 test('It can submit the text value by hitting the Enter key', () => {
-  const submit = jest.fn().mockImplementationOnce(() => {});
+  const submit = jest.fn();
   renderWithProviders(
     <TextView
       value={textValue}

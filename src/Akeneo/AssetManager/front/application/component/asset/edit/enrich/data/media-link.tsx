@@ -71,7 +71,7 @@ const View = ({
   value: EditionValue;
   locale: LocaleReference;
   onChange: (value: EditionValue) => void;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   canEditData: boolean;
   reloadPreview: boolean;
   onReloadPreview: () => void;
@@ -117,7 +117,7 @@ const View = ({
         }`}
         value={mediaLinkDataStringValue(value.data)}
         onChange={e => onChange(setValueData(value, mediaLinkDataFromString(e.currentTarget.value)))}
-        onKeyDown={e => Key.Enter === e.key && onSubmit()}
+        onKeyDown={e => Key.Enter === e.key && onSubmit?.()}
         disabled={!canEditData}
         readOnly={!canEditData}
         placeholder={__(`pim_asset_manager.attribute.media_link.${canEditData ? 'placeholder' : 'read_only'}`)}

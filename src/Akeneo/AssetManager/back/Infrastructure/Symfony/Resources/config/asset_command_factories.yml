@@ -1,4 +1,10 @@
 services:
+    # Mass edit asset command factory
+    akeneo_assetmanager.application.factory.asset.mass_edit_assets_command_factory:
+        class: Akeneo\AssetManager\Application\Asset\MassEditAssets\CommandFactory\MassEditAssetsCommandFactory
+        arguments:
+            - '@akeneo_assetmanager.application.factory.asset.edit_asset_command_factory'
+
     # Edit asset command factory
     akeneo_assetmanager.application.factory.asset.edit_asset_command_factory:
         class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommandFactory
