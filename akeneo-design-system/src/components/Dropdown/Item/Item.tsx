@@ -11,7 +11,6 @@ const ItemLabel = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   flex: 1;
-  color: ${getColor('grey', 120)};
   line-height: 34px;
 `;
 
@@ -23,26 +22,29 @@ const ItemContainer = styled.div<{tall: boolean} & AkeneoThemedProps>`
   align-items: center;
   gap: 10px;
   cursor: pointer;
+  color: ${getColor('grey', 120)};
 
   a {
     color: ${getColor('grey', 120)};
   }
 
-  &:focus ${ItemLabel} {
+  a:focus,
+  &:focus {
     color: ${getColor('grey', 120)};
   }
+  a:hover,
   &:hover {
     background: ${getColor('grey', 20)};
-  }
-  &:hover ${ItemLabel} {
     color: ${getColor('brand', 140)};
   }
-  &:active ${ItemLabel} {
+  a:active,
+  &:active {
     color: ${getColor('brand', 100)};
     font-style: italic;
     font-weight: 700;
   }
-  &:disabled ${ItemLabel} {
+  a:disabled,
+  &:disabled {
     color: ${getColor('grey', 100)};
   }
 `;

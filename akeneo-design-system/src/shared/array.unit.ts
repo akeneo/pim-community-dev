@@ -30,9 +30,9 @@ test('It remove duplicate items', () => {
 
 test('It does nothing on unique array', () => {
   const arrayWithoutDuplication = [
-    {'code': 'object1', 'description': 'first object'},
-    {'code': 'object2', 'description': 'second object'},
-    {'code': 'object3', 'description': 'third object'},
+    {code: 'object1', description: 'first object'},
+    {code: 'object2', description: 'second object'},
+    {code: 'object3', description: 'third object'},
   ];
 
   const comparator = (first: MyObject, second: MyObject) => first.code === second.code;
@@ -42,17 +42,17 @@ test('It does nothing on unique array', () => {
 
 test('It remove duplicate items on object with comparator', () => {
   const arrayWithDuplication = [
-    {'code': 'object1', 'description': 'first object'},
-    {'code': 'object2', 'description': 'second object'},
-    {'code': 'object2', 'description': 'second object'},
-    {'code': 'object3', 'description': 'third object'},
-    {'code': 'object1', 'description': 'another object'},
+    {code: 'object1', description: 'first object'},
+    {code: 'object2', description: 'second object'},
+    {code: 'object2', description: 'second object'},
+    {code: 'object3', description: 'third object'},
+    {code: 'object1', description: 'another object'},
   ];
 
   const arrayWithoutDuplication = [
-    {'code': 'object1', 'description': 'first object'},
-    {'code': 'object2', 'description': 'second object'},
-    {'code': 'object3', 'description': 'third object'},
+    {code: 'object1', description: 'first object'},
+    {code: 'object2', description: 'second object'},
+    {code: 'object3', description: 'third object'},
   ];
 
   const comparator = (first: MyObject, second: MyObject) => first.code === second.code;
