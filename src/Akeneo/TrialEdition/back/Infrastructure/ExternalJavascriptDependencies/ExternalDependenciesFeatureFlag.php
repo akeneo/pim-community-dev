@@ -19,16 +19,13 @@ final class ExternalDependenciesFeatureFlag
 {
     private FeatureFlag $trialEditionFeature;
 
-    private string $environment;
-
-    public function __construct(FeatureFlag $trialEditionFeature, string $environment)
+    public function __construct(FeatureFlag $trialEditionFeature)
     {
         $this->trialEditionFeature = $trialEditionFeature;
-        $this->environment = $environment;
     }
 
     public function isEnabled(): bool
     {
-        return $this->trialEditionFeature->isEnabled() && in_array($this->environment, ['dev', 'prod']);
+        return $this->trialEditionFeature->isEnabled();
     }
 }

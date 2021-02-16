@@ -11,5 +11,4 @@ services:
     Akeneo\Pim\TrialEdition\Infrastructure\ExternalJavascriptDependencies\ExternalDependenciesFeatureFlag:
         arguments:
             - '@akeneo.pim.automation.trial_edition.feature'
-            - '%kernel.environment%'
         public: true
