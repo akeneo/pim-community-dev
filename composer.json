@@ -125,7 +125,8 @@
         "symfony/yaml": "4.4.18",
         "twig/twig": "1.44.1",
         "webmozart/assert": "1.9.1",
-        "aws/aws-sdk-php": "3.172"
+        "aws/aws-sdk-php": "3.172",
+        "symfony/http-client": "^4.4.18"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",
