@@ -97,7 +97,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductModelProperties',
             'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions',
-            'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException',
+            'Akeneo\Tool\Component\StorageUtils\Exception',
             'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
             'Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration',
             'Oro\Bundle\DataGridBundle\Event\BuildBefore',

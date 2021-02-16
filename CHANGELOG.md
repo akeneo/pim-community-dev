@@ -24,6 +24,7 @@
 ## New features
 
 - DAPI-1443: Add possibility to export products depending on their Quality Score
+- DAPI-1480: Add possibility to filter products on Quality Score through the API
 
 ## Improvements
 
