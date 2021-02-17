@@ -17,7 +17,6 @@ use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetComm
 use Akeneo\AssetManager\Application\Asset\MassEditAssets\MassEditAssetsCommand;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
@@ -57,7 +56,7 @@ class MassEditAssetsCommandFactory
             return [
                 'action' => $normalizedUpdater['action'],
                 'id' => $normalizedUpdater['id'],
-                'command' => $fakeEditAssetCommand->editAssetValueCommands[0]
+                'command' => isset($fakeEditAssetCommand->editAssetValueCommands[0]) ? $fakeEditAssetCommand->editAssetValueCommands[0] : null
             ];
         }, $normalizedUpdaters);
 

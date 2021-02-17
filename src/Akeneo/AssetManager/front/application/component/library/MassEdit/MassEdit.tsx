@@ -16,32 +16,31 @@ type MassEditProps = {
   selectedCount: number;
   onConfirm: () => void;
   channels: Channel[];
-}
-const MassEdit = ({
-  selectionQuery,
-  assetFamily,
-  context,
-  onConfirm,
-  selectedCount,
-  channels,
-}: MassEditProps) => {
+};
+const MassEdit = ({selectionQuery, assetFamily, context, onConfirm, selectedCount, channels}: MassEditProps) => {
   const translate = useTranslate();
   const [isMassEditModalOpen, openMassEditModal, closeMassEditModal] = useBooleanState(false);
   const notify = useNotify();
-  const [,launchMassEdit] = useMassEdit();
-  const handleMassEdit = useCallback(async (updaterCollection: Updater[]) => {
-    if (selectionQuery === null || assetFamily === null) return;
+  const [, launchMassEdit] = useMassEdit();
+  const handleMassEdit = useCallback(
+    async (updaterCollection: Updater[]) => {
+      if (selectionQuery === null || assetFamily === null) return;
 
-    try {
-      await launchMassEdit(assetFamily.code, selectionQuery, updaterCollection);
-      notify(NotificationLevel.SUCCESS, translate('pim_asset_manager.asset.notification.mass_edit.success'));
-      closeMassEditModal();
+      try {
+        await launchMassEdit(assetFamily.code, selectionQuery, updaterCollection);
+        notify(NotificationLevel.SUCCESS, translate('pim_asset_manager.asset.notification.mass_edit.launch.success'));
+        closeMassEditModal();
 
-      onConfirm();
-    } catch (error) {
-      notify(NotificationLevel.ERROR, translate('pim_asset_manager.asset.notification.mass_edit.fail', {error}));
-    }
-  }, [selectionQuery, closeMassEditModal, assetFamily]);
+        onConfirm();
+      } catch (error) {
+        notify(
+          NotificationLevel.ERROR,
+          translate('pim_asset_manager.asset.notification.mass_edit.launch.fail', {error})
+        );
+      }
+    },
+    [selectionQuery, closeMassEditModal, assetFamily]
+  );
 
   if (null === selectionQuery) return;
 

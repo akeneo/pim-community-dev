@@ -31,8 +31,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Edit assets for a given selection
- *
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  */
 class ValidateMassEditAction
@@ -107,7 +105,7 @@ class ValidateMassEditAction
             return new JsonResponse($this->normalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse(null, Response::HTTP_ACCEPTED);
+        return new JsonResponse(null, Response::HTTP_OK);
     }
 
     private function isUserAllowedToMassEditAssets(string $assetFamilyIdentifier): bool

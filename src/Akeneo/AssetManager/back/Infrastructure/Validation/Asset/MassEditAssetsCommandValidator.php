@@ -38,6 +38,9 @@ class MassEditAssetsCommandValidator extends ConstraintValidator
         $this->checkCommandType($massEditAssetsCommand);
 
         foreach ($massEditAssetsCommand->updaters as $updater) {
+            if (null === $updater['command']) {
+                continue;
+            }
             $violations = $this->validator->validate($updater['command']);
             foreach ($violations as $violation) {
                 $this->context->buildViolation($violation->getMessage())

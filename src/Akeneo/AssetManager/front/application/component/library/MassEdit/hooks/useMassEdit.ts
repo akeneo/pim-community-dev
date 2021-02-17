@@ -1,6 +1,8 @@
 import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
-import AssetFamilyIdentifier, {denormalizeAssetFamilyIdentifier} from '../../../../../domain/model/asset-family/identifier';
-import {Query} from '../../../../../domain/fetcher/fetcher';
+import AssetFamilyIdentifier, {
+  denormalizeAssetFamilyIdentifier,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import {normalizeUpdaterCollection} from '../model/updater';
 import {useRouter} from '@akeneo-pim-community/legacy-bridge/src';
 
@@ -27,6 +29,10 @@ const useMassEdit = () => {
       },
     });
 
+    if (200 !== response.status) {
+      throw new Error(await response.text());
+    }
+
     return await response.json();
   };
 
@@ -50,13 +56,14 @@ const useMassEdit = () => {
       },
     });
 
+    if (202 !== response.status) {
+      throw new Error(await response.text());
+    }
+
     await response.json();
   };
 
-  return [
-    validate,
-    launch,
-  ] as const;
+  return [validate, launch] as const;
 };
 
 export {useMassEdit};

@@ -86,7 +86,7 @@ class MassDeleteAssetsActionTest extends ControllerIntegrationTestCase
             ],
         );
 
-        $this->webClientHelper->assert202Accepted($this->client->getResponse());
+        $this->webClientHelper->assert200Ok($this->client->getResponse());
     }
 
     /**

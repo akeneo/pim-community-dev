@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {Button, getColor, Modal, ProgressIndicator, SectionTitle, useProgress} from 'akeneo-design-system';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {Context} from 'akeneoassetmanager/domain/model/context';
@@ -12,7 +12,7 @@ import {UpdaterCollection} from './components/UpdaterCollection';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import {Updater} from './model/updater';
 import {useMassEdit} from './hooks/useMassEdit';
-import {Query} from '../../../../domain/fetcher/fetcher';
+import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
 
 const Container = styled.div`
   width: 100%;
@@ -68,6 +68,7 @@ const MassEditModal = ({
   const steps = ['edit', 'confirm'];
   const [isCurrentStep, nextStep, previousStep] = useProgress(steps);
   const [errors, setErrors] = useState<ValidationError[]>([]);
+  const notify = useNotify();
 
   const handleConfirm = () => {
     onConfirm(updaterCollection);
@@ -83,14 +84,21 @@ const MassEditModal = ({
 
   const handleMoveToConfirmStep = async () => {
     setErrors([]);
-    const errors = await validateMassEdit(assetFamily.identifier, selectionQuery, updaterCollection);
-    if (errors.length) {
-      setErrors(errors);
+    try {
+      const errors = await validateMassEdit(assetFamily.identifier, selectionQuery, updaterCollection);
+      if (errors.length) {
+        setErrors(errors);
 
-      return;
+        return;
+      }
+
+      nextStep();
+    } catch (error) {
+      notify(
+        NotificationLevel.ERROR,
+        translate('pim_asset_manager.asset.notification.mass_edit.validation.fail', {error: error.message})
+      );
     }
-
-    nextStep();
   };
 
   return (
