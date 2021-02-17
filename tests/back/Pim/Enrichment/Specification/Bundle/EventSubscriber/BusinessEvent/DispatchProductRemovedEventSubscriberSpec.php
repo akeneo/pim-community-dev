@@ -41,7 +41,7 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn(
             [
                 StorageEvents::POST_REMOVE => 'createAndDispatchProductEvents',
-                StorageEvents::POST_SAVE_ALL => 'dispatchBufferedProductEvents',
+                StorageEvents::POST_REMOVE_ALL => 'dispatchBufferedProductEvents',
             ]
         );
     }

@@ -53,6 +53,10 @@ final class DispatchProductCreatedAndUpdatedEventSubscriber implements EventSubs
 
     public function createAndDispatchProductEvents(GenericEvent $postSaveEvent): void
     {
+        if ($postSaveEvent->hasArgument('force_save') && true === $postSaveEvent->getArgument('force_save')) {
+            return;
+        }
+
         /** @var ProductInterface */
         $product = $postSaveEvent->getSubject();
         if (false === $product instanceof ProductInterface) {

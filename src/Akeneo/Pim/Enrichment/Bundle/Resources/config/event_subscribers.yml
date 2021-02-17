@@ -186,7 +186,7 @@ services:
     Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductCreatedAndUpdatedEventSubscriber:
         arguments:
             - '@security.helper'
-            - '@Symfony\Component\Messenger\MessageBusInterface'
+            - '@messenger.default_bus'
             - '%webhook_max_bulk_size%'
             - '@logger'
         tags:
@@ -195,7 +195,7 @@ services:
     Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductRemovedEventSubscriber:
         arguments:
             - '@security.helper'
-            - '@Symfony\Component\Messenger\MessageBusInterface'
+            - '@messenger.default_bus'
             - '%webhook_max_bulk_size%'
             - '@logger'
         tags:
@@ -204,7 +204,7 @@ services:
     Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelCreatedAndUpdatedEventSubscriber:
         arguments:
             - '@security.helper'
-            - '@Symfony\Component\Messenger\MessageBusInterface'
+            - '@messenger.default_bus'
             - '%webhook_max_bulk_size%'
             - '@logger'
         tags:
@@ -213,7 +213,7 @@ services:
     Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelRemovedEventSubscriber:
         arguments:
             - '@security.helper'
-            - '@Symfony\Component\Messenger\MessageBusInterface'
+            - '@messenger.default_bus'
             - '%webhook_max_bulk_size%'
             - '@logger'
         tags:
