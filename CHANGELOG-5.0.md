@@ -1,7 +1,9 @@
 # 5.0.x
 
 ## Bug fixes
-DAPI-1490: Fix redirect to product grid from DQI dashboard when a default view is activated on the user profile
+
+- DAPI-1490: Fix redirect to product grid from DQI dashboard when a default view is activated on the user profile
+- PIM-9686: Fix memory leak during "set_attribute_requirements" job
 
 # 5.0.4 (2021-02-02)
 
