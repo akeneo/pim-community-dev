@@ -153,7 +153,6 @@ const LocaleSelector: React.FC<Props> = ({
         onChange={handleChange}
         allowClear={allowClear}
         disabled={disabled}
-        name={name}
         validation={validation}
         dropdownCssClass='locale-dropdown'
       />
