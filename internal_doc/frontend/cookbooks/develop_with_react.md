@@ -199,7 +199,7 @@ export {MyView};
 
 The PimView component works well with the most of the Backbone views. It does not work if you try to use it with complex FormView or ControllerView (using renderRoute).
 
-## How to share data and events between the Backbone view and the React component?
+## How to share data and events between the Backbone view, and the React component?
 
 ### Illustration
 
@@ -311,7 +311,7 @@ In order to keep the consistency of the product information displayed in the exa
 
 ---
 
-### Configure events and listeners to communicate in both way between the Backbone view and the React component
+### Configure events and listeners to communicate in both way between the Backbone view, and the React component
 
 Use standard CustomEvent (not recommended)
 
@@ -369,7 +369,7 @@ export = MyBridgeView;
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {Button, DangerIcon} from 'akeneo-design-system';
 
-type Product {
+type Product = {
 	identifier: string;
 };
 
@@ -481,7 +481,7 @@ import React, {FC, useCallback, useEffect, useState} from 'react';
 import {Button, DangerIcon} from 'akeneo-design-system';
 import {useMediator} from '@akeneo-pim-community/legacy-bridge';
 
-type Product {
+type Product = {
 	identifier: string;
 };
 
