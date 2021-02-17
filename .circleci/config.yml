@@ -916,9 +916,6 @@ workflows:
                 requires:
                     - build_dev
 
-          - test_back_missing_structure_migrations:
-                requires:
-                    - build_dev
           - test_back_data_migrations:
                 requires:
                     - build_dev
