@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
+import {Checkbox, Key} from 'akeneo-design-system';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
@@ -15,8 +16,6 @@ import ReferenceEntity, {
   denormalizeReferenceEntity,
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
-import Key from 'akeneoreferenceentity/tools/key';
-import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
 
 interface StateProps {
   context: {
@@ -149,26 +148,13 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                     {getErrorsView(this.props.errors, 'code')}
                   </div>
                   <div className="AknFieldContainer" data-code="create_another">
-                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                      <label
-                        className="AknFieldContainer-label"
-                        htmlFor="pim_reference_entity.record.create.input.create_another"
-                      >
-                        <Checkbox
-                          id="pim_reference_entity.record.create.input.create_another"
-                          value={this.state.createAnother}
-                          onChange={(newValue: boolean) => this.setState({createAnother: newValue})}
-                        />
-                        <span
-                          onClick={() => {
-                            this.setState({createAnother: !this.state.createAnother});
-                          }}
-                        >
-                          {__('pim_reference_entity.record.create.input.create_another')}
-                        </span>
-                      </label>
-                    </div>
-                    <div className="AknFieldContainer-inputContainer" />
+                    <Checkbox
+                      id="pim_reference_entity.record.create.input.create_another"
+                      checked={this.state.createAnother}
+                      onChange={newValue => this.setState({createAnother: newValue})}
+                    >
+                      {__('pim_reference_entity.record.create.input.create_another')}
+                    </Checkbox>
                   </div>
                   <button
                     className="AknButton AknButton--apply ok"

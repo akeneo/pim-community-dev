@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
@@ -47,8 +47,8 @@ const MediaLinkView = ({
   }`;
 
   return (
-    <React.Fragment>
-      <div className="AknFieldContainer" data-code="prefix">
+    <>
+      <div className="AknFieldContainer--packed" data-code="prefix">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.prefix">
             {__('pim_asset_manager.attribute.edit.input.prefix')}
@@ -84,7 +84,7 @@ const MediaLinkView = ({
         </div>
         {getErrorsView(errors, 'prefix')}
       </div>
-      <div className="AknFieldContainer" data-code="suffix">
+      <div className="AknFieldContainer--packed" data-code="suffix">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.suffix">
             {__('pim_asset_manager.attribute.edit.input.suffix')}
@@ -120,7 +120,7 @@ const MediaLinkView = ({
         </div>
         {getErrorsView(errors, 'suffix')}
       </div>
-      <div className="AknFieldContainer" data-code="mediaType">
+      <div className="AknFieldContainer--packed" data-code="mediaType">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.media_type">
             {__('pim_asset_manager.attribute.edit.input.media_type')}
@@ -143,7 +143,7 @@ const MediaLinkView = ({
         </div>
         {getErrorsView(errors, 'mediaType')}
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

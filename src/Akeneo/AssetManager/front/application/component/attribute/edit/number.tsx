@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
@@ -38,21 +38,19 @@ const NumberView = ({
   }`;
 
   return (
-    <React.Fragment>
-      <div className="AknFieldContainer AknFieldContainer--packed" data-code="decimalsAllowed">
-        <div className="AknFieldContainer-header">
-          <Checkbox
-            readOnly={!rights.attribute.edit}
-            id="pim_asset_manager.attribute.edit.input.decimals_allowed"
-            checked={attribute.decimalsAllowed}
-            onChange={(decimalsAllowed: boolean) => onAdditionalPropertyUpdated('decimals_allowed', decimalsAllowed)}
-          >
-            {__('pim_asset_manager.attribute.edit.input.decimals_allowed')}
-          </Checkbox>
-        </div>
+    <>
+      <div data-code="decimalsAllowed">
+        <Checkbox
+          readOnly={!rights.attribute.edit}
+          id="pim_asset_manager.attribute.edit.input.decimals_allowed"
+          checked={attribute.decimalsAllowed}
+          onChange={(decimalsAllowed: boolean) => onAdditionalPropertyUpdated('decimals_allowed', decimalsAllowed)}
+        >
+          {__('pim_asset_manager.attribute.edit.input.decimals_allowed')}
+        </Checkbox>
         {getErrorsView(errors, 'decimalsAllowed')}
       </div>
-      <div className="AknFieldContainer" data-code="minValue">
+      <div className="AknFieldContainer--packed" data-code="minValue">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.min_value">
             {__('pim_asset_manager.attribute.edit.input.min_value')}
@@ -78,7 +76,7 @@ const NumberView = ({
         </div>
         {getErrorsView(errors, 'minValue')}
       </div>
-      <div className="AknFieldContainer" data-code="maxValue">
+      <div className="AknFieldContainer--packed" data-code="maxValue">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.max_value">
             {__('pim_asset_manager.attribute.edit.input.max_value')}
@@ -104,7 +102,7 @@ const NumberView = ({
         </div>
         {getErrorsView(errors, 'maxValue')}
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

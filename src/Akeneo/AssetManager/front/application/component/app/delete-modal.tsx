@@ -1,6 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
-import {Key} from 'akeneo-design-system';
+import {Button} from 'akeneo-design-system';
+import {ButtonContainer} from './button';
 
 interface Props {
   message: string;
@@ -9,6 +10,7 @@ interface Props {
   onCancel: () => void;
 }
 
+//TODO Use DSM Modal
 class DeleteModal extends React.Component<Props> {
   private cancelButton: React.RefObject<HTMLButtonElement>;
 
@@ -40,22 +42,14 @@ class DeleteModal extends React.Component<Props> {
                 <div className="AknFullPage-title">{__('pim_asset_manager.modal.delete.subtitle')}</div>
                 <div className="AknFullPage-description AknFullPage-description--bottom">{message}</div>
               </div>
-              <div className="AknButtonList">
-                <button
-                  ref={this.cancelButton}
-                  className="AknButtonList-item AknButton AknButton--grey cancel"
-                  onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
-                    if (Key.Space === event.key) onCancel();
-                  }}
-                  onClick={onCancel}
-                >
+              <ButtonContainer>
+                <Button ref={this.cancelButton} level="tertiary" onClick={onCancel}>
                   {__('pim_asset_manager.modal.delete.button.cancel')}
-                </button>
-
-                <button className="AknButtonList-item AknButton AknButton--important ok" onClick={onConfirm}>
+                </Button>
+                <Button level="danger" onClick={onConfirm}>
                   {__('pim_asset_manager.modal.delete.button.confirm')}
-                </button>
-              </div>
+                </Button>
+              </ButtonContainer>
             </div>
           </div>
         </div>

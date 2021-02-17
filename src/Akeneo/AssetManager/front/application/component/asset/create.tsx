@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
+import {AssetsIllustration, Key, useShortcut, Checkbox, Button} from 'akeneo-design-system';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {createLocaleFromCode, LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {AssetsIllustration, Key, useShortcut, Checkbox} from 'akeneo-design-system';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {sanitizeAssetCode} from 'akeneoassetmanager/tools/sanitizeAssetCode';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
@@ -174,20 +174,15 @@ export const CreateModal = ({assetFamily, locale, onClose, onAssetCreated}: Crea
                   {getErrorsView(errors, 'code')}
                 </div>
                 <div className="AknFieldContainer" data-code="create_another">
-                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                    <Checkbox
-                      id="pim_asset_manager.asset.create.input.create_another"
-                      checked={createAnother}
-                      onChange={(newValue: boolean) => setCreateAnother(newValue)}
-                    >
-                      {__('pim_asset_manager.asset.create.input.create_another')}
-                    </Checkbox>
-                  </div>
-                  <div className="AknFieldContainer-inputContainer" />
+                  <Checkbox
+                    id="pim_asset_manager.asset.create.input.create_another"
+                    checked={createAnother}
+                    onChange={newValue => setCreateAnother(newValue)}
+                  >
+                    {__('pim_asset_manager.asset.create.input.create_another')}
+                  </Checkbox>
                 </div>
-                <button className="AknButton AknButton--apply ok" onClick={submit}>
-                  {__('pim_asset_manager.asset.create.confirm')}
-                </button>
+                <Button onClick={submit}>{__('pim_asset_manager.asset.create.confirm')}</Button>
               </div>
             </div>
           </div>

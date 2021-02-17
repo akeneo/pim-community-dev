@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
@@ -48,8 +48,8 @@ const MediaFileView = ({
   }`;
 
   return (
-    <React.Fragment>
-      <div className="AknFieldContainer" data-code="maxFileSize">
+    <>
+      <div className="AknFieldContainer--packed" data-code="maxFileSize">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.max_file_size">
             {__('pim_asset_manager.attribute.edit.input.max_file_size')}
@@ -81,8 +81,7 @@ const MediaFileView = ({
         </div>
         {getErrorsView(errors, 'maxFileSize')}
       </div>
-
-      <div className="AknFieldContainer" data-code="mediaType">
+      <div className="AknFieldContainer--packed" data-code="mediaType">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.media_type">
             {__('pim_asset_manager.attribute.edit.input.media_type')}
@@ -105,8 +104,7 @@ const MediaFileView = ({
         </div>
         {getErrorsView(errors, 'mediaType')}
       </div>
-
-      <div className="AknFieldContainer" data-code="allowedExtensions">
+      <div className="AknFieldContainer--packed" data-code="allowedExtensions">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label
             className="AknFieldContainer-label"
@@ -130,7 +128,7 @@ const MediaFileView = ({
         </div>
         {getErrorsView(errors, 'allowedExtensions')}
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

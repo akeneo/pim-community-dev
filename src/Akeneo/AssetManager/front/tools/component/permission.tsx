@@ -5,7 +5,7 @@ import Permission, {
   lowerLevel,
 } from 'akeneoassetmanager/domain/model/asset-family/permission';
 import __ from 'akeneoassetmanager/tools/translator';
-import {CheckIcon, pimTheme, Key} from 'akeneo-design-system';
+import {CheckIcon, pimTheme, Key, Button} from 'akeneo-design-system';
 
 type GroupName = string;
 
@@ -62,7 +62,7 @@ class PermissionEditor extends React.Component<PermissionEditorProps> {
                   }}
                 >
                   {!isNoneLevel && pillIsLowerOrAtThisLevel ? (
-                    <CheckIcon color={pimTheme.color.white} size={18} className="AknPermission-pillTick" />
+                    <CheckIcon color={pimTheme.color.white} size={16} className="AknPermission-pillTick" />
                   ) : null}
                 </div>
                 <div
@@ -125,22 +125,15 @@ export default class PermissionCollectionEditor extends React.Component<Permissi
                   className="AknGrid-headerCell AknGrid-headerCell--center AknGrid-headerCell--sticky"
                   style={{top: `${topPosition}px`}}
                 >
-                  <span
-                    className="AknButton AknButton--small"
-                    onClick={() => {
-                      this.onAllPermissionUpdated(rightLevel);
-                    }}
-                    onKeyDown={(event: React.KeyboardEvent<HTMLSpanElement>) => {
-                      if (Key.Space === event.key) {
-                        this.onAllPermissionUpdated(rightLevel);
-                      }
-                    }}
-                    tabIndex={0}
+                  <Button
+                    level="tertiary"
+                    ghost={true}
+                    onClick={() => this.onAllPermissionUpdated(rightLevel)}
                     title={__('permission.mass_action', {rightLevel})}
                     data-right-level={rightLevel}
                   >
                     {rightLevel}
-                  </span>
+                  </Button>
                 </th>
               ))}
             </tr>

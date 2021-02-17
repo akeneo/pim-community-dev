@@ -4,7 +4,7 @@ import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error'
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {createLocaleFromCode, LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {AssetsIllustration, Key, useShortcut} from 'akeneo-design-system';
+import {AssetsIllustration, Button, Key, useShortcut} from 'akeneo-design-system';
 import sanitize from 'akeneoassetmanager/tools/sanitize';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import assetFamilySaver from 'akeneoassetmanager/infrastructure/saver/asset-family';
@@ -167,9 +167,7 @@ export const CreateAssetFamilyModal = ({locale, onClose, onAssetFamilyCreated}: 
                   {getErrorsView(errors, 'code')}
                   {getErrorsView(errors, 'identifier')}
                 </div>
-                <button className="AknButton AknButton--apply ok" onClick={submit}>
-                  {__('pim_asset_manager.asset_family.create.confirm')}
-                </button>
+                <Button onClick={submit}>{__('pim_asset_manager.asset_family.create.confirm')}</Button>
               </div>
             </div>
           </div>

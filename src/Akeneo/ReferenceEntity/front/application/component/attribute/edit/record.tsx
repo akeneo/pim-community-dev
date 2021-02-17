@@ -38,28 +38,26 @@ class RecordView extends React.Component<Props, {referenceEntity: ReferenceEntit
         : this.props.attribute.recordType.stringValue();
 
     return (
-      <React.Fragment>
-        <div className="AknFieldContainer" data-code="recordType">
-          <div className="AknFieldContainer-header AknFieldContainer-header--light">
-            <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.record_type">
-              {__('pim_reference_entity.attribute.edit.input.record_type')}
-            </label>
-          </div>
-          <div className="AknFieldContainer-inputContainer">
-            <input
-              type="text"
-              autoComplete="off"
-              className="AknTextField AknTextField--light AknTextField--disabled"
-              id="pim_reference_entity.attribute.edit.input.record_type"
-              name="record_type"
-              value={value}
-              readOnly
-              tabIndex={-1}
-            />
-          </div>
-          {getErrorsView(this.props.errors, 'recordType')}
+      <div className="AknFieldContainer--packed" data-code="recordType">
+        <div className="AknFieldContainer-header AknFieldContainer-header--light">
+          <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.record_type">
+            {__('pim_reference_entity.attribute.edit.input.record_type')}
+          </label>
         </div>
-      </React.Fragment>
+        <div className="AknFieldContainer-inputContainer">
+          <input
+            type="text"
+            autoComplete="off"
+            className="AknTextField AknTextField--light AknTextField--disabled"
+            id="pim_reference_entity.attribute.edit.input.record_type"
+            name="record_type"
+            value={value}
+            readOnly
+            tabIndex={-1}
+          />
+        </div>
+        {getErrorsView(this.props.errors, 'recordType')}
+      </div>
     );
   }
 }

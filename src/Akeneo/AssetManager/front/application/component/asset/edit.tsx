@@ -93,6 +93,7 @@ class AssetEditView extends React.Component<EditProps> {
     this.setState({isDeleteModalOpen: false});
   };
 
+  //TODO use DSM Dropdown
   private getSecondaryActions = (
     canDelete: boolean,
     canExecuteNamingConvention: boolean,
