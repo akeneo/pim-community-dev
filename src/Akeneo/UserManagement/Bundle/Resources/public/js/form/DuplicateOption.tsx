@@ -13,7 +13,7 @@ type DuplicateActionProps = {
 const DuplicateOption = ({userId, userCode}: DuplicateActionProps) => {
   const [isAppOpened, openApp, closeApp] = useToggleState(false);
 
-  const onDuplicateSuccess = (duplicatedUserId: string) => {
+  const onDuplicateSuccess = (duplicatedUserId: number) => {
     Router.redirect(Router.generate('pim_user_edit', {identifier: duplicatedUserId}));
   };
 

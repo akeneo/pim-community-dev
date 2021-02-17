@@ -17,7 +17,7 @@ class DuplicateUserAction extends AbstractAction {
       ReactDOM.unmountComponentAtNode(container);
       document.body.removeChild(container);
     };
-    const onDuplicateSuccess = (duplicatedUserId: string) => {
+    const onDuplicateSuccess = (duplicatedUserId: number) => {
       closeApp();
       Routing.redirect(Routing.generate('pim_user_edit', {identifier: duplicatedUserId}));
     };
