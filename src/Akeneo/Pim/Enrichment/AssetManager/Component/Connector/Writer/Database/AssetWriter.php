@@ -29,15 +29,14 @@ final class AssetWriter implements ItemWriterInterface, StepExecutionAwareInterf
     private CreateAssetHandler $createAssetHandler;
     private EditAssetHandler $editAssetHandler;
     private EventAggregatorInterface $eventAggregator;
-    /** @pull-up master: remove null here and in the rest of the file */
-    private ?ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator;
+    private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator;
     private ?StepExecution $stepExecution = null;
 
     public function __construct(
         CreateAssetHandler $createAssetHandler,
         EditAssetHandler $editAssetHandler,
         EventAggregatorInterface $eventAggregator,
-        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator = null
+        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator
     ) {
         $this->createAssetHandler = $createAssetHandler;
         $this->editAssetHandler = $editAssetHandler;
@@ -85,8 +84,6 @@ final class AssetWriter implements ItemWriterInterface, StepExecutionAwareInterf
     public function flush(): void
     {
         $this->eventAggregator->flushEvents();
-        if (null !== $this->computeTransformationEventAggregator) {
-            $this->computeTransformationEventAggregator->flushEvents();
-        }
+        $this->computeTransformationEventAggregator->flushEvents();
     }
 }

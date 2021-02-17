@@ -86,10 +86,7 @@ class CreateOrUpdateAssetsAction
     /** @var IndexAssetEventAggregator */
     private $indexAssetEventAggregator;
 
-    /**
-     * @todo pullup: remove null (and in rest of class)
-     * @var ComputeTransformationEventAggregatorInterface|null
-     */
+    /** @var ComputeTransformationEventAggregatorInterface */
     private $computeTransformationEventAggregator;
 
     /** @var int */
@@ -110,7 +107,7 @@ class CreateOrUpdateAssetsAction
         NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
         EventAggregatorInterface $indexAssetEventAggregator,
         int $maximumAssetsPerRequest,
-        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator = null
+        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator
     ) {
         $this->assetFamilyExists = $assetFamilyExists;
         $this->assetExists = $assetExists;
@@ -181,9 +178,7 @@ class CreateOrUpdateAssetsAction
         }
 
         $this->indexAssetEventAggregator->flushEvents();
-        if (null !== $this->computeTransformationEventAggregator) {
-            $this->computeTransformationEventAggregator->flushEvents();
-        }
+        $this->computeTransformationEventAggregator->flushEvents();
 
         return new JsonResponse($responsesData);
     }

@@ -61,10 +61,7 @@ class EditAction
     /** @var IndexAssetEventAggregator */
     private $indexAssetEventAggregator;
 
-    /**
-     * @todo pullup: remove null (and in rest of class)
-     * @var ComputeTransformationEventAggregatorInterface|null
-     */
+    /** @var ComputeTransformationEventAggregatorInterface */
     private $computeTransformationEventAggregator;
 
     public function __construct(
@@ -75,7 +72,7 @@ class EditAction
         TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer,
         EventAggregatorInterface $indexAssetEventAggregator,
-        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator = null
+        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator
     ) {
         $this->editAssetCommandFactory = $editAssetCommandFactory;
         $this->editAssetHandler = $editAssetHandler;
@@ -116,9 +113,7 @@ class EditAction
         }
 
         $this->indexAssetEventAggregator->flushEvents();
-        if (null !== $this->computeTransformationEventAggregator) {
-            $this->computeTransformationEventAggregator->flushEvents();
-        }
+        $this->computeTransformationEventAggregator->flushEvents();
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }

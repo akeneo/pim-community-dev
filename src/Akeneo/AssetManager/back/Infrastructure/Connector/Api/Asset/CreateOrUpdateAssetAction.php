@@ -79,10 +79,7 @@ class CreateOrUpdateAssetAction
     /** @var IndexAssetEventAggregator */
     private $indexAssetEventAggregator;
 
-    /**
-     * @todo pullup: remove null (and in rest of class)
-     * @var ComputeTransformationEventAggregatorInterface|null
-     */
+    /** @var ComputeTransformationEventAggregatorInterface */
     private $computeTransformationEventAggregator;
 
     public function __construct(
@@ -97,7 +94,7 @@ class CreateOrUpdateAssetAction
         BatchAssetsToLink $batchAssetsToLink,
         NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
         EventAggregatorInterface $indexAssetEventAggregator,
-        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator = null
+        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator
     ) {
         $this->assetFamilyExists = $assetFamilyExists;
         $this->assetExists = $assetExists;
@@ -161,9 +158,7 @@ class CreateOrUpdateAssetAction
         }
 
         $this->indexAssetEventAggregator->flushEvents();
-        if (null !== $this->computeTransformationEventAggregator) {
-            $this->computeTransformationEventAggregator->flushEvents();
-        }
+        $this->computeTransformationEventAggregator->flushEvents();
 
         return $this->createResponse($responseStatusCode, $assetFamilyIdentifier, $assetCode);
     }
