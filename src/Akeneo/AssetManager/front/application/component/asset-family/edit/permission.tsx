@@ -22,7 +22,7 @@ const securityContext = require('pim/security-context');
 const routing = require('routing');
 
 export const StickyHeader = styled.header.attrs(() => ({className: 'AknSubsection-title AknSubsection-title--sticky'}))`
-  top: 160px;
+  top: 136px;
   padding: 0;
 `;
 
