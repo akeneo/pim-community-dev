@@ -1,6 +1,7 @@
 import React from 'react';
-import {ArrowDownIcon, Button, Dropdown, Locale as LocaleLabel, useBooleanState} from 'akeneo-design-system';
+import {Locale as LocaleFlag, SelectInput} from 'akeneo-design-system';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 type LocaleDropdownProps = {
   readOnly: boolean;
@@ -9,13 +10,8 @@ type LocaleDropdownProps = {
   locales: Locale[];
 };
 
-const LocaleDropdown = ({
-  readOnly,
-  locale,
-  onChange,
-  locales,
-}: LocaleDropdownProps) => {
-  const [isOpen, open, close] = useBooleanState();
+const LocaleDropdown = ({readOnly, locale, onChange, locales}: LocaleDropdownProps) => {
+  const translate = useTranslate();
   const currentLocale = locales.find(localeItem => localeItem.code === locale);
 
   if (undefined === currentLocale) {
@@ -23,31 +19,19 @@ const LocaleDropdown = ({
   }
 
   return (
-    <Dropdown>
-      <Button disabled={readOnly} onClick={open}>
-        <LocaleLabel code={currentLocale.code} languageLabel={currentLocale.language} /> <ArrowDownIcon />
-      </Button>
-      {isOpen && (
-        <Dropdown.Overlay verticalPosition="down" onClose={close}>
-          <Dropdown.Header>
-            <Dropdown.Title>Locales</Dropdown.Title>
-          </Dropdown.Header>
-          <Dropdown.ItemCollection>
-            {locales.map(currentLocale => (
-              <Dropdown.Item
-                key={currentLocale.code}
-                onClick={() => {
-                  onChange(currentLocale.code);
-                  close();
-                }}
-              >
-                <LocaleLabel code={currentLocale.code} languageLabel={currentLocale.language} />
-              </Dropdown.Item>
-            ))}
-          </Dropdown.ItemCollection>
-        </Dropdown.Overlay>
-      )}
-    </Dropdown>
+    <SelectInput
+      value={currentLocale.code}
+      onChange={onChange}
+      readOnly={readOnly}
+      clearable={false}
+      emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
+    >
+      {locales.map(localeItem => (
+        <SelectInput.Option key={localeItem.code} value={localeItem.code} title={localeItem.label}>
+          <LocaleFlag code={localeItem.code} languageLabel={localeItem.language} />
+        </SelectInput.Option>
+      ))}
+    </SelectInput>
   );
 };
 

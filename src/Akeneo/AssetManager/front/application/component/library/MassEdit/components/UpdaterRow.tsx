@@ -30,6 +30,10 @@ const InputCell = styled(Table.Cell)`
 const ContextCell = styled(Table.Cell)`
   width: 380px;
   overflow: visible;
+
+  & > div {
+    gap: 10px;
+  }
 `;
 
 const InputField = styled.div`

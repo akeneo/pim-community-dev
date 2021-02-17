@@ -1,8 +1,9 @@
 import React from 'react';
-import {ArrowDownIcon, Button, Dropdown, useBooleanState} from 'akeneo-design-system';
+import {SelectInput} from 'akeneo-design-system';
 import Channel, {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {getLabel} from 'pimui/js/i18n';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 type ChannelDropdownProps = {
   readOnly: boolean;
@@ -12,14 +13,8 @@ type ChannelDropdownProps = {
   channels: Channel[];
 };
 
-const ChannelDropdown = ({
-  readOnly,
-  channel,
-  uiLocale,
-  onChange,
-  channels,
-}: ChannelDropdownProps) => {
-  const [isOpen, open, close] = useBooleanState();
+const ChannelDropdown = ({readOnly, channel, uiLocale, onChange, channels}: ChannelDropdownProps) => {
+  const translate = useTranslate();
   const currentChannel = channels.find(channelItem => channelItem.code === channel);
 
   if (undefined === currentChannel) {
@@ -27,31 +22,19 @@ const ChannelDropdown = ({
   }
 
   return (
-    <Dropdown>
-      <Button disabled={readOnly} onClick={open}>
-        {getLabel(currentChannel.labels, uiLocale, currentChannel.code)} <ArrowDownIcon />
-      </Button>
-      {isOpen && (
-        <Dropdown.Overlay verticalPosition="down" onClose={close}>
-          <Dropdown.Header>
-            <Dropdown.Title>Channels</Dropdown.Title>
-          </Dropdown.Header>
-          <Dropdown.ItemCollection>
-            {channels.map(currentChannel => (
-              <Dropdown.Item
-                key={currentChannel.code}
-                onClick={() => {
-                  onChange(currentChannel.code);
-                  close();
-                }}
-              >
-                {getLabel(currentChannel.labels, uiLocale, currentChannel.code)}
-              </Dropdown.Item>
-            ))}
-          </Dropdown.ItemCollection>
-        </Dropdown.Overlay>
-      )}
-    </Dropdown>
+    <SelectInput
+      value={currentChannel.code}
+      onChange={onChange}
+      readOnly={readOnly}
+      clearable={false}
+      emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
+    >
+      {channels.map(currentChannel => (
+        <SelectInput.Option key={currentChannel.code} value={currentChannel.code}>
+          {getLabel(currentChannel.labels, uiLocale, currentChannel.code)}
+        </SelectInput.Option>
+      ))}
+    </SelectInput>
   );
 };
 
