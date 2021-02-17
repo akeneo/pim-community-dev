@@ -437,6 +437,8 @@ SQL
         Assert::assertEmpty($violations);
 
         ($this->getEditAssetHandler())($editAssetCommand);
+        $this->get('akeneo_assetmanager.application.asset.subscribers.compute_asset_transformation_event_aggregator')
+            ->flushEvents();
     }
 
     private function resetDB(): void

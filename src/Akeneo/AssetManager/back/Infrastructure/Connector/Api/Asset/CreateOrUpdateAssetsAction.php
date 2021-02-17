@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset;
 
+use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\EventAggregatorInterface as ComputeTransformationEventAggregatorInterface;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\Connector\EditAssetCommandFactory;
@@ -85,6 +86,12 @@ class CreateOrUpdateAssetsAction
     /** @var IndexAssetEventAggregator */
     private $indexAssetEventAggregator;
 
+    /**
+     * @todo pullup: remove null (and in rest of class)
+     * @var ComputeTransformationEventAggregatorInterface|null
+     */
+    private $computeTransformationEventAggregator;
+
     /** @var int */
     private $maximumAssetsPerRequest;
 
@@ -102,7 +109,8 @@ class CreateOrUpdateAssetsAction
         BatchAssetsToLink $batchAssetsToLink,
         NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
         EventAggregatorInterface $indexAssetEventAggregator,
-        int $maximumAssetsPerRequest
+        int $maximumAssetsPerRequest,
+        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator = null
     ) {
         $this->assetFamilyExists = $assetFamilyExists;
         $this->assetExists = $assetExists;
@@ -118,6 +126,7 @@ class CreateOrUpdateAssetsAction
         $this->namingConventionEditAssetCommandFactory = $namingConventionEditAssetCommandFactory;
         $this->maximumAssetsPerRequest = $maximumAssetsPerRequest;
         $this->indexAssetEventAggregator = $indexAssetEventAggregator;
+        $this->computeTransformationEventAggregator = $computeTransformationEventAggregator;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response
@@ -172,6 +181,9 @@ class CreateOrUpdateAssetsAction
         }
 
         $this->indexAssetEventAggregator->flushEvents();
+        if (null !== $this->computeTransformationEventAggregator) {
+            $this->computeTransformationEventAggregator->flushEvents();
+        }
 
         return new JsonResponse($responsesData);
     }

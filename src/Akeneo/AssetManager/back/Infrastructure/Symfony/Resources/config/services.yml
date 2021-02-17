@@ -86,7 +86,8 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\AssetManager\Application\Asset\Subscribers\ComputeAssetTransformationSubscriber:
+    akeneo_assetmanager.application.asset.subscribers.compute_asset_transformation_event_aggregator:
+        class: Akeneo\AssetManager\Application\Asset\Subscribers\ComputeAssetTransformationEventAggregator
         arguments:
             - '@akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_identifiers_launcher'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'

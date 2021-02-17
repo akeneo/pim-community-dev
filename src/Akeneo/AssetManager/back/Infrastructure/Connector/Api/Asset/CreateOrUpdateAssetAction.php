@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset;
 
+use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\EventAggregatorInterface as ComputeTransformationEventAggregatorInterface;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\Connector\EditAssetCommandFactory;
@@ -78,6 +79,12 @@ class CreateOrUpdateAssetAction
     /** @var IndexAssetEventAggregator */
     private $indexAssetEventAggregator;
 
+    /**
+     * @todo pullup: remove null (and in rest of class)
+     * @var ComputeTransformationEventAggregatorInterface|null
+     */
+    private $computeTransformationEventAggregator;
+
     public function __construct(
         AssetFamilyExistsInterface $assetFamilyExists,
         AssetExistsInterface $assetExists,
@@ -89,7 +96,8 @@ class CreateOrUpdateAssetAction
         ValidatorInterface $assetDataValidator,
         BatchAssetsToLink $batchAssetsToLink,
         NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
-        EventAggregatorInterface $indexAssetEventAggregator
+        EventAggregatorInterface $indexAssetEventAggregator,
+        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator = null
     ) {
         $this->assetFamilyExists = $assetFamilyExists;
         $this->assetExists = $assetExists;
@@ -102,6 +110,7 @@ class CreateOrUpdateAssetAction
         $this->batchAssetsToLink = $batchAssetsToLink;
         $this->namingConventionEditAssetCommandFactory = $namingConventionEditAssetCommandFactory;
         $this->indexAssetEventAggregator = $indexAssetEventAggregator;
+        $this->computeTransformationEventAggregator = $computeTransformationEventAggregator;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier, string $code): Response
@@ -152,6 +161,9 @@ class CreateOrUpdateAssetAction
         }
 
         $this->indexAssetEventAggregator->flushEvents();
+        if (null !== $this->computeTransformationEventAggregator) {
+            $this->computeTransformationEventAggregator->flushEvents();
+        }
 
         return $this->createResponse($responseStatusCode, $assetFamilyIdentifier, $assetCode);
     }
