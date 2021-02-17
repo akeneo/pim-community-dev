@@ -11,7 +11,7 @@
   - Cookbooks
     - [How to create an independant frontend package](./package_setup.yml)
     - [Adding react inside backbone](./)
-    - [Develop with react](./)
+    - [Develop with react](./cookbooks/develop_with_react.md)
     - [Working on backbone directly](./)
     - [Migrating javascript backbone to typescript](./)
   - [FAQ for new contributors](#faq-for-new-contributors)
