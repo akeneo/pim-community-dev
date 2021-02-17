@@ -29,10 +29,6 @@ const useMassEdit = () => {
       },
     });
 
-    if (200 !== response.status) {
-      throw new Error(await response.text());
-    }
-
     return await response.json();
   };
 
@@ -55,10 +51,6 @@ const useMassEdit = () => {
         'X-Requested-With': 'XMLHttpRequest',
       },
     });
-
-    if (202 !== response.status) {
-      throw new Error(await response.text());
-    }
 
     await response.json();
   };

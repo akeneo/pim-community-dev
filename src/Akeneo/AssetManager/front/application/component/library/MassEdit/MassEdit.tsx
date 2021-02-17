@@ -33,10 +33,7 @@ const MassEdit = ({selectionQuery, assetFamily, context, onConfirm, selectedCoun
 
         onConfirm();
       } catch (error) {
-        notify(
-          NotificationLevel.ERROR,
-          translate('pim_asset_manager.asset.notification.mass_edit.launch.fail', {error})
-        );
+        notify(NotificationLevel.ERROR, translate('pim_asset_manager.asset.notification.mass_edit.launch.fail'));
       }
     },
     [selectionQuery, closeMassEditModal, assetFamily]

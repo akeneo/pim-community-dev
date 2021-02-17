@@ -31,7 +31,7 @@ const MassDelete = ({
 
       onConfirm();
     } catch (error) {
-      notify(NotificationLevel.ERROR, translate('pim_asset_manager.asset.notification.mass_delete.fail', {error}));
+      notify(NotificationLevel.ERROR, translate('pim_asset_manager.asset.notification.mass_delete.fail'));
     }
   }, [selectionQuery, closeMassDeleteModal, assetFamily]);
 

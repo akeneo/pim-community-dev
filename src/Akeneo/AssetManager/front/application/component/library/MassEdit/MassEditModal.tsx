@@ -94,10 +94,7 @@ const MassEditModal = ({
 
       nextStep();
     } catch (error) {
-      notify(
-        NotificationLevel.ERROR,
-        translate('pim_asset_manager.asset.notification.mass_edit.validation.fail', {error: error.message})
-      );
+      notify(NotificationLevel.ERROR, translate('pim_asset_manager.asset.notification.mass_edit.validation.fail'));
     }
   };
 
