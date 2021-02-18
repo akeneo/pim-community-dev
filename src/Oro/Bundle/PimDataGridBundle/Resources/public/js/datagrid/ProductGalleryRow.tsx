@@ -41,7 +41,7 @@ class ProductGalleryRow<TModel extends Model> extends BaseRow {
       const technicalId = this.model.get('technical_id');
       const route = this.isProductModel() ? 'pim_enrich_product_model_edit' : 'pim_enrich_product_edit';
       Router.redirectToRoute(route, {
-        id: technicalId
+        id: technicalId,
       });
     };
 
@@ -53,7 +53,13 @@ class ProductGalleryRow<TModel extends Model> extends BaseRow {
     };
 
     const card = (
-      <Card fit="cover" src={imagePath} onClick={followProduct} isSelected={selection.selected} onSelect={selectProduct}>
+      <Card
+        fit="cover"
+        src={imagePath}
+        onClick={followProduct}
+        isSelected={selection.selected}
+        onSelect={selectProduct}
+      >
         <BadgeContainer>
           <Badge level={badgeLevel}>{badgeText}</Badge>
         </BadgeContainer>
