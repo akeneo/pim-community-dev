@@ -52,22 +52,22 @@ const CategorySelectorWithAllProducts: React.FC<CategorySelectorWithAllProductsP
   const [categoryCodes, setCategoryCodes] = React.useState<string[]>(initialCategoryCodes);
 
   const isCategorySelected: (category: CategoryValue) => boolean = category => {
-    return (categoryCodes || []).includes(category.code);
+    return categoryCodes.includes(category.code);
   };
 
   const handleChange = (value: string, checked: boolean) => {
-    const index = (categoryCodes || []).indexOf(value, 0);
+    const index = categoryCodes.indexOf(value, 0);
     if (checked) {
       if (index <= -1) {
-        (categoryCodes || []).push(value);
-        setCategoryCodes([...(categoryCodes || [])]);
-        onChange(categoryCodes || []);
+        categoryCodes.push(value);
+        setCategoryCodes([...categoryCodes]);
+        onChange(categoryCodes);
       }
     } else {
       if (index > -1) {
-        (categoryCodes || []).splice(index, 1);
-        setCategoryCodes([...(categoryCodes || [])]);
-        onChange(categoryCodes || []);
+        categoryCodes.splice(index, 1);
+        setCategoryCodes([...categoryCodes]);
+        onChange(categoryCodes);
       }
     }
   };
@@ -123,7 +123,7 @@ const CategorySelectorWithAllProducts: React.FC<CategorySelectorWithAllProductsP
         label={__('jstree.all')}
         isLeaf={true}
         selectable={true}
-        selected={(categoryCodes || []).length === 0}
+        selected={categoryCodes.length === 0}
         onChange={(_value, checked) => {
           if (checked) {
             setCategoryCodes([]);
@@ -150,7 +150,7 @@ class Selector extends BaseView {
   constructor(options: SelectorConfig) {
     super(options);
     this.channelCode = options.attributes.channel;
-    this.categoryCodes = options.attributes.categories;
+    this.categoryCodes = options.attributes.categories || [];
   }
 
   render() {
