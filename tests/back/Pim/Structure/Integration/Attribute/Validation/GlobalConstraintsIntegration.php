@@ -509,4 +509,48 @@ class GlobalConstraintsIntegration extends AbstractAttributeTestCase
         $this->assertSame('This value should be greater than or equal to 0.', $violations->get(0)->getMessage());
         $this->assertSame('maxCharacters', $violations->get(0)->getPropertyPath());
     }
+
+    public function testDescriptionMaxLength(): void
+    {
+        $attribute = $this->createAttribute();
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code'  => 'new_text',
+                'type'  => 'pim_catalog_text',
+                'group' => 'attributeGroupA',
+                'descriptions' => [
+                    'en_US' => 'valid description',
+                    'fr_FR' => str_repeat('a', 501),
+                ],
+            ]
+        );
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This value is too long. It should have 500 characters or less.', $violations->get(0)->getMessage());
+        $this->assertSame('descriptions[fr_FR]', $violations->get(0)->getPropertyPath());
+    }
+
+    public function testDescriptionUnknownLocale(): void
+    {
+        $attribute = $this->createAttribute();
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code'  => 'new_text',
+                'type'  => 'pim_catalog_text',
+                'group' => 'attributeGroupA',
+                'descriptions' => [
+                    'en_US' => 'valid description',
+                    'unknown' => 'valid description',
+                ],
+            ]
+        );
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('The locale "unknown" does not exist.', $violations->get(0)->getMessage());
+        $this->assertSame('descriptions', $violations->get(0)->getPropertyPath());
+    }
 }

@@ -98,7 +98,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
      */
     protected function validateDataType($field, $data)
     {
-        if (in_array($field, ['labels', 'available_locales', 'allowed_extensions'])) {
+        if (in_array($field, ['labels', 'available_locales', 'allowed_extensions', 'descriptions'])) {
             if (!is_array($data)) {
                 throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
             }
@@ -185,6 +185,15 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 break;
             case 'allowed_extensions':
                 $attribute->setAllowedExtensions(implode(',', $data));
+                break;
+            case 'descriptions':
+                foreach ($data as $localeCode => $description) {
+                    if (null === $description || '' === $description) {
+                        $attribute->removeDescription($localeCode);
+                    } else {
+                        $attribute->addDescription($localeCode, $description);
+                    }
+                }
                 break;
             default:
                 if (in_array($field, $this->properties)) {

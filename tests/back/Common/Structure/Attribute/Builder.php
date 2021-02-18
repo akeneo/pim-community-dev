@@ -35,6 +35,9 @@ class Builder
     /** @var string */
     private $backendType;
 
+    /** @var string[] */
+    private array $descriptions = [];
+
     public function __construct()
     {
         $this->code = Code::fromString('code');
@@ -58,6 +61,9 @@ class Builder
         $attribute->setLocalizable($this->localizable);
         $attribute->setDecimalsAllowed(false);
         $attribute->setBackendType($this->backendType);
+        foreach ($this->descriptions as $localeCode => $description) {
+            $attribute->addDescription($localeCode, $description);
+        }
 
         return $attribute;
     }
@@ -112,6 +118,7 @@ class Builder
         $this->scopable = false;
         $this->isUnique = true;
         $this->backendType = AttributeTypes::BACKEND_TYPE_TEXT;
+        $this->descriptions = ['en_US' => 'description'];
 
         return $this;
     }
