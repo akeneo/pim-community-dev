@@ -97,7 +97,7 @@ final class DispatchProductCreatedAndUpdatedEventSubscriber implements EventSubs
                     [
                         'type' => 'business_event.dispatch',
                         'event_count' => count($this->events),
-                        'events' => array_map(function ($event) { 
+                        'events' => array_map(function ($event) {
                             return [
                                 'name' => $event->getName(),
                                 'uuid' => $event->getUuid(),
