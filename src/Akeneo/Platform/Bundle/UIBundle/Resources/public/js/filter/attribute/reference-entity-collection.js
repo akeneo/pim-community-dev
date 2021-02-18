@@ -126,14 +126,35 @@ define([
          *
          * @returns {Promise}
          */
-        cleanInvalidValues: function (attribute, currentValues) {
-            return this.getChoices(attribute)
-              .then((response) => {
-                var possibleValues = _.pluck(response.items, 'code');
-                currentValues      = undefined !== currentValues ? currentValues : [];
+        cleanInvalidValues: async function (attribute, currentValues) {
+            if (undefined === currentValues
+                || 0 === currentValues.length
+            ) {
+                return [];
+            }
 
-                return _.intersection(currentValues, possibleValues);
-            });
+            const query = {
+                channel: UserContext.get('catalogScope'),
+                locale: UserContext.get('catalogLocale'),
+                size: 200,
+                page: 0,
+                filters: [
+                    {
+                        field: 'reference_entity',
+                        operator: '=',
+                        value: attribute.reference_data_name,
+                    },
+                    {
+                        field: 'code',
+                        operator: 'IN',
+                        value: currentValues,
+                    },
+                ],
+            };
+
+            const result = await recordFetcher.default.search(query);
+
+            return result.items.map(normalizedRecord => normalizedRecord.code);
         },
 
         getChoiceUrl: function getChoiceUrl(attribute) {

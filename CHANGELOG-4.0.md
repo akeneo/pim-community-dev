@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9680: Fix filtering exports with reference entity attributes
+
 # 4.0.94 (2021-02-17)
 
 # 4.0.93 (2021-02-12)
