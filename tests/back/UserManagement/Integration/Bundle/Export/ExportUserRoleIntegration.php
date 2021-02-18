@@ -41,7 +41,10 @@ final class ExportUserRoleIntegration extends TestCase
         ]);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group ce
+     */
     public function it_exports_user_roles_in_csv(): void
     {
         $csv = trim($this->jobLauncher->launchExport(static::CSV_EXPORT_JOB_CODE, null, []));
