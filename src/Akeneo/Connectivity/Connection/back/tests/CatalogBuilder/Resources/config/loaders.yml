@@ -51,6 +51,7 @@ services:
             - '@pim_catalog.saver.product'
             - '@validator'
             - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@akeneo_integration_tests.message_bus_observer'
 
     akeneo_connectivity.connection.fixtures.enrichment.product_model:
         class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductModelLoader'
