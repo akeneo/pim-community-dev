@@ -189,6 +189,7 @@ services:
             - '@Symfony\Component\Messenger\MessageBusInterface'
             - '%webhook_max_bulk_size%'
             - '@logger'
+            - '@monolog.logger.business_event'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -198,6 +199,7 @@ services:
             - '@Symfony\Component\Messenger\MessageBusInterface'
             - '%webhook_max_bulk_size%'
             - '@logger'
+            - '@monolog.logger.business_event'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -207,6 +209,7 @@ services:
             - '@Symfony\Component\Messenger\MessageBusInterface'
             - '%webhook_max_bulk_size%'
             - '@logger'
+            - '@monolog.logger.business_event'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -216,6 +219,7 @@ services:
             - '@Symfony\Component\Messenger\MessageBusInterface'
             - '%webhook_max_bulk_size%'
             - '@logger'
+            - '@monolog.logger.business_event'
         tags:
             - { name: kernel.event_subscriber }
 
