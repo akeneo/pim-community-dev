@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook;
 
-use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
-use Akeneo\Platform\Component\EventQueue\BulkEvent;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -14,8 +15,10 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProduceAPIEventOnSingleProductModelCreationIntegration extends TestCase
+class ProduceEventOnSingleProductModelUpdateIntegration extends TestCase
 {
+    use AssertEventCountTrait;
+
     private SimpleFactoryInterface $productModelFactory;
     private SaverInterface $productModelSaver;
     private ObjectUpdaterInterface $productModelUpdater;
@@ -29,7 +32,7 @@ class ProduceAPIEventOnSingleProductModelCreationIntegration extends TestCase
         $this->productModelUpdater = $this->get('pim_catalog.updater.product_model');
     }
 
-    public function test_the_single_product_model_creation_event()
+    public function test_the_single_product_model_update_event()
     {
         $productModel = $this->productModelFactory->create();
         $this->productModelUpdater->update($productModel, [
@@ -37,17 +40,20 @@ class ProduceAPIEventOnSingleProductModelCreationIntegration extends TestCase
             'family_variant' => 'familyVariantA1',
         ]);
         $this->productModelSaver->save($productModel);
+        $this->clearMessageBusObserver();
 
-        $transport = self::$container->get('messenger.transport.business_event');
+        $this->productModelUpdater->update($productModel, [
+            'code' => 'foo',
+            'family_variant' => 'familyVariantA1',
+            'values' => [
+                'a_simple_select' => [
+                    ['locale' => null, 'scope' => null, 'data' => 'optionA'],
+                ]
+            ],
+        ]);
+        $this->productModelSaver->save($productModel);
 
-        $envelopes = $transport->get();
-        $this->assertCount(1, $envelopes);
-
-        /** @var BulkEvent */
-        $bulkEvent = $envelopes[0]->getMessage();
-        $this->assertInstanceOf(BulkEvent::class, $bulkEvent);
-        $this->assertCount(1, $bulkEvent->getEvents());
-        $this->assertContainsOnlyInstancesOf(ProductModelCreated::class, $bulkEvent->getEvents());
+        $this->assertEventCount(1, ProductModelUpdated::class);
     }
 
     protected function getConfiguration(): Configuration

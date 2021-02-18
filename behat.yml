@@ -103,6 +103,8 @@ contexts: &context
             - '@pim_catalog.repository.product_model'
     -   Akeneo\Connectivity\Connection\Tests\EndToEnd\Context\SettingsContext:
             - 'Context\FeatureContext'
+    -   Context\ConnectivityContext:
+            - '@messenger.transport.business_event'
 
 legacy:
     suites:
