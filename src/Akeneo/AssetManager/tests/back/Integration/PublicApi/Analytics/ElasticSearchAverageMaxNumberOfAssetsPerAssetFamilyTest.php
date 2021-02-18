@@ -87,6 +87,9 @@ class ElasticSearchAverageMaxNumberOfAssetsPerAssetFamilyTest extends SqlIntegra
         $this->assertEquals('4', $volume->getAverageVolume());
     }
 
+    /**
+     * @test
+     */
     public function it_returns_empty_average_and_max_number_when_no_asset_family()
     {
         $volume = $this->averageMaxNumberOfAssetsPerAssetFamily->fetch();
