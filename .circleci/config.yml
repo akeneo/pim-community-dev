@@ -394,18 +394,6 @@ jobs:
           - run:
               name: Push PROD PIM image on docker registry
               command: PIM_CONTEXT=deployment make push-php-image-prod
-  check_cloud_compliant:
-      environment:
-        <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Test Cronjob jobs exists
-              command: PIM_CONTEXT=deployment make test-helm-cronjob
 
   test_deploy:
       environment:
@@ -871,12 +859,10 @@ workflows:
           - build_prod:
                 requires:
                     - checkout
-          - check_cloud_compliant:
-                requires:
-                    - build_prod
+
           - test_deploy:
                 requires:
-                    - check_cloud_compliant
+                    - build_prod
           - test_upgrade_from_last_release:
                 requires:
                     - test_deploy
@@ -887,7 +873,7 @@ workflows:
                         ignore:
                             - master
                 requires:
-                    - check_cloud_compliant
+                    - build_prod
           - delete_pr_environment:
                 requires:
                     - delete_pr_environment?
@@ -1043,15 +1029,12 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-          - check_cloud_compliant:
-                requires:
-                    - check_cloud_compliant
           - test_deploy:
                 requires:
-                    - check_cloud_compliant
+                    - build_prod
           - test_upgrade_from_last_release:
                 requires:
-                    - check_cloud_compliant
+                    - build_prod
           - test_front_code_style:
                 requires:
                     - build_dev
