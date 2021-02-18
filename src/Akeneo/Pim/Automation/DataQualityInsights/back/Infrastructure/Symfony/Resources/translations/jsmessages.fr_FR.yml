@@ -85,3 +85,7 @@ akeneo_data_quality_insights:
   product_grid:
     filter_label:
       spelling_quality: Qualité orthographique
+  dictionary:
+    no_search_results:
+      title: Aucun résultat pour votre recherche
+      subtitle: Veuillez réessayer avec de nouveaux critères de recherche.
