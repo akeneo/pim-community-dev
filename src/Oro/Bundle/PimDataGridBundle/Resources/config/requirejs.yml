@@ -100,7 +100,7 @@ config:
         oro/datagrid/pagination:                pimdatagrid/js/datagrid/pagination
         oro/datagrid/row:                       pimdatagrid/js/datagrid/row
         oro/datagrid/history-row:               pimdatagrid/js/datagrid/history-row
-        oro/datagrid/product-row:               pimdatagrid/js/datagrid/product-row
+        oro/datagrid/product-row:               pimdatagrid/js/datagrid/ProductGalleryRow.tsx
         oro/datagrid-builder:                   pimdatagrid/js/datagrid-builder
         oro/loading-mask:                       pimdatagrid/js/loading-mask
         oro/pageable-collection:                pimdatagrid/js/pageable-collection
