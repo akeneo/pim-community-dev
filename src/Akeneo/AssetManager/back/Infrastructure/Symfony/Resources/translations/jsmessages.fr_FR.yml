@@ -10,6 +10,7 @@ pim_asset_manager:
         message: Désolé, nous n'affichons pas cet élément intégré mais il sera correctement sauvegardé.
   result_counter: '{0} Pas de résultat|{1} {{ count }} résultat|]1,Inf] {{ count }} résultats'
   asset_counter: '{0}Pas de ressource |{1} {{ count }} ressource|]1,Inf] {{ count }} ressources'
+  asset_selected: '{0} {{ assetCount }} ressource sélectionnée|{1} {{ assetCount }} ressource sélectionnée|]1,Inf] {{ assetCount }} ressources sélectionnées'
   asset_collection:
     add_asset: 'Ajouter une ressource'
     upload_asset: 'Charger des ressources'
@@ -45,7 +46,6 @@ pim_asset_manager:
     filter:
       title: Filtres de ressources
     basket:
-      title: '{{ assetCount }} ressource sélectionnée|{{ assetCount }} ressources sélectionnées'
       empty_title: Votre panier est vide
       remove_one_asset: Supprimer la ressource {{ assetName }} de la sélection des ressources
       remove_all_assets: Tout supprimer
@@ -339,6 +339,10 @@ pim_asset_manager:
       title: Ressource
     delete_all:
       confirm: Êtes-vous sûr de vouloir supprimer toutes les ressources "{{ entityIdentifier }}" ? Si elles sont liées à des produits, les liens vers les produits seront supprimés.
+    mass_delete:
+      extra_information: Si ces ressources sont liées à des produits, les liens seront également supprimés.
+      confirm_label: 'Merci de saisir le code de la famille de ressources suivant : "{{ assetFamilyIdentifier }}"'
+      title: Ressources
     grid:
       search: Rechercher sur le libellé, le code et les attributs texte
       filter:
@@ -383,6 +387,9 @@ pim_asset_manager:
       delete_all:
         success: Toutes les ressources de «{{ entityIdentifier }}» ont été supprimées avec succès.
         fail: Une erreur s'est produite pendant la suppression des ressources de la famille.
+      mass_delete:
+        success: La suppression en masse des ressources a été lancée. Vous serez notifié lorsque la tâche sera terminée.
+        fail: "L'erreur suivante s'est produite lors du lancement de la suppression en masse des ressources : {{ error }}"
       execute_naming_convention:
         success: Convention de nommage exécutée avec succès
         fail: Une erreur s'est produite lors de l'exécution de la convention de nommage
@@ -552,9 +559,12 @@ pim_datagrid:
   cells:
     type:
       asset_manager_execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
+      asset_manager_mass_delete_assets: Lancer la suppression en masse des ressources
 batch_jobs:
   default_steps:
     execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
+    mass_delete_assets: Lancer la suppression en masse des ressources
 job_execution:
   summary:
     assets: Ressources
+pim_notification.types.asset_manager_mass_delete_assets: Supprimer en masse des ressources

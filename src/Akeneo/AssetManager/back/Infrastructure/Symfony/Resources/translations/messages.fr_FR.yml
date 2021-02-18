@@ -14,7 +14,7 @@ akeneo_assetmanager:
     asset:
       create: Créer une ressource
       edit: Editer les ressources
-      delete: Supprimer une ressource
+      delete: Supprimer les ressources
       delete_all: Supprimer toutes les ressources
       list_product: Lister les produits liés à la ressource
       execute_naming_conventions: Exécuter les conventions de nommage
@@ -28,6 +28,8 @@ akeneo_assetmanager:
   jobs:
     asset_manager_execute_naming_convention:
       error: 'L''exécution de la convention de nommage a échoué sur la ressource "{{ asset }}"'
+    asset_manager_mass_delete:
+      error: 'La suppression en masse a échoué pour la/les ressources(s) "{{ assets }}" à cause de l''erreur suivante : "{{ error }}"'
 pim_import_export:
   widget:
     last_operations:
@@ -63,6 +65,7 @@ pim_datagrid:
       asset_manager_execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
       asset_manager_link_assets_to_products: Lier les ressources aux produits
       asset_manager_compute_transformations: Calculer les transformations de ressource
+      asset_manager_mass_delete_assets: Supprimer en masse des ressources
 batch_jobs:
   default_steps:
     execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
@@ -71,3 +74,7 @@ batch_jobs:
 job_execution:
   summary:
     assets: Ressources
+pim_mass_edit.notification.asset_manager_mass_delete_assets:
+  warning: Les ressources ont bien été supprimées, mais avec des avertissements
+  success: Ressources supprimées avec succès
+  error: La suppression des ressources a échoué
