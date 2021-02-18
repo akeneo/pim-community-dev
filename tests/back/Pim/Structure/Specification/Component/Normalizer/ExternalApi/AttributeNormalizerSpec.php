@@ -2,10 +2,9 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Normalizer\ExternalApi;
 
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AttributeNormalizer;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Prophecy\Argument;
+use Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AttributeNormalizer;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AttributeNormalizerSpec extends ObjectBehavior

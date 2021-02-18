@@ -96,6 +96,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'descriptions'           => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -143,7 +144,8 @@ JSON;
                 {
         "code": "a_new_text_with_code",
         "type": "pim_catalog_text",
-        "group":"attributeGroupA"
+        "group":"attributeGroupA",
+        "descriptions": {"en_US": "the description", "fr_FR": "la description", "de_DE": ""}
     }
 JSON;
         $client->request('PATCH', 'api/rest/v1/attributes/a_new_text_with_code', [], [], [], $data);
@@ -176,6 +178,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'descriptions'           => ['en_US' => 'the description', 'fr_FR' => 'la description'],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -227,6 +230,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'descriptions'           => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -273,6 +277,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'descriptions'           => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -293,7 +298,8 @@ JSON;
         "code":"a_metric",
         "type":"pim_catalog_metric",
         "group":"attributeGroupA",
-        "default_metric_unit":"WATT" 
+        "default_metric_unit":"WATT",
+        "descriptions": {"en_US": "the description"}
     }
 JSON;
 
@@ -327,6 +333,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'descriptions'           => ['en_US' => 'the description'],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -380,6 +387,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'descriptions'           => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -443,6 +451,7 @@ JSON;
             'labels'                 => [
                 'de_DE' => 'Family A2 DE',
             ],
+            'descriptions'           => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
