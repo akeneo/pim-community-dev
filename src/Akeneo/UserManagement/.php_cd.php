@@ -43,6 +43,7 @@ $rules = [
         'Symfony\Contracts',
         'Akeneo\Tool',
         'Akeneo\UserManagement',
+        'Webmozart\Assert\Assert',
         'Oro\Bundle\SecurityBundle',
         'Sensio\Bundle\FrameworkExtraBundle',
         'Symfony\Bundle\FrameworkBundle',
