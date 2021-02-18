@@ -13,32 +13,40 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 class ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily
 {
     private Client $assetClient;
+    private int $assetFamilyLimit;
 
-    public function __construct(Client $assetClient)
+    public function __construct(Client $assetClient, int $assetFamilyLimit)
     {
         $this->assetClient = $assetClient;
+        $this->assetFamilyLimit = $assetFamilyLimit;
     }
 
     public function fetch(): AverageMaxVolumes
     {
         $response = $this->assetClient->search([
             "aggs" => [
-                "by_asset_family_code" => [
+                "assets_by_asset_family_code" => [
                     "terms" => [
-                        "field" => "asset_family_code"
-                    ],
+                        "field" => "asset_family_code",
+                        "size" => $this->assetFamilyLimit
+                    ]
+                ],
+                "avg_asset_by_family" => [
+                    "avg_bucket" => [
+                        "buckets_path" => "assets_by_asset_family_code._count"
+                    ]
+                ],
+                "max_asset_by_family" => [
+                    "max_bucket" => [
+                        "buckets_path" => "assets_by_asset_family_code._count"
+                    ]
                 ]
-            ],
+            ]
         ]);
 
-        $assetCount = array_map(
-            fn ($assetFamilyData) => $assetFamilyData['doc_count'],
-            $response['aggregations']['by_asset_family_code']['buckets']
-        );
-
         $volume = new AverageMaxVolumes(
-            empty($assetCount) ? 0 : (int) max($assetCount),
-            empty($assetCount) ? 0 : (int) ceil(array_sum($assetCount) / count($assetCount))
+            (int) $response['aggregations']['max_asset_by_family']['value'],
+            (int) ceil($response['aggregations']['avg_asset_by_family']['value'])
         );
 
         return $volume;
