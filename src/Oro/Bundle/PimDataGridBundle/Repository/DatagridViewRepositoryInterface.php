@@ -33,6 +33,4 @@ interface DatagridViewRepositoryInterface
         string $term = '',
         array $options = []
     ): array;
-
-    public function findByLabelAndUser(string $label, ?UserInterface $user): ?DatagridView;
 }

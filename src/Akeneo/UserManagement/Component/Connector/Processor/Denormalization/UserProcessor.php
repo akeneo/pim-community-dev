@@ -13,7 +13,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UserProcessor extends Processor
 {
-    private DatagridViewRepositoryInterface $gridViewRepository;
+    private ObjectRepository $gridViewRepository;
     private FileStorerInterface $fileStorer;
 
     public function __construct(
@@ -31,7 +31,7 @@ class UserProcessor extends Processor
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
-        DatagridViewRepositoryInterface $gridViewRepository,
+        ObjectRepository $gridViewRepository,
         FileStorerInterface $fileStorer
     ) {
         parent::__construct($repository, $factory, $updater, $validator, $objectDetacher);
@@ -55,7 +55,7 @@ class UserProcessor extends Processor
 
         $itemDefaultProductGridView = $item['default_product_grid_view'] ?? null;
         if (null !== $itemDefaultProductGridView) {
-            $defaultProductGridView = $this->gridViewRepository->findByLabelAndUser($itemDefaultProductGridView, $user);
+            $defaultProductGridView = $this->gridViewRepository->findOneBy(['label' => $itemDefaultProductGridView]);
             if (null !== $defaultProductGridView) {
                 $item['default_product_grid_view'] = $defaultProductGridView->getId();
             }
