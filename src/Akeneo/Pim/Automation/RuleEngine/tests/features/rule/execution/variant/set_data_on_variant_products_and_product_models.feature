@@ -129,7 +129,7 @@ Feature: Apply "set" action on variant product and product models
     And the "bag_uni_red" variant product should not have the following values:
       | style | [with_zipper] |
 
-  @integration-back
+  @integration-back @purge-messenger
   Scenario: Successfully set values according to conditions on both variant products and product models
     Given the following product rule definitions:
       """
@@ -161,6 +161,7 @@ Feature: Apply "set" action on variant product and product models
     And the "bag_uni" product model should not have the following values "price"
     And the "bag_uni_red" variant product should not have the following values:
       | price | 1.00 EUR |
+    And 2 events of type "product.updated" should have been raised
 
   @integration-back
   Scenario: Successfully set categories according to conditions on both variant products and product models
