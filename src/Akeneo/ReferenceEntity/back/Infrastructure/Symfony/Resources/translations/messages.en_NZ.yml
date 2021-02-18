@@ -31,3 +31,5 @@ pim_analytics:
     average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per reference entity
     average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per reference entity
     average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per reference entity
+akeneo_reference_entity: Reference entity single link
+akeneo_reference_entity_collection: Reference entity multiple links

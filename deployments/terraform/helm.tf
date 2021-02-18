@@ -8,6 +8,7 @@ data "template_file" "helm_pim_config" {
 
   vars = {
     instanceName        = var.instance_name
+    type                = local.type
     pfid                = local.pfid
     projectId           = var.google_project_id
     googleZone          = var.google_project_zone
@@ -79,8 +80,17 @@ kubectl scale -n ${local.pfid} deploy/pim-daemon-webhook-consumer-process --repl
 kubectl scale -n ${local.pfid} deploy/pim-daemon-all-but-linking-assets-to-products --replicas=0 || true
 helm upgrade --atomic --cleanup-on-fail --wait --install --force --timeout 1202 ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
 HELM_STATUS_CODE=$${?}
-kubectl scale -n ${local.pfid} deploy/pim-web --replicas=2
-kubectl scale -n ${local.pfid} deploy/pim-daemon-default deploy/pim-daemon-all-but-linking-assets-to-products deploy/pim-daemon-webhook-consumer-process --replicas=1
+
+PARALLEL_WEB=$(yq m -x ${path.module}/pim/values.yaml tf-helm-pim-values.yaml values.yaml | yq r - pim.replicas)
+PARALLEL_DAEMON_DEFAULT=$(yq m -x ${path.module}/pim/values.yaml tf-helm-pim-values.yaml values.yaml | yq r - pim.daemons.default.replicas)
+PARALLEL_DAEMON_WEBHOOK=$(yq m -x ${path.module}/pim/values.yaml tf-helm-pim-values.yaml values.yaml | yq r - pim.daemons.webhook-consumer-process.replicas)
+PARALLEL_DAEMON_ASSET=$(yq m -x ${path.module}/pim/values.yaml tf-helm-pim-values.yaml values.yaml | yq r - pim.daemons.all-but-linking-assets-to-products.replicas)
+
+kubectl scale -n ${local.pfid} deploy/pim-web                                      --replicas=$${PARALLEL_WEB}
+kubectl scale -n ${local.pfid} deploy/pim-daemon-default                            --replicas=$${PARALLEL_DAEMON_DEFAULT}
+kubectl scale -n ${local.pfid} deploy/pim-daemon-webhook-consumer-process           --replicas=$${PARALLEL_DAEMON_WEBHOOK}
+kubectl scale -n ${local.pfid} deploy/pim-daemon-all-but-linking-assets-to-products --replicas=$${PARALLEL_DAEMON_ASSET}
+
 KUBECTL_SCALE_CODE=$${?}
 if [ $${KUBECTL_SCALE_CODE} -eq 0 ]; then
   exit $${HELM_STATUS_CODE}

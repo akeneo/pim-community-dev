@@ -1,8 +1,12 @@
+import React from 'react';
+import {ThemeProvider} from 'styled-components';
+import {pimTheme} from 'akeneo-design-system';
+import {mount as baseMount} from 'enzyme';
 import PermissionCollectionEditor from 'akeneoassetmanager/tools/component/permission';
 import {denormalizePermissionCollection, RightLevel} from 'akeneoassetmanager/domain/model/asset-family/permission';
 
-import * as React from 'react';
-import {mount} from 'enzyme';
+const mount = (element: any) =>
+  baseMount(element, {wrappingComponent: ({children}) => <ThemeProvider theme={pimTheme}>{children}</ThemeProvider>});
 
 const assertRightLevel = (element: any, groupName: string, rightLevel: string) => {
   ['none', 'view', 'edit', 'own'].reduce((previous: string[], current: string) => {
@@ -74,30 +78,7 @@ describe('>>>COMPONENT --- permission', () => {
       />
     );
 
-    permissionsEditor.find(`.AknPermission-header .AknButton[data-right-level="edit"]`).simulate('click');
-  });
-
-  test('Mass update rights with keyboard', () => {
-    expect.assertions(4);
-    const permissionsEditor = mount(
-      <PermissionCollectionEditor
-        value={permissions}
-        readOnly={false}
-        onChange={newPermissions => {
-          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('edit');
-          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('edit');
-          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('edit');
-          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('edit');
-        }}
-        prioritizedRightLevels={[RightLevel.None, RightLevel.View, RightLevel.Edit, RightLevel.Own]}
-      />
-    );
-
-    permissionsEditor.find(`.AknPermission-header .AknButton[data-right-level="edit"]`).simulate('keyDown', {
-      keyCode: 32,
-      which: 32,
-      key: ' ',
-    });
+    permissionsEditor.find(`.AknPermission-header button[data-right-level="edit"]`).simulate('click');
   });
 
   test('Mass update rights with keyboard', () => {
@@ -113,7 +94,7 @@ describe('>>>COMPONENT --- permission', () => {
       />
     );
 
-    permissionsEditor.find(`.AknPermission-header .AknButton[data-right-level="edit"]`).simulate('keyDown', {
+    permissionsEditor.find(`.AknPermission-header button[data-right-level="edit"]`).simulate('keyDown', {
       keyCode: 40,
       which: 40,
       key: 'arrow down',
@@ -136,7 +117,7 @@ describe('>>>COMPONENT --- permission', () => {
       />
     );
 
-    permissionsEditor.find(`.AknPermission-header .AknButton[data-right-level="none"]`).simulate('click');
+    permissionsEditor.find(`.AknPermission-header button[data-right-level="none"]`).simulate('click');
   });
 
   test('Mass update rights on read only', () => {
@@ -152,7 +133,7 @@ describe('>>>COMPONENT --- permission', () => {
       />
     );
 
-    permissionsEditor.find(`.AknPermission-header .AknButton[data-right-level="edit"]`).simulate('click');
+    permissionsEditor.find(`.AknPermission-header button[data-right-level="edit"]`).simulate('click');
   });
 
   test('Update one right', () => {

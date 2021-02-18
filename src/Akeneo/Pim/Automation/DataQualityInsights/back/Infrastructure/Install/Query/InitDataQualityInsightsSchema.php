@@ -25,7 +25,7 @@ CREATE TABLE pimee_data_quality_insights_text_checker_dictionary (
     locale_code VARCHAR(20) NOT NULL,
     word VARCHAR(250) NOT NULL,
     PRIMARY KEY (id),
-    INDEX word_index (word)
+    UNIQUE unique_locale_word (locale_code, word)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE pimee_dqi_attribute_spellcheck (

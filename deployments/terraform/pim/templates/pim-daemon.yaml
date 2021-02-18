@@ -92,4 +92,4 @@ spec:
               path: key.json
         {{- end }}
 ---
-{{- end }}
+{{ end }}

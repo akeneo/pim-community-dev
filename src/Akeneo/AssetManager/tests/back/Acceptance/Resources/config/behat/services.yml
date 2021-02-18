@@ -209,19 +209,6 @@ services:
         tags:
             - { name: fob.context_service }
 
-    akeneo_assetmanager.tests.back.acceptance.context.delete_all_assets_context:
-        class: Akeneo\AssetManager\Acceptance\Context\DeleteAllAssetsContext
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
-            - '@akeneo_assetmanager.application.asset.delete_all_asset_family_assets_handler'
-            - '@validator'
-            - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
-            - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
-            - '@akeneo_assetmanager.application.asset_family.create_asset_family_handler'
-        tags:
-            - { name: fob.context_service }
-
     akeneo_assetmanager.tests.back.acceptance.context.index_assets_context:
         class: Akeneo\AssetManager\Acceptance\Context\IndexAssetsContext
         arguments:

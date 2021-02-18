@@ -1,14 +1,12 @@
-import * as React from 'react';
-import {Button} from 'akeneoassetmanager/application/component/app/button';
-import {Spacer} from 'akeneoassetmanager/application/component/app/spacer';
-import __ from 'akeneoassetmanager/tools/translator';
+import React from 'react';
 import styled, {css} from 'styled-components';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import {Spacer} from 'akeneoassetmanager/application/component/app/spacer';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import Row from 'akeneoassetmanager/application/asset-upload/component/row';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-import {AssetsIllustration} from 'akeneo-design-system';
+import {AssetsIllustration, Button, getColor, getFontSize} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 export const ColumnWidths = {
   asset: 78,
@@ -17,14 +15,13 @@ export const ColumnWidths = {
   locale: 250,
   channel: 250,
   status: 140,
-  retry: 54,
-  remove: 54,
+  actions: 108,
 };
 
 const Header = styled.div`
   align-items: center;
-  background: ${(props: ThemedProps<void>) => props.theme.color.white};
-  border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey140};
+  background: ${getColor('white')};
+  border-bottom: 1px solid ${getColor('grey', 140)};
   display: flex;
   height: 40px;
   padding-bottom: 7px;
@@ -33,13 +30,10 @@ const Header = styled.div`
   z-index: 2;
 `;
 const LineCount = styled.div`
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
-  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.big};
+  color: ${getColor('grey', 140)};
+  font-size: ${getFontSize('big')};
   font-weight: normal;
   text-transform: uppercase;
-`;
-const ActionButton = styled(Button)`
-  margin-left: 10px;
 `;
 const List = styled.div`
   border-collapse: collapse;
@@ -47,8 +41,8 @@ const List = styled.div`
 `;
 const ListHeader = styled.div`
   align-items: center;
-  background: ${(props: ThemedProps<void>) => props.theme.color.white};
-  border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey120};
+  background: ${getColor('white')};
+  border-bottom: 1px solid ${getColor('grey', 120)};
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
@@ -57,7 +51,7 @@ const ListHeader = styled.div`
   z-index: 1;
 `;
 const ListColumnHeader = styled.div<{width?: number}>`
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
+  color: ${getColor('grey', 140)};
   flex-grow: 0;
   flex-shrink: 0;
   height: 44px;
@@ -79,7 +73,7 @@ const Placeholder = styled.div`
   padding: 60px 0;
 `;
 const PlaceholderHelper = styled.div`
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
+  color: ${getColor('grey', 140)};
   font-size: 30px;
   line-height: 30px;
   margin-top: 7px;
@@ -110,44 +104,47 @@ const LineList = ({
   valuePerLocale,
   valuePerChannel,
 }: LineListProps) => {
+  const translate = useTranslate();
+
   return (
     <>
       <Header>
-        <LineCount>{__('pim_asset_manager.asset.upload.line_count', {count: lines.length}, lines.length)}</LineCount>
+        <LineCount>
+          {translate('pim_asset_manager.asset.upload.line_count', {count: lines.length}, lines.length)}
+        </LineCount>
         <Spacer />
-        <ActionButton color="outline" onClick={onLineRemoveAll}>
-          {__('pim_asset_manager.asset.upload.remove_all')}
-        </ActionButton>
+        <Button ghost={true} level="tertiary" onClick={onLineRemoveAll}>
+          {translate('pim_asset_manager.asset.upload.remove_all')}
+        </Button>
       </Header>
       <List>
         <ListHeader>
           <ListColumnHeader width={ColumnWidths.asset}>
-            {__('pim_asset_manager.asset.upload.list.asset')}
+            {translate('pim_asset_manager.asset.upload.list.asset')}
           </ListColumnHeader>
           <ListColumnHeader width={ColumnWidths.filename}>
-            {__('pim_asset_manager.asset.upload.list.filename')}
+            {translate('pim_asset_manager.asset.upload.list.filename')}
           </ListColumnHeader>
           <ListColumnHeader className={'edit-asset-code-label'} width={ColumnWidths.code}>
-            {__('pim_asset_manager.asset.upload.list.code')}
+            {translate('pim_asset_manager.asset.upload.list.code')}
           </ListColumnHeader>
           {valuePerChannel && (
             <ListColumnHeader width={ColumnWidths.channel}>
-              {__('pim_asset_manager.asset.upload.list.channel')}
+              {translate('pim_asset_manager.asset.upload.list.channel')}
             </ListColumnHeader>
           )}
           {valuePerLocale && (
             <ListColumnHeader width={ColumnWidths.locale}>
-              {__('pim_asset_manager.asset.upload.list.locale')}
+              {translate('pim_asset_manager.asset.upload.list.locale')}
             </ListColumnHeader>
           )}
           <Spacer />
           <ListColumnHeader width={ColumnWidths.status}>
-            {__('pim_asset_manager.asset.upload.list.status')}
+            {translate('pim_asset_manager.asset.upload.list.status')}
           </ListColumnHeader>
-          <ListColumnHeader width={ColumnWidths.retry} />
-          <ListColumnHeader width={ColumnWidths.remove} />
+          <ListColumnHeader width={ColumnWidths.actions} />
         </ListHeader>
-        <div aria-label={__('pim_asset_manager.asset.upload.lines')}>
+        <div aria-label={translate('pim_asset_manager.asset.upload.lines')}>
           {lines.map((line: Line) => (
             <Row
               key={line.id}
@@ -167,7 +164,7 @@ const LineList = ({
       {lines.length === 0 && (
         <Placeholder>
           <AssetsIllustration />
-          <PlaceholderHelper>{__('pim_asset_manager.asset.upload.will_appear_here')}</PlaceholderHelper>
+          <PlaceholderHelper>{translate('pim_asset_manager.asset.upload.will_appear_here')}</PlaceholderHelper>
         </Placeholder>
       )}
     </>

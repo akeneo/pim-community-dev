@@ -8,7 +8,9 @@ use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\CertificateMet
 use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchive;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrUpdateConfiguration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrUpdateConfigurationHandler;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Certificate;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\CertificateExpirationDate;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\ConfigurationNotFound;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\ServiceProviderDefaultConfiguration;
@@ -30,9 +32,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class Controller
 {
-    private const CONFIGURATION_CODE = 'authentication_sso';
-    private const SP_CERTIFICATE_EXPIRATION_WARNING_IN_DAYS = 30;
-
     /** @var ValidatorInterface */
     private $validator;
 
@@ -94,7 +93,7 @@ final class Controller
         $data = json_decode($request->getContent(), true);
 
         $createOrUpdateConfig = new CreateOrUpdateConfiguration(
-            self::CONFIGURATION_CODE,
+            Configuration::DEFAULT_CODE,
             $data['configuration']['is_enabled'] ?? false,
             $data['configuration']['identity_provider_entity_id'] ?? '',
             $data['configuration']['identity_provider_sign_on_url'] ?? '',
@@ -132,7 +131,7 @@ final class Controller
         ];
 
         try {
-            $config = $this->repository->find(self::CONFIGURATION_CODE);
+            $config = $this->repository->find(Configuration::DEFAULT_CODE);
             $configArray = $config->toArray();
             $expirationDate = (new CertificateMetadata($configArray['serviceProvider']['certificate']))->getExpirationDate();
 
@@ -152,7 +151,7 @@ final class Controller
                     'service_provider_certificate_expires_soon'    => $expirationDate ?
                         $expirationDate->doesExpireInLessThanDays(
                             new \DateTimeImmutable('now'),
-                            self::SP_CERTIFICATE_EXPIRATION_WARNING_IN_DAYS
+                            Certificate::EXPIRATION_WARNING_IN_DAYS
                         ) : null,
                 ] + $staticConfiguration
             ]);
@@ -176,7 +175,7 @@ final class Controller
                     'service_provider_certificate_expires_soon'    => $expirationDate ?
                         $expirationDate->doesExpireInLessThanDays(
                             new \DateTimeImmutable('now'),
-                            self::SP_CERTIFICATE_EXPIRATION_WARNING_IN_DAYS
+                            Certificate::EXPIRATION_WARNING_IN_DAYS
                         ) : null,
                 ] + $staticConfiguration
             ]);

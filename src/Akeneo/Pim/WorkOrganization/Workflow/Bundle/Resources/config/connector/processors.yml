@@ -51,7 +51,6 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.processor.bulk_media_fetcher'
             - '@pim_catalog.product_model.fill_missing_values'
-            - '@pim_connector.doctrine.cache_clearer'
 
     pimee_workflow.processor.mark_product_draft_as_ready:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\MarkProductDraftAsReadyProcessor'

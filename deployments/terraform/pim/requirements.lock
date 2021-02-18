@@ -1,12 +1,12 @@
 dependencies:
 - name: mysql
   repository: gs://akeneo-charts/
-  version: 2.0.10
+  version: 2.0.12
 - name: elasticsearch
   repository: https://charts.helm.sh/stable
   version: 1.32.4
 - name: memcached
   repository: https://charts.helm.sh/stable
   version: 3.2.3
-digest: sha256:cb959899c822f3e24895cbb8e184410b78284eb28e63f5ee980c2fb63fbd4ae4
-generated: "2021-01-08T14:45:52.118553655+01:00"
+digest: sha256:22be85adab86c8c786f75b747b9f72865477d905b4fc81d31f1b2f81a1655305
+generated: "2021-02-12T11:06:44.3119651+01:00"

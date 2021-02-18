@@ -20,7 +20,8 @@
             "Akeneo\\Connectivity\\Connection\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back",
             "Akeneo\\Platform\\CommunicationChannel\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
             "Akeneo\\Pim\\Automation\\DataQualityInsights\\": ["src/Akeneo/Pim/Automation/DataQualityInsights/back", "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/back"],
-            "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back"
+            "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
+            "Akeneo\\Pim\\TrialEdition\\": "src/Akeneo/TrialEdition/back"
         },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
@@ -43,7 +44,7 @@
             "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": ["src/Akeneo/Pim/Automation/DataQualityInsights/tests/back", "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/tests/back"],
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/tests/back",
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back",
-            "Akeneo\\Connectivity\\Connection\\Tests\\Acceptance\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance",
+            "Akeneo\\Connectivity\\Connection\\Tests\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests",
             "Akeneo\\Connectivity\\Connection\\Tests\\EndToEnd\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/tests/",
             "Pim\\Upgrade\\Schema\\Tests\\": "vendor/akeneo/pim-community-dev/upgrades/test_schema/",
             "Akeneo\\Platform\\CommunicationChannel\\Test\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests",

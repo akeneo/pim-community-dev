@@ -12,7 +12,10 @@
 namespace Akeneo\Pim\Permission\Bundle\Controller\Ui;
 
 use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Permission\Bundle\Form\Type\LocaleType;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,15 +33,28 @@ use Webmozart\Assert\Assert;
  */
 class LocaleController
 {
-    protected $formFactory;
-    private $templating;
-    private $translator;
+    protected FormFactoryInterface $formFactory;
 
-    public function __construct(FormFactoryInterface $formFactory, Environment $engine, TranslatorInterface $translator)
-    {
+    private Environment $templating;
+
+    private TranslatorInterface $translator;
+
+    private FeatureFlag $dictionaryFeatureFlag;
+
+    private SupportedLocaleValidator $supportedLocaleValidator;
+
+    public function __construct(
+        FormFactoryInterface $formFactory,
+        Environment $engine,
+        TranslatorInterface $translator,
+        FeatureFlag $dictionaryFeatureFlag,
+        SupportedLocaleValidator $supportedLocaleValidator
+    ) {
         $this->formFactory = $formFactory;
         $this->templating = $engine;
         $this->translator = $translator;
+        $this->dictionaryFeatureFlag = $dictionaryFeatureFlag;
+        $this->supportedLocaleValidator = $supportedLocaleValidator;
     }
 
     /**
@@ -69,8 +85,16 @@ class LocaleController
             }
         }
 
+        $dictionaryEnabled = (
+            $this->dictionaryFeatureFlag->isEnabled() &&
+            $this->supportedLocaleValidator->isSupported(new LocaleCode($locale))
+        );
+
         return new Response(
-            $this->templating->render('AkeneoPimPermissionBundle:Locale:edit.html.twig', ['form' => $form->createView()])
+            $this->templating->render('AkeneoPimPermissionBundle:Locale:edit.html.twig', [
+                'form' => $form->createView(),
+                'dictionaryEnabled' => $dictionaryEnabled,
+            ])
         );
     }
 }

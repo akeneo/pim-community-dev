@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
 const FieldColumn = styled.span`
-  width: 100px;
+  width: 120px;
   display: inline-block;
   padding: 0 2px;
+  white-space: nowrap;
   overflow: hidden;
   height: 40px;
   line-height: 40px;

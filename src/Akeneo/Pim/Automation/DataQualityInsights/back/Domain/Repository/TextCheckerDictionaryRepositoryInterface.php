@@ -11,9 +11,7 @@
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
-
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 
@@ -24,7 +22,23 @@ interface TextCheckerDictionaryRepositoryInterface
 {
     public function findByLocaleCode(LocaleCode $localeCode): array;
 
-    public function exists(LocaleCode $localeCode, DictionaryWord $word): bool;
+    public function paginatedSearch(LocaleCode $localeCode, int $page, int $itemsPerPage, string $search): array;
+
+    /**
+     * @param DictionaryWord[] $words
+     *
+     * @return DictionaryWord[] words that exist in the dictionary for the given locale.
+     */
+    public function filterExistingWords(LocaleCode $localeCode, array $words): array;
 
     public function save(Write\TextCheckerDictionaryWord $dictionaryWord): void;
+
+    /**
+     * @param Write\TextCheckerDictionaryWord[] $dictionaryWords
+     */
+    public function saveAll(array $dictionaryWords): void;
+
+    public function deleteWord(int $wordId): void;
+
+    public function isEmptyForLocale(LocaleCode $localeCode): bool;
 }

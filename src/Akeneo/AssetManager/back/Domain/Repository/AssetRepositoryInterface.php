@@ -29,21 +29,24 @@ interface AssetRepositoryInterface
      */
     public function getByIdentifier(AssetIdentifier $identifier): Asset;
 
+
     /**
      * @throws AssetNotFoundException
      */
     public function getByAssetFamilyAndCode(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $code): Asset;
 
     /**
+     * @param AssetFamilyIdentifier $assetFamilyIdentifier
+     * @param AssetCode[] $assetCodes
+     */
+    public function deleteByAssetFamilyAndCodes(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): void;
+
+    /**
      * @throws AssetNotFoundException
      */
     public function deleteByAssetFamilyAndCode(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $code): void;
 
-    public function deleteByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): void;
-
     public function count(): int;
 
-    public function countByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int;
-
-    public function nextIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $code):  AssetIdentifier;
+    public function nextIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $code): AssetIdentifier;
 }

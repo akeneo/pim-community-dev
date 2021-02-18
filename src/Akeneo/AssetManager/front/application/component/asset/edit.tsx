@@ -15,7 +15,7 @@ import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channe
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
-import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
+import {CompletenessBadge} from 'akeneoassetmanager/application/component/app/completeness';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
@@ -76,6 +76,11 @@ const DateLabel = styled(Label)`
   margin: 0 10px;
 `;
 
+const MetaContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 class AssetEditView extends React.Component<EditProps> {
   public props: EditProps;
   public state: {isDeleteModalOpen: boolean} = {
@@ -88,6 +93,7 @@ class AssetEditView extends React.Component<EditProps> {
     this.setState({isDeleteModalOpen: false});
   };
 
+  //TODO use DSM Dropdown
   private getSecondaryActions = (
     canDelete: boolean,
     canExecuteNamingConvention: boolean,
@@ -200,10 +206,13 @@ class AssetEditView extends React.Component<EditProps> {
                         </div>
                       </div>
                     </div>
-                    <div>
-                      <span>
-                        {completeness.hasRequiredAttribute() ? <CompletenessLabel completeness={completeness} /> : null}
-                      </span>
+                    <MetaContainer>
+                      {completeness.hasRequiredAttribute() && (
+                        <>
+                          {__('pim_common.completeness')}:&nbsp;
+                          <CompletenessBadge completeness={completeness} />
+                        </>
+                      )}
                       <span>
                         <DateLabel>
                           {__('pim_asset_manager.asset.created_at')}:{' '}
@@ -227,7 +236,7 @@ class AssetEditView extends React.Component<EditProps> {
                           })}
                         </DateLabel>
                       </span>
-                    </div>
+                    </MetaContainer>
                   </div>
                 </div>
               </header>

@@ -4,7 +4,7 @@ parameters:
     # Maximum number of attributes per asset families
     asset_family_maximum_attribute: 100
     # Maximum number of assets for single asset family
-    asset_manager_asset_limit_per_asset_family: 1000000
+    asset_manager_asset_limit_per_asset_family: 10000000
     # Maximum number of option for a single list attribute of an asset family
     asset_family_option_limit_per_list_attribute: 100
     # Number of assets per page for the connector

@@ -1,12 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import __ from 'akeneoassetmanager/tools/translator';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import {UsingIllustration, Button, getFontSize, getColor} from 'akeneo-design-system';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
-import {Button} from 'akeneoassetmanager/application/component/app/button';
-import {getProductIndexUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {updateDatagridStateWithFilterOnAssetCode} from 'akeneoassetmanager/tools/datagridstate';
-import {UsingIllustration} from 'akeneo-design-system';
+import {useRoute, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
   margin-top: 40px;
@@ -16,17 +13,13 @@ const Container = styled.div`
 `;
 
 const LimitTitle = styled.span`
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
-  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.title};
+  color: ${getColor('grey', 140)};
+  font-size: ${getFontSize('title')};
   white-space: nowrap;
 `;
 
 const LimitSubtitle = styled.span`
   margin: 10px 0 20px;
-`;
-
-const StyledButton = styled(Button)`
-  margin-bottom: 20px;
 `;
 
 type LimitProps = {
@@ -36,34 +29,36 @@ type LimitProps = {
   attribute: NormalizedAttribute | null;
 };
 
-export const Limit = ({assetCode, productCount, totalCount, attribute}: LimitProps) => {
+const Limit = ({assetCode, productCount, totalCount, attribute}: LimitProps) => {
+  const translate = useTranslate();
+  const productIndexRoute = useRoute('pim_enrich_product_index');
+
   if (null === attribute || productCount >= totalCount) return null;
 
   return (
     <Container>
       <LimitTitle>
-        {__('pim_asset_manager.asset.product.not_enough_items.title', {productCount, totalCount})}
+        {translate('pim_asset_manager.asset.product.not_enough_items.title', {productCount, totalCount})}
       </LimitTitle>
       <LimitSubtitle>
-        {__(
+        {translate(
           `pim_asset_manager.asset.product.not_enough_items.subtitle.${
             attribute.useable_as_grid_filter ? 'usable_in_grid' : 'not_usable_in_grid'
           }`
         )}
       </LimitSubtitle>
       {attribute.useable_as_grid_filter && (
-        <a href={getProductIndexUrl()} target="_blank">
-          <StyledButton
-            tabIndex="0"
-            role="button"
-            onClick={() => updateDatagridStateWithFilterOnAssetCode(attribute.code, assetCode)}
-            color="green"
-          >
-            {__('pim_asset_manager.asset.product.not_enough_items.button')}
-          </StyledButton>
-        </a>
+        <Button
+          href={`#${productIndexRoute}`}
+          target="_blank"
+          onClick={() => updateDatagridStateWithFilterOnAssetCode(attribute.code, assetCode)}
+        >
+          {translate('pim_asset_manager.asset.product.not_enough_items.button')}
+        </Button>
       )}
       <UsingIllustration />
     </Container>
   );
 };
+
+export {Limit};

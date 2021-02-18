@@ -1,0 +1,5 @@
+extensions:
+    akeneo-data-quality-insights-locale-dictionary:
+        module: akeneo/data-quality-insights/infrastructure/pim-view/locale/dictionary-app
+        config:
+            template: pim/template/common/default-template

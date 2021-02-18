@@ -133,7 +133,7 @@ class SqlFindConnectorAssetsByIdentifiersTest extends SqlIntegrationTestCase
 
         $assetQuery = AssetQuery::createPaginatedQueryUsingSearchAfter(
             AssetFamilyIdentifier::fromString('designer'),
-            ChannelReference::createfromNormalized('ecommerce'),
+            ChannelReference::createFromNormalized('ecommerce'),
             LocaleIdentifierCollection::empty(),
             100,
             null,
@@ -177,7 +177,7 @@ class SqlFindConnectorAssetsByIdentifiersTest extends SqlIntegrationTestCase
 
         $assetQuery = AssetQuery::createPaginatedQueryUsingSearchAfter(
             AssetFamilyIdentifier::fromString('designer'),
-            ChannelReference::createfromNormalized('ecommerce'),
+            ChannelReference::createFromNormalized('ecommerce'),
             LocaleIdentifierCollection::fromNormalized(['fr_FR']),
             100,
             null,

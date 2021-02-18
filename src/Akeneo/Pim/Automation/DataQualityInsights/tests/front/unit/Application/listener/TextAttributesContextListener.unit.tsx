@@ -1,5 +1,9 @@
 import {Attribute, Family, Product} from '@akeneo-pim-ee/data-quality-insights/src/domain';
-import {getTextAttributes} from '@akeneo-pim-ee/data-quality-insights/src/application/listener/ProductEditForm/TextAttributesContextListener';
+import {
+  getTextAttributes,
+  isValidTextAttributeElement,
+} from '@akeneo-pim-ee/data-quality-insights/src/application/listener/ProductEditForm/TextAttributesContextListener';
+import {anAttribute} from '../../../utils';
 
 const localizableTextarea = buildAttribute('textarea_1', 'pim_catalog_textarea', true, false, false);
 const localizableTextareaWysiwyg = buildAttribute('textarea_2', 'pim_catalog_textarea', true, true, false);
@@ -78,6 +82,27 @@ describe('Get eligible text attributes to initialize the PEF widgets', () => {
   });
 });
 
+describe('isValidTextAttributeElement', () => {
+  test('it validates the attribute when attribute group is enabled for DQI', () => {
+    const attribute1 = anAttribute('an_attribute', 1234, 'pim_catalog_text', 'group1');
+    const attribute2 = anAttribute('a_second_attribute', 4321, 'pim_catalog_text', 'group2');
+
+    const attributeElement1 = document.createElement('input');
+    attributeElement1.setAttribute('type', 'text');
+    attributeElement1.setAttribute('data-attribute', 'an_attribute');
+
+    const attributeElement2 = document.createElement('input');
+    attributeElement2.setAttribute('type', 'text');
+    attributeElement2.setAttribute('data-attribute', 'a_second_attribute');
+
+    const attributes: Attribute[] = [attribute1, attribute2];
+    const attributeGroupsStatus = {group1: true, group2: false};
+
+    expect(isValidTextAttributeElement(attributeElement1, attributes, attributeGroupsStatus)).toBeTruthy();
+    expect(isValidTextAttributeElement(attributeElement2, attributes, attributeGroupsStatus)).toBeFalsy();
+  });
+});
+
 function buildAttribute(
   code: string,
   type: string,
@@ -106,6 +131,9 @@ function buildFamilyWithAttributes(attributes: Attribute[]): Family {
     code: 'laptops',
     attribute_as_label: 'title',
     labels: {},
+    meta: {
+      id: 1234,
+    },
   };
 }
 

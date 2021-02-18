@@ -1,11 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import styled, {FlattenSimpleInterpolation} from 'styled-components';
+import {DeleteIcon, Key, Checkbox, Button, SectionTitle} from 'akeneo-design-system';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
-import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
 import {
   attributeEditionAdditionalPropertyUpdated,
   attributeEditionCancel,
@@ -24,7 +25,26 @@ import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {getAttributeView} from 'akeneoassetmanager/application/configuration/attribute';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {DeleteIcon, Key} from 'akeneo-design-system';
+import {ButtonContainer} from '../app/button';
+
+const DeleteButton = styled.span`
+  flex: 1;
+
+  :hover {
+    ${DeleteIcon.animatedMixin as FlattenSimpleInterpolation}
+  }
+`;
+
+const SpacedTitle = styled(SectionTitle)`
+  margin: 0 20px;
+`;
+
+const Fields = styled.div`
+  margin: 0 20px 20px;
+  display: flex;
+  gap: 14px;
+  flex-direction: column;
+`;
 
 interface OwnProps {
   rights: {
@@ -137,6 +157,7 @@ class Edit extends React.Component<EditProps> {
     if (Key.Enter === event.key) this.props.events.onSubmit();
   };
 
+  //TODO Use DSM Fields
   render(): JSX.Element | JSX.Element[] | null {
     const label = this.props.attribute.getLabel(this.props.context.locale);
     const canEditLabel = this.props.rights.attribute.edit && this.props.rights.locale.edit;
@@ -149,18 +170,17 @@ class Edit extends React.Component<EditProps> {
       !attributeidentifiersAreEqual(this.props.assetFamily.attributeAsMainMedia, this.props.attribute.getIdentifier());
 
     return (
-      <React.Fragment>
+      <>
         <div className={`AknQuickEdit ${!this.props.isActive ? 'AknQuickEdit--hidden' : ''}`} ref="quickEdit">
           <div className={`AknLoadingMask ${!this.props.isSaving ? 'AknLoadingMask--hidden' : ''}`} />
           <div className="AknSubsection">
-            <header
-              style={{margin: '0 20px 25px 20px'}}
-              className="AknSubsection-title AknSubsection-title--sticky AknSubsection-title--light"
-            >
-              {__('pim_asset_manager.attribute.edit.title', {code: this.props.attribute.getCode()})}
-            </header>
-            <div className="AknFormContainer AknFormContainer--expanded AknFormContainer--withSmallPadding">
-              <div className="AknFieldContainer" data-code="label">
+            <SpacedTitle>
+              <SectionTitle.Title>
+                {__('pim_asset_manager.attribute.edit.title', {code: this.props.attribute.getCode()})}
+              </SectionTitle.Title>
+            </SpacedTitle>
+            <Fields>
+              <div className="AknFieldContainer--packed" data-code="label">
                 <div className="AknFieldContainer-header AknFieldContainer-header--light">
                   <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.label">
                     {__('pim_asset_manager.attribute.edit.input.label')}
@@ -189,90 +209,48 @@ class Edit extends React.Component<EditProps> {
                 </div>
                 {getErrorsView(this.props.errors, 'labels')}
               </div>
-              <div className="AknFieldContainer AknFieldContainer--packed" data-code="valuePerChannel">
-                <div className="AknFieldContainer-header">
-                  <label
-                    className="AknFieldContainer-label"
-                    htmlFor="pim_asset_manager.attribute.edit.input.value_per_channel"
-                  >
-                    <Checkbox
-                      id="pim_asset_manager.attribute.edit.input.value_per_channel"
-                      value={this.props.attribute.valuePerChannel}
-                      readOnly
-                    />
-                    {__('pim_asset_manager.attribute.edit.input.value_per_channel')}
-                  </label>
-                </div>
+              <div data-code="valuePerChannel">
+                <Checkbox
+                  id="pim_asset_manager.attribute.edit.input.value_per_channel"
+                  checked={this.props.attribute.valuePerChannel}
+                  readOnly={true}
+                >
+                  {__('pim_asset_manager.attribute.edit.input.value_per_channel')}
+                </Checkbox>
                 {getErrorsView(this.props.errors, 'valuePerChannel')}
               </div>
-              <div className="AknFieldContainer AknFieldContainer--packed" data-code="valuePerLocale">
-                <div className="AknFieldContainer-header">
-                  <label
-                    className="AknFieldContainer-label"
-                    htmlFor="pim_asset_manager.attribute.edit.input.value_per_locale"
-                  >
-                    <Checkbox
-                      id="pim_asset_manager.attribute.edit.input.value_per_locale"
-                      value={this.props.attribute.valuePerLocale}
-                      readOnly
-                    />
-                    {__('pim_asset_manager.attribute.edit.input.value_per_locale')}
-                  </label>
-                </div>
+              <div data-code="valuePerLocale">
+                <Checkbox
+                  id="pim_asset_manager.attribute.edit.input.value_per_locale"
+                  checked={this.props.attribute.valuePerLocale}
+                  readOnly={true}
+                >
+                  {__('pim_asset_manager.attribute.edit.input.value_per_locale')}
+                </Checkbox>
                 {getErrorsView(this.props.errors, 'valuePerLocale')}
               </div>
-              <div className="AknFieldContainer AknFieldContainer--packed" data-code="isRequired">
-                <div className="AknFieldContainer-header">
-                  <label
-                    className="AknFieldContainer-label AknFieldContainer-label--inline"
-                    htmlFor="pim_asset_manager.attribute.edit.input.is_required"
-                  >
-                    <Checkbox
-                      id="pim_asset_manager.attribute.edit.input.is_required"
-                      value={this.props.attribute.isRequired}
-                      onChange={this.props.events.onIsRequiredUpdated}
-                      readOnly={!this.props.rights.attribute.edit}
-                    />
-                    <span
-                      onClick={() => {
-                        if (this.props.rights.attribute.edit) {
-                          this.props.events.onIsRequiredUpdated(!this.props.attribute.isRequired);
-                        }
-                      }}
-                    >
-                      {__('pim_asset_manager.attribute.edit.input.is_required')}
-                    </span>
-                  </label>
-                </div>
+              <div data-code="isRequired">
+                <Checkbox
+                  id="pim_asset_manager.attribute.edit.input.is_required"
+                  checked={this.props.attribute.isRequired}
+                  onChange={this.props.events.onIsRequiredUpdated}
+                  readOnly={!this.props.rights.attribute.edit}
+                >
+                  {__('pim_asset_manager.attribute.edit.input.is_required')}
+                </Checkbox>
                 {getErrorsView(this.props.errors, 'isRequired')}
               </div>
-
-              <div className="AknFieldContainer AknFieldContainer--packed" data-code="isReadOnly">
-                <div className="AknFieldContainer-header">
-                  <label
-                    className="AknFieldContainer-label AknFieldContainer-label--inline"
-                    htmlFor="pim_asset_manager.attribute.edit.input.is_read_only"
-                  >
-                    <Checkbox
-                      id="pim_asset_manager.attribute.edit.input.is_read_only"
-                      value={this.props.attribute.isReadOnly}
-                      onChange={this.props.events.onIsReadOnlyUpdated}
-                      readOnly={!this.props.rights.attribute.edit}
-                    />
-                    <span
-                      onClick={() => {
-                        if (this.props.rights.attribute.edit) {
-                          this.props.events.onIsReadOnlyUpdated(!this.props.attribute.isReadOnly);
-                        }
-                      }}
-                    >
-                      {__('pim_asset_manager.attribute.edit.input.is_read_only')}
-                    </span>
-                  </label>
-                </div>
+              <div data-code="isReadOnly">
+                <Checkbox
+                  id="pim_asset_manager.attribute.edit.input.is_read_only"
+                  checked={this.props.attribute.isReadOnly}
+                  onChange={this.props.events.onIsReadOnlyUpdated}
+                  readOnly={!this.props.rights.attribute.edit}
+                >
+                  {__('pim_asset_manager.attribute.edit.input.is_read_only')}
+                </Checkbox>
                 {getErrorsView(this.props.errors, 'isReadOnly')}
               </div>
-
               <ErrorBoundary errorMessage={__('pim_asset_manager.asset_family.attribute.error.render_edit')}>
                 {getAdditionalProperty(
                   this.props.attribute,
@@ -283,48 +261,31 @@ class Edit extends React.Component<EditProps> {
                   this.props.rights
                 )}
               </ErrorBoundary>
-            </div>
+            </Fields>
             <footer className="AknSubsection-footer AknSubsection-footer--sticky">
               {displayDeleteButton ? (
-                <span
+                <DeleteButton
                   className="AknButton AknButton--delete"
                   tabIndex={0}
                   onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
                     if (Key.Space === event.key) this.setState({isDeleteModalOpen: true});
                   }}
                   onClick={() => this.setState({isDeleteModalOpen: true})}
-                  style={{flex: 1}}
                 >
                   <DeleteIcon className="AknButton-animatedIcon" />
                   {__('pim_asset_manager.attribute.edit.delete')}
-                </span>
+                </DeleteButton>
               ) : (
                 <span style={{flex: 1}} />
               )}
-              <span
-                title={__('pim_asset_manager.attribute.edit.cancel')}
-                className="AknButton AknButton--small AknButton--grey AknButton--spaced"
-                tabIndex={0}
-                onClick={this.props.events.onCancel}
-                onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
-                  if (Key.Space === event.key) this.props.events.onCancel();
-                }}
-              >
-                {__('pim_asset_manager.attribute.edit.cancel')}
-              </span>
-              {this.props.rights.attribute.edit ? (
-                <span
-                  title={__('pim_asset_manager.attribute.edit.save')}
-                  className="AknButton AknButton--small AknButton--apply AknButton--spaced"
-                  tabIndex={0}
-                  onClick={this.props.events.onSubmit}
-                  onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
-                    if (Key.Space === event.key) this.props.events.onSubmit();
-                  }}
-                >
-                  {__('pim_asset_manager.attribute.edit.save')}
-                </span>
-              ) : null}
+              <ButtonContainer>
+                <Button onClick={this.props.events.onCancel} level="tertiary">
+                  {__('pim_asset_manager.attribute.edit.cancel')}
+                </Button>
+                {this.props.rights.attribute.edit && (
+                  <Button onClick={this.props.events.onSubmit}>{__('pim_asset_manager.attribute.edit.save')}</Button>
+                )}
+              </ButtonContainer>
             </footer>
           </div>
         </div>
@@ -336,7 +297,7 @@ class Edit extends React.Component<EditProps> {
             onCancel={() => this.setState({isDeleteModalOpen: false})}
           />
         )}
-      </React.Fragment>
+      </>
     );
   }
 }

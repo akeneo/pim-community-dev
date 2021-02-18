@@ -80,6 +80,7 @@ const EditAction = ({url, label}: {url: string; label: string}) => (
   </Action>
 );
 
+//TODO Use DSM Modal
 export const AssetPreview = ({
   assetCollection,
   initialAssetCode,
@@ -110,7 +111,7 @@ export const AssetPreview = ({
   const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily);
 
   return (
-    <Modal data-role="asset-preview-modal">
+    <Modal role="dialog">
       <Container>
         <CloseButton title={__('pim_asset_manager.close')} onClick={onClose} />
         <ArrowButton title={__('pim_asset_manager.asset_preview.previous')} onClick={setPreviousAsset}>

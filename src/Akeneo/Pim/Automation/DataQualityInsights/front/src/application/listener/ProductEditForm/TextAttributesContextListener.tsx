@@ -1,4 +1,4 @@
-import React, {useLayoutEffect} from 'react';
+import React, {useEffect, useLayoutEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {usePageContext, useProduct, useProductFamily} from '../../../infrastructure/hooks';
 import {createWidget, EditorElement, WidgetsCollection} from '../../helper';
@@ -6,6 +6,8 @@ import {Product} from '../../../domain';
 import {Attribute, Family} from '@akeneo-pim-community/data-quality-insights/src/domain';
 import {initializeWidgetsListAction} from '../../../infrastructure/reducer';
 import useFetchActiveLocales from '../../../infrastructure/hooks/EditorHighlight/useFetchActiveLocales';
+import {useAttributeGroupsStatusContext} from '@akeneo-pim-community/data-quality-insights/src/application';
+import {AttributeGroupsStatusCollection} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks';
 
 const uuidV5 = require('uuid/v5');
 
@@ -42,7 +44,11 @@ export const getTextAttributes = (family: Family, product: Product, activeLocale
   });
 };
 
-const isTextAttributeElement = (element: Element | null, attributes: Attribute[]) => {
+export const isValidTextAttributeElement = (
+  element: Element | null,
+  attributes: Attribute[],
+  attributeGroupsStatus: AttributeGroupsStatusCollection
+) => {
   if (!element || !element.hasAttribute('data-attribute')) {
     return false;
   }
@@ -53,8 +59,13 @@ const isTextAttributeElement = (element: Element | null, attributes: Attribute[]
   const isValidRichTextarea = (attribute: Attribute) =>
     attribute.type === 'pim_catalog_textarea' && attribute.wysiwyg_enabled;
   const isValidText = (attribute: Attribute) => attribute.type === 'pim_catalog_text';
+  const isAttributeGroupEnabled = (attribute: Attribute) => attributeGroupsStatus[attribute.group] || false;
 
-  return attribute && (isValidTextarea(attribute) || isValidRichTextarea(attribute) || isValidText(attribute));
+  return (
+    attribute &&
+    (isValidTextarea(attribute) || isValidRichTextarea(attribute) || isValidText(attribute)) &&
+    isAttributeGroupEnabled(attribute)
+  );
 };
 
 const getEditorElement = (element: Element) => {
@@ -83,6 +94,11 @@ const TextAttributesContextListener = () => {
   const product = useProduct();
   const dispatchAction = useDispatch();
   const activeLocales = useFetchActiveLocales();
+  const {status: attributeGroupsStatus, load} = useAttributeGroupsStatusContext();
+
+  useEffect(() => {
+    load();
+  }, []);
 
   useLayoutEffect(() => {
     const container = document.querySelector(PRODUCT_ATTRIBUTES_CONTAINER_SELECTOR);
@@ -90,10 +106,11 @@ const TextAttributesContextListener = () => {
 
     if (family && container && activeLocales.length > 0) {
       const textAttributes = getTextAttributes(family, product, activeLocales.length);
+
       observer = new MutationObserver(mutations => {
         let widgetList: WidgetsCollection = {};
         mutations.forEach(mutation => {
-          if (isTextAttributeElement(mutation.target as Element, textAttributes)) {
+          if (isValidTextAttributeElement(mutation.target as Element, textAttributes, attributeGroupsStatus)) {
             const element = mutation.target as Element;
             const attribute = element.getAttribute('data-attribute');
             const {editor, editorId} = getEditorElement(element);
@@ -127,7 +144,7 @@ const TextAttributesContextListener = () => {
         observer.disconnect();
       }
     };
-  }, [product, family, attributesTabIsLoading, activeLocales]);
+  }, [product, family, attributesTabIsLoading, activeLocales, attributeGroupsStatus]);
 
   return <></>;
 };

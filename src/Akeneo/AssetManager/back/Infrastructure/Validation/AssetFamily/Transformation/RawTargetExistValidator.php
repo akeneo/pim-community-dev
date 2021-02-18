@@ -78,7 +78,7 @@ class RawTargetExistValidator extends ConstraintValidator
         try {
             Target::create(
                 $attribute,
-                ChannelReference::createfromNormalized($target['channel']),
+                ChannelReference::createFromNormalized($target['channel']),
                 LocaleReference::createFromNormalized($target['locale'])
             );
         } catch (\Exception $e) {

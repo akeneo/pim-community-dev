@@ -104,6 +104,7 @@ services:
         class: '%pimee_workflow.normalizer.external_api.published_product.class%'
         arguments:
             - '@pim_api.normalizer.product.community'
+            - '@pimee_workflow.normalizer.standard.published_product.associations'
         tags:
             - { name: pim_external_api_serializer.normalizer, priority: 100 }
 

@@ -32,8 +32,8 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
     private const DEFAULT_REFERENCE_CODE = 'reference';
     private const DEFAULT_REFERENCE_LOCALIZABLE_CODE = 'reference_localizable';
 
-    /** @var Connection */
-    private $readConnection;
+    /** @var Connection|null */
+    private $readConnection = null;
 
     /** @var Connection */
     private $writeConnection;
@@ -44,14 +44,24 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
     /** @var CountAssets */
     private $countAssets;
 
+    private ConnectionFactory $connectionFactory;
+
     public function __construct(ConnectionFactory $connectionFactory, Connection $connection, CountAssets $countAssets)
     {
         parent::__construct($this::$defaultName);
 
         $this->writeConnection = $connection;
-        $this->readConnection = $connectionFactory->createConnection($connection->getParams());
-        $this->readConnection->getWrappedConnection()->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
+        $this->connectionFactory = $connectionFactory;
         $this->countAssets = $countAssets;
+    }
+
+    private function getReadConnection()
+    {
+        if (null === $this->readConnection) {
+            $this->readConnection = $this->connectionFactory->createConnection($this->writeConnection->getParams());
+            $this->readConnection->getWrappedConnection()->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
+        }
+        return $this->readConnection;
     }
 
     protected function configure()
@@ -156,7 +166,6 @@ SQL;
                     ]
                 );
             }
-
             $this->writeConnection->commit();
         } catch (\Exception $e) {
             $this->writeConnection->rollBack();
@@ -187,7 +196,7 @@ SELECT *
 FROM akeneo_asset_manager_asset
 WHERE asset_family_identifier = :asset_family_identifier
 SQL;
-        $stmt = $this->readConnection->executeQuery(
+        $stmt = $this->getReadConnection()->executeQuery(
             $allAssetsQuery,
             ['asset_family_identifier' => $assetFamilyCode],
             ['asset_family_identifier' => \PDO::PARAM_STR]
@@ -211,7 +220,7 @@ WHERE (code = :reference_code OR code = :reference_localizable_code)
     AND value_per_channel = 1
     AND asset_family_identifier = :asset_family_identifier
 SQL;
-        $this->readConnection->executeQuery(
+        $this->getReadConnection()->executeQuery(
             $sqlReferenceAttributeUpdate,
             [
                 'reference_code' => $referenceCode,
@@ -278,7 +287,7 @@ SQL;
             function ($row) {
                 return $row['identifier'];
             },
-            $this->readConnection->fetchAll(
+            $this->getReadConnection()->fetchAll(
                 $sqlReferenceAttributes,
                 [
                     'reference_code' => $referenceCode,

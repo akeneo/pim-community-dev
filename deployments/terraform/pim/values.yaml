@@ -99,7 +99,7 @@ pim:
       replicas: 1
     webhook-consumer-process:
       enabled: true
-      pimCommand: "messenger:consume webhook --time-limit=600 --memory-limit=384M"
+      pimCommand: "messenger:consume webhook --time-limit=3600 --memory-limit=384M"
       replicas: 1
   replicas: 2
   extraLabels: {}
@@ -148,7 +148,7 @@ pim:
     rule-run:
       enabled: true
       pimCommand: "akeneo:rule:run"
-      schedule: "0 5 * * *"
+      schedule: "0 5,11,17,23 * * *"
     versionning-refresh:
       enabled: true
       pimCommand: "pim:versioning:refresh"
@@ -220,7 +220,7 @@ mysql:
   image:
     mysql:
       repository: mysql
-      tag: "8.0.22"
+      tag: "8.0.23"
   common:
     class: ssd-retain
   mysql:

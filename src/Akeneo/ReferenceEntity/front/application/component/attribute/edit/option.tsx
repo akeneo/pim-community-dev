@@ -13,7 +13,6 @@ import {
   optionEditionLabelUpdated,
   optionEditionDelete,
 } from 'akeneoreferenceentity/domain/event/attribute/option';
-import Key from 'akeneoreferenceentity/tools/key';
 import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
 import hydrateAttribute from 'akeneoreferenceentity/application/hydrator/attribute';
 import {AttributeWithOptions} from 'akeneoreferenceentity/domain/model/attribute/type/option';
@@ -25,18 +24,16 @@ import {getErrorsView} from 'akeneoreferenceentity/application/component/app/val
 import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import Flag from 'akeneoreferenceentity/tools/component/flag';
 import {NormalizedReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import {CloseIcon, pimTheme} from 'akeneo-design-system';
+import {CloseIcon, pimTheme, Key, Button} from 'akeneo-design-system';
 
 const securityContext = require('pim/security-context');
 
 const OptionView = ({onOptionEditionStart}: {onOptionEditionStart: () => void}) => {
   return (
-    <div className="AknFieldContainer AknFieldContainer--packed">
-      <div className="AknFieldContainer-header">
-        <button onClick={onOptionEditionStart} className="AknButton" data-code="manageOption">
-          {__('pim_reference_entity.attribute.edit.input.manage_options.quick_edit.label')}
-        </button>
-      </div>
+    <div>
+      <Button onClick={onOptionEditionStart} level="tertiary" ghost={true} data-code="manageOption">
+        {__('pim_reference_entity.attribute.edit.input.manage_options.quick_edit.label')}
+      </Button>
     </div>
   );
 };

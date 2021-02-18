@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, {FlattenSimpleInterpolation} from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
@@ -18,46 +18,45 @@ import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
 import loadImage from 'akeneoassetmanager/tools/image-loader';
 import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-closing';
 import {emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
-import {CloseIcon, FullscreenIcon, ImportIllustration} from 'akeneo-design-system';
+import {CloseIcon, FullscreenIcon, getColor, ImportIllustration, AkeneoThemedProps} from 'akeneo-design-system';
 
-const FileUploadContainer = styled(Container).attrs(() => ({className: 'AknImage-uploader'}))`
+const FileUploadContainer = styled(Container)`
   position: relative;
   flex-direction: row;
+
+  :hover {
+    ${ImportIllustration.animatedMixin as FlattenSimpleInterpolation}
+  }
 `;
 
-const FileInput = styled.input.attrs(() => ({type: 'file'}))`
+const FileInput = styled.input`
   position: absolute;
   opacity: 0;
   width: 100%;
   height: 100%;
-  cursor: pointer;
-
-  :read-only,
-  :disabled {
-    cursor: not-allowed;
-    color: ${props => props.theme.color.grey100};
-  }
+  cursor: ${({disabled, readOnly}) => (disabled || readOnly ? 'not-allowed' : 'pointer')};
+  color: ${({disabled, readOnly}) => getColor('grey', disabled || readOnly ? 100 : 140)};
 `;
 
-const MediaFileLabel = styled.label<{readOnly: boolean}>`
+const MediaFileLabel = styled.label<{readOnly: boolean} & AkeneoThemedProps>`
   flex-grow: 1;
   font-size: ${props => props.theme.fontSize.big};
-  color: ${props => (props.readOnly ? props.theme.color.grey100 : props.theme.color.grey140)};
-  cursor: ${props => (props.readOnly ? 'not-allowed' : 'auto')};
+  color: ${({readOnly}) => getColor('grey', readOnly ? 100 : 140)};
+  cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'pointer')};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
 
 const MediaFileLabelPlaceholder = styled(MediaFileLabel)`
-  color: ${props => (props.readOnly ? props.theme.color.grey100 : props.theme.color.grey120)};
+  color: ${({readOnly}) => getColor('grey', readOnly ? 100 : 120)};
 `;
 
 const ThumbnailPlaceholder = styled.div`
   width: 40px;
   height: 40px;
   margin-right: 15px;
-  border: 1px solid ${props => props.theme.color.grey60};
+  border: 1px solid ${getColor('grey', 60)};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -124,6 +123,7 @@ const FileUploader = ({
     <FileUploadContainer>
       <FileInput
         id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
+        type="file"
         onDrop={handleDrop}
         onChange={handleChange}
         disabled={readOnly}

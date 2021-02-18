@@ -26,6 +26,7 @@ teamwork_assistant:
   create_project_modal:
     saved: Das Projekt wurde gespeichert. Sie werden benachrichtigt, sobald die Berechnung abgeschlossen ist.
     title: Projekt
+    label_already_used: Dieser Wert wird bereits für ein Projekt verwendet.
   widget:
     no_project: Sie haben aktuell kein Projekt
     no_project_create: erstellen Sie ein neues Projekt

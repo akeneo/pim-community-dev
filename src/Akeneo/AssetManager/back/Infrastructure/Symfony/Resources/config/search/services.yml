@@ -18,6 +18,15 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+  # Query builder
+    akeneo_assetmanager.infrastructure.search.elasticsearch.query_builder:
+      class: Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\AssetQueryBuilder
+      arguments:
+        - '@akeneo_assetmanager.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
+        - '@akeneo_assetmanager.infrastructure.persistence.query.get_value_key_for_attribute_channel_and_locale'
+        - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+        - '@akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family_and_codes'
+
     # Indexers
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer:
         class: Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\AssetIndexer
@@ -52,10 +61,7 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\FindIdentifiersForQuery
         arguments:
             - '@akeneo_assetmanager.client.asset'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.get_value_key_for_attribute_channel_and_locale'
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family_and_codes'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.query_builder'
 
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets:
         class: Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\CountAssets

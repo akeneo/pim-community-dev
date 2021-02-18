@@ -70,8 +70,6 @@ export const getListAssetMainMediaThumbnail = (
 };
 
 export const assetHasCompleteness = (asset: ListAsset) => asset.completeness.required > 0;
-export const getCompletenessPercentage = (completeness: NormalizedCompleteness) =>
-  Math.floor((completeness.complete / completeness.required) * 100);
 
 export const isComplete = (asset: ListAsset) => asset.completeness.complete === asset.completeness.required;
 

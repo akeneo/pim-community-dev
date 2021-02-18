@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -16,12 +18,14 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\PdfBuilderInterface;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductPdfRenderer as PimProductPdfRenderer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\FilterProductValuesHelper;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment;
 
 /**
@@ -31,11 +35,10 @@ use Twig\Environment;
  */
 class ProductPdfRenderer extends PimProductPdfRenderer
 {
-    private const IMAGE_MIME_TYPE_PREFIX = 'image/';
-
     protected FilterProductValuesHelper $filterHelper;
     protected ChannelRepositoryInterface $channelRepository;
     protected LocaleRepositoryInterface $localeRepository;
+    protected AuthorizationCheckerInterface $authorizationChecker;
 
     public function __construct(
         Environment $templating,
@@ -49,6 +52,7 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         LocaleRepositoryInterface $localeRepository,
         string $template,
         IdentifiableObjectRepositoryInterface $attributeOptionRepository,
+        AuthorizationCheckerInterface $authorizationChecker,
         ?string $customFont = null
     ) {
         parent::__construct(
@@ -66,6 +70,7 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         $this->filterHelper = $filterHelper;
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -87,16 +92,11 @@ class ProductPdfRenderer extends PimProductPdfRenderer
     }
 
     /**
-     * Checks a file has a mime type of type image.
-     *
-     * @param FileInfoInterface $file
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    private function isImage(FileInfoInterface $file): bool
+    protected function canRenderAttribute(?AttributeInterface $attribute): bool
     {
-        $fileMimeType = $file->getMimeType();
-
-        return 0 === strpos($fileMimeType, self::IMAGE_MIME_TYPE_PREFIX);
+        return parent::canRenderAttribute($attribute) &&
+            $this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute->getGroup());
     }
 }

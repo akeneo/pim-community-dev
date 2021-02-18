@@ -62,20 +62,6 @@ class AssetIndexer implements AssetIndexerInterface
     /**
      * {@inheritdoc}
      */
-    public function removeByAssetFamilyIdentifier(string $assetFamilyIdentifier)
-    {
-        $queryBody = [
-            'query' => [
-                'match' => ['asset_family_code' => $assetFamilyIdentifier],
-            ],
-        ];
-
-        $this->assetClient->deleteByQuery($queryBody);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function removeAssetByAssetFamilyIdentifierAndCode(
         string $assetFamilyIdentifier,
         string $assetCode
@@ -89,6 +75,27 @@ class AssetIndexer implements AssetIndexerInterface
                             ['term' => ['code' => $assetCode]],
                         ],
                 ],
+            ],
+        ];
+
+        $this->assetClient->deleteByQuery($queryBody);
+    }
+
+    public function removeByAssetFamilyIdentifierAndCodes(string $assetFamilyIdentifier, array $assetCodes)
+    {
+        $queryBody = [
+            'query' => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'must' =>
+                                [
+                                    ['term' => ['asset_family_code' => $assetFamilyIdentifier]],
+                                    ['terms' => ['code' => $assetCodes]],
+                                ],
+                        ],
+                    ]
+                ]
             ],
         ];
 

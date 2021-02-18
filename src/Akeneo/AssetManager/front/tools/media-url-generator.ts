@@ -27,6 +27,4 @@ export const getAssetEditUrl = (asset: ListAsset): string =>
     tab: 'enrich',
   })}`;
 
-export const getProductIndexUrl = () => `#${routing.generate('pim_enrich_product_index')}`;
-
 export const getProductEditUrl = (type: string, id: string) => `#${routing.generate(`pim_enrich_${type}_edit`, {id})}`;

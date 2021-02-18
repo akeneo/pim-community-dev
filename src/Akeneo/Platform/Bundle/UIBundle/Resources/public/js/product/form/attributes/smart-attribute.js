@@ -29,7 +29,7 @@ define([
             const matchingRuleRelations = ruleRelations.filter(
               ruleRelation => ruleRelation.attribute === field.attribute.code
             );
-            if (matchingRuleRelations.length && field.isEditable()) {
+            if (matchingRuleRelations.length) {
               const element = this.template({
                 __,
                 Routing,

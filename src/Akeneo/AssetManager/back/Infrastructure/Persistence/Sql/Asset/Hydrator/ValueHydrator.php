@@ -48,15 +48,16 @@ class ValueHydrator implements ValueHydratorInterface
 
         return Value::create(
             $attribute->getIdentifier(),
-            ChannelReference::createfromNormalized($row['channel']),
-            LocaleReference::createfromNormalized($row['locale']),
+            ChannelReference::createFromNormalized($row['channel']),
+            LocaleReference::createFromNormalized($row['locale']),
             $data
         );
     }
 
     private function checkRowKeys($row): void
     {
-        if (!array_key_exists('data', $row) ||
+        if (
+            !array_key_exists('data', $row) ||
             !array_key_exists('channel', $row) ||
             !array_key_exists('locale', $row)
         ) {

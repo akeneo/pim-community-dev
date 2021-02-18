@@ -22,7 +22,7 @@ type SpellcheckPopoverProps = {
 };
 
 const SpellcheckPopoverContent: FC<SpellcheckPopoverProps> = ({locale, content, mistake}) => {
-  const {apply, ignore, analyze} = useSpellcheckPopoverContext();
+  const {apply, ignore, refreshAnalysis} = useSpellcheckPopoverContext();
   const {activeElement, hide} = useHighlightPopoverContext();
 
   const handleApplySuggestion = useCallback(
@@ -38,13 +38,13 @@ const SpellcheckPopoverContent: FC<SpellcheckPopoverProps> = ({locale, content, 
     [apply, hide, mistake, content, activeElement]
   );
 
-  const handleIgnoreClick = useCallback(() => {
-    if (mistake && locale && content && ignore && analyze && hide) {
+  const handleIgnoreMistake = useCallback(() => {
+    if (mistake && locale && ignore && refreshAnalysis && hide) {
       ignore(mistake.text, locale);
-      analyze(content, locale);
+      refreshAnalysis();
       hide();
     }
-  }, [ignore, analyze, hide, mistake, locale, content]);
+  }, [ignore, refreshAnalysis, hide, mistake, locale]);
 
   return (
     <>
@@ -68,7 +68,7 @@ const SpellcheckPopoverContent: FC<SpellcheckPopoverProps> = ({locale, content, 
             />
           </div>
           <Footer>
-            <DismissButton handleClick={handleIgnoreClick}>
+            <DismissButton handleClick={handleIgnoreMistake}>
               {translate(
                 'akeneo_data_quality_insights.product_edit_form.spellcheck_popover.ignore_all_suggestions_button_label'
               )}

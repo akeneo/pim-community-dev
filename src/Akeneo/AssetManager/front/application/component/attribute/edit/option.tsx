@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {Button, Key, CloseIcon} from 'akeneo-design-system';
 import __ from 'akeneoassetmanager/tools/translator';
 import {getLabel} from 'pimui/js/i18n';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
@@ -13,7 +14,6 @@ import {
   optionEditionStart,
   optionEditionSubmission,
 } from 'akeneoassetmanager/domain/event/attribute/option';
-import {Key} from 'akeneo-design-system';
 import {Option, createEmptyOption} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import hydrateAttribute from 'akeneoassetmanager/application/hydrator/attribute';
 import {AttributeWithOptions} from 'akeneoassetmanager/domain/model/attribute/type/option';
@@ -25,21 +25,16 @@ import {getErrorsView} from 'akeneoassetmanager/application/component/app/valida
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import AssetFamilyCode from 'akeneoassetmanager/domain/model/asset-family/code';
-import {CloseIcon} from 'akeneo-design-system';
 
 const securityContext = require('pim/security-context');
 
-const OptionView = ({onOptionEditionStart}: {onOptionEditionStart: () => void}) => {
-  return (
-    <div className="AknFieldContainer AknFieldContainer--packed">
-      <div className="AknFieldContainer-header">
-        <button onClick={onOptionEditionStart} className="AknButton" data-code="manageOption">
-          {__('pim_asset_manager.attribute.edit.input.manage_options.quick_edit.label')}
-        </button>
-      </div>
-    </div>
-  );
-};
+const OptionView = ({onOptionEditionStart}: {onOptionEditionStart: () => void}) => (
+  <div>
+    <Button onClick={onOptionEditionStart} level="tertiary" ghost={true} data-code="manageOption">
+      {__('pim_asset_manager.attribute.edit.input.manage_options.quick_edit.label')}
+    </Button>
+  </div>
+);
 
 export const view = connect(
   () => ({}),
@@ -154,7 +149,7 @@ const optionRow = ({
       {!isLastRow || rights.attribute.edit ? (
         <tr data-code={code} className="AknOptionEditor-row">
           <td>
-            <div className="AknFieldContainer">
+            <div>
               <div className="AknFieldContainer-inputContainer">
                 <input
                   autoComplete="off"
@@ -191,7 +186,7 @@ const optionRow = ({
             </div>
           </td>
           <td>
-            <div className="AknFieldContainer">
+            <div>
               <div className="AknFieldContainer-inputContainer">
                 <input
                   ref={codeInputReference}
@@ -248,7 +243,7 @@ const helperRow = ({locale, currentOption}: {locale: Locale; currentOption: Opti
 
   return (
     <React.Fragment key={locale.code}>
-      <div className="AknFieldContainer">
+      <div>
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label">{locale.label}</label>
         </div>
@@ -353,7 +348,7 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
     this.updateRefs(options);
 
     return (
-      <React.Fragment>
+      <>
         {this.props.isActive ? (
           <div className="modal in manageOptionModal" aria-hidden="false" style={{zIndex: 1041}}>
             <div>
@@ -447,12 +442,9 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
             </div>
             <div className="AknButtonList AknButtonList--right modal-footer">
               {this.props.rights.attribute.edit ? (
-                <button
-                  className="AknButton AknButton--apply AknFullPage-ok ok confirm"
-                  onClick={this.props.events.onOptionEditionSubmission}
-                >
+                <Button className="AknFullPage-ok ok confirm" onClick={this.props.events.onOptionEditionSubmission}>
                   {__('pim_asset_manager.attribute.create.confirm')}
-                </button>
+                </Button>
               ) : null}
               <div
                 title={__('pim_asset_manager.attribute.create.cancel')}
@@ -466,7 +458,7 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
             </div>
           </div>
         ) : null}
-      </React.Fragment>
+      </>
     );
   }
 }

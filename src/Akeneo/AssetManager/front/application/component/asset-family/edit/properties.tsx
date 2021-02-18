@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
+import {Button} from 'akeneo-design-system';
 import __ from 'akeneoassetmanager/tools/translator';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import Form from 'akeneoassetmanager/application/component/asset-family/edit/form';
@@ -17,7 +18,6 @@ import DeleteModal from 'akeneoassetmanager/application/component/app/delete-mod
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {Button} from 'akeneoassetmanager/application/component/app/button';
 
 const securityContext = require('pim/security-context');
 
@@ -56,6 +56,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
     isDeleteModalOpen: false,
   };
 
+  //TODO Use DSM Dropdown
   private getSecondaryActions = () => (
     <div className="AknSecondaryActions AknDropdown AknButtonList-item">
       <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
@@ -86,7 +87,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
           image={assetFamily.image}
           primaryAction={(defaultFocus: React.RefObject<any>) =>
             rights.assetFamily.edit ? (
-              <Button color="green" onClick={events.onSaveEditForm} ref={defaultFocus}>
+              <Button onClick={events.onSaveEditForm} ref={defaultFocus}>
                 {__('pim_asset_manager.asset_family.button.save')}
               </Button>
             ) : null

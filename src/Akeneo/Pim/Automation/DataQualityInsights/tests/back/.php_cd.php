@@ -70,6 +70,9 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
 
+            //Subscribers for locale updates
+            'Akeneo\Channel\Component\Model\LocaleInterface',
+
             //Connector / (Tasklets, job parameters)
             'Akeneo\Tool\Component\Batch\Job\JobInterface',
             'Akeneo\Tool\Component\Batch\Job\JobParameters',
@@ -129,6 +132,9 @@ $rules = [
             //Necessary for the Dashboard
             'Akeneo\Tool\Component\Classification\Model\CategoryInterface',
             'Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface',
+
+            //Necessary for the dictionary
+            'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
 
             //External dependencies
             'Doctrine\DBAL',

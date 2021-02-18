@@ -1,11 +1,9 @@
 import styled from 'styled-components';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import {AkeneoThemedProps, getColor, getFontSize} from 'akeneo-design-system';
 
-type LabelProps = {color?: string};
-
-export const Label = styled.span<LabelProps>`
-  color: ${(props: ThemedProps<LabelProps>) => (undefined === props.color ? props.theme.color.grey120 : props.color)};
-  font-size: ${(props: ThemedProps<LabelProps>) => props.theme.fontSize.default};
+const Label = styled.span<{readOnly?: boolean} & AkeneoThemedProps>`
+  color: ${({readOnly}) => getColor('grey', readOnly ? 100 : 120)};
+  font-size: ${getFontSize('default')};
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -14,3 +12,5 @@ export const Label = styled.span<LabelProps>`
     text-transform: capitalize;
   }
 `;
+
+export {Label};

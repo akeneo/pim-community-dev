@@ -101,7 +101,7 @@ class GetConnectorAssetsAction
             $searchAfter = $request->get('search_after', null);
             $searchAfterCode = null !== $searchAfter ? AssetCode::fromString($searchAfter) : null;
             $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
-            $channelReferenceValuesFilter = ChannelReference::createfromNormalized($request->get('channel', null));
+            $channelReferenceValuesFilter = ChannelReference::createFromNormalized($request->get('channel', null));
             $localeIdentifiersValuesFilter = $this->getLocaleIdentifiersValuesFilterFromRequest($request);
             $assetQuery = AssetQuery::createPaginatedQueryUsingSearchAfter(
                 $assetFamilyIdentifier,

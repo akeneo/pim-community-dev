@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Bundle\CatalogVolumeMonitoring;
 
-use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAssetsPerAssetFamily;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 
@@ -17,14 +17,11 @@ class AverageMaxNumberOfAssetsPerAssetFamily implements AverageMaxQuery
 {
     private const VOLUME_NAME = 'average_max_assets_per_asset_family';
 
-    /** @var SqlAverageMaxNumberOfAssetsPerAssetFamily */
-    private $averageMaxNumberOfAssetsPerAssetFamily;
-
-    /** @var int */
-    private $limit;
+    private ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily $averageMaxNumberOfAssetsPerAssetFamily;
+    private int $limit;
 
     public function __construct(
-        SqlAverageMaxNumberOfAssetsPerAssetFamily $averageMaxNumberOfAssetsPerAssetFamily,
+        ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily $averageMaxNumberOfAssetsPerAssetFamily,
         int $limit
     ) {
         $this->averageMaxNumberOfAssetsPerAssetFamily = $averageMaxNumberOfAssetsPerAssetFamily;

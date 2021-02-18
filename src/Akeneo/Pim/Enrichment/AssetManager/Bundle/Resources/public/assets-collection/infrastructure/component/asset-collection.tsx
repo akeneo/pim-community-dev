@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import {ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {Pill} from 'akeneoassetmanager/application/component/app/pill';
-import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Label} from 'akeneoassetmanager/application/component/app/label';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
@@ -25,7 +24,7 @@ import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
-import {AssetsIllustration, Helper, Key, useShortcut} from 'akeneo-design-system';
+import {AkeneoThemedProps, AssetsIllustration, getColor, Helper, Key, useShortcut} from 'akeneo-design-system';
 
 const AssetCard = styled.div`
   display: flex;
@@ -47,15 +46,15 @@ const BaselinePill = styled(Pill)`
   align-self: unset;
 `;
 
-const EmptyAssetCollection = styled.div<{readonly: boolean}>`
+const EmptyAssetCollection = styled.div<{readonly: boolean} & AkeneoThemedProps>`
   height: 140px;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   padding: 20px;
-  border: 1px solid ${(props: ThemedProps<{readonly: boolean}>) => props.theme.color.grey80};
-  opacity: ${(props: ThemedProps<{readonly: boolean}>) => (props.readonly ? 0.4 : 1)};
+  border: 1px solid ${getColor('grey', 80)};
+  opacity: ${({readonly}) => (readonly ? 0.4 : 1)};
   margin: 10px 0;
 `;
 
@@ -156,9 +155,7 @@ export const AssetCollection = ({
                 }}
               />
               <AssetTitle>
-                <Label color={readonly ? akeneoTheme.color.grey100 : undefined}>
-                  {getAssetLabel(asset, context.locale)}
-                </Label>
+                <Label readOnly={readonly}>{getAssetLabel(asset, context.locale)}</Label>
                 {!isComplete(asset) ? <BaselinePill /> : null}
               </AssetTitle>
             </AssetCard>

@@ -37,6 +37,21 @@ class IgnoreWordForAttributeOptionSpec extends ObjectBehavior
         $this->execute($word, $locale, $attributeOption);
     }
 
+    public function it_ignores_word_containg_single_quote_and_dispatches_event(
+        $ignoreWord,
+        $eventDispatcher
+    ) {
+        $word = new DictionaryWord("ziggy's");
+        $locale = new LocaleCode('en_US');
+        $attribute = new AttributeCode('attribute_code');
+        $attributeOption = new AttributeOptionCode($attribute, 'option_code');
+
+        $ignoreWord->execute($word, $locale)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(AttributeOptionWordIgnoredEvent::class))->shouldBeCalled();
+
+        $this->execute($word, $locale, $attributeOption);
+    }
+
     public function it_ignores_word_and_does_not_dispatch_event_when_attribute_option_is_null(
         $ignoreWord,
         $eventDispatcher

@@ -1,16 +1,12 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import '@testing-library/jest-dom/extend-expect';
-import {fireEvent, act} from '@testing-library/react';
-import {ThemeProvider} from 'styled-components';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import React from 'react';
+import {fireEvent, act, screen, within} from '@testing-library/react';
 import {AssetPreview} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview';
 import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
-import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
+import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
 jest.mock('akeneoassetmanager/tools/security-context', () => ({isGranted: (permission: string) => true}));
 
@@ -242,287 +238,147 @@ const assetFamily = {
   transformations: '[]',
 };
 
-test('It can display the previous asset in the collection', async () => {
-  const container = document.createElement('div');
-  document.body.appendChild(container);
-  const initialAssetCode = 'iphone8_pack';
-  const dataProvider = {
-    assetFamilyFetcher: {
-      fetch: () => {
-        return new Promise(resolve => {
-          resolve({
-            assetFamily: {...assetFamily, attributeAsMainMedia: 'media_link_image_attribute_identifier'},
-            permission: {assetFamilyIdentifier: assetFamily.identifier, edit: true},
-          });
-        });
-      },
-    },
-  };
-
-  await act(async () => {
-    ReactDOM.render(
-      <ThemeProvider theme={akeneoTheme}>
-        <Provider store={createStore(() => ({reloadPreview: false}))}>
-          <AssetPreview
-            context={context}
-            assetCollection={simpleAssetCollection}
-            initialAssetCode={initialAssetCode}
-            productAttribute={mediaLinkImageAttribute}
-            dataProvider={dataProvider}
-            onClose={() => {}}
-          />
-        </Provider>
-      </ThemeProvider>,
-      container
-    );
-  });
-
-  fireEvent.click(container.querySelector(`[title="pim_asset_manager.asset_preview.previous"]`));
-
-  expect(container.querySelector('[data-role="media-data-preview"]')).toHaveAttribute('alt', 'iphone7_pack label');
-  document.body.removeChild(container);
+const dataProvider = (attributeAsMainMedia: string = 'media_link_image_attribute_identifier') => ({
+  assetFamilyFetcher: {
+    fetch: () =>
+      Promise.resolve({
+        assetFamily: {...assetFamily, attributeAsMainMedia},
+        permission: {assetFamilyIdentifier: assetFamily.identifier, edit: true},
+      }),
+  },
 });
 
-test('It can unbind keyboard listeners', async () => {
+const store = createStore(() => ({reloadPreview: false}));
+
+test('It can display the previous asset in the collection', async () => {
   const initialAssetCode = 'iphone8_pack';
-  const dataProvider = {
-    assetFamilyFetcher: {
-      fetch: () => ({
-        then: () => {
-          return {};
-        },
-      }),
-    },
-  };
+
   await act(async () => {
-    const wrapper = mount(
-      <AssetPreview
-        context={context}
-        assetCollection={simpleAssetCollection}
-        initialAssetCode={initialAssetCode}
-        productAttribute={mediaLinkImageAttribute}
-        dataProvider={dataProvider}
-        onClose={() => {}}
-      />
+    renderWithProviders(
+      <Provider store={store}>
+        <AssetPreview
+          context={context}
+          assetCollection={simpleAssetCollection}
+          initialAssetCode={initialAssetCode}
+          productAttribute={mediaLinkImageAttribute}
+          dataProvider={dataProvider()}
+          onClose={jest.fn()}
+        />
+      </Provider>
     );
-    wrapper.unmount();
   });
+
+  fireEvent.click(screen.getByTitle('pim_asset_manager.asset_preview.previous'));
+
+  expect(screen.getAllByRole('img')[0]).toHaveAttribute('alt', 'iphone7_pack label');
 });
 
 test('It can display the next asset in the collection', async () => {
-  const container = document.createElement('div');
-  document.body.appendChild(container);
-
   const initialAssetCode = 'iphone8_pack';
-  const dataProvider = {
-    assetFamilyFetcher: {
-      fetch: () => {
-        return new Promise(resolve => {
-          resolve({
-            assetFamily: {...assetFamily, attributeAsMainMedia: 'media_link_image_attribute_identifier'},
-            permission: {assetFamilyIdentifier: assetFamily.identifier, edit: true},
-          });
-        });
-      },
-    },
-  };
 
   await act(async () => {
-    ReactDOM.render(
-      <ThemeProvider theme={akeneoTheme}>
-        <Provider store={createStore(() => ({reloadPreview: false}))}>
-          <AssetPreview
-            context={context}
-            assetCollection={simpleAssetCollection}
-            initialAssetCode={initialAssetCode}
-            productAttribute={mediaLinkImageAttribute}
-            dataProvider={dataProvider}
-            onClose={() => {}}
-          />
-        </Provider>
-      </ThemeProvider>,
-      container
+    renderWithProviders(
+      <Provider store={store}>
+        <AssetPreview
+          context={context}
+          assetCollection={simpleAssetCollection}
+          initialAssetCode={initialAssetCode}
+          productAttribute={mediaLinkImageAttribute}
+          dataProvider={dataProvider()}
+          onClose={jest.fn()}
+        />
+      </Provider>
     );
   });
 
-  fireEvent.click(container.querySelector(`[title="pim_asset_manager.asset_preview.next"]`));
+  fireEvent.click(screen.getByTitle('pim_asset_manager.asset_preview.next'));
 
-  expect(container.querySelector('[data-role="media-data-preview"]')).toHaveAttribute('alt', 'iphone7_pack label');
-  document.body.removeChild(container);
+  expect(screen.getAllByRole('img')[0]).toHaveAttribute('alt', 'iphone7_pack label');
 });
 
 test('It can select an asset from the carousel', async () => {
-  const container = document.createElement('div');
-  document.body.appendChild(container);
-
   const initialAssetCode = 'iphone8_pack';
-  const dataProvider = {
-    assetFamilyFetcher: {
-      fetch: () => {
-        return new Promise(resolve => {
-          resolve({
-            assetFamily: {...assetFamily, attributeAsMainMedia: 'media_link_image_attribute_identifier'},
-            permission: {assetFamilyIdentifier: assetFamily.identifier, edit: true},
-          });
-        });
-      },
-    },
-  };
 
   await act(async () => {
-    ReactDOM.render(
-      <ThemeProvider theme={akeneoTheme}>
-        <Provider store={createStore(() => ({reloadPreview: false}))}>
-          <AssetPreview
-            context={context}
-            assetCollection={simpleAssetCollection}
-            initialAssetCode={initialAssetCode}
-            productAttribute={mediaLinkImageAttribute}
-            dataProvider={dataProvider}
-            onClose={() => {}}
-          />
-        </Provider>
-      </ThemeProvider>,
-      container
+    renderWithProviders(
+      <Provider store={store}>
+        <AssetPreview
+          context={context}
+          assetCollection={simpleAssetCollection}
+          initialAssetCode={initialAssetCode}
+          productAttribute={mediaLinkImageAttribute}
+          dataProvider={dataProvider()}
+          onClose={jest.fn()}
+        />
+      </Provider>
     );
   });
 
   await act(async () => {
-    fireEvent.click(container.querySelector(`[data-role="carousel-thumbnail-iphone7_pack"]`));
+    fireEvent.click(within(screen.getByRole('listbox')).getByAltText('iphone7_pack label'));
   });
 
-  expect(container.querySelector('[data-role="media-data-preview"]')).toHaveAttribute('alt', 'iphone7_pack label');
-
-  document.body.removeChild(container);
+  expect(screen.getAllByRole('img')[0]).toHaveAttribute('alt', 'iphone7_pack label');
 });
 
 test('It should not display the modal when the provided asset code is null', async () => {
-  const container = document.createElement('div');
-  document.body.appendChild(container);
   const initialAssetCode = null;
-  const dataProvider = {
-    assetFamilyFetcher: {
-      fetch: () => {
-        return new Promise(resolve => {
-          resolve({
-            assetFamily: {...assetFamily, attributeAsMainMedia: 'media_link_youtube_attribute_identifier'},
-            permission: {assetFamilyIdentifier: assetFamily.identifier, edit: true},
-          });
-        });
-      },
-    },
-  };
 
   await act(async () => {
-    ReactDOM.render(
-      <ThemeProvider theme={akeneoTheme}>
-        <AssetPreview
-          context={context}
-          assetCollection={assetCollection}
-          initialAssetCode={initialAssetCode}
-          productAttribute={mediaLinkImageAttribute}
-          dataProvider={dataProvider}
-          onClose={() => {}}
-        />
-      </ThemeProvider>,
-      container
+    renderWithProviders(
+      <AssetPreview
+        context={context}
+        assetCollection={assetCollection}
+        initialAssetCode={initialAssetCode}
+        productAttribute={mediaLinkImageAttribute}
+        dataProvider={dataProvider('media_link_youtube_attribute_identifier')}
+        onClose={jest.fn()}
+      />
     );
   });
 
-  expect(container.querySelector('[data-role="asset-preview-modal"]')).toBeNull();
-  document.body.removeChild(container);
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 });
 
 test('It should not display the modal when the provided asset code does not exist', async () => {
-  const container = document.createElement('div');
-  document.body.appendChild(container);
   const initialAssetCode = '404_not_found';
-  const dataProvider = {
-    assetFamilyFetcher: {
-      fetch: () => {
-        return new Promise(resolve => {
-          resolve({
-            assetFamily: {...assetFamily, attributeAsMainMedia: 'media_link_youtube_attribute_identifier'},
-            permission: {assetFamilyIdentifier: assetFamily.identifier, edit: true},
-          });
-        });
-      },
-    },
-  };
 
   await act(async () => {
-    ReactDOM.render(
-      <ThemeProvider theme={akeneoTheme}>
-        <AssetPreview
-          context={context}
-          assetCollection={assetCollection}
-          initialAssetCode={initialAssetCode}
-          productAttribute={mediaLinkImageAttribute}
-          dataProvider={dataProvider}
-          onClose={() => {}}
-        />
-      </ThemeProvider>,
-      container
+    renderWithProviders(
+      <AssetPreview
+        context={context}
+        assetCollection={assetCollection}
+        initialAssetCode={initialAssetCode}
+        productAttribute={mediaLinkImageAttribute}
+        dataProvider={dataProvider('media_link_youtube_attribute_identifier')}
+        onClose={jest.fn()}
+      />
     );
   });
 
-  expect(container.querySelector('[data-role="asset-preview-modal"]')).toBeNull();
-  document.body.removeChild(container);
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 });
 
 test('It should display the YouTube player when the product attribute is a YouTube media link', async () => {
-  const container = document.createElement('div');
-  document.body.appendChild(container);
   const initialAssetCode = 'iphone14_pack';
-  const dataProvider = {
-    assetFamilyFetcher: {
-      fetch: () => {
-        return new Promise(resolve => {
-          resolve({
-            assetFamily: {...assetFamily, attributeAsMainMedia: 'media_link_youtube_attribute_identifier'},
-            permission: {assetFamilyIdentifier: assetFamily.identifier, edit: true},
-          });
-        });
-      },
-    },
-  };
 
   await act(async () => {
-    ReactDOM.render(
-      <ThemeProvider theme={akeneoTheme}>
-        <AssetPreview
-          context={context}
-          assetCollection={assetCollection}
-          initialAssetCode={initialAssetCode}
-          productAttribute={mediaLinkYouTubeAttribute}
-          dataProvider={dataProvider}
-          onClose={() => {}}
-        />
-      </ThemeProvider>,
-      container
+    renderWithProviders(
+      <AssetPreview
+        context={context}
+        assetCollection={assetCollection}
+        initialAssetCode={initialAssetCode}
+        productAttribute={mediaLinkYouTubeAttribute}
+        dataProvider={dataProvider('media_link_youtube_attribute_identifier')}
+        onClose={jest.fn()}
+      />
     );
   });
 
-  expect(container.querySelector('[data-role="youtube-preview"]')).toBeInTheDocument();
-  document.body.removeChild(container);
+  expect(screen.getByText('iphone14_pack label')).toBeInTheDocument();
 });
 
 test('I should get the YouTube link when I click on the Copy URL button on the preview of an asset with a YouTube media link', async () => {
-  const container = document.createElement('div');
-  document.body.appendChild(container);
-  const dataProvider = {
-    assetFamilyFetcher: {
-      fetch: () => {
-        return new Promise(resolve => {
-          resolve({
-            assetFamily: {...assetFamily, attributeAsMainMedia: 'media_link_youtube_attribute_identifier'},
-            permission: {assetFamilyIdentifier: assetFamily.identifier, edit: true},
-          });
-        });
-      },
-    },
-  };
-
   class MockClipboard {
     text: string = '';
     writeText(text: string) {
@@ -539,22 +395,19 @@ test('I should get the YouTube link when I click on the Copy URL button on the p
   const initialAssetCode = 'iphone14_pack';
 
   await act(async () => {
-    ReactDOM.render(
-      <ThemeProvider theme={akeneoTheme}>
-        <AssetPreview
-          context={context}
-          assetCollection={assetCollection}
-          initialAssetCode={initialAssetCode}
-          productAttribute={mediaLinkYouTubeAttribute}
-          dataProvider={dataProvider}
-          onClose={() => {}}
-        />
-      </ThemeProvider>,
-      container
+    renderWithProviders(
+      <AssetPreview
+        context={context}
+        assetCollection={assetCollection}
+        initialAssetCode={initialAssetCode}
+        productAttribute={mediaLinkYouTubeAttribute}
+        dataProvider={dataProvider('media_link_youtube_attribute_identifier')}
+        onClose={jest.fn()}
+      />
     );
   });
-  fireEvent.click(container.querySelector('a[title="pim_asset_manager.asset_preview.copy_url"]'));
+
+  fireEvent.click(screen.getByTitle('pim_asset_manager.asset_preview.copy_url'));
 
   expect(mockClipboard.readText()).toEqual('https://youtube.com/watch?v=nice_file_path');
-  document.body.removeChild(container);
 });

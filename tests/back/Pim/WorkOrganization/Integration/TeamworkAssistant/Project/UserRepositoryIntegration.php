@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\Project;
 
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\ProjectRepository;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\UserRepository;
 use Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer;

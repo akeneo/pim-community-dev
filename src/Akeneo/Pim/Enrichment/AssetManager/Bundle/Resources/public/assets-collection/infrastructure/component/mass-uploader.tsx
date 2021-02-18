@@ -1,26 +1,21 @@
-import * as React from 'react';
-import styled from 'styled-components';
-import __ from 'akeneoassetmanager/tools/translator';
+import React from 'react';
+import {Button, useBooleanState} from 'akeneo-design-system';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {useChannels, ChannelFetcher} from 'akeneoassetmanager/application/hooks/channel';
-import {Button} from 'akeneoassetmanager/application/component/app/button';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
-
-const UploadButton = styled(Button)`
-  margin-right: 10px;
-`;
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 type DataProvider = {
   assetFamilyFetcher: AssetFamilyFetcher;
   channelFetcher: ChannelFetcher;
 };
 
-export const MassUploader = React.memo(
+const MassUploader = React.memo(
   ({
     assetFamilyIdentifier,
     context,
@@ -32,10 +27,11 @@ export const MassUploader = React.memo(
     onAssetCreated: (assetCodes: AssetCode[]) => void;
     dataProvider: DataProvider;
   }) => {
-    const [isOpen, setOpen] = React.useState(false);
+    const [isOpen, open, close] = useBooleanState();
     const {assetFamily, rights} = useAssetFamily(dataProvider, assetFamilyIdentifier);
     const channels = useChannels(dataProvider.channelFetcher);
     const locales = getLocales(channels, context.channel);
+    const translate = useTranslate();
 
     if (!rights.asset.upload) {
       return null;
@@ -43,28 +39,29 @@ export const MassUploader = React.memo(
 
     return (
       <>
-        <UploadButton
-          title={__('pim_asset_manager.asset_collection.upload_asset')}
-          buttonSize="medium"
-          color="outline"
-          isDisabled={!rights.asset.upload}
-          onClick={() => setOpen(true)}
+        <Button
+          title={translate('pim_asset_manager.asset_collection.upload_asset')}
+          size="small"
+          level="tertiary"
+          ghost={true}
+          disabled={!rights.asset.upload}
+          onClick={open}
         >
-          {__('pim_asset_manager.asset_collection.upload_asset')}
-        </UploadButton>
+          {translate('pim_asset_manager.asset_collection.upload_asset')}
+        </Button>
         {isOpen && null !== assetFamily && (
           <UploadModal
-            confirmLabel={__('pim_asset_manager.asset.upload.add_to_product')}
+            confirmLabel={translate('pim_asset_manager.asset.upload.add_to_product')}
             assetFamily={assetFamily}
             locale={context.locale}
             locales={locales}
             channels={channels}
-            onCancel={() => setOpen(false)}
+            onCancel={close}
             onAssetCreated={
               /* istanbul ignore next */
               (assetCodes: AssetCode[]) => {
                 onAssetCreated(assetCodes);
-                setOpen(false);
+                close();
               }
             }
           />
@@ -73,3 +70,5 @@ export const MassUploader = React.memo(
     );
   }
 );
+
+export {MassUploader};

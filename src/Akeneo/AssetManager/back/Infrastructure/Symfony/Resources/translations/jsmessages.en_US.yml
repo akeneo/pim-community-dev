@@ -10,6 +10,7 @@ pim_asset_manager:
         message: Sorry, we do not display this embed item but it will be correctly saved
   result_counter: '{0} No result|{1} {{ count }} result|]1,Inf] {{ count }} results'
   asset_counter: '{0} No asset|{1} {{ count }} asset|]1,Inf] {{ count }} assets'
+  asset_selected: '{0} {{ assetCount }} asset selected|{1} {{ assetCount }} asset selected|]1,Inf] {{ assetCount }} assets selected'
   asset_collection:
     add_asset: 'Add asset'
     upload_asset: 'Upload asset'
@@ -45,7 +46,6 @@ pim_asset_manager:
     filter:
       title: Asset filters
     basket:
-      title: '{{ assetCount }} asset selected|{{ assetCount }} assets selected'
       empty_title: Your basket is empty
       remove_one_asset: Remove asset {{ assetName }} from asset selection
       remove_all_assets: Remove all
@@ -340,6 +340,12 @@ pim_asset_manager:
       title: Asset
     delete_all:
       confirm: Are you sure you want to delete all "{{ entityIdentifier }}" assets? If they are linked to products, the links to the products will be removed.
+    mass_delete:
+      confirm: '[0,1]Are you sure you want to delete the {{ assetCount }} selected asset?|]1,Inf]Are you sure you want to delete the {{ assetCount }} selected assets?'
+      extra_information: If they are linked to products, the links to the products will be removed.
+      confirm_label: Please type "{{ assetFamilyIdentifier }}"
+      title: Assets
+
     grid:
       search: Search on label, code and text attributes
       filter:
@@ -384,6 +390,9 @@ pim_asset_manager:
       delete_all:
         success: All "{{ entityIdentifier }}" assets successfully deleted.
         fail: An error occurred during the deletion of all this asset family's assets
+      mass_delete:
+        success: The bulk action "Mass delete" has been launched. You will be notified when it is completed.
+        fail: "Error occured during mass delete job launching: {{ error }}"
       execute_naming_convention:
         success: Naming convention successfully executed
         fail: An error occurred during the execution of the naming convention
@@ -560,11 +569,15 @@ pim_datagrid:
     cells:
         type:
             asset_manager_execute_naming_convention: Execute Asset Family naming convention
+            asset_manager_mass_delete_assets: Execute Asset mass delete
 
 batch_jobs:
     default_steps:
         execute_naming_convention: Execute Asset Family naming convention
+        mass_delete_assets: Execute Asset mass delete
 
 job_execution:
     summary:
         assets: Assets
+
+pim_notification.types.asset_manager_mass_delete_assets: Mass delete assets

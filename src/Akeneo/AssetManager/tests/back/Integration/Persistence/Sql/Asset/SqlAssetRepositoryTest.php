@@ -15,7 +15,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\Asset;
 
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
-use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetsDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
@@ -62,6 +62,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
         $this->eventDispatcherMock->reset();
 
         $this->resetDB();
+        $this->get('akeneo_assetmanager.client.asset')->resetIndex();
         $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
         $this->loadFixtures();
     }
@@ -413,6 +414,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
     public function it_counts_the_assets()
     {
         $this->assertEquals(0, $this->repository->count());
+
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
 
         $assetCode = AssetCode::fromString('asset_identifier');
@@ -425,6 +427,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
         );
 
         $this->repository->create($asset);
+        $this->flushAssetEvent();
 
         $this->assertEquals(1, $this->repository->count());
 
@@ -438,7 +441,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
         );
 
         $this->repository->create($asset);
-
+        $this->flushAssetEvent();
         $this->assertEquals(2, $this->repository->count());
     }
 
@@ -468,45 +471,30 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_deletes_assets_by_asset_family_identifier()
+    public function it_mass_deletes_assets_by_asset_family_identifier_and_codes()
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
-        $assetCode = AssetCode::fromString('starck');
+        $assetCodesToDelete = [AssetCode::fromString('starck'), AssetCode::fromString('dyson')];
+        $assetCodeToKeep = AssetCode::fromString('michel');
 
-        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
-        $asset = Asset::create(
-            $identifier,
-            $assetFamilyIdentifier,
-            $assetCode,
-            ValueCollection::fromValues([])
-        );
-        $this->repository->create($asset);
+        foreach ([...$assetCodesToDelete, $assetCodeToKeep] as $assetCode) {
+            $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
+            $asset = Asset::create(
+                $identifier,
+                $assetFamilyIdentifier,
+                $assetCode,
+                ValueCollection::fromValues([])
+            );
+            $this->repository->create($asset);
+        }
 
-        $assetCode = AssetCode::fromString('dyson');
-        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifier, $assetCode);
-        $asset = Asset::create(
-            $identifier,
-            $assetFamilyIdentifier,
-            $assetCode,
-            ValueCollection::fromValues([])
-        );
-        $this->repository->create($asset);
-
-        $assetFamilyIdentifierBrand = AssetFamilyIdentifier::fromString('brand');
-        $assetCode = AssetCode::fromString('bar');
-        $identifier = $this->repository->nextIdentifier($assetFamilyIdentifierBrand, $assetCode);
-        $asset = Asset::create(
-            $identifier,
-            $assetFamilyIdentifierBrand,
-            $assetCode,
-            ValueCollection::fromValues([])
-        );
-        $this->repository->create($asset);
-
+        $this->flushAssetEvent();
         Assert::assertEquals(3, $this->repository->count());
 
-        $this->repository->deleteByAssetFamily($assetFamilyIdentifier);
-        $this->eventDispatcherMock->assertEventDispatched(AssetFamilyAssetsDeletedEvent::class);
+        $this->repository->deleteByAssetFamilyAndCodes($assetFamilyIdentifier, $assetCodesToDelete);
+        $this->eventDispatcherMock->assertEventDispatched(AssetsDeletedEvent::class);
+
+        $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
         Assert::assertEquals(1, $this->repository->count());
     }
 
@@ -562,45 +550,9 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
             ->load();
     }
 
-    /**
-     * @test
-     */
-    public function it_counts_the_assets_by_asset_family()
+    private function flushAssetEvent(): void
     {
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
-        $this->assertSame(0, $this->repository->countByAssetFamily($assetFamilyIdentifier));
-
-        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
-        $starck = Asset::create(
-            $this->repository->nextIdentifier($assetFamilyIdentifier, AssetCode::fromString('starck')),
-            $assetFamilyIdentifier,
-            AssetCode::fromString('starck'),
-            ValueCollection::fromValues([
-                Value::create(
-                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
-                    ChannelReference::noReference(),
-                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-                    TextData::fromString('Philippe Starck')
-                ),
-            ])
-        );
-        $this->repository->create($starck);
-        $this->assertSame(1, $this->repository->countByAssetFamily($assetFamilyIdentifier));
-
-        $bob = Asset::create(
-            $this->repository->nextIdentifier($assetFamilyIdentifier, AssetCode::fromString('bob')),
-            $assetFamilyIdentifier,
-            AssetCode::fromString('bob'),
-            ValueCollection::fromValues([
-                Value::create(
-                    $assetFamily->getAttributeAsLabelReference()->getIdentifier(),
-                    ChannelReference::noReference(),
-                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-                    TextData::fromString('Bob')
-                ),
-            ])
-        );
-        $this->repository->create($bob);
-        $this->assertSame(2, $this->repository->countByAssetFamily($assetFamilyIdentifier));
+        $indexAssetsEventAggregator = $this->get('akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator');
+        $indexAssetsEventAggregator->flushEvents();
     }
 }

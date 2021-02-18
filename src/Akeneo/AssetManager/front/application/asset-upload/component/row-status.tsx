@@ -1,42 +1,26 @@
-import * as React from 'react';
-import __ from 'akeneoassetmanager/tools/translator';
+import React from 'react';
 import styled from 'styled-components';
+import {AkeneoThemedProps, Badge, getColor} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
-import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 
-const StatusLabel = styled.span`
-  border-radius: 2px;
-  border: 1px solid ${(props: ThemedProps<{color: string}>) => props.color};
-  color: ${(props: ThemedProps<{color: string}>) => props.color};
-  display: inline-block;
-  font-size: 11px;
-  height: 18px;
-  line-height: 17px;
-  max-width: 100%;
-  overflow: hidden;
-  padding: 0 4px;
-  text-align: center;
-  text-overflow: ellipsis;
-  text-transform: uppercase;
-  white-space: nowrap;
-`;
 const ProgressBar = styled.div`
-  background: ${(props: ThemedProps<void>) => props.theme.color.grey80};
+  background: ${getColor('grey', 80)};
   border-radius: 2px;
   height: 18px;
   overflow: hidden;
   position: relative;
   width: 120px;
 `;
-const ProgressBarFill = styled.div<{width: number}>`
-  background: ${(props: ThemedProps<{width: number}>) => props.theme.color.blue100};
+const ProgressBarFill = styled.div<{width: number} & AkeneoThemedProps>`
+  background: ${getColor('blue', 100)};
   border-radius: 2px;
   height: 18px;
   left: 0;
   position: absolute;
   top: 0;
   transition: width 0.3s;
-  width: ${(props: ThemedProps<{width: number}>) => props.width}%;
+  width: ${({width}) => width}%;
 `;
 
 const progressToWidth = (progress: number | null): number => {
@@ -55,39 +39,23 @@ type RowStatusProps = {
 };
 
 const RowStatus = React.memo(({status, progress}: RowStatusProps) => {
+  const translate = useTranslate();
+  const statusLabel = translate(`pim_asset_manager.asset.upload.status.${status}`);
+
   switch (status) {
     case LineStatus.WaitingForUpload:
-      return (
-        <StatusLabel color={akeneoTheme.color.grey100}>
-          {__('pim_asset_manager.asset.upload.status.' + status)}
-        </StatusLabel>
-      );
+      return <Badge level="tertiary">{statusLabel}</Badge>;
     case LineStatus.Valid:
     case LineStatus.Created:
-      return (
-        <StatusLabel color={akeneoTheme.color.green100}>
-          {__('pim_asset_manager.asset.upload.status.' + status)}
-        </StatusLabel>
-      );
+      return <Badge level="primary">{statusLabel}</Badge>;
     case LineStatus.Invalid:
-      return (
-        <StatusLabel color={akeneoTheme.color.red100}>
-          {__('pim_asset_manager.asset.upload.status.' + status)}
-        </StatusLabel>
-      );
+      return <Badge level="danger">{statusLabel}</Badge>;
     case LineStatus.Uploaded:
-      return (
-        <StatusLabel color={akeneoTheme.color.blue100}>
-          {__('pim_asset_manager.asset.upload.status.' + status)}
-        </StatusLabel>
-      );
+      return <Badge level="secondary">{statusLabel}</Badge>;
     case LineStatus.UploadInProgress:
       return (
         <ProgressBar>
-          <ProgressBarFill
-            title={__('pim_asset_manager.asset.upload.status.' + status)}
-            width={progressToWidth(progress)}
-          />
+          <ProgressBarFill title={statusLabel} width={progressToWidth(progress)} />
         </ProgressBar>
       );
     default:

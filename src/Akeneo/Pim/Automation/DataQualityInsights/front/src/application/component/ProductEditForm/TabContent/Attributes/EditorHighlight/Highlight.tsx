@@ -37,7 +37,7 @@ interface HighlightPros {
   content: string;
 }
 
-const Highlight: FunctionComponent<HighlightPros> = ({highlight, editorRect, content}) => {
+const Highlight: FunctionComponent<HighlightPros> = ({highlight, editorRect}) => {
   const {isActive, domRange, mistake} = highlight;
   const [highlightRect, setHighlightRect] = useState<DOMRect | null>(null);
   const highlightRef = useRef<HTMLDivElement>(null);
@@ -48,11 +48,9 @@ const Highlight: FunctionComponent<HighlightPros> = ({highlight, editorRect, con
   }
 
   useLayoutEffect(() => {
-    (async () => {
-      const domRect = domRange.getBoundingClientRect();
-      setHighlightRect(domRect);
-    })();
-  }, [domRange, editorRect, content]);
+    const domRect = domRange.getBoundingClientRect();
+    setHighlightRect(domRect);
+  }, [domRange]);
 
   return <div ref={highlightRef} className={classList.join(' ')} style={computeStyle(highlightRect, editorRect)} />;
 };

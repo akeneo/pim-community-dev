@@ -14,7 +14,7 @@ import {
   getOptionsFromChannels,
   getOptionsFromLocales,
 } from 'akeneoassetmanager/application/asset-upload/utils/select2';
-import {CloseIcon, RefreshIcon, DangerIcon, getColor} from 'akeneo-design-system';
+import {CloseIcon, RefreshIcon, DangerIcon, getColor, IconButton} from 'akeneo-design-system';
 
 const Container = styled.div<{status?: LineStatus; isReadOnly?: boolean}>`
   border-bottom: 1px solid ${getColor('grey', 80)};
@@ -43,6 +43,7 @@ const Cell = styled.div<{width?: number}>`
   color: ${getColor('grey', 140)};
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   flex-grow: 0;
   flex-shrink: 0;
   padding: 0 15px;
@@ -52,6 +53,11 @@ const Cell = styled.div<{width?: number}>`
     css`
       width: ${props.width}px;
     `}
+`;
+const ActionsCell = styled(Cell)`
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 10px;
 `;
 const StyledFilename = styled.div`
   overflow: hidden;
@@ -63,17 +69,6 @@ const Thumbnail = styled.img`
   object-fit: cover;
   width: 48px;
   border: 1px solid ${getColor('grey', 80)};
-`;
-const IconButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  height: 54px;
-  line-height: 54px;
-  margin: -15px;
-  padding: 7px 0 0 0;
-  width: 54px;
-  color: ${getColor('grey', 100)};
 `;
 const Input = styled.input<{readOnly?: boolean; isValid?: boolean}>`
   border-radius: 2px;
@@ -261,20 +256,26 @@ const Row = React.memo(
           <Cell width={ColumnWidths.status}>
             <RowStatus status={status} progress={line.uploadProgress} />
           </Cell>
-          <Cell width={ColumnWidths.retry}>
+          <ActionsCell width={ColumnWidths.actions}>
             {!isReadOnly && line.isFileUploadFailed && (
-              <IconButton onClick={handleRetryUpload} aria-label={__('pim_asset_manager.asset.upload.retry')}>
-                <RefreshIcon />
-              </IconButton>
+              <IconButton
+                icon={<RefreshIcon />}
+                level={LineStatus.Invalid === status ? 'danger' : 'tertiary'}
+                ghost="borderless"
+                onClick={handleRetryUpload}
+                title={__('pim_asset_manager.asset.upload.retry')}
+              />
             )}
-          </Cell>
-          <Cell width={ColumnWidths.remove}>
             {!isReadOnly && (
-              <IconButton onClick={handleLineRemove} aria-label={__('pim_asset_manager.asset.upload.remove')}>
-                <CloseIcon />
-              </IconButton>
+              <IconButton
+                icon={<CloseIcon />}
+                level={LineStatus.Invalid === status ? 'danger' : 'tertiary'}
+                ghost="borderless"
+                onClick={handleLineRemove}
+                title={__('pim_asset_manager.asset.upload.remove')}
+              />
             )}
-          </Cell>
+          </ActionsCell>
         </Cells>
         <Errors>
           <Cell width={ColumnWidths.asset + ColumnWidths.filename}>

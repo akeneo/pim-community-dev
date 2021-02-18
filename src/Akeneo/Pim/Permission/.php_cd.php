@@ -163,6 +163,11 @@ $rules = [
         //CXP-567
         'Akeneo\Pim\Enrichment\Product\Component\Product\Query\GetViewableCategoryCodes',
 
+        // Manage dictionary in Locale Edit Form page
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+        'Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator',
+        'Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode',
+
     ])->in('Akeneo\Pim\Permission\Bundle'),
     $builder->only([
         'Symfony\Component',

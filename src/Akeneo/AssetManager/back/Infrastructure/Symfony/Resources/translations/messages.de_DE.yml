@@ -14,7 +14,6 @@ akeneo_assetmanager:
     asset:
       create: Asset erstellen
       edit: Asset bearbeiten
-      delete: Asset löschen
       delete_all: Alle Assets löschen
       list_product: Liste der zu erfassenden verknüpften Produkte
       execute_naming_conventions: Namenskonventionen ausführen

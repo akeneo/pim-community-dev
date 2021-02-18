@@ -263,7 +263,7 @@ describe('Test row component', () => {
       />
     );
 
-    const button = screen.getByLabelText('pim_asset_manager.asset.upload.remove');
+    const button = screen.getByTitle('pim_asset_manager.asset.upload.remove');
 
     fireEvent.click(button);
     expect(onLineRemove).toHaveBeenCalledWith(line);

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
@@ -44,7 +44,7 @@ const EmbedPlayer = styled.iframe`
   border: none;
 `;
 
-const ImagePlaceholder = styled.div<{alt: string}>`
+const ImagePlaceholder = styled.div`
   width: 400px;
   height: 300px;
 `;
@@ -60,7 +60,7 @@ const LazyLoadedImage = ({src, alt, isLoading = false, ...props}: LazyLoadedImag
 
   return undefined === loadedSrc || isLoading ? (
     <div className="AknLoadingPlaceHolderContainer">
-      <ImagePlaceholder alt={alt} {...props} />
+      <ImagePlaceholder title={alt} {...props} />
     </div>
   ) : (
     <Image src={loadedSrc} alt={alt} {...props} />
@@ -102,10 +102,10 @@ const DisconnectedMediaDataPreview = ({
     <>
       {regenerate ? (
         <div className="AknLoadingPlaceHolderContainer">
-          <ImagePlaceholder alt={label} data-role="media-data-preview" />
+          <ImagePlaceholder title={label} />
         </div>
       ) : (
-        <Image src={refreshedUrl} alt={label} data-role="media-data-preview" onError={handlePreviewError} />
+        <Image src={refreshedUrl} alt={label} onError={handlePreviewError} />
       )}
       {(previewError || attribute.media_type === MediaTypes.other) && (
         <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
@@ -131,9 +131,9 @@ const MediaLinkPreview = ({
 }) => {
   switch (attribute.media_type) {
     case MediaTypes.youtube:
-      return <EmbedPlayer src={getYouTubeEmbedUrl(mediaLinkData)} data-role="youtube-preview" allowFullScreen />;
+      return <EmbedPlayer title={label} src={getYouTubeEmbedUrl(mediaLinkData)} allowFullScreen />;
     case MediaTypes.vimeo:
-      return <EmbedPlayer src={getVimeoEmbedUrl(mediaLinkData)} data-role="vimeo-preview" allowFullScreen />;
+      return <EmbedPlayer title={label} src={getVimeoEmbedUrl(mediaLinkData)} allowFullScreen />;
     case MediaTypes.image:
     case MediaTypes.pdf:
     case MediaTypes.other:
@@ -145,7 +145,7 @@ const MediaLinkPreview = ({
 
 export const EmptyMediaPreview = ({label = ''}: {label?: string}) => (
   <>
-    <LazyLoadedImage src={getMediaPreviewUrl(emptyMediaPreview())} alt={label} data-role="empty-preview" />
+    <LazyLoadedImage src={getMediaPreviewUrl(emptyMediaPreview())} alt={label} />
     <Message title={__('pim_asset_manager.asset_preview.empty_main_media')}>
       {__('pim_asset_manager.asset_preview.empty_main_media')}
     </Message>

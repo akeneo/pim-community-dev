@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import {Button} from 'akeneoassetmanager/application/component/app/button';
+import {useShortcut, Key, Button, getColor, getFontSize, useSelection} from 'akeneo-design-system';
 import __ from 'akeneoassetmanager/tools/translator';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
@@ -31,8 +31,6 @@ import ListAsset, {
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import MosaicResult from 'akeneoassetmanager/application/component/asset/list/mosaic';
 import {useFetchResult} from 'akeneoassetmanager/application/hooks/grid';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {useShortcut, Key} from 'akeneo-design-system';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {
@@ -65,7 +63,7 @@ const FilterContainer = styled.div`
   width: 300px;
   padding-right: 20px;
   padding-left: 30px;
-  border-right: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
+  border-right: 1px solid ${getColor('grey', 80)};
   overflow-y: auto;
   height: 100%;
 `;
@@ -73,9 +71,9 @@ const FilterContainer = styled.div`
 const FilterTitle = styled.div`
   padding-bottom: 10px;
   padding-top: 4px;
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey100};
+  color: ${getColor('grey', 100)};
   text-transform: uppercase;
-  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
+  font-size: ${getFontSize('default')};
   background-color: white;
 `;
 
@@ -135,7 +133,7 @@ const dataProvider = {
   },
 };
 
-export const AssetPicker = ({
+const AssetPicker = ({
   assetFamilyIdentifier,
   initialContext,
   onAssetPick,
@@ -145,13 +143,16 @@ export const AssetPicker = ({
 }: AssetPickerProps) => {
   const [isOpen, setOpen] = React.useState(false);
   const [filterCollection, setFilterCollection] = React.useState<Filter[]>([]);
-  const [selection, setSelection] = React.useState<AssetCode[]>([]);
+
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [searchResult, setSearchResult] = React.useState<SearchResult<ListAsset> | null>(null);
   const [context, setContext] = React.useState<Context>(initialContext);
+  const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange] = useSelection<AssetCode>(
+    null === searchResult ? 0 : searchResult.matchesCount
+  );
 
   const resetModal = () => {
-    setSelection([]);
+    onSelectAllChange(false);
     setSearchValue('');
     setFilterCollection([]);
     setOpen(false);
@@ -173,17 +174,18 @@ export const AssetPicker = ({
     setSearchResult
   );
   const filterViews = useFilterViews(assetFamilyIdentifier, dataProvider);
-  const canAddAsset = canAddAssetToCollection(addAssetsToCollection(excludedAssetCollection, selection));
+  const canAddAsset = canAddAssetToCollection(addAssetsToCollection(excludedAssetCollection, selection.collection));
 
   useShortcut(Key.Escape, cancelModal);
 
   return (
-    <React.Fragment>
+    <>
       <Button
         title={__('pim_asset_manager.asset_collection.add_asset_title')}
-        buttonSize="medium"
-        color="outline"
-        isDisabled={!canAddAsset}
+        size="small"
+        level="tertiary"
+        ghost={true}
+        disabled={!canAddAsset}
         onClick={() => setOpen(true)}
       >
         {__('pim_asset_manager.asset_collection.add_asset')}
@@ -203,7 +205,7 @@ export const AssetPicker = ({
               title={__('pim_common.confirm')}
               color="green"
               onClick={() => {
-                onAssetPick(selection);
+                onAssetPick(selection.collection);
                 resetModal();
               }}
             >
@@ -234,26 +236,32 @@ export const AssetPicker = ({
                 onContextChange={setContext}
               />
               <MosaicResult
-                selection={selection}
                 assetCollection={searchResult.items}
                 context={context}
+                selectionState={selectionState}
+                onSelectionChange={onSelectionChange}
+                isItemSelected={isItemSelected}
                 resultCount={searchResult.matchesCount}
                 hasReachMaximumSelection={!canAddAsset}
-                onSelectionChange={setSelection}
               />
             </Grid>
             <Basket
               dataProvider={dataProvider}
-              selection={selection}
+              selection={selection.collection}
               assetFamilyIdentifier={assetFamilyIdentifier}
               context={context}
-              onSelectionChange={(assetCodeCollection: AssetCode[]) => {
-                setSelection(assetCodeCollection);
+              onRemove={(assetCode: AssetCode) => {
+                onSelectionChange(assetCode, false);
+              }}
+              onRemoveAll={() => {
+                onSelectAllChange(false);
               }}
             />
           </Container>
         </ScrollableModal>
       ) : null}
-    </React.Fragment>
+    </>
   );
 };
+
+export {AssetPicker};

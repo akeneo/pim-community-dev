@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
@@ -13,8 +13,7 @@ import {
   regularExpressionStringValue,
   ValidationRuleOption,
 } from 'akeneoassetmanager/domain/model/attribute/type/text';
-import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
-import {Key} from 'akeneo-design-system';
+import {Key, Checkbox} from 'akeneo-design-system';
 
 const AttributeValidationRuleItemView = ({
   isOpen,
@@ -79,8 +78,8 @@ const TextView = ({
   }`;
 
   return (
-    <React.Fragment>
-      <div className="AknFieldContainer" data-code="maxLength">
+    <>
+      <div className="AknFieldContainer--packed" data-code="maxLength">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.max_length">
             {__('pim_asset_manager.attribute.edit.input.max_length')}
@@ -111,60 +110,34 @@ const TextView = ({
         </div>
         {getErrorsView(errors, 'maxLength')}
       </div>
-      <div className="AknFieldContainer AknFieldContainer--packed" data-code="isTextarea">
-        <div className="AknFieldContainer-header">
-          <label
-            className="AknFieldContainer-label AknFieldContainer-label--inline"
-            htmlFor="pim_asset_manager.attribute.edit.input.textarea"
-          >
-            <Checkbox
-              readOnly={!rights.attribute.edit}
-              id="pim_asset_manager.attribute.edit.input.textarea"
-              value={attribute.isTextarea}
-              onChange={(isTextarea: boolean) => onAdditionalPropertyUpdated('is_textarea', isTextarea)}
-            />
-            <span
-              onClick={() => {
-                if (rights.attribute.edit) {
-                  onAdditionalPropertyUpdated('is_textarea', !attribute.isTextarea);
-                }
-              }}
-            >
-              {__('pim_asset_manager.attribute.edit.input.textarea')}
-            </span>
-          </label>
-        </div>
+      <div data-code="isTextarea">
+        <Checkbox
+          readOnly={!rights.attribute.edit}
+          id="pim_asset_manager.attribute.edit.input.textarea"
+          checked={attribute.isTextarea}
+          onChange={(isTextarea: boolean) => onAdditionalPropertyUpdated('is_textarea', isTextarea)}
+        >
+          {__('pim_asset_manager.attribute.edit.input.textarea')}
+        </Checkbox>
         {getErrorsView(errors, 'isTextarea')}
       </div>
       {attribute.isTextarea && (
-        <div className="AknFieldContainer AknFieldContainer--packed" data-code="isRichTextEditor">
-          <div className="AknFieldContainer-header">
-            <label
-              className="AknFieldContainer-label AknFieldContainer-label--inline"
-              htmlFor="pim_asset_manager.attribute.edit.input.is_rich_text_editor"
-            >
-              <Checkbox
-                id="pim_asset_manager.attribute.edit.input.is_rich_text_editor"
-                readOnly={!rights.attribute.edit}
-                value={attribute.isRichTextEditor}
-                onChange={(isrichTextEditor: boolean) =>
-                  onAdditionalPropertyUpdated('is_rich_text_editor', isrichTextEditor)
-                }
-              />
-              <span
-                onClick={() => {
-                  onAdditionalPropertyUpdated('is_rich_text_editor', !attribute.isRichTextEditor);
-                }}
-              >
-                {__('pim_asset_manager.attribute.edit.input.is_rich_text_editor')}
-              </span>
-            </label>
-          </div>
+        <div data-code="isRichTextEditor">
+          <Checkbox
+            id="pim_asset_manager.attribute.edit.input.is_rich_text_editor"
+            readOnly={!rights.attribute.edit}
+            checked={attribute.isRichTextEditor}
+            onChange={(isRichTextEditor: boolean) =>
+              onAdditionalPropertyUpdated('is_rich_text_editor', isRichTextEditor)
+            }
+          >
+            {__('pim_asset_manager.attribute.edit.input.is_rich_text_editor')}
+          </Checkbox>
           {getErrorsView(errors, 'richTextEditor')}
         </div>
       )}
       {!attribute.isTextarea && (
-        <div className="AknFieldContainer" data-code="validationRule">
+        <div className="AknFieldContainer--packed" data-code="validationRule">
           <div className="AknFieldContainer-header AknFieldContainer-header--light">
             <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.validation_rule">
               {__('pim_asset_manager.attribute.edit.input.validation_rule')}
@@ -187,7 +160,7 @@ const TextView = ({
         </div>
       )}
       {!attribute.isTextarea && attribute.validationRule === ValidationRuleOption.RegularExpression && (
-        <div className="AknFieldContainer" data-code="regularExpression">
+        <div className="AknFieldContainer--packed" data-code="regularExpression">
           <div className="AknFieldContainer-header AknFieldContainer-header--light">
             <label
               className="AknFieldContainer-label"
@@ -219,7 +192,7 @@ const TextView = ({
           {getErrorsView(errors, 'regularExpression')}
         </div>
       )}
-    </React.Fragment>
+    </>
   );
 };
 

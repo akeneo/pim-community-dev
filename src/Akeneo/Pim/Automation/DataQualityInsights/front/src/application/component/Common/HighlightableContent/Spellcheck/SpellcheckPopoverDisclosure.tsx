@@ -4,12 +4,14 @@ import {HighlightElement, MistakeElement} from '../../../../helper';
 import {useLocaleContext} from '../../../../context/LocaleContext';
 import {useSpellcheckContentContext} from '../../../../context/Spellcheck/SpellcheckContentContext';
 import analyzeSpellingInterface from '../../../../helper/Spellcheck/analyzeSpelling.interface';
+import refreshSpellingInterface from '../../../../helper/Spellcheck/refreshSpelling.interface';
 
 type SpellcheckPopoverDisclosureProps = HighlightPopoverDisclosureProps & {
   setLocale: (locale: string | null) => void;
   setContent: (content: string | null) => void;
   setMistake: (mistake: MistakeElement | null) => void;
   setAnalyze: (analyze: analyzeSpellingInterface) => void;
+  setRefreshAnalysis: (refreshAnalysis: refreshSpellingInterface) => void;
 };
 
 const SpellcheckPopoverDisclosure: FC<SpellcheckPopoverDisclosureProps> = ({
@@ -19,21 +21,24 @@ const SpellcheckPopoverDisclosure: FC<SpellcheckPopoverDisclosureProps> = ({
   setActiveHighlight,
   setActiveElement,
   setAnalyze,
+  setRefreshAnalysis,
   ...props
 }) => {
   const {locale} = useLocaleContext();
-  const {content, analyze} = useSpellcheckContentContext();
+  const {content, analyze, refreshAnalysis} = useSpellcheckContentContext();
 
   const setPopoverContext = useCallback(
     (
       locale: string | null,
       content: string | null,
       mistake: MistakeElement | null,
-      analyze: analyzeSpellingInterface
+      analyze: analyzeSpellingInterface,
+      refreshAnalysis: refreshSpellingInterface
     ) => {
       setLocale(locale);
       setContent(content);
       setAnalyze(() => analyze);
+      setRefreshAnalysis(() => refreshAnalysis);
       setMistake(mistake);
     },
     [setLocale, setContent, setAnalyze, setMistake]
@@ -44,10 +49,10 @@ const SpellcheckPopoverDisclosure: FC<SpellcheckPopoverDisclosureProps> = ({
       setActiveHighlight(highlight);
 
       if (highlight) {
-        setPopoverContext(locale, content, highlight.mistake, analyze);
+        setPopoverContext(locale, content, highlight.mistake, analyze, refreshAnalysis);
       }
     },
-    [setActiveHighlight, setPopoverContext, locale, content]
+    [setActiveHighlight, setPopoverContext, locale, content, analyze, refreshAnalysis]
   );
 
   return (

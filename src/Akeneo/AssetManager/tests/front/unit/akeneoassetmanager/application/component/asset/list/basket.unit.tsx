@@ -1,10 +1,8 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {fireEvent, act} from '@testing-library/react';
-import {ThemeProvider} from 'styled-components';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import {fireEvent, act, screen} from '@testing-library/react';
 import Basket from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/basket';
+import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
 const assetCollectionMock = [
   {
@@ -42,13 +40,7 @@ const assetCollectionMock = [
 ];
 const dataProvider = {
   assetFetcher: {
-    fetchByCode: (assetFamilyIdentifier, selection) => {
-      return new Promise(resolve => {
-        act(() => {
-          resolve(assetCollectionMock);
-        });
-      });
-    },
+    fetchByCode: () => Promise.resolve(assetCollectionMock),
   },
 };
 const assetFamilyIdentifier = 'packshot';
@@ -56,150 +48,81 @@ const context = {
   channel: 'ecommerce',
   locale: 'en_US',
 };
-const setSelection = jest.fn();
-
-let container;
-
-beforeEach(() => {
-  container = document.createElement('div');
-  document.body.appendChild(container);
-});
-
-afterEach(() => {
-  document.body.removeChild(container);
-  container = null;
-});
+const selection = ['iphone7_pack', 'iphone8_pack'];
 
 test('It can display all the items in the basket', async () => {
-  const actualSelection = ['iphone7_pack', 'iphone8_pack'];
-
   await act(async () => {
-    ReactDOM.render(
-      <ThemeProvider theme={akeneoTheme}>
-        <Basket
-          dataProvider={dataProvider}
-          selection={actualSelection}
-          assetFamilyIdentifier={assetFamilyIdentifier}
-          context={context}
-          onSelectionChange={() => setSelection()}
-        />
-      </ThemeProvider>,
-      container
+    renderWithProviders(
+      <Basket
+        dataProvider={dataProvider}
+        selection={selection}
+        assetFamilyIdentifier={assetFamilyIdentifier}
+        context={context}
+        onRemove={jest.fn()}
+        onRemoveAll={jest.fn()}
+      />
     );
   });
 
-  expect(container.querySelectorAll('li').length).toEqual(2);
+  expect(screen.getByText('iphone7_pack')).toBeInTheDocument();
+  expect(screen.getByText('iphone8_pack')).toBeInTheDocument();
 });
 
 test('It can display an empty basket', async () => {
-  const actualSelection = [];
-
   await act(async () => {
-    ReactDOM.render(
-      <ThemeProvider theme={akeneoTheme}>
-        <Basket
-          dataProvider={dataProvider}
-          selection={actualSelection}
-          assetFamilyIdentifier={assetFamilyIdentifier}
-          context={context}
-          onSelectionChange={() => setSelection()}
-        />
-      </ThemeProvider>,
-      container
+    renderWithProviders(
+      <Basket
+        dataProvider={dataProvider}
+        selection={[]}
+        assetFamilyIdentifier={assetFamilyIdentifier}
+        context={context}
+        onRemove={jest.fn()}
+        onRemoveAll={jest.fn()}
+      />
     );
   });
 
-  expect(container.querySelectorAll('li').length).toEqual(0);
+  expect(screen.getByText('pim_asset_manager.asset_picker.basket.empty_title')).toBeInTheDocument();
 });
 
 test('It can remove an item from the basket', async () => {
-  let actualSelection = ['iphone7_pack', 'iphone8_pack'];
+  const onRemove = jest.fn();
 
   await act(async () => {
-    ReactDOM.render(
-      <ThemeProvider theme={akeneoTheme}>
-        <Basket
-          dataProvider={dataProvider}
-          selection={actualSelection}
-          assetFamilyIdentifier={assetFamilyIdentifier}
-          context={context}
-          onSelectionChange={assetCodeCollection => {
-            actualSelection = assetCodeCollection;
-          }}
-        />
-      </ThemeProvider>,
-      container
+    renderWithProviders(
+      <Basket
+        dataProvider={dataProvider}
+        selection={selection}
+        assetFamilyIdentifier={assetFamilyIdentifier}
+        context={context}
+        onRemove={onRemove}
+        onRemoveAll={jest.fn()}
+      />
     );
   });
 
-  const removeItemButton = container.querySelector('li[data-code="iphone8_pack"] button');
-  expect(removeItemButton).toBeInTheDocument();
+  fireEvent.click(screen.getAllByTitle('pim_asset_manager.asset_picker.basket.remove_one_asset')[0]);
 
-  await act(async () => {
-    fireEvent.click(removeItemButton);
-  });
-
-  expect(actualSelection).toEqual(['iphone7_pack']);
-});
-
-test('It does nothing when we try to remove an undefined asset', async () => {
-  let actualSelection = ['honor'];
-
-  await act(async () => {
-    ReactDOM.render(
-      <ThemeProvider theme={akeneoTheme}>
-        <Basket
-          dataProvider={dataProvider}
-          selection={actualSelection}
-          assetFamilyIdentifier={assetFamilyIdentifier}
-          context={context}
-          onSelectionChange={assetCodeCollection => {
-            actualSelection = assetCodeCollection;
-          }}
-        />
-      </ThemeProvider>,
-      container
-    );
-  });
-
-  const removeItemButton = container.querySelector('li[data-code="honor"] button');
-  expect(removeItemButton).toBeInTheDocument();
-
-  await act(async () => {
-    fireEvent.click(removeItemButton);
-  });
-
-  expect(actualSelection).toEqual(['honor']);
+  expect(onRemove).toHaveBeenCalledWith('iphone7_pack');
 });
 
 test('It can remove all the items from the basket', async () => {
-  let actualSelection = ['iphone7_pack', 'iphone8_pack'];
+  const onRemoveAll = jest.fn();
 
   await act(async () => {
-    ReactDOM.render(
-      <ThemeProvider theme={akeneoTheme}>
-        <Basket
-          dataProvider={dataProvider}
-          selection={actualSelection}
-          assetFamilyIdentifier={assetFamilyIdentifier}
-          context={context}
-          onSelectionChange={assetCodeCollection => {
-            actualSelection = assetCodeCollection;
-          }}
-        />
-      </ThemeProvider>,
-      container
+    renderWithProviders(
+      <Basket
+        dataProvider={dataProvider}
+        selection={selection}
+        assetFamilyIdentifier={assetFamilyIdentifier}
+        context={context}
+        onRemove={jest.fn()}
+        onRemoveAll={onRemoveAll}
+      />
     );
   });
 
-  const removeAllButton = container.querySelector(
-    'div[title="pim_asset_manager.asset_picker.basket.remove_all_assets"]'
-  );
-  expect(removeAllButton).toBeInTheDocument();
+  fireEvent.click(screen.getByTitle('pim_asset_manager.asset_picker.basket.remove_all_assets'));
 
-  await act(async () => {
-    fireEvent.click(removeAllButton);
-  });
-
-  expect(actualSelection).toEqual([]);
+  expect(onRemoveAll).toHaveBeenCalled();
 });

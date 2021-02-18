@@ -47,8 +47,8 @@ class Source
 
         return new self(
             $normalizedSource['property'],
-            ChannelReference::createfromNormalized($normalizedSource['channel'] ?? null),
-            LocaleReference::createfromNormalized($normalizedSource['locale'] ?? null)
+            ChannelReference::createFromNormalized($normalizedSource['channel'] ?? null),
+            LocaleReference::createFromNormalized($normalizedSource['locale'] ?? null)
         );
     }
 

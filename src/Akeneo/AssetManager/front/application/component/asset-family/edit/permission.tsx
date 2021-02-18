@@ -1,6 +1,7 @@
-import * as React from 'react';
-import styled from 'styled-components';
+import React from 'react';
 import {connect} from 'react-redux';
+import styled from 'styled-components';
+import {Button} from 'akeneo-design-system';
 import __ from 'akeneoassetmanager/tools/translator';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
@@ -16,13 +17,12 @@ import {
 } from 'akeneoassetmanager/domain/model/asset-family/permission';
 import {savePermission} from 'akeneoassetmanager/application/action/asset-family/permission';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
-import {Button} from 'akeneoassetmanager/application/component/app/button';
 
 const securityContext = require('pim/security-context');
 const routing = require('routing');
 
 export const StickyHeader = styled.header.attrs(() => ({className: 'AknSubsection-title AknSubsection-title--sticky'}))`
-  top: 160px;
+  top: 136px;
   padding: 0;
 `;
 
@@ -66,7 +66,7 @@ class Permission extends React.Component<StateProps & DispatchProps> {
           image={assetFamily.image}
           primaryAction={(defaultFocus: React.RefObject<any>) =>
             rights.assetFamily.edit && !permission.data.isEmpty() ? (
-              <Button color="green" onClick={events.onSavePermissionEditForm} ref={defaultFocus}>
+              <Button onClick={events.onSavePermissionEditForm} ref={defaultFocus}>
                 {__('pim_asset_manager.asset_family.button.save_permission')}
               </Button>
             ) : null

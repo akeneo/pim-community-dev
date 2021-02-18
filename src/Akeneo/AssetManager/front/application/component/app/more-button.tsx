@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import __ from 'akeneoassetmanager/tools/translator';
-import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
-import {MoreIcon, getColor, getFontSize, Key} from 'akeneo-design-system';
+import {MoreIcon, getColor, getFontSize, Key, IconButton} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Mask = styled.button`
   position: fixed;
@@ -43,25 +42,6 @@ const Action = styled.li`
   }
 `;
 
-const ButtonContainer = styled(TransparentButton)`
-  margin: 0 10px;
-`;
-
-const Button: React.FunctionComponent<{title: string; onAction: () => void}> = ({children, title, onAction}) => {
-  return (
-    <ButtonContainer
-      title={title}
-      tabIndex={0}
-      onClick={() => onAction()}
-      onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
-        if (Key.Space === event.key) onAction();
-      }}
-    >
-      {children}
-    </ButtonContainer>
-  );
-};
-
 const Title = styled.div`
   line-height: 44px;
   font-size: ${getFontSize('small')};
@@ -81,9 +61,12 @@ type Element = {
   label: string;
   action: () => void;
 };
+
+//TODO use DSM Dropdown
 export const MoreButton = ({elements}: {elements: Element[]}) => {
   const [isOpen, setOpen] = React.useState(false);
   const firstActionButton = React.useRef(null);
+  const translate = useTranslate();
 
   React.useEffect(() => {
     if (isOpen && null !== firstActionButton.current) {
@@ -94,14 +77,20 @@ export const MoreButton = ({elements}: {elements: Element[]}) => {
   return (
     <Container>
       {isOpen ? (
-        <Mask onClick={() => setOpen(false)}>{__('pim_asset_manager.asset_collection.dismiss_other_actions')}</Mask>
+        <Mask onClick={() => setOpen(false)}>
+          {translate('pim_asset_manager.asset_collection.dismiss_other_actions')}
+        </Mask>
       ) : null}
-      <Button title={__('pim_asset_manager.asset_collection.open_other_actions')} onAction={() => setOpen(true)}>
-        <MoreIcon />
-      </Button>
+      <IconButton
+        icon={<MoreIcon />}
+        ghost="borderless"
+        level="tertiary"
+        title={translate('pim_asset_manager.asset_collection.open_other_actions')}
+        onClick={() => setOpen(true)}
+      />
       {isOpen ? (
         <Panel>
-          <Title>{__('pim_asset_manager.asset_collection.other_actions')}</Title>
+          <Title>{translate('pim_asset_manager.asset_collection.other_actions')}</Title>
           <ActionList>
             {elements.map((element: Element, index: number) => (
               // Not ideal to use the index here but the label is not unique

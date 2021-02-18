@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
-use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetsDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\DomainEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersByAssetFamilyAndCodesInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeyCollectionInterface;
@@ -27,6 +28,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysByAttributeTypeInter
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetHydratorInterface;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\CountAssets;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
@@ -39,26 +41,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class SqlAssetRepository implements AssetRepositoryInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var AssetHydratorInterface */
-    private $assetHydrator;
-
-    /** @var FindValueKeyCollectionInterface */
-    private $findValueKeyCollection;
-
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $findAttributesIndexedByIdentifier;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
-    /** @var FindIdentifiersByAssetFamilyAndCodesInterface */
-    private $findIdentifiersByAssetFamilyAndCodes;
-
-    /** @var FindValueKeysByAttributeTypeInterface */
-    private $findValueKeysByAttributeType;
+    private Connection $sqlConnection;
+    private AssetHydratorInterface $assetHydrator;
+    private FindValueKeyCollectionInterface $findValueKeyCollection;
+    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
+    private EventDispatcherInterface $eventDispatcher;
+    private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes;
+    private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
+    private CountAssetsInterface $countAssets;
 
     public function __construct(
         Connection $sqlConnection,
@@ -67,7 +57,8 @@ class SqlAssetRepository implements AssetRepositoryInterface
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
         EventDispatcherInterface $eventDispatcher,
         FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        CountAssetsInterface $countAssets
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->assetHydrator = $assetHydrator;
@@ -76,15 +67,12 @@ class SqlAssetRepository implements AssetRepositoryInterface
         $this->eventDispatcher = $eventDispatcher;
         $this->findIdentifiersByAssetFamilyAndCodes = $findIdentifiersByAssetFamilyAndCodes;
         $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
+        $this->countAssets = $countAssets;
     }
 
     public function count(): int
     {
-        $sql = 'SELECT COUNT(*) FROM akeneo_asset_manager_asset';
-        $statement = $this->sqlConnection->executeQuery($sql);
-        $count = (int) $statement->fetchColumn();
-
-        return $count;
+        return $this->countAssets->all();
     }
 
     public function create(Asset $asset): void
@@ -202,23 +190,35 @@ SQL;
         return $this->hydrateAsset($result);
     }
 
-    public function deleteByAssetFamily(
-        AssetFamilyIdentifier $assetFamilyIdentifier
-    ): void {
+    public function deleteByAssetFamilyAndCodes(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): void
+    {
+        $identifiers = $this->findIdentifiersByAssetFamilyAndCodes->find($assetFamilyIdentifier, $assetCodes);
+
         $sql = <<<SQL
         DELETE FROM akeneo_asset_manager_asset
-        WHERE asset_family_identifier = :asset_family_identifier;
+        WHERE code IN (:codes) AND asset_family_identifier = :asset_family_identifier;
 SQL;
         $this->sqlConnection->executeUpdate(
             $sql,
             [
+                'codes' => $assetCodes,
                 'asset_family_identifier' => (string) $assetFamilyIdentifier,
+            ],
+            [
+                'codes' => Connection::PARAM_STR_ARRAY
             ]
         );
 
+        $assetCodeDeleted = array_filter($assetCodes, function ($assetCode) use ($identifiers) {
+            return array_key_exists($assetCode->normalize(), $identifiers);
+        });
+
         $this->eventDispatcher->dispatch(
-            new AssetFamilyAssetsDeletedEvent($assetFamilyIdentifier),
-            AssetFamilyAssetsDeletedEvent::class
+            new AssetsDeletedEvent(
+                $assetFamilyIdentifier,
+                $assetCodeDeleted,
+            ),
+            AssetsDeletedEvent::class
         );
     }
 
@@ -232,7 +232,7 @@ SQL;
         DELETE FROM akeneo_asset_manager_asset
         WHERE code = :code AND asset_family_identifier = :asset_family_identifier;
 SQL;
-        $affectedRows = $this->sqlConnection->executeUpdate(
+        $affectedRowsCount = $this->sqlConnection->executeUpdate(
             $sql,
             [
                 'code' => (string) $code,
@@ -240,7 +240,7 @@ SQL;
             ]
         );
 
-        if (0 === $affectedRows) {
+        if (0 === $affectedRowsCount) {
             throw new AssetNotFoundException();
         }
 
@@ -263,22 +263,6 @@ SQL;
             (string) $code,
             Uuid::uuid4()->toString()
         );
-    }
-
-    public function countByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int
-    {
-        $fetch = <<<SQL
-        SELECT COUNT(*)
-        FROM akeneo_asset_manager_asset
-        WHERE asset_family_identifier = :asset_family_identifier;
-SQL;
-        $statement = $this->sqlConnection->executeQuery(
-            $fetch,
-            ['asset_family_identifier' => $assetFamilyIdentifier,]
-        );
-        $count = $statement->fetchColumn();
-
-        return intval($count);
     }
 
     private function getAssetFamilyIdentifier($result): AssetFamilyIdentifier

@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {JsonEditor as Editor} from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
+import {AssetsIllustration, Information, Link, Button} from 'akeneo-design-system';
 import __ from 'akeneoassetmanager/tools/translator';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
@@ -23,11 +24,10 @@ import Ajv from 'ajv';
 import {getErrorsViewStartedWith} from 'akeneoassetmanager/application/component/app/validation-error';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
-import {Button, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
+import {ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import {ConfirmModal} from 'akeneoassetmanager/application/component/app/modal';
 import namingConventionSchema from 'akeneoassetmanager/infrastructure/model/asset-family/naming-convention.schema.json';
 import productLinkRulesSchema from 'akeneoassetmanager/infrastructure/model/asset-family/product-link-rules.schema.json';
-import {AssetsIllustration, Information, Link} from 'akeneo-design-system';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
 const securityContext = require('pim/security-context');
@@ -132,6 +132,7 @@ type SecondaryActionsProps = {
   onExecuteNamingConvention: () => void;
 };
 
+//TODO Use DSM Dropdown
 const SecondaryActions = ({
   canExecuteRules,
   onExecuteRules,
@@ -196,7 +197,7 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps> {
           primaryAction={(defaultFocus: React.RefObject<any>) => (
             <ButtonContainer>
               {rights.assetFamily.edit_naming_convention ? (
-                <Button color="green" onClick={events.onSaveEditForm} ref={defaultFocus}>
+                <Button onClick={events.onSaveEditForm} ref={defaultFocus}>
                   {__('pim_asset_manager.asset_family.button.save')}
                 </Button>
               ) : null}

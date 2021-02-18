@@ -4,11 +4,13 @@ import {fetchTextAnalysis} from '../../../fetcher';
 import {MistakeElement} from '../../../../application/helper';
 import analyzeSpellingInterface from '../../../../application/helper/Spellcheck/analyzeSpelling.interface';
 import {useMountedState} from '../useMountedState';
+import refreshSpellingInterface from '../../../../application/helper/Spellcheck/refreshSpelling.interface';
 
 export type SpellcheckAnalysisState = {
   analysis: MistakeElement[];
   isLoading: boolean;
   analyze: analyzeSpellingInterface;
+  refreshAnalysis: refreshSpellingInterface;
 };
 
 const useFetchSpellcheckAnalysis = (content: string, locale: string, isActive: boolean): SpellcheckAnalysisState => {
@@ -17,8 +19,25 @@ const useFetchSpellcheckAnalysis = (content: string, locale: string, isActive: b
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {isMounted} = useMountedState();
 
+  const hasContentChangedSinceLastAnalysis = useCallback(
+    (content: null | string) => {
+      return content === null || content !== previousContent;
+    },
+    [previousContent]
+  );
+
   const doAnalyze = useCallback(
-    (content: string, locale: string) => {
+    (content: string, locale: string, force: boolean = true) => {
+      if (content.length === 0) {
+        setAnalysis([]);
+        setPreviousContent(null);
+        return;
+      }
+
+      if (!force && !hasContentChangedSinceLastAnalysis(content)) {
+        return;
+      }
+
       (async () => {
         setIsLoading(true);
         setPreviousContent(content);
@@ -32,28 +51,24 @@ const useFetchSpellcheckAnalysis = (content: string, locale: string, isActive: b
         setIsLoading(false);
       })();
     },
-    [setIsLoading, setPreviousContent, setAnalysis]
+    [setIsLoading, setPreviousContent, setAnalysis, hasContentChangedSinceLastAnalysis]
   );
 
-  const hasContentChangedSinceLastAnalysis = useCallback(() => {
-    return content === null || content !== previousContent;
-  }, [content, previousContent]);
+  const refreshAnalysis = useCallback(() => {
+    doAnalyze(content, locale);
+  }, [content, locale, doAnalyze]);
 
   useEffect(() => {
-    if (isActive && content.length > 0) {
-      if (hasContentChangedSinceLastAnalysis()) {
-        doAnalyze(content, locale);
-      }
-    } else {
-      setAnalysis([]);
-      setPreviousContent(null);
+    if (isActive) {
+      doAnalyze(content, locale, false);
     }
-  }, [content, locale, isActive, doAnalyze]);
+  }, [content, locale, isActive]);
 
   return {
     analysis,
     isLoading,
     analyze: doAnalyze,
+    refreshAnalysis,
   };
 };
 

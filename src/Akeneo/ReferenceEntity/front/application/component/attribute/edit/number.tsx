@@ -1,13 +1,12 @@
-import * as React from 'react';
+import React from 'react';
+import {Checkbox, Key} from 'akeneo-design-system';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
-import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
 import {NumberAdditionalProperty, NumberAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/number';
 import {DecimalsAllowed} from 'akeneoreferenceentity/domain/model/attribute/type/number/decimals-allowed';
 import {MinValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/min-value';
 import {MaxValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/max-value';
-import Key from 'akeneoreferenceentity/tools/key';
 import {unformatNumber, formatNumberForUILocale} from 'akeneoreferenceentity/tools/format-number';
 
 const NumberView = ({
@@ -34,38 +33,21 @@ const NumberView = ({
   }`;
 
   return (
-    <React.Fragment>
-      <div className="AknFieldContainer AknFieldContainer--packed" data-code="decimalsAllowed">
-        <div className="AknFieldContainer-header">
-          <label
-            className="AknFieldContainer-label AknFieldContainer-label--inline"
-            htmlFor="pim_reference_entity.attribute.edit.input.decimals_allowed"
-          >
-            <Checkbox
-              readOnly={!rights.attribute.edit}
-              id="pim_reference_entity.attribute.edit.input.decimals_allowed"
-              value={attribute.decimalsAllowed.booleanValue()}
-              onChange={(decimalsAllowed: boolean) =>
-                onAdditionalPropertyUpdated('decimals_allowed', DecimalsAllowed.createFromBoolean(decimalsAllowed))
-              }
-            />
-            <span
-              onClick={() => {
-                if (rights.attribute.edit) {
-                  onAdditionalPropertyUpdated(
-                    'decimals_allowed',
-                    DecimalsAllowed.createFromBoolean(!attribute.decimalsAllowed.booleanValue())
-                  );
-                }
-              }}
-            >
-              {__('pim_reference_entity.attribute.edit.input.decimals_allowed')}
-            </span>
-          </label>
-        </div>
+    <>
+      <div data-code="decimalsAllowed">
+        <Checkbox
+          readOnly={!rights.attribute.edit}
+          id="pim_reference_entity.attribute.edit.input.decimals_allowed"
+          checked={attribute.decimalsAllowed.booleanValue()}
+          onChange={decimalsAllowed =>
+            onAdditionalPropertyUpdated('decimals_allowed', DecimalsAllowed.createFromBoolean(decimalsAllowed))
+          }
+        >
+          {__('pim_reference_entity.attribute.edit.input.decimals_allowed')}
+        </Checkbox>
         {getErrorsView(errors, 'decimalsAllowed')}
       </div>
-      <div className="AknFieldContainer" data-code="minValue">
+      <div className="AknFieldContainer--packed" data-code="minValue">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.min_value">
             {__('pim_reference_entity.attribute.edit.input.min_value')}
@@ -91,7 +73,7 @@ const NumberView = ({
         </div>
         {getErrorsView(errors, 'minValue')}
       </div>
-      <div className="AknFieldContainer" data-code="maxValue">
+      <div className="AknFieldContainer--packed" data-code="maxValue">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.max_value">
             {__('pim_reference_entity.attribute.edit.input.max_value')}
@@ -117,7 +99,7 @@ const NumberView = ({
         </div>
         {getErrorsView(errors, 'maxValue')}
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

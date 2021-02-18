@@ -22,7 +22,7 @@ const UpdateHighlightsOnInputChange: FC<{}> = () => {
         element.removeEventListener('input', handleInput as EventListener);
       }
     };
-  }, [element]);
+  }, [element, refresh]);
 
   return <></>;
 };
