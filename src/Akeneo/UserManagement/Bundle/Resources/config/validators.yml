@@ -2,4 +2,9 @@ services:
   pim_user.validator.constraints.value_should_not_contains_blacklisted_characters:
     class: Akeneo\UserManagement\Bundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharactersValidator
     tags:
-    - { name: validator.constraint_validator }
+      - { name: validator.constraint_validator }
+
+  pim_user.validator.constraints.user_owns_default_grid_views:
+    class: Akeneo\UserManagement\Bundle\Validator\Constraints\UserOwnsDefaultGridViewsValidator
+    tags:
+      - { name: validator.constraint_validator }

@@ -76,25 +76,6 @@ SQL;
         return $qb->getQuery()->execute();
     }
 
-    public function findByLabelAndUser(string $label, ?UserInterface $user): ?DatagridView
-    {
-        $qb = $this->createQueryBuilder('v');
-        $qb
-            ->andWhere('v.label = :label')
-            ->andWhere(
-                $qb->expr()->orX('v.type = :type_public', 'v.owner = :user')
-            )
-            ->setParameters(
-                [
-                    'label' => $label,
-                    'type_public' => DatagridView::TYPE_PUBLIC,
-                    'user' => $user,
-                ]
-            );
-
-        return $qb->getQuery()->getOneOrNullResult();
-    }
-
     private function getConnection(): Connection
     {
         return $this->getEntityManager()->getConnection();
