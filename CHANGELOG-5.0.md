@@ -2,7 +2,6 @@
 
 ## Bug fixes
 
-DAPI-1490: Fix redirect to product grid from DQI dashboard when a default view is activated on the user profile
 - AOB-1317: Fix deprecated nested ternary expression
 - DAPI-1490: Fix redirect to product grid from DQI dashboard when a default view is activated on the user profile
 - PIM-9686: Fix memory leak during "set_attribute_requirements" job
