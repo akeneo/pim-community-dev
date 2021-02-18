@@ -95,3 +95,27 @@ services:
             - '@pim_connector.writer.database.user_group'
             - 100
             - '@akeneo_batch.job.job_stopper'
+
+    pim_connector.step.csv_user_import.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_user'
+            - '@pim_connector.processor.denormalization.user'
+            - '@pim_connector.writer.database.user'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
+
+    pim_connector.step.xlsx_user_import.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_user'
+            - '@pim_connector.processor.denormalization.user'
+            - '@pim_connector.writer.database.user'
+            - 100
+            - '@akeneo_batch.job.job_stopper'

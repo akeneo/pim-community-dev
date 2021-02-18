@@ -770,10 +770,28 @@ jobs:
     xlsx_user_group_import:
         connector: Akeneo XLSX Connector
         alias: xlsx_user_group_import
-        label: XLSX Demo user group import
+        label: Demo XLSX user group import
         type: import
         configuration:
             filePath: /tmp/user_group.xlsx
+            uploadAllowed: true
+    csv_user_import:
+        connector: Akeneo CSV Connector
+        alias: csv_user_import
+        label: Demo CSV user import
+        type: import
+        configuration:
+            filePath: /tmp/user.csv
+            uploadAllowed: true
+            delimiter: ;
+            enclosure: '"'
+    xlsx_user_import:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_user_import
+        label: Demo XLSX user import
+        type: import
+        configuration:
+            filePath: /tmp/user.xlsx
             uploadAllowed: true
     compute_completeness_of_products_family:
         connector: internal
