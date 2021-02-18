@@ -1,42 +1,20 @@
-import BaseView = require('pimui/js/view/base');
+import React from 'react';
 import ReactDOM from 'react-dom';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import { Channel, Category, CategoryTree, CategoryTreeModel, CategoryValue} from '@akeneo-pim-community/shared';
 import styled, {ThemeProvider} from 'styled-components';
-import {CategoryTree, CategoryTreeModel} from '@akeneo-pim-community/shared/src/components/CategoryTree/CategoryTree';
-import {CategoryValue} from '@akeneo-pim-community/shared/src/components/CategoryTree/RecursiveCategoryTree';
-import React from 'react';
-const FetcherRegistry = require('pim/fetcher-registry');
 import {pimTheme} from 'akeneo-design-system';
-const Router = require('pim/router');
-import {Tree} from 'akeneo-design-system/lib/components/Tree/Tree';
+import {Tree} from 'akeneo-design-system/lib';
 import {CategoryResponse, parseResponse} from '../../../CategoryTreeFetcher';
 const __ = require('oro/translator');
+const Router = require('pim/router');
+const FetcherRegistry = require('pim/fetcher-registry');
+import BaseView = require('pimui/js/view/base');
 
 const CategoryTreeContainer = styled.div`
   max-height: calc(100vh - 240px);
   overflow: hidden auto;
 `;
-
-type Category = {
-  id: number;
-  code: string;
-  parent: string | null;
-  labels: {[locale: string]: string};
-};
-
-type Channel = {
-  code: string;
-  category_tree: string;
-  conversion_units: any[];
-  currencies: string[];
-  labels: {[locale: string]: string};
-  meta: {
-    created: any;
-    form: string;
-    id: number;
-    updated: any;
-  };
-};
 
 type CategorySelectorWithAllProductsProps = {
   channelCode: string;
@@ -100,7 +78,7 @@ const CategorySelectorWithAllProducts: React.FC<CategorySelectorWithAllProductsP
     return {
       id: category.id,
       code: category.code,
-      label: category.labels['en_US'],
+      label: category.labels['en_US'], // TODO Fix this
       selectable: false,
       children: json.map(child =>
         parseResponse(child, {

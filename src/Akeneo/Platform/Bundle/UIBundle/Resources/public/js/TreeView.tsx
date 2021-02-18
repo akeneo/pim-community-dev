@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
-import {CategoryTrees} from '@akeneo-pim-community/shared/src/components/CategoryTree/CategoryTrees';
+import {CategoryTrees} from '@akeneo-pim-community/shared';
 import React from 'react';
 import {pimTheme} from 'akeneo-design-system';
 import {CategoryResponse, parseResponse} from './CategoryTreeFetcher';
