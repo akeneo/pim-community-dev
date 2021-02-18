@@ -17,6 +17,9 @@ const BadgeContainer = styled.div`
 `;
 
 class ProductGalleryRow<TModel extends Model> extends BaseRow {
+  private reactRef: Element | null;
+  private selected: boolean;
+
   public constructor(options?: ViewOptions<TModel>) {
     super({
       ...options,
@@ -25,6 +28,22 @@ class ProductGalleryRow<TModel extends Model> extends BaseRow {
     });
 
     this.selected = false;
+    this.reactRef = null;
+  }
+
+  public initialize(options: object) {
+    super.initialize(options);
+
+    // Remove the parent listener for the 'backgrid:selected' event
+    this.stopListening(this.model, 'backgrid:selected');
+
+    this.listenTo(this.model, 'backgrid:select', (_: any, isSelected: boolean) => {
+      this.model.trigger('backgrid:selected', this.model, isSelected);
+    });
+
+    this.listenTo(this.model, 'backgrid:selected', (_: any, isSelected: boolean) => {
+      this.updateSelection(isSelected);
+    });
   }
 
   public render() {
@@ -32,10 +51,6 @@ class ProductGalleryRow<TModel extends Model> extends BaseRow {
     const imagePath = this.getImagePath();
     const badgeText = this.getBadgeText();
     const badgeLevel = this.getBadgeLevel();
-    const selection = {selected: false};
-
-    // Initialize the selection state
-    this.model.trigger('backgrid:isSelected', this.model, selection);
 
     const followProduct = () => {
       const technicalId = this.model.get('technical_id');
@@ -45,21 +60,12 @@ class ProductGalleryRow<TModel extends Model> extends BaseRow {
       });
     };
 
-    const selectProduct = (isSelected: boolean) => {
+    const notifySelection = (isSelected: boolean) => {
       this.model.trigger('backgrid:selected', this.model, isSelected);
-
-      // @fixme: the rerender cause the following warning in the console  "Warning: render(...): It looks like the React-rendered content of this container was removed without using React. This is not supported and will cause errors. Instead, call ReactDOM.unmountComponentAtNode to empty a container"
-      this.render();
     };
 
-    const card = (
-      <Card
-        fit="cover"
-        src={imagePath}
-        onClick={followProduct}
-        isSelected={selection.selected}
-        onSelect={selectProduct}
-      >
+    const productCard = (
+      <Card fit="cover" src={imagePath} onClick={followProduct} isSelected={this.selected} onSelect={notifySelection}>
         <BadgeContainer>
           <Badge level={badgeLevel}>{badgeText}</Badge>
         </BadgeContainer>
@@ -67,21 +73,42 @@ class ProductGalleryRow<TModel extends Model> extends BaseRow {
       </Card>
     );
 
-    this.renderReactElement(card, this.el);
+    // @fixme: the rerender cause the following warning in the console  "Warning: render(...): It looks like the React-rendered content of this container was removed without using React. This is not supported and will cause errors. Instead, call ReactDOM.unmountComponentAtNode to empty a container"
+    this.renderReactElement(productCard, this.el);
 
     return this;
   }
 
-  private renderReactElement(reactElement: React.ReactElement, container: Element) {
+  public remove() {
+    super.remove();
+    // @fixme unmount crashes the page
+    //this.unmountReact();
+
+    return this;
+  }
+
+  private renderReactElement(component: React.ReactElement, container: Element) {
     this.reactRef = container;
+
     ReactDOM.render(
-      React.createElement(
-        ThemeProvider,
-        {theme: pimTheme},
-        React.createElement(DependenciesProvider, null, reactElement)
-      ),
+      React.createElement(ThemeProvider, {theme: pimTheme}, React.createElement(DependenciesProvider, null, component)),
       this.reactRef
     );
+  }
+
+  /* @fixme unmount crashes the page
+        
+        private unmountReact() {
+          if (null !== this.reactRef) {
+            ReactDOM.unmountComponentAtNode(this.reactRef);
+            this.reactRef = null;
+          }
+        }
+     */
+
+  private updateSelection(isSelected: boolean) {
+    this.selected = isSelected;
+    this.render();
   }
 
   private isProductModel() {
