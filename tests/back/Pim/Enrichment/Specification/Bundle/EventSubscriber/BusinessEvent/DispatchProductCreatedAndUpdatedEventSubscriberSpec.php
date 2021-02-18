@@ -28,7 +28,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
 {
     function let(Security $security, MessageBusInterface $messageBus)
     {
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
     }
 
     function it_is_initializable(): void
@@ -54,7 +54,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $security->getUser()->willReturn($user);
 
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $product = new Product();
         $product->setIdentifier('product_identifier');
@@ -82,7 +82,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $security->getUser()->willReturn($user);
 
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $product = new Product();
         $product->setIdentifier('product_identifier');
@@ -110,7 +110,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $security->getUser()->willReturn($user);
 
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $product1 = new Product();
         $product1->setIdentifier('product_identifier_1');
@@ -147,7 +147,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $security->getUser()->willReturn($user);
 
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 2, new NullLogger()); // Bulk size of 2
+        $this->beConstructedWith($security, $messageBus, 2, new NullLogger(), new NullLogger()); // Bulk size of 2
 
         $product1 = new Product();
         $product1->setIdentifier('product_identifier_1');
@@ -191,7 +191,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
     function it_only_supports_product_event($security)
     {
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $this->createAndDispatchProductEvents(new GenericEvent(
             new \stdClass(),
@@ -204,7 +204,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
     function it_does_nothing_if_the_user_is_not_defined($security)
     {
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $product = new Product();
         $product->setIdentifier('product_identifier');
@@ -243,7 +243,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
                 throw new TransportException('An error occured');
             }
         };
-        $this->beConstructedWith($security, $messageBus, 10, $logger);
+        $this->beConstructedWith($security, $messageBus, 10, $logger, new NullLogger());
 
         $user = new User();
         $user->setUsername('julia');

@@ -2,3 +2,5 @@ monolog:
     handlers:
         event_api:
             type: "null"
+        business_event:
+            type: "null"
