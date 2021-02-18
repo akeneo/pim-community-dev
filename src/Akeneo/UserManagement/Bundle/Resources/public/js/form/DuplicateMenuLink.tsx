@@ -5,12 +5,12 @@ import {DuplicateUserApp} from '@akeneo-pim-community/user-ui';
 const Router = require('pim/router');
 const translate = require('oro/translator');
 
-type DuplicateActionProps = {
+type DuplicateMenuLinkProps = {
   userId: number;
   userCode: string;
 };
 
-const DuplicateOption = ({userId, userCode}: DuplicateActionProps) => {
+const DuplicateMenuLink = ({userId, userCode}: DuplicateMenuLinkProps) => {
   const [isAppOpened, openApp, closeApp] = useToggleState(false);
 
   const onDuplicateSuccess = (duplicatedUserId: number) => {
@@ -34,4 +34,4 @@ const DuplicateOption = ({userId, userCode}: DuplicateActionProps) => {
   );
 };
 
-export {DuplicateOption};
+export {DuplicateMenuLink};

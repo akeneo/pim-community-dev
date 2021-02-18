@@ -1,10 +1,10 @@
 import React from 'react';
 import {ReactView} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
-import {DuplicateOption} from './DuplicateOption';
+import {DuplicateMenuLink} from './DuplicateMenuLink';
 
 class DuplicateSecondaryAction extends ReactView {
   reactElementToMount() {
-    return <DuplicateOption userId={this.getFormData().meta.id} userCode={this.getFormData().code} />;
+    return <DuplicateMenuLink userId={this.getFormData().meta.id} userCode={this.getFormData().code} />;
   }
 }
 
