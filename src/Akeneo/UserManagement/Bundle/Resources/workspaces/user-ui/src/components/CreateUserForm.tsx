@@ -65,6 +65,15 @@ const CreateUserForm = ({userId, onCancel, onSuccess, onError}: CreateUserFormPr
       Object.values(watchAllFields).reduce((result: boolean, value: any) => result && value !== '', true)
     );
   };
+  const getInputType = (fieldName: string): string => {
+    if (['password', 'password_repeat'].includes(fieldName)) {
+      return 'password';
+    }
+    if ('email' === fieldName) {
+      return 'email';
+    }
+    return 'text';
+  };
 
   return (
     <FormContainer onSubmit={handleSubmit(onSubmit)} data-testid="form-create-user">
@@ -76,7 +85,7 @@ const CreateUserForm = ({userId, onCancel, onSuccess, onError}: CreateUserFormPr
             requiredLabel={translate('pim_common.required_label')}
           >
             <TextInput
-              type={['password', 'password_repeat'].includes(fieldName) ? 'password' : 'text'}
+              type={getInputType(fieldName)}
               name={fieldName}
               placeholder={translate('pim_user_management.entity.user.properties.' + fieldName)}
               onChange={() => {}}
