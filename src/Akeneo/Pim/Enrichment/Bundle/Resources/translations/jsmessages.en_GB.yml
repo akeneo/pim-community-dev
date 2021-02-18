@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Settings
+    mass_delete: Deletion
 flash:
   comment:
     create:
@@ -170,7 +171,7 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'variant axis'
       create: Add new
-      create_label: "Add a new {{ axes }}"
+      title_create_label: "]-Inf, 1]Add a new {{ axes }}|]1, Inf[Add a new {{ axes }}"
       required_label: '(variant axis)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variant product|]1, Inf[{{ complete }} / {{ total }} variant products"

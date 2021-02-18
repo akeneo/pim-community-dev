@@ -1,0 +1,12 @@
+<select class="select2 value"
+    <%- isEditable ? '' : 'disabled' %>
+    multiple="multiple"
+    name="filter-value"
+    data-placeholder="<%- __('pim_enrich.export.product.filter.' + shortname + '.empty_selection') %>"
+>
+<% _.each(scoreChoices, function (scoreChoice) { %>
+    <option value="<%- scoreChoice.id %>"<%- value && value.includes(scoreChoice.id.toString()) ? ' selected' : '' %>>
+    <%- scoreChoice.text.toUpperCase() %>
+    </option>
+<% }); %>
+</select>

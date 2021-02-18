@@ -19,6 +19,7 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException as ProductInvalidArgumentException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -549,7 +550,8 @@ class ProductController
                     $exception
                 );
             }
-            if ($exception instanceof InvalidArgumentException) {
+
+            if ($exception instanceof InvalidArgumentException || $exception instanceof ProductInvalidArgumentException) {
                 throw new AccessDeniedHttpException($exception->getMessage(), $exception);
             }
 

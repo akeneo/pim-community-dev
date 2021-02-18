@@ -237,9 +237,7 @@ class UserController
     }
 
     /**
-     * @param Request $request
-     *
-     * @return Response
+     * @AclAncestor("pim_user_user_create")
      */
     public function createAction(Request $request): Response
     {
@@ -280,6 +278,48 @@ class UserController
         $this->saver->save($user);
 
         return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));
+    }
+
+    /**
+     * @AclAncestor("pim_user_user_create")
+     */
+    public function duplicateAction(Request $request, int $identifier): Response
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
+        $baseUser = $this->getUserOr404($identifier);
+        $targetUser = $baseUser->duplicate();
+
+        $content = \json_decode($request->getContent(), true);
+        $passwordViolations = $this->validatePasswordCreate($content);
+        unset($content['password_repeat']);
+        $this->updater->update($targetUser, $content);
+        $violations = $this->validator->validate($targetUser);
+        if ($violations->count() > 0 || $passwordViolations->count() > 0) {
+            $normalizedViolations = [];
+            foreach ($violations as $violation) {
+                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                    $violation,
+                    'internal_api',
+                    ['user' => $targetUser]
+                );
+            }
+            foreach ($passwordViolations as $violation) {
+                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                    $violation,
+                    'internal_api',
+                    ['user' => $targetUser]
+                );
+            }
+
+            return new JsonResponse(['values' => $normalizedViolations], Response::HTTP_BAD_REQUEST);
+        }
+
+        $this->saver->save($targetUser);
+
+        return new JsonResponse($this->normalizer->normalize($targetUser, 'internal_api'));
     }
 
     /**

@@ -53,14 +53,14 @@ const getStepExecutionTrackingTitle = (step: StepExecutionTracking): string => {
   return translate(key);
 };
 
-const getStepExecutionTrackingProgressLabel = (step: StepExecutionTracking): string => {
+const getStepExecutionTrackingProgressLabel = (jobStatus: string | undefined, step: StepExecutionTracking): string => {
   const translate = useTranslate();
 
   switch (step.status) {
     case 'STARTING':
       return translate('pim_import_export.tracking.not_started');
     case 'STARTED':
-      if (!step.isTrackable) {
+      if (!step.isTrackable || 'Failed' === jobStatus) {
         return translate('pim_import_export.tracking.untrackable');
       }
 
@@ -86,14 +86,14 @@ const getStepExecutionTrackingProgressLabel = (step: StepExecutionTracking): str
   }
 };
 
-const JobExecutionProgress = ({steps}: {steps: StepExecutionTracking[]}) => {
+const JobExecutionProgress = ({jobStatus, steps}: {jobStatus: string | undefined; steps: StepExecutionTracking[]}) => {
   return (
     <Container>
       {steps.map((step: StepExecutionTracking, index: number) => (
         <ProgressBar
           key={index}
           title={getStepExecutionTrackingTitle(step)}
-          progressLabel={getStepExecutionTrackingProgressLabel(step)}
+          progressLabel={getStepExecutionTrackingProgressLabel(jobStatus, step)}
           level={guessStepExecutionTrackingLevel(step)}
           percent={getStepExecutionTrackingPercent(step)}
           size="large"

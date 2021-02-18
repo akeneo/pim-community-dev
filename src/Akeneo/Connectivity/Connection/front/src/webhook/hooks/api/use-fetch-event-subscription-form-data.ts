@@ -8,7 +8,6 @@ type EventSubscription = {
     enabled: boolean;
     secret: string | null;
     url: string | null;
-    connectionImage: string | null;
 };
 
 type EventSubscriptionsLimit = {
@@ -24,18 +23,8 @@ type FormData = {
 export const useFetchEventSubscriptionFormData = (connectionCode: string) => {
     const url = useRoute('akeneo_connectivity_connection_webhook_rest_get', {code: connectionCode});
 
-    const [eventSubscription, setEventSubscription] = useState<{
-        connectionCode: string;
-        enabled: boolean;
-        secret: string | null;
-        url: string | null;
-        connectionImage: string | null;
-    }>();
-
-    const [eventSubscriptionsLimit, setEventSubscriptionsLimit] = useState<{
-        limit: number;
-        current: number;
-    }>();
+    const [eventSubscription, setEventSubscription] = useState<EventSubscription>();
+    const [eventSubscriptionsLimit, setEventSubscriptionsLimit] = useState<EventSubscriptionsLimit>();
 
     const fetchEventSubscriptionFormData = useCallback(() => {
         fetchResult<FormData, unknown>(url).then(result => {

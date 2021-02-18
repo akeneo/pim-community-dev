@@ -35,7 +35,7 @@ class EventSubscriptionRequestsLimitReachedLogSpec extends ObjectBehavior
                 'type' => EventSubscriptionRequestsLimitReachedLog::TYPE,
                 'message' => EventSubscriptionRequestsLimitReachedLog::MESSAGE,
                 'limit' => 666,
-                'retry_after' => 90,
+                'retry_after_seconds' => 90,
                 'limit_reset' => '2021-01-01T00:01:30+00:00'
             ]
         );

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\FamilyVariantLoader;
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\ProductModelLoader;
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\AttributeLoader;
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\FamilyLoader;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductModelLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\AttributeLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyVariantLoader;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
@@ -44,7 +44,7 @@ class ProduceProductModelEventEndToEnd extends ApiTestCase
 
         $this->attributeLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.attribute');
         $this->familyLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.family');
-        $this->familyVariantLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.family_variant');
+        $this->familyVariantLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.family_variant');
         $this->productModelLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.product_model');
         $this->productModelRemover = $this->get('pim_catalog.remover.product_model');
     }

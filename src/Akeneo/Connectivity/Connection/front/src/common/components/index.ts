@@ -17,7 +17,6 @@ import {PageContent} from './PageContent';
 import {PageError} from './PageError';
 import {PageHeader} from './PageHeader';
 import {RuntimeError} from './RuntimeError';
-import {Section} from './Section';
 import {Select} from './select/Select';
 import {Select2, Select2Configuration} from './Select2';
 import {SmallHelper} from './SmallHelper';
@@ -49,7 +48,6 @@ export {
     PageHeader,
     RuntimeError,
     SecondaryActionsDropdownButton,
-    Section,
     Select,
     Select2,
     Select2Configuration,

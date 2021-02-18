@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\Connector\Writer\File;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldSplitter;
 
 /**
@@ -35,11 +36,14 @@ class DefaultColumnSorter implements ColumnSorterInterface
     public function sort(array $unsortedColumns, array $context = [])
     {
         $mainColumns = [];
+        $trailingColumns = [];
         $additionalColumns = [];
 
         foreach ($unsortedColumns as $column) {
             if ($this->isInOrderConf($column)) {
                 $mainColumns[] = $column;
+            } elseif ($this->isTrailingColumn($column)) {
+                $trailingColumns[] = $column;
             } else {
                 $additionalColumns[] = $column;
             }
@@ -47,8 +51,9 @@ class DefaultColumnSorter implements ColumnSorterInterface
 
         usort($mainColumns, [$this, 'compare']);
         natcasesort($additionalColumns);
+        natcasesort($trailingColumns);
 
-        return array_merge($mainColumns, $additionalColumns);
+        return array_merge($mainColumns, $additionalColumns, $trailingColumns);
     }
 
     /**
@@ -88,5 +93,10 @@ class DefaultColumnSorter implements ColumnSorterInterface
         $splitedColumn = $this->fieldSplitter->splitFieldName($column);
 
         return is_array($splitedColumn) ? $splitedColumn[0] : $column;
+    }
+
+    private function isTrailingColumn(string $column): bool
+    {
+        return 0 === strpos($column, sprintf('%s-', GetProductsWithQualityScoresInterface::FLAT_FIELD_PREFIX));
     }
 }

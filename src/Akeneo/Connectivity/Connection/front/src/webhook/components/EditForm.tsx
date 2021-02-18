@@ -36,7 +36,7 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
         clearError('url');
         setTestUrl({checking: true});
 
-        const result = await checkReachability(getValues('url'));
+        const result = await checkReachability(getValues('url'), getValues('secret'));
         if (isErr(result)) {
             throw new Error();
         }
@@ -47,6 +47,9 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
             setError('url', 'manual', result.value.message);
         }
     };
+
+    const isTestButtonDisabled = () =>
+        !getValues('url') || '' === getValues('url') || !getValues('secret') || '' === getValues('secret');
 
     const isActiveEventSubscriptionsLimitReached = () =>
         activeEventSubscriptionsLimit.current >= activeEventSubscriptionsLimit.limit;
@@ -63,7 +66,7 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
                                 placeholders={{limit: activeEventSubscriptionsLimit.limit.toString()}}
                             />{' '}
                             <Link
-                                href='https://help.akeneo.com/pim/serenity/articles/manage-your-connections.html#subscribe-to-events'
+                                href='https://help.akeneo.com/pim/serenity/articles/manage-event-subscription.html#activation'
                                 target='_blank'
                             >
                                 <Translate id='akeneo_connectivity.connection.webhook.active_event_subscriptions_limit_reached.link' />
@@ -90,8 +93,13 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
                         </Helper>
                     ),
                     true === testUrl?.status?.success && (
-                        <Helper inline level='info'>
+                        <Helper inline level='success'>
                             <Translate id={testUrl.status.message} />
+                        </Helper>
+                    ),
+                    isTestButtonDisabled() && (
+                        <Helper inline level='info'>
+                            <Translate id={'akeneo_connectivity.connection.webhook.helper.url.test_disabled'} />
                         </Helper>
                     ),
                 ]}
@@ -110,7 +118,7 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
                     />
                     <TestUrlButton
                         onClick={handleTestUrl}
-                        disabled={!getValues('url') || '' === getValues('url')}
+                        disabled={isTestButtonDisabled()}
                         loading={testUrl.checking}
                     />
                 </>

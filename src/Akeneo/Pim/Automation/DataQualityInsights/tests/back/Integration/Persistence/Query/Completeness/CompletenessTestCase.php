@@ -10,19 +10,15 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class CompletenessTestCase extends TestCase
+abstract class CompletenessTestCase extends DataQualityInsightsTestCase
 {
-    protected function getConfiguration()
-    {
-        return $this->catalog->useMinimalCatalog();
-    }
-
     protected function givenFamilies(array $familiesData): void
     {
         $families = array_map(function ($familyData) {
@@ -99,7 +95,7 @@ abstract class CompletenessTestCase extends TestCase
             return $channel;
         }, $channelsData);
 
-        $this->get('pim_catalog.saver.channel')->saveAll($channels);
+        $this->saveChannels($channels);
     }
 
     protected function givenChannels(array $channelsData): void
@@ -122,7 +118,7 @@ abstract class CompletenessTestCase extends TestCase
             return $channel;
         }, $channelsData);
 
-        $this->get('pim_catalog.saver.channel')->saveAll($channels);
+        $this->saveChannels($channels);
     }
 
     protected function givenAProductModel(string $productModelCode, string $familyVariant): ProductId

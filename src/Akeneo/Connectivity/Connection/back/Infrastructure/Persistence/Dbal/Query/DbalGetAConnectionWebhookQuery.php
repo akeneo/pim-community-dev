@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
@@ -25,7 +26,7 @@ class DbalGetAConnectionWebhookQuery implements GetAConnectionWebhookQuery
     public function execute(string $code): ?ConnectionWebhook
     {
         $query = <<<SQL
-    SELECT code, webhook_secret, webhook_url, webhook_enabled, image
+    SELECT code, webhook_secret, webhook_url, webhook_enabled
     FROM akeneo_connectivity_connection
     WHERE code = :code
 SQL;
@@ -39,8 +40,7 @@ SQL;
             $connectionWebhook['code'],
             (bool) $connectionWebhook['webhook_enabled'],
             $connectionWebhook['webhook_secret'],
-            $connectionWebhook['webhook_url'],
-            $connectionWebhook['image']
+            $connectionWebhook['webhook_url']
         );
     }
 }

@@ -19,5 +19,6 @@ class AkeneoMessengerExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('transport.yml');
+        $loader->load('purge.yml');
     }
 }

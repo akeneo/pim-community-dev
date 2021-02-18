@@ -34,7 +34,6 @@ const Column = styled.div<{withHelper: boolean}>`
 
 const Label = styled(Column)`
     color: ${({theme}) => theme.color.purple100};
-    font-weight: bold;
     padding-left: 20px;
 `;
 

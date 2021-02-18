@@ -3,6 +3,7 @@ import {Dropdown} from './Dropdown';
 import {Button, Image, Badge, Link, Checkbox} from '../../components';
 import {useBooleanState} from '../../hooks';
 import {SpaceContainer, useSelection} from '../../storybook/PreviewGallery';
+import {ArrowDownIcon} from '../../icons';
 
 <Meta
   title="Components/Dropdown"
@@ -14,6 +15,7 @@ import {SpaceContainer, useSelection} from '../../storybook/PreviewGallery';
     'Dropdown.ItemCollection': Dropdown.ItemCollection,
     'Dropdown.Item': Dropdown.Item,
   }}
+  parameters={{docs: {inlineStories: false}}}
 />
 
 # Dropdown (Beta)
@@ -43,13 +45,15 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 ## Playground
 
 <Canvas>
-  <Story name="Standard">
+  <Story name="Standard" height={260}>
     {args => {
-      const [isOpen, open, close] = useBooleanState();
+      const [isOpen, open, close] = useBooleanState(true);
       return (
         <SpaceContainer height={200}>
           <Dropdown {...args}>
-            <Button onClick={open}>Dropdown</Button>
+            <Button onClick={open}>
+              Dropdown <ArrowDownIcon />
+            </Button>
             {isOpen && (
               <Dropdown.Overlay verticalPosition="down" onClose={close}>
                 <Dropdown.Header>
@@ -75,13 +79,15 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 ## Simple Item
 
 <Canvas>
-  <Story name="Simple Item">
+  <Story name="Simple Item" height={230}>
     {args => {
-      const [isOpen, open, close] = useBooleanState();
+      const [isOpen, open, close] = useBooleanState(true);
       return (
-        <SpaceContainer height={200}>
+        <SpaceContainer height={170}>
           <Dropdown>
-            <Button onClick={open}>Simple</Button>
+            <Button onClick={open}>
+              Simple <ArrowDownIcon />
+            </Button>
             {isOpen && (
               <Dropdown.Overlay verticalPosition="down" onClose={close}>
                 <Dropdown.Header>
@@ -106,9 +112,9 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 ## Selectable Item
 
 <Canvas>
-  <Story name="Item with selection">
+  <Story name="Item with selection" height={260}>
     {args => {
-      const [isOpen, open, close] = useBooleanState();
+      const [isOpen, open, close] = useBooleanState(true);
       const firstSelection = useSelection();
       const secondSelection = useSelection();
       const thirdSelection = useSelection();
@@ -116,7 +122,9 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
       return (
         <SpaceContainer height={200}>
           <Dropdown>
-            <Button onClick={open}>Selectable</Button>
+            <Button onClick={open}>
+              Selectable <ArrowDownIcon />
+            </Button>
             {isOpen && (
               <Dropdown.Overlay verticalPosition="down" onClose={close}>
                 <Dropdown.Header>
@@ -148,13 +156,15 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 ## Image Item
 
 <Canvas>
-  <Story name="Item with image">
+  <Story name="Item with image" height={310}>
     {args => {
-      const [isOpen, open, close] = useBooleanState();
+      const [isOpen, open, close] = useBooleanState(true);
       return (
-        <SpaceContainer height={300}>
+        <SpaceContainer height={250}>
           <Dropdown>
-            <Button onClick={open}>With image</Button>
+            <Button onClick={open}>
+              With image <ArrowDownIcon />
+            </Button>
             {isOpen && (
               <Dropdown.Overlay verticalPosition="down" onClose={close}>
                 <Dropdown.Header>

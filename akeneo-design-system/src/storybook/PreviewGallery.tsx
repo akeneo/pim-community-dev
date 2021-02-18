@@ -80,8 +80,10 @@ const Scrollable = styled.div<{height: number}>`
 `;
 
 const SpaceContainer = styled.div<{width: number; height: number}>`
-  width: ${({width}) => `${width}px`};
-  height: ${({height}) => `${height}px`};
+  width: ${({width}) => (width ? `${width}px` : 'auto')};
+  height: ${({height}) => (height ? `${height}px` : 'auto')};
+  display: flex;
+  flex-direction: column;
 `;
 
 export {

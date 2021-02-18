@@ -56,7 +56,6 @@ const Title = styled.div`
     color: ${({theme}) => theme.color.purple100};
     display: block;
     font-size: ${({theme}) => theme.fontSize.bigger};
-    font-weight: bold;
     line-height: 1.2em;
     text-transform: uppercase;
     padding-top: 20px;
@@ -66,7 +65,6 @@ const Title = styled.div`
 const SubTitle = styled.div`
     color: ${({theme}) => theme.color.grey140};
     font-size: ${({theme}) => theme.fontSize.big};
-    font-weight: bold;
     line-height: 1.2em;
     padding-bottom: 20px;
 `;

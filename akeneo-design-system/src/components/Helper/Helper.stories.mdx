@@ -91,6 +91,9 @@ non fermentum diam nisl sit amet erat. `}
           <Helper {...args} level="error">
             There is an error. <Link href="#">Link</Link>
           </Helper>
+          <Helper {...args} level="success">
+            There is a success. <Link href="#">Link</Link>
+          </Helper>
         </>
       );
     }}
@@ -113,6 +116,9 @@ non fermentum diam nisl sit amet erat. `}
           <Helper {...args} inline={true} level="error">
             There is an error. <Link href="#">Link</Link>
           </Helper>
+          <Helper {...args} inline={true} level="success">
+            There is a success. <Link href="#">Link</Link>
+          </Helper>
         </>
       );
     }}
@@ -134,6 +140,9 @@ non fermentum diam nisl sit amet erat. `}
           </Helper>
           <Helper {...args} level="error" inline={true} icon={<Icons.UnviewIcon />}>
             Error level and inline
+          </Helper>
+          <Helper {...args} level="success" inline={true} icon={<Icons.MailIcon />}>
+            Success level and inline
           </Helper>
         </>
       );

@@ -31,7 +31,7 @@ class OptionsValue extends AbstractValue implements OptionsValueInterface
     /**
      * {@inheritdoc}
      */
-    public function getData(): ?array
+    public function getData(): array
     {
         return $this->data;
     }

@@ -7,6 +7,7 @@ enum Key {
   ArrowRight = 'ArrowRight',
   ArrowDown = 'ArrowDown',
   ArrowUp = 'ArrowUp',
+  Delete = 'Delete',
 }
 
 export {Key};

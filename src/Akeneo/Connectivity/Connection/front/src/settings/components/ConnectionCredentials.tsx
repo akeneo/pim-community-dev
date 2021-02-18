@@ -1,6 +1,6 @@
 import React, {FC, useContext} from 'react';
 import {useHistory} from 'react-router';
-import {HelperLink, Section, SmallHelper} from '../../common';
+import {HelperLink, SmallHelper} from '../../common';
 import {ConnectionCredentials as ConnectionCredentialsModel} from '../../model/connection-credentials';
 import {TranslateContext, Translate} from '../../shared/translate';
 import {CopiableCredential} from './credentials/CopiableCredential';
@@ -8,7 +8,7 @@ import {Credential, CredentialList} from './credentials/Credential';
 import {RegenerateButton} from './RegenerateButton';
 import {WrongCredentialsCombination} from '../../model/wrong-credentials-combinations';
 import {WrongCombinationsWarning} from './wrong-credentials/WrongCombinationsWarning';
-import {Helper, Link} from 'akeneo-design-system';
+import {Helper, Link, SectionTitle} from 'akeneo-design-system';
 
 type Props = {
     code: string;
@@ -23,7 +23,11 @@ export const ConnectionCredentials: FC<Props> = ({code, label, credentials: cred
 
     return (
         <>
-            <Section title={<Translate id='akeneo_connectivity.connection.edit_connection.credentials.title' />} />
+            <SectionTitle>
+                <SectionTitle.Title>
+                    <Translate id='akeneo_connectivity.connection.edit_connection.credentials.title' />
+                </SectionTitle.Title>
+            </SectionTitle>
             <div>
                 <SmallHelper>
                     <Translate

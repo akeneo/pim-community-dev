@@ -53,6 +53,7 @@ type JobExecution = {
   jobInstance: JobInstance;
   tracking: JobExecutionTracking;
   isStoppable: boolean;
+  status: string | undefined;
   isRunning: boolean;
   meta: {
     logExists: boolean;
