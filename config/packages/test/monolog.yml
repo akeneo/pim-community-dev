@@ -10,3 +10,5 @@ monolog:
             path: '%kernel.logs_dir%/%kernel.environment%.log'
         event_api:
             type: "null"
+        business_event:
+            type: "null"
