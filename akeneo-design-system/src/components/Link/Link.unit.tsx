@@ -1,36 +1,45 @@
 import React from 'react';
-import {render} from '../../storybook/test-util';
+import {render, screen} from '../../storybook/test-util';
 import {Link} from './Link';
 
 describe('A link', () => {
   it('it redirect user when user clicks on link', () => {
-    const {getByText} = render(<Link href="https://akeneo.com">Hello</Link>);
+    render(<Link href="https://akeneo.com">Hello</Link>);
 
-    const link = getByText('Hello');
-    expect((link as HTMLAnchorElement).href).toBe('https://akeneo.com/');
+    expect(screen.getByText('Hello')).toHaveAttribute('href', 'https://akeneo.com');
   });
 
-  it('it does not redirect user when user clicks on disabled link', () => {
-    const {getByText} = render(
+  it('it does not redirect user when user clicks on a disabled link', () => {
+    render(
       <Link href="https://akeneo.com" disabled={true}>
         Hello
       </Link>
     );
 
-    const link = getByText('Hello');
-    expect((link as HTMLAnchorElement).href).not.toBe('https://akeneo.com/');
+    expect(screen.getByText('Hello')).not.toHaveAttribute('href', 'https://akeneo.com');
+  });
+
+  it('it does not call onClick handler on a disabled link', () => {
+    const onClick = jest.fn();
+
+    render(
+      <Link onClick={onClick} href="https://akeneo.com" disabled={true}>
+        Hello
+      </Link>
+    );
+
+    expect(onClick).not.toHaveBeenCalled();
   });
 
   it('it automatically add noopener and noreferrer for security reason when link is open into another tab', () => {
-    const {getByText} = render(
+    render(
       <Link href="https://akeneo.com" target="_blank">
         Hello
       </Link>
     );
 
-    const link = getByText('Hello');
-    expect((link as HTMLAnchorElement).target).toBe('_blank');
-    expect((link as HTMLAnchorElement).rel).toContain('noopener noreferrer');
+    expect(screen.getByText('Hello')).toHaveAttribute('target', '_blank');
+    expect(screen.getByText('Hello')).toHaveAttribute('rel', 'noopener noreferrer');
   });
 });
 
@@ -42,6 +51,7 @@ describe('Link supports forwardRef', () => {
 });
 
 describe('Link supports ...rest props', () => {
-  const {container} = render(<Link data-my-attribute="my_value">My link</Link>);
-  expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+  render(<Link data-testid="my_value">My link</Link>);
+
+  expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
