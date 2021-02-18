@@ -12,4 +12,14 @@ class AttributeSpec extends ObjectBehavior
         $this->setType('pim_catalog_identifier');
         $this->isRequired()->shouldReturn(true);
     }
+
+    function it_returns_the_descriptions()
+    {
+        $this->addDescription('en_US', 'the description');
+        $this->addDescription('fr_FR', 'la description');
+        $this->getDescriptions()->shouldReturn([
+            'en_US' => 'the description',
+            'fr_FR' => 'la description',
+        ]);
+    }
 }

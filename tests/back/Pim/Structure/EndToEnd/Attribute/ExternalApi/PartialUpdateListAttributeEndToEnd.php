@@ -17,7 +17,7 @@ class PartialUpdateListAttributeEndToEnd extends ApiTestCase
         $data =
 <<<JSON
     {"code": "an_image","max_file_size": 800}
-    {"code": "picture","allowed_extensions":["jpg","gif"],"type":"pim_catalog_image","group":"other"}
+    {"code": "picture","allowed_extensions":["jpg","gif"],"type":"pim_catalog_image","group":"other","descriptions":{"en_US":"the description"}}
 JSON;
 
         $expectedContent =
@@ -62,6 +62,7 @@ JSON;
                 'localizable'            => false,
                 'scopable'               => false,
                 'labels'                 => [],
+                'descriptions'           => [],
                 'auto_option_sorting'    => null,
                 'default_value'          => null,
             ],
@@ -92,6 +93,7 @@ JSON;
                 'localizable'            => false,
                 'scopable'               => false,
                 'labels'                 => [],
+                'descriptions'           => ['en_US' => 'the description'],
                 'auto_option_sorting'    => null,
                 'default_value'          => null,
             ]
