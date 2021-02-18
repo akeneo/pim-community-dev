@@ -33,6 +33,7 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Yaml\Yaml;
 use Webmozart\Assert\Assert;
 
@@ -41,12 +42,13 @@ use Webmozart\Assert\Assert;
  */
 final class DataFixturesContext implements Context
 {
-    /** @var ContainerInterface */
-    private $container;
+    private ContainerInterface $container;
+    private TransportInterface $transport;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, TransportInterface $transport)
     {
         $this->container = $container;
+        $this->transport = $transport;
     }
 
     public function getContainer(): ContainerInterface
@@ -76,6 +78,7 @@ final class DataFixturesContext implements Context
         foreach ($table->getHash() as $data) {
             $this->createProduct($data);
         }
+        $this->purgeMessenger();
     }
 
     /**
@@ -212,6 +215,8 @@ final class DataFixturesContext implements Context
 
             $this->createProduct($product);
         }
+
+        $this->purgeMessenger();
     }
 
     /**
@@ -418,6 +423,7 @@ final class DataFixturesContext implements Context
             $this->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
             $this->refreshEsIndexes();
         }
+        $this->purgeMessenger();
     }
 
     /**
@@ -450,6 +456,7 @@ final class DataFixturesContext implements Context
             $this->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
             $this->refreshEsIndexes();
         }
+        $this->purgeMessenger();
     }
 
     /**
@@ -585,5 +592,14 @@ final class DataFixturesContext implements Context
     private function listToArray(string $list): array
     {
         return array_map('trim', explode(',', $list));
+    }
+
+    private function purgeMessenger(): void
+    {
+        while (!empty($envelopes = $this->transport->get())) {
+            foreach ($envelopes as $envelope) {
+                $this->transport->ack($envelope);
+            }
+        }
     }
 }

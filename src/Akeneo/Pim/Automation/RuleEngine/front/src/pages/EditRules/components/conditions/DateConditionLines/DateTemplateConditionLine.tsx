@@ -173,7 +173,6 @@ const DateTemplateConditionLine: React.FC<Props> = ({
                 label={translate(
                   'pimee_catalog_rule.form.date.label.date_type'
                 )}
-                name={name}
                 onChange={handleDateTypeChange}
                 value={dateType}
               />

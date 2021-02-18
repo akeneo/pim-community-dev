@@ -2,8 +2,10 @@
 
 namespace AkeneoTestEnterprise\Pim\Enrichment\Product\EndToEnd\InternalAPI;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use Akeneo\UserManagement\Component\Model\User;
 use AkeneoTest\Pim\Enrichment\EndToEnd\InternalApiTestCase;
 use Akeneo\Test\Integration\Configuration;
@@ -13,6 +15,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 class DuplicateProductEndToEnd extends InternalApiTestCase
 {
+    use AssertEventCountTrait;
+
     /** @var RouterInterface */
     private $router;
 
@@ -39,6 +43,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
             'product_to_duplicate',
             $normalizedProductToDuplicate
         );
+        $this->clearMessageBusObserver();
 
         $url = $this->router->generate('pimee_enrich_product_rest_duplicate', [
             'id' => $productToDuplicate->getId()
@@ -57,6 +62,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
         );
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertEventCount(1, ProductCreated::class);
 
         $duplicatedProduct = $this->get('pim_catalog.repository.product_without_permission')->findOneByIdentifier('duplicated_product');
         Assert::assertNotNull($duplicatedProduct);

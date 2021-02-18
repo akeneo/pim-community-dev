@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Writer\Database;
 
+use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\EventAggregatorInterface as ComputeTransformationEventAggregatorInterface;
 use Akeneo\AssetManager\Application\Asset\CreateAndEditAsset\CreateAndEditAssetCommand;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
@@ -21,9 +22,15 @@ class AssetWriterSpec extends ObjectBehavior
         CreateAssetHandler $createAssetHandler,
         EditAssetHandler $editAssetHandler,
         EventAggregatorInterface $eventAggregator,
+        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($createAssetHandler, $editAssetHandler, $eventAggregator);
+        $this->beConstructedWith(
+            $createAssetHandler,
+            $editAssetHandler,
+            $eventAggregator,
+            $computeTransformationEventAggregator
+        );
         $this->setStepExecution($stepExecution);
     }
 
@@ -90,9 +97,12 @@ class AssetWriterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_flushes_asset_events(EventAggregatorInterface $eventAggregator)
-    {
+    function it_flushes_asset_events(
+        EventAggregatorInterface $eventAggregator,
+        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator
+    ) {
         $eventAggregator->flushEvents()->shouldBeCalled();
+        $computeTransformationEventAggregator->flushEvents()->shouldBeCalled();
 
         $this->flush();
     }

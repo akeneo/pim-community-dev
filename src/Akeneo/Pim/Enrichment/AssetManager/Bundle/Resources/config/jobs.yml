@@ -224,6 +224,7 @@ services:
             - '@akeneo_assetmanager.application.asset.create_asset_handler'
             - '@akeneo_assetmanager.application.asset.edit_asset_handler'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator'
+            - '@akeneo_assetmanager.application.asset.subscribers.compute_asset_transformation_event_aggregator'
 
     # Flat value translator
     pimee_connector.flat_translators.attribute_value_translator.reference_entity_multiple_link:

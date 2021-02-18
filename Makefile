@@ -159,7 +159,7 @@ pim-prod: #Doc: run docker-compose up, clean symfony cache, reinstall assets, bu
 	$(MAKE) assets
 	$(MAKE) css
 	$(MAKE) dsm
-	$(MAKE) javascript-cloud
+	$(MAKE) javascript-prod
 	docker/wait_docker_up.sh
 	APP_ENV=prod $(MAKE) database
 
