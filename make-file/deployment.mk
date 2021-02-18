@@ -296,3 +296,7 @@ php-image-prod: #Doc: pull docker image for pim-enterprise-dev with the prod tag
 .PHONY: push-php-image-prod
 push-php-image-prod: #Doc: push docker image to docker hub
 	docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG}
+
+.PHONY: test-helm-cronjob
+test-helm-cronjob: 
+	bash $(PWD)/deployments/bin/clone_serenity.sh
