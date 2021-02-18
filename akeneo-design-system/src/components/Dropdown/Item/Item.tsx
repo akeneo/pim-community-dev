@@ -22,6 +22,11 @@ const ItemContainer = styled.div<{tall: boolean; disabled: boolean} & AkeneoThem
   display: flex;
   align-items: center;
   gap: 10px;
+  outline-style: none;
+
+  &:focus {
+    box-shadow: inset 0 0 0 2px ${getColor('blue', 40)};
+  }
 
   ${({disabled}) =>
     disabled
@@ -35,15 +40,15 @@ const ItemContainer = styled.div<{tall: boolean; disabled: boolean} & AkeneoThem
           a {
             color: ${getColor('grey', 120)};
           }
-          :hover a,
+
+          &:hover a,
           &:hover {
             background: ${getColor('grey', 20)};
             color: ${getColor('brand', 140)};
           }
-          :active a,
+          &:active a,
           &:active {
             color: ${getColor('brand', 100)};
-            font-style: italic;
             font-weight: 700;
           }
         `}
@@ -118,6 +123,7 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
                 ref: actionableRef,
                 decorated: false,
                 disabled,
+                tabIndex: -1,
               })}
             </ItemLabel>
             {disabled && <LockIcon size={18} />}
@@ -130,6 +136,7 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
         return React.cloneElement(child, {
           ref: actionableRef,
           readOnly: disabled,
+          tabIndex: -1,
         });
       }
 
@@ -139,10 +146,11 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
     return (
       <ItemContainer
         tall={tall}
-        tabIndex={null === actionableRef.current ? 0 : -1}
+        tabIndex={null === actionableRef.current && !disabled ? 0 : -1}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         disabled={disabled}
+        aria-disabled={disabled}
         {...rest}
         ref={forwardedRef}
       >
