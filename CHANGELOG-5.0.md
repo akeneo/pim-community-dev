@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.5 (2021-02-19)
+
 ## Bug fixes
 
 - AOB-1317: Fix deprecated nested ternary expression
