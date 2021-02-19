@@ -52,6 +52,7 @@ type TextareaInputProps = Override<
   (
     | {
         readOnly: true;
+        onChange?: (newValue: string) => void; // TODO This is not the right solution
       }
     | {
         readOnly?: boolean;
@@ -82,7 +83,14 @@ type TextareaInputProps = Override<
 
 const TextareaInput = React.forwardRef<HTMLDivElement, TextareaInputProps>(
   (
-    {characterLeftLabel, readOnly, onChange, defaultValue, invalid, ...rest}: TextareaInputProps,
+    {
+      characterLeftLabel,
+      readOnly,
+      onChange,
+      defaultValue,
+      invalid,
+      ...rest
+    }: TextareaInputProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const handleChange = useCallback(
