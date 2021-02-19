@@ -69,10 +69,13 @@ const CreateUserForm = ({userId, onCancel, onSuccess, onError}: CreateUserFormPr
     if (['password', 'password_repeat'].includes(fieldName)) {
       return 'password';
     }
-    if ('email' === fieldName) {
-      return 'email';
+    return 'email' === fieldName ? 'email' : 'text';
+  };
+  const getAutoComplete = (fieldName: string): string => {
+    if (['password', 'password_repeat'].includes(fieldName)) {
+      return 'new-password';
     }
-    return 'text';
+    return 'username' === fieldName ? 'off' : 'on';
   };
 
   return (
@@ -92,6 +95,7 @@ const CreateUserForm = ({userId, onCancel, onSuccess, onError}: CreateUserFormPr
               ref={register({required: true})}
               invalid={!!errors[fieldName] || Object.prototype.hasOwnProperty.call(backendErrors, fieldName)}
               required={true}
+              autoComplete={getAutoComplete(fieldName)}
             />
             {errors[fieldName] && <Helper level="error">{translate('pim_user_management.form.error.required')}</Helper>}
             {(backendErrors[fieldName] ?? []).map((errorMessage: string, key: number) => (
