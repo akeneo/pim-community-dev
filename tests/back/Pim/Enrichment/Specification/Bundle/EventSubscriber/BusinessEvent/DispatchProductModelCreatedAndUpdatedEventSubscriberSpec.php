@@ -218,7 +218,7 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
     function it_does_nothing_if_the_save_has_been_forced($security)
     {
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $productModel = new ProductModel();
         $productModel->setCode('product_model_code');
@@ -239,7 +239,7 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
                 throw new TransportException('An error occured');
             }
         };
-        $this->beConstructedWith($security, $messageBus, 10, $logger, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, $logger, new NullLogger(), new NullLogger());
 
         $user = new User();
         $user->setUsername('julia');

@@ -222,7 +222,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
     function it_does_nothing_if_the_save_has_been_forced($security)
     {
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $product = new Product();
         $product->setIdentifier('product_identifier');
@@ -243,7 +243,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
                 throw new TransportException('An error occured');
             }
         };
-        $this->beConstructedWith($security, $messageBus, 10, $logger, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, $logger, new NullLogger(), new NullLogger());
 
         $user = new User();
         $user->setUsername('julia');
