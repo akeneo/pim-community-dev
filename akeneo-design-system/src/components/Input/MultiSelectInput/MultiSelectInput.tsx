@@ -176,7 +176,8 @@ type MultiMultiSelectInputProps = Override<
 >;
 
 /**
- * Multi select input allows the user to select content and data when the expected user input is composed of multiple option values.
+ * Multi select input allows the user to select content and data
+ * when the expected user input is composed of multiple option values.
  */
 const MultiSelectInput = ({
   id,
