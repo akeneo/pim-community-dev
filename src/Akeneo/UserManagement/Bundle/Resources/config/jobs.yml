@@ -112,6 +112,19 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
 
+    pim_connector.job.csv_user_role_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'csv_user_role_import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.csv_user_role_import.import'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
+
     pim_connector.job.xlsx_user_import:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
@@ -125,7 +138,20 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
 
-    # Job default values
+    pim_connector.job.xlsx_user_role_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'xlsx_user_role_import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.xlsx_user_role_import.import'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
+
+    # Job defaults
     pim_user.job.job_parameters.default_values_provider.simple_csv_export:
         class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport'
         arguments:
@@ -152,6 +178,7 @@ services:
             -
                 - 'csv_user_group_import'
                 - 'csv_user_import'
+                - 'csv_user_role_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -161,6 +188,7 @@ services:
             -
                 - 'xlsx_user_group_import'
                 - 'xlsx_user_import'
+                - 'xlsx_user_role_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -191,6 +219,7 @@ services:
             -
                 - 'csv_user_group_import'
                 - 'csv_user_import'
+                - 'csv_user_role_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
@@ -200,5 +229,6 @@ services:
             -
                 - 'xlsx_user_group_import'
                 - 'xlsx_user_import'
+                - 'xlsx_user_role_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

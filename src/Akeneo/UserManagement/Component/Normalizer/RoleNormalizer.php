@@ -61,6 +61,7 @@ final class RoleNormalizer implements NormalizerInterface, CacheableSupportsMeth
         }
 
         return [
+            'role' => $role->getRole(),
             'label' => $role->getLabel(),
             'permissions' => $permissions,
         ];

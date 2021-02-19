@@ -37,3 +37,15 @@ services:
         arguments:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@pim_connector.array_converter.flat_to_standard.user'
+
+    pim_connector.reader.file.import.csv_user_role:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.import.user_role'
+
+    pim_connector.reader.file.import.xlsx_user_role:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.import.user_role'
