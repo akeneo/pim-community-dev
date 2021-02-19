@@ -18,11 +18,14 @@ const ItemLabel = styled.span`
 const ItemContainer = styled.div<{tall: boolean; disabled: boolean} & AkeneoThemedProps>`
   background: ${getColor('white')};
   height: ${({tall}) => (tall ? 44 : 34)}px;
+  line-height: ${({tall}) => (tall ? 44 : 34)}px;
   padding: 0 20px;
   display: flex;
   align-items: center;
   gap: 10px;
   outline-style: none;
+  cursor: pointer;
+  white-space: nowrap;
 
   &:focus {
     box-shadow: inset 0 0 0 2px ${getColor('blue', 40)};
