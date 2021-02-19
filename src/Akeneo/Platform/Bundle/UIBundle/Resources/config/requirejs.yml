@@ -843,6 +843,7 @@ config:
     pim/attribute-edit-form/properties/type:                pimui/js/attribute/form/properties/type
     pim/attribute-edit-form/properties/unique:              pimui/js/attribute/form/properties/unique
     pim/attribute-edit-form/properties/validation-regexp:   pimui/js/attribute/form/properties/validation-regexp
+    pim/attribute-edit-form/properties/descriptions:        pimui/js/attribute/form/properties/descriptions.tsx
     pim/attribute-edit-form/type-specific-form:             pimui/js/attribute/form/type-specific-form
     pim/attribute-edit-form/type-specific-form-registry:    pimui/js/attribute/form/type-specific-form-registry
     pim/attribute-edit-form:                                pimui/js/attribute/form/edit-form
