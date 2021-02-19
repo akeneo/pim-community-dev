@@ -8,6 +8,7 @@ Feature: Remove attribute from a family
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Peter"
 
+  @purge-messenger
   Scenario: Successfully remove an attribute from a family and display it as removable from product
     Given I am on the "accessories" family page
     And I visit the "Attributes" tab
@@ -18,6 +19,7 @@ Feature: Remove attribute from a family
     Then I should see the flash message "Attribute successfully removed from the family"
     When I am on the "1111111292" product page
     Then I should not see the text "Material"
+    And 0 event of type "product.updated" should have been raised
 
   @purge-messenger
   Scenario: Successfully remove an attribute from a family and it does not appear in the variant product product model edit pages

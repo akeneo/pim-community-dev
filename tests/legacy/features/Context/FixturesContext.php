@@ -258,6 +258,8 @@ class FixturesContext extends BaseFixturesContext
         foreach ($table->getHash() as $data) {
             $this->createProduct($data);
         }
+
+        $this->purgeMessengerEvents();
     }
 
     /**
@@ -580,6 +582,18 @@ class FixturesContext extends BaseFixturesContext
             $product['sku'] = $identifier;
 
             $this->createProduct($product);
+        }
+
+        $this->purgeMessengerEvents();
+    }
+
+    private function purgeMessengerEvents()
+    {
+        $transport = $this->getContainer()->get('messenger.transport.business_event');
+        while (!empty($envelopes = $transport->get())) {
+            foreach ($envelopes as $envelope) {
+                $transport->ack($envelope);
+            }
         }
     }
 
