@@ -2,6 +2,7 @@ import React from 'react';
 import {SelectInput} from './SelectInput';
 import {Locale} from '../../../components';
 import {render, screen, fireEvent} from '../../../storybook/test-util';
+import userEvent from '@testing-library/user-event';
 
 test('it renders its children properly', () => {
   const onChange = jest.fn();
@@ -169,12 +170,12 @@ test('it handles keyboard events', () => {
   );
 
   const clearButton = screen.getByTitle('clear');
-  fireEvent.keyDown(clearButton, {key: 'Enter', code: 'Enter'});
+  userEvent.type(clearButton, '{enter}');
 
   expect(onChange).toHaveBeenCalledWith(null);
 
   const openButton = screen.getByTitle('open');
-  fireEvent.keyDown(openButton, {key: 'Enter', code: 'Enter'});
+  userEvent.type(openButton, '{enter}');
 
   const germanOption = screen.queryByText('German');
   expect(germanOption).toBeInTheDocument();
@@ -183,7 +184,7 @@ test('it handles keyboard events', () => {
 test('SelectInput supports ...rest props', () => {
   const onChange = jest.fn();
   render(<SelectInput value="noice" data-testid="my_value" emptyResultLabel="Empty result" onChange={onChange} />);
-  expect(screen.getByRole('textbox')).toBeInTheDocument();
+  expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
 
 test('SelectInput does not support duplicated options', () => {
