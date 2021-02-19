@@ -17,6 +17,7 @@ Feature: Approve notifications
       | field | value          |
       | Name  | Summer t-shirt |
 
+  @purge-messenger
   Scenario: A notification is sent when I approve a proposal from the proposal grid
     Given I am logged in as "Julia"
     And I am on the proposals page
@@ -32,6 +33,7 @@ Feature: Approve notifications
       | success | Julia Stark has accepted your proposal for the product Summer t-shirt | You did a nice job on this proposal. Thank you! |
     When I click on the notification "Julia Stark has accepted your proposal for the product Summer t-shirt"
     Then I should be on the product "tshirt" edit page
+    And 1 event of type "product.updated" should have been raised
 
   Scenario: A notification is sent when I approve a proposal from the product draft page
     Given I am logged in as "Julia"
@@ -50,6 +52,7 @@ Feature: Approve notifications
     When I click on the notification "Julia Stark has accepted your proposal for the product Summer t-shirt"
     Then I should be on the product "tshirt" edit page
 
+  @purge-messenger
   Scenario: A notification is sent when I approve a proposal from mass approval
     Given I am logged in as "Julia"
     And I am on the proposals page
@@ -66,3 +69,4 @@ Feature: Approve notifications
       | success | Julia Stark has accepted your proposal for the product Summer t-shirt | You did a nice job on this proposal. Thank you! |
     When I click on the notification "Julia Stark has accepted your proposal for the product Summer t-shirt"
     Then I should be on the product "tshirt" edit page
+    And 1 event of type "product.updated" should have been raised
