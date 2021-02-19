@@ -257,6 +257,7 @@ test-prod:
 release:
 ifeq ($(CI),true)
 	git config user.name "Michel Tag"
+	git config user.email "akeneo-ci@akeneo.com"
 	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
 endif
 	bash $(PWD)/deployments/bin/release.sh ${OLD_IMAGE_TAG}
