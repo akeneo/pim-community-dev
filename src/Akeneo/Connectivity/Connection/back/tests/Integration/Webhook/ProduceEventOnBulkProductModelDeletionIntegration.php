@@ -1,12 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook;
 
-use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
-use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -16,8 +16,10 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProduceAPIEventOnBulkProductModelDeletionIntegration extends TestCase
+class ProduceEventOnBulkProductModelDeletionIntegration extends TestCase
 {
+    use AssertEventCountTrait;
+
     private SimpleFactoryInterface $productModelFactory;
     private BulkSaverInterface $productModelSaver;
     private ObjectUpdaterInterface $productModelUpdater;
@@ -48,22 +50,7 @@ class ProduceAPIEventOnBulkProductModelDeletionIntegration extends TestCase
         $this->productModelSaver->saveAll($productModels);
         $this->productModelRemover->removeAll($productModels);
 
-        $transport = self::$container->get('messenger.transport.business_event');
-
-        $envelopes = $transport->get();
-        $this->assertCount(2, $envelopes);
-
-        /** @var BulkEvent */
-        $bulkEvent = $envelopes[0]->getMessage();
-        $this->assertInstanceOf(BulkEvent::class, $bulkEvent);
-        $this->assertCount($count, $bulkEvent->getEvents());
-        $this->assertContainsOnlyInstancesOf(ProductModelCreated::class, $bulkEvent->getEvents());
-
-        /** @var BulkEvent */
-        $bulkEvent = $envelopes[1]->getMessage();
-        $this->assertInstanceOf(BulkEvent::class, $bulkEvent);
-        $this->assertCount($count, $bulkEvent->getEvents());
-        $this->assertContainsOnlyInstancesOf(ProductModelRemoved::class, $bulkEvent->getEvents());
+        $this->assertEventCount($count, ProductModelRemoved::class);
     }
 
     protected function getConfiguration(): Configuration

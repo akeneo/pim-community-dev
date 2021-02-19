@@ -14,7 +14,6 @@ use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
@@ -30,8 +29,7 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
         CompletenessCalculator $completenessCalculator,
         SaveProductCompletenesses $saveProductCompletenesses,
         StepExecution $stepExecution
-    )
-    {
+    ) {
         $this->beConstructedWith(
             $productQueryBuilderFactory,
             $familyReader,
@@ -125,7 +123,8 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
         SaveProductCompletenesses $saveProductCompletenesses,
         StepExecution $stepExecution,
         JobRepositoryInterface $jobRepository,
-        FamilyInterface $familyShoes
+        FamilyInterface $familyShoes,
+        EntityManagerClearerInterface $cacheClearer
     ) {
         $productQueryBuilderFactory->create()->willReturn($productQueryBuilder);
 
@@ -139,16 +138,17 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
             }, range(1, 1006)))
         );
 
-        $completenessCalculator->fromProductIdentifiers(Argument::type('array'))->shouldBeCalledTimes(2);
-        $saveProductCompletenesses->saveAll(Argument::type('array'))->shouldBeCalledTimes(2);
+        $completenessCalculator->fromProductIdentifiers(Argument::type('array'))->shouldBeCalledTimes(11);
+        $saveProductCompletenesses->saveAll(Argument::type('array'))->shouldBeCalledTimes(11);
+        $cacheClearer->clear()->shouldBeCalledTimes(10);
 
         $stepExecution->setTotalItems(1006)->shouldBeCalledOnce();
-        $stepExecution->incrementSummaryInfo('process', 1000)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process', 100)->shouldBeCalledTimes(10);
         $stepExecution->incrementSummaryInfo('process', 6)->shouldBeCalled();
-        $stepExecution->incrementProcessedItems(1000)->shouldBeCalledOnce();
+        $stepExecution->incrementProcessedItems(100)->shouldBeCalledTimes(10);
         $stepExecution->incrementProcessedItems(6)->shouldBeCalledOnce();
 
-        $jobRepository->updateStepExecution($stepExecution)->shouldBeCalledTimes(2);
+        $jobRepository->updateStepExecution($stepExecution)->shouldBeCalledTimes(11);
 
         $this->execute();
     }
