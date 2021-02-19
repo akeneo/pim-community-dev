@@ -1151,6 +1151,7 @@ class User implements UserInterface
 
         $duplicated->setRoles($this->roles);
         $duplicated->setGroups($this->groups->toArray());
+        $duplicated->setProductGridFilters($this->productGridFilters);
         foreach ($this->defaultGridViews as $datagridView) {
             if ($datagridView->isPublic()) {
                 $duplicated->setDefaultGridView($datagridView->getDatagridAlias(), $datagridView);
