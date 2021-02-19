@@ -1,4 +1,4 @@
-import { LabelCollection } from "./label-collection";
+import {LabelCollection} from './label-collection';
 
 type CategoryCode = string;
 
@@ -9,4 +9,4 @@ type Category = {
   labels: LabelCollection;
 };
 
-export type { Category, CategoryCode };
+export type {Category, CategoryCode};

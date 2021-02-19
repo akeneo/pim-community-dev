@@ -129,7 +129,7 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
   };
 
   return (
-    <div>
+    <>
       <CategoryTreesContainer>
         <CategoryTreeSwitcher trees={trees} onClick={switchTree} />
         <CategoryTreeContainer>
@@ -158,7 +158,7 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
         noLabel={translate('pim_common.no')}
         onChange={handleIncludeSubCategoriesChange}
       />
-    </div>
+    </>
   );
 };
 
