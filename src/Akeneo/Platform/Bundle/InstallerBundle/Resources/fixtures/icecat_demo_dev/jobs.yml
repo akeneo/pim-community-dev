@@ -792,6 +792,23 @@ jobs:
         type: import
         configuration:
             filePath: /tmp/user.xlsx
+    csv_user_role_import:
+        connector: Akeneo CSV Connector
+        alias: csv_user_role_import
+        label: Demo CSV user role import
+        type: import
+        configuration:
+            filePath: /tmp/user_role.csv
+            uploadAllowed: true
+            delimiter: ;
+            enclosure: '"'
+    xlsx_user_role_import:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_user_role_import
+        label: Demo XLSX user role import
+        type: import
+        configuration:
+            filePath: /tmp/user_role.xlsx
             uploadAllowed: true
     compute_completeness_of_products_family:
         connector: internal

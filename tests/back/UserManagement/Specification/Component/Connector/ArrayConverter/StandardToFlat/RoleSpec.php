@@ -24,6 +24,7 @@ class RoleSpec extends ObjectBehavior
     function it_converts_a_role_in_flat_format(FieldsRequirementChecker $fieldsRequirementChecker)
     {
         $role = [
+            'role' => 'ROLE_ADMINISTRATOR',
             'label' => 'Administrator',
             'permissions' => [
                 ['id' => 'action:pim_enrich_product_create'],
@@ -31,10 +32,11 @@ class RoleSpec extends ObjectBehavior
             ],
         ];
 
-        $fieldsRequirementChecker->checkFieldsPresence($role, ['label'])->shouldBeCalled();
+        $fieldsRequirementChecker->checkFieldsPresence($role, ['role', 'label'])->shouldBeCalled();
 
         $convertedRole = $this->convert($role);
         $convertedRole->shouldHaveKey('label');
+        $convertedRole['role']->shouldBe('ROLE_ADMINISTRATOR');
         $convertedRole['label']->shouldBe('Administrator');
         $convertedRole->shouldHaveKey('permissions');
         $convertedRole['permissions']->shouldBe('action:pim_enrich_product_create,action:pim_enrich_product_index');

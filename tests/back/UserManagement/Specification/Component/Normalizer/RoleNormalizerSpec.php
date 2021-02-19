@@ -43,6 +43,7 @@ class RoleNormalizerSpec extends ObjectBehavior
         AclPrivilegeRepository $aclPrivilegeRepository
     ) {
         $role = new Role('Administrator');
+        $role->setRole('ROLE_ADMINISTRATOR');
         $format = 'standard';
 
 
@@ -76,17 +77,21 @@ class RoleNormalizerSpec extends ObjectBehavior
 
 
         $this->supportsNormalization($role, $format)->shouldBe(true);
-        $this->normalize($role, 'array')->shouldBe(['label' => 'Administrator', 'permissions' => [
-            [
-                'id' => 'action:name1',
-                'name' => 'name1',
-                'group' => 'group1',
-                'type' => 'action',
-                'permissions' => [
-                    'EXECUTE' => ['name' => 'EXECUTE', 'access_level' => 1],
+        $this->normalize($role, 'array')->shouldBe([
+            'role' => 'ROLE_ADMINISTRATOR',
+            'label' => 'Administrator',
+            'permissions' => [
+                [
+                    'id' => 'action:name1',
+                    'name' => 'name1',
+                    'group' => 'group1',
+                    'type' => 'action',
+                    'permissions' => [
+                        'EXECUTE' => ['name' => 'EXECUTE', 'access_level' => 1],
+                    ],
                 ],
             ],
-        ]]);
+        ]);
     }
 
     function it_cannot_normalize_a_non_role_class_instance()
