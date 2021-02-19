@@ -64,3 +64,9 @@ batch_jobs:
 
 pim_title:
     pimee_enrich_locale_edit: Locale | Edit
+
+pim_analytics:
+    info_type:
+        nb_custom_locale_accesses: Number of custom locale accesses
+        nb_custom_category_accesses: Number of custom category accesses
+        nb_custom_attribute_group_accesses: Number of custom attribute group accesses

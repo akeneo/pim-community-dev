@@ -229,3 +229,8 @@ pim_title:
     pimee_workflow_proposal_index: Proposals
     pimee_workflow_published_product_index: Published products
     pimee_workflow_published_product_view: Published product {{ product.label }} | View
+
+pim_analytics:
+    info_type:
+        nb_published_products: Number of published product
+        nb_product_drafts: Number of product drafts
