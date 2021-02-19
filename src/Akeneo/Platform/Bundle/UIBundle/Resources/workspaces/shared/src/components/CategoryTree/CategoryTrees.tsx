@@ -5,6 +5,7 @@ import {Tree, getColor} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {CategoryTreeSwitcher} from './CategoryTreeSwitcher';
 import styled from 'styled-components';
+import {CategoryValue} from './RecursiveCategoryTree';
 
 const CategoryTreesContainer = styled.div`
   height: calc(100vh - 110px);
@@ -123,8 +124,12 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
     />
   );
 
+  const isCategorySelected: (category: CategoryValue) => boolean = category => {
+    return category.id === selectedTreeId;
+  };
+
   return (
-    <div>
+    <>
       <CategoryTreesContainer>
         <CategoryTreeSwitcher trees={trees} onClick={switchTree} />
         <CategoryTreeContainer>
@@ -136,7 +141,7 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
                   init={() => customInitTree(tree)}
                   childrenCallback={childrenCallback}
                   onClick={handleClick}
-                  categoryId={selectedTreeId}
+                  isCategorySelected={isCategorySelected}
                   initCallback={handleInitCallback}
                 />
               )
@@ -153,7 +158,7 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
         noLabel={translate('pim_common.no')}
         onChange={handleIncludeSubCategoriesChange}
       />
-    </div>
+    </>
   );
 };
 

@@ -97,7 +97,8 @@ const CategoryTreeSwitcher: React.FC<CategoryTreeSwitcherProps> = ({trees, onCli
           {filteredTrees.length ? (
             <Dropdown.ItemCollection role="listbox">
               {filteredTrees.map(tree => (
-                <Dropdown.Item role="option"
+                <Dropdown.Item
+                  role="option"
                   key={tree.code}
                   onClick={() => {
                     onClick(tree.id);

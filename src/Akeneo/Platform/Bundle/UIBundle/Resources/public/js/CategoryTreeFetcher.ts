@@ -1,4 +1,4 @@
-import {CategoryTreeModel} from '@akeneo-pim-community/shared/src/components/CategoryTree/CategoryTree';
+import {CategoryTreeModel} from '@akeneo-pim-community/shared';
 
 type CategoryResponse = {
   attr: {
