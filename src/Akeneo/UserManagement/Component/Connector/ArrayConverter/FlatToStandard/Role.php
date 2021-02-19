@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\UserManagement\Component\Connector\ArrayConverter\StandardToFlat;
+namespace Akeneo\UserManagement\Component\Connector\ArrayConverter\FlatToStandard;
 
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -13,6 +14,8 @@ use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
  */
 final class Role implements ArrayConverterInterface
 {
+    private const ACL_EXTENSION_KEY = 'action';
+    private const ACL_DEFAULT_PERMISSION = 'EXECUTE';
     private const FIELDS_PRESENCE = ['role', 'label'];
 
     private FieldsRequirementChecker $fieldsRequirementChecker;
@@ -29,11 +32,17 @@ final class Role implements ArrayConverterInterface
      * [
      *      'role' => 'ROLE_ADMINISTRATOR',
      *      'label' => 'Administrators',
+     *      'permissions' => 'action:pim_enrich_product_create,action:pim_enrich_product_index',
+     * ]
+     *
+     * After:
+     * [
+     *      'role' => 'ROLE_ADMINISTRATOR',
+     *      'label' => 'Administrators',
      *      'permissions' => [
      *          [
      *              'id' => 'action:pim_enrich_product_create',
      *              'name' => 'pim_enrich_product_create',
-     *              'group' => 'pim_enrich.acl_group.product',
      *              'type' => 'action',
      *              'permissions' => [
      *                  'EXECUTE' => [
@@ -45,7 +54,6 @@ final class Role implements ArrayConverterInterface
      *          [
      *              'id' => 'action:pim_enrich_product_index',
      *              'name' => 'pim_enrich_product_index',
-     *              'group' => 'pim_enrich.acl_group.product',
      *              'type' => 'action',
      *              'permissions' => [
      *                  'EXECUTE' => [
@@ -56,32 +64,45 @@ final class Role implements ArrayConverterInterface
      *          ],
      *      ],
      * ]
-     *
-     * After:
-     * [
-     *      'role' => 'ROLE_ADMINISTRATOR',
-     *      'label' => 'Administrators',
-     *      'permissions' => 'action:pim_enrich_product_create,action:pim_enrich_product_index',
-     * ]
      */
     public function convert(array $item, array $options = []): array
     {
         $this->fieldsRequirementChecker->checkFieldsPresence($item, static::FIELDS_PRESENCE);
+        $this->fieldsRequirementChecker->checkFieldsFilling($item, static::FIELDS_PRESENCE);
 
         $convertedItem = [];
         foreach ($item as $property => $data) {
             switch ($property) {
                 case 'permissions':
-                    $convertedItem[$property] = implode(',', array_map(
-                        fn (array $privilege) => $privilege['id'],
-                        $data
-                    ));
+                    $convertedItem[$property] = $this->convertPermissions($data);
                     break;
                 default:
                     $convertedItem[$property] = (string) $data;
             }
         }
 
-        return $convertedItem;
+        return array_merge(['permissions' => []], $convertedItem);
+    }
+
+    private function convertPermissions(string $data): array
+    {
+        $flatPermissionIds = explode(',', $data);
+
+        $standardPermissions = [];
+        foreach ($flatPermissionIds as $flatPermissionId) {
+            $standardPermissions[] = [
+                'id' => $flatPermissionId,
+                'name' => false !== strpos($flatPermissionId, ':')
+                    ? substr($flatPermissionId, strpos($flatPermissionId, ':') + 1)
+                    : $flatPermissionId,
+                'type' => static::ACL_EXTENSION_KEY,
+                'permissions' => [static::ACL_DEFAULT_PERMISSION => [
+                    'name' => static::ACL_DEFAULT_PERMISSION,
+                    'access_level' => AccessLevel::BASIC_LEVEL,
+                ]],
+            ];
+        }
+
+        return $standardPermissions;
     }
 }

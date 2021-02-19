@@ -67,6 +67,10 @@ Akeneo\UserManagement\Component\Model\Role:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: label
     properties:
+        role:
+            - Regex:
+                  pattern: '/^(IS_AUTHENTICATED_ANONYMOUSLY|ROLE_[0-9A-Z_]*)$/'
+                  message: pim_user.role.invalid_role_format
         label:
             - NotBlank:     ~
             - Length:

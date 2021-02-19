@@ -50,10 +50,10 @@ final class ExportUserRoleIntegration extends TestCase
         $csv = trim($this->jobLauncher->launchExport(static::CSV_EXPORT_JOB_CODE, null, []));
         $lines = explode(PHP_EOL, $csv);
         self::assertCount(4, $lines);
-        self::assertSame('label;permissions', $lines[0]);
-        self::assertStringContainsString('Administrator', $lines[1]);
-        self::assertStringContainsString('Catalog manager', $lines[2]);
-        self::assertStringContainsString('User', $lines[3]);
+        self::assertSame('role;label;permissions', $lines[0]);
+        self::assertStringContainsString('ROLE_ADMINISTRATOR;Administrator;', $lines[1]);
+        self::assertStringContainsString('ROLE_CATALOG_MANAGER;"Catalog manager";', $lines[2]);
+        self::assertStringContainsString('ROLE_USER;User;', $lines[3]);
 
         $permissionsForAdministrator = $this->getPermissions($lines[1]);
         self::assertContains('action:oro_config_system', $permissionsForAdministrator);
@@ -70,7 +70,7 @@ final class ExportUserRoleIntegration extends TestCase
     private function getPermissions(string $csvLine): array
     {
         $cells = explode(';', $csvLine);
-        $stringPermissions = $cells[1] ?? '';
+        $stringPermissions = $cells[2] ?? '';
 
         return explode(',', $stringPermissions);
     }

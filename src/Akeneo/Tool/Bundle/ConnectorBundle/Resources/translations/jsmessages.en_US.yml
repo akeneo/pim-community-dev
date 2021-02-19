@@ -100,6 +100,9 @@ batch_jobs:
     csv_user_import:
         label: User import in CSV
         import.label: User import
+    csv_user_role_import:
+        label: User role import in CSV
+        import.label: User role import
     xlsx_category_import:
         label: Category import in XLSX
         import.label: Category import
@@ -181,3 +184,6 @@ batch_jobs:
     xlsx_user_import:
         label: User import in XLSX
         import.label: User import
+    xlsx_user_role_import:
+        label: User role import in XLSX
+        import.label: User role import
