@@ -157,7 +157,7 @@ SQL;
         return $idFromDatabase;
     }
 
-    protected function updateProductWithInternalApi(string $identifier, array $data): Response
+    protected function updateProductWithInternalApi(string $identifier, array $data): void
     {
         $this->client->request(
             'POST',
@@ -169,8 +169,50 @@ SQL;
             ],
             json_encode($data)
         );
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
 
-        return $this->client->getResponse();
+    protected function updateFamilyVariantWithInternalApi(string $identifier, array $data): void
+    {
+        if (isset($data['meta'])) {
+            unset($data['meta']);
+        }
+        $this->client->request(
+            'PUT',
+            sprintf('/configuration/rest/family-variant/%s', $identifier),
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ],
+            json_encode($data)
+        );
+        $response = $this->client->getResponse();
+        $this->assertSame(
+            Response::HTTP_OK,
+            $response->getStatusCode(),
+            'Family variant has not been updated.'
+        );
+        $this->launchAndWaitForJob('compute_family_variant_structure_changes');
+    }
+
+    protected function getFamilyVariantWithInternalApi(string $identifier)
+    {
+        $this->client->request(
+            'GET',
+            sprintf('/configuration/rest/family/family-variant/%s', $identifier),
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+
+        return json_decode($response->getContent(), true);
     }
 
     /**
