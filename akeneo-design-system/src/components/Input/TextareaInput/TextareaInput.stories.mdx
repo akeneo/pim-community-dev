@@ -1,0 +1,91 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {TextareaInput} from './TextareaInput.tsx';
+
+<Meta
+  title="Components/Inputs/Textarea input"
+  component={TextareaInput}
+  argTypes={{
+    readOnly: {
+      control: {type: 'boolean'},
+      description:
+        'Defines if the input should be read only. If defined so, the user cannot change the value of the input.',
+      table: {type: {summary: 'boolean'}},
+    },
+    onChange: {
+      description: 'The handler called when the value of the input changes.',
+      table: {type: {summary: '(newValue: string) => void'}},
+    },
+  }}
+  args={{
+    defaultValue: '',
+    placeholder: 'Please enter a value in the TextareaInput',
+  }}
+/>
+
+# Textarea Input
+
+## Usage
+
+Textarea input allows the user to enter content and data when the expected user input is a text containing multiple lines.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <TextareaInput {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on readOnly
+
+<Canvas>
+  <Story name="ReadOnly">
+    {args => {
+      return (
+        <>
+          <TextareaInput {...args} readOnly={false} />
+          <TextareaInput {...args} readOnly={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on invalid
+
+<Canvas>
+  <Story name="Invalid">
+    {args => {
+      return (
+        <>
+          <TextareaInput {...args} invalid={false} />
+          <TextareaInput {...args} invalid={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on character left label
+
+<Canvas>
+  <Story name="Character left label">
+    {args => {
+      const [value, setValue] = useState('');
+      const handleChange = newValue => setValue(newValue);
+      return (
+        <TextareaInput
+          placeholder="Type here to update the character left label"
+          defaultValue={value}
+          onChange={handleChange}
+          characterLeftLabel={`${250 - value.length} characters left`}
+        />
+      );
+    }}
+  </Story>
+</Canvas>
