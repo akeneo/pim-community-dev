@@ -43,10 +43,7 @@ final class RoleWithPermissionsWriter implements ItemWriterInterface, StepExecut
             fn (RoleWithPermissions $roleWithPermissions): RoleInterface => $roleWithPermissions->role(),
             $roleWithPermissions
         ));
-        array_walk(
-            $roleWithPermissions,
-            fn (RoleWithPermissions $roleWithPermissions) => $this->updatePermissions($roleWithPermissions)
-        );
+        array_walk($roleWithPermissions, [$this, 'updatePermissions']);
     }
 
     public function setStepExecution(StepExecution $stepExecution)
