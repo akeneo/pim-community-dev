@@ -4,6 +4,7 @@
 
 - PIM-9680: Fix filtering exports with reference entity attributes
 - PIM-9695: Backport of PIM-9503, ignore permissions when executing rules in a job step
+- PIM-9691: Fix filtering exports with assets collection attributes
 
 # 4.0.94 (2021-02-17)
 
