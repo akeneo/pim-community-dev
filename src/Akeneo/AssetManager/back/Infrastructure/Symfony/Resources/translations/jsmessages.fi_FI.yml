@@ -195,7 +195,7 @@ pim_asset_manager:
     #delete_all:
     #confirm: Are you sure you want to delete all "{{ entityIdentifier }}" assets? If they are linked to products, the links to the products will be removed.
     grid:
-      search: Esti otsikolla, koodilla tai tekstiattribuutilla
+      search: Etsi otsikolla, koodilla tai tekstiattribuutilla
       filter:
         completeness:
           label: Valmis
