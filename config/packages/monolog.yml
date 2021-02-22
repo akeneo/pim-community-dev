@@ -6,4 +6,10 @@ monolog:
       level: info
       channels: ['event_api']
       formatter: 'monolog.formatter.json'
-  channels: ['event_api']
+    business_event:
+      type: stream
+      path:  "php://stderr"
+      level: info
+      channels: ['business_event']
+      formatter: 'monolog.formatter.json'
+  channels: ['event_api', 'business_event']

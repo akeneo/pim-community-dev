@@ -16,7 +16,7 @@ import Evaluation, {
   CriterionEvaluationResult,
 } from '../../../../../../domain/Evaluation.interface';
 import {Recommendation, RecommendationType, RecommendationWithAttributesList} from '../Recommendation';
-import {useProduct, useProductFamily} from '../../../../../../infrastructure/hooks';
+import {useCatalogContext, useProduct, useProductFamily} from '../../../../../../infrastructure/hooks';
 import {criterionPlaceholder, evaluationPlaceholder, isSimpleProduct, isSuccess} from '../../../../../helper';
 import {
   AllowFollowingCriterionRecommendation,
@@ -158,12 +158,13 @@ const Criterion: FC<CriterionProps> = ({
   const criterion = code;
   const product = useProduct();
   const family = useProductFamily();
+  const {locale} = useCatalogContext();
   const isClickable = isFollowingCriterionRecommendationAllowed(criterionEvaluation, family, product);
   const handleFollowingCriterionRecommendation =
     !isClickable || followCriterionRecommendation === undefined
       ? undefined
       : () => {
-          followCriterionRecommendation(criterionEvaluation, family, product);
+          followCriterionRecommendation(criterionEvaluation, family, product, locale as string);
         };
 
   const recommendation = useMemo(() => {

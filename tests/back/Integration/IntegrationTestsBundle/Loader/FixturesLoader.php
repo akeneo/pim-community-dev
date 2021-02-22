@@ -22,6 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -95,6 +96,9 @@ class FixturesLoader implements FixturesLoaderInterface
     /** @var MeasurementInstaller */
     private $measurementInstaller;
 
+    /** @var TransportInterface */
+    private $transport;
+
     public function __construct(
         KernelInterface $kernel,
         DatabaseSchemaHandler $databaseSchemaHandler,
@@ -110,6 +114,7 @@ class FixturesLoader implements FixturesLoaderInterface
         Client $esClient,
         Connection $dbConnection,
         MeasurementInstaller $measurementInstaller,
+        TransportInterface $transport,
         string $databaseHost,
         string $databaseName,
         string $databaseUser,
@@ -143,6 +148,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $clientBuilder->setHosts([$elasticsearchHost]);
         $this->nativeElasticsearchClient = $clientBuilder->build();
         $this->measurementInstaller = $measurementInstaller;
+        $this->transport = $transport;
     }
 
     public function __destruct()
@@ -169,6 +175,7 @@ class FixturesLoader implements FixturesLoaderInterface
         } else {
             $this->loadData($configuration);
             $this->dumpDatabase($dumpFile);
+            $this->purgeMessengerEvents();
         }
 
         $this->nativeElasticsearchClient->indices()->refresh(['index' => $this->getIndexNames()]);
@@ -176,6 +183,15 @@ class FixturesLoader implements FixturesLoaderInterface
 
         $this->systemUserAuthenticator->createSystemUser();
 
+    }
+
+    protected function purgeMessengerEvents()
+    {
+        while (!empty($envelopes = $this->transport->get())) {
+            foreach ($envelopes as $envelope) {
+                $this->transport->ack($envelope);
+            }
+        }
     }
 
     protected function loadData(Configuration $configuration): void

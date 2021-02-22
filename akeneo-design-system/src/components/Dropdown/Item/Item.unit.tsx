@@ -19,11 +19,9 @@ test('It displays an item and add a label wrapper if needed', () => {
 
 test('It displays itself bigger if containing images', () => {
   render(
-    <>
-      <Item>
-        <Image src="" alt="A nice Image" />
-      </Item>
-    </>
+    <Item>
+      <Image src="" alt="A nice Image" />
+    </Item>
   );
 
   expect(screen.getByAltText('A nice Image')).toBeInTheDocument();
@@ -33,12 +31,10 @@ test('It transmit click and keydown events to links', () => {
   const clickHandler = jest.fn();
 
   render(
-    <>
-      <Item>
-        The Item
-        <Link onClick={clickHandler}>A link</Link>
-      </Item>
-    </>
+    <Item>
+      The Item
+      <Link onClick={clickHandler}>A link</Link>
+    </Item>
   );
 
   fireEvent.click(screen.getByText('The Item'));
@@ -53,12 +49,10 @@ test('It transmit click and keydown events to checkboxes', () => {
   const handleChange = jest.fn();
 
   render(
-    <>
-      <Item>
-        <Checkbox checked={false} onChange={handleChange} />
-        The Item
-      </Item>
-    </>
+    <Item>
+      <Checkbox checked={false} onChange={handleChange} />
+      The Item
+    </Item>
   );
 
   fireEvent.click(screen.getByText('The Item'));
@@ -67,4 +61,30 @@ test('It transmit click and keydown events to checkboxes', () => {
   expect(handleChange).toHaveBeenCalledTimes(3);
   fireEvent.keyDown(screen.getByText('The Item'), {key: 'ArrowDown', code: 'ArrowDown'});
   expect(handleChange).toHaveBeenCalledTimes(3);
+});
+
+it('It does not allow click or selection if the Item is disabled', () => {
+  const handler = jest.fn();
+
+  render(
+    <>
+      <Item disabled={true}>
+        <Link onClick={handler}>Nice Link</Link>
+      </Item>
+      <Item disabled={true}>
+        <Checkbox checked={false} onChange={handler} />
+        Nice Checkbox
+      </Item>
+    </>
+  );
+
+  const link = screen.getByText('Nice Link');
+  fireEvent.click(link);
+  expect(handler).not.toHaveBeenCalled();
+  expect(link).toHaveAttribute('disabled');
+
+  const checkbox = screen.getByRole('checkbox');
+  fireEvent.click(checkbox);
+  expect(handler).not.toHaveBeenCalled();
+  expect(checkbox).toHaveAttribute('readonly');
 });

@@ -6,7 +6,7 @@ Feature: Create product models through CSV import
   Background:
     Given the "catalog_modeling" catalog configuration
 
-  @critical
+  @critical @purge-messenger
   Scenario: Julia imports new root products models in CSV
     Given the following CSV file to import:
       """
@@ -17,6 +17,7 @@ Feature: Create product models through CSV import
     Then there should be the following root product model:
       | code     | categories | family_variant     | collection   | description-en_US-ecommerce | erp_name-en_US | price      |
       | code-001 | master_men | clothing_colorsize | [Spring2017] | description                 | Blazers_1654   | 100.00 EUR |
+    And 1 event of type "product_model.created" should have been raised
 
   @critical
   Scenario: Julia imports new products sub product models in CSV

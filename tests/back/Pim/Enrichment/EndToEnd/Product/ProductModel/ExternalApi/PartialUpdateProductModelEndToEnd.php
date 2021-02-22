@@ -2,23 +2,30 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateProductModelEndToEnd extends AbstractProductModelTestCase
 {
+    use AssertEventCountTrait;
+
     /**
      * {@inheritdoc}
      */
     public function setUp(): void
     {
         parent::setUp();
+        $this->createProduct('any_product');
 
         $this->createProductModel(
             [
                 'code' => 'sub_sweat',
                 'parent' => 'sweat',
                 'family_variant' => 'familyVariantA1',
+                'categories' => ['master', 'categoryA'],
                 'values'  => [
                     'a_simple_select' => [
                         [
@@ -27,12 +34,19 @@ class PartialUpdateProductModelEndToEnd extends AbstractProductModelTestCase
                             'data'   => 'optionB',
                         ],
                     ],
-                ]
-            ]
+                ],
+                'associations' => [
+                    'SUBSTITUTION' => [
+                        'groups' => [],
+                        'products' => ['any_product'],
+                        'product_models' => []
+                    ],
+                ],
+            ],
         );
 
         $this->createVariantProduct('apollon_optionb_false', [
-            'categories' => ['master'],
+            'categories' => ['categoryB'],
             'parent' => 'sub_sweat',
             'values' => [
                 'a_yes_no' => [
@@ -79,10 +93,140 @@ JSON;
             $response->headers->get('location')
         );
         $this->assertSame('', $response->getContent());
+        $this->assertEventCount(0, ProductUpdated::class);
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false');
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
         $this->assertSame($standardizedProduct['values']['a_text'][0]['data'], 'My awesome text');
+    }
+
+    public function testUpdateSubProductModelAssociation()
+    {
+        $this->createProduct('a_second_product');
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+{
+    "code": "sub_sweat",
+    "associations": {
+        "SUBSTITUTION": {
+            "products": ["any_product", "a_second_product"]
+        }
+    }
+}
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertArrayHasKey('location', $response->headers->all());
+        $this->assertSame(
+            'http://localhost/api/rest/v1/product-models/sub_sweat',
+            $response->headers->get('location')
+        );
+        $this->assertSame('', $response->getContent());
+        $this->assertEventCount(1, ProductModelUpdated::class);
+
+        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('sub_sweat');
+
+        $this->assertCount(2, $productModel->getAssociatedProducts('SUBSTITUTION'));
+    }
+
+    public function testRemoveSubProductModelAssociation()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+{
+    "code": "sub_sweat",
+    "associations": {
+        "SUBSTITUTION": {
+            "products": []
+        }
+    }
+}
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertArrayHasKey('location', $response->headers->all());
+        $this->assertSame(
+            'http://localhost/api/rest/v1/product-models/sub_sweat',
+            $response->headers->get('location')
+        );
+        $this->assertSame('', $response->getContent());
+        $this->assertEventCount(1, ProductModelUpdated::class);
+
+        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('sub_sweat');
+
+        $this->assertCount(0, $productModel->getAssociatedProducts('SUBSTITUTION'));
+    }
+
+    public function testUpdateSubProductModelCategories()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+{
+    "code": "sub_sweat",
+    "categories": ["master", "categoryA", "categoryA1"]
+}
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertArrayHasKey('location', $response->headers->all());
+        $this->assertSame(
+            'http://localhost/api/rest/v1/product-models/sub_sweat',
+            $response->headers->get('location')
+        );
+        $this->assertSame('', $response->getContent());
+        $this->assertEventCount(1, ProductModelUpdated::class);
+
+        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('sub_sweat');
+
+        $this->assertCount(3, $productModel->getCategories());
+    }
+
+    public function testRemoveSubProductModelCategories()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+{
+    "code": "sub_sweat",
+    "categories": ["master"]
+}
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertArrayHasKey('location', $response->headers->all());
+        $this->assertSame(
+            'http://localhost/api/rest/v1/product-models/sub_sweat',
+            $response->headers->get('location')
+        );
+        $this->assertSame('', $response->getContent());
+        $this->assertEventCount(1, ProductModelUpdated::class);
+
+        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('sub_sweat');
+
+        $this->assertCount(1, $productModel->getCategories());
     }
 
     public function testUpdateSubProductModelWithNonExistingProperty()
@@ -370,11 +514,13 @@ JSON;
             $response->headers->get('location')
         );
         $this->assertSame('', $response->getContent());
+        $this->assertEventCount(0, ProductUpdated::class);
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false');
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
         $this->assertSame($standardizedProduct['values']['a_number_float'][0]['data'], '15.3000');
 
+        $this->assertEventCount(1, ProductModelUpdated::class);
     }
 
     public function testSubProductModelCreation()
