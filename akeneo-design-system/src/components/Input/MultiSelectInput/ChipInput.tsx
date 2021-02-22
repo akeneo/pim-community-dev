@@ -26,7 +26,8 @@ const Container = styled.ul<AkeneoThemedProps & {invalid: boolean}>`
 
 const Chip = styled.li<AkeneoThemedProps & {isSelected: boolean; readOnly: boolean}>`
   list-style-type: none;
-  padding: ${({readOnly}) => (readOnly ? '3px 17px 3px 17px' : '3px 17px 3px 4px')};
+  padding: 3px 17px;
+  padding-left: ${({readOnly}) => (readOnly ? '17px' : '4px')};
   border: 1px ${getColor('grey', 80)} solid;
   background-color: ${({isSelected}) => (isSelected ? getColor('grey', 40) : getColor('grey', 20))};
   display: flex;
