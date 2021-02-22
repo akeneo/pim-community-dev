@@ -10,13 +10,6 @@ services:
       - { name: akeneo.pim.security.content_security_policy_provider }
       - { name: akeneo.pim.security.external_dependency_provider }
 
-  Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\POC\ExternalDependencies\Heap:
-    arguments:
-      - '@security.script_nonce_generator'
-    tags:
-      - { name: akeneo.pim.security.content_security_policy_provider }
-      - { name: akeneo.pim.security.external_dependency_provider }
-
   Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\POC\ContentSecurityProvider:
     arguments:
       - !tagged akeneo.pim.security.content_security_policy_provider

@@ -26,12 +26,13 @@ final class Appcues implements ExternalDependencyProviderInterface, ContentSecur
     public function getContentSecurityPolicy(): array
     {
         return [
-            'frame-src'   => ["'self'", "https://*.appcues.com"],
-            'style-src'   => ["'self'", "https://*.appcues.com", "https://*.appcues.net", "https://fonts.googleapis.com", "'unsafe-inline'"],
-            'script-src'  => ["'self'", "https://*.appcues.com", "https://*.appcues.net", "'unsafe-inline'"],
-            'img-src'     => ["'self'", "res.cloudinary.com", "twemoji.maxcdn.com"],
-            'connect-src' => ["https://*.appcues.com", "*.appcues.net", "ws:"],
-            'font-src'    => ["https://fonts.gstatic.com"]
+            'frame-src'       => ["'self'", "https://*.appcues.com"],
+            'style-src'       => ["'self'", "https://*.appcues.com", "https://*.appcues.net", "https://fonts.googleapis.com", "'unsafe-inline'"],
+            'script-src'      => ["'self'", "https://*.appcues.com", "https://*.appcues.net", "'unsafe-inline'"],
+            'script-src-attr' => ["'self'", "https://*.appcues.com", "https://*.appcues.net", "'unsafe-inline'"],
+            'img-src'         => ["'self'", "res.cloudinary.com", "twemoji.maxcdn.com"],
+            'connect-src'     => ["https://*.appcues.com", "*.appcues.net", "ws:"],
+            'font-src'        => ["https://fonts.gstatic.com"]
         ];
     }
 }

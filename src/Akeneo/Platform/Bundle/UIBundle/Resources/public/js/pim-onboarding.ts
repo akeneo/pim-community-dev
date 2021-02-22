@@ -31,15 +31,14 @@ class PimOnBoarding {
 
   public async registerPage(page: string) {
     setTimeout(() => {
-      this.heap.track('Page', {page});
-      //pendo is already initialized after the pendo library is loaded
+      //this.heap.track('Page', {page});
       this.appcues.page();
     }, 100);
   }
 
   public async registerUser() {
     setTimeout(() => {
-      this.registerUserWithHeap();
+      //this.registerUserWithHeap();
       this.registerUserWithAppcues();
     }, 100);
   }
