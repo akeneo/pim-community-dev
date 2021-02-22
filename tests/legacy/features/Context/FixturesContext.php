@@ -587,16 +587,6 @@ class FixturesContext extends BaseFixturesContext
         $this->purgeMessengerEvents();
     }
 
-    private function purgeMessengerEvents()
-    {
-        $transport = $this->getContainer()->get('messenger.transport.business_event');
-        while (!empty($envelopes = $transport->get())) {
-            foreach ($envelopes as $envelope) {
-                $transport->ack($envelope);
-            }
-        }
-    }
-
     /**
      * @param TableNode $table
      *
