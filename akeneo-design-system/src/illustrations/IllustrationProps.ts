@@ -10,6 +10,6 @@ type IllustrationProps = Override<
     animateOnHover?: boolean;
     ref?: RefObject<SVGSVGElement>;
   }
-  >;
+>;
 
 export type {IllustrationProps};
