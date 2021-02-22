@@ -82,21 +82,12 @@ class UserProcessorSpec extends ObjectBehavior
             'last_name' => 'Doe',
         ];
 
+        $user->getId()->willReturn(null);
         $factory->create()->shouldBeCalled()->willReturn($user);
-        $updater->update(
-            $user,
-            Argument::that(
-                function ($argument) use ($item): bool {
-                    $passwordIsSet = \is_array(
-                            $argument
-                        ) && isset($argument['password']) && '' !== $argument['password'];
-                    unset($argument['password']);
-
-                    return $passwordIsSet && $argument === $item;
-                }
-            )
-        )->shouldBeCalled();
+        $updater->update($user, $item)->shouldBeCalled();
         $validator->validate($user)->shouldBeCalled()->willReturn(new ConstraintViolationList([]));
+
+        $user->setPlainPassword(Argument::type('string'))->shouldBeCalled();
 
         $this->process($item)->shouldReturn($user);
     }

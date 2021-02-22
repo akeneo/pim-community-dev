@@ -47,11 +47,6 @@ class UserProcessor extends Processor
         if ($item['password'] ?? null) {
             $this->skipItemWithMessage($item, 'Passwords cannot be imported via flat files');
         }
-        $itemIdentifier = $this->getItemIdentifier($this->repository, $item);
-        $user = $this->repository->findOneByIdentifier($itemIdentifier);
-        if (null === $user) {
-            $item['password'] = \uniqid('tmp_pwd');
-        }
 
         $itemDefaultProductGridView = $item['default_product_grid_view'] ?? null;
         if (null !== $itemDefaultProductGridView) {
@@ -73,6 +68,11 @@ class UserProcessor extends Processor
             }
         }
 
-        return parent::process($item);
+        $user =  parent::process($item);
+        if (null === $user->getId()) {
+            $user->setPlainPassword(\uniqid('tmp_pwd'));
+        }
+
+        return $user;
     }
 }
