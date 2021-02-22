@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionRequestsLimitReachedLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep;
 use Psr\Log\LoggerInterface;
@@ -22,17 +23,20 @@ final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInte
     private int $webhookRequestsLimit;
     private Sleep $sleep;
     private LoggerInterface $logger;
+    private EventsApiDebugLogger $eventsApiDebugLogger;
 
     public function __construct(
         GetDelayUntilNextRequest $getDelayUntilNextRequest,
         int $webhookRequestsLimit,
         Sleep $sleep,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        EventsApiDebugLogger $eventsApiDebugLogger
     ) {
         $this->getDelayUntilNextRequest = $getDelayUntilNextRequest;
         $this->webhookRequestsLimit = $webhookRequestsLimit;
         $this->sleep = $sleep;
         $this->logger = $logger;
+        $this->eventsApiDebugLogger = $eventsApiDebugLogger;
     }
 
     public static function getSubscribedEvents(): array
@@ -60,6 +64,9 @@ final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInte
                     JSON_THROW_ON_ERROR
                 )
             );
+
+            $this->eventsApiDebugLogger->logLimitOfEventApiRequestsReached();
+            $this->eventsApiDebugLogger->flushLogs();
 
             $this->sleep->sleep($delayUntilNextRequest);
         }

@@ -29,3 +29,7 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_connectivity.connection.persistence.repository.events_api_debug:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Repository\ElasticsearchEventsApiDebugRepository
+        arguments:
+            - '@akeneo_connectivity.client.events_api_debug'
