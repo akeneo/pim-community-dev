@@ -44,14 +44,47 @@ class MassEditCategoriesOfEntitiesEndToEnd extends AbstractMassEditEndToEnd
         $this->assertEventCount(1, ProductModelUpdated::class);
     }
 
+    public function test_moving_to_a_category_to_entities_produces_event(): void
+    {
+        $this->executeMassEdit([
+            'filters' => [
+                [
+                    'field' => 'id',
+                    'operator' => Operators::IN_LIST,
+                    'value' => [
+                        $this->findESIdFor('1111111111', 'product'), // variant product
+                        $this->findESIdFor('watch', 'product'), // product
+                        $this->findESIdFor('apollon_yellow', 'product_model'),
+                    ],
+                    'context' => [
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                ]
+            ],
+            'jobInstanceCode' => 'move_to_category',
+            'actions' => [
+                [
+                    'field' => 'categories',
+                    'value' => ['supplier_the_tootles'],
+                ]
+            ],
+            'itemsCount' => 3,
+            'familyVariant' => null,
+            'operation' => 'move_to_category',
+        ]);
+
+        $this->assertEventCount(2, ProductUpdated::class);
+        $this->assertEventCount(1, ProductModelUpdated::class);
+    }
+
     public function test_removing_a_category_to_entities_produces_event(): void
     {
-        $response = $this->updateProductWithInternalApi('1111111119', [
+        $this->updateProductWithInternalApi('1111111119', [
             'identifier' => '1111111119',
             'values' => [],
             'categories' => ['print_accessories'],
         ]);
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->clearMessengerTransport();
 
         $this->executeMassEdit([
