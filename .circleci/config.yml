@@ -40,7 +40,7 @@ jobs:
             type: boolean
             default: true
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202010-01
     steps:
       - attach_workspace:
             at: ~/
@@ -118,7 +118,7 @@ jobs:
 
   test_back_static_and_acceptance:
       machine:
-          image: ubuntu-1604:201903-01
+          image: ubuntu-2004:202010-01
       steps:
           - attach_workspace:
                 at: ~/
@@ -155,7 +155,7 @@ jobs:
 
   test_back_integration_bounded_contexts:
       machine:
-          image: ubuntu-1604:201903-01
+          image: ubuntu-2004:202010-01
       steps:
           - attach_workspace:
                 at: ~/
@@ -189,7 +189,7 @@ jobs:
 
   test_back_integration_reference_entities:
       machine:
-          image: ubuntu-1604:201903-01
+          image: ubuntu-2004:202010-01
       steps:
           - attach_workspace:
                 at: ~/
@@ -217,7 +217,7 @@ jobs:
 
   test_back_phpunit:
       machine:
-          image: ubuntu-1604:201903-01
+          image: ubuntu-2004:202010-01
       parallelism: 20
       steps:
           - attach_workspace:
@@ -249,7 +249,7 @@ jobs:
 
   test_back_behat_legacy:
     machine:
-        image: ubuntu-1604:201903-01
+        image: ubuntu-2004:202010-01
     parallelism: 40
     steps:
       - attach_workspace:
@@ -305,7 +305,7 @@ jobs:
 
   test_front_code_style:
       machine:
-          image: ubuntu-1604:201903-01
+          image: ubuntu-2004:202010-01
       steps:
         - attach_workspace:
             at: ~/
@@ -324,7 +324,7 @@ jobs:
 
   test_front_static_acceptance_and_integration:
       machine:
-          image: ubuntu-1604:201903-01
+          image: ubuntu-2004:202010-01
       steps:
         - attach_workspace:
             at: ~/
@@ -340,7 +340,7 @@ jobs:
 
   test_back_performance:
     machine:
-        image: ubuntu-1604:201903-01
+        image: ubuntu-2004:202010-01
     steps:
       - attach_workspace:
           at: ~/
@@ -372,7 +372,7 @@ jobs:
       environment:
         <<: *envVarsDeployDev
       machine:
-          image: ubuntu-1604:201903-01
+          image: ubuntu-2004:202010-01
       steps:
           - attach_workspace:
                 at: ~/
@@ -394,6 +394,26 @@ jobs:
           - run:
               name: Push PROD PIM image on docker registry
               command: PIM_CONTEXT=deployment make push-php-image-prod
+
+  check_cloud_compliant:
+      environment:
+        <<: *envVarsDeployDev
+      machine:
+          image: ubuntu-2004:202010-01
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+              name: Install yq
+              command: |
+                  wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
+                  sudo mv yq_linux_386 /usr/local/bin/yq
+                  sudo chmod +x /usr/local/bin/yq
+          - run:
+              name: Test Cronjob jobs exists
+              command: PIM_CONTEXT=deployment make test-helm-cronjob
 
   test_deploy:
       environment:
@@ -472,7 +492,7 @@ jobs:
       environment:
           <<: *envVarsDeployDev
       machine:
-          image: ubuntu-1604:201903-01
+          image: ubuntu-2004:202010-01
       steps:
           - attach_workspace:
                   at: ~/
@@ -621,7 +641,7 @@ jobs:
 
   test_back_missing_structure_migrations:
       machine:
-        image: ubuntu-1604:201903-01
+        image: ubuntu-2004:202010-01
       steps:
         -   attach_workspace:
                 at: ~/
@@ -654,7 +674,7 @@ jobs:
 
   test_back_data_migrations:
       machine:
-          image: ubuntu-1604:201903-01
+          image: ubuntu-2004:202010-01
       steps:
           - attach_workspace:
                 at: ~/
@@ -682,7 +702,7 @@ jobs:
 
   test_onboarder_bundle:
       machine:
-          image: ubuntu-1604:201903-01
+          image: ubuntu-2004:202010-01
       environment:
           FLAG_ONBOARDER_ENABLED: 1
       steps:
@@ -756,7 +776,7 @@ jobs:
       environment:
         <<: *envVarsDeployDev
       machine:
-          image: ubuntu-1604:201903-01
+          image: ubuntu-2004:202010-01
       steps:
           - attach_workspace:
                 at: ~/
@@ -819,7 +839,7 @@ jobs:
       environment:
           <<: *envVarsDeployDev
       machine:
-          image: ubuntu-1604:201903-01
+          image: ubuntu-2004:202010-01
       steps:
           - attach_workspace:
                 at: ~/
@@ -859,10 +879,12 @@ workflows:
           - build_prod:
                 requires:
                     - checkout
-
-          - test_deploy:
+          - check_cloud_compliant:
                 requires:
                     - build_prod
+          - test_deploy:
+                requires:
+                    - check_cloud_compliant
           - test_upgrade_from_last_release:
                 requires:
                     - test_deploy
@@ -873,7 +895,7 @@ workflows:
                         ignore:
                             - master
                 requires:
-                    - build_prod
+                    - check_cloud_compliant
           - delete_pr_environment:
                 requires:
                     - delete_pr_environment?
@@ -908,7 +930,6 @@ workflows:
           - test_back_integration_reference_entities:
                 requires:
                     - build_dev
-
           - test_back_performance:
                 requires:
                     - build_dev
@@ -919,11 +940,7 @@ workflows:
 
           - test_back_data_migrations:
                 requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-                    - test_back_phpunit
-                    - test_back_integration_bounded_contexts
-                    - test_back_integration_reference_entities
+                    - build_dev
           - test_back_behat_legacy:
                 requires:
                     - test_back_static_and_acceptance
@@ -1029,12 +1046,15 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
+          - check_cloud_compliant:
+                requires:
+                    - build_prod
           - test_deploy:
                 requires:
-                    - build_prod
+                    - check_cloud_compliant
           - test_upgrade_from_last_release:
                 requires:
-                    - build_prod
+                    - check_cloud_compliant
           - test_front_code_style:
                 requires:
                     - build_dev
@@ -1097,9 +1117,12 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-          - test_deploy:
+          - check_cloud_compliant:
                 requires:
                     - build_prod
+          - test_deploy:
+                requires:
+                    - check_cloud_compliant
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev

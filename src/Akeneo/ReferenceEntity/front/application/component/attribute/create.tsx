@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
+import {Checkbox, Key} from 'akeneo-design-system';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import Flag from 'akeneoreferenceentity/tools/component/flag';
@@ -22,8 +23,6 @@ import referenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher
 import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import {isRecordAttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
-import Key from 'akeneoreferenceentity/tools/key';
-import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
 
 interface StateProps {
   context: {
@@ -284,47 +283,23 @@ class Create extends React.Component<CreateProps> {
                     </div>
                   ) : null}
                   <div className="AknFieldContainer" style={{position: 'static'}} data-code="valuePerChannel">
-                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                      <label
-                        className="AknFieldContainer-label"
-                        htmlFor="pim_reference_entity.attribute.create.input.value_per_channel"
-                      >
-                        <Checkbox
-                          id="pim_reference_entity.attribute.create.input.value_per_channel"
-                          value={this.props.data.value_per_channel}
-                          onChange={this.props.events.onValuePerChannelUpdated}
-                        />
-                        <span
-                          onClick={() => {
-                            this.props.events.onValuePerChannelUpdated(!this.props.data.value_per_channel);
-                          }}
-                        >
-                          {__('pim_reference_entity.attribute.create.input.value_per_channel')}
-                        </span>
-                      </label>
-                    </div>
+                    <Checkbox
+                      id="pim_reference_entity.attribute.create.input.value_per_channel"
+                      checked={this.props.data.value_per_channel}
+                      onChange={this.props.events.onValuePerChannelUpdated}
+                    >
+                      {__('pim_reference_entity.attribute.create.input.value_per_channel')}
+                    </Checkbox>
                     {getErrorsView(this.props.errors, 'valuePerChannel')}
                   </div>
                   <div className="AknFieldContainer" style={{position: 'static'}} data-code="valuePerLocale">
-                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                      <label
-                        className="AknFieldContainer-label"
-                        htmlFor="pim_reference_entity.attribute.create.input.value_per_locale"
-                      >
-                        <Checkbox
-                          id="pim_reference_entity.attribute.create.input.value_per_locale"
-                          value={this.props.data.value_per_locale}
-                          onChange={this.props.events.onValuePerLocaleUpdated}
-                        />
-                        <span
-                          onClick={() => {
-                            this.props.events.onValuePerLocaleUpdated(!this.props.data.value_per_locale);
-                          }}
-                        >
-                          {__('pim_reference_entity.attribute.create.input.value_per_locale')}
-                        </span>
-                      </label>
-                    </div>
+                    <Checkbox
+                      id="pim_reference_entity.attribute.create.input.value_per_locale"
+                      checked={this.props.data.value_per_locale}
+                      onChange={this.props.events.onValuePerLocaleUpdated}
+                    >
+                      {__('pim_reference_entity.attribute.create.input.value_per_locale')}
+                    </Checkbox>
                     {getErrorsView(this.props.errors, 'valuePerLocale')}
                   </div>
                   <button

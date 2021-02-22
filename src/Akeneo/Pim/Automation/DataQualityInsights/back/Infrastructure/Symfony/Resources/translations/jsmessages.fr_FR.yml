@@ -85,3 +85,31 @@ akeneo_data_quality_insights:
   product_grid:
     filter_label:
       spelling_quality: Qualité orthographique
+  dictionary:
+    helper:
+      content: Le dictionnaire vous permet d'enregistrer des mots qui seront ignorés par Data Quality Insight.
+      link_label: Plus d'informations sur notre centre d'aide.
+    words: Mots
+    searchPlaceholder: Recherche
+    add_words: Ajouter des mots
+    no_search_results:
+      title: Aucun résultat pour votre recherche
+      subtitle: Veuillez réessayer avec de nouveaux critères de recherche.
+    no_data:
+      title: Aucun mot pour l'instant
+pimee_enrich.entity.locale:
+  grid:
+    columns:
+      dictionary_words_count:
+        title: Nombre de mots
+        not_available: Non disponible
+    add_words: Ajouter mots
+    modal:
+      title: Ajouter des mots à {{ count }} locales
+      subtitle: Saisissez les mots ci-dessous. Ils seront ajoutés aux dictionnaires de toutes les locales sélectionnées.
+      locales_added_notification:
+        title: Mots ajoutés à {{ count }} locales
+        content: Les mots ont été ajoutés aux dictionnaires des locales sélectionnées.
+      no_supported_locales:
+        title: Les locales sélectionnés ne sont pas disponibles pour le correcteur orthographique.
+        content: Pour connaître la liste des locales disponibles pour le correcteur orthographique, veuillez consulter notre <a href="{{ link }}" target="_blank">Centre d'Aide</a>

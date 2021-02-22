@@ -56,6 +56,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
     isDeleteModalOpen: false,
   };
 
+  //TODO Use DSM Dropdown
   private getSecondaryActions = () => (
     <div className="AknSecondaryActions AknDropdown AknButtonList-item">
       <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />

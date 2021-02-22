@@ -1,0 +1,15 @@
+services:
+  Akeneo\Pim\TrialEdition\Infrastructure\ExternalJavascriptDependencies\Appcues:
+    arguments:
+      - '@Akeneo\Pim\TrialEdition\Infrastructure\ExternalJavascriptDependencies\ExternalDependenciesFeatureFlag'
+    tags:
+      - { name: akeneo.pim.security.content_security_policy_provider }
+      - { name: akeneo.pim.security.external_dependency_provider }
+
+  Akeneo\Pim\TrialEdition\Infrastructure\ExternalJavascriptDependencies\Heap:
+    arguments:
+      - '@security.script_nonce_generator'
+      - '@Akeneo\Pim\TrialEdition\Infrastructure\ExternalJavascriptDependencies\ExternalDependenciesFeatureFlag'
+    tags:
+      - { name: akeneo.pim.security.content_security_policy_provider }
+      - { name: akeneo.pim.security.external_dependency_provider }

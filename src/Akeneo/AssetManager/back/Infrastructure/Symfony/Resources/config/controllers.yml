@@ -140,6 +140,7 @@ services:
             - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetCommandFactory'
             - '@akeneo_assetmanager.application.asset.link_assets.link_asset_handler'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator'
+            - '@akeneo_assetmanager.application.asset.subscribers.compute_asset_transformation_event_aggregator'
 
     akeneo_assetmanager.infrastructure.action.asset.index:
         class: Akeneo\AssetManager\Infrastructure\Controller\Asset\IndexAction
@@ -163,6 +164,7 @@ services:
             - '@security.token_storage'
             - '@asset_manager_serializer'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator'
+            - '@akeneo_assetmanager.application.asset.subscribers.compute_asset_transformation_event_aggregator'
 
     akeneo_assetmanager.infrastructure.action.asset.delete:
         class: Akeneo\AssetManager\Infrastructure\Controller\Asset\DeleteAction
@@ -300,6 +302,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.connector.action.asset.batch_assets_to_link'
             - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Connector\EditAssetCommandFactory'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator'
+            - '@akeneo_assetmanager.application.asset.subscribers.compute_asset_transformation_event_aggregator'
 
     akeneo_assetmanager.infrastructure.connector.action.asset.delete:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\DeleteAssetAction
@@ -323,6 +326,7 @@ services:
             - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Connector\EditAssetCommandFactory'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator'
             - '%asset_family_connector_maximum_assets_to_process_per_request%'
+            - '@akeneo_assetmanager.application.asset.subscribers.compute_asset_transformation_event_aggregator'
 
     akeneo_assetmanager.infrastructure.connector.action.asset.batch_assets_to_link:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\BatchAssetsToLink

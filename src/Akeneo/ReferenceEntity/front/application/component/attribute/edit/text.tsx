@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
@@ -12,8 +12,7 @@ import {
 import {IsRichTextEditor} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-rich-text-editor';
 import {IsTextarea} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-textarea';
 import {MaxLength} from 'akeneoreferenceentity/domain/model/attribute/type/text/max-length';
-import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
-import Key from 'akeneoreferenceentity/tools/key';
+import {Checkbox, Key} from 'akeneo-design-system';
 
 const AttributeValidationRuleItemView = ({
   isOpen,
@@ -78,8 +77,8 @@ const TextView = ({
   }`;
 
   return (
-    <React.Fragment>
-      <div className="AknFieldContainer" data-code="maxLength">
+    <>
+      <div className="AknFieldContainer--packed" data-code="maxLength">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.max_length">
             {__('pim_reference_entity.attribute.edit.input.max_length')}
@@ -110,71 +109,34 @@ const TextView = ({
         </div>
         {getErrorsView(errors, 'maxLength')}
       </div>
-      <div className="AknFieldContainer AknFieldContainer--packed" data-code="isTextarea">
-        <div className="AknFieldContainer-header">
-          <label
-            className="AknFieldContainer-label AknFieldContainer-label--inline"
-            htmlFor="pim_reference_entity.attribute.edit.input.textarea"
-          >
-            <Checkbox
-              readOnly={!rights.attribute.edit}
-              id="pim_reference_entity.attribute.edit.input.textarea"
-              value={attribute.isTextarea.booleanValue()}
-              onChange={(isTextarea: boolean) =>
-                onAdditionalPropertyUpdated('is_textarea', IsTextarea.createFromBoolean(isTextarea))
-              }
-            />
-            <span
-              onClick={() => {
-                if (rights.attribute.edit) {
-                  onAdditionalPropertyUpdated(
-                    'is_textarea',
-                    IsTextarea.createFromBoolean(!attribute.isTextarea.booleanValue())
-                  );
-                }
-              }}
-            >
-              {__('pim_reference_entity.attribute.edit.input.textarea')}
-            </span>
-          </label>
-        </div>
+      <div data-code="isTextarea">
+        <Checkbox
+          readOnly={!rights.attribute.edit}
+          id="pim_reference_entity.attribute.edit.input.textarea"
+          checked={attribute.isTextarea.booleanValue()}
+          onChange={isTextarea => onAdditionalPropertyUpdated('is_textarea', IsTextarea.createFromBoolean(isTextarea))}
+        >
+          {__('pim_reference_entity.attribute.edit.input.textarea')}
+        </Checkbox>
         {getErrorsView(errors, 'isTextarea')}
       </div>
       {attribute.isTextarea.booleanValue() && (
-        <div className="AknFieldContainer AknFieldContainer--packed" data-code="isRichTextEditor">
-          <div className="AknFieldContainer-header">
-            <label
-              className="AknFieldContainer-label AknFieldContainer-label--inline"
-              htmlFor="pim_reference_entity.attribute.edit.input.is_rich_text_editor"
-            >
-              <Checkbox
-                id="pim_reference_entity.attribute.edit.input.is_rich_text_editor"
-                readOnly={!rights.attribute.edit}
-                value={attribute.isRichTextEditor.booleanValue()}
-                onChange={(isrichTextEditor: boolean) =>
-                  onAdditionalPropertyUpdated(
-                    'is_rich_text_editor',
-                    IsRichTextEditor.createFromBoolean(isrichTextEditor)
-                  )
-                }
-              />
-              <span
-                onClick={() => {
-                  onAdditionalPropertyUpdated(
-                    'is_rich_text_editor',
-                    IsRichTextEditor.createFromBoolean(!attribute.isRichTextEditor.booleanValue())
-                  );
-                }}
-              >
-                {__('pim_reference_entity.attribute.edit.input.is_rich_text_editor')}
-              </span>
-            </label>
-          </div>
+        <div data-code="isRichTextEditor">
+          <Checkbox
+            id="pim_reference_entity.attribute.edit.input.is_rich_text_editor"
+            readOnly={!rights.attribute.edit}
+            checked={attribute.isRichTextEditor.booleanValue()}
+            onChange={isrichTextEditor =>
+              onAdditionalPropertyUpdated('is_rich_text_editor', IsRichTextEditor.createFromBoolean(isrichTextEditor))
+            }
+          >
+            {__('pim_reference_entity.attribute.edit.input.is_rich_text_editor')}
+          </Checkbox>
           {getErrorsView(errors, 'richTextEditor')}
         </div>
       )}
       {!attribute.isTextarea.booleanValue() && (
-        <div className="AknFieldContainer" data-code="validationRule">
+        <div className="AknFieldContainer--packed" data-code="validationRule">
           <div className="AknFieldContainer-header AknFieldContainer-header--light">
             <label
               className="AknFieldContainer-label"
@@ -201,7 +163,7 @@ const TextView = ({
       )}
       {!attribute.isTextarea.booleanValue() &&
         attribute.validationRule.stringValue() === ValidationRuleOption.RegularExpression && (
-          <div className="AknFieldContainer" data-code="regularExpression">
+          <div className="AknFieldContainer--packed" data-code="regularExpression">
             <div className="AknFieldContainer-header AknFieldContainer-header--light">
               <label
                 className="AknFieldContainer-label"
@@ -233,7 +195,7 @@ const TextView = ({
             {getErrorsView(errors, 'regularExpression')}
           </div>
         )}
-    </React.Fragment>
+    </>
   );
 };
 

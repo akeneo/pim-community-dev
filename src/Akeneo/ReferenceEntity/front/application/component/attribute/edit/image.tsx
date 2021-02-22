@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
@@ -35,8 +35,8 @@ const ImageView = ({
   }`;
 
   return (
-    <React.Fragment>
-      <div className="AknFieldContainer" data-code="maxFileSize">
+    <>
+      <div className="AknFieldContainer--packed" data-code="maxFileSize">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.max_file_size">
             {__('pim_reference_entity.attribute.edit.input.max_file_size')}
@@ -68,7 +68,7 @@ const ImageView = ({
         </div>
         {getErrorsView(errors, 'maxFileSize')}
       </div>
-      <div className="AknFieldContainer" data-code="allowedExtensions">
+      <div className="AknFieldContainer--packed" data-code="allowedExtensions">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label
             className="AknFieldContainer-label"
@@ -95,7 +95,7 @@ const ImageView = ({
         </div>
         {getErrorsView(errors, 'allowedExtensions')}
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

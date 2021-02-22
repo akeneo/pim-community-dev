@@ -1,13 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import styled, {FlattenSimpleInterpolation} from 'styled-components';
-import {DeleteIcon, Key} from 'akeneo-design-system';
+import {DeleteIcon, Key, Checkbox, SectionTitle} from 'akeneo-design-system';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import Flag from 'akeneoreferenceentity/tools/component/flag';
 import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
 import {
   attributeEditionAdditionalPropertyUpdated,
   attributeEditionCancel,
@@ -35,6 +34,17 @@ const DeleteButton = styled.span`
   :hover {
     ${DeleteIcon.animatedMixin as FlattenSimpleInterpolation}
   }
+`;
+
+const SpacedTitle = styled(SectionTitle)`
+  margin: 0 20px;
+`;
+
+const Fields = styled.div`
+  margin: 0 20px 20px;
+  display: flex;
+  gap: 14px;
+  flex-direction: column;
 `;
 
 interface OwnProps {
@@ -151,6 +161,7 @@ class Edit extends React.Component<EditProps> {
     if (Key.Enter === event.key) this.props.events.onSubmit();
   };
 
+  //TODO Use DSM Fields
   render(): JSX.Element | JSX.Element[] | null {
     const label = this.props.attribute.getLabel(this.props.context.locale);
     const canEditLabel = this.props.rights.attribute.edit && this.props.rights.locale.edit;
@@ -163,18 +174,17 @@ class Edit extends React.Component<EditProps> {
       !this.props.referenceEntity.getAttributeAsImage().equals(this.props.attribute.getIdentifier());
 
     return (
-      <React.Fragment>
+      <>
         <div className={`AknQuickEdit ${!this.props.isActive ? 'AknQuickEdit--hidden' : ''}`} ref="quickEdit">
           <div className={`AknLoadingMask ${!this.props.isSaving ? 'AknLoadingMask--hidden' : ''}`} />
           <div className="AknSubsection">
-            <header
-              style={{margin: '0 20px 25px 20px'}}
-              className="AknSubsection-title AknSubsection-title--sticky AknSubsection-title--light"
-            >
-              {__('pim_reference_entity.attribute.edit.title', {code: this.props.attribute.getCode().stringValue()})}
-            </header>
-            <div className="AknFormContainer AknFormContainer--expanded AknFormContainer--withSmallPadding">
-              <div className="AknFieldContainer" data-code="label">
+            <SpacedTitle>
+              <SectionTitle.Title>
+                {__('pim_reference_entity.attribute.edit.title', {code: this.props.attribute.getCode().stringValue()})}
+              </SectionTitle.Title>
+            </SpacedTitle>
+            <Fields>
+              <div className="AknFieldContainer--packed" data-code="label">
                 <div className="AknFieldContainer-header AknFieldContainer-header--light">
                   <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.label">
                     {__('pim_reference_entity.attribute.edit.input.label')}
@@ -203,61 +213,35 @@ class Edit extends React.Component<EditProps> {
                 </div>
                 {getErrorsView(this.props.errors, 'labels')}
               </div>
-              <div className="AknFieldContainer AknFieldContainer--packed" data-code="valuePerChannel">
-                <div className="AknFieldContainer-header">
-                  <label
-                    className="AknFieldContainer-label"
-                    htmlFor="pim_reference_entity.attribute.edit.input.value_per_channel"
-                  >
-                    <Checkbox
-                      id="pim_reference_entity.attribute.edit.input.value_per_channel"
-                      value={this.props.attribute.valuePerChannel}
-                      readOnly
-                    />
-                    {__('pim_reference_entity.attribute.edit.input.value_per_channel')}
-                  </label>
-                </div>
+              <div data-code="valuePerChannel">
+                <Checkbox
+                  id="pim_reference_entity.attribute.edit.input.value_per_channel"
+                  checked={this.props.attribute.valuePerChannel}
+                  readOnly={true}
+                >
+                  {__('pim_reference_entity.attribute.edit.input.value_per_channel')}
+                </Checkbox>
                 {getErrorsView(this.props.errors, 'valuePerChannel')}
               </div>
-              <div className="AknFieldContainer AknFieldContainer--packed" data-code="valuePerLocale">
-                <div className="AknFieldContainer-header">
-                  <label
-                    className="AknFieldContainer-label"
-                    htmlFor="pim_reference_entity.attribute.edit.input.value_per_locale"
-                  >
-                    <Checkbox
-                      id="pim_reference_entity.attribute.edit.input.value_per_locale"
-                      value={this.props.attribute.valuePerLocale}
-                      readOnly
-                    />
-                    {__('pim_reference_entity.attribute.edit.input.value_per_locale')}
-                  </label>
-                </div>
+              <div data-code="valuePerLocale">
+                <Checkbox
+                  id="pim_reference_entity.attribute.edit.input.value_per_locale"
+                  checked={this.props.attribute.valuePerLocale}
+                  readOnly={true}
+                >
+                  {__('pim_reference_entity.attribute.edit.input.value_per_locale')}
+                </Checkbox>
                 {getErrorsView(this.props.errors, 'valuePerLocale')}
               </div>
-              <div className="AknFieldContainer AknFieldContainer--packed" data-code="isRequired">
-                <div className="AknFieldContainer-header">
-                  <label
-                    className="AknFieldContainer-label AknFieldContainer-label--inline"
-                    htmlFor="pim_reference_entity.attribute.edit.input.is_required"
-                  >
-                    <Checkbox
-                      id="pim_reference_entity.attribute.edit.input.is_required"
-                      value={this.props.attribute.isRequired}
-                      onChange={this.props.events.onIsRequiredUpdated}
-                      readOnly={!this.props.rights.attribute.edit}
-                    />
-                    <span
-                      onClick={() => {
-                        if (this.props.rights.attribute.edit) {
-                          this.props.events.onIsRequiredUpdated(!this.props.attribute.isRequired);
-                        }
-                      }}
-                    >
-                      {__('pim_reference_entity.attribute.edit.input.is_required')}
-                    </span>
-                  </label>
-                </div>
+              <div data-code="isRequired">
+                <Checkbox
+                  id="pim_reference_entity.attribute.edit.input.is_required"
+                  checked={this.props.attribute.isRequired}
+                  onChange={this.props.events.onIsRequiredUpdated}
+                  readOnly={!this.props.rights.attribute.edit}
+                >
+                  {__('pim_reference_entity.attribute.edit.input.is_required')}
+                </Checkbox>
                 {getErrorsView(this.props.errors, 'isRequired')}
               </div>
               <ErrorBoundary errorMessage={__('pim_reference_entity.reference_entity.attribute.error.render_edit')}>
@@ -270,7 +254,7 @@ class Edit extends React.Component<EditProps> {
                   this.props.rights
                 )}
               </ErrorBoundary>
-            </div>
+            </Fields>
             <footer className="AknSubsection-footer AknSubsection-footer--sticky">
               {displayDeleteButton ? (
                 <DeleteButton
@@ -324,7 +308,7 @@ class Edit extends React.Component<EditProps> {
             onCancel={this.props.events.onCancelDeleteModal}
           />
         )}
-      </React.Fragment>
+      </>
     );
   }
 }

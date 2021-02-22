@@ -33,7 +33,7 @@ Feature: Read a single product by applying rules
     When the product rule "set_name" is executed
     Then the en_US unscoped name of "my-jacket" should be "My jacket"
 
-  @integration-back
+  @integration-back @purge-messenger
   Scenario: Successfully execute a rule with a "not equal" condition
     Given the following products:
       | sku         | family  |
@@ -64,6 +64,7 @@ Feature: Read a single product by applying rules
     And the en_US mobile description of "my-jacket" should be "A stylish white jacket"
     And the fr_FR unscoped name of "my-jacket" should be "Veste blanche"
     And the en_US unscoped name of "my-cardigan" should be "Red cardigan"
+    And 1 event of type "product.updated" should have been raised
 
   @integration-back
   Scenario: Successfully execute a rule with a "not empty" condition
