@@ -205,9 +205,7 @@ const SelectInput = ({
 
   const validChildren = React.Children.toArray(children).filter((child): child is ReactElement<
     {value: string} & React.HTMLAttributes<HTMLSpanElement>
-  > => {
-    return isValidElement<{value: string}>(child);
-  });
+  > => isValidElement<{value: string}>(child));
 
   validChildren.reduce<string[]>((optionCodes: string[], child) => {
     if (optionCodes.includes(child.props.value)) {
@@ -225,7 +223,7 @@ const SelectInput = ({
     const value = child.props.value;
     const optionValue = value + content + title;
 
-    return -1 !== optionValue.toLowerCase().indexOf(searchValue.toLowerCase());
+    return optionValue.toLowerCase().includes(searchValue.toLowerCase());
   });
 
   const currentValueElement =

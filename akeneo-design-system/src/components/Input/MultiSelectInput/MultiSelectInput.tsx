@@ -202,39 +202,26 @@ const MultiSelectInput = ({
     isValidElement<OptionProps>(child)
   );
 
-  const indexedChips = validChildren.reduce<{[key: string]: ChipValue}>(
-    (indexedChips: {[key: string]: ChipValue}, child) => {
-      if (typeof child.props.children !== 'string') {
-        throw new Error('Multi select only accepts string as Option');
-      }
-
-      if (
-        Object.values(indexedChips)
-          .map(chip => chip.code)
-          .includes(child.props.value)
-      ) {
-        throw new Error(`Duplicate option value ${child.props.value}`);
-      }
-
-      indexedChips[child.props.value] = {code: child.props.value, label: child.props.children};
-
-      return indexedChips;
-    },
-    {}
-  );
-
-  const filteredChildren = validChildren.filter(child => {
-    const childValue = child.props.value;
-    const optionValue = childValue + child.props.children;
-
-    if (value.includes(childValue)) {
-      return false;
+  const indexedChips = validChildren.reduce<{[key: string]: ChipValue}>((indexedChips, {props: {value, children}}) => {
+    if ('string' !== typeof children) {
+      throw new Error('Multi select only accepts string as Option');
     }
 
-    return -1 !== optionValue.toLowerCase().indexOf(searchValue.toLowerCase());
-  });
+    if (value in indexedChips) {
+      throw new Error(`Duplicate option value ${value}`);
+    }
 
-  const chipValues = value.map(chipCode => indexedChips[chipCode]);
+    indexedChips[value] = {code: value, label: children};
+
+    return indexedChips;
+  }, {});
+
+  const filteredChildren = validChildren.filter(({props}) => {
+    const childValue = props.value;
+    const optionValue = childValue + props.children;
+
+    return !value.includes(childValue) && optionValue.toLowerCase().includes(searchValue.toLowerCase());
+  });
 
   const handleEnter = () => {
     if (filteredChildren.length > 0 && dropdownIsOpen) {
@@ -286,7 +273,7 @@ const MultiSelectInput = ({
         <ChipInput
           ref={inputRef}
           placeholder={placeholder}
-          value={chipValues}
+          value={value.map(chipCode => indexedChips[chipCode])}
           searchValue={searchValue}
           removeLabel={removeLabel}
           readOnly={readOnly}
@@ -312,21 +299,17 @@ const MultiSelectInput = ({
       <OverlayContainer>
         {dropdownIsOpen && !readOnly && (
           <>
-            <Backdrop data-testid="backdrop" onClick={handleBlur} />
+            <Backdrop onClick={handleBlur} />
             <Overlay verticalPosition={verticalPosition} onClose={handleBlur}>
               <OptionCollection>
-                {filteredChildren.length === 0 ? (
+                {0 === filteredChildren.length ? (
                   <EmptyResultContainer>{emptyResultLabel}</EmptyResultContainer>
                 ) : (
-                  filteredChildren.map(child => {
-                    const value = child.props.value;
-
-                    return (
-                      <OptionContainer key={value} onClick={handleOptionClick(value)}>
-                        {React.cloneElement(child)}
-                      </OptionContainer>
-                    );
-                  })
+                  filteredChildren.map(child => (
+                    <OptionContainer key={child.props.value} onClick={handleOptionClick(child.props.value)}>
+                      {React.cloneElement(child)}
+                    </OptionContainer>
+                  ))
                 )}
               </OptionCollection>
             </Overlay>
