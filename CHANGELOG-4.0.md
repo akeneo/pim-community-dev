@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9688: Remove capitalization from the first letter of the asset code as label
+- PIM-9694: Display error message when the image resolution is too big to generate a thumbnail
 
 # 4.0.95 (2021-02-19)
 
