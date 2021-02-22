@@ -8,6 +8,8 @@ import {AkeneoThemedProps, getColor} from '../../../theme';
 import {ArrowDownIcon, CloseIcon} from '../../../icons';
 
 const SelectInputContainer = styled.div<{value: string | null; readOnly: boolean} & AkeneoThemedProps>`
+  width: 100%;
+
   & input[type='text'] {
     cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'pointer')};
     background: ${({value, readOnly}) => (null === value && readOnly ? getColor('grey', 20) : 'transparent')};
@@ -161,12 +163,12 @@ type SelectInputProps = Override<
     /**
      * Accessibility text for the clear button.
      */
-    clearSelectLabel?: string;
+    clearLabel?: string;
 
     /**
      * Accessibility text for the open dropdown button.
      */
-    openSelectLabel?: string;
+    openLabel?: string;
 
     /**
      * Defines if the input is valid on not.
@@ -196,8 +198,8 @@ const SelectInput = ({
   emptyResultLabel,
   children,
   onChange,
-  clearSelectLabel = '',
-  openSelectLabel = '',
+  clearLabel = '',
+  openLabel = '',
   readOnly = false,
   verticalPosition = 'down',
   'aria-labelledby': ariaLabelledby,
@@ -250,14 +252,7 @@ const SelectInput = ({
     setSearchValue(value);
   };
 
-  const handleClick = () => {
-    if (dropdownIsOpen) {
-      setSearchValue('');
-      closeOverlay();
-    } else {
-      openOverlay();
-    }
-  };
+  const handleFocus = () => openOverlay();
 
   const handleOptionClick = (value: string) => () => {
     onChange?.(value);
@@ -291,7 +286,7 @@ const SelectInput = ({
           invalid={invalid}
           placeholder={null === value ? placeholder : ''}
           onChange={handleSearch}
-          onClick={handleClick}
+          onFocus={handleFocus}
           aria-labelledby={ariaLabelledby}
         />
         {!readOnly && (
@@ -302,7 +297,7 @@ const SelectInput = ({
                 level="tertiary"
                 size="small"
                 icon={<CloseIcon />}
-                title={clearSelectLabel}
+                title={clearLabel}
                 onClick={handleClear}
                 tabIndex={0}
               />
@@ -312,8 +307,8 @@ const SelectInput = ({
               level="tertiary"
               size="small"
               icon={<OpenButton />}
-              title={openSelectLabel}
-              onClick={openOverlay}
+              title={openLabel}
+              onClick={handleFocus}
               tabIndex={0}
             />
           </ActionContainer>

@@ -21,14 +21,14 @@ test('it renders its children properly', () => {
   );
 
   const input = screen.getByRole('textbox');
-  fireEvent.click(input);
+  fireEvent.focus(input);
 
   expect(screen.queryByText('German')).toBeInTheDocument();
 
-  fireEvent.click(screen.getByRole('textbox'));
+  fireEvent.click(screen.getByTestId('backdrop'));
   expect(screen.queryByText('German')).not.toBeInTheDocument();
 
-  fireEvent.click(screen.getByRole('textbox'));
+  fireEvent.focus(screen.getByRole('textbox'));
   expect(screen.queryByText('German')).toBeInTheDocument();
 
   const germanOption = screen.getByText('German');
@@ -138,7 +138,7 @@ test('it handles keyboard events', () => {
       placeholder="Placeholder"
       removeLabel="Remove"
       emptyResultLabel="Empty result"
-      openSelectLabel="open"
+      openLabel="open"
     >
       <MultiSelectInput.Option value="en_US">English</MultiSelectInput.Option>
       <MultiSelectInput.Option value="fr_FR">French</MultiSelectInput.Option>
@@ -168,7 +168,7 @@ test('it closes the overlay when hitting Escape', () => {
       placeholder="Placeholder"
       removeLabel="Remove"
       emptyResultLabel="Empty result"
-      openSelectLabel="open"
+      openLabel="open"
     >
       <MultiSelectInput.Option value="en_US">English</MultiSelectInput.Option>
       <MultiSelectInput.Option value="fr_FR">French</MultiSelectInput.Option>
@@ -194,7 +194,7 @@ test('it can remove a chip using Backspace', () => {
       placeholder="Placeholder"
       removeLabel="Remove"
       emptyResultLabel="Empty result"
-      openSelectLabel="open"
+      openLabel="open"
     >
       <MultiSelectInput.Option value="en_US">English</MultiSelectInput.Option>
       <MultiSelectInput.Option value="fr_FR">French</MultiSelectInput.Option>
@@ -218,7 +218,7 @@ test('it does not remove the chip when the search value is not empty', () => {
       placeholder="Placeholder"
       removeLabel="Remove"
       emptyResultLabel="Empty result"
-      openSelectLabel="open"
+      openLabel="open"
     >
       <MultiSelectInput.Option value="en_US">English</MultiSelectInput.Option>
       <MultiSelectInput.Option value="fr_FR">French</MultiSelectInput.Option>

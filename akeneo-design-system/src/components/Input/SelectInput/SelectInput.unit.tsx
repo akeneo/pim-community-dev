@@ -24,14 +24,14 @@ test('it renders its children properly', () => {
   );
 
   const input = screen.getByRole('textbox');
-  fireEvent.click(input);
+  fireEvent.focus(input);
 
   expect(screen.queryByText('German')).toBeInTheDocument();
 
-  fireEvent.click(screen.getByRole('textbox'));
+  fireEvent.click(screen.getByTestId('backdrop'));
   expect(screen.queryByText('German')).not.toBeInTheDocument();
 
-  fireEvent.click(screen.getByRole('textbox'));
+  fireEvent.focus(screen.getByRole('textbox'));
   expect(screen.queryByText('German')).toBeInTheDocument();
 
   const germanOption = screen.getByText('German');
@@ -60,7 +60,7 @@ test('it handles search', () => {
   );
 
   const input = screen.getByRole('textbox');
-  fireEvent.click(input);
+  fireEvent.focus(input);
   fireEvent.change(input, {target: {value: 'Français'}});
 
   const germanOption = screen.queryByText('German');
@@ -70,7 +70,7 @@ test('it handles search', () => {
   fireEvent.keyDown(input, {key: 'Enter', code: 'Enter'});
   expect(onChange).toHaveBeenCalledWith('fr_FR');
 
-  fireEvent.click(input);
+  fireEvent.focus(input);
   fireEvent.change(input, {target: {value: 'Spain'}});
 
   const spainOption = screen.getByText('Spanish');
@@ -99,7 +99,7 @@ test('it handles empty cases', () => {
   );
 
   const input = screen.getByRole('textbox');
-  fireEvent.click(input);
+  fireEvent.focus(input);
   fireEvent.change(input, {target: {value: 'France 3'}});
 
   const germanOption = screen.queryByText('German');
@@ -120,7 +120,7 @@ test('it handles clearing the field', () => {
       onChange={onChange}
       placeholder="Placeholder"
       emptyResultLabel="Empty result"
-      clearSelectLabel="clear"
+      clearLabel="clear"
     >
       <SelectInput.Option value="en_US" title="English (United States)">
         <Locale code="en_US" languageLabel="English" />
@@ -151,8 +151,8 @@ test('it handles keyboard events', () => {
       onChange={onChange}
       placeholder="Placeholder"
       emptyResultLabel="Empty result"
-      openSelectLabel="open"
-      clearSelectLabel="clear"
+      openLabel="open"
+      clearLabel="clear"
     >
       <SelectInput.Option value="en_US" title="English (United States)">
         <Locale code="en_US" languageLabel="English" />

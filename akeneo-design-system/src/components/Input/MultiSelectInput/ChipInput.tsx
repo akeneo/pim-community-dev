@@ -85,6 +85,7 @@ type ChipValue = {
 };
 
 type ChipInputProps = {
+  id?: string;
   value: ChipValue[];
   invalid?: boolean;
   placeholder?: string;
@@ -93,12 +94,13 @@ type ChipInputProps = {
   removeLabel: string;
   onRemove: (chipCode: string) => void;
   onSearchChange: (searchValue: string) => void;
-  onClick?: () => void;
+  onFocus?: () => void;
 };
 
 const ChipInput = React.forwardRef<HTMLInputElement, ChipInputProps>(
   (
     {
+      id,
       value,
       invalid,
       readOnly,
@@ -107,7 +109,7 @@ const ChipInput = React.forwardRef<HTMLInputElement, ChipInputProps>(
       removeLabel,
       onRemove,
       onSearchChange,
-      onClick,
+      onFocus,
     }: ChipInputProps,
     forwardedRef: Ref<HTMLInputElement>
   ) => {
@@ -153,6 +155,7 @@ const ChipInput = React.forwardRef<HTMLInputElement, ChipInputProps>(
         <InputContainer>
           <Input
             type="text"
+            id={id}
             value={searchValue}
             ref={forwardedRef}
             placeholder={value.length === 0 ? placeholder : undefined}
@@ -160,7 +163,7 @@ const ChipInput = React.forwardRef<HTMLInputElement, ChipInputProps>(
             onBlur={unselectLast}
             aria-invalid={invalid}
             readOnly={readOnly}
-            onClick={onClick}
+            onFocus={onFocus}
           />
           {readOnly && <ReadOnlyIcon size={16} />}
         </InputContainer>

@@ -9,6 +9,8 @@ import {ArrowDownIcon} from '../../../icons';
 import {ChipInput, ChipValue} from './ChipInput';
 
 const MultiSelectInputContainer = styled.div<{value: string | null; readOnly: boolean} & AkeneoThemedProps>`
+  width: 100%;
+
   & input[type='text'] {
     cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'pointer')};
     background: ${({value, readOnly}) => (null === value && readOnly ? getColor('grey', 20) : 'transparent')};
@@ -155,7 +157,7 @@ type MultiMultiSelectInputProps = Override<
     /**
      * Accessibility text for the open dropdown button.
      */
-    openSelectLabel?: string;
+    openLabel?: string;
 
     /**
      * Accessibility text for the remove chip button.
@@ -192,7 +194,7 @@ const MultiSelectInput = ({
   children = [],
   onChange,
   removeLabel,
-  openSelectLabel = '',
+  openLabel = '',
   readOnly = false,
   verticalPosition = 'down',
   'aria-labelledby': ariaLabelledby,
@@ -246,15 +248,6 @@ const MultiSelectInput = ({
     onChange?.(value.filter(value => value !== chipsCode));
   };
 
-  const handleClick = () => {
-    if (dropdownIsOpen) {
-      setSearchValue('');
-      closeOverlay();
-    } else {
-      openOverlay();
-    }
-  };
-
   const handleOptionClick = (newValue: string) => () => {
     onChange?.(arrayUnique([...value, newValue]));
     setSearchValue('');
@@ -268,6 +261,8 @@ const MultiSelectInput = ({
     inputRef.current?.blur();
   };
 
+  const handleFocus = () => openOverlay();
+
   useShortcut(Key.Enter, handleEnter, inputRef);
   useShortcut(Key.Escape, handleBlur, inputRef);
 
@@ -276,6 +271,7 @@ const MultiSelectInput = ({
       <InputContainer>
         <ChipInput
           ref={inputRef}
+          id={id}
           placeholder={placeholder}
           value={value.map(chipCode => indexedChips[chipCode])}
           searchValue={searchValue}
@@ -284,7 +280,7 @@ const MultiSelectInput = ({
           invalid={invalid}
           onSearchChange={handleSearch}
           onRemove={handleRemove}
-          onClick={handleClick}
+          onFocus={handleFocus}
         />
         {!readOnly && (
           <ActionContainer>
@@ -293,7 +289,7 @@ const MultiSelectInput = ({
               level="tertiary"
               size="small"
               icon={<OpenButton />}
-              title={openSelectLabel}
+              title={openLabel}
               onClick={openOverlay}
               tabIndex={0}
             />
@@ -303,7 +299,7 @@ const MultiSelectInput = ({
       <OverlayContainer>
         {dropdownIsOpen && !readOnly && (
           <>
-            <Backdrop onClick={handleBlur} />
+            <Backdrop data-testid="backdrop" onClick={handleBlur} />
             <Overlay verticalPosition={verticalPosition} onClose={handleBlur}>
               <OptionCollection>
                 {0 === filteredChildren.length ? (
