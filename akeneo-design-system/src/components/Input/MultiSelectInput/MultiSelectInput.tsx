@@ -1,13 +1,14 @@
-import React, {ReactNode, useState, useRef, isValidElement, ReactElement} from 'react';
+import React, {useState, useRef, ReactElement, isValidElement} from 'react';
 import styled, {css} from 'styled-components';
-import {Key, Override} from '../../../shared';
+import {arrayUnique, Key, Override} from '../../../shared';
 import {InputProps} from '../InputProps';
-import {IconButton, TextInput} from '../../../components';
+import {IconButton} from '../../../components';
 import {useBooleanState, useShortcut} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
-import {ArrowDownIcon, CloseIcon} from '../../../icons';
+import {ArrowDownIcon} from '../../../icons';
+import {ChipInput, ChipValue} from './ChipInput';
 
-const SelectInputContainer = styled.div<{value: string | null; readOnly: boolean} & AkeneoThemedProps>`
+const MultiSelectInputContainer = styled.div<{value: string | null; readOnly: boolean} & AkeneoThemedProps>`
   width: 100%;
 
   & input[type='text'] {
@@ -32,18 +33,6 @@ const ActionContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-`;
-
-const SelectedOptionContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
-  background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
-  box-sizing: border-box;
 `;
 
 const OpenButton = styled(ArrowDownIcon)`
@@ -132,23 +121,28 @@ const OptionCollection = styled.div`
   overflow-y: auto;
 `;
 
-const Option = styled.span<{value: string}>``;
+type OptionProps = {
+  value: string;
+  children: string;
+} & React.HTMLAttributes<HTMLSpanElement>;
 
-type SelectInputProps = Override<
-  Override<React.InputHTMLAttributes<HTMLDivElement>, InputProps<string | null>>,
+const Option = ({children, ...rest}: OptionProps) => <span {...rest}>{children}</span>;
+
+type MultiMultiSelectInputProps = Override<
+  Override<React.InputHTMLAttributes<HTMLDivElement>, InputProps<string[]>>,
   (
     | {
         readOnly: true;
       }
     | {
         readOnly?: boolean;
-        onChange: (newValue: string | null) => void;
+        onChange: (newValue: string[]) => void;
       }
   ) & {
     /**
      * The props value of the selected option.
      */
-    value: string | null;
+    value: string[];
 
     /**
      * The placeholder displayed when no option is selected.
@@ -161,14 +155,14 @@ type SelectInputProps = Override<
     emptyResultLabel: string;
 
     /**
-     * Accessibility text for the clear button.
-     */
-    clearLabel?: string;
-
-    /**
      * Accessibility text for the open dropdown button.
      */
     openLabel?: string;
+
+    /**
+     * Accessibility text for the remove chip button.
+     */
+    removeLabel: string;
 
     /**
      * Defines if the input is valid on not.
@@ -178,7 +172,7 @@ type SelectInputProps = Override<
     /**
      * The options.
      */
-    children?: ReactNode;
+    children?: ReactElement<OptionProps>[] | ReactElement<OptionProps>;
 
     /**
      * Force the vertical position of the overlay.
@@ -188,79 +182,77 @@ type SelectInputProps = Override<
 >;
 
 /**
- * Select input allows the user to select content and data when the expected user input is composed of one option value.
+ * Multi select input allows the user to select content and data
+ * when the expected user input is composed of multiple option values.
  */
-const SelectInput = ({
+const MultiSelectInput = ({
   id,
   placeholder,
   invalid,
   value,
   emptyResultLabel,
-  children,
+  children = [],
   onChange,
-  clearLabel = '',
+  removeLabel,
   openLabel = '',
   readOnly = false,
   verticalPosition = 'down',
   'aria-labelledby': ariaLabelledby,
   ...rest
-}: SelectInputProps) => {
+}: MultiMultiSelectInputProps) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [dropdownIsOpen, openOverlay, closeOverlay] = useBooleanState();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const validChildren = React.Children.toArray(children).filter((child): child is ReactElement<
-    {value: string} & React.HTMLAttributes<HTMLSpanElement>
-  > => isValidElement<{value: string}>(child));
+  const validChildren = React.Children.toArray(children).filter((child): child is ReactElement<OptionProps> =>
+    isValidElement<OptionProps>(child)
+  );
 
-  validChildren.reduce<string[]>((optionCodes: string[], child) => {
-    if (optionCodes.includes(child.props.value)) {
-      throw new Error(`Duplicate option value ${child.props.value}`);
+  const indexedChips = validChildren.reduce<{[key: string]: ChipValue}>((indexedChips, {props: {value, children}}) => {
+    if ('string' !== typeof children) {
+      throw new Error('Multi select only accepts string as Option');
     }
 
-    optionCodes.push(child.props.value);
+    if (value in indexedChips) {
+      throw new Error(`Duplicate option value ${value}`);
+    }
 
-    return optionCodes;
-  }, []);
+    indexedChips[value] = {code: value, label: children};
 
-  const filteredChildren = validChildren.filter(child => {
-    const content = typeof child.props.children === 'string' ? child.props.children : '';
-    const title = child.props.title ?? '';
-    const value = child.props.value;
-    const optionValue = value + content + title;
+    return indexedChips;
+  }, {});
 
-    return optionValue.toLowerCase().includes(searchValue.toLowerCase());
+  const filteredChildren = validChildren.filter(({props}) => {
+    const childValue = props.value;
+    const optionValue = childValue + props.children;
+
+    return !value.includes(childValue) && optionValue.toLowerCase().includes(searchValue.toLowerCase());
   });
 
-  const currentValueElement =
-    validChildren.find(child => {
-      const childrenValue = child.props.value;
-
-      return value === childrenValue;
-    }) ?? value;
-
   const handleEnter = () => {
-    if (filteredChildren.length > 0) {
-      const value = filteredChildren[0].props.value;
+    if (filteredChildren.length > 0 && dropdownIsOpen) {
+      const newValue = filteredChildren[0].props.value;
 
-      onChange?.(value);
-      handleBlur();
+      onChange?.(arrayUnique([...value, newValue]));
+      setSearchValue('');
+      closeOverlay();
     }
   };
 
   const handleSearch = (value: string) => {
     setSearchValue(value);
+    openOverlay();
   };
 
-  const handleFocus = () => openOverlay();
-
-  const handleOptionClick = (value: string) => () => {
-    onChange?.(value);
-    handleBlur();
+  const handleRemove = (chipsCode: string) => {
+    onChange?.(value.filter(value => value !== chipsCode));
   };
 
-  const handleClear = () => {
-    onChange?.(null);
+  const handleOptionClick = (newValue: string) => () => {
+    onChange?.(arrayUnique([...value, newValue]));
+    setSearchValue('');
+    closeOverlay();
+    inputRef.current?.focus();
   };
 
   const handleBlur = () => {
@@ -269,46 +261,36 @@ const SelectInput = ({
     inputRef.current?.blur();
   };
 
+  const handleFocus = () => openOverlay();
+
   useShortcut(Key.Enter, handleEnter, inputRef);
   useShortcut(Key.Escape, handleBlur, inputRef);
 
   return (
-    <SelectInputContainer readOnly={readOnly} value={value} {...rest}>
+    <MultiSelectInputContainer readOnly={readOnly} value={value} {...rest}>
       <InputContainer>
-        {null !== value && '' === searchValue && (
-          <SelectedOptionContainer readOnly={readOnly}>{currentValueElement}</SelectedOptionContainer>
-        )}
-        <TextInput
-          id={id}
+        <ChipInput
           ref={inputRef}
-          value={searchValue}
+          id={id}
+          placeholder={placeholder}
+          value={value.map(chipCode => indexedChips[chipCode])}
+          searchValue={searchValue}
+          removeLabel={removeLabel}
           readOnly={readOnly}
           invalid={invalid}
-          placeholder={null === value ? placeholder : ''}
-          onChange={handleSearch}
+          onSearchChange={handleSearch}
+          onRemove={handleRemove}
           onFocus={handleFocus}
-          aria-labelledby={ariaLabelledby}
         />
         {!readOnly && (
           <ActionContainer>
-            {!dropdownIsOpen && null !== value && (
-              <IconButton
-                ghost="borderless"
-                level="tertiary"
-                size="small"
-                icon={<CloseIcon />}
-                title={clearLabel}
-                onClick={handleClear}
-                tabIndex={0}
-              />
-            )}
             <IconButton
               ghost="borderless"
               level="tertiary"
               size="small"
               icon={<OpenButton />}
               title={openLabel}
-              onClick={handleFocus}
+              onClick={openOverlay}
               tabIndex={0}
             />
           </ActionContainer>
@@ -320,29 +302,25 @@ const SelectInput = ({
             <Backdrop data-testid="backdrop" onClick={handleBlur} />
             <Overlay verticalPosition={verticalPosition} onClose={handleBlur}>
               <OptionCollection>
-                {filteredChildren.length === 0 ? (
+                {0 === filteredChildren.length ? (
                   <EmptyResultContainer>{emptyResultLabel}</EmptyResultContainer>
                 ) : (
-                  filteredChildren.map(child => {
-                    const value = child.props.value;
-
-                    return (
-                      <OptionContainer key={value} onClick={handleOptionClick(value)}>
-                        {React.cloneElement(child)}
-                      </OptionContainer>
-                    );
-                  })
+                  filteredChildren.map(child => (
+                    <OptionContainer key={child.props.value} onClick={handleOptionClick(child.props.value)}>
+                      {React.cloneElement(child)}
+                    </OptionContainer>
+                  ))
                 )}
               </OptionCollection>
             </Overlay>
           </>
         )}
       </OverlayContainer>
-    </SelectInputContainer>
+    </MultiSelectInputContainer>
   );
 };
 
-Option.displayName = 'SelectInput.Option';
-SelectInput.Option = Option;
+Option.displayName = 'MultiSelectInput.Option';
+MultiSelectInput.Option = Option;
 
-export {SelectInput};
+export {MultiSelectInput};

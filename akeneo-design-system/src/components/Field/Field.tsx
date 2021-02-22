@@ -59,12 +59,12 @@ type FieldProps = {
   /**
    * The locale of the field.
    */
-  locale?: ReactElement<LocaleProps> | string;
+  locale?: ReactElement<LocaleProps> | string | null;
 
   /**
    * The channel of the field.
    */
-  channel?: string;
+  channel?: string | null;
 
   /**
    * Children of the Field, can only be an Input or Helpers, other children will not be displayed.
