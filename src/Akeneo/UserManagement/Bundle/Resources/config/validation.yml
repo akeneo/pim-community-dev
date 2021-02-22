@@ -53,6 +53,9 @@ Akeneo\UserManagement\Component\Model\User:
         catalogLocale:
             - NotBlank: ~
             - Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale: ~
+        defaultTree:
+            - NotBlank: ~
+            - Akeneo\Channel\Component\Validator\Constraint\IsRootCategory: ~
         phone:
             - Regex:
                 pattern: '/^\+[0-9]+$/'
