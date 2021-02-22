@@ -11,12 +11,6 @@ const TableCellList = styled(Table.Cell)`
   }
 `;
 
-const ButtonCollection = styled.div.attrs(() => ({className: 'AknTitleContainer-actionsContainer AknButtonList'}))`
-  > :not(:first-child) {
-    margin-left: 10px;
-  }
-`;
-
 const SystemInfo = () => {
   const translate = useTranslate();
   const systemHomeRoute = useRoute('oro_config_configuration_system');
@@ -76,12 +70,12 @@ const SystemInfo = () => {
             viewName="pim-menu-user-navigation"
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
-          <ButtonCollection>
-            <Button href={downloadTxtRoute} level="tertiary">
-              {translate('pim_analytics.system_info.download')}
-            </Button>
-          </ButtonCollection>
         </PageHeader.UserActions>
+        <PageHeader.Actions>
+          <Button href={downloadTxtRoute} level="tertiary">
+            {translate('pim_analytics.system_info.download')}
+          </Button>
+        </PageHeader.Actions>
         <PageHeader.Title>{translate('pim_analytics.system_info.title')}</PageHeader.Title>
       </PageHeader>
       <PageContent>
