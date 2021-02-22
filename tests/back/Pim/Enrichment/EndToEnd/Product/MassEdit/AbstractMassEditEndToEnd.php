@@ -56,7 +56,9 @@ abstract class AbstractMassEditEndToEnd extends InternalApiTestCase
 
     protected function launchAndWaitForJob(string $jobInstanceCode): void
     {
-        $this->jobLauncher->launchConsumerOnce();
+        while ($this->jobLauncher->hasJobInQueue()) {
+            $this->jobLauncher->launchConsumerOnce();
+        }
 
         $query = <<<SQL
 SELECT exec.status, exec.id
