@@ -908,7 +908,8 @@ config:
     pim/form/common/exclusif-boolean: pimui/js/form/common/exclusif-boolean
 
     pim/menu/menu:                                       pimui/js/menu/menu
-    pim/menu/tab:                                        pimui/js/menu/tab
+    #pim/menu/tab:                                        pimui/js/menu/tab
+    pim/menu/tab:                                        pimui/js/menu/tab.ts
     pim/menu/item:                                       pimui/js/menu/item
     pim/menu/help:                                       pimui/js/menu/help.ts
     pim/menu/navigation-back:                            pimui/js/menu/navigation-back.ts
