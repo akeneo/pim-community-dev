@@ -26,8 +26,8 @@ const Container = styled.ul<AkeneoThemedProps & {invalid: boolean}>`
 
 const Chip = styled.li<AkeneoThemedProps & {isSelected: boolean; readOnly: boolean}>`
   list-style-type: none;
-  padding: 3px 17px;
-  padding-left: ${({readOnly}) => (readOnly ? '17px' : '4px')};
+  padding: 3px 15px;
+  padding-left: ${({readOnly}) => (readOnly ? '15px' : '4px')};
   border: 1px ${getColor('grey', 80)} solid;
   background-color: ${({isSelected}) => (isSelected ? getColor('grey', 40) : getColor('grey', 20))};
   display: flex;
@@ -74,6 +74,9 @@ const ReadOnlyIcon = styled(LockIcon)`
 
 const RemoveButton = styled(IconButton)`
   background-color: transparent;
+  margin-left: -3px;
+  margin-right: 1px;
+  color: ${getColor('grey', 100)};
 `;
 
 type ChipValue = {

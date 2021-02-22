@@ -24,7 +24,7 @@ const InputContainer = styled.div`
 
 const ActionContainer = styled.div`
   position: absolute;
-  right: 10px;
+  right: 8px;
   top: 0;
   height: 100%;
   display: flex;
@@ -42,6 +42,10 @@ const SelectedOptionContainer = styled.div<{readOnly: boolean} & AkeneoThemedPro
   padding: 0 20px;
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
   box-sizing: border-box;
+`;
+
+const OpenButton = styled(ArrowDownIcon)`
+  color: ${getColor('grey', 100)};
 `;
 
 const OptionContainer = styled.div`
@@ -307,7 +311,7 @@ const SelectInput = ({
               ghost="borderless"
               level="tertiary"
               size="small"
-              icon={<ArrowDownIcon />}
+              icon={<OpenButton />}
               title={openSelectLabel}
               onClick={openOverlay}
               tabIndex={0}

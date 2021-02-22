@@ -25,12 +25,16 @@ const InputContainer = styled.div`
 
 const ActionContainer = styled.div`
   position: absolute;
-  right: 10px;
+  right: 8px;
   top: 0;
   height: 100%;
   display: flex;
   align-items: center;
   gap: 10px;
+`;
+
+const OpenButton = styled(ArrowDownIcon)`
+  color: ${getColor('grey', 100)};
 `;
 
 const OptionContainer = styled.div`
@@ -288,7 +292,7 @@ const MultiSelectInput = ({
               ghost="borderless"
               level="tertiary"
               size="small"
-              icon={<ArrowDownIcon />}
+              icon={<OpenButton />}
               title={openSelectLabel}
               onClick={openOverlay}
               tabIndex={0}
