@@ -23,31 +23,43 @@ const SystemInfo = () => {
   const downloadTxtRoute = useRoute('pim_analytics_system_info_download');
   const systemInfoData = useSystemInfo();
 
+  const renderArraySystemInfo: any = (infoValue: any) =>
+    infoValue.map((subInfoValue: any, subInfoKey: string) => {
+      return (
+        <span key={`${subInfoKey}`}>
+          {renderSystemInfoValue(subInfoValue)}
+          <br />
+        </span>
+      );
+    });
+
+  const renderNestedObjectSystemInfo: any = (infoValue: any, keyPrefix: string = '') =>
+    Object.entries(infoValue).map(([subInfoKey, subInfoValue]) => {
+      const infoKey = keyPrefix !== '' ? keyPrefix + '.' + subInfoKey : subInfoKey;
+      return typeof subInfoValue === 'object' ? (
+        renderSystemInfoValue(subInfoValue, subInfoKey)
+      ) : (
+        <span key={`${infoKey}`}>
+          {translate('pim_analytics.info_type.' + infoKey)}: {subInfoValue}
+          <br />
+        </span>
+      );
+    });
+
   const renderSystemInfoValue: any = (infoValue: any, keyPrefix: string = '') => {
     if (typeof infoValue === 'boolean') {
       return infoValue ? '1' : '0';
-    } else if (Array.isArray(infoValue)) {
-      return infoValue.map((subInfoValue, subInfoKey) => {
-        return (
-          <span key={`${subInfoKey}`}>
-            {renderSystemInfoValue(subInfoValue)}
-            <br />
-          </span>
-        );
-      });
-    } else if (typeof infoValue === 'object') {
-      return Object.entries(infoValue).map(([subInfoKey, subInfoValue]) => {
-        const infoKey = keyPrefix !== '' ? keyPrefix + '.' + subInfoKey : subInfoKey;
-        return typeof subInfoValue === 'object' ? (
-          renderSystemInfoValue(subInfoValue, subInfoKey)
-        ) : (
-          <span key={`${infoKey}`}>
-            {translate('pim_analytics.info_type.' + infoKey)}: {subInfoValue}
-            <br />
-          </span>
-        );
-      });
-    } else return infoValue;
+    }
+
+    if (Array.isArray(infoValue)) {
+      return renderArraySystemInfo(infoValue);
+    }
+
+    if (typeof infoValue === 'object') {
+      return renderNestedObjectSystemInfo(infoValue, keyPrefix);
+    }
+
+    return infoValue;
   };
 
   return (
