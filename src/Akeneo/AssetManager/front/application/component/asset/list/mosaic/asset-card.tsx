@@ -85,6 +85,7 @@ const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, o
   const [url, setUrl] = React.useState<string | null>(null);
   const emptyMediaUrl = getMediaPreviewUrl(emptyMediaPreview());
   let isDisplayed = true;
+  const label = getAssetLabel(asset, context.locale);
   React.useEffect(() => {
     const imageUrl = getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
     loadImage(imageUrl)
@@ -133,7 +134,7 @@ const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, o
             readOnly={isDisabled}
           />
         )}
-        <Label color={isSelected ? akeneoTheme.color.blue100 : undefined}>{getAssetLabel(asset, context.locale)}</Label>
+          <Label color={isSelected ? akeneoTheme.color.blue100 : undefined} isCode={label===`[${asset.code}]`}>{label}</Label>
       </Title>
     </Container>
   );

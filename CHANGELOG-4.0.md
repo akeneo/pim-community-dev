@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9688: Remove capitalization from the first letter of the asset code as label
+
 # 4.0.95 (2021-02-19)
 
 ## Bug fixes

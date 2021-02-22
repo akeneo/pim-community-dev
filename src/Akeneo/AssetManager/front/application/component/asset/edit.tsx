@@ -26,7 +26,18 @@ import {getLabel} from 'pimui/js/i18n';
 import EditionAsset, {getEditionAssetCompleteness} from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {MainMediaThumbnail} from 'akeneoassetmanager/application/component/asset/edit/main-media-thumbnail';
 import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
+import styled from "styled-components";
 const securityContext = require('pim/security-context');
+
+const CodeAsLabel = styled.div `
+     ::first-letter {
+     text-transform: initial !important;
+   }
+`
+
+const Label : React.FC<{isCode:boolean}> = ({children, isCode}) => (isCode
+        ? <CodeAsLabel className="AknTitleContainer-title">{children}</CodeAsLabel>
+        : <div className="AknTitleContainer-title">{children}</div>)
 
 interface StateProps {
   form: {
@@ -172,7 +183,7 @@ class AssetEditView extends React.Component<EditProps> {
                         </div>
                       </div>
                       <div className="AknTitleContainer-line">
-                        <div className="AknTitleContainer-title">{label}</div>
+                        <Label isCode={label===`[${asset.code}]`}>{label}</Label>
                         {editState}
                       </div>
                     </div>
