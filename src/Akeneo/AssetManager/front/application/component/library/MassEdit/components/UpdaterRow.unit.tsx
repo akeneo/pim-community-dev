@@ -1,5 +1,6 @@
 import React, {ReactNode} from 'react';
-import {screen, fireEvent, within} from '@testing-library/react';
+import {screen, within} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {UpdaterRow} from './UpdaterRow';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
@@ -150,7 +151,7 @@ test('it calls onChange handler when the user changes input', () => {
   );
 
   const textInput = screen.getByLabelText('Description attribute');
-  fireEvent.change(textInput, {target: {value: 'New value'}});
+  userEvent.type(textInput, 'New value', {allAtOnce: true});
   expect(handleChange).toHaveBeenCalledTimes(1);
   expect(handleChange).toHaveBeenCalledWith({...updater, data: 'New value'});
 });
@@ -170,8 +171,8 @@ test('it calls onChange handler when the user changes the channel', () => {
   );
 
   const channelSelect = screen.getByTitle('pim_asset_manager.asset.mass_edit.select.channel');
-  fireEvent.click(within(channelSelect).getByRole('textbox'));
-  fireEvent.click(screen.getByText('Mobile'));
+  userEvent.click(within(channelSelect).getByRole('textbox'));
+  userEvent.click(screen.getByText('Mobile'));
   expect(handleChange).toHaveBeenCalledTimes(1);
   expect(handleChange).toHaveBeenCalledWith({...updater, channel: 'mobile'});
 });
@@ -191,8 +192,8 @@ test('it calls onChange handler when the user changes the locale', () => {
   );
 
   const localeSelect = screen.getByTitle('pim_asset_manager.asset.mass_edit.select.locale');
-  fireEvent.click(within(localeSelect).getByRole('textbox'));
-  fireEvent.click(screen.getByText('French'));
+  userEvent.click(within(localeSelect).getByRole('textbox'));
+  userEvent.click(screen.getByText('French'));
   expect(handleChange).toHaveBeenCalledTimes(1);
   expect(handleChange).toHaveBeenCalledWith({...updater, locale: 'fr_FR'});
 });
@@ -223,8 +224,8 @@ test('it calls onChange handler when the user changes the action on an option co
   );
 
   const localeSelect = screen.getByTitle('pim_asset_manager.asset.mass_edit.select.action');
-  fireEvent.click(within(localeSelect).getByRole('textbox'));
-  fireEvent.click(screen.getByText('pim_asset_manager.asset.mass_edit.action.append'));
+  userEvent.click(within(localeSelect).getByRole('textbox'));
+  userEvent.click(screen.getByText('pim_asset_manager.asset.mass_edit.action.append'));
   expect(handleChange).toHaveBeenCalledTimes(1);
   expect(handleChange).toHaveBeenCalledWith({...optionCollectionUpdater, action: 'append'});
 });
@@ -244,7 +245,7 @@ test('it calls onRemove handler when the user remove line', () => {
   );
 
   const removeButton = screen.getByTitle('pim_common.remove');
-  fireEvent.click(removeButton);
+  userEvent.click(removeButton);
   expect(handleRemove).toHaveBeenCalledTimes(1);
   expect(handleRemove).toHaveBeenCalledWith(updater);
 });
@@ -267,7 +268,7 @@ test('it does not permit user action when readonly', () => {
   screen.getAllByRole('textbox').forEach(input => expect(input).toHaveAttribute('readonly'));
 
   const textInput = screen.getByLabelText('Description attribute');
-  fireEvent.change(textInput, {target: {value: 'New value'}});
+  userEvent.type(textInput, 'New value');
   expect(handleChange).not.toHaveBeenCalled();
 
   expect(screen.queryByTitle('pim_common.remove')).not.toBeInTheDocument();
@@ -325,7 +326,7 @@ test('it displays all locales when attribute is not scopable', () => {
   );
 
   const localeSelect = screen.getByTitle('pim_asset_manager.asset.mass_edit.select.locale');
-  fireEvent.click(within(localeSelect).getByRole('textbox'));
+  userEvent.click(within(localeSelect).getByRole('textbox'));
 
   expect(screen.getByText('German')).toBeInTheDocument();
   expect(screen.getByText('French')).toBeInTheDocument();
@@ -347,8 +348,8 @@ test('it changes the locale if selected channel does not contain the current loc
   );
 
   const channelSelect = screen.getByTitle('pim_asset_manager.asset.mass_edit.select.channel');
-  fireEvent.click(within(channelSelect).getByRole('textbox'));
-  fireEvent.click(screen.getByText('Mobile'));
+  userEvent.click(within(channelSelect).getByRole('textbox'));
+  userEvent.click(screen.getByText('Mobile'));
 
   expect(handleChange).toHaveBeenCalledTimes(1);
   expect(handleChange).toHaveBeenCalledWith({...updater, channel: 'mobile', locale: 'de_DE'});

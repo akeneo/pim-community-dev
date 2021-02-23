@@ -1,17 +1,26 @@
 import React, {useState} from 'react';
+import styled from 'styled-components';
+import {
+  Button,
+  getColor,
+  Helper,
+  Link,
+  Modal,
+  ProgressIndicator,
+  SectionTitle,
+  useProgress,
+} from 'akeneo-design-system';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {Button, getColor, Modal, ProgressIndicator, SectionTitle, useProgress} from 'akeneo-design-system';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {Context} from 'akeneoassetmanager/domain/model/context';
-import styled from 'styled-components';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
-import {useUpdaterCollection} from './hooks/useUpdaterCollection';
-import {AddAttributeDropdown} from './components/AddAttributeDropdown';
-import {EmptyUpdaterCollection} from './components/EmptyUpdaterCollection';
-import {UpdaterCollection} from './components/UpdaterCollection';
+import {useUpdaterCollection} from 'akeneoassetmanager/application/component/library/MassEdit/hooks/useUpdaterCollection';
+import {AddAttributeDropdown} from 'akeneoassetmanager/application/component/library/MassEdit/components/AddAttributeDropdown';
+import {EmptyUpdaterCollection} from 'akeneoassetmanager/application/component/library/MassEdit/components/EmptyUpdaterCollection';
+import {UpdaterCollection} from 'akeneoassetmanager/application/component/library/MassEdit/components/UpdaterCollection';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-import {Updater} from './model/updater';
-import {useMassEdit} from './hooks/useMassEdit';
+import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
+import {useMassEdit} from 'akeneoassetmanager/application/component/library/MassEdit/hooks/useMassEdit';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
 
 const Container = styled.div`
@@ -106,7 +115,9 @@ const MassEditModal = ({
             <Button level="tertiary" onClick={onCancel}>
               {translate('pim_common.cancel')}
             </Button>
-            <Button onClick={handleMoveToConfirmStep}>{translate('pim_common.next')}</Button>
+            <Button onClick={handleMoveToConfirmStep} disabled={0 === updaterCollection.length}>
+              {translate('pim_common.next')}
+            </Button>
           </>
         )}
         {isCurrentStep('confirm') && (
@@ -153,6 +164,10 @@ const MassEditModal = ({
           </SectionTitle>
         </Header>
         <Content>
+          <Helper>
+            {translate('pim_asset_manager.asset.mass_edit.helper.content')}&nbsp;
+            <Link href="#">{translate('pim_asset_manager.asset.mass_edit.helper.link')}</Link>
+          </Helper>
           {0 === updaterCollection.length ? (
             <EmptyUpdaterCollection />
           ) : (

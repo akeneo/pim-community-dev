@@ -16,7 +16,7 @@ type ViewGeneratorProps = {
   onChange: (value: EditionValue) => void;
   onSubmit?: () => void;
   canEditData: boolean;
-  invalid: boolean;
+  invalid?: boolean;
 };
 
 export type ViewGenerator = React.FC<ViewGeneratorProps>;
@@ -150,4 +150,4 @@ export const getDataFilterView = getFilterView(__moduleConfig as ValueConfig);
 export const hasDataFilterView = hasFilterView(__moduleConfig as ValueConfig);
 export const getDataFilterViews = getFilterViews(__moduleConfig as ValueConfig);
 
-export type {ValueConfig, ViewGeneratorProps};
+export {ValueConfig, ViewGeneratorProps};

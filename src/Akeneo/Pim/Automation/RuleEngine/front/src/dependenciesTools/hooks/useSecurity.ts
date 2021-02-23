@@ -7,5 +7,7 @@ export const useSecurity = (): Security => {
   if (security) {
     return security;
   }
-  throw new Error('[ApplicationContext]: Security has not been properly initiated');
+  throw new Error(
+    '[ApplicationContext]: Security has not been properly initiated'
+  );
 };

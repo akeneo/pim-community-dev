@@ -361,6 +361,9 @@ pim_asset_manager:
         channel: Select a channel
         locale: Select a locale
         action: Select an action
+      helper:
+        content: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
+        link: Take a look at this article.
     grid:
       search: Search on label, code and text attributes
       filter:

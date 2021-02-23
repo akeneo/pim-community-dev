@@ -1,5 +1,6 @@
 import React from 'react';
 import {screen, fireEvent} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {TEXT_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import {view as TextView} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/text';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
@@ -19,7 +20,9 @@ const textValue = {
 };
 
 test('It renders the text attribute', () => {
-  renderWithProviders(<TextView value={textValue} locale={null} onChange={jest.fn()} canEditData={true} />);
+  renderWithProviders(
+    <TextView channel={null} value={textValue} locale={null} onChange={jest.fn()} canEditData={true} />
+  );
 
   const inputElement = screen.getByRole('textbox') as HTMLInputElement;
   expect(inputElement).toBeInTheDocument();
@@ -47,9 +50,18 @@ test('It can change the text value', () => {
 
   renderWithProviders(<TextView value={textValue} locale={null} onChange={onChange} canEditData={true} />);
 
-  fireEvent.change(screen.getByRole('textbox'), {target: {value: 'pam'}});
+  userEvent.type(screen.getByRole('textbox'), 'pam', {allAtOnce: true});
   expect(onChange).toHaveBeenCalledWith({...textValue, data: 'pam'});
   expect(onChange).toHaveBeenCalledTimes(1);
+});
+
+test('It does not call onChange when the text value is the same', () => {
+  const onChange = jest.fn();
+
+  renderWithProviders(<TextView value={textValue} locale={null} onChange={onChange} canEditData={true} />);
+
+  userEvent.type(screen.getByRole('textbox'), 'pim', {allAtOnce: true});
+  expect(onChange).not.toHaveBeenCalled();
 });
 
 test('It can change the text value on a text area attribute', () => {
@@ -58,7 +70,7 @@ test('It can change the text value on a text area attribute', () => {
 
   renderWithProviders(<TextView value={textAreaValue} locale={null} onChange={onChange} canEditData={true} />);
 
-  fireEvent.change(screen.getByRole('textbox'), {target: {value: 'pam area'}});
+  userEvent.type(screen.getByRole('textbox'), 'pam area', {allAtOnce: true});
   expect(onChange).toHaveBeenCalledWith({...textAreaValue, data: 'pam area'});
   expect(onChange).toHaveBeenCalledTimes(1);
 });

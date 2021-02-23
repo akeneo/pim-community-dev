@@ -1,19 +1,20 @@
 import React from 'react';
+import styled from 'styled-components';
 import {CloseIcon, getColor, getFontSize, IconButton, SelectInput, Table, useId} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {getErrorsForPath} from '@akeneo-pim-community/shared';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
 import {getFieldView} from 'akeneoassetmanager/application/configuration/value';
 import {useConfig} from 'akeneoassetmanager/application/hooks/useConfig';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import Channel, {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {getLabel} from 'pimui/js/i18n';
-import styled from 'styled-components';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {getLocaleFromChannel, getLocalesFromChannel} from 'akeneoassetmanager/application/reducer/structure';
-import {LocaleDropdown} from './LocaleDropdown';
-import {ChannelDropdown} from './ChannelDropdown';
-import {getErrorsView} from '../../../app/validation-error';
+import {LocaleDropdown} from 'akeneoassetmanager/application/component/library/MassEdit/components/LocaleDropdown';
+import {ChannelDropdown} from 'akeneoassetmanager/application/component/library/MassEdit/components/ChannelDropdown';
+import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 
 /** @TODO RAC-331 use body style bold */
 const AttributeName = styled.label`
@@ -86,6 +87,8 @@ const UpdaterRow = ({updater, uiLocale, readOnly = false, errors, onChange, onRe
   const locales = getLocalesFromChannel(channels, updater.channel);
   const id = useId('updater_row_input_');
 
+  const rowErrors = getErrorsForPath(errors, `updaters.${updater.id}`);
+
   return (
     <Table.Row>
       <Table.Cell>
@@ -102,8 +105,9 @@ const UpdaterRow = ({updater, uiLocale, readOnly = false, errors, onChange, onRe
             locale={updater.locale}
             onChange={handleDataChange}
             value={updater}
+            invalid={0 < rowErrors.length}
           />
-          {getErrorsView(errors, `updaters.${updater.id}`)}
+          {getErrorsView(rowErrors, `updaters.${updater.id}`)}
         </InputField>
       </InputCell>
       <ContextCell>

@@ -27,5 +27,4 @@ const normalizeUpdaterCollection = (updaterCollection: Updater[]) => {
   return updaterCollection.map(updater => normalizeUpdater(updater));
 };
 
-export {normalizeUpdaterCollection};
-export type {Updater};
+export {normalizeUpdaterCollection, Updater};

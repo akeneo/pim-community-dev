@@ -85,12 +85,9 @@ const ValueCollection = ({
         return (
           <ErrorBoundary
             key={attributeIdentifierStringValue(value.attribute.identifier)}
-            errorMessage={
-              ('pim_asset_manager.asset.error.value',
-              {
-                fieldName: attributeLabel,
-              })
-            }
+            errorMessage={translate('pim_asset_manager.asset.error.value', {
+              fieldName: attributeLabel,
+            })}
           >
             <Field
               label={attributeLabel}

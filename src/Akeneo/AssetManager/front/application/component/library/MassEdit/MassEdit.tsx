@@ -17,11 +17,13 @@ type MassEditProps = {
   onConfirm: () => void;
   channels: Channel[];
 };
+
 const MassEdit = ({selectionQuery, assetFamily, context, onConfirm, selectedCount, channels}: MassEditProps) => {
   const translate = useTranslate();
   const [isMassEditModalOpen, openMassEditModal, closeMassEditModal] = useBooleanState(false);
   const notify = useNotify();
   const [, launchMassEdit] = useMassEdit();
+
   const handleMassEdit = useCallback(
     async (updaterCollection: Updater[]) => {
       if (selectionQuery === null || assetFamily === null) return;
@@ -39,7 +41,7 @@ const MassEdit = ({selectionQuery, assetFamily, context, onConfirm, selectedCoun
     [selectionQuery, closeMassEditModal, assetFamily]
   );
 
-  if (null === selectionQuery) return;
+  if (null === selectionQuery) return null;
 
   return (
     <>

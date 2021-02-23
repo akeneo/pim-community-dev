@@ -1,10 +1,5 @@
-import * as React from 'react';
-import {
-  isTextData,
-  areTextDataEqual,
-  textDataStringValue,
-  textDataFromString,
-} from 'akeneoassetmanager/domain/model/asset/data/text';
+import React from 'react';
+import {isTextData, textDataStringValue, textDataFromString} from 'akeneoassetmanager/domain/model/asset/data/text';
 import {isTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import RichTextEditor from 'akeneoassetmanager/application/component/app/rich-text-editor';
 import {Key, TextInput} from 'akeneo-design-system';
@@ -17,12 +12,7 @@ const View = ({id, value, invalid, onChange, onSubmit, canEditData}: ViewGenerat
   }
 
   const onValueChange = (text: string) => {
-    const newData = textDataFromString(text);
-    if (areTextDataEqual(newData, value.data)) {
-      return;
-    }
-
-    const newValue = setValueData(value, newData);
+    const newValue = setValueData(value, textDataFromString(text));
 
     onChange(newValue);
   };
@@ -43,9 +33,7 @@ const View = ({id, value, invalid, onChange, onSubmit, canEditData}: ViewGenerat
             ${value.attribute.value_per_locale ? 'AknTextareaField--localizable' : ''}
             ${!canEditData ? 'AknTextField--disabled' : ''}`}
             value={textDataStringValue(value.data)}
-            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
-              onValueChange(event.currentTarget.value);
-            }}
+            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => onValueChange(event.currentTarget.value)}
             readOnly={!canEditData}
           />
         )

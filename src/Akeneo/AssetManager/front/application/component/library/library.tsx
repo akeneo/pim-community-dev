@@ -314,9 +314,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             {rights.asset.edit && (
               <MassEdit
                 selectionQuery={selectionQuery}
-                onConfirm={() => {
-                  onSelectAllChange(false);
-                }}
+                onConfirm={() => onSelectAllChange(false)}
                 context={context}
                 assetFamily={currentAssetFamily}
                 selectedCount={selectedCount}
@@ -326,9 +324,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             {rights.asset.delete && (
               <MassDelete
                 selectionQuery={selectionQuery}
-                onConfirm={() => {
-                  onSelectAllChange(false);
-                }}
+                onConfirm={() => onSelectAllChange(false)}
                 assetFamily={currentAssetFamily}
                 selectedCount={selectedCount}
               />

@@ -6,17 +6,14 @@ import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-fa
 import assetRemover from 'akeneoassetmanager/infrastructure/remover/asset';
 import {MassDeleteModal} from 'akeneoassetmanager/application/component/library/MassDelete/MassDeleteModal';
 
-const MassDelete = ({
-  selectionQuery,
-  onConfirm,
-  assetFamily,
-  selectedCount,
-}: {
+type MassDeleteProps = {
   selectionQuery: Query | null;
   assetFamily: AssetFamily | null;
   selectedCount: number;
   onConfirm: () => void;
-}) => {
+};
+
+const MassDelete = ({selectionQuery, onConfirm, assetFamily, selectedCount}: MassDeleteProps) => {
   const translate = useTranslate();
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
   const notify = useNotify();
@@ -34,6 +31,8 @@ const MassDelete = ({
       notify(NotificationLevel.ERROR, translate('pim_asset_manager.asset.notification.mass_delete.fail'));
     }
   }, [selectionQuery, closeMassDeleteModal, assetFamily]);
+
+  if (null === selectionQuery) return null;
 
   return (
     <>

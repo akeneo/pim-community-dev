@@ -47,17 +47,17 @@ describe('akeneo > asset family > application > reducer --- structure[', () => {
 
   test('I can get the list of local of all channels', () => {
     const channels: Channel[] = [
-        {
-          code: 'ecommerce',
-          locales: [
-            {
-              code: 'en_US',
-            },
-            {
-              code: 'fr_FR',
-            },
-          ],
-        },
+      {
+        code: 'ecommerce',
+        locales: [
+          {
+            code: 'en_US',
+          },
+          {
+            code: 'fr_FR',
+          },
+        ],
+      },
       {
         code: 'mobile',
         labels: {},
@@ -109,7 +109,7 @@ describe('akeneo > asset family > application > reducer --- structure[', () => {
             code: 'fr_FR',
           },
         ],
-      }
+      },
     ];
 
     expect(getLocaleFromChannel(channels, 'ecommerce', 'fr_FR')).toEqual('fr_FR');

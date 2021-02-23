@@ -1,5 +1,6 @@
 import React from 'react';
-import {screen, fireEvent} from '@testing-library/react';
+import {screen} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import {ChannelDropdown} from './ChannelDropdown';
@@ -87,13 +88,13 @@ test('it renders its children properly', () => {
   expect(screen.getByText('Ecommerce')).toBeInTheDocument();
 });
 
-test('it displays all channels when clicking on the dropdown', () => {
+test('it displays all channels when opening the dropdown', () => {
   const handleOnChange = jest.fn();
   renderWithProviders(
     <ChannelDropdown uiLocale="en_US" channels={channels} channel="ecommerce" onChange={handleOnChange} />
   );
 
-  fireEvent.click(screen.getByRole('textbox'));
+  userEvent.click(screen.getByRole('textbox'));
 
   expect(screen.getAllByText('Ecommerce')).toHaveLength(2);
   expect(screen.getByText('Mobile')).toBeInTheDocument();
@@ -112,7 +113,7 @@ test('it does not display the dropdown when read only', () => {
     />
   );
 
-  fireEvent.click(screen.getByRole('textbox'));
+  userEvent.click(screen.getByRole('textbox'));
 
   expect(screen.queryByText('Mobile')).not.toBeInTheDocument();
   expect(screen.queryByText('Print')).not.toBeInTheDocument();
@@ -124,8 +125,8 @@ test('it calls onChange handler when clicking on another channel', () => {
     <ChannelDropdown uiLocale="en_US" channels={channels} channel="ecommerce" onChange={handleOnChange} />
   );
 
-  fireEvent.click(screen.getByRole('textbox'));
-  fireEvent.click(screen.getByText('Mobile'));
+  userEvent.click(screen.getByRole('textbox'));
+  userEvent.click(screen.getByText('Mobile'));
 
   expect(handleOnChange).toHaveBeenCalledWith('mobile');
 });

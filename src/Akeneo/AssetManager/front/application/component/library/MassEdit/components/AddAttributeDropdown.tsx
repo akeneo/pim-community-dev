@@ -39,7 +39,10 @@ const AddAttributeDropdown = ({attributes, uiLocale, alreadyUsed, onAdd}: AddAtt
           </Dropdown.Header>
           <Dropdown.ItemCollection>
             {attributes
-              .filter(attribute => !attribute.is_read_only && ['text', 'option_collection'].includes(attribute.type))
+              .filter(
+                ({is_read_only, type}) =>
+                  !is_read_only && ['text', 'option', 'number', 'option_collection'].includes(type)
+              )
               .map(attribute => (
                 <AttributeItem
                   key={attribute.identifier}

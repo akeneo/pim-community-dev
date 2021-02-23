@@ -1,7 +1,8 @@
-import * as React from 'react';
+import React from 'react';
+import {connect} from 'react-redux';
 import styled from 'styled-components';
-import __ from 'akeneoassetmanager/tools/translator';
-import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
+import {FullscreenIcon, Key} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {
   isMediaLinkData,
@@ -14,7 +15,7 @@ import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-prev
 import {setValueData, isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
 import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
+import {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import {
   Action,
   DownloadAction,
@@ -26,11 +27,9 @@ import {
   ReloadAction,
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
-import {connect} from 'react-redux';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {doReloadAllPreviews} from 'akeneoassetmanager/application/action/asset/reloadPreview';
 import {ViewGenerator, ViewGeneratorProps} from 'akeneoassetmanager/application/configuration/value';
-import {FullscreenIcon, Key} from 'akeneo-design-system';
 
 const MediaLinkInput = styled.input`
   ::placeholder {
@@ -71,6 +70,8 @@ const View = ({
   reloadPreview: boolean;
   onReloadPreview: () => void;
 }) => {
+  const translate = useTranslate();
+
   if (!isMediaLinkData(value.data) || !isMediaLinkAttribute(value.attribute)) {
     return null;
   }
@@ -101,7 +102,7 @@ const View = ({
         <ThumbnailPlaceholder className="AknLoadingPlaceHolder" />
       ) : (
         <ThumbnailContainer>
-          <Thumbnail src={refreshedUrl} alt={__('pim_asset_manager.attribute.media_type_preview')} />
+          <Thumbnail src={refreshedUrl} alt={translate('pim_asset_manager.attribute.media_type_preview')} />
         </ThumbnailContainer>
       )}
       <MediaLinkInput
@@ -115,7 +116,7 @@ const View = ({
         onKeyDown={e => Key.Enter === e.key && onSubmit?.()}
         disabled={!canEditData}
         readOnly={!canEditData}
-        placeholder={__(`pim_asset_manager.attribute.media_link.${canEditData ? 'placeholder' : 'read_only'}`)}
+        placeholder={translate(`pim_asset_manager.attribute.media_link.${canEditData ? 'placeholder' : 'read_only'}`)}
       />
       {!isValueEmpty(value) && (
         <Actions>
@@ -123,7 +124,7 @@ const View = ({
           <CopyUrlAction size={20} data={value.data} attribute={value.attribute} />
           <DownloadAction size={20} data={value.data} attribute={value.attribute} />
           <FullscreenPreview anchor={Action} label={label} data={value.data} attribute={value.attribute}>
-            <FullscreenIcon title={__('pim_asset_manager.asset.button.fullscreen')} size={20} />
+            <FullscreenIcon title={translate('pim_asset_manager.asset.button.fullscreen')} size={20} />
           </FullscreenPreview>
         </Actions>
       )}

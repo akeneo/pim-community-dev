@@ -1,5 +1,6 @@
 import React from 'react';
-import {screen, fireEvent} from '@testing-library/react';
+import {screen} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import {LocaleDropdown} from './LocaleDropdown';
@@ -31,11 +32,11 @@ test('it renders its children properly', () => {
   expect(screen.getByText('English')).toBeInTheDocument();
 });
 
-test('it displays all locales when clicking on the dropdown', () => {
+test('it displays all locales when opening the dropdown', () => {
   const handleOnChange = jest.fn();
   renderWithProviders(<LocaleDropdown locales={locales} locale="en_US" onChange={handleOnChange} />);
 
-  fireEvent.click(screen.getByRole('textbox'));
+  userEvent.click(screen.getByRole('textbox'));
 
   expect(screen.getAllByText('English')).toHaveLength(2);
   expect(screen.getByText('German')).toBeInTheDocument();
@@ -46,18 +47,18 @@ test('it does not display the dropdown when read only', () => {
   const handleOnChange = jest.fn();
   renderWithProviders(<LocaleDropdown readOnly={true} locales={locales} locale="en_US" onChange={handleOnChange} />);
 
-  fireEvent.click(screen.getByRole('textbox'));
+  userEvent.click(screen.getByRole('textbox'));
 
   expect(screen.queryByText('German')).not.toBeInTheDocument();
   expect(screen.queryByText('French')).not.toBeInTheDocument();
 });
 
-test('it calls onChange handler when clicking on another locale', () => {
+test('it calls onChange handler when selecting another locale', () => {
   const handleOnChange = jest.fn();
   renderWithProviders(<LocaleDropdown locales={locales} locale="en_US" onChange={handleOnChange} />);
 
-  fireEvent.click(screen.getByRole('textbox'));
-  fireEvent.click(screen.getByText('German'));
+  userEvent.click(screen.getByRole('textbox'));
+  userEvent.click(screen.getByText('German'));
 
   expect(handleOnChange).toHaveBeenCalledWith('de_DE');
 });

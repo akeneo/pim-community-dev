@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {isOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import OptionData, {isOptionData} from 'akeneoassetmanager/domain/model/asset/data/option';
 import {getOptionLabel} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
@@ -23,6 +23,7 @@ const View = ({value, invalid, id, onChange, locale, canEditData}: ViewGenerator
       value={value.data}
       readOnly={!canEditData}
       invalid={invalid}
+      placeholder={translate('pim_asset_manager.attribute.options.no_value')}
       emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
       clearLabel={translate('pim_common.remove')}
       onChange={(optionCode: OptionData) => {
