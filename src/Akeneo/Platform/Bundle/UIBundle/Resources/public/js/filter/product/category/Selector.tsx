@@ -6,6 +6,7 @@ import styled, {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {Tree} from 'akeneo-design-system/lib';
 import {CategoryResponse, parseResponse} from '../../../CategoryTreeFetcher';
+const UserContext = require('pim/user-context');
 const __ = require('oro/translator');
 const Router = require('pim/router');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -78,7 +79,7 @@ const CategorySelectorWithAllProducts: React.FC<CategorySelectorWithAllProductsP
     return {
       id: category.id,
       code: category.code,
-      label: category.labels['en_US'], // TODO Fix this
+      label: category.labels[UserContext.get('catalogLocale')] || `[${category.code}]`,
       selectable: false,
       children: json.map(child =>
         parseResponse(child, {
