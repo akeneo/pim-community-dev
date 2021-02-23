@@ -1,5 +1,4 @@
 import * as React from 'react';
-import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {
   isTextData,
   areTextDataEqual,
@@ -10,20 +9,9 @@ import {isTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/te
 import RichTextEditor from 'akeneoassetmanager/application/component/app/rich-text-editor';
 import {Key, TextInput} from 'akeneo-design-system';
 import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
+import {ViewGeneratorProps} from 'akeneoassetmanager/application/configuration/value';
 
-const View = ({
-  id,
-  value,
-  onChange,
-  onSubmit,
-  canEditData,
-}: {
-  id?: string;
-  value: EditionValue;
-  onChange: (value: EditionValue) => void;
-  onSubmit?: () => void;
-  canEditData: boolean;
-}) => {
+const View = ({id, value, invalid, onChange, onSubmit, canEditData}: ViewGeneratorProps) => {
   if (!isTextData(value.data) || !isTextAttribute(value.attribute)) {
     return null;
   }
@@ -44,7 +32,7 @@ const View = ({
   }
 
   return (
-    <React.Fragment>
+    <>
       {value.attribute.is_textarea ? (
         value.attribute.is_rich_text_editor ? (
           <RichTextEditor value={textDataStringValue(value.data)} onChange={onValueChange} readOnly={!canEditData} />
@@ -67,6 +55,7 @@ const View = ({
           autoComplete="off"
           readOnly={!canEditData}
           value={textDataStringValue(value.data)}
+          invalid={invalid}
           onChange={onValueChange}
           onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
             if (Key.Enter === event.key) onSubmit?.();
@@ -74,7 +63,7 @@ const View = ({
           disabled={!canEditData}
         />
       )}
-    </React.Fragment>
+    </>
   );
 };
 

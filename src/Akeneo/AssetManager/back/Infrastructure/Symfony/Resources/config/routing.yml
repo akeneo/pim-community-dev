@@ -87,6 +87,11 @@ akeneo_asset_manager_asset_validate_mass_edit_rest:
     defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset.validate_mass_edit }
     methods: [POST]
 
+akeneo_asset_manager_asset_mass_edit_rest:
+    path: '/rest/asset_manager/{assetFamilyIdentifier}/assets'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset.mass_edit }
+    methods: [POST]
+
 akeneo_asset_manager_attribute_index_rest:
     path: '/rest/asset_manager/{assetFamilyIdentifier}/attribute'
     defaults: { _controller: akeneo_assetmanager.infrastructure.action.attribute.index }

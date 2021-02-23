@@ -31,7 +31,7 @@ test('It can generate a basic selection', () => {
   [updaterCollection, addUpdater, removeUpdater, setUpdater, alreadyUsedAttributeIdentifiers] = result.current;
 
   const defaultUpdater: Updater = {
-    action: 'set',
+    action: 'replace',
     attribute: {
       asset_family_identifier: 'packshot',
       code: 'description',
@@ -101,7 +101,7 @@ test('It uses the context if needed', () => {
   [updaterCollection, addUpdater, removeUpdater, setUpdater, alreadyUsedAttributeIdentifiers] = result.current;
 
   const defaultUpdater: Updater = {
-    action: 'set',
+    action: 'replace',
     attribute: {
       asset_family_identifier: 'packshot',
       code: 'description',

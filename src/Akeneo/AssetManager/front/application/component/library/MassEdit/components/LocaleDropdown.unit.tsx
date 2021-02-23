@@ -6,103 +6,64 @@ import {LocaleDropdown} from './LocaleDropdown';
 
 const locales: Locale[] = [
   {
-    "code": "de_DE",
-    "label": "German (Germany)",
-    "region": "Germany",
-    "language": "German"
+    code: 'de_DE',
+    label: 'German (Germany)',
+    region: 'Germany',
+    language: 'German',
   },
   {
-    "code": "en_US",
-    "label": "English (United States)",
-    "region": "United States",
-    "language": "English"
+    code: 'en_US',
+    label: 'English (United States)',
+    region: 'United States',
+    language: 'English',
   },
   {
-    "code": "fr_FR",
-    "label": "French (France)",
-    "region": "France",
-    "language": "French"
-  }
+    code: 'fr_FR',
+    label: 'French (France)',
+    region: 'France',
+    language: 'French',
+  },
 ];
 
 test('it renders its children properly', () => {
-  renderWithProviders(
-    <LocaleDropdown
-      readOnly={false}
-      locales={locales}
-      locale="en_US"
-      onChange={() => {}}
-    />
-  );
+  renderWithProviders(<LocaleDropdown locales={locales} locale="en_US" onChange={jest.fn()} />);
 
   expect(screen.getByText('English')).toBeInTheDocument();
 });
 
-test('it display all locales when clicking on the dropdown', () => {
+test('it displays all locales when clicking on the dropdown', () => {
   const handleOnChange = jest.fn();
-  renderWithProviders(
-    <LocaleDropdown
-      readOnly={false}
-      locales={locales}
-      locale="en_US"
-      onChange={handleOnChange}
-    />
-  );
+  renderWithProviders(<LocaleDropdown locales={locales} locale="en_US" onChange={handleOnChange} />);
 
-  const dropdownButton = screen.getByText('English');
-  fireEvent.click(dropdownButton);
+  fireEvent.click(screen.getByRole('textbox'));
 
-  expect(screen.getAllByText('English').length).toEqual(2);
+  expect(screen.getAllByText('English')).toHaveLength(2);
   expect(screen.getByText('German')).toBeInTheDocument();
   expect(screen.getByText('French')).toBeInTheDocument();
 });
 
 test('it does not display the dropdown when read only', () => {
   const handleOnChange = jest.fn();
-  renderWithProviders(
-    <LocaleDropdown
-      readOnly={true}
-      locales={locales}
-      locale="en_US"
-      onChange={handleOnChange}
-    />
-  );
+  renderWithProviders(<LocaleDropdown readOnly={true} locales={locales} locale="en_US" onChange={handleOnChange} />);
 
-  const dropdownButton = screen.getByText('English');
-  fireEvent.click(dropdownButton);
+  fireEvent.click(screen.getByRole('textbox'));
 
   expect(screen.queryByText('German')).not.toBeInTheDocument();
   expect(screen.queryByText('French')).not.toBeInTheDocument();
 });
 
-test('it call onChange handler when user click on another locale', () => {
+test('it calls onChange handler when clicking on another locale', () => {
   const handleOnChange = jest.fn();
-  renderWithProviders(
-    <LocaleDropdown
-      readOnly={false}
-      locales={locales}
-      locale="en_US"
-      onChange={handleOnChange}
-    />
-  );
+  renderWithProviders(<LocaleDropdown locales={locales} locale="en_US" onChange={handleOnChange} />);
 
-  const dropdownButton = screen.getByText('English');
-  fireEvent.click(dropdownButton);
-  const newOption = screen.getByText('German');
-  fireEvent.click(newOption);
+  fireEvent.click(screen.getByRole('textbox'));
+  fireEvent.click(screen.getByText('German'));
 
-  expect(handleOnChange).toHaveBeenCalledWith('de_DE')
+  expect(handleOnChange).toHaveBeenCalledWith('de_DE');
 });
 
-test('it return nothing when locale is not found', () => {
-  renderWithProviders(
-    <LocaleDropdown
-      readOnly={false}
-      locales={locales}
-      locale="unknown_locale"
-      onChange={() => {}}
-    />
-  );
+test('it returns nothing when locale is not found', () => {
+  renderWithProviders(<LocaleDropdown locales={locales} locale="unknown_locale" onChange={jest.fn()} />);
 
   expect(screen.queryByText('unknown_locale')).not.toBeInTheDocument();
 });

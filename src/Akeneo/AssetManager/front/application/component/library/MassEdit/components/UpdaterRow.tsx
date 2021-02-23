@@ -1,5 +1,5 @@
 import React from 'react';
-import {CloseIcon, getColor, getFontSize, IconButton, Table, useId} from 'akeneo-design-system';
+import {CloseIcon, getColor, getFontSize, IconButton, SelectInput, Table, useId} from 'akeneo-design-system';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
 import {getFieldView} from 'akeneoassetmanager/application/configuration/value';
@@ -50,22 +50,27 @@ const RemoveCell = styled(Table.Cell)`
   }
 `;
 
+const APPEND_ATTRIBUTE_TYPES = ['option_collection'];
+
 type UpdaterRowProps = {
   updater: Updater;
   uiLocale: string;
   onRemove: (updater: Updater) => void;
   onChange: (updater: Updater) => void;
-  readOnly: boolean;
+  readOnly?: boolean;
   errors: ValidationError[];
   channels: Channel[];
 };
 
-const UpdaterRow = ({updater, uiLocale, readOnly, errors, onChange, onRemove, channels}: UpdaterRowProps) => {
+const UpdaterRow = ({updater, uiLocale, readOnly = false, errors, onChange, onRemove, channels}: UpdaterRowProps) => {
   const translate = useTranslate();
   const config = useConfig('value');
   const InputView = getFieldView(config)(updater);
   const handleDataChange = (editionValue: EditionValue) => {
     onChange({...updater, data: editionValue.data});
+  };
+  const handleActionChange = (action: typeof updater.action) => {
+    onChange({...updater, action});
   };
 
   const handleLocaleChange = (newLocale: LocaleCode) => {
@@ -102,8 +107,25 @@ const UpdaterRow = ({updater, uiLocale, readOnly, errors, onChange, onRemove, ch
         </InputField>
       </InputCell>
       <ContextCell>
+        {APPEND_ATTRIBUTE_TYPES.includes(updater.attribute.type) && (
+          <SelectInput
+            title={translate('pim_asset_manager.asset.mass_edit.select.action')}
+            value={updater.action}
+            onChange={handleActionChange}
+            clearable={false}
+            emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
+          >
+            <SelectInput.Option value="replace">
+              {translate('pim_asset_manager.asset.mass_edit.action.replace')}
+            </SelectInput.Option>
+            <SelectInput.Option value="append">
+              {translate('pim_asset_manager.asset.mass_edit.action.append')}
+            </SelectInput.Option>
+          </SelectInput>
+        )}
         {null !== updater.channel && (
           <ChannelDropdown
+            title={translate('pim_asset_manager.asset.mass_edit.select.channel')}
             readOnly={readOnly}
             channel={updater.channel}
             uiLocale={uiLocale}
@@ -112,7 +134,13 @@ const UpdaterRow = ({updater, uiLocale, readOnly, errors, onChange, onRemove, ch
           />
         )}
         {null !== updater.locale && (
-          <LocaleDropdown readOnly={readOnly} locale={updater.locale} onChange={handleLocaleChange} locales={locales} />
+          <LocaleDropdown
+            title={translate('pim_asset_manager.asset.mass_edit.select.locale')}
+            readOnly={readOnly}
+            locale={updater.locale}
+            onChange={handleLocaleChange}
+            locales={locales}
+          />
         )}
       </ContextCell>
       <RemoveCell>

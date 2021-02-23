@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
+use Akeneo\AssetManager\Application\Asset\MassEditAssets\MassEditAssetsCommand;
+use Akeneo\AssetManager\Infrastructure\Validation\Asset\MassEditAssetsCommand as MassEditAssetsCommandConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Akeneo\AssetManager\Application\Asset\MassEditAssets\MassEditAssetsCommand;
-use Akeneo\AssetManager\Infrastructure\Validation\Asset\MassEditAssetsCommand as ConstraintClass;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -37,18 +37,21 @@ class MassEditAssetsCommandValidator extends ConstraintValidator
         $this->checkConstraintType($constraint);
         $this->checkCommandType($massEditAssetsCommand);
 
-        foreach ($massEditAssetsCommand->updaters as $updater) {
-            if (null === $updater['command']) {
-                continue;
-            }
-            $violations = $this->validator->validate($updater['command']);
+        if (empty($massEditAssetsCommand->editValueCommands)) {
+            $this->context
+                ->buildViolation($constraint->emptyValueCommandMessage)
+                ->addViolation();
+        }
+
+        foreach ($massEditAssetsCommand->editValueCommands as $id => $command) {
+            $violations = $this->validator->validate($command);
             foreach ($violations as $violation) {
                 $this->context->buildViolation($violation->getMessage())
                     ->setParameters($violation->getParameters())
-                    ->atPath(sprintf('updaters.%s', $updater['id']))
+                    ->atPath(sprintf('updaters.%s', $id))
                     ->setCode($violation->getCode())
                     ->setPlural($violation->getPlural())
-                    ->setInvalidValue($updater)
+                    ->setInvalidValue($command)
                     ->addViolation();
             }
         }
@@ -59,7 +62,7 @@ class MassEditAssetsCommandValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof ConstraintClass) {
+        if (!$constraint instanceof MassEditAssetsCommandConstraint) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }

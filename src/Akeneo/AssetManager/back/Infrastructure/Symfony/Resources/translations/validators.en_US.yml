@@ -51,6 +51,8 @@ pim_asset_manager:
                 not_main_media_attribute_code: 'Property must match the code of the attribute defined as main media'
     asset:
         validation:
+            mass_edit:
+                updater_cannot_be_empty: 'You must specify at least one action in your mass edit'
             code:
                 pattern: 'This field may only contain letters, numbers and underscores.'
                 should_be_unique: 'An asset already exists with code "%code%"'

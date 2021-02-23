@@ -204,6 +204,17 @@ services:
             - '@validator'
             - '@asset_manager_serializer'
 
+    akeneo_assetmanager.infrastructure.action.asset.mass_edit:
+        class: Akeneo\AssetManager\Infrastructure\Controller\Asset\MassEditAction
+        arguments:
+            - '@akeneo_assetmanager.application.factory.asset.mass_edit_assets_command_factory'
+            - '@akeneo_assetmanager.application.asset.mass_edit.mass_edit_assets_handler'
+            - '@oro_security.security_facade'
+            - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+            - '@security.token_storage'
+            - '@validator'
+            - '@asset_manager_serializer'
+
     akeneo_assetmanager.infrastructure.action.image_preview:
         class: Akeneo\AssetManager\Infrastructure\Controller\Asset\ImagePreviewAction
         arguments:

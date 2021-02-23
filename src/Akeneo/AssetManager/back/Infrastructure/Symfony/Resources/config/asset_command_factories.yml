@@ -3,7 +3,9 @@ services:
     akeneo_assetmanager.application.factory.asset.mass_edit_assets_command_factory:
         class: Akeneo\AssetManager\Application\Asset\MassEditAssets\CommandFactory\MassEditAssetsCommandFactory
         arguments:
-            - '@akeneo_assetmanager.application.factory.asset.edit_asset_command_factory'
+            - '@akeneo_assetmanager.application.registry.asset.edit_asset_value_command_factory_registry'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+            - '@Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\CheckIfTransformationTarget'
 
     # Edit asset command factory
     akeneo_assetmanager.application.factory.asset.edit_asset_command_factory:
@@ -40,6 +42,11 @@ services:
 
     akeneo_assetmanager.application.factory.asset.edit_option_collection_value_command_factory:
         class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionCollectionValueCommandFactory
+        tags:
+            - { name: akeneo_assetmanager.edit_asset_value_command_factory }
+
+    akeneo_assetmanager.application.factory.asset.append_option_collection_value_command_factory:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AppendOptionCollectionValueCommandFactory
         tags:
             - { name: akeneo_assetmanager.edit_asset_value_command_factory }
 

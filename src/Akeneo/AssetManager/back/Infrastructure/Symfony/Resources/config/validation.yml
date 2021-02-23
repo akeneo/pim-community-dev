@@ -112,6 +112,10 @@ Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionCollect
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditOptionCollectionValueCommand: ~
 
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AppendOptionCollectionValueCommand:
+    constraints:
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditOptionCollectionValueCommand: ~
+
 Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditNumberValueCommand:
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditNumberValueCommand: ~

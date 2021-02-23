@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
+use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
@@ -27,17 +29,20 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-class MassDeleteAssetsActionTest extends ControllerIntegrationTestCase
+class ValidateMassEditActionTest extends ControllerIntegrationTestCase
 {
     private const MASS_EDIT_ASSETS_ROUTE = 'akeneo_asset_manager_asset_validate_mass_edit_rest';
 
     private WebClientHelper $webClientHelper;
     private FixturesLoader $fixturesLoader;
+    private InMemoryFileExists $fileExists;
+    private InMemoryFindActivatedLocalesByIdentifiers $activatedLocales;
 
     public function setUp(): void
     {
@@ -46,7 +51,8 @@ class MassDeleteAssetsActionTest extends ControllerIntegrationTestCase
         $this->fixturesLoader = $this->get('akeneo_assetmanager.common.helper.fixtures_loader');
         $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
-        $this->massDeleteAssetsLauncherSpy = $this->get('akeneo_assetmanager.infrastructure.job.mass_delete_launcher');
+        $this->activatedLocales = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers');
+        $this->fileExists = $this->get('akeneo_assetmanager.infrastructure.persistence.query.file_exists');
         $this->loadFixtures();
     }
 
@@ -59,7 +65,7 @@ class MassDeleteAssetsActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::MASS_EDIT_ASSETS_ROUTE,
             [
-                'assetFamilyIdentifier' => 'atmosphere',
+                'assetFamilyIdentifier' => 'designer',
             ],
             'POST',
             [
@@ -75,14 +81,33 @@ class MassDeleteAssetsActionTest extends ControllerIntegrationTestCase
                     'filters' => [
                         [
                             'field' => 'asset_family',
-                            'value' => 'atmosphere',
+                            'value' => 'designer',
                             'context' => [],
                             'operator' => '='
                         ]
                     ]
                 ],
                 'type' => 'edit',
-                'updaters' => []
+                    'updaters' => [[
+                        'id' => 'an_uuid',
+                        'attribute' => 'label_designer_d00de54460082b239164135175588647',
+                        'channel' => null,
+                        'locale' => 'fr_FR',
+                        'data' => 'My new data',
+                        'action' => 'replace',
+                    ],
+                    [
+                        'id' => 'another_uuid',
+                        'attribute' => 'media_designer_9a6a7b91c08be7574d5f48dea2ea99fa',
+                        'channel' => null,
+                        'locale' => null,
+                        'data' => [
+                            'filePath' => '/a/b/c/title_12.png',
+                            'updatedAt' => '2019-11-22T15:16:21+0000'
+                        ],
+                        'action' => 'replace',
+                    ],
+                ],
             ],
         );
 
@@ -140,6 +165,11 @@ class MassDeleteAssetsActionTest extends ControllerIntegrationTestCase
             $content[0]['messageTemplate'],
             'This value is too long. It should have 2 characters or less.'
         );
+
+        Assert::assertEquals(
+            $content[0]['propertyPath'],
+            'updaters.some_uuid'
+        );
     }
 
     /**
@@ -167,7 +197,7 @@ class MassDeleteAssetsActionTest extends ControllerIntegrationTestCase
                     'filters' => [
                         [
                             'field' => 'asset_family',
-                            'value' => 'atmosphere',
+                            'value' => 'designer',
                             'context' => [],
                             'operator' => '='
                         ]
@@ -179,45 +209,6 @@ class MassDeleteAssetsActionTest extends ControllerIntegrationTestCase
         );
         $response = $this->client->getResponse();
         Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_an_error_if_user_does_not_have_the_permissions_to_delete_assets()
-    {
-        $this->revokeEditionRights();
-        $this->webClientHelper->callRoute(
-            $this->client,
-            self::MASS_EDIT_ASSETS_ROUTE,
-            [
-                'assetFamilyIdentifier' => 'designer',
-            ],
-            'POST',
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE' => 'application/json'
-            ],
-            [
-                'query' => [
-                    'page' => 0,
-                    'size' => 50,
-                    'locale' => 'en_US',
-                    'channel' => 'ecommerce',
-                    'filters' => [
-                        [
-                            'field' => 'asset_family',
-                            'value' => 'atmosphere',
-                            'context' => [],
-                            'operator' => '='
-                        ]
-                    ]
-                ],
-                'type' => 'edit',
-                'updaters' => []
-            ],
-        );
-        $this->webClientHelper->assert403Forbidden($this->client->getResponse());
     }
 
     /**
@@ -245,7 +236,7 @@ class MassDeleteAssetsActionTest extends ControllerIntegrationTestCase
                     'filters' => [
                         [
                             'field' => 'asset_family',
-                            'value' => 'atmosphere',
+                            'value' => 'designer',
                             'context' => [],
                             'operator' => '='
                         ]
@@ -302,11 +293,12 @@ class MassDeleteAssetsActionTest extends ControllerIntegrationTestCase
         $this->get('akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler')
             ->forbid();
     }
+
     private function loadFixtures(): void
     {
-        $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_assetmanager_asset_delete', true);
         $this->fixturesLoader->assetFamily('designer')->load();
+        $this->fileExists->save('/a/b/c/title_12.png');
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
         // text attribute
         $textAttributeIdentifier = AttributeIdentifier::create('designer', 'name', 'fingerprint');
@@ -326,11 +318,5 @@ class MassDeleteAssetsActionTest extends ControllerIntegrationTestCase
         );
         $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
             ->create($textAttribute);
-    }
-
-    private function revokeEditionRights(): void
-    {
-        $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_assetmanager_asset_delete', false);
     }
 }

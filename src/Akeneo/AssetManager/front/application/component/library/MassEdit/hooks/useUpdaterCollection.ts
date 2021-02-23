@@ -16,7 +16,7 @@ const useUpdaterCollection = () => {
         locale: attribute.value_per_locale ? context.locale : null,
         attribute: attribute,
         data: null,
-        action: 'set',
+        action: 'replace',
       },
     ]);
   };

@@ -8,7 +8,7 @@ import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 export class InvalidArgument extends Error {}
 
-export type ViewGenerator = React.FC<{
+type ViewGeneratorProps = {
   id?: string;
   value: EditionValue;
   channel: ChannelReference;
@@ -16,7 +16,10 @@ export type ViewGenerator = React.FC<{
   onChange: (value: EditionValue) => void;
   onSubmit?: () => void;
   canEditData: boolean;
-}>;
+  invalid: boolean;
+};
+
+export type ViewGenerator = React.FC<ViewGeneratorProps>;
 /**
  * @api
  */
@@ -147,4 +150,4 @@ export const getDataFilterView = getFilterView(__moduleConfig as ValueConfig);
 export const hasDataFilterView = hasFilterView(__moduleConfig as ValueConfig);
 export const getDataFilterViews = getFilterViews(__moduleConfig as ValueConfig);
 
-export type {ValueConfig};
+export type {ValueConfig, ViewGeneratorProps};

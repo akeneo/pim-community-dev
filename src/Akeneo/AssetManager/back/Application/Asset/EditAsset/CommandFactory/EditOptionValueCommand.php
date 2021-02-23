@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -20,13 +21,22 @@ use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
  */
 class EditOptionValueCommand extends AbstractEditValueCommand
 {
-    /** @var string */
-    public $optionCode;
+    public string $optionCode;
 
     public function __construct(OptionAttribute $attribute, ?string $channel, ?string $locale, string $optionCode)
     {
         parent::__construct($attribute, $channel, $locale);
 
         $this->optionCode = $optionCode;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'attribute' => (string) $this->attribute->getIdentifier(),
+            'channel' => $this->channel,
+            'locale' => $this->locale,
+            'data' => $this->optionCode
+        ];
     }
 }

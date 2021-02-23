@@ -4,7 +4,7 @@ import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {assetValueUpdated, saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset/edit/form';
 import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
-import renderValues from 'akeneoassetmanager/application/component/asset/edit/enrich/value';
+import {ValueCollection} from 'akeneoassetmanager/application/component/asset/edit/enrich/value';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {Key} from 'akeneo-design-system';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
@@ -92,15 +92,15 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
               <span>{__('pim_asset_manager.asset.enrich.edit_subsection')}</span>
             </SubsectionHeader>
             <div className="AknFormContainer AknFormContainer--wide AknFormContainer--withPadding">
-              {renderValues(
-                asset,
-                denormalizeChannelReference(this.props.context.channel),
-                denormalizeLocaleReference(this.props.context.locale),
-                this.props.form.errors,
-                this.props.events.form.onValueChange,
-                this.props.events.form.onSubmit,
-                this.props.rights
-              )}
+              <ValueCollection
+                asset={asset}
+                channel={denormalizeChannelReference(this.props.context.channel)}
+                locale={denormalizeLocaleReference(this.props.context.locale)}
+                errors={this.props.form.errors}
+                onChange={this.props.events.form.onValueChange}
+                onSubmit={this.props.events.form.onSubmit}
+                rights={this.props.rights}
+              />
             </div>
           </Subsection>
         </LeftColumn>

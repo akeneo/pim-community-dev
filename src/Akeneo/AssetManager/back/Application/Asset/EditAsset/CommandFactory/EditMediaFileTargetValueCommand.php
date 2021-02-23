@@ -17,23 +17,12 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 
 class EditMediaFileTargetValueCommand extends AbstractEditValueCommand
 {
-    /** @var string */
-    public $filePath;
-
-    /** @var string */
-    public $originalFilename;
-
-    /** @var int */
-    public $size;
-
-    /** @var string */
-    public $mimeType;
-
-    /** @var string */
-    public $extension;
-
-    /** @var ?string */
-    public $updatedAt;
+    public string $filePath;
+    public string $originalFilename;
+    public int $size;
+    public string $mimeType;
+    public string $extension;
+    public ?string $updatedAt;
 
     public function __construct(
         MediaFileAttribute $attribute,
@@ -54,5 +43,22 @@ class EditMediaFileTargetValueCommand extends AbstractEditValueCommand
         $this->mimeType = $mimeType;
         $this->extension = $extension;
         $this->updatedAt = $updatedAt;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'attribute' => (string) $this->attribute->getIdentifier(),
+            'channel' => $this->channel,
+            'locale' => $this->locale,
+            'data' => [
+                'filePath' => $this->filePath,
+                'originalFilename' => $this->originalFilename,
+                'size' => $this->size,
+                'mimeType' => $this->mimeType,
+                'extension' => $this->extension,
+                'updatedAt' => $this->updatedAt,
+            ]
+        ];
     }
 }

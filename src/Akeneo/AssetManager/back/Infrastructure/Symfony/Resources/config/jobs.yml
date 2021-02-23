@@ -16,6 +16,12 @@ services:
             - '@akeneo_batch_queue.queue.publish_job_to_queue'
             - '@security.token_storage'
 
+    akeneo_assetmanager.infrastructure.job.mass_edit_launcher:
+        class: Akeneo\AssetManager\Infrastructure\Job\MassEditAssetsLauncher
+        arguments:
+            - '@akeneo_batch_queue.queue.publish_job_to_queue'
+            - '@security.token_storage'
+
     akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_identifiers_launcher:
         class: Akeneo\AssetManager\Infrastructure\Job\ComputeTransformationFromAssetIdentifiersLauncher
         arguments:
@@ -36,6 +42,12 @@ services:
 
     akeneo_assetmanager.infrastructure.job.provider.mass_delete_assets:
         class: 'Akeneo\AssetManager\Infrastructure\Job\Provider\MassDeleteAssets'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_assetmanager.infrastructure.job.provider.mass_edit_assets:
+        class: 'Akeneo\AssetManager\Infrastructure\Job\Provider\MassEditAssets'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
@@ -96,6 +108,17 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: 'internal', type: 'akeneo_assetmanager.mass_delete_assets' }
 
+    akeneo_assetmanager.job.mass_edit_assets:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'asset_manager_mass_edit_assets'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - [ '@akeneo_assetmanager.step.mass_edit_assets' ]
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: 'internal', type: 'akeneo_assetmanager.mass_edit_assets' }
+
     # STEPS
     akeneo_assetmanager.step.link_assets_to_products:
         class: '%pim_connector.step.tasklet.class%'
@@ -133,6 +156,15 @@ services:
             - '@akeneo_assetmanager.tasklet.mass_delete_assets_tasklet'
         public: false
 
+    akeneo_assetmanager.step.mass_edit_assets:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'mass_edit_assets'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_assetmanager.tasklet.mass_edit_assets_tasklet'
+        public: false
+
     # TASKLETS
     akeneo_assetmanager.tasklet.link_assets_to_products:
         class: 'Akeneo\AssetManager\Infrastructure\Job\LinkAssetsToProductsTasklet'
@@ -153,6 +185,20 @@ services:
             - '@akeneo_batch.job_repository'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
             - '@akeneo_batch.job.job_stopper'
+            - 1000
+        public: false
+
+    akeneo_assetmanager.tasklet.mass_edit_assets_tasklet:
+        class: 'Akeneo\AssetManager\Infrastructure\Job\MassEditAssetsTasklet'
+        arguments:
+            - '@akeneo_assetmanager.application.asset.edit_asset_handler'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.query_builder'
+            - '@akeneo_assetmanager.client.asset'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
+            - '@akeneo_batch.job.job_stopper'
+            - '@akeneo_assetmanager.application.registry.asset.edit_asset_value_command_factory_registry'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
             - 1000
         public: false
 

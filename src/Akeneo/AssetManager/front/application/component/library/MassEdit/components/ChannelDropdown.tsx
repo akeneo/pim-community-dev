@@ -6,14 +6,15 @@ import {getLabel} from 'pimui/js/i18n';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 type ChannelDropdownProps = {
-  readOnly: boolean;
+  title?: string;
+  readOnly?: boolean;
   channel: ChannelCode;
   uiLocale: LocaleCode;
   onChange: (newChannel: ChannelCode) => void;
   channels: Channel[];
 };
 
-const ChannelDropdown = ({readOnly, channel, uiLocale, onChange, channels}: ChannelDropdownProps) => {
+const ChannelDropdown = ({channel, uiLocale, channels, ...rest}: ChannelDropdownProps) => {
   const translate = useTranslate();
   const currentChannel = channels.find(channelItem => channelItem.code === channel);
 
@@ -24,10 +25,9 @@ const ChannelDropdown = ({readOnly, channel, uiLocale, onChange, channels}: Chan
   return (
     <SelectInput
       value={currentChannel.code}
-      onChange={onChange}
-      readOnly={readOnly}
       clearable={false}
       emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
+      {...rest}
     >
       {channels.map(currentChannel => (
         <SelectInput.Option key={currentChannel.code} value={currentChannel.code}>

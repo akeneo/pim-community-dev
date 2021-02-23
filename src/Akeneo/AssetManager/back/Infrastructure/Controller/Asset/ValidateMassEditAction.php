@@ -115,8 +115,7 @@ class ValidateMassEditAction
             $this->tokenStorage->getToken()->getUser()->getUsername()
         );
 
-        return $this->securityFacade->isGranted('akeneo_assetmanager_asset_delete')
-            && ($this->canEditAssetFamilyQueryHandler)($query);
+        return ($this->canEditAssetFamilyQueryHandler)($query);
     }
 
     /**

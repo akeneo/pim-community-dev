@@ -9,7 +9,7 @@ type Updater = {
   locale: LocaleReference;
   attribute: NormalizedAttribute;
   data: Data;
-  action: 'set' | 'add';
+  action: 'replace' | 'append';
 };
 
 const normalizeUpdater = (updater: Updater) => {

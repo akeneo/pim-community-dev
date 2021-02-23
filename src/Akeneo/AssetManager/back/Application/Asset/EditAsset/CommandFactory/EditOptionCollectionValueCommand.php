@@ -24,12 +24,23 @@ use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 class EditOptionCollectionValueCommand extends AbstractEditValueCommand
 {
     /** @var string[] */
-    public $optionCodes;
+    public array $optionCodes;
 
     public function __construct(OptionCollectionAttribute $attribute, ?string $channel, ?string $locale, array $optionCodes)
     {
         parent::__construct($attribute, $channel, $locale);
 
         $this->optionCodes = $optionCodes;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'attribute' => (string) $this->attribute->getIdentifier(),
+            'channel' => $this->channel,
+            'locale' => $this->locale,
+            'data' => $this->optionCodes,
+            'action' => 'replace'
+        ];
     }
 }

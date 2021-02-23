@@ -47,7 +47,7 @@ class EditAction
     private NormalizerInterface $normalizer;
     private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
     private TokenStorageInterface $tokenStorage;
-    private IndexAssetEventAggregator $indexAssetEventAggregator;
+    private EventAggregatorInterface $indexAssetEventAggregator;
 
     /** @var ComputeTransformationEventAggregatorInterface */
     private $computeTransformationEventAggregator;

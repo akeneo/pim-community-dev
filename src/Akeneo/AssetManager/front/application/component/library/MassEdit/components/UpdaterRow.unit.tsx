@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {screen, fireEvent} from '@testing-library/react';
+import {screen, fireEvent, within} from '@testing-library/react';
 import {UpdaterRow} from './UpdaterRow';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
@@ -8,77 +8,77 @@ import Channel from 'akeneoassetmanager/domain/model/channel';
 
 const channels: Channel[] = [
   {
-    "code": "ecommerce",
-    "locales": [
+    code: 'ecommerce',
+    locales: [
       {
-        "code": "en_US",
-        "label": "English (United States)",
-        "region": "United States",
-        "language": "English"
+        code: 'en_US',
+        label: 'English (United States)',
+        region: 'United States',
+        language: 'English',
       },
       {
-        "code": "fr_FR",
-        "label": "French (France)",
-        "region": "France",
-        "language": "French"
-      }
+        code: 'fr_FR',
+        label: 'French (France)',
+        region: 'France',
+        language: 'French',
+      },
     ],
-    "labels": {
-      "en_US": "Ecommerce",
-      "de_DE": "Ecommerce",
-      "fr_FR": "Ecommerce"
+    labels: {
+      en_US: 'Ecommerce',
+      de_DE: 'Ecommerce',
+      fr_FR: 'Ecommerce',
     },
   },
   {
-    "code": "mobile",
-    "locales": [
+    code: 'mobile',
+    locales: [
       {
-        "code": "de_DE",
-        "label": "German (Germany)",
-        "region": "Germany",
-        "language": "German"
+        code: 'de_DE',
+        label: 'German (Germany)',
+        region: 'Germany',
+        language: 'German',
       },
       {
-        "code": "en_US",
-        "label": "English (United States)",
-        "region": "United States",
-        "language": "English"
+        code: 'en_US',
+        label: 'English (United States)',
+        region: 'United States',
+        language: 'English',
       },
     ],
-    "labels": {
-      "en_US": "Mobile",
-      "de_DE": "Mobil",
-      "fr_FR": "Mobile"
-    }
+    labels: {
+      en_US: 'Mobile',
+      de_DE: 'Mobil',
+      fr_FR: 'Mobile',
+    },
   },
   {
-    "code": "print",
-    "locales": [
+    code: 'print',
+    locales: [
       {
-        "code": "de_DE",
-        "label": "German (Germany)",
-        "region": "Germany",
-        "language": "German"
+        code: 'de_DE',
+        label: 'German (Germany)',
+        region: 'Germany',
+        language: 'German',
       },
       {
-        "code": "en_US",
-        "label": "English (United States)",
-        "region": "United States",
-        "language": "English"
+        code: 'en_US',
+        label: 'English (United States)',
+        region: 'United States',
+        language: 'English',
       },
       {
-        "code": "fr_FR",
-        "label": "French (France)",
-        "region": "France",
-        "language": "French"
-      }
+        code: 'fr_FR',
+        label: 'French (France)',
+        region: 'France',
+        language: 'French',
+      },
     ],
-    "labels": {
-      "en_US": "Print",
-      "de_DE": "Drucken",
-      "fr_FR": "Impression"
+    labels: {
+      en_US: 'Print',
+      de_DE: 'Drucken',
+      fr_FR: 'Impression',
     },
-  }
+  },
 ];
 
 const updater = {
@@ -94,7 +94,10 @@ const updater = {
     code: 'description',
   },
   data: 'the value',
-  action: 'set',
+  action: 'replace',
+};
+const defaultValueView = {
+  view: {view: TextInput},
 };
 
 const renderUpdaterRow = (row: ReactNode) => {
@@ -102,31 +105,27 @@ const renderUpdaterRow = (row: ReactNode) => {
     <ConfigProvider
       config={{
         value: {
-          text: {
-            view: {view: TextInput},
-          },
+          text: defaultValueView,
+          option_collection: defaultValueView,
         },
       }}
     >
       <table>
-        <tbody>
-          {row}
-        </tbody>
+        <tbody>{row}</tbody>
       </table>
     </ConfigProvider>
   );
-}
+};
 
 test('it renders its children properly', () => {
   renderUpdaterRow(
     <UpdaterRow
       updater={updater}
-      readOnly={false}
       uiLocale="en_US"
       channels={channels}
       errors={[]}
-      onChange={() => {}}
-      onRemove={() => {}}
+      onChange={jest.fn()}
+      onRemove={jest.fn()}
     />
   );
 
@@ -136,80 +135,110 @@ test('it renders its children properly', () => {
   expect(screen.getByTitle('pim_common.remove')).toBeInTheDocument();
 });
 
-test('it calls onChange handler when user change input', () => {
+test('it calls onChange handler when the user changes input', () => {
   const handleChange = jest.fn();
+
   renderUpdaterRow(
     <UpdaterRow
       updater={updater}
-      readOnly={false}
       uiLocale="en_US"
       channels={channels}
       errors={[]}
       onChange={handleChange}
-      onRemove={() => {}}
+      onRemove={jest.fn()}
     />
   );
 
   const textInput = screen.getByLabelText('Description attribute');
-  fireEvent.change(textInput, { target: { value: 'New value' } })
+  fireEvent.change(textInput, {target: {value: 'New value'}});
   expect(handleChange).toHaveBeenCalledTimes(1);
   expect(handleChange).toHaveBeenCalledWith({...updater, data: 'New value'});
 });
 
-test('it calls onChange handler when user change the channel', () => {
+test('it calls onChange handler when the user changes the channel', () => {
   const handleChange = jest.fn();
+
   renderUpdaterRow(
     <UpdaterRow
       updater={updater}
-      readOnly={false}
       uiLocale="en_US"
       channels={channels}
       errors={[]}
       onChange={handleChange}
-      onRemove={() => {}}
+      onRemove={jest.fn()}
     />
   );
 
-  const channelSelector = screen.getByText('Ecommerce');
-  fireEvent.click(channelSelector);
-  const newChannelOption = screen.getByTitle('Mobile');
-  fireEvent.click(newChannelOption);
+  const channelSelect = screen.getByTitle('pim_asset_manager.asset.mass_edit.select.channel');
+  fireEvent.click(within(channelSelect).getByRole('textbox'));
+  fireEvent.click(screen.getByText('Mobile'));
   expect(handleChange).toHaveBeenCalledTimes(1);
   expect(handleChange).toHaveBeenCalledWith({...updater, channel: 'mobile'});
 });
 
-test('it calls onChange handler when user change the locale', () => {
+test('it calls onChange handler when the user changes the locale', () => {
   const handleChange = jest.fn();
+
   renderUpdaterRow(
     <UpdaterRow
       updater={updater}
-      readOnly={false}
       uiLocale="en_US"
       channels={channels}
       errors={[]}
       onChange={handleChange}
-      onRemove={() => {}}
+      onRemove={jest.fn()}
     />
   );
 
-  const localeSelector = screen.getByText('English');
-  fireEvent.click(localeSelector);
-  const newLocaleOption = screen.getByLabelText('FR');
-  fireEvent.click(newLocaleOption);
+  const localeSelect = screen.getByTitle('pim_asset_manager.asset.mass_edit.select.locale');
+  fireEvent.click(within(localeSelect).getByRole('textbox'));
+  fireEvent.click(screen.getByText('French'));
   expect(handleChange).toHaveBeenCalledTimes(1);
   expect(handleChange).toHaveBeenCalledWith({...updater, locale: 'fr_FR'});
 });
 
-test('it call onRemove handler when user remove line', () => {
-  const handleRemove = jest.fn();
+test('it calls onChange handler when the user changes the action on an option collection attribute', () => {
+  const handleChange = jest.fn();
+  const optionCollectionUpdater = {
+    ...updater,
+    attribute: {
+      identifier: 'tags',
+      labels: {
+        en_US: 'Tags attribute',
+      },
+      type: 'option_collection',
+      code: 'tags',
+    },
+  };
+
   renderUpdaterRow(
     <UpdaterRow
-      updater={updater}
-      readOnly={false}
+      updater={optionCollectionUpdater}
       uiLocale="en_US"
       channels={channels}
       errors={[]}
-      onChange={() => {}}
+      onChange={handleChange}
+      onRemove={jest.fn()}
+    />
+  );
+
+  const localeSelect = screen.getByTitle('pim_asset_manager.asset.mass_edit.select.action');
+  fireEvent.click(within(localeSelect).getByRole('textbox'));
+  fireEvent.click(screen.getByText('pim_asset_manager.asset.mass_edit.action.append'));
+  expect(handleChange).toHaveBeenCalledTimes(1);
+  expect(handleChange).toHaveBeenCalledWith({...optionCollectionUpdater, action: 'append'});
+});
+
+test('it calls onRemove handler when the user remove line', () => {
+  const handleRemove = jest.fn();
+
+  renderUpdaterRow(
+    <UpdaterRow
+      updater={updater}
+      uiLocale="en_US"
+      channels={channels}
+      errors={[]}
+      onChange={jest.fn()}
       onRemove={handleRemove}
     />
   );
@@ -220,8 +249,9 @@ test('it call onRemove handler when user remove line', () => {
   expect(handleRemove).toHaveBeenCalledWith(updater);
 });
 
-test('it does not permit user action on readonly', () => {
+test('it does not permit user action when readonly', () => {
   const handleChange = jest.fn();
+
   renderUpdaterRow(
     <UpdaterRow
       updater={updater}
@@ -230,25 +260,23 @@ test('it does not permit user action on readonly', () => {
       channels={channels}
       errors={[]}
       onChange={handleChange}
-      onRemove={() => {}}
+      onRemove={jest.fn()}
     />
   );
 
-  expect(screen.getByText('Ecommerce')).toHaveAttribute('aria-disabled', 'true');
-  expect(screen.getByText('English').closest("button")).toHaveAttribute('aria-disabled', 'true');
+  screen.getAllByRole('textbox').forEach(input => expect(input).toHaveAttribute('readonly'));
 
   const textInput = screen.getByLabelText('Description attribute');
-  fireEvent.change(textInput, { target: { value: 'New value' } })
+  fireEvent.change(textInput, {target: {value: 'New value'}});
   expect(handleChange).not.toHaveBeenCalled();
 
   expect(screen.queryByTitle('pim_common.remove')).not.toBeInTheDocument();
 });
 
-test('it display validation errors', () => {
+test('it displays validation errors', () => {
   renderUpdaterRow(
     <UpdaterRow
       updater={updater}
-      readOnly={false}
       uiLocale="en_US"
       channels={channels}
       errors={[
@@ -256,75 +284,72 @@ test('it display validation errors', () => {
           messageTemplate: 'This value should not be blank.',
           parameters: {'{{ value }}': '""'},
           message: 'This value should not be blank.',
-          propertyPath: 'description',
+          propertyPath: 'updaters.uuid_random',
           invalidValue: '',
         },
       ]}
-      onChange={() => {}}
-      onRemove={() => {}}
+      onChange={jest.fn()}
+      onRemove={jest.fn()}
     />
   );
 
-  expect(screen.getByText('description: This value should not be blank.')).toBeInTheDocument();
+  expect(screen.getByText('This value should not be blank.')).toBeInTheDocument();
 });
 
 test('it does not display the channel and locale dropdown when attribute is not scopable and not localisable', () => {
   renderUpdaterRow(
     <UpdaterRow
       updater={{...updater, locale: null, channel: null}}
-      readOnly={false}
       uiLocale="en_US"
       channels={channels}
       errors={[]}
-      onChange={() => {}}
-      onRemove={() => {}}
+      onChange={jest.fn()}
+      onRemove={jest.fn()}
     />
   );
 
-  expect(screen.queryByText('English')).not.toBeInTheDocument();
-  expect(screen.queryByText('Ecommerce')).not.toBeInTheDocument();
+  expect(screen.queryByTitle('pim_asset_manager.asset.mass_edit.select.channel')).not.toBeInTheDocument();
+  expect(screen.queryByTitle('pim_asset_manager.asset.mass_edit.select.locale')).not.toBeInTheDocument();
 });
 
-test('it display all locales when attribute is not scopable', () => {
+test('it displays all locales when attribute is not scopable', () => {
   renderUpdaterRow(
     <UpdaterRow
       updater={{...updater, channel: null}}
-      readOnly={false}
       uiLocale="en_US"
       channels={channels}
       errors={[]}
-      onChange={() => {}}
-      onRemove={() => {}}
+      onChange={jest.fn()}
+      onRemove={jest.fn()}
     />
   );
 
-  const localeSelector = screen.getByText('English');
-  fireEvent.click(localeSelector);
+  const localeSelect = screen.getByTitle('pim_asset_manager.asset.mass_edit.select.locale');
+  fireEvent.click(within(localeSelect).getByRole('textbox'));
 
-  expect(screen.getByLabelText('DE')).toBeInTheDocument();
-  expect(screen.getByLabelText('FR')).toBeInTheDocument();
-  expect(screen.getAllByLabelText('US').length).toEqual(2);
+  expect(screen.getByText('German')).toBeInTheDocument();
+  expect(screen.getByText('French')).toBeInTheDocument();
+  expect(screen.getAllByText('English')).toHaveLength(2);
 });
 
-test('it change the locale if selected channel does not contain the current locale', () => {
+test('it changes the locale if selected channel does not contain the current locale', () => {
   const handleChange = jest.fn();
+
   renderUpdaterRow(
     <UpdaterRow
       updater={{...updater, locale: 'fr_FR'}}
-      readOnly={false}
       uiLocale="en_US"
       channels={channels}
       errors={[]}
       onChange={handleChange}
-      onRemove={() => {}}
+      onRemove={jest.fn()}
     />
   );
 
-  const channelSelector = screen.getByText('Ecommerce');
-  fireEvent.click(channelSelector);
-  const newChannelOption = screen.getByTitle('Mobile');
-  fireEvent.click(newChannelOption);
+  const channelSelect = screen.getByTitle('pim_asset_manager.asset.mass_edit.select.channel');
+  fireEvent.click(within(channelSelect).getByRole('textbox'));
+  fireEvent.click(screen.getByText('Mobile'));
+
   expect(handleChange).toHaveBeenCalledTimes(1);
   expect(handleChange).toHaveBeenCalledWith({...updater, channel: 'mobile', locale: 'de_DE'});
 });
-

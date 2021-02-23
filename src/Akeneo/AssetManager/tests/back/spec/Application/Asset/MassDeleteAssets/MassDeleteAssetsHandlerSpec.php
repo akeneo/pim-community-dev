@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention;
+namespace spec\Akeneo\AssetManager\Application\Asset\MassDeleteAssets;
 
 use Akeneo\AssetManager\Application\Asset\MassDeleteAssets\MassDeleteAssetsCommand;
 use Akeneo\AssetManager\Application\Asset\MassDeleteAssets\MassDeleteAssetsLauncherInterface;

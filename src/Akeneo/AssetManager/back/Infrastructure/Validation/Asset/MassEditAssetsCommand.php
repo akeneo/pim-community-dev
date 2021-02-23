@@ -20,6 +20,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class MassEditAssetsCommand extends Constraint
 {
+    public string $emptyValueCommandMessage = 'pim_asset_manager.asset.validation.mass_edit.updater_cannot_be_empty';
+
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;

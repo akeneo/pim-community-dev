@@ -21,13 +21,22 @@ use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
  */
 class EditNumberValueCommand extends AbstractEditValueCommand
 {
-    /** @var string */
-    public $number;
+    public string $number;
 
     public function __construct(NumberAttribute $attribute, ?string $channel, ?string $locale, string $number)
     {
         parent::__construct($attribute, $channel, $locale);
 
         $this->number = $number;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'attribute' => (string) $this->attribute->getIdentifier(),
+            'channel' => $this->channel,
+            'locale' => $this->locale,
+            'data' => $this->number
+        ];
     }
 }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\MassEditAssets;
 
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
+
 /**
  * Command to mass edit assets from a family
  *
@@ -23,12 +25,13 @@ class MassEditAssetsCommand
 {
     public string $assetFamilyIdentifier;
     public array $query;
-    public array $updaters;
+    /** @var AbstractEditValueCommand[] */
+    public array $editValueCommands;
 
-    public function __construct(string $assetFamilyIdentifier, array $query, array $updaters)
+    public function __construct(string $assetFamilyIdentifier, array $query, array $editValueCommands)
     {
         $this->assetFamilyIdentifier = $assetFamilyIdentifier;
         $this->query = $query;
-        $this->updaters = $updaters;
+        $this->editValueCommands = $editValueCommands;
     }
 }

@@ -13,21 +13,31 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\MassEditAssets\CommandFactory;
 
-use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommandFactory;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditValueCommandFactoryRegistryInterface;
 use Akeneo\AssetManager\Application\Asset\MassEditAssets\MassEditAssetsCommand;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\CheckIfTransformationTarget;
+use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  */
 class MassEditAssetsCommandFactory
 {
-    private EditAssetCommandFactory $editAssetCommandFactory;
+    private FindAttributesIndexedByIdentifierInterface $sqlFindAttributesIndexedByIdentifier;
+    private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry;
+    private CheckIfTransformationTarget $checkIfTransformationTarget;
 
-    public function __construct(EditAssetCommandFactory $editAssetCommandFactory)
-    {
-        $this->editAssetCommandFactory = $editAssetCommandFactory;
+    public function __construct(
+        EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry,
+        FindAttributesIndexedByIdentifierInterface $sqlFindAttributesIndexedByIdentifier,
+        CheckIfTransformationTarget $checkIfTransformationTarget
+    ) {
+        $this->sqlFindAttributesIndexedByIdentifier = $sqlFindAttributesIndexedByIdentifier;
+        $this->editValueCommandFactoryRegistry = $editValueCommandFactoryRegistry;
+        $this->checkIfTransformationTarget = $checkIfTransformationTarget;
     }
 
     public function create(
@@ -39,35 +49,55 @@ class MassEditAssetsCommandFactory
             throw new \InvalidArgumentException('Impossible to create a command of mass asset edition.');
         }
 
-        $updaters = array_map(function ($normalizedUpdater) use ($assetFamilyIdentifier) {
-            $fakeEditAssetCommand = $this->editAssetCommandFactory->create([
-                'asset_family_identifier' => (string) $assetFamilyIdentifier,
-                'code' => 'FAKE_CODE_FOR_MASS_EDIT_VALIDATION_' . microtime(),
-                'values' => [
-                    [
-                        'attribute' => $normalizedUpdater['attribute'],
-                        'channel' => $normalizedUpdater['channel'],
-                        'locale' => $normalizedUpdater['locale'],
-                        'data' => $normalizedUpdater['data'],
-                    ]
-                ]
-            ]);
+        $attributesIndexedByIdentifier = $this->sqlFindAttributesIndexedByIdentifier->find($assetFamilyIdentifier);
 
-            return [
-                'action' => $normalizedUpdater['action'],
-                'id' => $normalizedUpdater['id'],
-                'command' => isset($fakeEditAssetCommand->editAssetValueCommands[0]) ? $fakeEditAssetCommand->editAssetValueCommands[0] : null
-            ];
-        }, $normalizedUpdaters);
+        $filteredUpdaters = array_filter($normalizedUpdaters, function ($normalizedUpdater) use ($attributesIndexedByIdentifier) {
+            if (!$this->isAttributeExisting($normalizedUpdater, $attributesIndexedByIdentifier)) {
+                return false;
+            }
+
+            $attribute = $attributesIndexedByIdentifier[$normalizedUpdater['attribute']];
+
+            return !$this->isAttributeTargetOrATransformation($attribute, $normalizedUpdater);
+        });
+
+        $updaters = array_reduce($filteredUpdaters, function ($result, $normalizedUpdater) use ($attributesIndexedByIdentifier) {
+            $attribute = $attributesIndexedByIdentifier[$normalizedUpdater['attribute']];
+            $updaterId = $normalizedUpdater['id'];
+            unset($normalizedUpdater['id']);
+
+            $editValueCommand = $this->editValueCommandFactoryRegistry
+                ->getFactory($attribute, $normalizedUpdater)
+                ->create($attribute, $normalizedUpdater);
+
+            $result[$updaterId] = $editValueCommand;
+
+            return $result;
+        }, []);
 
         return new MassEditAssetsCommand((string) $assetFamilyIdentifier, $query->normalize(), $updaters);
+    }
+
+    private function isAttributeExisting($normalizedValue, $attributesIndexedByIdentifier): bool
+    {
+        return array_key_exists($normalizedValue['attribute'], $attributesIndexedByIdentifier);
+    }
+
+    private function isAttributeTargetOrATransformation(AbstractAttribute $attribute, array $normalizedValue)
+    {
+        return $this->checkIfTransformationTarget->forAttribute(
+            $attribute,
+            $normalizedValue['locale'] ?? null,
+            $normalizedValue['channel'] ?? null
+        );
     }
 
     private function isValidUpdaters(array $normalizedUpdaters): bool
     {
         foreach ($normalizedUpdaters as $normalizedUpdater) {
             if (
-                !array_key_exists('attribute', $normalizedUpdater)
+                !is_array($normalizedUpdater)
+                || !array_key_exists('attribute', $normalizedUpdater)
                 || !array_key_exists('channel', $normalizedUpdater)
                 || !array_key_exists('locale', $normalizedUpdater)
                 || !array_key_exists('data', $normalizedUpdater)

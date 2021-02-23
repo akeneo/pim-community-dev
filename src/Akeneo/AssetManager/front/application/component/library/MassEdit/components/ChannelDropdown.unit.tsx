@@ -6,109 +6,96 @@ import {ChannelDropdown} from './ChannelDropdown';
 
 const channels: Channel[] = [
   {
-    "code": "ecommerce",
-    "locales": [
+    code: 'ecommerce',
+    locales: [
       {
-        "code": "en_US",
-        "label": "English (United States)",
-        "region": "United States",
-        "language": "English"
+        code: 'en_US',
+        label: 'English (United States)',
+        region: 'United States',
+        language: 'English',
       },
       {
-        "code": "fr_FR",
-        "label": "French (France)",
-        "region": "France",
-        "language": "French"
-      }
+        code: 'fr_FR',
+        label: 'French (France)',
+        region: 'France',
+        language: 'French',
+      },
     ],
-    "labels": {
-      "en_US": "Ecommerce",
-      "de_DE": "Ecommerce",
-      "fr_FR": "Ecommerce"
+    labels: {
+      en_US: 'Ecommerce',
+      de_DE: 'Ecommerce',
+      fr_FR: 'Ecommerce',
     },
   },
   {
-    "code": "mobile",
-    "locales": [
+    code: 'mobile',
+    locales: [
       {
-        "code": "de_DE",
-        "label": "German (Germany)",
-        "region": "Germany",
-        "language": "German"
+        code: 'de_DE',
+        label: 'German (Germany)',
+        region: 'Germany',
+        language: 'German',
       },
       {
-        "code": "en_US",
-        "label": "English (United States)",
-        "region": "United States",
-        "language": "English"
+        code: 'en_US',
+        label: 'English (United States)',
+        region: 'United States',
+        language: 'English',
       },
     ],
-    "labels": {
-      "en_US": "Mobile",
-      "de_DE": "Mobil",
-      "fr_FR": "Mobile"
-    }
+    labels: {
+      en_US: 'Mobile',
+      de_DE: 'Mobil',
+      fr_FR: 'Mobile',
+    },
   },
   {
-    "code": "print",
-    "locales": [
+    code: 'print',
+    locales: [
       {
-        "code": "de_DE",
-        "label": "German (Germany)",
-        "region": "Germany",
-        "language": "German"
+        code: 'de_DE',
+        label: 'German (Germany)',
+        region: 'Germany',
+        language: 'German',
       },
       {
-        "code": "en_US",
-        "label": "English (United States)",
-        "region": "United States",
-        "language": "English"
+        code: 'en_US',
+        label: 'English (United States)',
+        region: 'United States',
+        language: 'English',
       },
       {
-        "code": "fr_FR",
-        "label": "French (France)",
-        "region": "France",
-        "language": "French"
-      }
+        code: 'fr_FR',
+        label: 'French (France)',
+        region: 'France',
+        language: 'French',
+      },
     ],
-    "labels": {
-      "en_US": "Print",
-      "de_DE": "Drucken",
-      "fr_FR": "Impression"
+    labels: {
+      en_US: 'Print',
+      de_DE: 'Drucken',
+      fr_FR: 'Impression',
     },
-  }
+  },
 ];
 
 test('it renders its children properly', () => {
   renderWithProviders(
-    <ChannelDropdown
-      readOnly={false}
-      uiLocale="en_US"
-      channels={channels}
-      channel="ecommerce"
-      onChange={() => {}}
-    />
+    <ChannelDropdown uiLocale="en_US" channels={channels} channel="ecommerce" onChange={jest.fn()} />
   );
 
   expect(screen.getByText('Ecommerce')).toBeInTheDocument();
 });
 
-test('it display all channels when clicking on the dropdown', () => {
+test('it displays all channels when clicking on the dropdown', () => {
   const handleOnChange = jest.fn();
   renderWithProviders(
-    <ChannelDropdown
-      readOnly={false}
-      uiLocale="en_US"
-      channels={channels}
-      channel="ecommerce"
-      onChange={handleOnChange}
-    />
+    <ChannelDropdown uiLocale="en_US" channels={channels} channel="ecommerce" onChange={handleOnChange} />
   );
 
-  const dropdownButton = screen.getByText('Ecommerce');
-  fireEvent.click(dropdownButton);
+  fireEvent.click(screen.getByRole('textbox'));
 
-  expect(screen.getAllByText('Ecommerce').length).toEqual(2);
+  expect(screen.getAllByText('Ecommerce')).toHaveLength(2);
   expect(screen.getByText('Mobile')).toBeInTheDocument();
   expect(screen.getByText('Print')).toBeInTheDocument();
 });
@@ -125,42 +112,27 @@ test('it does not display the dropdown when read only', () => {
     />
   );
 
-  const dropdownButton = screen.getByText('Ecommerce');
-  fireEvent.click(dropdownButton);
+  fireEvent.click(screen.getByRole('textbox'));
 
   expect(screen.queryByText('Mobile')).not.toBeInTheDocument();
   expect(screen.queryByText('Print')).not.toBeInTheDocument();
 });
 
-test('it call onChange handler when user click on another channel', () => {
+test('it calls onChange handler when clicking on another channel', () => {
   const handleOnChange = jest.fn();
   renderWithProviders(
-    <ChannelDropdown
-      readOnly={false}
-      uiLocale="en_US"
-      channels={channels}
-      channel="ecommerce"
-      onChange={handleOnChange}
-    />
+    <ChannelDropdown uiLocale="en_US" channels={channels} channel="ecommerce" onChange={handleOnChange} />
   );
 
-  const dropdownButton = screen.getByText('Ecommerce');
-  fireEvent.click(dropdownButton);
-  const newOption = screen.getByText('Mobile');
-  fireEvent.click(newOption);
+  fireEvent.click(screen.getByRole('textbox'));
+  fireEvent.click(screen.getByText('Mobile'));
 
-  expect(handleOnChange).toHaveBeenCalledWith('mobile')
+  expect(handleOnChange).toHaveBeenCalledWith('mobile');
 });
 
-test('it return nothing when locale is not found', () => {
+test('it returns nothing when locale is not found', () => {
   renderWithProviders(
-    <ChannelDropdown
-      readOnly={false}
-      uiLocale="en_US"
-      channels={channels}
-      channel="unknown_channel"
-      onChange={() => {}}
-    />
+    <ChannelDropdown uiLocale="en_US" channels={channels} channel="unknown_channel" onChange={jest.fn()} />
   );
 
   expect(screen.queryByText('unknown_channel')).not.toBeInTheDocument();

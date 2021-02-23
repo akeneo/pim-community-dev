@@ -14,11 +14,13 @@ type AddAttributeDropdownProps = {
 };
 
 const AttributeItem = styled(Dropdown.Item)<{isAlreadyUsed: boolean} & AkeneoThemedProps>`
-  ${({isAlreadyUsed}) => isAlreadyUsed && css`
-    color: ${getColor('brand', 100)};
-    font-style: italic;
-    font-weight: 700;
-  `}
+  ${({isAlreadyUsed}) =>
+    isAlreadyUsed &&
+    css`
+      color: ${getColor('brand', 100)};
+      font-style: italic;
+      font-weight: 700;
+    `}
 `;
 
 const AddAttributeDropdown = ({attributes, uiLocale, alreadyUsed, onAdd}: AddAttributeDropdownProps) => {
@@ -37,7 +39,7 @@ const AddAttributeDropdown = ({attributes, uiLocale, alreadyUsed, onAdd}: AddAtt
           </Dropdown.Header>
           <Dropdown.ItemCollection>
             {attributes
-              .filter(attribute => !attribute.is_read_only && attribute.type === 'text')
+              .filter(attribute => !attribute.is_read_only && ['text', 'option_collection'].includes(attribute.type))
               .map(attribute => (
                 <AttributeItem
                   key={attribute.identifier}
@@ -49,8 +51,7 @@ const AddAttributeDropdown = ({attributes, uiLocale, alreadyUsed, onAdd}: AddAtt
                 >
                   {getLabel(attribute.labels, uiLocale, attribute.code)}
                 </AttributeItem>
-              ))
-            }
+              ))}
           </Dropdown.ItemCollection>
         </Dropdown.Overlay>
       )}

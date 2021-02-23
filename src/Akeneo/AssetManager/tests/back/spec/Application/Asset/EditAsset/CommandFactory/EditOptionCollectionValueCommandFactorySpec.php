@@ -31,6 +31,13 @@ class EditOptionCollectionValueCommandFactorySpec extends ObjectBehavior
         $this->supports($optionCollectionAttribute, $normalizedData)->shouldReturn(true);
         $this->supports($textAttribute, $normalizedData)->shouldReturn(false);
 
+
+        $normalizedData = ['data' => ['blue', 'red'], 'action' => 'replace'];
+        $this->supports($optionCollectionAttribute, $normalizedData)->shouldReturn(true);
+
+        $normalizedData = ['data' => ['blue', 'red'], 'action' => 'append'];
+        $this->supports($optionCollectionAttribute, $normalizedData)->shouldReturn(false);
+
         $normalizedData = ['data' => []];
         $this->supports($optionCollectionAttribute, $normalizedData)->shouldReturn(false);
         $normalizedData = ['data' => 'blue'];

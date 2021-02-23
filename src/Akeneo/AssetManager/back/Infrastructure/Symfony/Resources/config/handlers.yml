@@ -124,6 +124,11 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.job.mass_delete_launcher'
 
+    akeneo_assetmanager.application.asset.mass_edit.mass_edit_assets_handler:
+        class: Akeneo\AssetManager\Application\Asset\MassEditAssets\MassEditAssetsHandler
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.job.mass_edit_launcher'
+
     Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAllAssetFamilyAssetsHandler:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'

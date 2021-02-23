@@ -1,8 +1,28 @@
-import {renderHookWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import React from 'react';
+import {renderHook} from '@testing-library/react-hooks';
+import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
 import {useConfig} from './useConfig';
 
-test('It return the config', () => {
-  const {result} = renderHookWithProviders(() => useConfig('value'));
+test('It returns the config', () => {
+  const {result} = renderHook(() => useConfig('value'), {
+    wrapper: ({children}) => (
+      <ConfigProvider
+        config={{
+          value: {some: 'thing'},
+        }}
+      >
+        {children}
+      </ConfigProvider>
+    ),
+  });
 
-  expect(result.current).toEqual({})
+  expect(result.current).toEqual({some: 'thing'});
+});
+
+test('It throws when the config is undefined', () => {
+  const {result} = renderHook(() => useConfig('value'), {
+    wrapper: ({children}) => <ConfigProvider config={{}}>{children}</ConfigProvider>,
+  });
+
+  expect(result.error).toEqual(new Error('Invalid config key'));
 });

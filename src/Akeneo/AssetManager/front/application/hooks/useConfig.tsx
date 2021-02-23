@@ -19,14 +19,13 @@ const ConfigProvider = ({config, children}: ConfigProviderProps) => {
 };
 
 const useConfig = (key: keyof Config) => {
-  const config = useContext(ConfigContext) as Config;
-  const value = config[key];
+  const config = useContext(ConfigContext);
 
-  if (undefined === value) {
-    throw 'Invalid config key';
+  if (!(undefined !== config && key in config && undefined !== config[key])) {
+    throw new Error('Invalid config key');
   }
 
-  return value;
+  return config[key];
 };
 
 export {useConfig, ConfigProvider};

@@ -12,13 +12,22 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
  */
 class EditMediaLinkValueCommand extends AbstractEditValueCommand
 {
-    /** @var string */
-    public $mediaLink;
+    public string $mediaLink;
 
     public function __construct(MediaLinkAttribute $attribute, ?string $channel, ?string $locale, string $mediaLink)
     {
         parent::__construct($attribute, $channel, $locale);
 
         $this->mediaLink = $mediaLink;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'attribute' => (string) $this->attribute->getIdentifier(),
+            'channel' => $this->channel,
+            'locale' => $this->locale,
+            'data' => $this->mediaLink
+        ];
     }
 }

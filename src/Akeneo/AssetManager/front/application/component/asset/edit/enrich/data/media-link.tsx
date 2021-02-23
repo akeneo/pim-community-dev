@@ -29,7 +29,7 @@ import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 import {connect} from 'react-redux';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {doReloadAllPreviews} from 'akeneoassetmanager/application/action/asset/reloadPreview';
-import {ViewGenerator} from 'akeneoassetmanager/application/configuration/value';
+import {ViewGenerator, ViewGeneratorProps} from 'akeneoassetmanager/application/configuration/value';
 import {FullscreenIcon, Key} from 'akeneo-design-system';
 
 const MediaLinkInput = styled.input`
@@ -67,12 +67,7 @@ const View = ({
   canEditData,
   reloadPreview,
   onReloadPreview,
-}: {
-  value: EditionValue;
-  locale: LocaleReference;
-  onChange: (value: EditionValue) => void;
-  onSubmit?: () => void;
-  canEditData: boolean;
+}: ViewGeneratorProps & {
   reloadPreview: boolean;
   onReloadPreview: () => void;
 }) => {
