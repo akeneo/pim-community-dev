@@ -8,6 +8,7 @@ Feature: Configure action to change status of many products at once
     Given the "apparel" catalog configuration
     And I am logged in as "Julia"
 
+  @purge-messenger
   Scenario: Configure the operation to enable many products at once
     Given a disabled "boat" product
     And a disabled "jet-ski" product
@@ -19,3 +20,4 @@ Feature: Configure action to change status of many products at once
     And I wait for the "update_product_value" job to finish
     Then product "boat" should be enabled
     And product "jet-ski" should be enabled
+    And 2 events of type "product.updated" should have been raised
