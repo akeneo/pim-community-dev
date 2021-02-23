@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Service;
 
+use Akeneo\Connectivity\Connection\Domain\Clock;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 
 /**
@@ -30,19 +31,22 @@ class EventsApiDebugLogger
      */
     private array $buffer;
 
+    private Clock $clock;
+
     private EventsApiDebugRepository $repository;
 
-    public function __construct(EventsApiDebugRepository $repository, int $bufferSize = 100)
+    public function __construct(EventsApiDebugRepository $repository, Clock $clock, int $bufferSize = 100)
     {
         $this->repository = $repository;
+        $this->clock = $clock;
         $this->bufferSize = $bufferSize;
         $this->buffer = [];
     }
 
-    public function logLimitOfEventApiRequestsReached(int $timestamp = null): void
+    public function logLimitOfEventApiRequestsReached(): void
     {
         $this->addLog([
-            'timestamp' => $timestamp ?? time(),
+            'timestamp' => $this->clock->now()->getTimestamp(),
             'level' => self::LEVEL_WARNING,
             'message' => 'The maximum number of events sent per hour has been reached.',
             'connection_code' => null,

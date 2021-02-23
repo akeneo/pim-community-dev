@@ -85,3 +85,6 @@ services:
 
     akeneo_connectivity.connection.webhook.sleep:
         class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep
+
+    akeneo_connectivity.connection.system_clock:
+        class: Akeneo\Connectivity\Connection\Infrastructure\SystemClock

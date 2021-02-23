@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Service;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
+use Akeneo\Connectivity\Connection\Domain\Clock;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -15,9 +16,10 @@ use Prophecy\Argument;
  */
 class EventsApiDebugLoggerSpec extends ObjectBehavior
 {
-    public function let(EventsApiDebugRepository $eventsApiDebugRepository): void
-    {
-        $this->beConstructedWith($eventsApiDebugRepository);
+    public function let(
+        EventsApiDebugRepository $eventsApiDebugRepository
+    ): void {
+        $this->beConstructedWith($eventsApiDebugRepository, $this->getClock());
     }
 
     public function it_is_initializable(): void
@@ -28,11 +30,11 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
     public function it_logs_the_limit_of_event_api_requests_reached(
         EventsApiDebugRepository $eventsApiDebugRepository
     ): void {
-        $this->beConstructedWith($eventsApiDebugRepository, 1);
+        $this->beConstructedWith($eventsApiDebugRepository, $this->getClock(), 1);
 
         $eventsApiDebugRepository->bulkInsert([
             [
-                'timestamp' => 946684800,
+                'timestamp' => 1609459200,
                 'level' => 'warning',
                 'message' => 'The maximum number of events sent per hour has been reached.',
                 'connection_code' => null,
@@ -41,7 +43,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
         ])
             ->shouldBeCalled();
 
-        $this->logLimitOfEventApiRequestsReached(946684800);
+        $this->logLimitOfEventApiRequestsReached();
     }
 
     public function it_flushs_logs_in_the_buffer(
@@ -50,24 +52,35 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
         $eventsApiDebugRepository->bulkInsert(Argument::size(4))
             ->shouldBeCalled();
 
-        $this->logLimitOfEventApiRequestsReached(0);
-        $this->logLimitOfEventApiRequestsReached(315532800);
-        $this->logLimitOfEventApiRequestsReached(631152000);
-        $this->logLimitOfEventApiRequestsReached(946684800);
+        $this->logLimitOfEventApiRequestsReached();
+        $this->logLimitOfEventApiRequestsReached();
+        $this->logLimitOfEventApiRequestsReached();
+        $this->logLimitOfEventApiRequestsReached();
         $this->flushLogs();
     }
 
     public function it_flushs_logs_once_the_buffer_is_full(
         EventsApiDebugRepository $eventsApiDebugRepository
     ): void {
-        $this->beConstructedWith($eventsApiDebugRepository, 2);
+        $this->beConstructedWith($eventsApiDebugRepository, $this->getClock(), 2);
 
         $eventsApiDebugRepository->bulkInsert(Argument::size(2))
             ->shouldBeCalledTimes(2);
 
-        $this->logLimitOfEventApiRequestsReached(0);
-        $this->logLimitOfEventApiRequestsReached(315532800);
-        $this->logLimitOfEventApiRequestsReached(631152000);
-        $this->logLimitOfEventApiRequestsReached(946684800);
+        $this->logLimitOfEventApiRequestsReached();
+        $this->logLimitOfEventApiRequestsReached();
+        $this->logLimitOfEventApiRequestsReached();
+        $this->logLimitOfEventApiRequestsReached();
+    }
+
+    private function getClock(): Clock
+    {
+        return new class() implements Clock
+        {
+            public function now(): \DateTimeImmutable
+            {
+                return new \DateTimeImmutable('2021-01-01T00:00:00+00:00');
+            }
+        };
     }
 }
