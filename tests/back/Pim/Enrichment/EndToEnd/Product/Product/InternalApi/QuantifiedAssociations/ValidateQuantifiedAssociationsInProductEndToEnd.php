@@ -2,7 +2,6 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\InternalApi\QuantifiedAssociations;
 
-use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\InternalApi\QuantifiedAssociations\AbstractProductWithQuantifiedAssociationsTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class ValidateQuantifiedAssociationsInProductEndToEnd extends AbstractProductWithQuantifiedAssociationsTestCase
@@ -12,7 +11,9 @@ class ValidateQuantifiedAssociationsInProductEndToEnd extends AbstractProductWit
      */
     public function it_add_quantified_associations_to_a_product(): void
     {
-        $product = $this->createProduct([
+        $product = $this->createProduct(
+            'yellow_chair',
+            'shoes',[
             'values' => [
                 'sku' => [
                     [
