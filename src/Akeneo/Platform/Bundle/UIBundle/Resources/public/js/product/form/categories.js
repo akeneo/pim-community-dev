@@ -119,6 +119,10 @@ define(
                         children:        'pim_enrich_categorytree_children'
                     }, 'POST');
 
+                    if (this.isReadOnly()) {
+                        this.treeAssociate.lock(false);
+                    }
+
                     this.delegateEvents();
 
                     this.onLoadedEvent = this.lockCategories.bind(this);
@@ -144,6 +148,10 @@ define(
              * Locks a set of categories
              */
             lockCategories: function() {
+                if (this.isReadOnly()) {
+                    return;
+                }
+
                 const lockedCategoryIds = this.getFormData().meta.ascendant_category_ids;
                 lockedCategoryIds.forEach((categoryId) => {
                     const node = $('#node_' + categoryId);
@@ -266,7 +274,11 @@ define(
              */
             isVisible: function () {
                 return true;
-            }
+            },
+
+            isReadOnly: function () {
+                return false;
+            },
         });
     }
 );
