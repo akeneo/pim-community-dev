@@ -22,7 +22,6 @@ const ItemContainer = styled.div<{tall: boolean; disabled: boolean} & AkeneoThem
   display: flex;
   align-items: center;
   gap: 10px;
-  color: ${getColor('grey', 120)};
   outline-style: none;
 
   &:focus {
