@@ -1,16 +1,25 @@
 import React, {ReactNode} from 'react';
-import styled from 'styled-components';
-import {getColor, getFontSize} from '../../theme';
-import {Button, ButtonProps, IconButton, IconButtonProps} from '..';
+import styled, {css} from 'styled-components';
+import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
+import {Button, ButtonProps, IconButton, IconButtonProps} from '../../components';
 import {Override} from '../../shared';
 
-const SectionTitleContainer = styled.div`
+const SectionTitleContainer = styled.div<{sticky?: number} & AkeneoThemedProps>`
   display: flex;
   gap: 10px;
   align-items: center;
   height: 44px;
   line-height: 44px;
   border-bottom: 1px solid ${getColor('grey', 140)};
+
+  ${({sticky}) =>
+    undefined !== sticky &&
+    css`
+      position: sticky;
+      top: ${sticky}px;
+      background-color: ${getColor('white')};
+      z-index: 10;
+    `}
 `;
 
 const Title = styled.h2`
@@ -42,6 +51,11 @@ const Information = styled.div`
 type SectionTitleProps = Override<
   React.HTMLAttributes<HTMLDivElement>,
   {
+    /**
+     * When set, defines the sticky top position of the Section Title.
+     */
+    sticky?: number;
+
     /**
      * The content of the section title.
      */
