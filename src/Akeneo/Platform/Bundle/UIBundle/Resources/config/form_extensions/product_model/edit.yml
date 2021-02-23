@@ -68,3 +68,23 @@ extensions:
         module: pimee/product-edit-form/variant-navigation
         parent: pim-product-model-edit-form
         targetZone: navigation
+
+    pim-product-model-edit-form-associations:
+        module: pimee/product-edit-form/associations
+        parent: pim-product-model-edit-form-column-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_associations_view
+        position: 110
+        config:
+            aclAddAssociations: pim_enrich_associations_edit
+
+    pim-product-model-edit-form-categories:
+        module: pimee/product-edit-form/categories
+        parent: pim-product-model-edit-form-column-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_product_model_categories_view
+        position: 100
+        config:
+            tabCode: pim-product-edit-form-categories
+            itemCategoryListRoute: pim_enrich_product_model_listcategories
+            itemCategoryTreeRoute: pim_enrich_product_model_category_rest_list

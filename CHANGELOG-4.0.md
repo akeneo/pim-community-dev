@@ -5,6 +5,7 @@
 - PIM-9688: Remove capitalization from the first letter of the asset code as label
 - PIM-9694: Display error message when the image resolution is too big to generate a thumbnail
 - PIM-9703: Add a white background on optimize jpeg transformation when background is transparent
+- PIM-9696: Associations and categories display according to the ownership rights
 
 # 4.0.95 (2021-02-19)
 

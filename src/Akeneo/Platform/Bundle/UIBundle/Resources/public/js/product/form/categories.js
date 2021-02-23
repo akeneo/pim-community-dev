@@ -10,8 +10,8 @@ define(['underscore', 'pim/product-edit-form/categories'],
             /**
              * {@inheritdoc}
              */
-            isVisible: function () {
-                return _.result(
+            isReadOnly: function () {
+                return !_.result(
                     _.result(this.getFormData(), 'meta', {}),
                     'is_owner',
                     false
