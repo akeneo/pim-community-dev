@@ -97,7 +97,7 @@ akeneo_data_quality_insights:
 
     dictionary:
         helper:
-            content: The dictionary allows you to register words that will be ignored by Data Quality Insight.
+            content: The dictionary allows you to register words that will be ignored by Data Quality Insights.
             link_label: More info on our helpcenter.
         words: Words
         searchPlaceholder: Search a word
