@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionRequestsLimitReachedLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionLogInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 
@@ -22,20 +22,20 @@ final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInte
     private GetDelayUntilNextRequest $getDelayUntilNextRequest;
     private int $webhookRequestsLimit;
     private Sleep $sleep;
-    private LoggerInterface $logger;
+    private EventSubscriptionLogInterface $eventSubscriptionLog;
     private EventsApiDebugLogger $eventsApiDebugLogger;
 
     public function __construct(
         GetDelayUntilNextRequest $getDelayUntilNextRequest,
         int $webhookRequestsLimit,
         Sleep $sleep,
-        LoggerInterface $logger,
+        EventSubscriptionLogInterface $eventSubscriptionLog,
         EventsApiDebugLogger $eventsApiDebugLogger
     ) {
         $this->getDelayUntilNextRequest = $getDelayUntilNextRequest;
         $this->webhookRequestsLimit = $webhookRequestsLimit;
         $this->sleep = $sleep;
-        $this->logger = $logger;
+        $this->eventSubscriptionLog = $eventSubscriptionLog;
         $this->eventsApiDebugLogger = $eventsApiDebugLogger;
     }
 
@@ -54,15 +54,10 @@ final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInte
         );
 
         if ($delayUntilNextRequest > 0) {
-            $this->logger->info(
-                json_encode(
-                    EventSubscriptionRequestsLimitReachedLog::create(
-                        $this->webhookRequestsLimit,
-                        new \DateTimeImmutable('now', new \DateTimeZone('UTC')),
-                        $delayUntilNextRequest,
-                    )->toLog(),
-                    JSON_THROW_ON_ERROR
-                )
+            $this->eventSubscriptionLog->logReachRequestLimit(
+                $this->webhookRequestsLimit,
+                new \DateTimeImmutable('now', new \DateTimeZone('UTC')),
+                $delayUntilNextRequest
             );
 
             $this->eventsApiDebugLogger->logLimitOfEventApiRequestsReached();
