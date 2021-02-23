@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.96 (2021-02-23)
+
 ## Bug fixes
 
 - PIM-9696: Associations and categories display according to the ownership rights
