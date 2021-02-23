@@ -1,0 +1,215 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {MultiSelectInput} from './MultiSelectInput.tsx';
+import {SpaceContainer} from '../../../storybook/PreviewGallery.tsx';
+import {Locale} from '../../../components';
+
+<Meta
+  title="Components/Inputs/Multi Select input"
+  component={MultiSelectInput}
+  args={{
+    placeholder: 'Please enter a value in the Multi select input',
+    emptyResultLabel: 'No result found',
+    value: [],
+  }}
+  argTypes={{
+    readOnly: {
+      control: {type: 'boolean'},
+      description:
+        'Defines if the input should be read only. If defined so, the user cannot change the value of the input.',
+      table: {type: {summary: 'boolean'}},
+    },
+    onChange: {
+      description: 'The handler called when the value of the input changes.',
+      table: {type: {summary: '(newValue: string[]) => void'}},
+    },
+    children: {
+      table: {type: {summary: '<MultiSelectInput.Option>[]'}},
+    },
+  }}
+/>
+
+# Multi select input (Beta)
+
+## Usage
+
+Multi select input allows the user to select content and data when the expected user input is composed of multiple option values.
+
+### Placeholder text
+
+The placeholder text provides tips or examples of items to enter. Placeholder text disappears when the user begins entering data.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [value, setValue] = useState([]);
+      return (
+        <SpaceContainer height={170}>
+          <MultiSelectInput {...args} removeLabel="Remove" value={value} onChange={setValue}>
+            <MultiSelectInput.Option value="en_US">English (United States)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="fr_FR">French (France)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="de_DE">German (Germany)</MultiSelectInput.Option>
+          </MultiSelectInput>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on readOnly
+
+<Canvas>
+  <Story name="ReadOnly">
+    {args => {
+      const [value, setValue] = useState([]);
+      return (
+        <>
+          <MultiSelectInput readOnly={true} value={[]} placeholder="Placeholder" emptyResultLabel="Not matches found">
+            <MultiSelectInput.Option value="en_US">English (United States)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="fr_FR">French (France)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="de_DE">German (Germany)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="es_ES">Spanish (Spain)</MultiSelectInput.Option>
+          </MultiSelectInput>
+          <MultiSelectInput
+            readOnly={true}
+            value={['en_US', 'fr_FR']}
+            onChange={setValue}
+            emptyResultLabel="No result found"
+          >
+            <MultiSelectInput.Option value="en_US">English (United States)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="fr_FR">French (France)</MultiSelectInput.Option>
+          </MultiSelectInput>
+          <MultiSelectInput
+            readOnly={false}
+            value={value}
+            onChange={setValue}
+            placeholder="Editable select"
+            emptyResultLabel="No result found"
+          >
+            <MultiSelectInput.Option value="en_US">English (United States)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="fr_FR">French (France)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="de_DE">German (Germany)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="es_ES">Spanish (Spain)</MultiSelectInput.Option>
+          </MultiSelectInput>
+          <SpaceContainer height={100} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on invalid
+
+<Canvas>
+  <Story name="Invalid">
+    {args => {
+      const [validValue, setValidValue] = useState([]);
+      const [invalidValue, setInvalidValue] = useState([]);
+      return (
+        <>
+          <MultiSelectInput
+            {...args}
+            value={invalidValue}
+            onChange={setInvalidValue}
+            invalid={true}
+            placeholder="Invalid input value"
+          >
+            <MultiSelectInput.Option value="en_US">English (United States)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="fr_FR">French (France)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="de_DE">German (Germany)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="es_ES">Spanish (Spain)</MultiSelectInput.Option>
+          </MultiSelectInput>
+          <MultiSelectInput
+            value={validValue}
+            onChange={setValidValue}
+            invalid={false}
+            placeholder="Valid input value"
+            emptyResultLabel="No result found"
+          >
+            <MultiSelectInput.Option value="en_US">English (United States)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="fr_FR">French (France)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="de_DE">German (Germany)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="es_ES">Spanish (Spain)</MultiSelectInput.Option>
+          </MultiSelectInput>
+          <SpaceContainer height={100} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on vertical position
+
+<Canvas>
+  <Story name="Vertical position">
+    {args => {
+      const [upValue, setUpValue] = useState([]);
+      const [downValue, setDownValue] = useState([]);
+      return (
+        <>
+          <SpaceContainer height={120} />
+          <MultiSelectInput
+            {...args}
+            value={upValue}
+            onChange={setUpValue}
+            verticalPosition="up"
+            placeholder="Up input"
+          >
+            <MultiSelectInput.Option value="en_US">English (United States)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="fr_FR">French (France)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="de_DE">German (Germany)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="es_ES">Spanish (Spain)</MultiSelectInput.Option>
+          </MultiSelectInput>
+          <MultiSelectInput
+            value={downValue}
+            onChange={setDownValue}
+            verticalPosition="down"
+            placeholder="Down input"
+            emptyResultLabel="No result found"
+          >
+            <MultiSelectInput.Option value="en_US">English (United States)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="fr_FR">French (France)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="de_DE">German (Germany)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="es_ES">Spanish (Spain)</MultiSelectInput.Option>
+          </MultiSelectInput>
+          <SpaceContainer height={100} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on large select input
+
+<Canvas>
+  <Story name="Large">
+    {args => {
+      const [value, setValue] = useState([]);
+      return (
+        <>
+          <MultiSelectInput {...args} value={value} onChange={setValue} emptyResultLabel="Not matches found">
+            <MultiSelectInput.Option value="en_US">English (United States)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="fr_FR">French (France)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="de_DE">German (Germany)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="es_ES">Spanish (Spain)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="ad_AD">Andorra</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="ae_AE">United Arab Emirates</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="af_AF">Afghanistan</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="ag_AG">Antigua and Barbuda</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="ai_AI">Anguilla</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="al_AL">Albania</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="au_AU">Australia</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="be_BE">Belgium</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="br_BR">Brazil</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="bs_BS">Bahamas</MultiSelectInput.Option>
+          </MultiSelectInput>
+          <SpaceContainer height={350} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

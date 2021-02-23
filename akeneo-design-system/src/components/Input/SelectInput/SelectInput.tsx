@@ -1,4 +1,4 @@
-import React, {ReactNode, useState, useRef, isValidElement, ReactElement, KeyboardEvent} from 'react';
+import React, {ReactNode, useState, useRef, isValidElement, ReactElement} from 'react';
 import styled, {css} from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {InputProps} from '../InputProps';
@@ -8,6 +8,8 @@ import {AkeneoThemedProps, getColor} from '../../../theme';
 import {ArrowDownIcon, CloseIcon} from '../../../icons';
 
 const SelectInputContainer = styled.div<{value: string | null; readOnly: boolean} & AkeneoThemedProps>`
+  width: 100%;
+
   & input[type='text'] {
     cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'pointer')};
     background: ${({value, readOnly}) => (null === value && readOnly ? getColor('grey', 20) : 'transparent')};
@@ -24,7 +26,7 @@ const InputContainer = styled.div`
 
 const ActionContainer = styled.div`
   position: absolute;
-  right: 10px;
+  right: 8px;
   top: 0;
   height: 100%;
   display: flex;
@@ -42,6 +44,10 @@ const SelectedOptionContainer = styled.div<{readOnly: boolean} & AkeneoThemedPro
   padding: 0 20px;
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
   box-sizing: border-box;
+`;
+
+const OpenButton = styled(ArrowDownIcon)`
+  color: ${getColor('grey', 100)};
 `;
 
 const OptionContainer = styled.div`
@@ -170,12 +176,12 @@ type SelectInputProps = Override<
       /**
        * Accessibility text for the clear button
        */
-      clearSelectLabel?: string;
+      clearLabel?: string;
 
       /**
        * Accessibility text for the open dropdown button
        */
-      openSelectLabel?: string;
+      openLabel?: string;
 
       /**
        * Defines if the input is valid on not.
@@ -206,8 +212,8 @@ const SelectInput = ({
   children,
   onChange,
   clearable = true,
-  clearSelectLabel = '',
-  openSelectLabel = '',
+  clearLabel = '',
+  openLabel = '',
   readOnly = false,
   verticalPosition = 'down',
   'aria-labelledby': ariaLabelledby,
@@ -219,9 +225,7 @@ const SelectInput = ({
 
   const validChildren = React.Children.toArray(children).filter((child): child is ReactElement<
     {value: string} & React.HTMLAttributes<HTMLSpanElement>
-  > => {
-    return isValidElement<{value: string}>(child);
-  });
+  > => isValidElement<{value: string}>(child));
 
   validChildren.reduce<string[]>((optionCodes: string[], child) => {
     if (optionCodes.includes(child.props.value)) {
@@ -239,7 +243,7 @@ const SelectInput = ({
     const value = child.props.value;
     const optionValue = value + content + title;
 
-    return -1 !== optionValue.toLowerCase().indexOf(searchValue.toLowerCase());
+    return optionValue.toLowerCase().includes(searchValue.toLowerCase());
   });
 
   const currentValueElement =
@@ -262,14 +266,7 @@ const SelectInput = ({
     setSearchValue(value);
   };
 
-  const handleClick = () => {
-    if (dropdownIsOpen) {
-      setSearchValue('');
-      closeOverlay();
-    } else {
-      openOverlay();
-    }
-  };
+  const handleFocus = () => openOverlay();
 
   const handleOptionClick = (value: string) => () => {
     onChange?.(value);
@@ -303,9 +300,8 @@ const SelectInput = ({
           invalid={invalid}
           placeholder={null === value ? placeholder : ''}
           onChange={handleSearch}
-          onClick={handleClick}
+          onFocus={handleFocus}
           aria-labelledby={ariaLabelledby}
-          data-testid="select_input"
         />
         {!readOnly && (
           <ActionContainer>
@@ -315,29 +311,19 @@ const SelectInput = ({
                 level="tertiary"
                 size="small"
                 icon={<CloseIcon />}
-                title={clearSelectLabel}
+                title={clearLabel}
                 onClick={handleClear}
                 tabIndex={0}
-                onKeyDown={(event: KeyboardEvent<HTMLButtonElement | HTMLAnchorElement>) => {
-                  if ([Key.Enter, Key.Space].includes(event.key as Key)) {
-                    handleClear();
-                  }
-                }}
               />
             )}
             <IconButton
               ghost="borderless"
               level="tertiary"
               size="small"
-              icon={<ArrowDownIcon />}
-              title={openSelectLabel}
-              onClick={openOverlay}
+              icon={<OpenButton />}
+              title={openLabel}
+              onClick={handleFocus}
               tabIndex={0}
-              onKeyDown={(event: KeyboardEvent<HTMLButtonElement | HTMLAnchorElement>) => {
-                if ([Key.Enter, Key.Space].includes(event.key as Key)) {
-                  openOverlay();
-                }
-              }}
             />
           </ActionContainer>
         )}
