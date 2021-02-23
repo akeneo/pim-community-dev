@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Service\Clock;
 
 use Akeneo\Connectivity\Connection\Domain\Clock;
 
