@@ -166,3 +166,123 @@ Here the `fit` prop is also set to `contain`.
     }}
   </Story>
 </Canvas>
+
+## Small Stack Cards
+
+<Canvas>
+  <Story name="SmallStackedCard">
+    {args => {
+      const [firstSelected, setFirstSelected] = useState(false);
+      const [secondSelected, setSecondSelected] = useState(false);
+      const [thirdSelected, setThirdSelected] = useState(false);
+      return (
+        <CardGrid size="small">
+          <Card {...args} stacked src="https://picsum.photos/seed/akenec/200">
+            This is a small card
+          </Card>
+          <Card {...args} src="https://picsum.photos/seed/akened/200">
+            This is a small card not stacked
+          </Card>
+          <Card {...args} stacked src="https://picsum.photos/seed/akenee/200">
+            <Card.BadgeContainer>
+              <Badge level="primary">100%</Badge>
+            </Card.BadgeContainer>
+            This one even has a Badge
+          </Card>
+          <Card
+            {...args}
+            src="https://picsum.photos/seed/akenef/200"
+            isSelected={firstSelected}
+            onSelect={isSelected => setFirstSelected(isSelected)}
+            stacked
+          >
+            And this one is selectable
+          </Card>
+          <Card
+            {...args}
+            src="https://picsum.photos/seed/akeneg/200"
+            isSelected={secondSelected}
+            onSelect={isSelected => setSecondSelected(isSelected)}
+            stacked
+          >
+            <Card.BadgeContainer>
+              <Badge level="warning">75%</Badge>
+            </Card.BadgeContainer>
+            Badge &amp; selectable 🤩
+          </Card>
+          <Card
+            {...args}
+            src="https://picsum.photos/seed/akeneh/200"
+            isSelected={thirdSelected}
+            onSelect={isSelected => setThirdSelected(isSelected)}
+          >
+            <Card.BadgeContainer>
+              <Badge level="warning">75%</Badge>
+            </Card.BadgeContainer>
+            Badge &amp; selectable 🤩
+          </Card>
+        </CardGrid>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Big Stack Cards
+
+<Canvas>
+  <Story name="BigStackedCard">
+    {args => {
+      const [firstSelected, setFirstSelected] = useState(false);
+      const [secondSelected, setSecondSelected] = useState(false);
+      const [thirdSelected, setThirdSelected] = useState(false);
+      return (
+        <CardGrid size="big">
+          <Card {...args} stacked src="https://picsum.photos/seed/akenec/200">
+            This is a big Card
+          </Card>
+          <Card {...args} src="https://picsum.photos/seed/akened/200">
+            This is a big Card not stacked
+          </Card>
+          <Card {...args} stacked src="https://picsum.photos/seed/akenee/200">
+            <Card.BadgeContainer>
+              <Badge level="primary">100%</Badge>
+            </Card.BadgeContainer>
+            This one even has a Badge
+          </Card>
+          <Card
+            {...args}
+            src="https://picsum.photos/seed/akenef/200"
+            isSelected={firstSelected}
+            onSelect={isSelected => setFirstSelected(isSelected)}
+            stacked
+          >
+            And this one is selectable
+          </Card>
+          <Card
+            {...args}
+            src="https://picsum.photos/seed/akeneg/200"
+            isSelected={secondSelected}
+            onSelect={isSelected => setSecondSelected(isSelected)}
+            stacked
+          >
+            <Card.BadgeContainer>
+              <Badge level="warning">75%</Badge>
+            </Card.BadgeContainer>
+            Badge &amp; selectable 🤩
+          </Card>
+          <Card
+            {...args}
+            src="https://picsum.photos/seed/akeneh/200"
+            isSelected={thirdSelected}
+            onSelect={isSelected => setThirdSelected(isSelected)}
+          >
+            <Card.BadgeContainer>
+              <Badge level="warning">75%</Badge>
+            </Card.BadgeContainer>
+            Badge &amp; selectable 🤩
+          </Card>
+        </CardGrid>
+      );
+    }}
+  </Story>
+</Canvas>
