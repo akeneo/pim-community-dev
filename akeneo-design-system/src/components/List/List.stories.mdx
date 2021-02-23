@@ -1,0 +1,146 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {List} from './List.tsx';
+import {Badge, IconButton, NumberInput, SelectInput, MultiSelectInput, TextInput, Locale} from '../../components';
+import {CloseIcon} from '../../icons';
+import {Content, ListContextContainer} from '../../storybook/PreviewGallery';
+import {styled} from 'styled-components';
+
+<Meta
+  title="Components/List"
+  component={List}
+  argTypes={{
+    level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
+  }}
+  args={{level: 'primary', children: 'List text'}}
+/>
+
+# List
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return (
+        <List>
+          <List.Row>
+            <List.Cell width="auto" rowTitle>
+              Label
+            </List.Cell>
+            <List.Cell width={400} extensible>
+              <TextInput value="example" onChange={() => {}} />
+            </List.Cell>
+            <List.Cell width={380}>
+              <ListContextContainer>
+                <SelectInput value="ecommerce" clearable={false}>
+                  <SelectInput.Option value="ecommerce">Ecommerce</SelectInput.Option>
+                </SelectInput>
+                <SelectInput value="en_US" clearable={false}>
+                  <SelectInput.Option value="en_US">
+                    <Locale code="en_US" />
+                  </SelectInput.Option>
+                </SelectInput>
+              </ListContextContainer>
+            </List.Cell>
+            <List.Cell width={60}>
+              <IconButton ghost borderless level="tertiary" icon={<CloseIcon />} />
+            </List.Cell>
+          </List.Row>
+          <List.Row>
+            <List.Cell width="auto" rowTitle>
+              Description is very long
+            </List.Cell>
+            <List.Cell width={400} extensible>
+              <Content width={400} height={300}>
+                Large content
+              </Content>
+            </List.Cell>
+            <List.Cell width={380}>
+              <ListContextContainer>
+                <SelectInput value="ecommerce" clearable={false}>
+                  <SelectInput.Option value="ecommerce">Ecommerce</SelectInput.Option>
+                </SelectInput>
+                <SelectInput value="en_US" clearable={false}>
+                  <SelectInput.Option value="en_US">
+                    <Locale code="en_US" />
+                  </SelectInput.Option>
+                </SelectInput>
+              </ListContextContainer>
+            </List.Cell>
+            <List.Cell width={60}>
+              <IconButton ghost borderless level="tertiary" icon={<CloseIcon />} />
+            </List.Cell>
+          </List.Row>
+          <List.Row>
+            <List.Cell width="auto" rowTitle>
+              Label
+            </List.Cell>
+            <List.Cell width={400} extensible>
+              <NumberInput value="12" onChange={() => {}} />
+            </List.Cell>
+            <List.Cell width={380}>
+              <ListContextContainer>
+                <SelectInput value="ecommerce" clearable={false}>
+                  <SelectInput.Option value="ecommerce">Ecommerce</SelectInput.Option>
+                </SelectInput>
+                <SelectInput value="en_US" clearable={false}>
+                  <SelectInput.Option value="en_US">
+                    <Locale code="en_US" />
+                  </SelectInput.Option>
+                </SelectInput>
+              </ListContextContainer>
+            </List.Cell>
+            <List.Cell width={60}>
+              <IconButton ghost borderless level="tertiary" icon={<CloseIcon />} />
+            </List.Cell>
+          </List.Row>
+          <List.Row>
+            <List.Cell width="auto" rowTitle>
+              Label
+            </List.Cell>
+            <List.Cell width={400} extensible>
+              <MultiSelectInput value={['red', 'green', 'blue', 'yellow', 'orange', 'cyan']} onChange={() => {}}>
+                <MultiSelectInput.Option value="red">Red</MultiSelectInput.Option>
+                <MultiSelectInput.Option value="green">Green</MultiSelectInput.Option>
+                <MultiSelectInput.Option value="blue">Blue</MultiSelectInput.Option>
+                <MultiSelectInput.Option value="yellow">Yellow</MultiSelectInput.Option>
+                <MultiSelectInput.Option value="orange">Orange</MultiSelectInput.Option>
+                <MultiSelectInput.Option value="cyan">Cyan</MultiSelectInput.Option>
+                <MultiSelectInput.Option value="purple">Purple</MultiSelectInput.Option>
+              </MultiSelectInput>
+            </List.Cell>
+            <List.Cell width={380}>
+              <ListContextContainer>
+                <SelectInput value="append" clearable={false}>
+                  <SelectInput.Option value="append">Append</SelectInput.Option>
+                  <SelectInput.Option value="replace">Replace</SelectInput.Option>
+                </SelectInput>
+                <SelectInput value="ecommerce" clearable={false}>
+                  <SelectInput.Option value="ecommerce">Ecommerce</SelectInput.Option>
+                </SelectInput>
+                <SelectInput value="en_US" clearable={false}>
+                  <SelectInput.Option value="en_US">
+                    <Locale code="en_US" />
+                  </SelectInput.Option>
+                </SelectInput>
+              </ListContextContainer>
+            </List.Cell>
+            <List.Cell width={60}>
+              <IconButton ghost borderless level="tertiary" icon={<CloseIcon />} />
+            </List.Cell>
+          </List.Row>
+        </List>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
