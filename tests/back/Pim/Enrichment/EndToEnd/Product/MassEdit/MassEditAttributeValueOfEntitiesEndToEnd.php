@@ -70,6 +70,31 @@ class MassEditAttributeValueOfEntitiesEndToEnd extends AbstractMassEditEndToEnd
 
         $this->assertEventCount(2, ProductUpdated::class);
         $this->assertEventCount(5, ProductModelUpdated::class);
+
+        $expectedDescription = [
+            'locale' => 'en_US',
+            'scope' => 'ecommerce',
+            'data' => '<p>another description</p>'
+        ];
+        $expectedVariationName = [
+            'locale' => 'en_US',
+            'scope' => null,
+            'data' => 'Another Braided hat M'
+        ];
+        $product = $this->getProductWithInternalApi('watch');
+        $this->assertContains($expectedDescription, $product['values']['description']);
+
+        $variantProduct = $this->getProductWithInternalApi('braided-hat-m');
+        $this->assertContains($expectedVariationName, $variantProduct['values']['variation_name']);
+        /** description is handled by the product model, it should not have been changed */
+        $this->assertContains([
+            'locale' => 'en_US',
+            'scope' => 'ecommerce',
+            'data' => 'Braided hat '
+        ], $variantProduct['values']['description']);
+
+        $productModel = $this->getProductModelWithInternalApi('apollon');
+        $this->assertContains($expectedDescription, $productModel['values']['description']);
     }
 
     public function test_adding_attribute_value_of_entities_produces_event(): void
@@ -119,5 +144,26 @@ class MassEditAttributeValueOfEntitiesEndToEnd extends AbstractMassEditEndToEnd
 
         $this->assertEventCount(2, ProductUpdated::class);
         $this->assertEventCount(1, ProductModelUpdated::class);
+
+        $product = $this->getProductWithInternalApi('watch');
+        $this->assertContains([
+            'locale' => null,
+            'scope' => null,
+            'data' => ['winter_2016']
+        ], $product['values']['collection'], 'product');
+
+        $variantProduct = $this->getProductWithInternalApi('1111111111');
+        $this->assertContains([
+            'locale' => null,
+            'scope' => null,
+            'data' => ['summer_2016', 'winter_2016']
+        ], $variantProduct['values']['collection'], 'variant product');
+
+        $productModel = $this->getProductModelWithInternalApi('brogueshoe');
+        $this->assertContains([
+            'locale' => null,
+            'scope' => null,
+            'data' => ['summer_2016', 'winter_2016']
+        ], $productModel['values']['collection']);
     }
 }

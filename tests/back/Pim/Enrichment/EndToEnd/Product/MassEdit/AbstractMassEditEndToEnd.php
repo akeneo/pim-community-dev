@@ -173,6 +173,40 @@ SQL;
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
+    protected function getProductWithInternalApi(string $identifier): array
+    {
+        $this->client->request(
+            'GET',
+            sprintf('/enrich/product/rest/%s', $this->getProductId($identifier)),
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+
+        return json_decode($response->getContent(), true);
+    }
+
+    protected function getProductModelWithInternalApi(string $identifier): array
+    {
+        $this->client->request(
+            'GET',
+            sprintf('/enrich/product-model/rest/%s', $this->getProductModelId($identifier)),
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+
+        return json_decode($response->getContent(), true);
+    }
+
     protected function updateFamilyVariantWithInternalApi(string $identifier, array $data): void
     {
         if (isset($data['meta'])) {

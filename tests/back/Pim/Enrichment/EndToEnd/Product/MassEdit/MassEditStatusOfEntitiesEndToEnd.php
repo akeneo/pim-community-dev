@@ -17,10 +17,10 @@ class MassEditStatusOfEntitiesEndToEnd extends AbstractMassEditEndToEnd
                     'field' => 'id',
                     'operator' => Operators::IN_LIST,
                     'value' => [
-                        $this->findESIdFor('1111111111', 'product'), // variant product
+                        $this->findESIdFor('1111111119', 'product'), // variant product
                         $this->findESIdFor('watch', 'product'), // product
-                        /* Has 13 variant products */
-                        $this->findESIdFor('apollon', 'product_model'),
+                        /* Has 3 variant products */
+                        $this->findESIdFor('amor', 'product_model'),
                     ],
                     'context' => [
                         'locale' => null,
@@ -31,8 +31,8 @@ class MassEditStatusOfEntitiesEndToEnd extends AbstractMassEditEndToEnd
             'jobInstanceCode' => 'update_product_value',
             'actions' => [
                 [
-                    'field' => 'categories',
-                    'value' => ['master_men_pants_jeans'],
+                    'field' => 'enabled',
+                    'value' => false,
                 ]
             ],
             'itemsCount' => 3,
@@ -40,8 +40,21 @@ class MassEditStatusOfEntitiesEndToEnd extends AbstractMassEditEndToEnd
             'operation' => 'change_status',
         ]);
 
-        $this->assertEventCount(13 + 1 + 1, ProductUpdated::class);
+        $this->assertEventCount(3 + 1 + 1, ProductUpdated::class);
         // A product model can not be disabled. The action is done on variant products.
         $this->assertEventCount(0, ProductModelUpdated::class);
+
+        $product = $this->getProductWithInternalApi('watch');
+        $this->assertFalse($product['enabled']);
+
+        $variantProduct = $this->getProductWithInternalApi('1111111119');
+        $this->assertFalse($variantProduct['enabled']);
+
+        $amorVariant11 = $this->getProductWithInternalApi('1111111111');
+        $this->assertFalse($amorVariant11['enabled']);
+        $amorVariant12 = $this->getProductWithInternalApi('1111111112');
+        $this->assertFalse($amorVariant12['enabled']);
+        $amorVariant13 = $this->getProductWithInternalApi('1111111113');
+        $this->assertFalse($amorVariant13['enabled']);
     }
 }
