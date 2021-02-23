@@ -5,7 +5,7 @@ services:
             - '@pim_user.repository.group'
 
     pim_connector.reader.database.user_role:
-        class: 'Akeneo\Tool\Component\Connector\Reader\Database\Reader'
+        class: 'Akeneo\UserManagement\Component\Connector\Reader\Database\UserRole'
         arguments:
             - '@pim_user.repository.role'
 
