@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionLogInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
@@ -15,7 +16,6 @@ use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
-use Psr\Log\LoggerInterface;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -27,9 +27,9 @@ class WebhookEventBuilderSpec extends ObjectBehavior
     public function let(
         EventDataBuilderInterface $notSupportedEventDataBuilder,
         EventDataBuilderInterface $supportedEventDataBuilder,
-        LoggerInterface $logger
+        EventSubscriptionLogInterface $eventSubscriptionLog
     ): void {
-        $this->beConstructedWith([$notSupportedEventDataBuilder, $supportedEventDataBuilder], $logger);
+        $this->beConstructedWith([$notSupportedEventDataBuilder, $supportedEventDataBuilder], $eventSubscriptionLog);
     }
 
     public function it_is_initializable(): void
@@ -77,9 +77,9 @@ class WebhookEventBuilderSpec extends ObjectBehavior
 
     public function it_throws_an_error_if_the_business_event_is_not_supported(
         UserInterface $user,
-        LoggerInterface $logger
+        EventSubscriptionLogInterface $eventSubscriptionLog
     ): void {
-        $this->beConstructedWith([], $logger);
+        $this->beConstructedWith([], $eventSubscriptionLog);
 
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $pimEvent = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');
