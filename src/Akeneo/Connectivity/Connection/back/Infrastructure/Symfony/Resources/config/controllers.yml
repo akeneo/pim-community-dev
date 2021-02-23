@@ -36,3 +36,9 @@ services:
             - '@akeneo_connectivity.connection.application.webhook.handler.check_url_reachability'
             - '@akeneo_connectivity.connection.application.webhook.handler.update_connection_webhook'
             - '@akeneo_connectivity.connection.application.webhook.handler.generate_webhook_secret'
+
+    akeneo_connectivity.connection.internal_api.controller.events_api_debug:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\EventsApiDebugController
+        arguments:
+            - '@akeneo_connectivity.client.events_api_debug'

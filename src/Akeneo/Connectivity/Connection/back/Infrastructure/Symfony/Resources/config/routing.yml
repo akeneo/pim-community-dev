@@ -2,7 +2,7 @@
 # Internal API
 
 akeneo_connectivity_connection_error_management_rest:
-    resource: ./routing/error-management.yml
+    resource: ./routing/error_management.yml
     name_prefix: akeneo_connectivity_connection_error_management_rest_
     prefix: /rest/connections
 
@@ -18,9 +18,14 @@ akeneo_connectivity_connection_rest:
     trailing_slash_on_root: false
 
 akeneo_connectivity_connection_webhook_rest:
-  resource: ./routing/webhook.yml
-  name_prefix: akeneo_connectivity_connection_webhook_rest_
-  prefix: /rest/connections
+    resource: ./routing/webhook.yml
+    name_prefix: akeneo_connectivity_connection_webhook_rest_
+    prefix: /rest/connections
+
+akeneo_connectivity_connection_events_api_debug_rest:
+    resource: ./routing/events_api_debug.yml
+    name_prefix: akeneo_connectivity_connection_events_api_debug_rest_
+    prefix: /rest/events-api-debug
 
 # Frontend
 
