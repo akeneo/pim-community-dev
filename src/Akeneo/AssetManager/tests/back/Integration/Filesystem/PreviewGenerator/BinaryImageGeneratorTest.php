@@ -151,22 +151,17 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
 
         $this->expectException(CouldNotGeneratePreviewException::class);
 
-        $previewImage = $this->binaryImageGenerator->generate(
+        $this->binaryImageGenerator->generate(
             $data,
             $this->mediaFileAttribute,
             PreviewGeneratorRegistry::THUMBNAIL_TYPE
-        );
-
-        $this->assertStringContainsString(
-            sprintf('__root__/thumbnail/asset_manager/%s/pim_asset_manager.default_image.image', BinaryImageGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE]),
-            $previewImage
         );
     }
 
     /**
      * @test
      */
-    public function it_throw_an_error_when_the_file_exceeded_limit()
+    public function it_throw_an_error_when_resolution_is_too_big()
     {
         $data = $this->generateImage(16000, 1);
 
