@@ -16,7 +16,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
  */
 class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
 {
-    public function supports(object $event): bool
+    public function supports(BulkEventInterface $event): bool
     {
         if (false === $event instanceof BulkEventInterface) {
             return false;
@@ -31,10 +31,7 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
         return true;
     }
 
-    /**
-     * @param BulkEventInterface $bulkEvent
-     */
-    public function build(object $bulkEvent, UserInterface $user): EventDataCollection
+    public function build(BulkEventInterface $bulkEvent, UserInterface $user): EventDataCollection
     {
         $collection = new EventDataCollection();
 

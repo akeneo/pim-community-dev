@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
+use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\Event;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
@@ -42,18 +43,19 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         UserInterface $user
     ): void {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
-        $event = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');
+        $pimEvent = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');
+        $pimEventBulk = new BulkEvent([$pimEvent]);
 
         $collection = new EventDataCollection();
-        $collection->setEventData($event, ['data']);
+        $collection->setEventData($pimEvent, ['data']);
 
-        $notSupportedEventDataBuilder->supports($event)->willReturn(false);
-        $supportedEventDataBuilder->supports($event)->willReturn(true);
+        $notSupportedEventDataBuilder->supports($pimEventBulk)->willReturn(false);
+        $supportedEventDataBuilder->supports($pimEventBulk)->willReturn(true);
 
-        $supportedEventDataBuilder->build($event, $user)->willReturn($collection);
+        $supportedEventDataBuilder->build($pimEventBulk, $user)->willReturn($collection);
 
         $this->build(
-            $event,
+            $pimEventBulk,
             [
                 'pim_source' => 'staging.akeneo.com',
                 'user' => $user,
@@ -80,12 +82,13 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         $this->beConstructedWith([], $logger);
 
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
-        $event = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');
+        $pimEvent = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');
+        $pimEventBulk = new BulkEvent([$pimEvent]);
 
         $this->shouldThrow(WebhookEventDataBuilderNotFoundException::class)->during(
             'build',
             [
-                $event,
+                $pimEventBulk,
                 [
                     'pim_source' => 'staging.akeneo.com',
                     'user' => $user,
@@ -98,18 +101,20 @@ class WebhookEventBuilderSpec extends ObjectBehavior
     public function it_throws_an_exception_if_there_is_no_pim_source_in_context(UserInterface $user): void
     {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
-        $event = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');
+        $pimEvent = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');
+        $pimEventBulk = new BulkEvent([$pimEvent]);
 
-        $this->shouldThrow(\InvalidArgumentException::class)->during('build', [$event, ['user' => $user]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('build', [$pimEventBulk, ['user' => $user]]);
     }
 
     public function it_throws_an_exception_if_pim_source_is_null(UserInterface $user): void
     {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
-        $event = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');
+        $pimEvent = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');
+        $pimEventBulk = new BulkEvent([$pimEvent]);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('build', [
-            $event,
+            $pimEventBulk,
             ['pim_source' => null, 'user' => $user],
         ]);
     }
@@ -117,10 +122,11 @@ class WebhookEventBuilderSpec extends ObjectBehavior
     public function it_throws_an_exception_if_there_is_no_user_in_context(): void
     {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
-        $event = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');
+        $pimEvent = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');
+        $pimEventBulk = new BulkEvent([$pimEvent]);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('build', [
-            $event,
+            $pimEventBulk,
             ['pim_source' => 'staging.akeneo.com'],
         ]);
     }
@@ -128,17 +134,19 @@ class WebhookEventBuilderSpec extends ObjectBehavior
     public function it_throws_an_exception_if_user_is_null(): void
     {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
-        $event = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');
+        $pimEvent = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');
+        $pimEventBulk = new BulkEvent([$pimEvent]);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('build', [
-            $event,
+            $pimEventBulk,
             ['pim_source' => 'staging.akeneo.com', 'user' => null],
         ]);
     }
 
     private function createEvent(Author $author, array $data, int $timestamp, string $uuid): EventInterface
     {
-        return new class ($author, $data, $timestamp, $uuid) extends Event {
+        return new class($author, $data, $timestamp, $uuid) extends Event
+        {
             public function getName(): string
             {
                 return 'product.created';
