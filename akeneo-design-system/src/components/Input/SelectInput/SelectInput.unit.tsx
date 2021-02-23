@@ -151,7 +151,7 @@ test('it handles non clearable field', () => {
       onChange={onChange}
       placeholder="Placeholder"
       emptyResultLabel="Empty result"
-      clearSelectLabel="clear"
+      clearLabel="clear"
       clearable={false}
     >
       <SelectInput.Option value="en_US" title="English (United States)">
