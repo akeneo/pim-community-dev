@@ -426,6 +426,7 @@ class FixturesContext extends BaseFixturesContext
 
             $this->refresh($productModel);
             $this->refreshEsIndexes();
+            $this->purgeMessengerEvents();
         }
     }
 
