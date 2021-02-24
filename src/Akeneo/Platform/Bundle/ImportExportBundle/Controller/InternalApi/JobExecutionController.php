@@ -6,8 +6,10 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutio
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -23,26 +25,37 @@ class JobExecutionController
     protected JobExecutionManager $jobExecutionManager;
     protected JobExecutionRepository $jobExecutionRepo;
     private NormalizerInterface $normalizer;
+    private SecurityFacade $securityFacade;
+    private array $jobSecurityMapping;
 
     public function __construct(
         TranslatorInterface $translator,
         JobExecutionArchivist $archivist,
         JobExecutionManager $jobExecutionManager,
         JobExecutionRepository $jobExecutionRepo,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        SecurityFacade $securityFacade,
+        array $jobSecurityMapping
     ) {
         $this->translator = $translator;
         $this->archivist = $archivist;
         $this->jobExecutionManager = $jobExecutionManager;
         $this->jobExecutionRepo = $jobExecutionRepo;
         $this->normalizer = $normalizer;
+        $this->securityFacade = $securityFacade;
+        $this->jobSecurityMapping = $jobSecurityMapping;
     }
 
     public function getAction($identifier): JsonResponse
     {
+        /** @var JobExecution $jobExecution */
         $jobExecution = $this->jobExecutionRepo->find($identifier);
         if (null === $jobExecution) {
             throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
+        }
+
+        if (!$this->isJobGranted($jobExecution)) {
+            throw new AccessDeniedException();
         }
 
         $jobExecution = $this->jobExecutionManager->resolveJobExecutionStatus($jobExecution);
@@ -72,5 +85,15 @@ class JobExecutionController
         }
 
         return $archives;
+    }
+
+    private function isJobGranted(JobExecution $jobExecution)
+    {
+        $jobExecutionType = $jobExecution->getJobInstance()->getType();
+        if (!array_key_exists($jobExecutionType, $this->jobSecurityMapping)) {
+            return true;
+        }
+
+        return $this->securityFacade->isGranted($this->jobSecurityMapping[$jobExecutionType]);
     }
 }

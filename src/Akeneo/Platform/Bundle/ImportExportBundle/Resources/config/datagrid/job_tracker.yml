@@ -49,6 +49,7 @@ datagrid:
                     isStoppable: boolean
                     showLink: string
                 data_name: id
+        action_configuration: '@pim_import_export.datagrid.grid_helper->getActionConfigurationClosure'
         actions:
             view:
                 type: navigate
