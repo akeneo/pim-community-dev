@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import {PimView, useRoute, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
 import {Breadcrumb, Table, Button} from 'akeneo-design-system';
@@ -17,7 +17,7 @@ const SystemInfo = () => {
   const downloadTxtRoute = useRoute('pim_analytics_system_info_download');
   const systemInfoData = useSystemInfo();
 
-  const renderArraySystemInfo: any = (infoValue: any) =>
+  const renderArraySystemInfo = (infoValue: any): ReactElement[] =>
     infoValue.map((subInfoValue: any, subInfoKey: string) => {
       return (
         <span key={`${subInfoKey}`}>
@@ -27,7 +27,7 @@ const SystemInfo = () => {
       );
     });
 
-  const renderNestedObjectSystemInfo: any = (infoValue: any, keyPrefix: string = '') =>
+  const renderNestedObjectSystemInfo = (infoValue: any, keyPrefix: string = ''): any[] | ReactElement[] =>
     Object.entries(infoValue).map(([subInfoKey, subInfoValue]) => {
       const infoKey = keyPrefix !== '' ? keyPrefix + '.' + subInfoKey : subInfoKey;
       return typeof subInfoValue === 'object' ? (
@@ -40,7 +40,7 @@ const SystemInfo = () => {
       );
     });
 
-  const renderSystemInfoValue: any = (infoValue: any, keyPrefix: string = '') => {
+  const renderSystemInfoValue = (infoValue: any, keyPrefix: string = ''): any => {
     if (typeof infoValue === 'boolean') {
       return infoValue ? '1' : '0';
     }
