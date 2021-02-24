@@ -28,7 +28,7 @@ const ModalContainer = styled.div`
 `;
 
 const ModalCloseButton = styled(IconButton)`
-  position: absolute;
+  position: fixed;
   top: 40px;
   left: 40px;
 `;
@@ -77,7 +77,7 @@ const BottomButtons = styled.div`
 `;
 
 const TopRightButtons = styled(BottomButtons)`
-  position: absolute;
+  position: fixed;
   top: 40px;
   right: 40px;
   margin: 0;

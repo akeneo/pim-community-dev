@@ -143,6 +143,35 @@ test('it handles clearing the field', () => {
   expect(onChange).toHaveBeenCalledWith(null);
 });
 
+test('it handles non clearable field', () => {
+  const onChange = jest.fn();
+  render(
+    <SelectInput
+      value="en_US"
+      onChange={onChange}
+      placeholder="Placeholder"
+      emptyResultLabel="Empty result"
+      clearLabel="clear"
+      clearable={false}
+    >
+      <SelectInput.Option value="en_US" title="English (United States)">
+        <Locale code="en_US" languageLabel="English" />
+      </SelectInput.Option>
+      <SelectInput.Option value="fr_FR" title="French (France)">
+        <Locale code="fr_FR" languageLabel="French" />
+      </SelectInput.Option>
+      <SelectInput.Option value="de_DE" title="German (Germany)">
+        <Locale code="de_DE" languageLabel="German" />
+      </SelectInput.Option>
+      <SelectInput.Option value="es_ES" title="Spanish (Spain)">
+        <Locale code="es_ES" languageLabel="Spanish" />
+      </SelectInput.Option>
+    </SelectInput>
+  );
+
+  expect(screen.queryByTitle('clear')).not.toBeInTheDocument();
+});
+
 test('it handles keyboard events', () => {
   const onChange = jest.fn();
   render(
