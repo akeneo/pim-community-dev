@@ -25,6 +25,7 @@ Feature: Import variant products through CSV import
       | ean    | EAN           |
     And 1 event of type "product.created" should have been raised
 
+  @purge-messenger
   Scenario: Update values of existing variant products through CSV import
     Given the following CSV file to import:
       """
@@ -38,6 +39,7 @@ Feature: Import variant products through CSV import
       | size   | s             |
       | weight | 600.0000 GRAM |
       | ean    | EAN           |
+    And 1 event of type "product.updated" should have been raised
 
   Scenario Outline: Convert a variant product to a simple product via import or not, depending on the convertVariantToSimple job parameter
     Given the following job "csv_catalog_modeling_product_import" configuration:

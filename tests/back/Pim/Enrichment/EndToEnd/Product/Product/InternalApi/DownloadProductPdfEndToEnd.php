@@ -84,24 +84,4 @@ class DownloadProductPdfEndToEnd extends InternalApiTestCase
     {
         return self::$container->get('pim_user.repository.user')->findOneByIdentifier('admin');
     }
-
-    private function createProduct(string $identifier, ?string $familyCode, array $data = []): ProductInterface
-    {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $familyCode);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-
-        $errors = $this->get('pim_catalog.validator.product')->validate($product);
-        if (0 !== $errors->count()) {
-            throw new \Exception(sprintf(
-                'Impossible to setup test in %s: %s',
-                static::class,
-                $errors->get(0)->getMessage()
-            ));
-        }
-
-        $this->get('pim_catalog.saver.product')->save($product);
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-
-        return $product;
-    }
 }

@@ -12,6 +12,7 @@ Feature: Classify a product
       | coffee |
     And I am logged in as "Julia"
 
+  @purge-messenger
   Scenario: Associate a product to categories
     Given I edit the "tea" product
     When I visit the "Categories" column tab
@@ -22,3 +23,4 @@ Feature: Classify a product
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And the categories of the product "tea" should be "summer_collection and winter_collection"
+    And 1 event of type "product.updated" should have been raised

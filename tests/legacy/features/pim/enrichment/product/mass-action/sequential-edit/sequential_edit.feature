@@ -17,6 +17,7 @@ Feature: Edit sequentially some products
     And I am on the products grid
     And I switch the locale to "en_US"
 
+  @purge-messenger
   Scenario: Successfully sequentially edit some products
     Given I sort by "ID" value ascending
     And I select rows white_sandal, boot and sneaker
@@ -37,3 +38,4 @@ Feature: Edit sequentially some products
       | name-en_US | Fur boots |
     And the product "sneaker" should have the following values:
       | name-en_US | Ultra sneaker |
+    And 2 event of type "product.updated" should have been raised
