@@ -8,6 +8,7 @@ use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobQueueConsumerConfiguration;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -87,61 +88,71 @@ class JobQueueConsumerCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $whitelistedJobInstanceCodes = $input->getOption('job');
-        $blacklistedJobInstanceCodes = $input->getOption('blacklisted-job');
+        /** @var JobQueueConsumerConfiguration */
+        $configuration = (new JobQueueConsumerConfiguration())
+            ->setTimeToLive(5)
+            ->setQueueCheckInterval(1);
+
+        if ($input->hasOption('job')) {
+            $configuration->setWhitelistedJobInstanceCodes($input->getOption('job'));
+        }
+
+        if ($input->hasOption('blacklisted-job')) {
+            $configuration->setBlacklistedJobInstanceCodes($input->getOption('blacklisted-job'));
+        }
 
         $errOutput = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
-
         $consumerName = Uuid::uuid4();
         $output->writeln(sprintf('Consumer name: "%s"', $consumerName->toString()));
-
         $pathFinder = new PhpExecutableFinder();
         $console = sprintf('%s%sbin%sconsole', $this->projectDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
 
         do {
             try {
-                $jobExecutionMessage = $this->jobExecutionQueue->consume($consumerName->toString(), $whitelistedJobInstanceCodes, $blacklistedJobInstanceCodes);
+                $jobExecutionMessage = $this->jobExecutionQueue->consume($consumerName->toString(), $configuration);
 
-                $arguments = array_merge([$pathFinder->find(), $console, 'akeneo:batch:job' ], $this->getArguments($jobExecutionMessage));
-                $process = new Process($arguments);
+                if (null !== $jobExecutionMessage) {
+                    $arguments = array_merge([$pathFinder->find(), $console, 'akeneo:batch:job'], $this->getArguments($jobExecutionMessage));
+                    $process = new Process($arguments);
 
-                $process->setTimeout(null);
+                    $process->setTimeout(null);
 
-                $output->writeln(sprintf('Launching job execution "%s".', $jobExecutionMessage->getJobExecutionId()));
-                $output->writeln(sprintf('Command line: "%s"', $process->getCommandLine()));
+                    $output->writeln(sprintf('Launching job execution "%s".', $jobExecutionMessage->getJobExecutionId()));
+                    $output->writeln(sprintf('Command line: "%s"', $process->getCommandLine()));
 
-                $this->executionManager->updateHealthCheck($jobExecutionMessage);
+                    $this->executionManager->updateHealthCheck($jobExecutionMessage);
 
-                $process->start();
+                    $process->start();
 
-                $nbIterationBeforeUpdatingHealthCheck = self::HEALTH_CHECK_INTERVAL * 1000000 / self::RUNNING_PROCESS_CHECK_INTERVAL;
-                $iteration = 1;
+                    $nbIterationBeforeUpdatingHealthCheck = self::HEALTH_CHECK_INTERVAL * 1000000 / self::RUNNING_PROCESS_CHECK_INTERVAL;
+                    $iteration = 1;
 
-                while ($process->isRunning()) {
-                    if ($iteration < $nbIterationBeforeUpdatingHealthCheck) {
-                        $iteration++;
-                        usleep(self::RUNNING_PROCESS_CHECK_INTERVAL);
+                    while ($process->isRunning()) {
+                        if ($iteration < $nbIterationBeforeUpdatingHealthCheck) {
+                            $iteration++;
+                            usleep(self::RUNNING_PROCESS_CHECK_INTERVAL);
 
-                        continue;
+                            continue;
+                        }
+
+                        $output->write($process->getIncrementalOutput());
+                        $errOutput->write($process->getIncrementalErrorOutput());
+
+                        $this->executionManager->updateHealthCheck($jobExecutionMessage);
+                        $iteration = 1;
+                    }
+
+                    // update status if the job execution failed due to an uncatchable error as a fatal error
+                    $exitStatus = $this->executionManager->getExitStatus($jobExecutionMessage);
+                    if ($exitStatus->isRunning()) {
+                        $this->executionManager->markAsFailed($jobExecutionMessage);
                     }
 
                     $output->write($process->getIncrementalOutput());
                     $errOutput->write($process->getIncrementalErrorOutput());
 
-                    $this->executionManager->updateHealthCheck($jobExecutionMessage);
-                    $iteration = 1;
+                    $output->writeln(sprintf('Job execution "%s" is finished.', $jobExecutionMessage->getJobExecutionId()));
                 }
-
-                // update status if the job execution failed due to an uncatchable error as a fatal error
-                $exitStatus = $this->executionManager->getExitStatus($jobExecutionMessage);
-                if ($exitStatus->isRunning()) {
-                    $this->executionManager->markAsFailed($jobExecutionMessage);
-                }
-
-                $output->write($process->getIncrementalOutput());
-                $errOutput->write($process->getIncrementalErrorOutput());
-
-                $output->writeln(sprintf('Job execution "%s" is finished.', $jobExecutionMessage->getJobExecutionId()));
             } catch (\Throwable $t) {
                 $errOutput->writeln(sprintf('An error occurred: %s', $t->getMessage()));
                 $errOutput->writeln($t->getTraceAsString());
