@@ -57,7 +57,6 @@ class DatabaseJobExecutionQueue implements JobExecutionQueueInterface
                 $jobExecutionMessage->consumedBy($consumer);
                 $hasBeenUpdated = $this->jobExecutionMessageRepository->updateJobExecutionMessage($jobExecutionMessage);
             }
-
         } while (!$hasBeenUpdated && 0 !== --$ttl && 0 === sleep($configuration['queueCheckInterval']));
 
         return $jobExecutionMessage;
