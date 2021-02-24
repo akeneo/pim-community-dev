@@ -17,8 +17,19 @@ const DropdownContainer = styled(Dropdown)`
   color: ${getColor('grey', 120)};
 `
 
-const HighlightLocaleWithFlag = styled(LocaleWithFlag)<{ highlighted?: boolean } & AkeneoThemedProps>`
-  ${({highlighted}) => highlighted && css` color: ${getColor('purple100')};`}
+const HighlightLocaleWithFlag = styled(LocaleWithFlag)<{ highlighted?: boolean, selected?: boolean } & AkeneoThemedProps>`
+  ${({highlighted}) => highlighted && css`
+    color: ${getColor('purple100')};
+  `}
+  ${({selected}) => selected && css`
+    color: ${getColor('purple100')};
+    font-style: italic;
+    font-weight: bold;
+  `}
+`
+
+const LocaleDropdownItem = styled(Dropdown.Item)`
+  justify-content: space-between;
 `
 
 const LocaleButton = styled.button`
@@ -32,12 +43,14 @@ const LocaleButton = styled.button`
 type LocaleSelectorProps = {
   value: LocaleCode;
   values: Locale[];
+  completeValues: LocaleCode[];
   onChange: (localeCode: LocaleCode) => void;
 }
 
 const LocaleSelector = ({
   value,
   values,
+  completeValues,
   onChange
 }: LocaleSelectorProps) => {
   const translate = useTranslate();
@@ -45,7 +58,7 @@ const LocaleSelector = ({
   const selectedLocale: Locale = values.find((locale) => locale.code === value) || values[0];
 
   return <DropdownContainer>
-    {translate('pim_enrich.entity.locale.uppercase_label')}:
+    {translate('pim_enrich.entity.locale.plural_label')}:
     <LocaleButton onClick={(e) => {
       e.stopPropagation();
       open();
@@ -55,16 +68,19 @@ const LocaleSelector = ({
     {isOpen &&
     <Dropdown.Overlay verticalPosition="down" onClose={close}>
       <Dropdown.Header>
-        <Dropdown.Title>{translate('pim_enrich.entity.locale.uppercase_label')}</Dropdown.Title>
+        <Dropdown.Title>{translate('pim_enrich.entity.attribute.module.edit.select_locale')}</Dropdown.Title>
       </Dropdown.Header>
       <Dropdown.ItemCollection>
         {values.map((locale) =>
-          <Dropdown.Item aria-selected={locale.code === value} key={locale.code} onClick={() => {
+          <LocaleDropdownItem aria-selected={locale.code === value} key={locale.code} onClick={() => {
             close();
             onChange(locale.code);
           }}>
-            <HighlightLocaleWithFlag code={locale.code} languageLabel={locale.label} highlighted={locale.code === value}/>
-          </Dropdown.Item>
+            <HighlightLocaleWithFlag code={locale.code} languageLabel={locale.label} selected={locale.code === value}/>
+            { !completeValues.includes(locale.code) &&
+              <span className='AknBadge AknBadge--small AknBadge--highlight'/>
+            }
+          </LocaleDropdownItem>
         )}
       </Dropdown.ItemCollection>
     </Dropdown.Overlay>
