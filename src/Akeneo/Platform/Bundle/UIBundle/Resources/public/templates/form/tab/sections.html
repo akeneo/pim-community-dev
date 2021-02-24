@@ -1,1 +1,6 @@
-<div class="tabsections" data-drop-zone="accordion"></div>
+<% if (typeof twoColumns !== 'undefined' && twoColumns) { %>
+    <div class="tabsections AknTabContainer-column" data-drop-zone="accordion"></div>
+    <div class="tabsections AknTabContainer-column" data-drop-zone="secondColumn"></div>
+<% } else { %>
+    <div class="tabsections" data-drop-zone="accordion"></div>
+<% } %>

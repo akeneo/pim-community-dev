@@ -92,6 +92,8 @@ extensions:
         targetZone: self
         config:
             template: pim/template/form/tab/sections
+            templateParams:
+                twoColumns: true
 
     pim-attribute-edit-form-properties-common:
         module: pim/common/simple-view
@@ -166,28 +168,16 @@ extensions:
             label: pim_enrich.entity.attribute.property.localizable
             readOnly: true
 
-    # TODO: la description n'est pas à la bonne place (voir par exemple avec un attribut simple select)
-    pim-attribute-edit-form-properties-descriptions-block:
-        module: pim/common/simple-view
-        parent: pim-attribute-edit-form-properties
-        targetZone: accordion
-        position: 110
-        config:
-            template: pim/template/form/tab/section
-            templateParams:
-                sectionTitle: pim_enrich.entity.attribute.property.descriptions
-                dropZone: content
-
     pim-attribute-edit-form-properties-descriptions:
         module: pim/attribute-edit-form/properties/descriptions
-        parent: pim-attribute-edit-form-properties-descriptions-block
-        targetZone: content
-        position: 120
+        parent: pim-attribute-edit-form-properties
+        targetZone: secondColumn
+        position: 100
 
     pim-attribute-edit-form-properties-type-specific:
         module: pim/attribute-edit-form/type-specific-form
         parent: pim-attribute-edit-form-properties
-        targetZone: accordion
+        targetZone: secondColumn
         position: 110
         config:
             mode: edit
