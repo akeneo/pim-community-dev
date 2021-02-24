@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {CloseIcon, getColor, getFontSize, IconButton, SelectInput, Table, useId} from 'akeneo-design-system';
+import {CloseIcon, getColor, getFontSize, IconButton, SelectInput, List, useId} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {getErrorsForPath} from '@akeneo-pim-community/shared';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
@@ -24,29 +24,23 @@ const AttributeName = styled.label`
   font-style: italic;
 `;
 
-const InputCell = styled(Table.Cell)`
-  width: 400px;
-`;
+const ContextContainer = styled.div`
+  display: flex;
+  gap: 10px;
 
-const ContextCell = styled(Table.Cell)`
-  width: 380px;
-  overflow: visible;
-
-  & > div {
-    gap: 10px;
+  & > * {
+    max-width: 120px;
   }
 `;
 
 const InputField = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
-const RemoveCell = styled(Table.Cell)`
-  width: 84px;
-
-  & > div {
-    display: flex;
+const RemoveCell = styled(List.Cell)`
+  & > * {
     justify-content: center;
   }
 `;
@@ -90,13 +84,13 @@ const UpdaterRow = ({updater, uiLocale, readOnly = false, errors, onChange, onRe
   const rowErrors = getErrorsForPath(errors, `updaters.${updater.id}`);
 
   return (
-    <Table.Row>
-      <Table.Cell>
+    <List.Row>
+      <List.Cell width="auto" rowTitle>
         <AttributeName htmlFor={id}>
           {getLabel(updater.attribute.labels, uiLocale, updater.attribute.code)}
         </AttributeName>
-      </Table.Cell>
-      <InputCell>
+      </List.Cell>
+      <List.Cell width={400} extensible>
         <InputField>
           <InputView
             id={id}
@@ -109,45 +103,48 @@ const UpdaterRow = ({updater, uiLocale, readOnly = false, errors, onChange, onRe
           />
           {getErrorsView(rowErrors, `updaters.${updater.id}`)}
         </InputField>
-      </InputCell>
-      <ContextCell>
-        {APPEND_ATTRIBUTE_TYPES.includes(updater.attribute.type) && (
-          <SelectInput
-            title={translate('pim_asset_manager.asset.mass_edit.select.action')}
-            value={updater.action}
-            onChange={handleActionChange}
-            clearable={false}
-            emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
-          >
-            <SelectInput.Option value="replace">
-              {translate('pim_asset_manager.asset.mass_edit.action.replace')}
-            </SelectInput.Option>
-            <SelectInput.Option value="append">
-              {translate('pim_asset_manager.asset.mass_edit.action.append')}
-            </SelectInput.Option>
-          </SelectInput>
-        )}
-        {null !== updater.channel && (
-          <ChannelDropdown
-            title={translate('pim_asset_manager.asset.mass_edit.select.channel')}
-            readOnly={readOnly}
-            channel={updater.channel}
-            uiLocale={uiLocale}
-            onChange={handleChannelChange}
-            channels={channels}
-          />
-        )}
-        {null !== updater.locale && (
-          <LocaleDropdown
-            title={translate('pim_asset_manager.asset.mass_edit.select.locale')}
-            readOnly={readOnly}
-            locale={updater.locale}
-            onChange={handleLocaleChange}
-            locales={locales}
-          />
-        )}
-      </ContextCell>
-      <RemoveCell>
+      </List.Cell>
+      <List.Cell width={380}>
+        <ContextContainer>
+          {APPEND_ATTRIBUTE_TYPES.includes(updater.attribute.type) && (
+            <SelectInput
+              title={translate('pim_asset_manager.asset.mass_edit.select.action')}
+              value={updater.action}
+              readOnly={readOnly}
+              onChange={handleActionChange}
+              clearable={false}
+              emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
+            >
+              <SelectInput.Option value="replace">
+                {translate('pim_asset_manager.asset.mass_edit.action.replace')}
+              </SelectInput.Option>
+              <SelectInput.Option value="append">
+                {translate('pim_asset_manager.asset.mass_edit.action.append')}
+              </SelectInput.Option>
+            </SelectInput>
+          )}
+          {null !== updater.channel && (
+            <ChannelDropdown
+              title={translate('pim_asset_manager.asset.mass_edit.select.channel')}
+              readOnly={readOnly}
+              channel={updater.channel}
+              uiLocale={uiLocale}
+              onChange={handleChannelChange}
+              channels={channels}
+            />
+          )}
+          {null !== updater.locale && (
+            <LocaleDropdown
+              title={translate('pim_asset_manager.asset.mass_edit.select.locale')}
+              readOnly={readOnly}
+              locale={updater.locale}
+              onChange={handleLocaleChange}
+              locales={locales}
+            />
+          )}
+        </ContextContainer>
+      </List.Cell>
+      <RemoveCell width={84}>
         {!readOnly && (
           <IconButton
             level="tertiary"
@@ -158,7 +155,7 @@ const UpdaterRow = ({updater, uiLocale, readOnly = false, errors, onChange, onRe
           />
         )}
       </RemoveCell>
-    </Table.Row>
+    </List.Row>
   );
 };
 
