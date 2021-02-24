@@ -35,12 +35,14 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
         $uniqueAttributeCodes = ['unique_attribute_1', 'unique_attribute_2'];
         $this->createAttributes($this->getAttributeData());
         $this->addAttributesToFamily($familyCode, $uniqueAttributeCodes);
-        $associatedProduct = $this->createProduct('associated_product', [
-            'family' => 'familyA1'
-        ]);
+        $associatedProduct = $this->createProduct(
+            'associated_product',
+            'familyA1'
+        );
         $normalizedProductToDuplicate = $this->getNormalizedProductToDuplicate($familyCode, $associatedProduct->getIdentifier());
         $productToDuplicate = $this->createProduct(
             'product_to_duplicate',
+            $familyCode,
             $normalizedProductToDuplicate
         );
         $this->clearMessageBusObserver();
@@ -105,6 +107,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
 
         $productToDuplicate = $this->createProduct(
             'product_to_duplicate',
+            'familyA2',
             [
                 'family' => 'familyA2',
                 'values' => [
@@ -144,7 +147,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
     {
         $productToDuplicate = $this->createProduct(
             'product_to_duplicate',
-            []
+            null
         );
 
         $url = $this->router->generate('pimee_enrich_product_rest_duplicate', [
@@ -170,7 +173,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
     {
         $productToDuplicate = $this->createProduct(
             'product_to_duplicate',
-            ['family' => 'familyA']
+            'familyA'
         );
         $url = $this->router->generate('pimee_enrich_product_rest_duplicate', [
             'id' => $productToDuplicate->getId()
@@ -251,26 +254,6 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
         }
 
         $this->get('pim_catalog.saver.family')->save($family);
-    }
-
-    private function createProduct($identifier, array $data = []): ProductInterface
-    {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-
-        $errors = $this->get('pim_catalog.validator.product')->validate($product);
-        if (0 !== $errors->count()) {
-            throw new \Exception(sprintf(
-                'Impossible to setup test in %s: %s',
-                static::class,
-                $errors->get(0)->getMessage()
-            ));
-        }
-
-        $this->get('pim_catalog.saver.product')->save($product);
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-
-        return $product;
     }
 
     private function assertSameData(
