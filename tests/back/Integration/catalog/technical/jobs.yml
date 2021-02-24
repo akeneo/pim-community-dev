@@ -92,3 +92,8 @@ jobs:
         alias:     rule_engine_execute_rules
         label:     Execution of the rules
         type:      execute_rules
+    refresh_project_completeness_calculation:
+        connector: teamwork assistant
+        alias:     refresh_project_completeness_calculation
+        label:     Refresh project completeness
+        type:      refresh_project_completeness_calculation
