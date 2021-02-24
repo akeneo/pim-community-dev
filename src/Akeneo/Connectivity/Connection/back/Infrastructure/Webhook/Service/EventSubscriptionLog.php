@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSendApiEventRequestLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionLogInterface;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
@@ -126,8 +127,8 @@ class EventSubscriptionLog implements EventSubscriptionLogInterface
         $this->logger->info(json_encode($log, JSON_THROW_ON_ERROR));
     }
 
-    public function logSendApiEventRequest($durationMs, $headers, $message, $success, $response):void
+    public function logSendApiEventRequest(EventSubscriptionSendApiEventRequestLog $eventSubscriptionSendApiEventRequestLog): void
     {
-        // TODO
+        $this->logger->info(json_encode($eventSubscriptionSendApiEventRequestLog->toLog(), JSON_THROW_ON_ERROR));
     }
 }

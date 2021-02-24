@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSend
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\EventSubscriptionLog;
 use Akeneo\Platform\Component\EventQueue\Author;
 use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
@@ -57,7 +58,7 @@ class EventSubscriptionSendApiEventRequestLogSpec extends ObjectBehavior
         $this->setResponse(new Response());
 
         $this->toLog()->shouldReturn([
-            'type' => EventSubscriptionSendApiEventRequestLog::TYPE,
+            'type' => EventSubscriptionLog::TYPE_SEND_API_EVENT_REQUEST,
             'duration_ms' => 21289,
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -96,7 +97,7 @@ class EventSubscriptionSendApiEventRequestLogSpec extends ObjectBehavior
         $this->setResponse(null);
 
         $this->toLog()->shouldReturn([
-            'type' => EventSubscriptionSendApiEventRequestLog::TYPE,
+            'type' => EventSubscriptionLog::TYPE_SEND_API_EVENT_REQUEST,
             'duration_ms' => 21289,
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -160,7 +161,7 @@ class EventSubscriptionSendApiEventRequestLogSpec extends ObjectBehavior
         $this->setResponse(new Response());
 
         $this->toLog()->shouldReturn([
-            'type' => EventSubscriptionSendApiEventRequestLog::TYPE,
+            'type' => EventSubscriptionLog::TYPE_SEND_API_EVENT_REQUEST,
             'duration_ms' => 21289,
             'headers' => [
                 'Content-Type' => 'application/json',

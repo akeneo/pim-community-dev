@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSendApiEventRequestLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionLogInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
 use GuzzleHttp\ClientInterface;
@@ -12,7 +13,6 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
 
 /**
@@ -24,7 +24,7 @@ class GuzzleWebhookClient implements WebhookClient
 {
     private ClientInterface $client;
     private EncoderInterface $encoder;
-    private LoggerInterface $logger;
+    private EventSubscriptionLogInterface $eventSubscriptionLog;
 
     /** @var array{concurrency: ?int, timeout: ?float} */
     private $config;
@@ -35,12 +35,12 @@ class GuzzleWebhookClient implements WebhookClient
     public function __construct(
         ClientInterface $client,
         EncoderInterface $encoder,
-        LoggerInterface $logger,
+        EventSubscriptionLogInterface $eventSubscriptionLog,
         array $config
     ) {
         $this->client = $client;
         $this->encoder = $encoder;
-        $this->logger = $logger;
+        $this->eventSubscriptionLog = $eventSubscriptionLog;
         $this->config = $config;
     }
 
@@ -83,11 +83,7 @@ class GuzzleWebhookClient implements WebhookClient
                     $webhookRequestLog->setEndTime(microtime(true));
                     $webhookRequestLog->setResponse($response);
 
-                    $this->logger->info(
-                        json_encode(
-                            $webhookRequestLog->toLog()
-                        )
-                    );
+                    $this->eventSubscriptionLog->logSendApiEventRequest($webhookRequestLog);
                 },
                 'rejected' => function (RequestException $reason, int $index) use (&$logs) {
                     $webhookRequestLog = $logs[$index];
@@ -96,11 +92,7 @@ class GuzzleWebhookClient implements WebhookClient
                     $webhookRequestLog->setEndTime(microtime(true));
                     $webhookRequestLog->setResponse($reason->getResponse());
 
-                    $this->logger->info(
-                        json_encode(
-                            $webhookRequestLog->toLog()
-                        )
-                    );
+                    $this->eventSubscriptionLog->logSendApiEventRequest($webhookRequestLog);
                 },
             ]
         );

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionLogInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
 use Akeneo\Platform\Component\EventQueue\Author;
@@ -17,7 +18,6 @@ use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
-use Psr\Log\NullLogger;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 /**
@@ -27,12 +27,12 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
  */
 class GuzzleWebhookClientSpec extends ObjectBehavior
 {
-    public function let(): void
+    public function let(EventSubscriptionLogInterface $eventSubscriptionLog): void
     {
         $this->beConstructedWith(
             new Client(),
             new JsonEncoder(),
-            new NullLogger(),
+            $eventSubscriptionLog,
             []
         );
     }
@@ -42,7 +42,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(GuzzleWebhookClient::class);
     }
 
-    public function it_sends_webhook_requests_in_bulk(): void
+    public function it_sends_webhook_requests_in_bulk(EventSubscriptionLogInterface $eventSubscriptionLog): void
     {
         $container = [];
         $history = Middleware::history($container);
@@ -53,7 +53,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $this->beConstructedWith(
             new Client(['handler' => $handlerStack]),
             new JsonEncoder(),
-            new NullLogger(),
+            $eventSubscriptionLog,
             []
         );
 

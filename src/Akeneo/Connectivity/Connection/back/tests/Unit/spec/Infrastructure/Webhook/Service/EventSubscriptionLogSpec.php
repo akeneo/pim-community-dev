@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 
 class EventSubscriptionLogSpec extends ObjectBehavior
@@ -136,7 +137,7 @@ class EventSubscriptionLogSpec extends ObjectBehavior
         ;
     }
 
-    public function it_returns_the_log(LoggerInterface $logger): void
+    public function it_logs_skip_own_event(LoggerInterface $logger): void
     {
         $event = new ProductCreated(
             Author::fromNameAndType('julia', Author::TYPE_UI),
@@ -160,5 +161,13 @@ class EventSubscriptionLogSpec extends ObjectBehavior
         $logger->info(json_encode($expectedLog, JSON_THROW_ON_ERROR))->shouldBeCalled();
 
         $this->logSkipOwnEvent($event,'ecommerce');
+    }
+
+    public function truc(LoggerInterface $logger): void
+    {
+        $logger->info(Argument::type('Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSendApiEventRequestLog'))
+            ->shouldBeCalled();
+
+        $this->logSendApiEventRequest();
     }
 }

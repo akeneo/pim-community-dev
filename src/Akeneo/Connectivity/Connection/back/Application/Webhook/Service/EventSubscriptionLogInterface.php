@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Service;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSendApiEventRequestLog;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 
 /**
@@ -17,4 +18,5 @@ interface EventSubscriptionLogInterface
     public function logEventBuild(int $subscriptionCount, int $durationMs, int $eventBuiltCount, object $event): void;
     public function logReachRequestLimit(int $limit, \DateTimeImmutable $reachedLimitDateTime, int $delayUntilNextRequest): void;
     public function logSkipOwnEvent(EventInterface $event, string $connectionCode): void;
+    public function logSendApiEventRequest(EventSubscriptionSendApiEventRequestLog $eventSubscriptionSendApiEventRequestLog): void;
 }
