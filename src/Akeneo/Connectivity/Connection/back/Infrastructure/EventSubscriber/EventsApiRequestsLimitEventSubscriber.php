@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionRequestsLimitReachedLog;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionLogInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\ReachRequestLimitLogger;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -22,20 +22,20 @@ final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInte
     private GetDelayUntilNextRequest $getDelayUntilNextRequest;
     private int $webhookRequestsLimit;
     private Sleep $sleep;
-    private EventSubscriptionLogInterface $eventSubscriptionLog;
+    private ReachRequestLimitLogger $reachRequestLimitLogger;
     private EventsApiDebugLogger $eventsApiDebugLogger;
 
     public function __construct(
         GetDelayUntilNextRequest $getDelayUntilNextRequest,
         int $webhookRequestsLimit,
         Sleep $sleep,
-        EventSubscriptionLogInterface $eventSubscriptionLog,
+        ReachRequestLimitLogger $reachRequestLimitLogger,
         EventsApiDebugLogger $eventsApiDebugLogger
     ) {
         $this->getDelayUntilNextRequest = $getDelayUntilNextRequest;
         $this->webhookRequestsLimit = $webhookRequestsLimit;
         $this->sleep = $sleep;
-        $this->eventSubscriptionLog = $eventSubscriptionLog;
+        $this->reachRequestLimitLogger = $reachRequestLimitLogger;
         $this->eventsApiDebugLogger = $eventsApiDebugLogger;
     }
 
@@ -54,7 +54,7 @@ final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInte
         );
 
         if ($delayUntilNextRequest > 0) {
-            $this->eventSubscriptionLog->logReachRequestLimit(
+            $this->reachRequestLimitLogger->log(
                 $this->webhookRequestsLimit,
                 new \DateTimeImmutable('now', new \DateTimeZone('UTC')),
                 $delayUntilNextRequest

@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSend
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\EventSubscriptionLog;
 use Akeneo\Platform\Component\EventQueue\Author;
 use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;

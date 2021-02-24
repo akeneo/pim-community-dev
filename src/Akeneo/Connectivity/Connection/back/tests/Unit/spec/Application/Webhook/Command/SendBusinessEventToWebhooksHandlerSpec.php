@@ -7,7 +7,8 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Command;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksCommand;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionLogInterface;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventBuildLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SkipOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
@@ -38,7 +39,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         WebhookUserAuthenticator $webhookUserAuthenticator,
         WebhookClient $client,
         WebhookEventBuilder $builder,
-        EventSubscriptionLogInterface $eventSubscriptionLog,
+        EventBuildLogger $eventBuildLogger,
+        SkipOwnEventLogger $skipOwnEventLogger,
         LoggerInterface $logger,
         DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer
@@ -48,7 +50,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $webhookUserAuthenticator,
             $client,
             $builder,
-            $eventSubscriptionLog,
+            $eventBuildLogger,
+            $skipOwnEventLogger,
             $logger,
             $eventsApiRequestRepository,
             $cacheClearer,
@@ -309,7 +312,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhookUserAuthenticator,
         $client,
         $builder,
-        $eventSubscriptionLog,
+        EventBuildLogger $eventBuildLogger,
+        SkipOwnEventLogger $skipOwnEventLogger,
         $eventsApiRequestRepository,
         $cacheClearer,
         LoggerInterface $logger
@@ -335,7 +339,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $webhookUserAuthenticator,
             $client,
             $builder,
-            $eventSubscriptionLog,
+            $eventBuildLogger,
+            $skipOwnEventLogger,
             $logger,
             $eventsApiRequestRepository,
             $cacheClearer,
@@ -390,7 +395,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $this->handle($command);
 
         $expectedBuildTime = (3 - 2) + (8 - 5);
-        $eventSubscriptionLog->logEventBuild(2, $expectedBuildTime, 2, $bulkEvent)->shouldBeCalled();
+        $eventBuildLogger->log(2, $expectedBuildTime, 2, $bulkEvent)->shouldBeCalled();
     }
 
     private function createEvent(Author $author, array $data): EventInterface

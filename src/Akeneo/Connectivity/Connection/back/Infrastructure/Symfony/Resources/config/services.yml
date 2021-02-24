@@ -86,10 +86,5 @@ services:
     akeneo_connectivity.connection.webhook.sleep:
         class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep
 
-    akeneo_connectivity.connection.webhook.event_subscription_log:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\EventSubscriptionLog
-        arguments:
-            - '@monolog.logger.event_api'
-
     akeneo_connectivity.connection.system_clock:
         class: Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock

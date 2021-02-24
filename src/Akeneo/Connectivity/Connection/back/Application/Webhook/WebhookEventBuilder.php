@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionLogInterface;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataBuildErrorLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
@@ -23,16 +23,16 @@ class WebhookEventBuilder
 {
     /** @var iterable<EventDataBuilderInterface> */
     private iterable $eventDataBuilders;
-    private EventSubscriptionLogInterface $eventSubscriptionLog;
+    private EventDataBuildErrorLogger $eventDataBuildErrorLogger;
 
     /**
      * @param iterable<EventDataBuilderInterface> $eventDataBuilders
-     * @param EventSubscriptionLogInterface $eventSubscriptionLog
+     * @param EventDataBuildErrorLogger $eventDataBuildErrorLogger
      */
-    public function __construct(iterable $eventDataBuilders, EventSubscriptionLogInterface $eventSubscriptionLog)
+    public function __construct(iterable $eventDataBuilders, EventDataBuildErrorLogger $eventDataBuildErrorLogger)
     {
         $this->eventDataBuilders = $eventDataBuilders;
-        $this->eventSubscriptionLog = $eventSubscriptionLog;
+        $this->eventDataBuildErrorLogger = $eventDataBuildErrorLogger;
     }
 
     /**
@@ -107,7 +107,7 @@ class WebhookEventBuilder
             }
 
             if ($data instanceof \Throwable) {
-                $this->eventSubscriptionLog->logEventDataBuildError(
+                $this->eventDataBuildErrorLogger->log(
                     $data->getMessage(),
                     $context['connection_code'],
                     $context['user']->getId(),
