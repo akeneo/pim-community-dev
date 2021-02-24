@@ -499,6 +499,11 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
+              name: Push Terraform modules to GCS
+              command: |
+                SERENITY_RELEASE_NAME=v$(docker run --rm eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} grep -o "const VERSION = '.*';$" src/Akeneo/Platform/EnterpriseVersion.php | sed "s/const VERSION = '//" | sed "s/';//")
+                BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/serenity-edition/$SERENITY_RELEASE_NAME/
+          - run:
               name: PIM_CONTEXT=deployment make release
               command: OLD_IMAGE_TAG=$IMAGE_TAG PIM_CONTEXT=deployment make release
 
