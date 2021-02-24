@@ -84,7 +84,7 @@ class Client
     {
         $params = [
             'index' => $this->indexName,
-            'id' => $this->idPrefix . $id,
+            'id' => $this->idPrefix.$id,
             'body' => $body,
         ];
 
@@ -210,7 +210,7 @@ class Client
     {
         $params = [
             'index' => $this->indexName,
-            'id' => $this->idPrefix . $id,
+            'id' => $this->idPrefix.$id,
         ];
 
         return $this->client->get($params);
@@ -295,7 +295,7 @@ class Client
     {
         $params = [
             'index' => $this->indexName,
-            'id' => $this->idPrefix . $id,
+            'id' => $this->idPrefix.$id,
         ];
 
         return $this->client->delete($params);
@@ -314,7 +314,7 @@ class Client
             $params['body'][] = [
                 'delete' => [
                     '_index' => $this->indexName,
-                    '_id' => $this->idPrefix . $identifier,
+                    '_id' => $this->idPrefix.$identifier,
                 ],
             ];
         }
