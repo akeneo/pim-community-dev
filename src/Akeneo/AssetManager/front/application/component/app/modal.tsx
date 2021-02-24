@@ -4,6 +4,7 @@ import {ButtonContainer} from 'akeneoassetmanager/application/component/app/butt
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {AssetCategoriesIllustration, Key, useShortcut, Button} from 'akeneo-design-system';
 
+//TODO Use DSM Modal
 export const Modal = styled.div`
   display: flex;
   flex-direction: column;

@@ -135,17 +135,15 @@ pim_asset_manager:
       product_link_rules: Product link rules
     transformations:
       help:
-        title: 'Welcome to your new asset management area!'
-        description: 'You can define here up to 10 transformations by asset family.'
-        link: 'If you want to dig into the new Asset Manager transformations, click here'
+        description: Here you can define here up to 10 transformations by asset family.
+        link: If you want to dig into the asset transformations, click here.
       subsection: 'Transformation properties'
     product_link_rules:
       naming_convention_subsection: 'Naming convention properties'
       product_link_rules_subsection: 'Product link rules properties'
       help:
-        title: 'Welcome to your new asset management area!'
-        description: 'You can define here up to 2 product link rules by asset family.'
-        link: 'If you want to dig into the Product Link Rules feature, click here'
+        description: 'Here, you can define up to 2 product link rules for each asset family.'
+        link: 'If you want to dig into the Product Link Rules feature, click here.'
       execute_rules:
         confirm_title: Confirm execution
         confirm_content: Are you sure you want to execute all the rules? (this could take a long time)
@@ -156,6 +154,10 @@ pim_asset_manager:
         confirm_content: Are you sure you want to execute the naming convention? (this could take a long time)
         execute_naming_convention: Execute naming convention
         cancel: Cancel
+    naming_convention:
+      help:
+        description: Here is where you can define naming convention properties.
+        link: Learn everything you need to know about their format.
     properties:
       title: Asset family properties
       identifier: Code

@@ -1,6 +1,8 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import styled from 'styled-components';
-import __ from 'akeneoassetmanager/tools/translator';
+import {FullscreenIcon, SectionTitle} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import EditionAsset, {getEditionAssetMediaData} from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
@@ -16,10 +18,8 @@ import {
   ReloadAction,
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 import {isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
-import {Subsection, SubsectionHeader} from 'akeneoassetmanager/application/component/app/subsection';
+import {Subsection} from 'akeneoassetmanager/application/component/app/subsection';
 import {doReloadAllPreviews} from 'akeneoassetmanager/application/action/asset/reloadPreview';
-import {connect} from 'react-redux';
-import {FullscreenIcon} from 'akeneo-design-system';
 
 const Container = styled.div`
   display: flex;
@@ -31,21 +31,6 @@ const Container = styled.div`
   position: relative;
 `;
 
-const Actions = styled.div`
-  display: flex;
-  padding: 0 10px;
-  font-weight: normal;
-  text-transform: none;
-
-  > ${Action} {
-    margin-left: 15px;
-  }
-`;
-
-const StyledHeader = styled(SubsectionHeader)`
-  position: initial;
-`;
-
 type MainMediaPreviewProps = {
   asset: EditionAsset;
   context: {
@@ -54,9 +39,10 @@ type MainMediaPreviewProps = {
   };
 };
 
-export const MainMediaPreview = connect(null, dispatch => ({
+const MainMediaPreview = connect(null, dispatch => ({
   onReloadPreview: () => dispatch(doReloadAllPreviews() as any),
 }))(({asset, context, onReloadPreview}: MainMediaPreviewProps & {onReloadPreview: () => void}) => {
+  const translate = useTranslate();
   const attributeAsMainMedia = getAttributeAsMainMedia(asset.assetFamily);
   const data = getEditionAssetMediaData(asset, context.channel, context.locale);
   const attributeLabel = getLabelInCollection(
@@ -68,22 +54,25 @@ export const MainMediaPreview = connect(null, dispatch => ({
 
   return (
     <Subsection>
-      <StyledHeader top={192}>
-        <span>{__('pim_asset_manager.asset.enrich.main_media_preview')}</span>
+      <SectionTitle sticky={192}>
+        <SectionTitle.Title>{translate('pim_asset_manager.asset.enrich.main_media_preview')}</SectionTitle.Title>
+        <SectionTitle.Spacer />
         {!isDataEmpty(data) && (
-          <Actions>
+          <>
             <ReloadAction size={20} data={data} attribute={attributeAsMainMedia} onReload={onReloadPreview} />
             <CopyUrlAction size={20} data={data} attribute={attributeAsMainMedia} />
             <DownloadAction size={20} data={data} attribute={attributeAsMainMedia} />
             <FullscreenPreview anchor={Action} label={attributeLabel} data={data} attribute={attributeAsMainMedia}>
-              <FullscreenIcon title={__('pim_asset_manager.asset.button.fullscreen')} size={20} />
+              <FullscreenIcon title={translate('pim_asset_manager.asset.button.fullscreen')} size={20} />
             </FullscreenPreview>
-          </Actions>
+          </>
         )}
-      </StyledHeader>
+      </SectionTitle>
       <Container>
         <MediaPreview data={data} label={attributeLabel} attribute={attributeAsMainMedia} />
       </Container>
     </Subsection>
   );
 });
+
+export {MainMediaPreview};
