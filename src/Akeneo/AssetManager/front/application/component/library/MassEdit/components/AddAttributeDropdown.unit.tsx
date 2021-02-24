@@ -62,7 +62,5 @@ test('it call onAdd handler when user select an attribute', () => {
   const attributeToAdd = screen.getByText('Name');
   userEvent.click(attributeToAdd);
 
-  screen.debug();
-
   expect(handleAddAttribute).toHaveBeenCalledWith(attributes[1]);
 });

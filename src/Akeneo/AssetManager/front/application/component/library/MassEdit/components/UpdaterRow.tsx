@@ -39,12 +39,6 @@ const InputField = styled.div`
   width: 100%;
 `;
 
-const RemoveCell = styled(List.Cell)`
-  & > * {
-    justify-content: center;
-  }
-`;
-
 const APPEND_ATTRIBUTE_TYPES = ['option_collection'];
 
 type UpdaterRowProps = {
@@ -84,13 +78,13 @@ const UpdaterRow = ({updater, uiLocale, readOnly = false, errors, onChange, onRe
   const rowErrors = getErrorsForPath(errors, `updaters.${updater.id}`);
 
   return (
-    <List.Row>
-      <List.Cell width="auto" rowTitle>
+    <List.Row multiline>
+      <List.Title width="auto">
         <AttributeName htmlFor={id}>
           {getLabel(updater.attribute.labels, uiLocale, updater.attribute.code)}
         </AttributeName>
-      </List.Cell>
-      <List.Cell width={400} extensible>
+      </List.Title>
+      <List.Cell width={400}>
         <InputField>
           <InputView
             id={id}
@@ -144,7 +138,7 @@ const UpdaterRow = ({updater, uiLocale, readOnly = false, errors, onChange, onRe
           )}
         </ContextContainer>
       </List.Cell>
-      <RemoveCell width={84}>
+      <List.RemoveCell>
         {!readOnly && (
           <IconButton
             level="tertiary"
@@ -154,7 +148,7 @@ const UpdaterRow = ({updater, uiLocale, readOnly = false, errors, onChange, onRe
             onClick={() => onRemove(updater)}
           />
         )}
-      </RemoveCell>
+      </List.RemoveCell>
     </List.Row>
   );
 };
