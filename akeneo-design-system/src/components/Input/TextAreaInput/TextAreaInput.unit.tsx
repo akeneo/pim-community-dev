@@ -1,24 +1,66 @@
 import React from 'react';
 import {TextAreaInput} from './TextAreaInput';
-import {render, screen} from '../../storybook/test-util';
+import {fireEvent, render, screen} from '../../../storybook/test-util';
 
-test('it renders its children properly', () => {
-  render(<TextAreaInput>TextAreaInput content</TextAreaInput>);
+test('it renders and handle changes', () => {
+  const handleChange = jest.fn();
 
-  expect(screen.getByText('TextAreaInput content')).toBeInTheDocument();
+  render(
+    <>
+      <label htmlFor="myInput">My label</label>
+      <TextAreaInput id="myInput" value="Nice" onChange={handleChange} />
+    </>
+  );
+
+  expect(screen.getByLabelText('My label')).toBeInTheDocument();
+  const input = screen.getByLabelText('My label') as HTMLInputElement;
+  fireEvent.change(input, {target: {value: 'Cool'}});
+  expect(handleChange).toHaveBeenCalledWith('Cool');
 });
 
-// Those tests should pass directly if you follow the contributing guide.
-// If you add required props to your Component, these tests will fail
-// and you will need to add these required props here as well
+test('it renders and does not call onChange if readOnly', () => {
+  const handleChange = jest.fn();
+
+  render(
+    <>
+      <label htmlFor="myInput">My label</label>
+      <TextAreaInput id="myInput" readOnly={true} value="Nice" onChange={handleChange} />
+    </>
+  );
+
+  expect(screen.getByLabelText('My label')).toBeInTheDocument();
+  const input = screen.getByLabelText('My label') as HTMLInputElement;
+  fireEvent.change(input, {target: {value: 'Cool'}});
+  expect(handleChange).not.toHaveBeenCalledWith('Cool');
+});
+
+test('it renders and displays the character left label', () => {
+  const handleChange = jest.fn();
+
+  render(
+    <>
+      <label htmlFor="myInput">My label</label>
+      <TextAreaInput
+        id="myInput"
+        characterLeftLabel="100 character remaining"
+        readOnly={true}
+        value="Nice"
+        onChange={handleChange}
+      />
+    </>
+  );
+
+  expect(screen.getByText('100 character remaining')).toBeInTheDocument();
+});
+
 test('TextAreaInput supports forwardRef', () => {
   const ref = {current: null};
 
-  render(<TextAreaInput ref={ref} />);
+  render(<TextAreaInput value="nice" onChange={jest.fn()} ref={ref} />);
   expect(ref.current).not.toBe(null);
 });
 
 test('TextAreaInput supports ...rest props', () => {
-  render(<TextAreaInput data-testid="my_value" />);
+  render(<TextAreaInput value="nice" onChange={jest.fn()} data-testid="my_value" />);
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
