@@ -20,7 +20,7 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
     /**
      * Job code to execute by the consumer.
      * If set, all jobs will NOT be executed but the ones given in the whitelist.
-     * 
+     *
      * @var array
      * */
     private $whitelistedJobInstanceCodes = [];
@@ -29,22 +29,22 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
      * Job codes NOT to execute by the consumer.
      * If this is set, all jobs will be executed but the ones given in the blacklist.
      * When both lists are empty, all jobs consumed are executed.
-     * 
+     *
      * @var array
      * */
     private $blacklistedJobInstanceCodes = [];
 
     /**
      * Number of seconds to wait between each check when polling jobs queue.
-     * 
+     *
      * @var int
      * */
-    private $queueCheckInterval = 5; 
+    private $queueCheckInterval = 5;
 
     /**
      * Number of job iterations before the consumer waits for a job.
      * 0 means the process does wait for a job forever.
-     * 
+     *
      * @var int
      * */
     private $timeToLive = 0;
@@ -55,6 +55,10 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
 
     public function setWhitelistedJobInstanceCodes(array $codes): Self
     {
+        if (0 === count($codes)) {
+            return;
+        }
+
         if (count($this->blacklistedJobInstanceCodes) > 0) {
             throw new \InvalidArgumentException(
                 sprintf(
@@ -72,6 +76,10 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
 
     public function setBlacklistedJobInstanceCodes(array $codes): Self
     {
+        if (0 === count($codes)) {
+            return;
+        }
+
         if (count($this->whitelistedJobInstanceCodes) > 0) {
             throw new \InvalidArgumentException(
                 sprintf(
@@ -108,19 +116,15 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
 
     public function offsetGet($offset)
     {
-        switch($offset) {
+        switch ($offset) {
             case "whitelistedJobInstanceCodes":
                 return $this->whitelistedJobInstanceCodes;
-                // no break
             case "blacklistedJobInstanceCodes":
                 return $this->blacklistedJobInstanceCodes;
-                // no break
             case "timeToLive":
                 return $this->timeToLive;
-                // no break
             case "queueCheckInterval":
                 return $this->queueCheckInterval;
-                // no break
             default:
                 throw new \RuntimeException(
                     sprintf(
