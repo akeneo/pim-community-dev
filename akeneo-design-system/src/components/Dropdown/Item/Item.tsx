@@ -71,6 +71,11 @@ type ItemProps = Override<
     disabled?: boolean;
 
     /**
+     * Called when the user click (or hit enter/space) on the item
+     */
+    onClick: () => void;
+
+    /**
      * The content of the item.
      */
     children: ReactNode;
@@ -93,7 +98,7 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
       if (null !== actionableRef.current && actionableRef.current !== event.target) {
         actionableRef.current.click();
       } else {
-        internalRef?.current?.click();
+        onClick();
       }
     }, [disabled]);
 
