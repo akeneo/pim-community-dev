@@ -162,11 +162,11 @@ class Client
     {
         $length = count($params['body']);
         try {
-            $mergedResponse = $this->doChuckedBulkIndex($params, $mergedResponse, $length);
+            $mergedResponse = $this->doChunkedBulkIndex($params, $mergedResponse, $length);
         } catch (BadRequest400Exception $e) {
             $chunkLength = intdiv($length, self::NUMBER_OF_BATCHES);
             $chunkLength = $chunkLength % 2 == 0 ? $chunkLength : $chunkLength + 1;
-            $mergedResponse = $this->doChuckedBulkIndex($params, $mergedResponse, $chunkLength);
+            $mergedResponse = $this->doChunkedBulkIndex($params, $mergedResponse, $chunkLength);
 
         } catch (\Exception $e) {
             throw new IndexationException($e->getMessage(), $e->getCode(), $e);
@@ -175,12 +175,12 @@ class Client
         return $mergedResponse;
     }
 
-    private function doChuckedBulkIndex(array $params, array $mergedResponse, int $chunkLength): array
+    private function doChunkedBulkIndex(array $params, array $mergedResponse, int $chunkLength): array
     {
         $bulkRequest = [];
         $bulkRequest['refresh'] = $params['refresh'];
-        $chunkedParams = array_chunk($params['body'], $chunkLength);
-        foreach ($chunkedParams as $chunk) {
+        $chunkedBody = array_chunk($params['body'], $chunkLength);
+        foreach ($chunkedBody as $chunk) {
             $bulkRequest['body'] = $chunk;
             $response = $this->client->bulk($bulkRequest);
 
