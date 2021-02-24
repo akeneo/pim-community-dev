@@ -1,44 +1,27 @@
-import * as React from 'react';
-import __ from 'akeneoassetmanager/tools/translator';
+import React from 'react';
 import styled from 'styled-components';
-import {Modal, Title} from 'akeneoassetmanager/application/component/app/modal';
-import {CloseButton} from 'akeneoassetmanager/application/component/app/close-button';
+import {getColor, Modal, useBooleanState} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {
   Actions,
   DownloadAction,
   CopyUrlAction,
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 import {MediaData} from 'akeneoassetmanager/domain/model/asset/data';
-import {Key, useShortcut} from 'akeneo-design-system';
 
-const Container = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-`;
-
-export const PreviewContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const Border = styled.div`
+const Border = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
-  border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
+  border: 1px solid ${getColor('grey', 80)};
   max-height: 100%;
+  gap: 20px;
+`;
 
-  > :first-child {
-    margin-bottom: 20px;
-  }
+const BrandedTitle = styled(Modal.Title)`
+  color: ${getColor('brand', 100)};
 `;
 
 type FullscreenPreviewProps = {
@@ -49,42 +32,35 @@ type FullscreenPreviewProps = {
   children?: React.ReactNode;
 };
 
-export const FullscreenPreview = ({anchor: Anchor, label, data, attribute, children}: FullscreenPreviewProps) => {
-  const [isModalOpen, setModalOpen] = React.useState(false);
-
-  const openModal = React.useCallback(() => setModalOpen(true), []);
-  const closeModal = React.useCallback(() => setModalOpen(false), []);
-
-  useShortcut(Key.Escape, closeModal);
+const FullscreenPreview = ({anchor: Anchor, label, data, attribute, children}: FullscreenPreviewProps) => {
+  const translate = useTranslate();
+  const [isModalOpen, openModal, closeModal] = useBooleanState();
 
   return (
     <>
       <Anchor onClick={openModal}>{children}</Anchor>
       {isModalOpen && (
-        <Modal>
-          <Container>
-            <CloseButton title={__('pim_asset_manager.close')} onClick={closeModal} />
-            <Title>{label}</Title>
-            <PreviewContainer>
-              <Border>
-                <MediaPreview label={label} data={data} attribute={attribute} />
-                <Actions margin={20}>
-                  <CopyUrlAction
-                    data={data}
-                    attribute={attribute}
-                    label={__('pim_asset_manager.asset_preview.copy_url')}
-                  />
-                  <DownloadAction
-                    data={data}
-                    attribute={attribute}
-                    label={__('pim_asset_manager.asset_preview.download')}
-                  />
-                </Actions>
-              </Border>
-            </PreviewContainer>
-          </Container>
+        <Modal onClose={closeModal} closeTitle={translate('pim_common.close')}>
+          <BrandedTitle>{label}</BrandedTitle>
+          <Border>
+            <MediaPreview label={label} data={data} attribute={attribute} />
+            <Actions margin={20}>
+              <CopyUrlAction
+                data={data}
+                attribute={attribute}
+                label={translate('pim_asset_manager.asset_preview.copy_url')}
+              />
+              <DownloadAction
+                data={data}
+                attribute={attribute}
+                label={translate('pim_asset_manager.asset_preview.download')}
+              />
+            </Actions>
+          </Border>
         </Modal>
       )}
     </>
   );
 };
+
+export {FullscreenPreview};

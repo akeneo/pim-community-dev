@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import __ from 'akeneoassetmanager/tools/translator';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import {SectionTitle} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {NormalizedProduct} from 'akeneoassetmanager/domain/model/product/product';
-import {Subsection, SubsectionHeader} from 'akeneoassetmanager/application/component/app/subsection';
+import {Subsection} from 'akeneoassetmanager/application/component/app/subsection';
 import {Product} from 'akeneoassetmanager/application/component/asset/edit/linked-products/product';
 import {NoResults} from 'akeneoassetmanager/application/component/asset/edit/linked-products/no-results';
 import {AttributeButton} from 'akeneoassetmanager/application/component/asset/edit/linked-products/attribute-button';
@@ -13,7 +13,6 @@ import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/componen
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
 import {attributeSelected} from 'akeneoassetmanager/application/action/product/attribute';
 import {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
-import {ResultCounter} from 'akeneoassetmanager/application/component/app/result-counter';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {Limit} from 'akeneoassetmanager/application/component/asset/edit/linked-products/limit';
 
@@ -22,24 +21,6 @@ const Grid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   grid-gap: 20px;
   margin: 20px 0;
-`;
-
-const SubsectionHeaderRight = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 20px;
-
-  .AknActionButton--light {
-    padding-top: 0;
-  }
-`;
-
-const SubsectionHeaderSeparator = styled.div`
-  background: ${(props: ThemedProps<void>) => props.theme.color.grey80};
-  display: block;
-  height: 24px;
-  margin: 0 5px 0 10px;
-  width: 1px;
 `;
 
 interface StateProps {
@@ -71,15 +52,7 @@ const LinkedProducts = ({
   selectedAttribute,
   events,
 }: StateProps & DispatchProps) => {
-  if (!isLoaded) {
-    return (
-      <Subsection>
-        <SubsectionHeader top={192}>
-          <span>{__('pim_asset_manager.asset.enrich.product_subsection')}</span>
-        </SubsectionHeader>
-      </Subsection>
-    );
-  }
+  const translate = useTranslate();
 
   const handleSelectedAttributeChange = React.useCallback(
     (selectedElement: DropdownElement) => {
@@ -98,33 +71,44 @@ const LinkedProducts = ({
     [attributes, context.locale]
   );
 
+  if (!isLoaded) {
+    return (
+      <Subsection>
+        <SectionTitle sticky={192}>
+          <SectionTitle.Title>{translate('pim_asset_manager.asset.enrich.product_subsection')}</SectionTitle.Title>
+        </SectionTitle>
+      </Subsection>
+    );
+  }
+
   return (
     <Subsection>
-      <SubsectionHeader top={192}>
-        <span>{__('pim_asset_manager.asset.enrich.product_subsection')}</span>
-        <SubsectionHeaderRight>
-          <ResultCounter count={totalCount} />
-          {null !== selectedAttribute && (
-            <>
-              <SubsectionHeaderSeparator />
-              <Dropdown
-                elements={attributesAsDropdownElements}
-                selectedElement={selectedAttribute.code}
-                label={__('pim_asset_manager.asset.product.attribute')}
-                onSelectionChange={handleSelectedAttributeChange}
-                ButtonView={AttributeButton}
-                isOpenLeft={true}
-              />
-            </>
-          )}
-        </SubsectionHeaderRight>
-      </SubsectionHeader>
+      <SectionTitle sticky={192}>
+        <SectionTitle.Title>{translate('pim_asset_manager.asset.enrich.product_subsection')}</SectionTitle.Title>
+        <SectionTitle.Spacer />
+        <SectionTitle.Information>
+          {translate('pim_asset_manager.result_counter', {count: totalCount}, totalCount)}
+        </SectionTitle.Information>
+        {null !== selectedAttribute && (
+          <>
+            <SectionTitle.Separator />
+            <Dropdown
+              elements={attributesAsDropdownElements}
+              selectedElement={selectedAttribute.code}
+              label={translate('pim_asset_manager.asset.product.attribute')}
+              onSelectionChange={handleSelectedAttributeChange}
+              ButtonView={AttributeButton}
+              isOpenLeft={true}
+            />
+          </>
+        )}
+      </SectionTitle>
       <Grid>
         {products.map(product => (
           <Product key={product.id} product={product} locale={context.locale} />
         ))}
       </Grid>
-      {products.length === 0 && <NoResults message={__('pim_asset_manager.asset.no_linked_products')} />}
+      {products.length === 0 && <NoResults message={translate('pim_asset_manager.asset.no_linked_products')} />}
       <Limit
         assetCode={assetCode}
         productCount={products.length}

@@ -1,10 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
-import __ from 'akeneoassetmanager/tools/translator';
+import {ArrowLeftIcon, ArrowRightIcon, EditIcon, getColor, Key, Modal, useShortcut} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
-import {CloseButton} from 'akeneoassetmanager/application/component/app/close-button';
-import {Modal, SubTitle, Title} from 'akeneoassetmanager/application/component/app/modal';
 import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {Carousel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/carousel';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
@@ -22,7 +21,6 @@ import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {useAssetFamily, AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
 import {getAssetEditUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
-import {Border, PreviewContainer} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
 import {
   Action,
   ActionLabel,
@@ -30,7 +28,6 @@ import {
   DownloadAction,
   CopyUrlAction,
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
-import {ArrowLeftIcon, ArrowRightIcon, EditIcon, getColor, Key, useShortcut} from 'akeneo-design-system';
 
 const Container = styled.div`
   position: relative;
@@ -39,6 +36,17 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 100%;
+  width: 100%;
+  padding: 20px 0;
+`;
+
+const Border = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid ${getColor('grey', 80)};
+  max-height: 100%;
+  gap: 20px;
 `;
 
 const AssetContainer = styled.div`
@@ -51,16 +59,34 @@ const AssetContainer = styled.div`
   overflow-x: auto;
 `;
 
-const Header = styled.div``;
+const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const ArrowButton = styled(TransparentButton)`
   margin: 0 10px;
   color: ${getColor('grey', 100)};
 `;
 
-const StyledPreviewContainer = styled(PreviewContainer)`
+const PreviewContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   max-height: calc(100vh - 350px);
 `;
+
+const BrandedTitle = styled(Modal.Title)`
+  color: ${getColor('brand', 100)};
+`;
+
+const EditAction = ({url, label}: {url: string; label: string}) => (
+  <Action className="edit-asset-from-preview" title={label} href={url} target="_blank">
+    <EditIcon />
+    <ActionLabel title={label}>{label}</ActionLabel>
+  </Action>
+);
 
 type AssetPreviewProps = {
   assetCollection: ListAsset[];
@@ -73,15 +99,7 @@ type AssetPreviewProps = {
   dataProvider: AssetFamilyDataProvider;
 };
 
-const EditAction = ({url, label}: {url: string; label: string}) => (
-  <Action className={'edit-asset-from-preview'} title={label} href={url} target="_blank">
-    <EditIcon />
-    <ActionLabel title={label}>{label}</ActionLabel>
-  </Action>
-);
-
-//TODO Use DSM Modal
-export const AssetPreview = ({
+const AssetPreview = ({
   assetCollection,
   initialAssetCode,
   productIdentifier,
@@ -91,7 +109,8 @@ export const AssetPreview = ({
   onClose,
   dataProvider,
 }: AssetPreviewProps) => {
-  const [currentAssetCode, setCurrentAssetCode] = React.useState(initialAssetCode);
+  const translate = useTranslate();
+  const [currentAssetCode, setCurrentAssetCode] = useState<AssetCode>(initialAssetCode);
   const selectedAsset: ListAsset | undefined = getAssetByCode(assetCollection, currentAssetCode);
   const {assetFamily} = useAssetFamily(dataProvider, assetFamilyIdentifier);
   const assetCodeCollection = getAssetCodes(assetCollection);
@@ -111,37 +130,36 @@ export const AssetPreview = ({
   const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily);
 
   return (
-    <Modal role="dialog">
+    <Modal closeTitle={translate('pim_common.close')} onClose={onClose}>
       <Container>
-        <CloseButton title={__('pim_asset_manager.close')} onClick={onClose} />
-        <ArrowButton title={__('pim_asset_manager.asset_preview.previous')} onClick={setPreviousAsset}>
+        <ArrowButton title={translate('pim_asset_manager.asset_preview.previous')} onClick={setPreviousAsset}>
           <ArrowLeftIcon size={44} />
         </ArrowButton>
         <AssetContainer>
           <Header>
-            <SubTitle>
-              {__('pim_asset_manager.breadcrumb.products')} / {productIdentifier}
-            </SubTitle>
-            <Title>{selectedAssetLabel}</Title>
+            <Modal.SectionTitle>
+              {translate('pim_asset_manager.breadcrumb.products')} / {productIdentifier}
+            </Modal.SectionTitle>
+            <BrandedTitle>{selectedAssetLabel}</BrandedTitle>
           </Header>
-          <StyledPreviewContainer>
+          <PreviewContainer>
             <Border>
               <MediaPreview data={data} label={selectedAssetLabel} attribute={attributeAsMainMedia} />
               <Actions margin={20}>
                 <CopyUrlAction
                   data={data}
                   attribute={attributeAsMainMedia}
-                  label={__('pim_asset_manager.asset_preview.copy_url')}
+                  label={translate('pim_asset_manager.asset_preview.copy_url')}
                 />
                 <DownloadAction
                   data={data}
                   attribute={attributeAsMainMedia}
-                  label={__('pim_asset_manager.asset_preview.download')}
+                  label={translate('pim_asset_manager.asset_preview.download')}
                 />
-                <EditAction url={editUrl} label={__('pim_asset_manager.asset_preview.edit_asset')} />
+                <EditAction url={editUrl} label={translate('pim_asset_manager.asset_preview.edit_asset')} />
               </Actions>
             </Border>
-          </StyledPreviewContainer>
+          </PreviewContainer>
           <Carousel
             context={context}
             selectedAssetCode={selectedAsset.code}
@@ -150,10 +168,12 @@ export const AssetPreview = ({
             onAssetChange={setCurrentAssetCode}
           />
         </AssetContainer>
-        <ArrowButton title={__('pim_asset_manager.asset_preview.next')} onClick={setNextAsset}>
+        <ArrowButton title={translate('pim_asset_manager.asset_preview.next')} onClick={setNextAsset}>
           <ArrowRightIcon size={44} />
         </ArrowButton>
       </Container>
     </Modal>
   );
 };
+
+export {AssetPreview};
