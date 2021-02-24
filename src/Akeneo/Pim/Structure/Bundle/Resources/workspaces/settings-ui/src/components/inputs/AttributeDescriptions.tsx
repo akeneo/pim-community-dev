@@ -47,10 +47,11 @@ const AttributeDescriptions = ({defaultValue, onChange}: AttributeDescriptionsPr
           value={localeCode}
           onChange={setLocaleCode}
           values={locales}
+          completeValues={locales.map(locale => locale.code).filter(localeCode => !!descriptions[localeCode])}
         />
       </Header>
       <div className="AknFormContainer AknFormContainer--withPadding" data-drop-zone="content">
-        <Field label={translate('todo descriptions')}>
+        <Field label={translate('pim_enrich.entity.attribute.property.descriptions')}>
           {locales.filter(locale => locale.code === localeCode).map((locale) =>
             <TextareaInput
               key={locale.code}
