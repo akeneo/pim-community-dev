@@ -56,8 +56,13 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
     public function setWhitelistedJobInstanceCodes(array $codes): Self
     {
         if (count($this->blacklistedJobInstanceCodes) > 0) {
-            throw new \InvalidArgumentException("Cannot set a job queue whitelist in consumer since a blacklist is already defined.");
-
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Cannot set a job queue whitelist '{%s}' in consumer since a blacklist '{%s}' is already defined.",
+                    join(', ', $codes),
+                    join(', ', $this->blacklistedJobInstanceCodes)
+                )
+            );
         }
 
         $this->whitelistedJobInstanceCodes = $codes;
@@ -68,7 +73,13 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
     public function setBlacklistedJobInstanceCodes(array $codes): Self
     {
         if (count($this->whitelistedJobInstanceCodes) > 0) {
-            throw new \InvalidArgumentException("Cannot set a job queue blacklist in consumer since a whitelist is already defined.");
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Cannot set a job queue blacklist '{%s}' in consumer since a whitelist '{%s}' is already defined.",
+                    join(', ', $codes),
+                    join(', ', $this->whitelistedJobInstanceCodes)
+                )
+            );
         }
 
         $this->blacklistedJobInstanceCodes = $codes;
