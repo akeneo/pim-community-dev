@@ -25,8 +25,8 @@ class Client
     /** @var int ElasticSearch max query size */
     private const PARAMS_MAX_SIZE = 100000000;
 
-    /** @var int Max number of documents */
-    private const DOCUMENTS_MAX_BATCH = 1000;
+    /** @var int Number of split requests  */
+    private const NUMBER_OF_BATCHES = 2;
 
     /** @var ClientBuilder */
     private $builder;
@@ -160,10 +160,13 @@ class Client
 
     private function doBulkIndex(array $params, array $mergedResponse): array
     {
+        $length = count($params['body']);
         try {
-            $mergedResponse = $this->doChuckedBulkIndex($params, $mergedResponse, self::PARAMS_MAX_SIZE);
+            $mergedResponse = $this->doChuckedBulkIndex($params, $mergedResponse, $length);
         } catch (BadRequest400Exception $e) {
-            $mergedResponse = $this->doChuckedBulkIndex($params, $mergedResponse, self::DOCUMENTS_MAX_BATCH);
+            $chunkLength = intdiv($length, self::NUMBER_OF_BATCHES);
+            $chunkLength = $chunkLength % 2 == 0 ? $chunkLength : $chunkLength + 1;
+            $mergedResponse = $this->doChuckedBulkIndex($params, $mergedResponse, $chunkLength);
 
         } catch (\Exception $e) {
             throw new IndexationException($e->getMessage(), $e->getCode(), $e);
