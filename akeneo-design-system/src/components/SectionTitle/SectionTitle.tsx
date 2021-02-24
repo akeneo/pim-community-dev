@@ -19,7 +19,7 @@ const SectionTitleContainer = styled.div<{sticky?: number} & AkeneoThemedProps>`
       position: sticky;
       top: ${sticky}px;
       background-color: ${getColor('white')};
-      z-index: 10;
+      z-index: 9;
     `}
 `;
 
