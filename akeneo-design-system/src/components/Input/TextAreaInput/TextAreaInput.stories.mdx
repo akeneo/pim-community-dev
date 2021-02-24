@@ -1,0 +1,107 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {TextAreaInput} from './TextAreaInput.tsx';
+
+<Meta
+  title="Components/Inputs/TextArea input"
+  component={TextAreaInput}
+  argTypes={{
+    readOnly: {
+      control: {type: 'boolean'},
+      description:
+        'Defines if the input should be read only. If defined so, the user cannot change the value of the input.',
+      table: {type: {summary: 'boolean'}},
+    },
+    onChange: {
+      description: 'The handler called when the value of the input changes.',
+      table: {type: {summary: '(newValue: string) => void'}},
+    },
+  }}
+  args={{
+    value:
+      'The giant panda, also known as the panda bear or simply the panda, is a bear native to south-central China. It is characterized by large, black patches around its eyes, over the ears, and across its round body. The name "giant panda" is sometimes used to distinguish it from the red panda, a neighboring musteloid. Though it belongs to the order Carnivora, the giant panda is a folivore, with bamboo shoots and leaves making up more than 99% of its diet. Giant pandas in the wild will occasionally eat other grasses, wild tubers, or even meat in the form of birds, rodents.',
+    placeholder: 'Please enter a value in the TextAreaInput',
+  }}
+/>
+
+# Text input (Beta)
+
+## Usage
+
+Text input allows the user to enter content and data when the expected user input is a single line of text.
+
+### Placeholder text
+
+The placeholder text provides tips or examples of items to enter. Placeholder text disappears when the user begins entering data.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [value, setValue] = useState(args.value);
+      return <TextAreaInput {...args} value={value} onChange={setValue} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on readOnly
+
+<Canvas>
+  <Story name="ReadOnly">
+    {args => {
+      return (
+        <>
+          <TextAreaInput {...args} readOnly={false} />
+          <TextAreaInput {...args} readOnly={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on invalid
+
+<Canvas>
+  <Story name="Invalid">
+    {args => {
+      return (
+        <>
+          <TextAreaInput {...args} invalid={false} />
+          <TextAreaInput {...args} invalid={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on character left label
+
+<Canvas>
+  <Story name="Character left label">
+    {args => {
+      const [value, setValue] = useState('');
+      const handleChange = newValue => setValue(newValue);
+      return (
+        <TextAreaInput
+          placeholder="Type here to update the character left label"
+          value={value}
+          onChange={handleChange}
+          characterLeftLabel={`${250 - value.length} characters left`}
+        />
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Rich Text Editor
+
+<Canvas>
+  <Story name="Rich Text Editor">
+    {args => {
+      return <TextAreaInput {...args} isRichTextEditor={true} />;
+    }}
+  </Story>
+</Canvas>
