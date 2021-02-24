@@ -56,7 +56,7 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
     public function setWhitelistedJobInstanceCodes(array $codes): Self
     {
         if (0 === count($codes)) {
-            return;
+            return $this;
         }
 
         if (count($this->blacklistedJobInstanceCodes) > 0) {
@@ -77,7 +77,7 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
     public function setBlacklistedJobInstanceCodes(array $codes): Self
     {
         if (0 === count($codes)) {
-            return;
+            return $this;
         }
 
         if (count($this->whitelistedJobInstanceCodes) > 0) {
