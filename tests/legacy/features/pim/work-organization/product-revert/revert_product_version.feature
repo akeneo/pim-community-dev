@@ -43,6 +43,7 @@ Feature: Revert a product to a previous version
       | 1       | Julia Stark | SKU      | shirt |
       | 1       | Julia Stark | enabled  | 1     |
 
+  @purge-messenger
   Scenario: Successfully revert the status of a product (disabled)
     Given I am on the products grid
     And I create a product
@@ -56,6 +57,8 @@ Feature: Revert a product to a previous version
     Then I should see 2 versions in the history
     When I revert the product version number 1
     Then product "shirt" should be enabled
+    And 1 event of type "product.created" should have been raised
+    And 2 event of type "product.updated" should have been raised
 
   Scenario: Successfully revert the status of a product (enable)
     Given I am on the products grid
