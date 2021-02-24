@@ -1,6 +1,6 @@
-import React, {Ref, ReactNode} from 'react';
+import React, {ReactNode} from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColor, getFontSize} from 'theme';
+import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 
 const ListContainer = styled.div`
   display: flex;
@@ -10,7 +10,10 @@ const ListContainer = styled.div`
 const Row = styled.div`
   display: flex;
   gap: 10px;
-  border-bottom: 1px solid ${getColor('grey', 60)};
+
+  &:not(:last-child) {
+    border-bottom: 1px solid ${getColor('grey', 60)};
+  }
 `;
 const CellContainer = styled.div<{width: 'auto' | number; rowTitle: boolean} & AkeneoThemedProps>`
   min-height: 54px;
@@ -44,21 +47,17 @@ const CellAligner = styled.div`
   height: 40px;
 `;
 
-const Cell = ({
-  title,
-  width,
-  rowTitle,
-  extensible,
-  children,
-}: {
+type CellProps = {
   width: 'auto' | number;
-  rowTitle: true | undefined;
-  extensible: true | undefined;
-} & React.HTMLAttributes<HTMLDivElement>) => {
+  rowTitle?: true | undefined;
+  extensible?: true | undefined;
+} & React.HTMLAttributes<HTMLDivElement>;
+
+const Cell = ({title, width, rowTitle, extensible, children, ...rest}: CellProps) => {
   title = undefined === title && typeof children === 'string' ? children : title;
 
   return (
-    <CellContainer width={width} rowTitle={rowTitle === true} title={title}>
+    <CellContainer width={width} rowTitle={rowTitle === true} title={title} {...rest}>
       {extensible ? children : <CellAligner>{children}</CellAligner>}
     </CellContainer>
   );
