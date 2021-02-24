@@ -245,7 +245,9 @@ class Client
 
         $response = $this->client->search($params);
         while (isset($response['hits']['hits']) && count($response['hits']['hits']) > 0) {
-            yield $response;
+            foreach($response['hits']['hits'] as $hit) {
+                yield $hit['_source'];
+            }
 
             $response = $this->client->scroll([
                 'body' => [

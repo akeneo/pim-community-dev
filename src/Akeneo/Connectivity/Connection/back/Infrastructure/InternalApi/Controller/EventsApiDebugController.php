@@ -27,29 +27,56 @@ class EventsApiDebugController
     {
         $connectionCode = $request->query->get('connection_code');
 
-        $results = $this->elasticsearchClient->scroll([
-            'query' => [
-                'match_all' => new \stdClass()
-            ]
-        ], 1000);
+        $results = $this->elasticsearchClient->scroll(
+            [
+                'query' => [
+                    'match_all' => new \stdClass(),
+                ],
+            ],
+            1000
+        );
 
         $disposition = HeaderUtils::makeDisposition(
             HeaderUtils::DISPOSITION_ATTACHMENT,
-            'logs.txt'
+            sprintf('events_api_logs_%s.txt', date('Ymd_His'))
         );
 
         $response = new StreamedResponse();
         $response->headers->set('Content-Type', 'text/plain');
         $response->headers->set('Content-Disposition', $disposition);
 
-        $response->setCallback(function () use ($results) {
-            foreach ($results as $result) {
-                foreach ($result['hits']['hits'] as $hit) {
-                    echo json_encode($hit['_source']);
+        $response->setCallback(
+            function () use ($results) {
+                foreach ($results as $result) {
+                    foreach ($result['hits']['hits'] as $hit) {
+
+                        /**
+                         * @var array{
+                         *  timestamp: int,
+                         *  level: string,
+                         *  message: string,
+                         *  connection_code: ?string,
+                         *  context: array
+                         * } $log
+                         */
+                        $log = $hit['_source'];
+
+                        echo sprintf(
+                            '%s %s %s %s',
+                            \DateTime::createFromFormat(
+                                'U',
+                                (string)$log['timestamp'],
+                                new \DateTimeZone('UTC')
+                            )->format('Y/m/d H:i:s'),
+                            strtoupper($log['level']),
+                            $log['message'],
+                            json_encode($log['context'])
+                        );
+                    }
+                    flush();
                 }
-                flush();
             }
-        });
+        );
 
         return $response;
     }

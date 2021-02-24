@@ -37,4 +37,4 @@ services:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger
         arguments:
             - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
-            - '@akeneo_connectivity.connection.system_clock'
+            - '@akeneo_connectivity.connection.clock'
