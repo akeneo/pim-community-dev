@@ -39,34 +39,23 @@ class GetEventSubscriptionLogsQuery implements GetEventSubscriptionLogsQueryInte
                 'sort' => [['timestamp' => ['order' => 'ASC']]],
                 'query' => [
                     'bool' => [
-                        'must' => [
-                            [
-                                'bool' => [
-                                    'should' => [
-                                        ['term' => ['connection_code' => $connectionCode]],
-                                        ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
-                                    ],
-                                ],
-                            ],
-                            [
-                                'bool' => [
-                                    'should' => [
-                                        ['bool' => [
-                                            'must' => [
-                                                ['terms' => ['level' => ['info', 'notice']]],
-                                                ['terms' => ['_id' => $lastNoticeAndInfoIdentifiers]],
-                                            ]
-                                        ]],
-                                        ['bool' => [
-                                                'must' => [
-                                                    ['terms' => ['level' => ['error', 'warning']]],
-                                                    ['range' => ['timestamp' => ['gte' => $nowTimestamp - self::MAX_LIFETIME_OF_WARNING_AND_ERROR_LOGS]]],
-                                                ]
-                                            ]
-                                        ],
-                                    ]
-                                ],
-                            ],
+                        'should' => [
+                            ['bool' => ['must' => [
+                                ['terms' => ['level' => ['info', 'notice']]],
+                                ['terms' => ['_id' => $lastNoticeAndInfoIdentifiers]],
+                                ['bool' => ['should' => [
+                                    ['term' => ['connection_code' => $connectionCode]],
+                                    ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
+                                ]]],
+                            ]]],
+                            ['bool' => ['must' => [
+                                ['terms' => ['level' => ['error', 'warning']]],
+                                ['range' => ['timestamp' => ['gte' => $nowTimestamp - self::MAX_LIFETIME_OF_WARNING_AND_ERROR_LOGS]]],
+                                ['bool' => ['should' => [
+                                    ['term' => ['connection_code' => $connectionCode]],
+                                    ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
+                                ]]],
+                            ]]],
                         ],
                     ],
                 ],
