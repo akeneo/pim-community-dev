@@ -140,7 +140,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
                 $this->updateProcessedItems($batchCount);
                 $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
                 $batchCount = 0;
-                if ($this->jobStopper->isStopping($stepExecution)) {
+                if (null !== $this->jobStopper && $this->jobStopper->isStopping($stepExecution)) {
                     $this->jobStopper->stop($stepExecution);
 
                     break;
@@ -157,7 +157,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
         }
 
-        if ($this->jobStopper->isStopping($stepExecution)) {
+        if (null !== $this->jobStopper && $this->jobStopper->isStopping($stepExecution)) {
             $this->jobStopper->stop($stepExecution);
         }
 

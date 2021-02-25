@@ -43,7 +43,7 @@ const IncompleteBadge = styled.div`
   margin-right: 4px;
 `;
 
-type FieldChild = ReactElement<InputProps<unknown>> | ReactElement<HelperProps> | FieldChild[];
+type FieldChild = ReactElement<InputProps<unknown>> | ReactElement<HelperProps> | FieldChild[] | false | null;
 
 type FieldProps = {
   /**
