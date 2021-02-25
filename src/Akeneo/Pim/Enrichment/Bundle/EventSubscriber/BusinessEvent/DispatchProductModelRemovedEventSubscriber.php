@@ -26,6 +26,7 @@ final class DispatchProductModelRemovedEventSubscriber implements EventSubscribe
     private MessageBusInterface $messageBus;
     private int $maxBulkSize;
     private LoggerInterface $logger;
+    private LoggerInterface $loggerBusinessEvent;
 
     /** @var array<ProductModelRemoved> */
     private array $events = [];
@@ -34,19 +35,22 @@ final class DispatchProductModelRemovedEventSubscriber implements EventSubscribe
         Security $security,
         MessageBusInterface $messageBus,
         int $maxBulkSize,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        LoggerInterface $loggerBusinessEvent
+
     ) {
         $this->security = $security;
         $this->messageBus = $messageBus;
         $this->maxBulkSize = $maxBulkSize;
         $this->logger = $logger;
+        $this->loggerBusinessEvent = $loggerBusinessEvent;
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::POST_REMOVE => 'createAndDispatchProductModelEvents',
-            StorageEvents::POST_SAVE_ALL => 'dispatchBufferedProductModelEvents',
+            StorageEvents::POST_REMOVE_ALL => 'dispatchBufferedProductModelEvents',
         ];
     }
 
@@ -85,6 +89,24 @@ final class DispatchProductModelRemovedEventSubscriber implements EventSubscribe
 
         try {
             $this->messageBus->dispatch(new BulkEvent($this->events));
+            $this->loggerBusinessEvent->info(
+                json_encode(
+                    [
+                        'type' => 'business_event.dispatch',
+                        'event_count' => count($this->events),
+                        'events' => array_map(function ($event) {
+                            return [
+                                'name' => $event->getName(),
+                                'uuid' => $event->getUuid(),
+                                'author' => $event->getAuthor()->name(),
+                                'author_type' => $event->getAuthor()->type(),
+                                'timestamp' => $event->getTimestamp(),
+                            ];
+                        }, $this->events)
+                    ],
+                    JSON_THROW_ON_ERROR
+                )
+            );
         } catch (TransportException $e) {
             $this->logger->critical($e->getMessage());
         }

@@ -4,7 +4,7 @@ import {toMatchImageSnapshot} from 'jest-image-snapshot';
 
 expect.extend({toMatchImageSnapshot});
 
-const EXCLUDE = ['Components/Modal'];
+const EXCLUDE = ['Components/Modal', 'Components/Inputs/Select input'];
 
 type StoriesDump = {
   stories: {
@@ -32,7 +32,7 @@ describe('Visual tests', () => {
     const image = await root.screenshot();
 
     expect(image).toMatchImageSnapshot({
-      failureThreshold: 1,
+      failureThreshold: 0.5,
       failureThresholdType: 'percent',
     });
   });

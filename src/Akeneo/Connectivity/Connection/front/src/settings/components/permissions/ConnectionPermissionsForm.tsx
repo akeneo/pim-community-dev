@@ -1,11 +1,12 @@
 import {useFormikContext} from 'formik';
 import React, {FC} from 'react';
 import styled from 'styled-components';
-import {HelperLink, Section, SmallHelper} from '../../../common';
+import {HelperLink, SmallHelper} from '../../../common';
 import {Translate} from '../../../shared/translate';
 import {FormValues} from '../../pages/EditConnection';
 import {UserGroupSelect} from './UserGroupSelect';
 import {UserRoleSelect} from './UserRoleSelect';
+import {SectionTitle} from 'akeneo-design-system';
 
 type Props = {
     label: string;
@@ -16,7 +17,11 @@ export const ConnectionPermissionsForm: FC<Props> = ({label}: Props) => {
 
     return (
         <>
-            <Section title={<Translate id='akeneo_connectivity.connection.edit_connection.permissions.title' />} />
+            <SectionTitle>
+                <SectionTitle.Title>
+                    <Translate id='akeneo_connectivity.connection.edit_connection.permissions.title' />
+                </SectionTitle.Title>
+            </SectionTitle>
             <SmallHelper>
                 <Translate
                     id='akeneo_connectivity.connection.edit_connection.permissions.helper.message'

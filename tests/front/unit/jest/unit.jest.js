@@ -34,10 +34,11 @@ const unitConfig = {
     '^styled-components$': '<rootDir>/node_modules/styled-components',
     "\\.(jpg|ico|jpeg|png|gif|svg)$": `${__dirname}/fileMock.js`,
   },
-  testRegex: '(tests/front/unit)(.*)(unit).(jsx?|tsx?)$',
+  testRegex: '(.*)\\.unit\\.(jsx?|tsx?)$',
   testPathIgnorePatterns: [
-      '/node_modules/',
-      '<rootDir>/src/Akeneo/Connectivity/',
+    '/node_modules/',
+    '/akeneo-design-system/',
+    '<rootDir>/src/Akeneo/Connectivity/',
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleDirectories: ['node_modules', `<rootDir>/public/bundles/`],
@@ -63,6 +64,7 @@ const unitConfig = {
       lines: 100,
     },
   },
+  setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
   setupFiles: [`${__dirname}/enzyme.js`, `${__dirname}/mocks.js`, `${__dirname}/fetchMock.ts`],
 };
 

@@ -7,6 +7,7 @@ framework:
                 options:
                     project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
                     topic_name: '%env(PUBSUB_TOPIC_BUSINESS_EVENT)%'
+                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_BUSINESS_EVENT)%'
                     auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
                 retry_strategy:
                     max_retries: 0

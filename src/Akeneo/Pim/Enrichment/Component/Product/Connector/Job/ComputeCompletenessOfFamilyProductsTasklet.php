@@ -31,7 +31,7 @@ use Webmozart\Assert\Assert;
  */
 class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, TrackableTaskletInterface
 {
-    private const BATCH_SIZE = 1000;
+    private const BATCH_SIZE = 100;
 
     private StepExecution $stepExecution;
     private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory;
@@ -94,6 +94,7 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, Tr
 
             if (count($productsToCompute) >= self::BATCH_SIZE) {
                 $this->computeCompleteness($productsToCompute);
+                $this->cacheClearer->clear();
                 $productsToCompute = [];
             }
         }

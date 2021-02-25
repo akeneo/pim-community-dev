@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateProductEndToEnd extends AbstractProductTestCase
 {
+    use AssertEventCountTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -81,6 +85,8 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_creation_family');
+
+        $this->assertEventCount(1, ProductCreated::class);
     }
 
     public function testProductCreationWithGroups()

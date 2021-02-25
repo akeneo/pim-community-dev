@@ -46,7 +46,7 @@ class JobExecutionManager
     public function resolveJobExecutionStatus(JobExecution $jobExecution): JobExecution
     {
         if (BatchStatus::STARTING === $jobExecution->getStatus()->getValue() ||
-            !$jobExecution->getExitStatus()->isRunning()) {
+            (!$jobExecution->getExitStatus()->isRunning() && !$jobExecution->isStopping())) {
             return $jobExecution;
         }
 

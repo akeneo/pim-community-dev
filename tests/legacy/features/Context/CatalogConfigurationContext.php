@@ -3,11 +3,9 @@
 namespace Context;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoader;
 use Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoaderInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Pim\Behat\Context\PimContext;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A context for initializing catalog configuration

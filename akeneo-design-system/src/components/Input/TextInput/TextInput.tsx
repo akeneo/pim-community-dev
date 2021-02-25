@@ -9,6 +9,7 @@ const TextInputContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedProps>`
@@ -16,6 +17,7 @@ const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedP
   height: 40px;
   border: 1px solid ${({invalid}) => (invalid ? getColor('red', 100) : getColor('grey', 80))};
   border-radius: 2px;
+  box-sizing: border-box;
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
   color: ${getColor('grey', 140)};
   font-size: ${getFontSize('default')};

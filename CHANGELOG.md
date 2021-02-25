@@ -20,6 +20,9 @@
 - PIM-9670: Fix attribute filter "Group" issue when several attribute groups have the same label
 - PIM-9664: Display Ziggy as asset image when the preview cannot be generated
 - PIM-9681: Fix criteria selector closing behavior on the product grid filters
+- PIM-9686: Fix memory leak during "set_attribute_requirements" job
+- PIM-9690: Fix job remaining in stopping status forever
+- PIM-9700: Add batch-size option in index products command and index product-models command
 
 ## New features
 
