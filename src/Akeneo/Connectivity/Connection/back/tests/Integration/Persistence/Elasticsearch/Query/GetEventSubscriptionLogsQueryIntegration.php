@@ -31,7 +31,6 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
         $this->elasticsearchClient = $this->get('akeneo_connectivity.client.events_api_debug');
         $this->clock = $this->get('akeneo_connectivity.connection.clock');
 
-        // timestamp = 1612326611
         $this->clock->setNow(new \DateTimeImmutable('2021-03-02T04:30:11'));
     }
 
