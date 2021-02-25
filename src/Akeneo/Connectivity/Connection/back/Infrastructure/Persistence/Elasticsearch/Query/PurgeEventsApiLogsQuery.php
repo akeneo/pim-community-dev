@@ -43,7 +43,8 @@ class PurgeEventsApiLogsQuery
         return [
             'query' => [
                 'bool' => [
-                    'must_not' => ['terms' => ['_id' => $idsToKeep]]
+                    'must_not' => ['terms' => ['_id' => $idsToKeep]],
+                    'must' => ['terms' => ['level' => ['notice', 'info']]],
                 ]
             ]
         ];

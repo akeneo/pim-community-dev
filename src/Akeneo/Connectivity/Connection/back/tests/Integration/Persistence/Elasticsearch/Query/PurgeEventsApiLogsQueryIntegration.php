@@ -20,8 +20,8 @@ class PurgeEventsApiLogsQueryIntegration extends TestCase
     public function test_it_purges_infos_over_the_given_number()
     {
         $interval = new \DateInterval('PT1H');
-        // We generate an error each hour and we iterate 10 times
-        $this->generateLogs($interval, 10);
+        // We generate logs for each hour and we iterate 10 times
+        $this->generateLogs($interval, 10, array('info', 'notice', 'warn', 'error'));
 
         // We want to keep only 8 infos & notices
         $this->purgeQuery->execute(8, 10);
@@ -33,6 +33,26 @@ class PurgeEventsApiLogsQueryIntegration extends TestCase
 
         Assert::assertEquals(4, $infoResults['hits']['total']['value']);
         Assert::assertEquals(4, $noticeResults['hits']['total']['value']);
+        Assert::assertEquals(10, $errorResults['hits']['total']['value']);
+        Assert::assertEquals(10, $warnResults['hits']['total']['value']);
+    }
+
+    public function test_it_purges_nothing_if_no_notice_or_info()
+    {
+        $interval = new \DateInterval('PT1H');
+        // We generate logs for each hour and we iterate 10 times
+        $this->generateLogs($interval, 10, array('warn', 'error'));
+
+        // We want to keep only 8 infos & notices
+        $this->purgeQuery->execute(8, 10);
+        $this->esClient->refreshIndex();
+        $infoResults = $this->findDocumentsByLevel('info');
+        $noticeResults = $this->findDocumentsByLevel('notice');
+        $errorResults = $this->findDocumentsByLevel('error');
+        $warnResults = $this->findDocumentsByLevel('warn');
+
+        Assert::assertEquals(0, $infoResults['hits']['total']['value']);
+        Assert::assertEquals(0, $noticeResults['hits']['total']['value']);
         Assert::assertEquals(10, $errorResults['hits']['total']['value']);
         Assert::assertEquals(10, $warnResults['hits']['total']['value']);
     }
@@ -80,20 +100,20 @@ class PurgeEventsApiLogsQueryIntegration extends TestCase
             $documents[] = [
                 'content' => $content,
                 'level' => $level,
-                'timestamp' => $datetime->timestamp,
+                'timestamp' => $datetime->getTimestamp(),
             ];
             $datetime->sub($interval);
         }
         return $documents;
     }
 
-    private function generateLogs(\DateInterval $interval, int $number): void
+    private function generateLogs(\DateInterval $interval, int $number, array $levels): void
     {
-        foreach (array( 'info', 'notice', 'warn', 'error') as $level) {
+        foreach ($levels as $level) {
             $documents = $this->buildDocument($interval, $level, $number);
 
             $this->esClient->bulkIndexes($documents);
-            $this->esClient->refreshIndex();
         }
+        $this->esClient->refreshIndex();
     }
 }
