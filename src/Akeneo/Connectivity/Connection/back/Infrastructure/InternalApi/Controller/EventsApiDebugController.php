@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetEventSubscriptionLogsQueryInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -16,25 +18,26 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  */
 class EventsApiDebugController
 {
-    private Client $elasticsearchClient;
+    private GetEventSubscriptionLogsQueryInterface $getEventSubscriptionLogsQuery;
+    private SecurityFacade $securityFacade;
 
-    public function __construct(Client $elasticsearchClient)
-    {
-        $this->elasticsearchClient = $elasticsearchClient;
+    public function __construct(
+        GetEventSubscriptionLogsQueryInterface $getEventSubscriptionLogsQuery,
+        SecurityFacade $securityFacade
+    ) {
+        $this->getEventSubscriptionLogsQuery = $getEventSubscriptionLogsQuery;
+        $this->securityFacade = $securityFacade;
     }
 
     public function downloadEventSubscriptionLogs(Request $request): Response
     {
+        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
+            throw new AccessDeniedException();
+        }
+
         $connectionCode = $request->query->get('connection_code');
 
-        $results = $this->elasticsearchClient->scroll(
-            [
-                'query' => [
-                    'match_all' => new \stdClass(),
-                ],
-            ],
-            1000
-        );
+        $results = $this->getEventSubscriptionLogsQuery->execute($connectionCode);
 
         $disposition = HeaderUtils::makeDisposition(
             HeaderUtils::DISPOSITION_ATTACHMENT,

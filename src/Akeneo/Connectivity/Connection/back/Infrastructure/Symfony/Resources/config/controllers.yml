@@ -41,4 +41,5 @@ services:
         public: true
         class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\EventsApiDebugController
         arguments:
-            - '@akeneo_connectivity.client.events_api_debug'
+            - '@akeneo_connectivity.connection.persistence.query.get_event_subscription_logs_query'
+            - '@oro_security.security_facade'

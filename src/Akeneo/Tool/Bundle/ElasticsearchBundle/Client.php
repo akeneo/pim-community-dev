@@ -232,33 +232,6 @@ class Client
     }
 
     /**
-     * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/search_operations.html#_scrolling}
-     */
-    public function scroll(array $body, int $size = 50, string $scroll = '30s'): \Generator
-    {
-        $params = [
-            'scroll' => $scroll,
-            'size' => $size,
-            'index' => $this->indexName,
-            'body' => $body
-        ];
-
-        $response = $this->client->search($params);
-        while (isset($response['hits']['hits']) && count($response['hits']['hits']) > 0) {
-            foreach($response['hits']['hits'] as $hit) {
-                yield $hit['_source'];
-            }
-
-            $response = $this->client->scroll([
-                'body' => [
-                    'scroll_id' => $response['_scroll_id'],
-                    'scroll'    => $scroll
-                ]
-            ]);
-        }
-    }
-
-    /**
      * @param array  $body
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html}
