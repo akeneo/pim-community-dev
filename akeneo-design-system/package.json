@@ -39,6 +39,7 @@
     "@testing-library/react": "^10.4.8",
     "@testing-library/react-hooks": "^3.4.2",
     "@testing-library/user-event": "^12.1.9",
+    "@types/draft-js": "^0.10.44",
     "@types/draftjs-to-html": "^0.8.0",
     "@types/expect-puppeteer": "^4.4.3",
     "@types/jest": "^26.0.14",
