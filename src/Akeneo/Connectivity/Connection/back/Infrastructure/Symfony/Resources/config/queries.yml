@@ -94,3 +94,4 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\GetEventSubscriptionLogsQuery
         arguments:
             - '@akeneo_connectivity.client.events_api_debug'
+            - '@akeneo_connectivity.connection.clock'

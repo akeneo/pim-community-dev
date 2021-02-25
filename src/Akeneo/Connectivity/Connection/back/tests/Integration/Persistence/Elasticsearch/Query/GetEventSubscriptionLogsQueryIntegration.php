@@ -53,9 +53,9 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
         );
 
         $result = $this->getEventSubscriptionLogsQuery->execute('a_connection_code');
-        dump(iterator_to_array($result));
+//        dump(iterator_to_array($result));
 
-        Assert::assertEquals(iterator_count($result), 100);
+        Assert::assertEquals(100, iterator_count($result));
     }
 
     public function test_it_returns_the_last_warning_and_error_logs()
@@ -100,7 +100,7 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
 
         $result = $this->getEventSubscriptionLogsQuery->execute('whatever');
 
-        Assert::assertEquals(iterator_count($result), 2);
+        Assert::assertEquals(2, iterator_count($result));
     }
 
     public function test_it_returns_logs_ordered_by_date_asc()
@@ -110,22 +110,36 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
         $this->insertLogs(
             [
                 [
-                    'timestamp' => $timestampNow - 10,
+                    'timestamp' => $timestampNow - 5,
+                    'level' => 'notice',
+                    'message' => 'Foo bar',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestampNow - 1,
                     'level' => 'warning',
                     'message' => 'Foo bar',
                     'connection_code' => 'a_connection_code',
                     'context' => [],
                 ],
                 [
-                    'timestamp' => $timestampNow - 30,
+                    'timestamp' => $timestampNow - 3,
                     'level' => 'warning',
                     'message' => 'Foo bar',
                     'connection_code' => 'a_connection_code',
                     'context' => [],
                 ],
                 [
-                    'timestamp' => $timestampNow - 20,
+                    'timestamp' => $timestampNow - 4,
                     'level' => 'error',
+                    'message' => 'Foo bar',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestampNow - 2,
+                    'level' => 'notice',
                     'message' => 'Foo bar',
                     'connection_code' => 'a_connection_code',
                     'context' => [],
@@ -135,9 +149,11 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
 
         $logs = iterator_to_array($this->getEventSubscriptionLogsQuery->execute('a_connection_code'));
 
-        Assert::assertEquals($logs[0]['timestamp'], $timestampNow - 30);
-        Assert::assertEquals($logs[1]['timestamp'], $timestampNow - 20);
-        Assert::assertEquals($logs[2]['timestamp'], $timestampNow - 10);
+        Assert::assertEquals($timestampNow - 5, $logs[0]['timestamp']);
+        Assert::assertEquals($timestampNow - 4, $logs[1]['timestamp']);
+        Assert::assertEquals($timestampNow - 3, $logs[2]['timestamp']);
+        Assert::assertEquals($timestampNow - 2, $logs[3]['timestamp']);
+        Assert::assertEquals($timestampNow - 1, $logs[4]['timestamp']);
     }
 
     public function test_it_returns_logs_only_for_the_specified_connection()
@@ -172,7 +188,7 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
 
         $logs = iterator_to_array($this->getEventSubscriptionLogsQuery->execute('a_connection_code'));
 
-        Assert::assertEquals(count($logs), 2);
+        Assert::assertEquals(2, count($logs));
 
         foreach ($logs as $log) {
             Assert::assertContains($log['connection_code'], ['a_connection_code', null]);
