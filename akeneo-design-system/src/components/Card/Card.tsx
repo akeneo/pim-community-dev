@@ -136,7 +136,7 @@ const BadgeContainer = styled.div<{stacked: boolean} & AkeneoThemedProps>`
   top: 10px;
   right: ${({stacked}) => (stacked ? '20px' : '10px')};
 `;
-
+BadgeContainer.displayName = 'BadgeContainer';
 BadgeContainer.defaultProps = {
   stacked: false,
 };
@@ -203,7 +203,7 @@ const Card = ({
     if (typeof child === 'string') {
       texts.push(child);
     } else if (isValidElement(child)) {
-      let props = {};
+      let props: {stacked?: boolean} & React.Attributes = {key: child.key};
       if (child.type === BadgeContainer) {
         props = {
           ...props,
