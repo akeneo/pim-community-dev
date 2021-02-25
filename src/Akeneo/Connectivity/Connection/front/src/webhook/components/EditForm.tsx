@@ -32,7 +32,8 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
         checking: false,
     });
 
-    const handleTestUrl = async () => {
+    const handleTestUrl = async (e: Event) => {
+        e.preventDefault();
         clearError('url');
         setTestUrl({checking: true});
 
