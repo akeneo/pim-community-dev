@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {JsonEditor as Editor} from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
-import {AssetsIllustration, Information, Link, Button} from 'akeneo-design-system';
+import {Link, Button, Helper, SectionTitle} from 'akeneo-design-system';
 import __ from 'akeneoassetmanager/tools/translator';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
@@ -21,6 +21,7 @@ import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error'
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
 import {ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import schema from 'akeneoassetmanager/infrastructure/model/asset-family/transformations.schema.json';
+import {Subsection} from 'akeneoassetmanager/application/component/app/subsection';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
 const securityContext = require('pim/security-context');
@@ -95,7 +96,7 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
     const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
 
     return (
-      <React.Fragment>
+      <>
         <Header
           label={__('pim_asset_manager.asset_family.tab.transformations')}
           image={null}
@@ -117,29 +118,27 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
           isDirty={form.state.isDirty}
           breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
         />
-        <Information
-          illustration={<AssetsIllustration />}
-          title={`👋 ${__('pim_asset_manager.asset_family.transformations.help.title')}`}
-        >
-          <p>{__('pim_asset_manager.asset_family.transformations.help.description')}</p>
-          <Link href="https://help.akeneo.com/pim/v4/articles/assets-transformation.html" target="_blank">
-            {__('pim_asset_manager.asset_family.transformations.help.link')}
-          </Link>
-        </Information>
-        <div className="AknSubsection">
-          <header className="AknSubsection-title">
-            <span className="group-label">{__('pim_asset_manager.asset_family.transformations.subsection')}</span>
-          </header>
-          <div className="AknFormContainer AknFormContainer--wide">
-            <AssetFamilyTransformationEditor
-              transformations={assetFamily.transformations}
-              errors={errors}
-              onAssetFamilyTransformationsChange={events.onAssetFamilyTransformationsUpdated}
-              editMode={rights.assetFamily.edit}
-            />
+        <Subsection>
+          <div>
+            <SectionTitle>
+              <SectionTitle.Title>{__('pim_asset_manager.asset_family.transformations.subsection')}</SectionTitle.Title>
+            </SectionTitle>
+            <Helper>
+              {__('pim_asset_manager.asset_family.transformations.help.description')}
+              <Link href="https://help.akeneo.com/pim/serenity/articles/assets-transformation.html" target="_blank">
+                &nbsp;
+                {__('pim_asset_manager.asset_family.transformations.help.link')}
+              </Link>
+            </Helper>
           </div>
-        </div>
-      </React.Fragment>
+          <AssetFamilyTransformationEditor
+            transformations={assetFamily.transformations}
+            errors={errors}
+            onAssetFamilyTransformationsChange={events.onAssetFamilyTransformationsUpdated}
+            editMode={rights.assetFamily.edit}
+          />
+        </Subsection>
+      </>
     );
   }
 }

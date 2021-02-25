@@ -1,19 +1,18 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
+import styled from 'styled-components';
+import {getColor, Key, SectionTitle} from 'akeneo-design-system';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {assetValueUpdated, saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset/edit/form';
 import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 import renderValues from 'akeneoassetmanager/application/component/asset/edit/enrich/value';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
-import {Key} from 'akeneo-design-system';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
-import styled from 'styled-components';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoassetmanager/tools/translator';
 import LinkedProducts from 'akeneoassetmanager/application/component/asset/edit/linked-products';
-import {Subsection, SubsectionHeader} from 'akeneoassetmanager/application/component/app/subsection';
+import {Subsection} from 'akeneoassetmanager/application/component/app/subsection';
 import {MainMediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/main-media-preview';
 
 const securityContext = require('pim/security-context');
@@ -31,7 +30,7 @@ const LeftColumn = styled.div`
 `;
 
 const Separator = styled.div`
-  background: ${(props: ThemedProps<void>) => props.theme.color.purple100};
+  background: ${getColor('brand', 100)};
   flex-shrink: 0;
   margin: 0 40px;
   width: 1px;
@@ -88,10 +87,10 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
       <Container>
         <LeftColumn>
           <Subsection>
-            <SubsectionHeader top={192}>
-              <span>{__('pim_asset_manager.asset.enrich.edit_subsection')}</span>
-            </SubsectionHeader>
-            <div className="AknFormContainer AknFormContainer--wide AknFormContainer--withPadding">
+            <SectionTitle sticky={192}>
+              <SectionTitle.Title>{__('pim_asset_manager.asset.enrich.edit_subsection')}</SectionTitle.Title>
+            </SectionTitle>
+            <div>
               {renderValues(
                 asset,
                 denormalizeChannelReference(this.props.context.channel),

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
+import {AkeneoThemedProps, AssetsIllustration, getColor, Helper, useBooleanState} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {Pill} from 'akeneoassetmanager/application/component/app/pill';
 import {Label} from 'akeneoassetmanager/application/component/app/label';
-import __ from 'akeneoassetmanager/tools/translator';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {Thumbnail} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/thumbnail';
 import {AssetPreview} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview';
@@ -24,7 +25,6 @@ import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
-import {AkeneoThemedProps, AssetsIllustration, getColor, Helper, Key, useShortcut} from 'akeneo-design-system';
 
 const AssetCard = styled.div`
   display: flex;
@@ -77,7 +77,7 @@ const useLoadAssets = (
   assetFamilyIdentifier: AssetFamilyIdentifier,
   context: ContextState
 ) => {
-  const [assets, setAssets] = React.useState<ListAsset[]>([]);
+  const [assets, setAssets] = useState<ListAsset[]>([]);
   const hasChangeInCollection = (assetCodes: AssetCode[], assets: ListAsset[]) => {
     const collectionSizesAreTheSame = assets.length === assetCodes.length;
     const fetchedAssetCollectionIsEmpty = assets.length === 0;
@@ -88,7 +88,7 @@ const useLoadAssets = (
     return !(collectionSizesAreTheSame && (fetchedAssetCollectionIsEmpty || arrayCodesAreIdentical));
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (assetCodes.length === 0) {
       setAssets([]);
       return;
@@ -107,7 +107,7 @@ const assetPreviewDataProvider: AssetFamilyDataProvider = {
   assetFamilyFetcher,
 };
 
-export const AssetCollection = ({
+const AssetCollection = ({
   productIdentifier,
   productAttribute,
   assetCodes,
@@ -115,21 +115,20 @@ export const AssetCollection = ({
   context,
   onChange,
 }: AssetCollectionProps) => {
+  const translate = useTranslate();
   const assetFamilyIdentifier = productAttribute.referenceDataName;
-  const [isPreviewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false);
-  const [initialPreviewAssetCode, setInitialPreviewAssetCode] = React.useState<AssetCode | null>(null);
+  const [isPreviewModalOpen, openPreviewModal, closePreviewModal] = useBooleanState(false);
+  const [initialPreviewAssetCode, setInitialPreviewAssetCode] = useState<AssetCode | null>(null);
   const {assets, setAssets} = useLoadAssets(assetCodes, assetFamilyIdentifier, context);
-
-  useShortcut(Key.Escape, () => setPreviewModalOpen(false));
 
   return (
     <Container>
       {/* Collection is not empty and is loaded (we also need to check assetCodes because in this case we don't update the fetched assets */}
       {0 !== assetCodes.length ? (
-        <React.Fragment>
+        <>
           {!canAddAssetToCollection(assetCodes) && (
             <Helper>
-              {__('pim_asset_manager.asset_collection.notification.limit', {limit: ASSET_COLLECTION_LIMIT})}
+              {translate('pim_asset_manager.asset_collection.notification.limit', {limit: ASSET_COLLECTION_LIMIT})}
             </Helper>
           )}
           {assets.map((asset: ListAsset) => (
@@ -151,37 +150,39 @@ export const AssetCollection = ({
                 }}
                 onClick={() => {
                   setInitialPreviewAssetCode(asset.code);
-                  setPreviewModalOpen(true);
+                  openPreviewModal();
                 }}
               />
               <AssetTitle>
                 <Label readOnly={readonly}>{getAssetLabel(asset, context.locale)}</Label>
-                {!isComplete(asset) ? <BaselinePill /> : null}
+                {!isComplete(asset) && <BaselinePill />}
               </AssetTitle>
             </AssetCard>
           ))}
-          {isPreviewModalOpen && null !== initialPreviewAssetCode ? (
+          {isPreviewModalOpen && null !== initialPreviewAssetCode && (
             <AssetPreview
               productIdentifier={productIdentifier}
               productAttribute={productAttribute}
               assetCollection={assets}
               initialAssetCode={initialPreviewAssetCode}
               context={context}
-              onClose={() => setPreviewModalOpen(false)}
+              onClose={closePreviewModal}
               assetFamilyIdentifier={assetFamilyIdentifier}
               dataProvider={assetPreviewDataProvider}
             />
-          ) : null}
-        </React.Fragment>
+          )}
+        </>
       ) : (
         <EmptyAssetCollection
-          title={__('pim_asset_manager.asset_collection.no_asset_in_collection')}
+          title={translate('pim_asset_manager.asset_collection.no_asset_in_collection')}
           readonly={readonly}
         >
           <AssetsIllustration size={80} />
-          <Label>{__('pim_asset_manager.asset_collection.no_asset_in_collection')}</Label>
+          <Label>{translate('pim_asset_manager.asset_collection.no_asset_in_collection')}</Label>
         </EmptyAssetCollection>
       )}
     </Container>
   );
 };
+
+export {AssetCollection};

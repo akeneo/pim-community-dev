@@ -45,7 +45,7 @@ describe('Tests fullscreen preview component', () => {
     );
 
     fireEvent.click(screen.getByTitle('anchor'));
-    fireEvent.click(screen.getByTitle('pim_asset_manager.close'));
+    fireEvent.click(screen.getByTitle('pim_common.close'));
 
     expect(screen.queryByText('nice label')).not.toBeInTheDocument();
   });
