@@ -27,7 +27,7 @@ services:
     pim_user.event_subscriber.remove_role:
         class: '%pim_user.event_subscriber.remove_role.class%'
         arguments:
-            - '@pim_user.query.is_there_user_without_role'
+            - '@pim_user.query.get_user_count'
         tags:
             - { name: kernel.event_subscriber }
 
