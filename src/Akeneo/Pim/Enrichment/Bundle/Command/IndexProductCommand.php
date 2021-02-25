@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class IndexProductCommand extends Command
 {
-    private const BATCH_SIZE = 1000;
+    private const DEFAULT_BATCH_SIZE = 1000;
 
     private const ERROR_CODE_USAGE = 1;
 
@@ -68,6 +68,13 @@ class IndexProductCommand extends Command
                 InputOption::VALUE_NONE,
                 'Index all existing products into Elasticsearch'
             )
+            ->addOption(
+                'batch-size',
+                false,
+                InputOption::VALUE_REQUIRED,
+                'Number of products to index per batch',
+                self::DEFAULT_BATCH_SIZE
+            )
             ->setDescription('Index all or some products into Elasticsearch');
     }
 
@@ -78,8 +85,10 @@ class IndexProductCommand extends Command
     {
         $this->checkIndexExists();
 
+        $batchSize = (int) $input->getOption('batch-size') ?: self::DEFAULT_BATCH_SIZE;
+
         if (true === $input->getOption('all')) {
-            $chunkedProductIdentifiers = $this->getAllProductIdentifiers();
+            $chunkedProductIdentifiers = $this->getAllProductIdentifiers($batchSize);
             $productCount = $this->getTotalNumberOfProducts();
         } elseif (!empty($input->getArgument('identifiers'))) {
             $requestedIdentifiers = $input->getArgument('identifiers');
@@ -93,7 +102,7 @@ class IndexProductCommand extends Command
                     )
                 );
             }
-            $chunkedProductIdentifiers = array_chunk($existingIdentifiers, self::BATCH_SIZE);
+            $chunkedProductIdentifiers = array_chunk($existingIdentifiers, $batchSize);
             $productCount = count($existingIdentifiers);
         } else {
             $output->writeln(
@@ -126,7 +135,7 @@ class IndexProductCommand extends Command
         return $indexedProductCount;
     }
 
-    private function getAllProductIdentifiers(): iterable
+    private function getAllProductIdentifiers(int $batchSize): iterable
     {
         $formerId = 0;
         $sql = <<< SQL
@@ -141,7 +150,7 @@ SQL;
                 $sql,
                 [
                     'formerId' => $formerId,
-                    'limit' => self::BATCH_SIZE,
+                    'limit' => $batchSize,
                 ],
                 [
                     'formerId' => \PDO::PARAM_INT,
