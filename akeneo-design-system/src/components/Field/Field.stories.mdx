@@ -112,3 +112,22 @@ The Field component is used to display information around an Input component.
     }}
   </Story>
 </Canvas>
+
+## Variation on fullWidth
+
+<Canvas>
+  <Story name="Full width">
+    {args => {
+      return (
+        <Field {...args} fullWidth>
+          <TextInput
+            placeholder="This field takes the full width of the parent container"
+            value=""
+            onChange={() => {}}
+            characterLeftLabel="250 characters left"
+          />
+        </Field>
+      );
+    }}
+  </Story>
+</Canvas>

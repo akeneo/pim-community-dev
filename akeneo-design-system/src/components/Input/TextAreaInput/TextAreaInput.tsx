@@ -20,7 +20,6 @@ const CommonStyle = css<{readOnly: boolean; invalid: boolean} & AkeneoThemedProp
   font-size: ${getFontSize('default')};
   line-height: 20px;
   width: 100%;
-  height: 200px;
   box-sizing: border-box;
   padding: 10px 30px 10px 15px;
   font-family: inherit;
@@ -34,11 +33,17 @@ const CommonStyle = css<{readOnly: boolean; invalid: boolean} & AkeneoThemedProp
 
 const RichTextEditorContainer = styled.div<{readOnly: boolean; invalid: boolean} & AkeneoThemedProps>`
   ${CommonStyle}
+
+  & .rdw-editor-main {
+    min-height: 200px;
+    max-height: 400px;
+  }
 `;
 
 const Textarea = styled.textarea<{readOnly: boolean; invalid: boolean} & AkeneoThemedProps>`
   ${CommonStyle}
   resize: none;
+  height: 200px;
 
   &::placeholder {
     color: ${getColor('grey', 100)};
@@ -116,7 +121,7 @@ const TextAreaInput = React.forwardRef<HTMLInputElement, TextAreaInputProps>(
       <TextAreaInputContainer>
         {isRichText ? (
           <RichTextEditorContainer readOnly={readOnly} invalid={invalid}>
-            <RichTextEditor readOnly={readOnly} value={value} onChange={value => onChange?.(value)} />
+            <RichTextEditor readOnly={readOnly} value={value} onChange={value => onChange?.(value)} {...rest} />
           </RichTextEditorContainer>
         ) : (
           <Textarea
