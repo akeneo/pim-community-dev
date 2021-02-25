@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksCommand;
-use Akeneo\Platform\Component\EventQueue\EventInterface;
+use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -15,9 +15,9 @@ use PhpSpec\ObjectBehavior;
  */
 class SendBusinessEventToWebhooksCommandSpec extends ObjectBehavior
 {
-    public function let(EventInterface $businessEvent): void
+    public function let(BulkEventInterface $event): void
     {
-        $this->beConstructedWith($businessEvent);
+        $this->beConstructedWith($event);
     }
 
     public function it_is_initializable(): void
@@ -25,8 +25,8 @@ class SendBusinessEventToWebhooksCommandSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(SendBusinessEventToWebhooksCommand::class);
     }
 
-    public function it_returns_the_business_event($businessEvent): void
+    public function it_returns_the_business_event($event): void
     {
-        $this->event()->shouldReturn($businessEvent);
+        $this->event()->shouldReturn($event);
     }
 }
