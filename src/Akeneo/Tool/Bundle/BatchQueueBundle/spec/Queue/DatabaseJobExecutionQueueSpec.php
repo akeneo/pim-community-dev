@@ -39,9 +39,9 @@ class DatabaseJobExecutionQueueSpec extends ObjectBehavior
         $jobExecutionMessageRepository->updateJobExecutionMessage($jobExecutionMessage)->willReturn(true);
         $configuration = new JobQueueConsumerConfiguration();
 
-        $jobExecutionMessage->consumedBy('consumer_name', $configuration)->shouldBeCalled();
+        $jobExecutionMessage->consumedBy('consumer_name')->shouldBeCalled();
 
-        $this->consume('consumer_name')->shouldReturn($jobExecutionMessage);
+        $this->consume('consumer_name', $configuration)->shouldReturn($jobExecutionMessage);
     }
 
     function it_consumes_a_job_execution_message_with_whitelist_filter(
