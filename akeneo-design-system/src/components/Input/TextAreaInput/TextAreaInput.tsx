@@ -1,5 +1,5 @@
 import React, {ChangeEvent, Ref, useCallback} from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {InputProps} from '../InputProps';
 import {LockIcon} from '../../../icons';
 import {Override} from '../../../shared';
@@ -13,25 +13,32 @@ const TextAreaInputContainer = styled.div`
   width: 100%;
 `;
 
-const Textarea = styled.textarea<{readOnly: boolean; invalid: boolean} & AkeneoThemedProps>`
-  width: 100%;
-  height: 200px;
+const CommonStyle = css<{readOnly: boolean; invalid: boolean} & AkeneoThemedProps>`
   border: 1px solid ${({invalid}) => (invalid ? getColor('red', 100) : getColor('grey', 80))};
   border-radius: 2px;
-  box-sizing: border-box;
-  background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
   color: ${getColor('grey', 140)};
   font-size: ${getFontSize('default')};
   line-height: 20px;
-  padding: 10px 15px;
+  width: 100%;
+  height: 200px;
   box-sizing: border-box;
-  outline-style: none;
+  padding: 10px 30px 10px 15px;
   font-family: inherit;
-  resize: none;
+  outline-style: none;
+  background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
 
-  &:focus {
+  &:focus-within {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};
   }
+`;
+
+const RichTextEditorContainer = styled.div<{readOnly: boolean; invalid: boolean} & AkeneoThemedProps>`
+  ${CommonStyle}
+`;
+
+const Textarea = styled.textarea<{readOnly: boolean; invalid: boolean} & AkeneoThemedProps>`
+  ${CommonStyle}
+  resize: none;
 
   &::placeholder {
     color: ${getColor('grey', 100)};
@@ -86,7 +93,7 @@ type TextAreaInputProps = Override<
     /**
      * If true, the component will display a WYSIWYG editor.
      */
-    isRichTextEditor?: boolean;
+    isRichText?: boolean;
   }
 >;
 
@@ -95,7 +102,7 @@ type TextAreaInputProps = Override<
  */
 const TextAreaInput = React.forwardRef<HTMLInputElement, TextAreaInputProps>(
   (
-    {value, invalid, onChange, readOnly, characterLeftLabel, isRichTextEditor = false, ...rest}: TextAreaInputProps,
+    {value, invalid, onChange, readOnly, characterLeftLabel, isRichText = false, ...rest}: TextAreaInputProps,
     forwardedRef: Ref<HTMLInputElement>
   ) => {
     const handleChange = useCallback(
@@ -105,21 +112,25 @@ const TextAreaInput = React.forwardRef<HTMLInputElement, TextAreaInputProps>(
       [readOnly, onChange]
     );
 
-    return isRichTextEditor ? (
-      <RichTextEditor value={value} onChange={value => onChange?.(value)} />
-    ) : (
+    return (
       <TextAreaInputContainer>
-        <Textarea
-          ref={forwardedRef}
-          value={value}
-          onChange={handleChange}
-          type="text"
-          readOnly={readOnly}
-          disabled={readOnly}
-          aria-invalid={invalid}
-          invalid={invalid}
-          {...rest}
-        />
+        {isRichText ? (
+          <RichTextEditorContainer readOnly={readOnly} invalid={invalid}>
+            <RichTextEditor readOnly={readOnly} value={value} onChange={value => onChange?.(value)} />
+          </RichTextEditorContainer>
+        ) : (
+          <Textarea
+            ref={forwardedRef}
+            value={value}
+            onChange={handleChange}
+            type="text"
+            readOnly={readOnly}
+            disabled={readOnly}
+            aria-invalid={invalid}
+            invalid={invalid}
+            {...rest}
+          />
+        )}
         {readOnly && <ReadOnlyIcon size={16} />}
         {characterLeftLabel && <CharacterLeftLabel>{characterLeftLabel}</CharacterLeftLabel>}
       </TextAreaInputContainer>
