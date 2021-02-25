@@ -27,3 +27,11 @@ services:
             - '@akeneo_connectivity_connection.persistence.query.purge_audit_error'
         tags:
             - {name: 'console.command'}
+
+    Akeneo\Connectivity\Connection\Infrastructure\Cli\PurgeEventsApiLogsCommand:
+        arguments:
+            - '@akeneo_connectivity_connection.persistence.query.purge_events_api_info_notices_logs'
+           #- '@akeneo_connectivity_connection.persistence.query.purge_events_api_old_logs'
+        tags:
+            - {name: 'console.command'}
+
