@@ -53,7 +53,6 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
         );
 
         $result = $this->getEventSubscriptionLogsQuery->execute('a_connection_code');
-//        dump(iterator_to_array($result));
 
         Assert::assertEquals(100, iterator_count($result));
     }
