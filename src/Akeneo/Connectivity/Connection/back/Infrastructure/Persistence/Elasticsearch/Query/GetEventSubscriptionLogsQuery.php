@@ -29,163 +29,79 @@ class GetEventSubscriptionLogsQuery implements GetEventSubscriptionLogsQueryInte
         $this->clock = $clock;
     }
 
-    public function execute(string $connectionCode): \Generator
+    public function execute(string $connectionCode): \Traversable
     {
-        $now = $this->clock->now();
-        $lastNoticeOrInfoTimestamp = $this->findLastNoticeOrInfoTimestamp($connectionCode);
+        $nowTimestamp = $this->clock->now()->getTimestamp();
+        $lastNoticeAndInfoIdentifiers = iterator_to_array($this->findLastNoticeAndInfoIdentifiers($connectionCode));
 
-        return $this->elasticsearchClient->scroll([
-            'sort' => [['timestamp' => ['order' => 'ASC']]],
-            'query' => [
-                'bool' => [
-                    'must' => [
-                        [
-                            'bool' => [
-                                'should' => [
-                                    ['term' => ['connection_code' => $connectionCode]],
-                                    ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
+        return $this->elasticsearchClient->scroll(
+            [
+                'sort' => [['timestamp' => ['order' => 'ASC']]],
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            [
+                                'bool' => [
+                                    'should' => [
+                                        ['term' => ['connection_code' => $connectionCode]],
+                                        ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
+                                    ],
+                                ],
+                            ],
+                            [
+                                'bool' => [
+                                    'should' => [
+                                        ['bool' => [
+                                            'must' => [
+                                                ['terms' => ['level' => ['info', 'notice']]],
+                                                ['terms' => ['_id' => $lastNoticeAndInfoIdentifiers]],
+                                            ]
+                                        ]],
+                                        ['bool' => [
+                                                'must' => [
+                                                    ['terms' => ['level' => ['error', 'warning']]],
+                                                    ['range' => ['timestamp' => ['gte' => $nowTimestamp - self::MAX_LIFETIME_OF_WARNING_AND_ERROR_LOGS]]],
+                                                ]
+                                            ]
+                                        ],
+                                    ]
                                 ],
                             ],
                         ],
-                        [
-                            'bool' => [
-
-                            ]
-                        ]
                     ],
-//                        'should' => [
-//                            [
-//                                'bool' => [
-//                                    'must' => [
-//                                        ['terms' => ['level' => ['info', 'notice']]],
-//                                        ['range' => ['timestamp' => ['gte' => $lastNoticeOrInfoTimestamp]]],
-//                                        [
-//                                            'bool' => [
-//                                                'should' => [
-//                                                    ['term' => ['connection_code' => $connectionCode]],
-//                                                    ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
-//                                                ],
-//                                            ],
-//                                        ],
-//                                    ],
-//                                ],
-//                            ],
-//                            [
-//                                'bool' => [
-//                                    'must' => [
-//                                        ['terms' => ['level' => ['warning', 'error']]],
-//                                        ['range' => ['timestamp' => ['gte' => $now->getTimestamp() - self::MAX_LIFETIME_OF_WARNING_AND_ERROR_LOGS]]],
-//                                        [
-//                                            'bool' => [
-//                                                'should' => [
-//                                                    ['term' => ['connection_code' => $connectionCode]],
-//                                                    ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
-//                                                ],
-//                                            ],
-//                                        ],
-//                                    ],
-//                                ],
-//                            ],
-//                        ],
                 ],
-            ],
-        ]);
-//        $results = $this->elasticsearchClient->scroll([
-//            [], // metadata
-//            [
-//                'sort' => [['timestamp' => ['order' => 'ASC']]],
-//                'size' => self::MAX_NUMBER_OF_NOTICE_AND_INFO_LOGS,
-//                'query' => [
-//                    'bool' => [
-//                        'must' => [
-//                            ['terms' => ['level' => ['info', 'notice']]],
-//                        ],
-//                        'should' => [
-//                            ['term' => ['connection_code' => $connectionCode]],
-//                            ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
-//                        ],
-//                    ],
-//                ],
-//            ],
-//            [], // metadata
-//            [
-//                'sort' => [['timestamp' => ['order' => 'ASC']]],
-//                'query' => [
-//                    'bool' => [
-//                        'must' => [
-//                            ['terms' => ['level' => ['warning', 'error']]],
-//                            ['range' => ['timestamp' => ['gte' => $now->getTimestamp() - self::MAX_LIFETIME_OF_WARNING_AND_ERROR_LOGS]]],
-//                            [
-//                                'bool' => [
-//                                    'should' => [
-//                                        ['term' => ['connection_code' => $connectionCode]],
-//                                        ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
-//                                    ],
-//                                ],
-//                            ],
-//                        ],
-//                    ],
-//                ],
-//            ],
-//        ]);
+            ]
+        );
 
-//        foreach ($results['responses'] as $response) {
-//            foreach ($response['hits']['hits'] as $hit) {
-//                yield $hit['_source'];
-//            }
-//        }
-
-//        dump($results);
-
-//        yield null;
-
-//        yield null;
-
-//        return $this->elasticsearchClient->scroll(
-//            [
-//                'sort' => [
-//                    'timestamp' => [
-//                        'order' => 'ASC',
-//                    ],
-//                ],
-//                // TODO: ????
-//                'size' => 11,
-//                'query' => [
-//                    'bool' => [
-//                        'should' => [
-//                            ['term' => ['connection_code' => $connectionCode],],
-//                            ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code'],],],],
-//                        ],
-//                    ],
-//                ],
-//            ],
-//            1000
-//        );
     }
 
-    private function findLastNoticeAndInfoIdentifiers(string $connectionCode): ?int
+    private function findLastNoticeAndInfoIdentifiers(string $connectionCode): \Generator
     {
-        $result = $this->elasticsearchClient->search([
-            'sort' => [['timestamp' => ['order' => 'ASC']]],
-            'size' => 1,
-            'from' => self::MAX_NUMBER_OF_NOTICE_AND_INFO_LOGS,
-            'query' => [
-                'bool' => [
-                    'must' => [
-                        ['terms' => ['level' => ['info', 'notice']]],
-                    ],
-                    'should' => [
-                        ['term' => ['connection_code' => $connectionCode]],
-                        ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
+        $result = $this->elasticsearchClient->search(
+            [
+                '_source' => ['id'],
+                'sort' => [['timestamp' => ['order' => 'ASC']]],
+                'size' => self::MAX_NUMBER_OF_NOTICE_AND_INFO_LOGS,
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            ['terms' => ['level' => ['info', 'notice']]],
+                            [
+                                'bool' => [
+                                    'should' => [
+                                        ['term' => ['connection_code' => $connectionCode]],
+                                        ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                 ],
-            ],
-        ]);
+            ]
+        );
 
         foreach ($result['hits']['hits'] as $hit) {
-            return $hit['_source']['timestamp'];
+            yield $hit['_id'];
         }
-
-        return null;
     }
 }
