@@ -33,16 +33,15 @@ class GetEventSubscriptionLogsQuery implements GetEventSubscriptionLogsQueryInte
                         'order' => 'ASC',
                     ],
                 ],
+                // TODO: ????
+                'size' => 11,
                 'query' => [
-                    'match_all' => new \stdClass(),
-                    /*
-                    'constant_score' => [
-                        'filter' => [
-                            'bool' => [
-                                'filter' => ['term' => ['connection_code' => $connectionCode]],
-                            ],
+                    'bool' => [
+                        'should' => [
+                            ['term' => ['connection_code' => $connectionCode],],
+                            ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code'],],],],
                         ],
-                    ],*/
+                    ],
                 ],
             ],
             1000
