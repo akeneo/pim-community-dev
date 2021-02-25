@@ -4,28 +4,23 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PurgeEventsApiLogsQuery
+class PurgeEventsApiSuccessLogsQuery
 {
-    /** @var Client */
-    private $esClient;
+    private Client $esClient;
 
     public function __construct(Client $esClient)
     {
         $this->esClient = $esClient;
     }
 
-    /**
-     * @param array $connectionCodes Connection codes for which we want to keep errors
-     * @param int $nbOfNoticesAndInfosToKeep  Number of notices and infos to keep for each connection
-     * @param int $nbOfDaysToKeep    Age of errors to keep
-     */
     public function execute(int $nbOfNoticesAndInfosToKeep = 100): void
     {
         $search = $this->getEsIdsToKeepQuery($nbOfNoticesAndInfosToKeep);
@@ -44,9 +39,16 @@ class PurgeEventsApiLogsQuery
             'query' => [
                 'bool' => [
                     'must_not' => ['terms' => ['_id' => $idsToKeep]],
-                    'must' => ['terms' => ['level' => ['notice', 'info']]],
-                ]
-            ]
+                    'must' => [
+                        'terms' => [
+                            'level' => [
+                                EventsApiDebugLogger::LEVEL_INFO,
+                                EventsApiDebugLogger::LEVEL_NOTICE
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -61,12 +63,17 @@ class PurgeEventsApiLogsQuery
                     'filter' => [
                         'bool' => [
                             'filter' => [
-                                'terms' => ['level' => ['info', 'notice']],
+                                'terms' => [
+                                    'level' => [
+                                        EventsApiDebugLogger::LEVEL_INFO,
+                                        EventsApiDebugLogger::LEVEL_NOTICE
+                                    ],
+                                ],
                             ],
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 }

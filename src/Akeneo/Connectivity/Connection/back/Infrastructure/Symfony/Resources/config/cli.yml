@@ -30,8 +30,7 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\Cli\PurgeEventsApiLogsCommand:
         arguments:
-            - '@akeneo_connectivity_connection.persistence.query.purge_events_api_info_notices_logs'
-           #- '@akeneo_connectivity_connection.persistence.query.purge_events_api_old_logs'
+            - '@akeneo_connectivity_connection.persistence.query.purge_events_api_success_logs'
+            - '@akeneo_connectivity_connection.persistence.query.purge_events_api_error_logs'
         tags:
             - {name: 'console.command'}
-

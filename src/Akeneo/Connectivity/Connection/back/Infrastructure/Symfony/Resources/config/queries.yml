@@ -90,13 +90,12 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_connectivity_connection.persistence.query.purge_events_api_info_notices_logs:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\PurgeEventsApiLogsQuery
+    akeneo_connectivity_connection.persistence.query.purge_events_api_success_logs:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\PurgeEventsApiSuccessLogsQuery
         arguments:
             - '@akeneo_connectivity.client.events_api_debug'
 
-#    akeneo_connectivity_connection.persistence.query.purge_events_api_old_logs:
-#        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\PurgeEventsApiLogsQuery
-#        arguments:
-#            - '@akeneo_connectivity.client.events_api_debug'
-
+    akeneo_connectivity_connection.persistence.query.purge_events_api_error_logs:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\PurgeEventsApiErrorLogsQuery
+        arguments:
+            - '@akeneo_connectivity.client.events_api_debug'
