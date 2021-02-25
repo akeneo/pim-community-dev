@@ -5,8 +5,14 @@ import {Breadcrumb, Table, Button} from 'akeneo-design-system';
 import {useSystemInfo} from './SystemInfoHook';
 import styled from 'styled-components';
 
+const TableCell = styled(Table.Cell)`
+  white-space: normal;
+`;
+
 const TableCellList = styled(Table.Cell)`
-  > div {
+  white-space: normal;
+  overflow-wrap: break-word;
+  div {
     display: block;
   }
 `;
@@ -19,12 +25,7 @@ const SystemInfo = () => {
 
   const renderArraySystemInfo = (infoValue: any): ReactElement[] =>
     infoValue.map((subInfoValue: any, subInfoKey: string) => {
-      return (
-        <span key={`${subInfoKey}`}>
-          {renderSystemInfoValue(subInfoValue)}
-          <br />
-        </span>
-      );
+      return <div key={`${subInfoKey}`}>{renderSystemInfoValue(subInfoValue)}</div>;
     });
 
   const renderNestedObjectSystemInfo = (infoValue: any, keyPrefix: string = ''): any[] | ReactElement[] =>
@@ -33,10 +34,9 @@ const SystemInfo = () => {
       return typeof subInfoValue === 'object' ? (
         renderSystemInfoValue(subInfoValue, subInfoKey)
       ) : (
-        <span key={`${infoKey}`}>
+        <div key={`${infoKey}`}>
           {translate('pim_analytics.info_type.' + infoKey)}: {subInfoValue}
-          <br />
-        </span>
+        </div>
       );
     });
 
@@ -81,14 +81,15 @@ const SystemInfo = () => {
       <PageContent>
         <Table>
           <Table.Header>
-            <Table.HeaderCell>{translate('pim_analytics.info_header.property')}</Table.HeaderCell>
+            {/* @ts-ignore | @fixme: width props definition */}
+            <Table.HeaderCell width="35%">{translate('pim_analytics.info_header.property')}</Table.HeaderCell>
             <Table.HeaderCell>{translate('pim_analytics.info_header.information')}</Table.HeaderCell>
           </Table.Header>
           <Table.Body>
             {Object.entries(systemInfoData).map(([systemInfoType, systemInfoValue]) => {
               return (
                 <Table.Row key={systemInfoType}>
-                  <Table.Cell>{translate('pim_analytics.info_type.' + systemInfoType)}</Table.Cell>
+                  <TableCell>{translate('pim_analytics.info_type.' + systemInfoType)}</TableCell>
                   <TableCellList>{renderSystemInfoValue(systemInfoValue)}</TableCellList>
                 </Table.Row>
               );
