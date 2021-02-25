@@ -30,48 +30,27 @@ class EventSubscriptionLog implements EventSubscriptionLogInterface
         $this->logger = $logger;
     }
 
-    public function logEventDataBuildError(string $message, string $connectionCode, int $userId, object $event): void
+    public function logEventDataBuildError(string $message, string $connectionCode, int $userId, EventInterface $event): void
     {
-        $events = [];
-        if ($event instanceof EventInterface) {
-            $events[] = $event;
-        }
-        if ($event instanceof BulkEventInterface) {
-            $events = $event->getEvents();
-        }
-
         $log = [
             'type' => self::TYPE_EVENT_DATA_BUILD_ERROR,
             'message' => $message,
             'connection_code' => $connectionCode,
             'user_id' => $userId,
-            'events' => array_map(
-                function (EventInterface $event) {
-                    return [
-                        'uuid' => $event->getUuid(),
-                        'author' => $event->getAuthor()->name(),
-                        'author_type' => $event->getAuthor()->type(),
-                        'name' => $event->getName(),
-                        'timestamp' => $event->getTimestamp(),
-                    ];
-                },
-                $events
-            ),
+            'event' => [
+                'uuid' => $event->getUuid(),
+                'author' => $event->getAuthor()->name(),
+                'author_type' => $event->getAuthor()->type(),
+                'name' => $event->getName(),
+                'timestamp' => $event->getTimestamp(),
+            ],
         ];
 
         $this->logger->warning(json_encode($log, JSON_THROW_ON_ERROR));
     }
 
-    public function logEventBuild(int $subscriptionCount, int $durationMs, int $eventBuiltCount, object $event): void
+    public function logEventBuild(int $subscriptionCount, int $durationMs, int $eventBuiltCount, BulkEventInterface $events): void
     {
-        $events = [];
-        if ($event instanceof EventInterface) {
-            $events[] = $event;
-        }
-        if ($event instanceof BulkEventInterface) {
-            $events = $event->getEvents();
-        }
-
         $log = [
             'type' => self::TYPE_EVENT_BUILD,
             'subscription_count' => $subscriptionCount,
