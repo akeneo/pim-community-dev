@@ -120,7 +120,16 @@ type CheckboxProps = Override<
  */
 const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
   (
-    {checked = false, onChange, readOnly = false, children, title, 'aria-label': ariaLabel, ...rest}: CheckboxProps,
+    {
+      checked = false,
+      onChange,
+      readOnly = false,
+      children,
+      title,
+      'aria-label': ariaLabel,
+      tabIndex,
+      ...rest
+    }: CheckboxProps,
     forwardedRef: Ref<HTMLDivElement>
   ): React.ReactElement => {
     const checkboxId = useId('checkbox_');
@@ -161,7 +170,7 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
           role="checkbox"
           ref={ref}
           aria-checked={isChecked}
-          tabIndex={readOnly ? -1 : 0}
+          tabIndex={undefined !== tabIndex ? tabIndex : readOnly ? -1 : 0}
           onClick={handleChange}
           aria-label={ariaLabel}
           {...forProps}

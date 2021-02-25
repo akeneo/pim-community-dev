@@ -10,13 +10,13 @@ import {Locale} from '../../../components';
   args={{
     placeholder: 'Please enter a value in the Select input',
     emptyResultLabel: 'No result found',
-    value: null
+    value: null,
   }}
   argTypes={{
     readOnly: {
       control: {type: 'boolean'},
       description:
-          'Defines if the input should be read only. If defined so, the user cannot change the value of the input.',
+        'Defines if the input should be read only. If defined so, the user cannot change the value of the input.',
       table: {type: {summary: 'boolean'}},
     },
     onChange: {
@@ -96,7 +96,13 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
               <Locale code="en_US" languageLabel="English" />
             </SelectInput.Option>
           </SelectInput>
-          <SelectInput readOnly={false} value={value} onChange={setValue} placeholder="Editable select" emptyResultLabel="No result found">
+          <SelectInput
+            readOnly={false}
+            value={value}
+            onChange={setValue}
+            placeholder="Editable select"
+            emptyResultLabel="No result found"
+          >
             <SelectInput.Option value="en_US" title="English (United States)">
               <Locale code="en_US" languageLabel="English" />
             </SelectInput.Option>
@@ -118,6 +124,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
 </Canvas>
 
 ## Variation on invalid
+
 <Canvas>
   <Story name="Invalid">
     {args => {
@@ -125,7 +132,13 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
       const [invalidValue, setInvalidValue] = useState(null);
       return (
         <>
-          <SelectInput {...args} value={invalidValue} onChange={setInvalidValue} invalid={true} placeholder="Invalid input value">
+          <SelectInput
+            {...args}
+            value={invalidValue}
+            onChange={setInvalidValue}
+            invalid={true}
+            placeholder="Invalid input value"
+          >
             <SelectInput.Option value="en_US" title="English (United States)">
               <Locale code="en_US" languageLabel="English" />
             </SelectInput.Option>
@@ -139,7 +152,13 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
               <Locale code="es_ES" languageLabel="Spanish" />
             </SelectInput.Option>
           </SelectInput>
-          <SelectInput value={validValue} onChange={setValidValue} invalid={false} placeholder="Valid input value" emptyResultLabel="No result found">
+          <SelectInput
+            value={validValue}
+            onChange={setValidValue}
+            invalid={false}
+            placeholder="Valid input value"
+            emptyResultLabel="No result found"
+          >
             <SelectInput.Option value="en_US" title="English (United States)">
               <Locale code="en_US" languageLabel="English" />
             </SelectInput.Option>
@@ -161,6 +180,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
 </Canvas>
 
 ## Variation on vertical position
+
 <Canvas>
   <Story name="Vertical position">
     {args => {
@@ -183,7 +203,13 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
               <Locale code="es_ES" languageLabel="Spanish" />
             </SelectInput.Option>
           </SelectInput>
-          <SelectInput value={downValue} onChange={setDownValue} verticalPosition="down" placeholder="Down input" emptyResultLabel="No result found">
+          <SelectInput
+            value={downValue}
+            onChange={setDownValue}
+            verticalPosition="down"
+            placeholder="Down input"
+            emptyResultLabel="No result found"
+          >
             <SelectInput.Option value="en_US" title="English (United States)">
               <Locale code="en_US" languageLabel="English" />
             </SelectInput.Option>
@@ -205,6 +231,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
 </Canvas>
 
 ## Variation on large select input
+
 <Canvas>
   <Story name="Large">
     {args => {
@@ -257,6 +284,31 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
           </SelectInput>
           <SpaceContainer height={350} />
         </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on clearable
+
+<Canvas>
+  <Story name="Clearable">
+    {args => {
+      const [value, setValue] = useState(null);
+      return (
+        <SpaceContainer height={170}>
+          <SelectInput {...args} clearable={false} value={value} onChange={setValue}>
+            <SelectInput.Option value="en_US" title="English (United States)">
+              <Locale code="en_US" languageLabel="English" />
+            </SelectInput.Option>
+            <SelectInput.Option value="fr_FR" title="French (France)">
+              <Locale code="fr_FR" languageLabel="French" />
+            </SelectInput.Option>
+            <SelectInput.Option value="de_DE" title="German (Germany)">
+              <Locale code="de_DE" languageLabel="German" />
+            </SelectInput.Option>
+          </SelectInput>
+        </SpaceContainer>
       );
     }}
   </Story>

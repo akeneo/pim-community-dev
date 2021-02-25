@@ -79,11 +79,11 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 ## Simple Item
 
 <Canvas>
-  <Story name="Simple Item" height={230}>
+  <Story name="Simple Item" height={260}>
     {args => {
       const [isOpen, open, close] = useBooleanState(true);
       return (
-        <SpaceContainer height={170}>
+        <SpaceContainer height={200}>
           <Dropdown>
             <Button onClick={open}>
               Simple <ArrowDownIcon />
@@ -96,8 +96,14 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                 <Dropdown.ItemCollection>
                   <Dropdown.Item>First item</Dropdown.Item>
                   <Dropdown.Item>A very long item</Dropdown.Item>
+                  <Dropdown.Item disabled={true}>This one is disabled</Dropdown.Item>
                   <Dropdown.Item>
-                    <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Item with a link</Link>
+                    <Link target="_blank" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+                      Item with a link
+                    </Link>
+                  </Dropdown.Item>
+                  <Dropdown.Item disabled={true}>
+                    <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Disabled link</Link>
                   </Dropdown.Item>
                 </Dropdown.ItemCollection>
               </Dropdown.Overlay>
@@ -137,7 +143,7 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                   <Dropdown.Item>
                     <Checkbox {...secondSelection} /> Item 2
                   </Dropdown.Item>
-                  <Dropdown.Item>
+                  <Dropdown.Item disabled={true}>
                     <Checkbox {...thirdSelection} /> Item 3
                   </Dropdown.Item>
                   <Dropdown.Item>
@@ -175,18 +181,20 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                     <Image src="https://picsum.photos/seed/akeneo/200/140" alt="The alt" />
                     Item 1<Badge>100%</Badge>
                   </Dropdown.Item>
-                  <Dropdown.Item>
+                  <Dropdown.Item disabled={true}>
                     <Image src="https://picsum.photos/seed/akenep/200/140" alt="The alt" />
-                    Item 2<Badge level="warning">80%</Badge>
+                    Item 2<Badge level="danger">8%</Badge>
                   </Dropdown.Item>
-                  <Dropdown.Item>
+                  <Dropdown.Item disabled={true}>
                     <Image src="https://picsum.photos/seed/akeneq/200/140" alt="The alt" />A very long item Name that
                     will be truncated
                     <Badge>100%</Badge>
                   </Dropdown.Item>
                   <Dropdown.Item>
                     <Image src="https://picsum.photos/seed/akener/200/140" alt="The alt" />
-                    <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Item 4</Link>
+                    <Link target="_blank" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+                      Item 4
+                    </Link>
                     <Badge>100%</Badge>
                   </Dropdown.Item>
                 </Dropdown.ItemCollection>

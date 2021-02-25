@@ -9,6 +9,7 @@ Feature: Classify many products and product models at once
     And I am logged in as "Julia"
     And I am on the products grid
 
+  @critical @purge-messenger
   Scenario: Add several products and product models to categories at once
     When I sort by "ID" value ascending
     Given I select rows aphrodite, 1111111171 and amor
@@ -25,3 +26,5 @@ Feature: Classify many products and product models at once
     Then the categories of the product "1111111114" should be "master_men, master_women_blouses, print_clothing and supplier_zaro"
     Then the categories of the product "1111111171" should be "master_accessories_bags, master_men, print_accessories and supplier_zaro"
     Then the categories of the product model "amor" should be "master_men, master_men_blazers and supplier_zaro"
+    And 1 event of type "product.updated" should have been raised
+    And 2 events of type "product_model.updated" should have been raised

@@ -10,6 +10,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Messenger\TraceableMessageBus;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -18,33 +19,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductLoader
 {
-    /** @var ProductBuilderInterface */
-    private $builder;
-
-    /** @var ObjectUpdaterInterface */
-    private $updater;
-
-    /** @var SaverInterface */
-    private $saver;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var Client */
-    private $client;
+    private ProductBuilderInterface $builder;
+    private ObjectUpdaterInterface $updater;
+    private SaverInterface $saver;
+    private ValidatorInterface $validator;
+    private Client $client;
+    private TraceableMessageBus $messageBus;
 
     public function __construct(
         ProductBuilderInterface $builder,
         ObjectUpdaterInterface $updater,
         SaverInterface $saver,
         ValidatorInterface $validator,
-        Client $client
+        Client $client,
+        TraceableMessageBus $messageBus
     ) {
         $this->builder = $builder;
         $this->updater = $updater;
         $this->saver = $saver;
         $this->validator = $validator;
         $this->client = $client;
+        $this->messageBus = $messageBus;
     }
 
     public function create($identifier, array $data): ProductInterface
@@ -53,6 +48,8 @@ class ProductLoader
 
         $product = $this->builder->createProduct($identifier, $family);
         $this->update($product, $data);
+
+        $this->messageBus->reset();
 
         return $product;
     }
@@ -67,5 +64,6 @@ class ProductLoader
         $this->saver->save($product);
 
         $this->client->refreshIndex();
+        $this->messageBus->reset();
     }
 }

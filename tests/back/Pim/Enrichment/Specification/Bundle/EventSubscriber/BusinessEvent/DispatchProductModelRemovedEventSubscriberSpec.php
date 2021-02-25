@@ -29,7 +29,7 @@ class DispatchProductModelRemovedEventSubscriberSpec extends ObjectBehavior
         Security $security,
         MessageBusInterface $messageBus
     ) {
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
     }
 
     function it_is_initializable(): void
@@ -42,7 +42,7 @@ class DispatchProductModelRemovedEventSubscriberSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn(
             [
                 StorageEvents::POST_REMOVE => 'createAndDispatchProductModelEvents',
-                StorageEvents::POST_SAVE_ALL => 'dispatchBufferedProductModelEvents',
+                StorageEvents::POST_REMOVE_ALL => 'dispatchBufferedProductModelEvents',
             ]
         );
     }
@@ -57,7 +57,7 @@ class DispatchProductModelRemovedEventSubscriberSpec extends ObjectBehavior
         $security->getUser()->willReturn($user);
 
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $productModel = new ProductModel();
         $productModel->setCode('jean');
@@ -91,7 +91,7 @@ class DispatchProductModelRemovedEventSubscriberSpec extends ObjectBehavior
         $security->getUser()->willReturn($user);
 
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $product1 = new ProductModel();
         $product1->setCode('t-shirt');
@@ -136,7 +136,7 @@ class DispatchProductModelRemovedEventSubscriberSpec extends ObjectBehavior
         $security
     ) {
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $this->createAndDispatchProductModelEvents(new GenericEvent(
             new \stdClass(),
@@ -150,7 +150,7 @@ class DispatchProductModelRemovedEventSubscriberSpec extends ObjectBehavior
         $security
     ) {
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $productModel = new ProductModel();
         $productModel->setCode('product_model_code');
@@ -173,7 +173,7 @@ class DispatchProductModelRemovedEventSubscriberSpec extends ObjectBehavior
                 throw new TransportException('An error occured');
             }
         };
-        $this->beConstructedWith($security, $messageBus, 10, $logger);
+        $this->beConstructedWith($security, $messageBus, 10, $logger, new NullLogger());
 
         $user = new User();
         $user->setUsername('julia');

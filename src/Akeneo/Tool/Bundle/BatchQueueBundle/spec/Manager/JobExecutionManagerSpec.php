@@ -45,6 +45,7 @@ class JobExecutionManagerSpec extends ObjectBehavior
     ) {
         $jobExecution->getStatus()->willReturn($status);
         $jobExecution->getExitStatus()->willReturn($exitStatus);
+        $jobExecution->isStopping()->willReturn(false);
         $status->getValue()->willReturn(BatchStatus::COMPLETED);
         $exitStatus->isRunning()->willReturn(false);
 
@@ -59,12 +60,11 @@ class JobExecutionManagerSpec extends ObjectBehavior
         BatchStatus $status,
         ExitStatus $exitStatus
     ) {
-        $now = new \DateTime('now', new \DateTimeZone('UTC'));
-
         $healthCheck = new \DateTime('now', new \DateTimeZone('UTC'));
         $healthCheck->add(DateInterval::createFromDateString('-100 seconds'));
 
         $jobExecution->getStatus()->willReturn($status);
+        $jobExecution->isStopping()->willReturn(false);
         $jobExecution->getExitStatus()->willReturn($exitStatus);
         $jobExecution->getHealthCheckTime()->willReturn($healthCheck);
 
@@ -77,17 +77,43 @@ class JobExecutionManagerSpec extends ObjectBehavior
         $this->resolveJobExecutionStatus($jobExecution);
     }
 
-    function it_resolves_job_execution_status_when_job_execution_failed_with_null_health_check(
+    function it_resolves_job_execution_status_when_job_execution_failed_but_has_still_a_stopping_status(
+        JobExecution $jobExecution,
+        BatchStatus $status,
+        ExitStatus $exitStatus
+    ) {
+        $healthCheck = new \DateTime('now', new \DateTimeZone('UTC'));
+        $healthCheck->add(DateInterval::createFromDateString('-100 seconds'));
+
+        $jobExecution->getStatus()->willReturn($status);
+        $jobExecution->isStopping()->willReturn(true);
+        $jobExecution->getExitStatus()->willReturn($exitStatus);
+        $jobExecution->getHealthCheckTime()->willReturn($healthCheck);
+
+        $status->getValue()->willReturn(BatchStatus::STOPPING);
+        $exitStatus->isRunning()->willReturn(false);
+
+        $jobExecution->setStatus(new BatchStatus(BatchStatus::FAILED))->shouldBeCalled();
+        $jobExecution->setExitStatus(new ExitStatus(ExitStatus::FAILED))->shouldBeCalled();
+
+        $this->resolveJobExecutionStatus($jobExecution);
+    }
+
+    function it_does_not_modify_status_when_job_execution_health_check_is_null(
         JobExecution $jobExecution,
         BatchStatus $status,
         ExitStatus $exitStatus
     ) {
         $jobExecution->getStatus()->willReturn($status);
+        $jobExecution->isStopping()->willReturn(false);
         $jobExecution->getExitStatus()->willReturn($exitStatus);
         $jobExecution->getHealthCheckTime()->willReturn(null);
 
         $status->getValue()->willReturn(BatchStatus::STARTED);
         $exitStatus->isRunning()->willReturn(true);
+
+        $jobExecution->setStatus(Argument::any())->shouldNotBeCalled();
+        $jobExecution->setExitStatus(Argument::any())->shouldNotBeCalled();
 
         $this->resolveJobExecutionStatus($jobExecution);
     }

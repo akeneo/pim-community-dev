@@ -1,5 +1,14 @@
 # 5.0.x
 
+# 5.0.5 (2021-02-19)
+
+## Bug fixes
+
+- AOB-1317: Fix deprecated nested ternary expression
+- DAPI-1490: Fix redirect to product grid from DQI dashboard when a default view is activated on the user profile
+- PIM-9686: Fix memory leak during "set_attribute_requirements" job
+- PIM-9673: Make sure that the job that converts product models into simple products does not fail
+
 # 5.0.4 (2021-02-02)
 
 # 5.0.3 (2021-01-29)
@@ -17,6 +26,7 @@
 - DAPI-1470: Fix DateTime bad usage
 - DAPI-1469: Fix the size issue with the logo on login page
 - PIM-9622: Fix query that can generate a MySQL memory allocation error
+- PIM-9620: Fix performance issue on API attributes partial update list
 
 # 5.0.0 (2020-12-31)
 

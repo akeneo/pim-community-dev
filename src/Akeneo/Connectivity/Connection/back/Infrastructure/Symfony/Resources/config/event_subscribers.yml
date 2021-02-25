@@ -24,5 +24,6 @@ services:
             - '%webhook_requests_limit%'
             - '@akeneo_connectivity.connection.webhook.sleep'
             - '@monolog.logger.event_api'
+            - '@akeneo_connectivity.connection.webhook.events_api_debug_logger'
         tags:
             - { name: kernel.event_subscriber }

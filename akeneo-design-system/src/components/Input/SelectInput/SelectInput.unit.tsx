@@ -2,6 +2,7 @@ import React from 'react';
 import {SelectInput} from './SelectInput';
 import {Locale} from '../../../components';
 import {render, screen, fireEvent} from '../../../storybook/test-util';
+import userEvent from '@testing-library/user-event';
 
 test('it renders its children properly', () => {
   const onChange = jest.fn();
@@ -23,14 +24,14 @@ test('it renders its children properly', () => {
   );
 
   const input = screen.getByRole('textbox');
-  fireEvent.click(input);
+  fireEvent.focus(input);
 
   expect(screen.queryByText('German')).toBeInTheDocument();
 
-  fireEvent.click(screen.getByRole('textbox'));
+  fireEvent.click(screen.getByTestId('backdrop'));
   expect(screen.queryByText('German')).not.toBeInTheDocument();
 
-  fireEvent.click(screen.getByRole('textbox'));
+  fireEvent.focus(screen.getByRole('textbox'));
   expect(screen.queryByText('German')).toBeInTheDocument();
 
   const germanOption = screen.getByText('German');
@@ -59,7 +60,7 @@ test('it handles search', () => {
   );
 
   const input = screen.getByRole('textbox');
-  fireEvent.click(input);
+  fireEvent.focus(input);
   fireEvent.change(input, {target: {value: 'Français'}});
 
   const germanOption = screen.queryByText('German');
@@ -69,7 +70,7 @@ test('it handles search', () => {
   fireEvent.keyDown(input, {key: 'Enter', code: 'Enter'});
   expect(onChange).toHaveBeenCalledWith('fr_FR');
 
-  fireEvent.click(input);
+  fireEvent.focus(input);
   fireEvent.change(input, {target: {value: 'Spain'}});
 
   const spainOption = screen.getByText('Spanish');
@@ -98,7 +99,7 @@ test('it handles empty cases', () => {
   );
 
   const input = screen.getByRole('textbox');
-  fireEvent.click(input);
+  fireEvent.focus(input);
   fireEvent.change(input, {target: {value: 'France 3'}});
 
   const germanOption = screen.queryByText('German');
@@ -119,7 +120,7 @@ test('it handles clearing the field', () => {
       onChange={onChange}
       placeholder="Placeholder"
       emptyResultLabel="Empty result"
-      clearSelectLabel="clear"
+      clearLabel="clear"
     >
       <SelectInput.Option value="en_US" title="English (United States)">
         <Locale code="en_US" languageLabel="English" />
@@ -142,6 +143,35 @@ test('it handles clearing the field', () => {
   expect(onChange).toHaveBeenCalledWith(null);
 });
 
+test('it handles non clearable field', () => {
+  const onChange = jest.fn();
+  render(
+    <SelectInput
+      value="en_US"
+      onChange={onChange}
+      placeholder="Placeholder"
+      emptyResultLabel="Empty result"
+      clearLabel="clear"
+      clearable={false}
+    >
+      <SelectInput.Option value="en_US" title="English (United States)">
+        <Locale code="en_US" languageLabel="English" />
+      </SelectInput.Option>
+      <SelectInput.Option value="fr_FR" title="French (France)">
+        <Locale code="fr_FR" languageLabel="French" />
+      </SelectInput.Option>
+      <SelectInput.Option value="de_DE" title="German (Germany)">
+        <Locale code="de_DE" languageLabel="German" />
+      </SelectInput.Option>
+      <SelectInput.Option value="es_ES" title="Spanish (Spain)">
+        <Locale code="es_ES" languageLabel="Spanish" />
+      </SelectInput.Option>
+    </SelectInput>
+  );
+
+  expect(screen.queryByTitle('clear')).not.toBeInTheDocument();
+});
+
 test('it handles keyboard events', () => {
   const onChange = jest.fn();
   render(
@@ -150,8 +180,8 @@ test('it handles keyboard events', () => {
       onChange={onChange}
       placeholder="Placeholder"
       emptyResultLabel="Empty result"
-      openSelectLabel="open"
-      clearSelectLabel="clear"
+      openLabel="open"
+      clearLabel="clear"
     >
       <SelectInput.Option value="en_US" title="English (United States)">
         <Locale code="en_US" languageLabel="English" />
@@ -169,12 +199,12 @@ test('it handles keyboard events', () => {
   );
 
   const clearButton = screen.getByTitle('clear');
-  fireEvent.keyDown(clearButton, {key: 'Enter', code: 'Enter'});
+  userEvent.type(clearButton, '{enter}');
 
   expect(onChange).toHaveBeenCalledWith(null);
 
   const openButton = screen.getByTitle('open');
-  fireEvent.keyDown(openButton, {key: 'Enter', code: 'Enter'});
+  userEvent.type(openButton, '{enter}');
 
   const germanOption = screen.queryByText('German');
   expect(germanOption).toBeInTheDocument();
@@ -183,7 +213,7 @@ test('it handles keyboard events', () => {
 test('SelectInput supports ...rest props', () => {
   const onChange = jest.fn();
   render(<SelectInput value="noice" data-testid="my_value" emptyResultLabel="Empty result" onChange={onChange} />);
-  expect(screen.getByRole('textbox')).toBeInTheDocument();
+  expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
 
 test('SelectInput does not support duplicated options', () => {

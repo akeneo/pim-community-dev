@@ -199,12 +199,15 @@ describe('Criterion user actions', () => {
           a_family: family,
         },
         product,
+        catalogContext: {
+          locale: 'en_US',
+        },
       }
     );
 
     fireEvent.click(getByText('an_attribute')); // the user can click anywhere on the row
 
-    expect(handleFollowCriterion).toHaveBeenCalledWith(criterion, family, product);
+    expect(handleFollowCriterion).toHaveBeenCalledWith(criterion, family, product, 'en_US');
   });
 
   test('it does not handle the follow criterion action when the action is not allowed', () => {

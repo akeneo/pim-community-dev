@@ -9,6 +9,7 @@ const NumberInputContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedProps>`

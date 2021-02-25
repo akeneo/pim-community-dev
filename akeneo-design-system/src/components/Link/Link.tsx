@@ -66,7 +66,7 @@ type LinkProps = {
 /** Link redirect user to another page */
 const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   (
-    {disabled = false, decorated = true, target = '_self', href, children, ...rest}: LinkProps,
+    {disabled = false, decorated = true, target = '_self', href, children, onClick, ...rest}: LinkProps,
     forwardedRef: Ref<HTMLAnchorElement>
   ): React.ReactElement => {
     return (
@@ -76,7 +76,8 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
         target={target}
         decorated={decorated}
         rel={target === '_blank' ? 'noopener noreferrer' : ''}
-        {...(!disabled ? {href: href} : {})}
+        href={disabled ? undefined : href}
+        onClick={disabled ? undefined : onClick}
         {...rest}
       >
         {children}

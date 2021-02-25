@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateProductEndToEnd extends AbstractProductTestCase
 {
+    use AssertEventCountTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -465,6 +469,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_family');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductPartialUpdateWithTheFamilyDeleted()
@@ -543,6 +548,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_groups');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductPartialUpdateWithTheGroupsDeleted()
@@ -583,6 +589,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_groups');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductPartialUpdateWithTheCategoriesUpdated()
@@ -623,6 +630,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_categories');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductPartialUpdateWithTheCategoriesDeleted()
@@ -663,6 +671,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_categories');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     /**
@@ -740,6 +749,9 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_associations');
+
+        $this->assertEventCount(1, ProductUpdated::class);
+
     }
 
     public function testProductPartialUpdateWithTheAssociationsDeletedOnGroups()
@@ -843,6 +855,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_associations');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductPartialUpdateWithProductDisable()
@@ -883,6 +896,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_categories');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductPartialUpdateWhenProductValueAddedOnAttribute()
@@ -936,6 +950,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'localizable');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductPartialUpdateWhenProductValueUpdatedOnAttribute()

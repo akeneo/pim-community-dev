@@ -8,7 +8,6 @@ pim_menu:
     connection_settings: Connexions
     connection_settings_edit: Paramètres de connexion
     connection_monitoring: Supervision
-    connection_webhook_edit: Souscription aux événements
 pim_title:
   akeneo_connectivity_connection_settings_index: Connexions
   akeneo_connectivity_connection_settings_edit: Paramètres de connexion
@@ -17,8 +16,6 @@ pim_title:
   akeneo_connectivity_connection_audit_any: Tableau de bord des connexions
   akeneo_connectivity_connection_error_management_dashboard: Tableau de bord des connexions
   akeneo_connectivity_connection_error_management_connection_monitoring: Supervision
-  akeneo_connectivity_connection_webhook_edit: Souscription aux événements
-  akeneo_connectivity_connection_webhook_regenerate_secret: Souscription aux événements
 akeneo_connectivity.connection:
   connections: Connexions
   secondary_actions:
@@ -193,10 +190,7 @@ akeneo_connectivity.connection:
         message: Demandez à votre administrateur d'en créer une.
         link: En savoir plus sur les connexions ici...
   webhook:
-    title: Souscription aux événements
-    event_subscription: Souscription aux événements
     helper:
-      message: L'application connectée grâce à la connexion courante peut recevoir des événements grâce à l'Events API du PIM. Pour cela, merci de remplir l'URL ci-dessous. 
       link: En savoir plus sur la configuration de la souscription aux événements...
       url.test_disabled: Veuillez cliquer sur le bouton Enregistrer pour pouvoir tester l'URL.
     form:
@@ -223,7 +217,6 @@ akeneo_connectivity.connection:
         error: Désolé, une erreur s'est produite lors du renouvellement du secret lié à la souscription aux événements.
     active_event_subscriptions_limit_reached:
       message: Vous pouvez activer la souscription aux événements sur {{ limit }} connexions maximum et vous avez atteint cette limite. 
-      link: En savoir plus sur la configuration de la souscription aux événements.
   error_management:
     connection_monitoring:
       title: Supervision
