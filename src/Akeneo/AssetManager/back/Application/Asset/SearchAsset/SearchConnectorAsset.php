@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\Asset\SearchAsset;
 
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAssetResult;
 use Akeneo\AssetManager\Domain\Query\Asset\Connector\FindConnectorAssetsByIdentifiersInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersForQueryInterface;
 
@@ -39,11 +40,11 @@ class SearchConnectorAsset
         $this->findConnectorAssetsByIdentifiers = $findConnectorAssetsByIdentifiers;
     }
 
-    public function __invoke(AssetQuery $query): array
+    public function __invoke(AssetQuery $query): ConnectorAssetResult
     {
         $result = $this->findIdentifiersForQuery->find($query);
         $assets = empty($result) ? [] : $this->findConnectorAssetsByIdentifiers->find($result->identifiers, $query);
 
-        return $assets;
+        return ConnectorAssetResult::createFromSearchAfterQuery($assets, $result->lastSortValue);
     }
 }

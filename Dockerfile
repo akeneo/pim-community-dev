@@ -42,11 +42,11 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         ca-certificates \
         imagemagick \
         libmagickcore-6.q16-2-extra \
-        php-memcached \
         php7.4-fpm \
         php7.4-cli \
         php7.4-intl \
         php7.4-opcache \
+        php7.4-memcached \
         php7.4-mysql \
         php7.4-zip \
         php7.4-xml \
@@ -116,12 +116,16 @@ FROM dev AS builder
 
 ARG COMPOSER_AUTH
 
-RUN apt-get update && \
-    apt-get --yes install \
-        yarnpkg \
-        nodejs && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# Install NodeJS 12 and Yarn
+RUN sh -c 'wget -q -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add -' && \
+    sh -c 'echo "deb https://deb.nodesource.com/node_12.x buster main" > /etc/apt/sources.list.d/nodesource.list' && \
+    sh -c 'echo "deb-src https://deb.nodesource.com/node_12.x buster main" >> /etc/apt/sources.list.d/nodesource.list' && \
+    sh -c 'wget -q -O - https://dl.yarnpkg.com/debian/pubkey.gpg | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add -' && \
+    sh -c 'echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list' && \
+    apt-get update && \
+    apt-get install -y nodejs yarn \
+    && apt-get clean && apt-get -y -q autoremove --purge \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /srv/pim/
 

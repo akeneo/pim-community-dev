@@ -1,11 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2021 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +13,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Application\Asset\Subscribers;
 
 use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationFromAssetIdentifiersLauncherInterface;
-use Akeneo\AssetManager\Application\Asset\Subscribers\ComputeAssetTransformationSubscriber;
+use Akeneo\AssetManager\Application\Asset\Subscribers\ComputeAssetTransformationEventAggregator;
 use Akeneo\AssetManager\Application\AssetFamily\Transformation\GetOutdatedVariationSourceInterface;
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
@@ -32,11 +31,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
- * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- */
-class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
+class ComputeAssetTransformationEventAggregatorSpec extends ObjectBehavior
 {
     function let(
         ComputeTransformationFromAssetIdentifiersLauncherInterface $computeTransformationLauncher,
@@ -54,7 +49,7 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->beAnInstanceOf(ComputeAssetTransformationSubscriber::class);
+        $this->beAnInstanceOf(ComputeAssetTransformationEventAggregator::class);
     }
 
     function it_is_a_subscriber()
@@ -66,13 +61,13 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
     {
         $this::getSubscribedEvents()->shouldReturn(
             [
-                AssetUpdatedEvent::class => 'whenAssetUpdated',
-                AssetCreatedEvent::class => 'whenAssetCreated',
+                AssetUpdatedEvent::class => 'whenAssetCreatedOrUpdated',
+                AssetCreatedEvent::class => 'whenAssetCreatedOrUpdated',
             ]
         );
     }
 
-    function it_launches_a_compute_transformation_job_on_asset_update(
+    function it_launches_a_compute_transformation_job_on_asset_create_or_update(
         ComputeTransformationFromAssetIdentifiersLauncherInterface $computeTransformationLauncher,
         GetOutdatedVariationSourceInterface $getOutdatedVariationSource,
         AssetRepositoryInterface $assetRepository,
@@ -83,16 +78,24 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
         Transformation $transformation,
         FileData $fileData
     ) {
-        $assetIdentifier = AssetIdentifier::fromString('id');
-        $assetUpdatedEvent = new AssetUpdatedEvent(
-            $assetIdentifier,
-            AssetCode::fromString('code'),
+        $createdAssetIdentifier = AssetIdentifier::fromString('created_id');
+        $createdAssetEvent = new AssetUpdatedEvent(
+            $createdAssetIdentifier,
+            AssetCode::fromString('created_code'),
+            AssetFamilyIdentifier::fromString('family')
+        );
+        $updatedAssetIdentifier = AssetIdentifier::fromString('updated_id');
+        $updatedAssetEvent = new AssetUpdatedEvent(
+            $updatedAssetIdentifier,
+            AssetCode::fromString('updated_code'),
             AssetFamilyIdentifier::fromString('family')
         );
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('family');
-        $asset = $this->getAsset($assetIdentifier, $assetFamilyIdentifier);
-        $assetRepository->getByIdentifier($assetIdentifier)->willReturn($asset);
+        $createdAsset = $this->getAsset($updatedAssetIdentifier, $assetFamilyIdentifier);
+        $assetRepository->getByIdentifier($createdAssetIdentifier)->willReturn($createdAsset);
+        $updatedAsset = $this->getAsset($updatedAssetIdentifier, $assetFamilyIdentifier);
+        $assetRepository->getByIdentifier($updatedAssetIdentifier)->willReturn($updatedAsset);
 
         $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier)->willReturn($assetFamily);
         $assetFamily->getTransformationCollection()->willReturn($transformationCollection);
@@ -101,12 +104,20 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
         $transformationCollectionIterator->valid()->willReturn(true, true, false);
         $transformationCollectionIterator->current()->willReturn($transformation);
         $transformationCollectionIterator->rewind()->shouldBeCalled();
-        $getOutdatedVariationSource->forAssetAndTransformation($asset, $transformation)
+        $getOutdatedVariationSource->forAssetAndTransformation($createdAsset, $transformation)
+            ->willReturn($fileData);
+        $getOutdatedVariationSource->forAssetAndTransformation($updatedAsset, $transformation)
             ->willReturn($fileData);
 
-        $computeTransformationLauncher->launch([$assetIdentifier])->shouldBeCalled();
+        $this->whenAssetCreatedOrUpdated($createdAssetEvent);
+        $this->whenAssetCreatedOrUpdated($updatedAssetEvent);
+        $this->whenAssetCreatedOrUpdated($createdAssetEvent);
 
-        $this->whenAssetUpdated($assetUpdatedEvent);
+        $computeTransformationLauncher->launch([
+            'created_id' => $createdAssetIdentifier,
+            'updated_id' => $updatedAssetIdentifier,
+        ])->shouldBeCalled();
+        $this->flushEvents();
     }
 
     function it_does_not_launch_job_at_update_if_all_asset_values_are_up_to_date(
@@ -146,84 +157,7 @@ class ComputeAssetTransformationSubscriberSpec extends ObjectBehavior
 
         $computeTransformationLauncher->launch([$assetIdentifier])->shouldNotBeCalled();
 
-        $this->whenAssetUpdated($assetUpdatedEvent);
-    }
-
-    function it_launches_a_compute_transformation_job_on_asset_creation(
-        ComputeTransformationFromAssetIdentifiersLauncherInterface $computeTransformationLauncher,
-        GetOutdatedVariationSourceInterface $getOutdatedVariationSource,
-        AssetRepositoryInterface $assetRepository,
-        AssetFamilyRepositoryInterface $assetFamilyRepository,
-        AssetFamily $assetFamily,
-        TransformationCollection $transformationCollection,
-        \ArrayIterator $transformationCollectionIterator,
-        Transformation $transformation,
-        FileData $fileData
-    ) {
-        $assetIdentifier = AssetIdentifier::fromString('id');
-        $assetCreatedEvent = new AssetCreatedEvent(
-            $assetIdentifier,
-            AssetCode::fromString('code'),
-            AssetFamilyIdentifier::fromString('family')
-        );
-
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('family');
-        $asset = $this->getAsset($assetIdentifier, $assetFamilyIdentifier);
-        $assetRepository->getByIdentifier($assetIdentifier)->willReturn($asset);
-
-        $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier)->willReturn($assetFamily);
-        $assetFamily->getTransformationCollection()->willReturn($transformationCollection);
-
-        $transformationCollection->getIterator()->willReturn($transformationCollectionIterator);
-        $transformationCollectionIterator->valid()->willReturn(true, true, false);
-        $transformationCollectionIterator->current()->willReturn($transformation);
-        $transformationCollectionIterator->rewind()->shouldBeCalled();
-        $getOutdatedVariationSource->forAssetAndTransformation($asset, $transformation)
-            ->willReturn($fileData);
-
-        $computeTransformationLauncher->launch([$assetIdentifier])->shouldBeCalled();
-
-        $this->whenAssetCreated($assetCreatedEvent);
-    }
-
-    function it_does_not_launch_job_at_creation_if_all_asset_values_are_up_to_date(
-        ComputeTransformationFromAssetIdentifiersLauncherInterface $computeTransformationLauncher,
-        GetOutdatedVariationSourceInterface $getOutdatedVariationSource,
-        AssetRepositoryInterface $assetRepository,
-        AssetFamilyRepositoryInterface $assetFamilyRepository,
-        AssetFamily $assetFamily,
-        TransformationCollection $transformationCollection,
-        \ArrayIterator $transformationCollectionIterator,
-        Transformation $transformation1,
-        Transformation $transformation2
-    ) {
-        $assetIdentifier = AssetIdentifier::fromString('id');
-        $assetCreatedEvent = new AssetCreatedEvent(
-            $assetIdentifier,
-            AssetCode::fromString('code'),
-            AssetFamilyIdentifier::fromString('family')
-        );
-
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('family');
-        $asset = $this->getAsset($assetIdentifier, $assetFamilyIdentifier);
-        $assetRepository->getByIdentifier($assetIdentifier)->willReturn($asset);
-
-        $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier)->willReturn($assetFamily);
-        $assetFamily->getTransformationCollection()->willReturn($transformationCollection);
-
-        $transformationCollection->getIterator()->willReturn($transformationCollectionIterator);
-        $transformationCollectionIterator->valid()->willReturn(true, true, false);
-        $transformationCollectionIterator->current()->willReturn($transformation1, $transformation2);
-        $transformationCollectionIterator->rewind()->shouldBeCalled();
-        $transformationCollectionIterator->next()->shouldBeCalled();
-        $getOutdatedVariationSource->forAssetAndTransformation($asset, $transformation1)
-            ->willReturn(null);
-        $getOutdatedVariationSource->forAssetAndTransformation($asset, $transformation2)
-            ->willReturn(null);
-
-        $computeTransformationLauncher->launch([$assetIdentifier])->shouldNotBeCalled();
-
-        $this->whenAssetCreated($assetCreatedEvent);
+        $this->whenAssetCreatedOrUpdated($assetUpdatedEvent);
     }
 
     private function getAsset(AssetIdentifier $assetIdentifier, AssetFamilyIdentifier $assetFamilyIdentifier): Asset

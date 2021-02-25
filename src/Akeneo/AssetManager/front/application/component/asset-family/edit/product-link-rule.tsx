@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {JsonEditor as Editor} from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
-import {AssetsIllustration, Information, Link, Button} from 'akeneo-design-system';
+import {Link, Button, Helper, SectionTitle} from 'akeneo-design-system';
 import __ from 'akeneoassetmanager/tools/translator';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
@@ -28,6 +28,7 @@ import {ButtonContainer} from 'akeneoassetmanager/application/component/app/butt
 import {ConfirmModal} from 'akeneoassetmanager/application/component/app/modal';
 import namingConventionSchema from 'akeneoassetmanager/infrastructure/model/asset-family/naming-convention.schema.json';
 import productLinkRulesSchema from 'akeneoassetmanager/infrastructure/model/asset-family/product-link-rules.schema.json';
+import {Subsection} from 'akeneoassetmanager/application/component/app/subsection';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
 const securityContext = require('pim/security-context');
@@ -190,7 +191,7 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps> {
     const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
 
     return (
-      <React.Fragment>
+      <>
         <Header
           label={__('pim_asset_manager.asset_family.tab.product_link_rules')}
           image={null}
@@ -216,47 +217,53 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps> {
           isDirty={form.state.isDirty}
           breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
         />
-        <Information
-          illustration={<AssetsIllustration />}
-          title={`👋 ${__('pim_asset_manager.asset_family.product_link_rules.help.title')}`}
-        >
-          <p>{__('pim_asset_manager.asset_family.product_link_rules.help.description')}</p>
-          <Link href="https://help.akeneo.com/pim/v4/articles/assets-product-link-rules.html" target="_blank">
-            {__('pim_asset_manager.asset_family.product_link_rules.help.link')}
-          </Link>
-        </Information>
-        <div className="AknSubsection">
-          <header className="AknSubsection-title">
-            <span className="group-label">
-              {__('pim_asset_manager.asset_family.product_link_rules.naming_convention_subsection')}
-            </span>
-          </header>
-          <div className="AknFormContainer AknFormContainer--wide">
-            <AssetFamilyNamingConventionEditor
-              namingConvention={assetFamily.namingConvention}
-              errors={errors}
-              onAssetFamilyNamingConventionChange={events.onAssetFamilyNamingConventionUpdated}
-              editMode={rights.assetFamily.edit_naming_convention}
-            />
+        <Subsection>
+          <div>
+            <SectionTitle>
+              <SectionTitle.Title>
+                {__('pim_asset_manager.asset_family.product_link_rules.naming_convention_subsection')}
+              </SectionTitle.Title>
+            </SectionTitle>
+            <Helper>
+              {__('pim_asset_manager.asset_family.naming_convention.help.description')}&nbsp;
+              <Link
+                href="https://help.akeneo.com/pim/serenity/articles/assets-product-link-rules.html#focus-on-the-naming-convention"
+                target="_blank"
+              >
+                {__('pim_asset_manager.asset_family.naming_convention.help.link')}
+              </Link>
+            </Helper>
           </div>
-        </div>
-        <div className="AknSubsection">
-          <header className="AknSubsection-title">
-            <span className="group-label">
-              {__('pim_asset_manager.asset_family.product_link_rules.product_link_rules_subsection')}
-            </span>
-          </header>
-          <div className="AknFormContainer AknFormContainer--wide">
-            <AssetFamilyProductLinkRulesEditor
-              productLinkRules={this.props.assetFamily.productLinkRules}
-              errors={this.props.errors}
-              onAssetFamilyProductLinkRulesChange={(productLinkRules: ProductLinkRuleCollection) => {
-                this.props.events.onAssetFamilyProductLinkRulesUpdated(productLinkRules);
-              }}
-              editMode={this.props.rights.assetFamily.edit_product_link_rules}
-            />
+          <AssetFamilyNamingConventionEditor
+            namingConvention={assetFamily.namingConvention}
+            errors={errors}
+            onAssetFamilyNamingConventionChange={events.onAssetFamilyNamingConventionUpdated}
+            editMode={rights.assetFamily.edit_naming_convention}
+          />
+        </Subsection>
+        <Subsection>
+          <div>
+            <SectionTitle>
+              <SectionTitle.Title>
+                {__('pim_asset_manager.asset_family.product_link_rules.product_link_rules_subsection')}
+              </SectionTitle.Title>
+            </SectionTitle>
+            <Helper>
+              {__('pim_asset_manager.asset_family.product_link_rules.help.description')}&nbsp;
+              <Link href="https://help.akeneo.com/pim/serenity/articles/assets-product-link-rules.html" target="_blank">
+                {__('pim_asset_manager.asset_family.product_link_rules.help.link')}
+              </Link>
+            </Helper>
           </div>
-        </div>
+          <AssetFamilyProductLinkRulesEditor
+            productLinkRules={this.props.assetFamily.productLinkRules}
+            errors={this.props.errors}
+            onAssetFamilyProductLinkRulesChange={(productLinkRules: ProductLinkRuleCollection) => {
+              this.props.events.onAssetFamilyProductLinkRulesUpdated(productLinkRules);
+            }}
+            editMode={this.props.rights.assetFamily.edit_product_link_rules}
+          />
+        </Subsection>
         {this.state.isExecuteRulesModalOpen && (
           <ConfirmModal
             titleContent={__('pim_asset_manager.asset_family.product_link_rules.execute_rules.confirm_title')}
@@ -291,7 +298,7 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps> {
             }}
           />
         )}
-      </React.Fragment>
+      </>
     );
   }
 }

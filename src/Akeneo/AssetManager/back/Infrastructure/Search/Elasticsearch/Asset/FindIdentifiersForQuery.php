@@ -43,7 +43,8 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         $elasticSearchQuery = $this->assetQueryBuilder->buildFromQuery($assetQuery, '_id');
         $matches = $this->assetClient->search($elasticSearchQuery);
         $identifiers = $this->getIdentifiers($matches);
-        $queryResult = new IdentifiersForQueryResult($identifiers, $matches['hits']['total']['value']);
+        $lastSortValue = $this->getLastSortValue($matches);
+        $queryResult = new IdentifiersForQueryResult($identifiers, $matches['hits']['total']['value'], $lastSortValue);
 
         return $queryResult;
     }
@@ -60,5 +61,12 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         }, $matches['hits']['hits']);
 
         return $identifiers;
+    }
+
+    private function getLastSortValue(array $matches): ?array
+    {
+        $lastHit = end($matches['hits']['hits']);
+
+        return $lastHit['sort'] ?? null;
     }
 }

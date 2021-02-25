@@ -1,5 +1,11 @@
 # 5.0.x
 
+# 5.0.5 (2021-02-19)
+
+## Improvements
+
+- BH-351: use Debian nodejs v12 in docker-compose
+
 # 5.0.4 (2021-02-02)
 
 # 5.0.3 (2021-01-29)

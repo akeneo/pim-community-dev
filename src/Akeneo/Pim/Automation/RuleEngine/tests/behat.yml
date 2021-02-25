@@ -42,6 +42,7 @@ integration:
 
                 - Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\DataFixturesContext:
                     - '@test.service_container'
+                    - '@messenger.transport.business_event'
 
                 - Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\ExecuteRuleContext:
                     - '@doctrine.dbal.default_connection'
@@ -99,6 +100,9 @@ integration:
                       - '@pim_connector.doctrine.cache_clearer'
 
                 - Akeneo\Test\Pim\Automation\RuleEngine\Common\Context\ExceptionContext:
+
+                - Context\ConnectivityContext:
+                      - '@messenger.transport.business_event'
 
             filters:
                 tags: '@integration-back'

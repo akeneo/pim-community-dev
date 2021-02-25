@@ -22,7 +22,7 @@ const Dictionary: FC = () => {
         {translate('akeneo_data_quality_insights.dictionary.helper.content')}
         <> </>
         <PimHelperLink
-          href="https://help.akeneo.com/pim/serenity/articles/manage-your-data-quality.html#manage-your-dictionary"
+          href="https://help.akeneo.com/pim/serenity/articles/manage-data-quality.html#manage-your-dictionaries"
           target="_blank"
         >
           {translate('akeneo_data_quality_insights.dictionary.helper.link_label')}

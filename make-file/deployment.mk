@@ -257,6 +257,7 @@ test-prod:
 release:
 ifeq ($(CI),true)
 	git config user.name "Michel Tag"
+	git config user.email "akeneo-ci@akeneo.com"
 	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
 endif
 	bash $(PWD)/deployments/bin/release.sh ${OLD_IMAGE_TAG}
@@ -286,6 +287,8 @@ test_upgrade_from_flexibility_clone:
 .PHONY: php-image-prod
 php-image-prod: #Doc: pull docker image for pim-enterprise-dev with the prod tag
 	git config user.name "Michel Tag"
+	git config user.email "akeneo-ci@akeneo.com"
+
 	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
 	sed -i "s/VERSION = '.*';/VERSION = '${IMAGE_TAG_DATE}';/g" src/Akeneo/Platform/EnterpriseVersion.php
 	git add src/Akeneo/Platform/EnterpriseVersion.php
@@ -296,3 +299,7 @@ php-image-prod: #Doc: pull docker image for pim-enterprise-dev with the prod tag
 .PHONY: push-php-image-prod
 push-php-image-prod: #Doc: push docker image to docker hub
 	docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG}
+
+.PHONY: test-helm-cronjob
+test-helm-cronjob: #Doc: Test declared cronjob job are available via the PIM console
+	bash $(PWD)/deployments/bin/test-cronjob-values.sh
