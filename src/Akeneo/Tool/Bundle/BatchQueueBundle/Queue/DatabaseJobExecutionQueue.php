@@ -43,13 +43,12 @@ class DatabaseJobExecutionQueue implements JobExecutionQueueInterface
         $hasBeenUpdated = false;
         $jobExecutionMessage = null;
         $ttl = $configuration['timeToLive'];
-
         do {
-            if (empty($configuraion['whitelistedJobInstanceCodes']) && empty($configuration['blacklistedJobInstanceCodes'])) {
+            if (count($configuration['whitelistedJobInstanceCodes']) == 0 && count($configuration['blacklistedJobInstanceCodes']) == 0) {
                 $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessage();
-            } elseif ($configuration['whitelistedJobInstanceCodes']) {
+            } elseif (count($configuration['whitelistedJobInstanceCodes']) > 0) {
                 $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessageFilteredByCodes($configuration['whitelistedJobInstanceCodes']);
-            } elseif ($configuration['blacklistedJobInstanceCodes']) {
+            } elseif (count($configuration['blacklistedJobInstanceCodes']) > 0) {
                 $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableNotBlacklistedJobExecutionMessageFilteredByCodes($configuration['blacklistedJobInstanceCodes']);
             }
 
