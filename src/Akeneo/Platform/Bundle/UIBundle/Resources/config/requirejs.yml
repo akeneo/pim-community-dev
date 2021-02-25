@@ -1117,6 +1117,7 @@ config:
     pim/template/product/meta/updated:                   pimui/templates/product/meta/updated.html
     pim/template/product/scope-switcher:                 pimui/templates/product/scope-switcher.html
     pim/template/product/field/field:                    pimui/templates/product/field/field.html
+    pim/template/product/field/field-description:        pimui/templates/product/field/field-description.html
     pim/template/product/field/date:                     pimui/templates/product/field/date.html
     pim/template/product/field/media:                    pimui/templates/product/field/media.html
     pim/template/product/field/metric:                   pimui/templates/product/field/metric.html
