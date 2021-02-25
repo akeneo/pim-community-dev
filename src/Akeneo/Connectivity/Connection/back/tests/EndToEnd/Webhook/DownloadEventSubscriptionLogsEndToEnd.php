@@ -11,14 +11,21 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader;
 use Akeneo\Connectivity\Connection\Tests\Integration\FakeClock;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use PHPUnit\Framework\Assert;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
+/**
+ * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class DownloadEventSubscriptionLogsEndToEnd extends WebTestCase
 {
     private WebhookLoader $webhookLoader;
     private Client $elasticsearchClient;
     private FakeClock $clock;
 
-    public function test_(): void
+    public function test_it_gets_file_of_event_subscription_logs(): void
     {
         $timestamp = $this->clock->now()->getTimestamp() - 10;
         $sapConnection = $this->getConnection();
@@ -42,6 +49,29 @@ class DownloadEventSubscriptionLogsEndToEnd extends WebTestCase
                 ],
             ]
         );
+
+        $this->authenticateAsAdmin();
+
+        ob_start();
+
+        $this->client->request(
+            'GET',
+            '/rest/events-api-debug/download-event-subscription-logs',
+            ['connection_code' => $sapConnection->code()]
+        );
+
+        $response = $this->client->getResponse();
+        $content = ob_get_contents();
+
+        ob_end_clean();
+
+        $expectedContent = <<<EOF
+2021/03/02 03:30:01 WARNING Foo bar {"foo":"bar"}
+2021/03/02 03:30:01 WARNING Foo bar 2 {"foo":"bar2"}\n
+EOF;
+        Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        Assert::assertInstanceOf(StreamedResponse::class, $response);
+        Assert::assertEquals($expectedContent, $content);
     }
 
     protected function setUp(): void
@@ -71,4 +101,3 @@ class DownloadEventSubscriptionLogsEndToEnd extends WebTestCase
         return $this->catalog->useMinimalCatalog();
     }
 }
-

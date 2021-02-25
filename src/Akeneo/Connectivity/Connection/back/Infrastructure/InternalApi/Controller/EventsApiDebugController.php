@@ -37,7 +37,7 @@ class EventsApiDebugController
 
         $connectionCode = $request->query->get('connection_code');
 
-        $results = $this->getEventSubscriptionLogsQuery->execute($connectionCode);
+        $logs = $this->getEventSubscriptionLogsQuery->execute($connectionCode);
 
         $disposition = HeaderUtils::makeDisposition(
             HeaderUtils::DISPOSITION_ATTACHMENT,
@@ -49,33 +49,29 @@ class EventsApiDebugController
         $response->headers->set('Content-Disposition', $disposition);
 
         $response->setCallback(
-            function () use ($results) {
-                foreach ($results as $result) {
-                    foreach ($result['hits']['hits'] as $hit) {
-
-                        /**
-                         * @var array{
-                         *  timestamp: int,
-                         *  level: string,
-                         *  message: string,
-                         *  connection_code: ?string,
-                         *  context: array
-                         * } $log
-                         */
-                        $log = $hit['_source'];
-
-                        echo sprintf(
-                            '%s %s %s %s',
-                            \DateTime::createFromFormat(
-                                'U',
-                                (string)$log['timestamp'],
-                                new \DateTimeZone('UTC')
-                            )->format('Y/m/d H:i:s'),
-                            strtoupper($log['level']),
-                            $log['message'],
-                            json_encode($log['context'])
-                        );
-                    }
+            function () use ($logs) {
+                /**
+                 * @var array{
+                 *  timestamp: int,
+                 *  level: string,
+                 *  message: string,
+                 *  connection_code: ?string,
+                 *  context: array
+                 * } $log
+                 */
+                foreach ($logs as $log) {
+                    echo sprintf(
+                        '%s %s %s %s%s',
+                        \DateTime::createFromFormat(
+                            'U',
+                            (string)$log['timestamp'],
+                            new \DateTimeZone('UTC')
+                        )->format('Y/m/d H:i:s'),
+                        strtoupper($log['level']),
+                        $log['message'],
+                        json_encode($log['context']),
+                        PHP_EOL
+                    );
                     flush();
                 }
             }
