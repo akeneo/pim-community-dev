@@ -1,7 +1,7 @@
 pim_analytics:
     system_info:
         title: System information
-        download: TXT
+        download: Download
 
     info_header:
         property: Property

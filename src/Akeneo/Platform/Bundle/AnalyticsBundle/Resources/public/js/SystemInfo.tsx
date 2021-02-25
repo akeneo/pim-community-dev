@@ -72,7 +72,7 @@ const SystemInfo = () => {
           />
         </PageHeader.UserActions>
         <PageHeader.Actions>
-          <Button href={downloadTxtRoute} level="tertiary">
+          <Button href={downloadTxtRoute} level="tertiary" ghost>
             {translate('pim_analytics.system_info.download')}
           </Button>
         </PageHeader.Actions>
