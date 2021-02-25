@@ -709,6 +709,7 @@ config:
     pim/product-edit-form/product-and-product-model-picker:  pimui/js/product/form/product-and-product-model-picker
     pim/product-edit-form/attributes/read-only-parent-attributes: pimui/js/product/form/attributes/read-only-parent-attributes
     pim/product/product-grid-title:                          pimui/js/form/common/product/product-grid-title.ts
+    pim/datagrid/product-gallery-row: pimdatagrid/js/datagrid/ProductGalleryRow.tsx
 
     # Product model
     pim/product-model-edit-form/product-model-label: pimui/js/product-model/form/product-model-label
