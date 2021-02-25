@@ -1,29 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import styled, {ThemeProvider} from 'styled-components';
+import {ThemeProvider} from 'styled-components';
 import {Badge, Card, pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {Model, ViewOptions} from 'backbone';
+import {ViewOptions} from 'backbone';
 
 const BaseRow = require('oro/datagrid/row');
 const MediaUrlGenerator = require('pim/media-url-generator');
 const Router = require('pim/router');
 
-const BadgeContainer = styled.div`
-  position: absolute;
-  z-index: 5;
-  top: 10px;
-  right: 10px;
-`;
+class ProductGalleryRow extends BaseRow {
+  reactRef: Element | null;
+  selected: boolean;
 
-class ProductGalleryRow<TModel extends Model> extends BaseRow {
-  private reactRef: Element | null;
-  private selected: boolean;
-
-  public constructor(options?: ViewOptions<TModel>) {
+  constructor(options?: ViewOptions) {
     super({
       ...options,
-      tagName: 'div',
+      tagName: 'tr',
       className: '',
     });
 
@@ -31,7 +24,7 @@ class ProductGalleryRow<TModel extends Model> extends BaseRow {
     this.reactRef = null;
   }
 
-  public initialize(options: object) {
+  initialize(options: object) {
     super.initialize(options);
 
     // Remove the parent listener for the 'backgrid:selected' event
@@ -46,7 +39,7 @@ class ProductGalleryRow<TModel extends Model> extends BaseRow {
     });
   }
 
-  public render() {
+  render() {
     const label = this.model.get('label');
     const imagePath = this.getImagePath();
     const badgeText = this.getBadgeText();
@@ -65,29 +58,41 @@ class ProductGalleryRow<TModel extends Model> extends BaseRow {
     };
 
     const productCard = (
-      <Card fit="cover" src={imagePath} onClick={followProduct} isSelected={this.selected} onSelect={notifySelection}>
-        <BadgeContainer>
+      <Card
+        fit="cover"
+        src={imagePath}
+        onClick={followProduct}
+        isSelected={this.selected}
+        onSelect={notifySelection}
+        stacked={this.isProductModel()}
+        // @ts-ignore
+        as="td"
+      >
+        <Card.BadgeContainer>
           <Badge level={badgeLevel}>{badgeText}</Badge>
-        </BadgeContainer>
+        </Card.BadgeContainer>
         {label}
       </Card>
     );
 
-    // @fixme: the rerender cause the following warning in the console  "Warning: render(...): It looks like the React-rendered content of this container was removed without using React. This is not supported and will cause errors. Instead, call ReactDOM.unmountComponentAtNode to empty a container"
     this.renderReactElement(productCard, this.el);
 
     return this;
   }
 
-  public remove() {
+  remove() {
+    this.unmountReact();
     super.remove();
-    // @fixme unmount crashes the page
-    //this.unmountReact();
 
     return this;
   }
 
-  private renderReactElement(component: React.ReactElement, container: Element) {
+  onClick(event: MouseEvent) {
+    // prevent rowClickAction
+    event.preventDefault();
+  }
+
+  renderReactElement(component: React.ReactElement, container: Element) {
     this.reactRef = container;
 
     ReactDOM.render(
@@ -96,26 +101,23 @@ class ProductGalleryRow<TModel extends Model> extends BaseRow {
     );
   }
 
-  /* @fixme unmount crashes the page
-        
-        private unmountReact() {
-          if (null !== this.reactRef) {
-            ReactDOM.unmountComponentAtNode(this.reactRef);
-            this.reactRef = null;
-          }
-        }
-     */
+  unmountReact() {
+    if (null !== this.reactRef) {
+      ReactDOM.unmountComponentAtNode(this.reactRef);
+      this.reactRef = null;
+    }
+  }
 
-  private updateSelection(isSelected: boolean) {
+  updateSelection(isSelected: boolean) {
     this.selected = isSelected;
     this.render();
   }
 
-  private isProductModel() {
+  isProductModel() {
     return this.model.get('document_type') === 'product_model';
   }
 
-  private getImagePath() {
+  getImagePath() {
     const image = this.model.get('image');
 
     if (undefined === image || null === image) {
@@ -125,23 +127,23 @@ class ProductGalleryRow<TModel extends Model> extends BaseRow {
     return MediaUrlGenerator.getMediaShowUrl(image.filePath, 'thumbnail');
   }
 
-  private getBadgeText() {
+  getBadgeText() {
     if (this.isProductModel()) {
       const complete = this.model.get('complete_variant_products').complete;
       const total = this.model.get('complete_variant_products').total;
 
-      return complete + ' / ' + total;
+      return `${complete} / ${total}`;
     }
 
     const completeness = this.model.get('completeness');
     if (null !== completeness) {
-      return completeness + '%';
+      return `${completeness}%`;
     }
 
     return null;
   }
 
-  private getBadgeLevel(): 'primary' | 'danger' | 'warning' | undefined {
+  getBadgeLevel(): 'primary' | 'danger' | 'warning' | undefined {
     if (this.isProductModel()) {
       const complete = this.model.get('complete_variant_products').complete;
       const total = this.model.get('complete_variant_products').total;
