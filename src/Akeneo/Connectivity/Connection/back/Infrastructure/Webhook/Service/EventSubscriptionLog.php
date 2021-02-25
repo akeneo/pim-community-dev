@@ -67,7 +67,7 @@ class EventSubscriptionLog implements EventSubscriptionLogInterface
                         'timestamp' => $event->getTimestamp(),
                     ];
                 },
-                $events
+                $events->getEvents()
             ),
         ];
 
