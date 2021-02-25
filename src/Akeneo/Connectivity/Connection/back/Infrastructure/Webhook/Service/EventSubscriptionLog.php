@@ -54,7 +54,7 @@ class EventSubscriptionLog implements EventSubscriptionLogInterface
         $log = [
             'type' => self::TYPE_EVENT_BUILD,
             'subscription_count' => $subscriptionCount,
-            'event_count' => count($events),
+            'event_count' => count($events->getEvents()),
             'event_built_count' => $eventBuiltCount,
             'duration_ms' => $durationMs,
             'events' => array_map(
