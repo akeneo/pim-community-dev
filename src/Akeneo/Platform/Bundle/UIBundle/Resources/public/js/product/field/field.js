@@ -12,10 +12,20 @@ define([
   'backbone',
   'underscore',
   'pim/template/product/field/field',
+  'pim/template/product/field/field-description',
   'pim/attribute-manager',
   'pim/i18n',
   'oro/mediator',
-], function ($, Backbone, _, fieldTemplate, AttributeManager, i18n, mediator) {
+], function (
+  $,
+  Backbone,
+  _,
+  fieldTemplate,
+  descriptionTemplate,
+  AttributeManager,
+  i18n,
+  mediator
+) {
   var FieldModel = Backbone.Model.extend({
     values: [],
   });
@@ -33,6 +43,7 @@ define([
     context: {},
     model: FieldModel,
     template: _.template(fieldTemplate),
+    descriptionTemplate: _.template(descriptionTemplate),
     elements: {},
     editable: true,
     ready: true,
@@ -66,6 +77,12 @@ define([
       this.elements = {};
       var promises = [];
       mediator.trigger('pim_enrich:form:field:extension:add', {field: this, promises: promises});
+
+      if (this.attribute.descriptions[this.context.uiLocale]) {
+        this.addElement('footer', 'description', _.descriptionTemplate({
+          description: this.attribute.descriptions[this.context.uiLocale]
+        }));
+      }
 
       $.when
         .apply($, promises)
