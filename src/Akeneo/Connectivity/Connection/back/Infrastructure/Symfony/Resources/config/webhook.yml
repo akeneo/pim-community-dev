@@ -38,3 +38,4 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
             - '@akeneo_connectivity.connection.system_clock'
+            - !tagged akeneo_connectivity.connection.webhook.event_normalizer

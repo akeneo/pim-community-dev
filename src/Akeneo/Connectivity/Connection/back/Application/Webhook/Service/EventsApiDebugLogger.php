@@ -6,7 +6,9 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Service;
 
 use Akeneo\Connectivity\Connection\Domain\Clock;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
+use Akeneo\Connectivity\Connection\Domain\Webhook\EventNormalizer\EventNormalizerInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
+use Akeneo\Platform\Component\EventQueue\EventInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -31,15 +33,43 @@ class EventsApiDebugLogger
 
     private EventsApiDebugRepository $repository;
 
-    public function __construct(EventsApiDebugRepository $repository, Clock $clock, int $bufferSize = 100)
-    {
+    /**
+     * @var iterable<EventNormalizerInterface>
+     */
+    private iterable $eventNormalizers;
+
+    /**
+     * @param iterable<EventNormalizerInterface> $eventNormalizers
+     */
+    public function __construct(
+        EventsApiDebugRepository $repository,
+        Clock $clock,
+        iterable $eventNormalizers,
+        int $bufferSize = 100
+    ) {
         $this->repository = $repository;
         $this->clock = $clock;
+        $this->eventNormalizers = $eventNormalizers;
         $this->bufferSize = $bufferSize;
         $this->buffer = [];
     }
 
-    public function logLimitOfEventApiRequestsReached(): void
+    public function logEventSubscriptionSkippedOwnEvent(
+        string $connectionCode,
+        EventInterface $event
+    ): void {
+        $this->addLog([
+            'timestamp' => $this->clock->now()->getTimestamp(),
+            'level' => EventsApiDebugLogLevels::NOTICE,
+            'message' => 'The event was not sent because it was raised by the same connection.',
+            'connection_code' => $connectionCode,
+            'context' => [
+                'event' => $this->normalizeEvent($event)
+            ]
+        ]);
+    }
+
+    public function logLimitOfEventsApiRequestsReached(): void
     {
         $this->addLog([
             'timestamp' => $this->clock->now()->getTimestamp(),
@@ -76,5 +106,21 @@ class EventsApiDebugLogger
         if (count($this->buffer) >= $this->bufferSize) {
             $this->flushLogs();
         }
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    private function normalizeEvent(EventInterface $event): array
+    {
+        foreach ($this->eventNormalizers as $normalizer) {
+            if (true === $normalizer->supports($event)) {
+                return $normalizer->normalize($event);
+            }
+        }
+
+        throw new \RuntimeException(
+            sprintf('Event normalizer not found for %s', get_class($event))
+        );
     }
 }

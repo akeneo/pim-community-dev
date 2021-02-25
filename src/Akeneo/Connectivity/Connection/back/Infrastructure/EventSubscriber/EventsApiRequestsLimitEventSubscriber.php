@@ -65,7 +65,7 @@ final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInte
                 )
             );
 
-            $this->eventsApiDebugLogger->logLimitOfEventApiRequestsReached();
+            $this->eventsApiDebugLogger->logLimitOfEventsApiRequestsReached();
             $this->eventsApiDebugLogger->flushLogs();
 
             $this->sleep->sleep($delayUntilNextRequest);
