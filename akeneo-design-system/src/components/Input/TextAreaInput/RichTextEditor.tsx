@@ -10,7 +10,7 @@ const editorStateToRaw = (editorState: EditorState): string =>
 const rawToEditorState = (value: string): EditorState => {
   const rawDraft = convertFromHTML(value);
 
-  if (!rawDraft) {
+  if (!rawDraft || !rawDraft.contentBlocks) {
     return EditorState.createEmpty();
   }
 
@@ -23,7 +23,7 @@ type RichTextEditorProps = {
   onChange: (value: string) => void;
 };
 
-const RichTextEditor = ({value, readOnly = false, onChange}: RichTextEditorProps) => {
+const RichTextEditor = ({value, readOnly = false, onChange, ...rest}: RichTextEditorProps) => {
   const [editorState, setEditorState] = useState<EditorState>(rawToEditorState(value));
 
   useEffect(() => {
@@ -42,6 +42,7 @@ const RichTextEditor = ({value, readOnly = false, onChange}: RichTextEditorProps
       }}
       editorState={editorState}
       onEditorStateChange={setEditorState}
+      {...rest}
     />
   );
 };
