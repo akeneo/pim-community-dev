@@ -645,6 +645,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_enrich.step.convert_to_simple_products.mass_edit'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 

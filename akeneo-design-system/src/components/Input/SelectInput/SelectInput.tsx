@@ -144,47 +144,60 @@ type SelectInputProps = Override<
         readOnly?: boolean;
         onChange: (newValue: string | null) => void;
       }
-  ) & {
-    /**
-     * The props value of the selected option.
-     */
-    value: string | null;
+  ) &
+    (
+      | {
+          clearable?: true;
 
-    /**
-     * The placeholder displayed when no option is selected.
-     */
-    placeholder?: string;
+          /**
+           * The props value of the selected option.
+           */
+          value: string | null;
+        }
+      | {
+          clearable?: false;
 
-    /**
-     * The text displayed when no result was found.
-     */
-    emptyResultLabel: string;
+          /**
+           * The props value of the selected option.
+           */
+          value: string;
+        }
+    ) & {
+      /**
+       * The placeholder displayed when no option is selected.
+       */
+      placeholder?: string;
 
-    /**
-     * Accessibility text for the clear button.
-     */
-    clearLabel?: string;
+      /**
+       * The text displayed when no result was found.
+       */
+      emptyResultLabel: string;
 
-    /**
-     * Accessibility text for the open dropdown button.
-     */
-    openLabel?: string;
+      /**
+       * Accessibility text for the clear button
+       */
+      clearLabel?: string;
 
-    /**
-     * Defines if the input is valid on not.
-     */
-    invalid?: boolean;
+      /**
+       * Accessibility text for the open dropdown button
+       */
+      openLabel?: string;
 
-    /**
-     * The options.
-     */
-    children?: ReactNode;
+      /**
+       * Defines if the input is valid on not.
+       */
+      invalid?: boolean;
 
-    /**
-     * Force the vertical position of the overlay.
-     */
-    verticalPosition?: VerticalPosition;
-  }
+      /**
+       * The options.
+       */
+      children?: ReactNode;
+
+      /**
+       * Force the vertical position of the overlay.
+       */
+      verticalPosition?: VerticalPosition;
+    }
 >;
 
 /**
@@ -198,6 +211,7 @@ const SelectInput = ({
   emptyResultLabel,
   children,
   onChange,
+  clearable = true,
   clearLabel = '',
   openLabel = '',
   readOnly = false,
@@ -291,7 +305,7 @@ const SelectInput = ({
         />
         {!readOnly && (
           <ActionContainer>
-            {!dropdownIsOpen && null !== value && (
+            {!dropdownIsOpen && null !== value && clearable && (
               <IconButton
                 ghost="borderless"
                 level="tertiary"

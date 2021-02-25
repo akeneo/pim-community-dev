@@ -11,17 +11,20 @@ class AddQuantifiedAssociationsToProductEndToEnd extends AbstractProductWithQuan
      */
     public function it_add_quantified_associations_to_a_product(): void
     {
-        $product = $this->createProduct([
-            'values' => [
-                'sku' => [
-                    [
-                        'scope' => null,
-                        'locale' => null,
-                        'data' => 'yellow_chair',
+        $product = $this->createProduct(
+            'yellow_chair',
+            null,
+            [
+                'values' => [
+                    'sku' => [
+                        [
+                            'scope' => null,
+                            'locale' => null,
+                            'data' => 'yellow_chair',
+                        ],
                     ],
                 ],
-            ],
-        ]);
+            ]);
         $normalizedProduct = $this->getProductFromInternalApi($product->getId());
 
         $quantifiedAssociations = [

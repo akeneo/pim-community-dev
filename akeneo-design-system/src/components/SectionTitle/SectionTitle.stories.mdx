@@ -1,18 +1,19 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {SectionTitle} from './SectionTitle.tsx';
-import {Button, IconButton} from "../../components";
-import {MoreIcon} from "../../icons";
+import {Button, IconButton} from '../../components';
+import {MoreIcon} from '../../icons';
+import {Scrollable, Content} from '../../storybook/PreviewGallery';
 
 <Meta
   title="Components/Section title"
   subcomponents={{
-    'SectionTitle': SectionTitle
+    SectionTitle,
   }}
   argTypes={{
-    text: {control: {type: 'text'}, description: 'Define the section title text'},
+    SectionTitle: {control: {type: 'text'}, description: 'Define the section title text'},
   }}
   args={{
-    text: 'General parameters',
+    SectionTitle: 'General parameters',
   }}
 />
 
@@ -33,9 +34,9 @@ Use this component only for title, not for description or help message.
     {args => {
       return (
         <SectionTitle>
-          <SectionTitle.Title>{args.text}</SectionTitle.Title>
+          <SectionTitle.Title>{args.SectionTitle}</SectionTitle.Title>
         </SectionTitle>
-      )
+      );
     }}
   </Story>
 </Canvas>
@@ -43,6 +44,7 @@ Use this component only for title, not for description or help message.
 <ArgsTable story="Standard" />
 
 ## With actions
+
 <Canvas>
   <Story name="Actions">
     <SectionTitle>
@@ -52,8 +54,28 @@ Use this component only for title, not for description or help message.
       <SectionTitle.Separator />
       <Button>Action</Button>
       <Button>Action</Button>
-      <IconButton icon={<MoreIcon />} title='More'/>
+      <IconButton icon={<MoreIcon />} title="More" />
     </SectionTitle>
   </Story>
 </Canvas>
 
+## Sticky
+
+<Canvas>
+  <Story name="Sticky">
+    <Scrollable height={300}>
+      <SectionTitle sticky={0}>
+        <SectionTitle.Title>First section</SectionTitle.Title>
+        <SectionTitle.Spacer />
+        <Button>Action</Button>
+      </SectionTitle>
+      <Content height={400}>Some content</Content>
+      <SectionTitle sticky={0}>
+        <SectionTitle.Title>Second section</SectionTitle.Title>
+        <SectionTitle.Spacer />
+        <Button>Action</Button>
+      </SectionTitle>
+      <Content height={400}>Some other content</Content>
+    </Scrollable>
+  </Story>
+</Canvas>
