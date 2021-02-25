@@ -2,9 +2,17 @@ import styled, {css, keyframes} from 'styled-components';
 import {Color, FontSize, getColor, getFontSize, Palette} from './theme';
 
 const CommonStyle = css`
+  input,
+  button,
+  select,
+  textarea {
+    font-family: 'Lato';
+    font-size: ${getFontSize('default')};
+  }
+
   font-family: 'Lato';
-  color: ${getColor('grey', 120)};
   font-size: ${getFontSize('default')};
+  color: ${getColor('grey', 120)};
   line-height: 20px;
   box-sizing: border-box;
 `;

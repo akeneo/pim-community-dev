@@ -19,17 +19,31 @@ const rawToEditorState = (value: string): EditorState => {
 
 type RichTextEditorProps = {
   value: string;
+  readOnly?: boolean;
   onChange: (value: string) => void;
 };
 
-const RichTextEditor = ({value, onChange}: RichTextEditorProps) => {
+const RichTextEditor = ({value, readOnly = false, onChange}: RichTextEditorProps) => {
   const [editorState, setEditorState] = useState<EditorState>(rawToEditorState(value));
 
   useEffect(() => {
     onChange(editorStateToRaw(editorState));
   }, [editorState]);
 
-  return <Editor editorState={editorState} onEditorStateChange={setEditorState} />;
+  return (
+    <Editor
+      toolbarHidden={readOnly}
+      readOnly={readOnly}
+      toolbar={{
+        options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'link', 'embedded', 'image', 'remove'],
+        inline: {
+          options: ['bold', 'italic'],
+        },
+      }}
+      editorState={editorState}
+      onEditorStateChange={setEditorState}
+    />
+  );
 };
 
 export {RichTextEditor};
