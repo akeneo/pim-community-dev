@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionRequestsLimitReachedLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
 use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiRequestsLimitEventSubscriber;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep;
@@ -19,13 +20,15 @@ class EventsApiRequestsLimitEventSubscriberSpec extends ObjectBehavior
     public function let(
         GetDelayUntilNextRequest $getDelayUntilNextRequest,
         Sleep $sleep,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        EventsApiDebugLogger $eventsApiDebugLogger
     ): void {
         $this->beConstructedWith(
             $getDelayUntilNextRequest,
             10,
             $sleep,
-            $logger
+            $logger,
+            $eventsApiDebugLogger
         );
     }
 
@@ -53,6 +56,22 @@ class EventsApiRequestsLimitEventSubscriberSpec extends ObjectBehavior
 
         $logger->info(Argument::any())->shouldBeCalled();
         $sleep->sleep(123)->shouldBeCalled();
+
+        $this->checkWebhookRequestLimit();
+    }
+
+    public function it_logs_that_the_limit_is_reached_for_the_events_api_debug(
+        GetDelayUntilNextRequest $getDelayUntilNextRequest,
+        EventsApiDebugLogger $eventsApiDebugLogger
+    ): void {
+        $getDelayUntilNextRequest
+            ->execute(Argument::cetera())
+            ->willReturn(1);
+
+        $eventsApiDebugLogger->logLimitOfEventApiRequestsReached()
+            ->shouldBeCalled();
+        $eventsApiDebugLogger->flushLogs()
+            ->shouldBeCalled();
 
         $this->checkWebhookRequestLimit();
     }
