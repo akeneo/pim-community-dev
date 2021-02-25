@@ -87,7 +87,7 @@ class JobExecutionController
         return $archives;
     }
 
-    private function isJobGranted(JobExecution $jobExecution)
+    private function isJobGranted(JobExecution $jobExecution): bool
     {
         $jobExecutionType = $jobExecution->getJobInstance()->getType();
         if (!array_key_exists($jobExecutionType, $this->jobSecurityMapping)) {
