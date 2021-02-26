@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Elasticsearch\Query;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\PurgeEventsApiErrorLogsQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -23,10 +23,10 @@ class PurgeEventsApiErrorLogsQueryIntegration extends TestCase
             $interval,
             10,
             [
-                EventsApiDebugLogger::LEVEL_ERROR,
-                EventsApiDebugLogger::LEVEL_WARNING,
-                EventsApiDebugLogger::LEVEL_NOTICE,
-                EventsApiDebugLogger::LEVEL_INFO,
+                EventsApiDebugLogLevels::ERROR,
+                EventsApiDebugLogLevels::WARNING,
+                EventsApiDebugLogLevels::NOTICE,
+                EventsApiDebugLogLevels::INFO,
             ]
         );
 
@@ -36,10 +36,10 @@ class PurgeEventsApiErrorLogsQueryIntegration extends TestCase
                 ->sub(new \DateInterval('PT4H'))
         );
         $this->esClient->refreshIndex();
-        $infoResults = $this->findDocumentsByLevel(EventsApiDebugLogger::LEVEL_INFO);
-        $noticeResults = $this->findDocumentsByLevel(EventsApiDebugLogger::LEVEL_NOTICE);
-        $errorResults = $this->findDocumentsByLevel(EventsApiDebugLogger::LEVEL_ERROR);
-        $warnResults = $this->findDocumentsByLevel(EventsApiDebugLogger::LEVEL_WARNING);
+        $infoResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::INFO);
+        $noticeResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::NOTICE);
+        $errorResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::ERROR);
+        $warnResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::WARNING);
 
         Assert::assertEquals(10, $infoResults['hits']['total']['value']);
         Assert::assertEquals(10, $noticeResults['hits']['total']['value']);
@@ -54,7 +54,7 @@ class PurgeEventsApiErrorLogsQueryIntegration extends TestCase
         $this->generateLogs(
             $interval,
             10,
-            [EventsApiDebugLogger::LEVEL_INFO, EventsApiDebugLogger::LEVEL_NOTICE]
+            [EventsApiDebugLogLevels::INFO, EventsApiDebugLogLevels::NOTICE]
         );
 
         // We want to purge errors that are older than 4h
@@ -63,10 +63,10 @@ class PurgeEventsApiErrorLogsQueryIntegration extends TestCase
                 ->sub(new \DateInterval('PT4H'))
         );
         $this->esClient->refreshIndex();
-        $infoResults = $this->findDocumentsByLevel(EventsApiDebugLogger::LEVEL_INFO);
-        $noticeResults = $this->findDocumentsByLevel(EventsApiDebugLogger::LEVEL_NOTICE);
-        $errorResults = $this->findDocumentsByLevel(EventsApiDebugLogger::LEVEL_ERROR);
-        $warnResults = $this->findDocumentsByLevel(EventsApiDebugLogger::LEVEL_WARNING);
+        $infoResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::INFO);
+        $noticeResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::NOTICE);
+        $errorResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::ERROR);
+        $warnResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::WARNING);
 
         Assert::assertEquals(10, $infoResults['hits']['total']['value']);
         Assert::assertEquals(10, $noticeResults['hits']['total']['value']);

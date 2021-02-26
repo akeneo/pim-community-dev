@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 /**
@@ -34,8 +34,8 @@ class PurgeEventsApiErrorLogsQuery
                         [
                             'terms' => [
                                 'level' => [
-                                    EventsApiDebugLogger::LEVEL_ERROR,
-                                    EventsApiDebugLogger::LEVEL_WARNING
+                                    EventsApiDebugLogLevels::ERROR,
+                                    EventsApiDebugLogLevels::WARNING
                                 ],
                             ],
                         ],

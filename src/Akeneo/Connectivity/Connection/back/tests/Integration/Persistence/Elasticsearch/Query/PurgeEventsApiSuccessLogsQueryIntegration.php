@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Elasticsearch\Query;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\PurgeEventsApiSuccessLogsQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -23,20 +23,20 @@ class PurgeEventsApiSuccessLogsQueryIntegration extends TestCase
             $interval,
             10,
             [
-                EventsApiDebugLogger::LEVEL_ERROR,
-                EventsApiDebugLogger::LEVEL_WARNING,
-                EventsApiDebugLogger::LEVEL_NOTICE,
-                EventsApiDebugLogger::LEVEL_INFO,
+                EventsApiDebugLogLevels::ERROR,
+                EventsApiDebugLogLevels::WARNING,
+                EventsApiDebugLogLevels::NOTICE,
+                EventsApiDebugLogLevels::INFO,
             ]
         );
 
         // We want to keep only 8 infos & notices
         $this->purgeQuery->execute(8);
         $this->esClient->refreshIndex();
-        $infoResults = $this->findDocumentsByLevel(EventsApiDebugLogger::LEVEL_INFO);
-        $noticeResults = $this->findDocumentsByLevel(EventsApiDebugLogger::LEVEL_NOTICE);
-        $errorResults = $this->findDocumentsByLevel(EventsApiDebugLogger::LEVEL_ERROR);
-        $warnResults = $this->findDocumentsByLevel(EventsApiDebugLogger::LEVEL_WARNING);
+        $infoResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::INFO);
+        $noticeResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::NOTICE);
+        $errorResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::ERROR);
+        $warnResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::WARNING);
 
         Assert::assertEquals(4, $infoResults['hits']['total']['value']);
         Assert::assertEquals(4, $noticeResults['hits']['total']['value']);
@@ -51,16 +51,16 @@ class PurgeEventsApiSuccessLogsQueryIntegration extends TestCase
         $this->generateLogs(
             $interval,
             10,
-            [EventsApiDebugLogger::LEVEL_WARNING, EventsApiDebugLogger::LEVEL_ERROR]
+            [EventsApiDebugLogLevels::WARNING, EventsApiDebugLogLevels::ERROR]
         );
 
         // We want to keep only 8 infos & notices
         $this->purgeQuery->execute(8);
         $this->esClient->refreshIndex();
-        $infoResults = $this->findDocumentsByLevel(EventsApiDebugLogger::LEVEL_INFO);
-        $noticeResults = $this->findDocumentsByLevel(EventsApiDebugLogger::LEVEL_NOTICE);
-        $errorResults = $this->findDocumentsByLevel(EventsApiDebugLogger::LEVEL_ERROR);
-        $warnResults = $this->findDocumentsByLevel(EventsApiDebugLogger::LEVEL_WARNING);
+        $infoResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::INFO);
+        $noticeResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::NOTICE);
+        $errorResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::ERROR);
+        $warnResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::WARNING);
 
         Assert::assertEquals(0, $infoResults['hits']['total']['value']);
         Assert::assertEquals(0, $noticeResults['hits']['total']['value']);
