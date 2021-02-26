@@ -1,8 +1,9 @@
 import {useState} from 'react';
 import styled from 'styled-components';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {action} from '@storybook/addon-actions';
 import {Card, CardGrid} from './Card.tsx';
-import {Badge} from '../../components';
+import {Badge, Link} from '../../components';
 
 <Meta
   title="Components/Card"
@@ -85,11 +86,56 @@ Cards should be displayed in a grid, therefore, a `CardGrid` component is also a
             </Card.BadgeContainer>
             Card almost complete
           </Card>
-          <Card {...args} src="https://picsum.photos/seed/akenec/200">
+          <Card {...args} isStacked={true} src="https://picsum.photos/seed/akenec/200">
             <Card.BadgeContainer>
               <Badge level="primary">100%</Badge>
             </Card.BadgeContainer>
-            Card complete
+            Card complete (and stacked)
+          </Card>
+        </CardGrid>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With Links
+
+<Canvas>
+  <Story name="With Links">
+    {args => {
+      const [firstSelected, setFirstSelected] = useState(false);
+      return (
+        <CardGrid>
+          <Card {...args} src="https://picsum.photos/seed/akeneaa/200">
+            <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+              Card with Link
+            </Link>
+          </Card>
+          <Card {...args} disabled={true} src="https://picsum.photos/seed/akeneba/200">
+            <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+              Disabled Card with Link
+            </Link>
+          </Card>
+          <Card
+            {...args}
+            isSelected={firstSelected}
+            onSelect={isSelected => setFirstSelected(isSelected)}
+            src="https://picsum.photos/seed/akeneca/200"
+          >
+            <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+              Selectable Card with Link
+            </Link>
+          </Card>
+          <Card
+            {...args}
+            disabled={true}
+            isSelected={false}
+            onSelect={() => {}}
+            src="https://picsum.photos/seed/akenecb/200"
+          >
+            <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+              Disabled selectable Card with Link
+            </Link>
           </Card>
         </CardGrid>
       );
@@ -111,6 +157,7 @@ Here the `fit` prop is also set to `contain`.
               {...args}
               key={index}
               fit="contain"
+              onClick={action('Clicked')}
               src={`https://picsum.photos/seed/akeneo${index}/${index % 2 === 0 ? 200 : 120}/${
                 index % 2 === 0 ? 120 : 200
               }`}
@@ -146,9 +193,10 @@ Here the `fit` prop is also set to `contain`.
             {...args}
             src="https://picsum.photos/seed/akenef/200"
             isSelected={firstSelected}
+            isStacked={true}
             onSelect={isSelected => setFirstSelected(isSelected)}
           >
-            And this one is selectable
+            Selectable &amp; stacked
           </Card>
           <Card
             {...args}
