@@ -19,6 +19,7 @@ const uncheckTick = keyframes`
 
 const Container = styled.div`
   display: flex;
+  line-height: 20px;
 `;
 
 const TickIcon = styled(CheckIcon)`
