@@ -43,12 +43,14 @@ class TreeDecorator extends ElementDecorator
 
     public function expandNode(string $nodeName): void
     {
-        $tree = $this->findNodeInTree($nodeName);
-        if ($tree->getAttribute('aria-expanded') === 'false') {
-            $tree->find('css', 'button')->click();
-        }
-
         $this->spin(function () use ($nodeName) {
+            $tree = $this->findNodeInTree($nodeName);
+            if ($tree->getAttribute('aria-expanded') === 'false') {
+                $tree->find('css', 'button')->click();
+
+                return false;
+            }
+
             return $this->findNodeInTree($nodeName)->getAttribute('aria-expanded') === 'true';
         }, sprintf('Unable to open %s', $nodeName));
     }
