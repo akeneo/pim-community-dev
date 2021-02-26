@@ -41,6 +41,12 @@ class JobQueueConsumerCommand extends Command
     /** Interval in seconds to wait after an exception occurred.*/
     private const EXCEPTION_WAIT_INTERVAL = 5;
 
+    /** Number of iterations the consumer check for a job */
+    private const CONSUMER_TTL = 5;
+
+    /** Duration in seconds to sleep between each consumer queue check */
+    private const CONSUMER_QUEUE_CHECK_INTERVAL = 1;
+
     /** Interval in microseconds before checking if the process is still running. */
     private const RUNNING_PROCESS_CHECK_INTERVAL = 200000;
 
@@ -90,8 +96,8 @@ class JobQueueConsumerCommand extends Command
     {
         /** @var JobQueueConsumerConfiguration */
         $configuration = (new JobQueueConsumerConfiguration())
-            ->setTimeToLive(5)
-            ->setQueueCheckInterval(1);
+            ->setTimeToLive(static::CONSUMER_TTL)
+            ->setQueueCheckInterval(static::CONSUMER_QUEUE_CHECK_INTERVAL);
 
         if ($input->hasOption('job')) {
             $configuration->setWhitelistedJobInstanceCodes($input->getOption('job'));
