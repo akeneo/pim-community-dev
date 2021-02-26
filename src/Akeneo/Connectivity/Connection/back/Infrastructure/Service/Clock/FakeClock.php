@@ -16,7 +16,7 @@ final class FakeClock implements Clock
 
     public function __construct(\DateTimeImmutable $now = null)
     {
-        $this->now = $now ?: new \DateTimeImmutable('now', new \DateTimeZone('UTC'));;
+        $this->now = $now ?: new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
     }
 
     public function now(): \DateTimeImmutable

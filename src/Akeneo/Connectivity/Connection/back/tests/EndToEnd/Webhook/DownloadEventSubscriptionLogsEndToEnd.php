@@ -27,21 +27,21 @@ class DownloadEventSubscriptionLogsEndToEnd extends WebTestCase
 
     public function test_it_gets_file_of_event_subscription_logs(): void
     {
-        $timestamp = $this->clock->now()->getTimestamp() - 10;
+        $now = $this->clock->now()->getTimestamp();
         $sapConnection = $this->getConnection();
         $this->webhookLoader->initWebhook($sapConnection->code());
 
         $this->insertLogs(
             [
                 [
-                    'timestamp' => $timestamp,
+                    'timestamp' => $now - 2,
                     'level' => 'warning',
                     'message' => 'Foo bar',
                     'connection_code' => $sapConnection->code(),
                     'context' => ['foo' => 'bar'],
                 ],
                 [
-                    'timestamp' => $timestamp,
+                    'timestamp' => $now - 1,
                     'level' => 'warning',
                     'message' => 'Foo bar 2',
                     'connection_code' => $sapConnection->code(),
@@ -66,8 +66,8 @@ class DownloadEventSubscriptionLogsEndToEnd extends WebTestCase
         ob_end_clean();
 
         $expectedContent = <<<EOF
-2021/03/02 03:30:01 WARNING Foo bar {"foo":"bar"}
-2021/03/02 03:30:01 WARNING Foo bar 2 {"foo":"bar2"}\n
+2021/03/02 03:30:09 WARNING Foo bar {"foo":"bar"}
+2021/03/02 03:30:10 WARNING Foo bar 2 {"foo":"bar2"}\n
 EOF;
         Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
         Assert::assertInstanceOf(StreamedResponse::class, $response);
