@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
-use Akeneo\Platform\Component\EventQueue\EventInterface;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -14,21 +13,14 @@ use Akeneo\Platform\Component\EventQueue\EventInterface;
  */
 class SendBusinessEventToWebhooksCommand
 {
-    /** @var EventInterface|BulkEventInterface */
-    private object $event;
+    private BulkEventInterface $event;
 
-    /**
-     * @param EventInterface|BulkEventInterface $event
-     */
-    public function __construct(object $event)
+    public function __construct(BulkEventInterface $event)
     {
         $this->event = $event;
     }
 
-    /**
-     * @return EventInterface|BulkEventInterface
-     */
-    public function event(): object
+    public function event(): BulkEventInterface
     {
         return $this->event;
     }

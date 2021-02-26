@@ -9,7 +9,6 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuil
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
-use Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -39,37 +38,27 @@ class WebhookEventBuilder
     }
 
     /**
-     * @param EventInterface|BulkEventInterface $event
      * @param array<mixed> $context
      *
      * @return array<WebhookEvent>
      */
-    public function build(object $event, array $context = []): array
+    public function build(BulkEventInterface $pimEventBulk, array $context = []): array
     {
         $context = $this->resolveOptions($context);
-        $eventDataBuilder = $this->getEventDataBuilder($event);
-        $webhookEvents = [];
+        $eventDataBuilder = $this->getEventDataBuilder($pimEventBulk);
 
-        // TODO: Remove try/catch when BulkEvent refactoring is completed
-        try {
-            $eventDataCollection = $eventDataBuilder->build($event, $context['user']);
-            $events = $event instanceof EventInterface ? [$event] : $event->getEvents();
-            $webhookEvents = $this->buildWebhookEvents($events, $eventDataCollection, $context);
-        } catch (EventBuildingExceptionInterface $exception) {
-            $this->logger->warning(
-                json_encode(
-                    (new EventSubscriptionDataBuildErrorLog(
-                        $exception->getMessage(),
-                        $context['connection_code'],
-                        $context['user']->getId(),
-                        $event
-                    ))->toLog(),
-                    JSON_THROW_ON_ERROR
-                )
-            );
-        }
+        $eventDataCollection = $eventDataBuilder->build(
+            $pimEventBulk,
+            $context['user']
+        );
 
-        return $webhookEvents;
+        $apiEvents = $this->buildWebhookEvents(
+            $pimEventBulk->getEvents(),
+            $eventDataCollection,
+            $context
+        );
+
+        return $apiEvents;
     }
 
     /**
@@ -88,10 +77,7 @@ class WebhookEventBuilder
         return $resolver->resolve($options);
     }
 
-    /**
-     * @param EventInterface|BulkEventInterface $event
-     */
-    private function getEventDataBuilder(object $event): EventDataBuilderInterface
+    private function getEventDataBuilder(BulkEventInterface $event): EventDataBuilderInterface
     {
         foreach ($this->eventDataBuilders as $builder) {
             if (true === $builder->supports($event)) {
@@ -103,20 +89,23 @@ class WebhookEventBuilder
     }
 
     /**
-     * @param array<EventInterface> $events
+     * @param array<EventInterface> $pimEvents
      * @param array<mixed> $context
      *
      * @return array<WebhookEvent>
      */
-    private function buildWebhookEvents(array $events, EventDataCollection $eventDataCollection, array $context): array
-    {
-        $webhookEvents = [];
+    private function buildWebhookEvents(
+        array $pimEvents,
+        EventDataCollection $eventDataCollection,
+        array $context
+    ): array {
+        $apiEvents = [];
 
-        foreach ($events as $event) {
-            $data = $eventDataCollection->getEventData($event);
+        foreach ($pimEvents as $pimEvent) {
+            $data = $eventDataCollection->getEventData($pimEvent);
 
             if (null === $data) {
-                throw new \LogicException(sprintf('Event %s should have event data', $event->getUuid()));
+                throw new \LogicException(sprintf('Event %s should have event data', $pimEvent->getUuid()));
             }
 
             if ($data instanceof \Throwable) {
@@ -126,7 +115,7 @@ class WebhookEventBuilder
                             $data->getMessage(),
                             $context['connection_code'],
                             $context['user']->getId(),
-                            $event
+                            $pimEvent
                         ))->toLog(),
                         JSON_THROW_ON_ERROR
                     )
@@ -135,16 +124,16 @@ class WebhookEventBuilder
                 continue;
             }
 
-            $webhookEvents[] = new WebhookEvent(
-                $event->getName(),
-                $event->getUuid(),
-                date(\DateTimeInterface::ATOM, $event->getTimestamp()),
-                $event->getAuthor(),
+            $apiEvents[] = new WebhookEvent(
+                $pimEvent->getName(),
+                $pimEvent->getUuid(),
+                date(\DateTimeInterface::ATOM, $pimEvent->getTimestamp()),
+                $pimEvent->getAuthor(),
                 $context['pim_source'],
                 $data,
             );
         }
 
-        return $webhookEvents;
+        return $apiEvents;
     }
 }

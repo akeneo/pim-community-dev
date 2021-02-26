@@ -67,9 +67,9 @@ final class SendBusinessEventToWebhooksHandler
             return;
         }
 
-        $event = $command->event();
+        $pimEventBulk = $command->event();
 
-        $requests = function () use ($event, $webhooks) {
+        $requests = function () use ($pimEventBulk, $webhooks) {
             $apiEventsRequestCount = 0;
             $cumulatedTimeMs = 0;
             $startTime = $this->getTime();
@@ -77,14 +77,14 @@ final class SendBusinessEventToWebhooksHandler
             foreach ($webhooks as $webhook) {
                 $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
 
-                $filteredEvent = $this->filterConnectionOwnEvents($webhook, $user->getUsername(), $event);
-                if (null === $filteredEvent) {
+                $filteredPimEventBulk = $this->filterConnectionOwnEvents($webhook, $user->getUsername(), $pimEventBulk);
+                if (null === $filteredPimEventBulk) {
                     continue;
                 }
 
                 try {
-                    $webhookEvents = $this->builder->build(
-                        $filteredEvent,
+                    $apiEvents = $this->builder->build(
+                        $filteredPimEventBulk,
                         [
                             'user' => $user,
                             'pim_source' => $this->pimSource,
@@ -92,7 +92,7 @@ final class SendBusinessEventToWebhooksHandler
                         ]
                     );
 
-                    if (0 === count($webhookEvents)) {
+                    if (0 === count($apiEvents)) {
                         continue;
                     }
 
@@ -100,7 +100,7 @@ final class SendBusinessEventToWebhooksHandler
 
                     yield new WebhookRequest(
                         $webhook,
-                        $webhookEvents
+                        $apiEvents
                     );
 
                     $apiEventsRequestCount++;
@@ -119,7 +119,7 @@ final class SendBusinessEventToWebhooksHandler
                     json_encode(
                         (new EventSubscriptionEventBuildLog(
                             count($webhooks),
-                            $event,
+                            $pimEventBulk,
                             $cumulatedTimeMs,
                             $apiEventsRequestCount
                         ))->toLog(),
@@ -134,53 +134,37 @@ final class SendBusinessEventToWebhooksHandler
         $this->cacheClearer->clear();
     }
 
-    /**
-     * @param EventInterface|BulkEventInterface $event
-     *
-     * @return EventInterface|BulkEventInterface|null
-     */
-    private function filterConnectionOwnEvents(ActiveWebhook $webhook, string $username, object $event): ?object
-    {
-        if ($event instanceof BulkEventInterface) {
-            $events = array_filter(
-                $event->getEvents(),
-                function (EventInterface $event) use ($username, $webhook) {
-                    if ($username === $event->getAuthor()->name()) {
-                        $this->logger->info(
-                            json_encode(
-                                (EventSubscriptionSkipOwnEventLog::fromEvent(
-                                    $event,
-                                    $webhook->connectionCode()
-                                ))->toLog(),
-                                JSON_THROW_ON_ERROR
-                            )
-                        );
+    private function filterConnectionOwnEvents(
+        ActiveWebhook $webhook,
+        string $username,
+        BulkEventInterface $bulkEvent
+    ): ?BulkEventInterface {
+        $events = array_filter(
+            $bulkEvent->getEvents(),
+            function (EventInterface $event) use ($username, $webhook) {
+                if ($username === $event->getAuthor()->name()) {
+                    $this->logger->info(
+                        json_encode(
+                            (EventSubscriptionSkipOwnEventLog::fromEvent(
+                                $event,
+                                $webhook->connectionCode()
+                            ))->toLog(),
+                            JSON_THROW_ON_ERROR
+                        )
+                    );
 
-                        return false;
-                    }
-
-                    return true;
+                    return false;
                 }
-            );
-            if (count($events) === 0) {
-                return null;
+
+                return true;
             }
+        );
 
-            return new BulkEvent($events);
-        }
-
-        if ($event instanceof EventInterface && $username === $event->getAuthor()->name()) {
-            $this->logger->info(
-                json_encode(
-                    (EventSubscriptionSkipOwnEventLog::fromEvent($event, $webhook->connectionCode()))->toLog(),
-                    JSON_THROW_ON_ERROR
-                )
-            );
-
+        if (count($events) === 0) {
             return null;
         }
 
-        return $event;
+        return new BulkEvent($events);
     }
 
     /**

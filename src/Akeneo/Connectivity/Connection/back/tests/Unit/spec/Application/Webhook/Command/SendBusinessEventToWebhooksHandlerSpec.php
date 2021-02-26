@@ -16,16 +16,16 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository\DbalEventsApiRequestCountRepository;
+use Akeneo\Platform\Component\EventQueue\Author;
+use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\Event;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 use Prophecy\Argument;
-use Psr\Log\NullLogger;
-use Akeneo\Platform\Component\EventQueue\Author;
-use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -80,8 +80,10 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $magentoUser->defineAsApiUser();
 
         $author = Author::fromUser($juliaUser);
-        $businessEvent = $this->createEvent($author, ['data']);
-        $command = new SendBusinessEventToWebhooksCommand($businessEvent);
+        $pimEventBulk = new BulkEvent([
+            $this->createEvent($author, ['data'])
+        ]);
+        $command = new SendBusinessEventToWebhooksCommand($pimEventBulk);
         $webhook = new ActiveWebhook('ecommerce', 42, 'a_secret', 'http://localhost/');
 
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
@@ -89,7 +91,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhookUserAuthenticator->authenticate(42)->willReturn($magentoUser);
         $builder
             ->build(
-                $businessEvent,
+                $pimEventBulk,
                 [
                     'user' => $magentoUser,
                     'pim_source' => 'staging.akeneo.com',
@@ -171,8 +173,10 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $magentoUser->defineAsApiUser();
 
         $erpAuthor = Author::fromUser($erpUser);
-        $businessEvent = $this->createEvent($erpAuthor, ['data']);
-        $command = new SendBusinessEventToWebhooksCommand($businessEvent);
+        $pimEventBulk = new BulkEvent([
+            $this->createEvent($erpAuthor, ['data'])
+        ]);
+        $command = new SendBusinessEventToWebhooksCommand($pimEventBulk);
         $erpWebhook = new ActiveWebhook('erp_source', 42, 'a_secret', 'http://localhost/');
         $magentoWebhook = new ActiveWebhook('ecommerce_destination', 12, 'a_secret', 'http://localhost/');
 
@@ -182,7 +186,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
 
         $builder
             ->build(
-                $businessEvent,
+                $pimEventBulk,
                 [
                     'pim_source' => 'staging.akeneo.com',
                     'user' => $magentoUser,
@@ -259,15 +263,17 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $user->setLastName('Doe');
 
         $author = Author::fromUser($user);
-        $businessEvent = $this->createEvent($author, ['data']);
-        $command = new SendBusinessEventToWebhooksCommand($businessEvent);
+        $pimEventBulk = new BulkEvent([
+            $this->createEvent($author, ['data'])
+        ]);
+        $command = new SendBusinessEventToWebhooksCommand($pimEventBulk);
         $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/');
 
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
         $webhookUserAuthenticator->authenticate(0)->willReturn($user);
         $builder
             ->build(
-                $businessEvent,
+                $pimEventBulk,
                 [
                     'pim_source' => 'staging.akeneo.com',
                     'user' => $user,
@@ -389,7 +395,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $timestamp = 1577836800;
         $uuid = '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c';
 
-        return new class ($author, $data, $timestamp, $uuid) extends Event
+        return new class($author, $data, $timestamp, $uuid) extends Event
         {
             public function getName(): string
             {

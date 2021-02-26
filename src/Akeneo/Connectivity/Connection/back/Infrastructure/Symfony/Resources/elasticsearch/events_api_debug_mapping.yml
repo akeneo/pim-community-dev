@@ -1,0 +1,13 @@
+mappings:
+    properties:
+        connection_code:
+            type: 'keyword'
+        timestamp:
+            type: 'date'
+        level:
+            type: 'keyword'
+        message:
+            type: 'text'
+        context:
+            type: 'object'
+            enabled: false

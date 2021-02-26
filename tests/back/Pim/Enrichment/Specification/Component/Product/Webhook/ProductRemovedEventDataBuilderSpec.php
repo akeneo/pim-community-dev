@@ -48,13 +48,6 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
         $this->supports($bulkEvent)->shouldReturn(false);
     }
 
-    public function it_does_not_support_an_individual_event(): void
-    {
-        $event = new ProductRemoved(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => '1', 'category_codes' => []]);
-
-        $this->supports($event)->shouldReturn(false);
-    }
-
     public function it_builds_a_bulk_event_of_product_removed_event(): void
     {
         $user = new User();
