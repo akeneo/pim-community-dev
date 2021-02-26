@@ -623,10 +623,22 @@ jobs:
                 at: ~/
           - set_gcloud_config_dev
           - run:
-                name: delete PR environment
+                name: Delete PR environment
                 command: |
                     PIM_CONTEXT=deployment make delete_pr_environments_hourly
 
+  mr_proper:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - run:
+                name: Clean unliked ressources
+                command: |
+                    PIM_CONTEXT=deployment make mr-proper
 
   delete_pr_environment:
       environment:
@@ -1013,6 +1025,9 @@ workflows:
           - delete_pr_environments_hourly:
                 requires:
                     - checkout
+          - mr_proper:
+                requires:
+                  - delete_pr_environments_hourly
 
   nightly-beta:
       triggers:

@@ -303,3 +303,7 @@ push-php-image-prod: #Doc: push docker image to docker hub
 .PHONY: test-helm-cronjob
 test-helm-cronjob: #Doc: Test declared cronjob job are available via the PIM console
 	bash $(PWD)/deployments/bin/test-cronjob-values.sh
+
+.PHONY: mr-proper 
+mr-proper: #Doc: Clean olds or orphans google resources
+	bash $(PWD)/deployments/bin/ci-mrproper.sh
