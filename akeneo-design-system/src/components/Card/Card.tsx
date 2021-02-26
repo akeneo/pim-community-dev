@@ -1,6 +1,6 @@
-import React, {ReactNode, isValidElement, useRef, MouseEvent, ReactElement} from 'react';
+import React, {isValidElement, ReactElement, ReactNode, useRef, MouseEvent} from 'react';
 import styled from 'styled-components';
-import {Checkbox, Image, Link, LinkProps} from '../../components';
+import {Checkbox, Link, LinkProps} from '../../components';
 import {AkeneoThemedProps, getColor, getFontSize, placeholderStyle} from '../../theme';
 import {Override} from '../../shared';
 
@@ -29,7 +29,7 @@ const Overlay = styled.div`
   transition: opacity 0.3s ease-in;
 `;
 
-const CardContainer = styled.div<{disabled: boolean; actionable: boolean} & AkeneoThemedProps>`
+const CardContainer = styled.div<{fit: string; disabled: boolean; actionable: boolean} & AkeneoThemedProps>`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -42,6 +42,7 @@ const CardContainer = styled.div<{disabled: boolean; actionable: boolean} & Aken
   img {
     position: absolute;
     top: 0;
+    object-fit: ${({fit}) => fit};
     width: 100%;
     height: 100%;
     box-sizing: border-box;
@@ -129,6 +130,11 @@ type CardProps = Override<
     onSelect?: (isSelected: boolean) => void;
 
     /**
+     * Add a visual representation of a collection for the same item
+     */
+    stacked?: boolean;
+
+    /**
      * Children of the Card, contains the text to display below the image and can also contain a Badge component.
      */
     children: ReactNode;
@@ -142,7 +148,6 @@ type CardProps = Override<
 const Card = ({
   src,
   fit = 'cover',
-  isStacked = false,
   isSelected = false,
   onSelect,
   disabled = false,
@@ -184,6 +189,7 @@ const Card = ({
 
   return (
     <CardContainer
+      fit={fit}
       isSelected={isSelected}
       actionable={0 < links.length || undefined !== onClick}
       onClick={handleClick}
@@ -192,7 +198,7 @@ const Card = ({
     >
       <ImageContainer isLoading={null === src}>
         <Overlay />
-        <Image fit={fit} isStacked={isStacked} src={src ?? ''} alt={texts[0]} />
+        <img src={src ?? ''} alt={texts[0]} />
       </ImageContainer>
       <CardLabel>
         {undefined !== onSelect && (

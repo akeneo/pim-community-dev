@@ -86,11 +86,11 @@ Cards should be displayed in a grid, therefore, a `CardGrid` component is also a
             </Card.BadgeContainer>
             Card almost complete
           </Card>
-          <Card {...args} isStacked={true} src="https://picsum.photos/seed/akenec/200">
+          <Card {...args} src="https://picsum.photos/seed/akenec/200">
             <Card.BadgeContainer>
               <Badge level="primary">100%</Badge>
             </Card.BadgeContainer>
-            Card complete (and stacked)
+            Card complete
           </Card>
         </CardGrid>
       );
@@ -193,10 +193,9 @@ Here the `fit` prop is also set to `contain`.
             {...args}
             src="https://picsum.photos/seed/akenef/200"
             isSelected={firstSelected}
-            isStacked={true}
             onSelect={isSelected => setFirstSelected(isSelected)}
           >
-            Selectable &amp; stacked
+            Selectable
           </Card>
           <Card
             {...args}
