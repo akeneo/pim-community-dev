@@ -31,6 +31,8 @@ $rules = [
         'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Oro\Bundle\SecurityBundle\Acl\AccessLevel',
+        'Oro\Bundle\SecurityBundle\Annotation\Acl',
+        'Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider',
 
         'Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException',
 

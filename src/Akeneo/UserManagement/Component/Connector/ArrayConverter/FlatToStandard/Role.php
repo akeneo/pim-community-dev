@@ -5,7 +5,6 @@ namespace Akeneo\UserManagement\Component\Connector\ArrayConverter\FlatToStandar
 
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -14,8 +13,6 @@ use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
  */
 final class Role implements ArrayConverterInterface
 {
-    private const ACL_EXTENSION_KEY = 'action';
-    private const ACL_DEFAULT_PERMISSION = 'EXECUTE';
     private const FIELDS_PRESENCE = ['role', 'label'];
 
     private FieldsRequirementChecker $fieldsRequirementChecker;
@@ -40,69 +37,27 @@ final class Role implements ArrayConverterInterface
      *      'role' => 'ROLE_ADMINISTRATOR',
      *      'label' => 'Administrators',
      *      'permissions' => [
-     *          [
-     *              'id' => 'action:pim_enrich_product_create',
-     *              'name' => 'pim_enrich_product_create',
-     *              'type' => 'action',
-     *              'permissions' => [
-     *                  'EXECUTE' => [
-     *                      'name' => 'EXECUTE',
-     *                      'access_level' => 1,
-     *                  ]
-     *              ],
-     *          ],
-     *          [
-     *              'id' => 'action:pim_enrich_product_index',
-     *              'name' => 'pim_enrich_product_index',
-     *              'type' => 'action',
-     *              'permissions' => [
-     *                  'EXECUTE' => [
-     *                      'name' => 'EXECUTE',
-     *                      'access_level' => 1,
-     *                  ]
-     *              ],
-     *          ],
+     *          action:pim_enrich_product_create,
+     *          action:pim_enrich_product_index,
      *      ],
      * ]
      */
     public function convert(array $item, array $options = []): array
     {
-        $this->fieldsRequirementChecker->checkFieldsPresence($item, static::FIELDS_PRESENCE);
-        $this->fieldsRequirementChecker->checkFieldsFilling($item, static::FIELDS_PRESENCE);
+        $this->fieldsRequirementChecker->checkFieldsPresence($item, self::FIELDS_PRESENCE);
+        $this->fieldsRequirementChecker->checkFieldsFilling($item, self::FIELDS_PRESENCE);
 
         $convertedItem = [];
         foreach ($item as $property => $data) {
             switch ($property) {
                 case 'permissions':
-                    $convertedItem[$property] = $this->convertPermissions($data);
+                    $convertedItem[$property] = \explode(',', $data);
                     break;
                 default:
                     $convertedItem[$property] = (string) $data;
             }
         }
 
-        return array_merge(['permissions' => []], $convertedItem);
-    }
-
-    private function convertPermissions(string $data): array
-    {
-        $flatPermissionIds = explode(',', $data);
-
-        $standardPermissions = [];
-        foreach ($flatPermissionIds as $flatPermissionId) {
-            $standardPermissions[] = [
-                'id' => $flatPermissionId,
-                'name' => false !== strpos($flatPermissionId, ':')
-                    ? substr($flatPermissionId, strpos($flatPermissionId, ':') + 1)
-                    : $flatPermissionId,
-                'type' => static::ACL_EXTENSION_KEY,
-                'permissions' => [static::ACL_DEFAULT_PERMISSION => [
-                    'name' => static::ACL_DEFAULT_PERMISSION,
-                    'access_level' => AccessLevel::BASIC_LEVEL,
-                ]],
-            ];
-        }
-
-        return $standardPermissions;
+        return $convertedItem;
     }
 }
