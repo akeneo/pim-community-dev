@@ -85,10 +85,11 @@ export const EditConnectionWebhook: FC = () => {
                     }
                     buttons={[
                         <DownloadLogsButton
+                            key={0}
                             webhook={eventSubscription}
                         />,
                         <SaveButton
-                            key={0}
+                            key={1}
                             webhook={eventSubscription}
                             onSaveSuccess={fetchEventSubscriptionFormData}
                         />,
