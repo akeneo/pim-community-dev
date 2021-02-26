@@ -87,7 +87,6 @@ akeneo_data_quality_insights:
       spelling_quality: Qualité orthographique
   dictionary:
     helper:
-      content: Le dictionnaire vous permet d'enregistrer des mots qui seront ignorés par Data Quality Insight.
       link_label: Plus d'informations sur notre centre d'aide.
     words: Mots
     searchPlaceholder: Recherche
