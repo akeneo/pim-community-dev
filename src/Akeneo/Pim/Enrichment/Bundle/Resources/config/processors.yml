@@ -32,6 +32,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.processor.attribute_filter.product_model'
             - '@pim_connector.processor.denormalization.media_storer'
+            - '@pim_connector.processor.attribute_cleaner.text_attribute_line_break'
             - 'root_product_model'
 
     pim_connector.processor.denormalization.sub_product_model:
@@ -45,6 +46,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.processor.attribute_filter.product_model'
             - '@pim_connector.processor.denormalization.media_storer'
+            - '@pim_connector.processor.attribute_cleaner.text_attribute_line_break'
             - 'sub_product_model'
 
     pim_connector.processor.denormalization.product_association:
