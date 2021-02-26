@@ -10,8 +10,8 @@ type Props = PropsWithChildren<{
 }>;
 
 const ButtonCollection = styled.div.attrs(() => ({className: 'AknTitleContainer-actionsContainer AknButtonList'}))`
-  > :not(:first-child) {
-    margin-left: 10px;
+  > :not(:last-child) {
+    margin-right: 10px;
   }
 `;
 
