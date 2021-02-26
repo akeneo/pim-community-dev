@@ -9,6 +9,7 @@ use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobQueueConsumerConfiguration;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -62,7 +63,11 @@ class JobQueueConsumerCommand extends Command
     /** @var string */
     private $projectDir;
 
+    /** @var LoggerInterface */
+    private $logger;
+
     public function __construct(
+        LoggerInterface $logger,
         JobExecutionQueueInterface $jobExecutionQueue,
         JobExecutionMessageRepository $executionMessageRepository,
         JobExecutionManager $executionManager,
@@ -70,6 +75,7 @@ class JobQueueConsumerCommand extends Command
     ) {
         parent::__construct();
 
+        $this->logger = $logger;
         $this->jobExecutionQueue = $jobExecutionQueue;
         $this->executionMessageRepository = $executionMessageRepository;
         $this->executionManager = $executionManager;
@@ -109,7 +115,7 @@ class JobQueueConsumerCommand extends Command
 
         $errOutput = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
         $consumerName = Uuid::uuid4();
-        $output->writeln(sprintf('Consumer name: "%s"', $consumerName->toString()));
+        $this->logger->notice(sprintf('Consumer name: "%s"', $consumerName->toString()));
         $pathFinder = new PhpExecutableFinder();
         $console = sprintf('%s%sbin%sconsole', $this->projectDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
 
@@ -123,8 +129,8 @@ class JobQueueConsumerCommand extends Command
 
                     $process->setTimeout(null);
 
-                    $output->writeln(sprintf('Launching job execution "%s".', $jobExecutionMessage->getJobExecutionId()));
-                    $output->writeln(sprintf('Command line: "%s"', $process->getCommandLine()));
+                    $this->logger->notice(sprintf('Launching job execution "%s".', $jobExecutionMessage->getJobExecutionId()));
+                    $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
 
                     $this->executionManager->updateHealthCheck($jobExecutionMessage);
 
@@ -141,7 +147,7 @@ class JobQueueConsumerCommand extends Command
                             continue;
                         }
 
-                        $output->write($process->getIncrementalOutput());
+                        $this->logger->debug($process->getIncrementalOutput());
                         $errOutput->write($process->getIncrementalErrorOutput());
 
                         $this->executionManager->updateHealthCheck($jobExecutionMessage);
@@ -154,14 +160,14 @@ class JobQueueConsumerCommand extends Command
                         $this->executionManager->markAsFailed($jobExecutionMessage);
                     }
 
-                    $output->write($process->getIncrementalOutput());
+                    $this->logger->debug($process->getIncrementalOutput());
                     $errOutput->write($process->getIncrementalErrorOutput());
 
-                    $output->writeln(sprintf('Job execution "%s" is finished.', $jobExecutionMessage->getJobExecutionId()));
+                    $this->logger->notice(sprintf('Job execution "%s" is finished.', $jobExecutionMessage->getJobExecutionId()));
                 }
             } catch (\Throwable $t) {
-                $errOutput->writeln(sprintf('An error occurred: %s', $t->getMessage()));
-                $errOutput->writeln($t->getTraceAsString());
+                $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()));
+                $this->logger->error($t->getTraceAsString());
 
                 sleep(self::EXCEPTION_WAIT_INTERVAL);
             }
