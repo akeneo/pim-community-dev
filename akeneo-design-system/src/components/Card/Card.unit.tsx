@@ -1,7 +1,7 @@
 import React from 'react';
 import {fireEvent, render, screen} from 'storybook/test-util';
 import {Card, CardGrid} from './Card';
-import {Badge} from '../../components';
+import {Badge, Link} from '../../components';
 
 test('it renders its children properly', () => {
   render(
@@ -30,6 +30,22 @@ test('it calls onSelect handler when clicked on', () => {
   expect(onSelect).toBeCalledTimes(1);
 });
 
+test('it does not call onSelect or onClick handlers when disabled', () => {
+  const onSelect = jest.fn();
+  const onClick = jest.fn();
+
+  render(
+    <Card src="some.jpg" disabled={true} onClick={onClick} onSelect={onSelect}>
+      Card text
+    </Card>
+  );
+
+  fireEvent.click(screen.getByText('Card text'));
+
+  expect(onSelect).not.toBeCalled();
+  expect(onClick).not.toBeCalled();
+});
+
 test('it calls onSelect handler only once when clicking on the Checkbox', () => {
   const onSelect = jest.fn();
   render(
@@ -40,7 +56,7 @@ test('it calls onSelect handler only once when clicking on the Checkbox', () => 
 
   fireEvent.click(screen.getByRole('checkbox'));
 
-  expect(onSelect).toBeCalledWith(true);
+  expect(onSelect).toBeCalledWith(true, expect.anything());
   expect(onSelect).toBeCalledTimes(1);
 });
 
@@ -60,19 +76,18 @@ test('it does not call onSelect handler if onClick is defined when clicking on t
   expect(onClick).toBeCalledTimes(2);
 });
 
-test('it calls onSelect handler if onClick is defined but checkbox is clicked', () => {
-  const onSelect = jest.fn();
+test('it calls its child Link handler when clicking on the image', () => {
   const onClick = jest.fn();
+
   render(
-    <Card src="some.jpg" isSelected={false} onSelect={onSelect} onClick={onClick}>
-      Card text
+    <Card src="some.jpg">
+      <Link onClick={onClick}>Card link</Link>
     </Card>
   );
 
-  fireEvent.click(screen.getByRole('checkbox'));
+  fireEvent.click(screen.getByRole('img'));
 
-  expect(onClick).not.toBeCalled();
-  expect(onSelect).toBeCalledTimes(1);
+  expect(onClick).toBeCalledTimes(1);
 });
 
 test('it does not display a Checkbox if no handler is provided', () => {
@@ -95,7 +110,7 @@ test('it displays a Checkbox if a handler is provided', () => {
   expect(screen.queryByRole('checkbox')).toBeInTheDocument();
 });
 
-describe('Card supports ...rest props', () => {
+test('Card supports ...rest props', () => {
   render(
     <Card src="some.jpg" data-testid="my_value">
       My card

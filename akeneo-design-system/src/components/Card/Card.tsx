@@ -1,6 +1,6 @@
-import React, {ReactNode, isValidElement, ReactElement} from 'react';
+import React, {ReactNode, isValidElement, useRef, MouseEvent, ReactElement} from 'react';
 import styled from 'styled-components';
-import {Checkbox} from '../../components';
+import {Checkbox, Image, Link, LinkProps} from '../../components';
 import {AkeneoThemedProps, getColor, getFontSize, placeholderStyle} from '../../theme';
 import {Override} from '../../shared';
 
@@ -24,31 +24,35 @@ const Overlay = styled.div`
   top: 0;
   width: 100%;
   padding-bottom: 100%;
-  background-color: ${getColor('grey140')};
+  background-color: ${getColor('grey', 140)};
   opacity: 0%;
   transition: opacity 0.3s ease-in;
 `;
 
-const CardContainer = styled.div<CardProps & AkeneoThemedProps>`
+const CardContainer = styled.div<{disabled: boolean; actionable: boolean} & AkeneoThemedProps>`
   position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   line-height: 20px;
   font-size: ${getFontSize('default')};
-  color: ${getColor('grey120')};
-  cursor: ${({onClick, disabled}) => (disabled ? 'not-allowed' : undefined !== onClick ? 'pointer' : 'auto')};
+  color: ${getColor('grey', 120)};
+  cursor: ${({actionable, disabled}) => (disabled ? 'not-allowed' : actionable ? 'pointer' : 'auto')};
 
   img {
     position: absolute;
     top: 0;
-    object-fit: ${({fit}) => fit};
     width: 100%;
     height: 100%;
     box-sizing: border-box;
-    border-style: solid;
-    border-width: ${({isSelected}) => (isSelected ? '2px' : '1px')};
-    border-color: ${({isSelected}) => (isSelected ? getColor('blue100') : getColor('grey100'))};
+    border-width: ${({isSelected}) => (isSelected ? 2 : 1)}px;
+    border-color: ${({isSelected}) => getColor(isSelected ? 'blue' : 'grey', 100)};
+  }
+
+  a,
+  a:hover {
+    color: inherit;
+    text-decoration: none;
   }
 `;
 
@@ -100,9 +104,14 @@ type CardProps = Override<
     src: string | null;
 
     /**
-     * Should the image cover all the Card container or be contained in it.
+     * Should the Card image cover all the Card container or be contained in it.
      */
     fit?: 'cover' | 'contain';
+
+    /**
+     * Should the Card image appear as a stack of multiple images.
+     */
+    isStacked?: boolean;
 
     /**
      * Whether or not the Card is selected.
@@ -133,6 +142,7 @@ type CardProps = Override<
 const Card = ({
   src,
   fit = 'cover',
+  isStacked = false,
   isSelected = false,
   onSelect,
   disabled = false,
@@ -140,30 +150,58 @@ const Card = ({
   onClick,
   ...rest
 }: CardProps) => {
+  const linkRef = useRef<HTMLAnchorElement>(null);
+
   const nonLabelChildren: ReactElement[] = [];
+  const links: ReactElement<LinkProps>[] = [];
   const texts: string[] = [];
 
-  React.Children.forEach(children, child => {
+  React.Children.forEach(children, (child, key) => {
     if (typeof child === 'string') {
       texts.push(child);
     } else if (isValidElement(child)) {
-      nonLabelChildren.push(child);
+      if (Link === child.type) {
+        links.push(React.cloneElement(child, {key, ref: linkRef, disabled}));
+      } else {
+        nonLabelChildren.push(child);
+      }
     }
   });
 
-  const toggleSelect = undefined !== onSelect && !disabled ? () => onSelect(!isSelected) : undefined;
+  const handleClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (disabled || (null !== linkRef.current && linkRef.current === event.target)) {
+      return;
+    }
+
+    if (null !== linkRef.current && linkRef.current !== event.target) {
+      linkRef.current.click();
+    } else if (undefined !== onClick) {
+      onClick(event);
+    } else {
+      onSelect?.(!isSelected);
+    }
+  };
 
   return (
-    <CardContainer fit={fit} isSelected={isSelected} onClick={onClick || toggleSelect} disabled={disabled} {...rest}>
+    <CardContainer
+      isSelected={isSelected}
+      actionable={0 < links.length || undefined !== onClick}
+      onClick={handleClick}
+      disabled={disabled}
+      {...rest}
+    >
       <ImageContainer isLoading={null === src}>
         <Overlay />
-        <img src={src ?? ''} alt={texts[0]} />
+        <Image fit={fit} isStacked={isStacked} src={src ?? ''} alt={texts[0]} />
       </ImageContainer>
       <CardLabel>
         {undefined !== onSelect && (
-          <Checkbox aria-label={texts[0]} checked={isSelected} readOnly={disabled} onChange={toggleSelect} />
+          <Checkbox aria-label={texts[0]} checked={isSelected} readOnly={disabled} onChange={onSelect} />
         )}
-        <CardText title={texts[0]}>{texts}</CardText>
+        <CardText title={texts[0]}>
+          {texts}
+          {links}
+        </CardText>
       </CardLabel>
       {nonLabelChildren}
     </CardContainer>

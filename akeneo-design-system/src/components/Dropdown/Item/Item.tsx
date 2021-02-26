@@ -1,4 +1,4 @@
-import React, {isValidElement, KeyboardEvent, ReactNode, Ref, useCallback, useRef} from 'react';
+import React, {isValidElement, KeyboardEvent, ReactNode, Ref, SyntheticEvent, useCallback, useRef} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {Image} from '../../../components/Image/Image';
@@ -76,16 +76,19 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
   ): React.ReactElement => {
     let tall = false;
     const actionableRef = useRef<HTMLAnchorElement>(null);
-    const handleClick = useCallback(() => {
-      if (null !== actionableRef.current && !disabled) {
-        actionableRef.current.click();
-      }
-    }, [disabled]);
+    const handleClick = useCallback(
+      (event: SyntheticEvent) => {
+        if (null !== actionableRef.current && actionableRef.current !== event.target && !disabled) {
+          actionableRef.current.click();
+        }
+      },
+      [disabled]
+    );
     const handleKeyDown = useCallback(
       (event: KeyboardEvent<HTMLDivElement>) => {
         if (Key.Enter === event.key || Key.Space === event.key) {
           event.preventDefault();
-          handleClick();
+          handleClick(event);
           return;
         }
 
