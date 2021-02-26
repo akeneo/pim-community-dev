@@ -32,25 +32,13 @@ class RoleSpec extends ObjectBehavior
         $fieldsRequirementChecker->checkFieldsPresence($flat, ['role', 'label'])->shouldBeCalled();
         $fieldsRequirementChecker->checkFieldsFilling($flat, ['role', 'label'])->shouldBeCalled();
 
-        $standardFormat = $this->convert($flat);
-        $standardFormat->shouldBeArray();
-        $standardFormat->shouldHaveKey('label');
-        $standardFormat->shouldHaveKey('permissions');
-        $standardFormat['role']->shouldBe('ROLE_ADMINISTRATOR');
-        $standardFormat['label']->shouldBe('Administrators');
-        $standardFormat['permissions']->shouldBeArray();
-        $standardFormat['permissions']->shouldHaveCount(2);
-        $standardFormat['permissions'][0]['id']->shouldBe('action:pim_enrich_product_create');
-        $standardFormat['permissions'][0]['name']->shouldBe('pim_enrich_product_create');
-        $standardFormat['permissions'][0]['type']->shouldBe('action');
-        $standardFormat['permissions'][0]['permissions']->shouldBe([
-           'EXECUTE' => ['name' => 'EXECUTE', 'access_level' => 1],
-        ]);
-        $standardFormat['permissions'][1]['id']->shouldBe('action:pim_enrich_product_index');
-        $standardFormat['permissions'][1]['name']->shouldBe('pim_enrich_product_index');
-        $standardFormat['permissions'][1]['type']->shouldBe('action');
-        $standardFormat['permissions'][1]['permissions']->shouldBe([
-           'EXECUTE' => ['name' => 'EXECUTE', 'access_level' => 1],
+        $this->convert($flat)->shouldReturn([
+            'role' => 'ROLE_ADMINISTRATOR',
+            'label' => 'Administrators',
+            'permissions' => [
+                'action:pim_enrich_product_create',
+                'action:pim_enrich_product_index',
+            ],
         ]);
     }
 
@@ -61,12 +49,9 @@ class RoleSpec extends ObjectBehavior
         $fieldsRequirementChecker->checkFieldsPresence($flat, ['role', 'label'])->shouldBeCalled();
         $fieldsRequirementChecker->checkFieldsFilling($flat, ['role', 'label'])->shouldBeCalled();
 
-        $standardFormat = $this->convert($flat);
-        $standardFormat->shouldBeArray();
-        $standardFormat->shouldHaveKey('label');
-        $standardFormat->shouldHaveKey('permissions');
-        $standardFormat['role']->shouldBe('ROLE_ADMINISTRATOR');
-        $standardFormat['label']->shouldBe('Administrators');
-        $standardFormat['permissions']->shouldBe([]);
+        $this->convert($flat)->shouldReturn([
+            'role' => 'ROLE_ADMINISTRATOR',
+            'label' => 'Administrators',
+        ]);
     }
 }

@@ -36,3 +36,4 @@ services:
       - '@pim_user.repository.role'
       - '@validator'
       - '@akeneo_storage_utils.doctrine.object_detacher'
+      - '@oro_security.acl.annotation_provider'
