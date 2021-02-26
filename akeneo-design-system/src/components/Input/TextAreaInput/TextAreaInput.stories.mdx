@@ -28,13 +28,29 @@ import {TextAreaInput} from './TextAreaInput.tsx';
 
 ## Usage
 
-Text input allows the user to enter content and data when the expected user input is a single line of text.
+Textarea input allows the user to enter content and data when the expected user input is composed of more than one sentence.
 
-### Placeholder text
+### Rich text editor:
+
+Rich text editors, sometimes called WYSIWYG editors ("what you see is what you get"), allow you to create documents that include text, images, graphics, tables, and play with the layout and style of the content.
+
+## Content
+
+**Label:**
+
+It helps users to understand what information to enter into a text input. Using a placeholder instead of a label is sometimes used to save space. However, this is not recommended because it hides the context and raises accessibility issues.
+
+**Placeholder text:**
 
 The placeholder text provides tips or examples of items to enter. Placeholder text disappears when the user begins entering data.
 
-## Playground
+**Help text:**
+
+Help text is relevant information that helps the user to fill a field. Help text is always available when the input is active and appears below the text input. Complete sentences with punctuation should be used.
+
+**Errors text:**
+
+A compelling error message can help the user understand the problem and solve it. You should begin by informing the user of what happened, then indicate next steps or possible solutions.
 
 <Canvas>
   <Story name="Standard">

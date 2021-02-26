@@ -23,6 +23,7 @@
   "license": "OSL-3.0",
   "dependencies": {
     "draftjs-to-html": "^0.9.1",
+    "draft-js": "^0.11.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-draft-wysiwyg": "^1.14.5",
@@ -53,7 +54,6 @@
     "@types/testing-library__jest-dom": "^5.9.2",
     "@typescript-eslint/eslint-plugin": "^4.1.0",
     "@typescript-eslint/parser": "^4.1.0",
-    "draft-js": "^0.11.7",
     "eslint": "^7.8.1",
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.0",
