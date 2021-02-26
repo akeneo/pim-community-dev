@@ -10,9 +10,9 @@ type Props = PropsWithChildren<{
 }>;
 
 const ButtonCollection = styled.div.attrs(() => ({className: 'AknTitleContainer-actionsContainer AknButtonList'}))`
-  > :not(:last-child) {
-    margin-right: 10px;
-  }
+    > :not(:last-child) {
+        margin-right: 10px;
+    }
 `;
 
 export const PageHeader = ({children: title, breadcrumb, buttons, userButtons, state, imageSrc}: Props) => (

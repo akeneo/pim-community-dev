@@ -84,10 +84,7 @@ export const EditConnectionWebhook: FC = () => {
                         null === connection.image ? defaultImageUrl : generateMediaUrl(connection.image, 'thumbnail')
                     }
                     buttons={[
-                        <DownloadLogsButton
-                            key={0}
-                            webhook={eventSubscription}
-                        />,
+                        <DownloadLogsButton key={0} webhook={eventSubscription} />,
                         <SaveButton
                             key={1}
                             webhook={eventSubscription}
@@ -162,17 +159,10 @@ type DownloadLogsButtonProps = {
 
 const DownloadLogsButton: FC<DownloadLogsButtonProps> = ({webhook}) => {
     const url = useRoute('akeneo_connectivity_connection_events_api_debug_rest_download_event_subscription_logs', {
-        'connection_code': webhook.connectionCode
+        connection_code: webhook.connectionCode,
     });
     return (
-        <Button
-            disabled={!webhook.enabled}
-            ghost
-            href={url}
-            level="tertiary"
-            size="default"
-            target="_blank"
-        >
+        <Button disabled={!webhook.enabled} ghost href={url} level='tertiary' size='default' target='_blank'>
             <Translate id='akeneo_connectivity.connection.webhook.download_logs' />
         </Button>
     );
