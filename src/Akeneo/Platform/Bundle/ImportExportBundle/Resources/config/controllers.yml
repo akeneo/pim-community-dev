@@ -55,7 +55,9 @@ services:
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@pim_enrich.repository.job_execution'
             - '@pim_internal_api_serializer'
-            -
+            - '@oro_security.security_facade'
+            - {'import': 'pim_importexport_import_execution_show', 'export': 'pim_importexport_export_execution_show'}
+
     pim_enrich.controller.job_tracker:
         public: true
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui\JobTrackerController'
