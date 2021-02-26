@@ -395,7 +395,7 @@ jobs:
               name: Push PROD PIM image on docker registry
               command: PIM_CONTEXT=deployment make push-php-image-prod
 
-  check_cloud_compliant:
+  check_cronjobs_existence:
       environment:
         <<: *envVarsDeployDev
       machine:
@@ -896,12 +896,12 @@ workflows:
           - build_prod:
                 requires:
                     - checkout
-          - check_cloud_compliant:
+          - check_cronjobs_existence:
                 requires:
                     - build_prod
           - test_deploy:
                 requires:
-                    - check_cloud_compliant
+                    - check_cronjobs_existence
           - test_upgrade_from_last_release:
                 requires:
                     - test_deploy
@@ -912,7 +912,7 @@ workflows:
                         ignore:
                             - master
                 requires:
-                    - check_cloud_compliant
+                    - check_cronjobs_existence
           - delete_pr_environment:
                 requires:
                     - delete_pr_environment?
@@ -986,9 +986,12 @@ workflows:
            - prepare_growth_edition:
                 requires:
                     - checkout
-           - test_deploy:
+           - check_cronjobs_existence:
                 requires:
                     - prepare_growth_edition
+           - test_deploy:
+                requires:
+                    - check_cronjobs_existence
            - release_growth_edition:
                     requires:
                         - test_deploy
@@ -1066,15 +1069,15 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-          - check_cloud_compliant:
+          - check_cronjobs_existence:
                 requires:
                     - build_prod
           - test_deploy:
                 requires:
-                    - check_cloud_compliant
+                    - check_cronjobs_existence
           - test_upgrade_from_last_release:
                 requires:
-                    - check_cloud_compliant
+                    - check_cronjobs_existence
           - test_front_code_style:
                 requires:
                     - build_dev
@@ -1137,12 +1140,12 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-          - check_cloud_compliant:
+          - check_cronjobs_existence:
                 requires:
                     - build_prod
           - test_deploy:
                 requires:
-                    - check_cloud_compliant
+                    - check_cronjobs_existence
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -1197,9 +1200,12 @@ workflows:
            - prepare_growth_edition:
                 requires:
                     - checkout
-           - test_deploy:
+           - check_cronjobs_existence:
                 requires:
                     - prepare_growth_edition
+           - test_deploy:
+                requires:
+                    - check_cronjobs_existence
            - release_growth_edition:
                     requires:
                         - test_deploy
