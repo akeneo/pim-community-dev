@@ -9,6 +9,12 @@ type Props = PropsWithChildren<{
     imageSrc?: string;
 }>;
 
+const ButtonCollection = styled.div.attrs(() => ({className: 'AknTitleContainer-actionsContainer AknButtonList'}))`
+  > :not(:first-child) {
+    margin-left: 10px;
+  }
+`;
+
 export const PageHeader = ({children: title, breadcrumb, buttons, userButtons, state, imageSrc}: Props) => (
     <Header>
         <div className='AknTitleContainer-line'>
@@ -25,11 +31,11 @@ export const PageHeader = ({children: title, breadcrumb, buttons, userButtons, s
                         <div className='AknTitleContainer-buttonsContainer'>
                             {userButtons}
                             {buttons && (
-                                <div className='AknTitleContainer-actionsContainer AknButtonList'>
+                                <ButtonCollection>
                                     {buttons.map((button, index) => (
                                         <Fragment key={index}>{button}</Fragment>
                                     ))}
-                                </div>
+                                </ButtonCollection>
                             )}
                         </div>
                     </div>
