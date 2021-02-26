@@ -33,7 +33,8 @@ class PurgeEventsApiLogsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->purgeSuccessLogsQuery->execute();
-        $this->purgeErrorLogsQuery->execute();
+        $this->purgeErrorLogsQuery->execute((new \DateTimeImmutable('now', new \DateTimeZone('UTC')))
+            ->sub(new \DateInterval('PT72H')));
 
         return 0;
     }
