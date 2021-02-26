@@ -38,6 +38,13 @@ const RichTextEditorContainer = styled.div<{readOnly: boolean; invalid: boolean}
     min-height: 200px;
     max-height: 400px;
   }
+
+  & .rdw-editor-toolbar {
+    border: none;
+    padding: 0;
+    margin: 0;
+    margin-left: -9px;
+  }
 `;
 
 const Textarea = styled.textarea<{readOnly: boolean; invalid: boolean} & AkeneoThemedProps>`
