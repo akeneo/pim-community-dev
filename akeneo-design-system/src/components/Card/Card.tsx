@@ -110,11 +110,6 @@ type CardProps = Override<
     fit?: 'cover' | 'contain';
 
     /**
-     * Should the Card image appear as a stack of multiple images.
-     */
-    isStacked?: boolean;
-
-    /**
      * Whether or not the Card is selected.
      */
     isSelected?: boolean;
