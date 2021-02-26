@@ -25,6 +25,7 @@
 - PIM-9700: Add batch-size option in index products command and index product-models command
 - PIM-9701: Fix role deletion when a user do not have any role
 - PIM-9699: Fix clicking detail on last operation return 404 on import and export jobs
+- API-1483: Fix the test button of the Event Subscription
 
 ## New features
 
