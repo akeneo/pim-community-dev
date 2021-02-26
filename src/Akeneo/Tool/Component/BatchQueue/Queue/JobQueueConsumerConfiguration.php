@@ -55,12 +55,12 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
 
     public function setWhitelistedJobInstanceCodes(array $codes): Self
     {
-        if (0 === count($codes)) {
+        if (empty($codes)) {
             return $this;
         }
 
-        if (count($this->blacklistedJobInstanceCodes) > 0) {
-            throw new \InvalidArgumentException(
+        if (!empty($this->blacklistedJobInstanceCodes)) {
+            throw new \LogicException(
                 sprintf(
                     "Cannot set a job queue whitelist '{%s}' in consumer since a blacklist '{%s}' is already defined.",
                     join(', ', $codes),
@@ -76,12 +76,12 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
 
     public function setBlacklistedJobInstanceCodes(array $codes): Self
     {
-        if (0 === count($codes)) {
+        if (empty($codes)) {
             return $this;
         }
 
-        if (count($this->whitelistedJobInstanceCodes) > 0) {
-            throw new \InvalidArgumentException(
+        if (!empty($this->whitelistedJobInstanceCodes)) {
+            throw new \LogicException(
                 sprintf(
                     "Cannot set a job queue blacklist '{%s}' in consumer since a whitelist '{%s}' is already defined.",
                     join(', ', $codes),
@@ -138,11 +138,11 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
 
     public function offsetSet($offset, $value)
     {
-        throw new \LogicException("Please do use setters to set properties.");
+        throw new \RuntimeException("Please do use setters to set properties.");
     }
 
     public function offsetUnset($offset)
     {
-        throw new \LogicException('Cannot unset configutation properties.');
+        throw new \RuntimeException('Cannot unset configutation properties.');
     }
 }
