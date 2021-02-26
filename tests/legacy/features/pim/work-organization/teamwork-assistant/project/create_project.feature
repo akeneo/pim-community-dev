@@ -14,7 +14,7 @@ Feature: Create enrichment project
     When I am on the products grid
     And I filter by "family" with operator "in list" and value "Sneakers"
     And I open the category tree
-    And I filter by "category" with operator "" and value "summer_collection"
+    And I filter by "category" with operator "" and value "Summer collection"
     And I collapse the column
     And I display in the products grid the columns sku, name, description
     Then I should be on the products page

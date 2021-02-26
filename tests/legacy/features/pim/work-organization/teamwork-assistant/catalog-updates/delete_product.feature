@@ -39,7 +39,7 @@ Feature: Catalog updates - Remove a product used by a project
     Given I am on the products grid
     When I filter by "family" with operator "in list" and value "TShirts"
     And I open the category tree
-    And I filter by "category" with operator "" and value "clothing"
+    And I filter by "category" with operator "" and value "Clothing"
     And I close the category tree
     Then I should be on the products page
     When I click on the create project button

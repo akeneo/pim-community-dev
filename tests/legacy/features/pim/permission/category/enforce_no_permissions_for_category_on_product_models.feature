@@ -12,7 +12,7 @@ Feature: Enforce no permissions for a category
     When I am on the products grid
     And I open the category tree
     And I select the "Master" tree
-    And I filter by "category" with operator "" and value "master_men"
+    And I filter by "category" with operator "" and value "Men"
     And I filter by "parent" with operator "is empty" and value ""
     And I sort by "family" value ascending
     And I close the category tree
@@ -30,7 +30,7 @@ Feature: Enforce no permissions for a category
     And I am on the products grid
     And I open the category tree
     And I select the "Master" tree
-    And I filter by "category" with operator "" and value "master_men"
+    And I filter by "category" with operator "" and value "Men"
     And I close the category tree
     And I filter by "family" with operator "in list" and value "Clothing"
     Then I should not see the product models plain
