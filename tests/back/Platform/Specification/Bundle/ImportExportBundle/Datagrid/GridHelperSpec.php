@@ -17,7 +17,7 @@ class GridHelperSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_enabled_view_action_when_user_have_permission_to_view_job(
+    public function it_enables_view_action_when_user_have_permission_to_view_job(
         SecurityFacade $securityFacade,
         ResultRecordInterface $record
     ) {
@@ -30,7 +30,7 @@ class GridHelperSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_disable_view_action_when_user_does_not_have_permission_to_view_job(
+    public function it_disables_view_action_when_user_does_not_have_permission_to_view_job(
         SecurityFacade $securityFacade,
         ResultRecordInterface $record
     ) {
@@ -43,7 +43,7 @@ class GridHelperSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_enabled_view_action_when_there_is_no_acl_related_to_the_job_type(
+    public function it_enables_view_action_when_there_is_no_acl_related_to_the_job_type(
         SecurityFacade $securityFacade,
         ResultRecordInterface $record
     ) {
