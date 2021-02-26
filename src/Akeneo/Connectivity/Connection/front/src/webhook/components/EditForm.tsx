@@ -1,5 +1,5 @@
 import {Helper, Link} from 'akeneo-design-system';
-import React, {FC, useContext, useState} from 'react';
+import React, {FC, useContext, useState, SyntheticEvent} from 'react';
 import {useFormContext} from 'react-hook-form';
 import {useHistory} from 'react-router';
 import styled from 'styled-components';
@@ -32,7 +32,7 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
         checking: false,
     });
 
-    const handleTestUrl = async (e: Event) => {
+    const handleTestUrl = async (e: SyntheticEvent) => {
         e.preventDefault();
         clearError('url');
         setTestUrl({checking: true});
@@ -115,7 +115,7 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
                                 message: 'akeneo_connectivity.connection.webhook.error.required',
                             },
                         })}
-                        onKeyDown={event => 'enter' === event.key && handleTestUrl()}
+                        onKeyDown={event => 'enter' === event.key && handleTestUrl(event)}
                     />
                     <TestUrlButton
                         onClick={handleTestUrl}
