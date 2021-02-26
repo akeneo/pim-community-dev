@@ -42,9 +42,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
         $this->beConstructedWith(
             $eventsApiDebugRepository,
             new FakeClock(new \DateTimeImmutable('2021-01-01T00:00:00+00:00')),
-            [
-                new EventNormalizer()
-            ],
+            [],
             1
         );
 

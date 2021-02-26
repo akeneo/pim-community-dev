@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Service;
 
 use Akeneo\Connectivity\Connection\Domain\Clock;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
+use Akeneo\Connectivity\Connection\Domain\Webhook\EventNormalizer\EventNormalizer;
 use Akeneo\Connectivity\Connection\Domain\Webhook\EventNormalizer\EventNormalizerInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
@@ -33,6 +34,8 @@ class EventsApiDebugLogger
 
     private EventsApiDebugRepository $repository;
 
+    private EventNormalizerInterface $defaultEventNormalizer;
+
     /**
      * @var iterable<EventNormalizerInterface>
      */
@@ -49,6 +52,7 @@ class EventsApiDebugLogger
     ) {
         $this->repository = $repository;
         $this->clock = $clock;
+        $this->defaultEventNormalizer = new EventNormalizer();
         $this->eventNormalizers = $eventNormalizers;
         $this->bufferSize = $bufferSize;
         $this->buffer = [];
@@ -119,8 +123,6 @@ class EventsApiDebugLogger
             }
         }
 
-        throw new \RuntimeException(
-            sprintf('Event normalizer not found for %s', get_class($event))
-        );
+        return $this->defaultEventNormalizer->normalize($event);
     }
 }
