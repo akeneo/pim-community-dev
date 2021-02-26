@@ -1,12 +1,12 @@
 services:
     Akeneo\Connectivity\Connection\Domain\Webhook\EventNormalizer\EventNormalizer:
         tags:
-            - { name: akeneo_connectivity.connection.webhook.event_formatter, priority: -100 }
+            - { name: akeneo_connectivity.connection.webhook.event_normalizer, priority: -100 }
 
     Akeneo\Connectivity\Connection\Domain\Webhook\EventNormalizer\ProductEventNormalizer:
         tags:
-            - { name: akeneo_connectivity.connection.webhook.event_formatter }
+            - { name: akeneo_connectivity.connection.webhook.event_normalizer }
 
     Akeneo\Connectivity\Connection\Domain\Webhook\EventNormalizer\ProductModelEventNormalizer:
         tags:
-            - { name: akeneo_connectivity.connection.webhook.event_formatter }
+            - { name: akeneo_connectivity.connection.webhook.event_normalizer }
