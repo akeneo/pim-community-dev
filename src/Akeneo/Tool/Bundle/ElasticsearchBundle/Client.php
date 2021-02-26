@@ -84,7 +84,7 @@ class Client
     {
         $params = [
             'index' => $this->indexName,
-            'id' => $this->idPrefix.$id,
+            'id' => $this->idPrefix . $id,
             'body' => $body,
         ];
 
@@ -158,18 +158,22 @@ class Client
         return $mergedResponse;
     }
 
-    private function doBulkIndex(array $params, array $mergedResponse): array
+    private function doBulkIndex(array $params, array $mergedResponse, bool $isRetry = false): array
     {
         $length = count($params['body']);
+        $chunkLength = (int) ceil($length / self::NUMBER_OF_BATCHES);
+
         try {
             $mergedResponse = $this->doChunkedBulkIndex($params, $mergedResponse, $length);
         } catch (BadRequest400Exception $e) {
-            $chunkLength = intdiv($length, self::NUMBER_OF_BATCHES);
-            $chunkLength = $chunkLength % 2 == 0 ? $chunkLength : $chunkLength + 1;
-
             $mergedResponse = $this->doChunkedBulkIndex($params, $mergedResponse, $chunkLength);
         } catch (\Exception $e) {
             throw new IndexationException($e->getMessage(), $e->getCode(), $e);
+        }
+
+        if ($this->responseHasMappingErrors($mergedResponse) && !$isRetry) {
+            sleep(60);
+            $mergedResponse = $this->doChunkedBulkIndex($params, $mergedResponse, $length);
         }
 
         return $mergedResponse;
@@ -373,9 +377,28 @@ class Client
     {
         foreach ($response['items'] as $item) {
             if (isset($item['index']['error'])) {
-                throw new IndexationException(json_encode($item['index']['error']));
+                throw new IndexationException(json_encode([
+                    'id' => $item['index']['_id'],
+                    'error' => $item['index']['error'],
+                ]));
             }
         }
+    }
+
+    /**
+     * @throws IndexationException
+     */
+    private function responseHasMappingErrors(array $response): bool
+    {
+        if (isset($response['errors']) && true === $response['errors']) {
+            foreach ($response['items'] as $item) {
+                if (isset($item['index']['error']) && 'mapper_exception' === $item['index']['error']['type']) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
