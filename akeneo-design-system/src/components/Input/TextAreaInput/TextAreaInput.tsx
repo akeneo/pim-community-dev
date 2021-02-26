@@ -21,7 +21,6 @@ const CommonStyle = css<{readOnly: boolean; invalid: boolean} & AkeneoThemedProp
   line-height: 20px;
   width: 100%;
   box-sizing: border-box;
-  padding: 10px 30px 10px 15px;
   font-family: inherit;
   outline-style: none;
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
@@ -33,6 +32,8 @@ const CommonStyle = css<{readOnly: boolean; invalid: boolean} & AkeneoThemedProp
 
 const RichTextEditorContainer = styled.div<{readOnly: boolean; invalid: boolean} & AkeneoThemedProps>`
   ${CommonStyle}
+  padding: 0;
+  padding-bottom: 10px;
 
   & .rdw-editor-main {
     min-height: 200px;
@@ -43,7 +44,20 @@ const RichTextEditorContainer = styled.div<{readOnly: boolean; invalid: boolean}
     border: none;
     padding: 0;
     margin: 0;
-    margin-left: -9px;
+    /* margin-left: -9px; */
+    padding: 5px 30px 0 0;
+    border-radius: 0;
+    border-bottom: 1px solid ${({invalid}) => (invalid ? getColor('red', 100) : getColor('grey', 80))};
+  }
+
+  & .rdw-dropdown-wrapper:hover,
+  & .rdw-option-wrapper:hover,
+  & .rdw-dropdown-optionwrapper:hover {
+    box-shadow: none;
+  }
+
+  & .rdw-editor-main {
+    padding: 0 30px 10px 15px;
   }
 `;
 
@@ -51,6 +65,7 @@ const Textarea = styled.textarea<{readOnly: boolean; invalid: boolean} & AkeneoT
   ${CommonStyle}
   resize: none;
   height: 200px;
+  padding: 10px 30px 10px 15px;
 
   &::placeholder {
     color: ${getColor('grey', 100)};
