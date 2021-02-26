@@ -133,18 +133,10 @@ pim_asset_manager:
       transformations: Transformations
       product_link_rules: Règles de rattachement aux produits
     transformations:
-      help:
-        title: 'Bienvenue dans votre nouvel espace de gestion des ressources !'
-        description: 'Vous pouvez définir ici jusqu''à 10 transformations par famille de ressources.'
-        link: 'Si vous voulez mieux comprendre comment fonctionnent les nouvelles transformations du gestionnaire de ressources, cliquez ici'
       subsection: 'Propriétés de la transformation'
     product_link_rules:
       naming_convention_subsection: 'Propriétés de la convention de nommage'
       product_link_rules_subsection: 'Propriétés des règles de rattachement aux produits'
-      help:
-        title: 'Bienvenue dans votre nouvel espace de gestion des ressources !'
-        description: 'Vous pouvez définir ici jusqu''à 2 règles de rattachement automatique aux produits par famille de ressources.'
-        link: 'Si vous voulez en savoir plus sur les règles de rattachement automatique aux produits, cliquez ici.'
       execute_rules:
         confirm_title: Confirmer l’exécution
         confirm_content: Êtes-vous certain de vouloir exécuter toutes les règles ? (cela peut prendre un certain temps)
