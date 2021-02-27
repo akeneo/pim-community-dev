@@ -14,6 +14,7 @@ akeneo_assetmanager:
     asset:
       create: Asset erstellen
       edit: Asset bearbeiten
+      delete: Assets löschen
       delete_all: Alle Assets löschen
       list_product: Liste der zu erfassenden verknüpften Produkte
       execute_naming_conventions: Namenskonventionen ausführen
@@ -27,6 +28,8 @@ akeneo_assetmanager:
   jobs:
     asset_manager_execute_naming_convention:
       error: 'Die Namenskonvention ist beim Asset "{{ asset }}" fehlgeschlagen'
+    asset_manager_mass_delete:
+      error: 'Massenlöschung fehlgeschlagen auf Asset(s) "{{ assets }}" mit Fehler: "{{ error }}"'
 pim_import_export:
   widget:
     last_operations:
@@ -62,6 +65,7 @@ pim_datagrid:
       asset_manager_execute_naming_convention: Asset-Familien-Namenskonvention ausführen
       asset_manager_link_assets_to_products: Assets mit Produkten verknüpfen
       asset_manager_compute_transformations: Asset-Transformationen berechnen
+      asset_manager_mass_delete_assets: Massenlöschung
 batch_jobs:
   default_steps:
     execute_naming_convention: Asset-Familien-Namenskonvention ausführen
@@ -70,3 +74,7 @@ batch_jobs:
 job_execution:
   summary:
     assets: Assets
+pim_mass_edit.notification.asset_manager_mass_delete_assets:
+  warning: Assets erfolgreich mit Warnungen gelöscht
+  success: Assets erfolgreich gelöscht
+  error: Löschen des Assets fehlgeschlagen
