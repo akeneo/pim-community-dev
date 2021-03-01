@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Persistence\Elasticsearch\Query;
 
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\GetEventSubscriptionLogsQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
 use Akeneo\Test\Integration\TestCase;
@@ -41,7 +42,7 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
             function ($index) use ($timestamp) {
                 return [
                     'timestamp' => $timestamp,
-                    'level' => $index % 2 ? 'notice' : 'info',
+                    'level' => $index % 2 ? EventsApiDebugLogLevels::NOTICE : EventsApiDebugLogLevels::INFO,
                     'message' => 'Foo bar',
                     'connection_code' => null,
                     'context' => [],
@@ -66,28 +67,28 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
             [
                 [
                     'timestamp' => $timestampOlderThanLimit,
-                    'level' => 'warning',
+                    'level' => EventsApiDebugLogLevels::WARNING,
                     'message' => 'Foo bar',
                     'connection_code' => null,
                     'context' => [],
                 ],
                 [
                     'timestamp' => $timestampNewerThanLimit,
-                    'level' => 'warning',
+                    'level' => EventsApiDebugLogLevels::WARNING,
                     'message' => 'Foo bar',
                     'connection_code' => null,
                     'context' => [],
                 ],
                 [
                     'timestamp' => $timestampOlderThanLimit,
-                    'level' => 'error',
+                    'level' => EventsApiDebugLogLevels::ERROR,
                     'message' => 'Foo bar',
                     'connection_code' => null,
                     'context' => [],
                 ],
                 [
                     'timestamp' => $timestampNewerThanLimit,
-                    'level' => 'error',
+                    'level' => EventsApiDebugLogLevels::ERROR,
                     'message' => 'Foo bar',
                     'connection_code' => null,
                     'context' => [],
@@ -108,35 +109,35 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
             [
                 [
                     'timestamp' => $timestampNow - 5,
-                    'level' => 'notice',
+                    'level' => EventsApiDebugLogLevels::NOTICE,
                     'message' => 'Foo bar',
                     'connection_code' => 'a_connection_code',
                     'context' => [],
                 ],
                 [
                     'timestamp' => $timestampNow - 1,
-                    'level' => 'warning',
+                    'level' => EventsApiDebugLogLevels::WARNING,
                     'message' => 'Foo bar',
                     'connection_code' => 'a_connection_code',
                     'context' => [],
                 ],
                 [
                     'timestamp' => $timestampNow - 3,
-                    'level' => 'warning',
+                    'level' => EventsApiDebugLogLevels::WARNING,
                     'message' => 'Foo bar',
                     'connection_code' => 'a_connection_code',
                     'context' => [],
                 ],
                 [
                     'timestamp' => $timestampNow - 4,
-                    'level' => 'error',
+                    'level' => EventsApiDebugLogLevels::ERROR,
                     'message' => 'Foo bar',
                     'connection_code' => 'a_connection_code',
                     'context' => [],
                 ],
                 [
                     'timestamp' => $timestampNow - 2,
-                    'level' => 'notice',
+                    'level' => EventsApiDebugLogLevels::NOTICE,
                     'message' => 'Foo bar',
                     'connection_code' => 'a_connection_code',
                     'context' => [],
@@ -161,21 +162,21 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
             [
                 [
                     'timestamp' => $timestamp,
-                    'level' => 'warning',
+                    'level' => EventsApiDebugLogLevels::WARNING,
                     'message' => 'Foo bar',
                     'connection_code' => 'a_connection_code',
                     'context' => [],
                 ],
                 [
                     'timestamp' => $timestamp,
-                    'level' => 'warning',
+                    'level' => EventsApiDebugLogLevels::WARNING,
                     'message' => 'Foo bar',
                     'connection_code' => 'whatever',
                     'context' => [],
                 ],
                 [
                     'timestamp' => $timestamp,
-                    'level' => 'error',
+                    'level' => EventsApiDebugLogLevels::ERROR,
                     'message' => 'Foo bar',
                     'connection_code' => null,
                     'context' => [],
