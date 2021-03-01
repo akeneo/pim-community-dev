@@ -189,6 +189,10 @@ pim:
       enabled: true
       pimCommand: "akeneo:asset-manager:index-all-assets-on-temporary-index --no-interaction"
       schedule: "*/30 * * * *"
+    purge-events-api-logs:
+      enabled: true
+      pimCommand: "akeneo:connectivity-connection:purge-events-api-logs"
+      schedule: "5 * * * *"
 
 # Onboarder
 onboarder:
