@@ -44,6 +44,7 @@ class GuzzleWebhookClient implements WebhookClient
         $this->client = $client;
         $this->encoder = $encoder;
         $this->sendApiEventRequestLogger = $sendApiEventRequestLogger;
+        $this->responseErrorLogger = $responseErrorLogger;
         $this->config = $config;
     }
 
@@ -117,7 +118,7 @@ class GuzzleWebhookClient implements WebhookClient
                     $this->responseErrorLogger->logSendRequestError(
                         $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
                         $webhookRequestLog->getWebhookRequest()->apiEvents(),
-                        $reason->getRequest()->getUri(),
+                        strval($reason->getRequest()->getUri()),
                         $reason->getResponse()->getStatusCode(),
                         $reason->getRequest()->getHeaders(),
                     );
