@@ -1,16 +1,11 @@
 pim_analytics:
-    new_patch_available: New patch available
-    system_config:
-        group:
-            notification.title: Notifications
-            version_update.title: Version updates
-        form:
-            version_update.label: New versions notifications
-            version_update.tooltip: Send request to a distant server to retrieve information about the release of new patchs
-
     system_info:
         title: System information
-        download: TXT
+        download: Download
+
+    info_header:
+        property: Property
+        information: Information
 
     info_type:
         pim_edition: Edition
@@ -57,6 +52,7 @@ pim_analytics:
         nb_media_files_in_products: Number of media files in the products
         nb_media_images_in_products: Number of media images in the products
         is_demo_catalog: Demo catalog installed
+        nb_active_event_subscription: Number of activated web-hooks
         data_source.tracked: Number of API source connections tracked
         data_source.untracked: Number of API source connections untracked
         data_destination.tracked: Number of API destination connections tracked
@@ -64,10 +60,3 @@ pim_analytics:
         other.tracked: Number of API other connections tracked
         other.untracked: Number of API other connections untracked
 
-    acl:
-        system_info:
-            index: System information
-
-pim_menu:
-    item:
-        system_info: System information
