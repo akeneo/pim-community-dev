@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {Tab} from 'akeneoassetmanager/application/reducer/sidebar';
 import securityContext from 'akeneoassetmanager/tools/security-context';
 
 class SibebarMissConfigurationError extends Error {}
+
+type Tab = {code: string; label: string};
 
 interface TabConfiguration {
   [code: string]: {
@@ -40,7 +41,7 @@ config:
             ${sidebarIdentifier}:
                 tabs:
                     tab-code:
-                        label: '@your_view_path_here'`;
+                        label: 'your.translation.key.here'`;
 
       throw new SibebarMissConfigurationError(
         `Cannot get the tabs for "${sidebarIdentifier}". The configuration path should be ${confPath}
@@ -58,11 +59,7 @@ Actual conf: ${JSON.stringify(this.configuration)}`
       .map((code: string) => {
         const tabConf = this.configuration[sidebarIdentifier].tabs[code];
 
-        if ('string' === typeof tabConf.label) {
-          return {code, label: tabConf.label};
-        }
-
-        if (undefined === tabConf.label.label) {
+        if ('string' !== typeof tabConf.label) {
           const confPath = `
 config:
     config:
@@ -70,13 +67,11 @@ config:
             ${sidebarIdentifier}:
                 tabs:
                     tab-code:
-                        label: '@your_view_path_here'`;
-          throw new SibebarMissConfigurationError(
-            `The Component loaded to display the label needs to export the label property from the configuration ${confPath}`
-          );
+                        label: 'your.translation.key.here'`;
+          throw new SibebarMissConfigurationError(`You need to defin a label for your tab: ${confPath}`);
         }
 
-        return {code, label: tabConf.label.label};
+        return {code, label: tabConf.label};
       });
   }
 
@@ -109,3 +104,4 @@ Actual conf: ${JSON.stringify(this.configuration)}`
 }
 
 export default TabsProvider.create(__moduleConfig as TabsConfiguration);
+export type {Tab};

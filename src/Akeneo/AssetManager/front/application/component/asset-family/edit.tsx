@@ -1,97 +1,38 @@
-import * as React from 'react';
-import {connect} from 'react-redux';
-import {EditState as State} from 'akeneoassetmanager/application/reducer/asset-family/edit';
-import Sidebar from 'akeneoassetmanager/application/component/app/sidebar';
-import {Tab} from 'akeneoassetmanager/application/reducer/sidebar';
+import React, {useState} from 'react';
+import {Sidebar} from 'akeneoassetmanager/application/component/app/sidebar';
 import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
-import __ from 'akeneoassetmanager/tools/translator';
-import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
-import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import Channel from 'akeneoassetmanager/domain/model/channel';
-const router = require('pim/router');
 
-interface StateProps {
-  locale: LocaleCode;
-  assetFamily: AssetFamily;
-  channels: Channel[];
-  locales: Locale[];
-  sidebar: {
-    tabs: Tab[];
-    currentTab: string;
-  };
-}
+type AssetFamilyEditProps = {
+  initialTab: string;
+  onTabChange: (tabCode: string) => void;
+};
 
-interface DispatchProps {
-  events: {
-    backToAssetFamilyList: () => void;
-  };
-}
+const AssetFamilyEdit = ({initialTab, onTabChange}: AssetFamilyEditProps) => {
+  // TODO RAC-546: use a proper react router (be aware of the dynamic configuration)
+  const tabs = sidebarProvider.getTabs('akeneo_asset_manager_asset_family_edit');
+  const [currentTab, setCurrentTab] = useState(initialTab ?? tabs[0].code);
+  const TabView = sidebarProvider.getView('akeneo_asset_manager_asset_family_edit', currentTab);
 
-interface EditProps extends StateProps, DispatchProps {}
-
-class AssetFamilyEditView extends React.Component<EditProps> {
-  public props: EditProps;
-  private backToAssetFamilyList = () => (
-    <a
-      href={`#${router.generate('akeneo_asset_manager_asset_family_index')}`}
-      role="button"
-      tabIndex={0}
-      className="AknColumn-navigationLink"
-      onClick={e => {
-        e.preventDefault();
-        this.props.events.backToAssetFamilyList();
-      }}
-    >
-      {__('pim_asset_manager.asset.button.back')}
-    </a>
-  );
-
-  render(): JSX.Element | JSX.Element[] {
-    const TabView = sidebarProvider.getView('akeneo_asset_manager_asset_family_edit', this.props.sidebar.currentTab);
-
-    return (
-      <div className="AknDefault-contentWithColumn">
-        <div className="AknDefault-thirdColumnContainer">
-          <div className="AknDefault-thirdColumn" />
-        </div>
-        <div className="AknDefault-contentWithBottom">
-          <div
-            className="AknDefault-mainContent AknDefault-mainContent--withoutBottomPadding"
-            data-tab={this.props.sidebar.currentTab}
-          >
-            <TabView code={this.props.sidebar.currentTab} />
-          </div>
-        </div>
-        <Sidebar backButton={this.backToAssetFamilyList} />
+  return (
+    <div className="AknDefault-contentWithColumn">
+      <div className="AknDefault-thirdColumnContainer">
+        <div className="AknDefault-thirdColumn" />
       </div>
-    );
-  }
-}
+      <div className="AknDefault-contentWithBottom">
+        <div className="AknDefault-mainContent AknDefault-mainContent--withoutBottomPadding" data-tab={currentTab}>
+          <TabView code={currentTab} />
+        </div>
+      </div>
+      <Sidebar
+        tabs={tabs}
+        currentTab={currentTab}
+        onTabChange={tab => {
+          onTabChange(tab);
+          setCurrentTab(tab);
+        }}
+      />
+    </div>
+  );
+};
 
-export default connect(
-  (state: State): StateProps => {
-    const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
-    const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
-
-    return {
-      locale: state.user.catalogLocale,
-      assetFamily: state.form.data,
-      channels: state.structure.channels,
-      locales: state.structure.locales,
-      sidebar: {
-        tabs,
-        currentTab,
-      },
-    };
-  },
-  (dispatch: any): DispatchProps => {
-    return {
-      events: {
-        backToAssetFamilyList: () => {
-          dispatch(redirectToAssetFamilyListItem());
-        },
-      },
-    };
-  }
-)(AssetFamilyEditView);
+export {AssetFamilyEdit};
