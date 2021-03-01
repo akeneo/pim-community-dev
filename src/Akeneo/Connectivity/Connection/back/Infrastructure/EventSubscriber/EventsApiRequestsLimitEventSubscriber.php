@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionRequestsLimitReachedLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\ReachRequestLimitLogger;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,19 +24,22 @@ final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInte
     private Sleep $sleep;
     private ReachRequestLimitLogger $reachRequestLimitLogger;
     private EventsApiDebugLogger $eventsApiDebugLogger;
+    private EventsApiDebugRepository $eventsApiDebugRepository;
 
     public function __construct(
         GetDelayUntilNextRequest $getDelayUntilNextRequest,
         int $webhookRequestsLimit,
         Sleep $sleep,
         ReachRequestLimitLogger $reachRequestLimitLogger,
-        EventsApiDebugLogger $eventsApiDebugLogger
+        EventsApiDebugLogger $eventsApiDebugLogger,
+        EventsApiDebugRepository $eventsApiDebugRepository
     ) {
         $this->getDelayUntilNextRequest = $getDelayUntilNextRequest;
         $this->webhookRequestsLimit = $webhookRequestsLimit;
         $this->sleep = $sleep;
         $this->reachRequestLimitLogger = $reachRequestLimitLogger;
         $this->eventsApiDebugLogger = $eventsApiDebugLogger;
+        $this->eventsApiDebugRepository = $eventsApiDebugRepository;
     }
 
     public static function getSubscribedEvents(): array
@@ -61,7 +64,7 @@ final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInte
             );
 
             $this->eventsApiDebugLogger->logLimitOfEventsApiRequestsReached();
-            $this->eventsApiDebugLogger->flushLogs();
+            $this->eventsApiDebugRepository->flush();
 
             $this->sleep->sleep($delayUntilNextRequest);
         }

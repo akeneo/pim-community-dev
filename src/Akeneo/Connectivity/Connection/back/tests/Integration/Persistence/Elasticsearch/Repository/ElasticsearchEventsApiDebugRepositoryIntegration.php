@@ -27,28 +27,25 @@ class ElasticsearchEventsApiDebugRepositoryIntegration extends TestCase
         $this->elasticsearchClient = $this->get('akeneo_connectivity.client.events_api_debug');
     }
 
-    public function test_it_bulk_inserts(): void
+    public function test_it_saves_logs(): void
     {
-        $documents = [
-            [
-                'timestamp' => 631152000,
-                'level' => 'info',
-                'message' => 'An information message.',
-                'connection_code' => null,
-                'context' => [
-                    'data' => 'Some more informations.',
-                ],
+        $this->elasticsearchEventsApiDebugRepository->persist([
+            'timestamp' => 631152000,
+            'level' => 'info',
+            'message' => 'An information message.',
+            'connection_code' => null,
+            'context' => [
+                'data' => 'Some more informations.',
             ],
-            [
-                'timestamp' => 946684800,
-                'level' => 'warning',
-                'message' => 'A warning message!',
-                'connection_code' => 'erp_0000',
-                'context' => [],
-            ],
-        ];
-
-        $this->elasticsearchEventsApiDebugRepository->bulkInsert($documents);
+        ]);
+        $this->elasticsearchEventsApiDebugRepository->persist([
+            'timestamp' => 946684800,
+            'level' => 'warning',
+            'message' => 'A warning message!',
+            'connection_code' => 'erp_0000',
+            'context' => [],
+        ]);
+        $this->elasticsearchEventsApiDebugRepository->flush();
 
         $this->elasticsearchClient->refreshIndex();
         $result = $this->elasticsearchClient->search([]);

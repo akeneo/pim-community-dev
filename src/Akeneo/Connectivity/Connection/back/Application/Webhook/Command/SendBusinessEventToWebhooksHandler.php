@@ -15,6 +15,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepository;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
@@ -36,6 +37,7 @@ final class SendBusinessEventToWebhooksHandler
     private SkipOwnEventLogger $skipOwnEventLogger;
     private LoggerInterface $logger;
     private EventsApiDebugLogger $eventsApiDebugLogger;
+    private EventsApiDebugRepository $eventsApiDebugRepository;
     private EventsApiRequestCountRepository $eventsApiRequestRepository;
     private CacheClearerInterface $cacheClearer;
     private string $pimSource;
@@ -50,6 +52,7 @@ final class SendBusinessEventToWebhooksHandler
         SkipOwnEventLogger $skipOwnEventLogger,
         LoggerInterface $logger,
         EventsApiDebugLogger $eventsApiDebugLogger,
+        EventsApiDebugRepository $eventsApiDebugRepository,
         EventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
         string $pimSource,
@@ -63,6 +66,7 @@ final class SendBusinessEventToWebhooksHandler
         $this->skipOwnEventLogger = $skipOwnEventLogger;
         $this->logger = $logger;
         $this->eventsApiDebugLogger = $eventsApiDebugLogger;
+        $this->eventsApiDebugRepository = $eventsApiDebugRepository;
         $this->eventsApiRequestRepository = $eventsApiRequestRepository;
         $this->cacheClearer = $cacheClearer;
         $this->pimSource = $pimSource;
@@ -132,7 +136,7 @@ final class SendBusinessEventToWebhooksHandler
         $this->client->bulkSend($requests());
 
         $this->cacheClearer->clear();
-        $this->eventsApiDebugLogger->flushLogs();
+        $this->eventsApiDebugRepository->flush();
     }
 
     private function filterConnectionOwnEvents(
