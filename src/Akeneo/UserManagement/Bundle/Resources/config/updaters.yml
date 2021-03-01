@@ -23,5 +23,3 @@ services:
 
     pim_user.updater.role:
         class: '%pim_user.updater.role.class%'
-        arguments:
-            - '@oro_security.acl.manager'

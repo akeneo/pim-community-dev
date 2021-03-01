@@ -42,8 +42,9 @@ class RoleNormalizerSpec extends ObjectBehavior
         NormalizerInterface $aclPrivilegeNormalizer,
         AclPrivilegeRepository $aclPrivilegeRepository
     ) {
-        $role = new Role('Administrator');
+        $role = new Role();
         $role->setRole('ROLE_ADMINISTRATOR');
+        $role->setLabel('Administrator');
         $format = 'standard';
 
 

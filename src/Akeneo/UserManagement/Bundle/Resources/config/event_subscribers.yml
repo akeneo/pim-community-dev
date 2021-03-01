@@ -49,3 +49,9 @@ services:
             - '@pim_user.factory.user'
         tags:
             - { name: kernel.event_listener, event: console.command, method: createUserSystem }
+
+    Akeneo\UserManagement\Bundle\EventListener\AddPrivilegesOnRoleCreationSubscriber:
+        arguments:
+            - '@oro_security.acl.manager'
+        tags:
+            - { name: kernel.event_subscriber }
