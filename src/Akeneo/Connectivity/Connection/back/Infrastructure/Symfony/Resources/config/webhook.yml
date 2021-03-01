@@ -32,3 +32,9 @@ services:
         arguments:
             - '@pim_user.repository.user'
             - '@security.token_storage'
+
+    akeneo_connectivity.connection.webhook.events_api_debug_logger:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
+            - '@akeneo_connectivity.connection.system_clock'

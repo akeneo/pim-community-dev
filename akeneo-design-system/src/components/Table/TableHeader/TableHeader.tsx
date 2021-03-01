@@ -15,6 +15,10 @@ const TableHead = styled.thead<{sticky?: number} & AkeneoThemedProps>`
     `}
 `;
 
+const SelectColumn = styled.th`
+  width: 40px;
+`;
+
 type TableHeaderProps = {
   /**
    * When set, defines the top position of the Header cells.
@@ -35,7 +39,7 @@ const TableHeader = React.forwardRef<HTMLTableSectionElement, TableHeaderProps>(
       <TableHead sticky={sticky} ref={forwardedRef}>
         <tr {...rest}>
           {/* Add new column for checkbox to be displayed properly in the tbody */}
-          {isSelectable && <th />}
+          {isSelectable && <SelectColumn />}
           {children}
         </tr>
       </TableHead>

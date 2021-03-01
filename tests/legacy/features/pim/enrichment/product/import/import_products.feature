@@ -9,7 +9,7 @@ Feature: Import products coming from an external application
       | code  | label-en_US | type    |
       | CROSS | Bag Cross   | RELATED |
 
-  @critical @validate-migration
+  @critical @validate-migration @purge-messenger
   Scenario: Successfully import a csv file of products
     Given the following CSV file to import:
       """
@@ -31,6 +31,7 @@ Feature: Import products coming from an external application
     And product "SKU-007" should be enabled
     And the english localizable value name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-002" should be "Pellentesque habitant morbi tristique senectus et netus et malesuada fames"
+    And 10 events of type "product.created" should have been raised
 
   Scenario: Successfully ignore duplicate unique data
     Given the following CSV file to import:
@@ -54,6 +55,7 @@ Feature: Import products coming from an external application
     Then the product "SKU-001" should not have the following values:
       | comment |
 
+  @purge-messenger
   Scenario: Successfully update an existing product
     Given the following product:
       | sku     | name-en_US |
@@ -67,6 +69,7 @@ Feature: Import products coming from an external application
     Then there should be 1 product
     And the english localizable value name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est"
+    And 1 event of type "product.updated" should have been raised
 
   Scenario: Successfully update existing products prices
     Given the following product:

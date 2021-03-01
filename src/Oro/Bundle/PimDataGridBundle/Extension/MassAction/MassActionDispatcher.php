@@ -91,6 +91,7 @@ class MassActionDispatcher
      */
     public function getRawFilters(array $parameters)
     {
+        $actionName = $parameters['actionName'] ?? '';
         $parameters = $this->prepareMassActionParameters($parameters);
         $datagrid = $parameters['datagrid'];
         $datasource = $datagrid->getDatasource();
@@ -122,7 +123,9 @@ class MassActionDispatcher
             }
         }
 
-        $filters = $this->convertParentFieldIfAllRowsAreSelected($filters);
+        if ($actionName !== 'sequential_edit') {
+            $filters = $this->convertParentFieldIfAllRowsAreSelected($filters);
+        }
 
         return $filters;
     }

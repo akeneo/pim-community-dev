@@ -1,0 +1,81 @@
+services:
+    _defaults:
+        public: true
+
+    akeneo_connectivity.connection.fixtures.connection_loader:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader'
+        arguments:
+            - '@akeneo_connectivity.connection.application.handler.create_connection'
+            - '@akeneo_connectivity.connection.application.handler.update_connection'
+
+    akeneo_connectivity.connection.fixtures.audit_loader:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditLoader'
+        arguments:
+            - '@database_connection'
+            - '@akeneo_connectivity.connection.persistence.repository.event_count'
+
+    akeneo_connectivity.connection.fixtures.audit_error_loader:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditErrorLoader'
+        arguments:
+            - '@akeneo_connectivity.connection.application.error_management.handler.update_connection_error_count'
+
+    akeneo_connectivity.connection.fixtures.structure.attribute:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\AttributeLoader'
+        arguments:
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@pim_catalog.saver.attribute'
+            - '@validator'
+
+    akeneo_connectivity.connection.fixtures.structure.family:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader'
+        arguments:
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@pim_catalog.saver.family'
+            - '@validator'
+
+    akeneo_connectivity.connection.fixtures.structure.family_variant:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyVariantLoader'
+        arguments:
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@validator'
+            - '@pim_catalog.saver.family_variant'
+
+    akeneo_connectivity.connection.fixtures.enrichment.product:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader'
+        arguments:
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@validator'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@akeneo_integration_tests.message_bus_observer'
+
+    akeneo_connectivity.connection.fixtures.enrichment.product_model:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductModelLoader'
+        arguments:
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.saver.product_model'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo_connectivity.connection.fixtures.enrichment.category:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\CategoryLoader'
+        arguments:
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.updater.category'
+            - '@validator'
+            - '@pim_catalog.saver.category'
+
+    akeneo_connectivity.connection.fixtures.webhook_loader:
+        class: Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader
+        arguments:
+            - '@database_connection'
+
+    akeneo_connectivity.connection.fixtures.events_api_request_count_loader:
+        class: Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventsApiRequestCountLoader
+        arguments:
+            - '@database_connection'

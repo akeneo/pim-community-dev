@@ -554,4 +554,6 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function isApiUser(): bool;
 
     public function defineAsApiUser(): void;
+
+    public function duplicate(): UserInterface;
 }

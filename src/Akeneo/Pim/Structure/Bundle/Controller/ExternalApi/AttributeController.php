@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Controller\ExternalApi;
 
+use Akeneo\Pim\Structure\Bundle\EventSubscriber\ApiAggregatorForAttributePostSaveEventSubscriber;
+use Akeneo\Pim\Structure\Bundle\EventSubscriber\ApiBatchAttributePostSaveEventSubscriber;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
@@ -16,6 +18,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,19 +71,10 @@ class AttributeController
     /** @var array */
     protected $apiConfiguration;
 
-    /**
-     * @param AttributeRepositoryInterface $repository
-     * @param NormalizerInterface          $normalizer
-     * @param SimpleFactoryInterface       $factory
-     * @param ObjectUpdaterInterface       $updater
-     * @param ValidatorInterface           $validator
-     * @param SaverInterface               $saver
-     * @param RouterInterface              $router
-     * @param PaginatorInterface           $paginator
-     * @param ParameterValidatorInterface  $parameterValidator
-     * @param StreamResourceResponse       $partialUpdateStreamResource
-     * @param array                        $apiConfiguration
-     */
+    private ApiAggregatorForAttributePostSaveEventSubscriber $apiAggregatorForAttributePostSave;
+
+    private LoggerInterface $logger;
+
     public function __construct(
         AttributeRepositoryInterface $repository,
         NormalizerInterface $normalizer,
@@ -92,7 +86,9 @@ class AttributeController
         PaginatorInterface $paginator,
         ParameterValidatorInterface $parameterValidator,
         StreamResourceResponse $partialUpdateStreamResource,
-        array $apiConfiguration
+        array $apiConfiguration,
+        ApiAggregatorForAttributePostSaveEventSubscriber $apiAggregatorForAttributePostSave,
+        LoggerInterface $logger
     ) {
         $this->repository = $repository;
         $this->normalizer = $normalizer;
@@ -105,6 +101,8 @@ class AttributeController
         $this->paginator = $paginator;
         $this->partialUpdateStreamResource = $partialUpdateStreamResource;
         $this->apiConfiguration = $apiConfiguration;
+        $this->apiAggregatorForAttributePostSave = $apiAggregatorForAttributePostSave;
+        $this->logger = $logger;
     }
 
     /**
@@ -216,7 +214,18 @@ class AttributeController
     public function partialUpdateListAction(Request $request)
     {
         $resource = $request->getContent(true);
-        $response = $this->partialUpdateStreamResource->streamResponse($resource);
+        $this->apiAggregatorForAttributePostSave->activate();
+
+        $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
+            try {
+                $this->apiAggregatorForAttributePostSave->dispatchAllEvents();
+            } catch (\Throwable $exception) {
+                $this->logger->critical('An exception has been thrown in the post-save events', [
+                    'exception' => $exception,
+                ]);
+            }
+            $this->apiAggregatorForAttributePostSave->deactivate();
+        });
 
         return $response;
     }

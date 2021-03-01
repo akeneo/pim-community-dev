@@ -42,15 +42,6 @@ abstract class AbstractProductWithQuantifiedAssociationsTestCase extends Abstrac
         return json_decode($this->client->getResponse()->getContent(), true);
     }
 
-    protected function createProduct(array $fields): ProductInterface
-    {
-        $product = new Product();
-        $this->getProductUpdater()->update($product, $fields);
-        $this->getProductSaver()->save($product);
-
-        return $product;
-    }
-
     protected function updateNormalizedProduct(array $data, array $changes): array
     {
         unset($data['meta']);

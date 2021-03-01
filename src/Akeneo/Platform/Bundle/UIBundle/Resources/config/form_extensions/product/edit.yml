@@ -19,7 +19,7 @@ extensions:
             logout: pim_menu.user.logout
 
     pim-product-edit-form-main-image:
-        module: pim/form/common/main-image
+        module: pim/form/common/product/product-main-image
         parent: pim-product-edit-form
         targetZone: main-image
 

@@ -28,7 +28,7 @@ const ModalContainer = styled.div`
 `;
 
 const ModalCloseButton = styled(IconButton)`
-  position: absolute;
+  position: fixed;
   top: 40px;
   left: 40px;
 `;
@@ -77,7 +77,7 @@ const BottomButtons = styled.div`
 `;
 
 const TopRightButtons = styled(BottomButtons)`
-  position: absolute;
+  position: fixed;
   top: 40px;
   right: 40px;
   margin: 0;
@@ -114,6 +114,8 @@ type ModalProps = Override<
 const Modal: React.FC<ModalProps> & {
   BottomButtons: typeof BottomButtons;
   TopRightButtons: typeof TopRightButtons;
+  SectionTitle: typeof SectionTitle;
+  Title: typeof Title;
 } = ({onClose, illustration, closeTitle, children, ...rest}: ModalProps) => {
   const portalNode = document.createElement('div');
   portalNode.setAttribute('id', 'modal-root');
@@ -147,5 +149,7 @@ const Modal: React.FC<ModalProps> & {
 
 Modal.BottomButtons = BottomButtons;
 Modal.TopRightButtons = TopRightButtons;
+Modal.Title = Title;
+Modal.SectionTitle = SectionTitle;
 
-export {Modal, SectionTitle, Title};
+export {Modal};

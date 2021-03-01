@@ -11,9 +11,17 @@ imports:
     - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/Acceptance/Resources/config/queries.yml }
     - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/Acceptance/Resources/config/repositories.yml }
     - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/Acceptance/Resources/config/services.yml }
+    - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/CatalogBuilder/Resources/config/loaders.yml }
 
 services:
     akeneo_integration_tests.doctrine.connection.connection_closer:
         class: Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser
         arguments:
             - '@doctrine'
+
+    akeneo_integration_tests.message_bus_observer:
+        class: Symfony\Component\Messenger\TraceableMessageBus
+        decorates: messenger.default_bus
+        decoration_inner_name: messenger.default_bus.inner
+        arguments:
+            - '@messenger.default_bus.inner'

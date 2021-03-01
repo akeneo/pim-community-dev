@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\EventListener;
 
+use Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\ContentSecurityPolicyProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -15,12 +16,11 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class AddContentSecurityPolicyListener implements EventSubscriberInterface
 {
-    /** @var string */
-    private $generatedNonce;
+    private ContentSecurityPolicyProvider $contentSecurityPolicyProvider;
 
-    public function __construct(ScriptNonceGenerator $nonceGenerator)
+    public function __construct(ContentSecurityPolicyProvider $contentSecurityPolicyProvider)
     {
-        $this->generatedNonce = $nonceGenerator->getGeneratedNonce();
+        $this->contentSecurityPolicyProvider = $contentSecurityPolicyProvider;
     }
 
     public static function getSubscribedEvents(): array
@@ -32,10 +32,7 @@ class AddContentSecurityPolicyListener implements EventSubscriberInterface
 
     public function addCspHeaders(ResponseEvent $event): void
     {
-        $policy = sprintf(
-            "default-src 'self' *.akeneo.com 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'nonce-%s'; img-src 'self' data: ; frame-src * ; font-src 'self' data:",
-            $this->generatedNonce
-        );
+        $policy = $this->contentSecurityPolicyProvider->getPolicy();
 
         $response = $event->getResponse();
         $response->headers->set('Content-Security-Policy', $policy);

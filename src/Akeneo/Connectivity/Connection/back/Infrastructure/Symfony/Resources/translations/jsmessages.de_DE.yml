@@ -8,7 +8,7 @@ pim_menu:
     connection_settings: Verbindungen
     connection_settings_edit: Verbindungseinstellungen
     connection_monitoring: Überwachung
-    connection_webhook_edit: Ereignisabonnements
+    connection_webhook_edit: Event-Abonnement
 pim_title:
   akeneo_connectivity_connection_settings_index: Verbindungen
   akeneo_connectivity_connection_settings_edit: Verbindungseinstellungen
@@ -17,8 +17,8 @@ pim_title:
   akeneo_connectivity_connection_audit_any: Verbindungs-Dashboard
   akeneo_connectivity_connection_error_management_dashboard: Verbindungs-Dashboard
   akeneo_connectivity_connection_error_management_connection_monitoring: Verbindungsüberwachung
-  akeneo_connectivity_connection_webhook_edit: Ereignisabonnements
-  akeneo_connectivity_connection_webhook_regenerate_secret: Ereignisabonnements
+  akeneo_connectivity_connection_webhook_edit: Event-Abonnement
+  akeneo_connectivity_connection_webhook_regenerate_secret: Event-Abonnement
 akeneo_connectivity.connection:
   connections: Verbindungen
   secondary_actions:
@@ -193,10 +193,10 @@ akeneo_connectivity.connection:
         message: Bitten Sie Ihren Administrator, einen zu erstellen.
         link: Erfahren Sie hier mehr über Verbindungen...
   webhook:
-    title: Ereignisabonnements
-    event_subscription: Ereignisabonnements
+    title: Event-Abonnement
+    event_subscription: Event-Abonnement
     helper:
-      message: Sie können über Ereignisse im PIM für Produkte, die mit dieser verbundenen App synchronisiert werden, benachrichtigt werden. Sie müssen nur eine URL und den Ereignistyp(en) definieren, über den Sie den Überblick behalten möchten.
+      message: Sie können über Ereignisse im PIM für Produkte, die mit dieser verbundenen App synchronisiert wurden, benachrichtigt werden. Sie müssen nur eine URL definieren.
       link: Erfahren Sie mehr über Eventabonnement-Konfiguration...
       url.test_disabled: Bitte klicken Sie auf Speichern, um die URL testen zu können.
     form:
@@ -223,7 +223,7 @@ akeneo_connectivity.connection:
         error: Beim erneuten Erzeugen des Webhook-Geheimnisses ist ein Fehler aufgetreten.
     active_event_subscriptions_limit_reached:
       message: Sie können bis zu {{ limit }} Verbindungen mit der Event-Abonnement-Funktion verbinden. Sie haben dieses Limit erreicht.
-      link: Erfahren Sie mehr über die Konfiguration von Event-Abonnements.
+      link: Erfahren Sie mehr über die Eventabonnement-Konfiguration.
   error_management:
     connection_monitoring:
       title: Überwachung

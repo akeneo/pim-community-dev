@@ -3,7 +3,7 @@ import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {TextInput} from './TextInput.tsx';
 
 <Meta
-  title="Components/Inputs/TextInput"
+  title="Components/Inputs/Text input"
   component={TextInput}
   argTypes={{
     readOnly: {
@@ -19,11 +19,11 @@ import {TextInput} from './TextInput.tsx';
   }}
   args={{
     value: '',
-    placeholder: 'Please enter a value in the TextField',
+    placeholder: 'Please enter a value in the TextInput',
   }}
 />
 
-# TextInput (Beta)
+# Text input (Beta)
 
 ## Usage
 
@@ -38,9 +38,8 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
 <Canvas>
   <Story name="Standard">
     {args => {
-      // There currently is a bug on Storybook with `useArgs` that loses the focus on the input when typing
-      // See: https://github.com/storybookjs/storybook/issues/11657
-      return <TextInput {...args} />;
+      const [value, setValue] = useState(args.value);
+      return <TextInput {...args} value={value} onChange={setValue} />;
     }}
   </Story>
 </Canvas>

@@ -13,18 +13,19 @@ const checkTick = keyframes`
 
 const uncheckTick = keyframes`
   to {
-    stroke-dashoffset: 17px;
+    stroke-dashoffset: 27px;
   }
 `;
 
 const Container = styled.div`
   display: flex;
+  line-height: 20px;
 `;
 
 const TickIcon = styled(CheckIcon)`
   animation: ${uncheckTick} 0.2s ease-in forwards;
   opacity: 0;
-  stroke-dasharray: 17px;
+  stroke-dasharray: 27px;
   stroke-dashoffset: 0;
   transition-delay: 0.2s;
   transition: opacity 0.1s ease-out;
@@ -51,7 +52,7 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
       ${TickIcon} {
         animation-delay: 0.2s;
         animation: ${checkTick} 0.2s ease-out forwards;
-        stroke-dashoffset: 17px;
+        stroke-dashoffset: 27px;
         opacity: 1;
         transition-delay: 0s;
       }
@@ -119,7 +120,16 @@ type CheckboxProps = Override<
  */
 const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
   (
-    {checked = false, onChange, readOnly = false, children, title, 'aria-label': ariaLabel, ...rest}: CheckboxProps,
+    {
+      checked = false,
+      onChange,
+      readOnly = false,
+      children,
+      title,
+      'aria-label': ariaLabel,
+      tabIndex,
+      ...rest
+    }: CheckboxProps,
     forwardedRef: Ref<HTMLDivElement>
   ): React.ReactElement => {
     const checkboxId = useId('checkbox_');
@@ -160,12 +170,12 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
           role="checkbox"
           ref={ref}
           aria-checked={isChecked}
-          tabIndex={readOnly ? -1 : 0}
+          tabIndex={undefined !== tabIndex ? tabIndex : readOnly ? -1 : 0}
           onClick={handleChange}
           aria-label={ariaLabel}
           {...forProps}
         >
-          {isMixed ? <CheckPartialIcon size={18} /> : <TickIcon size={20} />}
+          {isMixed ? <CheckPartialIcon size={18} /> : <TickIcon size={18} />}
         </CheckboxContainer>
         {children ? (
           <LabelContainer onClick={handleChange} id={labelId} readOnly={readOnly} htmlFor={checkboxId}>

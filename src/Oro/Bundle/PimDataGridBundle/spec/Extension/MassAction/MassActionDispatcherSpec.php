@@ -327,4 +327,62 @@ class MassActionDispatcherSpec extends ObjectBehavior
             ],
         ]);
     }
+
+    function it_does_not_convert_parent_filter_when_using_sequential_edit(
+        DatagridInterface $grid,
+        Acceptor $acceptor,
+        MassActionExtension $massActionExtension,
+        MassActionInterface $massActionInterface,
+        QueryBuilder $queryBuilder,
+        ProductDatasource $datasource,
+        ProductMassActionRepositoryInterface $massActionRepository,
+        MassActionParametersParser $parametersParser,
+        ProductQueryBuilderInterface $productQueryBuilder
+    ) {
+        $massActionName = 'sequential_edit';
+        $request = new Request([
+            'inset'      => 'inset',
+            'values'     => [1],
+            'gridName'   => 'grid',
+            'massAction' => $massActionInterface,
+            'actionName' => $massActionName,
+        ]);
+
+        $parametersParser->parse($request)->willReturn([
+            'inset' => 'inset',
+            'values' => [1],
+            'gridName'   => 'grid',
+            'massAction' => $massActionInterface,
+            'actionName' => $massActionName,
+        ]);
+        $datasource->getMassActionRepository()->willReturn($massActionRepository);
+        $massActionRepository->applyMassActionParameters($queryBuilder, '', [1])->willReturn(null);
+        $massActionExtension->getMassAction('sequential_edit', $grid)->willReturn($massActionInterface);
+        $acceptor->getExtensions()->willReturn([$massActionExtension]);
+
+        $datasource->getProductQueryBuilder()->willReturn($productQueryBuilder);
+        $productQueryBuilder->getRawFilters()->willReturn([
+            [
+                'field' => 'parent',
+                'operator' => 'IN',
+                'values' => ['CODE1', 'CODE2'],
+            ],
+        ]);
+        $datasource->getParameters()->willReturn(null);
+
+        $this->getRawFilters([
+            'inset'      => '',
+            'values'     => [1],
+            'gridName'   => 'grid',
+            'massAction' => $massActionInterface,
+            'actionName' => $massActionName,
+        ])->shouldReturn([
+            [
+                'field' => 'parent',
+                'operator' => 'IN',
+                'values' => ['CODE1', 'CODE2'],
+                'context' => [],
+            ],
+        ]);
+    }
 }

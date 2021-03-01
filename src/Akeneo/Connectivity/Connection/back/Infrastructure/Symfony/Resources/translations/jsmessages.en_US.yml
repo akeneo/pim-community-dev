@@ -9,7 +9,7 @@ pim_menu:
         connection_settings: Connections
         connection_settings_edit: Connection settings
         connection_monitoring: Monitoring
-        connection_webhook_edit: Event subscriptions
+        connection_webhook_edit: Event subscription
 
 pim_title:
     akeneo_connectivity_connection_settings_index: Connections
@@ -19,8 +19,8 @@ pim_title:
     akeneo_connectivity_connection_audit_any: Connection dashboard
     akeneo_connectivity_connection_error_management_dashboard: Connection dashboard
     akeneo_connectivity_connection_error_management_connection_monitoring: Connection monitoring
-    akeneo_connectivity_connection_webhook_edit: Event subscriptions
-    akeneo_connectivity_connection_webhook_regenerate_secret: Event subscriptions
+    akeneo_connectivity_connection_webhook_edit: Event subscription
+    akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
 
 akeneo_connectivity.connection:
     connections: Connections
@@ -197,10 +197,10 @@ akeneo_connectivity.connection:
                 message: Ask your administrator to create one.
                 link: Learn more about connections here...
     webhook:
-        title: Event subscriptions
-        event_subscription: Event subscriptions
+        title: Event subscription
+        event_subscription: Event subscription
         helper:
-            message: You can be notified of events happening in the PIM for products synchronized with this connected app. You just need to define a URL and the event type(s) you want to keep track of.
+            message: You can be notified of events happening in the PIM for products synchronized with this connected app. You just need to define a URL.
             link: Learn more about event subscription configuration...
             url.test_disabled: Please, click on the Save button to be able to test the URL.
         form:
@@ -227,7 +227,7 @@ akeneo_connectivity.connection:
                 error: Sorry, an error occurred while regenerating the webhook secret.
         active_event_subscriptions_limit_reached:
             message: You can connect up to {{ limit }} connections to the Event subscription feature. You have reached this limit.
-            link: Learn more about event subscriptions configuration.
+            link: Learn more about event subscription configuration.
     error_management:
         connection_monitoring:
             title: Monitoring

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Loading, Section, SmallHelper} from '../../../common';
+import {Loading, SmallHelper} from '../../../common';
 import styled from '../../../common/styled-with-theme';
 import {FlowType} from '../../../model/flow-type.enum';
 import {Translate, useTranslate} from '../../../shared/translate';
@@ -8,6 +8,7 @@ import useConnectionSelect from '../../hooks/useConnectionSelect';
 import {WeeklyAuditChart} from '../Chart/WeeklyAuditChart';
 import {ConnectionSelect} from '../ConnectionSelect';
 import {NoConnection} from '../NoConnection';
+import {SectionTitle} from 'akeneo-design-system';
 
 export const DataSourceErrorChart = () => {
     const translate = useTranslate();
@@ -18,11 +19,13 @@ export const DataSourceErrorChart = () => {
     if (0 === connections.filter(connection => connection.code !== '<all>').length) {
         return (
             <Container>
-                <Section
-                    title={translate(
-                        'akeneo_connectivity.connection.dashboard.error_management.data_source_error_chart.section.title'
-                    )}
-                />
+                <SectionTitle>
+                    <SectionTitle.Title>
+                        {translate(
+                            'akeneo_connectivity.connection.dashboard.error_management.data_source_error_chart.section.title'
+                        )}
+                    </SectionTitle.Title>
+                </SectionTitle>
                 <NoConnectionContainer>
                     <NoConnection small flowType={FlowType.DATA_SOURCE} />
                 </NoConnectionContainer>
@@ -32,17 +35,19 @@ export const DataSourceErrorChart = () => {
 
     return (
         <Container>
-            <Section
-                title={translate(
-                    'akeneo_connectivity.connection.dashboard.error_management.data_source_error_chart.section.title'
-                )}
-            >
+            <SectionTitle>
+                <SectionTitle.Title>
+                    {translate(
+                        'akeneo_connectivity.connection.dashboard.error_management.data_source_error_chart.section.title'
+                    )}
+                </SectionTitle.Title>
+                <SectionTitle.Spacer />
                 <ConnectionSelect
                     connections={connections}
                     onChange={code => selectConnectionCode(code!)}
                     label={translate('akeneo_connectivity.connection.dashboard.connection_selector.title.source')}
                 />
-            </Section>
+            </SectionTitle>
             <SmallHelper>
                 <Translate id='akeneo_connectivity.connection.dashboard.error_management.data_source_error_chart.section.helper' />
             </SmallHelper>

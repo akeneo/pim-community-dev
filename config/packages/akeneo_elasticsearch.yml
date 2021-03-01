@@ -9,3 +9,7 @@ akeneo_elasticsearch:
             service_name: "akeneo_connectivity.client.connection_error"
             index_name: "%connection_error_index_name%"
             configuration_files: "%connection_error_elasticsearch_index_configuration_file%"
+        -
+            service_name: "akeneo_connectivity.client.events_api_debug"
+            index_name: "%events_api_debug_index_name%"
+            configuration_files: "%events_api_debug_elasticsearch_index_configuration_file%"

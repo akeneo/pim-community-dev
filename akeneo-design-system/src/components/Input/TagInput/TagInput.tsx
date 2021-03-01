@@ -1,7 +1,7 @@
 import React, {useState, useRef, ChangeEvent, FC, KeyboardEvent, useCallback} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
-import {CloseIcon} from '../../../icons';
+import {CloseIcon, LockIcon} from '../../../icons';
 import {arrayUnique, Key, Override} from '../../../shared';
 import {InputProps} from '../InputProps';
 
@@ -151,6 +151,7 @@ const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = []
           readOnly={readOnly}
           {...inputProps}
         />
+        {readOnly && <ReadOnlyIcon size={16} />}
       </InputContainer>
     </TagContainer>
   );
@@ -167,13 +168,15 @@ const RemoveTagIcon = styled(CloseIcon)<AkeneoThemedProps>`
 const TagContainer = styled.ul<AkeneoThemedProps & {invalid: boolean}>`
   border: 1px solid ${({invalid}) => (invalid ? getColor('red', 100) : getColor('grey', 80))};
   border-radius: 2px;
-  padding: 5px;
+  padding: 4px;
   display: flex;
   flex-wrap: wrap;
   min-height: 40px;
   gap: 5px;
   box-sizing: border-box;
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
+  position: relative;
+  width: 100%;
 
   &:focus-within {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};
@@ -187,6 +190,8 @@ const Tag = styled.li<AkeneoThemedProps & {isSelected: boolean; readOnly: boolea
   background-color: ${({isSelected}) => (isSelected ? getColor('grey', 40) : getColor('grey', 20))};
   display: flex;
   align-items: center;
+  height: 30px;
+  box-sizing: border-box;
 `;
 
 const InputContainer = styled.li<AkeneoThemedProps>`
@@ -209,6 +214,14 @@ const InputContainer = styled.li<AkeneoThemedProps>`
       font-family: 'Lato';
     }
   }
+`;
+
+const ReadOnlyIcon = styled(LockIcon)`
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 11px;
+  color: ${getColor('grey', 100)};
 `;
 
 export {TagInput};

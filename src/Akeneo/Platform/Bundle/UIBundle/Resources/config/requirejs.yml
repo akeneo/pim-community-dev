@@ -538,8 +538,8 @@ config:
     pim/form-modal:                     pimui/js/form/form-modal
     pim/scopable:                       pimui/js/pim-scopable
     pim/currencyfield:                  pimui/js/pim-currencyfield
-    pim/tree/view:                      pimui/js/tree-view.jstree
-    pim/tree/associate:                 pimui/js/tree-associate.jstree
+    pim/tree/view:                      pimui/js/TreeView.tsx
+    pim/tree/associate:                 pimui/js/TreeAssociate.tsx
     pim/tree/manage:                    pimui/js/tree-manage.jstree
     pim/attributeoptionview:            pimui/js/pim-attributeoptionview
     pim/i18n:                           pimui/js/i18n
@@ -770,8 +770,9 @@ config:
     pim/filter/product/enabled:            pimui/js/filter/product/enabled
     pim/filter/product/updated:            pimui/js/filter/product/updated
     pim/filter/product/completeness:       pimui/js/filter/product/completeness
+    pim/filter/product/quality-score:      pimui/js/filter/product/quality-score
     pim/filter/product/category:           pimui/js/filter/product/category
-    pim/filter/product/category/selector:  pimui/js/filter/product/category/selector
+    pim/filter/product/category/selector:  pimui/js/filter/product/category/Selector.tsx
     pim/filter/attribute/identifier:       pimui/js/filter/attribute/identifier
     pim/filter/attribute/attribute:        pimui/js/filter/attribute/attribute
     pim/filter/attribute/boolean:          pimui/js/filter/attribute/boolean
@@ -901,6 +902,7 @@ config:
     pim/form/common/creation/type:                       pimui/js/form/common/creation/type
     pim/form/common/creation/job:                        pimui/js/form/common/creation/job
     pim/form/common/product/create-button:               pimui/js/form/common/product/create-button
+    pim/form/common/product/product-main-image:          pimui/js/form/common/product/product-main-image
     pim/form/common/section:                             pimui/js/form/common/section.ts
     pim/form/user/login-details:                         pimui/js/form/user/login-details
     pim/form/common/exclusif-boolean: pimui/js/form/common/exclusif-boolean
@@ -1212,6 +1214,9 @@ config:
     pim/template/filter/attribute/select:           pimui/templates/filter/attribute/select.html
     pim/template/filter/attribute/media:            pimui/templates/filter/attribute/media.html
     pim/template/filter/attribute/date:             pimui/templates/filter/attribute/date.html
+    pim/template/filter/product/quality-score: pimui/templates/filter/product/quality-score/select-score.html
+    pim/template/filter/product/quality-score-operator: pimui/templates/filter/product/quality-score/select-operator.html
+    pim/template/filter/product/quality-score-filter: pimui/templates/filter/product/quality-score/filter.html
 
     # Grid view selector
     pim/template/grid/view-selector/create-view-inputs: pimui/templates/grid/view-selector-create-view-inputs.html

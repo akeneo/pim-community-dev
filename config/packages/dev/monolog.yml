@@ -4,10 +4,12 @@ monolog:
             type:     stream
             path:     "%kernel.logs_dir%/%kernel.environment%.log"
             level:    debug
-            channels: ['!event', '!event_api']
+            channels: ['!event', '!event_api', '!business_event']
         firephp:
             type:     firephp
             level:    info
         console:
             type:     console
-            channels: ['!event', '!doctrine', '!event_api']
+            channels: ['!event', '!doctrine', '!event_api', '!business_event']
+        business_event:
+            type: 'null'

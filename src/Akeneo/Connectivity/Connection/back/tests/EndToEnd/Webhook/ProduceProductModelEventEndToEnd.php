@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\FamilyVariantLoader;
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\ProductModelLoader;
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\AttributeLoader;
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\FamilyLoader;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductModelLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\AttributeLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyVariantLoader;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
-use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 
@@ -23,20 +23,13 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
  */
 class ProduceProductModelEventEndToEnd extends ApiTestCase
 {
-    /** @var ProductModelLoader */
-    private $productModelLoader;
+    use AssertEventCountTrait;
 
-    /** @var FamilyVariantLoader */
-    private $familyVariantLoader;
-
-    /** @var FamilyLoader */
-    private $familyLoader;
-
-    /** @var AttributeLoader */
-    private $attributeLoader;
-
-    /** @var RemoverInterface */
-    private $productModelRemover;
+    private ProductModelLoader $productModelLoader;
+    private FamilyVariantLoader $familyVariantLoader;
+    private FamilyLoader $familyLoader;
+    private AttributeLoader $attributeLoader;
+    private RemoverInterface $productModelRemover;
 
     protected function setUp(): void
     {
@@ -44,7 +37,7 @@ class ProduceProductModelEventEndToEnd extends ApiTestCase
 
         $this->attributeLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.attribute');
         $this->familyLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.family');
-        $this->familyVariantLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.family_variant');
+        $this->familyVariantLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.family_variant');
         $this->productModelLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.product_model');
         $this->productModelRemover = $this->get('pim_catalog.remover.product_model');
     }
@@ -109,15 +102,7 @@ JSON;
 
         $apiClient->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
 
-        $transport = self::$container->get('messenger.transport.business_event');
-        $envelopes = $transport->get();
-
-        $this->assertCount(1, $envelopes);
-
-        /** @var BulkEvent */
-        $bulkEvent = $envelopes[0]->getMessage();
-        $this->assertInstanceOf(BulkEvent::class, $bulkEvent);
-        $this->assertContainsOnlyInstancesOf(ProductModelCreated::class, $bulkEvent->getEvents());
+        $this->assertEventCount(1, ProductModelCreated::class);
     }
 
     public function test_update_product_model_add_business_event_to_queue()
@@ -186,15 +171,7 @@ JSON;
 JSON;
         $apiClient->request('PATCH', 'api/rest/v1/product-models/product_model', [], [], [], $data);
 
-        $transport = self::$container->get('messenger.transport.business_event');
-        $envelopes = $transport->get();
-
-        $this->assertCount(1, $envelopes);
-
-        /** @var BulkEvent */
-        $bulkEvent = $envelopes[0]->getMessage();
-        $this->assertInstanceOf(BulkEvent::class, $bulkEvent);
-        $this->assertContainsOnlyInstancesOf(ProductModelUpdated::class, $bulkEvent->getEvents());
+        $this->assertEventCount(1, ProductModelUpdated::class);
     }
 
     public function test_remove_product_model_add_business_event_to_queue()
@@ -231,17 +208,7 @@ JSON;
 
         $this->productModelRemover->remove($productModel);
 
-        $transport = self::$container->get('messenger.transport.business_event');
-
-        $envelopes = $transport->get();
-
-        $this->assertCount(2, $envelopes);
-
-        $this->assertInstanceOf(BulkEvent::class, $envelopes[0]->getMessage());
-        $this->assertContainsOnlyInstancesOf(ProductModelCreated::class, $envelopes[0]->getMessage()->getEvents());
-
-        $this->assertInstanceOf(BulkEvent::class, $envelopes[1]->getMessage());
-        $this->assertContainsOnlyInstancesOf(ProductModelRemoved::class, $envelopes[1]->getMessage()->getEvents());
+        $this->assertEventCount(1, ProductModelRemoved::class);
     }
 
     protected function getConfiguration(): Configuration

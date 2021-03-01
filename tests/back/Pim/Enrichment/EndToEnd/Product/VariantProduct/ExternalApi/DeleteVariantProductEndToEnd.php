@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\VariantProduct\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class DeleteVariantProductEndToEnd extends AbstractProductTestCase
 {
+    use AssertEventCountTrait;
+
     public function testDeleteAVariantProduct()
     {
         $client = $this->createAuthenticatedClient();
@@ -27,6 +31,8 @@ class DeleteVariantProductEndToEnd extends AbstractProductTestCase
 
         $this->assertCount(241, $this->get('pim_catalog.repository.product')->findAll());
         $this->assertNull($this->get('pim_catalog.repository.product')->findOneByIdentifier('biker-jacket-leather-xxs'));
+
+        $this->assertEventCount(1, ProductRemoved::class);
     }
 
     /**

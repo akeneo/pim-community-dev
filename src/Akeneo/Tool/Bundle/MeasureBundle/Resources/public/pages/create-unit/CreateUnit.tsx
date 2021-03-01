@@ -3,8 +3,6 @@ import {
   Helper,
   MeasurementIllustration,
   Button,
-  SectionTitle,
-  Title,
   Modal,
   Checkbox,
   useAutoFocus,
@@ -100,10 +98,10 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
 
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={handleClose} illustration={<MeasurementIllustration />}>
-      <SectionTitle color="brand">
+      <Modal.SectionTitle color="brand">
         {translate('measurements.title.measurement')} / {measurementFamilyLabel}
-      </SectionTitle>
-      <Title>{translate('measurements.unit.add_new')}</Title>
+      </Modal.SectionTitle>
+      <Modal.Title>{translate('measurements.unit.add_new')}</Modal.Title>
       <Subsection>
         {measurementFamily.is_locked && (
           <Helper level="warning">{translate('measurements.unit.will_be_read_only')}</Helper>
