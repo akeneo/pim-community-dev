@@ -26,6 +26,7 @@
 - PIM-9701: Fix role deletion when a user do not have any role
 - PIM-9699: Fix clicking detail on last operation return 404 on import and export jobs
 - API-1483: Fix the test button of the Event Subscription
+- PLG-63: Fix product-grid grouped variant filter dropdown
 
 ## New features
 
