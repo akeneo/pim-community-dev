@@ -1,24 +1,40 @@
 import React from 'react';
 import {SwitcherButton} from './SwitcherButton';
-import {render, screen} from '../../storybook/test-util';
+import {fireEvent, render, screen} from '../../storybook/test-util';
 
 test('it renders its children properly', () => {
-  render(<SwitcherButton>SwitcherButton content</SwitcherButton>);
+  render(<SwitcherButton label={'A label'}>A value</SwitcherButton>);
 
-  expect(screen.getByText('SwitcherButton content')).toBeInTheDocument();
+  expect(screen.getByText('A label:')).toBeInTheDocument();
+  expect(screen.getByText('A value')).toBeInTheDocument();
 });
 
-// Those tests should pass directly if you follow the contributing guide.
-// If you add required props to your Component, these tests will fail
-// and you will need to add these required props here as well
 test('SwitcherButton supports forwardRef', () => {
   const ref = {current: null};
 
-  render(<SwitcherButton ref={ref} />);
+  render(<SwitcherButton label={'A label'} ref={ref} />);
   expect(ref.current).not.toBe(null);
 });
 
 test('SwitcherButton supports ...rest props', () => {
-  render(<SwitcherButton data-testid="my_value" />);
+  render(<SwitcherButton label={'A label'} data-testid="my_value" />);
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
+});
+
+test('It calls deletion', () => {
+  const onDelete = jest.fn();
+
+  render(<SwitcherButton label={'A label'} inline={false} deletable={true} onDelete={onDelete} />);
+
+  fireEvent.click(screen.getAllByRole('button')[1]);
+  expect(onDelete).toBeCalledTimes(1);
+});
+
+test('It calls click', () => {
+  const onClick = jest.fn();
+
+  render(<SwitcherButton label={'A label'} onClick={onClick} />);
+
+  fireEvent.click(screen.getAllByRole('button')[0]);
+  expect(onClick).toBeCalledTimes(1);
 });

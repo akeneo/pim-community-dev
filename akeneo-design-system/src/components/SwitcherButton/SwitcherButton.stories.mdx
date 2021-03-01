@@ -14,27 +14,27 @@ import {SpaceContainer} from '../../storybook/PreviewGallery';
 
 # SwitcherButton
 
+Switchers are used to switch the filter on the context or the content of a page or a table.
+
 ## Usage
 
-TODO
-
-### TODO
-
-TODO
+Most of the time, when you click on a switcher, a dropdown appears.
 
 ## Playground
 
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <SwitcherButton {...args}>
-        {args.children}
-      </SwitcherButton>
+      return <SpaceContainer width={200}>
+        <SwitcherButton {...args}>
+          {args.children}
+        </SwitcherButton>
+      </SpaceContainer>
     }}
   </Story>
 </Canvas>
 
-<ArgsTable story="Inline" />
+<ArgsTable story="Standard" />
 
 ## Variation on inline
 
@@ -54,9 +54,6 @@ TODO
     }}
   </Story>
 </Canvas>
-
-
-<ArgsTable story="Deletable" />
 
 ## Variation on deletable
 
@@ -80,8 +77,6 @@ TODO
     }}
   </Story>
 </Canvas>
-
-<ArgsTable story="Locale" />
 
 ## Example with flag
 
