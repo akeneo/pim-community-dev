@@ -78,21 +78,39 @@ class GuzzleWebhookClient implements WebhookClient
                     'timeout' => $this->config['timeout'] ?? null,
                 ],
                 'fulfilled' => function (Response $response, int $index) use (&$logs) {
+                    /** @var EventSubscriptionSendApiEventRequestLog $webhookRequestLog */
                     $webhookRequestLog = $logs[$index];
                     $webhookRequestLog->setSuccess(true);
                     $webhookRequestLog->setEndTime(microtime(true));
                     $webhookRequestLog->setResponse($response);
 
-                    $this->sendApiEventRequestLogger->log($webhookRequestLog);
+                    $this->sendApiEventRequestLogger->log(
+                        $webhookRequestLog->getWebhookRequest(),
+                        $webhookRequestLog->getStartTime(),
+                        $webhookRequestLog->getEndTime(),
+                        $webhookRequestLog->getHeaders(),
+                        $webhookRequestLog->getMessage(),
+                        $webhookRequestLog->isSuccess(),
+                        $webhookRequestLog->getResponse()
+                    );
                 },
                 'rejected' => function (RequestException $reason, int $index) use (&$logs) {
+                    /** @var EventSubscriptionSendApiEventRequestLog $webhookRequestLog */
                     $webhookRequestLog = $logs[$index];
                     $webhookRequestLog->setMessage($reason->getMessage());
                     $webhookRequestLog->setSuccess(false);
                     $webhookRequestLog->setEndTime(microtime(true));
                     $webhookRequestLog->setResponse($reason->getResponse());
 
-                    $this->sendApiEventRequestLogger->log($webhookRequestLog);
+                    $this->sendApiEventRequestLogger->log(
+                        $webhookRequestLog->getWebhookRequest(),
+                        $webhookRequestLog->getStartTime(),
+                        $webhookRequestLog->getEndTime(),
+                        $webhookRequestLog->getHeaders(),
+                        $webhookRequestLog->getMessage(),
+                        $webhookRequestLog->isSuccess(),
+                        $webhookRequestLog->getResponse()
+                    );
                 },
             ]
         );
