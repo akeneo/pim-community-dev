@@ -12,7 +12,7 @@ use Pim\Behat\Decorator\Completeness\PanelDecorator;
 use Pim\Behat\Decorator\ContextSwitcherDecorator;
 use Pim\Behat\Decorator\Tab\ComparableTabDecorator;
 use Pim\Behat\Decorator\TabElement\ComparisonPanelDecorator;
-use Pim\Behat\Decorator\Tree\JsTreeDecorator;
+use Pim\Behat\Decorator\Tree\TreeDecorator;
 
 /**
  * Product edit page
@@ -55,7 +55,7 @@ class Edit extends ProductEditForm
                 'Category tree'           => [
                     'css'        => '#trees',
                     'decorators' => [
-                        JsTreeDecorator::class
+                        TreeDecorator::class
                     ]
                 ],
                 'Copy actions'            => ['css' => '.copy-actions'],
@@ -232,7 +232,7 @@ class Edit extends ProductEditForm
 
         if (strstr($field, 'USD') || strstr($field, 'EUR')) {
             if (false !== strpos($field, ' ')) {
-                list($subLabelContent, $labelContent) = explode(' ', $field);
+                [$subLabelContent, $labelContent] = explode(' ', $field);
             }
         }
 

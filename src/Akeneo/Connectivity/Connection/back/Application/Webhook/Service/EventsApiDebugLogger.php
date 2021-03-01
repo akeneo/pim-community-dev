@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Service;
 
 use Akeneo\Connectivity\Connection\Domain\Clock;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 
 /**
@@ -13,17 +14,12 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsA
  */
 class EventsApiDebugLogger
 {
-    const LEVEL_NOTICE = 'notice';
-    const LEVEL_INFO = 'info';
-    const LEVEL_WARNING = 'warning';
-    const LEVEL_ERROR = 'error';
-
     private int $bufferSize;
 
     /**
      * @var array<array{
      *  timestamp: int,
-     *  level: self::LEVEL_*,
+     *  level: string,
      *  message: string,
      *  connection_code: ?string,
      *  context: array
@@ -47,7 +43,7 @@ class EventsApiDebugLogger
     {
         $this->addLog([
             'timestamp' => $this->clock->now()->getTimestamp(),
-            'level' => self::LEVEL_WARNING,
+            'level' => EventsApiDebugLogLevels::WARNING,
             'message' => 'The maximum number of events sent per hour has been reached.',
             'connection_code' => null,
             'context' => [],
@@ -67,7 +63,7 @@ class EventsApiDebugLogger
     /**
      * @param array{
      *  timestamp: int,
-     *  level: self::LEVEL_*,
+     *  level: string,
      *  message: string,
      *  connection_code: ?string,
      *  context: array

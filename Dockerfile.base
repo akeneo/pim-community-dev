@@ -34,7 +34,7 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         php7.4-apcu \
         php7.4-exif \
         openssh-client \
-        php-memcached \
+        php7.4-memcached \
         aspell \
         aspell-en aspell-es aspell-de aspell-fr && \
     apt-get clean && \
