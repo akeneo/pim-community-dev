@@ -17,9 +17,9 @@ Feature: Classify many products and product models at once
     And I choose the "Add to categories" operation
     And I move on to the choose step
     And I choose the "Add to categories" operation
-    And I press the "Master" button
-    And I expand the "master" category
-    And I click on the "master_men" category
+    And I visit the "Master" tab
+    And I expand the "Master" category
+    And I click on the "Men" category
     When I confirm mass edit
     And I wait for the "add_to_category" job to finish
     Then the categories of the product model "aphrodite" should be "master_men, master_women_blouses, print_clothing and supplier_zaro"

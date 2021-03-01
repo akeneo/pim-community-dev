@@ -31,19 +31,7 @@ define([
      */
     showOperationDetails: function (event) {
       event.preventDefault();
-      var operationType = $(event.currentTarget).data('operation-type');
-
-      switch (operationType) {
-        case 'import':
-        case 'export':
-          router.redirectToRoute('pim_importexport_' + operationType + '_execution_show', {
-            id: $(event.currentTarget).data('id'),
-          });
-          break;
-        default:
-          router.redirectToRoute('pim_enrich_job_tracker_show', {id: $(event.currentTarget).data('id')});
-          break;
-      }
+      router.redirectToRoute('pim_enrich_job_tracker_show', {id: $(event.currentTarget).data('id')});
     },
 
     /**
