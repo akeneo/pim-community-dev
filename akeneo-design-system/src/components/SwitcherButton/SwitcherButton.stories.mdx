@@ -1,0 +1,103 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {SwitcherButton} from './SwitcherButton.tsx';
+import {Locale} from '../Locale/Locale';
+import styled from 'styled-components';
+import {SpaceContainer} from '../../storybook/PreviewGallery';
+
+<Meta
+  title="Components/SwitcherButton"
+  component={SwitcherButton}
+  argTypes={{
+  }}
+  args={{label: 'Label', children: 'Value'}}
+/>
+
+# SwitcherButton
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <SwitcherButton {...args}>
+        {args.children}
+      </SwitcherButton>
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Inline" />
+
+## Variation on inline
+
+<Canvas>
+  <Story name="Inline">
+    {args => {
+      return (
+        <>
+          <SwitcherButton {...args} label={'Inline'} inline={true}>
+            True
+          </SwitcherButton>
+          <SwitcherButton {...args} label={'Inline'} inline={false}>
+            False
+          </SwitcherButton>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+
+<ArgsTable story="Deletable" />
+
+## Variation on deletable
+
+<Canvas>
+  <Story name="Deletable">
+    {args => {
+      return (
+        <>
+          <SpaceContainer width={200}>
+            <SwitcherButton {...args} label={'Deletable'} inline={false} deletable={true}>
+              True
+            </SwitcherButton>
+          </SpaceContainer>
+          <SpaceContainer width={200}>
+            <SwitcherButton {...args} label={'Deletable'} inline={false} deletable={false}>
+              False
+            </SwitcherButton>
+          </SpaceContainer>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Locale" />
+
+## Example with flag
+
+<Canvas>
+  <Story name="Flag">
+    {args => {
+      return (
+        <>
+          <SwitcherButton {...args} label={'Locale'} inline={true}>
+            <Locale code='en_US' languageLabel='English'/>
+          </SwitcherButton>
+          <SwitcherButton {...args} label={'Locale'} inline={false}>
+            <Locale code='fr_FR' languageLabel='French'/>
+          </SwitcherButton>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
