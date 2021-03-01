@@ -15,7 +15,7 @@ use Akeneo\Platform\Component\EventQueue\EventInterface;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EventsApiDebugLogger
+class EventsApiDebugLogger implements EventsApiDebugSendRequestErrorLogger
 {
     private Clock $clock;
 
@@ -64,6 +64,59 @@ class EventsApiDebugLogger
             'connection_code' => null,
             'context' => [],
         ]);
+    }
+
+    /**
+     * @param string $connectionCode
+     * @param array<EventInterface> $events
+     * @param string $url
+     * @param int $statusCode
+     * @param array<string> $headers
+     */
+    public function logSendRequestError(string $connectionCode, array $events, string $url, int $statusCode, array $headers): void
+    {
+        $this->addLog([
+            'timestamp' => $this->clock->now()->getTimestamp(),
+            'level' => EventsApiDebugLogLevels::ERROR,
+            'message' => 'The endpoint returned an error.',
+            'connection_code' => $connectionCode,
+            'event_subscription_url' => $url,
+            'status_code' => $statusCode,
+            'headers' => $headers,
+            'context' => [
+                'events' => array_map(function ($event) {
+                    $this->normalizeEvent($event);
+                }, $events),
+            ]
+        ]);
+    }
+
+    public function flushLogs(): void
+    {
+        if (0 === count($this->buffer)) {
+            return;
+        }
+
+        $this->repository->bulkInsert($this->buffer);
+        $this->buffer = [];
+    }
+
+    /**
+     * @param array{
+     *  timestamp: int,
+     *  level: string,
+     *  message: string,
+     *  connection_code: ?string,
+     *  context: array
+     * } $log
+     */
+    private function addLog(array $log): void
+    {
+        $this->buffer[] = $log;
+
+        if (count($this->buffer) >= $this->bufferSize) {
+            $this->flushLogs();
+        }
     }
 
     /**
