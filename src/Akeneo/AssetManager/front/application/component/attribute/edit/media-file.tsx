@@ -16,13 +16,12 @@ import {
   isValidMaxFileSize,
   createMaxFileSizeFromString,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-file/max-file-size';
-import {Key} from 'akeneo-design-system';
+import {Key, TagInput} from 'akeneo-design-system';
 import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-file/media-type';
 import {
   normalizeMediaType,
   createMediaTypeFromNormalized,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-file/media-type';
-import Tags from 'akeneoassetmanager/application/component/app/tags';
 
 const MediaFileView = ({
   attribute,
@@ -114,16 +113,15 @@ const MediaFileView = ({
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
-          <Tags
-            id="pim_asset_manager.attribute.edit.input.allowed_extensions"
-            name="allowed_extensions"
-            values={normalizeAllowedExtension(attribute.allowedExtensions)}
-            tags={[]}
-            readOnly={!rights.attribute.edit}
-            configuration={{maximumInputLength: 20}}
+          <TagInput
             onChange={(allowedExtensions: string[]) => {
               onAdditionalPropertyUpdated('allowed_extensions', createAllowedExtensionFromArray(allowedExtensions));
             }}
+            readOnly={!rights.attribute.edit}
+            value={normalizeAllowedExtension(attribute.allowedExtensions)}
+            id="pim_asset_manager.attribute.edit.input.allowed_extensions"
+            placeholder="Placeholder"
+            name="allowed_extensions"
           />
         </div>
         {getErrorsView(errors, 'allowedExtensions')}

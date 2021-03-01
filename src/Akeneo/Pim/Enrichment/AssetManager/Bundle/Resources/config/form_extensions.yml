@@ -125,4 +125,6 @@ extensions:
 
 attribute_fields:
     pim-asset-collection-field: pim/asset-collection-field
+
+    # RAC-546
     akeneo-asset-single-link-field: pim/asset-single-link-field
