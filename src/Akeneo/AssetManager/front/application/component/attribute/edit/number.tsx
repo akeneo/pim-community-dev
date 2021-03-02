@@ -1,5 +1,4 @@
 import React from 'react';
-import __ from 'akeneoassetmanager/tools/translator';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {NumberAdditionalProperty, NumberAttribute} from 'akeneoassetmanager/domain/model/attribute/type/number';
@@ -13,6 +12,7 @@ import {
 } from 'akeneoassetmanager/domain/model/attribute/type/number/max-value';
 import {Key, Checkbox} from 'akeneo-design-system';
 import {unformatNumber, formatNumberForUILocale} from 'akeneoassetmanager/tools/format-number';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const NumberView = ({
   attribute,
@@ -33,6 +33,7 @@ const NumberView = ({
     };
   };
 }) => {
+  const translate = useTranslate();
   const inputTextClassName = `AknTextField AknTextField--light ${
     !rights.attribute.edit ? 'AknTextField--disabled' : ''
   }`;
@@ -46,14 +47,14 @@ const NumberView = ({
           checked={attribute.decimalsAllowed}
           onChange={(decimalsAllowed: boolean) => onAdditionalPropertyUpdated('decimals_allowed', decimalsAllowed)}
         >
-          {__('pim_asset_manager.attribute.edit.input.decimals_allowed')}
+          {translate('pim_asset_manager.attribute.edit.input.decimals_allowed')}
         </Checkbox>
         {getErrorsView(errors, 'decimalsAllowed')}
       </div>
       <div className="AknFieldContainer--packed" data-code="minValue">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.min_value">
-            {__('pim_asset_manager.attribute.edit.input.min_value')}
+            {translate('pim_asset_manager.attribute.edit.input.min_value')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
@@ -79,7 +80,7 @@ const NumberView = ({
       <div className="AknFieldContainer--packed" data-code="maxValue">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.max_value">
-            {__('pim_asset_manager.attribute.edit.input.max_value')}
+            {translate('pim_asset_manager.attribute.edit.input.max_value')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">

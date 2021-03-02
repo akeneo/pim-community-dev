@@ -249,6 +249,7 @@ pim_asset_manager:
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
         should_be_unique: 'This code already exists for another asset.'
+      server_error: 'An error occured during the creation of the asset'
     no_data:
       title: There is no asset for {{ entityLabel }}
       subtitle: Click on the button "Add new" to create the first asset

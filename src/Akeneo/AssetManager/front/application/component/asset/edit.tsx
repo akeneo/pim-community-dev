@@ -71,6 +71,10 @@ const MetaContainer = styled.div`
   align-items: center;
 `;
 
+const SecondaryActionsButton = styled(IconButton)`
+  margin-right: 10px;
+`;
+
 const SecondaryActions = ({
   canDelete,
   canExecuteNamingConvention,
@@ -87,7 +91,7 @@ const SecondaryActions = ({
 
   return (
     <Dropdown>
-      <IconButton
+      <SecondaryActionsButton
         icon={<MoreIcon />}
         ghost="borderless"
         level="tertiary"

@@ -1,5 +1,4 @@
 import React from 'react';
-import __ from 'akeneoassetmanager/tools/translator';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {MediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
@@ -22,6 +21,7 @@ import {
 } from 'akeneoassetmanager/domain/model/attribute/attribute';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import {MediaTypes, MediaType} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const MediaLinkView = ({
   attribute,
@@ -42,6 +42,7 @@ const MediaLinkView = ({
     };
   };
 }) => {
+  const translate = useTranslate();
   const inputTextClassName = `AknTextField AknTextField--light ${
     !rights.attribute.edit ? 'AknTextField--disabled' : ''
   }`;
@@ -51,7 +52,7 @@ const MediaLinkView = ({
       <div className="AknFieldContainer--packed" data-code="prefix">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.prefix">
-            {__('pim_asset_manager.attribute.edit.input.prefix')}
+            {translate('pim_asset_manager.attribute.edit.input.prefix')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
@@ -87,7 +88,7 @@ const MediaLinkView = ({
       <div className="AknFieldContainer--packed" data-code="suffix">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.suffix">
-            {__('pim_asset_manager.attribute.edit.input.suffix')}
+            {translate('pim_asset_manager.attribute.edit.input.suffix')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
@@ -123,7 +124,7 @@ const MediaLinkView = ({
       <div className="AknFieldContainer--packed" data-code="mediaType">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.media_type">
-            {__('pim_asset_manager.attribute.edit.input.media_type')}
+            {translate('pim_asset_manager.attribute.edit.input.media_type')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">

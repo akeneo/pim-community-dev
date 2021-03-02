@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Channel, {getChannelLabel} from 'akeneoassetmanager/domain/model/channel';
-import __ from 'akeneoassetmanager/tools/translator';
 import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
 import {Key} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const ChannelItemView = ({
   isOpen,
@@ -32,24 +32,28 @@ const ChannelItemView = ({
   );
 };
 
-const ChannelButtonView = ({selectedElement, onClick}: {selectedElement: DropdownElement; onClick: () => void}) => (
-  <div
-    className="AknActionButton AknActionButton--light AknActionButton--withoutBorder"
-    data-identifier={selectedElement.identifier}
-    onClick={onClick}
-    tabIndex={0}
-    onKeyPress={event => {
-      if (Key.Space === event.key) onClick();
-    }}
-  >
-    {__('Channel')}
-    :&nbsp;
-    <span className="AknActionButton-highlight" data-identifier={selectedElement.identifier}>
-      {selectedElement.label}
-    </span>
-    <span className="AknActionButton-caret" />
-  </div>
-);
+const ChannelButtonView = ({selectedElement, onClick}: {selectedElement: DropdownElement; onClick: () => void}) => {
+  const translate = useTranslate();
+
+  return (
+    <div
+      className="AknActionButton AknActionButton--light AknActionButton--withoutBorder"
+      data-identifier={selectedElement.identifier}
+      onClick={onClick}
+      tabIndex={0}
+      onKeyPress={event => {
+        if (Key.Space === event.key) onClick();
+      }}
+    >
+      {translate('pim_common.channel')}
+      :&nbsp;
+      <span className="AknActionButton-highlight" data-identifier={selectedElement.identifier}>
+        {selectedElement.label}
+      </span>
+      <span className="AknActionButton-caret" />
+    </div>
+  );
+};
 
 const ChannelSwitcher = ({
   channelCode,
@@ -64,6 +68,8 @@ const ChannelSwitcher = ({
   className?: string;
   onChannelChange: (channel: Channel) => void;
 }) => {
+  const translate = useTranslate();
+
   return (
     <Dropdown
       elements={channels.map((channel: Channel) => {
@@ -73,7 +79,7 @@ const ChannelSwitcher = ({
           original: channel,
         };
       })}
-      label={__('Channel')}
+      label={translate('pim_common.channel')}
       selectedElement={channelCode}
       ItemView={ChannelItemView}
       ButtonView={ChannelButtonView}

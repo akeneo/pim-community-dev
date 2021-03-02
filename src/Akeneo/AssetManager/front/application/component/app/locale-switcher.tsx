@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Locale from 'akeneoassetmanager/domain/model/locale';
-import __ from 'akeneoassetmanager/tools/translator';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
 import {Key} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const LocaleItemView = ({
   isOpen,
@@ -35,24 +35,28 @@ const LocaleItemView = ({
   );
 };
 
-const LocaleButtonView = ({selectedElement, onClick}: {selectedElement: DropdownElement; onClick: () => void}) => (
-  <div
-    className="AknActionButton AknActionButton--light AknActionButton--withoutBorder"
-    data-identifier={selectedElement.identifier}
-    onClick={onClick}
-    tabIndex={0}
-    onKeyPress={event => {
-      if (Key.Space === event.key) onClick();
-    }}
-  >
-    {__('Locale')}
-    :&nbsp;
-    <span className="AknActionButton-highlight" data-identifier={selectedElement.identifier}>
-      <Flag locale={selectedElement.original} displayLanguage />
-    </span>
-    <span className="AknActionButton-caret" />
-  </div>
-);
+const LocaleButtonView = ({selectedElement, onClick}: {selectedElement: DropdownElement; onClick: () => void}) => {
+  const translate = useTranslate();
+
+  return (
+    <div
+      className="AknActionButton AknActionButton--light AknActionButton--withoutBorder"
+      data-identifier={selectedElement.identifier}
+      onClick={onClick}
+      tabIndex={0}
+      onKeyPress={event => {
+        if (Key.Space === event.key) onClick();
+      }}
+    >
+      {translate('pim_common.locale')}
+      :&nbsp;
+      <span className="AknActionButton-highlight" data-identifier={selectedElement.identifier}>
+        <Flag locale={selectedElement.original} displayLanguage />
+      </span>
+      <span className="AknActionButton-caret" />
+    </div>
+  );
+};
 
 const LocaleSwitcher = ({
   localeCode,
@@ -65,6 +69,8 @@ const LocaleSwitcher = ({
   onLocaleChange: (locale: Locale) => void;
   className?: string;
 }) => {
+  const translate = useTranslate();
+
   return (
     <Dropdown
       elements={locales.map((locale: Locale) => {
@@ -74,7 +80,7 @@ const LocaleSwitcher = ({
           original: locale,
         };
       })}
-      label={__('Locale')}
+      label={translate('pim_common.locale')}
       selectedElement={localeCode}
       ItemView={LocaleItemView}
       ButtonView={LocaleButtonView}

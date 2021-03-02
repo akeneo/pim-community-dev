@@ -9,8 +9,8 @@ import {
   optionDataFromString,
 } from 'akeneoassetmanager/domain/model/asset/data/option';
 import {Option, getOptionLabel} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
-import __ from 'akeneoassetmanager/tools/translator';
 import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const View = ({
   value,
@@ -23,6 +23,7 @@ const View = ({
   onChange: (value: EditionValue) => void;
   canEditData: boolean;
 }) => {
+  const translate = useTranslate();
   if (!isOptionData(value.data) || !isOptionAttribute(value.attribute)) {
     return null;
   }
@@ -47,7 +48,7 @@ const View = ({
         readOnly={!canEditData}
         configuration={{
           allowClear: true,
-          placeholder: __('pim_asset_manager.attribute.options.no_value'),
+          placeholder: translate('pim_asset_manager.attribute.options.no_value'),
         }}
         onChange={(optionCode: string) => {
           //TODO remove old options

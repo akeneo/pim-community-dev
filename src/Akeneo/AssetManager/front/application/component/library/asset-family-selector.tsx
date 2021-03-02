@@ -4,9 +4,9 @@ import {AssetFamilyListItem} from 'akeneoassetmanager/domain/model/asset-family/
 import {getLabel} from 'pimui/js/i18n';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import __ from 'akeneoassetmanager/tools/translator';
 import {ColumnTitle} from 'akeneoassetmanager/application/component/app/column';
 import {AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 type AssetFamilySelectorProps = {
   assetFamilyIdentifier: AssetFamilyIdentifier | null;
@@ -56,6 +56,7 @@ export const AssetFamilySelector = ({
   dataProvider,
   onChange,
 }: AssetFamilySelectorProps) => {
+  const translate = useTranslate();
   const [assetFamilyList, isFetching] = useAssetFamilyList(assetFamilyIdentifier, dataProvider, onChange);
 
   const data = assetFamilyList.reduce(
@@ -68,7 +69,7 @@ export const AssetFamilySelector = ({
 
   return (
     <>
-      <ColumnTitle>{__('pim_asset_manager.asset_family.column.selector.title')}</ColumnTitle>
+      <ColumnTitle>{translate('pim_asset_manager.asset_family.column.selector.title')}</ColumnTitle>
       {null !== assetFamilyIdentifier && !isFetching ? (
         <Select2
           light
@@ -80,7 +81,7 @@ export const AssetFamilySelector = ({
           onChange={onChange}
         />
       ) : (
-        __('pim_asset_manager.asset_family.column.selector.no_data')
+        translate('pim_asset_manager.asset_family.column.selector.no_data')
       )}
     </>
   );

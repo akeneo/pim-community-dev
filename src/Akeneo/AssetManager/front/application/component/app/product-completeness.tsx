@@ -1,5 +1,4 @@
 import * as React from 'react';
-import __ from 'akeneoassetmanager/tools/translator';
 import {ProductType, PRODUCT_TYPE} from 'akeneoassetmanager/domain/model/product/product';
 import Completeness from 'akeneoassetmanager/domain/model/product/completeness';
 

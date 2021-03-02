@@ -1,4 +1,3 @@
-import __ from 'akeneoassetmanager/tools/translator';
 import Line, {
   LineErrorsByTarget,
   LineIdentifier,
@@ -106,7 +105,7 @@ export const createBasicValidationError = (message: string): ValidationError => 
   return {
     messageTemplate: message,
     parameters: {},
-    message: __(message),
+    message: message,
     propertyPath: '',
     invalidValue: null,
   };

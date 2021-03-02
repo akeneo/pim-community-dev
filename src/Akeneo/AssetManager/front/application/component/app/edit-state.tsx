@@ -1,12 +1,16 @@
 import * as React from 'react';
-import __ from 'akeneoassetmanager/tools/translator';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
-const EditState = () => (
-  <div className="AknTitleContainer-state">
-    <div className="updated-status">
-      <span className="AknState">{__('pim_common.entity_updated')}</span>
+const EditState = () => {
+  const translate = useTranslate();
+
+  return (
+    <div className="AknTitleContainer-state">
+      <div className="updated-status">
+        <span className="AknState">{translate('pim_common.entity_updated')}</span>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default EditState;
