@@ -17,6 +17,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository\DbalEventsApiRequestCountRepository;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
@@ -45,7 +46,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         LoggerInterface $logger,
         DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
-        EventsApiDebugLogger $eventsApiDebugLogger
+        EventsApiDebugLogger $eventsApiDebugLogger,
+        EventsApiDebugRepository $eventsApiDebugRepository
     ): void {
         $this->beConstructedWith(
             $selectActiveWebhooksQuery,
@@ -56,6 +58,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $skipOwnEventLogger,
             $logger,
             $eventsApiDebugLogger,
+            $eventsApiDebugRepository,
             $eventsApiRequestRepository,
             $cacheClearer,
             'staging.akeneo.com'
@@ -320,7 +323,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $eventsApiRequestRepository,
         $cacheClearer,
         LoggerInterface $logger,
-        EventsApiDebugLogger $eventsApiDebugLogger
+        EventsApiDebugLogger $eventsApiDebugLogger,
+        EventsApiDebugRepository $eventsApiDebugRepository
     ): void {
         $getTimeIterable = (function () {
             yield 2; // Start - subscription 1
@@ -347,6 +351,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $skipOwnEventLogger,
             $logger,
             $eventsApiDebugLogger,
+            $eventsApiDebugRepository,
             $eventsApiRequestRepository,
             $cacheClearer,
             'staging.akeneo.com',
@@ -407,6 +412,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
         WebhookUserAuthenticator $webhookUserAuthenticator,
         EventsApiDebugLogger $eventsApiDebugLogger,
+        EventsApiDebugRepository $eventsApiDebugRepository,
         DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
         WebhookClient $client
     ): void {
@@ -429,7 +435,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $eventsApiDebugLogger->logEventSubscriptionSkippedOwnEvent('erp', $pimEvent)
             ->shouldBeCalled();
 
-        $eventsApiDebugLogger->flushLogs()
+        $eventsApiDebugRepository->flush()
             ->shouldBeCalled();
 
         $eventsApiRequestRepository->upsert(Argument::cetera())
@@ -454,7 +460,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $timestamp = 1577836800;
         $uuid = '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c';
 
-        return new class($author, $data, $timestamp, $uuid) extends Event
+        return new class ($author, $data, $timestamp, $uuid) extends Event
         {
             public function getName(): string
             {

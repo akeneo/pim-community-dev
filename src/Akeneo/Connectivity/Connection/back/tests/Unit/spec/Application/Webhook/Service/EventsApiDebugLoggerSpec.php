@@ -46,8 +46,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
             1
         );
 
-        $eventsApiDebugRepository->bulkInsert([
-            [
+        $eventsApiDebugRepository->persist([
                 'timestamp' => 1609459200,
                 'level' => 'notice',
                 'message' => 'The event was not sent because it was raised by the same connection.',
@@ -61,8 +60,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
                         'author_type' => 'ui',
                     ]
                 ],
-            ]
-        ])
+            ])
             ->shouldBeCalled();
 
         $this->logEventSubscriptionSkippedOwnEvent('erp_000', $this->createEvent());
@@ -78,55 +76,21 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
             1
         );
 
-        $eventsApiDebugRepository->bulkInsert([
-            [
+        $eventsApiDebugRepository->persist([
                 'timestamp' => 1609459200,
                 'level' => 'warning',
                 'message' => 'The maximum number of events sent per hour has been reached.',
                 'connection_code' => null,
                 'context' => [],
-            ]
-        ])
+            ])
             ->shouldBeCalled();
 
-        $this->logLimitOfEventsApiRequestsReached();
-    }
-
-    public function it_flushs_logs_in_the_buffer(
-        EventsApiDebugRepository $eventsApiDebugRepository
-    ): void {
-        $eventsApiDebugRepository->bulkInsert(Argument::size(4))
-            ->shouldBeCalled();
-
-        $this->logLimitOfEventsApiRequestsReached();
-        $this->logLimitOfEventsApiRequestsReached();
-        $this->logLimitOfEventsApiRequestsReached();
-        $this->logLimitOfEventsApiRequestsReached();
-        $this->flushLogs();
-    }
-
-    public function it_flushs_logs_once_the_buffer_is_full(
-        EventsApiDebugRepository $eventsApiDebugRepository
-    ): void {
-        $this->beConstructedWith(
-            $eventsApiDebugRepository,
-            new FakeClock(new \DateTimeImmutable('2021-01-01T00:00:00+00:00')),
-            [],
-            2
-        );
-
-        $eventsApiDebugRepository->bulkInsert(Argument::size(2))
-            ->shouldBeCalledTimes(2);
-
-        $this->logLimitOfEventsApiRequestsReached();
-        $this->logLimitOfEventsApiRequestsReached();
-        $this->logLimitOfEventsApiRequestsReached();
         $this->logLimitOfEventsApiRequestsReached();
     }
 
     private function createEvent(): EventInterface
     {
-        $event = new class(
+        $event = new class (
             Author::fromNameAndType('julia', Author::TYPE_UI),
             [],
             0,
