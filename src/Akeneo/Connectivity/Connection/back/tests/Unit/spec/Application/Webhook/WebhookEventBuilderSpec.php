@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventPermissionLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErrorLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataBuildErrorLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
@@ -30,13 +30,13 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         EventDataBuilderInterface $notSupportedEventDataBuilder,
         EventDataBuilderInterface $supportedEventDataBuilder,
         EventDataBuildErrorLogger $eventDataBuildErrorLogger,
-        EventPermissionLogger $eventPermissionLogger,
+        ApiEventBuildErrorLogger $apiEventBuildErrorLogger,
         EventsApiDebugRepository $eventsApiDebugRepository
     ): void {
         $this->beConstructedWith(
             [$notSupportedEventDataBuilder, $supportedEventDataBuilder],
             $eventDataBuildErrorLogger,
-            $eventPermissionLogger,
+            $apiEventBuildErrorLogger,
             $eventsApiDebugRepository
         );
     }
@@ -88,13 +88,13 @@ class WebhookEventBuilderSpec extends ObjectBehavior
     public function it_throws_an_error_if_the_business_event_is_not_supported(
         UserInterface $user,
         EventDataBuildErrorLogger $eventDataBuildErrorLogger,
-        EventPermissionLogger $eventPermissionLogger,
+        ApiEventBuildErrorLogger $apiEventBuildErrorLogger,
         EventsApiDebugRepository $eventsApiDebugRepository
     ): void {
         $this->beConstructedWith(
             [],
             $eventDataBuildErrorLogger,
-            $eventPermissionLogger,
+            $apiEventBuildErrorLogger,
             $eventsApiDebugRepository
         );
 

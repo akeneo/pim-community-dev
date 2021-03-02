@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Service;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErrorLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\LimitOfEventsApiRequestsReachedLogger;
@@ -87,6 +88,36 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->logLimitOfEventsApiRequestsReached();
+    }
+
+    public function it_logs_when_the_resource_was_not_found_or_access_denied(
+        EventsApiDebugRepository $eventsApiDebugRepository
+    ): void {
+        $this->beConstructedWith(
+            $eventsApiDebugRepository,
+            new FakeClock(new \DateTimeImmutable('2021-01-01T00:00:00+00:00')),
+            [],
+            1
+        );
+        $this->shouldImplement(ApiEventBuildErrorLogger::class);
+
+        $eventsApiDebugRepository->persist([
+            'timestamp' => 1609459200,
+            'level' => 'notice',
+            'message' => 'The event was not sent because the product does not exists or the connection does not have the required permissions.',
+            'connection_code' => 'erp_000',
+            'context' => [
+                'event' => [
+                    'action' => 'my_event',
+                    'event_id' => '9979c367-595d-42ad-9070-05f62f31f49b',
+                    'event_datetime' => '1970-01-01T00:00:00+00:00',
+                    'author' => 'julia',
+                    'author_type' => 'ui',
+                ]
+            ],
+        ])->shouldBeCalled();
+
+        $this->logResourceNotFoundOrAccessDenied('erp_000', $this->createEvent());
     }
 
     private function createEvent(): EventInterface

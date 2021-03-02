@@ -20,7 +20,8 @@ class EventsApiDebugLogger implements
     EventSubscriptionSkippedOwnEventLogger,
     LimitOfEventsApiRequestsReachedLogger,
     EventsApiRequestLogger,
-    EventPermissionLogger
+    EventPermissionLogger,
+    ApiEventBuildErrorLogger
 {
     private Clock $clock;
     private EventsApiDebugRepository $repository;
@@ -69,14 +70,14 @@ class EventsApiDebugLogger implements
         ]);
     }
 
-    public function logEventPermission(
+    public function logResourceNotFoundOrAccessDenied(
         string $connectionCode,
         EventInterface $event
     ): void {
         $this->repository->persist([
             'timestamp' => $this->clock->now()->getTimestamp(),
             'level' => EventsApiDebugLogLevels::NOTICE,
-            'message' => 'The event was not sent because the connection does not have the required permissions.',
+            'message' => 'The event was not sent because the product does not exists or the connection does not have the required permissions.',
             'connection_code' => $connectionCode,
             'context' => [
                 'event' => $this->normalizeEvent($event)
