@@ -4,8 +4,8 @@ namespace Akeneo\UserManagement\Bundle\EventListener;
 
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Akeneo\UserManagement\Bundle\Doctrine\ORM\Query\IsThereUserWithoutRole;
 use Akeneo\UserManagement\Component\Exception\ForbiddenToRemoveRoleException;
+use Akeneo\UserManagement\Component\Storage\Query\GetUserCountInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Role\Role;
 
@@ -15,15 +15,14 @@ use Symfony\Component\Security\Core\Role\Role;
  */
 class RemoveRoleSubscriber implements EventSubscriberInterface
 {
-    /** @var IsThereUserWithoutRole */
-    private $isThereUserWithoutRole;
+    private GetUserCountInterface $getUserCount;
 
-    public function __construct(IsThereUserWithoutRole $isThereUserWithoutRole)
+    public function __construct(GetUserCountInterface $getUserCount)
     {
-        $this->isThereUserWithoutRole = $isThereUserWithoutRole;
+        $this->getUserCount = $getUserCount;
     }
 
-    public function checkRoleIsRemovable(RemoveEvent $event)
+    public function checkRoleIsRemovable(RemoveEvent $event): void
     {
         $role = $event->getSubject();
         if (!$role instanceof Role) {
@@ -34,17 +33,12 @@ class RemoveRoleSubscriber implements EventSubscriberInterface
             throw new ForbiddenToRemoveRoleException('You can not delete this role, this role is the one by default in Akeneo PIM');
         }
 
-        $isThereUserWithoutRole = $this->isThereUserWithoutRole;
-        $result = $isThereUserWithoutRole($role->getId());
-        if ($result) {
+        if (0 < $this->getUserCount->forUsersHavingOnlyRole($role->getRole())) {
             throw new ForbiddenToRemoveRoleException('You can not delete this role, otherwise some users will no longer have a role.');
         }
     }
 
-    /**
-     * @return array
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_REMOVE => [['checkRoleIsRemovable']],

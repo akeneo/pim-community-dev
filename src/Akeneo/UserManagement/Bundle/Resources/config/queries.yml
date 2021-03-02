@@ -1,8 +1,5 @@
-parameters:
-    pim_user.query.is_there_user_without_role.class: Akeneo\UserManagement\Bundle\Doctrine\ORM\Query\IsThereUserWithoutRole
-
 services:
-    pim_user.query.is_there_user_without_role:
-        class: '%pim_user.query.is_there_user_without_role.class%'
+    pim_user.query.get_user_count:
+        class: 'Akeneo\UserManagement\Bundle\Storage\Query\SqlGetUserCount'
         arguments:
-        - '@doctrine.orm.entity_manager'
+            - '@database_connection'
