@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventPermissionLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataBuildErrorLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
@@ -24,15 +26,22 @@ class WebhookEventBuilder
     /** @var iterable<EventDataBuilderInterface> */
     private iterable $eventDataBuilders;
     private EventDataBuildErrorLogger $eventDataBuildErrorLogger;
+    private EventPermissionLogger $eventPermissionLogger;
+    private EventsApiDebugRepository $eventsApiDebugRepository;
 
     /**
      * @param iterable<EventDataBuilderInterface> $eventDataBuilders
-     * @param EventDataBuildErrorLogger $eventDataBuildErrorLogger
      */
-    public function __construct(iterable $eventDataBuilders, EventDataBuildErrorLogger $eventDataBuildErrorLogger)
-    {
+    public function __construct(
+        iterable $eventDataBuilders,
+        EventDataBuildErrorLogger $eventDataBuildErrorLogger,
+        EventPermissionLogger $eventPermissionLogger,
+        EventsApiDebugRepository $eventsApiDebugRepository
+    ) {
         $this->eventDataBuilders = $eventDataBuilders;
         $this->eventDataBuildErrorLogger = $eventDataBuildErrorLogger;
+        $this->eventPermissionLogger = $eventPermissionLogger;
+        $this->eventsApiDebugRepository = $eventsApiDebugRepository;
     }
 
     /**
@@ -114,6 +123,11 @@ class WebhookEventBuilder
                     $pimEvent
                 );
 
+                $this->eventPermissionLogger->logEventPermission(
+                    $context['connection_code'],
+                    $pimEvent
+                );
+
                 continue;
             }
 
@@ -127,6 +141,8 @@ class WebhookEventBuilder
                 $pimEvent
             );
         }
+
+        $this->eventsApiDebugRepository->flush();
 
         return $apiEvents;
     }
