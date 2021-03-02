@@ -93,16 +93,6 @@ class EventsApiDebugLogger implements EventsApiDebugResponseErrorLogger
         ]);
     }
 
-    public function flushLogs(): void
-    {
-        if (0 === count($this->buffer)) {
-            return;
-        }
-
-        $this->repository->bulkInsert($this->buffer);
-        $this->buffer = [];
-    }
-
     /**
      * @return array<mixed>
      */
