@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\LimitOfEventsApiRequestsReachedLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\ReachRequestLimitLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest;
@@ -23,7 +23,7 @@ final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInte
     private int $webhookRequestsLimit;
     private Sleep $sleep;
     private ReachRequestLimitLogger $reachRequestLimitLogger;
-    private EventsApiDebugLogger $eventsApiDebugLogger;
+    private LimitOfEventsApiRequestsReachedLogger $limitOfEventsApiRequestsReachedLogger;
     private EventsApiDebugRepository $eventsApiDebugRepository;
 
     public function __construct(
@@ -31,14 +31,14 @@ final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInte
         int $webhookRequestsLimit,
         Sleep $sleep,
         ReachRequestLimitLogger $reachRequestLimitLogger,
-        EventsApiDebugLogger $eventsApiDebugLogger,
+        LimitOfEventsApiRequestsReachedLogger $limitOfEventsApiRequestsReachedLogger,
         EventsApiDebugRepository $eventsApiDebugRepository
     ) {
         $this->getDelayUntilNextRequest = $getDelayUntilNextRequest;
         $this->webhookRequestsLimit = $webhookRequestsLimit;
         $this->sleep = $sleep;
         $this->reachRequestLimitLogger = $reachRequestLimitLogger;
-        $this->eventsApiDebugLogger = $eventsApiDebugLogger;
+        $this->limitOfEventsApiRequestsReachedLogger = $limitOfEventsApiRequestsReachedLogger;
         $this->eventsApiDebugRepository = $eventsApiDebugRepository;
     }
 
@@ -63,7 +63,7 @@ final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInte
                 $delayUntilNextRequest
             );
 
-            $this->eventsApiDebugLogger->logLimitOfEventsApiRequestsReached();
+            $this->limitOfEventsApiRequestsReachedLogger->logLimitOfEventsApiRequestsReached();
             $this->eventsApiDebugRepository->flush();
 
             $this->sleep->sleep($delayUntilNextRequest);
