@@ -92,7 +92,7 @@ class AssetFamilyEditController extends BaseController {
             <DependenciesProvider>
               <ThemeProvider theme={pimTheme}>
                 <AssetFamilyEdit
-                  currentTab={route.params.tab}
+                  initialTab={route.params.tab}
                   onTabChange={(tabCode: string) => {
                     const route = router.match(window.location.hash);
                     if (undefined !== route.params.tab) {

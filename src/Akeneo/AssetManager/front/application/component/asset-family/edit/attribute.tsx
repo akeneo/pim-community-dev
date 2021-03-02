@@ -1,7 +1,6 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {connect} from 'react-redux';
 import {Key, Button} from 'akeneo-design-system';
-import __ from 'akeneoassetmanager/tools/translator';
 import {attributeCreationStart} from 'akeneoassetmanager/domain/event/attribute/create';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {CreateState} from 'akeneoassetmanager/application/reducer/attribute/create';
@@ -20,6 +19,7 @@ import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-bo
 import {EditOptionState} from 'akeneoassetmanager/application/reducer/attribute/type/option';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import {StickyHeader} from 'akeneoassetmanager/application/component/asset-family/edit/permission';
+import {useTranslate, Translate} from '@akeneo-pim-community/legacy-bridge';
 
 const securityContext = require('pim/security-context');
 
@@ -52,7 +52,7 @@ interface DispatchProps {
 }
 interface CreateProps extends StateProps, DispatchProps {}
 
-const renderSystemAttribute = (type: string, identifier: string) => {
+const renderSystemAttribute = (type: string, identifier: string, translate: Translate) => {
   return (
     <div
       className="AknFieldContainer"
@@ -76,7 +76,7 @@ const renderSystemAttribute = (type: string, identifier: string) => {
           tabIndex={-1}
           id={`pim_asset_manager.asset_family.properties.system_asset_${identifier}`}
           className="AknTextField AknTextField--light AknTextField--disabled"
-          value={__(`pim_asset_manager.attribute.default.${identifier}`)}
+          value={translate(`pim_asset_manager.attribute.default.${identifier}`)}
           readOnly
         />
       </div>
@@ -84,42 +84,49 @@ const renderSystemAttribute = (type: string, identifier: string) => {
   );
 };
 
-const renderSystemAttributes = () => {
-  return <React.Fragment>{renderSystemAttribute('text', 'code')}</React.Fragment>;
+const renderSystemAttributes = (translate: Translate) => {
+  return <>{renderSystemAttribute('text', 'code', translate)}</>;
 };
 
-const renderAttributePlaceholders = () => {
-  return Array(8)
-    .fill('placeholder')
-    .map((attributeIdentifier, key) => (
-      <div key={key} className="AknFieldContainer" data-placeholder="true">
-        <div className="AknFieldContainer-header AknFieldContainer-header--light">
-          <label
-            className="AknFieldContainer-label AknFieldContainer-label--withImage AknLoadingPlaceHolder"
-            htmlFor={`pim_asset_manager.asset_family.properties.${attributeIdentifier}_${key}`}
-          >
-            <img className="AknFieldContainer-labelImage" src={`bundles/pimui/images/attribute/icon-text.svg`} />
-            <span>
-              {__(`pim_asset_manager.attribute.type.text`)} {`(${__('pim_asset_manager.attribute.is_required')})`}
-            </span>
-          </label>
-        </div>
-        <div className="AknFieldContainer-inputContainer AknLoadingPlaceHolder">
-          <input
-            type="text"
-            autoComplete="off"
-            id={`pim_asset_manager.asset_family.properties.${attributeIdentifier}_${key}`}
-            className="AknTextField AknTextField--transparent"
-          />
-          <button className="AknIconButton AknIconButton--trash" />
-          <button className="AknIconButton AknIconButton--edit" />
-        </div>
-      </div>
-    ));
+const AttributePlaceholders = () => {
+  const translate = useTranslate();
+
+  return (
+    <>
+      {Array(8)
+        .fill('placeholder')
+        .map((attributeIdentifier, key) => (
+          <div key={key} className="AknFieldContainer" data-placeholder="true">
+            <div className="AknFieldContainer-header AknFieldContainer-header--light">
+              <label
+                className="AknFieldContainer-label AknFieldContainer-label--withImage AknLoadingPlaceHolder"
+                htmlFor={`pim_asset_manager.asset_family.properties.${attributeIdentifier}_${key}`}
+              >
+                <img className="AknFieldContainer-labelImage" src={`bundles/pimui/images/attribute/icon-text.svg`} />
+                <span>
+                  {translate(`pim_asset_manager.attribute.type.text`)}{' '}
+                  {`(${translate('pim_asset_manager.attribute.is_required')})`}
+                </span>
+              </label>
+            </div>
+            <div className="AknFieldContainer-inputContainer AknLoadingPlaceHolder">
+              <input
+                type="text"
+                autoComplete="off"
+                id={`pim_asset_manager.asset_family.properties.${attributeIdentifier}_${key}`}
+                className="AknTextField AknTextField--transparent"
+              />
+              <button className="AknIconButton AknIconButton--trash" />
+              <button className="AknIconButton AknIconButton--edit" />
+            </div>
+          </div>
+        ))}
+    </>
+  );
 };
 
 interface AttributeViewProps {
-  attribute: NormalizedAttribute;
+  normalizedAttribute: NormalizedAttribute;
   onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => void;
   locale: string;
   rights: {
@@ -134,159 +141,150 @@ interface AttributeViewProps {
   };
 }
 
-class AttributeView extends React.Component<AttributeViewProps> {
-  public shouldComponentUpdate(nextProps: AttributeViewProps) {
-    return (
-      nextProps.attribute.labels[nextProps.locale] !== this.props.attribute.labels[this.props.locale] ||
-      nextProps.attribute.is_required !== this.props.attribute.is_required
-    );
-  }
+const AttributeView = memo(({normalizedAttribute, onAttributeEdit, locale, rights}: AttributeViewProps) => {
+  const translate = useTranslate();
+  const attribute = denormalizeAttribute(normalizedAttribute);
+  const icon = getAttributeIcon(attribute.getType());
 
-  render() {
-    const {onAttributeEdit, locale, rights} = this.props;
-    const attribute = denormalizeAttribute(this.props.attribute);
-    const icon = getAttributeIcon(attribute.getType());
-
-    return (
-      <div
-        className="AknFieldContainer"
-        data-placeholder="false"
-        data-identifier={attribute.getCode()}
-        data-type={attribute.getType()}
-      >
-        <div className="AknFieldContainer-header AknFieldContainer-header--light">
-          <label
-            className="AknFieldContainer-label AknFieldContainer-label--withImage"
-            htmlFor={`pim_asset_manager.asset_family.properties.${attribute.getCode()}`}
-          >
-            <img className="AknFieldContainer-labelImage" src={icon} />
-            <span>
-              {attribute.getCode()} {attribute.isRequired ? `(${__('pim_asset_manager.attribute.is_required')})` : ''}
-            </span>
-          </label>
-        </div>
-        <div className="AknFieldContainer-inputContainer">
-          <input
-            type="text"
-            autoComplete="off"
-            id={`pim_asset_manager.asset_family.properties.${attribute.getCode()}`}
-            className="AknTextField AknTextField--light AknTextField--disabled"
-            value={attribute.getLabel(locale)}
-            readOnly
-            tabIndex={-1}
-          />
-          {rights.attribute.edit ? (
-            <button
-              className="AknIconButton AknIconButton--edit"
-              onClick={() => onAttributeEdit(attribute.getIdentifier())}
-              onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
-                if (Key.Space === event.key) onAttributeEdit(attribute.getIdentifier());
-              }}
-            />
-          ) : (
-            <button
-              className="AknIconButton AknIconButton--view"
-              onClick={() => onAttributeEdit(attribute.getIdentifier())}
-              onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
-                if (Key.Space === event.key) onAttributeEdit(attribute.getIdentifier());
-              }}
-            />
-          )}
-        </div>
+  return (
+    <div
+      className="AknFieldContainer"
+      data-placeholder="false"
+      data-identifier={attribute.getCode()}
+      data-type={attribute.getType()}
+    >
+      <div className="AknFieldContainer-header AknFieldContainer-header--light">
+        <label
+          className="AknFieldContainer-label AknFieldContainer-label--withImage"
+          htmlFor={`pim_asset_manager.asset_family.properties.${attribute.getCode()}`}
+        >
+          <img className="AknFieldContainer-labelImage" src={icon} />
+          <span>
+            {attribute.getCode()}{' '}
+            {attribute.isRequired ? `(${translate('pim_asset_manager.attribute.is_required')})` : ''}
+          </span>
+        </label>
       </div>
-    );
-  }
-}
-
-class AttributesView extends React.Component<CreateProps> {
-  render() {
-    const {
-      assetFamily,
-      rights,
-      events,
-      context,
-      attributes,
-      firstLoading,
-      createAttribute,
-      editAttribute,
-      options,
-    } = this.props;
-    const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
-
-    return (
-      <React.Fragment>
-        <Header
-          label={__('pim_asset_manager.asset_family.tab.attribute')}
-          image={assetFamily.image}
-          primaryAction={(defaultFocus: React.RefObject<any>) =>
-            rights.attribute.create ? (
-              <Button level="secondary" onClick={events.onAttributeCreationStart} ref={defaultFocus} tabIndex={0}>
-                {__('pim_asset_manager.attribute.button.add')}
-              </Button>
-            ) : null
-          }
-          secondaryActions={() => null}
-          withLocaleSwitcher={true}
-          withChannelSwitcher={false}
-          isDirty={false}
-          breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
-          displayActions={rights.attribute.create}
+      <div className="AknFieldContainer-inputContainer">
+        <input
+          type="text"
+          autoComplete="off"
+          id={`pim_asset_manager.asset_family.properties.${attribute.getCode()}`}
+          className="AknTextField AknTextField--light AknTextField--disabled"
+          value={attribute.getLabel(locale)}
+          readOnly
+          tabIndex={-1}
         />
-        <div className="AknSubsection">
-          <StickyHeader>
-            <span className="group-label">{__('pim_asset_manager.asset_family.attribute.title')}</span>
-          </StickyHeader>
-          {firstLoading || 0 < attributes.length ? (
-            <div className="AknSubsection-container">
-              <div className="AknFormContainer AknFormContainer--withPadding">
-                {renderSystemAttributes()}
-                {firstLoading ? (
-                  renderAttributePlaceholders()
-                ) : (
-                  <React.Fragment>
-                    {attributes.map((attribute: NormalizedAttribute) => (
-                      <ErrorBoundary
-                        key={attribute.identifier}
-                        errorMessage={__('pim_asset_manager.asset_family.attribute.error.render_list')}
-                      >
-                        <AttributeView
-                          attribute={attribute}
-                          onAttributeEdit={events.onAttributeEdit}
-                          locale={context.locale}
-                          rights={rights}
-                        />
-                      </ErrorBoundary>
-                    ))}
-                  </React.Fragment>
-                )}
-              </div>
-              {editAttribute && <AttributeEditForm rights={rights} />}
+        {rights.attribute.edit ? (
+          <button
+            className="AknIconButton AknIconButton--edit"
+            onClick={() => onAttributeEdit(attribute.getIdentifier())}
+            onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
+              if (Key.Space === event.key) onAttributeEdit(attribute.getIdentifier());
+            }}
+          />
+        ) : (
+          <button
+            className="AknIconButton AknIconButton--view"
+            onClick={() => onAttributeEdit(attribute.getIdentifier())}
+            onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
+              if (Key.Space === event.key) onAttributeEdit(attribute.getIdentifier());
+            }}
+          />
+        )}
+      </div>
+    </div>
+  );
+});
+
+const AttributesView = ({
+  assetFamily,
+  rights,
+  events,
+  context,
+  attributes,
+  firstLoading,
+  createAttribute,
+  editAttribute,
+  options,
+}: CreateProps) => {
+  const translate = useTranslate();
+
+  const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
+
+  return (
+    <>
+      <Header
+        label={translate('pim_asset_manager.asset_family.tab.attribute')}
+        image={assetFamily.image}
+        primaryAction={(defaultFocus: React.RefObject<any>) =>
+          rights.attribute.create ? (
+            <Button level="secondary" onClick={events.onAttributeCreationStart} ref={defaultFocus} tabIndex={0}>
+              {translate('pim_asset_manager.attribute.button.add')}
+            </Button>
+          ) : null
+        }
+        secondaryActions={() => null}
+        withLocaleSwitcher={true}
+        withChannelSwitcher={false}
+        isDirty={false}
+        breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
+        displayActions={rights.attribute.create}
+      />
+      <div className="AknSubsection">
+        <StickyHeader>
+          <span className="group-label">{translate('pim_asset_manager.asset_family.attribute.title')}</span>
+        </StickyHeader>
+        {firstLoading || 0 < attributes.length ? (
+          <div className="AknSubsection-container">
+            <div className="AknFormContainer AknFormContainer--withPadding">
+              {renderSystemAttributes(translate)}
+              {firstLoading ? (
+                <AttributePlaceholders />
+              ) : (
+                <>
+                  {attributes.map((attribute: NormalizedAttribute) => (
+                    <ErrorBoundary
+                      key={attribute.identifier}
+                      errorMessage={translate('pim_asset_manager.asset_family.attribute.error.render_list')}
+                    >
+                      <AttributeView
+                        normalizedAttribute={attribute}
+                        onAttributeEdit={events.onAttributeEdit}
+                        locale={context.locale}
+                        rights={rights}
+                      />
+                    </ErrorBoundary>
+                  ))}
+                </>
+              )}
             </div>
-          ) : (
-            <React.Fragment>
-              <div className="AknSubsection-container">
-                <div className="AknFormContainer AknFormContainer--withPadding">{renderSystemAttributes()}</div>
+            {editAttribute && <AttributeEditForm rights={rights} />}
+          </div>
+        ) : (
+          <>
+            <div className="AknSubsection-container">
+              <div className="AknFormContainer AknFormContainer--withPadding">{renderSystemAttributes(translate)}</div>
+            </div>
+            <div className="AknGridContainer-noData AknGridContainer-noData--small">
+              <div className="AknGridContainer-noDataTitle">
+                {translate('pim_asset_manager.attribute.no_data.title', {entityLabel: assetFamilyLabel})}
               </div>
-              <div className="AknGridContainer-noData AknGridContainer-noData--small">
-                <div className="AknGridContainer-noDataTitle">
-                  {__('pim_asset_manager.attribute.no_data.title', {entityLabel: assetFamilyLabel})}
-                </div>
-                <div className="AknGridContainer-noDataSubtitle">
-                  {__('pim_asset_manager.attribute.no_data.subtitle')}
-                </div>
-                <button className="AknButton AknButton--action" onClick={events.onAttributeCreationStart}>
-                  {__('pim_asset_manager.attribute.button.add')}
-                </button>
+              <div className="AknGridContainer-noDataSubtitle">
+                {translate('pim_asset_manager.attribute.no_data.subtitle')}
               </div>
-            </React.Fragment>
-          )}
-          {createAttribute.active && <CreateAttributeModal />}
-          {options.isActive && <ManageOptionsView rights={rights} />}
-        </div>
-      </React.Fragment>
-    );
-  }
-}
+              <button className="AknButton AknButton--action" onClick={events.onAttributeCreationStart}>
+                {translate('pim_asset_manager.attribute.button.add')}
+              </button>
+            </div>
+          </>
+        )}
+        {createAttribute.active && <CreateAttributeModal />}
+        {options.isActive && <ManageOptionsView rights={rights} />}
+      </div>
+    </>
+  );
+};
 
 export default connect(
   (state: EditState): StateProps => {

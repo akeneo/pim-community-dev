@@ -1,5 +1,4 @@
-import * as React from 'react';
-import __ from 'akeneoassetmanager/tools/translator';
+import React, {useRef} from 'react';
 import EditState from 'akeneoassetmanager/application/component/app/edit-state';
 import {connect} from 'react-redux';
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
@@ -11,6 +10,7 @@ import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoassetmanager/do
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
+import {useAutoFocus} from 'akeneo-design-system';
 
 interface OwnProps {
   label: string;
@@ -47,97 +47,77 @@ interface DispatchProps {
 
 interface HeaderProps extends StateProps, DispatchProps {}
 
-export class HeaderView extends React.Component<HeaderProps> {
-  private defaultFocus: React.RefObject<any>;
-  static defaultProps = {
-    displayActions: true,
-  };
+const HeaderView = ({
+  label,
+  primaryAction,
+  secondaryActions,
+  withChannelSwitcher,
+  withLocaleSwitcher,
+  isDirty,
+  isLoading,
+  displayActions = true,
+  breadcrumb,
+  context,
+  structure,
+  events,
+}: HeaderProps) => {
+  const saveButtonRef = useRef(null);
+  useAutoFocus(saveButtonRef);
 
-  constructor(props: HeaderProps) {
-    super(props);
-
-    this.defaultFocus = React.createRef();
-  }
-
-  componentDidMount() {
-    if (null !== this.defaultFocus.current) {
-      this.defaultFocus.current.focus();
-    }
-  }
-
-  render() {
-    const {
-      label,
-      primaryAction,
-      secondaryActions,
-      withChannelSwitcher,
-      withLocaleSwitcher,
-      isDirty,
-      isLoading,
-      displayActions,
-      breadcrumb,
-      context,
-      structure,
-      events,
-    } = this.props;
-
-    return (
-      <header className="AknTitleContainer">
-        <div className="AknTitleContainer-line">
-          <div className="AknTitleContainer-mainContainer">
-            <div>
-              <div className="AknTitleContainer-line">
-                <div className="AknTitleContainer-breadcrumbs">{breadcrumb}</div>
-                <div className="AknTitleContainer-buttonsContainer">
-                  <div className={`AknLoadingIndicator ${true === isLoading ? '' : 'AknLoadingIndicator--hidden'}`} />
-                  <div className="AknTitleContainer-userMenuContainer user-menu">
-                    <PimView
-                      className={`AknTitleContainer-userMenu ${
-                        displayActions ? '' : 'AknTitleContainer--withoutMargin'
-                      }`}
-                      viewName="pim-asset-family-index-user-navigation"
-                    />
-                  </div>
-                  <div className="AknTitleContainer-actionsContainer AknButtonList">
-                    {secondaryActions && secondaryActions()}
-                    <div className="AknTitleContainer-rightButton">{primaryAction(this.defaultFocus)}</div>
-                  </div>
+  return (
+    <header className="AknTitleContainer">
+      <div className="AknTitleContainer-line">
+        <div className="AknTitleContainer-mainContainer">
+          <div>
+            <div className="AknTitleContainer-line">
+              <div className="AknTitleContainer-breadcrumbs">{breadcrumb}</div>
+              <div className="AknTitleContainer-buttonsContainer">
+                <div className={`AknLoadingIndicator ${true === isLoading ? '' : 'AknLoadingIndicator--hidden'}`} />
+                <div className="AknTitleContainer-userMenuContainer user-menu">
+                  <PimView
+                    className={`AknTitleContainer-userMenu ${displayActions ? '' : 'AknTitleContainer--withoutMargin'}`}
+                    viewName="pim-asset-family-index-user-navigation"
+                  />
                 </div>
-              </div>
-              <div className="AknTitleContainer-line">
-                <div className="AknTitleContainer-title">{label}</div>
-                {isDirty ? <EditState /> : null}
+                <div className="AknTitleContainer-actionsContainer AknButtonList">
+                  {secondaryActions && secondaryActions()}
+                  <div className="AknTitleContainer-rightButton">{primaryAction(saveButtonRef)}</div>
+                </div>
               </div>
             </div>
-            <div>
-              <div className="AknTitleContainer-line">
-                <div className="AknTitleContainer-context AknButtonList">
-                  {withChannelSwitcher && structure && events ? (
-                    <ChannelSwitcher
-                      channelCode={context.channel}
-                      channels={structure.channels}
-                      locale={context.locale}
-                      onChannelChange={events.onChannelChanged}
-                      className="AknDropdown--right"
-                    />
-                  ) : null}
-                  {withLocaleSwitcher && structure && events ? (
-                    <LocaleSwitcher
-                      localeCode={context.locale}
-                      locales={structure.locales}
-                      onLocaleChange={events.onLocaleChanged}
-                      className="AknDropdown--right"
-                    />
-                  ) : null}
-                </div>
+            <div className="AknTitleContainer-line">
+              <div className="AknTitleContainer-title">{label}</div>
+              {isDirty ? <EditState /> : null}
+            </div>
+          </div>
+          <div>
+            <div className="AknTitleContainer-line">
+              <div className="AknTitleContainer-context AknButtonList">
+                {withChannelSwitcher && structure && events ? (
+                  <ChannelSwitcher
+                    channelCode={context.channel}
+                    channels={structure.channels}
+                    locale={context.locale}
+                    onChannelChange={events.onChannelChanged}
+                    className="AknDropdown--right"
+                  />
+                ) : null}
+                {withLocaleSwitcher && structure && events ? (
+                  <LocaleSwitcher
+                    localeCode={context.locale}
+                    locales={structure.locales}
+                    onLocaleChange={events.onLocaleChanged}
+                    className="AknDropdown--right"
+                  />
+                ) : null}
               </div>
             </div>
           </div>
         </div>
-      </header>
-    );
-  }
-}
+      </div>
+    </header>
+  );
+};
 
 export default connect(
   (state: State, ownProps: OwnProps): StateProps => {
@@ -174,3 +154,4 @@ export default connect(
     };
   }
 )(HeaderView);
+export {HeaderView};

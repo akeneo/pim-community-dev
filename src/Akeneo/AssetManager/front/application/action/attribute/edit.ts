@@ -12,6 +12,7 @@ import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edi
 import {
   notifyAttributeSaveFailed,
   notifyAttributeSaveValidationError,
+  notifyAttributeWellSaved,
 } from 'akeneoassetmanager/application/action/attribute/notify';
 import {updateAttributeList} from 'akeneoassetmanager/application/action/attribute/list';
 import AttributeCode from 'akeneoassetmanager/domain/model/code';
@@ -58,6 +59,7 @@ export const saveAttribute = (dismiss: boolean = true) => async (
   }
 
   dispatch(attributeEditionSucceeded());
+  dispatch(notifyAttributeWellSaved());
   if (dismiss) {
     dispatch(attributeEditionCancel());
   }

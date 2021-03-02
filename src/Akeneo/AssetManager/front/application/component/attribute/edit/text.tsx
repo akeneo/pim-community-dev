@@ -1,5 +1,4 @@
 import React from 'react';
-import __ from 'akeneoassetmanager/tools/translator';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
@@ -14,6 +13,7 @@ import {
   ValidationRuleOption,
 } from 'akeneoassetmanager/domain/model/attribute/type/text';
 import {Key, Checkbox} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const AttributeValidationRuleItemView = ({
   isOpen,
@@ -45,15 +45,6 @@ const AttributeValidationRuleItemView = ({
   );
 };
 
-const getValidationRuleOptions = (): DropdownElement[] => {
-  return Object.values(ValidationRuleOption).map((option: string) => {
-    return {
-      identifier: option,
-      label: __(`pim_asset_manager.attribute.edit.input.options.validation_rule.${option}`),
-    };
-  });
-};
-
 const TextView = ({
   attribute,
   onAdditionalPropertyUpdated,
@@ -73,6 +64,7 @@ const TextView = ({
     };
   };
 }) => {
+  const translate = useTranslate();
   const inputTextClassName = `AknTextField AknTextField--light ${
     !rights.attribute.edit ? 'AknTextField--disabled' : ''
   }`;
@@ -82,7 +74,7 @@ const TextView = ({
       <div className="AknFieldContainer--packed" data-code="maxLength">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.max_length">
-            {__('pim_asset_manager.attribute.edit.input.max_length')}
+            {translate('pim_asset_manager.attribute.edit.input.max_length')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
@@ -117,7 +109,7 @@ const TextView = ({
           checked={attribute.isTextarea}
           onChange={(isTextarea: boolean) => onAdditionalPropertyUpdated('is_textarea', isTextarea)}
         >
-          {__('pim_asset_manager.attribute.edit.input.textarea')}
+          {translate('pim_asset_manager.attribute.edit.input.textarea')}
         </Checkbox>
         {getErrorsView(errors, 'isTextarea')}
       </div>
@@ -131,7 +123,7 @@ const TextView = ({
               onAdditionalPropertyUpdated('is_rich_text_editor', isRichTextEditor)
             }
           >
-            {__('pim_asset_manager.attribute.edit.input.is_rich_text_editor')}
+            {translate('pim_asset_manager.attribute.edit.input.is_rich_text_editor')}
           </Checkbox>
           {getErrorsView(errors, 'richTextEditor')}
         </div>
@@ -140,15 +132,20 @@ const TextView = ({
         <div className="AknFieldContainer--packed" data-code="validationRule">
           <div className="AknFieldContainer-header AknFieldContainer-header--light">
             <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.validation_rule">
-              {__('pim_asset_manager.attribute.edit.input.validation_rule')}
+              {translate('pim_asset_manager.attribute.edit.input.validation_rule')}
             </label>
           </div>
           <div className="AknFieldContainer-inputContainer">
             <Dropdown
               readOnly={!rights.attribute.edit}
               ItemView={AttributeValidationRuleItemView}
-              label={__('pim_asset_manager.attribute.edit.input.validation_rule')}
-              elements={getValidationRuleOptions()}
+              label={translate('pim_asset_manager.attribute.edit.input.validation_rule')}
+              elements={Object.values(ValidationRuleOption).map((option: string) => {
+                return {
+                  identifier: option,
+                  label: translate(`pim_asset_manager.attribute.edit.input.options.validation_rule.${option}`),
+                };
+              })}
               selectedElement={attribute.validationRule}
               onSelectionChange={(value: DropdownElement) =>
                 onAdditionalPropertyUpdated('validation_rule', value.identifier)
@@ -166,7 +163,7 @@ const TextView = ({
               className="AknFieldContainer-label"
               htmlFor="pim_asset_manager.attribute.edit.input.regular_expression"
             >
-              {__('pim_asset_manager.attribute.edit.input.regular_expression')}
+              {translate('pim_asset_manager.attribute.edit.input.regular_expression')}
             </label>
           </div>
           <div className="AknFieldContainer-inputContainer">
