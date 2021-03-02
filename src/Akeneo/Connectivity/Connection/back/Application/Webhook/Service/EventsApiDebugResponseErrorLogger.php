@@ -19,5 +19,5 @@ interface EventsApiDebugResponseErrorLogger
      * @param int $statusCode
      * @param array<array<string>> $headers
      */
-    public function logResponseError(string $connectionCode, array $events, string $url, int $statusCode, array $headers): void;
+    public function logEventsApiRequestFailed(string $connectionCode, array $events, string $url, int $statusCode, array $headers): void;
 }

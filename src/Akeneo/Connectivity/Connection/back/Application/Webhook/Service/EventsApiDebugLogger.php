@@ -11,7 +11,6 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
-use Akeneo\Platform\Component\Webhook\EventDataCollection;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -75,7 +74,7 @@ class EventsApiDebugLogger implements EventsApiDebugResponseErrorLogger
      * @param int $statusCode
      * @param array<array<string>> $headers
      */
-    public function logResponseError(string $connectionCode, array $webhookEvents, string $url, int $statusCode, array $headers): void
+    public function logEventsApiRequestFailed(string $connectionCode, array $webhookEvents, string $url, int $statusCode, array $headers): void
     {
         $this->repository->persist([
             'timestamp' => $this->clock->now()->getTimestamp(),
