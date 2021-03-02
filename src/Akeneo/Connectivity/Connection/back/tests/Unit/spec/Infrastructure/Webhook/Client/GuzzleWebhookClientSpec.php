@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugResponseErrorLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugWebhookClientLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
@@ -31,7 +31,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
  */
 class GuzzleWebhookClientSpec extends ObjectBehavior
 {
-    public function let(SendApiEventRequestLogger $sendApiEventRequestLogger, EventsApiDebugResponseErrorLogger $responseErrorLogger): void
+    public function let(SendApiEventRequestLogger $sendApiEventRequestLogger, EventsApiDebugWebhookClientLogger $responseErrorLogger): void
     {
         $this->beConstructedWith(
             new Client(),
@@ -47,7 +47,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(GuzzleWebhookClient::class);
     }
 
-    public function it_sends_webhook_requests_in_bulk(SendApiEventRequestLogger $sendApiEventRequestLogger, EventsApiDebugResponseErrorLogger $responseErrorLogger): void
+    public function it_sends_webhook_requests_in_bulk(SendApiEventRequestLogger $sendApiEventRequestLogger, EventsApiDebugWebhookClientLogger $responseErrorLogger): void
     {
         $container = [];
         $history = Middleware::history($container);

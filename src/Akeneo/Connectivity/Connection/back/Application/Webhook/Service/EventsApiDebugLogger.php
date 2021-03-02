@@ -11,18 +11,15 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
-use Akeneo\Platform\Component\Webhook\EventDataCollection;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EventsApiDebugLogger implements EventsApiDebugResponseErrorLogger
+class EventsApiDebugLogger implements EventsApiDebugWebhookClientLogger
 {
     private Clock $clock;
-
     private EventsApiDebugRepository $repository;
-
     private EventNormalizerInterface $defaultEventNormalizer;
 
     /** @var iterable<EventNormalizerInterface> */
@@ -93,14 +90,24 @@ class EventsApiDebugLogger implements EventsApiDebugResponseErrorLogger
         ]);
     }
 
-    public function flushLogs(): void
-    {
-        if (0 === count($this->buffer)) {
-            return;
-        }
-
-        $this->repository->bulkInsert($this->buffer);
-        $this->buffer = [];
+    public function logTimeoutLimit(
+        string $connectionCode,
+        array $events,
+        string $url,
+        float $timeout
+    ): void {
+        $this->repository->persist([
+            'timestamp' => $this->clock->now()->getTimestamp(),
+            'level' => EventsApiDebugLogLevels::ERROR,
+            'message' => sprintf('The endpoint failed to answer under %d ms.', round($timeout * 1000, 0)),
+            'connection_code' => $connectionCode,
+            'event_subscription_url' => $url,
+            'context' => [
+                'events' => array_map(function ($webhookEvent) {
+                    $this->normalizeEvent($webhookEvent->getPimEvent());
+                }, $events),
+            ]
+        ]);
     }
 
     /**
