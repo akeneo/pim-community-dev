@@ -85,6 +85,13 @@ extensions:
                 fail: pim_enrich.entity.user.flash.delete.fail
             redirect: pim_user_index
 
+    pim-user-edit-form-duplicate:
+        module: pim/user-edit-form/duplicate
+        parent: pim-user-edit-form-secondary-actions
+        targetZone: secondary-actions
+        aclResourceId: pim_user_user_create
+        position: 95
+
     pim-user-edit-form-state:
         module: pim/form/common/state
         parent: pim-user-edit-form
