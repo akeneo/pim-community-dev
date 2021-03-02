@@ -44,7 +44,7 @@ const ScoreCellWrapper = styled.p<{score: Score} & ScoreCellProps & AkeneoThemed
   ${({bigger}) =>
     bigger &&
     css`
-      transform: scale(0.75);
+      transform: scale(0.8); // Cancel the scaling transformation from the parent container
       font-size: ${getFontSize('big')};
     `}
 `;
@@ -73,7 +73,7 @@ const ScoreCell = React.forwardRef<HTMLDivElement, ScoreCellProps>(
       <div ref={forwardedRef} {...rest}>
         {score && (
           <ScoreCellContainer score={score} placement={placement} bigger={bigger}>
-            <ScoreCellWrapper score={score}>{score}</ScoreCellWrapper>
+            <ScoreCellWrapper score={score} bigger={bigger}>{score}</ScoreCellWrapper>
           </ScoreCellContainer>
         )}
       </div>
