@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventBuildLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SkipOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
@@ -34,6 +35,7 @@ final class SendBusinessEventToWebhooksHandler
     private EventBuildLogger $eventBuildLogger;
     private SkipOwnEventLogger $skipOwnEventLogger;
     private LoggerInterface $logger;
+    private EventsApiDebugLogger $eventsApiDebugLogger;
     private EventsApiRequestCountRepository $eventsApiRequestRepository;
     private CacheClearerInterface $cacheClearer;
     private string $pimSource;
@@ -47,6 +49,7 @@ final class SendBusinessEventToWebhooksHandler
         EventBuildLogger $eventBuildLogger,
         SkipOwnEventLogger $skipOwnEventLogger,
         LoggerInterface $logger,
+        EventsApiDebugLogger $eventsApiDebugLogger,
         EventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
         string $pimSource,
@@ -59,6 +62,7 @@ final class SendBusinessEventToWebhooksHandler
         $this->eventBuildLogger = $eventBuildLogger;
         $this->skipOwnEventLogger = $skipOwnEventLogger;
         $this->logger = $logger;
+        $this->eventsApiDebugLogger = $eventsApiDebugLogger;
         $this->eventsApiRequestRepository = $eventsApiRequestRepository;
         $this->cacheClearer = $cacheClearer;
         $this->pimSource = $pimSource;
@@ -128,6 +132,7 @@ final class SendBusinessEventToWebhooksHandler
         $this->client->bulkSend($requests());
 
         $this->cacheClearer->clear();
+        $this->eventsApiDebugLogger->flushLogs();
     }
 
     private function filterConnectionOwnEvents(
@@ -140,6 +145,12 @@ final class SendBusinessEventToWebhooksHandler
             function (EventInterface $event) use ($username, $webhook) {
                 if ($username === $event->getAuthor()->name()) {
                     $this->skipOwnEventLogger->log($event, $webhook->connectionCode());
+
+                    $this->eventsApiDebugLogger
+                        ->logEventSubscriptionSkippedOwnEvent(
+                            $webhook->connectionCode(),
+                            $event
+                        );
 
                     return false;
                 }

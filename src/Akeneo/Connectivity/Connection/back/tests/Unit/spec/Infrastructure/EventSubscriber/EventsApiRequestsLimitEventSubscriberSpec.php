@@ -60,7 +60,7 @@ class EventsApiRequestsLimitEventSubscriberSpec extends ObjectBehavior
         $this->checkWebhookRequestLimit();
     }
 
-    public function it_logs_that_the_limit_is_reached_for_the_events_api_debug(
+    public function it_logs_for_the_events_api_debug_that_the_limit_is_reached(
         GetDelayUntilNextRequest $getDelayUntilNextRequest,
         EventsApiDebugLogger $eventsApiDebugLogger
     ): void {
@@ -68,7 +68,7 @@ class EventsApiRequestsLimitEventSubscriberSpec extends ObjectBehavior
             ->execute(Argument::cetera())
             ->willReturn(1);
 
-        $eventsApiDebugLogger->logLimitOfEventApiRequestsReached()
+        $eventsApiDebugLogger->logLimitOfEventsApiRequestsReached()
             ->shouldBeCalled();
         $eventsApiDebugLogger->flushLogs()
             ->shouldBeCalled();

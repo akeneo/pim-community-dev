@@ -7,6 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Command;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksCommand;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventBuildLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SkipOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
@@ -43,7 +44,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         SkipOwnEventLogger $skipOwnEventLogger,
         LoggerInterface $logger,
         DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
-        CacheClearerInterface $cacheClearer
+        CacheClearerInterface $cacheClearer,
+        EventsApiDebugLogger $eventsApiDebugLogger
     ): void {
         $this->beConstructedWith(
             $selectActiveWebhooksQuery,
@@ -53,6 +55,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $eventBuildLogger,
             $skipOwnEventLogger,
             $logger,
+            $eventsApiDebugLogger,
             $eventsApiRequestRepository,
             $cacheClearer,
             'staging.akeneo.com'
@@ -316,7 +319,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         SkipOwnEventLogger $skipOwnEventLogger,
         $eventsApiRequestRepository,
         $cacheClearer,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        EventsApiDebugLogger $eventsApiDebugLogger
     ): void {
         $getTimeIterable = (function () {
             yield 2; // Start - subscription 1
@@ -342,6 +346,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $eventBuildLogger,
             $skipOwnEventLogger,
             $logger,
+            $eventsApiDebugLogger,
             $eventsApiRequestRepository,
             $cacheClearer,
             'staging.akeneo.com',
@@ -396,6 +401,52 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
 
         $expectedBuildTime = (3 - 2) + (8 - 5);
         $eventBuildLogger->log(2, $expectedBuildTime, 2, $bulkEvent)->shouldBeCalled();
+    }
+
+    public function test_it_logs_for_the_events_api_debug_when_an_event_subscription_skipped_its_own_event(
+        SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
+        WebhookUserAuthenticator $webhookUserAuthenticator,
+        EventsApiDebugLogger $eventsApiDebugLogger,
+        DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
+        WebhookClient $client
+    ): void {
+        $user = new User();
+        $user->setId(0);
+        $user->setUsername('erp_0000');
+        $user->defineAsApiUser();
+
+        $webhook = new ActiveWebhook('erp', $user->getId(), 'a_secret', 'http://localhost/');
+        $selectActiveWebhooksQuery->execute()
+            ->willReturn([$webhook]);
+
+        $webhookUserAuthenticator->authenticate($user->getId())
+            ->willReturn($user);
+
+        $author = Author::fromUser($user);
+        $pimEvent = $this->createEvent($author, []);
+        $pimEventBulk = new BulkEvent([$pimEvent]);
+
+        $eventsApiDebugLogger->logEventSubscriptionSkippedOwnEvent('erp', $pimEvent)
+            ->shouldBeCalled();
+
+        $eventsApiDebugLogger->flushLogs()
+            ->shouldBeCalled();
+
+        $eventsApiRequestRepository->upsert(Argument::cetera())
+            ->willReturn(0);
+
+        $client->bulkSend(
+            Argument::that(
+                function (iterable $iterable) {
+                    iterator_to_array($iterable); // Call the iterator to run the code.
+
+                    return true;
+                }
+            )
+        )->shouldBeCalled();
+
+        $command = new SendBusinessEventToWebhooksCommand($pimEventBulk);
+        $this->handle($command);
     }
 
     private function createEvent(Author $author, array $data): EventInterface
