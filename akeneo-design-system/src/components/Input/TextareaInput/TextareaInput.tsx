@@ -48,21 +48,29 @@ const CharacterLeftLabel = styled.div`
 `;
 
 type TextareaInputProps = Override<
-  React.InputHTMLAttributes<HTMLTextAreaElement>,
-  (
-    | {
-        readOnly: true;
-        onChange?: (newValue: string) => void; // TODO This is not the right solution
-      }
-    | {
-        readOnly?: boolean;
-        onChange: (newValue: string) => void;
-      }
-  ) & {
+  React.InputHTMLAttributes<HTMLInputElement>,
+  {
+    id?: string;
+
     /**
      * Value of the input.
      */
     defaultValue?: string;
+
+    /**
+     * Defines if the textarea is in read only.
+     */
+    readOnly?: boolean;
+
+    /**
+     * Provides a function triggered each time the textarea is changed.
+     */
+    onChange?: (newValue: string) => void;
+
+    /**
+     * Establishes relationships between objects and their label(s)
+     */
+    'aria-labelledby'?: string;
 
     /**
      * Placeholder displayed when the input is empty.
@@ -83,19 +91,11 @@ type TextareaInputProps = Override<
 
 const TextareaInput = React.forwardRef<HTMLDivElement, TextareaInputProps>(
   (
-    {
-      characterLeftLabel,
-      readOnly,
-      onChange,
-      defaultValue,
-      invalid,
-      ...rest
-    }: TextareaInputProps,
+    {characterLeftLabel, readOnly, onChange, defaultValue, invalid, ...rest}: TextareaInputProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const handleChange = useCallback(
       (event: ChangeEvent<HTMLTextAreaElement>) => {
-        // TODO: fix next line (run unit test to see the error)
         if (!readOnly && onChange) onChange(event.currentTarget.value);
       },
       [readOnly, onChange]
