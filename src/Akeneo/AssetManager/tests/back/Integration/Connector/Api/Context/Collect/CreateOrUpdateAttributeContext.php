@@ -292,8 +292,8 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::empty(),
-            Suffix::empty(),
+            Prefix::createEmpty(),
+            Suffix::createEmpty(),
             MediaLinkMediaType::fromString('image')
         );
 
@@ -521,8 +521,8 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::empty(),
-            Suffix::empty(),
+            Prefix::createEmpty(),
+            Suffix::createEmpty(),
             MediaLinkMediaType::fromString('image')
         );
         $this->attributeRepository->create($attribute);
@@ -565,8 +565,8 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::empty(),
-            Suffix::empty(),
+            Prefix::createEmpty(),
+            Suffix::createEmpty(),
             MediaLinkMediaType::fromString('image')
         );
 

@@ -85,6 +85,8 @@ pim_asset_manager:
                 should_be_integer: 'This field should be an integer'
                 integer_too_long: 'This integer is too big'
                 should_be_numeric: 'This field should be a numeric value with the right decimal separator'
+            media_link:
+                protocol_not_allowed: 'This field should start with a valid protocol. Allowed protocols are: %allowed_protocols%.'
             main_media:
                 not_main_media_attribute: 'The expected attribute as main media is "%main_media_attribute%", "%attribute%" given.'
     attribute:
@@ -124,6 +126,7 @@ pim_asset_manager:
                 asset_family_should_exist: 'The asset family "%asset_family_code%" was not found.'
             prefix:
                 should_not_be_empty: 'The prefix cannot be an empty string.'
+                protocol_not_allowed: 'This field should start with a valid protocol. Allowed protocols are: %allowed_protocols%.'
             suffix:
                 should_not_be_empty: 'The suffix cannot be an empty string.'
             media_type:

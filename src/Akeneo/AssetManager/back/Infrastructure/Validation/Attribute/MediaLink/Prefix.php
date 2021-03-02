@@ -22,4 +22,10 @@ use Symfony\Component\Validator\Constraint;
 class Prefix extends Constraint
 {
     public const MESSAGE_NOT_EMPTY_STRING = 'pim_asset_manager.attribute.validation.prefix.should_not_be_empty';
+    public const PROTOCOL_NOT_ALLOWED = 'pim_asset_manager.attribute.validation.prefix.protocol_not_allowed';
+
+    public function validatedBy()
+    {
+        return 'akeneo_assetmanager.validator.attribute.media_link.prefix_validator';
+    }
 }

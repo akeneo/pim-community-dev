@@ -28,3 +28,4 @@ parameters:
     # Set to "true" to automatically load asset fixtures
     env(SHOULD_LOAD_ASSETS_FIXTURES): 'false'
     should_load_assets_fixtures: '%env(bool:SHOULD_LOAD_ASSETS_FIXTURES)%'
+    allowed_media_link_protocols: ['http://', 'https://']

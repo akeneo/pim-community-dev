@@ -124,8 +124,8 @@ abstract class AbstractExportWithAssetTestCase extends AbstractExportTestCase
             AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::empty(),
-            Suffix::empty(),
+            Prefix::createEmpty(),
+            Suffix::createEmpty(),
             MediaLinkMediaType::fromString(MediaLinkMediaType::IMAGE)
         );
         $this->attributeRepository->create($linkAtmosphere);
