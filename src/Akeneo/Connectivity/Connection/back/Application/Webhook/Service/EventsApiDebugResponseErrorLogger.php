@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Service;
 
-use Akeneo\Platform\Component\EventQueue\EventInterface;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 
 /**
  * @author    Pierre-Yves Aillet <pierre-yves.aillet@zenika.com>
@@ -14,10 +14,10 @@ interface EventsApiDebugResponseErrorLogger
 {
     /**
      * @param string $connectionCode
-     * @param array<EventInterface> $events
+     * @param array<WebhookEvent> $events
      * @param string $url
      * @param int $statusCode
-     * @param array<string> $headers
+     * @param array<array<string>> $headers
      */
-    public function logSendRequestError(string $connectionCode, array $events, string $url, int $statusCode, array $headers): void;
+    public function logResponseError(string $connectionCode, array $events, string $url, int $statusCode, array $headers): void;
 }

@@ -8,11 +8,14 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugRes
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\GuzzleWebhookClient;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\Signature;
+use Akeneo\Platform\Component\EventQueue\Event;
+use Akeneo\Platform\Component\EventQueue\EventInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -35,7 +38,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             new JsonEncoder(),
             $sendApiEventRequestLogger,
             $responseErrorLogger,
-            []
+            ['timeout' => 0.5, 'concurrency' => 1]
         );
     }
 
@@ -56,8 +59,8 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             new Client(['handler' => $handlerStack]),
             new JsonEncoder(),
             $sendApiEventRequestLogger,
-            $responseErrorLogger
-            []
+            $responseErrorLogger,
+            ['timeout' => 0.5, 'concurrency' => 1]
         );
 
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
@@ -70,7 +73,8 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
                     '2020-01-01T00:00:00+00:00',
                     $author,
                     'staging.akeneo.com',
-                    ['data_1']
+                    ['data_1'],
+                    $this->createEvent($author, ['data_1'], 1577836800, '7abae2fe-759a-4fce-aa43-f413980671b3')
                 )
             ]
         );
@@ -84,7 +88,8 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
                     '2020-01-01T00:00:00+00:00',
                     $author,
                     'staging.akeneo.com',
-                    ['data_2']
+                    ['data_2'],
+                    $this->createEvent($author, ['data_2'], 1577836800, '7abae2fe-759a-4fce-aa43-f413980671b3')
                 )
             ]
         );
@@ -126,5 +131,16 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
                 return $transaction['request'];
             }
         }
+    }
+
+    private function createEvent(Author $author, array $data, int $timestamp, string $uuid): EventInterface
+    {
+        return new class($author, $data, $timestamp, $uuid) extends Event
+        {
+            public function getName(): string
+            {
+                return 'product.created';
+            }
+        };
     }
 }

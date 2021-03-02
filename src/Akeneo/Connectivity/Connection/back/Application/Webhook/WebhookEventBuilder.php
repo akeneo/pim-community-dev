@@ -124,6 +124,7 @@ class WebhookEventBuilder
                 $pimEvent->getAuthor(),
                 $context['pim_source'],
                 $data,
+                $pimEvent
             );
         }
 

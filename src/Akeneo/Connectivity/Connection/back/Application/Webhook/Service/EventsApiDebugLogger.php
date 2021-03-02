@@ -8,8 +8,10 @@ use Akeneo\Connectivity\Connection\Domain\Clock;
 use Akeneo\Connectivity\Connection\Domain\Webhook\EventNormalizer\EventNormalizer;
 use Akeneo\Connectivity\Connection\Domain\Webhook\EventNormalizer\EventNormalizerInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
+use Akeneo\Platform\Component\Webhook\EventDataCollection;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -68,12 +70,12 @@ class EventsApiDebugLogger implements EventsApiDebugResponseErrorLogger
 
     /**
      * @param string $connectionCode
-     * @param array<EventInterface> $events
+     * @param array<WebhookEvent> $webhookEvents
      * @param string $url
      * @param int $statusCode
-     * @param array<string> $headers
+     * @param array<array<string>> $headers
      */
-    public function logSendRequestError(string $connectionCode, array $events, string $url, int $statusCode, array $headers): void
+    public function logResponseError(string $connectionCode, array $webhookEvents, string $url, int $statusCode, array $headers): void
     {
         $this->addLog([
             'timestamp' => $this->clock->now()->getTimestamp(),
@@ -84,9 +86,9 @@ class EventsApiDebugLogger implements EventsApiDebugResponseErrorLogger
             'status_code' => $statusCode,
             'headers' => $headers,
             'context' => [
-                'events' => array_map(function ($event) {
-                    $this->normalizeEvent($event);
-                }, $events),
+                'events' => array_map(function ($webhookEvent) {
+                    $this->normalizeEvent($webhookEvent->getPimEvent());
+                }, $webhookEvents),
             ]
         ]);
     }
