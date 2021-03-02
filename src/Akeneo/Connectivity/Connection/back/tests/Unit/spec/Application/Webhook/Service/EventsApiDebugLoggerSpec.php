@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Service;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
-use Akeneo\Connectivity\Connection\Domain\Webhook\EventNormalizer\EventNormalizer;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\LimitOfEventsApiRequestsReachedLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
-use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\Event;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -45,6 +44,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
             [],
             1
         );
+        $this->shouldImplement(EventSubscriptionSkippedOwnEventLogger::class);
 
         $eventsApiDebugRepository->persist([
                 'timestamp' => 1609459200,
@@ -75,6 +75,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
             [],
             1
         );
+        $this->shouldImplement(LimitOfEventsApiRequestsReachedLogger::class);
 
         $eventsApiDebugRepository->persist([
                 'timestamp' => 1609459200,
