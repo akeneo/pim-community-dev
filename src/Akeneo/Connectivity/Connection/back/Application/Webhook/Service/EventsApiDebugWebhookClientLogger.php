@@ -38,7 +38,7 @@ interface EventsApiDebugWebhookClientLogger
      * @param array<WebhookEvent> $events
      * @param array<array<string>> $headers
      */
-    public function logRequestSent(
+    public function logEventsApiRequestSucceed(
         string $connectionCode,
         array $events,
         string $url,

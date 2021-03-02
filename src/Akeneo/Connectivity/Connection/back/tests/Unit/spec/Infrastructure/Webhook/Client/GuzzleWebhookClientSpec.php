@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugWeb
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
-use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
@@ -17,11 +16,14 @@ use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\Signature;
 use Akeneo\Platform\Component\EventQueue\Event;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 /**
@@ -31,13 +33,15 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
  */
 class GuzzleWebhookClientSpec extends ObjectBehavior
 {
-    public function let(SendApiEventRequestLogger $sendApiEventRequestLogger, EventsApiDebugWebhookClientLogger $responseErrorLogger): void
-    {
+    public function let(
+        SendApiEventRequestLogger $sendApiEventRequestLogger,
+        EventsApiDebugWebhookClientLogger $debugLogger
+    ): void {
         $this->beConstructedWith(
             new Client(),
             new JsonEncoder(),
             $sendApiEventRequestLogger,
-            $responseErrorLogger,
+            $debugLogger,
             ['timeout' => 0.5, 'concurrency' => 1]
         );
     }
@@ -47,19 +51,29 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(GuzzleWebhookClient::class);
     }
 
-    public function it_sends_webhook_requests_in_bulk(SendApiEventRequestLogger $sendApiEventRequestLogger, EventsApiDebugWebhookClientLogger $responseErrorLogger): void
-    {
+    public function it_sends_webhook_requests_in_bulk(
+        SendApiEventRequestLogger $sendApiEventRequestLogger,
+        EventsApiDebugWebhookClientLogger $debugLogger
+    ): void {
+
+        $mock = new MockHandler(
+            [
+                new Response(200, ['Content-Length' => 0]),
+                new Response(200, ['Content-Length' => 0]),
+            ]
+        );
+
         $container = [];
         $history = Middleware::history($container);
 
-        $handlerStack = HandlerStack::create();
+        $handlerStack = HandlerStack::create($mock);
         $handlerStack->push($history);
 
         $this->beConstructedWith(
             new Client(['handler' => $handlerStack]),
             new JsonEncoder(),
             $sendApiEventRequestLogger,
-            $responseErrorLogger,
+            $debugLogger,
             ['timeout' => 0.5, 'concurrency' => 1]
         );
 
@@ -75,7 +89,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
                     'staging.akeneo.com',
                     ['data_1'],
                     $this->createEvent($author, ['data_1'], 1577836800, '7abae2fe-759a-4fce-aa43-f413980671b3')
-                )
+                ),
             ]
         );
 
@@ -90,11 +104,12 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
                     'staging.akeneo.com',
                     ['data_2'],
                     $this->createEvent($author, ['data_2'], 1577836800, '7abae2fe-759a-4fce-aa43-f413980671b3')
-                )
+                ),
             ]
         );
 
         $this->bulkSend([$request1, $request2]);
+
 
         Assert::assertCount(2, $container);
 
@@ -111,6 +126,14 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $signature = Signature::createSignature('a_secret', $timestamp, $body);
         Assert::assertEquals($signature, $request->getHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE)[0]);
 
+        $debugLogger->logEventsApiRequestSucceed(
+            'ecommerce',
+            $request1->apiEvents(),
+            'http://localhost/webhook1',
+            200,
+            Argument::any()
+        )->shouldBeCalled();
+
         // Request 2
 
         $request = $this->findRequest($container, 'http://localhost/webhook2');
@@ -122,6 +145,14 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $timestamp = (int)$request->getHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP)[0];
         $signature = Signature::createSignature('a_secret', $timestamp, $body);
         Assert::assertEquals($signature, $request->getHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE)[0]);
+
+        $debugLogger->logEventsApiRequestSucceed(
+            'erp',
+            $request2->apiEvents(),
+            'http://localhost/webhook2',
+            200,
+            Argument::any()
+        )->shouldBeCalled();
     }
 
     private function findRequest(array $container, string $url): ?Request
@@ -131,12 +162,13 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
                 return $transaction['request'];
             }
         }
+
+        return null;
     }
 
     private function createEvent(Author $author, array $data, int $timestamp, string $uuid): EventInterface
     {
-        return new class($author, $data, $timestamp, $uuid) extends Event
-        {
+        return new class($author, $data, $timestamp, $uuid) extends Event {
             public function getName(): string
             {
                 return 'product.created';

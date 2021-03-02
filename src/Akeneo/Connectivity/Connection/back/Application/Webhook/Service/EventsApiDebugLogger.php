@@ -110,7 +110,7 @@ class EventsApiDebugLogger implements EventsApiDebugWebhookClientLogger
         ]);
     }
 
-    public function logRequestSent(
+    public function logEventsApiRequestSucceed(
         string $connectionCode,
         array $events,
         string $url,

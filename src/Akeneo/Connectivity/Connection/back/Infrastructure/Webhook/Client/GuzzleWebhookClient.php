@@ -98,7 +98,7 @@ class GuzzleWebhookClient implements WebhookClient
                         $webhookRequestLog->getResponse()
                     );
 
-                    $this->debugLogger->logRequestSent(
+                    $this->debugLogger->logEventsApiRequestSucceed(
                         $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
                         $webhookRequestLog->getWebhookRequest()->apiEvents(),
                         strval($webhookRequestLog->getWebhookRequest()->url()),
