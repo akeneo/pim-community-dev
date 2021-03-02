@@ -395,7 +395,7 @@ jobs:
               name: Push PROD PIM image on docker registry
               command: PIM_CONTEXT=deployment make push-php-image-prod
 
-  check_cronjobs_existence:
+  test_cronjobs_existence:
       environment:
         <<: *envVarsDeployDev
       machine:
@@ -414,6 +414,28 @@ jobs:
           - run:
               name: Test Cronjob jobs exists
               command: PIM_CONTEXT=deployment make test-helm-cronjob
+
+  test_helm_generated_k8s_files:
+      environment:
+        <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars 
+          - run:
+              name: Test Serenity Helm generated yaml files compliance with current kubernetes Version
+              command: PIM_CONTEXT=deployment K8S_CLUSTER_VERSION_ENABLED=1  make test_helm_generated_k8s_files
+          - run:
+              name: Test Serenity with Onboarder bundle Helm generated yaml files compliance with current kubernetes Version
+              command: PIM_CONTEXT=deployment WITH_ONBOARDER=1 K8S_CLUSTER_VERSION_ENABLED=1 make test_helm_generated_k8s_files
+          - run:
+              name: Test Serenity Helm generated yaml files compliance with latest kubernetes Version
+              command: PIM_CONTEXT=deployment make test_helm_generated_k8s_files
+          - run:
+              name: Test Serenity with Onboarder bundle Helm generated yaml files compliance with latest kubernetes Version
+              command: PIM_CONTEXT=deployment WITH_ONBOARDER=1 make test_helm_generated_k8s_files
 
   test_deploy:
       environment:
@@ -893,15 +915,18 @@ workflows:
           - build_dev:
                 requires:
                     - checkout
-          - build_prod:
+          - test_helm_generated_k8s_files:
                 requires:
                     - checkout
-          - check_cronjobs_existence:
+          - build_prod:
+                requires:
+                    - test_helm_generated_k8s_files
+          - test_cronjobs_existence:
                 requires:
                     - build_prod
           - test_deploy:
                 requires:
-                    - check_cronjobs_existence
+                    - test_cronjobs_existence
           - test_upgrade_from_last_release:
                 requires:
                     - test_deploy
@@ -912,7 +937,7 @@ workflows:
                         ignore:
                             - master
                 requires:
-                    - check_cronjobs_existence
+                    - test_cronjobs_existence
           - delete_pr_environment:
                 requires:
                     - delete_pr_environment?
@@ -986,12 +1011,12 @@ workflows:
            - prepare_growth_edition:
                 requires:
                     - checkout
-           - check_cronjobs_existence:
+           - test_cronjobs_existence:
                 requires:
                     - prepare_growth_edition
            - test_deploy:
                 requires:
-                    - check_cronjobs_existence
+                    - test_cronjobs_existence
            - release_growth_edition:
                     requires:
                         - test_deploy
@@ -1069,15 +1094,15 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-          - check_cronjobs_existence:
+          - test_cronjobs_existence:
                 requires:
                     - build_prod
           - test_deploy:
                 requires:
-                    - check_cronjobs_existence
+                    - test_cronjobs_existence
           - test_upgrade_from_last_release:
                 requires:
-                    - check_cronjobs_existence
+                    - test_cronjobs_existence
           - test_front_code_style:
                 requires:
                     - build_dev
@@ -1140,12 +1165,12 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-          - check_cronjobs_existence:
+          - test_cronjobs_existence:
                 requires:
                     - build_prod
           - test_deploy:
                 requires:
-                    - check_cronjobs_existence
+                    - test_cronjobs_existence
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -1200,12 +1225,12 @@ workflows:
            - prepare_growth_edition:
                 requires:
                     - checkout
-           - check_cronjobs_existence:
+           - test_cronjobs_existence:
                 requires:
                     - prepare_growth_edition
            - test_deploy:
                 requires:
-                    - check_cronjobs_existence
+                    - test_cronjobs_existence
            - release_growth_edition:
                     requires:
                         - test_deploy

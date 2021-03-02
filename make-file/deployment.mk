@@ -304,6 +304,10 @@ push-php-image-prod: #Doc: push docker image to docker hub
 test-helm-cronjob: #Doc: Test declared cronjob job are available via the PIM console
 	bash $(PWD)/deployments/bin/test-cronjob-values.sh
 
+.PHONY: test_helm_generated_k8s_files
+test_helm_generated_k8s_files: #Doc Test helm generated templates are K8S compliant
+	bash $(PWD)/deployments/bin/test_helm_generated_k8s_files.sh
+	
 .PHONY: mr-proper 
 mr-proper: #Doc: Clean olds or orphans google resources
 	bash $(PWD)/deployments/bin/ci-mrproper.sh
