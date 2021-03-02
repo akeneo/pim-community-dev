@@ -4,9 +4,9 @@ import {ExecutionDetail} from './ExecutionDetail';
 
 const Index = () => {
   return (
-    <Router basename="/job/show">
+    <Router>
       <Switch>
-        <Route path="/:jobExecutionId">
+        <Route path="/job/show/:jobExecutionId">
           <ExecutionDetail />
         </Route>
       </Switch>

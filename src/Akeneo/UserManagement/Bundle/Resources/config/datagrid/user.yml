@@ -90,6 +90,13 @@ datagrid:
                 label:         pim_common.update
                 link:          update_link
                 rowAction:     true
+            duplicate:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--copy
+                type:          duplicate-user
+                label:         pim_common.duplicate
+                rowAction:     true
+                acl_resource:  pim_user_user_create
             delete:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash

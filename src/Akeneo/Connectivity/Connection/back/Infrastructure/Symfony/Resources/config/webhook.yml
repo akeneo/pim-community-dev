@@ -16,7 +16,7 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.webhook.guzzle_client'
             - '@akeneo_connectivity.connection.webhook.serializer.json_encoder'
-            - '@monolog.logger.event_api'
+            - '@akeneo_connectivity.connection.webhook.send_api_event_request_logger'
             - 
                 concurrency: '%webhook_concurrency%'
                 timeout: '%webhook_timeout%'
@@ -25,7 +25,7 @@ services:
         class: Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder
         arguments:
             - !tagged akeneo_connectivity.connection.webhook.event_data_builder
-            - '@monolog.logger.event_api'
+            - '@akeneo_connectivity.connection.webhook.event_data_build_error_logger'
 
     akeneo_connectivity.connection.webhook.webhook_user_authenticator:
         class: Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator
@@ -38,3 +38,29 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
             - '@akeneo_connectivity.connection.system_clock'
+            - !tagged akeneo_connectivity.connection.webhook.event_normalizer
+
+    akeneo_connectivity.connection.webhook.event_build_logger:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventBuildLogger
+        arguments:
+            - '@monolog.logger.event_api'
+
+    akeneo_connectivity.connection.webhook.event_data_build_error_logger:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataBuildErrorLogger
+        arguments:
+            - '@monolog.logger.event_api'
+
+    akeneo_connectivity.connection.webhook.reach_request_limit_logger:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\ReachRequestLimitLogger
+        arguments:
+            - '@monolog.logger.event_api'
+
+    akeneo_connectivity.connection.webhook.send_api_event_request_logger:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger
+        arguments:
+            - '@monolog.logger.event_api'
+
+    akeneo_connectivity.connection.webhook.skip_own_event_logger:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SkipOwnEventLogger
+        arguments:
+            - '@monolog.logger.event_api'

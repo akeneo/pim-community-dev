@@ -11,13 +11,23 @@ namespace Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository;
 interface EventsApiDebugRepository
 {
     /**
-     * @param array<array{
+     * Tells the repository to make a log entry persistent.
+     *
+     * Invoking the persist method does NOT save the log immediately,
+     * you need to call the flush method to effectively do it.
+     *
+     * @param array{
      *  timestamp: int,
      *  level: string,
      *  message: string,
      *  connection_code: ?string,
      *  context: array
-     * }> $documents
+     * } $log
      */
-    public function bulkInsert(array $documents): void;
+    public function persist(array $log): void;
+
+    /**
+     * Saves all the log entries that have been queued up to now.
+     */
+    public function flush(): void;
 }

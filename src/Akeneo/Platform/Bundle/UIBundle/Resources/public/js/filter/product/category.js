@@ -115,7 +115,7 @@ define([
       modal.on(
         'ok',
         function () {
-          if (_.isEmpty(tree.attributes.categories)) {
+          if (_.isEmpty(tree.getCategoryCodes())) {
             this.getCurrentChannel().then(
               function (channel) {
                 this.setDefaultValues(channel);
@@ -125,7 +125,7 @@ define([
             this.setData({
               field: this.getField(),
               operator: 'IN',
-              value: tree.attributes.categories,
+              value: tree.getCategoryCodes(),
             });
           }
 

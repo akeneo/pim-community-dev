@@ -6,8 +6,10 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksCommand;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionEventBuildLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventBuildLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SkipOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
@@ -15,6 +17,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository\DbalEventsApiRequestCountRepository;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
@@ -25,7 +28,6 @@ use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -39,15 +41,24 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         WebhookUserAuthenticator $webhookUserAuthenticator,
         WebhookClient $client,
         WebhookEventBuilder $builder,
+        EventBuildLogger $eventBuildLogger,
+        SkipOwnEventLogger $skipOwnEventLogger,
+        LoggerInterface $logger,
         DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
-        CacheClearerInterface $cacheClearer
+        CacheClearerInterface $cacheClearer,
+        EventsApiDebugLogger $eventsApiDebugLogger,
+        EventsApiDebugRepository $eventsApiDebugRepository
     ): void {
         $this->beConstructedWith(
             $selectActiveWebhooksQuery,
             $webhookUserAuthenticator,
             $client,
             $builder,
-            new NullLogger(),
+            $eventBuildLogger,
+            $skipOwnEventLogger,
+            $logger,
+            $eventsApiDebugLogger,
+            $eventsApiDebugRepository,
             $eventsApiRequestRepository,
             $cacheClearer,
             'staging.akeneo.com'
@@ -307,9 +318,13 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhookUserAuthenticator,
         $client,
         $builder,
+        EventBuildLogger $eventBuildLogger,
+        SkipOwnEventLogger $skipOwnEventLogger,
         $eventsApiRequestRepository,
         $cacheClearer,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        EventsApiDebugLogger $eventsApiDebugLogger,
+        EventsApiDebugRepository $eventsApiDebugRepository
     ): void {
         $getTimeIterable = (function () {
             yield 2; // Start - subscription 1
@@ -332,7 +347,11 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $webhookUserAuthenticator,
             $client,
             $builder,
+            $eventBuildLogger,
+            $skipOwnEventLogger,
             $logger,
+            $eventsApiDebugLogger,
+            $eventsApiDebugRepository,
             $eventsApiRequestRepository,
             $cacheClearer,
             'staging.akeneo.com',
@@ -386,8 +405,54 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $this->handle($command);
 
         $expectedBuildTime = (3 - 2) + (8 - 5);
-        $log = new EventSubscriptionEventBuildLog(2, $bulkEvent, $expectedBuildTime, 2);
-        $logger->info(json_encode($log->toLog()))->shouldBeCalled();
+        $eventBuildLogger->log(2, $expectedBuildTime, 2, $bulkEvent)->shouldBeCalled();
+    }
+
+    public function test_it_logs_for_the_events_api_debug_when_an_event_subscription_skipped_its_own_event(
+        SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
+        WebhookUserAuthenticator $webhookUserAuthenticator,
+        EventsApiDebugLogger $eventsApiDebugLogger,
+        EventsApiDebugRepository $eventsApiDebugRepository,
+        DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
+        WebhookClient $client
+    ): void {
+        $user = new User();
+        $user->setId(0);
+        $user->setUsername('erp_0000');
+        $user->defineAsApiUser();
+
+        $webhook = new ActiveWebhook('erp', $user->getId(), 'a_secret', 'http://localhost/');
+        $selectActiveWebhooksQuery->execute()
+            ->willReturn([$webhook]);
+
+        $webhookUserAuthenticator->authenticate($user->getId())
+            ->willReturn($user);
+
+        $author = Author::fromUser($user);
+        $pimEvent = $this->createEvent($author, []);
+        $pimEventBulk = new BulkEvent([$pimEvent]);
+
+        $eventsApiDebugLogger->logEventSubscriptionSkippedOwnEvent('erp', $pimEvent)
+            ->shouldBeCalled();
+
+        $eventsApiDebugRepository->flush()
+            ->shouldBeCalled();
+
+        $eventsApiRequestRepository->upsert(Argument::cetera())
+            ->willReturn(0);
+
+        $client->bulkSend(
+            Argument::that(
+                function (iterable $iterable) {
+                    iterator_to_array($iterable); // Call the iterator to run the code.
+
+                    return true;
+                }
+            )
+        )->shouldBeCalled();
+
+        $command = new SendBusinessEventToWebhooksCommand($pimEventBulk);
+        $this->handle($command);
     }
 
     private function createEvent(Author $author, array $data): EventInterface
@@ -395,7 +460,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $timestamp = 1577836800;
         $uuid = '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c';
 
-        return new class($author, $data, $timestamp, $uuid) extends Event
+        return new class ($author, $data, $timestamp, $uuid) extends Event
         {
             public function getName(): string
             {
