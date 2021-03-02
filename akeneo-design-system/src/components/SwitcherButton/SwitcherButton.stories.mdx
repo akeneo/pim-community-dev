@@ -43,10 +43,10 @@ Most of the time, when you click on a switcher, a dropdown appears.
     {args => {
       return (
         <>
-          <SwitcherButton {...args} label={'Inline'} inline={true}>
+          <SwitcherButton label="Inline">
             True
           </SwitcherButton>
-          <SwitcherButton {...args} label={'Inline'} inline={false}>
+          <SwitcherButton label="Inline" inline={false}>
             False
           </SwitcherButton>
         </>
@@ -63,13 +63,13 @@ Most of the time, when you click on a switcher, a dropdown appears.
       return (
         <>
           <SpaceContainer width={200}>
-            <SwitcherButton {...args} label={'Deletable'} inline={false} deletable={true}>
-              True
+            <SwitcherButton label="Deletable" deletable inline={false}>
+              Value
             </SwitcherButton>
           </SpaceContainer>
           <SpaceContainer width={200}>
-            <SwitcherButton {...args} label={'Deletable'} inline={false} deletable={false}>
-              False
+            <SwitcherButton label="Not deletable" inline={false}>
+              Value
             </SwitcherButton>
           </SpaceContainer>
         </>
@@ -85,10 +85,10 @@ Most of the time, when you click on a switcher, a dropdown appears.
     {args => {
       return (
         <>
-          <SwitcherButton {...args} label={'Locale'} inline={true}>
+          <SwitcherButton label="Locale">
             <Locale code='en_US' languageLabel='English'/>
           </SwitcherButton>
-          <SwitcherButton {...args} label={'Locale'} inline={false}>
+          <SwitcherButton label="Locale" inline={false}>
             <Locale code='fr_FR' languageLabel='French'/>
           </SwitcherButton>
         </>

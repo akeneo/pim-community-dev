@@ -110,17 +110,9 @@ const SwitcherButton = React.forwardRef<HTMLDivElement, SwitcherButtonProps>(
     {label, children, onClick, deletable = false, onDelete, inline = true, ...rest}: SwitcherButtonProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
-    const handleDelete = () => {
-      if (deletable && onDelete) {
-        onDelete();
-      }
-    };
+    const handleDelete = () => deletable && onDelete?.();
 
-    const handleClick = () => {
-      if (onClick) {
-        onClick();
-      }
-    };
+    const handleClick = () => onClick?.();
 
     return (
       <SwitcherButtonContainer ref={forwardedRef} {...rest}>
