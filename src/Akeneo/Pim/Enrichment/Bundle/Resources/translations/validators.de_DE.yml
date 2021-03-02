@@ -72,6 +72,7 @@ pim_catalog:
     product_identifier: Diese Kennungen "%s" sind nicht vorhanden.
     blacklisted_attribute_code: Code vorübergehend gesperrt, bis der laufende Bereinigungsauftrag abgeschlossen ist.
     blacklisted_attribute_code_with_link: "Code vorübergehend gesperrt, bis der laufende Bereinigungsauftrag abgeschlossen ist. Um mehr zu erfahren, schaue bitte die <a href='{{ link }}' target='_blank'>Job-Details</a> an."
+    duplicate_options: '{1} Die folgende Option wurde mehrfach verwendet: "{{ duplicate_options }}". Bitte überprüfen Sie Ihre Optionsliste erneut.|]1, +Inf] Die folgenden Optionen wurden mehrfach verwendet: "{{ duplicate_options }}". Bitte überprüfen Sie Ihre Optionsliste erneut.'
     0: Es ist ein unerwarteter Fehler aufgetreten.
     100: Unerwarteter Wert
     101: Dieses Feld erwartet Werte vom Typ Boolean.
