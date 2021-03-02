@@ -73,7 +73,9 @@ const ScoreCell = React.forwardRef<HTMLDivElement, ScoreCellProps>(
       <div ref={forwardedRef} {...rest}>
         {score && (
           <ScoreCellContainer score={score} placement={placement} bigger={bigger}>
-            <ScoreCellWrapper score={score} bigger={bigger}>{score}</ScoreCellWrapper>
+            <ScoreCellWrapper score={score} bigger={bigger}>
+              {score}
+            </ScoreCellWrapper>
           </ScoreCellContainer>
         )}
       </div>
