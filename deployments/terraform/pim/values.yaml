@@ -193,6 +193,12 @@ pim:
       enabled: true
       pimCommand: "akeneo:connectivity-connection:purge-events-api-logs"
       schedule: "5 * * * *"
+      resources:
+        limits:
+          memory: "128Mi"
+        requests:
+          cpu: "100m"
+          memory: "128Mi"
 
 # Onboarder
 onboarder:
