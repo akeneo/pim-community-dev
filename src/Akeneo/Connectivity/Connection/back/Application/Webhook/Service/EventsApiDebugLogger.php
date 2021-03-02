@@ -110,6 +110,29 @@ class EventsApiDebugLogger implements EventsApiDebugWebhookClientLogger
         ]);
     }
 
+    public function logRequestSent(
+        string $connectionCode,
+        array $events,
+        string $url,
+        int $statusCode,
+        array $headers
+    ): void {
+        $this->repository->persist([
+            'timestamp' => $this->clock->now()->getTimestamp(),
+            'level' => EventsApiDebugLogLevels::INFO,
+            'message' => 'The API event request was sent.',
+            'connection_code' => $connectionCode,
+            'event_subscription_url' => $url,
+            'status_code' => $statusCode,
+            'headers' => $headers,
+            'context' => [
+                'events' => array_map(function ($webhookEvent) {
+                    $this->normalizeEvent($webhookEvent->getPimEvent());
+                }, $events),
+            ]
+        ]);
+    }
+
     /**
      * @return array<mixed>
      */

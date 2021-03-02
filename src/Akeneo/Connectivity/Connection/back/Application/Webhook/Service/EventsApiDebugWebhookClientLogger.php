@@ -33,4 +33,16 @@ interface EventsApiDebugWebhookClientLogger
         string $url,
         float $timeout
     ): void;
+
+    /**
+     * @param array<WebhookEvent> $events
+     * @param array<array<string>> $headers
+     */
+    public function logRequestSent(
+        string $connectionCode,
+        array $events,
+        string $url,
+        int $statusCode,
+        array $headers
+    ): void;
 }
