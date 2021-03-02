@@ -2,49 +2,30 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\AssetManager\Infrastructure\Symfony\Command\IndexAllAssetsOnTemporaryIndexCommand;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Webmozart\Assert\Assert;
 
-
-final class Version_5_0_20201207132648_prepare_new_asset_index extends AbstractMigration implements ContainerAwareInterface
+/**
+ * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
+ *
+ * This migration was a one-shot. We re-indexed on a temporary index (with a new mapping)
+ * and another migration will switch the alias to this temporary index.
+ * Now there is no reason to execute it, and the services do not exist anymore.
+ * As the migrations must not be deleted we keep this file, event if today the migration does nothing.
+ */
+final class Version_5_0_20201207132648_prepare_new_asset_index extends AbstractMigration
 {
     private ContainerInterface $container;
 
     public function up(Schema $schema) : void
     {
         $this->disableMigrationWarning();
-
-        $client = $this->container->get('akeneo_assetmanager.client.asset_temporary');
-
-        Assert::false($client->hasIndex(), 'An index already exist with this name.');
-        Assert::false($client->hasIndexForAlias(), 'An alias already exist with this name.');
-        $this->container->get('akeneo_assetmanager.client.asset_temporary')->resetIndex();
-
-        $sql = 'INSERT INTO pim_configuration (`code`, `values`) VALUES (:code, :values);';
-
-        $this->addSql(
-            $sql,
-            [
-                'code' => IndexAllAssetsOnTemporaryIndexCommand::CONFIGURATION_CODE,
-                'values' => ['status' => 'todo'],
-            ],
-            ['values' => Types::JSON]
-        );
     }
 
     public function down(Schema $schema) : void
     {
         $this->throwIrreversibleMigrationException();
-    }
-
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
     }
 
     /**
