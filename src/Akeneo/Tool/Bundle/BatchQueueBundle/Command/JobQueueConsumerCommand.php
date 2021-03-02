@@ -115,7 +115,7 @@ class JobQueueConsumerCommand extends Command
 
         $errOutput = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
         $consumerName = Uuid::uuid4();
-        $this->logger->notice(sprintf('Consumer name: "%s"', $consumerName->toString()));
+        $this->logger->debug(sprintf('Consumer name: "%s"', $consumerName->toString()));
         $pathFinder = new PhpExecutableFinder();
         $console = sprintf('%s%sbin%sconsole', $this->projectDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
 
@@ -147,7 +147,6 @@ class JobQueueConsumerCommand extends Command
                             continue;
                         }
 
-                        $this->logger->debug($process->getIncrementalOutput());
                         $errOutput->write($process->getIncrementalErrorOutput());
 
                         $this->executionManager->updateHealthCheck($jobExecutionMessage);
@@ -160,7 +159,6 @@ class JobQueueConsumerCommand extends Command
                         $this->executionManager->markAsFailed($jobExecutionMessage);
                     }
 
-                    $this->logger->debug($process->getIncrementalOutput());
                     $errOutput->write($process->getIncrementalErrorOutput());
 
                     $this->logger->notice(sprintf('Job execution "%s" is finished.', $jobExecutionMessage->getJobExecutionId()));
