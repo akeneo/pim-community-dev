@@ -7,7 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Command;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksCommand;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventBuildLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SkipOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
@@ -46,7 +46,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         LoggerInterface $logger,
         DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
-        EventsApiDebugLogger $eventsApiDebugLogger,
+        EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
         EventsApiDebugRepository $eventsApiDebugRepository
     ): void {
         $this->beConstructedWith(
@@ -57,7 +57,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $eventBuildLogger,
             $skipOwnEventLogger,
             $logger,
-            $eventsApiDebugLogger,
+            $eventSubscriptionSkippedOwnEventLogger,
             $eventsApiDebugRepository,
             $eventsApiRequestRepository,
             $cacheClearer,
@@ -325,7 +325,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $eventsApiRequestRepository,
         $cacheClearer,
         LoggerInterface $logger,
-        EventsApiDebugLogger $eventsApiDebugLogger,
+        EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
         EventsApiDebugRepository $eventsApiDebugRepository
     ): void {
         $getTimeIterable = (function () {
@@ -352,7 +352,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $eventBuildLogger,
             $skipOwnEventLogger,
             $logger,
-            $eventsApiDebugLogger,
+            $eventSubscriptionSkippedOwnEventLogger,
             $eventsApiDebugRepository,
             $eventsApiRequestRepository,
             $cacheClearer,
@@ -414,7 +414,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
     public function test_it_logs_for_the_events_api_debug_when_an_event_subscription_skipped_its_own_event(
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
         WebhookUserAuthenticator $webhookUserAuthenticator,
-        EventsApiDebugLogger $eventsApiDebugLogger,
+        EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
         EventsApiDebugRepository $eventsApiDebugRepository,
         DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
         WebhookClient $client
@@ -435,7 +435,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $pimEvent = $this->createEvent($author, []);
         $pimEventBulk = new BulkEvent([$pimEvent]);
 
-        $eventsApiDebugLogger->logEventSubscriptionSkippedOwnEvent('erp', $pimEvent)
+        $eventSubscriptionSkippedOwnEventLogger->logEventSubscriptionSkippedOwnEvent('erp', $pimEvent)
             ->shouldBeCalled();
 
         $eventsApiDebugRepository->flush()

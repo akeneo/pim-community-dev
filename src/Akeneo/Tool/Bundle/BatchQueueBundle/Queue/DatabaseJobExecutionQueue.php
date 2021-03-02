@@ -6,6 +6,7 @@ namespace Akeneo\Tool\Bundle\BatchQueueBundle\Queue;
 
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobQueueConsumerConfiguration;
 
 /**
  * Aims to publish and consume job execution messages in a queue stored in database.
@@ -18,9 +19,6 @@ use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
  */
 class DatabaseJobExecutionQueue implements JobExecutionQueueInterface
 {
-    /** Interval in seconds before checking if a new message is in the queue. */
-    const QUEUE_CHECK_INTERVAL = 5;
-
     /** @var JobExecutionMessageRepository */
     private $jobExecutionMessageRepository;
 
@@ -40,29 +38,25 @@ class DatabaseJobExecutionQueue implements JobExecutionQueueInterface
     /**
      * {@inheritdoc}
      */
-    public function consume(string $consumer, array $whitelistedJobInstanceCodes = [], array $blacklistedJobInstanceCodes = []): JobExecutionMessage
+    public function consume(string $consumer, JobQueueConsumerConfiguration $configuration): ?JobExecutionMessage
     {
         $hasBeenUpdated = false;
         $jobExecutionMessage = null;
-
-        if (!empty($whitelistedJobInstanceCodes) && !empty($blacklistedJobInstanceCodes)) {
-            throw new \InvalidArgumentException('You cannot use a whitelist filter and a blacklist filter at the same time');
-        }
-
+        $ttl = $configuration['timeToLive'];
         do {
-            if (empty($whitelistedJobInstanceCodes) && empty($blacklistedJobInstanceCodes)) {
+            if (count($configuration['whitelistedJobInstanceCodes']) == 0 && count($configuration['blacklistedJobInstanceCodes']) == 0) {
                 $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessage();
-            } elseif ($whitelistedJobInstanceCodes) {
-                $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessageFilteredByCodes($whitelistedJobInstanceCodes);
-            } elseif ($blacklistedJobInstanceCodes) {
-                $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableNotBlacklistedJobExecutionMessageFilteredByCodes($blacklistedJobInstanceCodes);
+            } elseif (count($configuration['whitelistedJobInstanceCodes']) > 0) {
+                $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessageFilteredByCodes($configuration['whitelistedJobInstanceCodes']);
+            } elseif (count($configuration['blacklistedJobInstanceCodes']) > 0) {
+                $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableNotBlacklistedJobExecutionMessageFilteredByCodes($configuration['blacklistedJobInstanceCodes']);
             }
 
             if (null !== $jobExecutionMessage) {
                 $jobExecutionMessage->consumedBy($consumer);
                 $hasBeenUpdated = $this->jobExecutionMessageRepository->updateJobExecutionMessage($jobExecutionMessage);
             }
-        } while (!$hasBeenUpdated && 0 === sleep(self::QUEUE_CHECK_INTERVAL));
+        } while (!$hasBeenUpdated && 0 !== --$ttl && 0 === sleep($configuration['queueCheckInterval']));
 
         return $jobExecutionMessage;
     }
