@@ -77,7 +77,7 @@ class EventsApiDebugLogger implements EventsApiDebugResponseErrorLogger
      */
     public function logResponseError(string $connectionCode, array $webhookEvents, string $url, int $statusCode, array $headers): void
     {
-        $this->addLog([
+        $this->repository->persist([
             'timestamp' => $this->clock->now()->getTimestamp(),
             'level' => EventsApiDebugLogLevels::ERROR,
             'message' => 'The endpoint returned an error.',
@@ -101,24 +101,6 @@ class EventsApiDebugLogger implements EventsApiDebugResponseErrorLogger
 
         $this->repository->bulkInsert($this->buffer);
         $this->buffer = [];
-    }
-
-    /**
-     * @param array{
-     *  timestamp: int,
-     *  level: string,
-     *  message: string,
-     *  connection_code: ?string,
-     *  context: array
-     * } $log
-     */
-    private function addLog(array $log): void
-    {
-        $this->buffer[] = $log;
-
-        if (count($this->buffer) >= $this->bufferSize) {
-            $this->flushLogs();
-        }
     }
 
     /**
