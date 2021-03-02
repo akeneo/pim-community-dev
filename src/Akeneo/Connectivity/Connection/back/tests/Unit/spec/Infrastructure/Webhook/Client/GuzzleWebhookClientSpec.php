@@ -126,7 +126,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         Assert::assertEquals($signature, $request->getHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE)[0]);
     }
 
-    public function it_should_log_an_error_when_an_error_occurs(SendApiEventRequestLogger $sendApiEventRequestLogger, EventsApiDebugResponseErrorLogger $responseErrorLogger): void
+    public function it_logs_a_failed_events_api_request(SendApiEventRequestLogger $sendApiEventRequestLogger, EventsApiDebugResponseErrorLogger $responseErrorLogger): void
     {
         $mock = new MockHandler([
             new Response(500, ['Content-Length' => 0])
