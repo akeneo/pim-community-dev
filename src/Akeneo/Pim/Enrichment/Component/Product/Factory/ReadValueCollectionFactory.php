@@ -42,8 +42,10 @@ class ReadValueCollectionFactory
 
     public function createMultipleFromStorageFormat(array $rawValueCollections): array
     {
+        $attributes = $this->getAttributesUsedByProducts($rawValueCollections);
+        $rawValueCollections = CleanLineBreaksInTextAttributes::cleanFromRawValuesFormat($rawValueCollections, $attributes);
         $filteredRawValuesCollection = $this->chainedNonExistentValuesFilter->filterAll($rawValueCollections);
-        $valueCollections = $this->createValues($filteredRawValuesCollection);
+        $valueCollections = $this->createValues($filteredRawValuesCollection, $attributes);
 
         return $valueCollections;
     }
@@ -63,11 +65,9 @@ class ReadValueCollectionFactory
         return $attributes;
     }
 
-    private function createValues(array $rawValueCollections): array
+    private function createValues(array $rawValueCollections, array $attributes): array
     {
         $entities = [];
-        $attributes = $this->getAttributesUsedByProducts($rawValueCollections);
-
         foreach ($rawValueCollections as $productIdentifier => $valueCollection) {
             $values = [];
 
