@@ -111,6 +111,7 @@
   "dependencies": {
     "ajv": "^6.10.2",
     "akeneo-design-system": "link:akeneo-design-system",
+    "@types/backbone": "1.4.8",
     "babel-polyfill": "6.26.0",
     "backbone": "0.9.10",
     "css-loader": "^3.3.0",
