@@ -146,7 +146,7 @@ pim_reference_entity:
     delete_all:
       confirm: Oletko varma, että haluat poistaa kaikki ”{{ entityIdentifier }}” tietueet? Jos ne on liitetty tuotteisiin, liitokset poistetaan.
     grid:
-      search: Esti otsikolla, koodilla tai tekstiattribuutilla
+      search: Etsi otsikolla, koodilla tai tekstiattribuutilla
       filter:
         completeness:
           label: Valmis

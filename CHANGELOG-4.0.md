@@ -1,5 +1,40 @@
 # 4.0.x
 
+# 4.0.96 (2021-02-23)
+
+## Bug fixes
+
+- PIM-9688: Remove capitalization from the first letter of the asset code as label
+- PIM-9694: Display error message when the image resolution is too big to generate a thumbnail
+- PIM-9703: Add a white background on optimize jpeg transformation when background is transparent
+- PIM-9696: Associations and categories display according to the ownership rights
+
+# 4.0.95 (2021-02-19)
+
+## Bug fixes
+
+- PIM-9680: Fix filtering exports with reference entity attributes
+- PIM-9695: Backport of PIM-9503, ignore permissions when executing rules in a job step
+- PIM-9691: Fix filtering exports with assets collection attributes
+
+# 4.0.94 (2021-02-17)
+
+# 4.0.93 (2021-02-12)
+
+- PIM-9674: Fix Flash message missing when editing and saving an asset attribute at the family level
+
+# 4.0.92 (2021-02-11)
+
+## Improvements
+
+- PIM-9666: improve asset transformation computing process
+
+# 4.0.91 (2021-02-09)
+
+## Bug fixes
+
+- PIM-9663: Fix PDF product renderer disregarding permissions on attribute groups (backport of PIM-9649)
+
 # 4.0.90 (2021-02-02)
 
 ## Bug fixes

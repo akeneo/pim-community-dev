@@ -10,6 +10,7 @@ import AttributeIdentifier, {attributeidentifiersAreEqual} from 'akeneoassetmana
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
+  notifyAttributeWellSaved,
   notifyAttributeSaveFailed,
   notifyAttributeSaveValidationError,
 } from 'akeneoassetmanager/application/action/attribute/notify';
@@ -62,6 +63,8 @@ export const saveAttribute = (dismiss: boolean = true) => async (
     dispatch(attributeEditionCancel());
   }
   await dispatch(updateAttributeList());
+
+  dispatch(notifyAttributeWellSaved());
 
   return;
 };
