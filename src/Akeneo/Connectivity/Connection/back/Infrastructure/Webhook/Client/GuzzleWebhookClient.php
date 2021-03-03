@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSendApiEventRequestLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugResponseErrorLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
@@ -25,6 +26,7 @@ class GuzzleWebhookClient implements WebhookClient
     private ClientInterface $client;
     private EncoderInterface $encoder;
     private SendApiEventRequestLogger $sendApiEventRequestLogger;
+    private EventsApiDebugResponseErrorLogger $responseErrorLogger;
 
     /** @var array{concurrency: ?int, timeout: ?float} */
     private $config;
@@ -36,11 +38,13 @@ class GuzzleWebhookClient implements WebhookClient
         ClientInterface $client,
         EncoderInterface $encoder,
         SendApiEventRequestLogger $sendApiEventRequestLogger,
+        EventsApiDebugResponseErrorLogger $responseErrorLogger,
         array $config
     ) {
         $this->client = $client;
         $this->encoder = $encoder;
         $this->sendApiEventRequestLogger = $sendApiEventRequestLogger;
+        $this->responseErrorLogger = $responseErrorLogger;
         $this->config = $config;
     }
 
@@ -111,6 +115,16 @@ class GuzzleWebhookClient implements WebhookClient
                         $webhookRequestLog->isSuccess(),
                         $webhookRequestLog->getResponse()
                     );
+
+                    if ($reason->hasResponse()) {
+                        $this->responseErrorLogger->logEventsApiRequestFailed(
+                            $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
+                            $webhookRequestLog->getWebhookRequest()->apiEvents(),
+                            strval($reason->getRequest()->getUri()),
+                            $reason->getResponse()->getStatusCode(),
+                            $reason->getRequest()->getHeaders(),
+                        );
+                    }
                 },
             ]
         );

@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Domain\Clock;
 use Akeneo\Connectivity\Connection\Domain\Webhook\EventNormalizer\EventNormalizer;
 use Akeneo\Connectivity\Connection\Domain\Webhook\EventNormalizer\EventNormalizerInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 
@@ -15,7 +16,7 @@ use Akeneo\Platform\Component\EventQueue\EventInterface;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EventsApiDebugLogger implements EventSubscriptionSkippedOwnEventLogger, LimitOfEventsApiRequestsReachedLogger
+class EventsApiDebugLogger implements EventSubscriptionSkippedOwnEventLogger, LimitOfEventsApiRequestsReachedLogger, EventsApiDebugResponseErrorLogger
 {
     private Clock $clock;
 
@@ -63,6 +64,31 @@ class EventsApiDebugLogger implements EventSubscriptionSkippedOwnEventLogger, Li
             'message' => 'The maximum number of events sent per hour has been reached.',
             'connection_code' => null,
             'context' => [],
+        ]);
+    }
+
+    /**
+     * @param string $connectionCode
+     * @param array<WebhookEvent> $webhookEvents
+     * @param string $url
+     * @param int $statusCode
+     * @param array<array<string>> $headers
+     */
+    public function logEventsApiRequestFailed(string $connectionCode, array $webhookEvents, string $url, int $statusCode, array $headers): void
+    {
+        $this->repository->persist([
+            'timestamp' => $this->clock->now()->getTimestamp(),
+            'level' => EventsApiDebugLogLevels::ERROR,
+            'message' => 'The endpoint returned an error.',
+            'connection_code' => $connectionCode,
+            'context' => [
+                'event_subscription_url' => $url,
+                'status_code' => $statusCode,
+                'headers' => $headers,
+                'events' => array_map(function ($webhookEvent) {
+                    $this->normalizeEvent($webhookEvent->getPimEvent());
+                }, $webhookEvents),
+            ]
         ]);
     }
 

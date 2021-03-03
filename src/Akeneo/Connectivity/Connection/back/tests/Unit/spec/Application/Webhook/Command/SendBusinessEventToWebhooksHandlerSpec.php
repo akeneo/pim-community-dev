@@ -118,6 +118,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                         $author,
                         'staging.akeneo.com',
                         ['data'],
+                        $this->createEvent($author, ['data'])
                     ),
                 ]
             );
@@ -213,6 +214,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                         $erpAuthor,
                         'staging.akeneo.com',
                         ['data'],
+                        $this->createEvent($erpAuthor, ['data'])
                     ),
                 ]
             );
@@ -385,6 +387,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                         $author,
                         'staging.akeneo.com',
                         ['data'],
+                        $this->createEvent($author, ['data'])
                     ),
                 ]
             );

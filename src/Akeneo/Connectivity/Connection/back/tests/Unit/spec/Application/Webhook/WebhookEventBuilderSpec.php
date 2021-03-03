@@ -70,6 +70,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                     $author,
                     'staging.akeneo.com',
                     ['data'],
+                    $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb')
                 ),
             ]
         );
