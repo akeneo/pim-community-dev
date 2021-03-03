@@ -39,6 +39,7 @@ class ConvertToJPGPostProcessor implements PostProcessorInterface
 
         $image->setImageCompressionQuality($options['quality']);
         $isSuccess = $image->setImageFormat('jpeg');
+        $image = $image->flattenImages();
 
         return $isSuccess
             ? new Binary($image->__toString(), static::MIME_TYPE, 'jpg')

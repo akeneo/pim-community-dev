@@ -19,6 +19,7 @@ use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use PhpSpec\ObjectBehavior;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ProductPdfRendererSpec extends ObjectBehavior
 {
@@ -34,7 +35,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         FilterProductValuesHelper $filterHelper,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $attributeOptionRepository
+        IdentifiableObjectRepositoryInterface $attributeOptionRepository,
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->beConstructedWith(
             $templating,
@@ -48,7 +50,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
             $localeRepository,
             self::TEMPLATE_NAME,
             $attributeOptionRepository,
-            null
+            null,
+            $authorizationChecker
         );
     }
 
@@ -61,7 +64,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         AttributeInterface $color,
         ValueInterface $blue,
         FamilyInterface $family,
-        $attributeRepository
+        $attributeRepository,
+        $authorizationChecker
     ) {
         $filterHelper->filter([$blue], 'en_US')->willReturn([$blue]);
 
@@ -80,6 +84,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $color->getType()->willReturn('pim_catalog_text');
         $color->isScopable()->willReturn(false);
         $color->isLocalizable()->willReturn(false);
+        $authorizationChecker->isGranted('VIEW_ATTRIBUTES', $design)->willReturn(true);
 
         $design->getLabel()->willReturn('Design');
 
@@ -115,7 +120,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         ValueInterface $productValue,
         FileInfoInterface $fileInfo,
         FamilyInterface $family,
-        $attributeRepository
+        $attributeRepository,
+        $authorizationChecker
     ) {
         $mainImage->isScopable()->willReturn(true);
         $mainImage->isLocalizable()->willReturn(true);
@@ -136,10 +142,11 @@ class ProductPdfRendererSpec extends ObjectBehavior
 
         $mainImage->getGroup()->willReturn($media);
         $mainImage->getCode()->willReturn('main_image');
-        $mainImage->getType()->willReturn('pim_catalog_image');
+        $authorizationChecker->isGranted('VIEW_ATTRIBUTES', $media)->willReturn(true);
 
         $mainImage->getGroup()->willReturn($media);
         $media->getLabel()->willReturn('Media');
+        $mainImage->getType()->willReturn('pim_catalog_image');
 
         $productValue->getData()->willReturn($fileInfo);
         $fileInfo->getKey()->willReturn('fookey');
@@ -163,6 +170,66 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $this->render(
             $blender,
             'pdf',
+            ['locale' => 'en_US', 'scope' => 'ecommerce', 'renderingDate' => $renderingDate]
+        );
+    }
+
+    function it_does_not_render_inherited_attributes_if_no_rights_given(
+        $filterHelper,
+        $templating,
+        ProductInterface $blender,
+        WriteValueCollection $blenderValues,
+        AttributeGroupInterface $design,
+        AttributeGroupInterface $marketing,
+        AttributeInterface $color,
+        AttributeInterface $name,
+        ValueInterface $blue,
+        FamilyInterface $family,
+        $attributeRepository,
+        $authorizationChecker
+    ) {
+        $filterHelper->filter([$blue], 'en_US')->willReturn([$blue]);
+
+        $blender->getValues()->willReturn($blenderValues);
+        $blender->getUsedAttributeCodes()->willReturn(['color']);
+        $blenderValues->getAttributeCodes()->willReturn(['color']);
+        $blenderValues->toArray()->willReturn([$blue]);
+        $blender->getFamily()->willReturn($family);
+        $family->getAttributeCodes()->willReturn(['color', 'name']);
+
+        $blue->getAttributeCode()->willReturn('color');
+        $attributeRepository->findOneByIdentifier('color')->willReturn($color);
+
+        $color->getCode()->willReturn('color');
+        $color->getGroup()->willReturn($design);
+        $color->getType()->willReturn('pim_catalog_text');
+        $color->isScopable()->willReturn(false);
+        $color->isLocalizable()->willReturn(false);
+        $authorizationChecker->isGranted('VIEW_ATTRIBUTES', $design)->willReturn(true);
+
+        $attributeRepository->findOneByIdentifier('name')->willReturn($name);
+        $name->getGroup()->willReturn($marketing);
+        $authorizationChecker->isGranted('VIEW_ATTRIBUTES', $marketing)->willReturn(false);
+
+        $design->getLabel()->willReturn('Design');
+
+        $renderingDate = new \DateTime();
+
+        $templating->render(self::TEMPLATE_NAME, [
+            'product' => $blender,
+            'locale' => 'en_US',
+            'scope' => 'ecommerce',
+            'groupedAttributes' => ['Design' => ['color' => $color]],
+            'imagePaths' => [],
+            'customFont' => null,
+            'optionLabels' => [],
+            'filter' => 'pdf_thumbnail',
+            'renderingDate' => $renderingDate,
+        ])->shouldBeCalled();
+
+        $this->render(
+            $blender,
+            'plain',
             ['locale' => 'en_US', 'scope' => 'ecommerce', 'renderingDate' => $renderingDate]
         );
     }
