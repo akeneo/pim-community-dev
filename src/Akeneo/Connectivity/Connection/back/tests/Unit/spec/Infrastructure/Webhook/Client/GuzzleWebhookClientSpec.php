@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugWebhookClientLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
-use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
@@ -17,11 +16,9 @@ use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\Signature;
 use Akeneo\Platform\Component\EventQueue\Event;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use GuzzleHttp\Client;
-use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -33,7 +30,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
  */
 class GuzzleWebhookClientSpec extends ObjectBehavior
 {
-    public function let(SendApiEventRequestLogger $sendApiEventRequestLogger, EventsApiDebugWebhookClientLogger $responseErrorLogger): void
+    public function let(SendApiEventRequestLogger $sendApiEventRequestLogger, EventsApiRequestLogger $responseErrorLogger): void
     {
         $this->beConstructedWith(
             new Client(),
@@ -49,7 +46,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(GuzzleWebhookClient::class);
     }
 
-    public function it_sends_webhook_requests_in_bulk(SendApiEventRequestLogger $sendApiEventRequestLogger, EventsApiDebugWebhookClientLogger $responseErrorLogger): void
+    public function it_sends_webhook_requests_in_bulk(SendApiEventRequestLogger $sendApiEventRequestLogger, EventsApiRequestLogger $responseErrorLogger): void
     {
         $container = [];
         $history = Middleware::history($container);
@@ -128,7 +125,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
     public function it_does_not_send_webhook_request_because_of_timeout(
         SendApiEventRequestLogger $sendApiEventRequestLogger,
-        EventsApiDebugWebhookClientLogger $debugLogger)
+        EventsApiRequestLogger $debugLogger)
     : void {
 
         $container = [];
@@ -163,7 +160,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
         $this->bulkSend([$request]);
 
-        $debugLogger->logTimeoutLimit(
+        $debugLogger->logEventsApiRequestTimedOut(
             'ecommerce',
             $request->apiEvents(),
             'http://localhost/webhook',

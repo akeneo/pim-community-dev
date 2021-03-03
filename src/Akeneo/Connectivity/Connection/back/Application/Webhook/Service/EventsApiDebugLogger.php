@@ -16,7 +16,7 @@ use Akeneo\Platform\Component\EventQueue\EventInterface;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EventsApiDebugLogger implements EventsApiDebugWebhookClientLogger
+class EventsApiDebugLogger implements EventsApiRequestLogger
 {
     private Clock $clock;
     private EventsApiDebugRepository $repository;
@@ -90,7 +90,7 @@ class EventsApiDebugLogger implements EventsApiDebugWebhookClientLogger
         ]);
     }
 
-    public function logTimeoutLimit(
+    public function logEventsApiRequestTimedOut(
         string $connectionCode,
         array $events,
         string $url,

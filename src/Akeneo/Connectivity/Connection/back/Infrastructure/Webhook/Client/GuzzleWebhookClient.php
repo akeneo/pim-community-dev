@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSendApiEventRequestLog;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugWebhookClientLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
@@ -26,7 +26,7 @@ class GuzzleWebhookClient implements WebhookClient
     private ClientInterface $client;
     private EncoderInterface $encoder;
     private SendApiEventRequestLogger $sendApiEventRequestLogger;
-    private EventsApiDebugWebhookClientLogger $debugLogger;
+    private EventsApiRequestLogger $debugLogger;
 
     /** @var array{concurrency: ?int, timeout: ?float} */
     private $config;
@@ -38,7 +38,7 @@ class GuzzleWebhookClient implements WebhookClient
         ClientInterface $client,
         EncoderInterface $encoder,
         SendApiEventRequestLogger $sendApiEventRequestLogger,
-        EventsApiDebugWebhookClientLogger $debugLogger,
+        EventsApiRequestLogger $debugLogger,
         array $config
     ) {
         $this->client = $client;
@@ -125,7 +125,7 @@ class GuzzleWebhookClient implements WebhookClient
                             $reason->getRequest()->getHeaders(),
                         );
                     } else {
-                        $this->debugLogger->logTimeoutLimit(
+                        $this->debugLogger->logEventsApiRequestTimedOut(
                             $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
                             $webhookRequestLog->getWebhookRequest()->apiEvents(),
                             strval($reason->getRequest()->getUri()),
