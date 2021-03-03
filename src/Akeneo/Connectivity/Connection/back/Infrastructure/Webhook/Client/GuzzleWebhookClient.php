@@ -27,6 +27,7 @@ class GuzzleWebhookClient implements WebhookClient
     private EncoderInterface $encoder;
     private SendApiEventRequestLogger $sendApiEventRequestLogger;
     private EventsApiRequestLogger $debugLogger;
+    private EventsApiDebugResponseErrorLogger $responseErrorLogger;
 
     /** @var array{concurrency: ?int, timeout: ?float} */
     private $config;
