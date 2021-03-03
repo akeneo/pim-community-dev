@@ -1,15 +1,15 @@
 import React from 'react';
-import { Field, TextareaInput } from 'akeneo-design-system';
+import { Field, TextareaInput, LoaderIcon } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import { LocaleCode, LocaleSelector, Locale } from '@akeneo-pim-community/shared';
 import {Descriptions} from '../../models';
 import styled from "styled-components";
-import { LoaderIcon } from "../../../../../../../../../../../akeneo-design-system/src";
 const FetcherRegistry = require('pim/fetcher-registry');
 
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
 `
 
 type AttributeDescriptionsProps = {

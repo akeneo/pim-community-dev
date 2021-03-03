@@ -6,7 +6,8 @@ import {
   Locale as LocaleWithFlag,
   AkeneoThemedProps,
   pimTheme,
-  getColor
+  getColor,
+  SwitcherButton
 } from 'akeneo-design-system';
 import styled, {css} from "styled-components";
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
@@ -17,10 +18,7 @@ const DropdownContainer = styled(Dropdown)`
   color: ${getColor('grey', 120)};
 `
 
-const HighlightLocaleWithFlag = styled(LocaleWithFlag)<{ highlighted?: boolean, selected?: boolean } & AkeneoThemedProps>`
-  ${({highlighted}) => highlighted && css`
-    color: ${getColor('purple100')};
-  `}
+const HighlightLocaleWithFlag = styled(LocaleWithFlag)<{ selected?: boolean } & AkeneoThemedProps>`
   ${({selected}) => selected && css`
     color: ${getColor('purple100')};
     font-style: italic;
@@ -31,14 +29,6 @@ const HighlightLocaleWithFlag = styled(LocaleWithFlag)<{ highlighted?: boolean, 
 const LocaleDropdownItem = styled(Dropdown.Item)`
   justify-content: space-between;
 `
-
-const LocaleButton = styled.button`
-  background: none;
-  border: 0;
-  line-height: 26px;
-  color: ${getColor('grey', 120)};
-  cursor: pointer;
-`;
 
 type LocaleSelectorProps = {
   value: LocaleCode;
@@ -58,13 +48,12 @@ const LocaleSelector = ({
   const selectedLocale: Locale = values.find((locale) => locale.code === value) || values[0];
 
   return <DropdownContainer>
-    {translate('pim_enrich.entity.locale.plural_label')}:
-    <LocaleButton onClick={(e) => {
-      e.stopPropagation();
-      open();
-    }}>
-      <HighlightLocaleWithFlag code={selectedLocale.code} languageLabel={selectedLocale.label} highlighted={true}/>
-    </LocaleButton>
+    <SwitcherButton
+      label={translate('pim_enrich.entity.locale.plural_label')}
+      onClick={open}
+    >
+      <HighlightLocaleWithFlag code={selectedLocale.code} languageLabel={selectedLocale.label}/>
+    </SwitcherButton>
     {isOpen &&
     <Dropdown.Overlay verticalPosition="down" onClose={close}>
       <Dropdown.Header>
