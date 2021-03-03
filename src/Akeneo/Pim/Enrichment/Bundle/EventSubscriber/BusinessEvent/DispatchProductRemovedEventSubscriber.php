@@ -88,7 +88,7 @@ final class DispatchProductRemovedEventSubscriber implements EventSubscriberInte
 
         try {
             $this->messageBus->dispatch(new BulkEvent($this->events));
-            $this->loggerBusinessEvent->debug(
+            $this->loggerBusinessEvent->info(
                 json_encode(
                     [
                         'type' => 'business_event.dispatch',
