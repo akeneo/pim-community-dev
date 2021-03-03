@@ -4,6 +4,7 @@ import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import { LocaleCode, LocaleSelector, Locale } from '@akeneo-pim-community/shared';
 import {Descriptions} from '../../models';
 import styled from "styled-components";
+import { LoaderIcon } from "../../../../../../../../../../../akeneo-design-system/src";
 const FetcherRegistry = require('pim/fetcher-registry');
 
 const Header = styled.div`
@@ -30,7 +31,7 @@ const AttributeDescriptions = ({defaultValue, onChange}: AttributeDescriptionsPr
   }, []);
 
   if (!locales) {
-    return <>LCOGING</>;
+    return <LoaderIcon/>;
   }
 
   const handleDescriptionsChange = (description: string) => {
