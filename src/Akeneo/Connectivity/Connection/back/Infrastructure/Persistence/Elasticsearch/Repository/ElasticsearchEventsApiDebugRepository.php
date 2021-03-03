@@ -15,17 +15,35 @@ final class ElasticsearchEventsApiDebugRepository implements EventsApiDebugRepos
 {
     private Client $client;
 
+    /**
+     * @var array<array{
+     *  timestamp: int,
+     *  level: string,
+     *  message: string,
+     *  connection_code: ?string,
+     *  context: array
+     * }>
+     */
+    private array $buffer;
+
     public function __construct(Client $client)
     {
         $this->client = $client;
+        $this->buffer = [];
     }
 
-    public function bulkInsert(array $documents): void
+    public function persist(array $log): void
     {
-        if (0 === count($documents)) {
+        $this->buffer[] = $log;
+    }
+
+    public function flush(): void
+    {
+        if (0 === count($this->buffer)) {
             return;
         }
 
-        $this->client->bulkIndexes($documents);
+        $this->client->bulkIndexes($this->buffer);
+        $this->buffer = [];
     }
 }

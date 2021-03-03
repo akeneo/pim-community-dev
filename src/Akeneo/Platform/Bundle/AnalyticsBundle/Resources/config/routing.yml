@@ -4,7 +4,10 @@ pim_analytics_data_collect:
 
 pim_analytics_system_info_index:
     path: /system_info
-    defaults: { _controller: 'pim_analytics.controller.system_info:indexAction', _format: html }
+
+pim_analytics_system_info_rest_index:
+    path: /system_info/rest
+    defaults: { _controller: 'pim_analytics.controller.system_info:indexAction', _format: json }
 
 pim_analytics_system_info_download:
     path: /system_info/download

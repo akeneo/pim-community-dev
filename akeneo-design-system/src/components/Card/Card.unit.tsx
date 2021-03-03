@@ -1,7 +1,8 @@
 import React from 'react';
-import {fireEvent, render, screen} from 'storybook/test-util';
+import {render, screen} from 'storybook/test-util';
+import userEvent from '@testing-library/user-event';
 import {Card, CardGrid} from './Card';
-import {Badge} from '../../components';
+import {Badge, Link} from '../../components';
 
 test('it renders its children properly', () => {
   render(
@@ -24,10 +25,26 @@ test('it calls onSelect handler when clicked on', () => {
     </Card>
   );
 
-  fireEvent.click(screen.getByText('Card text'));
+  userEvent.click(screen.getByText('Card text'));
 
   expect(onSelect).toBeCalledWith(true);
   expect(onSelect).toBeCalledTimes(1);
+});
+
+test('it does not call onSelect or onClick handlers when disabled', () => {
+  const onSelect = jest.fn();
+  const onClick = jest.fn();
+
+  render(
+    <Card src="some.jpg" disabled={true} onClick={onClick} onSelect={onSelect}>
+      Card text
+    </Card>
+  );
+
+  userEvent.click(screen.getByText('Card text'));
+
+  expect(onSelect).not.toBeCalled();
+  expect(onClick).not.toBeCalled();
 });
 
 test('it calls onSelect handler only once when clicking on the Checkbox', () => {
@@ -38,9 +55,9 @@ test('it calls onSelect handler only once when clicking on the Checkbox', () => 
     </Card>
   );
 
-  fireEvent.click(screen.getByRole('checkbox'));
+  userEvent.click(screen.getByRole('checkbox'));
 
-  expect(onSelect).toBeCalledWith(true);
+  expect(onSelect).toBeCalledWith(true, expect.anything());
   expect(onSelect).toBeCalledTimes(1);
 });
 
@@ -53,8 +70,8 @@ test('it does not call onSelect handler if onClick is defined when clicking on t
     </Card>
   );
 
-  fireEvent.click(screen.getByText('Card text'));
-  fireEvent.click(screen.getByRole('img'));
+  userEvent.click(screen.getByText('Card text'));
+  userEvent.click(screen.getByRole('img'));
 
   expect(onSelect).not.toBeCalled();
   expect(onClick).toBeCalledTimes(2);
@@ -69,10 +86,24 @@ test('it calls onSelect handler if onClick is defined but checkbox is clicked', 
     </Card>
   );
 
-  fireEvent.click(screen.getByRole('checkbox'));
+  userEvent.click(screen.getByRole('checkbox'));
 
   expect(onClick).not.toBeCalled();
   expect(onSelect).toBeCalledTimes(1);
+});
+
+test('it calls its child Link handler when clicking on the image', () => {
+  const onClick = jest.fn();
+
+  render(
+    <Card src="some.jpg">
+      <Link onClick={onClick}>Card link</Link>
+    </Card>
+  );
+
+  userEvent.click(screen.getByRole('img'));
+
+  expect(onClick).toBeCalledTimes(1);
 });
 
 test('it does not display a Checkbox if no handler is provided', () => {
@@ -108,7 +139,7 @@ test('it displays a stack style when the card is marked as stacked', () => {
   expect(screen.getByTestId('stack')).toBeInTheDocument();
 });
 
-describe('Card supports ...rest props', () => {
+test('Card supports ...rest props', () => {
   render(
     <Card src="some.jpg" data-testid="my_value">
       My card

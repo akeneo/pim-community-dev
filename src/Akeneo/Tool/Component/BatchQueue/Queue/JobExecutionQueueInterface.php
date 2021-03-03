@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\BatchQueue\Queue;
 
+use Akeneo\Tool\Component\BatchQueue\Queue\JobQueueConsumerConfiguration;
+
 /**
  * This class aims to publish and consume job execution messages into a queue.
  *
@@ -22,13 +24,11 @@ interface JobExecutionQueueInterface
 
     /**
      * Gets the last job execution message from the queue, that is not consumed yet.
-     * This method loops until there is a message to consume into the queue.
      *
      * @param string $consumer name of the consumer
-     * @param string[] $whitelistedJobInstanceCodes codes of the whitelisted job instances
-     * @param string[] $blacklistedJobInstanceCodes codes of the blacklisted job instances
+     * @param JobQueueConsumerConfiguration consumer configuration
      *
-     * @return JobExecutionMessage
+     * @return JobExecutionMessage|null
      */
-    public function consume(string $consumer, array $whitelistedJobInstanceCodes = [], array $blacklistedJobInstanceCodes = []): JobExecutionMessage;
+    public function consume(string $consumer, JobQueueConsumerConfiguration $configuration): ?JobExecutionMessage;
 }

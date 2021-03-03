@@ -1,7 +1,5 @@
 import React, {useCallback} from 'react';
 import styled from 'styled-components';
-import {SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
-import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
 import {
   setUnitSymbol,
@@ -16,8 +14,8 @@ import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
 import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
 import {useTranslate, useUserContext, useSecurity} from '@akeneo-pim-community/legacy-bridge';
-import {filterErrors, ValidationError, useToggleState, TextField} from '@akeneo-pim-community/shared';
-import {Button} from 'akeneo-design-system';
+import {filterErrors, ValidationError, useToggleState, TextField, Section} from '@akeneo-pim-community/shared';
+import {Button, getColor, SectionTitle} from 'akeneo-design-system';
 
 const Container = styled.div`
   margin-left: 40px;
@@ -26,8 +24,8 @@ const Container = styled.div`
 `;
 
 const Footer = styled.div`
-  background: ${props => props.theme.color.white};
-  border-top: 1px solid ${props => props.theme.color.grey80};
+  background: ${getColor('white')};
+  border-top: 1px solid ${getColor('grey', 80)};
   padding: 10px 0 40px;
   position: sticky;
   bottom: 0;
@@ -75,10 +73,12 @@ const UnitDetails = ({
         onCancel={closeConfirmDeleteUnitModal}
       />
       <Container>
-        <SubsectionHeader top={0}>
-          {translate('measurements.unit.title', {unitLabel: getUnitLabel(selectedUnit, locale)})}
-        </SubsectionHeader>
-        <FormGroup>
+        <Section>
+          <SectionTitle sticky={0}>
+            <SectionTitle.Title>
+              {translate('measurements.unit.title', {unitLabel: getUnitLabel(selectedUnit, locale)})}
+            </SectionTitle.Title>
+          </SectionTitle>
           <TextField
             label={translate('pim_common.code')}
             value={selectedUnit.code}
@@ -105,9 +105,9 @@ const UnitDetails = ({
             }
             errors={filterErrors(errors, '[convert_from_standard]')}
           />
-        </FormGroup>
-        <SubsectionHeader top={0}>{translate('measurements.label_translations')}</SubsectionHeader>
-        <FormGroup>
+          <SectionTitle sticky={0}>
+            <SectionTitle.Title>{translate('measurements.label_translations')}</SectionTitle.Title>
+          </SectionTitle>
           {null !== locales &&
             locales.map(locale => (
               <TextField
@@ -122,7 +122,7 @@ const UnitDetails = ({
                 errors={filterErrors(errors, `[labels][${locale.code}]`)}
               />
             ))}
-        </FormGroup>
+        </Section>
         {isGranted('akeneo_measurements_measurement_unit_delete') &&
           !measurementFamily.is_locked &&
           selectedUnitCode !== measurementFamily.standard_unit_code && (
