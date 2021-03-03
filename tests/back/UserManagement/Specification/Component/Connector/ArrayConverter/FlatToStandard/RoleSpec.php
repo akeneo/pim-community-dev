@@ -32,14 +32,16 @@ class RoleSpec extends ObjectBehavior
         $fieldsRequirementChecker->checkFieldsPresence($flat, ['role', 'label'])->shouldBeCalled();
         $fieldsRequirementChecker->checkFieldsFilling($flat, ['role', 'label'])->shouldBeCalled();
 
-        $this->convert($flat)->shouldReturn([
-            'role' => 'ROLE_ADMINISTRATOR',
-            'label' => 'Administrators',
-            'permissions' => [
-                'action:pim_enrich_product_create',
-                'action:pim_enrich_product_index',
-            ],
-        ]);
+        $this->convert($flat)->shouldReturn(
+            [
+                'role' => 'ROLE_ADMINISTRATOR',
+                'label' => 'Administrators',
+                'permissions' => [
+                    'action:pim_enrich_product_create',
+                    'action:pim_enrich_product_index',
+                ],
+            ]
+        );
     }
 
     function it_can_convert_a_role_without_permission(FieldsRequirementChecker $fieldsRequirementChecker)
@@ -49,9 +51,27 @@ class RoleSpec extends ObjectBehavior
         $fieldsRequirementChecker->checkFieldsPresence($flat, ['role', 'label'])->shouldBeCalled();
         $fieldsRequirementChecker->checkFieldsFilling($flat, ['role', 'label'])->shouldBeCalled();
 
-        $this->convert($flat)->shouldReturn([
-            'role' => 'ROLE_ADMINISTRATOR',
-            'label' => 'Administrators',
-        ]);
+        $this->convert($flat)->shouldReturn(
+            [
+                'role' => 'ROLE_ADMINISTRATOR',
+                'label' => 'Administrators',
+            ]
+        );
+    }
+
+    function it_returns_an_empty_permissions_arrayif_permissions_are_empty(
+        FieldsRequirementChecker $fieldsRequirementChecker
+    ) {
+        $flat = ['role' => 'ROLE_ADMINISTRATOR', 'label' => 'Administrators', 'permissions' => ''];
+        $fieldsRequirementChecker->checkFieldsPresence($flat, ['role', 'label'])->shouldBeCalled();
+        $fieldsRequirementChecker->checkFieldsFilling($flat, ['role', 'label'])->shouldBeCalled();
+
+        $this->convert($flat)->shouldReturn(
+            [
+                'role' => 'ROLE_ADMINISTRATOR',
+                'label' => 'Administrators',
+                'permissions' => [],
+            ]
+        );
     }
 }

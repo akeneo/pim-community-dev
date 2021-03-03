@@ -3,18 +3,17 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\UserManagement\Component\Connector\Writer\Database;
 
-use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\UserManagement\Component\Connector\RoleWithPermissions;
 use Akeneo\UserManagement\Component\Connector\Writer\Database\RoleWithPermissionsWriter;
 use Akeneo\UserManagement\Component\Model\Role;
-use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
-use Oro\Bundle\SecurityBundle\Metadata\ActionMetadata;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 
 class RoleWithPermissionsWriterSpec extends ObjectBehavior
@@ -22,18 +21,8 @@ class RoleWithPermissionsWriterSpec extends ObjectBehavior
     function let(
         ItemWriterInterface $writer,
         AclManager $aclManager,
-        StepExecution $stepExecution,
-        AclExtensionInterface $extension
+        StepExecution $stepExecution
     ) {
-        $aclManager->getAllExtensions()->willReturn([$extension]);
-        $extension->getExtensionKey()->willReturn('action');
-        $extension->getClasses()->willReturn([
-            new ActionMetadata('list_product'),
-            new ActionMetadata('create_product'),
-            new ActionMetadata('delete_product'),
-        ]);
-        $extension->getAllMaskBuilders()->willReturn([]);
-
         $this->beConstructedWith($writer, $aclManager);
         $this->setStepExecution($stepExecution);
     }
@@ -47,48 +36,39 @@ class RoleWithPermissionsWriterSpec extends ObjectBehavior
     {
         $this->shouldImplement(ItemWriterInterface::class);
         $this->shouldImplement(StepExecutionAwareInterface::class);
-        $this->shouldImplement(FlushableInterface::class);
     }
 
-    function it_writes_role_and_updates_permissions(ItemWriterInterface $writer, AclManager $aclManager)
-    {
+    function it_writes_role_and_updates_permissions(
+        ItemWriterInterface $writer,
+        AclManager $aclManager,
+        AclPrivilegeRepository $privilegeRepository
+    ) {
+        $privilege1 = new AclPrivilege();
+        $privilege2 = new AclPrivilege();
+
         $adminRole = new Role('ROLE_ADMIN');
         $userRole = new Role('ROLE_USER');
-        $roleWithPermissions1 = RoleWithPermissions::createFromRoleAndPermissionIds(
+        $roleWithPermissions1 = RoleWithPermissions::createFromRoleAndPrivileges(
             $adminRole,
-            ['action:list_product', 'action:create_product']
+            [$privilege1, $privilege2]
         );
-        $roleWithPermissions2 = RoleWithPermissions::createFromRoleAndPermissionIds(
+        $roleWithPermissions2 = RoleWithPermissions::createFromRoleAndPrivileges(
             $userRole,
-            ['action:list_product', 'action:delete_product']
+            [$privilege2]
         );
 
         $writer->write([$adminRole, $userRole])->shouldBeCalled();
 
-        $createProductOid = new ObjectIdentity('action', 'create_product');
-        $listProductOid = new ObjectIdentity('action', 'list_product');
-        $deleteProductOid = new ObjectIdentity('action', 'delete_product');
-        $aclManager->getRootOid('action')->WillReturn(new ObjectIdentity('id', 'type'));
-
-        $adminSid = new RoleSecurityIdentity($adminRole->getRole());
+        $aclManager->getPrivilegeRepository()->willReturn($privilegeRepository);
+        $adminSid = new RoleSecurityIdentity('ROLE_ADMIN');
         $aclManager->getSid($adminRole)->willReturn($adminSid);
-        $aclManager->setPermission($adminSid, $listProductOid, 1, true)->shouldBeCalled();
-        $aclManager->setPermission($adminSid, $createProductOid, 1, true)->shouldBeCalled();
-        $aclManager->setPermission($adminSid, $deleteProductOid, 0, true)->shouldBeCalled();
-
-        $userSid = new RoleSecurityIdentity($userRole->getRole());
+        $privilegeRepository->savePrivileges($adminSid, new ArrayCollection([$privilege1, $privilege2]))
+                            ->shouldBeCalled();
+        $userSid = new RoleSecurityIdentity('ROLE_USER');
         $aclManager->getSid($userRole)->willReturn($userSid);
-        $aclManager->setPermission($userSid, $listProductOid, 1, true)->shouldBeCalled();
-        $aclManager->setPermission($userSid, $createProductOid, 0, true)->shouldBeCalled();
-        $aclManager->setPermission($userSid, $deleteProductOid, 1, true)->shouldBeCalled();
+        $privilegeRepository->savePrivileges($userSid, new ArrayCollection([$privilege2]))
+                            ->shouldBeCalled();
 
         $this->write([$roleWithPermissions1, $roleWithPermissions2]);
-    }
-
-    function it_flushes_the_permissions(AclManager $aclManager)
-    {
-        $aclManager->flush()->shouldBeCalled();
-
-        $this->flush();
     }
 }

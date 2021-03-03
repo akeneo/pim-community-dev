@@ -51,7 +51,11 @@ final class Role implements ArrayConverterInterface
         foreach ($item as $property => $data) {
             switch ($property) {
                 case 'permissions':
-                    $convertedItem[$property] = \explode(',', $data);
+                    if ('' === $data) {
+                        $convertedItem[$property] = [];
+                    } else {
+                        $convertedItem[$property] = \explode(',', $data);
+                    }
                     break;
                 default:
                     $convertedItem[$property] = (string) $data;

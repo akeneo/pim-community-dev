@@ -5,36 +5,33 @@ namespace Specification\Akeneo\UserManagement\Component\Connector;
 
 use Akeneo\UserManagement\Component\Connector\RoleWithPermissions;
 use Akeneo\UserManagement\Component\Model\Role;
+use Akeneo\UserManagement\Component\Model\RoleInterface;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 use PhpSpec\ObjectBehavior;
 
 class RoleWithPermissionsSpec extends ObjectBehavior
 {
-    function let()
+    function it_is_instantiable(RoleInterface $role)
     {
-        $this->beConstructedThrough('createFromRoleAndPermissionIds', [
-            new Role('ROLE_USER'),
-            ['id1', 'id2'],
-        ]);
-    }
-
-    function it_is_instantiable()
-    {
+        $this->beConstructedThrough('createFromRoleAndPrivileges', [$role, []]);
         $this->shouldBeAnInstanceOf(RoleWithPermissions::class);
     }
 
-    function it_returns_the_role()
+    function it_returns_the_role(RoleInterface $role)
     {
-        $this->role()->getRole()->shouldReturn('ROLE_USER');
+        $this->beConstructedThrough('createFromRoleAndPrivileges', [$role, []]);
+        $this->role()->shouldBe($role);
     }
 
-    function it_returns_alowed_permission_ids()
+    function it_returns_privileges(RoleInterface $role, AclPrivilege $privilege1, AClPrivilege $privilege2)
     {
-        $this->allowedPermissionIds()->shouldReturn(['id1', 'id2']);
+        $this->beConstructedThrough('createFromRoleAndPrivileges', [$role, [$privilege1, $privilege2]]);
+        $this->privileges()->shouldReturn([$privilege1, $privilege2]);
     }
 
     function it_cannot_be_constructed_with_bad_permissions_structure()
     {
-        $this->beConstructedThrough('createFromRoleAndPermissionIds', [
+        $this->beConstructedThrough('createFromRoleAndPrivileges', [
             new Role('ROLE_USER'),
             ['id1', null],
         ]);

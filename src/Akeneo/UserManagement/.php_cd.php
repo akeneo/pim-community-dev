@@ -29,10 +29,10 @@ $rules = [
 
         // TODO: This dependency should be removed, Bundle dependency
         'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager',
-        'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Oro\Bundle\SecurityBundle\Acl\AccessLevel',
-        'Oro\Bundle\SecurityBundle\Annotation\Acl',
-        'Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider',
+        'Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository',
+        'Oro\Bundle\SecurityBundle\Model\AclPrivilege',
+        'Oro\Bundle\SecurityBundle\SecurityFacade',
 
         'Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException',
 

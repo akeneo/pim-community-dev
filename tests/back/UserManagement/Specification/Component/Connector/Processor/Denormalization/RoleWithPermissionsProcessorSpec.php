@@ -4,20 +4,25 @@ declare(strict_types=1);
 namespace Specification\Akeneo\UserManagement\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
-use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Connector\Processor\Denormalization\RoleWithPermissionsProcessor;
 use Akeneo\UserManagement\Component\Connector\RoleWithPermissions;
-use Akeneo\UserManagement\Component\Model\Role;
+use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider;
+use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
+use Oro\Bundle\SecurityBundle\Model\AclPermission;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -26,20 +31,31 @@ class RoleWithPermissionsProcessorSpec extends ObjectBehavior
 {
     function let(
         RoleRepositoryInterface $roleRepository,
+        ObjectUpdaterInterface $roleUpdater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
-        AclAnnotationProvider $aclProvider,
+        AclManager $aclManager,
         StepExecution $stepExecution,
-        ExecutionContext $executionContext
+        ExecutionContext $executionContext,
+        AclPrivilegeRepository $privilegeRepository
     ) {
-        $aclProvider->getAnnotations()->willReturn([
-            new Acl(['type' => 'type1', 'id' => 'privilege1']),
-            new ACl(['type' => 'type2', 'id' => 'privilege2']),
-        ]);
+        $aclManager->getSid(Argument::type(RoleInterface::class))->will(
+            function ($args): RoleSecurityIdentity {
+                return new RoleSecurityIdentity($args[0]->getRole());
+            }
+        );
+        $aclManager->getPrivilegeRepository()->willReturn($privilegeRepository);
+        $privilegeRepository->getPrivileges(Argument::type(RoleSecurityIdentity::class))->willReturn(
+            new ArrayCollection(
+                [
+                    $this->createPrivilege('root:(default)', '(default)', 'action', 5),
+                    $this->createPrivilege('action:privilege1', 'privilege1', 'action', 5),
+                    $this->createPrivilege('action:privilege2', 'privilege2', 'action', 5),
+                ]
+            )
+        );
 
-        $roleRepository->findOneByIdentifier('ROLE_NEW')->willReturn(null);
-        $this->beConstructedWith($roleRepository, $validator, $objectDetacher, $aclProvider);
-        $this->initialize();
+        $this->beConstructedWith($roleRepository, $roleUpdater, $validator, $objectDetacher, $aclManager);
         $stepExecution->getExecutionContext()->willReturn($executionContext);
         $this->setStepExecution($stepExecution);
     }
@@ -48,55 +64,104 @@ class RoleWithPermissionsProcessorSpec extends ObjectBehavior
     {
         $this->shouldBeAnInstanceOf(RoleWithPermissionsProcessor::class);
         $this->shouldImplement(ItemProcessorInterface::class);
-        $this->shouldImplement(InitializableInterface::class);
     }
 
-    function it_processes_a_new_role(ValidatorInterface $validator)
-    {
-        $item = ['role' => 'ROLE_NEW', 'label' => 'the label', 'permissions' => ['type1:privilege1']];
+    function it_processes_a_new_role(
+        ObjectUpdaterInterface $roleUpdater,
+        ValidatorInterface $validator
+    ) {
+        $item = ['role' => 'ROLE_NEW', 'label' => 'the label', 'permissions' => ['action:privilege1']];
 
-        $validator->validate(Argument::type(Role::class))->willReturn(new ConstraintViolationList());
+        $roleUpdater->update(
+            Argument::type(RoleInterface::class),
+            ['role' => 'ROLE_NEW', 'label' => 'the label']
+        )->shouldBeCalled();
+        $validator->validate(Argument::type(RoleInterface::class))->willReturn(new ConstraintViolationList());
 
         $roleWithPermissions = $this->process($item);
         $roleWithPermissions->shouldBeAnInstanceOf(RoleWithPermissions::class);
-        $roleWithPermissions->role()->getRole()->shouldBe('ROLE_NEW');
-        $roleWithPermissions->role()->getLabel()->shouldBe('the label');
-        $roleWithPermissions->allowedPermissionIds()->shouldBe(['type1:privilege1']);
+        $roleWithPermissions->privileges()->shouldBeLike(
+            [
+                $this->createPrivilege('root:(default)', '(default)', 'action', 5),
+                $this->createPrivilege('action:privilege1', 'privilege1', 'action', 5),
+                $this->createPrivilege('action:privilege2', 'privilege2', 'action', 0),
+            ]
+        );
     }
 
-    function it_processes_an_existing_role(RoleRepositoryInterface $roleRepository, ValidatorInterface $validator)
-    {
+    function it_processes_an_existing_role(
+        RoleRepositoryInterface $roleRepository,
+        ObjectUpdaterInterface $roleUpdater,
+        ValidatorInterface $validator,
+        RoleInterface $role
+    ) {
         $item = [
             'role' => 'ROLE_USER',
             'label' => 'the new label',
-            'permissions' => ['type1:privilege1', 'type2:privilege2'],
+            'permissions' => [],
         ];
 
-        $role = new Role('ROLE_USER');
-        $role->setLabel('old label');
         $roleRepository->findOneByIdentifier('ROLE_USER')->willReturn($role);
+        $roleUpdater->update($role, ['role' => 'ROLE_USER','label' => 'the new label'])->shouldBeCalled();
         $validator->validate($role)->willReturn(new ConstraintViolationList());
 
         $roleWithPermissions = $this->process($item);
         $roleWithPermissions->shouldBeAnInstanceOf(RoleWithPermissions::class);
-        $roleWithPermissions->role()->getRole()->shouldBe('ROLE_USER');
-        $roleWithPermissions->role()->getLabel()->shouldBe('the new label');
-        $roleWithPermissions->allowedPermissionIds()->shouldBe(['type1:privilege1', 'type2:privilege2']);
+        $roleWithPermissions->role()->shouldBe($role);
+        $roleWithPermissions->privileges()->shouldBeLike(
+            [
+                $this->createPrivilege('root:(default)', '(default)', 'action', 5),
+                $this->createPrivilege('action:privilege1', 'privilege1', 'action', 0),
+                $this->createPrivilege('action:privilege2', 'privilege2', 'action', 0),
+            ]
+        );
+    }
+
+    function it_does_not_update_permissions_if_they_are_not_specified(
+        RoleRepositoryInterface $roleRepository,
+        ObjectUpdaterInterface $roleUpdater,
+        ValidatorInterface $validator,
+        RoleInterface $role
+    ) {
+        $item = [
+            'role' => 'ROLE_USER',
+            'label' => 'the new label',
+        ];
+
+        $roleRepository->findOneByIdentifier('ROLE_USER')->willReturn($role);
+        $roleUpdater->update($role, ['role' => 'ROLE_USER', 'label' => 'the new label'])->shouldBeCalled();
+        $validator->validate($role)->willReturn(new ConstraintViolationList());
+
+        $roleWithPermissions = $this->process($item);
+        $roleWithPermissions->shouldBeAnInstanceOf(RoleWithPermissions::class);
+        $roleWithPermissions->role()->shouldBe($role);
+        $roleWithPermissions->privileges()->shouldBeLike(
+            [
+                $this->createPrivilege('root:(default)', '(default)', 'action', 5),
+                $this->createPrivilege('action:privilege1', 'privilege1', 'action', 5),
+                $this->createPrivilege('action:privilege2', 'privilege2', 'action', 5),
+            ]
+        );
     }
 
     function it_throws_an_exception_when_validation_fails(
         RoleRepositoryInterface $roleRepository,
+        ObjectUpdaterInterface $roleUpdater,
         ValidatorInterface $validator,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        RoleInterface $role
     ) {
         $item = ['role' => 'ROLE_USER', 'label' => 'the new label'];
 
-        $role = new Role('ROLE_USER');
-        $role->setLabel('old label');
         $roleRepository->findOneByIdentifier('ROLE_USER')->willReturn($role);
-        $validator->validate($role)->willReturn(new ConstraintViolationList([
-            new ConstraintViolation('message', null, [], null, null, null),
-        ]));
+        $roleUpdater->update($role, $item)->shouldBeCalled();
+        $validator->validate($role)->willReturn(
+            new ConstraintViolationList(
+                [
+                    new ConstraintViolation('message', null, [], null, null, null),
+                ]
+            )
+        );
 
         $stepExecution->getSummaryInfo('item_position')->willReturn(44);
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
@@ -104,17 +169,29 @@ class RoleWithPermissionsProcessorSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_a_permission_does_not_exist(
+        ObjectUpdaterInterface $roleUpdater,
         ValidatorInterface $validator,
         StepExecution $stepExecution
     ) {
-        $item = ['role' => 'ROLE_NEW', 'label' => 'My new role', 'permissions' => ['unknown_type:unknown']];
-
-        $role = new Role('ROLE_NEW');
-        $role->setLabel('My new role');
-        $validator->validate($role)->willReturn(new ConstraintViolationList([]));
+        $item = ['role' => 'ROLE_NEW', 'label' => 'My new role', 'permissions' => ['unknown:unknown']];
+        $roleUpdater->update(
+            Argument::type(RoleInterface::class),
+            ['role' => 'ROLE_NEW', 'label' => 'My new role']
+        )->shouldBeCalled();
+        $validator->validate(Argument::type(RoleInterface::class))->willReturn(new ConstraintViolationList([]));
 
         $stepExecution->getSummaryInfo('item_position')->willReturn(42);
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
         $this->shouldThrow(InvalidItemException::class)->during('process', [$item]);
+    }
+
+    private function createPrivilege(string $id, string $name, string $extensionKey, int $accessLevel = 0): AclPrivilege
+    {
+        $privilege = new AclPrivilege();
+        $privilege->setIdentity(new AclPrivilegeIdentity($id, $name));
+        $privilege->setExtensionKey($extensionKey);
+        $privilege->addPermission(new AclPermission('EXECUTE', $accessLevel));
+
+        return $privilege;
     }
 }
