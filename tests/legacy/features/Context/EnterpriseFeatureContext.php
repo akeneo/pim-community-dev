@@ -2,7 +2,6 @@
 
 namespace Context;
 
-use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
@@ -98,11 +97,7 @@ class EnterpriseFeatureContext extends FeatureContext
     }
 
     /**
-     * @param string $attribute
-     *
      * @throws ExpectationException
-     *
-     * @return bool
      *
      * @Then /^I should see that (.*) is a smart attribute with (.*)$/
      */
@@ -113,18 +108,16 @@ class EnterpriseFeatureContext extends FeatureContext
             throw $this->createExpectationException(sprintf('Expecting to see attribute "%s".', $attribute));
         }
 
-        $fieldContainer = $this->getClosest($element, 'AknFieldContainer');
-        $truc = $fieldContainer->find('css', '.from-smart');
-
-        if (null === $truc) {
-            throw new ElementNotFoundException(sprintf('No smart attribute found for %s', $attribute));
-        }
+        $smartElement = $this->spin(function () use ($element) {
+            $fieldContainer = $this->getClosest($element, 'AknFieldContainer');
+            return $fieldContainer->find('css', '.from-smart');
+        }, sprintf('No smart attribute found for %s', $attribute));
 
         $expected = sprintf('This attribute can be updated by a rule: %s', $ruleLabel);
-        if ($truc->getText() !== $expected) {
-            throw new ElementNotFoundException(sprintf(
+        if ($smartElement->getText() !== $expected) {
+            throw $this->createExpectationException(sprintf(
                 'Smart attribute text does not match: found "%s", expected "%s"',
-                $truc->getText(),
+                $smartElement->getText(),
                 $expected
             ));
         }
