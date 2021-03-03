@@ -484,8 +484,8 @@ SQL;
             AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::empty(),
-            Suffix::empty(),
+            Prefix::createEmpty(),
+            Suffix::createEmpty(),
             MediaLinkMediaType::fromString(MediaLinkMediaType::IMAGE)
         );
         $order++;
@@ -607,8 +607,8 @@ SQL;
             AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::empty(),
-            Suffix::empty(),
+            Prefix::createEmpty(),
+            Suffix::createEmpty(),
             MediaLinkMediaType::fromString(MediaLinkMediaType::PDF)
         );
         $order++;
@@ -721,8 +721,8 @@ SQL;
             AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::empty(),
-            Suffix::empty(),
+            Prefix::createEmpty(),
+            Suffix::createEmpty(),
             MediaLinkMediaType::fromString(MediaLinkMediaType::YOUTUBE)
         );
         $this->attributeRepository->create($youtube);

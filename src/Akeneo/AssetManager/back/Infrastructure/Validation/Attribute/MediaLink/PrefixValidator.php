@@ -25,6 +25,14 @@ use Symfony\Component\Validator\Validation;
  */
 class PrefixValidator extends ConstraintValidator
 {
+    /** @var string[] */
+    private array $allowedProtocols;
+
+    public function __construct(array $allowedProtocols)
+    {
+        $this->allowedProtocols = $allowedProtocols;
+    }
+
     public function validate($prefix, Constraint $constraint)
     {
         if (!$constraint instanceof Prefix) {
@@ -41,6 +49,10 @@ class PrefixValidator extends ConstraintValidator
                 ->addViolation();
         }
 
+        if (is_string($prefix)) {
+            $this->validateProtocol($prefix);
+        }
+
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {
                 $this->context->addViolation(
@@ -49,5 +61,29 @@ class PrefixValidator extends ConstraintValidator
                 );
             }
         }
+    }
+
+    private function validateProtocol(string $prefix): void
+    {
+        if ($prefix === '') {
+            return;
+        }
+
+        if (!$this->protocolIsAllowed($prefix)) {
+            $this->context->buildViolation(Prefix::PROTOCOL_NOT_ALLOWED)
+                ->setParameter('%allowed_protocols%', implode(', ', $this->allowedProtocols))
+                ->addViolation();
+        }
+    }
+
+    private function protocolIsAllowed(string $prefix): bool
+    {
+        foreach ($this->allowedProtocols as $allowedProtocol) {
+            if (str_starts_with($prefix, $allowedProtocol)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

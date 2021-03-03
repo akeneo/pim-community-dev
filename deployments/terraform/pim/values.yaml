@@ -91,16 +91,19 @@ pim:
   daemons:
     all-but-linking-assets-to-products:
       enabled: true
-      pimCommand: "akeneo:batch:job-queue-consumer-daemon --blacklisted-job asset_manager_link_assets_to_products --blacklisted-job clean_removed_attribute_job"
+      pimCommand: "akeneo:batch:job-queue-consumer-daemon --run-once --blacklisted-job asset_manager_link_assets_to_products --blacklisted-job clean_removed_attribute_job"
       replicas: 1
+      trapped: true
     default:
       enabled: true
-      pimCommand: "akeneo:batch:job-queue-consumer-daemon"
+      pimCommand: "akeneo:batch:job-queue-consumer-daemon --run-once"
       replicas: 1
+      trapped: true
     webhook-consumer-process:
       enabled: true
       pimCommand: "messenger:consume webhook --time-limit=3600 --memory-limit=384M"
       replicas: 1
+      trapped: false
   replicas: 2
   extraLabels: {}
   secret: null # Generate me with `uuidgen`
@@ -185,14 +188,16 @@ pim:
       enabled: true
       pimCommand: "pim:data-quality-insights:evaluations"
       schedule: "*/30 * * * *"
-    asset-manager-update-mapping:
-      enabled: true
-      pimCommand: "akeneo:asset-manager:index-all-assets-on-temporary-index --no-interaction"
-      schedule: "*/30 * * * *"
     purge-events-api-logs:
       enabled: true
       pimCommand: "akeneo:connectivity-connection:purge-events-api-logs"
       schedule: "5 * * * *"
+      resources:
+        limits:
+          memory: "128Mi"
+        requests:
+          cpu: "100m"
+          memory: "128Mi"
 
 # Onboarder
 onboarder:

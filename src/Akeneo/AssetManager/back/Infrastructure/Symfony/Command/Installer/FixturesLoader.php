@@ -614,7 +614,7 @@ class FixturesLoader
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::fromString('https://www.akeneo.com/wp-content/uploads/'),
-                Suffix::empty(),
+                Suffix::createEmpty(),
                 MediaLinkMediaType::fromString(MediaLinkMediaType::IMAGE)
             );
         }
@@ -637,7 +637,7 @@ class FixturesLoader
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::fromString('https://www.akeneo.com/wp-content/uploads/'),
-                Suffix::empty(),
+                Suffix::createEmpty(),
                 MediaLinkMediaType::fromString(MediaLinkMediaType::PDF)
             );
         }
@@ -660,7 +660,7 @@ class FixturesLoader
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::fromString('https://my-stream.com'),
-                Suffix::empty(),
+                Suffix::createEmpty(),
                 MediaLinkMediaType::fromString(MediaLinkMediaType::OTHER)
             );
         }
@@ -682,8 +682,8 @@ class FixturesLoader
                 AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                Prefix::empty(),
-                Suffix::empty(),
+                Prefix::createEmpty(),
+                Suffix::createEmpty(),
                 MediaLinkMediaType::fromString(MediaLinkMediaType::YOUTUBE)
             );
         }
@@ -705,8 +705,8 @@ class FixturesLoader
                 AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                Prefix::empty(),
-                Suffix::empty(),
+                Prefix::createEmpty(),
+                Suffix::createEmpty(),
                 MediaLinkMediaType::fromString(MediaLinkMediaType::VIMEO)
             );
         }

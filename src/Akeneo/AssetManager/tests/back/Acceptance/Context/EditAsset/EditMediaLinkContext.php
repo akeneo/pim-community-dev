@@ -53,8 +53,8 @@ class EditMediaLinkContext implements Context
     private const ATTRIBUTE_IDENTIFIER = 'website_designer_fingerprint';
     private const ASSET_CODE = 'stark';
     private const FINGERPRINT = 'fingerprint';
-    private const NEW_URL = 'house_2345112';
-    private const OLD_URL = 'garden_5124';
+    private const NEW_URL = 'http://awesomeurl.fr/house_2345112';
+    private const OLD_URL = 'http://awesomeurl.fr/garden_5124';
 
     /** @var AssetFamilyRepositoryInterface */
     private $assetFamilyRepository;
@@ -200,8 +200,8 @@ class EditMediaLinkContext implements Context
             AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::empty(),
-            Suffix::empty(),
+            Prefix::createEmpty(),
+            Suffix::createEmpty(),
             MediaType::fromString('image')
         );
         $this->attributeRepository->create($attribute);
