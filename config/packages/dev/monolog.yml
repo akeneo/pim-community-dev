@@ -11,5 +11,3 @@ monolog:
         console:
             type:     console
             channels: ['!event', '!doctrine', '!event_api', '!business_event']
-        business_event:
-            type: 'null'
