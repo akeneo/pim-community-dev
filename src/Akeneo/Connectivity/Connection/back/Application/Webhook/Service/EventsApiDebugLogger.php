@@ -20,7 +20,6 @@ class EventsApiDebugLogger implements
     EventSubscriptionSkippedOwnEventLogger,
     LimitOfEventsApiRequestsReachedLogger,
     EventsApiRequestLogger,
-    EventPermissionLogger,
     ApiEventBuildErrorLogger
 {
     private Clock $clock;
