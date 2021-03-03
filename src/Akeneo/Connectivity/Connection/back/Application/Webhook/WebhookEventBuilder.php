@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErro
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataBuildErrorLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
@@ -27,7 +26,6 @@ class WebhookEventBuilder
     private iterable $eventDataBuilders;
     private EventDataBuildErrorLogger $eventDataBuildErrorLogger;
     private ApiEventBuildErrorLogger $apiEventBuildErrorLogger;
-    private EventsApiDebugRepository $eventsApiDebugRepository;
 
     /**
      * @param iterable<EventDataBuilderInterface> $eventDataBuilders
@@ -35,13 +33,11 @@ class WebhookEventBuilder
     public function __construct(
         iterable $eventDataBuilders,
         EventDataBuildErrorLogger $eventDataBuildErrorLogger,
-        ApiEventBuildErrorLogger $apiEventBuildErrorLogger,
-        EventsApiDebugRepository $eventsApiDebugRepository
+        ApiEventBuildErrorLogger $apiEventBuildErrorLogger
     ) {
         $this->eventDataBuilders = $eventDataBuilders;
         $this->eventDataBuildErrorLogger = $eventDataBuildErrorLogger;
         $this->apiEventBuildErrorLogger = $apiEventBuildErrorLogger;
-        $this->eventsApiDebugRepository = $eventsApiDebugRepository;
     }
 
     /**
@@ -141,8 +137,6 @@ class WebhookEventBuilder
                 $pimEvent
             );
         }
-
-        $this->eventsApiDebugRepository->flush();
 
         return $apiEvents;
     }
