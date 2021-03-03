@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Clock;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetEventSubscriptionLogsQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetAllEventSubscriptionDebugLogsQueryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 /**
@@ -13,7 +13,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetEventSubscriptionLogsQuery implements GetEventSubscriptionLogsQueryInterface
+class GetAllEventSubscriptionDebugLogsQuery implements GetAllEventSubscriptionDebugLogsQueryInterface
 {
     const MAX_NUMBER_OF_NOTICE_AND_INFO_LOGS = 100;
     const MAX_LIFETIME_OF_WARNING_AND_ERROR_LOGS = 72 * 60 * 60; // 72h

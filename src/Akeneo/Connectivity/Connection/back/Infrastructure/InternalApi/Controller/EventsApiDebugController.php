@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetEventSubscriptionLogsQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetAllEventSubscriptionDebugLogsQueryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,11 +18,11 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class EventsApiDebugController
 {
-    private GetEventSubscriptionLogsQueryInterface $getEventSubscriptionLogsQuery;
+    private GetAllEventSubscriptionDebugLogsQueryInterface $getEventSubscriptionLogsQuery;
     private SecurityFacade $securityFacade;
 
     public function __construct(
-        GetEventSubscriptionLogsQueryInterface $getEventSubscriptionLogsQuery,
+        GetAllEventSubscriptionDebugLogsQueryInterface $getEventSubscriptionLogsQuery,
         SecurityFacade $securityFacade
     ) {
         $this->getEventSubscriptionLogsQuery = $getEventSubscriptionLogsQuery;

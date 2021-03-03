@@ -8,7 +8,7 @@ namespace Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface GetEventSubscriptionLogsQueryInterface
+interface GetAllEventSubscriptionDebugLogsQueryInterface
 {
     /**
      * @return \Generator<array{
