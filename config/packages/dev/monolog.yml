@@ -1,4 +1,5 @@
 monolog:
+    channels: ['event_api', 'business_event']
     handlers:
         main:
             type:     stream
