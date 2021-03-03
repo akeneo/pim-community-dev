@@ -27,7 +27,7 @@ interface EventsApiRequestLogger
     /**
      * @param array<WebhookEvent> $events
      */
-    public function logTimeoutLimit(
+    public function logEventsApiRequestTimedOut(
         string $connectionCode,
         array $events,
         string $url,
