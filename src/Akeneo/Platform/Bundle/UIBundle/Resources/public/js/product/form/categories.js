@@ -131,11 +131,7 @@ define([
             this.treeAssociate.lock(false);
           }
 
-                    if (this.isReadOnly()) {
-                        this.treeAssociate.lock(false);
-                    }
-
-                    this.delegateEvents();
+          this.delegateEvents();
 
           this.onLoadedEvent = this.lockCategories.bind(this);
           mediator.on('jstree:loaded', this.onLoadedEvent);
