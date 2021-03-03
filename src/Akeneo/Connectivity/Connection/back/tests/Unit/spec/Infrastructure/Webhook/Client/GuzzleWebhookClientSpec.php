@@ -17,9 +17,11 @@ use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\Signature;
 use Akeneo\Platform\Component\EventQueue\Event;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -117,6 +119,64 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         Assert::assertNotNull($request);
 
         $body = '{"events":[{"action":"product.created","event_id":"7abae2fe-759a-4fce-aa43-f413980671b3","event_datetime":"2020-01-01T00:00:00+00:00","author":"julia","author_type":"ui","pim_source":"staging.akeneo.com","data":["data_2"]}]}';
+        Assert::assertEquals($body, (string)$request->getBody());
+
+        $timestamp = (int)$request->getHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP)[0];
+        $signature = Signature::createSignature('a_secret', $timestamp, $body);
+        Assert::assertEquals($signature, $request->getHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE)[0]);
+    }
+
+    public function it_does_not_send_webhook_request_because_of_timeout(
+        SendApiEventRequestLogger $sendApiEventRequestLogger,
+        EventsApiDebugWebhookClientLogger $debugLogger)
+    : void {
+
+        $container = [];
+        $history = Middleware::history($container);
+
+        $handlerStack = HandlerStack::create();
+        $handlerStack->push($history);
+
+        $this->beConstructedWith(
+            new Client(['handler' => $handlerStack]),
+            new JsonEncoder(),
+            $sendApiEventRequestLogger,
+            $debugLogger,
+            ['timeout' => 0.5, 'concurrency' => 1]
+        );
+
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
+        $request = new WebhookRequest(
+            new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook'),
+            [
+                new WebhookEvent(
+                    'product.created',
+                    '7abae2fe-759a-4fce-aa43-f413980671b3',
+                    '2020-01-01T00:00:00+00:00',
+                    $author,
+                    'staging.akeneo.com',
+                    ['data_1'],
+                    $this->createEvent($author, ['data_1'], 1577836800, '7abae2fe-759a-4fce-aa43-f413980671b3')
+                )
+            ]
+        );
+
+        $this->bulkSend([$request]);
+
+        $debugLogger->logTimeoutLimit(
+            'ecommerce',
+            $request->apiEvents(),
+            'http://localhost/webhook',
+            0.5
+        )->shouldBeCalled();
+
+        Assert::assertCount(1, $container);
+
+        $request = $this->findRequest($container, 'http://localhost/webhook');
+
+        Assert::assertNotNull($request);
+
+        $body = '{"events":[{"action":"product.created","event_id":"7abae2fe-759a-4fce-aa43-f413980671b3","event_datetime":"2020-01-01T00:00:00+00:00","author":"julia","author_type":"ui","pim_source":"staging.akeneo.com","data":["data_1"]}]}';
         Assert::assertEquals($body, (string)$request->getBody());
 
         $timestamp = (int)$request->getHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP)[0];

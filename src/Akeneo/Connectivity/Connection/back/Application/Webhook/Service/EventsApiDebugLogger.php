@@ -100,13 +100,13 @@ class EventsApiDebugLogger implements EventsApiDebugWebhookClientLogger
             'timestamp' => $this->clock->now()->getTimestamp(),
             'level' => EventsApiDebugLogLevels::ERROR,
             'message' => sprintf('The endpoint failed to answer under %d ms.', round($timeout * 1000, 0)),
-            'connection_code' => $connectionCode,
-            'event_subscription_url' => $url,
             'context' => [
                 'events' => array_map(function ($webhookEvent) {
                     $this->normalizeEvent($webhookEvent->getPimEvent());
                 }, $events),
-            ]
+            ],
+            'connection_code' => $connectionCode,
+            'event_subscription_url' => $url,
         ]);
     }
 
