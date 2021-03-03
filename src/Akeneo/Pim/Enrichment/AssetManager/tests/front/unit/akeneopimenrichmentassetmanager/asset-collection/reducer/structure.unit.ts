@@ -54,11 +54,11 @@ test('It should generate a default state', () => {
     type: 'ANOTHER_ACTION',
   });
 
-  expect(newState).toMatchObject({attributes: [], channels: [], family: null, ruleRelations: []});
+  expect(newState).toMatchObject({attributes: [], channels: [], family: null, rulesNumberByAttribute: {}});
 });
 
 test('It should update the attribute list', () => {
-  const state = {attributes: [], channels: [], family: null, ruleRelations: []};
+  const state = {attributes: [], channels: [], family: null, rulesNumberByAttribute: {}};
   const attribute = {
     code: 'packshot',
     labels: {
@@ -73,11 +73,11 @@ test('It should update the attribute list', () => {
     attributes: [attribute],
   });
 
-  expect(newState).toMatchObject({attributes: [attribute], channels: [], family: null, ruleRelations: []});
+  expect(newState).toMatchObject({attributes: [attribute], channels: [], family: null, rulesNumberByAttribute: {}});
 });
 
 test('It should update the channel list', () => {
-  const state = {attributes: [], channels: [], family: null, ruleRelations: []};
+  const state = {attributes: [], channels: [], family: null, rulesNumberByAttribute: {}};
   const channel = {
     code: 'ecommerce',
     labels: {
@@ -98,11 +98,11 @@ test('It should update the channel list', () => {
     channels: [channel],
   });
 
-  expect(newState).toMatchObject({attributes: [], channels: [channel], family: null, ruleRelations: []});
+  expect(newState).toMatchObject({attributes: [], channels: [channel], family: null, rulesNumberByAttribute: {}});
 });
 
 test('It should update the family', () => {
-  const state = {attributes: [], channels: [], family: null, ruleRelations: []};
+  const state = {attributes: [], channels: [], family: null, rulesNumberByAttribute: {}};
   const family = {
     code: 'marketing',
     attributeRequirements: {
@@ -115,19 +115,18 @@ test('It should update the family', () => {
     family,
   });
 
-  expect(newState).toMatchObject({attributes: [], channels: [], family, ruleRelations: []});
+  expect(newState).toMatchObject({attributes: [], channels: [], family, rulesNumberByAttribute: {}});
 });
 
 test('It should update the rule relation list', () => {
-  const state = {attributes: [], channels: [], family: null, ruleRelations: []};
-  const ruleRelation = {attribute: 'packshot', rule: 'set_packshot_en_US'};
+  const state = {attributes: [], channels: [], family: null, rulesNumberByAttribute: {}};
 
   const newState = structureReducer(state, {
     type: 'RULE_RELATION_LIST_UPDATED',
-    ruleRelations: [ruleRelation],
+    rulesNumberByAttribute: {packshot: 2},
   });
 
-  expect(newState).toMatchObject({attributes: [], channels: [], family: null, ruleRelations: [ruleRelation]});
+  expect(newState).toMatchObject({attributes: [], channels: [], family: null, rulesNumberByAttribute: {packshot: 2}});
 });
 
 /**
@@ -195,18 +194,13 @@ test('It should have an action to update the family', () => {
 });
 
 test('It should have an action to update the rule relation list', () => {
-  const ruleRelations = [
-    {
-      attribute: 'packshot',
-      rule: 'set_packshot_en_US',
-    },
-  ];
+  const rulesByAttribute = {packshot: 2};
   const expectedAction = {
     type: 'RULE_RELATION_LIST_UPDATED',
-    ruleRelations,
+    rulesNumberByAttribute: rulesByAttribute,
   };
 
-  expect(ruleRelationListUpdated(ruleRelations)).toMatchObject(expectedAction);
+  expect(ruleRelationListUpdated(rulesByAttribute)).toMatchObject(expectedAction);
 });
 
 /**
@@ -225,7 +219,7 @@ test('It should be able to select the attribute list from the state', () => {
   };
   const state = {
     context: {channel: 'ecommerce', locale: 'en_US'},
-    structure: {attributes: [attribute], channels: [], family: null, ruleRelations: []},
+    structure: {attributes: [attribute], channels: [], family: null, rulesNumberByAttribute: {}},
     values: [],
   };
 
@@ -249,7 +243,7 @@ test('It should be able to select the channels from the state', () => {
   };
   const state = {
     context: {channel: 'ecommerce', locale: 'en_US'},
-    structure: {attributes: [], channels: [channel], family: null, ruleRelations: []},
+    structure: {attributes: [], channels: [channel], family: null, rulesNumberByAttribute: {}},
     values: [],
   };
 
@@ -272,7 +266,7 @@ test('It should be able to select locales from the state', () => {
   };
   const state = {
     context: {channel: 'ecommerce', locale: 'en_US'},
-    structure: {attributes: [], channels: [channel], family: null, ruleRelations: []},
+    structure: {attributes: [], channels: [channel], family: null, rulesNumberByAttribute: {}},
     values: [],
   };
 
@@ -295,7 +289,7 @@ test('It should be able to select distinct locales from the state', () => {
   };
   const state = {
     context: {channel: 'ecommerce', locale: 'en_US'},
-    structure: {attributes: [], channels: [channel], family: null, ruleRelations: []},
+    structure: {attributes: [], channels: [channel], family: null, rulesNumberByAttribute: {}},
     values: [],
   };
 
@@ -311,27 +305,22 @@ test('It should be able to select a family from the state', () => {
   };
   const state = {
     context: {channel: 'ecommerce', locale: 'en_US'},
-    structure: {attributes: [], channels: [], family, ruleRelations: []},
+    structure: {attributes: [], channels: [], family, rulesNumberByAttribute: {}},
     values: [],
   };
 
   expect(selectFamily(state)).toEqual(family);
 });
 
-test('It should be able to select ruleRelations from the state', () => {
-  const ruleRelations = [
-    {
-      attribute: 'packshot',
-      rule: 'set_packshot_en_US',
-    },
-  ];
+test('It should be able to select rulesNumberByAttribute from the state', () => {
+  const rulesByAttribute = {packshot: 2};
   const state = {
     context: {channel: 'ecommerce', locale: 'en_US'},
-    structure: {attributes: [], channels: [], family: null, ruleRelations},
+    structure: {attributes: [], channels: [], family: null, rulesNumberByAttribute: rulesByAttribute},
     values: [],
   };
 
-  expect(selectRuleRelations(state)).toEqual(ruleRelations);
+  expect(selectRuleRelations(state)).toEqual(rulesByAttribute);
 });
 
 /**
@@ -382,22 +371,17 @@ test('It should be able to dispatch an action to update the family', async () =>
 });
 
 test('It should be able to dispatch an action to update the rule relation list', async () => {
-  const ruleRelations = [
-    {
-      attribute: 'packshot',
-      rule: 'set_packshot_en_US',
-    },
-  ];
+  const rulesNumberByAttribute = {packshot: 2};
   const dispatch = jest.fn();
-  fetchRuleRelations.mockImplementation(() => ruleRelations);
+  fetchRuleRelations.mockImplementation(() => rulesNumberByAttribute);
 
   await updateRuleRelations()(dispatch);
   expect(fetchRuleRelations).toBeCalled();
-  expect(dispatch).toBeCalledWith({type: 'RULE_RELATION_LIST_UPDATED', ruleRelations});
+  expect(dispatch).toBeCalledWith({type: 'RULE_RELATION_LIST_UPDATED', rulesNumberByAttribute});
 });
 
 test('It should update the attribute group list', () => {
-  const state = {attributes: [], attributeGroups: {}, channels: [], family: null, ruleRelations: []};
+  const state = {attributes: [], attributeGroups: {}, channels: [], family: null, rulesNumberByAttribute: {}};
   const attributeGroups = {
     marketing: {
       code: 'marketing',
@@ -410,7 +394,13 @@ test('It should update the attribute group list', () => {
     attributeGroups,
   });
 
-  expect(newState).toMatchObject({attributes: [], attributeGroups, channels: [], family: null, ruleRelations: []});
+  expect(newState).toMatchObject({
+    attributes: [],
+    attributeGroups,
+    channels: [],
+    family: null,
+    rulesNumberByAttribute: {},
+  });
 });
 
 test('It should be able to select attribute groups from the state', () => {
@@ -423,7 +413,7 @@ test('It should be able to select attribute groups from the state', () => {
   };
   const state = {
     context: {channel: 'ecommerce', locale: 'en_US'},
-    structure: {attributes: [], channels: [], family: null, ruleRelations: [], attributeGroups},
+    structure: {attributes: [], channels: [], family: null, rulesNumberByAttribute: {}, attributeGroups},
     values: [],
   };
 

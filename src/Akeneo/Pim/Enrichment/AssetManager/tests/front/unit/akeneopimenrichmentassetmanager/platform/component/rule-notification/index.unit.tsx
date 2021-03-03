@@ -1,49 +1,57 @@
 import React from 'react';
-import {screen} from '@testing-library/react';
+import {screen, fireEvent} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {RuleNotification} from 'akeneoassetmanager/platform/component/rule-notification';
 
+jest.mock('pim/security-context', () => ({
+  isGranted: () => {
+    return true;
+  },
+}));
+
+const redirect = jest.fn();
+
+jest.mock('@akeneo-pim-community/legacy-bridge/src/hooks/useRouter', () => ({
+  useRouter: () => {
+    return {
+      redirect,
+      generate: jest.fn(),
+    };
+  },
+}));
+
+jest.mock('@akeneo-pim-community/legacy-bridge/src/hooks/useTranslate', () => ({
+  useTranslate: () => {
+    return jest.fn((key: string, params: any, count: number) => {
+      switch (key) {
+        case 'pimee_enrich.entity.product.module.attribute.can_be_updated_by_rules':
+          return 'This attribute can be updated by <span>2 rules</span>';
+        default:
+          return key;
+      }
+    });
+  },
+}));
+
 test('It should render the rule notification when the attribute can be updated by a rule', () => {
   const attributeCode = 'packshot';
-  const ruleRelations = [
-    {
-      attribute: 'packshot',
-      rule: 'set_packshot',
-    },
-  ];
-  renderWithProviders(<RuleNotification attributeCode={attributeCode} ruleRelations={ruleRelations} />);
+  const rulesNumberByAttribute = {packshot: 2};
 
-  expect(screen.getByText('pim_asset_manager.asset_collection.notification.product_rule')).toBeInTheDocument();
-  expect(screen.getByText('set_packshot')).toBeInTheDocument();
-});
+  renderWithProviders(
+    <RuleNotification attributeCode={attributeCode} rulesNumberByAttribute={rulesNumberByAttribute} />
+  );
 
-test('It should render multiple rule notifications when the attribute can be updated by a rule', () => {
-  const attributeCode = 'packshot';
-  const ruleRelations = [
-    {
-      attribute: 'packshot',
-      rule: 'set_packshot',
-    },
-    {
-      attribute: 'packshot',
-      rule: 'set_packshot_image',
-    },
-  ];
-  renderWithProviders(<RuleNotification attributeCode={attributeCode} ruleRelations={ruleRelations} />);
+  expect(screen.getByText('This attribute can be updated by')).toBeInTheDocument();
 
-  expect(screen.getByText('set_packshot, set_packshot_image')).toBeInTheDocument();
+  fireEvent.click(screen.getByText('2 rules'));
+  expect(redirect).toHaveBeenCalledTimes(1);
 });
 
 test('It should not render the rule notification when the attribute can not be updated by a rule', () => {
-  const attributeCode = 'another_attribute_asset';
-  const ruleRelations = [
-    {
-      attribute: 'packshot',
-      rule: 'set_packshot',
-    },
-  ];
+  const attributeCode = 'packshot';
+  const rulesNumberByAttribute = {};
   const {container} = renderWithProviders(
-    <RuleNotification attributeCode={attributeCode} ruleRelations={ruleRelations} />
+    <RuleNotification attributeCode={attributeCode} rulesNumberByAttribute={rulesNumberByAttribute} />
   );
 
   expect(container).toBeEmptyDOMElement();
