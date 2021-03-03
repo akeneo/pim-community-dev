@@ -16,7 +16,8 @@ use Akeneo\Platform\Component\EventQueue\EventInterface;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EventsApiDebugLogger implements EventsApiRequestLogger
+
+class EventsApiDebugLogger implements EventSubscriptionSkippedOwnEventLogger, LimitOfEventsApiRequestsReachedLogger, EventsApiRequestLogger
 {
     private Clock $clock;
     private EventsApiDebugRepository $repository;
@@ -72,17 +73,17 @@ class EventsApiDebugLogger implements EventsApiRequestLogger
      * @param int $statusCode
      * @param array<array<string>> $headers
      */
-    public function logResponseError(string $connectionCode, array $webhookEvents, string $url, int $statusCode, array $headers): void
+    public function logEventsApiRequestFailed(string $connectionCode, array $webhookEvents, string $url, int $statusCode, array $headers): void
     {
         $this->repository->persist([
             'timestamp' => $this->clock->now()->getTimestamp(),
             'level' => EventsApiDebugLogLevels::ERROR,
             'message' => 'The endpoint returned an error.',
             'connection_code' => $connectionCode,
-            'event_subscription_url' => $url,
-            'status_code' => $statusCode,
-            'headers' => $headers,
             'context' => [
+                'event_subscription_url' => $url,
+                'status_code' => $statusCode,
+                'headers' => $headers,
                 'events' => array_map(function ($webhookEvent) {
                     $this->normalizeEvent($webhookEvent->getPimEvent());
                 }, $webhookEvents),
@@ -100,13 +101,13 @@ class EventsApiDebugLogger implements EventsApiRequestLogger
             'timestamp' => $this->clock->now()->getTimestamp(),
             'level' => EventsApiDebugLogLevels::ERROR,
             'message' => sprintf('The endpoint failed to answer under %d ms.', round($timeout * 1000, 0)),
+            'connection_code' => $connectionCode,
             'context' => [
+                'event_subscription_url' => $url,
                 'events' => array_map(function ($webhookEvent) {
                     $this->normalizeEvent($webhookEvent->getPimEvent());
                 }, $events),
             ],
-            'connection_code' => $connectionCode,
-            'event_subscription_url' => $url,
         ]);
     }
 

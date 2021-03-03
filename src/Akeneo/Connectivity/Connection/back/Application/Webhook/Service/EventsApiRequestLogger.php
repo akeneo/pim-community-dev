@@ -14,23 +14,23 @@ interface EventsApiRequestLogger
 {
     /**
      * @param array<WebhookEvent> $events
-     * @param array<array<string>> $headers
-     */
-    public function logResponseError(
-        string $connectionCode,
-        array $events,
-        string $url,
-        int $statusCode,
-        array $headers
-    ): void;
-
-    /**
-     * @param array<WebhookEvent> $events
      */
     public function logEventsApiRequestTimedOut(
         string $connectionCode,
         array $events,
         string $url,
         float $timeout
+    ): void;
+
+    /**
+     * @param array<WebhookEvent> $events
+     * @param array<array<string>> $headers
+     */
+    public function logEventsApiRequestFailed(
+        string $connectionCode,
+        array $events,
+        string $url,
+        int $statusCode,
+        array $headers
     ): void;
 }
