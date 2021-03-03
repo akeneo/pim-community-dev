@@ -5,6 +5,7 @@ import {getFontSize} from '../../theme';
 
 const LocaleContainer = styled.span`
   display: inline-flex;
+  align-items: baseline;
 `;
 
 const Emoji = styled.span`

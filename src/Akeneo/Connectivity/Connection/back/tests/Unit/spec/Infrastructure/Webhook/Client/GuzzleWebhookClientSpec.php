@@ -55,7 +55,6 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         SendApiEventRequestLogger $sendApiEventRequestLogger,
         EventsApiRequestLogger $eventsApiRequestLogger
     ): void {
-
         $mock = new MockHandler(
             [
                 new Response(200, ['Content-Length' => 0]),

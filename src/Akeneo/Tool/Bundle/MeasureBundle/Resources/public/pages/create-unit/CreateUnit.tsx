@@ -9,8 +9,6 @@ import {
   useShortcut,
   Key,
 } from 'akeneo-design-system';
-import {Subsection} from 'akeneomeasure/shared/components/Subsection';
-import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {useForm} from 'akeneomeasure/hooks/use-form';
 import {getMeasurementFamilyLabel, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {Unit} from 'akeneomeasure/model/unit';
@@ -25,7 +23,7 @@ import {Operation} from 'akeneomeasure/model/operation';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
 import {ConfigContext} from 'akeneomeasure/context/config-context';
 import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
-import {filterErrors, ValidationError, getErrorsForPath, TextField} from '@akeneo-pim-community/shared';
+import {filterErrors, ValidationError, getErrorsForPath, TextField, Section} from '@akeneo-pim-community/shared';
 
 type CreateUnitProps = {
   measurementFamily: MeasurementFamily;
@@ -102,46 +100,44 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
         {translate('measurements.title.measurement')} / {measurementFamilyLabel}
       </Modal.SectionTitle>
       <Modal.Title>{translate('measurements.unit.add_new')}</Modal.Title>
-      <Subsection>
+      <Section>
         {measurementFamily.is_locked && (
           <Helper level="warning">{translate('measurements.unit.will_be_read_only')}</Helper>
         )}
-        <FormGroup>
-          <TextField
-            ref={firstFieldRef}
-            label={translate('pim_common.code')}
-            value={form.code}
-            onChange={value => setFormValue('code', value)}
-            required={true}
-            errors={getErrorsForPath(errors, 'code')}
-          />
-          <TextField
-            label={translate('pim_common.label')}
-            value={form.label}
-            onChange={value => setFormValue('label', value)}
-            locale={locale}
-            errors={getErrorsForPath(errors, `labels[${locale}]`)}
-          />
-          <TextField
-            label={translate('measurements.form.input.symbol')}
-            value={form.symbol}
-            onChange={value => setFormValue('symbol', value)}
-            errors={getErrorsForPath(errors, 'symbol')}
-          />
-          <OperationCollection
-            operations={form.operations}
-            onOperationsChange={(operations: Operation[]) => setFormValue('operations', operations)}
-            errors={filterErrors(errors, `convert_from_standard`)}
-          />
-          <Checkbox
-            id="measurements.unit.create_another"
-            checked={createAnotherUnit}
-            onChange={(checked: boolean) => setCreateAnotherUnit(checked)}
-          >
-            {translate('measurements.unit.create_another')}
-          </Checkbox>
-        </FormGroup>
-      </Subsection>
+        <TextField
+          ref={firstFieldRef}
+          label={translate('pim_common.code')}
+          value={form.code}
+          onChange={value => setFormValue('code', value)}
+          required={true}
+          errors={getErrorsForPath(errors, 'code')}
+        />
+        <TextField
+          label={translate('pim_common.label')}
+          value={form.label}
+          onChange={value => setFormValue('label', value)}
+          locale={locale}
+          errors={getErrorsForPath(errors, `labels[${locale}]`)}
+        />
+        <TextField
+          label={translate('measurements.form.input.symbol')}
+          value={form.symbol}
+          onChange={value => setFormValue('symbol', value)}
+          errors={getErrorsForPath(errors, 'symbol')}
+        />
+        <OperationCollection
+          operations={form.operations}
+          onOperationsChange={(operations: Operation[]) => setFormValue('operations', operations)}
+          errors={filterErrors(errors, `convert_from_standard`)}
+        />
+        <Checkbox
+          id="measurements.unit.create_another"
+          checked={createAnotherUnit}
+          onChange={(checked: boolean) => setCreateAnotherUnit(checked)}
+        >
+          {translate('measurements.unit.create_another')}
+        </Checkbox>
+      </Section>
       <Modal.BottomButtons>
         <Button onClick={handleAdd} disabled={config.units_max <= measurementFamily.units.length}>
           {translate('pim_common.add')}
