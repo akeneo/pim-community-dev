@@ -68,7 +68,7 @@ config:
                 tabs:
                     tab-code:
                         label: 'your.translation.key.here'`;
-          throw new SibebarMissConfigurationError(`You need to defin a label for your tab: ${confPath}`);
+          throw new SibebarMissConfigurationError(`You need to define a label for your tab: ${confPath}`);
         }
 
         return {code, label: tabConf.label};

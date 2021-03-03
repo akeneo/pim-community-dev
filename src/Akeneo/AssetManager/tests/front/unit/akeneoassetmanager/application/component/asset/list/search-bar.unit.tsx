@@ -1,7 +1,7 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import SearchBar from 'akeneoassetmanager/application/component/asset/list/search-bar';
+import {SearchBar} from 'akeneoassetmanager/application/component/asset/list/search-bar';
 import {act} from 'react-dom/test-utils';
 import {renderHook} from '@testing-library/react-hooks';
 import userEvent from '@testing-library/user-event';

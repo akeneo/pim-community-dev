@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Sidebar} from 'akeneoassetmanager/application/component/app/sidebar';
+import {Sidebar} from 'akeneoassetmanager/application/component/app/Sidebar';
 import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
 
 type AssetFamilyEditProps = {
