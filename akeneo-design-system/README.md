@@ -43,12 +43,12 @@ Once the package installed, you should provide the theme related to your project
 import React from 'react';
 import {ThemeProvider} from 'styled-components';
 {/* change with your theme path */}
-import {theme} from 'akeneo-design-system/theme/pim'
+import { pimTheme } from 'akeneo-design-system';
 
 const App = () => {
   return (
     <>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={pimTheme}>
         {/* All your application*/}
       </ThemeProvider>
     </>
