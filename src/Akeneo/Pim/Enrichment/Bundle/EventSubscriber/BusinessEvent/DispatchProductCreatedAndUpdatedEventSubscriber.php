@@ -96,7 +96,7 @@ final class DispatchProductCreatedAndUpdatedEventSubscriber implements EventSubs
 
         try {
             $this->messageBus->dispatch(new BulkEvent($this->events));
-            $this->loggerBusinessEvent->info(
+            $this->loggerBusinessEvent->debug(
                 json_encode(
                     [
                         'type' => 'business_event.dispatch',
