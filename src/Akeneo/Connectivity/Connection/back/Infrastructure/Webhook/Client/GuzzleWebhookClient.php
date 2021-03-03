@@ -27,7 +27,6 @@ class GuzzleWebhookClient implements WebhookClient
     private EncoderInterface $encoder;
     private SendApiEventRequestLogger $sendApiEventRequestLogger;
     private EventsApiRequestLogger $debugLogger;
-    private EventsApiDebugResponseErrorLogger $responseErrorLogger;
 
     /** @var array{concurrency: ?int, timeout: ?float} */
     private $config;
@@ -97,6 +96,14 @@ class GuzzleWebhookClient implements WebhookClient
                         $webhookRequestLog->getMessage(),
                         $webhookRequestLog->isSuccess(),
                         $webhookRequestLog->getResponse()
+                    );
+
+                    $this->debugLogger->logEventsApiRequestSucceed(
+                        $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
+                        $webhookRequestLog->getWebhookRequest()->apiEvents(),
+                        strval($webhookRequestLog->getWebhookRequest()->url()),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
                     );
                 },
                 'rejected' => function (RequestException $reason, int $index) use (&$logs) {
