@@ -1,5 +1,27 @@
 # 4.0.x
 
+# 4.0.96 (2021-02-23)
+
+## Bug fixes
+
+- PIM-9696: Associations and categories display according to the ownership rights
+
+# 4.0.95 (2021-02-19)
+
+# 4.0.94 (2021-02-17)
+
+# 4.0.93 (2021-02-12)
+
+# 4.0.92 (2021-02-11)
+
+# 4.0.91 (2021-02-09)
+
+## Bug fixes
+
+- PIM-9665: [Backport] PIM-9533: Update wysiwyg editor's style in order to differentiate new paragraphs from mere line breaks
+- PIM-9663: Fix PDF product renderer disregarding permissions on attribute groups (backport of PIM-9649)
+- PIM-9669: [Backport] PIM-9610: Force displaying years with 4 digits in dates for every locale
+
 # 4.0.90 (2021-02-02)
 
 # 4.0.89 (2021-01-29)

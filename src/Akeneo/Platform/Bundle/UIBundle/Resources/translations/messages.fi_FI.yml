@@ -60,6 +60,7 @@ pim_common:
   properties: Ominaisuudet
   name: Nimi
   remove: Poista
+  code: Koodi
 pim_enrich:
   #ACLs
   acl:
@@ -109,7 +110,7 @@ pim_enrich:
     family:
       index: Listaa perheet
       create: Luo perhe
-      edit_properties: Muokkaa perheen attribuutteja
+      edit_properties: Muokkaa perheen ominaisuuksia
       edit_attributes: Muokkaa perheen attribuutteja
       edit_variants: Muokkaa varianttiperhettä
       remove: Poista perhe
@@ -153,8 +154,6 @@ pim_enrich:
       remove: Poista tuotteen assosiaatiot
     job_tracker:
       index: Näytä prosessien seuraaja
-    api_connection:
-      manage: Hallinnoi API -yhteyksiä
   acl_group:
     association_type: Assosiaatiotyypit
     attribute: Attribuutit
@@ -238,7 +237,7 @@ info:
     disable: Poista käytöstä
     disabled: Poistettu käytöstä
   group:
-    axis: 'Variaatioakseli: %attributes%'
+    axis: 'Varianttiulottuvuus: %attributes%'
     select products: Valitse tuotteet joiden tulisi kuulua tähän ryhmään.
     selectable products: Seuraavilla valittavilla tuotteilla on määritelty arvo jokaiselle akselille.
     no group types: Mitään ryhmätyyppekä ei ole, aloita luomalla sellainen
