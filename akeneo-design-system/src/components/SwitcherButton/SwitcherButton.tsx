@@ -46,6 +46,7 @@ const Label = styled.label<{$inline: boolean} & AkeneoThemedProps>`
           text-transform: uppercase;
           font-size: ${getFontSize('small')};
           line-height: ${getFontSize('small')};
+          margin-bottom: -2px;
         `}
 `;
 
@@ -55,11 +56,7 @@ const LabelAndArrow = styled.div`
 `;
 
 const Value = styled.span<{$inline: boolean} & AkeneoThemedProps>`
-  ${({$inline}) =>
-    $inline &&
-    css`
-      color: ${getColor('purple', 100)};
-    `}
+  color: ${({$inline}) => ($inline ? getColor('purple', 100) : getColor('grey', 140))};
   margin-right: 5px;
 `;
 
