@@ -177,7 +177,7 @@ class AssetEditView extends React.Component<EditProps> {
                         </div>
                       </div>
                       <div className="AknTitleContainer-line">
-                        <Label isCode={label===`[${asset.code}]`}>{label}</Label>
+                        <Label isCode={label === `[${asset.code}]`}>{label}</Label>
                         {editState}
                       </div>
                     </div>

@@ -137,7 +137,9 @@ const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, o
             readOnly={isDisabled}
           />
         )}
-          <Label color={isSelected ? akeneoTheme.color.blue100 : undefined} isCode={label===`[${asset.code}]`}>{label}</Label>
+        <Label color={isSelected ? akeneoTheme.color.blue100 : undefined} isCode={label === `[${asset.code}]`}>
+          {label}
+        </Label>
       </Title>
     </Container>
   );

@@ -115,10 +115,8 @@ define([
      *
      * @returns {Promise}
      */
-    cleanInvalidValues: async function (attribute, currentValues) {
-      if (undefined === currentValues
-        || 0 === currentValues.length
-      ) {
+    cleanInvalidValues: async function(attribute, currentValues) {
+      if (undefined === currentValues || 0 === currentValues.length) {
         return [];
       }
 
