@@ -81,10 +81,10 @@ class EventsApiDebugLogger implements EventSubscriptionSkippedOwnEventLogger, Li
             'level' => EventsApiDebugLogLevels::ERROR,
             'message' => 'The endpoint returned an error.',
             'connection_code' => $connectionCode,
-            'event_subscription_url' => $url,
-            'status_code' => $statusCode,
-            'headers' => $headers,
             'context' => [
+                'event_subscription_url' => $url,
+                'status_code' => $statusCode,
+                'headers' => $headers,
                 'events' => array_map(function ($webhookEvent) {
                     $this->normalizeEvent($webhookEvent->getPimEvent());
                 }, $webhookEvents),
