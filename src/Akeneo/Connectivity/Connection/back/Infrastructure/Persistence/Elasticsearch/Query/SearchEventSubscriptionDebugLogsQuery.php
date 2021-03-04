@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query;
 
+use Akeneo\Connectivity\Connection\Domain\Clock;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SearchEventSubscriptionDebugLogsQueryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Connectivity\Connection\Domain\Clock;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -98,7 +97,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         $result = $this->elasticsearchClient->search($query);
 
         return [
-            'results' => array_map(function($hit) {
+            'results' => array_map(function ($hit) {
                 return $hit['_source'];
             }, $result['hits']['hits']),
             'search_after' => $this->encrypter->encrypt(json_encode([
@@ -148,7 +147,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         return [
             'first_id' => $result['hits']['hits'][0]['_id'] ?? null,
             'first_sort' => $result['hits']['hits'][0]['sort'] ?? null,
-            'identifiers' => array_map(function($hit) {
+            'identifiers' => array_map(function ($hit) {
                 return $hit['_id'];
             }, $result['hits']['hits']),
         ];
@@ -193,7 +192,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         return [
             'first_id' => $firstId,
             'first_sort' => $firstSort,
-            'identifiers' => array_merge([$firstId], array_map(function($hit) {
+            'identifiers' => array_merge([$firstId], array_map(function ($hit) {
                 return $hit['_id'];
             }, $result['hits']['hits'])),
         ];
