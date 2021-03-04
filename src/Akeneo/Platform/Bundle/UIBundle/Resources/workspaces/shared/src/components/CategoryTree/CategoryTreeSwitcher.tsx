@@ -3,31 +3,28 @@ import styled, {css} from 'styled-components';
 import {
   Dropdown,
   useBooleanState,
-  ArrowDownIcon,
   ProductCategoryIllustration,
   TextInput,
   SearchIcon,
   getColor,
   AkeneoThemedProps,
+  SwitcherButton
 } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {CategoryTreeRoot} from './CategoryTrees';
 
-const CategoryTreeSwitcherContainer = styled(Dropdown)`
+const CategoryTreeSwitcherButtonContainer = styled.div`
+  border-bottom: 1px solid ${getColor('brand', 100)};
   width: 100%;
 `;
 
-const CategoryTreeSwitcherButton = styled.div`
-  border-bottom: 1px solid ${getColor('brand', 100)};
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
+const CategoryTreeSwitcherButton = styled(SwitcherButton)`
   height: 40px;
-  align-items: center;
-`;
+  width: 100%;
+`
 
-const CategoryTreeSwitcherText = styled.span`
-  color: ${getColor('brand', 100)};
+const CategoryTreeSwitcherContainer = styled(Dropdown)`
+  width: 100%;
 `;
 
 const SearchInput = styled(TextInput)`
@@ -76,10 +73,11 @@ const CategoryTreeSwitcher: React.FC<CategoryTreeSwitcherProps> = ({trees, onCli
 
   return (
     <CategoryTreeSwitcherContainer {...rest}>
-      <CategoryTreeSwitcherButton onClick={open} aria-haspopup="listbox">
-        <CategoryTreeSwitcherText>{selectedTreeLabel}</CategoryTreeSwitcherText>
-        <ArrowDownIcon size={20} />
-      </CategoryTreeSwitcherButton>
+      <CategoryTreeSwitcherButtonContainer>
+        <CategoryTreeSwitcherButton label={''} onClick={open}  aria-haspopup="listbox">
+          {selectedTreeLabel}
+        </CategoryTreeSwitcherButton>
+      </CategoryTreeSwitcherButtonContainer>
       {isOpen && (
         <Dropdown.Overlay verticalPosition="down" onClose={close}>
           <Dropdown.Header>

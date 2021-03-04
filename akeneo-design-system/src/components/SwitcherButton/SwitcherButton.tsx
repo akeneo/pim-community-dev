@@ -116,7 +116,7 @@ const SwitcherButton = React.forwardRef<HTMLDivElement, SwitcherButtonProps>(
         <LabelAndValueContainer onClick={handleClick} $inline={inline}>
           <Label $inline={inline}>
             {label}
-            {inline && ':'}
+            {label && inline && ':'}
           </Label>
           <LabelAndArrow>
             <Value $inline={inline}>{children}</Value>
