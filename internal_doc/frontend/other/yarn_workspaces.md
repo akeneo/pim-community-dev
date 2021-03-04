@@ -18,7 +18,7 @@ Since the Community Edition is declared as a Yarn workspace for the Enterprise E
 
 Yarn will treat the Community Edition like a normal dependency and install its required libs.
 
-# How to use them
+## How to use them
 
 Create a new folder with a `package.json`:
 
