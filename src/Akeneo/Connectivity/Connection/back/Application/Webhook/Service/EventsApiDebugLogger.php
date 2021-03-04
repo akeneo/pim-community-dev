@@ -54,6 +54,29 @@ class EventsApiDebugLogger implements EventSubscriptionSkippedOwnEventLogger, Li
         ]);
     }
 
+    public function logEventsApiRequestSucceed(
+        string $connectionCode,
+        array $events,
+        string $url,
+        int $statusCode,
+        array $headers
+    ): void {
+        $this->repository->persist([
+            'timestamp' => $this->clock->now()->getTimestamp(),
+            'level' => EventsApiDebugLogLevels::INFO,
+            'message' => 'The API event request was sent.',
+            'connection_code' => $connectionCode,
+            'context' => [
+                'event_subscription_url' => $url,
+                'status_code' => $statusCode,
+                'headers' => $headers,
+                'events' => array_map(function ($webhookEvent) {
+                    $this->normalizeEvent($webhookEvent->getPimEvent());
+                }, $events),
+            ]
+        ]);
+    }
+
     public function logLimitOfEventsApiRequestsReached(): void
     {
         $this->repository->persist([
