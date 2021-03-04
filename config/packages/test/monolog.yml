@@ -1,5 +1,5 @@
 monolog:
     handlers:
         console:
-            type:  console
-            channels: ['!event', '!doctrine', '!event_api', '!business_event']
+          type:  console
+          channels: ['!event', '!doctrine', '!event_api', '!business_event']
