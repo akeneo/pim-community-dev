@@ -16,7 +16,11 @@ use Akeneo\Platform\Component\EventQueue\EventInterface;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EventsApiDebugLogger implements EventSubscriptionSkippedOwnEventLogger, LimitOfEventsApiRequestsReachedLogger, EventsApiRequestLogger
+class EventsApiDebugLogger implements
+    EventSubscriptionSkippedOwnEventLogger,
+    LimitOfEventsApiRequestsReachedLogger,
+    EventsApiRequestLogger,
+    ApiEventBuildErrorLogger
 {
     private Clock $clock;
     private EventsApiDebugRepository $repository;
@@ -85,6 +89,21 @@ class EventsApiDebugLogger implements EventSubscriptionSkippedOwnEventLogger, Li
             'message' => 'The maximum number of events sent per hour has been reached.',
             'connection_code' => null,
             'context' => [],
+        ]);
+    }
+
+    public function logResourceNotFoundOrAccessDenied(
+        string $connectionCode,
+        EventInterface $event
+    ): void {
+        $this->repository->persist([
+            'timestamp' => $this->clock->now()->getTimestamp(),
+            'level' => EventsApiDebugLogLevels::NOTICE,
+            'message' => 'The event was not sent because the product does not exists or the connection does not have the required permissions.',
+            'connection_code' => $connectionCode,
+            'context' => [
+                'event' => $this->normalizeEvent($event)
+            ]
         ]);
     }
 
