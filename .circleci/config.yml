@@ -45,6 +45,16 @@ jobs:
           paths:
             - project
 
+  checkout_ce:
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: ~/
+          paths:
+              - project
+
   build_dev:
     parameters:
         is_ee_built:
@@ -56,7 +66,8 @@ jobs:
     machine:
       image: ubuntu-1604:201903-01
     steps:
-      - checkout
+      - attach_workspace:
+            at: ~/
       - run:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
@@ -644,11 +655,14 @@ workflows:
                     branches:
                         ignore:
                             - master
+          - checkout_ce:
+                requires:
+                    - ready_to_build_only_ce?
           - build_dev:
                 name: build_dev_ce
                 is_ee_built: false
                 requires:
-                    - ready_to_build_only_ce?
+                    - checkout_ce
           - test_back_static_and_acceptance:
                 name: test_back_static_and_acceptance_ce
                 requires:
@@ -690,8 +704,11 @@ workflows:
                             - master
 
       jobs:
+          - checkout_ce
           - build_dev:
                 is_ee_built: false
+                requires:
+                    - checkout_ce
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -715,10 +732,13 @@ workflows:
                 filters:
                     branches:
                         only: master
+          - checkout_ce:
+                requires:
+                    - ready_to_build?
           - build_dev:
                 is_ee_built: false
                 requires:
-                    - ready_to_build?
+                    - checkout_ce
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
