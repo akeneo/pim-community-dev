@@ -154,15 +154,18 @@ class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMe
         }
 
         $data = $value->getData();
-        $integer = substr($data, 0, strpos($data, '.') + 1);
-        $decimals = substr($data, strpos($data, '.') + 1);
+        $splitNumber = preg_split('/\./', $data);
+        if (!isset($splitNumber[1])) {
+            return number_format($data, static::DECIMAL_PRECISION, '.', '');
+        }
+        [$integer, $decimals] = $splitNumber;
 
         if (strlen($decimals) <= static::DECIMAL_PRECISION) {
             return number_format($data, static::DECIMAL_PRECISION, '.', '');
         }
 
         return sprintf(
-            '%s%s%s',
+            '%s.%s%s',
             $integer,
             substr($decimals, 0, static::DECIMAL_PRECISION),
             rtrim(substr($decimals, static::DECIMAL_PRECISION), '0')
