@@ -10,6 +10,50 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
 
 /**
+ * The functionnal need of this query is not easy to do in ES.
+ * The query is working and well tested but not easy to read at first glance.
+ *
+ * We want the logs `warning` and `error` of the last 72h.
+ * We want the last 100 `notice` and `info`.
+ * We want to have those 2 in the same list, ordered by date DESC.
+ *
+ * We know it's easier to write its counterpart in pseudo-SQL, so here it is:
+ *
+ * SELECT * FROM logs
+ * WHERE
+ *  (id IN (
+ *    SELECT id
+ *    FROM logs
+ *    WHERE (level = "info" OR level = "notice")
+ *    ORDER BY timestamp DESC
+ *    LIMIT 100
+ *  ) OR (
+ *    (level = "error" OR level = "warning")
+ *    AND timestamp > ${now - 72h}
+ *  )
+ * ORDER BY timestamp DESC
+ * LIMIT 25
+ *
+ * But since you cannot write subqueries in ES, we simply run the subquery first:
+ *
+ * $noticeIds = <<<
+ *   SELECT id
+ *   FROM logs
+ *   WHERE (level = "info" OR level = "notice")
+ *   ORDER BY timestamp DESC
+ *   LIMIT 100;
+ *
+ * $logs = <<<
+ *   SELECT * FROM logs
+ *   WHERE
+ *    (id IN :ids)
+ *    OR (
+ *      (level = "error" OR level = "warning")
+ *       AND timestamp > ${now - 72h}
+ *    )
+ *   ORDER BY timestamp DESC
+ *   LIMIT 25
+ *
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
