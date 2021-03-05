@@ -17,6 +17,7 @@
 - PIM-9702: Fix infinite loop when using get all assets API endpoint
 - PIM-9720: Fix Asset cursor search after query
 - PIM-9723: Fix Mysql memory size issue during ordering in SQL when getting category trees in product grid
+- PIM-9722: Fix the increasing amount of requests when editing attribute with options
 
 ## Improvements
 

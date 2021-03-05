@@ -20,7 +20,7 @@ export default class OverrideTabTitles implements OverrideTabTitlesInterface {
     return Promise.all(tabsTitle);
   }
 
-  private overrideLabelsTabTitle(attributeCode: string) {
+  private async overrideLabelsTabTitle(attributeCode: string) {
     return this.overrideTabTitle(
       'pim-attribute-edit-form-labels-tab',
       translate('pim_common.label_translations'),
@@ -30,7 +30,7 @@ export default class OverrideTabTitles implements OverrideTabTitlesInterface {
     );
   }
 
-  private overrideLabelOptionsTabTitle(attributeCode: string) {
+  private async overrideLabelOptionsTabTitle(attributeCode: string) {
     return this.overrideTabTitle(
       'pim-attribute-edit-form-choices',
       translate('pim_enrich.entity.attribute_option.short_uppercase_label'),
@@ -40,7 +40,7 @@ export default class OverrideTabTitles implements OverrideTabTitlesInterface {
     );
   }
 
-  private overrideTabTitle(tabCode: string, title: string, url: string) {
+  private async overrideTabTitle(tabCode: string, title: string, url: string) {
     const tabs = this.root.getExtension('pim-attribute-edit-form-form-tabs');
     if (!tabs) {
       return;
