@@ -146,7 +146,9 @@ class JobQueueConsumerCommand extends Command
 
                             continue;
                         }
-
+                        // As child process, the job send his log output to the job queue consumer daemon 
+                        // with this sub process behavior, We catch an output already decorated by monolog. 
+                        // To not re-decorated the job log and make it unreadable, it passed through the daemon as is.
                         $errOutput->write($process->getIncrementalErrorOutput());
 
                         $this->executionManager->updateHealthCheck($jobExecutionMessage);
@@ -159,6 +161,9 @@ class JobQueueConsumerCommand extends Command
                         $this->executionManager->markAsFailed($jobExecutionMessage);
                     }
 
+                    // As child process, the job send his log output to the job queue consumer daemon 
+                    // with this sub process behavior, We catch an output already decorated by monolog. 
+                    // To not re-decorated the job log and make it unreadable, it passed through the daemon as is.
                     $errOutput->write($process->getIncrementalErrorOutput());
 
                     $this->logger->notice(sprintf('Job execution "%s" is finished.', $jobExecutionMessage->getJobExecutionId()));
