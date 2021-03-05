@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import {SectionTitle} from 'akeneo-design-system';
 import {MeasurementFamily, setMeasurementFamilyLabel} from 'akeneomeasure/model/measurement-family';
-import {SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
-import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
-import {ValidationError, filterErrors, TextField} from '@akeneo-pim-community/shared';
+import {ValidationError, filterErrors, TextField, Section} from '@akeneo-pim-community/shared';
 import {useTranslate, useSecurity} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
@@ -29,8 +28,10 @@ const PropertyTab = ({
 
   return (
     <Container>
-      <SubsectionHeader top={0}>{translate('pim_common.general_properties')}</SubsectionHeader>
-      <FormGroup>
+      <Section>
+        <SectionTitle sticky={0}>
+          <SectionTitle.Title>{translate('pim_common.general_properties')}</SectionTitle.Title>
+        </SectionTitle>
         <TextField
           label={translate('pim_common.code')}
           value={measurementFamily.code}
@@ -38,9 +39,9 @@ const PropertyTab = ({
           required={true}
           readOnly={true}
         />
-      </FormGroup>
-      <SubsectionHeader top={0}>{translate('measurements.label_translations')}</SubsectionHeader>
-      <FormGroup>
+        <SectionTitle sticky={0}>
+          <SectionTitle.Title>{translate('measurements.label_translations')}</SectionTitle.Title>
+        </SectionTitle>
         {null !== locales &&
           locales.map((locale, index) => (
             <TextField
@@ -56,7 +57,7 @@ const PropertyTab = ({
               }
             />
           ))}
-      </FormGroup>
+      </Section>
     </Container>
   );
 };

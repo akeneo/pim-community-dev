@@ -21,4 +21,5 @@ export * from './Table/Table';
 export * from './Toolbar/Toolbar';
 export * from './SectionTitle/SectionTitle';
 export * from './Tree/Tree';
+export * from './SwitcherButton/SwitcherButton';
 export * from './Scoring/Scoring';

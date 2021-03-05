@@ -181,6 +181,7 @@ pim_common:
     created: Created
     delete: Delete
     done: Done
+    duplicate: Duplicate
     edit: Edit
     entity_updated: There are unsaved changes.
     export: Export
