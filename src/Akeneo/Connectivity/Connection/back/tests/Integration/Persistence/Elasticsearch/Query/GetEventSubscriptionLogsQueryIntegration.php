@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Persistence\Elasticsearch\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\GetEventSubscriptionLogsQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\GetAllEventSubscriptionDebugLogsQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -18,7 +18,7 @@ use PHPUnit\Framework\Assert;
 class GetEventSubscriptionLogsQueryIntegration extends TestCase
 {
     private Client $elasticsearchClient;
-    private GetEventSubscriptionLogsQuery $getEventSubscriptionLogsQuery;
+    private GetAllEventSubscriptionDebugLogsQuery $getEventSubscriptionLogsQuery;
     private FakeClock $clock;
 
     protected function setUp(): void
@@ -212,4 +212,3 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 }
-
