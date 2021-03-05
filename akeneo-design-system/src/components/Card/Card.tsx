@@ -1,29 +1,74 @@
 import React, {isValidElement, ReactElement, ReactNode, useRef, MouseEvent} from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {Checkbox, Link, LinkProps} from '../../components';
 import {AkeneoThemedProps, getColor, getFontSize, placeholderStyle} from '../../theme';
 import {Override} from '../../shared';
+
+type StackProps = {
+  isSelected: boolean;
+};
+
+const Stack = styled.div.attrs(() => ({
+  role: 'none',
+}))<StackProps & AkeneoThemedProps>`
+  ::before,
+  ::after {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 95%;
+    height: 95%;
+    box-sizing: border-box;
+    border-style: solid;
+    border-width: ${({isSelected}) => (isSelected ? 2 : 1)}px;
+    border-color: ${({isSelected}) => getColor(isSelected ? 'blue' : 'grey', 100)};
+    background-color: ${getColor('white')};
+  }
+
+  ::before {
+    transform: translate(6px, 6px);
+  }
+
+  ::after {
+    transform: translate(3px, 3px);
+  }
+`;
 
 type CardGridProps = {
   size?: 'normal' | 'big';
 };
 
-const CardGrid = styled.div<CardGridProps>`
+const CardGrid = styled.div<CardGridProps & AkeneoThemedProps>`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(${({size}) => ('big' === size ? 200 : 140)}px, 1fr));
   gap: ${({size}) => ('big' === size ? 40 : 20)}px;
+
+  ${({size}) =>
+    'big' === size &&
+    css`
+      ${Stack} {
+        ::before {
+          transform: translate(8px, 10px);
+        }
+
+        ::after {
+          transform: translate(4px, 5px);
+        }
+      }
+    `}
 `;
 
 CardGrid.defaultProps = {
   size: 'normal',
 };
 
-const Overlay = styled.div`
+const Overlay = styled.div<{stacked: boolean} & AkeneoThemedProps>`
   position: absolute;
   z-index: 2;
   top: 0;
-  width: 100%;
-  padding-bottom: 100%;
+  width: ${({stacked}) => (stacked ? '95%' : '100%')};
+  height: ${({stacked}) => (stacked ? '95%' : '100%')};
   background-color: ${getColor('grey', 140)};
   opacity: 0%;
   transition: opacity 0.3s ease-in;
@@ -43,9 +88,10 @@ const CardContainer = styled.div<{fit: string; disabled: boolean; actionable: bo
     position: absolute;
     top: 0;
     object-fit: ${({fit}) => fit};
-    width: 100%;
-    height: 100%;
+    width: ${({stacked}) => (stacked ? '95%' : '100%')};
+    height: ${({stacked}) => (stacked ? '95%' : '100%')};
     box-sizing: border-box;
+    border-style: solid;
     border-width: ${({isSelected}) => (isSelected ? 2 : 1)}px;
     border-color: ${({isSelected}) => getColor(isSelected ? 'blue' : 'grey', 100)};
   }
@@ -54,6 +100,7 @@ const CardContainer = styled.div<{fit: string; disabled: boolean; actionable: bo
   a:hover {
     color: inherit;
     text-decoration: none;
+    background-color: ${getColor('white')};
   }
 `;
 
@@ -89,12 +136,16 @@ const CardText = styled.span`
   overflow: hidden;
 `;
 
-const BadgeContainer = styled.div`
+const BadgeContainer = styled.div<{stacked: boolean} & AkeneoThemedProps>`
   position: absolute;
   z-index: 5;
   top: 10px;
-  right: 10px;
+  right: ${({stacked}) => (stacked ? '20px' : '10px')};
 `;
+BadgeContainer.displayName = 'BadgeContainer';
+BadgeContainer.defaultProps = {
+  stacked: false,
+};
 
 type CardProps = Override<
   React.HTMLAttributes<HTMLDivElement>,
@@ -148,6 +199,7 @@ const Card = ({
   disabled = false,
   children,
   onClick,
+  stacked = false,
   ...rest
 }: CardProps) => {
   const linkRef = useRef<HTMLAnchorElement>(null);
@@ -163,7 +215,14 @@ const Card = ({
       if (Link === child.type) {
         links.push(React.cloneElement(child, {key, ref: linkRef, disabled}));
       } else {
-        nonLabelChildren.push(child);
+        let props: {stacked?: boolean} & React.Attributes = {key: child.key};
+        if (child.type === BadgeContainer) {
+          props = {
+            ...props,
+            stacked,
+          };
+        }
+        nonLabelChildren.push(React.cloneElement(child, props));
       }
     }
   });
@@ -189,10 +248,12 @@ const Card = ({
       actionable={0 < links.length || undefined !== onClick}
       onClick={handleClick}
       disabled={disabled}
+      stacked={stacked}
       {...rest}
     >
       <ImageContainer isLoading={null === src}>
-        <Overlay />
+        {stacked && <Stack isSelected={isSelected} data-testid="stack" />}
+        <Overlay stacked={stacked} />
         <img src={src ?? ''} alt={texts[0]} />
       </ImageContainer>
       <CardLabel>

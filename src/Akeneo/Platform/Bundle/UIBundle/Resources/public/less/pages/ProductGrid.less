@@ -1,0 +1,44 @@
+#product-grid {
+  &.AknGrid--gallery {
+    .AknGrid {
+      &-body {
+        display: grid;
+        grid-gap: 40px;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+        div[data-testid="stack"] {
+          &:before {
+            transform: translate(8px, 10px);
+          }
+
+          &:after {
+            transform: translate(4px, 5px);
+          }
+        }
+      }
+
+      &-body--small {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        grid-gap: 20px;
+
+        div[data-testid="stack"] {
+          &:before {
+            transform: translate(6px, 6px);
+          }
+
+          &:after {
+            transform: translate(3px, 3px);
+          }
+        }
+      }
+
+      &-bodyRow {
+        transition: none;
+
+        &:hover {
+          background: transparent;
+        }
+      }
+    }
+  }
+}
