@@ -74,6 +74,17 @@ class FieldFilterHelper
         }
     }
 
+    public static function checkArrayOfStrings($field, $value, $className)
+    {
+        self::checkArray($field, $value, $className);
+
+        foreach ($value as $subValue) {
+            if (!is_string($subValue)) {
+                throw InvalidPropertyTypeException::arrayOfStringsExpected(static::getCode($field), $className, $value);
+            }
+        }
+    }
+
     /**
      * Check if value is a datetime corresponding to a format
      *
