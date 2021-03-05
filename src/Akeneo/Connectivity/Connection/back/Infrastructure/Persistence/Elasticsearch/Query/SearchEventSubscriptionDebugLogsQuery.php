@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Domain\Clock;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SearchEventSubscriptionDebugLogsQueryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * The functionnal need of this query is not easy to do in ES.
@@ -78,22 +79,11 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
 
     public function execute(string $connectionCode, ?string $encryptedSearchAfter = null): array
     {
-        $parameters = [
-            'search_after' => null,
-            'first_notice_and_info_id' => null,
-            'first_notice_and_info_search_after' => null,
-        ];
-
-        if (null !== $encryptedSearchAfter) {
-            $decryptedSearchAfter = $this->encrypter->decrypt($encryptedSearchAfter);
-            $parameters = json_decode($decryptedSearchAfter, true);
-        }
+        $parameters = $this->buildParameters($encryptedSearchAfter);
 
         $nowTimestamp = $this->clock->now()->getTimestamp();
 
-        if (null !== $parameters['first_notice_and_info_id']
-            && null !== $parameters['first_notice_and_info_search_after']
-        ) {
+        if (null !== $parameters['first_notice_and_info_id'] && null !== $parameters['first_notice_and_info_search_after']) {
             $lastNoticeAndInfoIdentifiers = $this->findSameLastNoticeAndInfoIdentifiers(
                 $connectionCode,
                 $parameters['first_notice_and_info_id'],
@@ -151,6 +141,34 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
             ])),
             'total' => $result['hits']['total']['value'],
         ];
+    }
+
+    /**
+     * @return array{
+     *   search_after: ?array<string>,
+     *   first_notice_and_info_id: ?string,
+     *   first_notice_and_info_search_after: ?array<string>,
+     * }
+     */
+    private function buildParameters(?string $encryptedSearchAfter): array
+    {
+        $defaults = [
+            'search_after' => null,
+            'first_notice_and_info_id' => null,
+            'first_notice_and_info_search_after' => null,
+        ];
+
+        if (null === $encryptedSearchAfter) {
+            return $defaults;
+        }
+
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults($defaults);
+
+        $decryptedSearchAfter = $this->encrypter->decrypt($encryptedSearchAfter);
+        $parameters = json_decode($decryptedSearchAfter, true);
+
+        return $resolver->resolve($parameters);
     }
 
     /**
