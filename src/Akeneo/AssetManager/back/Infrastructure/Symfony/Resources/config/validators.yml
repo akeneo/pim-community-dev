@@ -95,13 +95,6 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.attribute.edit_command_validator' }
 
-    akeneo_assetmanager.infrastructure.validation.attribute.media_link.prefix:
-        class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\MediaLink\PrefixValidator
-        arguments:
-            - '%allowed_media_link_protocols%'
-        tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.attribute.media_link.prefix_validator' }
-
     akeneo_assetmanager.infrastructure.validation.attribute.text_property_updates_should_be_coherent_validator:
         class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\TextPropertyUpdatesShouldBeCoherentValidator
         arguments:
@@ -206,13 +199,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_media_file_value_command' }
-
-    akeneo_assetmanager.infrastructure.validation.asset.edit_media_link_value_command_validator:
-        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaLinkValueCommandValidator
-        arguments:
-            - '%allowed_media_link_protocols%'
-        tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_media_link_value_command' }
 
     akeneo_assetmanager.infrastructure.validation.attribute.attribute_option_should_exist:
         class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeOptionShouldExistValidator

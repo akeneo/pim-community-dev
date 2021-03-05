@@ -78,7 +78,7 @@ services:
     akeneo_assetmanager.infrastructure.loader.stream_pdf_loader:
         class: Akeneo\AssetManager\Infrastructure\Filesystem\Loader\PdfLoader
         arguments:
-            - '@akeneo_assetmanager.infrastructure.loader.restricted_protocol_stream_loader'
+            - '@akeneo_assetmanager.infrastructure.loader.stream_loader'
             - '@pim_asset.provider.default_image'
         tags:
             - { name: liip_imagine.binary.loader, loader: stream_pdf_loader }
@@ -91,18 +91,12 @@ services:
         tags:
             - { name: liip_imagine.binary.loader, loader: flysystem_pdf_loader }
 
-    akeneo_assetmanager.infrastructure.loader.restricted_protocol_stream_loader:
-        class: 'Akeneo\AssetManager\Infrastructure\Filesystem\Loader\RestrictedProtocolStreamLoader'
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.loader.stream_loader'
-            - '%allowed_media_link_protocols%'
-        tags:
-            - { name: liip_imagine.binary.loader, loader: stream_data_loader }
-
     akeneo_assetmanager.infrastructure.loader.stream_loader:
         class: 'Liip\ImagineBundle\Binary\Loader\StreamLoader'
         arguments:
             - ''
+        tags:
+            - { name: liip_imagine.binary.loader, loader: stream_data_loader }
 
     akeneo_assetmanager.infrastructure.loader.flysystem_loader:
         class: 'Akeneo\AssetManager\Infrastructure\Filesystem\Loader\ImageLoader'

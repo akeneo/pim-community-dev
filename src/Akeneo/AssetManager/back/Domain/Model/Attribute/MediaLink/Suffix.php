@@ -34,7 +34,7 @@ class Suffix
         return new self('' === $suffix ? self::EMPTY : $suffix);
     }
 
-    public static function createEmpty(): self
+    public static function empty(): self
     {
         return new self(self::EMPTY);
     }

@@ -348,8 +348,8 @@ class FindAllAssetsTest extends SqlIntegrationTestCase
             AttributeIsReadOnly::fromBoolean(false),
             $valuePerChannel,
             $valuePerLocale,
-            Prefix::createEmpty(),
-            Suffix::createEmpty(),
+            Prefix::empty(),
+            Suffix::empty(),
             MediaType::fromString(MediaType::PDF)
         );
 

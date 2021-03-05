@@ -474,8 +474,8 @@ class ExecuteNamingConventionContext implements Context
                 AttributeIsReadOnly::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                Prefix::createEmpty(),
-                Suffix::createEmpty(),
+                Prefix::empty(),
+                Suffix::empty(),
                 LinkMediaType::fromString(LinkMediaType::OTHER)
             )
         );

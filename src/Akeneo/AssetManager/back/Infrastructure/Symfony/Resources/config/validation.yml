@@ -109,10 +109,6 @@ Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditNumberValueCo
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditNumberValueCommand: ~
 
-Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaLinkValueCommand:
-    constraints:
-        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaLinkValueCommand: ~
-
 Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand:
     group_sequence:
         - CreateTextAttributeCommand

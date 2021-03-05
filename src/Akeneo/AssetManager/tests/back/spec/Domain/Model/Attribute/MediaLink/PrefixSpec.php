@@ -25,14 +25,14 @@ class PrefixSpec extends ObjectBehavior
 
     function it_can_be_created_with_no_prefix()
     {
-        $noPrefix = $this::createEmpty();
+        $noPrefix = $this::empty();
         $noPrefix->normalize()->shouldReturn(null);
     }
 
     function it_says_if_it_holds_no_prefix()
     {
         $this->isEmpty()->shouldReturn(false);
-        $this::createEmpty()->isEmpty()->shouldReturn(true);
+        $this::empty()->isEmpty()->shouldReturn(true);
     }
 
     function it_normalizes_itself()

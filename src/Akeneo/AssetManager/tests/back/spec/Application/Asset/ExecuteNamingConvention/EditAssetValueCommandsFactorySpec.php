@@ -267,8 +267,8 @@ class EditAssetValueCommandsFactorySpec extends ObjectBehavior
             AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::createEmpty(),
-            Suffix::createEmpty(),
+            Prefix::empty(),
+            Suffix::empty(),
             MediaType::fromString(MediaType::OTHER)
         );
     }
