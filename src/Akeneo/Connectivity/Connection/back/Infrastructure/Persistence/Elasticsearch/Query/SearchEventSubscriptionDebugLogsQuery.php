@@ -6,9 +6,8 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearc
 
 use Akeneo\Connectivity\Connection\Domain\Clock;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SearchEventSubscriptionDebugLogsQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * The functionnal need of this query is not easy to do in ES.
@@ -49,12 +48,12 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
 
     private Client $elasticsearchClient;
     private Clock $clock;
-    private PrimaryKeyEncrypter $encrypter;
+    private Encrypter $encrypter;
 
     public function __construct(
         Client $elasticsearchClient,
         Clock $clock,
-        PrimaryKeyEncrypter $encrypter
+        Encrypter $encrypter
     ) {
         $this->elasticsearchClient = $elasticsearchClient;
         $this->clock = $clock;
@@ -141,13 +140,10 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
             return $defaults;
         }
 
-        $resolver = new OptionsResolver();
-        $resolver->setDefaults($defaults);
-
         $decryptedSearchAfter = $this->encrypter->decrypt($encryptedSearchAfter);
         $parameters = json_decode($decryptedSearchAfter, true);
 
-        return $resolver->resolve($parameters);
+        return $parameters;
     }
 
     private function getLastNoticeAndInfoIdsQuery(string $connectionCode): array

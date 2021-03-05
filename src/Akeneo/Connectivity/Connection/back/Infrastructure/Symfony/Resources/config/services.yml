@@ -88,3 +88,10 @@ services:
 
     akeneo_connectivity.connection.system_clock:
         class: Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock
+
+    akeneo_connectivity.connection.encrypter:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter
+        arguments:
+            - 'AES-256-OFB'
+            - '%env(APP_SECRET)%'
+            - '%env(APP_SECRET)%'
