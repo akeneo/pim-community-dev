@@ -71,7 +71,7 @@ const ScoreCell = React.forwardRef<HTMLDivElement, ScoreCellProps>(
   ({score = null, placement, bigger = false, ...rest}: ScoreCellProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (
       <div ref={forwardedRef} {...rest}>
-        {(score === null || score === 'n/a') ? (
+        {score === null || score === 'n/a' ? (
           <>N/A</>
         ) : (
           <ScoreCellContainer score={score} placement={placement} bigger={bigger}>

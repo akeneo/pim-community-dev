@@ -109,10 +109,9 @@ const getFontSize = (fontSize: keyof FontSize): ((props: AkeneoThemedProps) => s
   theme,
 }: AkeneoThemedProps): string => theme.fontSize[fontSize];
 
-
 const sanitizeScoring = (score: string | null): Score | 'n/a' | null => {
   if (typeof score === 'string' && ['a', 'b', 'c', 'd', 'e', 'n/a'].includes(score.toLowerCase())) {
-    return score.toLowerCase() as  Score | 'n/a';
+    return score.toLowerCase() as Score | 'n/a';
   }
 
   return null;
