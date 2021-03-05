@@ -10,6 +10,7 @@ pim_menu:
         connection_settings_edit: Connection settings
         connection_monitoring: Monitoring
         connection_webhook_edit: Event subscription
+        connection_webhook_event_logs: Event logs
 
 pim_title:
     akeneo_connectivity_connection_settings_index: Connections
@@ -21,6 +22,7 @@ pim_title:
     akeneo_connectivity_connection_error_management_connection_monitoring: Connection monitoring
     akeneo_connectivity_connection_webhook_edit: Event subscription
     akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
+    akeneo_connectivity_connection_webhook_event_logs: Event logs
 
 akeneo_connectivity.connection:
     connections: Connections
@@ -228,6 +230,13 @@ akeneo_connectivity.connection:
         active_event_subscriptions_limit_reached:
             message: You can connect up to {{ limit }} connections to the Event subscription feature. You have reached this limit.
             link: Learn more about event subscription configuration.
+        event_logs:
+            event_subscription_disabled:
+                title: The event subscription isn’t enabled for this connection. 
+                link: Enable the event subscription
+            no_event_logs:
+                title: There is no log for the moment.
+
     error_management:
         connection_monitoring:
             title: Monitoring

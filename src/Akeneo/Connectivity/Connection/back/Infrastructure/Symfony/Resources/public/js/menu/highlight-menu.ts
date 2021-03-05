@@ -35,6 +35,11 @@ const highlightConnectionNavigationMenuItems = (routeName: string) => {
         extension: 'pim-menu-connection-event-subscriptions',
       });
       break;
+    case 'akeneo_connectivity_connection_webhook_event_logs':
+      mediator.trigger('pim_menu:highlight:item', {
+        extension: 'pim-menu-connection-event-logs',
+      });
+      break;
   }
 };
 

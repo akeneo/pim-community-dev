@@ -13,6 +13,9 @@ config:
                 akeneo_connectivity_connection_webhook_regenerate_secret:
                     module: pim/controller/connectivity/connection/webhook
                     aclResourceId: akeneo_connectivity_connection_manage_settings
+                akeneo_connectivity_connection_webhook_event_logs:
+                    module: pim/controller/connectivity/connection/webhook
+                    aclResourceId: akeneo_connectivity_connection_manage_settings
                 akeneo_connectivity_connection_settings_index:
                     module: pim/controller/connectivity/connection/settings
                     aclResourceId: akeneo_connectivity_connection_manage_settings

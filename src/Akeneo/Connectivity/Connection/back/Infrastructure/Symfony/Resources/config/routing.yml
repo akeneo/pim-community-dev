@@ -53,6 +53,11 @@ akeneo_connectivity_connection_webhook_edit:
     requirements:
         code: '[a-zA-Z0-9_]+'
 
+akeneo_connectivity_connection_webhook_event_logs:
+    path: '/connections/{code}/event-logs'
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
 ## Settings
 akeneo_connectivity_connection_settings_index:
     path: '/connections'
