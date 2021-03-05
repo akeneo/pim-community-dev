@@ -1,8 +1,7 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import {QualityScore} from '@akeneo-pim-community/data-quality-insights/src/application/component/QualityScore';
 import {ThemeProvider} from 'styled-components';
-import {pimTheme} from 'akeneo-design-system';
+import {pimTheme, Scoring} from 'akeneo-design-system';
 
 const StringCell = require('oro/datagrid/string-cell');
 
@@ -12,7 +11,7 @@ class QualityScoreBadgeCell extends StringCell {
 
     ReactDOM.render(
       <ThemeProvider theme={pimTheme}>
-        <QualityScore score={productQualityScore} />
+        <Scoring score={productQualityScore} />
       </ThemeProvider>,
       this.el
     );

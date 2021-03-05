@@ -5,7 +5,7 @@ import {Scoring} from './Scoring.tsx';
   title="Components/Scoring"
   component={Scoring}
   argTypes={{
-    score: {control: {type: 'select', options: ['a', 'b', 'c', 'd', 'e']}},
+    score: {control: {type: 'select', options: ['n/a', 'a', 'b', 'c', 'd', 'e']}},
   }}
   args={{
     bar: true,
@@ -37,6 +37,7 @@ Scoring are introduced as new components inside Akeneo to highlight to the users
     {args => {
       return (
         <>
+          <Scoring {...args} score="n/a" bar={false} />
           <Scoring {...args} score="a" bar={false} />
           <Scoring {...args} score="b" bar={false} />
           <Scoring {...args} score="c" bar={false} />

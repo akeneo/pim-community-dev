@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import {useCatalogContext, useFetchProductQualityScore} from '../../../infrastructure/hooks';
 import {Scoring} from 'akeneo-design-system';
 
 const Container = styled.div`
@@ -15,16 +14,13 @@ const Separator = styled.div`
   height: 25px;
 `;
 
-const QualityScoreProductHeader = () => {
-  const {channel, locale} = useCatalogContext();
-  const score = useFetchProductQualityScore(channel, locale);
-
+const QualityScoreProductModelHeader = () => {
   return (
     <Container>
-      <Scoring score={score ? score : null} bar />
+      <Scoring bar />
       <Separator />
     </Container>
   );
 };
 
-export {QualityScoreProductHeader};
+export {QualityScoreProductModelHeader};

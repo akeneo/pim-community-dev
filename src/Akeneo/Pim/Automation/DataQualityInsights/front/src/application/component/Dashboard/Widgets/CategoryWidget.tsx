@@ -9,8 +9,8 @@ import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {SeeInGrid} from './SeeInGrid';
 import {RemoveItem} from './RemoveItem';
 import {AddItem} from './AddItem';
-import {QualityScore} from '../../QualityScore';
 import {Cell, HeaderCell, Row, Table} from './Table';
+import {Scoring} from 'akeneo-design-system';
 
 const MAX_WATCHED_CATEGORIES = 20;
 const LOCAL_STORAGE_KEY = 'data-quality-insights:dashboard:widgets:categories';
@@ -145,7 +145,7 @@ const CategoryWidget: FunctionComponent<CategoryWidgetProps> = ({catalogChannel,
                 <Row key={index}>
                   <Cell highlight={true}>{category.label ? category.label : '[' + category.code + ']'}</Cell>
                   <Cell align={'center'}>
-                    <QualityScore score={averageScoreRank ? Ranks[averageScoreRank] : 'N/A'} />
+                    <Scoring score={averageScoreRank ? Ranks[averageScoreRank] : 'N/A'} />
                   </Cell>
                   <Cell action={true}>
                     <SeeInGrid

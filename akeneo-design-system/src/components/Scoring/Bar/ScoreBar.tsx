@@ -17,13 +17,11 @@ const ScoreBarContainer = styled.div<ScoreBarProps & AkeneoThemedProps>`
   display: flex;
   position: relative;
   top: 1px;
-  padding-right: 20px;
-  margin-right: 20px;
   padding-top: 2px;
   height: 25px;
 
   ${({score}) =>
-    score === null &&
+    (score === null || score === 'n/a') &&
     css`
       opacity: 0.3;
     `}
@@ -33,7 +31,7 @@ type ScoreBarProps = {
   /**
    * Defines if Score should be highlighted.
    */
-  score?: Score | null;
+  score?: Score | 'n/a' | null;
 };
 
 /**

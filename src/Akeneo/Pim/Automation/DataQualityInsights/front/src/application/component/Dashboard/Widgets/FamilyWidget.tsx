@@ -11,8 +11,8 @@ import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge'
 import {SeeInGrid} from './SeeInGrid';
 import {RemoveItem} from './RemoveItem';
 import {AddItem} from './AddItem';
-import {QualityScore} from '../../QualityScore';
 import {Cell, HeaderCell, Row, Table} from './Table';
+import {Scoring} from 'akeneo-design-system';
 
 const MAX_WATCHED_FAMILIES = 20;
 const LOCAL_STORAGE_KEY = 'data-quality-insights:dashboard:widgets:families';
@@ -141,7 +141,7 @@ const FamilyWidget: FunctionComponent<FamilyWidgetProps> = ({catalogChannel, cat
                   {family && (family.labels[uiLocale] ? family.labels[uiLocale] : '[' + family.code + ']')}
                 </Cell>
                 <Cell align={'center'}>
-                  <QualityScore score={averageScoreRank ? Ranks[averageScoreRank] : 'N/A'} />
+                  <Scoring score={averageScoreRank ? Ranks[averageScoreRank] : 'N/A'} />
                 </Cell>
                 <Cell action={true}>
                   <SeeInGrid

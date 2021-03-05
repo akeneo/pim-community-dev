@@ -53,7 +53,7 @@ type ScoreCellProps = {
   /**
    * Defines if Score should be highlighted.
    */
-  score?: Score | null;
+  score?: Score | 'n/a' | null;
   /**
    * Defines the placement of the cell when it used in ScoreBar
    */
@@ -68,10 +68,12 @@ type ScoreCellProps = {
  * This component highlight to the users the level of quality of their product data.
  */
 const ScoreCell = React.forwardRef<HTMLDivElement, ScoreCellProps>(
-  ({score, placement, bigger = false, ...rest}: ScoreCellProps, forwardedRef: Ref<HTMLDivElement>) => {
+  ({score = null, placement, bigger = false, ...rest}: ScoreCellProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (
       <div ref={forwardedRef} {...rest}>
-        {score && (
+        {(score === null || score === 'n/a') ? (
+          <>N/A</>
+        ) : (
           <ScoreCellContainer score={score} placement={placement} bigger={bigger}>
             <ScoreCellWrapper score={score} bigger={bigger}>
               {score}

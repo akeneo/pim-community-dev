@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
-import {QualityScore} from '../../../QualityScore';
 import styled, {css} from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {Scoring} from 'akeneo-design-system';
 
 type ReversibleProps = {
   flip?: boolean;
@@ -89,7 +89,7 @@ const Footer = styled.div`
   padding-bottom: 13px;
 `;
 
-const AverageScore = styled(QualityScore)`
+const AverageScore = styled(Scoring)`
   line-height: 20px;
   margin-top: -3px;
 `;
@@ -116,23 +116,23 @@ const Summary: FC<Props> = ({totalA, totalB, totalC, totalD, totalE, averageScor
           <Title>Distribution</Title>
           <List>
             <ListItem>
-              <QualityScore score={'A'} />
+              <Scoring score={'A'} />
               <ScoreValue>{Math.round(totalA)}%</ScoreValue>
             </ListItem>
             <ListItem>
-              <QualityScore score={'B'} />
+              <Scoring score={'B'} />
               <ScoreValue>{Math.round(totalB)}%</ScoreValue>
             </ListItem>
             <ListItem>
-              <QualityScore score={'C'} />
+              <Scoring score={'C'} />
               <ScoreValue>{Math.round(totalC)}%</ScoreValue>
             </ListItem>
             <ListItem>
-              <QualityScore score={'D'} />
+              <Scoring score={'D'} />
               <ScoreValue>{Math.round(totalD)}%</ScoreValue>
             </ListItem>
             <ListItem>
-              <QualityScore score={'E'} />
+              <Scoring score={'E'} />
               <ScoreValue>{Math.round(totalE)}%</ScoreValue>
             </ListItem>
           </List>

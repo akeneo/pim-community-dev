@@ -24,12 +24,11 @@ import {DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID} from './applicat
 import fetchProductDataQualityEvaluation from './infrastructure/fetcher/ProductEditForm/fetchProductDataQualityEvaluation';
 import fetchProductModelEvaluation from './infrastructure/fetcher/ProductEditForm/fetchProductModelEvaluation';
 import {AttributeGroupDQIActivation} from './application/component/AttributeGroup/AttributeGroupDQIActivation';
-import {QualityScoreBar} from './application/component/QualityScoreBar';
 import {CONTAINER_ELEMENT_ID as DATA_QUALITY_INSIGHTS_PRODUCT_QUALITY_SCORE_CONTAINER_ELEMENT_ID} from './application/component/ProductEditForm/QualityScorePortal';
 
 export {CriterionEvaluationResult, ProductEvaluation, TimePeriod} from './domain';
 
-export {BackLinkButton} from './application';
+export {BackLinkButton, QualityScoreProductModelHeader} from './application';
 export * from './application/constant';
 
 export {
@@ -53,7 +52,6 @@ export {
   fetchProductDataQualityEvaluation,
   fetchProductModelEvaluation,
   AttributeGroupDQIActivation,
-  QualityScoreBar,
   DATA_QUALITY_INSIGHTS_PRODUCT_QUALITY_SCORE_CONTAINER_ELEMENT_ID,
   DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB,
 };

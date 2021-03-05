@@ -1,10 +1,10 @@
 import React, {FC, ReactElement, useEffect, useState} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {QualityScore} from '../../QualityScore';
 import {QualityScoreEvolutionChart} from './QualityScoreEvolutionChart';
 import {RawScoreEvolutionData, useFetchQualityScoreEvolution} from '../../../../infrastructure/hooks';
 import {EmptyChartPlaceholder} from '../EmptyChartPlaceholder';
 import styled from 'styled-components';
+import {Scoring} from 'akeneo-design-system';
 
 type Props = {
   locale: string;
@@ -39,7 +39,7 @@ const QualityScoreEvolutionSection: FC<Props> = ({categoryCode, familyCode, chan
             <>{translate('akeneo_data_quality_insights.dqi_dashboard.quality_score_evolution.no_catalog_score')}</>
           ) : (
             <>
-              <QualityScore score={dataset.average_rank} />
+              <Scoring score={dataset.average_rank} />
               <span style={{marginLeft: '8px'}}>
                 {translate('akeneo_data_quality_insights.dqi_dashboard.quality_score_evolution.current_score')}
               </span>
