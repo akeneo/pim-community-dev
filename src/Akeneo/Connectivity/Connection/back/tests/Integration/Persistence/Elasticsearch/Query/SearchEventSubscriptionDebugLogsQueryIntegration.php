@@ -241,6 +241,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         );
 
         $firstPage = $this->query->execute('a_connection_code');
+        Assert::assertCount(25, $firstPage['results']);
 
         $this->clock->setNow($this->clock->now()->modify('+30 seconds'));
         $secondTimestamp = $this->clock->now()->getTimestamp();
@@ -259,6 +260,9 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         $secondPage = $this->query->execute('a_connection_code', $firstPage['search_after'],);
 
+        // At the time of the first query, there were 30 logs.
+        // The first page returned 25 logs, and we want to be sure the second page returns the 5 next logs
+        // and is not returning logs that were added between the requests.
         Assert::assertCount(5, $secondPage['results']);
         foreach($secondPage['results'] as $log) {
             Assert::assertEquals($firstTimestamp, $log['timestamp']);
