@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventBuildLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SkipOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
@@ -15,6 +15,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepository;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
@@ -35,7 +36,8 @@ final class SendBusinessEventToWebhooksHandler
     private EventBuildLogger $eventBuildLogger;
     private SkipOwnEventLogger $skipOwnEventLogger;
     private LoggerInterface $logger;
-    private EventsApiDebugLogger $eventsApiDebugLogger;
+    private EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger;
+    private EventsApiDebugRepository $eventsApiDebugRepository;
     private EventsApiRequestCountRepository $eventsApiRequestRepository;
     private CacheClearerInterface $cacheClearer;
     private string $pimSource;
@@ -49,7 +51,8 @@ final class SendBusinessEventToWebhooksHandler
         EventBuildLogger $eventBuildLogger,
         SkipOwnEventLogger $skipOwnEventLogger,
         LoggerInterface $logger,
-        EventsApiDebugLogger $eventsApiDebugLogger,
+        EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
+        EventsApiDebugRepository $eventsApiDebugRepository,
         EventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
         string $pimSource,
@@ -62,7 +65,8 @@ final class SendBusinessEventToWebhooksHandler
         $this->eventBuildLogger = $eventBuildLogger;
         $this->skipOwnEventLogger = $skipOwnEventLogger;
         $this->logger = $logger;
-        $this->eventsApiDebugLogger = $eventsApiDebugLogger;
+        $this->eventSubscriptionSkippedOwnEventLogger = $eventSubscriptionSkippedOwnEventLogger;
+        $this->eventsApiDebugRepository = $eventsApiDebugRepository;
         $this->eventsApiRequestRepository = $eventsApiRequestRepository;
         $this->cacheClearer = $cacheClearer;
         $this->pimSource = $pimSource;
@@ -132,7 +136,7 @@ final class SendBusinessEventToWebhooksHandler
         $this->client->bulkSend($requests());
 
         $this->cacheClearer->clear();
-        $this->eventsApiDebugLogger->flushLogs();
+        $this->eventsApiDebugRepository->flush();
     }
 
     private function filterConnectionOwnEvents(
@@ -146,7 +150,7 @@ final class SendBusinessEventToWebhooksHandler
                 if ($username === $event->getAuthor()->name()) {
                     $this->skipOwnEventLogger->log($event, $webhook->connectionCode());
 
-                    $this->eventsApiDebugLogger
+                    $this->eventSubscriptionSkippedOwnEventLogger
                         ->logEventSubscriptionSkippedOwnEvent(
                             $webhook->connectionCode(),
                             $event

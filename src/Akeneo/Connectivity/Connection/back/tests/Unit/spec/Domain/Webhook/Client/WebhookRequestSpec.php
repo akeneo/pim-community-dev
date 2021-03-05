@@ -8,6 +8,8 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
+use Akeneo\Platform\Component\EventQueue\Event;
+use Akeneo\Platform\Component\EventQueue\EventInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -18,6 +20,7 @@ class WebhookRequestSpec extends ObjectBehavior
 {
     public function let(): void
     {
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $this->beConstructedWith(
             new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook'),
             [
@@ -25,9 +28,10 @@ class WebhookRequestSpec extends ObjectBehavior
                     'product.created',
                     '79fc4791-86d6-4d3b-93c5-76b787af9497',
                     '2020-01-01T00:00:00+00:00',
-                    Author::fromNameAndType('julia', Author::TYPE_UI),
+                    $author,
                     'staging.akeneo.com',
-                    ['identifier' => '1']
+                    ['identifier' => '1'],
+                    $this->createEvent($author, ['identifier' => '1'])
                 ),
             ]
         );
@@ -88,5 +92,19 @@ class WebhookRequestSpec extends ObjectBehavior
         );
 
         $this->apiEvents()->shouldReturn([$webhookEvent]);
+    }
+
+    private function createEvent(Author $author, array $data): EventInterface
+    {
+        $timestamp = 1577836800;
+        $uuid = '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c';
+
+        return new class($author, $data, $timestamp, $uuid) extends Event
+        {
+            public function getName(): string
+            {
+                return 'product.created';
+            }
+        };
     }
 }

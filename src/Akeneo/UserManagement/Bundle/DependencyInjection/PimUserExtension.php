@@ -26,6 +26,7 @@ class PimUserExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('context.yml');
         $loader->load('controllers.yml');
+        $loader->load('datagrid_actions.yml');
         $loader->load('datagrid_listeners.yml');
         $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');

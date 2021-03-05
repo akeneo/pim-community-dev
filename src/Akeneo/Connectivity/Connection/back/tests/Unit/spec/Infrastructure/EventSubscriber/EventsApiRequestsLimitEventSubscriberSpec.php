@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionRequestsLimitReachedLog;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\LimitOfEventsApiRequestsReachedLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\ReachRequestLimitLogger;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiRequestsLimitEventSubscriber;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep;
@@ -21,14 +21,16 @@ class EventsApiRequestsLimitEventSubscriberSpec extends ObjectBehavior
         GetDelayUntilNextRequest $getDelayUntilNextRequest,
         Sleep $sleep,
         ReachRequestLimitLogger $reachRequestLimitLogger,
-        EventsApiDebugLogger $eventsApiDebugLogger
+        LimitOfEventsApiRequestsReachedLogger $limitOfEventsApiRequestsReachedLogger,
+        EventsApiDebugRepository $eventsApiDebugRepository
     ): void {
         $this->beConstructedWith(
             $getDelayUntilNextRequest,
             10,
             $sleep,
             $reachRequestLimitLogger,
-            $eventsApiDebugLogger
+            $limitOfEventsApiRequestsReachedLogger,
+            $eventsApiDebugRepository
         );
     }
 
@@ -62,15 +64,16 @@ class EventsApiRequestsLimitEventSubscriberSpec extends ObjectBehavior
 
     public function it_logs_for_the_events_api_debug_that_the_limit_is_reached(
         GetDelayUntilNextRequest $getDelayUntilNextRequest,
-        EventsApiDebugLogger $eventsApiDebugLogger
+        LimitOfEventsApiRequestsReachedLogger $limitOfEventsApiRequestsReachedLogger,
+        EventsApiDebugRepository $eventsApiDebugRepository
     ): void {
         $getDelayUntilNextRequest
             ->execute(Argument::cetera())
             ->willReturn(1);
 
-        $eventsApiDebugLogger->logLimitOfEventsApiRequestsReached()
+        $limitOfEventsApiRequestsReachedLogger->logLimitOfEventsApiRequestsReached()
             ->shouldBeCalled();
-        $eventsApiDebugLogger->flushLogs()
+        $eventsApiDebugRepository->flush()
             ->shouldBeCalled();
 
         $this->checkWebhookRequestLimit();

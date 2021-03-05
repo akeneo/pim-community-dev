@@ -1,7 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {Helper, MeasurementIllustration, Button, Modal} from 'akeneo-design-system';
-import {Subsection, SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
-import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
+import {Helper, MeasurementIllustration, Button, Modal, SectionTitle} from 'akeneo-design-system';
 import {useCreateMeasurementFamilySaver} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-saver';
 import {
   CreateMeasurementFamilyForm,
@@ -11,7 +9,7 @@ import {
 import {useForm} from 'akeneomeasure/hooks/use-form';
 import {MeasurementFamilyCode} from 'akeneomeasure/model/measurement-family';
 import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
-import {ValidationError, getErrorsForPath, TextField} from '@akeneo-pim-community/shared';
+import {ValidationError, getErrorsForPath, TextField, Section} from '@akeneo-pim-community/shared';
 
 type CreateMeasurementFamilyProps = {
   isOpen: boolean;
@@ -59,51 +57,53 @@ const CreateMeasurementFamily = ({isOpen, onClose}: CreateMeasurementFamilyProps
     >
       <Modal.SectionTitle color="brand">{translate('measurements.title.measurement')}</Modal.SectionTitle>
       <Modal.Title>{translate('measurements.family.add_new_measurement_family')}</Modal.Title>
-      <Subsection>
-        <SubsectionHeader>{translate('pim_common.properties')}</SubsectionHeader>
-        <FormGroup>
-          <TextField
-            label={translate('pim_common.code')}
-            value={form.family_code}
-            onChange={value => setFormValue('family_code', value)}
-            required={true}
-            errors={getErrorsForPath(errors, 'code')}
-          />
-          <TextField
-            label={translate('pim_common.label')}
-            value={form.family_label}
-            onChange={value => setFormValue('family_label', value)}
-            locale={locale}
-            errors={getErrorsForPath(errors, `labels[${locale}]`)}
-          />
-        </FormGroup>
-      </Subsection>
-      <Subsection>
-        <SubsectionHeader>{translate('measurements.family.standard_unit')}</SubsectionHeader>
-        <Helper level="warning">{translate('measurements.family.standard_unit_is_not_editable_after_creation')}</Helper>
-        <FormGroup>
-          <TextField
-            label={translate('pim_common.code')}
-            value={form.standard_unit_code}
-            onChange={value => setFormValue('standard_unit_code', value)}
-            required={true}
-            errors={getErrorsForPath(errors, 'units[0][code]')}
-          />
-          <TextField
-            label={translate('pim_common.label')}
-            value={form.standard_unit_label}
-            onChange={value => setFormValue('standard_unit_label', value)}
-            locale={locale}
-            errors={getErrorsForPath(errors, `units[0][labels][${locale}]`)}
-          />
-          <TextField
-            label={translate('measurements.form.input.symbol')}
-            value={form.standard_unit_symbol}
-            onChange={value => setFormValue('standard_unit_symbol', value)}
-            errors={getErrorsForPath(errors, 'units[0][symbol]')}
-          />
-        </FormGroup>
-      </Subsection>
+      <Section>
+        <SectionTitle>
+          <SectionTitle.Title>{translate('pim_common.properties')}</SectionTitle.Title>
+        </SectionTitle>
+        <TextField
+          label={translate('pim_common.code')}
+          value={form.family_code}
+          onChange={value => setFormValue('family_code', value)}
+          required={true}
+          errors={getErrorsForPath(errors, 'code')}
+        />
+        <TextField
+          label={translate('pim_common.label')}
+          value={form.family_label}
+          onChange={value => setFormValue('family_label', value)}
+          locale={locale}
+          errors={getErrorsForPath(errors, `labels[${locale}]`)}
+        />
+        <div>
+          <SectionTitle>
+            <SectionTitle.Title>{translate('measurements.family.standard_unit')}</SectionTitle.Title>
+          </SectionTitle>
+          <Helper level="warning">
+            {translate('measurements.family.standard_unit_is_not_editable_after_creation')}
+          </Helper>
+        </div>
+        <TextField
+          label={translate('pim_common.code')}
+          value={form.standard_unit_code}
+          onChange={value => setFormValue('standard_unit_code', value)}
+          required={true}
+          errors={getErrorsForPath(errors, 'units[0][code]')}
+        />
+        <TextField
+          label={translate('pim_common.label')}
+          value={form.standard_unit_label}
+          onChange={value => setFormValue('standard_unit_label', value)}
+          locale={locale}
+          errors={getErrorsForPath(errors, `units[0][labels][${locale}]`)}
+        />
+        <TextField
+          label={translate('measurements.form.input.symbol')}
+          value={form.standard_unit_symbol}
+          onChange={value => setFormValue('standard_unit_symbol', value)}
+          errors={getErrorsForPath(errors, 'units[0][symbol]')}
+        />
+      </Section>
       <Modal.BottomButtons>
         <Button onClick={handleSave}>{translate('pim_common.save')}</Button>
       </Modal.BottomButtons>

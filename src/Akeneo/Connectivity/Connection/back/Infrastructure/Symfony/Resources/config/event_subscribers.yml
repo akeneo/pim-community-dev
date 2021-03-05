@@ -25,5 +25,6 @@ services:
             - '@akeneo_connectivity.connection.webhook.sleep'
             - '@akeneo_connectivity.connection.webhook.reach_request_limit_logger'
             - '@akeneo_connectivity.connection.webhook.events_api_debug_logger'
+            - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
         tags:
             - { name: kernel.event_subscriber }

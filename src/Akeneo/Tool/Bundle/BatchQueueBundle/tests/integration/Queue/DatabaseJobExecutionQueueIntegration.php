@@ -7,6 +7,7 @@ namespace Akeneo\Tool\Bundle\BatchQueueBundle\tests\integration\Queue;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobQueueConsumerConfiguration;
 use Doctrine\DBAL\Driver\Connection;
 
 class DatabaseJobExecutionQueueIntegration extends TestCase
@@ -43,7 +44,7 @@ SQL;
         $stmt = $connection->prepare($sql);
         $stmt->execute();
 
-        $jobExecutionMessage = $this->getQueue()->consume('consumer_name');
+        $jobExecutionMessage = $this->getQueue()->consume('consumer_name', new JobQueueConsumerConfiguration);
         $this->assertEquals(1, $jobExecutionMessage->getJobExecutionId());
         $this->assertEquals(['email' => 'ziggy_1@akeneo.com'], $jobExecutionMessage->getOptions());
         $this->assertNull($jobExecutionMessage->getUpdatedTime());
@@ -75,7 +76,7 @@ SQL;
         $stmt = $connection->prepare($sql);
         $stmt->execute();
 
-        $jobExecutionMessage = $this->getQueue()->consume('consumer_name');
+        $jobExecutionMessage = $this->getQueue()->consume('consumer_name', new JobQueueConsumerConfiguration);
         $this->assertEquals(2, $jobExecutionMessage->getJobExecutionId());
         $this->assertEquals(['email' => 'ziggy_2@akeneo.com'], $jobExecutionMessage->getOptions());
         $this->assertNull($jobExecutionMessage->getUpdatedTime());
@@ -91,7 +92,7 @@ SQL;
         $this->assertEquals($jobExecutionMessage->getConsumer(), $row['consumer']);
         $this->assertNotNull($row['updated_time']);
 
-        $jobExecutionMessage = $this->getQueue()->consume('consumer_name');
+        $jobExecutionMessage = $this->getQueue()->consume('consumer_name', new JobQueueConsumerConfiguration);
         $this->assertEquals(1, $jobExecutionMessage->getJobExecutionId());
     }
 
