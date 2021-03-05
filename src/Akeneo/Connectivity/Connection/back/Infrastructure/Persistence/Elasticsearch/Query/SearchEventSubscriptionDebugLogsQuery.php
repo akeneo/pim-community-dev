@@ -68,13 +68,13 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         $nowTimestamp = $this->clock->now()->getTimestamp();
 
         if (null !== $parameters['first_notice_and_info_id'] && null !== $parameters['first_notice_and_info_search_after']) {
-            $lastNoticeAndInfoIdentifiers = $this->findSameLastNoticeAndInfoIdentifiers(
+            $lastNoticeAndInfoIds = $this->findSameLastNoticeAndInfoIds(
                 $connectionCode,
                 $parameters['first_notice_and_info_id'],
                 $parameters['first_notice_and_info_search_after']
             );
         } else {
-            $lastNoticeAndInfoIdentifiers = $this->findLastNoticeAndInfoIdentifiers($connectionCode);
+            $lastNoticeAndInfoIds = $this->findLastNoticeAndInfoIds($connectionCode);
         }
 
         $query = [
@@ -88,7 +88,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
                 'bool' => [
                     'should' => [
                         ['bool' => ['must' => [
-                            ['terms' => ['_id' => $lastNoticeAndInfoIdentifiers['identifiers']]],
+                            ['terms' => ['_id' => $lastNoticeAndInfoIds['ids']]],
                         ]]],
                         ['bool' => ['must' => [
                             ['terms' => ['level' => ['error', 'warning']]],
@@ -115,8 +115,8 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
             }, $result['hits']['hits']),
             'search_after' => $this->encrypter->encrypt(json_encode([
                 'search_after' => end($result['hits']['hits'])['sort'] ?? null,
-                'first_notice_and_info_id' => $lastNoticeAndInfoIdentifiers['first_id'],
-                'first_notice_and_info_search_after' => $lastNoticeAndInfoIdentifiers['first_sort'],
+                'first_notice_and_info_id' => $lastNoticeAndInfoIds['first_id'],
+                'first_notice_and_info_search_after' => $lastNoticeAndInfoIds['first_search_after'],
             ])),
             'total' => $result['hits']['total']['value'],
         ];
@@ -150,90 +150,82 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         return $resolver->resolve($parameters);
     }
 
-    /**
-     * @return array{
-     *   first_id: ?string,
-     *   first_sort: ?array<int, string>,
-     *   identifiers: array<string>
-     * }
-     */
-    private function findLastNoticeAndInfoIdentifiers(string $connectionCode): array
+    private function getLastNoticeAndInfoIdsQuery(string $connectionCode): array
     {
-        $result = $this->elasticsearchClient->search(
-            [
-                '_source' => ['id'],
-                'sort' => [
-                    'timestamp' => 'DESC',
-                    '_id' => 'ASC'
-                ],
-                'size' => self::MAX_NUMBER_OF_NOTICE_AND_INFO_LOGS,
-                'query' => [
-                    'bool' => [
-                        'must' => [
-                            ['terms' => ['level' => ['info', 'notice']]],
-                            [
-                                'bool' => [
-                                    'should' => [
-                                        ['term' => ['connection_code' => $connectionCode]],
-                                        ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
-                                    ],
+        return [
+            '_source' => ['id'],
+            'sort' => [
+                'timestamp' => 'DESC',
+                '_id' => 'ASC'
+            ],
+            'size' => self::MAX_NUMBER_OF_NOTICE_AND_INFO_LOGS,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        ['terms' => ['level' => ['info', 'notice']]],
+                        [
+                            'bool' => [
+                                'should' => [
+                                    ['term' => ['connection_code' => $connectionCode]],
+                                    ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
                                 ],
                             ],
                         ],
                     ],
                 ],
-            ]
-        );
-
-        return [
-            'first_id' => $result['hits']['hits'][0]['_id'] ?? null,
-            'first_sort' => $result['hits']['hits'][0]['sort'] ?? null,
-            'identifiers' => array_map(function ($hit) {
-                return $hit['_id'];
-            }, $result['hits']['hits']),
+            ],
         ];
     }
 
     /**
      * @return array{
      *   first_id: ?string,
-     *   first_sort: ?array<int, string>,
-     *   identifiers: array<string>
+     *   first_search_after: ?array<string>,
+     *   ids: array<string>
      * }
      */
-    private function findSameLastNoticeAndInfoIdentifiers(string $connectionCode, string $firstId, array $firstSort): array
+    private function findLastNoticeAndInfoIds(string $connectionCode): array
     {
-        $result = $this->elasticsearchClient->search(
-            [
-                '_source' => ['id'],
-                'sort' => [
-                    'timestamp' => 'DESC',
-                    '_id' => 'ASC'
-                ],
-                'search_after' => $firstSort,
-                'size' => self::MAX_NUMBER_OF_NOTICE_AND_INFO_LOGS - 1,
-                'query' => [
-                    'bool' => [
-                        'must' => [
-                            ['terms' => ['level' => ['info', 'notice']]],
-                            [
-                                'bool' => [
-                                    'should' => [
-                                        ['term' => ['connection_code' => $connectionCode]],
-                                        ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ]
-        );
+        $query = $this->getLastNoticeAndInfoIdsQuery($connectionCode);
+
+        $result = $this->elasticsearchClient->search($query);
+
+        return [
+            'first_id' => $result['hits']['hits'][0]['_id'] ?? null,
+            'first_search_after' => $result['hits']['hits'][0]['sort'] ?? null,
+            'ids' => array_map(function ($hit) {
+                return $hit['_id'];
+            }, $result['hits']['hits']),
+        ];
+    }
+
+    /**
+     * To avoid duplicated results, when using the pagination, we want to repeat the same initial list of 100 ids
+     * for the requests paginating after the first page.
+     *
+     * To do so, we reuse the "id" and the "search_after" of the *first* result of the initial query.
+     * We can then repeat the results by doing a search_after ES query, asking for the 99 results after the
+     * first one we already know.
+     * We then merge the first id and the 99 following ids, and we have the same 100 ids.
+     *
+     * @return array{
+     *   first_id: ?string,
+     *   first_search_after: ?array<string>,
+     *   ids: array<string>
+     * }
+     */
+    private function findSameLastNoticeAndInfoIds(string $connectionCode, string $firstId, array $firstSearchAfter): array
+    {
+        $query = $this->getLastNoticeAndInfoIdsQuery($connectionCode);
+        $query['search_after'] = $firstSearchAfter;
+        $query['size'] = self::MAX_NUMBER_OF_NOTICE_AND_INFO_LOGS - 1;
+
+        $result = $this->elasticsearchClient->search($query);
 
         return [
             'first_id' => $firstId,
-            'first_sort' => $firstSort,
-            'identifiers' => array_merge([$firstId], array_map(function ($hit) {
+            'first_search_after' => $firstSearchAfter,
+            'ids' => array_merge([$firstId], array_map(function ($hit) {
                 return $hit['_id'];
             }, $result['hits']['hits'])),
         ];
