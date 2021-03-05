@@ -12,15 +12,20 @@ use Akeneo\Connectivity\Connection\Domain\Clock;
  */
 final class FakeClock implements Clock
 {
-    private \DateTimeImmutable $dateTime;
+    private \DateTimeImmutable $now;
 
-    public function __construct(\DateTimeImmutable $dateTime)
+    public function __construct(\DateTimeImmutable $now = null)
     {
-        $this->dateTime = $dateTime;
+        $this->now = $now ?: new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
     }
 
     public function now(): \DateTimeImmutable
     {
-        return $this->dateTime;
+        return $this->now;
+    }
+
+    public function setNow(\DateTimeImmutable $now): void
+    {
+        $this->now = $now;
     }
 }
