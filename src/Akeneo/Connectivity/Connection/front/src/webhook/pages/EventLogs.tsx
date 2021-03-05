@@ -24,7 +24,7 @@ export const EventLogs: FC = () => {
                     <Loading />
                 ) : (
                     <EnabledEventSubscriptionGuard connectionCode={connection.code}>
-                        <EventLogList />
+                        <EventLogList connectionCode={connection.code} />
                     </EnabledEventSubscriptionGuard>
                 )}
             </PageContent>
