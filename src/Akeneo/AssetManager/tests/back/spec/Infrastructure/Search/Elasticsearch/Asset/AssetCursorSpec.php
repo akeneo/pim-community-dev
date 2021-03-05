@@ -75,12 +75,15 @@ class AssetCursorSpec extends ObjectBehavior
                 'hits' => [
                     [
                         '_source' => ['code' => 'nice'],
+                        'sort' => ['nice'],
                     ],
                     [
                         '_source' => ['code' => 'cool'],
+                        'sort' => ['cool'],
                     ],
                     [
-                        '_source' => ['code' => 'awesome'],
+                        '_source' => ['code' => 'AWESOME'],
+                        'sort' => ['awesome'],
                     ]
                 ]
             ]
@@ -95,6 +98,7 @@ class AssetCursorSpec extends ObjectBehavior
                 'hits' => [
                     [
                         '_source' => ['code' => 'tricky'],
+                        'sort' => ['tricky'],
                     ]
                 ]
             ]
@@ -110,7 +114,7 @@ class AssetCursorSpec extends ObjectBehavior
             ]
         ]);
 
-        $page1 = ['nice', 'cool', 'awesome'];
+        $page1 = ['nice', 'cool', 'AWESOME'];
         $page2 = ['tricky'];
         $data = array_merge($page1, $page2);
 
@@ -178,12 +182,15 @@ class AssetCursorSpec extends ObjectBehavior
                     'hits' => [
                         [
                             '_source' => ['code' => 'nice'],
+                            'sort' => ['nice'],
                         ],
                         [
                             '_source' => ['code' => 'cool'],
+                            'sort' => ['cool'],
                         ],
                         [
-                            '_source' => ['code' => 'awesome'],
+                            '_source' => ['code' => 'AWESOME'],
+                            'sort' => ['awesome'],
                         ]
                     ]
                 ]

@@ -20,6 +20,7 @@ class AssetCursor implements CursorInterface
 
     private int $count;
     private ?array $items = null;
+    private ?string $searchAfterCode = null;
 
     public function __construct(
         AssetQueryBuilderInterface $queryBuilder,
@@ -112,6 +113,12 @@ class AssetCursor implements CursorInterface
 
         $this->count = $matches['hits']['total']['value'];
 
+        if (isset($matches['hits']['hits']) && count($matches['hits']['hits']) > 0) {
+            $hitsCount = count($matches['hits']['hits']);
+            $lastHit = $matches['hits']['hits'][$hitsCount - 1];
+            $this->searchAfterCode = $lastHit['sort'][0];
+        }
+
         return $this->getCodes($matches);
     }
 
@@ -124,7 +131,7 @@ class AssetCursor implements CursorInterface
 
     private function nextPage()
     {
-        $searchAfterCode = AssetCode::fromString($this->items[count($this->items) - 1]);
+        $searchAfterCode = AssetCode::fromString($this->searchAfterCode);
         $this->assetQuery = AssetQuery::createNextWithSearchAfter($this->assetQuery, $searchAfterCode);
     }
 }
