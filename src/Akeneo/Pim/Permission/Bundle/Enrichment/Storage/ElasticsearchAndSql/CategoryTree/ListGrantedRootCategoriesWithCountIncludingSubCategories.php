@@ -44,6 +44,12 @@ class ListGrantedRootCategoriesWithCountIncludingSubCategories implements Query\
     }
 
     /**
+     * It gets the children categories into a dedicated query instead of a CTE or a subquery to avoid
+     * to order by the final results with a potential big array of children category codes.
+     *
+     * Such ordering would fail on some big catalogs. The first attempt was to increase the sort buffer size, but
+     * a customer reached the limit. Splitting the queries fixes definitively the issue with any number of children categories.
+     *
      * @param int    $userId
      * @param string $translationLocaleCode
      *
@@ -59,35 +65,40 @@ class ListGrantedRootCategoriesWithCountIncludingSubCategories implements Query\
      */
     private function getRootCategories(int $userId, string $translationLocaleCode): array
     {
+        $childrenCategoriesSql = <<<SQL
+            SELECT 
+                child.root as root_id,
+                JSON_ARRAYAGG(child.code) as children_codes
+            FROM 
+                pim_catalog_category child
+            WHERE 
+                child.parent_id IS NOT NULL
+               AND EXISTS (
+                    SELECT * FROM pimee_security_product_category_access ca
+                    JOIN oro_user_access_group ag ON ag.group_id = ca.user_group_id
+                    WHERE
+                        ca.category_id = child.id
+                        AND ca.view_items = 1
+                        AND ag.user_id = :user_id
+                ) 
+            GROUP BY 
+                child.root
+        SQL;
+
+        $childrenCategoriesRows = $this->connection->executeQuery($childrenCategoriesSql, ['user_id' => $userId])->fetchAll();
+        $childrenCategoriesIndexedByRootId = array_combine(
+            array_column($childrenCategoriesRows, 'root_id'),
+            array_column($childrenCategoriesRows, 'children_codes')
+        );
+
         $sql = <<<SQL
-            WITH child AS (
-                SELECT 
-                    child.root as root_id,
-                    JSON_ARRAYAGG(child.code) as children_codes
-                FROM 
-                    pim_catalog_category child
-                WHERE 
-                    child.parent_id IS NOT NULL
-                   AND EXISTS (
-                        SELECT * FROM pimee_security_product_category_access ca
-                        JOIN oro_user_access_group ag ON ag.group_id = ca.user_group_id
-                        WHERE
-                            ca.category_id = child.id
-                            AND ca.view_items = 1
-                            AND ag.user_id = :user_id_1
-                    ) 
-                GROUP BY 
-                    child.root
-            )
-            SELECT /*+ SET_VAR(group_concat_max_len = 1000000) SET_VAR(sort_buffer_size = 524288) */
+            SELECT
                 root.id as root_id,
                 root.code as root_code, 
-                child.children_codes,
                 COALESCE(ct.label, CONCAT('[', root.code, ']')) as label
             FROM 
                 pim_catalog_category AS root
                 LEFT JOIN pim_catalog_category_translation ct ON ct.foreign_key = root.id AND ct.locale = :locale
-                LEFT JOIN child ON root.id = child.root_id
             WHERE 
                 root.parent_id IS NULL
                 AND EXISTS (
@@ -96,7 +107,7 @@ class ListGrantedRootCategoriesWithCountIncludingSubCategories implements Query\
                     WHERE
                         ca.category_id = root.id
                         AND ca.view_items = 1
-                        AND ag.user_id = :user_id_2
+                        AND ag.user_id = :user_id
                 ) 
             ORDER BY 
                 label, root.code
@@ -106,15 +117,13 @@ SQL;
             $sql,
             [
                 'locale' => $translationLocaleCode,
-                'user_id_1' => $userId,
-                'user_id_2' => $userId
+                'user_id' => $userId
             ]
         )->fetchAll();
 
         $categories = [];
         foreach ($rows as $row) {
-            $row['children_codes'] = null !== $row['children_codes'] ? json_decode($row['children_codes'], true) : [];
-            ;
+            $row['children_codes'] = isset($childrenCategoriesIndexedByRootId[$row['root_id']]) ? json_decode($childrenCategoriesIndexedByRootId[$row['root_id']], true) : [];
             $categories[] = $row;
         }
 
