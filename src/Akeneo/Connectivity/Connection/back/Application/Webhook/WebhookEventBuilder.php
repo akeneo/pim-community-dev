@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionDataBuildErrorLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErrorLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataBuildErrorLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
@@ -12,7 +13,6 @@ use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -24,17 +24,20 @@ class WebhookEventBuilder
 {
     /** @var iterable<EventDataBuilderInterface> */
     private iterable $eventDataBuilders;
-
-    private LoggerInterface $logger;
+    private EventDataBuildErrorLogger $eventDataBuildErrorLogger;
+    private ApiEventBuildErrorLogger $apiEventBuildErrorLogger;
 
     /**
      * @param iterable<EventDataBuilderInterface> $eventDataBuilders
-     * @param LoggerInterface $logger
      */
-    public function __construct(iterable $eventDataBuilders, LoggerInterface $logger)
-    {
+    public function __construct(
+        iterable $eventDataBuilders,
+        EventDataBuildErrorLogger $eventDataBuildErrorLogger,
+        ApiEventBuildErrorLogger $apiEventBuildErrorLogger
+    ) {
         $this->eventDataBuilders = $eventDataBuilders;
-        $this->logger = $logger;
+        $this->eventDataBuildErrorLogger = $eventDataBuildErrorLogger;
+        $this->apiEventBuildErrorLogger = $apiEventBuildErrorLogger;
     }
 
     /**
@@ -109,16 +112,16 @@ class WebhookEventBuilder
             }
 
             if ($data instanceof \Throwable) {
-                $this->logger->warning(
-                    json_encode(
-                        (new EventSubscriptionDataBuildErrorLog(
-                            $data->getMessage(),
-                            $context['connection_code'],
-                            $context['user']->getId(),
-                            $pimEvent
-                        ))->toLog(),
-                        JSON_THROW_ON_ERROR
-                    )
+                $this->eventDataBuildErrorLogger->log(
+                    $data->getMessage(),
+                    $context['connection_code'],
+                    $context['user']->getId(),
+                    $pimEvent
+                );
+
+                $this->apiEventBuildErrorLogger->logResourceNotFoundOrAccessDenied(
+                    $context['connection_code'],
+                    $pimEvent
                 );
 
                 continue;
@@ -131,6 +134,7 @@ class WebhookEventBuilder
                 $pimEvent->getAuthor(),
                 $context['pim_source'],
                 $data,
+                $pimEvent
             );
         }
 

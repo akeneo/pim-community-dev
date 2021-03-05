@@ -85,6 +85,7 @@ class UserSpec extends ObjectBehavior
         $this->setDefaultGridView('alias2', $privateView);
         $this->setPassword('encrypted');
         $this->setPlainPassword('password');
+        $this->setProductGridFilters(['name', 'label']);
 
         $duplicated = $this->duplicate();
         $duplicated->getId()->shouldBeNull();
@@ -115,5 +116,6 @@ class UserSpec extends ObjectBehavior
         $duplicated->getPlainPassword()->shouldBe(null);
         $duplicated->getLastLogin()->shouldBe(null);
         $duplicated->getLoginCount()->shouldBe(0);
+        $duplicated->getProductGridFilters()->shouldBe(['name', 'label']);
     }
 }

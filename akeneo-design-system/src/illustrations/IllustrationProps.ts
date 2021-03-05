@@ -5,7 +5,7 @@ type IllustrationProps = Override<
   SVGProps<SVGSVGElement>,
   {
     title?: string;
-    size?: number;
+    size?: number | string;
     className?: string;
     animateOnHover?: boolean;
     ref?: RefObject<SVGSVGElement>;

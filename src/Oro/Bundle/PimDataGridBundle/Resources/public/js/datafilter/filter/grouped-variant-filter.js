@@ -11,12 +11,12 @@ define([
     template: _.template(template),
     className: 'AknDropdown AknDropdown--left AknTitleContainer-variantSelector',
     events: {
-      'click .display-grouped-item': '_onValueChange',
+      'click .AknDropdown-menuLink': '_onValueChange',
     },
     placeholder: __('pim_datagrid.filters.entity_type.grouped'),
 
     _onValueChange: function (event) {
-      const value = this.$(event.target).data('value');
+      const value = this.$(event.currentTarget).find('.display-grouped-item').data('value');
       this.setValue({value});
     },
 

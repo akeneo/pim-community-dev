@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react",
+    "noEmit": true,
+    "esModuleInterop": true,
+    "lib": [
+      "dom",
+      "es2015",
+      "es2016",
+      "es2017",
+      "es2018",
+      "es2019"
+    ]
+  },
+  "include": [
+    "src",
+    "tests"
+  ]
+}

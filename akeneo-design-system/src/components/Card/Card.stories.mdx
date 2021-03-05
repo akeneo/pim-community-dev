@@ -1,8 +1,9 @@
 import {useState} from 'react';
 import styled from 'styled-components';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {action} from '@storybook/addon-actions';
 import {Card, CardGrid} from './Card.tsx';
-import {Badge} from '../../components';
+import {Badge, Link} from '../../components';
 
 <Meta
   title="Components/Card"
@@ -97,6 +98,51 @@ Cards should be displayed in a grid, therefore, a `CardGrid` component is also a
   </Story>
 </Canvas>
 
+## With Links
+
+<Canvas>
+  <Story name="With Links">
+    {args => {
+      const [firstSelected, setFirstSelected] = useState(false);
+      return (
+        <CardGrid>
+          <Card {...args} src="https://picsum.photos/seed/akeneaa/200">
+            <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+              Card with Link
+            </Link>
+          </Card>
+          <Card {...args} disabled={true} src="https://picsum.photos/seed/akeneba/200">
+            <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+              Disabled Card with Link
+            </Link>
+          </Card>
+          <Card
+            {...args}
+            isSelected={firstSelected}
+            onSelect={isSelected => setFirstSelected(isSelected)}
+            src="https://picsum.photos/seed/akeneca/200"
+          >
+            <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+              Selectable Card with Link
+            </Link>
+          </Card>
+          <Card
+            {...args}
+            disabled={true}
+            isSelected={false}
+            onSelect={() => {}}
+            src="https://picsum.photos/seed/akenecb/200"
+          >
+            <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+              Disabled selectable Card with Link
+            </Link>
+          </Card>
+        </CardGrid>
+      );
+    }}
+  </Story>
+</Canvas>
+
 ## CardGrid
 
 Here the `fit` prop is also set to `contain`.
@@ -111,6 +157,7 @@ Here the `fit` prop is also set to `contain`.
               {...args}
               key={index}
               fit="contain"
+              onClick={action('Clicked')}
               src={`https://picsum.photos/seed/akeneo${index}/${index % 2 === 0 ? 200 : 120}/${
                 index % 2 === 0 ? 120 : 200
               }`}
@@ -148,6 +195,54 @@ Here the `fit` prop is also set to `contain`.
             isSelected={firstSelected}
             onSelect={isSelected => setFirstSelected(isSelected)}
           >
+            Selectable
+          </Card>
+          <Card
+            {...args}
+            src="https://picsum.photos/seed/akeneg/200"
+            isSelected={secondSelected}
+            onSelect={isSelected => setSecondSelected(isSelected)}
+          >
+            <Card.BadgeContainer>
+              <Badge level="warning">75%</Badge>
+            </Card.BadgeContainer>
+            Badge &amp; selectable 🤩
+          </Card>
+        </CardGrid>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Small Stack Cards
+
+<Canvas>
+  <Story name="SmallStackedCard">
+    {args => {
+      const [firstSelected, setFirstSelected] = useState(false);
+      const [secondSelected, setSecondSelected] = useState(false);
+      const [thirdSelected, setThirdSelected] = useState(false);
+      return (
+        <CardGrid size="small">
+          <Card {...args} stacked src="https://picsum.photos/seed/akenec/200">
+            This is a small card
+          </Card>
+          <Card {...args} src="https://picsum.photos/seed/akened/200">
+            This is a small card not stacked
+          </Card>
+          <Card {...args} stacked src="https://picsum.photos/seed/akenee/200">
+            <Card.BadgeContainer>
+              <Badge level="primary">100%</Badge>
+            </Card.BadgeContainer>
+            This one even has a Badge
+          </Card>
+          <Card
+            {...args}
+            src="https://picsum.photos/seed/akenef/200"
+            isSelected={firstSelected}
+            onSelect={isSelected => setFirstSelected(isSelected)}
+            stacked
+          >
             And this one is selectable
           </Card>
           <Card
@@ -155,6 +250,78 @@ Here the `fit` prop is also set to `contain`.
             src="https://picsum.photos/seed/akeneg/200"
             isSelected={secondSelected}
             onSelect={isSelected => setSecondSelected(isSelected)}
+            stacked
+          >
+            <Card.BadgeContainer>
+              <Badge level="warning">75%</Badge>
+            </Card.BadgeContainer>
+            Badge &amp; selectable 🤩
+          </Card>
+          <Card
+            {...args}
+            src="https://picsum.photos/seed/akeneh/200"
+            isSelected={thirdSelected}
+            onSelect={isSelected => setThirdSelected(isSelected)}
+          >
+            <Card.BadgeContainer>
+              <Badge level="warning">75%</Badge>
+            </Card.BadgeContainer>
+            Badge &amp; selectable 🤩
+          </Card>
+        </CardGrid>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Big Stack Cards
+
+<Canvas>
+  <Story name="BigStackedCard">
+    {args => {
+      const [firstSelected, setFirstSelected] = useState(false);
+      const [secondSelected, setSecondSelected] = useState(false);
+      const [thirdSelected, setThirdSelected] = useState(false);
+      return (
+        <CardGrid size="big">
+          <Card {...args} stacked src="https://picsum.photos/seed/akenec/200">
+            This is a big Card
+          </Card>
+          <Card {...args} src="https://picsum.photos/seed/akened/200">
+            This is a big Card not stacked
+          </Card>
+          <Card {...args} stacked src="https://picsum.photos/seed/akenee/200">
+            <Card.BadgeContainer>
+              <Badge level="primary">100%</Badge>
+            </Card.BadgeContainer>
+            This one even has a Badge
+          </Card>
+          <Card
+            {...args}
+            src="https://picsum.photos/seed/akenef/200"
+            isSelected={firstSelected}
+            onSelect={isSelected => setFirstSelected(isSelected)}
+            stacked
+          >
+            And this one is selectable
+          </Card>
+          <Card
+            {...args}
+            src="https://picsum.photos/seed/akeneg/200"
+            isSelected={secondSelected}
+            onSelect={isSelected => setSecondSelected(isSelected)}
+            stacked
+          >
+            <Card.BadgeContainer>
+              <Badge level="warning">75%</Badge>
+            </Card.BadgeContainer>
+            Badge &amp; selectable 🤩
+          </Card>
+          <Card
+            {...args}
+            src="https://picsum.photos/seed/akeneh/200"
+            isSelected={thirdSelected}
+            onSelect={isSelected => setThirdSelected(isSelected)}
           >
             <Card.BadgeContainer>
               <Badge level="warning">75%</Badge>

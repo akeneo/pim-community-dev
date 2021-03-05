@@ -5,80 +5,164 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Service;
 
 use Akeneo\Connectivity\Connection\Domain\Clock;
+use Akeneo\Connectivity\Connection\Domain\Webhook\EventNormalizer\EventNormalizer;
+use Akeneo\Connectivity\Connection\Domain\Webhook\EventNormalizer\EventNormalizerInterface;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
+use Akeneo\Platform\Component\EventQueue\EventInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EventsApiDebugLogger
+class EventsApiDebugLogger implements
+    EventSubscriptionSkippedOwnEventLogger,
+    LimitOfEventsApiRequestsReachedLogger,
+    EventsApiRequestLogger,
+    ApiEventBuildErrorLogger
 {
-    const LEVEL_NOTICE = 'notice';
-    const LEVEL_INFO = 'info';
-    const LEVEL_WARNING = 'warning';
-    const LEVEL_ERROR = 'error';
+    private Clock $clock;
+    private EventsApiDebugRepository $repository;
+    private EventNormalizerInterface $defaultEventNormalizer;
 
-    private int $bufferSize;
+    /** @var iterable<EventNormalizerInterface> */
+    private iterable $eventNormalizers;
 
     /**
-     * @var array<array{
-     *  timestamp: int,
-     *  level: self::LEVEL_*,
-     *  message: string,
-     *  connection_code: ?string,
-     *  context: array
-     * }>
+     * @param iterable<EventNormalizerInterface> $eventNormalizers
      */
-    private array $buffer;
-
-    private Clock $clock;
-
-    private EventsApiDebugRepository $repository;
-
-    public function __construct(EventsApiDebugRepository $repository, Clock $clock, int $bufferSize = 100)
-    {
+    public function __construct(
+        EventsApiDebugRepository $repository,
+        Clock $clock,
+        iterable $eventNormalizers
+    ) {
         $this->repository = $repository;
         $this->clock = $clock;
-        $this->bufferSize = $bufferSize;
-        $this->buffer = [];
+        $this->defaultEventNormalizer = new EventNormalizer();
+        $this->eventNormalizers = $eventNormalizers;
     }
 
-    public function logLimitOfEventApiRequestsReached(): void
-    {
-        $this->addLog([
+    public function logEventSubscriptionSkippedOwnEvent(
+        string $connectionCode,
+        EventInterface $event
+    ): void {
+        $this->repository->persist([
             'timestamp' => $this->clock->now()->getTimestamp(),
-            'level' => self::LEVEL_WARNING,
+            'level' => EventsApiDebugLogLevels::NOTICE,
+            'message' => 'The event was not sent because it was raised by the same connection.',
+            'connection_code' => $connectionCode,
+            'context' => [
+                'event' => $this->normalizeEvent($event)
+            ]
+        ]);
+    }
+
+    public function logEventsApiRequestSucceed(
+        string $connectionCode,
+        array $events,
+        string $url,
+        int $statusCode,
+        array $headers
+    ): void {
+        $this->repository->persist([
+            'timestamp' => $this->clock->now()->getTimestamp(),
+            'level' => EventsApiDebugLogLevels::INFO,
+            'message' => 'The API event request was sent.',
+            'connection_code' => $connectionCode,
+            'context' => [
+                'event_subscription_url' => $url,
+                'status_code' => $statusCode,
+                'headers' => $headers,
+                'events' => array_map(function ($webhookEvent) {
+                    $this->normalizeEvent($webhookEvent->getPimEvent());
+                }, $events),
+            ]
+        ]);
+    }
+
+    public function logLimitOfEventsApiRequestsReached(): void
+    {
+        $this->repository->persist([
+            'timestamp' => $this->clock->now()->getTimestamp(),
+            'level' => EventsApiDebugLogLevels::WARNING,
             'message' => 'The maximum number of events sent per hour has been reached.',
             'connection_code' => null,
             'context' => [],
         ]);
     }
 
-    public function flushLogs(): void
-    {
-        if (0 === count($this->buffer)) {
-            return;
-        }
-
-        $this->repository->bulkInsert($this->buffer);
-        $this->buffer = [];
+    public function logResourceNotFoundOrAccessDenied(
+        string $connectionCode,
+        EventInterface $event
+    ): void {
+        $this->repository->persist([
+            'timestamp' => $this->clock->now()->getTimestamp(),
+            'level' => EventsApiDebugLogLevels::NOTICE,
+            'message' => 'The event was not sent because the product does not exists or the connection does not have the required permissions.',
+            'connection_code' => $connectionCode,
+            'context' => [
+                'event' => $this->normalizeEvent($event)
+            ]
+        ]);
     }
 
     /**
-     * @param array{
-     *  timestamp: int,
-     *  level: self::LEVEL_*,
-     *  message: string,
-     *  connection_code: ?string,
-     *  context: array
-     * } $log
+     * @param string $connectionCode
+     * @param array<WebhookEvent> $webhookEvents
+     * @param string $url
+     * @param int $statusCode
+     * @param array<array<string>> $headers
      */
-    private function addLog(array $log): void
+    public function logEventsApiRequestFailed(string $connectionCode, array $webhookEvents, string $url, int $statusCode, array $headers): void
     {
-        $this->buffer[] = $log;
+        $this->repository->persist([
+            'timestamp' => $this->clock->now()->getTimestamp(),
+            'level' => EventsApiDebugLogLevels::ERROR,
+            'message' => 'The endpoint returned an error.',
+            'connection_code' => $connectionCode,
+            'context' => [
+                'event_subscription_url' => $url,
+                'status_code' => $statusCode,
+                'headers' => $headers,
+                'events' => array_map(function ($webhookEvent) {
+                    $this->normalizeEvent($webhookEvent->getPimEvent());
+                }, $webhookEvents),
+            ]
+        ]);
+    }
 
-        if (count($this->buffer) >= $this->bufferSize) {
-            $this->flushLogs();
+    public function logEventsApiRequestTimedOut(
+        string $connectionCode,
+        array $events,
+        string $url,
+        float $timeout
+    ): void {
+        $this->repository->persist([
+            'timestamp' => $this->clock->now()->getTimestamp(),
+            'level' => EventsApiDebugLogLevels::ERROR,
+            'message' => sprintf('The endpoint failed to answer under %d ms.', round($timeout * 1000, 0)),
+            'connection_code' => $connectionCode,
+            'context' => [
+                'event_subscription_url' => $url,
+                'events' => array_map(function ($webhookEvent) {
+                    $this->normalizeEvent($webhookEvent->getPimEvent());
+                }, $events),
+            ],
+        ]);
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    private function normalizeEvent(EventInterface $event): array
+    {
+        foreach ($this->eventNormalizers as $normalizer) {
+            if (true === $normalizer->supports($event)) {
+                return $normalizer->normalize($event);
+            }
         }
+
+        return $this->defaultEventNormalizer->normalize($event);
     }
 }

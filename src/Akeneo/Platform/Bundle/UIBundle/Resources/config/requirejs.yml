@@ -538,8 +538,8 @@ config:
     pim/form-modal:                     pimui/js/form/form-modal
     pim/scopable:                       pimui/js/pim-scopable
     pim/currencyfield:                  pimui/js/pim-currencyfield
-    pim/tree/view:                      pimui/js/tree-view.jstree
-    pim/tree/associate:                 pimui/js/tree-associate.jstree
+    pim/tree/view:                      pimui/js/TreeView.tsx
+    pim/tree/associate:                 pimui/js/TreeAssociate.tsx
     pim/tree/manage:                    pimui/js/tree-manage.jstree
     pim/attributeoptionview:            pimui/js/pim-attributeoptionview
     pim/i18n:                           pimui/js/i18n
@@ -709,6 +709,7 @@ config:
     pim/product-edit-form/product-and-product-model-picker:  pimui/js/product/form/product-and-product-model-picker
     pim/product-edit-form/attributes/read-only-parent-attributes: pimui/js/product/form/attributes/read-only-parent-attributes
     pim/product/product-grid-title:                          pimui/js/form/common/product/product-grid-title.ts
+    pim/datagrid/product-gallery-row: pimdatagrid/js/datagrid/ProductGalleryRow.tsx
 
     # Product model
     pim/product-model-edit-form/product-model-label: pimui/js/product-model/form/product-model-label
@@ -772,7 +773,7 @@ config:
     pim/filter/product/completeness:       pimui/js/filter/product/completeness
     pim/filter/product/quality-score:      pimui/js/filter/product/quality-score
     pim/filter/product/category:           pimui/js/filter/product/category
-    pim/filter/product/category/selector:  pimui/js/filter/product/category/selector
+    pim/filter/product/category/selector:  pimui/js/filter/product/category/Selector.tsx
     pim/filter/attribute/identifier:       pimui/js/filter/attribute/identifier
     pim/filter/attribute/attribute:        pimui/js/filter/attribute/attribute
     pim/filter/attribute/boolean:          pimui/js/filter/attribute/boolean

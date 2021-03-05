@@ -8,6 +8,15 @@ type Channel = {
   code: ChannelCode;
   labels: LabelCollection;
   locales: Locale[];
+  category_tree: string;
+  conversion_units: any[];
+  currencies: string[];
+  meta: {
+    created: any;
+    form: string;
+    id: number;
+    updated: any;
+  };
 };
 
 const getChannelLabel = (channel: Channel, locale: LocaleCode) => {

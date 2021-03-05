@@ -8,7 +8,10 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSend
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\EventSubscriptionLog;
 use Akeneo\Platform\Component\EventQueue\Author;
+use Akeneo\Platform\Component\EventQueue\Event;
+use Akeneo\Platform\Component\EventQueue\EventInterface;
 use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 
@@ -17,22 +20,26 @@ class EventSubscriptionSendApiEventRequestLogSpec extends ObjectBehavior
     public function let(): void
     {
         $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook');
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $events = [
             new WebhookEvent(
                 'product.created',
                 '79fc4791-86d6-4d3b-93c5-76b787af9497',
                 '2020-01-01T00:00:00+00:00',
-                Author::fromNameAndType('julia', Author::TYPE_UI),
+                $author,
                 'staging.akeneo.com',
-                ['data']
+                ['data'],
+                $this->createEvent($author, ['data'])
+
             ),
             new WebhookEvent(
                 'product.updated',
                 '8bdfe74c-da2e-4bda-a2b1-b5e2a3006ea3',
                 '2020-01-01T00:00:11+00:00',
-                Author::fromNameAndType('julia', Author::TYPE_UI),
+                $author,
                 'staging.akeneo.com',
-                ['data']
+                ['data'],
+                $this->createEvent($author, ['data'])
             )
         ];
 
@@ -50,100 +57,38 @@ class EventSubscriptionSendApiEventRequestLogSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(EventSubscriptionSendApiEventRequestLog::class);
     }
 
-    public function it_returns_the_log_with_response()
+    public function it_returns_the_start_time(): void
     {
-        $this->setSuccess(true);
-        $this->setEndTime(1603935029.121);
-        $this->setResponse(new Response());
-
-        $this->toLog()->shouldReturn([
-            'type' => EventSubscriptionSendApiEventRequestLog::TYPE,
-            'duration_ms' => 21289,
-            'headers' => [
-                'Content-Type' => 'application/json',
-            ],
-            'message' => '',
-            'success' => true,
-            'response' => [
-                'status_code' => 200,
-            ],
-            'events' => [
-                [
-                    'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
-                    'author' => 'julia',
-                    'author_type' => 'ui',
-                    'name' => 'product.created',
-                    'timestamp' => 1577836800,
-                ],
-                [
-                    'uuid' => '8bdfe74c-da2e-4bda-a2b1-b5e2a3006ea3',
-                    'author' => 'julia',
-                    'author_type' => 'ui',
-                    'name' => 'product.updated',
-                    'timestamp' => 1577836811,
-                ],
-            ],
-            'max_propagation_seconds' => 26098229,
-            'min_propagation_seconds' => 26098218,
-        ]);
+        $this->getStartTime()->shouldReturn(1603935007.832);
     }
 
-    public function it_returns_the_log_without_response()
+    public function it_returns_the_headers(): void
     {
-        $this->setMessage('a message');
-        $this->setSuccess(false);
-        $this->setEndTime(1603935029.121);
-        $this->setResponse(null);
-
-        $this->toLog()->shouldReturn([
-            'type' => EventSubscriptionSendApiEventRequestLog::TYPE,
-            'duration_ms' => 21289,
-            'headers' => [
-                'Content-Type' => 'application/json',
-            ],
-            'message' => 'a message',
-            'success' => false,
-            'response' => null,
-            'events' => [
-                [
-                    'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
-                    'author' => 'julia',
-                    'author_type' => 'ui',
-                    'name' => 'product.created',
-                    'timestamp' => 1577836800,
-                ],
-                [
-                    'uuid' => '8bdfe74c-da2e-4bda-a2b1-b5e2a3006ea3',
-                    'author' => 'julia',
-                    'author_type' => 'ui',
-                    'name' => 'product.updated',
-                    'timestamp' => 1577836811,
-                ],
-            ],
-            'max_propagation_seconds' => 26098229,
-            'min_propagation_seconds' => 26098218,
-        ]);
+        $this->getHeaders()->shouldReturn(['Content-Type' => 'application/json']);
     }
 
-    public function it_returns_the_log_without_propagation_times()
+    public function it_returns_the_webhook_requests(): void
     {
         $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook');
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $events = [
             new WebhookEvent(
                 'product.created',
                 '79fc4791-86d6-4d3b-93c5-76b787af9497',
-                'NOT_WELL_FORMED',
-                Author::fromNameAndType('julia', Author::TYPE_UI),
+                '2020-01-01T00:00:00+00:00',
+                $author,
                 'staging.akeneo.com',
-                ['data']
+                ['data'],
+                $this->createEvent($author, ['data'])
             ),
             new WebhookEvent(
                 'product.updated',
                 '8bdfe74c-da2e-4bda-a2b1-b5e2a3006ea3',
-                'NOT_WELL_FORMED',
-                Author::fromNameAndType('julia', Author::TYPE_UI),
+                '2020-01-01T00:00:11+00:00',
+                $author,
                 'staging.akeneo.com',
-                ['data']
+                ['data'],
+                $this->createEvent($author, ['data'])
             )
         ];
 
@@ -155,42 +100,49 @@ class EventSubscriptionSendApiEventRequestLogSpec extends ObjectBehavior
             1603935007.832
         );
 
-        $this->setSuccess(true);
-        $this->setEndTime(1603935029.121);
-        $this->setResponse(new Response());
-
-        $this->toLog()->shouldReturn([
-            'type' => EventSubscriptionSendApiEventRequestLog::TYPE,
-            'duration_ms' => 21289,
-            'headers' => [
-                'Content-Type' => 'application/json',
-            ],
-            'message' => '',
-            'success' => true,
-            'response' => [
-                'status_code' => 200,
-            ],
-            'events' => [
-                [
-                    'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
-                    'author' => 'julia',
-                    'author_type' => 'ui',
-                    'name' => 'product.created',
-                    'timestamp' => null,
-                ],
-                [
-                    'uuid' => '8bdfe74c-da2e-4bda-a2b1-b5e2a3006ea3',
-                    'author' => 'julia',
-                    'author_type' => 'ui',
-                    'name' => 'product.updated',
-                    'timestamp' => null,
-                ],
-            ],
-        ]);
+        $this->getWebhookRequest()->shouldReturn($webhookRequest);
     }
 
-    public function it_throw_an_exception_when_end_time_is_null()
+    public function it_returns_the_message(): void
     {
-        $this->shouldThrow(\RuntimeException::class)->during('toLog');
+        $this->setMessage('a message');
+
+        $this->getMessage()->shouldReturn('a message');
+    }
+
+    public function it_returns_success(): void
+    {
+        $this->setSuccess(true);
+
+        $this->isSuccess()->shouldReturn(true);
+    }
+
+    public function it_returns_the_end_time(): void
+    {
+        $this->setEndTime(1603935009.832);
+
+        $this->getEndTime()->shouldReturn(1603935009.832);
+    }
+
+    public function it_returns_the_response(): void
+    {
+        $response = new Response();
+        $this->setResponse($response);
+
+        $this->getResponse()->shouldReturn($response);
+    }
+
+    private function createEvent(Author $author, array $data): EventInterface
+    {
+        $timestamp = 1577836800;
+        $uuid = '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c';
+
+        return new class($author, $data, $timestamp, $uuid) extends Event
+        {
+            public function getName(): string
+            {
+                return 'product.created';
+            }
+        };
     }
 }

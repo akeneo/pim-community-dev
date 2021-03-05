@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSendApiEventRequestLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
 use GuzzleHttp\ClientInterface;
@@ -12,7 +14,6 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
 
 /**
@@ -24,7 +25,8 @@ class GuzzleWebhookClient implements WebhookClient
 {
     private ClientInterface $client;
     private EncoderInterface $encoder;
-    private LoggerInterface $logger;
+    private SendApiEventRequestLogger $sendApiEventRequestLogger;
+    private EventsApiRequestLogger $debugLogger;
 
     /** @var array{concurrency: ?int, timeout: ?float} */
     private $config;
@@ -35,12 +37,14 @@ class GuzzleWebhookClient implements WebhookClient
     public function __construct(
         ClientInterface $client,
         EncoderInterface $encoder,
-        LoggerInterface $logger,
+        SendApiEventRequestLogger $sendApiEventRequestLogger,
+        EventsApiRequestLogger $debugLogger,
         array $config
     ) {
         $this->client = $client;
         $this->encoder = $encoder;
-        $this->logger = $logger;
+        $this->sendApiEventRequestLogger = $sendApiEventRequestLogger;
+        $this->debugLogger = $debugLogger;
         $this->config = $config;
     }
 
@@ -78,29 +82,64 @@ class GuzzleWebhookClient implements WebhookClient
                     'timeout' => $this->config['timeout'] ?? null,
                 ],
                 'fulfilled' => function (Response $response, int $index) use (&$logs) {
+                    /** @var EventSubscriptionSendApiEventRequestLog $webhookRequestLog */
                     $webhookRequestLog = $logs[$index];
                     $webhookRequestLog->setSuccess(true);
                     $webhookRequestLog->setEndTime(microtime(true));
                     $webhookRequestLog->setResponse($response);
 
-                    $this->logger->info(
-                        json_encode(
-                            $webhookRequestLog->toLog()
-                        )
+                    $this->sendApiEventRequestLogger->log(
+                        $webhookRequestLog->getWebhookRequest(),
+                        $webhookRequestLog->getStartTime(),
+                        $webhookRequestLog->getEndTime(),
+                        $webhookRequestLog->getHeaders(),
+                        $webhookRequestLog->getMessage(),
+                        $webhookRequestLog->isSuccess(),
+                        $webhookRequestLog->getResponse()
+                    );
+
+                    $this->debugLogger->logEventsApiRequestSucceed(
+                        $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
+                        $webhookRequestLog->getWebhookRequest()->apiEvents(),
+                        strval($webhookRequestLog->getWebhookRequest()->url()),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
                     );
                 },
                 'rejected' => function (RequestException $reason, int $index) use (&$logs) {
+                    /** @var EventSubscriptionSendApiEventRequestLog $webhookRequestLog */
                     $webhookRequestLog = $logs[$index];
                     $webhookRequestLog->setMessage($reason->getMessage());
                     $webhookRequestLog->setSuccess(false);
                     $webhookRequestLog->setEndTime(microtime(true));
                     $webhookRequestLog->setResponse($reason->getResponse());
 
-                    $this->logger->info(
-                        json_encode(
-                            $webhookRequestLog->toLog()
-                        )
+                    $this->sendApiEventRequestLogger->log(
+                        $webhookRequestLog->getWebhookRequest(),
+                        $webhookRequestLog->getStartTime(),
+                        $webhookRequestLog->getEndTime(),
+                        $webhookRequestLog->getHeaders(),
+                        $webhookRequestLog->getMessage(),
+                        $webhookRequestLog->isSuccess(),
+                        $webhookRequestLog->getResponse()
                     );
+
+                    if ($reason->hasResponse()) {
+                        $this->debugLogger->logEventsApiRequestFailed(
+                            $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
+                            $webhookRequestLog->getWebhookRequest()->apiEvents(),
+                            strval($reason->getRequest()->getUri()),
+                            $reason->getResponse()->getStatusCode(),
+                            $reason->getRequest()->getHeaders(),
+                        );
+                    } else {
+                        $this->debugLogger->logEventsApiRequestTimedOut(
+                            $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
+                            $webhookRequestLog->getWebhookRequest()->apiEvents(),
+                            strval($reason->getRequest()->getUri()),
+                            $this->config['timeout']
+                        );
+                    }
                 },
             ]
         );
