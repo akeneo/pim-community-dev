@@ -1,0 +1,6 @@
+search_event_subscription_logs:
+  path: '/search-event-subscription-logs'
+  defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.events_api_debug:searchEventSubscriptionLogs }
+  methods: [GET]
+  requirements:
+    connection_code: '[a-zA-Z0-9_]+'
