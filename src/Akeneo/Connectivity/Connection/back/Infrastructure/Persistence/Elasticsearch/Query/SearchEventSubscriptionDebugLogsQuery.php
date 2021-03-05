@@ -88,12 +88,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
                 'bool' => [
                     'should' => [
                         ['bool' => ['must' => [
-                            ['terms' => ['level' => ['info', 'notice']]],
                             ['terms' => ['_id' => $lastNoticeAndInfoIdentifiers['identifiers']]],
-                            ['bool' => ['should' => [
-                                ['term' => ['connection_code' => $connectionCode]],
-                                ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]], // connection_code IS NULL
-                            ]]],
                         ]]],
                         ['bool' => ['must' => [
                             ['terms' => ['level' => ['error', 'warning']]],
