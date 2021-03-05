@@ -27,6 +27,7 @@
 - PIM-9699: Fix clicking detail on last operation return 404 on import and export jobs
 - API-1483: Fix the test button of the Event Subscription
 - PLG-63: Fix product-grid grouped variant filter dropdown
+- PIM-9718: Decimals attribute values with no separators are well formatted
 
 ## New features
 
