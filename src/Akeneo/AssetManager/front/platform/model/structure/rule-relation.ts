@@ -1,15 +1,12 @@
 import {AttributeCode} from 'akeneoassetmanager/platform/model/structure/attribute';
 
-export type RuleCode = string;
-export type RuleRelation = {
-  attribute: AttributeCode;
-  rule: RuleCode;
+export type RulesNumberByAttribute = {
+  [attributeCode: string]: number;
 };
 
-export const getRulesForAttribute = (attributeCode: AttributeCode, ruleRelations: RuleRelation[]): RuleCode[] => {
-  const rulesForAttribute = ruleRelations.filter(
-    (ruleRelation: RuleRelation) => attributeCode === ruleRelation.attribute
-  );
-
-  return rulesForAttribute.map((ruleRelation: RuleRelation) => ruleRelation.rule);
+export const getRulesForAttribute = (
+  attributeCode: AttributeCode,
+  rulesNumberByAttribute: RulesNumberByAttribute
+): number => {
+  return Object.keys(rulesNumberByAttribute).includes(attributeCode) ? rulesNumberByAttribute[attributeCode] : 0;
 };
