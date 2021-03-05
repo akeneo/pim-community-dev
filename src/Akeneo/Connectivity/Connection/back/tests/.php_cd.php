@@ -140,6 +140,9 @@ $rules = [
 
             // Dependency on Elasticsearch
             'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
+
+            // Dependency on Encrypter
+            'Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Persistence'),
 
