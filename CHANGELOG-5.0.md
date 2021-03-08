@@ -8,6 +8,7 @@
 - DAPI-1490: Fix redirect to product grid from DQI dashboard when a default view is activated on the user profile
 - PIM-9686: Fix memory leak during "set_attribute_requirements" job
 - PIM-9673: Make sure that the job that converts product models into simple products does not fail
+- PIM-9727: Add missing query params to hatoas links
 
 # 5.0.4 (2021-02-02)
 
