@@ -281,7 +281,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
     /**
      * @param OptionsResolver $resolver
      */
-    protected function configureOptions(OptionsResolver $resolver)
+    private function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefault('levels', null);
         $resolver->setAllowedTypes('levels', ['null', 'string[]']);
