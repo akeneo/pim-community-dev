@@ -93,6 +93,18 @@ class JobExecutionMessage
         return new self($id, $jobExecutionId, $consumer, $createTime, $updatedTime, $options);
     }
 
+    public static function createJobExecutionMessageFromNormalized(
+        // @TODO CPM-152: replace id by a uuid? The id is only used for old queue.
+        ?int $id,
+        int $jobExecutionId,
+        ?string $consumer,
+        \DateTime $createTime,
+        ?\DateTime $updatedTime,
+        array $options
+    ): JobExecutionMessage {
+        return new self($id, $jobExecutionId, $consumer, $createTime, $updatedTime, $options);
+    }
+
     /**
      * @return null|int
      */
