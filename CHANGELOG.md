@@ -30,6 +30,7 @@
 - PIM-9718: Decimals attribute values with no separators are well formatted
 - PIM-9727: Add missing query params to hatoas links
 - API-9698: Refresh ES index after creating a product from the UI in order to well send product created event to event subscriptions
+- PIM-9711: Forbid moving categories from root to sub-category
 
 ## New features
 

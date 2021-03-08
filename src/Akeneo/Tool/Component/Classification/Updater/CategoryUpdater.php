@@ -143,6 +143,13 @@ class CategoryUpdater implements ObjectUpdaterInterface
             );
         }
 
+        if (null !== $category->getId() && $category->isRoot()) {
+            throw InvalidPropertyException::expected(
+                sprintf('Property "parent" of a root category must be null, "%s" given.', $data),
+                static::class
+            );
+        }
+
         $category->setParent($categoryParent);
     }
 }

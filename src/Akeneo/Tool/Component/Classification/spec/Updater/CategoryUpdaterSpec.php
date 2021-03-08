@@ -110,6 +110,30 @@ class CategoryUpdaterSpec extends ObjectBehavior
             ->during('update', [$category, $values, []]);
     }
 
+    function it_throws_an_exception_when_trying_to_set_the_parent_of_a_root_category(
+        $categoryRepository,
+        CategoryInterface $category,
+        CategoryInterface $categoryMaster
+    ) {
+        $categoryRepository->findOneByIdentifier('master')->willReturn($categoryMaster);
+
+        $category->getId()->willReturn(1);
+        $category->isRoot()->willReturn(true);
+
+        $values = [
+            'parent' => 'master',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyException::expected(
+                    'Property "parent" of a root category must be null, "master" given.',
+                    CategoryUpdater::class
+                )
+            )
+            ->during('update', [$category, $values, []]);
+    }
+
     function it_throws_an_exception_when_code_is_not_a_scalar(CategoryInterface $category)
     {
         $values = [
