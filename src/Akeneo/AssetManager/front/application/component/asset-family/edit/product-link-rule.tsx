@@ -2,8 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {JsonEditor as Editor} from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
-import {Link, Button, Helper, SectionTitle} from 'akeneo-design-system';
-import __ from 'akeneoassetmanager/tools/translator';
+import {Link, Button, Helper, SectionTitle, useBooleanState} from 'akeneo-design-system';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
@@ -29,6 +28,7 @@ import {ConfirmModal} from 'akeneoassetmanager/application/component/app/modal';
 import namingConventionSchema from 'akeneoassetmanager/infrastructure/model/asset-family/naming-convention.schema.json';
 import productLinkRulesSchema from 'akeneoassetmanager/infrastructure/model/asset-family/product-link-rules.schema.json';
 import {Subsection} from 'akeneoassetmanager/application/component/app/subsection';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
 const securityContext = require('pim/security-context');
@@ -140,6 +140,7 @@ const SecondaryActions = ({
   canExecuteNamingConvention,
   onExecuteNamingConvention,
 }: SecondaryActionsProps) => {
+  const translate = useTranslate();
   if (!canExecuteRules && !canExecuteNamingConvention) {
     return null;
   }
@@ -148,16 +149,16 @@ const SecondaryActions = ({
     <div className="AknSecondaryActions AknDropdown AknButtonList-item">
       <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
       <div className="AknDropdown-menu AknDropdown-menu--right">
-        <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
+        <div className="AknDropdown-menuTitle">{translate('pim_datagrid.actions.other')}</div>
         <div>
           {canExecuteRules && (
             <button tabIndex={-1} className="AknDropdown-menuLink" onClick={onExecuteRules}>
-              {__(`pim_asset_manager.asset_family.button.execute_product_link_rules`)}
+              {translate(`pim_asset_manager.asset_family.button.execute_product_link_rules`)}
             </button>
           )}
           {canExecuteNamingConvention && (
             <button tabIndex={-1} className="AknDropdown-menuLink" onClick={onExecuteNamingConvention}>
-              {__(`pim_asset_manager.asset_family.button.execute_naming_convention`)}
+              {translate(`pim_asset_manager.asset_family.button.execute_naming_convention`)}
             </button>
           )}
         </div>
@@ -176,132 +177,127 @@ interface DispatchProps {
   };
 }
 
-class ProductLinkRule extends React.Component<StateProps & DispatchProps> {
-  props: StateProps & DispatchProps;
-  public state: {
-    isExecuteRulesModalOpen: boolean;
-    isExecuteNamingConventionModalOpen: boolean;
-  } = {
-    isExecuteRulesModalOpen: false,
-    isExecuteNamingConventionModalOpen: false,
-  };
+const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: StateProps & DispatchProps) => {
+  const translate = useTranslate();
+  const [isExecuteRulesModalOpen, openExecuteRulesModal, closeExecuteRulesModal] = useBooleanState();
+  const [
+    isExecuteNamingConventionModalOpen,
+    openExecuteNamingConventionModal,
+    closeExecuteNamingConventionModal,
+  ] = useBooleanState();
+  const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
 
-  render() {
-    const {assetFamily, context, form, errors, events, rights} = this.props;
-    const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
-
-    return (
-      <>
-        <Header
-          label={__('pim_asset_manager.asset_family.tab.product_link_rules')}
-          image={null}
-          primaryAction={(defaultFocus: React.RefObject<any>) => (
-            <ButtonContainer>
-              {rights.assetFamily.edit_naming_convention ? (
-                <Button onClick={events.onSaveEditForm} ref={defaultFocus}>
-                  {__('pim_asset_manager.asset_family.button.save')}
-                </Button>
-              ) : null}
-            </ButtonContainer>
-          )}
-          secondaryActions={() => (
-            <SecondaryActions
-              canExecuteRules={rights.assetFamily.execute_product_link_rules}
-              onExecuteRules={() => this.setState({isExecuteRulesModalOpen: true})}
-              canExecuteNamingConvention={rights.assetFamily.execute_naming_conventions}
-              onExecuteNamingConvention={() => this.setState({isExecuteNamingConventionModalOpen: true})}
-            />
-          )}
-          withLocaleSwitcher={false}
-          withChannelSwitcher={false}
-          isDirty={form.state.isDirty}
-          breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
+  return (
+    <>
+      <Header
+        label={translate('pim_asset_manager.asset_family.tab.product_link_rules')}
+        image={null}
+        primaryAction={(defaultFocus: React.RefObject<any>) => (
+          <ButtonContainer>
+            {rights.assetFamily.edit_naming_convention ? (
+              <Button onClick={events.onSaveEditForm} ref={defaultFocus}>
+                {translate('pim_asset_manager.asset_family.button.save')}
+              </Button>
+            ) : null}
+          </ButtonContainer>
+        )}
+        secondaryActions={() => (
+          <SecondaryActions
+            canExecuteRules={rights.assetFamily.execute_product_link_rules}
+            onExecuteRules={openExecuteRulesModal}
+            canExecuteNamingConvention={rights.assetFamily.execute_naming_conventions}
+            onExecuteNamingConvention={openExecuteNamingConventionModal}
+          />
+        )}
+        withLocaleSwitcher={false}
+        withChannelSwitcher={false}
+        isDirty={form.state.isDirty}
+        breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
+      />
+      <Subsection>
+        <div>
+          <SectionTitle>
+            <SectionTitle.Title>
+              {translate('pim_asset_manager.asset_family.product_link_rules.naming_convention_subsection')}
+            </SectionTitle.Title>
+          </SectionTitle>
+          <Helper>
+            {translate('pim_asset_manager.asset_family.naming_convention.help.description')}&nbsp;
+            <Link
+              href="https://help.akeneo.com/pim/serenity/articles/assets-product-link-rules.html#focus-on-the-naming-convention"
+              target="_blank"
+            >
+              {translate('pim_asset_manager.asset_family.naming_convention.help.link')}
+            </Link>
+          </Helper>
+        </div>
+        <AssetFamilyNamingConventionEditor
+          namingConvention={assetFamily.namingConvention}
+          errors={errors}
+          onAssetFamilyNamingConventionChange={events.onAssetFamilyNamingConventionUpdated}
+          editMode={rights.assetFamily.edit_naming_convention}
         />
-        <Subsection>
-          <div>
-            <SectionTitle>
-              <SectionTitle.Title>
-                {__('pim_asset_manager.asset_family.product_link_rules.naming_convention_subsection')}
-              </SectionTitle.Title>
-            </SectionTitle>
-            <Helper>
-              {__('pim_asset_manager.asset_family.naming_convention.help.description')}&nbsp;
-              <Link
-                href="https://help.akeneo.com/pim/serenity/articles/assets-product-link-rules.html#focus-on-the-naming-convention"
-                target="_blank"
-              >
-                {__('pim_asset_manager.asset_family.naming_convention.help.link')}
-              </Link>
-            </Helper>
-          </div>
-          <AssetFamilyNamingConventionEditor
-            namingConvention={assetFamily.namingConvention}
-            errors={errors}
-            onAssetFamilyNamingConventionChange={events.onAssetFamilyNamingConventionUpdated}
-            editMode={rights.assetFamily.edit_naming_convention}
-          />
-        </Subsection>
-        <Subsection>
-          <div>
-            <SectionTitle>
-              <SectionTitle.Title>
-                {__('pim_asset_manager.asset_family.product_link_rules.product_link_rules_subsection')}
-              </SectionTitle.Title>
-            </SectionTitle>
-            <Helper>
-              {__('pim_asset_manager.asset_family.product_link_rules.help.description')}&nbsp;
-              <Link href="https://help.akeneo.com/pim/serenity/articles/assets-product-link-rules.html" target="_blank">
-                {__('pim_asset_manager.asset_family.product_link_rules.help.link')}
-              </Link>
-            </Helper>
-          </div>
-          <AssetFamilyProductLinkRulesEditor
-            productLinkRules={this.props.assetFamily.productLinkRules}
-            errors={this.props.errors}
-            onAssetFamilyProductLinkRulesChange={(productLinkRules: ProductLinkRuleCollection) => {
-              this.props.events.onAssetFamilyProductLinkRulesUpdated(productLinkRules);
-            }}
-            editMode={this.props.rights.assetFamily.edit_product_link_rules}
-          />
-        </Subsection>
-        {this.state.isExecuteRulesModalOpen && (
-          <ConfirmModal
-            titleContent={__('pim_asset_manager.asset_family.product_link_rules.execute_rules.confirm_title')}
-            content={__('pim_asset_manager.asset_family.product_link_rules.execute_rules.confirm_content')}
-            cancelButtonText={__('pim_asset_manager.asset_family.product_link_rules.execute_rules.cancel')}
-            confirmButtonText={__('pim_asset_manager.asset_family.product_link_rules.execute_rules.execute_rules')}
-            onCancel={() => {
-              this.setState({isExecuteRulesModalOpen: false});
-            }}
-            onConfirm={() => {
-              this.setState({isExecuteRulesModalOpen: false});
-              events.onExecuteProductLinkRules();
-            }}
-          />
-        )}
-        {this.state.isExecuteNamingConventionModalOpen && (
-          <ConfirmModal
-            titleContent={__(
-              'pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.confirm_title'
-            )}
-            content={__('pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.confirm_content')}
-            cancelButtonText={__('pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.cancel')}
-            confirmButtonText={__(
-              'pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.execute_naming_convention'
-            )}
-            onCancel={() => {
-              this.setState({isExecuteNamingConventionModalOpen: false});
-            }}
-            onConfirm={() => {
-              this.setState({isExecuteNamingConventionModalOpen: false});
-              events.onExecuteNamingConvention();
-            }}
-          />
-        )}
-      </>
-    );
-  }
-}
+      </Subsection>
+      <Subsection>
+        <div>
+          <SectionTitle>
+            <SectionTitle.Title>
+              {translate('pim_asset_manager.asset_family.product_link_rules.product_link_rules_subsection')}
+            </SectionTitle.Title>
+          </SectionTitle>
+          <Helper>
+            {translate('pim_asset_manager.asset_family.product_link_rules.help.description')}&nbsp;
+            <Link href="https://help.akeneo.com/pim/serenity/articles/assets-product-link-rules.html" target="_blank">
+              {translate('pim_asset_manager.asset_family.product_link_rules.help.link')}
+            </Link>
+          </Helper>
+        </div>
+        <AssetFamilyProductLinkRulesEditor
+          productLinkRules={assetFamily.productLinkRules}
+          errors={errors}
+          onAssetFamilyProductLinkRulesChange={(productLinkRules: ProductLinkRuleCollection) => {
+            events.onAssetFamilyProductLinkRulesUpdated(productLinkRules);
+          }}
+          editMode={rights.assetFamily.edit_product_link_rules}
+        />
+      </Subsection>
+      {isExecuteRulesModalOpen && (
+        <ConfirmModal
+          titleContent={translate('pim_asset_manager.asset_family.product_link_rules.execute_rules.confirm_title')}
+          content={translate('pim_asset_manager.asset_family.product_link_rules.execute_rules.confirm_content')}
+          cancelButtonText={translate('pim_asset_manager.asset_family.product_link_rules.execute_rules.cancel')}
+          confirmButtonText={translate('pim_asset_manager.asset_family.product_link_rules.execute_rules.execute_rules')}
+          onCancel={closeExecuteRulesModal}
+          onConfirm={() => {
+            closeExecuteRulesModal();
+            events.onExecuteProductLinkRules();
+          }}
+        />
+      )}
+      {isExecuteNamingConventionModalOpen && (
+        <ConfirmModal
+          titleContent={translate(
+            'pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.confirm_title'
+          )}
+          content={translate(
+            'pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.confirm_content'
+          )}
+          cancelButtonText={translate(
+            'pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.cancel'
+          )}
+          confirmButtonText={translate(
+            'pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.execute_naming_convention'
+          )}
+          onCancel={closeExecuteNamingConventionModal}
+          onConfirm={() => {
+            closeExecuteNamingConventionModal();
+            events.onExecuteNamingConvention();
+          }}
+        />
+      )}
+    </>
+  );
+};
 
 export default connect(
   (state: EditState): StateProps => {

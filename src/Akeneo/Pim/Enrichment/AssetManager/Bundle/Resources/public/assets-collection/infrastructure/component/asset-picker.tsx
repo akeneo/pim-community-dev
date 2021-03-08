@@ -7,7 +7,7 @@ import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import FilterCollection, {useFilterViews} from 'akeneoassetmanager/application/component/asset/list/filter-collection';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import Basket from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/basket';
-import SearchBar from 'akeneoassetmanager/application/component/asset/list/search-bar';
+import {SearchBar} from 'akeneoassetmanager/application/component/asset/list/search-bar';
 import fetchAllChannels from 'akeneoassetmanager/infrastructure/fetcher/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';

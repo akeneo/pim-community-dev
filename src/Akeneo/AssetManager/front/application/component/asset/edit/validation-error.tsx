@@ -1,10 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import __ from 'akeneoassetmanager/tools/translator';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {channelReferenceAreEqual} from 'akeneoassetmanager/domain/model/channel-reference';
 import {localeReferenceAreEqual} from 'akeneoassetmanager/domain/model/locale-reference';
 
+// TODO RAC-546: will be removed by mass edit
 export const getErrorsView = (errors: ValidationError[], value: EditionValue) => {
   const errorMessages = errors
     .filter(

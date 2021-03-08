@@ -17,10 +17,8 @@ import {
   localePermissionsChanged,
   assetFamilyPermissionChanged,
 } from 'akeneoassetmanager/domain/event/user';
-import {setUpSidebar} from 'akeneoassetmanager/application/action/sidebar';
 import {updateActivatedLocales} from 'akeneoassetmanager/application/action/locale';
 import {updateChannels} from 'akeneoassetmanager/application/action/channel';
-import {updateCurrentTab} from 'akeneoassetmanager/application/event/sidebar';
 import {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 import {LocalePermission} from 'akeneoassetmanager/domain/model/permission/locale';
 import {updateAttributeList} from 'akeneoassetmanager/application/action/product/attribute';
@@ -65,8 +63,6 @@ class AssetEditController extends BaseController {
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')) as any);
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
-        this.store.dispatch(setUpSidebar('akeneo_asset_manager_asset_edit') as any);
-        this.store.dispatch(updateCurrentTab(route.params.tab));
         this.store.dispatch(updateActivatedLocales() as any);
         this.store.dispatch(updateAttributeList(assetFamilyIdentifier) as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));

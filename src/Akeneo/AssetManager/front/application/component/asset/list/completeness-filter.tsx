@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
 import {Key} from 'akeneo-design-system';
-import __ from 'akeneoassetmanager/tools/translator';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
-type Props = {
+type CompletenessFilterProps = {
   value: CompletenessValue;
   onChange: (newValue: CompletenessValue) => void;
 };
@@ -14,24 +14,28 @@ const CompletenessFilterButtonView = ({
 }: {
   selectedElement: DropdownElement;
   onClick: () => void;
-}) => (
-  <div
-    className="AknActionButton AknActionButton--light AknActionButton--withoutBorder"
-    data-identifier={selectedElement.identifier}
-    onClick={onClick}
-    tabIndex={0}
-    onKeyPress={event => {
-      if (Key.Space === event.key) onClick();
-    }}
-  >
-    {__('pim_asset_manager.asset.grid.filter.completeness.label')}
-    :&nbsp;
-    <span className="AknActionButton-highlight" data-identifier={selectedElement.identifier}>
-      {selectedElement.label}
-    </span>
-    <span className="AknActionButton-caret" />
-  </div>
-);
+}) => {
+  const translate = useTranslate();
+
+  return (
+    <div
+      className="AknActionButton AknActionButton--light AknActionButton--withoutBorder"
+      data-identifier={selectedElement.identifier}
+      onClick={onClick}
+      tabIndex={0}
+      onKeyPress={event => {
+        if (Key.Space === event.key) onClick();
+      }}
+    >
+      {translate('pim_asset_manager.asset.grid.filter.completeness.label')}
+      :&nbsp;
+      <span className="AknActionButton-highlight" data-identifier={selectedElement.identifier}>
+        {selectedElement.label}
+      </span>
+      <span className="AknActionButton-caret" />
+    </div>
+  );
+};
 
 const CompletenessFilterItemView = ({
   isOpen,
@@ -45,6 +49,7 @@ const CompletenessFilterItemView = ({
   onClick: (element: DropdownElement) => void;
 }) => {
   const menuLinkClass = `AknDropdown-menuLink ${isActive ? 'AknDropdown-menuLink--active' : ''}`;
+
   return (
     <div
       className={menuLinkClass}
@@ -66,39 +71,39 @@ export enum CompletenessValue {
   No = 'no',
 }
 
-export default class CompletenessFilter extends React.Component<Props> {
-  private getCompletenessFilter = (): DropdownElement[] => {
+const CompletenessFilter = ({value, onChange}: CompletenessFilterProps) => {
+  const translate = useTranslate();
+
+  const getCompletenessFilter = (): DropdownElement[] => {
     return [
       {
         identifier: CompletenessValue.All,
-        label: __('pim_asset_manager.asset.grid.filter.completeness.all'),
+        label: translate('pim_asset_manager.asset.grid.filter.completeness.all'),
       },
       {
         identifier: CompletenessValue.Yes,
-        label: __('pim_asset_manager.asset.grid.filter.completeness.yes'),
+        label: translate('pim_asset_manager.asset.grid.filter.completeness.yes'),
       },
       {
         identifier: CompletenessValue.No,
-        label: __('pim_asset_manager.asset.grid.filter.completeness.no'),
+        label: translate('pim_asset_manager.asset.grid.filter.completeness.no'),
       },
     ];
   };
 
-  onCompletenessUpdated(event: DropdownElement) {
-    this.props.onChange(event.identifier as CompletenessValue);
-  }
+  return (
+    <Dropdown
+      ItemView={CompletenessFilterItemView}
+      ButtonView={CompletenessFilterButtonView}
+      label={translate('pim_asset_manager.asset.grid.filter.completeness.label')}
+      elements={getCompletenessFilter()}
+      selectedElement={value}
+      onSelectionChange={(event: DropdownElement) => {
+        onChange(event.identifier as CompletenessValue);
+      }}
+      className="complete-filter"
+    />
+  );
+};
 
-  render() {
-    return (
-      <Dropdown
-        ItemView={CompletenessFilterItemView}
-        ButtonView={CompletenessFilterButtonView}
-        label={__('pim_asset_manager.asset.grid.filter.completeness.label')}
-        elements={this.getCompletenessFilter()}
-        selectedElement={this.props.value}
-        onSelectionChange={this.onCompletenessUpdated.bind(this)}
-        className="complete-filter"
-      />
-    );
-  }
-}
+export {CompletenessFilter};

@@ -20,7 +20,7 @@ const eeConfig = {
     'akeneoassetmanager/application/component/app/select2',
     'akeneoassetmanager/platform/component/common/checkbox',
     'akeneodataqualityinsights/react',
-    'akeneoassetmanager/application/component/asset/index/completeness-filter',
+    'akeneoassetmanager/application/component/asset/list/completeness-filter',
     'akeneoassetmanager/application/component/asset/list/search-bar/search-field', // cannot trigger re-render
     'akeneoassetmanager/application/component/asset/list/search-bar', // cannot test hooks + asynchronous fetching
     'akeneoassetmanager/application/component/app',

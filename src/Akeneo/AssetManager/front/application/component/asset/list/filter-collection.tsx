@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import {FilterView, FilterViewCollection, getDataFilterViews} from 'akeneoassetmanager/application/configuration/value';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import {getAttributeFilterKey} from 'akeneoassetmanager/tools/filter';
-import __ from 'akeneoassetmanager/tools/translator';
 import {NormalizedOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {NormalizedOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';

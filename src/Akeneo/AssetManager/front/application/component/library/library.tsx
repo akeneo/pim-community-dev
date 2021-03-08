@@ -1,6 +1,6 @@
 import React, {useEffect, useCallback, useState} from 'react';
 import styled from 'styled-components';
-import SearchBar from 'akeneoassetmanager/application/component/asset/list/search-bar';
+import {SearchBar} from 'akeneoassetmanager/application/component/asset/list/search-bar';
 import Mosaic from 'akeneoassetmanager/application/component/asset/list/mosaic';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';

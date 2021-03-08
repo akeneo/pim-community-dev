@@ -1,6 +1,5 @@
-import * as React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
-import __ from 'akeneoassetmanager/tools/translator';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {
@@ -31,6 +30,7 @@ import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {doReloadAllPreviews} from 'akeneoassetmanager/application/action/asset/reloadPreview';
 import {ViewGenerator} from 'akeneoassetmanager/application/configuration/value';
 import {FullscreenIcon, Key} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const MediaLinkInput = styled.input`
   ::placeholder {
@@ -76,6 +76,7 @@ const View = ({
   reloadPreview: boolean;
   onReloadPreview: () => void;
 }) => {
+  const translate = useTranslate();
   if (!isMediaLinkData(value.data) || !isMediaLinkAttribute(value.attribute)) {
     return null;
   }
@@ -86,7 +87,7 @@ const View = ({
     data: getMediaData(value.data),
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (reloadPreview) {
       doRegenerate();
     }
@@ -106,7 +107,7 @@ const View = ({
         <ThumbnailPlaceholder className="AknLoadingPlaceHolder" />
       ) : (
         <ThumbnailContainer>
-          <Thumbnail src={refreshedUrl} alt={__('pim_asset_manager.attribute.media_type_preview')} />
+          <Thumbnail src={refreshedUrl} alt={translate('pim_asset_manager.attribute.media_type_preview')} />
         </ThumbnailContainer>
       )}
       <MediaLinkInput
@@ -120,7 +121,7 @@ const View = ({
         onKeyDown={e => Key.Enter === e.key && onSubmit()}
         disabled={!canEditData}
         readOnly={!canEditData}
-        placeholder={__(`pim_asset_manager.attribute.media_link.${canEditData ? 'placeholder' : 'read_only'}`)}
+        placeholder={translate(`pim_asset_manager.attribute.media_link.${canEditData ? 'placeholder' : 'read_only'}`)}
       />
       {!isValueEmpty(value) && (
         <Actions>
@@ -128,7 +129,7 @@ const View = ({
           <CopyUrlAction size={20} data={value.data} attribute={value.attribute} />
           <DownloadAction size={20} data={value.data} attribute={value.attribute} />
           <FullscreenPreview anchor={Action} label={label} data={value.data} attribute={value.attribute}>
-            <FullscreenIcon title={__('pim_asset_manager.asset.button.fullscreen')} size={20} />
+            <FullscreenIcon title={translate('pim_asset_manager.asset.button.fullscreen')} size={20} />
           </FullscreenPreview>
         </Actions>
       )}

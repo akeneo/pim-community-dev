@@ -1,5 +1,4 @@
 import React from 'react';
-import __ from 'akeneoassetmanager/tools/translator';
 import styled from 'styled-components';
 import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
 import {
@@ -14,6 +13,7 @@ import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/ty
 import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {CopyIcon, DownloadIcon, RefreshIcon, getColor} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 export const Container = styled.div`
   align-items: center;
@@ -82,6 +82,7 @@ type ActionProps = {
 };
 
 export const DownloadAction = ({data, attribute, label, size, color}: ActionProps) => {
+  const translate = useTranslate();
   if (
     (isMediaLinkAttribute(attribute) &&
       (MediaTypes.youtube === attribute.media_type || MediaTypes.vimeo === attribute.media_type)) ||
@@ -91,7 +92,7 @@ export const DownloadAction = ({data, attribute, label, size, color}: ActionProp
 
   const url = isMediaFileData(data) ? getImageDownloadUrl(data) : getMediaLinkUrl(data, attribute);
   const fileName = null !== data && isMediaFileData(data) ? data.originalFilename : url;
-  const title = label || __('pim_asset_manager.asset_preview.download');
+  const title = label || translate('pim_asset_manager.asset_preview.download');
 
   return (
     <Action title={title} href={url} download={fileName} target="_blank">
@@ -102,6 +103,7 @@ export const DownloadAction = ({data, attribute, label, size, color}: ActionProp
 };
 
 export const CopyUrlAction = ({data, attribute, label, size, color}: ActionProps) => {
+  const translate = useTranslate();
   if (!isMediaLinkAttribute(attribute) || !isMediaLinkData(data) || isDataEmpty(data) || !canCopyToClipboard())
     return null;
 
@@ -111,7 +113,7 @@ export const CopyUrlAction = ({data, attribute, label, size, color}: ActionProps
       : MediaTypes.vimeo === attribute.media_type
       ? getVimeoWatchUrl(data)
       : getMediaLinkUrl(data, attribute);
-  const title = label || __('pim_asset_manager.asset_preview.copy_url');
+  const title = label || translate('pim_asset_manager.asset_preview.copy_url');
 
   return (
     <Action title={title} onClick={() => copyToClipboard(url)}>
@@ -122,8 +124,9 @@ export const CopyUrlAction = ({data, attribute, label, size, color}: ActionProps
 };
 
 export const ReloadAction = ({data, onReload, attribute, label, size, color}: ActionProps & {onReload: () => void}) => {
+  const translate = useTranslate();
   if (!isMediaLinkAttribute(attribute) || !isMediaLinkData(data)) return null;
-  const title = label || __('pim_asset_manager.attribute.media_link.reload');
+  const title = label || translate('pim_asset_manager.attribute.media_link.reload');
 
   return (
     <Action title={title} onClick={onReload}>

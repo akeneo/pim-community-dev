@@ -1,21 +1,19 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import {getColor, Key, SectionTitle} from 'akeneo-design-system';
+import {getColor, SectionTitle} from 'akeneo-design-system';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {assetValueUpdated, saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset/edit/form';
 import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
-import renderValues from 'akeneoassetmanager/application/component/asset/edit/enrich/value';
+import {ValueCollection} from 'akeneoassetmanager/application/component/asset/edit/enrich/value';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
-import __ from 'akeneoassetmanager/tools/translator';
 import LinkedProducts from 'akeneoassetmanager/application/component/asset/edit/linked-products';
 import {Subsection} from 'akeneoassetmanager/application/component/app/subsection';
 import {MainMediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/main-media-preview';
-
-const securityContext = require('pim/security-context');
+import {useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
   display: flex;
@@ -40,78 +38,57 @@ const RightColumn = styled.div`
   flex-grow: 1;
 `;
 
-interface StateProps {
+type StateProps = {
   form: EditionFormState;
   context: {
     locale: string;
     channel: string;
   };
-  rights: {
-    locale: {
-      edit: boolean;
-    };
-    asset: {
-      edit: boolean;
-      delete: boolean;
-    };
-  };
-}
+  canEditCurrentLocale: boolean;
+  canEditCurrentFamily: boolean;
+};
 
-interface DispatchProps {
+type DispatchProps = {
   events: {
     form: {
       onValueChange: (value: EditionValue) => void;
       onSubmit: () => void;
     };
   };
-}
+};
 
-class Enrich extends React.Component<StateProps & DispatchProps> {
-  private labelInput: HTMLInputElement;
-  props: StateProps & DispatchProps;
+const Enrich = ({form, context, events, canEditCurrentLocale, canEditCurrentFamily}: StateProps & DispatchProps) => {
+  const translate = useTranslate();
+  const {isGranted} = useSecurity();
+  const asset = form.data;
 
-  componentDidMount() {
-    if (this.labelInput) {
-      this.labelInput.focus();
-    }
-  }
-
-  keyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (Key.Enter === event.key) this.props.events.form.onSubmit();
-  };
-
-  render() {
-    const asset = this.props.form.data;
-
-    return (
-      <Container>
-        <LeftColumn>
-          <Subsection>
-            <SectionTitle sticky={192}>
-              <SectionTitle.Title>{__('pim_asset_manager.asset.enrich.edit_subsection')}</SectionTitle.Title>
-            </SectionTitle>
-            <div>
-              {renderValues(
-                asset,
-                denormalizeChannelReference(this.props.context.channel),
-                denormalizeLocaleReference(this.props.context.locale),
-                this.props.form.errors,
-                this.props.events.form.onValueChange,
-                this.props.events.form.onSubmit,
-                this.props.rights
-              )}
-            </div>
-          </Subsection>
-        </LeftColumn>
-        <Separator />
-        <RightColumn>
-          <MainMediaPreview asset={asset} context={this.props.context} />
-          <LinkedProducts />
-        </RightColumn>
-      </Container>
-    );
-  }
-}
+  return (
+    <Container>
+      <LeftColumn>
+        <Subsection>
+          <SectionTitle sticky={192}>
+            <SectionTitle.Title>{translate('pim_asset_manager.asset.enrich.edit_subsection')}</SectionTitle.Title>
+          </SectionTitle>
+          <ValueCollection
+            asset={asset}
+            channel={denormalizeChannelReference(context.channel)}
+            locale={denormalizeLocaleReference(context.locale)}
+            errors={form.errors}
+            onValueChange={events.form.onValueChange}
+            onFieldSubmit={events.form.onSubmit}
+            canEditLocale={canEditCurrentLocale}
+            canEditAsset={canEditCurrentFamily && isGranted('akeneo_assetmanager_asset_edit')}
+          />
+        </Subsection>
+      </LeftColumn>
+      <Separator />
+      <RightColumn>
+        <MainMediaPreview asset={asset} context={context} />
+        <LinkedProducts />
+      </RightColumn>
+    </Container>
+  );
+};
 
 export default connect(
   (state: EditState): StateProps => {
@@ -123,20 +100,8 @@ export default connect(
         locale: locale,
         channel: state.user.catalogChannel,
       },
-      rights: {
-        locale: {
-          edit: canEditLocale(state.right.locale, locale),
-        },
-        asset: {
-          edit:
-            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
-            canEditAssetFamily(state.right.assetFamily, state.form.data.assetFamily.identifier),
-          delete:
-            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_delete') &&
-            canEditAssetFamily(state.right.assetFamily, state.form.data.assetFamily.identifier),
-        },
-      },
+      canEditCurrentLocale: canEditLocale(state.right.locale, locale),
+      canEditCurrentFamily: canEditAssetFamily(state.right.assetFamily, state.form.data.assetFamily.identifier),
     };
   },
   (dispatch: any): DispatchProps => {

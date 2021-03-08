@@ -1,5 +1,4 @@
 import * as React from 'react';
-import __ from 'akeneoassetmanager/tools/translator';
 import EditionAsset, {
   getEditionAssetLabel,
   getEditionAssetMainMediaThumbnail,
@@ -14,6 +13,7 @@ import {connect} from 'react-redux';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 import {emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 type MainMediaThumbnailProps = {
   asset: EditionAsset;
@@ -47,6 +47,7 @@ const Img = styled.img`
 `;
 
 export const DisconnectedMainMediaThumbnail = ({asset, context, reloadPreview}: MainMediaThumbnailProps) => {
+  const translate = useTranslate();
   const url = getMediaPreviewUrl(getEditionAssetMainMediaThumbnail(asset, context.channel, context.locale));
   const emptyMediaUrl = getMediaPreviewUrl(emptyMediaPreview());
   const label = getEditionAssetLabel(asset, context.locale);
@@ -65,7 +66,7 @@ export const DisconnectedMainMediaThumbnail = ({asset, context, reloadPreview}: 
   ) : (
     <Container>
       <Img
-        alt={__('pim_asset_manager.asset.img', {label})}
+        alt={translate('pim_asset_manager.asset.img', {label})}
         src={refreshedUrl}
         onError={event => (event.target as HTMLInputElement).setAttribute('src', emptyMediaUrl)}
       />

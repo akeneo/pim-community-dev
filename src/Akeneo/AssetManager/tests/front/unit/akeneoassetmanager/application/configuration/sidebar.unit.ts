@@ -40,7 +40,7 @@ config:
             my_view:
                 tabs:
                     tab-code:
-                        label: '@your_view_path_here'
+                        label: 'your.translation.key.here'
 
 Actual conf: {\"my_view\":{}}`;
       expect(error.message).toBe(`Cannot get the tabs for "my_view". The configuration path should be ${confPath}`);
@@ -71,10 +71,8 @@ config:
             my_view:
                 tabs:
                     tab-code:
-                        label: '@your_view_path_here'`;
-      expect(error.message).toBe(
-        `The Component loaded to display the label needs to export the label property from the configuration ${confPath}`
-      );
+                        label: 'your.translation.key.here'`;
+      expect(error.message).toBe(`You need to define a label for your tab: ${confPath}`);
     }
   });
 
@@ -98,9 +96,7 @@ config:
       my_view: {
         tabs: {
           first: {
-            label: {
-              label: 'my_view',
-            },
+            label: 'my_view',
           },
         },
       },

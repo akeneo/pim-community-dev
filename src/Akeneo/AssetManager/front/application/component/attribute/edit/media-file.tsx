@@ -1,5 +1,4 @@
 import React from 'react';
-import __ from 'akeneoassetmanager/tools/translator';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
@@ -16,13 +15,13 @@ import {
   isValidMaxFileSize,
   createMaxFileSizeFromString,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-file/max-file-size';
-import {Key} from 'akeneo-design-system';
+import {Key, TagInput} from 'akeneo-design-system';
 import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-file/media-type';
 import {
   normalizeMediaType,
   createMediaTypeFromNormalized,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-file/media-type';
-import Tags from 'akeneoassetmanager/application/component/app/tags';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const MediaFileView = ({
   attribute,
@@ -43,6 +42,7 @@ const MediaFileView = ({
     };
   };
 }) => {
+  const translate = useTranslate();
   const inputTextClassName = `AknTextField AknTextField--light ${
     !rights.attribute.edit ? 'AknTextField--disabled' : ''
   }`;
@@ -52,7 +52,7 @@ const MediaFileView = ({
       <div className="AknFieldContainer--packed" data-code="maxFileSize">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.max_file_size">
-            {__('pim_asset_manager.attribute.edit.input.max_file_size')}
+            {translate('pim_asset_manager.attribute.edit.input.max_file_size')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
@@ -84,7 +84,7 @@ const MediaFileView = ({
       <div className="AknFieldContainer--packed" data-code="mediaType">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.media_type">
-            {__('pim_asset_manager.attribute.edit.input.media_type')}
+            {translate('pim_asset_manager.attribute.edit.input.media_type')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
@@ -110,20 +110,19 @@ const MediaFileView = ({
             className="AknFieldContainer-label"
             htmlFor="pim_asset_manager.attribute.edit.input.allowed_extensions"
           >
-            {__('pim_asset_manager.attribute.edit.input.allowed_extensions')}
+            {translate('pim_asset_manager.attribute.edit.input.allowed_extensions')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
-          <Tags
-            id="pim_asset_manager.attribute.edit.input.allowed_extensions"
-            name="allowed_extensions"
-            values={normalizeAllowedExtension(attribute.allowedExtensions)}
-            tags={[]}
-            readOnly={!rights.attribute.edit}
-            configuration={{maximumInputLength: 20}}
+          <TagInput
             onChange={(allowedExtensions: string[]) => {
               onAdditionalPropertyUpdated('allowed_extensions', createAllowedExtensionFromArray(allowedExtensions));
             }}
+            readOnly={!rights.attribute.edit}
+            value={normalizeAllowedExtension(attribute.allowedExtensions)}
+            id="pim_asset_manager.attribute.edit.input.allowed_extensions"
+            placeholder="Placeholder"
+            name="allowed_extensions"
           />
         </div>
         {getErrorsView(errors, 'allowedExtensions')}

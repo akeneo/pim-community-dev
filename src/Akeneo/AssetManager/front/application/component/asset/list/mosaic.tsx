@@ -2,11 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import AssetCard from 'akeneoassetmanager/application/component/asset/list/mosaic/asset-card';
-import __ from 'akeneoassetmanager/tools/translator';
 import EmptyResult from 'akeneoassetmanager/application/component/asset/list/mosaic/empty-result';
 import ListAsset, {ASSET_COLLECTION_LIMIT} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {CardGrid, Helper} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
   height: 100%;
@@ -41,10 +41,14 @@ const Mosaic = ({
   onAssetClick?: (asset: AssetCode) => void;
   selectionState: 'mixed' | boolean;
 }) => {
+  const translate = useTranslate();
+
   return (
     <React.Fragment>
       {hasReachMaximumSelection && (
-        <Helper>{__('pim_asset_manager.asset_collection.notification.limit', {limit: ASSET_COLLECTION_LIMIT})}</Helper>
+        <Helper>
+          {translate('pim_asset_manager.asset_collection.notification.limit', {limit: ASSET_COLLECTION_LIMIT})}
+        </Helper>
       )}
       {assetCollection.length > 0 ? (
         <Container data-container="mosaic" ref={scrollContainerRef}>
@@ -75,9 +79,9 @@ const Mosaic = ({
                   style={{backgroundImage: 'url("/bundles/pimui/images/illustrations/Product.svg")'}}
                 />
                 <div className="AknDescriptionHeader-title">
-                  {__('pim_asset_manager.asset.grid.more_result.title')}
+                  {translate('pim_asset_manager.asset.grid.more_result.title')}
                   <div className="AknDescriptionHeader-description">
-                    {__('pim_asset_manager.asset.grid.more_result.description', {
+                    {translate('pim_asset_manager.asset.grid.more_result.description', {
                       total: resultCount,
                       maxDisplayedAssets: MAX_DISPLAYED_ASSETS,
                     })}
