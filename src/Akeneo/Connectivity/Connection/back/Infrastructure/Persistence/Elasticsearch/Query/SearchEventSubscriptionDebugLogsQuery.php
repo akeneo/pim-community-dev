@@ -104,7 +104,14 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
                         [
                             'bool' => [
                                 'must' => [
-                                    ['terms' => ['level' => ['error', 'warning']]],
+                                    [
+                                        'terms' => [
+                                            'level' => [
+                                                EventsApiDebugLogLevels::ERROR,
+                                                EventsApiDebugLogLevels::WARNING,
+                                            ],
+                                        ],
+                                    ],
                                     ['range' => ['timestamp' => ['gte' => $nowTimestamp - self::MAX_LIFETIME_OF_WARNING_AND_ERROR_LOGS]]],
                                     [
                                         'bool' => [
@@ -119,7 +126,6 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
                             ],
                         ],
                     ],
-                    //'must' => $filters,
                 ],
             ],
         ];
@@ -191,7 +197,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
             'query' => [
                 'bool' => [
                     'must' => [
-                        ['terms' => ['level' => ['info', 'notice']]],
+                        ['terms' => ['level' => [EventsApiDebugLogLevels::INFO, EventsApiDebugLogLevels::NOTICE]]],
                         [
                             'bool' => [
                                 'should' => [
@@ -278,23 +284,34 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
     protected function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefault('levels', null);
-        //$resolver->setAllowedTypes('levels', 'string[]');
-        /*
-        $resolver->setDefault(
+        $resolver->setAllowedTypes('levels', ['null', 'string[]']);
+        $resolver->setAllowedValues(
             'levels',
-            function (OptionsResolver $levelResolver) {
-                $levelResolver->setAllowedValues(
-                    'levels',
-                    [
-                        null,
-                        EventsApiDebugLogLevels::WARNING,
-                        EventsApiDebugLogLevels::ERROR,
-                        EventsApiDebugLogLevels::INFO,
-                        EventsApiDebugLogLevels::NOTICE,
-                    ]
-                );
+            function ($levels) {
+                if (null === $levels) {
+                    return true;
+                }
+
+                if (!is_array($levels)) {
+                    return false;
+                }
+
+                foreach ($levels as $level) {
+                    if (!in_array(
+                        $level,
+                        [
+                            EventsApiDebugLogLevels::WARNING,
+                            EventsApiDebugLogLevels::ERROR,
+                            EventsApiDebugLogLevels::INFO,
+                            EventsApiDebugLogLevels::NOTICE,
+                        ]
+                    )) {
+                        return false;
+                    }
+                }
+
+                return true;
             }
         );
-        */
     }
 }

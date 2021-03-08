@@ -319,9 +319,15 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         $result = $this->query->execute('a_connection_code', null, $filters);
 
-        // TODO: assert notice et info
-        Assert::assertCount(3, $result['results']);
+        usort($result['results'], function($a, $b) {
+            return strcmp($a['level'], $b['level']);
+        });
+
         Assert::assertEquals(3, $result['total']);
+        Assert::assertCount(3, $result['results']);
+        Assert::assertEquals(EventsApiDebugLogLevels::INFO, $result['results'][0]['level']);
+        Assert::assertEquals(EventsApiDebugLogLevels::NOTICE, $result['results'][1]['level']);
+        Assert::assertEquals(EventsApiDebugLogLevels::NOTICE, $result['results'][2]['level']);
     }
 
     private function generateLogs(callable $generator, int $number): void
