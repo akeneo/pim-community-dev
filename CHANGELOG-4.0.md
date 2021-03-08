@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9717: Fix 500 error when filtering with invalid identifiers value during an API call
+
 # 4.0.96 (2021-02-23)
 
 ## Bug fixes
