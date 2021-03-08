@@ -1,5 +1,5 @@
 import styled, {css, keyframes} from 'styled-components';
-import {Color, FontSize, getColor, getFontSize, Palette} from './theme';
+import {Color, FontFamily, FontSize, getColor, getFontSize, Palette} from './theme';
 
 const CommonStyle = css`
   input,
@@ -115,8 +115,13 @@ const palette: Palette = {
   danger: 'red',
 };
 
+const fontFamily: FontFamily = {
+  default: 'Lato, "Helvetica Neue", Helvetica, Arial, sans-serif',
+  monospace: 'Courier, "MS Courier New", Prestige, "Everson Mono"',
+};
+
 const BrandedPath = styled.path`
   fill: ${getColor('brand', 100)};
 `;
 
-export {color, fontSize, palette, CommonStyle, BrandedPath, placeholderStyle};
+export {color, fontFamily, fontSize, palette, CommonStyle, BrandedPath, placeholderStyle};

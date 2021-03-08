@@ -4,7 +4,7 @@ import {InputProps} from '../InputProps';
 import {LockIcon} from '../../../icons';
 import {Override} from '../../../shared';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
-import {RichTextEditor} from './RichTextEditor';
+import {RichTextEditor, EditorProps} from './RichTextEditor';
 
 const TextAreaInputContainer = styled.div`
   position: relative;
@@ -121,6 +121,11 @@ type TextAreaInputProps = Override<
      * If true, the component will display a WYSIWYG editor.
      */
     isRichText?: boolean;
+
+    /**
+     * Properties passed to the WYSIWYG editor.
+     */
+    richTextEditorProps?: EditorProps;
   }
 >;
 
@@ -129,7 +134,16 @@ type TextAreaInputProps = Override<
  */
 const TextAreaInput = React.forwardRef<HTMLInputElement, TextAreaInputProps>(
   (
-    {value, invalid, onChange, readOnly, characterLeftLabel, isRichText = false, ...rest}: TextAreaInputProps,
+    {
+      value,
+      invalid,
+      onChange,
+      readOnly,
+      characterLeftLabel,
+      isRichText = false,
+      richTextEditorProps,
+      ...rest
+    }: TextAreaInputProps,
     forwardedRef: Ref<HTMLInputElement>
   ) => {
     const handleChange = useCallback(
@@ -143,7 +157,12 @@ const TextAreaInput = React.forwardRef<HTMLInputElement, TextAreaInputProps>(
       <TextAreaInputContainer>
         {isRichText ? (
           <RichTextEditorContainer readOnly={readOnly} invalid={invalid}>
-            <RichTextEditor readOnly={readOnly} value={value} onChange={value => onChange?.(value)} {...rest} />
+            <RichTextEditor
+              readOnly={readOnly}
+              value={value}
+              {...richTextEditorProps}
+              onChange={value => onChange?.(value)}
+            />
           </RichTextEditorContainer>
         ) : (
           <Textarea
