@@ -96,3 +96,12 @@ services:
             - '%akeneo_batch.entity.job_instance.class%'
         tags:
             - { name: console.command }
+
+    akeneo_batch_queue.messenger.serializer:
+        class: Akeneo\Tool\Bundle\MessengerBundle\Serialization\JsonSerializer
+        arguments:
+            - !tagged akeneo_batch_queue.messenger.normalizer
+
+    Akeneo\Tool\Component\BatchQueue\Normalizer\JobExecutionMessageNormalizer:
+        tags:
+            - { name: akeneo_batch_queue.messenger.normalizer, priority: 0 }
