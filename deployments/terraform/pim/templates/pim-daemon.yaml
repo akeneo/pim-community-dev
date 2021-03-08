@@ -18,7 +18,15 @@ spec:
       component: "pim-daemon-{{ $daemonName }}"
       release: "{{ $tplCtx.Release.Name }}"
   strategy:
+{{- if $daemonOptions.trapped }}
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 100%
+      maxSurge: 100%
+{{- else }}
     type: Recreate
+{{- end }}
+
   template:
     metadata:
       labels:
@@ -32,6 +40,9 @@ spec:
         checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") $tplCtx | replace  (printf "%s-%s" $tplCtx.Chart.Name $tplCtx.Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
         checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") $tplCtx | replace  (printf "%s-%s" $tplCtx.Chart.Name $tplCtx.Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
     spec:
+{{- if $daemonOptions.trapped }}
+      terminationGracePeriodSeconds: 86400
+{{- end }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -47,7 +58,11 @@ spec:
         - name: php
           image: {{ template "pim.imageNameAndTag" $tplCtx }}
           imagePullPolicy: {{ $tplCtx.Values.image.pim.pullPolicy | quote }}
+{{- if $daemonOptions.trapped }}
+          command: ['setpriv','--reuid=www-data','--regid=www-data','--init-groups','bin/queue-daemon-wrapper.sh','{{ $daemonOptions.pimCommand }}']
+{{- else }}
           command: ['sh', '-c', 'export HOME=/srv/pim && cd /srv/pim && su www-data -s /bin/bash -c "php bin/console {{ $daemonOptions.pimCommand }}"']
+{{- end }}
           resources:
 {{- if $daemonOptions.resources }}
 {{ toYaml $daemonOptions.resources | indent 12 }}

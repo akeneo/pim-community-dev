@@ -1,14 +1,3 @@
 <div class="from-smart">
-    <%- __('pimee_enrich.entity.product.module.attribute.can_be_updated_by_a_rule', {}, ruleRelations.length) %>
-    <% ruleRelations.slice(0, -1).map((ruleRelation) => { %><!--
-        --><span <%- canEdit ? `data-url=${Routing.generate('pimee_catalog_rule_edit', { code: ruleRelation.rule })}` : '' %>>
-            <%- getRuleLabel(ruleRelation) %>
-        </span><!--
-    --><% }).join(', ') %>
-    <% if (ruleRelations.length > 1) { %>
-        <%- __('pim_common.and') %>
-    <% } %>
-    <span <%- canEdit ? `data-url=${Routing.generate('pimee_catalog_rule_edit', { code: ruleRelations[ruleRelations.length - 1].rule })}` : '' %>>
-        <%- getRuleLabel(ruleRelations[ruleRelations.length - 1]) %>
-    </span>
+    <%= __(translation, {count: rules_number}, rules_number) %>
 </div>

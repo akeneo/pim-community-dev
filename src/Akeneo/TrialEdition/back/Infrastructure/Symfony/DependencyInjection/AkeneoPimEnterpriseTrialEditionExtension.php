@@ -26,5 +26,6 @@ final class AkeneoPimEnterpriseTrialEditionExtension extends Extension
 
         $loader->load('external_javascript_dependencies.yml');
         $loader->load('feature_flags.yml');
+        $loader->load('sso.yml');
     }
 }

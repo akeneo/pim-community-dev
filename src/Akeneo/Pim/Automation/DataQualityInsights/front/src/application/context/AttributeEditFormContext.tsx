@@ -37,7 +37,7 @@ export const AttributeEditFormContextProvider: FC<ProviderProps> = ({children, .
 
   return (
     <AttributeEditFormContext.Provider value={initialState}>
-      <AttributeOptionsListContextProvider attribute={attribute}>
+      <AttributeOptionsListContextProvider>
         <AttributeSpellcheckEvaluationContextProvider attribute={attribute}>
           {children}
         </AttributeSpellcheckEvaluationContextProvider>

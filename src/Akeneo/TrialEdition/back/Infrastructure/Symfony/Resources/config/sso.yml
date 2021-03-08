@@ -1,0 +1,12 @@
+services:
+    Akeneo\Pim\TrialEdition\Infrastructure\Sso\SamlUserFactory:
+        decorates: akeneo_authentication.sso.user.factory
+        decoration_inner_name: akeneo_authentication.sso.user.factory.base
+        arguments:
+            - '@akeneo_authentication.sso.user.factory.base'
+            - '@akeneo.pim.trial_edition.feature'
+            - '@pim_user.factory.user'
+            - '@pim_user.saver.user'
+            - '@pim_user.updater.user'
+            - '@validator'
+            - '@logger'

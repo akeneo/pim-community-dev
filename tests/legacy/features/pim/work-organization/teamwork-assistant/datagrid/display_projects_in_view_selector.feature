@@ -88,7 +88,7 @@ Feature: Display teamwork assistant projects in the datagrid view selector
     And I save the product
     When I am on the products grid
     And I open the category tree
-    And I filter by "category" with operator "" and value "clothing"
+    And I filter by "category" with operator "" and value "Clothing"
     And I close the category tree
     And I show the filter "weight"
     And I filter by "weight" with operator "<" and value "6 Ounce"
@@ -106,7 +106,7 @@ Feature: Display teamwork assistant projects in the datagrid view selector
     And I apply the "Default view" view
     Then I should be on the products page
     And I open the category tree
-    And I filter by "category" with operator "" and value "default"
+    And I filter by "category" with operator "" and value "Default"
     And I close the category tree
     And I type "capacity" in the manage filter input
     And I show the filter "capacity"

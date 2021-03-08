@@ -16,6 +16,7 @@ coupling-back: #Doc: launch all coupling detector tests
 	PIM_CONTEXT=permission $(MAKE) permission-coupling-back
 	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-coupling-back
 	PIM_CONTEXT=communication-channel $(MAKE) communication-channel-coupling-back
+	PIM_CONTEXT=trial-edition $(MAKE) coupling-back
 
 ### Static tests
 static-back: check-pullup check-sf-services #Doc: launch PHP static analyzer asset-manager & check Sf services
@@ -44,6 +45,7 @@ lint-back: #Doc: launch all PHP linter tests
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-lint-back
 	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-lint-back
 	PIM_CONTEXT=communication-channel $(MAKE) communication-channel-lint-back
+	PIM_CONTEXT=trial-edition $(MAKE) lint-back
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs_ce.php
@@ -57,7 +59,7 @@ lint-front: #Doc: launch all YARN linter tests
 ### Unit tests
 .PHONY: unit-back
 unit-back: var/tests/phpspec community-unit-back #Doc: launch all PHPSec unit tests
-	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-unit-back 
+	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-unit-back
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-unit-back
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml

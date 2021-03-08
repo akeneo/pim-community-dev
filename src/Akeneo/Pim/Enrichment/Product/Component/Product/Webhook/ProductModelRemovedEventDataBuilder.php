@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Enrichment\Product\Component\Product\Webhook;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelRemovedEventDataBuilder as BaseProductModelRemovedEventDataBuilder;
 use Akeneo\Pim\Enrichment\Product\Component\Product\Query\GetViewableCategoryCodes;
-use Akeneo\Platform\Component\EventQueue\BulkEvent;
+use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -30,15 +30,12 @@ class ProductModelRemovedEventDataBuilder implements EventDataBuilderInterface
         $this->getViewableCategoryCodes = $getViewableCategoryCodes;
     }
 
-    public function supports(object $event): bool
+    public function supports(BulkEventInterface $event): bool
     {
         return $this->baseProductModelRemovedEventDataBuilder->supports($event);
     }
 
-    /**
-     * @param BulkEvent $event
-     */
-    public function build(object $event, UserInterface $user): EventDataCollection
+    public function build(BulkEventInterface $event, UserInterface $user): EventDataCollection
     {
         if (false === $this->supports($event)) {
             throw new \InvalidArgumentException();
@@ -57,7 +54,8 @@ class ProductModelRemovedEventDataBuilder implements EventDataBuilderInterface
                 $collection->setEventDataError(
                     $productModelRemovedEvent,
                     new NotGrantedProductModelException(
-                        $user->getUsername(), $productModelRemovedEvent->getCode()
+                        $user->getUsername(),
+                        $productModelRemovedEvent->getCode()
                     )
                 );
 

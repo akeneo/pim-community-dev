@@ -107,3 +107,8 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\RuleEngine\Component\Handler\UpdateRuleStatusHandler'
             - '@oro_security.security_facade'
+
+    Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\GetAttributesRulesNumberController:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Automation\RuleEngine\Bundle\Query\Sql\SqlGetAttributesRulesNumber'

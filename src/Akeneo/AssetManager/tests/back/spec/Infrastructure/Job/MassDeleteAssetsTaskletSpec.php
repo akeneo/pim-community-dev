@@ -129,12 +129,15 @@ class MassDeleteAssetsTaskletSpec extends ObjectBehavior
                 'hits' => [
                     [
                         '_source' => ['code' => 'nice'],
+                        'sort' => ['nice'],
                     ],
                     [
                         '_source' => ['code' => 'cool'],
+                        'sort' => ['cool'],
                     ],
                     [
-                        '_source' => ['code' => 'awesome'],
+                        '_source' => ['code' => 'AWESOME'],
+                        'sort' => ['awesome'],
                     ]
                 ]
             ]
@@ -155,7 +158,7 @@ class MassDeleteAssetsTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('assets', 3)->shouldBeCalledOnce();
 
         $deleteAssetsHandler
-            ->__invoke(new DeleteAssetsCommand('packshot', ['nice', 'cool', 'awesome']))
+            ->__invoke(new DeleteAssetsCommand('packshot', ['nice', 'cool', 'AWESOME']))
             ->shouldBeCalled();
 
         $assetIndexer->refresh()->shouldBeCalled();
@@ -242,12 +245,15 @@ class MassDeleteAssetsTaskletSpec extends ObjectBehavior
                 'hits' => [
                     [
                         '_source' => ['code' => 'nice'],
+                        'sort' => ['nice'],
                     ],
                     [
                         '_source' => ['code' => 'cool'],
+                        'sort' => ['cool'],
                     ],
                     [
-                        '_source' => ['code' => 'awesome'],
+                        '_source' => ['code' => 'AWESOME'],
+                        'sort' => ['awesome'],
                     ]
                 ],
             ],
@@ -262,6 +268,7 @@ class MassDeleteAssetsTaskletSpec extends ObjectBehavior
                 'hits' => [
                     [
                         '_source' => ['code' => 'tricky'],
+                        'sort' => ['tricky'],
                     ],
                 ],
             ],
@@ -282,7 +289,7 @@ class MassDeleteAssetsTaskletSpec extends ObjectBehavior
         $stepExecution->incrementProcessedItems(3)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo('assets', 3)->shouldBeCalledOnce();
         $deleteAssetsHandler
-            ->__invoke(new DeleteAssetsCommand('packshot', ['nice', 'cool', 'awesome']))
+            ->__invoke(new DeleteAssetsCommand('packshot', ['nice', 'cool', 'AWESOME']))
             ->shouldBeCalled();
 
 

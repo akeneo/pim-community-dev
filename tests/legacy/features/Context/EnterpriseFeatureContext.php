@@ -2,7 +2,6 @@
 
 namespace Context;
 
-use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
@@ -98,33 +97,27 @@ class EnterpriseFeatureContext extends FeatureContext
     }
 
     /**
-     * @param string $attribute
-     *
      * @throws ExpectationException
      *
-     * @return bool
-     *
-     * @Then /^I should see that (.*) is a smart attribute with (.*)$/
+     * @Then /^I should see that (.*) is a smart attribute$/
      */
-    public function iShouldSeeThatAttributeIsASmartAttribute(string $attribute, string $ruleLabel): void
+    public function iShouldSeeThatAttributeIsASmartAttribute(string $attribute): void
     {
         $element = $this->getSubcontext('navigation')->getCurrentPage()->findField($attribute);
         if (!$element) {
             throw $this->createExpectationException(sprintf('Expecting to see attribute "%s".', $attribute));
         }
 
-        $fieldContainer = $this->getClosest($element, 'AknFieldContainer');
-        $truc = $fieldContainer->find('css', '.from-smart');
+        $smartElement = $this->spin(function () use ($element) {
+            $fieldContainer = $this->getClosest($element, 'AknFieldContainer');
+            return $fieldContainer->find('css', '.from-smart');
+        }, sprintf('No smart attribute found for %s', $attribute));
 
-        if (null === $truc) {
-            throw new ElementNotFoundException(sprintf('No smart attribute found for %s', $attribute));
-        }
-
-        $expected = sprintf('This attribute can be updated by a rule: %s', $ruleLabel);
-        if ($truc->getText() !== $expected) {
-            throw new ElementNotFoundException(sprintf(
+        $expected = sprintf('This attribute can be updated by a rule');
+        if ($smartElement->getText() !== $expected) {
+            throw $this->createExpectationException(sprintf(
                 'Smart attribute text does not match: found "%s", expected "%s"',
-                $truc->getText(),
+                $smartElement->getText(),
                 $expected
             ));
         }

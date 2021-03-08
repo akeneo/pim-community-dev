@@ -73,6 +73,14 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
       this.store.dispatch(productIdentifierChanged(this.getFormData().identifier));
       this.store.dispatch(valuesUpdated(values));
       this.store.dispatch(labelsUpdated(this.getFormData().meta.label));
+
+      let attributeCodes = Object.keys(this.getFormData().values);
+      if (this.getFormData().meta.model_type === 'product_model') {
+        this.getFormData().meta.family_variant.variant_attribute_sets.forEach((attributeSets: any) => {
+          attributeCodes = [...attributeCodes, ...attributeSets.attributes];
+        });
+      }
+      this.store.dispatch(updateRuleRelations(attributeCodes) as any);
     });
 
     //Validation errors
@@ -82,7 +90,7 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
     this.store.dispatch(localeUpdated(UserContext.get('catalogLocale')));
     this.store.dispatch(channelUpdated(UserContext.get('catalogScope')));
     this.store.dispatch(updateChannels() as any);
-    this.store.dispatch(updateRuleRelations() as any);
+
     this.store.dispatch(updateAttributeGroups() as any);
 
     return Form.prototype.configure.apply(this, arguments);

@@ -5,10 +5,12 @@ const __ = require('oro/translator');
 const Router = require('pim/router');
 
 class QualitySummaryHeader extends BaseView {
+  private attributeEditFormUpdatedHandler = () => {
+    this.render();
+  };
+
   public configure() {
-    window.addEventListener(ATTRIBUTE_EDIT_FORM_UPDATED, () => {
-      this.render();
-    });
+    window.addEventListener(ATTRIBUTE_EDIT_FORM_UPDATED, this.attributeEditFormUpdatedHandler);
 
     return super.configure();
   }
@@ -42,6 +44,13 @@ class QualitySummaryHeader extends BaseView {
         </div>
       `);
     });
+
+    return this;
+  }
+
+  public remove() {
+    super.remove();
+    window.removeEventListener(ATTRIBUTE_EDIT_FORM_UPDATED, this.attributeEditFormUpdatedHandler);
 
     return this;
   }

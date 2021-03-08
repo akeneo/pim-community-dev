@@ -10,6 +10,7 @@ pim_asset_manager:
         message: Entschuldigung, wir zeigen dieses einbettende Element nicht an, aber es wird korrekt gespeichert
   result_counter: '{0} Kein Ergebnis|{1} {{ count }} Ergebnis|]1,Inf] {{ count }} Ergebnisse'
   asset_counter: '{0} Keine Asset|{1} {{ count }} Asset|]1,Inf] {{ count }} Assets'
+  asset_selected: '{0} {{ assetCount }} Asset ausgewählt|{1} {{ assetCount }} Asset ausgewählt|]1,Inf] {{ assetCount }} Assets ausgewählt'
   asset_collection:
     add_asset: 'Asset hinzufügen'
     upload_asset: 'Assets hochladen'
@@ -133,17 +134,15 @@ pim_asset_manager:
       product_link_rules: Produkt-Link-Regeln
     transformations:
       help:
-        title: 'Willkommen in Ihrem neuen Asset-Management-Bereich!'
-        description: 'Sie können hier bis zu 10 Transformationen nach Asset-Familie definieren.'
-        link: 'Wenn Sie in die neuen Asset-Manager-Transformationen eingreifen möchten, klicken Sie hier'
+        description: Hier können Sie bis zu 10 Transformationen nach Asset-Familie definieren.
+        link: Wenn Sie in die Transformation der Assets eingreifen möchten, klicken Sie hier.
       subsection: 'Transformationseigenschaften'
     product_link_rules:
       naming_convention_subsection: 'Benamungs-Konventions-Regeln'
       product_link_rules_subsection: 'Produkt-Link-Regeln'
       help:
-        title: 'Willkommen in Ihrem neuen Asset-Management-Bereich!'
-        description: 'Sie können hier bis zu 2 Produktlink-Regeln nach Asset-Familie definieren.'
-        link: 'Wenn Sie die Funktion Produkt-Link-Regeln nutzen möchten, klicken Sie hier'
+        description: 'Hier können Sie bis zu 2 Produktlink-Regeln für jede Asset Familie definieren.'
+        link: 'Wenn Sie die Funktion Produkt-Link-Regeln nutzen möchten, klicken Sie hier.'
       execute_rules:
         confirm_title: Ausführung bestätigen
         confirm_content: Sind Sie sicher, dass Sie alle Regeln anwenden möchten? (Dies kann sehr lange dauern)
@@ -154,6 +153,10 @@ pim_asset_manager:
         confirm_content: Sind Sie sicher, dass Sie die Namenskonvention ausführen möchten? (dies kann lange dauern)
         execute_naming_convention: Namenskonvention ausführen
         cancel: Abbrechen
+    naming_convention:
+      help:
+        description: Hier können Sie die Namenskonventionseigenschaften definieren.
+        link: Erfahren Sie alles, was Sie über ihr Format wissen müssen.
     properties:
       title: Eigenschaften der Assetfamilie
       identifier: Code
@@ -339,6 +342,9 @@ pim_asset_manager:
     delete_all:
       confirm: Sind Sie sicher, dass Sie alle "{{ entityIdentifier }}" Assets löschen möchten? Wenn sie mit Produkten verlinkt sind, werden die Verknüpfungen zu den Produkten entfernt.
     mass_delete:
+      confirm: '[0,1]Sind Sie sicher, dass Sie die {{ assetCount }} ausgewählten Assets löschen wollen?|]1,Inf]Sind Sie sicher, dass Sie die {{ assetCount }} ausgewählten Assets löschen möchten?'
+      extra_information: Wenn sie mit Produkten verknüpft sind, werden die Links zu den Produkten entfernt.
+      confirm_label: Bitte geben Sie "{{ assetFamilyIdentifier }}" ein
       title: Assets
     grid:
       search: Suche nach Label-, Code- und Textattributen
@@ -384,6 +390,9 @@ pim_asset_manager:
       delete_all:
         success: Alle "{{ entityIdentifier }}" Assets erfolgreich gelöscht.
         fail: Beim Löschen aller Assets dieser Anlagefamilie ist ein Fehler aufgetreten
+      mass_delete:
+        success: Die Massenlöschaktion "Massenlöschen" wurde gestartet. Sie werden benachrichtigt, sobald sie abgeschlossen ist.
+        fail: "Während des Massenlöschens ist ein Fehler aufgetreten: {{ error }}"
       execute_naming_convention:
         success: Namenskonvention erfolgreich ausgeführt
         fail: Bei der Ausführung der Namenskonvention ist ein Fehler aufgetreten
@@ -553,9 +562,12 @@ pim_datagrid:
   cells:
     type:
       asset_manager_execute_naming_convention: Asset-Familien-Namenskonvention ausführen
+      asset_manager_mass_delete_assets: Asset Massenlöschung ausführen
 batch_jobs:
   default_steps:
     execute_naming_convention: Asset-Familien-Namenskonvention ausführen
+    mass_delete_assets: Asset Massenlöschung ausführen
 job_execution:
   summary:
     assets: Assets
+pim_notification.types.asset_manager_mass_delete_assets: Massenlöschung

@@ -16,46 +16,40 @@ define([
     template: _.template(smartAttributeTemplate),
     configure: function() {
       this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
-
-      return $.when(BaseForm.prototype.configure.apply(this, arguments), RuleManager.getRuleRelations('attribute'));
     },
     addFieldExtension: function(event) {
+      let attributeCodes = Object.keys(this.getFormData().values);
+      if (this.getFormData().meta.model_type === 'product_model') {
+        this.getFormData().meta.family_variant.variant_attribute_sets.forEach(attributeSets => {
+          attributeCodes = [...attributeCodes, ...attributeSets.attributes];
+        });
+      }
       event.promises.push(
-        RuleManager.getRuleRelations('attribute').done(
-          function(ruleRelations) {
-            var deferred = $.Deferred();
-            var field = event.field;
+        RuleManager.getFamilyAttributesRulesNumber(attributeCodes).done(attributesRulesNumber => {
+          const deferred = $.Deferred();
+          const field = event.field;
+          const fieldAttributeCode = field.attribute.code;
+          const attributeHasRules = Object.keys(attributesRulesNumber).includes(fieldAttributeCode);
+          if (attributeHasRules) {
+            const translation = SecurityContext.isGranted('pimee_catalog_rule_rule_view_permissions')
+              ? 'pimee_enrich.entity.product.module.attribute.can_be_updated_by_rules'
+              : 'pimee_enrich.entity.product.module.attribute.can_be_updated_by_rules_readonly';
+            const element = this.template({
+              __,
+              translation,
+              rules_number: attributesRulesNumber[fieldAttributeCode],
+            });
+            const $element = $(element);
+            $element.find('span').on('click', () => {
+              sessionStorage.setItem('current_form_tab', 'pim-attribute-edit-form-rules-tab');
+              Routing.redirectToRoute('pim_enrich_attribute_edit', {code: fieldAttributeCode});
+            });
+            field.addElement('footer', 'from_smart', $element);
+          }
+          deferred.resolve();
 
-            const matchingRuleRelations = ruleRelations.filter(
-              ruleRelation => ruleRelation.attribute === field.attribute.code
-            );
-            if (matchingRuleRelations.length) {
-              const element = this.template({
-                __,
-                Routing,
-                ruleRelations: matchingRuleRelations,
-                canEdit: SecurityContext.isGranted('pimee_catalog_rule_rule_edit_permissions'),
-                getRuleLabel: ruleRelation => {
-                  const label = ruleRelation.labels[UserContext.get('catalogLocale')];
-                  if ((label || '').trim() === '') {
-                    return `[${ruleRelation.rule}]`;
-                  }
-
-                  return label;
-                },
-              });
-              const $element = $(element);
-              $element.on('click span[data-url]', event => {
-                Routing.redirect(event.target.dataset.url);
-              });
-
-              field.addElement('footer', 'from_smart', $element);
-            }
-            deferred.resolve();
-
-            return deferred.promise();
-          }.bind(this)
-        )
+          return deferred.promise();
+        })
       );
 
       return this;

@@ -27,9 +27,9 @@ Feature: Show a product product model
     Given I am on the products grid
     When I open the category tree
     And I select the "Master" tree
-    And I expand the "master_men" category
-    And I expand the "master_men_blazers" category
-    And I filter by "category" with operator "" and value "master_men_blazers_deals"
+    And I expand the "Men" category
+    And I expand the "Blazers" category
+    And I filter by "category" with operator "" and value "Deals"
     And I close the category tree
     Then I should be able to view the "View the product" action of the row which contains "caelus"
     And I should not be able to view the "Edit attributes of the product" action of the row which contains "caelus"

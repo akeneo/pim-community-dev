@@ -124,22 +124,24 @@ class GetConnectorAssetsAction
             throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $assetFamilyIdentifier));
         }
 
-        $assets = ($this->searchConnectorAsset)($assetQuery);
+        $result = ($this->searchConnectorAsset)($assetQuery);
         $assets = array_map(function (ConnectorAsset $asset) {
             return $asset->normalize();
-        }, $assets);
+        }, $result->assets());
 
         $assets = ($this->addHalLinksToImageValues)($assetFamilyIdentifier, $assets);
-        $paginatedAssets = $this->paginateAssets($assets, $request, $assetFamilyIdentifier);
+        $paginatedAssets = $this->paginateAssets($assets, $request, $assetFamilyIdentifier, $result->lastSortValue());
 
         return new JsonResponse($paginatedAssets);
     }
 
-    private function paginateAssets(array $assets, Request $request, AssetFamilyIdentifier $assetFamilyIdentifier): array
-    {
-        $lastAsset = end($assets);
-        reset($assets);
-        $lastAssetCode = $lastAsset['code'] ?? null;
+    private function paginateAssets(
+        array $assets,
+        Request $request,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        ?array $lastSortValue
+    ): array {
+        $lastAssetCode = $lastSortValue[0] ?? null;
 
         $paginationParameters = [
             'list_route_name'     => 'akeneo_asset_manager_assets_rest_connector_get',

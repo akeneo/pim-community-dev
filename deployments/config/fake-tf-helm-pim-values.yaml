@@ -1,0 +1,104 @@
+image:
+  pim:
+    tag: v20201214020354
+
+elasticsearch:
+  cluster:
+    env:
+      cluster.routing.allocation.disk.watermark.low: .97
+      cluster.routing.allocation.disk.watermark.high: .98
+      cluster.routing.allocation.disk.watermark.flood_stage: .99
+  master:
+    podAnnotations:
+      tags.akeneo.com/pfid: srnt-fake-instancename
+      # app.kubernetes.io/name: # already set by default by ES chart. Cf  https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L5
+      # app.kubernetes.io/component: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
+      tags.akeneo.com/product_reference: serenity
+      # helm.sh/chart: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
+      tags.akeneo.com/instance_dns_zone: dev.cloud.akeneo.com
+      tags.akeneo.com/instance_dns_record: fake-instancename
+      tags.akeneo.com/papo_project_code: akeneo-product-team
+  client:
+    podAnnotations:
+      tags.akeneo.com/pfid: srnt-fake-instancename
+      # app.kubernetes.io/name: # already set by default by ES chart. Cf  https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L5
+      # app.kubernetes.io/component: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
+      tags.akeneo.com/product_reference: serenity
+      # helm.sh/chart: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
+      tags.akeneo.com/instance_dns_zone: dev.cloud.akeneo.com
+      tags.akeneo.com/instance_dns_record: fake-instancename
+      tags.akeneo.com/papo_project_code:  akeneo-product-team
+  data:
+    podAnnotations:
+      tags.akeneo.com/pfid: srnt-fake-instancename
+      # app.kubernetes.io/name: # already set by default by ES chart. Cf  https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L5
+      # app.kubernetes.io/component: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
+      tags.akeneo.com/product_reference: serenity
+      # helm.sh/chart: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
+      tags.akeneo.com/instance_dns_zone: dev.cloud.akeneo.com
+      tags.akeneo.com/instance_dns_record: fake-instancename
+      tags.akeneo.com/papo_project_code: akeneo-product-team
+
+global:
+  extraLabels:
+    instanceName: fake-instancename
+    pfid: srnt-fake-instancename
+    instance_dns_record: fake-instancename
+    instance_dns_zone: dev.cloud.akeneo.com
+    papo_project_code: akeneo-product-team
+    papo_project_code_truncated: akeneo-product-team
+    papo_project_code_hashed: a29a65bf00e68d062288a88881f35bb4
+
+common:
+  gcpProjectID: akecld-saas-dev
+  googleZone: europe-west3-a
+  pimMasterDomain: fake-instancename.dev.cloud.akeneo.com
+
+backup:
+  projectId: akecld-saas-dev
+  zone: europe-west3-a
+
+mailer:
+  login: srnt-fake-instancename-akecld-saas-dev@mg.cloud.akeneo.com
+  password: UTHnsEDpxN3Z
+
+pim:
+  serviceAccountKey: ewogICJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsCiAgInByb2plY3RfaWQiOiAiZ29vZ2xlLXByb2plY3QtaWQiLAogICJwcml2YXRlX2tleV9pZCI6ICIxMjMxNDIzNTM2NTc2NDI1MzI0MjQyIiwKICAicHJpdmF0ZV9rZXkiOiAiLS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tXG4tLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tXG4iLAogICJjbGllbnRfZW1haWwiOiAic2FtcGxlQGV4YW1wbGUuY29tIiwKICAiY2xpZW50X2lkIjogIjEyMzQ1Njc4OTAiLAogICJhdXRoX3VyaSI6ICJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20vby9vYXV0aDIvYXV0aCIsCiAgInRva2VuX3VyaSI6ICJodHRwczovL29hdXRoMi5nb29nbGVhcGlzLmNvbS90b2tlbiIsCiAgImF1dGhfcHJvdmlkZXJfeDUwOV9jZXJ0X3VybCI6ICJodHRwczovL3d3dy5nb29nbGVhcGlzLmNvbS9vYXV0aDIvdjEvY2VydHMiLAogICJjbGllbnRfeDUwOV9jZXJ0X3VybCI6ICJodHRwczovL3d3dy5nb29nbGVhcGlzLmNvbS9yb2JvdC92MS9tZXRhZGF0YS94NTA5L3NhbXBsZUBleGFtcGxlLmNvbSIKfQo==
+  pubsub:
+    subscription_webhook: srnt-fake-instancename-webhook
+    subscription_job_queue: srnt-fake-instancename-job-queue
+    topic_business_event: srnt-fake-instancename-business-event
+    topic_job_queue: srnt-fake-instancename-job-queue
+  storage:
+    bucketName: srnt-fake-instancename
+  monitoring:
+    authenticationToken: 1234567890a
+
+mysql:
+  mysql:
+    dataDiskSize: 30Gi
+  common:
+    persistentDisks:
+    - srnt-fake-instancename
+    class: ssd-retain
+
+onboarder:
+  enabled: true
+  hook:
+    setupOnboarderDatabase:
+      enabled: true
+    pushChannelToOnboarder:
+      enabled: true
+    pushCatalogToOnboarder:
+      enabled: true
+    importAdditionalOnboarderFixtures:
+      enabled: true
+    importOnboarderSuppliers:
+      enabled: true
+  pubsub:
+    topicPubMiddleware: srnt-fake-instancename-job-queue
+    topicPubOnboarder: srnt-fake-instancename-job-queue
+    topicCon: srnt-fake-instancename-job-queue
+    queueName: srnt-fake-instancename-job-queue
+    maxReplicas: 10
+  serviceAccount: ewogICJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsCiAgInByb2plY3RfaWQiOiAiZ29vZ2xlLXByb2plY3QtaWQiLAogICJwcml2YXRlX2tleV9pZCI6ICIxMjMxNDIzNTM2NTc2NDI1MzI0MjQyIiwKICAicHJpdmF0ZV9rZXkiOiAiLS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tXG4tLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tXG4iLAogICJjbGllbnRfZW1haWwiOiAic2FtcGxlQGV4YW1wbGUuY29tIiwKICAiY2xpZW50X2lkIjogIjEyMzQ1Njc4OTAiLAogICJhdXRoX3VyaSI6ICJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20vby9vYXV0aDIvYXV0aCIsCiAgInRva2VuX3VyaSI6ICJodHRwczovL29hdXRoMi5nb29nbGVhcGlzLmNvbS90b2tlbiIsCiAgImF1dGhfcHJvdmlkZXJfeDUwOV9jZXJ0X3VybCI6ICJodHRwczovL3d3dy5nb29nbGVhcGlzLmNvbS9vYXV0aDIvdjEvY2VydHMiLAogICJjbGllbnRfeDUwOV9jZXJ0X3VybCI6ICJodHRwczovL3d3dy5nb29nbGVhcGlzLmNvbS9yb2JvdC92MS9tZXRhZGF0YS94NTA5L3NhbXBsZUBleGFtcGxlLmNvbSIKfQo==

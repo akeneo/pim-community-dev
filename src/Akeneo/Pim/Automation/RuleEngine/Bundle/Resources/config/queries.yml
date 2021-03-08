@@ -3,3 +3,8 @@ services:
         class: Akeneo\Pim\Automation\RuleEngine\Bundle\Query\Sql\SqlGetGroupedAttributes
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Automation\RuleEngine\Bundle\Query\Sql\SqlGetAttributesRulesNumber:
+        arguments:
+            - '@database_connection'
+            - '@pim_catalog.resolver.fqcn'

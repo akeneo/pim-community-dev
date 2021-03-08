@@ -86,6 +86,9 @@ akeneo_data_quality_insights:
     filter_label:
       spelling_quality: Rechtschreibqualität
   dictionary:
+    helper:
+      content: Mit dem Wörterbuch können Sie Wörter registrieren, die von den Datenqualitätseinsichten ignoriert werden.
+      link_label: Mehr Informationen über unser Hilfe-Center.
     words: Wörter
     searchPlaceholder: Ein Wort suchen
     add_words: Wörter hier hinzufügen
@@ -95,3 +98,21 @@ akeneo_data_quality_insights:
     no_data:
       title: Noch keine Wörter
       subtitle: Fügen Sie das erste oben hinzu, klicken Sie auf "Hinzufügen" oder drücken Sie die Eingabe-Taste.
+pimee_enrich.entity.locale:
+  grid:
+    columns:
+      dictionary_words_count:
+        title: Anzahl der Wörter
+        label: "]-Inf, 1]{{ count }} Worte|]1, Inf[{{ count }} Wörter"
+        not_available: Nicht verfügbar
+    add_words: Wörter hinzufügen
+    items_selected: "{1}1 Element ausgewählt|[2, Inf[{{ count }} Elemente ausgewählt"
+    modal:
+      title: Füge Wörter zu {{ count }} Gebietsschema hinzu
+      subtitle: Geben Sie Ihre Wörter unten ein. Sie werden zu allen ausgewählten Gebietsschemen hinzugefügt.
+      locales_added_notification:
+        title: Wörter zu {{ count }} Sprachen hinzugefügt
+        content: Die neuen Wörter wurden den Wörterbüchern ausgewählter Gebietsschema hinzugefügt.
+      no_supported_locales:
+        title: Die ausgewählten Gebietsschema können nicht durch Datenqualitätseinsichten Rechtschreibprüfung durchgeführt werden.
+        content: Um die Liste der unterstützten Lokale zu erfahren, schauen Sie bitte in unserem <a href="{{ link }}" target="_blank">Hilfe-Center</a>

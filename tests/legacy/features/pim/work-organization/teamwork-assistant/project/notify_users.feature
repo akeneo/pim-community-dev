@@ -87,7 +87,7 @@ Feature: Notify users after a project creation
     Given I am logged in as "Julia"
     When I am on the products grid
     And I open the category tree
-    And I filter by "category" with operator "" and value "clothing"
+    And I filter by "category" with operator "" and value "Clothing"
     And I close the category tree
     And I show the filter "weight"
     # In order to remove the tshirt LCD which is in Clothing and High-Tech categories
@@ -145,7 +145,7 @@ Feature: Notify users after a project creation
     Given I am logged in as "Julia"
     When I am on the products grid
     And I open the category tree
-    And I filter by "category" with operator "" and value "clothing"
+    And I filter by "category" with operator "" and value "Clothing"
     And I close the category tree
     And I click on the create project button
     When I fill in the following information in the popin:
@@ -203,7 +203,7 @@ Feature: Notify users after a project creation
     Given I am logged in as "Marc"
     When I am on the products grid
     And I open the category tree
-    And I filter by "category" with operator "" and value "high_tech"
+    And I filter by "category" with operator "" and value "High-Tech"
     And I close the category tree
     And I show the filter "weight"
     # In order to remove the tshirt LCD which is in Clothing and High-Tech categories
@@ -261,7 +261,7 @@ Feature: Notify users after a project creation
     And I am logged in as "Julia"
     When I am on the products grid
     And I open the category tree
-    And I filter by "category" with operator "" and value "decoration"
+    And I filter by "category" with operator "" and value "Decoration"
     And I click on the create project button
     When I fill in the following information in the popin:
       | project-label       | 2016 summer collection |

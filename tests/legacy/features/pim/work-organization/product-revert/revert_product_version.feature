@@ -43,6 +43,7 @@ Feature: Revert a product to a previous version
       | 1       | Julia Stark | SKU      | shirt |
       | 1       | Julia Stark | enabled  | 1     |
 
+  @purge-messenger
   Scenario: Successfully revert the status of a product (disabled)
     Given I am on the products grid
     And I create a product
@@ -56,6 +57,8 @@ Feature: Revert a product to a previous version
     Then I should see 2 versions in the history
     When I revert the product version number 1
     Then product "shirt" should be enabled
+    And 1 event of type "product.created" should have been raised
+    And 2 event of type "product.updated" should have been raised
 
   Scenario: Successfully revert the status of a product (enable)
     Given I am on the products grid
@@ -107,15 +110,15 @@ Feature: Revert a product to a previous version
     And I wait to be on the "sandals" product page
     And I visit the "Categories" column tab
     And I visit the "2014 collection" tab
-    And I expand the "2014_collection" category
-    And I click on the "winter_collection" category
+    And I expand the "2014 collection" category
+    And I click on the "Winter collection" category
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And I visit the "Categories" column tab
     And I visit the "2014 collection" tab
-    And I expand the "2014_collection" category
-    And I click on the "winter_collection" category
-    And I click on the "summer_collection" category
+    And I expand the "2014 collection" category
+    And I click on the "Winter collection" category
+    And I click on the "Summer collection" category
     And I press the "Save" button
     And the history of the product "sandals" has been built
     Then I visit the "History" column tab

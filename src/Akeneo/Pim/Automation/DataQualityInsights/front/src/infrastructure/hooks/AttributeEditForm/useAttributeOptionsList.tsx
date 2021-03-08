@@ -5,8 +5,6 @@ import {
   AttributeOptionsListStateEvent,
 } from 'akeneopimstructure/js/attribute-option/hooks';
 
-import {Attribute} from '@akeneo-pim-community/data-quality-insights/src/domain';
-
 export type AttributeOptionsListState = AttributeOptionsListStateEvent;
 
 export const initialAttributeOptionsListState = {
@@ -16,7 +14,7 @@ export const initialAttributeOptionsListState = {
   getAttributeOption: () => undefined,
 };
 
-export const useAttributeOptionsList = (attribute: Attribute) => {
+export const useAttributeOptionsList = () => {
   const [attributeOptionsState, setAttributeOptionsState] = useState<AttributeOptionsListState>(
     initialAttributeOptionsListState
   );
@@ -31,7 +29,7 @@ export const useAttributeOptionsList = (attribute: Attribute) => {
     return () => {
       window.removeEventListener(ATTRIBUTE_OPTIONS_LIST_LOADED, handleListLoaded as EventListener);
     };
-  }, [attribute]);
+  }, []);
 
   return {
     ...attributeOptionsState,

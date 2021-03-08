@@ -1,6 +1,4 @@
 import React, {createContext, FC, useContext} from 'react';
-
-import {Attribute} from '@akeneo-pim-community/data-quality-insights/src/domain';
 import {
   AttributeOptionsListState,
   initialAttributeOptionsListState,
@@ -15,12 +13,8 @@ export const useAttributeOptionsListContext = (): AttributeOptionsListState => {
   return useContext(AttributeOptionsListContext);
 };
 
-type ProviderProps = {
-  attribute: Attribute;
-};
-
-export const AttributeOptionsListContextProvider: FC<ProviderProps> = ({children, attribute}) => {
-  const state = useAttributeOptionsList(attribute);
+export const AttributeOptionsListContextProvider: FC = ({children}) => {
+  const state = useAttributeOptionsList();
 
   return <AttributeOptionsListContext.Provider value={state}>{children}</AttributeOptionsListContext.Provider>;
 };
