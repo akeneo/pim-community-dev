@@ -29,6 +29,7 @@
 - PLG-63: Fix product-grid grouped variant filter dropdown
 - PIM-9718: Decimals attribute values with no separators are well formatted
 - PIM-9727: Add missing query params to hatoas links
+- API-9698: Refresh ES index after creating a product from the UI in order to well send product created event to event subscriptions
 
 ## New features
 
