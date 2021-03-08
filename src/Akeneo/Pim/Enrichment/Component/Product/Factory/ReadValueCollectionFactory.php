@@ -42,12 +42,11 @@ class ReadValueCollectionFactory
 
     public function createMultipleFromStorageFormat(array $rawValueCollections): array
     {
-        $attributes = $this->getAttributesUsedByProducts($rawValueCollections);
-        $rawValueCollections = CleanLineBreaksInTextAttributes::cleanFromRawValuesFormat($rawValueCollections, $attributes);
         $filteredRawValuesCollection = $this->chainedNonExistentValuesFilter->filterAll($rawValueCollections);
-        $valueCollections = $this->createValues($filteredRawValuesCollection, $attributes);
+        $attributes = $this->getAttributesUsedByProducts($rawValueCollections);
+        $filteredRawValuesCollection = CleanLineBreaksInTextAttributes::cleanFromRawValuesFormat($filteredRawValuesCollection, $attributes);
 
-        return $valueCollections;
+        return $this->createValues($filteredRawValuesCollection, $attributes);
     }
 
     private function getAttributesUsedByProducts(array $rawValueCollections): array
