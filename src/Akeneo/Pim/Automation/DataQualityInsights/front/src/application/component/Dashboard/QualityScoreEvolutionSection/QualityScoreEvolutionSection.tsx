@@ -76,6 +76,7 @@ const Container = styled.div`
 `;
 
 const AverageScoreLabel = styled.div`
+  display: flex;
   color: ${({theme}) => theme.color.grey140};
   margin-top: 20px;
   margin-bottom: 15px;
