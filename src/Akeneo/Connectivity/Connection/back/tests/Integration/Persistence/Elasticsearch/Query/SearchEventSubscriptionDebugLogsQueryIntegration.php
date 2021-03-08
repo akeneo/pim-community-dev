@@ -269,6 +269,61 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         }
     }
 
+    public function test_it_filters_on_log_level()
+    {
+        $timestamp = $this->clock->now()->getTimestamp() - 10;
+
+        $this->insertLogs(
+            [
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::WARNING,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::INFO,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'whatever',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::ERROR,
+                    'message' => 'Foo bar',
+                    'connection_code' => null,
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::NOTICE,
+                    'message' => 'Foo bar',
+                    'connection_code' => null,
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::NOTICE,
+                    'message' => 'Foo bar',
+                    'connection_code' => null,
+                    'context' => [],
+                ],
+            ]
+        );
+
+        $filters = [
+            'levels' => [EventsApiDebugLogLevels::NOTICE, EventsApiDebugLogLevels::INFO]
+        ];
+
+        $result = $this->query->execute('a_connection_code', null, $filters);
+
+        // TODO: assert notice et info
+        Assert::assertCount(3, $result['results']);
+        Assert::assertEquals(3, $result['total']);
+    }
+
     private function generateLogs(callable $generator, int $number): void
     {
         $this->insertLogs(array_map($generator, range(0, $number - 1)));

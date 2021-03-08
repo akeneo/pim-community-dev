@@ -26,5 +26,5 @@ interface SearchEventSubscriptionDebugLogsQueryInterface
      *  search_after: string
      *}>
      */
-    public function execute(string $connectionCode, ?string $encryptedSearchAfter = null): array;
+    public function execute(string $connectionCode, ?string $encryptedSearchAfter = null, ?array $filters = []): array;
 }

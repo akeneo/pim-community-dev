@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Clock;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SearchEventSubscriptionDebugLogsQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * The functionnal need of this query is not easy to do in ES.
@@ -49,6 +51,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
     private Client $elasticsearchClient;
     private Clock $clock;
     private Encrypter $encrypter;
+    private OptionsResolver $resolver;
 
     public function __construct(
         Client $elasticsearchClient,
@@ -58,10 +61,15 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         $this->elasticsearchClient = $elasticsearchClient;
         $this->clock = $clock;
         $this->encrypter = $encrypter;
+
+        $this->resolver = new OptionsResolver();
+        $this->configureOptions($this->resolver);
     }
 
-    public function execute(string $connectionCode, ?string $encryptedSearchAfter = null): array
+    public function execute(string $connectionCode, ?string $encryptedSearchAfter = null, ?array $filters = []): array
     {
+        $filters = $this->resolver->resolve($filters);
+
         $parameters = $this->buildParameters($encryptedSearchAfter);
 
         $nowTimestamp = $this->clock->now()->getTimestamp();
@@ -80,27 +88,45 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
             'size' => 25,
             'sort' => [
                 'timestamp' => 'DESC',
-                '_id' => 'ASC'
+                '_id' => 'ASC',
             ],
             'track_total_hits' => true,
             'query' => [
                 'bool' => [
                     'should' => [
-                        ['bool' => ['must' => [
-                            ['terms' => ['_id' => $lastNoticeAndInfoIds['ids']]],
-                        ]]],
-                        ['bool' => ['must' => [
-                            ['terms' => ['level' => ['error', 'warning']]],
-                            ['range' => ['timestamp' => ['gte' => $nowTimestamp - self::MAX_LIFETIME_OF_WARNING_AND_ERROR_LOGS]]],
-                            ['bool' => ['should' => [
-                                ['term' => ['connection_code' => $connectionCode]],
-                                ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]], // connection_code IS NULL
-                            ]]],
-                        ]]],
+                        [
+                            'bool' => [
+                                'must' => [
+                                    ['terms' => ['_id' => $lastNoticeAndInfoIds['ids']]],
+                                ],
+                            ],
+                        ],
+                        [
+                            'bool' => [
+                                'must' => [
+                                    ['terms' => ['level' => ['error', 'warning']]],
+                                    ['range' => ['timestamp' => ['gte' => $nowTimestamp - self::MAX_LIFETIME_OF_WARNING_AND_ERROR_LOGS]]],
+                                    [
+                                        'bool' => [
+                                            'should' => [
+                                                ['term' => ['connection_code' => $connectionCode]],
+                                                ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
+                                                // connection_code IS NULL
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
+                    //'must' => $filters,
                 ],
             ],
         ];
+
+        if ($filters['levels']) {
+            $query['query']['bool']['must'] = ['terms' => ['level' => $filters['levels']]];
+        }
 
         if (null !== $parameters['search_after']) {
             $query['search_after'] = $parameters['search_after'];
@@ -109,14 +135,21 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         $result = $this->elasticsearchClient->search($query);
 
         return [
-            'results' => array_map(function ($hit) {
-                return $hit['_source'];
-            }, $result['hits']['hits']),
-            'search_after' => $this->encrypter->encrypt(json_encode([
-                'search_after' => end($result['hits']['hits'])['sort'] ?? null,
-                'first_notice_and_info_id' => $lastNoticeAndInfoIds['first_id'],
-                'first_notice_and_info_search_after' => $lastNoticeAndInfoIds['first_search_after'],
-            ])),
+            'results' => array_map(
+                function ($hit) {
+                    return $hit['_source'];
+                },
+                $result['hits']['hits']
+            ),
+            'search_after' => $this->encrypter->encrypt(
+                json_encode(
+                    [
+                        'search_after' => end($result['hits']['hits'])['sort'] ?? null,
+                        'first_notice_and_info_id' => $lastNoticeAndInfoIds['first_id'],
+                        'first_notice_and_info_search_after' => $lastNoticeAndInfoIds['first_search_after'],
+                    ]
+                )
+            ),
             'total' => $result['hits']['total']['value'],
         ];
     }
@@ -152,7 +185,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
             '_source' => ['id'],
             'sort' => [
                 'timestamp' => 'DESC',
-                '_id' => 'ASC'
+                '_id' => 'ASC',
             ],
             'size' => self::MAX_NUMBER_OF_NOTICE_AND_INFO_LOGS,
             'query' => [
@@ -189,9 +222,12 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         return [
             'first_id' => $result['hits']['hits'][0]['_id'] ?? null,
             'first_search_after' => $result['hits']['hits'][0]['sort'] ?? null,
-            'ids' => array_map(function ($hit) {
-                return $hit['_id'];
-            }, $result['hits']['hits']),
+            'ids' => array_map(
+                function ($hit) {
+                    return $hit['_id'];
+                },
+                $result['hits']['hits']
+            ),
         ];
     }
 
@@ -210,8 +246,11 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
      *   ids: array<string>
      * }
      */
-    private function findSameLastNoticeAndInfoIds(string $connectionCode, string $firstId, array $firstSearchAfter): array
-    {
+    private function findSameLastNoticeAndInfoIds(
+        string $connectionCode,
+        string $firstId,
+        array $firstSearchAfter
+    ): array {
         $query = $this->getLastNoticeAndInfoIdsQuery($connectionCode);
         $query['search_after'] = $firstSearchAfter;
         $query['size'] = self::MAX_NUMBER_OF_NOTICE_AND_INFO_LOGS - 1;
@@ -221,9 +260,41 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         return [
             'first_id' => $firstId,
             'first_search_after' => $firstSearchAfter,
-            'ids' => array_merge([$firstId], array_map(function ($hit) {
-                return $hit['_id'];
-            }, $result['hits']['hits'])),
+            'ids' => array_merge(
+                [$firstId],
+                array_map(
+                    function ($hit) {
+                        return $hit['_id'];
+                    },
+                    $result['hits']['hits']
+                )
+            ),
         ];
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    protected function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefault('levels', null);
+        //$resolver->setAllowedTypes('levels', 'string[]');
+        /*
+        $resolver->setDefault(
+            'levels',
+            function (OptionsResolver $levelResolver) {
+                $levelResolver->setAllowedValues(
+                    'levels',
+                    [
+                        null,
+                        EventsApiDebugLogLevels::WARNING,
+                        EventsApiDebugLogLevels::ERROR,
+                        EventsApiDebugLogLevels::INFO,
+                        EventsApiDebugLogLevels::NOTICE,
+                    ]
+                );
+            }
+        );
+        */
     }
 }
