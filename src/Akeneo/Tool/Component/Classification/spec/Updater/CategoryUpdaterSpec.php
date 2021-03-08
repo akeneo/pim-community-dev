@@ -127,7 +127,7 @@ class CategoryUpdaterSpec extends ObjectBehavior
         $this
             ->shouldThrow(
                 InvalidPropertyException::expected(
-                    'Property "parent" of a root category must be null, "master" given.',
+                    'Property "parent" of a root category must be "null", "master" given.',
                     CategoryUpdater::class
                 )
             )
