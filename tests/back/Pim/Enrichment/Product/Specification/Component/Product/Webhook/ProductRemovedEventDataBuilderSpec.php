@@ -93,6 +93,27 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
         Assert::assertEquals($expectedCollection, $actualCollection->getWrappedObject());
     }
 
+    public function it_does_not_set_data_error_when_product_has_no_category(
+        BaseProductRemovedEventDataBuilder $baseProductRemovedEventDataBuilder
+    ): void {
+        $user = new User();
+        $eventWithNonCategorizedProduct = new ProductRemoved(
+            Author::fromNameAndType('erp', 'ui'),
+            [
+                'identifier' => 'blue_jean',
+                'category_codes' => [],
+            ]
+        );
+
+        $bulkEvent = new BulkEvent([$eventWithNonCategorizedProduct]);
+        $baseProductRemovedEventDataBuilder->supports($bulkEvent)->willReturn(true);
+
+        $actualCollection = $this->build($bulkEvent, $user);
+        $actualCollection->getEventData($eventWithNonCategorizedProduct)->shouldBe([
+            'resource' => ['identifier' => $eventWithNonCategorizedProduct->getIdentifier()],
+        ]);
+    }
+
     public function it_throws_an_error_if_an_event_is_not_supported($baseProductRemovedEventDataBuilder): void
     {
         $user = new User();

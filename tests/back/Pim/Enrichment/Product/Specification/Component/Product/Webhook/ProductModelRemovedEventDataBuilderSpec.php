@@ -7,16 +7,16 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Component\Product\Webhook;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelRemovedEventDataBuilder as BaseProductModelRemovedEventDataBuilder;
+use Akeneo\Pim\Enrichment\Product\Component\Product\Query\GetViewableCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Component\Product\Webhook\NotGrantedProductModelException;
 use Akeneo\Pim\Enrichment\Product\Component\Product\Webhook\ProductModelRemovedEventDataBuilder;
-use Akeneo\Pim\Enrichment\Product\Component\Product\Query\GetViewableCategoryCodes;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\User;
-use PHPUnit\Framework\Assert;
 use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -45,7 +45,7 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
         $bulkEvent = new BulkEvent([$eventBlueJean, $eventBlueCam]);
 
         $baseProductModelRemovedEventDataBuilder->supports($bulkEvent)->willReturn(true, false);
-        
+
         $this->supports($bulkEvent)->shouldReturn(true);
         $this->supports($bulkEvent)->shouldReturn(false);
     }
@@ -97,6 +97,28 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
         $actualCollection = $this->build($bulkEvent, $user);
 
         Assert::assertEquals($expectedCollection, $actualCollection->getWrappedObject());
+    }
+
+    public function it_does_not_set_data_error_when_product_model_has_no_category(
+        BaseProductModelRemovedEventDataBuilder $baseProductModelRemovedEventDataBuilder
+    ): void {
+        $user = new User();
+        $eventWithNonCategorizedProductModel = new ProductModelRemoved(
+            Author::fromNameAndType('erp', 'ui'),
+            [
+                'identifier' => 'blue_jean',
+                'code' => 'blue_jean',
+                'category_codes' => [],
+            ]
+        );
+
+        $bulkEvent = new BulkEvent([$eventWithNonCategorizedProductModel]);
+        $baseProductModelRemovedEventDataBuilder->supports($bulkEvent)->willReturn(true);
+
+        $actualCollection = $this->build($bulkEvent, $user);
+        $actualCollection->getEventData($eventWithNonCategorizedProductModel)->shouldBe([
+            'resource' => ['code' => $eventWithNonCategorizedProductModel->getCode()],
+        ]);
     }
 
     public function it_throws_an_error_if_an_event_is_not_supported($baseProductModelRemovedEventDataBuilder): void
