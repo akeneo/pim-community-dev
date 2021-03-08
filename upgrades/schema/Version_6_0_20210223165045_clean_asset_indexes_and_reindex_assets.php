@@ -2,9 +2,10 @@
 
 namespace Pim\Upgrade\Schema;
 
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Elasticsearch\Client;
+use Elasticsearch\Client as NativeClient;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Webmozart\Assert\Assert;
@@ -27,17 +28,22 @@ final class Version_6_0_20210223165045_clean_asset_indexes_and_reindex_assets ex
 
         $this->removeTemporaryIndex($nativeClient);
 
-        if ($this->mappingIsAlreadyOk($nativeClient)) {
-            $this->write('Mapping already ok. No need to reindex.');
-
-            return;
-        }
-
-        // Reindex all assets
+        $assetClient = $this->container->get('akeneo_assetmanager.client.asset');
         $this->write('Start to reindex all assets. This operation can take a long time...');
-        $this->container
-            ->get('akeneo_assetmanager.infrastructure.elasticsearch.update_index_mapping')
-            ->updateIndexMapping();
+        if ($assetClient->hasIndexForAlias()) {
+            if ($this->mappingIsAlreadyOk($nativeClient)) {
+                $this->write('Mapping already ok. No need to reindex.');
+
+                return;
+            }
+
+            // Reindex all assets by copy. Quick operation.
+            $this->container
+                ->get('akeneo_assetmanager.infrastructure.elasticsearch.update_index_mapping')
+                ->updateIndexMapping();
+        } else {
+            $this->recreateIndexProperlyAndReindexAllAssets($assetClient);
+        }
 
         $this->write('Done');
     }
@@ -57,7 +63,7 @@ final class Version_6_0_20210223165045_clean_asset_indexes_and_reindex_assets ex
         $this->addSql('SELECT 1');
     }
 
-    private function removeTemporaryIndex(Client $nativeClient): void
+    private function removeTemporaryIndex(NativeClient $nativeClient): void
     {
         $temporaryIndexName = sprintf('%s_temporary', $this->container->getParameter('asset_index_name'));
         $indices = $nativeClient->indices();
@@ -73,7 +79,7 @@ final class Version_6_0_20210223165045_clean_asset_indexes_and_reindex_assets ex
         }
     }
 
-    private function mappingIsAlreadyOk(Client $nativeClient): bool
+    private function mappingIsAlreadyOk(NativeClient $nativeClient): bool
     {
         $result = $nativeClient->indices()->getFieldMapping([
             'index' => $this->container->get('akeneo_assetmanager.client.asset')->getIndexName(),
@@ -85,5 +91,13 @@ final class Version_6_0_20210223165045_clean_asset_indexes_and_reindex_assets ex
         $assetFamilyCodeNormalizer = $currentIndexMappings['asset_family_code']['mapping']['asset_family_code']['normalizer'] ?? null;
 
         return 'text_normalizer' === $codeNormalizer && 'text_normalizer' === $assetFamilyCodeNormalizer;
+    }
+
+    private function recreateIndexProperlyAndReindexAllAssets(Client $assetClient): void
+    {
+        $assetClient->resetIndex();
+        $this->container->get('pim_catalog.command_launcher')->executeForeground(
+            'akeneo:asset-manager:index-assets --all'
+        );
     }
 }
