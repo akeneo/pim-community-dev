@@ -96,9 +96,7 @@ config:
       my_view: {
         tabs: {
           first: {
-            label: {
-              label: 'my_view',
-            },
+            label: 'my_view',
           },
         },
       },
