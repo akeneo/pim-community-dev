@@ -8,3 +8,4 @@ services:
           - '%kernel.root_dir%'
           - '%kernel.environment%'
           - '%kernel.logs_dir%'
+        public: true
