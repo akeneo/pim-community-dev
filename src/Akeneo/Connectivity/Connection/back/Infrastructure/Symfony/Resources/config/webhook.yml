@@ -17,6 +17,7 @@ services:
             - '@akeneo_connectivity.connection.webhook.guzzle_client'
             - '@akeneo_connectivity.connection.webhook.serializer.json_encoder'
             - '@akeneo_connectivity.connection.webhook.send_api_event_request_logger'
+            - '@akeneo_connectivity.connection.webhook.events_api_debug_logger'
             - 
                 concurrency: '%webhook_concurrency%'
                 timeout: '%webhook_timeout%'
@@ -26,6 +27,7 @@ services:
         arguments:
             - !tagged akeneo_connectivity.connection.webhook.event_data_builder
             - '@akeneo_connectivity.connection.webhook.event_data_build_error_logger'
+            - '@akeneo_connectivity.connection.webhook.events_api_debug_logger'
 
     akeneo_connectivity.connection.webhook.webhook_user_authenticator:
         class: Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator

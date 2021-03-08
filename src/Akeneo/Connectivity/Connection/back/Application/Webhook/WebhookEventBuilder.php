@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErrorLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataBuildErrorLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
@@ -24,15 +25,19 @@ class WebhookEventBuilder
     /** @var iterable<EventDataBuilderInterface> */
     private iterable $eventDataBuilders;
     private EventDataBuildErrorLogger $eventDataBuildErrorLogger;
+    private ApiEventBuildErrorLogger $apiEventBuildErrorLogger;
 
     /**
      * @param iterable<EventDataBuilderInterface> $eventDataBuilders
-     * @param EventDataBuildErrorLogger $eventDataBuildErrorLogger
      */
-    public function __construct(iterable $eventDataBuilders, EventDataBuildErrorLogger $eventDataBuildErrorLogger)
-    {
+    public function __construct(
+        iterable $eventDataBuilders,
+        EventDataBuildErrorLogger $eventDataBuildErrorLogger,
+        ApiEventBuildErrorLogger $apiEventBuildErrorLogger
+    ) {
         $this->eventDataBuilders = $eventDataBuilders;
         $this->eventDataBuildErrorLogger = $eventDataBuildErrorLogger;
+        $this->apiEventBuildErrorLogger = $apiEventBuildErrorLogger;
     }
 
     /**
@@ -114,6 +119,11 @@ class WebhookEventBuilder
                     $pimEvent
                 );
 
+                $this->apiEventBuildErrorLogger->logResourceNotFoundOrAccessDenied(
+                    $context['connection_code'],
+                    $pimEvent
+                );
+
                 continue;
             }
 
@@ -124,6 +134,7 @@ class WebhookEventBuilder
                 $pimEvent->getAuthor(),
                 $context['pim_source'],
                 $data,
+                $pimEvent
             );
         }
 
