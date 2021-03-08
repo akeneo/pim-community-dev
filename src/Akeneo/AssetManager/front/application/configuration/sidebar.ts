@@ -103,5 +103,5 @@ Actual conf: ${JSON.stringify(this.configuration)}`
   }
 }
 
+export {Tab};
 export default TabsProvider.create(__moduleConfig as TabsConfiguration);
-export type {Tab};

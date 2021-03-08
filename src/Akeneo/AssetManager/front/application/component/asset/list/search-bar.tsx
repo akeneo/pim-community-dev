@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import styled from 'styled-components';
 import Locale, {localeExists, LocaleCode} from 'akeneoassetmanager/domain/model/locale';

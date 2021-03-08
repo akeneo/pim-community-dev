@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled, {FlattenSimpleInterpolation} from 'styled-components';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
