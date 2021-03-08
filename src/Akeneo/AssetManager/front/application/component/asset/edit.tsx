@@ -28,7 +28,6 @@ import styled from 'styled-components';
 import {saveAndExecuteNamingConvention} from 'akeneoassetmanager/application/action/asset/save-and-execute-naming-convention';
 import {Button, Dropdown, IconButton, MoreIcon, useBooleanState} from 'akeneo-design-system';
 import {useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {openDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 
 interface StateProps {
   form: {
@@ -122,7 +121,7 @@ const SecondaryActions = ({
 const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnAssetFamily}: EditProps) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
-  const [isDeleteModalOpen, closeDeleteModal] = useBooleanState();
+  const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useBooleanState();
 
   const onConfirmedDelete = () => {
     events.onDelete(asset);
