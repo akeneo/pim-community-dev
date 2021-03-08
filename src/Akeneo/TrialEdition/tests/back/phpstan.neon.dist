@@ -1,0 +1,7 @@
+includes:
+    - %rootDir%/../../../vendor/phpstan/phpstan-webmozart-assert/extension.neon
+parameters:
+    level: 5
+    paths:
+        - %rootDir%/../../../src/Akeneo/TrialEdition/back
+    treatPhpDocTypesAsCertain: false
