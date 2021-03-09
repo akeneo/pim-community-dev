@@ -9,11 +9,11 @@ use Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Driver\Connection;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
@@ -29,6 +29,9 @@ use Webmozart\Assert\Assert;
  */
 class JobLauncher
 {
+    private const MESSENGER_COMMAND_NAME = 'messenger:consume';
+    private const MESSENGER_RECEIVERS = ['job'];
+
     const EXPORT_DIRECTORY = 'pim-integration-tests-export';
 
     const IMPORT_DIRECTORY = 'pim-integration-tests-import';
@@ -320,6 +323,32 @@ class JobLauncher
     }
 
     /**
+     * Launch the daemon command to consume and launch one job execution.
+     * @TODO CPM-156: replace the launchConsumerOnce method by this one
+     */
+    public function launchConsumerOnceUsingMessenger(array $options = []): OutputInterface
+    {
+        $application = new Application($this->kernel);
+        $application->setAutoExit(false);
+
+        $arrayInput = array_merge(
+            $options,
+            [
+                'command'  => static::MESSENGER_COMMAND_NAME,
+                'receivers' => static::MESSENGER_RECEIVERS,
+                '--limit' => 1,
+                '--verbose' => 2,
+            ]
+        );
+
+        $input = new ArrayInput($arrayInput);
+        $output = new BufferedOutput();
+        $application->run($input, $output);
+
+        return $output;
+    }
+
+    /**
      * Launch the daemon command to consume and launch one job execution, in a detached process in background.
      * It uses exec to not wrap the process in a subshell, in order to get the correct pid.
      *
@@ -334,6 +363,31 @@ class JobLauncher
             sprintf('%s/../bin', $this->kernel->getRootDir()),
             JobQueueConsumerCommand::COMMAND_NAME,
             $this->kernel->getEnvironment()
+        );
+
+        $process = new Process($command);
+        $process->start();
+
+        return $process;
+    }
+
+    /**
+     * @TODO CPM-156: replace the launchConsumerOnceInBackground method by this one
+     *
+     * Launch the daemon command to consume and launch one job execution, in a detached process in background.
+     * It uses exec to not wrap the process in a subshell, in order to get the correct pid.
+     *
+     * @see https://github.com/symfony/symfony/issues/5759
+     */
+    public function launchConsumerOnceInBackgroundUsingMessenger(int $timeLimitInSeconds = null): Process
+    {
+        $command = sprintf(
+            'exec %s/console %s %s --env=%s --limit=1 --verbose %s',
+            sprintf('%s/../bin', $this->kernel->getContainer()->getParameter('kernel.root_dir')),
+            static::MESSENGER_COMMAND_NAME,
+            implode(' ', static::MESSENGER_RECEIVERS),
+            $this->kernel->getEnvironment(),
+            $timeLimitInSeconds === null ? '' : sprintf('--time-limit=%d', $timeLimitInSeconds)
         );
 
         $process = new Process($command);
