@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Editor, EditorProps} from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
-import {ContentState, convertToRaw, EditorState, convertFromHTML} from 'draft-js';
+import htmlToDraft from 'html-to-draftjs';
+import {ContentState, convertToRaw, EditorState} from 'draft-js';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import {Override} from '../../../shared';
 
@@ -9,7 +10,7 @@ const editorStateToRaw = (editorState: EditorState): string =>
   draftToHtml(convertToRaw(editorState.getCurrentContent()));
 
 const rawToEditorState = (value: string): EditorState => {
-  const rawDraft = convertFromHTML(value);
+  const rawDraft = htmlToDraft(value);
 
   if (!rawDraft || !rawDraft.contentBlocks) {
     return EditorState.createEmpty();
@@ -30,9 +31,10 @@ type RichTextEditorProps = Override<
 const RichTextEditor = ({value, readOnly = false, onChange, ...rest}: RichTextEditorProps) => {
   const [editorState, setEditorState] = useState<EditorState>(rawToEditorState(value));
 
-  useEffect(() => {
+  const handleChange = (editorState: EditorState) => {
+    setEditorState(editorState);
     onChange(editorStateToRaw(editorState));
-  }, [editorState]);
+  };
 
   return (
     <Editor
@@ -44,7 +46,7 @@ const RichTextEditor = ({value, readOnly = false, onChange, ...rest}: RichTextEd
           options: ['bold', 'italic'],
         },
       }}
-      onEditorStateChange={setEditorState}
+      onEditorStateChange={handleChange}
       {...rest}
       editorState={editorState}
     />

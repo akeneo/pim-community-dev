@@ -38,13 +38,18 @@ const RichTextEditorContainer = styled.div<{readOnly: boolean; invalid: boolean}
   & .rdw-editor-main {
     min-height: 200px;
     max-height: 400px;
+    padding: 0 30px 10px 15px;
+  }
+
+  & .rdw-option-wrapper {
+    min-width: 30px;
+    height: 30px;
   }
 
   & .rdw-editor-toolbar {
     border: none;
     padding: 0;
     margin: 0;
-    /* margin-left: -9px; */
     padding: 5px 30px 0 0;
     border-radius: 0;
     border-bottom: 1px solid ${({invalid}) => (invalid ? getColor('red', 100) : getColor('grey', 80))};
@@ -54,10 +59,6 @@ const RichTextEditorContainer = styled.div<{readOnly: boolean; invalid: boolean}
   & .rdw-option-wrapper:hover,
   & .rdw-dropdown-optionwrapper:hover {
     box-shadow: none;
-  }
-
-  & .rdw-editor-main {
-    padding: 0 30px 10px 15px;
   }
 `;
 
