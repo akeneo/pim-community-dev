@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Quer
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -29,11 +30,14 @@ class SearchEventSubscriptionDebugLogsQuerySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(SearchEventSubscriptionDebugLogsQuery::class);
     }
 
-    public function it_resolves_filters(): void
+    public function it_throws_an_exception_when_given_filter_level_are_invalid(): void
     {
-        $resolver
-
-        $this->execute('erp');
-
+        $this
+            ->shouldThrow(InvalidOptionsException::class)
+            ->during('execute', [
+                'erp',
+                null,
+                ['levels' => 'red']
+            ]);
     }
 }

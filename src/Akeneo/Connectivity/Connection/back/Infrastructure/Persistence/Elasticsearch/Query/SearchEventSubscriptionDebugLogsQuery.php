@@ -51,7 +51,6 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
     private Client $elasticsearchClient;
     private Clock $clock;
     private Encrypter $encrypter;
-    private OptionsResolver $resolver;
 
     public function __construct(
         Client $elasticsearchClient,
@@ -61,20 +60,18 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         $this->elasticsearchClient = $elasticsearchClient;
         $this->clock = $clock;
         $this->encrypter = $encrypter;
-
-        $this->resolver = new OptionsResolver();
-        $this->configureOptions($this->resolver);
     }
 
-    public function execute(string $connectionCode, ?string $encryptedSearchAfter = null, ?array $filters = []): array
+    public function execute(string $connectionCode, ?string $encryptedSearchAfter = null, array $filters = []): array
     {
-        $filters = $this->resolver->resolve($filters);
-
+        $filters = $this->resolveFilters($filters);
         $parameters = $this->buildParameters($encryptedSearchAfter);
 
         $nowTimestamp = $this->clock->now()->getTimestamp();
 
-        if (null !== $parameters['first_notice_and_info_id'] && null !== $parameters['first_notice_and_info_search_after']) {
+        if (null !== $parameters['first_notice_and_info_id']
+            && null !== $parameters['first_notice_and_info_search_after']
+        ) {
             $lastNoticeAndInfoIds = $this->findSameLastNoticeAndInfoIds(
                 $connectionCode,
                 $parameters['first_notice_and_info_id'],
@@ -139,6 +136,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         }
 
         $result = $this->elasticsearchClient->search($query);
+        dump($result);
 
         return [
             'results' => array_map(
@@ -278,11 +276,10 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         ];
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    private function configureOptions(OptionsResolver $resolver)
+    private function resolveFilters(array $filters): array
     {
+        $resolver = new OptionsResolver();
+
         $resolver->setDefault('levels', null);
         $resolver->setAllowedTypes('levels', ['null', 'string[]']);
         $resolver->setAllowedValues(
@@ -313,5 +310,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
                 return true;
             }
         );
+
+        return $resolver->resolve($filters);
     }
 }

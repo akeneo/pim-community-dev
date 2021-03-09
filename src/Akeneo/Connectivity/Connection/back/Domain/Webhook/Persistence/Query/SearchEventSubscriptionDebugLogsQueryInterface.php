@@ -14,6 +14,8 @@ interface SearchEventSubscriptionDebugLogsQueryInterface
      * If you need to access the next results, you can simply pass the last "search_after" received as a parameter
      * to the following call.
      *
+     * @param array{levels?: array} $filters
+     *
      * @return array{
      *  results: array<array{
      *    timestamp: int,
@@ -26,5 +28,5 @@ interface SearchEventSubscriptionDebugLogsQueryInterface
      *  search_after: string
      *}>
      */
-    public function execute(string $connectionCode, ?string $encryptedSearchAfter = null, ?array $filters = []): array;
+    public function execute(string $connectionCode, ?string $encryptedSearchAfter = null, array $filters = []): array;
 }
