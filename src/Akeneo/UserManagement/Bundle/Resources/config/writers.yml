@@ -68,7 +68,7 @@ services:
             - [ 'role', 'label' ]
 
     pim_connector.writer.database.user_role_with_permission:
-        class: Akeneo\UserManagement\Component\Connector\Writer\Database\RoleWithPermissionsWriter
+        class: 'Akeneo\UserManagement\Component\Connector\Writer\Database\RoleWithPermissionsWriter'
         arguments:
-            - '@pim_connector.writer.database.user_role'
-            - '@oro_security.acl.manager'
+            - '@pim_user.saver.role_with_permissions'
+            - '@akeneo_storage_utils.doctrine.object_detacher'

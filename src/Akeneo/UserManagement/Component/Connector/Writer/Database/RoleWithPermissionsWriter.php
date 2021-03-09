@@ -6,11 +6,8 @@ namespace Akeneo\UserManagement\Component\Connector\Writer\Database;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\UserManagement\Component\Connector\RoleWithPermissions;
-use Akeneo\UserManagement\Component\Model\RoleInterface;
-use Akeneo\UserManagement\Component\Model\User;
-use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Webmozart\Assert\Assert;
 
 /**
@@ -20,45 +17,44 @@ use Webmozart\Assert\Assert;
  */
 final class RoleWithPermissionsWriter implements ItemWriterInterface, StepExecutionAwareInterface
 {
-    private ItemWriterInterface $writer;
-    private AclManager $aclManager;
-    private ?StepExecution $stepExecution;
+    private BulkSaverInterface $roleWithPermissionsSaver;
+    private ?StepExecution $stepExecution = null;
 
-    public function __construct(ItemWriterInterface $writer, AclManager $aclManager)
+    public function __construct(BulkSaverInterface $roleWithPermissionsSaver)
     {
-        $this->writer = $writer;
-        $this->aclManager = $aclManager;
+        $this->roleWithPermissionsSaver = $roleWithPermissionsSaver;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function write(array $rolesWithPermissions): void
     {
-        Assert::notNull($this->stepExecution);
         Assert::allIsInstanceOf($rolesWithPermissions, RoleWithPermissions::class);
 
-        $this->writer->write(array_map(
-            fn (RoleWithPermissions $roleWithPermissions): RoleInterface => $roleWithPermissions->role(),
-            $rolesWithPermissions
-        ));
-        array_walk($rolesWithPermissions, [$this, 'updatePermissions']);
+        $this->incrementCount($rolesWithPermissions);
+        $this->roleWithPermissionsSaver->saveAll($rolesWithPermissions);
     }
 
-    public function setStepExecution(StepExecution $stepExecution)
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
-        if ($this->writer instanceof StepExecutionAwareInterface) {
-            $this->writer->setStepExecution($stepExecution);
-        }
     }
 
-    private function updatePermissions(RoleWithPermissions $roleWithPermissions): void
+    private function incrementCount(array $rolesWithPermissions): void
     {
-        if (User::ROLE_ANONYMOUS === $roleWithPermissions->role()->getRole()) {
+        if (null === $this->stepExecution) {
             return;
         }
-
-        $this->aclManager->getPrivilegeRepository()->savePrivileges(
-            $this->aclManager->getSid($roleWithPermissions->role()),
-            new ArrayCollection($roleWithPermissions->privileges())
-        );
+        foreach ($rolesWithPermissions as $roleWithPermissions) {
+            if ($roleWithPermissions->role()->getId()) {
+                $this->stepExecution->incrementSummaryInfo('process');
+            } else {
+                $this->stepExecution->incrementSummaryInfo('create');
+            }
+        }
     }
 }

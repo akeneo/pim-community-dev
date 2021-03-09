@@ -5,17 +5,12 @@ namespace Akeneo\UserManagement\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
-use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Connector\RoleWithPermissions;
-use Akeneo\UserManagement\Component\Model\Role;
-use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
-use Doctrine\Common\Collections\Collection;
-use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
-use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
-use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -24,104 +19,76 @@ use Webmozart\Assert\Assert;
  */
 final class RoleWithPermissionsProcessor extends AbstractProcessor implements ItemProcessorInterface
 {
-    private const ACL_DEFAULT_EXTENSION = 'action';
-
-    private RoleRepositoryInterface $roleRepository;
-    private ObjectUpdaterInterface $roleUpdater;
+    private SimpleFactoryInterface $roleWithPermissionsFactory;
+    private ObjectUpdaterInterface $roleWithPermissionsUpdater;
     private ValidatorInterface $validator;
-    private ObjectDetacherInterface $objectDetacher;
-    private AclManager $aclManager;
 
     public function __construct(
-        RoleRepositoryInterface $roleRepository,
-        ObjectUpdaterInterface $roleUpdater,
-        ValidatorInterface $validator,
-        ObjectDetacherInterface $objectDetacher,
-        AclManager $aclManager
+        IdentifiableObjectRepositoryInterface $repository,
+        SimpleFactoryInterface $roleWithPermissionsFactory,
+        ObjectUpdaterInterface $roleWithPermissionsUpdater,
+        ValidatorInterface $validator
     ) {
-        $this->roleRepository = $roleRepository;
-        $this->roleUpdater = $roleUpdater;
+        parent::__construct($repository);
+        $this->roleWithPermissionsFactory = $roleWithPermissionsFactory;
+        $this->roleWithPermissionsUpdater = $roleWithPermissionsUpdater;
         $this->validator = $validator;
-        $this->objectDetacher = $objectDetacher;
-        $this->aclManager = $aclManager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function process($item): RoleWithPermissions
     {
-        Assert::isArray($item);
-        Assert::string($item['role'] ?? null);
-        Assert::string($item['label'] ?? null);
-        Assert::isArray($item['permissions'] ?? []);
+        $itemIdentifier = $this->getItemIdentifier($this->repository, $item);
+        $roleWithPermissions = $this->findOrCreateRoleWithPermissions($itemIdentifier);
 
-        $allowedPermissions = null;
-
-        $role = $this->roleRepository->findOneByIdentifier($item['role']);
-        if (null === $role) {
-            $role = new Role();
-            $allowedPermissions = [];
+        try {
+            $permissions = (null === $roleWithPermissions->role()->getId()) ? ['permissions' => []] : [];
+            $this->roleWithPermissionsUpdater->update($roleWithPermissions, array_merge($permissions, $item));
+        } catch (PropertyException $exception) {
+            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
-        if (\array_key_exists('permissions', $item)) {
-            $allowedPermissions = $item['permissions'];
-            unset($item['permissions']);
-        }
-        $this->roleUpdater->update($role, $item);
-
-        $violations = $this->validator->validate($role);
+        $violations = $this->validator->validate($roleWithPermissions);
         if ($violations->count() > 0) {
-            $this->objectDetacher->detach($role);
             $this->skipItemWithConstraintViolations($item, $violations);
         }
 
-        $privileges = $this->aclManager->getPrivilegeRepository()->getPrivileges($this->aclManager->getSid($role));
-        if (null !== $allowedPermissions) {
-            $nonExistentPermissions = $this->processPrivileges($privileges, $allowedPermissions);
-            if ([] !== $nonExistentPermissions) {
-                $this->skipItemWithMessage(
-                    $item,
-                    \sprintf('The following permissions are invalid: %s', \implode(', ', $nonExistentPermissions))
-                );
-            }
-        }
-
-        $roleWithPermissions = RoleWithPermissions::createFromRoleAndPrivileges($role, $privileges->getValues());
         if (null !== $this->stepExecution) {
-            $this->saveProcessedItemInStepExecutionContext($item['role'], $roleWithPermissions);
+            $this->saveProcessedItemInStepExecutionContext($itemIdentifier, $roleWithPermissions);
         }
 
         return $roleWithPermissions;
     }
 
-    protected function saveProcessedItemInStepExecutionContext(string $itemIdentifier, $processedItem): void
+    protected function findOrCreateRoleWithPermissions(string $roleIdentifier): RoleWithPermissions
     {
+        $entity = $this->repository->findOneByIdentifier($roleIdentifier);
+        if (null !== $entity) {
+            return $entity;
+        }
+
+        if ('' === $roleIdentifier || null === $this->stepExecution) {
+            return $this->roleWithPermissionsFactory->create();
+        }
+
+        $executionContext = $this->stepExecution->getExecutionContext();
+        $processedItemsBatch = $executionContext->get('processed_items_batch') ?? [];
+
+        return $processedItemsBatch[$roleIdentifier] ?? $this->roleWithPermissionsFactory->create();
+    }
+
+    private function saveProcessedItemInStepExecutionContext(string $itemIdentifier, $processedItem): void
+    {
+        if (null === $this->stepExecution) {
+            return;
+        }
+
         $executionContext = $this->stepExecution->getExecutionContext();
         $processedItemsBatch = $executionContext->get('processed_items_batch') ?? [];
         $processedItemsBatch[$itemIdentifier] = $processedItem;
 
         $executionContext->put('processed_items_batch', $processedItemsBatch);
-    }
-
-    private function processPrivileges(Collection $aclPrivileges, array $permissions): array
-    {
-        $allowedPermissions = \array_flip($permissions);
-        foreach ($aclPrivileges as $privilege) {
-            if (self::ACL_DEFAULT_EXTENSION !== $privilege->getExtensionKey()) {
-                $aclPrivileges->removeElement($privilege);
-                continue;
-            } elseif ($privilege->getIdentity()->getName() === AclPrivilegeRepository::ROOT_PRIVILEGE_NAME) {
-                continue;
-            }
-            foreach ($privilege->getPermissions() as $permission) {
-                $permission->setAccessLevel(
-                    \array_key_exists(
-                        $privilege->getIdentity()->getId(),
-                        $allowedPermissions
-                    ) ? AccessLevel::SYSTEM_LEVEL : AccessLevel::NONE_LEVEL
-                );
-                unset($allowedPermissions[$privilege->getIdentity()->getId()]);
-            }
-        }
-
-        return \array_keys($allowedPermissions);
     }
 }
