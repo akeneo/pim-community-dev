@@ -9,7 +9,7 @@ monolog:
         nested:
             type: stream
             path: '%kernel.logs_dir%/%kernel.environment%.log'
-            level: info
+            level: '%env(LOGGING_LEVEL)%'
         console:
             type:  console
             channels: ['!event', '!doctrine', '!event_api', '!business_event']
