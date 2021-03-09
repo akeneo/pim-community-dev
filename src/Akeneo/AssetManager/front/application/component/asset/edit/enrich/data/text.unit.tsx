@@ -19,6 +19,21 @@ const textValue = {
   data: 'pim',
 };
 
+const textAreaAttribute = {
+  code: 'description',
+  identifier: 'attribute_description',
+  type: TEXT_ATTRIBUTE_TYPE,
+  is_textarea: true,
+  labels: {},
+};
+
+const textAreaValue = {
+  attribute: textAreaAttribute,
+  channel: null,
+  locale: null,
+  data: 'My wysiwyg data',
+};
+
 test('It renders the text attribute', () => {
   renderWithProviders(
     <TextView channel={null} value={textValue} locale={null} onChange={jest.fn()} canEditData={true} />
@@ -27,6 +42,16 @@ test('It renders the text attribute', () => {
   const inputElement = screen.getByRole('textbox') as HTMLInputElement;
   expect(inputElement).toBeInTheDocument();
   expect(inputElement.value).toEqual('pim');
+});
+
+test('It renders the textarea attribute', () => {
+  renderWithProviders(
+    <TextView channel={null} value={textAreaValue} locale={null} onChange={jest.fn()} canEditData={true} />
+  );
+
+  const inputElement = screen.getByRole('textbox') as HTMLInputElement;
+  expect(inputElement).toBeInTheDocument();
+  expect(inputElement.value).toEqual('My wysiwyg data');
 });
 
 test('It renders the placeholder when the value is empty', () => {

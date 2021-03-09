@@ -160,12 +160,15 @@ class MassEditAssetsTaskletSpec extends ObjectBehavior
                 'hits' => [
                     [
                         '_source' => ['code' => 'nice'],
+                        'sort' => ['nice'],
                     ],
                     [
                         '_source' => ['code' => 'cool'],
+                        'sort' => ['cool'],
                     ],
                     [
-                        '_source' => ['code' => 'awesome'],
+                        '_source' => ['code' => 'AWESOME'],
+                        'sort' => ['awesome'],
                     ],
                 ],
             ],
@@ -207,7 +210,7 @@ class MassEditAssetsTaskletSpec extends ObjectBehavior
         $editValueAssetCommands = [$editValueAssetCommand->getWrappedObject()];
         $editAssetCommand1 = new EditAssetCommand('packshot', 'nice', $editValueAssetCommands);
         $editAssetCommand2 = new EditAssetCommand('packshot', 'cool', $editValueAssetCommands);
-        $editAssetCommand3 = new EditAssetCommand('packshot', 'awesome', $editValueAssetCommands);
+        $editAssetCommand3 = new EditAssetCommand('packshot', 'AWESOME', $editValueAssetCommands);
 
         $editAssetsHandler->__invoke($editAssetCommand1)->shouldBeCalledOnce();
         $editAssetsHandler->__invoke($editAssetCommand2)->shouldBeCalledOnce();
@@ -317,12 +320,15 @@ class MassEditAssetsTaskletSpec extends ObjectBehavior
                 'hits' => [
                     [
                         '_source' => ['code' => 'nice'],
+                        'sort' => ['nice'],
                     ],
                     [
                         '_source' => ['code' => 'cool'],
+                        'sort' => ['cool'],
                     ],
                     [
-                        '_source' => ['code' => 'awesome'],
+                        '_source' => ['code' => 'AWESOME'],
+                        'sort' => ['awesome'],
                     ]
                 ],
             ],
@@ -337,6 +343,7 @@ class MassEditAssetsTaskletSpec extends ObjectBehavior
                 'hits' => [
                     [
                         '_source' => ['code' => 'tricky'],
+                        'sort' => ['tricky'],
                     ],
                 ],
             ],
@@ -379,7 +386,7 @@ class MassEditAssetsTaskletSpec extends ObjectBehavior
         $editValueAssetCommands = [$editValueAssetCommand->getWrappedObject()];
         $editAssetCommand1 = new EditAssetCommand('packshot', 'nice', $editValueAssetCommands);
         $editAssetCommand2 = new EditAssetCommand('packshot', 'cool', $editValueAssetCommands);
-        $editAssetCommand3 = new EditAssetCommand('packshot', 'awesome', $editValueAssetCommands);
+        $editAssetCommand3 = new EditAssetCommand('packshot', 'AWESOME', $editValueAssetCommands);
 
         $editAssetsHandler->__invoke($editAssetCommand1)->shouldBeCalledOnce();
         $editAssetsHandler->__invoke($editAssetCommand2)->shouldBeCalledOnce();

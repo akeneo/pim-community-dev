@@ -7,6 +7,6 @@ module.exports = {
   transform: {'^.+\\.tsx?$': 'ts-jest'},
   moduleDirectories: ['<rootDir>/../../../../../../node_modules/'],
   moduleNameMapper: {
-    '\\.(svg)$': '<rootDir>/__mocks__/fileMock.ts',
+    '\\.(svg|css)$': '<rootDir>/__mocks__/fileMock.ts',
   },
 };

@@ -1,8 +1,7 @@
 import React from 'react';
 import {isTextData, textDataStringValue, textDataFromString} from 'akeneoassetmanager/domain/model/asset/data/text';
 import {isTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import RichTextEditor from 'akeneoassetmanager/application/component/app/rich-text-editor';
-import {Key, TextInput} from 'akeneo-design-system';
+import {Key, TextAreaInput, TextInput} from 'akeneo-design-system';
 import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
 import {ViewGeneratorProps} from 'akeneoassetmanager/application/configuration/value';
 
@@ -24,19 +23,13 @@ const View = ({id, value, invalid, onChange, onSubmit, canEditData}: ViewGenerat
   return (
     <>
       {value.attribute.is_textarea ? (
-        value.attribute.is_rich_text_editor ? (
-          <RichTextEditor value={textDataStringValue(value.data)} onChange={onValueChange} readOnly={!canEditData} />
-        ) : (
-          <textarea
-            id={id}
-            className={`AknTextareaField AknTextareaField--light
-            ${value.attribute.value_per_locale ? 'AknTextareaField--localizable' : ''}
-            ${!canEditData ? 'AknTextField--disabled' : ''}`}
-            value={textDataStringValue(value.data)}
-            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => onValueChange(event.currentTarget.value)}
-            readOnly={!canEditData}
-          />
-        )
+        <TextAreaInput
+          id={id}
+          value={textDataStringValue(value.data)}
+          onChange={onValueChange}
+          readOnly={!canEditData}
+          isRichText={value.attribute.is_rich_text_editor}
+        />
       ) : (
         <TextInput
           id={id}

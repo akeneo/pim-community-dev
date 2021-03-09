@@ -16,6 +16,7 @@ import {hasFieldAsTarget} from 'akeneoassetmanager/domain/model/asset-family/tra
 import {Field, Helper} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {isTextAreaAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 
 const ValueCollectionContainer = styled.div`
   display: flex;
@@ -94,6 +95,7 @@ const ValueCollection = ({
               incomplete={value.attribute.is_required && isValueEmpty(value)}
               channel={value.channel}
               locale={value.locale}
+              fullWidth={isTextAreaAttribute(value.attribute)}
             >
               <DataView
                 value={value}
