@@ -4,10 +4,10 @@ import {Helper, HelperProps, InputProps, Locale, LocaleProps} from '../../compon
 import {getColor} from '../../theme';
 import {useId} from '../../hooks';
 
-const FieldContainer = styled.div`
+const FieldContainer = styled.div<{fullWidth: boolean}>`
   display: flex;
   flex-direction: column;
-  max-width: 460px;
+  max-width: ${({fullWidth}) => (fullWidth ? '100%' : '460px')};
 `;
 
 const LabelContainer = styled.div`
@@ -72,6 +72,11 @@ type FieldProps = {
   requiredLabel?: string;
 
   /**
+   * Should the field input take the full width of the parent container
+   */
+  fullWidth?: boolean;
+
+  /**
    * Children of the Field, can only be an Input or Helpers, other children will not be displayed.
    */
   children: FieldChild;
@@ -82,7 +87,7 @@ type FieldProps = {
  */
 const Field = React.forwardRef<HTMLDivElement, FieldProps>(
   (
-    {label, locale, channel, incomplete = false, requiredLabel, children, ...rest}: FieldProps,
+    {label, locale, channel, incomplete = false, fullWidth = false, requiredLabel, children, ...rest}: FieldProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const inputId = useId('input_');
@@ -101,7 +106,7 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
     });
 
     return (
-      <FieldContainer ref={forwardedRef} {...rest}>
+      <FieldContainer ref={forwardedRef} fullWidth={fullWidth ?? false} {...rest}>
         <LabelContainer>
           {incomplete && <IncompleteBadge />}
           <Label htmlFor={inputId} id={labelId}>
