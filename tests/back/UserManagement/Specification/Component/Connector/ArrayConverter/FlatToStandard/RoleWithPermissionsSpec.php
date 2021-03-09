@@ -5,10 +5,10 @@ namespace Specification\Akeneo\UserManagement\Component\Connector\ArrayConverter
 
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Akeneo\UserManagement\Component\Connector\ArrayConverter\FlatToStandard\Role;
+use Akeneo\UserManagement\Component\Connector\ArrayConverter\FlatToStandard\RoleWithPermissions;
 use PhpSpec\ObjectBehavior;
 
-class RoleSpec extends ObjectBehavior
+class RoleWithPermissionsSpec extends ObjectBehavior
 {
     function let(FieldsRequirementChecker $fieldsRequirementChecker)
     {
@@ -17,7 +17,7 @@ class RoleSpec extends ObjectBehavior
 
     function it_is_an_array_converter()
     {
-        $this->shouldBeAnInstanceOf(Role::class);
+        $this->shouldBeAnInstanceOf(RoleWithPermissions::class);
         $this->shouldImplement(ArrayConverterInterface::class);
     }
 
@@ -29,8 +29,8 @@ class RoleSpec extends ObjectBehavior
             'permissions' => 'action:pim_enrich_product_create,action:pim_enrich_product_index',
         ];
 
-        $fieldsRequirementChecker->checkFieldsPresence($flat, ['role', 'label'])->shouldBeCalled();
-        $fieldsRequirementChecker->checkFieldsFilling($flat, ['role', 'label'])->shouldBeCalled();
+        $fieldsRequirementChecker->checkFieldsPresence($flat, ['role'])->shouldBeCalled();
+        $fieldsRequirementChecker->checkFieldsFilling($flat, ['role'])->shouldBeCalled();
 
         $this->convert($flat)->shouldReturn(
             [
@@ -48,8 +48,8 @@ class RoleSpec extends ObjectBehavior
     {
         $flat = ['role' => 'ROLE_ADMINISTRATOR', 'label' => 'Administrators'];
 
-        $fieldsRequirementChecker->checkFieldsPresence($flat, ['role', 'label'])->shouldBeCalled();
-        $fieldsRequirementChecker->checkFieldsFilling($flat, ['role', 'label'])->shouldBeCalled();
+        $fieldsRequirementChecker->checkFieldsPresence($flat, ['role'])->shouldBeCalled();
+        $fieldsRequirementChecker->checkFieldsFilling($flat, ['role'])->shouldBeCalled();
 
         $this->convert($flat)->shouldReturn(
             [
@@ -63,8 +63,8 @@ class RoleSpec extends ObjectBehavior
         FieldsRequirementChecker $fieldsRequirementChecker
     ) {
         $flat = ['role' => 'ROLE_ADMINISTRATOR', 'label' => 'Administrators', 'permissions' => ''];
-        $fieldsRequirementChecker->checkFieldsPresence($flat, ['role', 'label'])->shouldBeCalled();
-        $fieldsRequirementChecker->checkFieldsFilling($flat, ['role', 'label'])->shouldBeCalled();
+        $fieldsRequirementChecker->checkFieldsPresence($flat, ['role'])->shouldBeCalled();
+        $fieldsRequirementChecker->checkFieldsFilling($flat, ['role'])->shouldBeCalled();
 
         $this->convert($flat)->shouldReturn(
             [
