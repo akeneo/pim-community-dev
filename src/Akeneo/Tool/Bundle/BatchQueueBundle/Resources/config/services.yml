@@ -27,6 +27,11 @@ services:
         arguments:
             - '@akeneo_batch_queue.queue.job_execution_message_repository'
 
+    akeneo_batch_queue.queue.job_execution_queue:
+        class: 'Akeneo\Tool\Bundle\BatchQueueBundle\Queue\MessengerJobExecutionQueue'
+        arguments:
+            - '@messenger.bus.default'
+
     akeneo_batch_queue.manager.job_execution_manager:
         class: '%akeneo_batch_queue.manager.job_execution_manager.class%'
         arguments:
@@ -105,3 +110,11 @@ services:
     Akeneo\Tool\Component\BatchQueue\Normalizer\JobExecutionMessageNormalizer:
         tags:
             - { name: akeneo_batch_queue.messenger.normalizer, priority: 0 }
+
+    Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler\JobExecutionMessageHandler:
+        arguments:
+            - '@akeneo_batch_queue.queue.job_execution_message_repository'
+            - '@akeneo_batch_queue.manager.job_execution_manager'
+            - '@monolog.logger.job_event'
+            - '%kernel.project_dir%'
+        tags: [messenger.message_handler]
