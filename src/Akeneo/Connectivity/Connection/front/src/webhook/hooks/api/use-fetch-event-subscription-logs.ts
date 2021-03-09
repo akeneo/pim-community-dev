@@ -17,18 +17,26 @@ type SearchEventSubscriptionLogsResponse = {
 };
 
 type EventSubscriptionLogs = {
-    logs: EventSubscriptionLog[],
+    logs: EventSubscriptionLog[];
+    initialized: boolean;
     total?: number;
-    fetchNextLogs: () => void,
+    fetchNextLogs: () => void;
     maxScrollReached: boolean;
     endScrollReached: boolean;
 };
 
 const useFetchEventSubscriptionLogs = (connectionCode: string): EventSubscriptionLogs => {
-    const [data, setData] = useState<Data>({logs: [], page: 0, endScrollReached: false});
+    const [data, setData] = useState<Data>({
+        logs: [],
+        page: 0,
+        endScrollReached: false
+    });
     const url = useRoute(
         'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs',
-        {connectionCode, searchAfter: data.searchAfter}
+        {
+            connection_code: connectionCode,
+            search_after: data.searchAfter || null
+        }
     );
 
     const fetchNextLogs = useCallback(async () => {
@@ -40,9 +48,10 @@ const useFetchEventSubscriptionLogs = (connectionCode: string): EventSubscriptio
         const nextLogs: SearchEventSubscriptionLogsResponse = await response.json();
 
         setData(({logs, page}) => ({
-            page: page + 1,
             logs: [...logs, ...nextLogs.results],
+            initialized: true,
             total: nextLogs.total,
+            page: page + 1,
             searchAfter: nextLogs.searchAfter,
             endScrollReached: nextLogs.results.length === 0,
         }));
@@ -50,9 +59,12 @@ const useFetchEventSubscriptionLogs = (connectionCode: string): EventSubscriptio
 
     return {
         logs: data.logs,
+        initialized: data.total !== undefined,
         total: data.total,
         fetchNextLogs,
         maxScrollReached: data.page >= 20,
         endScrollReached: data.endScrollReached
     };
 };
+
+export default useFetchEventSubscriptionLogs;

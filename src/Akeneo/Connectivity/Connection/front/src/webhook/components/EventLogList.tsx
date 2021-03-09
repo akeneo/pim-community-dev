@@ -1,62 +1,44 @@
-import {ArrowRightIcon, Badge, Button, GraphIllustration, Information, RefreshIcon, Table} from 'akeneo-design-system';
-import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
-import {NoEventLogs} from './NoEventLogs';
+import { Button, GraphIllustration, Information, RefreshIcon } from 'akeneo-design-system';
+import React, { FC, useEffect, useRef } from 'react';
+import { NoEventLogs } from './NoEventLogs';
+import useFetchEventSubscriptionLogs from '../hooks/api/use-fetch-event-subscription-logs';
 
-
-export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => {
-    const {logs, total, fetchNextLogs} = useFetchEventSubscriptionLogs(connectionCode);
+export const EventLogList: FC<{connectionCode: string}> = ({ connectionCode }) => {
+    const {
+        logs,
+        initialized,
+        total,
+        fetchNextLogs,
+        maxScrollReached,
+        endScrollReached
+    } = useFetchEventSubscriptionLogs(connectionCode);
 
     useEffect(() => {
         fetchNextLogs();
     }, []);
 
-    if (logs.length > 0) {
-        return (
-            <>
-                <Information illustration={<GraphIllustration />} title={`There is ${total} logs.`}>
-                    {null}
-                </Information>
-                <Table>
-                    <Table.Header>
-                        <Table.HeaderCell></Table.HeaderCell>
-                        <Table.HeaderCell>Datetime</Table.HeaderCell>
-                        <Table.HeaderCell>Level</Table.HeaderCell>
-                        <Table.HeaderCell>Message</Table.HeaderCell>
-                    </Table.Header>
-                    <Table.Body>
-                        {logs.map(({id, timestamp, level, message}) => (
-                            <Table.Row key={id} onClick={() => undefined}>
-                                <Table.Cell>
-                                    <ArrowRightIcon />
-                                </Table.Cell>
-                                <Table.Cell>
-                                    {new Intl.DateTimeFormat('en-US', {
-                                        year: 'numeric',
-                                        month: '2-digit',
-                                        day: '2-digit',
-                                    }).format(new Date(timestamp))}
-                                    <br />
-                                    {new Intl.DateTimeFormat('en-US', {
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                        second: '2-digit',
-                                    }).format(new Date(timestamp))}
-                                </Table.Cell>
-                                <Table.Cell>
-                                    <Badge level='warning'>{level.toUpperCase()}</Badge>
-                                </Table.Cell>
-                                <Table.Cell>{message}</Table.Cell>
-                            </Table.Row>
-                        ))}
-                    </Table.Body>
-                </Table>
-                <br />
-                <Button ghost level='tertiary' onClick={() => fetchNextLogs()}>
-                    <RefreshIcon /> Load more…
-                </Button>
-            </>
-        );
+    const scrollContainer = useRef(null);
+
+    if (!initialized) {
+        return null;
     }
 
-    return <NoEventLogs />;
+    if (total === 0) {
+        return <NoEventLogs/>;
+    }
+
+    console.log(logs);
+
+    return (
+        <>
+            <Information illustration={<GraphIllustration/>} title={`There is ${total} logs.`}>
+                {null}
+            </Information>
+            <ul ref={container}>
+                {logs.map((log, index) => (
+                    <li key={index} style={{height: "50px"}}>{log.timestamp} - {log.level} - {log.message}</li>
+                ))}
+            </ul>
+        </>
+    );
 };
