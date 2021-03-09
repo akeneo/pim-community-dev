@@ -29,11 +29,11 @@ framework:
                 dsn: 'gps:'
                 options:
                     project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
-                    topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE))%'
-                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE))%'
+                    topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE)%'
+                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE)%'
                     auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
                 retry_strategy:
-                    max_retries: 3
+                    max_retries: 0
                 serializer: akeneo_batch_queue.messenger.serializer
 
         routing:
