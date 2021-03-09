@@ -67,8 +67,6 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         $filters = $this->resolveFilters($filters);
         $parameters = $this->buildParameters($encryptedSearchAfter);
 
-        $nowTimestamp = $this->clock->now()->getTimestamp();
-
         if (null !== $parameters['first_notice_and_info_id']
             && null !== $parameters['first_notice_and_info_search_after']
         ) {
@@ -80,6 +78,52 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         } else {
             $lastNoticeAndInfoIds = $this->findLastNoticeAndInfoIds($connectionCode);
         }
+
+        $query = $this->buildQuery($connectionCode, $parameters['search_after'], $lastNoticeAndInfoIds, $filters);
+
+        $result = $this->elasticsearchClient->search($query);
+
+        return [
+            'results' => array_map(
+                function ($hit) {
+                    return $hit['_source'];
+                },
+                $result['hits']['hits']
+            ),
+            'search_after' => $this->encrypter->encrypt(
+                json_encode(
+                    [
+                        'search_after' => end($result['hits']['hits'])['sort'] ?? null,
+                        'first_notice_and_info_id' => $lastNoticeAndInfoIds['first_id'],
+                        'first_notice_and_info_search_after' => $lastNoticeAndInfoIds['first_search_after'],
+                    ]
+                )
+            ),
+            'total' => $result['hits']['total']['value'],
+        ];
+    }
+
+    /**
+     * @param array{
+     *   first_id: ?string,
+     *   first_search_after: ?array<string>,
+     *   ids: array<string>
+     * } $lastNoticeAndInfoIds
+     * @param null|array<mixed> $searchAfter
+     * @param array{
+     *  levels?: array,
+     *  timestamp_from?: int,
+     *  timestamp_to?: int,
+     * } $filters
+     * @return array<mixed>
+     */
+    private function buildQuery(
+        string $connectionCode,
+        ?array $searchAfter,
+        array $lastNoticeAndInfoIds,
+        array $filters
+    ): array {
+        $nowTimestamp = $this->clock->now()->getTimestamp();
 
         $query = [
             'size' => 25,
@@ -128,33 +172,22 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         ];
 
         if ($filters['levels']) {
-            $query['query']['bool']['must'] = ['terms' => ['level' => $filters['levels']]];
+            $query['query']['bool']['must']['terms']['level'] = $filters['levels'];
         }
 
-        if (null !== $parameters['search_after']) {
-            $query['search_after'] = $parameters['search_after'];
+        if ($filters['timestamp_from']) {
+            $query['query']['bool']['must']['range']['timestamp']['gte'] = $filters['timestamp_from'];
         }
 
-        $result = $this->elasticsearchClient->search($query);
+        if ($filters['timestamp_to']) {
+            $query['query']['bool']['must']['range']['timestamp']['lte'] = $filters['timestamp_to'];
+        }
 
-        return [
-            'results' => array_map(
-                function ($hit) {
-                    return $hit['_source'];
-                },
-                $result['hits']['hits']
-            ),
-            'search_after' => $this->encrypter->encrypt(
-                json_encode(
-                    [
-                        'search_after' => end($result['hits']['hits'])['sort'] ?? null,
-                        'first_notice_and_info_id' => $lastNoticeAndInfoIds['first_id'],
-                        'first_notice_and_info_search_after' => $lastNoticeAndInfoIds['first_search_after'],
-                    ]
-                )
-            ),
-            'total' => $result['hits']['total']['value'],
-        ];
+        if (null !== $searchAfter) {
+            $query['search_after'] = $searchAfter;
+        }
+
+        return $query;
     }
 
     /**
@@ -280,7 +313,11 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         $resolver = new OptionsResolver();
 
         $resolver->setDefault('levels', null);
+        $resolver->setDefault('timestamp_from', null);
+        $resolver->setDefault('timestamp_to', null);
         $resolver->setAllowedTypes('levels', ['null', 'string[]']);
+        $resolver->setAllowedTypes('timestamp_from', ['null', 'int']);
+        $resolver->setAllowedTypes('timestamp_to', ['null', 'int']);
         $resolver->setAllowedValues(
             'levels',
             function ($levels) {
