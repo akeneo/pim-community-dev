@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\Classification\Updater;
 
+use Akeneo\Channel\Component\Query\PublicApi\IsCategoryTreeLinkedToChannel;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -9,6 +10,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\UserManagement\Component\Query\PublicApi\IsCategoryTreeLinkedToUser;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -23,19 +25,20 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  */
 class CategoryUpdater implements ObjectUpdaterInterface
 {
-    /** @var PropertyAccessor */
-    protected $accessor;
+    protected PropertyAccessor $accessor;
+    protected IdentifiableObjectRepositoryInterface $categoryRepository;
+    private IsCategoryTreeLinkedToUser $isCategoryTreeLinkedToUser;
+    private IsCategoryTreeLinkedToChannel $isCategoryTreeLinkedToChannel;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $categoryRepository;
-
-    /**
-     * @param IdentifiableObjectRepositoryInterface $categoryRepository
-     */
-    public function __construct(IdentifiableObjectRepositoryInterface $categoryRepository)
-    {
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $categoryRepository,
+        IsCategoryTreeLinkedToUser $isCategoryTreeLinkedToUser,
+        IsCategoryTreeLinkedToChannel $isCategoryTreeLinkedToChannel
+    ) {
         $this->accessor = PropertyAccess::createPropertyAccessor();
         $this->categoryRepository = $categoryRepository;
+        $this->isCategoryTreeLinkedToUser = $isCategoryTreeLinkedToUser;
+        $this->isCategoryTreeLinkedToChannel = $isCategoryTreeLinkedToChannel;
     }
 
     /**
@@ -144,10 +147,18 @@ class CategoryUpdater implements ObjectUpdaterInterface
         }
 
         if (null !== $category->getId() && $category->isRoot()) {
-            throw InvalidPropertyException::expected(
-                sprintf('Property "parent" of a root category must be "null", "%s" given.', $data),
-                static::class
-            );
+            if (true === $this->isCategoryTreeLinkedToUser->byCategoryTreeId($category->getId())) {
+                throw InvalidPropertyException::expected(
+                    sprintf('You can\'t move a category tree linked to a user.', $data),
+                    static::class
+                );
+            }
+            if (true === $this->isCategoryTreeLinkedToChannel->byCategoryTreeId($category->getId())) {
+                throw InvalidPropertyException::expected(
+                    sprintf('You can\'t move a category tree linked to a channel.', $data),
+                    static::class
+                );
+            }
         }
 
         $category->setParent($categoryParent);

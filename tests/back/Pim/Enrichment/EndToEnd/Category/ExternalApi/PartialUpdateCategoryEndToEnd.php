@@ -12,7 +12,7 @@ class PartialUpdateCategoryEndToEnd extends ApiTestCase
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "parent": null
     }
@@ -32,7 +32,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "code": "new_category_headers",
         "parent": null
@@ -53,7 +53,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "code": "new_category_incompleted"
     }
@@ -103,7 +103,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "code": "categoryD",
         "parent": "master",
@@ -136,7 +136,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "parent": "master",
         "labels": {
@@ -192,7 +192,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "code": "categoryA",
         "labels": {
@@ -224,7 +224,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "parent": "categoryA1",
         "labels": {
@@ -255,7 +255,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "labels": {
             "en_US": null,
@@ -317,7 +317,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "code": "new_code"
     }
@@ -346,7 +346,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "extra_property": ""
     }
@@ -374,7 +374,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "labels": null
     }
@@ -402,7 +402,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "code": "inconsistent_code2"
     }
@@ -442,7 +442,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "parent" of a root category must be "null", "categoryA" given. Check the expected format on the API documentation.',
+            'message' => 'You can\'t move a category tree linked to a user. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#patch_categories__code_'
