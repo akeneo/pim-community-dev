@@ -76,10 +76,10 @@ test('it renders rich text editor and handle changes', () => {
 
   // Hack to trigger onBeforeInput event listened by DraftJS
   fireEvent.paste(input, {
-    clipboardData:{
+    clipboardData: {
       types: ['text/plain'],
-      getData: () => 'New '
-    }
+      getData: () => 'New ',
+    },
   });
 
   expect(handleChange).toHaveBeenCalledWith('<p>New Nice RTF content</p>\n');
