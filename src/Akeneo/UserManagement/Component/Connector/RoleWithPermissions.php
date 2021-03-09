@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Akeneo\UserManagement\Component\Connector;
 
 use Akeneo\UserManagement\Component\Model\RoleInterface;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 use Webmozart\Assert\Assert;
 
 /**
@@ -15,21 +14,22 @@ use Webmozart\Assert\Assert;
 final class RoleWithPermissions
 {
     private RoleInterface $role;
-    private array $privileges;
+    private array $permissions;
 
     private function __construct(RoleInterface $role, array $privileges)
     {
         $this->role = $role;
-        $this->privileges = $privileges;
+        $this->setPermissions($privileges);
     }
 
-    public static function createFromRoleAndPrivileges(
-        RoleInterface $role,
-        array $privileges
-    ): RoleWithPermissions {
-        Assert::allIsInstanceOf($privileges, AclPrivilege::class);
+    public static function createFromRoleAndPermissions(RoleInterface $role, array $permissions): RoleWithPermissions
+    {
+        return new self($role, $permissions);
+    }
 
-        return new self($role, $privileges);
+    public function getId(): ?int
+    {
+        return $this->role->getId();
     }
 
     public function role(): RoleInterface
@@ -37,11 +37,15 @@ final class RoleWithPermissions
         return $this->role;
     }
 
-    /**
-     * @return AclPrivilege[]
-     */
-    public function privileges(): array
+    public function permissions(): array
     {
-        return $this->privileges;
+        return $this->permissions;
+    }
+
+    public function setPermissions(array $permissions): void
+    {
+        Assert::allBoolean($permissions);
+        Assert::allStringNotEmpty(\array_keys($permissions));
+        $this->permissions = $permissions;
     }
 }

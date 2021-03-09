@@ -23,3 +23,9 @@ services:
 
     pim_user.updater.role:
         class: '%pim_user.updater.role.class%'
+
+    pim_user.updater.role_with_permissions:
+        class: 'Akeneo\UserManagement\Component\Updater\RoleWithPermissionsUpdater'
+        arguments:
+            - '@pim_user.updater.role'
+            - '@oro_security.acl.manager'
