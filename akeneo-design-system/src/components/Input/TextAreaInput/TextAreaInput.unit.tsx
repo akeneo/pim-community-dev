@@ -3,16 +3,9 @@ import {TextAreaInput} from './TextAreaInput';
 import {fireEvent, render, screen} from '../../../storybook/test-util';
 import {ContentBlock} from 'draft-js';
 
-jest.mock('draft-js', () => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const draftJS = jest.requireActual('draft-js');
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return {
-    ...draftJS,
-    convertFromHTML: (text: string) => ('WILL FAIL' === text ? undefined : {contentBlocks: [new ContentBlock({text})]}),
-  };
-});
+jest.mock('html-to-draftjs', () => (text: string) =>
+  'WILL FAIL' === text ? undefined : {contentBlocks: [new ContentBlock({text})]}
+);
 
 test('it renders and handle changes', () => {
   const handleChange = jest.fn();
