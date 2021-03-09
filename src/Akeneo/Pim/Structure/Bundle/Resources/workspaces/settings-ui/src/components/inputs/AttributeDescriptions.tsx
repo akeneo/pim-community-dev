@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field, TextareaInput, LoaderIcon } from 'akeneo-design-system';
+import { Field, TextAreaInput, LoaderIcon } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import { LocaleCode, LocaleSelector, Locale } from '@akeneo-pim-community/shared';
 import {Descriptions} from '../../models';
@@ -54,7 +54,7 @@ const AttributeDescriptions = ({defaultValue, onChange}: AttributeDescriptionsPr
       <div className="AknFormContainer AknFormContainer--withPadding" data-drop-zone="content">
         <Field label={translate('pim_enrich.entity.attribute.property.descriptions')}>
           {locales.filter(locale => locale.code === localeCode).map((locale) =>
-            <TextareaInput
+            <TextAreaInput
               key={locale.code}
               name={'descriptions'}
               type={'text'}
