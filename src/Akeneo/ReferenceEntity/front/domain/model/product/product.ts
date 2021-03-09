@@ -13,6 +13,8 @@ export const PRODUCT_TYPE = 'product';
 export const PRODUCT_MODEL_TYPE = 'product_model';
 export type ProductType = 'product' | 'product_model';
 
+export const isProductModel = (product: Product): boolean => PRODUCT_MODEL_TYPE === product.getType();
+
 type NormalizedProductIdentifier = string;
 type NormalizedProductId = string;
 

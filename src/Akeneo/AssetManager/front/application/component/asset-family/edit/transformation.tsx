@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {JsonEditor as Editor} from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
 import {Link, Button, Helper, SectionTitle} from 'akeneo-design-system';
+import {Section} from '@akeneo-pim-community/shared';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
@@ -20,7 +21,6 @@ import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error'
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
 import {ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import schema from 'akeneoassetmanager/infrastructure/model/asset-family/transformations.schema.json';
-import {Subsection} from 'akeneoassetmanager/application/component/app/subsection';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
@@ -115,7 +115,7 @@ const Transformation = ({assetFamily, context, events, rights, form, errors}: St
         isDirty={form.state.isDirty}
         breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
       />
-      <Subsection>
+      <Section>
         <div>
           <SectionTitle>
             <SectionTitle.Title>
@@ -136,7 +136,7 @@ const Transformation = ({assetFamily, context, events, rights, form, errors}: St
           onAssetFamilyTransformationsChange={events.onAssetFamilyTransformationsUpdated}
           editMode={rights.assetFamily.edit}
         />
-      </Subsection>
+      </Section>
     </>
   );
 };

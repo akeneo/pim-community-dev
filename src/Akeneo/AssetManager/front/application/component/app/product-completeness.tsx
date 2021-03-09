@@ -1,31 +1,30 @@
-import * as React from 'react';
+import React from 'react';
+import {Badge} from 'akeneo-design-system';
 import {ProductType, PRODUCT_TYPE} from 'akeneoassetmanager/domain/model/product/product';
 import Completeness from 'akeneoassetmanager/domain/model/product/completeness';
 
-const memo = (React as any).memo;
-
-const getLabel = (completeness: Completeness, type: ProductType) => {
-  return PRODUCT_TYPE === type
+const getLabel = (completeness: Completeness, type: ProductType) =>
+  PRODUCT_TYPE === type
     ? `${completeness.getRatio()} %`
     : `${completeness.getCompleteChildren()}/${completeness.getTotalChildren()}`;
-};
 
-const getCompletenessClass = (completeness: Completeness) => {
+const getLevel = (completeness: Completeness) => {
   if (completeness.isComplete()) {
-    return `AknBadge AknBadge--success`;
+    return 'primary';
   } else if (completeness.hasCompleteItems()) {
-    return `AknBadge AknBadge--warning`;
+    return 'warning';
   } else {
-    return `AknBadge AknBadge--important`;
+    return 'danger';
   }
 };
 
-const ProductCompletenessLabel = memo(({completeness, type}: {completeness: Completeness; type: ProductType}) => {
-  return (
-    <div className="AknGrid-bodyCell string-cell AknBadge--topRight">
-      <span className={getCompletenessClass(completeness)}>{getLabel(completeness, type)}</span>
-    </div>
-  );
-});
+type ProductCompletenessProps = {
+  completeness: Completeness;
+  type: ProductType;
+};
 
-export default ProductCompletenessLabel;
+const ProductCompleteness = ({completeness, type}: ProductCompletenessProps) => (
+  <Badge level={getLevel(completeness)}>{getLabel(completeness, type)}</Badge>
+);
+
+export {ProductCompleteness};

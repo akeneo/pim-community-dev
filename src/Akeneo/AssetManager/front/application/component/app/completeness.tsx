@@ -25,7 +25,9 @@ const getTranslationKey = (completeness: Completeness) => {
   }
 };
 
-type CompletenessBadgeProps = {completeness: Completeness};
+type CompletenessBadgeProps = {
+  completeness: Completeness;
+};
 
 const CompletenessBadge = ({completeness}: CompletenessBadgeProps) => {
   const translate = useTranslate();

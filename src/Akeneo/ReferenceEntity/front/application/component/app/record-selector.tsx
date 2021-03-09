@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import $ from 'jquery';
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
@@ -10,12 +10,18 @@ import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 import {getLabel} from 'pimui/js/i18n';
 import __ from 'akeneoreferenceentity/tools/translator';
-import {
-  getCompletenessClass,
-  getLabel as getCompletenessLabel,
-  getTranslationKey,
-} from 'akeneoreferenceentity/application/component/app/completeness';
+import {getTranslationKey} from 'akeneoreferenceentity/application/component/app/completeness';
 import Completeness from 'akeneoreferenceentity/domain/model/record/completeness';
+
+const getCompletenessClass = (completeness: Completeness, expanded: boolean) => {
+  if (!completeness.hasCompleteAttribute()) {
+    return `AknBadge AknBadge--${expanded ? 'big' : 'medium'} AknBadge--invalid`;
+  } else if (completeness.isComplete()) {
+    return `AknBadge AknBadge--${expanded ? 'big' : 'medium'} AknBadge--success`;
+  } else {
+    return `AknBadge AknBadge--${expanded ? 'big' : 'medium'} AknBadge--warning`;
+  }
+};
 
 const routing = require('routing');
 
@@ -33,7 +39,7 @@ const renderRow = (label: string, normalizedRecord: NormalizedItemRecord, withLi
     })}"
     class="${getCompletenessClass(completeness, false)}"
   >
-    ${getCompletenessLabel(completeness.getRatio(), false)}
+    ${completeness.getRatio()}%
   </span>`
       : '';
 

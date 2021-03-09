@@ -37,6 +37,7 @@ const DeleteButton = styled.span`
 
 const SpacedTitle = styled(SectionTitle)`
   margin: 0 20px;
+  width: auto;
 `;
 
 const Fields = styled.div`

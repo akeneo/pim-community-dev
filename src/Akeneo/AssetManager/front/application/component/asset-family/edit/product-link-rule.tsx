@@ -3,6 +3,8 @@ import {connect} from 'react-redux';
 import {JsonEditor as Editor} from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
 import {Link, Button, Helper, SectionTitle, useBooleanState} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {Section} from '@akeneo-pim-community/shared';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
@@ -27,8 +29,6 @@ import {ButtonContainer} from 'akeneoassetmanager/application/component/app/butt
 import {ConfirmModal} from 'akeneoassetmanager/application/component/app/modal';
 import namingConventionSchema from 'akeneoassetmanager/infrastructure/model/asset-family/naming-convention.schema.json';
 import productLinkRulesSchema from 'akeneoassetmanager/infrastructure/model/asset-family/product-link-rules.schema.json';
-import {Subsection} from 'akeneoassetmanager/application/component/app/subsection';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
 const securityContext = require('pim/security-context');
@@ -214,7 +214,7 @@ const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: S
         isDirty={form.state.isDirty}
         breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
       />
-      <Subsection>
+      <Section>
         <div>
           <SectionTitle>
             <SectionTitle.Title>
@@ -237,8 +237,8 @@ const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: S
           onAssetFamilyNamingConventionChange={events.onAssetFamilyNamingConventionUpdated}
           editMode={rights.assetFamily.edit_naming_convention}
         />
-      </Subsection>
-      <Subsection>
+      </Section>
+      <Section>
         <div>
           <SectionTitle>
             <SectionTitle.Title>
@@ -260,7 +260,7 @@ const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: S
           }}
           editMode={rights.assetFamily.edit_product_link_rules}
         />
-      </Subsection>
+      </Section>
       {isExecuteRulesModalOpen && (
         <ConfirmModal
           titleContent={translate('pim_asset_manager.asset_family.product_link_rules.execute_rules.confirm_title')}

@@ -156,7 +156,7 @@ const OptionRow = ({
       {!isLastRow || rights.attribute.edit ? (
         <tr data-code={code} className="AknOptionEditor-row">
           <td>
-            <div>
+            <div className="AknFieldContainer">
               <div className="AknFieldContainer-inputContainer">
                 <input
                   autoComplete="off"
@@ -193,7 +193,7 @@ const OptionRow = ({
             </div>
           </td>
           <td>
-            <div>
+            <div className="AknFieldContainer">
               <div className="AknFieldContainer-inputContainer">
                 <input
                   ref={codeInputReference}
@@ -250,7 +250,7 @@ const HelperRow = ({locale, currentOption}: {locale: Locale; currentOption: Opti
 
   return (
     <>
-      <div>
+      <div className="AknFieldContainer">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label">{locale.label}</label>
         </div>
@@ -337,6 +337,7 @@ const ManageOptionsView = ({
   return (
     <>
       {isActive ? (
+        // TODO Use DSM Modal
         <div className="modal in manageOptionModal" aria-hidden="false" style={{zIndex: 1041}}>
           <div>
             <div className="AknFullPage AknFullPage--full">
