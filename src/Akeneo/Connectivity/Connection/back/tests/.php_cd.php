@@ -143,6 +143,8 @@ $rules = [
 
             // Dependency on Encrypter
             'Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter',
+
+            'Symfony\Component\OptionsResolver\OptionsResolver',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Persistence'),
 

@@ -136,7 +136,6 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         }
 
         $result = $this->elasticsearchClient->search($query);
-        dump($result);
 
         return [
             'results' => array_map(

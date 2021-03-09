@@ -258,7 +258,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
             30
         );
 
-        $secondPage = $this->query->execute('a_connection_code', $firstPage['search_after'],);
+        $secondPage = $this->query->execute('a_connection_code', $firstPage['search_after']);
 
         // At the time of the first query, there were 30 logs.
         // The first page returned 25 logs, and we want to be sure the second page returns the 5 next logs
