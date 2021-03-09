@@ -7,4 +7,4 @@ monolog:
             channels: ['!event', '!event_api', '!business_event']
         console:
             type:     console
-            channels: ['!event', '!doctrine', '!event_api', '!business_event']
+            channels: ['!event', '!doctrine', '!event_api', '!business_event', '!job_event']
