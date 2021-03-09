@@ -92,3 +92,11 @@ Akeneo\UserManagement\Component\Model\Group:
             - NotBlank:     ~
             - Length:
                 max:        30
+
+Akeneo\UserManagement\Component\Connector\RoleWithPermissions:
+    properties:
+        role:
+            - Valid: ~
+        permissions:
+            - Akeneo\UserManagement\Bundle\Validator\Constraints\UserRolePrivileges: ~
+

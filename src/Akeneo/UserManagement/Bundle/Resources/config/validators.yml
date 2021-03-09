@@ -8,3 +8,10 @@ services:
     class: Akeneo\UserManagement\Bundle\Validator\Constraints\UserOwnsDefaultGridViewsValidator
     tags:
       - { name: validator.constraint_validator }
+
+  pim_user.validator.constraints.user_role_privileges:
+    class: Akeneo\UserManagement\Bundle\Validator\Constraints\UserRolePrivilegesValidator
+    arguments:
+      - '@oro_security.acl.manager'
+    tags:
+      - { name: validator.constraint_validator }
