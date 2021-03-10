@@ -70,33 +70,12 @@ resource "null_resource" "helm_release_pim" {
     interpreter = ["/usr/bin/env", "bash", "-c"]
 
     command = <<EOF
+set -eo pipefail
 helm dependencies update ${path.module}/pim/
 yq w -i ${path.module}/pim/Chart.yaml version ${var.pim_version}
 yq w -i ${path.module}/pim/Chart.yaml appVersion ${var.pim_version}
 export KUBECONFIG="${local_file.kubeconfig.filename}"
-kubectl delete -n ${local.pfid} cronjob --all
-kubectl scale -n ${local.pfid} deploy/pim-web deploy/pim-daemon-default --replicas=0
-kubectl scale -n ${local.pfid} deploy/pim-daemon-webhook-consumer-process --replicas=0 || true
-kubectl scale -n ${local.pfid} deploy/pim-daemon-all-but-linking-assets-to-products --replicas=0 || true
 helm upgrade --atomic --cleanup-on-fail --wait --install --force --timeout 1202 ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
-HELM_STATUS_CODE=$${?}
-
-PARALLEL_WEB=$(yq m -x ${path.module}/pim/values.yaml tf-helm-pim-values.yaml values.yaml | yq r - pim.replicas)
-PARALLEL_DAEMON_DEFAULT=$(yq m -x ${path.module}/pim/values.yaml tf-helm-pim-values.yaml values.yaml | yq r - pim.daemons.default.replicas)
-PARALLEL_DAEMON_WEBHOOK=$(yq m -x ${path.module}/pim/values.yaml tf-helm-pim-values.yaml values.yaml | yq r - pim.daemons.webhook-consumer-process.replicas)
-PARALLEL_DAEMON_ASSET=$(yq m -x ${path.module}/pim/values.yaml tf-helm-pim-values.yaml values.yaml | yq r - pim.daemons.all-but-linking-assets-to-products.replicas)
-
-kubectl scale -n ${local.pfid} deploy/pim-web                                      --replicas=$${PARALLEL_WEB}
-kubectl scale -n ${local.pfid} deploy/pim-daemon-default                            --replicas=$${PARALLEL_DAEMON_DEFAULT}
-kubectl scale -n ${local.pfid} deploy/pim-daemon-webhook-consumer-process           --replicas=$${PARALLEL_DAEMON_WEBHOOK}
-kubectl scale -n ${local.pfid} deploy/pim-daemon-all-but-linking-assets-to-products --replicas=$${PARALLEL_DAEMON_ASSET}
-
-KUBECTL_SCALE_CODE=$${?}
-if [ $${KUBECTL_SCALE_CODE} -eq 0 ]; then
-  exit $${HELM_STATUS_CODE}
-else
-  exit $${KUBECTL_SCALE_CODE}
-fi
 EOF
   }
 }
