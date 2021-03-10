@@ -2,8 +2,9 @@ import React, {ChangeEvent, Ref, useCallback} from 'react';
 import styled from 'styled-components';
 import {InputProps} from '../InputProps';
 import {LockIcon} from '../../../icons';
-import {Override} from '../../../shared';
+import {Key, Override} from '../../../shared';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
+import {useShortcut} from '../../../hooks';
 
 const TextInputContainer = styled.div`
   position: relative;
@@ -79,6 +80,11 @@ type TextInputProps = Override<
      * Label displayed under the field to display the remaining character counter.
      */
     characterLeftLabel?: string;
+
+    /**
+     * Callback called when the user hit enter on the field
+     */
+    onSubmit?: () => void;
   }
 >;
 
@@ -86,13 +92,21 @@ type TextInputProps = Override<
  * The TextInput component allows the user to enter content and data when the expected input is a single line of text.
  */
 const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
-  ({invalid, onChange, readOnly, characterLeftLabel, ...rest}: TextInputProps, forwardedRef: Ref<HTMLInputElement>) => {
+  (
+    {invalid, onChange, readOnly, characterLeftLabel, onSubmit, ...rest}: TextInputProps,
+    forwardedRef: Ref<HTMLInputElement>
+  ) => {
     const handleChange = useCallback(
       (event: ChangeEvent<HTMLInputElement>) => {
         if (!readOnly && onChange) onChange(event.currentTarget.value);
       },
       [readOnly, onChange]
     );
+
+    const handleEnter = () => {
+      if (!readOnly) onSubmit?.();
+    };
+    useShortcut(Key.Enter, handleEnter, forwardedRef);
 
     return (
       <TextInputContainer>

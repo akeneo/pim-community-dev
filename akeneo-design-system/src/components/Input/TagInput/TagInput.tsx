@@ -96,7 +96,7 @@ const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = []
     [inputRef, containerRef, inputContainerRef]
   );
 
-  const handleTagDeletion = useCallback(
+  const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       const isDeleteKeyPressed = [Key.Backspace.toString(), Key.Delete.toString()].includes(event.key);
       const tagsAreEmpty = value.length === 0;
@@ -144,7 +144,7 @@ const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = []
           data-testid="tag-input"
           ref={inputRef}
           placeholder={value.length === 0 ? placeholder : ''}
-          onKeyDown={handleTagDeletion}
+          onKeyDown={handleKeyDown}
           onChange={onChangeCreateTags}
           onBlurCapture={onBlurCreateTag}
           aria-invalid={invalid}
