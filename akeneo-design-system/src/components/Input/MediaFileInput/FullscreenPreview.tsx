@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {IconButton, Image} from '../../../components';
+import {Button, Image} from '../../../components';
 import {Modal} from '../../Modal/Modal';
 import {getColor} from '../../../theme';
 import {DownloadIcon} from '../../../icons';
@@ -19,17 +19,16 @@ const BrandedTitle = styled(Modal.Title)`
   color: ${getColor('brand', 100)};
 `;
 
-const ActionButton = styled(IconButton)`
-  color: ${getColor('grey', 100)};
+const Actions = styled.div`
+  display: flex;
+  justify-content: center;
 `;
-
-const Actions = styled.div``;
 
 type FullscreenPreviewProps = {
   value: FileInfo;
   previewUrl: string;
   downloadUrl: string;
-  downloadTitle: string;
+  downloadLabel: string;
   closeTitle: string;
   label: string;
   onClose: () => void;
@@ -39,7 +38,7 @@ const FullscreenPreview = ({
   value,
   previewUrl,
   downloadUrl,
-  downloadTitle,
+  downloadLabel,
   closeTitle,
   label,
   onClose,
@@ -50,14 +49,10 @@ const FullscreenPreview = ({
       <Border>
         <Image src={previewUrl} alt={label} />
         <Actions>
-          <ActionButton
-            href={downloadUrl}
-            download={value.originalFilename}
-            level="tertiary"
-            ghost="borderless"
-            icon={<DownloadIcon size={16} />}
-            title={downloadTitle}
-          />
+          <Button ghost={true} href={downloadUrl} download={value.originalFilename} level="tertiary">
+            <DownloadIcon size={16} />
+            {downloadLabel}
+          </Button>
         </Actions>
       </Border>
     </Modal>
