@@ -15,10 +15,10 @@ const MediaFileInputContainer = styled.div<{isCompact: boolean} & AkeneoThemedPr
   display: flex;
   flex-direction: ${({isCompact}) => (isCompact ? 'row' : 'column')};
   align-items: center;
-  padding: ${({isCompact}) => (isCompact ? '12px' : '20px')};
+  padding: ${({isCompact}) => (isCompact ? 12 : 20)}px;
   border: 1px solid ${({invalid}) => (invalid ? getColor('red', 100) : getColor('grey', 80))};
   border-radius: 2px;
-  height: ${({isCompact}) => (isCompact ? '74px' : '180px')};
+  height: ${({isCompact}) => (isCompact ? 74 : 180)}px;
   gap: 10px;
   outline-style: none;
   box-sizing: border-box;
@@ -29,6 +29,9 @@ const MediaFileInputContainer = styled.div<{isCompact: boolean} & AkeneoThemedPr
     css`
       &:focus {
         box-shadow: 0 0 0 2px ${getColor('blue', 40)};
+      }
+      &:hover {
+        ${ImportIllustration.animatedMixin}
       }
     `}
 `;
@@ -50,15 +53,18 @@ const MediaFileLabel = styled.div<{isEmpty: boolean} & AkeneoThemedProps>`
   flex-grow: 1;
 `;
 
+const ReadOnlyIcon = styled(LockIcon)`
+  padding: 4px;
+`;
+
 const ActionContainer = styled.div<{isCompact: boolean} & AkeneoThemedProps>`
   ${({isCompact}) =>
-    isCompact
-      ? css``
-      : css`
-          position: absolute;
-          top: 12px;
-          right: 12px;
-        `}
+    !isCompact &&
+    css`
+      position: absolute;
+      top: 8px;
+      right: 8px;
+    `}
 
   display: flex;
   gap: 2px;
@@ -86,20 +92,20 @@ type MediaFileInputProps = Override<
     /**
      * Value of the input.
      */
-    value?: FileInfo | null;
+    value: FileInfo | null;
 
     /**
-     * Method called to generate the file preview url (can be base64)
+     * Method called to generate the file preview url (can be base64).
      */
     previewer: (value: FileInfo, type: PreviewType) => string;
 
     /**
-     * Method called to generate the file download url
+     * Method called to upload the file.
      */
     uploader: (file: File, onProgress: (ratio: number) => void) => Promise<FileInfo>;
 
     /**
-     * Method called to generate the file download url
+     * Method called to generate the file download url.
      */
     downloader: (value: FileInfo) => string;
 
@@ -109,19 +115,14 @@ type MediaFileInputProps = Override<
     placeholder?: string;
 
     /**
-     * The handler called when user want to display preview in fullscreen.
-     */
-    onFullScreen: () => void;
-
-    /**
      * Label displayed during image uploading.
      */
     uploadingLabel: string;
 
     /**
-     * Title of the download button.
+     * Label of the download button.
      */
-    downloadTitle: string;
+    downloadLabel: string;
 
     /**
      * Title of the clear button.
@@ -134,9 +135,14 @@ type MediaFileInputProps = Override<
     fullscreenTitle: string;
 
     /**
-     * Title of the fullscreen button.
+     * Label of the Media File in the fullscreen preview.
      */
     fullscreenLabel?: string;
+
+    /**
+     * Title of the Close fullscreen preview button.
+     */
+    closeTitle: string;
 
     /**
      * Defines if the input is compact or not.
@@ -150,10 +156,8 @@ type MediaFileInputProps = Override<
   }
 >;
 
-/** TODO how to handle multiple files (asset upload) => another input (like multiselect) or same component ? */
-
 /**
- * File input allows the user to enter content when the expected user input is a file.
+ * Media File input allows the user to enter content when the expected user input is a file.
  */
 const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
   (
@@ -167,11 +171,11 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
       downloader,
       size,
       placeholder,
-      downloadTitle,
+      downloadLabel,
       fullscreenTitle,
       fullscreenLabel,
-      onFullScreen,
       clearTitle,
+      closeTitle,
       invalid = false,
       readOnly = false,
       ...rest
@@ -204,12 +208,13 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
       if (!onChange || readOnly) return;
 
       startUploading();
+
       try {
         const uploadedFile = await uploader(file, console.log);
-        stopUploading();
         onChange(uploadedFile);
       } catch (error) {
         console.error(error);
+      } finally {
         stopUploading();
       }
     };
@@ -254,30 +259,36 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
             {value && (
               <>
                 <ActionButton
+                  size="small"
                   level="tertiary"
                   ghost="borderless"
-                  icon={<FullscreenIcon size={16} />}
+                  icon={<FullscreenIcon />}
                   title={fullscreenTitle}
                   onClick={openFullScreenModal}
                 />
                 <ActionButton
+                  size="small"
                   href={downloader(value)}
+                  target="_blank"
                   download={value.originalFilename}
                   level="tertiary"
                   ghost="borderless"
-                  icon={<DownloadIcon size={16} />}
-                  title={downloadTitle}
+                  icon={<DownloadIcon />}
+                  title={downloadLabel}
                 />
-                <ActionButton
-                  level="tertiary"
-                  ghost="borderless"
-                  icon={<CloseIcon size={16} />}
-                  title={clearTitle}
-                  onClick={handleClear}
-                />
+                {!readOnly && (
+                  <ActionButton
+                    size="small"
+                    level="tertiary"
+                    ghost="borderless"
+                    icon={<CloseIcon />}
+                    title={clearTitle}
+                    onClick={handleClear}
+                  />
+                )}
               </>
             )}
-            {readOnly && <LockIcon size={16} />}
+            {readOnly && <ReadOnlyIcon size={16} />}
           </ActionContainer>
         </MediaFileInputContainer>
         {isFullScreenModalOpen && value && (
@@ -285,8 +296,8 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
             value={value}
             previewUrl={previewer(value, 'preview')}
             downloadUrl={downloader(value)}
-            downloadTitle={downloadTitle}
-            closeTitle=""
+            downloadLabel={downloadLabel}
+            closeTitle={closeTitle}
             label={fullscreenLabel ?? value.originalFilename}
             onClose={closeFullScreenModal}
           />

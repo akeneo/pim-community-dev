@@ -1,6 +1,6 @@
 import React from 'react';
 import {MediaFileInput} from './MediaFileInput';
-import {render, screen} from '../../storybook/test-util';
+import {render, screen} from '../../../storybook/test-util';
 
 test('it renders its children properly', () => {
   render(<MediaFileInput>MediaFileInput content</MediaFileInput>);
