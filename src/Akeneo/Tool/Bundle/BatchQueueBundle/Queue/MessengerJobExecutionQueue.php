@@ -29,6 +29,6 @@ final class MessengerJobExecutionQueue implements JobExecutionQueueInterface
 
     public function consume(string $consumer, JobQueueConsumerConfiguration $configuration): ?JobExecutionMessage
     {
-        throw new \Exception('You cannot consume messages here. Use symfony messenger command to consume.');
+        throw new \LogicException('You cannot consume messages here. Use symfony messenger command to consume.');
     }
 }

@@ -34,19 +34,15 @@ class ConsumeJobMessageIntegration extends TestCase
         $jobInstanceSaver->save($jobInstance);
 
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
-        // Some messages created in another test could be in the queue. To prevent that we have to flush the queue.
-        $this->flushQueue();
+        // Some messages created in another test could be in the queue. To prevent that we flush the queue.
+        $this->jobLauncher->flushMessengerJobQueue();
     }
 
     public function testLaunchAJobExecution(): void
     {
         $jobExecution = $this->createJobExecutionInQueue('csv_product_export');
 
-        $output = $this->jobLauncher->launchConsumerOnceUsingMessenger();
-
-        $standardOutput = $output->fetch();
-
-        Assert::assertStringContainsString(sprintf('Job execution "%s" is finished.', $jobExecution->getId()), $standardOutput);
+        $this->jobLauncher->launchConsumerOnceUsingMessenger();
 
         $row = $this->getJobExecutionDatabaseRow($jobExecution);
 
@@ -108,7 +104,7 @@ class ConsumeJobMessageIntegration extends TestCase
         while ($daemonProcess->isRunning()) {
             sleep(1);
         }
-        sleep(1);
+        sleep(2);
 
         $killJobExecution = new Process(sprintf('kill -9 %s', $jobExecutionProcessPid));
         $killJobExecution->run();
@@ -213,14 +209,6 @@ class ConsumeJobMessageIntegration extends TestCase
     protected function getJobExecutionManager(): JobExecutionManager
     {
         return $this->get('akeneo_batch_queue.manager.job_execution_manager');
-    }
-
-    private function flushQueue(): void
-    {
-        do {
-            $enveloppes = $this->get('messenger.transport.job')->get();
-            $count = is_array($enveloppes) ? count($enveloppes) : iterator_count($enveloppes);
-        } while(0 < $count);
     }
 
     /**

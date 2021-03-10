@@ -117,4 +117,5 @@ services:
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@monolog.logger.job_event'
             - '%kernel.project_dir%'
-        tags: [messenger.message_handler]
+        tags:
+            - { name: messenger.message_handler }

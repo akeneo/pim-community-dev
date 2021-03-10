@@ -16,6 +16,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 use Webmozart\Assert\Assert;
@@ -36,20 +37,21 @@ class JobLauncher
 
     const IMPORT_DIRECTORY = 'pim-integration-tests-import';
 
-    /** @var KernelInterface */
-    private $kernel;
+    private KernelInterface $kernel;
+    private Connection $dbConnection;
+    private JobExecutionMessageRepository $jobExecutionMessageRepository;
+    private TransportInterface $jobQueueTransport;
 
-    /** @var Connection */
-    private $dbConnection;
-
-    /** @var JobExecutionMessageRepository */
-    private $jobExecutionMessageRepository;
-
-    public function __construct(KernelInterface $kernel, Connection $dbConnection, JobExecutionMessageRepository $jobExecutionMessageRepository)
-    {
+    public function __construct(
+        KernelInterface $kernel,
+        Connection $dbConnection,
+        JobExecutionMessageRepository $jobExecutionMessageRepository,
+        TransportInterface $jobQueueTransport
+    ) {
         $this->kernel = $kernel;
         $this->dbConnection = $dbConnection;
         $this->jobExecutionMessageRepository = $jobExecutionMessageRepository;
+        $this->jobQueueTransport = $jobQueueTransport;
     }
 
     /**
@@ -337,7 +339,6 @@ class JobLauncher
                 'command'  => static::MESSENGER_COMMAND_NAME,
                 'receivers' => static::MESSENGER_RECEIVERS,
                 '--limit' => 1,
-                '--verbose' => 2,
             ]
         );
 
@@ -475,5 +476,13 @@ class JobLauncher
         $config['is_user_authenticated'] = true;
 
         self::launchSubProcessImport($jobCode, $content, $username, $fixturePaths, $config);
+    }
+
+    public function flushMessengerJobQueue(): void
+    {
+        do {
+            $enveloppes = $this->jobQueueTransport->get();
+            $count = is_array($enveloppes) ? count($enveloppes) : iterator_count($enveloppes);
+        } while(0 < $count);
     }
 }
