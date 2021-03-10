@@ -24,19 +24,30 @@ final class SqlIsCategoryTreeLinkedToUserIntegration extends TestCase
         $this->isCategoryTreeLinkedToUser = $this->get('pim_user.query.is_category_tree_linked_to_user');
     }
 
-    public function test_it_counts_the_number_users_linked_to_a_category(): void
+    public function test_it_checks_if_a_category_is_linked_to_a_user(): void
     {
         $category = $this->createCategory(['code' => 'clothes']);
         $this->createUser([
             'username' => 'julia',
+            'first_name' => 'Julia',
+            'last_name' => 'Akeneo',
             'email' => 'julia@akeneo.com',
             'password' => 'a_password',
-            'default_category_tree' => 'clothes'
+            'default_category_tree' => 'clothes',
         ]);
 
         $isLinked = $this->isCategoryTreeLinkedToUser->byCategoryTreeId($category->getId());
 
         $this->assertTrue($isLinked);
+    }
+
+    public function test_it_checks_if_a_category_is_not_linked_to_a_user(): void
+    {
+        $category = $this->createCategory(['code' => 'clothes']);
+
+        $isLinked = $this->isCategoryTreeLinkedToUser->byCategoryTreeId($category->getId());
+
+        $this->assertFalse($isLinked);
     }
 
     protected function getConfiguration(): Configuration
@@ -48,7 +59,12 @@ final class SqlIsCategoryTreeLinkedToUserIntegration extends TestCase
     {
         $user = $this->get('pim_user.factory.user')->create();
         $this->get('pim_user.updater.user')->update($user, $data);
-        $this->get('validator')->validate($user);
+
+        $violations = $this->get('validator')->validate($user);
+        if (count($violations) > 0) {
+            throw new \InvalidArgumentException((string)$violations);
+        }
+
         $this->get('pim_user.saver.user')->save($user);
 
         return $user;

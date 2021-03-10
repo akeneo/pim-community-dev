@@ -24,14 +24,28 @@ final class SqlIsCategoryTreeLinkedToChannelIntegration extends TestCase
         $this->isCategoryTreeLinkedToChannel = $this->get('pim_channel.query.sql.is_category_tree_linked_to_channel');
     }
 
-    public function test_it_counts_the_number_channels_linked_to_a_category(): void
+    public function test_it_checks_if_a_category_is_linked_to_a_channel(): void
     {
         $category = $this->createCategory(['code' => 'clothes']);
-        $this->createChannel(['code' => 'mobile', 'category_tree' => 'clothes']);
+        $this->createChannel([
+            'code' => 'mobile',
+            'category_tree' => 'clothes',
+            'currencies' => ['USD'],
+            'locales' => ['en_US']
+        ]);
 
         $isLinked = $this->isCategoryTreeLinkedToChannel->byCategoryTreeId($category->getId());
 
         $this->assertTrue($isLinked);
+    }
+
+    public function test_it_checks_if_a_category_is_not_linked_to_a_channel(): void
+    {
+        $category = $this->createCategory(['code' => 'clothes']);
+
+        $isLinked = $this->isCategoryTreeLinkedToChannel->byCategoryTreeId($category->getId());
+
+        $this->assertFalse($isLinked);
     }
 
     protected function getConfiguration(): Configuration
@@ -43,7 +57,12 @@ final class SqlIsCategoryTreeLinkedToChannelIntegration extends TestCase
     {
         $channel = $this->get('pim_catalog.factory.channel')->create();
         $this->get('pim_catalog.updater.channel')->update($channel, $data);
-        $this->get('validator')->validate($channel);
+
+        $violations = $this->get('validator')->validate($channel);
+        if (count($violations) > 0) {
+            throw new \InvalidArgumentException((string)$violations);
+        }
+
         $this->get('pim_catalog.saver.channel')->save($channel);
 
         return $channel;
