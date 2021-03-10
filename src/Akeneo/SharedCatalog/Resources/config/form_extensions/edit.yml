@@ -197,6 +197,8 @@ extensions:
                     view: akeneo-product-completeness-filter
                 -   field: categories
                     view: akeneo-product-category-filter
+                -   field: quality_score_multi_locales
+                    view: akeneo-product-quality-score-filter
 
     pim-job-instance-shared-catalog-edit-content-default-attribute-filters:
         module: pim/job/product/edit/content/data/default-attribute-filters
