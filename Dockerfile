@@ -120,6 +120,8 @@ VOLUME /srv/pim
 #
 FROM dev AS builder
 
+ARG COMPOSER_AUTH
+
 RUN apt-get update && \
     apt-get --yes install yarnpkg nodejs && \
     apt-get clean && \
