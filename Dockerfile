@@ -120,6 +120,8 @@ VOLUME /srv/pim
 #
 FROM dev AS builder
 
+ARG COMPOSER_AUTH
+
 RUN apt-get update && \
     apt-get --yes install yarnpkg nodejs && \
     apt-get clean && \
@@ -138,7 +140,7 @@ COPY composer.json package.json yarn.lock .env tsconfig.json .
 
 ENV APP_ENV=prod
 RUN mkdir var && \
-    php -d 'memory_limit=3G' /usr/local/bin/composer install \
+    php -d 'memory_limit=4G' /usr/local/bin/composer install \
         --no-scripts \
         --no-interaction \
         --no-ansi \
