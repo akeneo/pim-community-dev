@@ -33,6 +33,8 @@ package-lock.json
 yarn-error.log
 coverage/*
 .phpunit.result.cache
+cypress/videos
+cypress/screenshots
 
 ###> symfony/framework-bundle ###
 /.env.local
