@@ -63,8 +63,7 @@ class JobQueueConsumerCommand extends Command
     /** @var string */
     private $projectDir;
 
-    /** @var LoggerInterface */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(
         LoggerInterface $logger,
