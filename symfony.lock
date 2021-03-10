@@ -298,6 +298,9 @@
     "liuggio/fastest": {
         "version": "v1.6.1"
     },
+    "maennchen/zipstream-php": {
+        "version": "2.1.0"
+    },
     "mcustiel/phiremock": {
         "version": "v1.12.1"
     },
@@ -318,6 +321,9 @@
     },
     "myclabs/deep-copy": {
         "version": "1.9.3"
+    },
+    "myclabs/php-enum": {
+        "version": "1.8.0"
     },
     "nikic/fast-route": {
         "version": "v1.3.0"
@@ -423,6 +429,9 @@
     },
     "psr/event-dispatcher": {
         "version": "1.0.0"
+    },
+    "psr/http-client": {
+        "version": "1.0.1"
     },
     "psr/http-factory": {
         "version": "1.0.1"
