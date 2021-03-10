@@ -435,8 +435,143 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         Assert::assertEquals(2, $result['total']);
         Assert::assertCount(2, $result['results']);
-        Assert::assertEquals($timestampTo -20, $result['results'][0]['timestamp']);
+        Assert::assertEquals($timestampTo - 20, $result['results'][0]['timestamp']);
         Assert::assertEquals($timestampTo, $result['results'][1]['timestamp']);
+    }
+
+    public function test_it_searches_a_pattern_on_message()
+    {
+        $timestamp = $this->clock->now()->getTimestamp() - 10;
+        $firstTimestampToFind = $timestamp - 20;
+        $secondTimestampToFind = $timestamp - 10;
+
+        $this->insertLogs(
+            [
+                [
+                    'timestamp' => $firstTimestampToFind,
+                    'level' => EventsApiDebugLogLevels::WARNING,
+                    'message' => 'to find',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $secondTimestampToFind,
+                    'level' => EventsApiDebugLogLevels::ERROR,
+                    'message' => 'the message to find',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::WARNING,
+                    'message' => '',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+            ]
+        );
+
+        $filters = [
+            'text' => 'to find',
+        ];
+
+        $result = $this->query->execute('a_connection_code', null, $filters);
+
+        $resultTimestamps = array_map(
+            function ($log) {
+                return $log['timestamp'];
+            },
+            $result['results']
+        );
+        sort($resultTimestamps);
+
+        Assert::assertEquals(2, $result['total']);
+        Assert::assertEquals($firstTimestampToFind, $resultTimestamps[0]);
+        Assert::assertEquals($secondTimestampToFind, $resultTimestamps[1]);
+    }
+
+    public function test_it_searches_a_pattern_on_context()
+    {
+        $timestamp = $this->clock->now()->getTimestamp() - 10;
+        $firstTimestampToFind = $timestamp - 20;
+        $secondTimestampToFind = $timestamp - 10;
+
+        $this->insertLogs(
+            [
+                [
+                    'timestamp' => $firstTimestampToFind,
+                    'level' => EventsApiDebugLogLevels::NOTICE,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [
+                        'event' => [
+                            'action' => 'action to find',
+                            'event_id' => '9979c367-595d-42ad-9070-05f62f31f49c',
+                            'event_datetime' => '1970-01-01T00:00:00+00:00',
+                            'author' => 'julia',
+                            'author_type' => 'ui',
+                        ],
+                    ],
+                ],
+                [
+                    'timestamp' => $secondTimestampToFind,
+                    'level' => EventsApiDebugLogLevels::ERROR,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'a_connection_code',
+                    'contexte' => [
+                        'event_subscription_url' => 'event_subscription_url',
+                        'events' => [
+                            'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
+                            'author' => 'julia',
+                            'author_type' => 'ui',
+                            'name' => 'product.created',
+                            'timestamp' => 1577836800,
+                        ],
+                        [
+                            'uuid' => '8bdfe74c-da2e-4bda-a2b1-b5e2a3006ea3',
+                            'author' => 'author to find',
+                            'author_type' => 'ui',
+                            'name' => 'product.updated',
+                            'timestamp' => 1577836811,
+                        ],
+                    ],
+                ],
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::NOTICE,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [
+                        'event' => [
+                            'action' => 'product.created',
+                            'event_id' => '9979c367-595d-42ad-9070-05f62f31f49b',
+                            'event_datetime' => '1970-01-01T00:00:00+00:00',
+                            'author' => 'julia',
+                            'author_type' => 'ui',
+                        ],
+                    ],
+                ],
+            ],
+
+        );
+
+        $filters = [
+            'text' => 'to find',
+        ];
+
+        $result = $this->query->execute('a_connection_code', null, $filters);
+
+        $resultTimestamps = array_map(
+            function ($log) {
+                return $log['timestamp'];
+            },
+            $result['results']
+        );
+        sort($resultTimestamps);
+
+        Assert::assertEquals(2, $result['total']);
+        Assert::assertEquals($firstTimestampToFind, $resultTimestamps[0]);
+        Assert::assertEquals($secondTimestampToFind, $resultTimestamps[1]);
     }
 
     private function generateLogs(callable $generator, int $number): void
