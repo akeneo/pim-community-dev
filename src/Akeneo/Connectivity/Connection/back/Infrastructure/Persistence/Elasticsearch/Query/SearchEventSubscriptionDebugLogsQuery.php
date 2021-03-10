@@ -114,8 +114,9 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
                                         'bool' => [
                                             'should' => [
                                                 ['term' => ['connection_code' => $connectionCode]],
-                                                ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
                                                 // connection_code IS NULL
+                                                ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
+
                                             ],
                                         ],
                                     ],
