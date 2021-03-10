@@ -74,7 +74,7 @@ const CategoryTreeSwitcher: React.FC<CategoryTreeSwitcherProps> = ({trees, onCli
   return (
     <CategoryTreeSwitcherContainer {...rest}>
       <CategoryTreeSwitcherButtonContainer>
-        <CategoryTreeSwitcherButton label={''} onClick={open}  aria-haspopup="listbox">
+        <CategoryTreeSwitcherButton label={''} onClick={open} aria-haspopup="listbox">
           {selectedTreeLabel}
         </CategoryTreeSwitcherButton>
       </CategoryTreeSwitcherButtonContainer>

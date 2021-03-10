@@ -11,6 +11,7 @@ Feature: Add attribute options
   @critical
   Scenario: Successfully create a simple reference data
     Given I create a "Reference data simple select" attribute
+    And I collapse the column
     And I fill in the following information:
       | Code                | mycolor |
       | Reference data type | color   |
@@ -20,6 +21,7 @@ Feature: Add attribute options
 
   Scenario: Successfully create a multiple reference data
     Given I create a "Reference data multi select" attribute
+    And I collapse the column
     And I fill in the following information:
       | Code                | mycolor |
       | Reference data type | fabric  |
