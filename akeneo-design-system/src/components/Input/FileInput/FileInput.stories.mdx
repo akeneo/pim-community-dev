@@ -1,0 +1,87 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {FileInput} from './FileInput.tsx';
+import {useSimpleFileInputPreview} from "../../../hooks";
+
+<Meta
+  title="Components/Inputs/File input"
+  component={FileInput}
+  args={{
+      value: null,
+      placeholder: 'Drag and drop to upload or click here',
+  }}
+/>
+
+# FileInput
+
+## Usage
+
+File input allows the user to enter content when the expected user input is a file.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [value, setValue, previewSrc] = useSimpleFileInputPreview();
+      return <FileInput {...args} value={value} onChange={setValue} previewSrc={previewSrc} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on size
+<Canvas>
+  <Story name="Size">
+    {args => {
+        const [value, setValue, previewSrc] = useSimpleFileInputPreview();
+        const [compactValue, setCompactValue, compactPreviewSrc] = useSimpleFileInputPreview();
+        return (
+        <>
+          <FileInput {...args} value={value} onChange={setValue} previewSrc={previewSrc} size='default' />
+          <FileInput {...args} value={compactValue} onChange={setCompactValue} previewSrc={compactPreviewSrc} size='small' />
+        </>
+      )
+    }}
+  </Story>
+</Canvas>
+
+## Variation on readonly
+<Canvas>
+  <Story name="Read only">
+    {args => {
+        const [value, setValue, previewSrc] = useSimpleFileInputPreview();
+        const [readOnlyValue, setReadOnlyValue, readOnlyPreviewSrc] = useSimpleFileInputPreview();
+        const [compactValue, setCompactValue, compactPreviewSrc] = useSimpleFileInputPreview();
+        const [readOnlyCompactValue, setReadOnlyCompactValue, readOnlyCompactPreviewSrc] = useSimpleFileInputPreview();
+        return (
+        <>
+          <FileInput {...args} value={value} onChange={setValue} previewSrc={previewSrc} />
+          <FileInput {...args} value={readOnlyValue} onChange={setReadOnlyValue} previewSrc={readOnlyPreviewSrc} readOnly />
+          <FileInput {...args} value={compactValue} onChange={setCompactValue} previewSrc={compactPreviewSrc} size='small' />
+          <FileInput {...args} value={readOnlyCompactValue} onChange={setReadOnlyCompactValue} previewSrc={readOnlyCompactPreviewSrc} size='small' readOnly />
+        </>
+      )
+    }}
+  </Story>
+</Canvas>
+
+## Variation on invalid
+<Canvas>
+  <Story name="Invalid">
+    {args => {
+      const [validValue, setValidValue, previewSrc] = useSimpleFileInputPreview();
+      const [invalidValue, setInvalidValue, invalidPreviewSrc] = useSimpleFileInputPreview();
+      const [validCompactValue, setValidCompactValue, validCompactPreviewSrc] = useSimpleFileInputPreview();
+      const [invalidCompactValue, setInvalidCompactValue, invalidCompactPreviewSrc] = useSimpleFileInputPreview();
+      return (
+        <>
+          <FileInput {...args} value={validValue} onChange={setValidValue} previewSrc={previewSrc} />
+          <FileInput {...args} value={invalidValue} onChange={setInvalidValue} previewSrc={invalidPreviewSrc} invalid />
+          <FileInput {...args} value={validCompactValue} onChange={setValidCompactValue} previewSrc={validCompactPreviewSrc} size='small'/>
+          <FileInput {...args} value={invalidCompactValue} onChange={setInvalidCompactValue} previewSrc={invalidCompactPreviewSrc} size='small' invalid />
+        </>
+      )
+    }}
+    </Story>
+</Canvas>
