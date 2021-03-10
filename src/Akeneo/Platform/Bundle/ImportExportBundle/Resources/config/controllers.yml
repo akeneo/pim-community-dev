@@ -70,3 +70,5 @@ services:
             - '@akeneo_batch.query.update_job_execution_status'
             - '@akeneo_batch.job.job_registry'
             - '@logger'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@database_connection'

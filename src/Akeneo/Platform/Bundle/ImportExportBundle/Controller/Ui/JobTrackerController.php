@@ -10,15 +10,22 @@ use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Query\SqlUpdateJobExecutionStatus;
+use Akeneo\Tool\Component\FileStorage\File\FileFetcher;
+use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
+use Doctrine\DBAL\Connection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use ZipStream\Option\Archive;
+use ZipStream\ZipStream;
 
 /**
  * Job execution tracker controller
@@ -38,6 +45,9 @@ class JobTrackerController extends Controller
     private JobRegistry $jobRegistry;
     private LoggerInterface $logger;
 
+    private FilesystemProvider $fsProvider;
+    private Connection $connection;
+
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         JobExecutionRepository $jobExecutionRepo,
@@ -46,7 +56,9 @@ class JobTrackerController extends Controller
         array $jobSecurityMapping,
         SqlUpdateJobExecutionStatus $updateJobExecutionStatus,
         JobRegistry $jobRegistry,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        FilesystemProvider $fsProvider,
+        Connection $connection
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->jobExecutionRepo = $jobExecutionRepo;
@@ -56,6 +68,9 @@ class JobTrackerController extends Controller
         $this->updateJobExecutionStatus = $updateJobExecutionStatus;
         $this->jobRegistry = $jobRegistry;
         $this->logger = $logger;
+        $this->fsProvider = $fsProvider;
+        $this->fileFetcher = $fileFetcher;
+        $this->connection = $connection;
     }
 
     /**
@@ -65,7 +80,7 @@ class JobTrackerController extends Controller
      * @param string $archiver
      * @param string $key
      */
-    public function downloadFilesAction($id, $archiver, $key): StreamedFileResponse
+    public function downloadFilesAction($id, $archiver, $key): StreamedResponse
     {
         $jobExecution = $this->jobExecutionRepo->find($id);
 
@@ -79,9 +94,38 @@ class JobTrackerController extends Controller
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));
 
-        $stream = $this->archivist->getArchive($jobExecution, $archiver, $key);
+        //$stream = $this->archivist->getArchive($jobExecution, $archiver, $key);
 
-        return new StreamedFileResponse($stream);
+        $files = $this->getRandomFiles();
+        $fsProvider = $this->fsProvider;
+
+        $stream = function () use ($files, $fsProvider, $key) {
+            $options = new Archive();
+            $options->setContentType('application/octet-stream');
+            // this is needed to prevent issues with truncated zip files
+            $options->setZeroHeader(true);
+            $options->setComment('test zip file.');
+
+            $zip = new ZipStream($key, $options);
+
+            $csvResource = \tmpfile();
+            \fwrite($csvResource, \sprintf('%s;%s%s', 'sku', 'image', PHP_EOL));
+
+            foreach ($files as $filePath => $props) {
+                $filesystem = $fsProvider->getFilesystem($props['storage']);
+                $streamedFile = $filesystem->readStream($props['key']);
+                $zip->addFileFromStream($filePath, $streamedFile);
+
+                \fwrite($csvResource, \sprintf('%s;"%s"%s', $props['sku'], $filePath, PHP_EOL));
+            }
+            \rewind($csvResource);
+            $zip->addFileFromStream('export.csv', $csvResource);
+            \fclose($csvResource);
+
+            $zip->finish();
+        };
+
+        return new StreamedResponse($stream, 200, ['Content-Type' => 'application/octet-stream']);
     }
 
     /**
@@ -116,5 +160,31 @@ class JobTrackerController extends Controller
         }
 
         return new JsonResponse(['successful' => true]);
+    }
+
+    private function getRandomFiles(): array
+    {
+        $sql = <<<SQL
+SELECT file_key, original_filename, storage
+FROM akeneo_file_storage_file_info
+LIMIT 1000
+SQL;
+
+        $files = [];
+        $rows = $this->connection->executeQuery($sql)->fetchAll();
+        $numberOfRows = count($rows);
+
+        for ($i = 0; $i < 1000; $i++) {
+            $row = $rows[$i % $numberOfRows];
+            $sku = \uniqid();
+            $filepath = \sprintf('files/%s/%s', $sku, $row['original_filename']);
+            $files[$filepath] = [
+                'sku' => $sku,
+                'key' => $row['file_key'],
+                'storage' => $row['storage'],
+            ];
+        }
+
+        return $files;
     }
 }
