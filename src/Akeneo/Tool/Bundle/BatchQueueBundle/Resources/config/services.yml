@@ -115,7 +115,8 @@ services:
         arguments:
             - '@akeneo_batch_queue.queue.job_execution_message_repository'
             - '@akeneo_batch_queue.manager.job_execution_manager'
-            - '@monolog.logger.job_event'
+            - '@logger'
             - '%kernel.project_dir%'
         tags:
             - { name: messenger.message_handler }
+            - { name: monolog.logger, channel: job_queue }
