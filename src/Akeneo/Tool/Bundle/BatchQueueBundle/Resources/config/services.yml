@@ -85,7 +85,7 @@ services:
             - '%kernel.project_dir%'
         tags:
             - { name: console.command }
-            - { name: monolog.logger, channel: Queue }
+            - { name: monolog.logger, channel: job_queue }
 
     Akeneo\Tool\Bundle\BatchQueueBundle\Command\PublishJobToQueueCommand:
         arguments:
