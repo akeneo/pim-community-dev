@@ -4,8 +4,8 @@ import {FileInfo} from '../../components';
 const useFakeMediaStorage = () => {
   const [uploadedFile, setUploadedFile] = useState<string | null>(null);
 
-  const uploader = (file: File, onProgress: (ratio: number) => void): Promise<FileInfo> => {
-    return new Promise(resolve => {
+  const uploader = (file: File, onProgress: (ratio: number) => void): Promise<FileInfo> =>
+    new Promise(resolve => {
       const normalizedFile = URL.createObjectURL(file);
       setUploadedFile(normalizedFile);
 
@@ -23,7 +23,6 @@ const useFakeMediaStorage = () => {
         });
       }, 1000);
     });
-  };
 
   const downloader = () => uploadedFile;
   const previewer = () => uploadedFile;

@@ -9,14 +9,19 @@ import {useFakeMediaStorage} from '../../../storybook/hooks/useFakeMediaStorage'
   args={{
     value: null,
     placeholder: 'Drag and drop to upload or click here',
+    downloadLabel: 'Download',
+    fullscreenTitle: 'Show fullscreen',
+    closeTitle: 'Close',
+    clearTitle: 'Clear',
+    uploadingLabel: 'Uploading...',
   }}
 />
 
-# MediaFileInput
+# Media File input
 
 ## Usage
 
-File input allows the user to enter content when the expected user input is a file.
+Media File input allows the user to enter content when the expected user input is a file.
 
 ## Playground
 
@@ -41,14 +46,54 @@ File input allows the user to enter content when the expected user input is a fi
 
 <ArgsTable story="Standard" />
 
+## Variation on size
+
+<Canvas>
+  <Story name="Size">
+    {args => {
+      const file = {
+        filePath: '/file/path.jpg',
+        originalFilename: 'nice-name.jpg',
+      };
+      const [uploader, downloader, previewer] = useFakeMediaStorage();
+      const [value, setValue] = useState(file);
+      return (
+        <>
+          <MediaFileInput
+            {...args}
+            value={value}
+            onChange={setValue}
+            uploader={uploader}
+            downloader={downloader}
+            previewer={previewer}
+          />
+          <MediaFileInput
+            {...args}
+            size="small"
+            value={value}
+            onChange={setValue}
+            uploader={uploader}
+            downloader={downloader}
+            previewer={previewer}
+          />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
 ## Variation on readonly
 
 <Canvas>
   <Story name="Read only">
     {args => {
+      const file = {
+        filePath: '/file/path.jpg',
+        originalFilename: 'nice-name.jpg',
+      };
       const uploader = () => {};
-      const downloader = () => {};
-      const previewer = () => '';
+      const downloader = () => 'https://picsum.photos/seed/akened/200';
+      const previewer = () => 'https://picsum.photos/seed/akened/200';
       return (
         <>
           <MediaFileInput
@@ -61,10 +106,7 @@ File input allows the user to enter content when the expected user input is a fi
           />
           <MediaFileInput
             {...args}
-            value={{
-              filePath: '/file/path.jpg',
-              originalFilename: 'path.jpg',
-            }}
+            value={file}
             readOnly
             uploader={uploader}
             downloader={downloader}
@@ -81,10 +123,7 @@ File input allows the user to enter content when the expected user input is a fi
           />
           <MediaFileInput
             {...args}
-            value={{
-              filePath: '/file/path.jpg',
-              originalFilename: 'path.jpg',
-            }}
+            value={file}
             size="small"
             readOnly
             uploader={uploader}
