@@ -1,0 +1,4 @@
+{
+  "baseUrl": "http://localhost:8080",
+  "integrationFolder": "tests/front/e2e"
+}

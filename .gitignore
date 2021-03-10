@@ -34,6 +34,8 @@ yarn-error.log
 coverage/*
 .phpunit.result.cache
 akeneo-design-system/lib
+cypress/videos
+cypress/screenshots
 
 ###> symfony/framework-bundle ###
 /.env.local
