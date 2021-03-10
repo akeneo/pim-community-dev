@@ -9,6 +9,7 @@ const ImageContainer = styled.img<
   background: ${getColor('white')};
   border: 1px solid ${getColor('grey80')};
   object-fit: ${({fit}) => fit};
+  box-sizing: border-box;
 
   ${({isStacked}) =>
     isStacked &&
