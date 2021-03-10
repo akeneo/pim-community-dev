@@ -55,6 +55,7 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
             $this->consumer = Uuid::uuid4();
         }
 
+        $this->logger->debug(sprintf('Consumer name: "%s"', $this->consumer));
         $jobExecutionMessage->consumedBy($this->consumer->toString());
         $pathFinder = new PhpExecutableFinder();
         $console = sprintf('%s%sbin%sconsole', $this->projectDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
@@ -67,14 +68,12 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
             $process = new Process($arguments);
             $process->setTimeout(null);
 
-            $this->logger->info('Launching job execution "{job_execution_id}".', [
-                'job_execution_id' => $jobExecutionMessage->getJobExecutionId(),
-            ]);
-            $this->logger->info('Command line: "{command_line}"', ['command_line' => $process->getCommandLine()]);
+            $this->logger->notice(sprintf('Launching job execution "%s".', $jobExecutionMessage->getJobExecutionId()));
+            $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
 
             $this->executeProcess($process, $jobExecutionMessage);
         } catch (\Throwable $t) {
-            $this->logger->error('An error occurred: {error_message}', ['error_message' => $t->getMessage()]);
+            $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()));
             $this->logger->error($t->getTraceAsString());
         } finally {
             // update status if the job execution failed due to an uncatchable error as a fatal error
@@ -84,9 +83,7 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
             }
         }
 
-        $this->logger->info('Job execution "{job_execution_id}" is finished.', [
-            'job_execution_id' => $jobExecutionMessage->getJobExecutionId(),
-        ]);
+        $this->logger->notice(sprintf('Job execution "%s" is finished.', $jobExecutionMessage->getJobExecutionId()));
     }
 
     private function executeProcess(Process $process, JobExecutionMessage $jobExecutionMessage)
@@ -140,7 +137,6 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
 
     private function writeProcessOutput(Process $process): void
     {
-        $this->logger->info($process->getIncrementalOutput());
         $errors = $process->getIncrementalErrorOutput();
         if ($errors) {
             $this->logger->error($errors);
