@@ -33,8 +33,8 @@ const LocaleDropdownItem = styled(Dropdown.Item)`
 type LocaleSelectorProps = {
   value: LocaleCode;
   values: Locale[];
-  completeValues: LocaleCode[];
-  onChange: (localeCode: LocaleCode) => void;
+  completeValues?: LocaleCode[];
+  onChange?: (localeCode: LocaleCode) => void;
 }
 
 const LocaleSelector = ({
@@ -46,6 +46,8 @@ const LocaleSelector = ({
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState();
   const selectedLocale: Locale = values.find((locale) => locale.code === value) || values[0];
+
+  const handleChange = (localeCode: LocaleCode) => onChange?.(localeCode);
 
   return <DropdownContainer>
     <SwitcherButton
@@ -63,11 +65,11 @@ const LocaleSelector = ({
         {values.map((locale) =>
           <LocaleDropdownItem aria-selected={locale.code === value} key={locale.code} onClick={() => {
             close();
-            onChange(locale.code);
+            handleChange(locale.code);
           }}>
             <HighlightLocaleWithFlag code={locale.code} languageLabel={locale.label} selected={locale.code === value}/>
-            { !completeValues.includes(locale.code) &&
-              <span className='AknBadge AknBadge--small AknBadge--highlight'/>
+            { completeValues && !completeValues.includes(locale.code) &&
+              <span className='AknBadge AknBadge--small AknBadge--highlight' data-testid={`LocaleSelector.incomplete.${locale.code}`}/>
             }
           </LocaleDropdownItem>
         )}

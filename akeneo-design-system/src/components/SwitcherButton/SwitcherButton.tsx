@@ -114,10 +114,7 @@ const SwitcherButton = React.forwardRef<HTMLDivElement, SwitcherButtonProps>(
     return (
       <SwitcherButtonContainer ref={forwardedRef} {...rest}>
         <LabelAndValueContainer onClick={handleClick} $inline={inline}>
-          <Label $inline={inline}>
-            {label}
-            {label && inline && ':'}
-          </Label>
+          <Label $inline={inline}>{label && `${label}:`}</Label>
           <LabelAndArrow>
             <Value $inline={inline}>{children}</Value>
             <ArrowDownIcon size={inline ? 16 : 10} />
