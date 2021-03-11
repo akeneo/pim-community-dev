@@ -59,6 +59,7 @@ const IncrementIconContainer = styled.div`
   height: 100%;
   justify-content: center;
   cursor: pointer;
+  color: ${getColor('grey', 100)};
 `;
 
 type NumberInputProps = Override<
@@ -136,13 +137,13 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         forwardedRef.current.stepUp(step);
         onChange(forwardedRef.current.value);
       }
-    }, [forwardedRef, step]);
+    }, [forwardedRef, step, readOnly]);
     const handleDecrement = useCallback(() => {
       if (forwardedRef && 'function' !== typeof forwardedRef && forwardedRef.current && !readOnly && onChange) {
         forwardedRef.current.stepDown(step);
         onChange(forwardedRef.current.value);
       }
-    }, [forwardedRef, step]);
+    }, [forwardedRef, step, readOnly]);
 
     return (
       <NumberInputContainer>
