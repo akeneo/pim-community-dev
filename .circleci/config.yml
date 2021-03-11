@@ -423,7 +423,7 @@ jobs:
           - attach_workspace:
                 at: ~/
           - set_gcloud_config_dev
-          - restore_persisted_env_vars 
+          - restore_persisted_env_vars
           - run:
               name: Test Serenity Helm generated yaml files compliance with current kubernetes Version
               command: PIM_CONTEXT=deployment K8S_CLUSTER_VERSION_ENABLED=1  make test_helm_generated_k8s_files
@@ -937,7 +937,7 @@ workflows:
                         ignore:
                             - master
                 requires:
-                    - test_cronjobs_existence
+                    - build_prod
           - delete_pr_environment:
                 requires:
                     - delete_pr_environment?
