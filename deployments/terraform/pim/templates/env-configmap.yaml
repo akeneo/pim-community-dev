@@ -53,3 +53,4 @@ data:
   PUBSUB_SUBSCRIPTION_JOB_QUEUE: {{ .Values.pim.pubsub.subscription_job_queue }}
   PUBSUB_TOPIC_BUSINESS_EVENT: {{ .Values.pim.pubsub.topic_business_event }}
   PUBSUB_TOPIC_JOB_QUEUE: {{ .Values.pim.pubsub.topic_job_queue }}
+  LOGGING_LEVEL: {{ .Values.pim.logging_level }}

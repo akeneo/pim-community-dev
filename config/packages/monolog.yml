@@ -1,6 +1,2 @@
 monolog:
-    handlers:
-        authentication:
-            type: service
-            id: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\DbTableLogHandler'
-            channels: ['security']
+  channels: ['event_api', 'business_event']

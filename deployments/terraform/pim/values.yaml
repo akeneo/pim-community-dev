@@ -75,6 +75,7 @@ image:
 
 pim:
   comm_panel_api_url: null
+  logging_level: NOTICE
   hook:
     addAdmin:
       enabled: true
