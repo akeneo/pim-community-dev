@@ -24,6 +24,14 @@ const Actions = styled.div`
   justify-content: center;
 `;
 
+const PreviewImage = styled(Image)`
+  width: auto;
+  min-height: 250px;
+  max-width: 100%;
+  object-fit: contain;
+  max-height: calc(-250px + 100vh);
+`;
+
 type FullscreenPreviewProps = {
   value: FileInfo;
   previewUrl: string;
@@ -47,7 +55,7 @@ const FullscreenPreview = ({
     <Modal onClose={onClose} closeTitle={closeTitle}>
       <BrandedTitle>{label}</BrandedTitle>
       <Border>
-        <Image src={previewUrl} alt={label} />
+        <PreviewImage src={previewUrl} alt={label} />
         <Actions>
           <Button ghost={true} href={downloadUrl} download={value.originalFilename} level="tertiary">
             <DownloadIcon size={16} />

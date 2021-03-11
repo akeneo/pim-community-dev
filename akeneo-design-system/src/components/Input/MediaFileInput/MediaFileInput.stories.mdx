@@ -55,7 +55,7 @@ Media File input allows the user to enter content when the expected user input i
         filePath: '/file/path.jpg',
         originalFilename: 'nice-name.jpg',
       };
-      const [uploader, downloader, previewer] = useFakeMediaStorage();
+      const [uploader, downloader, previewer] = useFakeMediaStorage('https://picsum.photos/seed/akeneo/200');
       const [value, setValue] = useState(file);
       return (
         <>
@@ -129,6 +129,44 @@ Media File input allows the user to enter content when the expected user input i
             uploader={uploader}
             downloader={downloader}
             previewer={previewer}
+          />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on invalid
+
+<Canvas>
+  <Story name="invalid">
+    {args => {
+      const file = {
+        filePath: '/file/path.jpg',
+        originalFilename: 'invalid-image.jpg',
+      };
+      const [uploader, downloader, previewer] = useFakeMediaStorage('https://picsum.photos/seed/akenew/400/100');
+      const [value, setValue] = useState(file);
+      return (
+        <>
+          <MediaFileInput
+            {...args}
+            value={value}
+            onChange={setValue}
+            uploader={uploader}
+            downloader={downloader}
+            previewer={previewer}
+            invalid={true}
+          />
+          <MediaFileInput
+            {...args}
+            size="small"
+            value={value}
+            onChange={setValue}
+            uploader={uploader}
+            downloader={downloader}
+            previewer={previewer}
+            invalid={true}
           />
         </>
       );
