@@ -241,7 +241,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       event.preventDefault();
       event.stopPropagation();
-      if (event.target.files) handleUpload(event.target.files[0]);
+      if (event.target.files) void handleUpload(event.target.files[0]);
     };
     const handleClear = () => !readOnly && onChange?.(null);
 
