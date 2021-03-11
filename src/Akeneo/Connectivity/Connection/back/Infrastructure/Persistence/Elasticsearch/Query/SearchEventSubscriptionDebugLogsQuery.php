@@ -175,7 +175,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
             $query['query']['bool']['must']['terms']['level'] = $filters['levels'];
         }
 
-        if ($filters['timestamp_from']) {
+        if (null !== $filters['timestamp_from']) {
             $query['query']['bool']['must']['range']['timestamp']['gte'] = $filters['timestamp_from'];
         }
 
