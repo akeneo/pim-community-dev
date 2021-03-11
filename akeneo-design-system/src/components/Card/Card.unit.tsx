@@ -126,6 +126,19 @@ test('it displays a Checkbox if a handler is provided', () => {
   expect(screen.queryByRole('checkbox')).toBeInTheDocument();
 });
 
+test('it displays a stack style when the card is marked as stacked', () => {
+  render(
+    <Card src="some.jpg" stacked>
+      <Card.BadgeContainer>
+        <Badge>100%</Badge>
+      </Card.BadgeContainer>
+      Card text
+    </Card>
+  );
+
+  expect(screen.getByTestId('stack')).toBeInTheDocument();
+});
+
 test('Card supports ...rest props', () => {
   render(
     <Card src="some.jpg" data-testid="my_value">

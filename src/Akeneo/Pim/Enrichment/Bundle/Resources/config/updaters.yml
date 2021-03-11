@@ -105,6 +105,8 @@ services:
         class: '%akeneo_classification.updater.category.class%'
         arguments:
             - '@pim_catalog.repository.category'
+            - '@pim_user.query.is_category_tree_linked_to_user'
+            - '@pim_channel.query.sql.is_category_tree_linked_to_channel'
 
     pim_catalog.updater.category_translatable:
         decorates: pim_catalog.updater.category

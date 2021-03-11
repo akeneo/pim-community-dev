@@ -9,3 +9,8 @@ services:
         arguments:
             - '@pim_channel.query.sql.get_channel_code_with_locale_codes'
         tags: ['akeneo.pim.cached_query']
+
+    pim_channel.query.sql.is_category_tree_linked_to_channel:
+        class: 'Akeneo\Channel\Bundle\Query\Sql\SqlIsCategoryTreeLinkedToChannel'
+        arguments:
+            - '@database_connection'
