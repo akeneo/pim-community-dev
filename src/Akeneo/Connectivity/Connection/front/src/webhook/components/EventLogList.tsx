@@ -37,6 +37,10 @@ export const EventLogList: FC<{connectionCode: string}> = ({ connectionCode }) =
         }
     );
     const fetchNextResponse = async () => {
+        if (eventSubscriptionLogs.maxScrollReached || eventSubscriptionLogs.endScrollReached) {
+            return;
+        }
+        console.log(url);
         const response = await fetch(url);
         const nextLogs = await response.json();
 
@@ -45,11 +49,10 @@ export const EventLogList: FC<{connectionCode: string}> = ({ connectionCode }) =
             logs: [...state.logs, ...nextLogs.results],
             total: nextLogs.total,
             page: state.page + 1,
-            searchAfter: nextLogs.searchAfter,
+            searchAfter: nextLogs.search_after,
             endScrollReached: nextLogs.results.length === 0,
+            maxScrollReached: state.page >= 3,
         }));
-
-        return nextLogs;
     };
     const scrollContainer = useRef(null);
 
@@ -64,8 +67,6 @@ export const EventLogList: FC<{connectionCode: string}> = ({ connectionCode }) =
     if (total === 0) {
         return <NoEventLogs/>;
     }
-
-    console.log(eventSubscriptionLogs);
 
     return (
         <>

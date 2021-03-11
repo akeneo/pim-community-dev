@@ -24,7 +24,7 @@ type EventSubscriptionLogs = {
     maxScrollReached: boolean;
     endScrollReached: boolean;
 };
-
+/** TO REMOVE */
 const useFetchEventSubscriptionLogs = (connectionCode: string): EventSubscriptionLogs => {
     const [data, setData] = useState<Data>({
         logs: [],

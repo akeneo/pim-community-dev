@@ -2,32 +2,37 @@ import {RefObject, useEffect, useState} from 'react';
 import useScrollPosition from './useScrollPosition';
 
 type State = {
-    lastFetchedTopPosition: number,
+    lastFetchedTopPosition: number|null,
     isFirstFetchDone: boolean
 }
 
 export const useInfiniteScroll = <T>(
-    fetchNextPage: (prev?: T) => Promise<T | undefined>,
+    fetchNextPage: (prev?: T) => Promise<void>,
     scrollContainerRef: RefObject<HTMLElement>,
-    threshold: number = 1000
+    threshold: number = 800
 ): void => {
     const [state, setState] = useState<State>({
-        lastFetchedTopPosition: 0,
+        lastFetchedTopPosition: null,
         isFirstFetchDone: false
     });
     const scrollPosition = useScrollPosition(scrollContainerRef);
+    if (null !== scrollPosition && null === state.lastFetchedTopPosition) {
+        setState({...state, lastFetchedTopPosition: scrollPosition.top});
+    }
     let isDistanceReached = false;
     if (null !== scrollPosition && null !== state.lastFetchedTopPosition) {
-        const result = Math.abs(scrollPosition.top) - state.lastFetchedTopPosition;
-        console.log(`height: ${scrollPosition.height}`);
-        console.log(`last top: ${state.lastFetchedTopPosition}`);
-        console.log(`top: ${scrollPosition.top}`);
-        console.log(`y: ${scrollPosition.y}`);
+        const distance = scrollPosition.top - state.lastFetchedTopPosition;
+        isDistanceReached = Math.abs(distance) >= threshold && distance < 0;
+
+        //console.log(`height: ${scrollPosition.height}`);
+        //console.log(`last top: ${state.lastFetchedTopPosition}`);
         //console.log(`top: ${scrollPosition.top}`);
-        console.log(`result: ${result}`);
-        isDistanceReached = result >= threshold;
+        //console.log(`y: ${scrollPosition.y}`);
+        //console.log(`top: ${scrollPosition.top}`);
+        //console.log(`result: ${distance}`);
     }
 
+    // check
     useEffect(() => {
         if (!state.isFirstFetchDone) {
             fetchNextPage();
@@ -37,8 +42,8 @@ export const useInfiniteScroll = <T>(
 
     useEffect(() => {
         if (isDistanceReached && null !== scrollPosition) {
+            setState({...state, lastFetchedTopPosition: scrollPosition.top});
             fetchNextPage();
-            setState({...state, lastFetchedTopPosition: Math.abs(scrollPosition.top)});
         }
     }, [isDistanceReached, scrollPosition]);
 };
