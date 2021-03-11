@@ -314,7 +314,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         );
 
         $filters = [
-            'levels' => [EventsApiDebugLogLevels::NOTICE, EventsApiDebugLogLevels::INFO],
+            'levels' => [EventsApiDebugLogLevels::NOTICE, EventsApiDebugLogLevels::INFO]
         ];
 
         $result = $this->query->execute('a_connection_code', null, $filters);

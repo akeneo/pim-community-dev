@@ -66,6 +66,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
     {
         $filters = $this->resolveFilters($filters);
         $parameters = $this->buildParameters($encryptedSearchAfter);
+        $nowTimestamp = $this->clock->now()->getTimestamp();
 
         if (null !== $parameters['first_notice_and_info_id']
             && null !== $parameters['first_notice_and_info_search_after']
@@ -178,6 +179,10 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
                     'level' => $filters['levels']
                 ]
             ];
+        }
+
+        if (null !== $searchAfter) {
+            $query['search_after'] = $searchAfter;
         }
 
         if (null !== $filters['timestamp_from']) {
@@ -314,11 +319,13 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         $resolver = new OptionsResolver();
 
         $resolver->setDefault('levels', null);
+
         $resolver->setDefault('timestamp_from', null);
         $resolver->setDefault('timestamp_to', null);
         $resolver->setAllowedTypes('levels', ['null', 'string[]']);
         $resolver->setAllowedTypes('timestamp_from', ['null', 'int']);
         $resolver->setAllowedTypes('timestamp_to', ['null', 'int']);
+
         $resolver->setAllowedValues(
             'levels',
             function ($levels) {
