@@ -54,18 +54,3 @@ Image allow to embed an image in a page
     }}
   </Story>
 </Canvas>
-
-## Variation on loading
-
-<Canvas>
-  <Story name="Loading">
-    {args => {
-      return (
-        <>
-          <Image {...args} />
-          <Image {...args} src={null} />
-        </>
-      );
-    }}
-  </Story>
-</Canvas>
