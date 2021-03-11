@@ -128,8 +128,12 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
             ],
         ];
 
-        if ($filters['levels']) {
-            $query['query']['bool']['must'] = ['terms' => ['level' => $filters['levels']]];
+        if (null !== $filters['levels']) {
+            $query['query']['bool']['must'] = [
+                'terms' => [
+                    'level' => $filters['levels']
+                ]
+            ];
         }
 
         if (null !== $parameters['search_after']) {
@@ -140,9 +144,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
 
         return [
             'results' => array_map(
-                function ($hit) {
-                    return $hit['_source'];
-                },
+                fn ($hit) => $hit['_source'],
                 $result['hits']['hits']
             ),
             'search_after' => $this->encrypter->encrypt(
@@ -227,9 +229,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
             'first_id' => $result['hits']['hits'][0]['_id'] ?? null,
             'first_search_after' => $result['hits']['hits'][0]['sort'] ?? null,
             'ids' => array_map(
-                function ($hit) {
-                    return $hit['_id'];
-                },
+                fn ($hit) => $hit['_id'],
                 $result['hits']['hits']
             ),
         ];
@@ -267,9 +267,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
             'ids' => array_merge(
                 [$firstId],
                 array_map(
-                    function ($hit) {
-                        return $hit['_id'];
-                    },
+                    fn ($hit) => $hit['_id'],
                     $result['hits']['hits']
                 )
             ),
