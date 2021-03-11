@@ -97,6 +97,14 @@ class GuzzleWebhookClient implements WebhookClient
                         $webhookRequestLog->isSuccess(),
                         $webhookRequestLog->getResponse()
                     );
+
+                    $this->debugLogger->logEventsApiRequestSucceed(
+                        $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
+                        $webhookRequestLog->getWebhookRequest()->apiEvents(),
+                        strval($webhookRequestLog->getWebhookRequest()->url()),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    );
                 },
                 'rejected' => function (RequestException $reason, int $index) use (&$logs) {
                     /** @var EventSubscriptionSendApiEventRequestLog $webhookRequestLog */

@@ -27,6 +27,7 @@ services:
         arguments:
             - !tagged akeneo_connectivity.connection.webhook.event_data_builder
             - '@akeneo_connectivity.connection.webhook.event_data_build_error_logger'
+            - '@akeneo_connectivity.connection.webhook.events_api_debug_logger'
 
     akeneo_connectivity.connection.webhook.webhook_user_authenticator:
         class: Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator

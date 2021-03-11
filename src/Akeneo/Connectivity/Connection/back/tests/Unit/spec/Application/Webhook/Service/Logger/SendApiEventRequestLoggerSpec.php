@@ -74,6 +74,7 @@ class SendApiEventRequestLoggerSpec extends ObjectBehavior
             'response' => [
                 'status_code' => 200,
             ],
+            'event_count' => 2,
             'events' => [
                 [
                     'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
@@ -151,6 +152,7 @@ class SendApiEventRequestLoggerSpec extends ObjectBehavior
             'message' => 'a message',
             'success' => false,
             'response' => null,
+            'event_count' => 2,
             'events' => [
                 [
                     'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
@@ -231,6 +233,7 @@ class SendApiEventRequestLoggerSpec extends ObjectBehavior
             'response' => [
                 'status_code' => 200,
             ],
+            'event_count' => 2,
             'events' => [
                 [
                     'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
