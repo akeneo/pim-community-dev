@@ -1,6 +1,6 @@
 import React, {useState, useRef, ChangeEvent, FC, KeyboardEvent, useCallback} from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps, getColor} from '../../../theme';
+import {AkeneoThemedProps, getColor, getFontFamily} from '../../../theme';
 import {CloseIcon, LockIcon} from '../../../icons';
 import {arrayUnique, Key, Override} from '../../../shared';
 import {InputProps} from '../InputProps';
@@ -211,7 +211,7 @@ const InputContainer = styled.li<AkeneoThemedProps>`
 
     &::placeholder {
       color: ${getColor('grey', 100)};
-      font-family: 'Lato';
+      font-family: ${getFontFamily('default')};
     }
   }
 `;

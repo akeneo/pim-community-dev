@@ -4,14 +4,11 @@ import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {default as JobExecutionStatusBadge} from 'pimimportexport/js/JobExecutionStatus';
 import {JobExecutionTracking} from './models';
 
-const Label = styled.span`
-  display: inline-block;
-  vertical-align: top;
-  margin: 0 5px 0 0;
-`;
-
 const Container = styled.div`
   margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 `;
 
 const Status = ({tracking}: {tracking: JobExecutionTracking}) => {
@@ -19,7 +16,7 @@ const Status = ({tracking}: {tracking: JobExecutionTracking}) => {
 
   return (
     <Container>
-      <Label>{translate('pim_common.status')}</Label>
+      {translate('pim_common.status')}
       <JobExecutionStatusBadge
         data-test-id="job-status"
         status={tracking.status}

@@ -55,10 +55,16 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         SendApiEventRequestLogger $sendApiEventRequestLogger,
         EventsApiRequestLogger $eventsApiRequestLogger
     ): void {
+        $mock = new MockHandler(
+            [
+                new Response(200, ['Content-Length' => 0]),
+                new Response(200, ['Content-Length' => 0]),
+            ]
+        );
         $container = [];
         $history = Middleware::history($container);
 
-        $handlerStack = HandlerStack::create();
+        $handlerStack = HandlerStack::create($mock);
         $handlerStack->push($history);
 
         $this->beConstructedWith(
@@ -117,6 +123,14 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $signature = Signature::createSignature('a_secret', $timestamp, $body);
         Assert::assertEquals($signature, $request->getHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE)[0]);
 
+        $eventsApiRequestLogger->logEventsApiRequestSucceed(
+            'ecommerce',
+            $request1->apiEvents(),
+            'http://localhost/webhook1',
+            200,
+            Argument::any()
+        )->shouldBeCalled();
+
         // Request 2
 
         $request = $this->findRequest($container, 'http://localhost/webhook2');
@@ -128,6 +142,14 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $timestamp = (int)$request->getHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP)[0];
         $signature = Signature::createSignature('a_secret', $timestamp, $body);
         Assert::assertEquals($signature, $request->getHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE)[0]);
+
+        $eventsApiRequestLogger->logEventsApiRequestSucceed(
+            'erp',
+            $request2->apiEvents(),
+            'http://localhost/webhook2',
+            200,
+            Argument::any()
+        )->shouldBeCalled();
     }
 
     public function it_logs_a_failed_events_api_request(
@@ -248,6 +270,8 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
                 return $transaction['request'];
             }
         }
+
+        return null;
     }
 
     private function createEvent(Author $author, array $data, int $timestamp, string $uuid): EventInterface

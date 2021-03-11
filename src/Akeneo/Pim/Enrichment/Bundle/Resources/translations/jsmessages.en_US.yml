@@ -293,11 +293,11 @@ pim_enrich.export.product:
                 NOT BETWEEN: Not between
         quality-score:
             title: Quality Score
-            operator_choice_title: Filter on Quality Score
+            operator_choice_title: Export Quality Score(s) for
             empty_selection: No condition on Quality Score
             operators:
-                IN AT LEAST ONE LOCALE: Apply the selected scores on at least 1 locale
-                IN ALL LOCALES: Apply the selected scores on all locales
+                IN AT LEAST ONE LOCALE: At least one locale
+                IN ALL LOCALES: All selected locales
     global_settings:
         title: Global settings
 

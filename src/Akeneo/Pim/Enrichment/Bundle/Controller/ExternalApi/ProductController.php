@@ -793,6 +793,12 @@ class ProductController
         if (null !== $query->attributeCodes) {
             $queryParameters['attributes'] = join(',', $query->attributeCodes);
         }
+        if (true === $query->withAttributeOptionsAsBoolean()) {
+            $queryParameters['with_attribute_options'] = 'true';
+        }
+        if (true === $query->withQualityScores()) {
+            $queryParameters['with_quality_scores'] = 'true';
+        }
 
         if (PaginationTypes::OFFSET === $query->paginationType) {
             $queryParameters = ['page' => $query->page] + $queryParameters;

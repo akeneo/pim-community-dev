@@ -473,8 +473,8 @@ JSON;
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10"},
-        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&with_attribute_options=true"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&with_attribute_options=true"}
     },
     "current_page" : 1,
     "_embedded"    : {
@@ -546,8 +546,8 @@ JSON;
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=$searchEncoded"},
-        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=$searchEncoded"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=$searchEncoded&with_quality_scores=true"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=$searchEncoded&with_quality_scores=true"}
     },
     "current_page" : 1,
     "_embedded"    : {

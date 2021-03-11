@@ -1,0 +1,129 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {TextAreaInput} from './TextAreaInput.tsx';
+
+<Meta
+  title="Components/Inputs/TextArea input"
+  component={TextAreaInput}
+  argTypes={{
+    readOnly: {
+      control: {type: 'boolean'},
+      description:
+        'Defines if the input should be read only. If defined so, the user cannot change the value of the input.',
+      table: {type: {summary: 'boolean'}},
+    },
+    onChange: {
+      description: 'The handler called when the value of the input changes.',
+      table: {type: {summary: '(newValue: string) => void'}},
+    },
+  }}
+  args={{
+    value:
+      'The giant panda, also known as the panda bear or simply the panda, is a <b>bear native</b> to south-central China. It is characterized by large, black patches around its eyes, over the ears, and across its round body. The name "giant panda" is sometimes used to distinguish it from the red panda, a neighboring musteloid. Though it belongs to the order Carnivora, the giant panda is a folivore, with bamboo shoots and leaves making up more than 99% of its diet. Giant pandas in the wild will occasionally eat other grasses, wild tubers, or even meat in the form of birds, rodents.',
+    placeholder: 'Please enter a value in the TextAreaInput',
+  }}
+/>
+
+# Text input (Beta)
+
+## Usage
+
+Textarea input allows the user to enter content and data when the expected user input is composed of more than one sentence.
+
+### Rich text editor:
+
+Rich text editors, sometimes called WYSIWYG editors ("what you see is what you get"), allow you to create documents that include text, images, graphics, tables, and play with the layout and style of the content.
+
+## Content
+
+**Label:**
+
+It helps users to understand what information to enter into a text input. Using a placeholder instead of a label is sometimes used to save space. However, this is not recommended because it hides the context and raises accessibility issues.
+
+**Placeholder text:**
+
+The placeholder text provides tips or examples of items to enter. Placeholder text disappears when the user begins entering data.
+
+**Help text:**
+
+Help text is relevant information that helps the user to fill a field. Help text is always available when the input is active and appears below the text input. Complete sentences with punctuation should be used.
+
+**Errors text:**
+
+A compelling error message can help the user understand the problem and solve it. You should begin by informing the user of what happened, then indicate next steps or possible solutions.
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [value, setValue] = useState(args.value);
+      return <TextAreaInput {...args} value={value} onChange={setValue} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on readOnly
+
+<Canvas>
+  <Story name="ReadOnly">
+    {args => {
+      return (
+        <>
+          <TextAreaInput {...args} readOnly={false} />
+          <TextAreaInput {...args} readOnly={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on invalid
+
+<Canvas>
+  <Story name="Invalid">
+    {args => {
+      return (
+        <>
+          <TextAreaInput {...args} invalid={false} />
+          <TextAreaInput {...args} invalid={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on character left label
+
+<Canvas>
+  <Story name="Character left label">
+    {args => {
+      const [value, setValue] = useState('');
+      const handleChange = newValue => setValue(newValue);
+      return (
+        <TextAreaInput
+          placeholder="Type here to update the character left label"
+          value={value}
+          onChange={handleChange}
+          characterLeftLabel={`${250 - value.length} characters left`}
+        />
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Rich Text Editor
+
+<Canvas>
+  <Story name="Rich Text Editor">
+    {args => {
+      return (
+        <>
+          <TextAreaInput {...args} isRichText={true} />
+          <TextAreaInput {...args} isRichText={true} readOnly={true} />
+          <TextAreaInput {...args} isRichText={true} invalid={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
