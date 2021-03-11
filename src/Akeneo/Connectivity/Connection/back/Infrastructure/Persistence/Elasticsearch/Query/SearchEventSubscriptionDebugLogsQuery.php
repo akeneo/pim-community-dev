@@ -179,7 +179,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
             $query['query']['bool']['must']['range']['timestamp']['gte'] = $filters['timestamp_from'];
         }
 
-        if ($filters['timestamp_to']) {
+        if (null !== $filters['timestamp_to']) {
             $query['query']['bool']['must']['range']['timestamp']['lte'] = $filters['timestamp_to'];
         }
 
