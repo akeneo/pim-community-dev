@@ -5,24 +5,32 @@ import {InputProps} from '../InputProps';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
 import {ImportIllustration} from '../../../illustrations';
 import {IconButton, Image} from '../../../components';
+import {ProgressBar} from '../../ProgressBar/ProgressBar';
 import {CloseIcon, DownloadIcon, FullscreenIcon, LockIcon} from '../../../icons';
 import {useBooleanState, useShortcut} from '../../../hooks';
 import {FileInfo} from './FileInfo';
 import {FullscreenPreview} from './FullscreenPreview';
 
-const MediaFileInputContainer = styled.div<{isCompact: boolean} & AkeneoThemedProps>`
+const ActionButton = styled(IconButton)`
+  color: ${getColor('grey', 100)};
+`;
+
+const MediaFileInputContainer = styled.div<{isCompact: boolean; readOnly: boolean} & AkeneoThemedProps>`
   position: relative;
   display: flex;
   flex-direction: ${({isCompact}) => (isCompact ? 'row' : 'column')};
   align-items: center;
-  padding: ${({isCompact}) => (isCompact ? 12 : 20)}px;
+  padding: 12px;
+  padding-top: ${({isCompact}) => (isCompact ? 12 : 20)}px;
   border: 1px solid ${({invalid}) => (invalid ? getColor('red', 100) : getColor('grey', 80))};
   border-radius: 2px;
   height: ${({isCompact}) => (isCompact ? 74 : 180)}px;
-  gap: 10px;
+  gap: ${({isCompact}) => (isCompact ? 10 : 0)}px;
   outline-style: none;
   box-sizing: border-box;
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
+  cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'auto')};
+  overflow: hidden;
 
   ${({readOnly}) =>
     !readOnly &&
@@ -46,11 +54,20 @@ const Input = styled.input`
   cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'pointer')};
 `;
 
-const MediaFileLabel = styled.div<{isEmpty: boolean} & AkeneoThemedProps>`
+const MediaFileLabel = styled.div`
   font-size: ${getFontSize('default')};
   font-weight: normal;
-  color: ${({isEmpty}) => getColor('grey', isEmpty ? 100 : 140)};
+  color: ${getColor('grey', 140)};
   flex-grow: 1;
+  display: flex;
+  align-items: flex-end;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;
+
+const MediaFilePlaceholder = styled(MediaFileLabel)`
+  color: ${getColor('grey', 100)};
 `;
 
 const ReadOnlyIcon = styled(LockIcon)`
@@ -72,8 +89,9 @@ const ActionContainer = styled.div<{isCompact: boolean} & AkeneoThemedProps>`
   color: ${getColor('grey', 100)};
 `;
 
-const ActionButton = styled(IconButton)`
-  color: ${getColor('grey', 100)};
+const UploadProgress = styled(ProgressBar)`
+  flex: 1;
+  width: 100%;
 `;
 
 type PreviewType = 'preview' | 'thumbnail';
@@ -120,27 +138,27 @@ type MediaFileInputProps = Override<
     uploadingLabel: string;
 
     /**
-     * Label of the download button.
+     * Label of the download button in the fullscreen preview and title of the download icon button.
      */
     downloadLabel: string;
 
     /**
-     * Title of the clear button.
+     * Title of the clear icon button.
      */
     clearTitle: string;
 
     /**
-     * Title of the fullscreen button.
+     * Title of the fullscreen icon button.
      */
     fullscreenTitle: string;
 
     /**
-     * Label of the Media File in the fullscreen preview.
+     * Label displayed at the top of the fullscreen preview.
      */
     fullscreenLabel?: string;
 
     /**
-     * Title of the Close fullscreen preview button.
+     * Title of the close icon button in the fullscreen preview.
      */
     closeTitle: string;
 
@@ -162,7 +180,6 @@ type MediaFileInputProps = Override<
 const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
   (
     {
-      alt,
       onChange,
       value,
       previewer,
@@ -186,6 +203,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
     const internalInputRef = useRef<HTMLInputElement>(null);
     const isCompact = size === 'small';
     const [isUploading, startUploading, stopUploading] = useBooleanState(false);
+    const [progress, setProgress] = useState<number>(0);
     const [isFullScreenModalOpen, openFullScreenModal, closeFullScreenModal] = useBooleanState(false);
     const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
     forwardedRef = forwardedRef ?? internalInputRef;
@@ -210,11 +228,12 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
       startUploading();
 
       try {
-        const uploadedFile = await uploader(file, console.log);
+        const uploadedFile = await uploader(file, setProgress);
         onChange(uploadedFile);
       } catch (error) {
         console.error(error);
       } finally {
+        setProgress(0);
         stopUploading();
       }
     };
@@ -247,14 +266,37 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
               {...rest}
             />
           )}
-          {thumbnailUrl ? (
-            <Image height={isCompact ? 47 : 120} width={isCompact ? 47 : 120} src={thumbnailUrl} alt={alt ?? ''} />
+          {isUploading ? (
+            <>
+              <Image height={isCompact ? 47 : 120} width={isCompact ? 47 : 120} src={null} alt={uploadingLabel} />
+              <UploadProgress
+                title={uploadingLabel}
+                progressLabel={`${Math.round(progress * 100)}%`}
+                level="primary"
+                percent={progress * 100}
+              />
+            </>
+          ) : null !== value ? (
+            <>
+              <Image
+                height={isCompact ? 47 : 120}
+                width={isCompact ? 47 : 120}
+                src={thumbnailUrl}
+                alt={value.originalFilename}
+              />
+              {readOnly ? (
+                <MediaFilePlaceholder>{value.originalFilename}</MediaFilePlaceholder>
+              ) : (
+                <MediaFileLabel>{value.originalFilename}</MediaFileLabel>
+              )}
+            </>
           ) : (
-            <ImportIllustration size={isCompact ? 47 : 180} />
+            <>
+              <ImportIllustration size={isCompact ? 47 : 180} />
+              <MediaFilePlaceholder>{placeholder}</MediaFilePlaceholder>
+            </>
           )}
-          <MediaFileLabel isEmpty={isUploading || !value}>
-            {isUploading ? uploadingLabel : value ? value.originalFilename : placeholder}
-          </MediaFileLabel>
+
           <ActionContainer isCompact={isCompact}>
             {value && (
               <>

@@ -1,8 +1,8 @@
 import {useState} from 'react';
 import {FileInfo} from '../../components';
 
-const useFakeMediaStorage = () => {
-  const [uploadedFile, setUploadedFile] = useState<string | null>(null);
+const useFakeMediaStorage = (defaultPath: string | null = null) => {
+  const [uploadedFile, setUploadedFile] = useState<string | null>(defaultPath);
 
   const uploader = (file: File, onProgress: (ratio: number) => void): Promise<FileInfo> =>
     new Promise(resolve => {
@@ -11,7 +11,7 @@ const useFakeMediaStorage = () => {
 
       let progress = 0;
       const interval = setInterval(() => {
-        onProgress(++progress / 10);
+        onProgress(++progress / 20);
       }, 100);
 
       setTimeout(() => {
@@ -21,7 +21,7 @@ const useFakeMediaStorage = () => {
           filePath: `/file/${file.name}`,
           originalFilename: file.name,
         });
-      }, 1000);
+      }, 2000);
     });
 
   const downloader = () => uploadedFile;
