@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {useEffect, useState, SyntheticEvent} from 'react';
 import styled from 'styled-components';
-import __ from 'akeneoassetmanager/tools/translator';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {
   NormalizedMediaLinkAttribute,
@@ -25,6 +24,7 @@ import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-bo
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 import {connect} from 'react-redux';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Image = styled.img`
   width: auto;
@@ -78,21 +78,22 @@ const DisconnectedMediaDataPreview = ({
   attribute: NormalizedMediaFileAttribute | NormalizedMediaLinkAttribute;
   reloadPreview: boolean;
 }) => {
+  const translate = useTranslate();
   const url = getMediaPreviewUrl({
     type: MediaPreviewType.Preview,
     attributeIdentifier: attribute.identifier,
     data: getMediaData(mediaData),
   });
   const [regenerate, doRegenerate, refreshedUrl] = useRegenerate(url);
-  const [previewError, setPreviewError] = React.useState(false);
+  const [previewError, setPreviewError] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (reloadPreview) {
       doRegenerate();
     }
   }, [reloadPreview]);
 
-  const handlePreviewError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const handlePreviewError = (event: SyntheticEvent<HTMLImageElement, Event>) => {
     const emptyMediaUrl = getMediaPreviewUrl(emptyMediaPreview());
     (event.target as HTMLInputElement).setAttribute('src', emptyMediaUrl);
     setPreviewError(true);
@@ -108,8 +109,8 @@ const DisconnectedMediaDataPreview = ({
         <Image src={refreshedUrl} alt={label} onError={handlePreviewError} />
       )}
       {(previewError || attribute.media_type === MediaTypes.other) && (
-        <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
-          {__('pim_asset_manager.asset_preview.other_main_media')}
+        <Message title={translate('pim_asset_manager.asset_preview.other_main_media')}>
+          {translate('pim_asset_manager.asset_preview.other_main_media')}
         </Message>
       )}
     </>
@@ -143,14 +144,18 @@ const MediaLinkPreview = ({
   }
 };
 
-export const EmptyMediaPreview = ({label = ''}: {label?: string}) => (
-  <>
-    <LazyLoadedImage src={getMediaPreviewUrl(emptyMediaPreview())} alt={label} />
-    <Message title={__('pim_asset_manager.asset_preview.empty_main_media')}>
-      {__('pim_asset_manager.asset_preview.empty_main_media')}
-    </Message>
-  </>
-);
+export const EmptyMediaPreview = ({label = ''}: {label?: string}) => {
+  const translate = useTranslate();
+
+  return (
+    <>
+      <LazyLoadedImage src={getMediaPreviewUrl(emptyMediaPreview())} alt={label} />
+      <Message title={translate('pim_asset_manager.asset_preview.empty_main_media')}>
+        {translate('pim_asset_manager.asset_preview.empty_main_media')}
+      </Message>
+    </>
+  );
+};
 
 type MediaPreviewProps = {
   label: string;
@@ -176,8 +181,12 @@ const Preview = ({data, label, attribute}: MediaPreviewProps) => {
   }
 };
 
-export const MediaPreview = ({data, label, attribute}: MediaPreviewProps) => (
-  <ErrorBoundary errorMessage={__('pim_asset_manager.asset_preview.error')}>
-    <Preview data={data} label={label} attribute={attribute} />
-  </ErrorBoundary>
-);
+export const MediaPreview = ({data, label, attribute}: MediaPreviewProps) => {
+  const translate = useTranslate();
+
+  return (
+    <ErrorBoundary errorMessage={translate('pim_asset_manager.asset_preview.error')}>
+      <Preview data={data} label={label} attribute={attribute} />
+    </ErrorBoundary>
+  );
+};

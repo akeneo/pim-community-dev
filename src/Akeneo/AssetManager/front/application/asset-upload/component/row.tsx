@@ -1,5 +1,4 @@
 import React from 'react';
-import __ from 'akeneoassetmanager/tools/translator';
 import styled, {css} from 'styled-components';
 import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
 import RowStatus from 'akeneoassetmanager/application/asset-upload/component/row-status';
@@ -15,6 +14,7 @@ import {
   getOptionsFromLocales,
 } from 'akeneoassetmanager/application/asset-upload/utils/select2';
 import {CloseIcon, RefreshIcon, DangerIcon, getColor, IconButton} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div<{status?: LineStatus; isReadOnly?: boolean}>`
   border-bottom: 1px solid ${getColor('grey', 80)};
@@ -118,6 +118,8 @@ type ChannelDropdownProps = {
   onChange: (value: string) => void;
 };
 const ChannelDropdown = React.memo(({options, value, readOnly, onChange}: ChannelDropdownProps) => {
+  const translate = useTranslate();
+
   return (
     <Select2
       data={options}
@@ -128,7 +130,7 @@ const ChannelDropdown = React.memo(({options, value, readOnly, onChange}: Channe
         allowClear: true,
       }}
       onChange={onChange}
-      aria-label={__('pim_asset_manager.asset.upload.list.channel')}
+      aria-label={translate('pim_asset_manager.asset.upload.list.channel')}
     />
   );
 });
@@ -140,6 +142,8 @@ type LocaleDropdownProps = {
   onChange: (value: string) => void;
 };
 const LocaleDropdown = React.memo(({options, value, readOnly, onChange}: LocaleDropdownProps) => {
+  const translate = useTranslate();
+
   return (
     <Select2
       data={options}
@@ -152,7 +156,7 @@ const LocaleDropdown = React.memo(({options, value, readOnly, onChange}: LocaleD
         formatSelection: formatLocaleOption,
       }}
       onChange={onChange}
-      aria-label={__('pim_asset_manager.asset.upload.list.locale')}
+      aria-label={translate('pim_asset_manager.asset.upload.list.locale')}
     />
   );
 });
@@ -180,6 +184,7 @@ const Row = React.memo(
     valuePerLocale,
     valuePerChannel,
   }: RowProps) => {
+    const translate = useTranslate();
     const status = getStatusFromLine(line, valuePerLocale, valuePerChannel);
     const errors = getAllErrorsOfLineByTarget(line);
     const channelOptions = getOptionsFromChannels(channels, locale);
@@ -229,7 +234,7 @@ const Row = React.memo(
               isValid={errors.code.length === 0}
               disabled={isReadOnly}
               onChange={handleCodeChange}
-              aria-label={__('pim_asset_manager.asset.upload.list.code')}
+              aria-label={translate('pim_asset_manager.asset.upload.list.code')}
             />
           </Cell>
           {valuePerChannel && (
@@ -263,7 +268,7 @@ const Row = React.memo(
                 level={LineStatus.Invalid === status ? 'danger' : 'tertiary'}
                 ghost="borderless"
                 onClick={handleRetryUpload}
-                title={__('pim_asset_manager.asset.upload.retry')}
+                title={translate('pim_asset_manager.asset.upload.retry')}
               />
             )}
             {!isReadOnly && (
@@ -272,7 +277,7 @@ const Row = React.memo(
                 level={LineStatus.Invalid === status ? 'danger' : 'tertiary'}
                 ghost="borderless"
                 onClick={handleLineRemove}
-                title={__('pim_asset_manager.asset.upload.remove')}
+                title={translate('pim_asset_manager.asset.upload.remove')}
               />
             )}
           </ActionsCell>
@@ -280,22 +285,22 @@ const Row = React.memo(
         <Errors>
           <Cell width={ColumnWidths.asset + ColumnWidths.filename}>
             {errors.common.map(error => (
-              <Error key={error.message} message={error.message} />
+              <Error key={error.message} message={translate(error.messageTemplate, error.parameters)} />
             ))}
           </Cell>
           <Cell width={ColumnWidths.code}>
             {errors.code.map(error => (
-              <Error key={error.message} message={error.message} />
+              <Error key={error.message} message={translate(error.messageTemplate, error.parameters)} />
             ))}
           </Cell>
           <Cell width={ColumnWidths.channel}>
             {errors.channel.map(error => (
-              <Error key={error.message} message={error.message} />
+              <Error key={error.message} message={translate(error.messageTemplate, error.parameters)} />
             ))}
           </Cell>
           <Cell width={ColumnWidths.locale}>
             {errors.locale.map(error => (
-              <Error key={error.message} message={error.message} />
+              <Error key={error.message} message={translate(error.messageTemplate, error.parameters)} />
             ))}
           </Cell>
           <Spacer />

@@ -1,6 +1,5 @@
 import user, {UserState} from 'akeneoassetmanager/application/reducer/user';
 import right, {RightState} from 'akeneoassetmanager/application/reducer/right';
-import sidebar, {SidebarState} from 'akeneoassetmanager/application/reducer/sidebar';
 import form, {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
 import createAttribute, {
   CreateState as CreateAttributeState,
@@ -17,7 +16,6 @@ import {
 export interface EditState {
   user: UserState;
   right: RightState;
-  sidebar: SidebarState;
   createAttribute: CreateAttributeState;
   attributes: ListState;
   attribute: EditAttributeState;
@@ -31,7 +29,6 @@ export interface EditState {
 export default {
   user,
   right,
-  sidebar,
   createAttribute,
   attributes,
   attribute,

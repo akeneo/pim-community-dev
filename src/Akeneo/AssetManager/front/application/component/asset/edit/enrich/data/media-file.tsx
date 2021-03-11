@@ -1,6 +1,5 @@
 import React from 'react';
 import styled, {FlattenSimpleInterpolation} from 'styled-components';
-import __ from 'akeneoassetmanager/tools/translator';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
@@ -18,7 +17,15 @@ import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
 import loadImage from 'akeneoassetmanager/tools/image-loader';
 import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-closing';
 import {emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
-import {CloseIcon, FullscreenIcon, getColor, ImportIllustration, AkeneoThemedProps} from 'akeneo-design-system';
+import {
+  CloseIcon,
+  FullscreenIcon,
+  getColor,
+  ImportIllustration,
+  AkeneoThemedProps,
+  useBooleanState,
+} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const FileUploadContainer = styled(Container)`
   position: relative;
@@ -71,7 +78,8 @@ const FileUploader = ({
   readOnly: boolean;
   onChange: (value: EditionValue) => void;
 }) => {
-  const [isUploading, setUploading] = React.useState<boolean>(false);
+  const [isUploading, startUploading, stopUploading] = useBooleanState();
+  const translate = useTranslate();
 
   const upload = React.useCallback(
     async (file: File): Promise<void> => {
@@ -79,7 +87,7 @@ const FileUploader = ({
         return;
       }
 
-      setUploading(true);
+      startUploading();
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
 
@@ -100,7 +108,7 @@ const FileUploader = ({
       } catch (error) {
         console.error(error);
       }
-      setUploading(false);
+      stopUploading();
     },
     [value, onChange]
   );
@@ -108,7 +116,7 @@ const FileUploader = ({
   const handleDrop = (e: React.DragEvent<HTMLInputElement>) => upload(e.dataTransfer.files[0]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => e.target.files && upload(e.target.files[0]);
 
-  usePreventClosing(() => isUploading, __('pim_enrich.confirmation.discard_changes', {entity: 'asset'}));
+  usePreventClosing(() => isUploading, translate('pim_enrich.confirmation.discard_changes', {entity: 'asset'}));
 
   return isUploading ? (
     <FileUploadContainer>
@@ -116,7 +124,7 @@ const FileUploader = ({
         <ThumbnailPlaceholder />
       </div>
       <MediaFileLabelPlaceholder readOnly={readOnly}>
-        {__(`pim_asset_manager.attribute.media_file.uploading`)}
+        {translate(`pim_asset_manager.attribute.media_file.uploading`)}
       </MediaFileLabelPlaceholder>
     </FileUploadContainer>
   ) : (
@@ -133,7 +141,7 @@ const FileUploader = ({
         <ImportIllustration size={40} />
       </ThumbnailPlaceholder>
       <MediaFileLabelPlaceholder readOnly={readOnly}>
-        {__(`pim_asset_manager.attribute.media_file.${readOnly ? 'read_only' : 'placeholder'}`)}
+        {translate(`pim_asset_manager.attribute.media_file.${readOnly ? 'read_only' : 'placeholder'}`)}
       </MediaFileLabelPlaceholder>
     </FileUploadContainer>
   );
@@ -150,6 +158,7 @@ const View = ({
   canEditData: boolean;
   onChange: (value: EditionValue) => void;
 }) => {
+  const translate = useTranslate();
   if (!isMediaFileData(value.data) || !isMediaFileAttribute(value.attribute)) {
     return null;
   }
@@ -176,19 +185,19 @@ const View = ({
     <Container>
       <Thumbnail
         src={mediaPreviewUrl}
-        alt={__('pim_asset_manager.attribute.media_type_preview')}
+        alt={translate('pim_asset_manager.attribute.media_type_preview')}
         onError={event => (event.target as HTMLInputElement).setAttribute('src', emptyMediaUrl)}
       />
       <MediaFileLabel readOnly={!canEditData}>{value.data?.originalFilename}</MediaFileLabel>
       <Actions>
         {canEditData && (
           <Action onClick={handleRemove}>
-            <CloseIcon title={__('pim_asset_manager.app.image.wide.remove')} size={20} />
+            <CloseIcon title={translate('pim_asset_manager.app.image.wide.remove')} size={20} />
           </Action>
         )}
         <DownloadAction size={20} data={value.data} attribute={value.attribute} />
         <FullscreenPreview anchor={Action} label={label} data={value.data} attribute={value.attribute}>
-          <FullscreenIcon title={__('pim_asset_manager.asset.button.fullscreen')} size={20} />
+          <FullscreenIcon title={translate('pim_asset_manager.asset.button.fullscreen')} size={20} />
         </FullscreenPreview>
       </Actions>
     </Container>

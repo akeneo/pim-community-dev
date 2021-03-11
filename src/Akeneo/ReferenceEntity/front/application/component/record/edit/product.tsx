@@ -1,9 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
+import {CardGrid, SectionTitle, Key} from 'akeneo-design-system';
+import {Section} from '@akeneo-pim-community/shared';
 import {EditState} from 'akeneoreferenceentity/application/reducer/record/edit';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ProductModel, {denormalizeProduct, NormalizedProduct} from 'akeneoreferenceentity/domain/model/product/product';
-import ItemView from 'akeneoreferenceentity/application/component/record/edit/product/item';
+import {ProductCard} from 'akeneoreferenceentity/application/component/record/edit/product/ProductCard';
 import {redirectToProduct, redirectToAttributeCreation} from 'akeneoreferenceentity/application/action/product/router';
 import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/component/app/dropdown';
 import {getLabel} from 'pimui/js/i18n';
@@ -17,8 +19,6 @@ import {
 import {NormalizedIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/product/attribute';
 import NoAttribute from 'akeneoreferenceentity/application/component/record/edit/product/no-attribute';
-import Key from 'akeneoreferenceentity/tools/key';
-import ItemsCounter from 'akeneoreferenceentity/application/component/record/index/items-counter';
 import {redirectToProductGrid} from 'akeneoreferenceentity/application/event/router';
 import NotEnoughItems from 'akeneoreferenceentity/application/component/record/edit/product/not-enough-items';
 
@@ -75,82 +75,69 @@ class Product extends React.Component<StateProps & DispatchProps> {
       return attribute.identifier === this.props.selectedAttribute.code;
     });
 
-    return (
-      <React.Fragment>
-        {0 < this.props.attributes.length ? (
-          <React.Fragment>
-            <div className="AknFilterBox AknFilterBox--search">
-              <div className="AknFilterBox-list">
-                <span className="AknFilterBox-title">{__('pim_reference_entity.record.product.title')}</span>
-                <ItemsCounter count={this.props.totalCount} inline={true} />
-                {null !== this.props.selectedAttribute ? (
-                  <div className="AknFilterBox-filterContainer AknFilterBox-filterContainer--inline">
-                    <div className="AknFilterBox-filter AknFilterBox-filter--relative AknFilterBox-filter--smallMargin">
-                      <Dropdown
-                        elements={this.props.attributes}
-                        selectedElement={(this.props.selectedAttribute as NormalizedAttribute).code}
-                        label={__('pim_reference_entity.record.product.attribute')}
-                        onSelectionChange={(selectedElement: DropdownElement) => {
-                          this.props.events.onLinkedAttributeChange(selectedElement.identifier);
-                        }}
-                        ButtonView={AttributeButtonView}
-                        isOpenLeft={true}
-                      />
-                    </div>
-                  </div>
-                ) : null}
-              </div>
-            </div>
-            {0 < this.props.products.length && null !== this.props.selectedAttribute ? (
-              <div className="AknSubsection">
-                <div className="AknGrid--gallery">
-                  <div className="AknGridContainer">
-                    <div className="AknGrid">
-                      <div className="AknGrid-body">
-                        {this.props.products.map((product: ProductModel) => (
-                          <ItemView
-                            key={product.getIdentifier().stringValue()}
-                            product={product}
-                            locale={this.props.context.locale}
-                            onRedirectToProduct={this.props.events.onRedirectToProduct}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <React.Fragment>
-                {undefined !== selectedDropdownAttribute ? (
-                  <NoResult
-                    entityLabel={selectedDropdownAttribute.label}
-                    title="pim_reference_entity.record.product.no_product.title"
-                    subtitle="pim_reference_entity.record.product.no_product.subtitle"
-                    type="product"
-                  />
-                ) : null}
-              </React.Fragment>
-            )}
-            <NotEnoughItems
-              productCount={this.props.products.length}
-              totalCount={this.props.totalCount}
-              selectedAttribute={this.props.selectedAttribute as NormalizedAttribute}
-              showMore={() =>
-                this.props.events.onRedirectToProductGrid(
-                  (this.props.selectedAttribute as NormalizedAttribute).code,
-                  this.props.recordCode
-                )
-              }
-            />
-          </React.Fragment>
+    return 0 < this.props.attributes.length ? (
+      <Section>
+        <SectionTitle>
+          <SectionTitle.Title>{__('pim_reference_entity.record.product.title')}</SectionTitle.Title>
+          <SectionTitle.Spacer />
+          <SectionTitle.Information>
+            {__('pim_reference_entity.grid.counter', {count: this.props.totalCount}, this.props.totalCount)}
+          </SectionTitle.Information>
+          {null !== this.props.selectedAttribute && (
+            <>
+              <SectionTitle.Separator />
+              <Dropdown
+                elements={this.props.attributes}
+                selectedElement={(this.props.selectedAttribute as NormalizedAttribute).code}
+                label={__('pim_reference_entity.record.product.attribute')}
+                onSelectionChange={(selectedElement: DropdownElement) => {
+                  this.props.events.onLinkedAttributeChange(selectedElement.identifier);
+                }}
+                ButtonView={AttributeButtonView}
+                isOpenLeft={true}
+              />
+            </>
+          )}
+        </SectionTitle>
+        {0 < this.props.products.length && null !== this.props.selectedAttribute ? (
+          <CardGrid>
+            {this.props.products.map((product: ProductModel) => (
+              <ProductCard
+                key={product.getIdentifier().stringValue()}
+                product={product}
+                locale={this.props.context.locale}
+              />
+            ))}
+          </CardGrid>
         ) : (
-          <NoAttribute
-            referenceEntityLabel={this.props.referenceEntityIdentifier}
-            onRedirectAttributeCreation={this.props.events.onRedirectAttributeCreation}
-          />
+          <React.Fragment>
+            {undefined !== selectedDropdownAttribute ? (
+              <NoResult
+                entityLabel={selectedDropdownAttribute.label}
+                title="pim_reference_entity.record.product.no_product.title"
+                subtitle="pim_reference_entity.record.product.no_product.subtitle"
+                type="product"
+              />
+            ) : null}
+          </React.Fragment>
         )}
-      </React.Fragment>
+        <NotEnoughItems
+          productCount={this.props.products.length}
+          totalCount={this.props.totalCount}
+          selectedAttribute={this.props.selectedAttribute as NormalizedAttribute}
+          showMore={() =>
+            this.props.events.onRedirectToProductGrid(
+              (this.props.selectedAttribute as NormalizedAttribute).code,
+              this.props.recordCode
+            )
+          }
+        />
+      </Section>
+    ) : (
+      <NoAttribute
+        referenceEntityLabel={this.props.referenceEntityIdentifier}
+        onRedirectAttributeCreation={this.props.events.onRedirectAttributeCreation}
+      />
     );
   }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\RuleEngineBundle\Command;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -36,9 +37,14 @@ class RunCommand extends Command
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
+    private LoggerInterface $logger;
+
+    public function __construct(
+        LoggerInterface $logger,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         parent::__construct();
+        $this->logger = $logger;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -73,12 +79,14 @@ class RunCommand extends Command
         $username = $input->getOption('username') ?: null;
         $stopOnError = $input->getOption('stop-on-error') ?: false;
         $dryRun = $input->getOption('dry-run') ?: false;
+        $verbose = $input->getOption('verbose') ?: false;
+        $numberOfExecutedRules=0;
 
         $config = [
             'rule_codes' => $ruleCodes,
             'user_to_notify' => $username,
             'stop_on_error' => $stopOnError,
-            'dry_run' => $dryRun,
+            'dry_run' => $dryRun
         ];
 
         $params = [
@@ -91,25 +99,41 @@ class RunCommand extends Command
         if (null !== $username) {
             $params['--username'] = $username;
         }
+        $startedTime = new \DateTimeImmutable('now');
 
-        $message = $dryRun ? 'Dry running rules...' : 'Running rules...';
-        $output->writeln($message);
+        $this->logger->notice($dryRun ? 'Dry running rules...' : 'Running rules...');
 
-        $progressBar = new ProgressBar($output, count($ruleCodes));
-
-        $this->eventDispatcher->addListener(
+        if ($verbose) {
+            $progressBar = new ProgressBar($output);
+        
+            $this->eventDispatcher->addListener(
                 RuleEvents::POST_EXECUTE,
                 function () use ($progressBar) {
                     $progressBar->advance();
                 }
             );
+        }
+
+        $this->eventDispatcher->addListener(
+            RuleEvents::POST_EXECUTE,
+            function () use (&$numberOfExecutedRules) {
+                $numberOfExecutedRules++;
+            }
+        );
 
         $this->getApplication()->setAutoExit(false);
         $result = $this->getApplication()->run(new ArrayInput($params), new NullOutput());
 
-        $progressBar->finish();
-        $output->writeln('');
+        if ($verbose) {
+            $progressBar->finish();
+            $output->writeln('');
+        }
 
+        $ruleRunDuration = $startedTime->diff(new \DateTimeImmutable('now'));
+        $this->logger->notice(
+            'rules run stats',
+            ['duration' => $ruleRunDuration->format('%s.%fs'), 'rules count' => $numberOfExecutedRules]
+        );
         return $result;
     }
 }

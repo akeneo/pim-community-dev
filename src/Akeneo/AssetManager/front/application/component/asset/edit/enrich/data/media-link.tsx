@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 import {FullscreenIcon, Key} from 'akeneo-design-system';
@@ -82,7 +82,7 @@ const View = ({
     data: getMediaData(value.data),
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (reloadPreview) {
       doRegenerate();
     }

@@ -1,13 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import {SectionTitle} from 'akeneo-design-system';
+import {CardGrid, getColor, getFontSize, ProductsIllustration, SectionTitle} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {Section} from '@akeneo-pim-community/shared';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {NormalizedProduct} from 'akeneoassetmanager/domain/model/product/product';
-import {Subsection} from 'akeneoassetmanager/application/component/app/subsection';
-import {Product} from 'akeneoassetmanager/application/component/asset/edit/linked-products/product';
-import {NoResults} from 'akeneoassetmanager/application/component/asset/edit/linked-products/no-results';
+import {ProductCard} from 'akeneoassetmanager/application/component/asset/edit/linked-products/ProductCard';
 import {AttributeButton} from 'akeneoassetmanager/application/component/asset/edit/linked-products/attribute-button';
 import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
@@ -15,13 +14,6 @@ import {attributeSelected} from 'akeneoassetmanager/application/action/product/a
 import {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {Limit} from 'akeneoassetmanager/application/component/asset/edit/linked-products/limit';
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  grid-gap: 20px;
-  margin: 20px 0;
-`;
 
 interface StateProps {
   assetCode: string;
@@ -41,6 +33,14 @@ interface DispatchProps {
     onLinkedAttributeChange: (attributeCode: string) => void;
   };
 }
+
+const NoResults = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: ${getColor('grey', 140)};
+  font-size: ${getFontSize('big')};
+`;
 
 const LinkedProducts = ({
   assetCode,
@@ -73,16 +73,16 @@ const LinkedProducts = ({
 
   if (!isLoaded) {
     return (
-      <Subsection>
+      <Section>
         <SectionTitle sticky={192}>
           <SectionTitle.Title>{translate('pim_asset_manager.asset.enrich.product_subsection')}</SectionTitle.Title>
         </SectionTitle>
-      </Subsection>
+      </Section>
     );
   }
 
   return (
-    <Subsection>
+    <Section>
       <SectionTitle sticky={192}>
         <SectionTitle.Title>{translate('pim_asset_manager.asset.enrich.product_subsection')}</SectionTitle.Title>
         <SectionTitle.Spacer />
@@ -103,19 +103,25 @@ const LinkedProducts = ({
           </>
         )}
       </SectionTitle>
-      <Grid>
-        {products.map(product => (
-          <Product key={product.id} product={product} locale={context.locale} />
-        ))}
-      </Grid>
-      {products.length === 0 && <NoResults message={translate('pim_asset_manager.asset.no_linked_products')} />}
+      {0 === products.length ? (
+        <NoResults>
+          <ProductsIllustration size={128} />
+          {translate('pim_asset_manager.asset.no_linked_products')}
+        </NoResults>
+      ) : (
+        <CardGrid>
+          {products.map(product => (
+            <ProductCard key={product.id} product={product} locale={context.locale} />
+          ))}
+        </CardGrid>
+      )}
       <Limit
         assetCode={assetCode}
         productCount={products.length}
         totalCount={totalCount}
         attribute={selectedAttribute}
       />
-    </Subsection>
+    </Section>
   );
 };
 

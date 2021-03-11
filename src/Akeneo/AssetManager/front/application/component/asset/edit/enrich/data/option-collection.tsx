@@ -1,11 +1,11 @@
 import React from 'react';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {
   isOptionCollectionData,
   optionCollectionDataFromArray,
 } from 'akeneoassetmanager/domain/model/asset/data/option-collection';
 import {isOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
 import {MultiSelectInput} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {getOptionLabel} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import {ViewGeneratorProps} from 'akeneoassetmanager/application/configuration/value';
 import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';

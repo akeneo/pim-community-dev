@@ -1,11 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 import * as ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
-import {act, fireEvent, getByText} from '@testing-library/react';
-import {renderHook} from '@testing-library/react-hooks';
-import CompletenessFilter, {
+import {act, fireEvent} from '@testing-library/react';
+import {
+  CompletenessFilter,
   CompletenessValue,
 } from 'akeneoassetmanager/application/component/asset/list/completeness-filter';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 const KeyEventSpace = {key: ' ', code: 32, charCode: 32, keyCode: 32};
 
@@ -33,7 +34,12 @@ describe('Tests completeness filter', () => {
     const handleChange = jest.fn();
 
     await act(async () => {
-      ReactDOM.render(<CompletenessFilter value={CompletenessValue.All} onChange={handleChange} />, container);
+      ReactDOM.render(
+        <DependenciesProvider>
+          <CompletenessFilter value={CompletenessValue.All} onChange={handleChange} />
+        </DependenciesProvider>,
+        container
+      );
     });
   });
 
@@ -41,7 +47,12 @@ describe('Tests completeness filter', () => {
     const handleChange = jest.fn();
 
     await act(async () => {
-      ReactDOM.render(<CompletenessFilter value={CompletenessValue.All} onChange={handleChange} />, container);
+      ReactDOM.render(
+        <DependenciesProvider>
+          <CompletenessFilter value={CompletenessValue.All} onChange={handleChange} />
+        </DependenciesProvider>,
+        container
+      );
     });
 
     const dropdownButton = getDropdownButton(container);
@@ -57,7 +68,12 @@ describe('Tests completeness filter', () => {
     const handleChange = jest.fn();
 
     await act(async () => {
-      ReactDOM.render(<CompletenessFilter value={CompletenessValue.All} onChange={handleChange} />, container);
+      ReactDOM.render(
+        <DependenciesProvider>
+          <CompletenessFilter value={CompletenessValue.All} onChange={handleChange} />
+        </DependenciesProvider>,
+        container
+      );
     });
 
     const dropdownButton = getDropdownButton(container);

@@ -1,6 +1,6 @@
 import {createIdentifier as denormalizeProductIdentifier} from 'akeneoreferenceentity/domain/model/product/identifier';
 import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import {createProduct, denormalizeProduct} from 'akeneoreferenceentity/domain/model/product/product';
+import {createProduct, denormalizeProduct, isProductModel} from 'akeneoreferenceentity/domain/model/product/product';
 import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
 
@@ -18,7 +18,7 @@ const productModel = denormalizeProduct({
   type: 'product_model',
   labels: {en_US: 'An awesome product model'},
   image: null,
-  completeness: {completeChildren: 2, comtotalChildrenplete: 4, ratio: 0},
+  completeness: {completeChildren: 2, totalChildren: 4, ratio: 0},
 });
 
 describe('akeneo > reference entity > domain > model --- product', () => {
@@ -29,6 +29,11 @@ describe('akeneo > reference entity > domain > model --- product', () => {
   test('I can compare two products', () => {
     expect(product.equals(productModel)).toEqual(false);
     expect(product.equals(product)).toEqual(true);
+  });
+
+  test('I can tell if an entity is a Product model', () => {
+    expect(isProductModel(product)).toBe(false);
+    expect(isProductModel(productModel)).toBe(true);
   });
 
   test('I can get the id of a product', () => {

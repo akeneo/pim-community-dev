@@ -1,5 +1,4 @@
-import React from 'react';
-import __ from 'akeneoassetmanager/tools/translator';
+import React, {useReducer} from 'react';
 import styled from 'styled-components';
 import {ConfirmButton, Modal} from 'akeneoassetmanager/application/component/app/modal';
 import {CloseButton} from 'akeneoassetmanager/application/component/app/close-button';
@@ -28,6 +27,7 @@ import Channel from 'akeneoassetmanager/domain/model/channel';
 import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-closing';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {getColor, getFontSize, Key, useShortcut} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Header = styled.div`
   background: ${getColor('white')};
@@ -71,11 +71,13 @@ type UploadModalHeaderProps = {
 };
 
 const UploadModalHeader = React.memo(({label, confirmLabel, onClose, onConfirm}: UploadModalHeaderProps) => {
+  const translate = useTranslate();
+
   return (
     <Header>
-      <CloseButton title={__('pim_asset_manager.close')} onClick={onClose} />
+      <CloseButton title={translate('pim_asset_manager.close')} onClick={onClose} />
       <Subtitle>{label}</Subtitle>
-      <Title>{__('pim_asset_manager.asset.upload.title')}</Title>
+      <Title>{translate('pim_asset_manager.asset.upload.title')}</Title>
       <ConfirmButton title={confirmLabel} color="green" onClick={onConfirm}>
         {confirmLabel}
       </ConfirmButton>
@@ -102,7 +104,8 @@ const UploadModal = ({
   onCancel,
   onAssetCreated,
 }: UploadModalProps) => {
-  const [state, dispatch] = React.useReducer<Reducer<State>>(reducer, {lines: []});
+  const translate = useTranslate();
+  const [state, dispatch] = useReducer<Reducer<State>>(reducer, {lines: []});
   const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
   const valuePerLocale = attributeAsMainMedia.value_per_locale;
   const valuePerChannel = attributeAsMainMedia.value_per_channel;
@@ -120,7 +123,7 @@ const UploadModal = ({
   }, [state.lines, valuePerLocale, valuePerChannel]);
 
   const handleClose = React.useCallback(() => {
-    if (!isDirty() || confirm(__('pim_asset_manager.asset.upload.discard_changes'))) {
+    if (!isDirty() || confirm(translate('pim_asset_manager.asset.upload.discard_changes'))) {
       onCancel();
     }
   }, [isDirty, onCancel]);
@@ -156,7 +159,7 @@ const UploadModal = ({
 
   useShortcut(Key.Escape, handleClose);
 
-  usePreventClosing(isDirty, __('pim_asset_manager.asset.upload.discard_changes'));
+  usePreventClosing(isDirty, translate('pim_asset_manager.asset.upload.discard_changes'));
 
   return (
     <Modal>

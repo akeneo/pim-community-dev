@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import __ from 'akeneoassetmanager/tools/translator';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
   white-space: nowrap;
@@ -16,5 +16,10 @@ type ResultCounterProps = {
   labelKey?: string;
 };
 
-export const ResultCounter = ({count = null, labelKey}: ResultCounterProps) =>
-  count === null ? null : <Container>{__(labelKey || 'pim_asset_manager.result_counter', {count}, count)}</Container>;
+export const ResultCounter = ({count = null, labelKey}: ResultCounterProps) => {
+  const translate = useTranslate();
+
+  return count === null ? null : (
+    <Container>{translate(labelKey || 'pim_asset_manager.result_counter', {count}, count)}</Container>
+  );
+};

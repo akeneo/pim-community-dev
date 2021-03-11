@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import styled from 'styled-components';
 import Locale, {localeExists, LocaleCode} from 'akeneoassetmanager/domain/model/locale';
@@ -10,7 +10,8 @@ import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import {useChannels} from 'akeneoassetmanager/application/hooks/channel';
-import CompletenessFilter, {
+import {
+  CompletenessFilter,
   CompletenessValue,
 } from 'akeneoassetmanager/application/component/asset/list/completeness-filter';
 
@@ -53,9 +54,9 @@ const SearchBar = ({
   onSearchChange,
   resultCount,
   context,
-  onContextChange,
-  dataProvider,
   completenessValue,
+  dataProvider,
+  onContextChange,
   onCompletenessChange,
 }: SearchProps) => {
   const channels = useChannels(dataProvider.channelFetcher);
@@ -93,4 +94,4 @@ const SearchBar = ({
   );
 };
 
-export default SearchBar;
+export {SearchBar};

@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import {NormalizedItemRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 import {getLabel} from 'pimui/js/i18n';
 import Completeness from 'akeneoreferenceentity/domain/model/record/completeness';
-import CompletenessLabel from 'akeneoreferenceentity/application/component/app/completeness';
+import {CompletenessBadge} from 'akeneoreferenceentity/application/component/app/completeness';
 
 const memo = (React as any).memo;
 
@@ -63,7 +63,7 @@ const CommonRow = memo(
           {record.code}
         </td>
         <td className="AknGrid-bodyCell">
-          <CompletenessLabel completeness={Completeness.createFromNormalized(record.completeness)} expanded={false} />
+          <CompletenessBadge completeness={Completeness.createFromNormalized(record.completeness)} />
         </td>
       </tr>
     );

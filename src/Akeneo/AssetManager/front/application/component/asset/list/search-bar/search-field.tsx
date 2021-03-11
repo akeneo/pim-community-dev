@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import __ from 'akeneoassetmanager/tools/translator';
 import styled from 'styled-components';
 import useDebounce from 'akeneoassetmanager/platform/hook/use-debounce';
 import {useFocus} from 'akeneoassetmanager/application/hooks/input';
 import {SearchIcon, getColor, getFontSize} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 type SearchFieldProps = {
   value: string;
@@ -28,6 +28,7 @@ const SearchInput = styled.input`
 `;
 
 const SearchField = ({value, onChange}: SearchFieldProps) => {
+  const translate = useTranslate();
   const [userSearch, setUserSearch] = useState(value);
   const debouncedUserSearch = useDebounce(userSearch, 250);
   const [inputRef] = useFocus();
@@ -46,7 +47,7 @@ const SearchField = ({value, onChange}: SearchFieldProps) => {
       <SearchInput
         type="text"
         autoComplete="off"
-        placeholder={__('pim_asset_manager.asset.grid.search')}
+        placeholder={translate('pim_asset_manager.asset.grid.search')}
         defaultValue={userSearch}
         onChange={onInputChange}
         ref={inputRef}

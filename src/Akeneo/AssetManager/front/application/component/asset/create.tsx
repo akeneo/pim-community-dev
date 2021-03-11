@@ -1,6 +1,5 @@
 import React from 'react';
 import {AssetsIllustration, Key, useShortcut, Checkbox, Button} from 'akeneo-design-system';
-import __ from 'akeneoassetmanager/tools/translator';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
@@ -11,6 +10,7 @@ import {sanitizeAssetCode} from 'akeneoassetmanager/tools/sanitizeAssetCode';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import assetSaver from 'akeneoassetmanager/infrastructure/saver/asset';
 import {useFocus} from 'akeneoassetmanager/application/hooks/input';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const submitCreateAsset = async (
   code: AssetCode,
@@ -78,6 +78,7 @@ type CreateModalProps = {
 };
 
 export const CreateModal = ({assetFamily, locale, onClose, onAssetCreated}: CreateModalProps) => {
+  const translate = useTranslate();
   const [code, setCode] = React.useState<AssetCode>('');
   const [label, setLabel] = React.useState<string>('');
   const [createAnother, setCreateAnother] = React.useState<boolean>(false);
@@ -122,9 +123,9 @@ export const CreateModal = ({assetFamily, locale, onClose, onAssetCreated}: Crea
             <div>
               <div className="AknFormContainer">
                 <div className="AknFullPage-titleContainer">
-                  <div className="AknFullPage-subTitle">{__('pim_asset_manager.asset.create.subtitle')}</div>
+                  <div className="AknFullPage-subTitle">{translate('pim_asset_manager.asset.create.subtitle')}</div>
                   <div className="AknFullPage-title">
-                    {__('pim_asset_manager.asset.create.title', {
+                    {translate('pim_asset_manager.asset.create.title', {
                       entityLabel: getAssetFamilyLabel(assetFamily, locale).toLowerCase(),
                     })}
                   </div>
@@ -132,7 +133,7 @@ export const CreateModal = ({assetFamily, locale, onClose, onAssetCreated}: Crea
                 <div className="AknFieldContainer" data-code="label">
                   <div className="AknFieldContainer-header AknFieldContainer-header--light">
                     <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.asset.create.input.label">
-                      {__('pim_asset_manager.asset.create.input.label')}
+                      {translate('pim_asset_manager.asset.create.input.label')}
                     </label>
                   </div>
                   <div className="AknFieldContainer-inputContainer">
@@ -157,7 +158,7 @@ export const CreateModal = ({assetFamily, locale, onClose, onAssetCreated}: Crea
                 <div className="AknFieldContainer" data-code="code">
                   <div className="AknFieldContainer-header AknFieldContainer-header--light">
                     <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.asset.create.input.code">
-                      {__('pim_asset_manager.asset.create.input.code')}
+                      {translate('pim_asset_manager.asset.create.input.code')}
                     </label>
                   </div>
                   <div className="AknFieldContainer-inputContainer">
@@ -179,17 +180,17 @@ export const CreateModal = ({assetFamily, locale, onClose, onAssetCreated}: Crea
                     checked={createAnother}
                     onChange={newValue => setCreateAnother(newValue)}
                   >
-                    {__('pim_asset_manager.asset.create.input.create_another')}
+                    {translate('pim_asset_manager.asset.create.input.create_another')}
                   </Checkbox>
                 </div>
-                <Button onClick={submit}>{__('pim_asset_manager.asset.create.confirm')}</Button>
+                <Button onClick={submit}>{translate('pim_asset_manager.asset.create.confirm')}</Button>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div
-        title={__('pim_asset_manager.asset.create.cancel')}
+        title={translate('pim_asset_manager.asset.create.cancel')}
         className="AknFullPage-cancel cancel"
         onClick={onClose}
       />

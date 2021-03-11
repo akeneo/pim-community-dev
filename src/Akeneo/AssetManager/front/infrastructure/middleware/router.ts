@@ -1,4 +1,3 @@
-const Routing = require('routing');
 const DatagridState = require('pim/datagrid/state');
 
 export default (router: any) => () => (next: any) => (action: any) => {
@@ -6,12 +5,6 @@ export default (router: any) => () => (next: any) => (action: any) => {
     router.redirectToRoute(action.route, action.params);
 
     return;
-  }
-  if ('UPDATE_CURRENT_SIDEBAR_TAB' === action.type) {
-    const route = router.match(window.location.hash);
-    if (undefined !== route.params.tab) {
-      history.replaceState(null, '', '#' + Routing.generate(route.name, {...route.params, tab: action.currentTab}));
-    }
   }
   if ('REDIRECT_TO_PRODUCT_GRID' === action.type) {
     const filters = `f[${action.selectedAttribute}][value][]=${action.assetCode}&f[${action.selectedAttribute}][type]=in`;

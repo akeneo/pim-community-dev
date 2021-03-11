@@ -1,5 +1,5 @@
 import {productidentifiersAreEqual} from 'akeneoassetmanager/domain/model/product/identifier';
-import {createProduct, denormalizeProduct} from 'akeneoassetmanager/domain/model/product/product';
+import {createProduct, denormalizeProduct, isProductModel} from 'akeneoassetmanager/domain/model/product/product';
 import {createFileFromNormalized} from 'akeneoassetmanager/domain/model/file';
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 
@@ -17,7 +17,7 @@ const productModel = denormalizeProduct({
   type: 'product_model',
   labels: {en_US: 'An awesome product model'},
   image: null,
-  completeness: {completeChildren: 2, comtotalChildrenplete: 4, ratio: 0},
+  completeness: {completeChildren: 2, totalChildren: 4, ratio: 0},
 });
 
 describe('akeneo > asset family > domain > model --- product', () => {
@@ -28,6 +28,11 @@ describe('akeneo > asset family > domain > model --- product', () => {
   test('I can compare two products', () => {
     expect(product.equals(productModel)).toEqual(false);
     expect(product.equals(product)).toEqual(true);
+  });
+
+  test('I can tell if an entity is a Product model', () => {
+    expect(isProductModel(product)).toBe(false);
+    expect(isProductModel(productModel)).toBe(true);
   });
 
   test('I can get the id of a product', () => {

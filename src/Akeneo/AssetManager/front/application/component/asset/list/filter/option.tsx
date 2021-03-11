@@ -3,11 +3,11 @@ import {FilterView, FilterViewProps} from 'akeneoassetmanager/application/config
 import {isOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {Option, getOptionLabel} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
-import __ from 'akeneoassetmanager/tools/translator';
 import {isOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
 import {getAttributeFilterKey} from 'akeneoassetmanager/tools/filter';
 import OptionCode from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
 import {getLabel} from 'pimui/js/i18n';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const memo = (React as any).memo;
 const useState = (React as any).useState;
@@ -21,6 +21,7 @@ type OptionFilterViewProps = FilterViewProps & {
 const DEFAULT_OPERATOR = 'IN';
 
 const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, context}: OptionFilterViewProps) => {
+  const translate = useTranslate();
   if (!(isOptionAttribute(attribute) || isOptionCollectionAttribute(attribute))) {
     return null;
   }
@@ -61,13 +62,13 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
   };
 
   return (
-    <React.Fragment>
+    <>
       <span ref={labelRef} className="AknFilterBox-filterLabel" onClick={openPanel}>
         {getLabel(attribute.labels, context.locale, attribute.code)}
       </span>
       <span className="AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited" onClick={openPanel}>
         <span className="AknFilterBox-filterCriteriaHint">
-          {0 === labels.length ? __('pim_asset_manager.asset.grid.filter.option.all') : labels.join(', ')}
+          {0 === labels.length ? translate('pim_asset_manager.asset.grid.filter.option.all') : labels.join(', ')}
         </span>
         <span className="AknFilterBox-filterCaret" />
       </span>
@@ -94,7 +95,7 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
                   readOnly={false}
                   configuration={{
                     allowClear: true,
-                    placeholder: __('pim_asset_manager.asset.grid.filter.option.no_value'),
+                    placeholder: translate('pim_asset_manager.asset.grid.filter.option.no_value'),
                     formatSelection: (data: any, _container: any, escapeMarkup: any) => {
                       const result = data ? escapeMarkup(data.text) : undefined;
                       if (result !== undefined) {
@@ -123,7 +124,7 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
           </div>
         </div>
       ) : null}
-    </React.Fragment>
+    </>
   );
 });
 

@@ -1,6 +1,6 @@
 import Flag from 'akeneoreferenceentity/tools/component/flag';
 import {denormalizeLocale} from 'akeneoreferenceentity/domain/model/locale';
-import * as React from 'react';
+import React from 'react';
 import {mount} from 'enzyme';
 
 describe('>>>COMPONENT --- flag', () => {

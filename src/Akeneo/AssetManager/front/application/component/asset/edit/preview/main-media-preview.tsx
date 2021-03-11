@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import styled from 'styled-components';
 import {FullscreenIcon, SectionTitle} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {Section} from '@akeneo-pim-community/shared';
 import EditionAsset, {getEditionAssetMediaData} from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
@@ -18,7 +19,6 @@ import {
   ReloadAction,
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 import {isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
-import {Subsection} from 'akeneoassetmanager/application/component/app/subsection';
 import {doReloadAllPreviews} from 'akeneoassetmanager/application/action/asset/reloadPreview';
 
 const Container = styled.div`
@@ -53,7 +53,7 @@ const MainMediaPreview = connect(null, dispatch => ({
   );
 
   return (
-    <Subsection>
+    <Section>
       <SectionTitle sticky={192}>
         <SectionTitle.Title>{translate('pim_asset_manager.asset.enrich.main_media_preview')}</SectionTitle.Title>
         <SectionTitle.Spacer />
@@ -71,7 +71,7 @@ const MainMediaPreview = connect(null, dispatch => ({
       <Container>
         <MediaPreview data={data} label={attributeLabel} attribute={attributeAsMainMedia} />
       </Container>
-    </Subsection>
+    </Section>
   );
 });
 

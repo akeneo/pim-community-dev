@@ -1,13 +1,21 @@
 import React from 'react';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {isOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
-import OptionData, {isOptionData} from 'akeneoassetmanager/domain/model/asset/data/option';
-import {getOptionLabel} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
-import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
+import OptionData from 'akeneoassetmanager/domain/model/asset/data/option';
 import {ViewGeneratorProps} from 'akeneoassetmanager/application/configuration/value';
 import {SelectInput} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {isOptionData} from 'akeneoassetmanager/domain/model/asset/data/option';
+import {getOptionLabel} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
 
-const View = ({value, invalid, id, onChange, locale, canEditData}: ViewGeneratorProps) => {
+const View = ({
+  id,
+  value,
+  onChange,
+  locale,
+  canEditData,
+  invalid
+}: ViewGeneratorProps) => {
   const translate = useTranslate();
   if (!isOptionData(value.data) || !isOptionAttribute(value.attribute)) {
     return null;

@@ -24,36 +24,31 @@ const ValueCollectionContainer = styled.div`
   gap: 20px;
 `;
 
+type ValueCollectionProps = {
+  asset: EditionAsset;
+  channel: ChannelReference;
+  locale: LocaleReference;
+  errors: ValidationError[];
+  onValueChange: (value: EditionValue) => void;
+  onFieldSubmit: () => void;
+  canEditLocale: boolean;
+  canEditAsset: boolean;
+};
+
 const ValueCollection = ({
   asset,
   channel,
   locale,
   errors,
-  onChange,
-  onSubmit,
-  rights,
-}: {
-  asset: EditionAsset;
-  channel: ChannelReference;
-  locale: LocaleReference;
-  errors: ValidationError[];
-  onChange: (value: EditionValue) => void;
-  onSubmit: () => void;
-  rights: {
-    locale: {
-      edit: boolean;
-    };
-    asset: {
-      edit: boolean;
-      delete: boolean;
-    };
-  };
-}) => {
+  onValueChange,
+  onFieldSubmit,
+  canEditLocale,
+  canEditAsset,
+}: ValueCollectionProps) => {
+  const translate = useTranslate();
   const visibleValues = getValuesForChannelAndLocale(asset.values, channel, locale).sort(
     (firstValue: EditionValue, secondValue: EditionValue) => firstValue.attribute.order - secondValue.attribute.order
   );
-
-  const translate = useTranslate();
 
   return (
     <ValueCollectionContainer>
@@ -72,9 +67,7 @@ const ValueCollection = ({
           locale,
         });
 
-        const canEditAsset = rights.asset.edit;
         const canEditAttribute = !value.attribute.is_read_only;
-        const canEditLocale = value.attribute.value_per_locale ? rights.locale.edit : true;
         const canEditData = canEditAsset && canEditAttribute && canEditLocale && !isTransformationTarget;
         const fieldErrors = errors.filter(
           (error: ValidationError) =>
@@ -99,8 +92,8 @@ const ValueCollection = ({
             >
               <DataView
                 value={value}
-                onChange={onChange}
-                onSubmit={onSubmit}
+                onChange={onValueChange}
+                onSubmit={onFieldSubmit}
                 channel={channel}
                 locale={locale}
                 invalid={0 !== fieldErrors.length}

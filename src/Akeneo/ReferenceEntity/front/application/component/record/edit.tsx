@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
+import styled from 'styled-components';
 import {EditState as State} from 'akeneoreferenceentity/application/reducer/record/edit';
 import Sidebar from 'akeneoreferenceentity/application/component/app/sidebar';
 import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
@@ -29,7 +30,7 @@ import Key from 'akeneoreferenceentity/tools/key';
 import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
 import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
 import {getLocales} from 'akeneoreferenceentity/application/reducer/structure';
-import CompletenessLabel from 'akeneoreferenceentity/application/component/app/completeness';
+import {CompletenessBadge} from 'akeneoreferenceentity/application/component/app/completeness';
 import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
 import {NormalizedCode} from 'akeneoreferenceentity/domain/model/record/code';
 import {NormalizedCode as NormalizedAttributeCode} from 'akeneoreferenceentity/domain/model/product/attribute/code';
@@ -37,6 +38,11 @@ import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/product/at
 import {redirectToProductGrid} from 'akeneoreferenceentity/application/event/router';
 
 const securityContext = require('pim/security-context');
+
+const MetaContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 interface StateProps {
   sidebar: {
@@ -230,9 +236,10 @@ class RecordEditView extends React.Component<EditProps> {
                       </div>
                     </div>
                     {completeness.hasRequiredAttribute() ? (
-                      <div>
-                        <CompletenessLabel completeness={completeness} />
-                      </div>
+                      <MetaContainer>
+                        {__('pim_common.completeness')}:&nbsp;
+                        <CompletenessBadge completeness={completeness} />
+                      </MetaContainer>
                     ) : null}
                   </div>
                 </div>

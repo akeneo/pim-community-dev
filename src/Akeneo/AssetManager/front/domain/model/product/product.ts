@@ -16,6 +16,8 @@ export const PRODUCT_TYPE = 'product';
 export const PRODUCT_MODEL_TYPE = 'product_model';
 export type ProductType = 'product' | 'product_model';
 
+export const isProductModel = ({type}: NormalizedProduct): boolean => PRODUCT_MODEL_TYPE === type;
+
 type NormalizedProductIdentifier = string;
 type NormalizedProductId = string;
 
