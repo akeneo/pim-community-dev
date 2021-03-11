@@ -14,8 +14,9 @@ services:
     pimee_catalog_rule.datagrid.extension.mass_action.execute_mass_action_handler:
         class: '%pimee_catalog_rule.datagrid.extension.mass_action.execute_mass_action_handler.class%'
         arguments:
-            - '@pim_catalog.command_launcher'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@security.token_storage'
+            - '@akeneo_batch.job.job_instance_repository'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_execute_rule }
 
