@@ -53,6 +53,9 @@ final class ActivateCommand extends Command
             ->addArgument('loginUrl', InputArgument::REQUIRED, 'Login URL')
             ->addArgument('logoutUrl', InputArgument::REQUIRED, 'Logout URL')
             ->addArgument('certificate', InputArgument::REQUIRED, 'Certificate')
+            ->addArgument('spEntityId', InputArgument::OPTIONAL, 'Service provider entity id')
+            ->addArgument('spCertificate', InputArgument::OPTIONAL, 'Service provider certificate')
+            ->addArgument('spPrivateKey', InputArgument::OPTIONAL, 'Service provider private key')
         ;
     }
 
@@ -69,9 +72,9 @@ final class ActivateCommand extends Command
             $input->getArgument('loginUrl'),
             $input->getArgument('logoutUrl'),
             $input->getArgument('certificate'),
-            $serviceProvider['entityId'],
-            $serviceProvider['certificate'],
-            $serviceProvider['privateKey']
+            $input->getArgument('spEntityId') ?? $serviceProvider['spEntityId'],
+            $input->getArgument('spCertificate') ?? $serviceProvider['certificate'],
+            $input->getArgument('spPrivateKey') ?? $serviceProvider['privateKey']
         );
 
         $violations = $this->validator->validate($ssoConfiguration);
@@ -104,6 +107,15 @@ final class ActivateCommand extends Command
                 break;
             case 'identityProviderCertificate':
                 $invalidArgument = 'Certificate';
+                break;
+            case 'serviceProviderEntityId':
+                $invalidArgument = 'Service provider entity id';
+                break;
+            case 'serviceProviderCertificate':
+                $invalidArgument = 'Service provider certificate';
+                break;
+            case 'serviceProviderPrivateKey':
+                $invalidArgument = 'Service provider private key';
                 break;
             default:
                 $invalidArgument = $violation->getPropertyPath();
