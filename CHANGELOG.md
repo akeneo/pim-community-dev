@@ -31,6 +31,7 @@
 - PIM-9727: Add missing query params to hatoas links
 - API-9698: Refresh ES index after creating a product from the UI in order to well send product created event to event subscriptions
 - PIM-9711: Check that a category root isn't linked to a user or a channel before moving it to a sub-category
+- PIM-9730: Fix category tree initialization in the PEF when switching tabs
 
 ## New features
 
