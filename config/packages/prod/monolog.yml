@@ -1,13 +1,11 @@
 monolog:
     handlers:
         main:
-            type:         fingers_crossed
-            action_level: warning
-            handler:      nested
-            buffer_size:  1000
-        nested:
-            type: stream
-            path: '%kernel.logs_dir%/%kernel.environment%.log'
-            level: info
+            type:     stream
+            path:     '%kernel.logs_dir%/%kernel.environment%.log'
+            level:    '%env(LOGGING_LEVEL)%'
+            channels: ['!event_api', '!business_event']
         console:
-            type:  console
+            type:     console
+            channels: ['!event', '!doctrine', '!event_api', '!business_event']
+
