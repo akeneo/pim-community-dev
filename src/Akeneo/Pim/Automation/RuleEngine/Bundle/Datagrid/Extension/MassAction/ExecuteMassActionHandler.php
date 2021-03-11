@@ -63,7 +63,7 @@ class ExecuteMassActionHandler implements MassActionHandlerInterface
         }
 
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier(static::RULE_EXECUTION_JOB);
-        $user = $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
 
         $configuration = [
             'rule_codes' => $rules,

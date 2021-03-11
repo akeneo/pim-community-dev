@@ -97,7 +97,7 @@ class RuleController
      *
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function massImpactedProductCountAction(Request $request): Response
     {
@@ -133,7 +133,7 @@ class RuleController
      *
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function executeRulesAction(Request $request): Response
     {
@@ -147,7 +147,7 @@ class RuleController
         }
 
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier(static::RULE_EXECUTION_JOB);
-        $user = $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
 
         $configuration = [
             'rule_codes' => $ruleCode,
