@@ -10,6 +10,7 @@ import {CloseIcon, DownloadIcon, FullscreenIcon, LockIcon} from '../../../icons'
 import {useBooleanState, useShortcut} from '../../../hooks';
 import {FileInfo} from './FileInfo';
 import {FullscreenPreview} from './FullscreenPreview';
+import DefaultPictureIllustration from '../../../../static/illustrations/DefaultPicture.svg';
 
 const ActionButton = styled(IconButton)`
   color: ${getColor('grey', 100)};
@@ -186,7 +187,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
       uploadingLabel,
       uploader,
       downloader,
-      size,
+      size = 'default',
       placeholder,
       downloadLabel,
       fullscreenTitle,
@@ -283,6 +284,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
                 width={isCompact ? 47 : 120}
                 src={thumbnailUrl}
                 alt={value.originalFilename}
+                onError={() => setThumbnailUrl(DefaultPictureIllustration)}
               />
               {readOnly ? (
                 <MediaFilePlaceholder>{value.originalFilename}</MediaFilePlaceholder>
