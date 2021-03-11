@@ -36,6 +36,7 @@ class ElasticsearchEventsApiDebugRepositoryIntegration extends TestCase
             'connection_code' => null,
             'context' => [
                 'data' => 'Some more informations.',
+                'other_data' => 'Another informations.',
             ],
         ]);
         $this->elasticsearchEventsApiDebugRepository->persist([
@@ -60,7 +61,9 @@ class ElasticsearchEventsApiDebugRepositoryIntegration extends TestCase
                 'connection_code' => null,
                 'context' => [
                     'data' => 'Some more informations.',
+                    'other_data' => 'Another informations.',
                 ],
+                'context_flattened' => 'Some more informations. Another informations.',
             ],
             $result['hits']['hits'][0]['_source']
         );
@@ -72,6 +75,7 @@ class ElasticsearchEventsApiDebugRepositoryIntegration extends TestCase
                 'message' => 'A warning message!',
                 'connection_code' => 'erp_0000',
                 'context' => [],
+                'context_flattened' => '',
             ],
             $result['hits']['hits'][1]['_source']
         );
