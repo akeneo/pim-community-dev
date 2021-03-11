@@ -78,6 +78,12 @@ type Theme = {
   palette: Palette;
   fontSize: FontSize;
   color: Color;
+  fontFamily: FontFamily;
+};
+
+type FontFamily = {
+  default: string;
+  monospace: string;
 };
 
 type Level = 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
@@ -94,6 +100,10 @@ const getFontSize = (fontSize: keyof FontSize): ((props: AkeneoThemedProps) => s
   theme,
 }: AkeneoThemedProps): string => theme.fontSize[fontSize];
 
+const getFontFamily = (fontFamilyType: keyof FontFamily): ((props: AkeneoThemedProps) => string) => ({
+  theme,
+}: AkeneoThemedProps): string => theme.fontFamily[fontFamilyType];
+
 export type AkeneoThemedProps<P = Record<string, unknown>> = ThemedStyledProps<P, Theme>;
-export type {Theme, FontSize, Color, Level, Palette};
-export {getColor, getColorForLevel, getFontSize};
+export type {Theme, FontSize, FontFamily, Color, Level, Palette};
+export {getColor, getFontFamily, getColorForLevel, getFontSize};

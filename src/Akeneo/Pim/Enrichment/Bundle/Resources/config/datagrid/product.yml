@@ -8,7 +8,7 @@ datagrid:
                     label: pim_datagrid.display_selector.list
                 gallery:
                     label: pim_datagrid.display_selector.gallery
-                    rowView: oro/datagrid/product-row
+                    rowView: pim/datagrid/product-gallery-row
                     manageColumns: false
             extraKeys:
                 - totalProducts

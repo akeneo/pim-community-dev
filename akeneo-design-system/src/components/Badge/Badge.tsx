@@ -4,7 +4,7 @@ import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
 
 const BadgeContainer = styled.span<BadgeProps & AkeneoThemedProps>`
-  display: inline-block;
+  display: inline-flex;
   height: 18px;
   line-height: 16px;
   border: 1px solid;
