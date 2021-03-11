@@ -201,7 +201,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
                 ],
                 [
                     'match' => [
-                        'contexte' => [
+                        'context' => [
                             'query' => $filters['text'],
                         ],
                     ],

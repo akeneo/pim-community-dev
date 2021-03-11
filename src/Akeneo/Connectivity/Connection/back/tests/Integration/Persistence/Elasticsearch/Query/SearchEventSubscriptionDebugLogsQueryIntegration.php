@@ -39,7 +39,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $timestamp = $this->clock->now()->getTimestamp() - 10;
 
         $this->generateLogs(
-            function ($index) use ($timestamp) {
+            function () use ($timestamp) {
                 return [
                     'timestamp' => $timestamp,
                     'level' => EventsApiDebugLogLevels::INFO,
@@ -228,7 +228,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
     {
         $firstTimestamp = $this->clock->now()->getTimestamp();
         $this->generateLogs(
-            function ($index) use ($firstTimestamp) {
+            function () use ($firstTimestamp) {
                 return [
                     'timestamp' => $firstTimestamp,
                     'level' => EventsApiDebugLogLevels::INFO,
@@ -246,7 +246,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $this->clock->setNow($this->clock->now()->modify('+30 seconds'));
         $secondTimestamp = $this->clock->now()->getTimestamp();
         $this->generateLogs(
-            function ($index) use ($secondTimestamp) {
+            function () use ($secondTimestamp) {
                 return [
                     'timestamp' => $secondTimestamp,
                     'level' => EventsApiDebugLogLevels::INFO,
@@ -518,7 +518,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
                     'level' => EventsApiDebugLogLevels::ERROR,
                     'message' => 'Foo bar',
                     'connection_code' => 'a_connection_code',
-                    'contexte' => [
+                    'context' => [
                         'event_subscription_url' => 'event_subscription_url',
                         'events' => [
                             'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
