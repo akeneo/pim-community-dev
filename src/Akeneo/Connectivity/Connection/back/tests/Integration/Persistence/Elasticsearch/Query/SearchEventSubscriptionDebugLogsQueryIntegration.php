@@ -258,7 +258,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
             30
         );
 
-        $secondPage = $this->query->execute('a_connection_code', $firstPage['search_after'],);
+        $secondPage = $this->query->execute('a_connection_code', $firstPage['search_after']);
 
         // At the time of the first query, there were 30 logs.
         // The first page returned 25 logs, and we want to be sure the second page returns the 5 next logs
@@ -267,6 +267,67 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         foreach($secondPage['results'] as $log) {
             Assert::assertEquals($firstTimestamp, $log['timestamp']);
         }
+    }
+
+    public function test_it_filters_on_log_level()
+    {
+        $timestamp = $this->clock->now()->getTimestamp() - 10;
+
+        $this->insertLogs(
+            [
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::WARNING,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::INFO,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'whatever',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::ERROR,
+                    'message' => 'Foo bar',
+                    'connection_code' => null,
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::NOTICE,
+                    'message' => 'Foo bar',
+                    'connection_code' => null,
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::NOTICE,
+                    'message' => 'Foo bar',
+                    'connection_code' => null,
+                    'context' => [],
+                ],
+            ]
+        );
+
+        $filters = [
+            'levels' => [EventsApiDebugLogLevels::NOTICE, EventsApiDebugLogLevels::INFO]
+        ];
+
+        $result = $this->query->execute('a_connection_code', null, $filters);
+
+        usort($result['results'], function($a, $b) {
+            return strcmp($a['level'], $b['level']);
+        });
+
+        Assert::assertEquals(3, $result['total']);
+        Assert::assertCount(3, $result['results']);
+        Assert::assertEquals(EventsApiDebugLogLevels::INFO, $result['results'][0]['level']);
+        Assert::assertEquals(EventsApiDebugLogLevels::NOTICE, $result['results'][1]['level']);
+        Assert::assertEquals(EventsApiDebugLogLevels::NOTICE, $result['results'][2]['level']);
     }
 
     private function generateLogs(callable $generator, int $number): void
