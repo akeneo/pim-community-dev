@@ -5,6 +5,7 @@ import { LocaleCode, LocaleSelector, Locale } from '@akeneo-pim-community/shared
 import {Descriptions} from '../../models';
 import styled from "styled-components";
 const FetcherRegistry = require('pim/fetcher-registry');
+const UserContext = require('pim/user-context');
 
 const Header = styled.div`
   display: flex;
@@ -20,12 +21,12 @@ type AttributeDescriptionsProps = {
 const AttributeDescriptions = ({defaultValue, onChange}: AttributeDescriptionsProps) => {
   const translate = useTranslate();
   const [descriptions, setDescriptions] = React.useState<Descriptions>(defaultValue);
-  const [localeCode, setLocaleCode] = React.useState<LocaleCode>('en_US');
+  const [localeCode, setLocaleCode] = React.useState<LocaleCode>(UserContext.get('uiLocale'));
   const [locales, setLocales] = React.useState<Locale[]>();
 
   React.useEffect(() => {
     FetcherRegistry.initialize().then(async () => {
-      const locales = await FetcherRegistry.getFetcher('locale').fetchActivated();
+      const locales = await FetcherRegistry.getFetcher('ui-locale').fetchAll();
       setLocales(locales);
     });
   }, []);
