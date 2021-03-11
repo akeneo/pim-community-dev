@@ -55,7 +55,6 @@ class CreateConnectionCommandEndToEnd extends CommandTestCase
 
         $output = $commandTester->getDisplay();
         $this->assertStringContainsString('akeneo_connectivity.connection.connection.constraint.code.too_short', $output);
-        $this->assertStringContainsString('akeneo_connectivity.connection.connection.constraint.label.too_short', $output);
     }
 
     protected function getConfiguration(): Configuration
