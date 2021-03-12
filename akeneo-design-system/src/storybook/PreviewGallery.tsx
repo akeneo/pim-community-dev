@@ -1,12 +1,5 @@
-import {useState} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor} from '../theme';
-
-const useSelection = () => {
-  const [checked, setChecked] = useState(false);
-
-  return {checked, onChange: () => setChecked(!checked)};
-};
 
 const StoryStyle = styled.div`
   ${CommonStyle}
@@ -107,5 +100,4 @@ export {
   Scrollable,
   SpaceContainer,
   ListContextContainer,
-  useSelection,
 };

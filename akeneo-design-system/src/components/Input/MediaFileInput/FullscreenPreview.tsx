@@ -58,7 +58,7 @@ const FullscreenPreview = ({
         <PreviewImage src={previewUrl} alt={label} />
         <Actions>
           <Button ghost={true} href={downloadUrl} download={value.originalFilename} level="tertiary">
-            <DownloadIcon size={16} />
+            <DownloadIcon />
             {downloadLabel}
           </Button>
         </Actions>
