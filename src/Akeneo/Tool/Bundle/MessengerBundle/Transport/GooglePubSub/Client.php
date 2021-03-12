@@ -6,6 +6,7 @@ namespace Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub;
 
 use Google\Cloud\PubSub\Subscription;
 use Google\Cloud\PubSub\Topic;
+use Webmozart\Assert\Assert;
 
 /**
  * Simple abstraction over the Google PubSubClient.
@@ -15,11 +16,9 @@ use Google\Cloud\PubSub\Topic;
  */
 class Client
 {
-    /** @var Topic */
-    private $topic;
-
-    /** @var ?Subscription */
-    private $subscription;
+    private Topic $topic;
+    private ?Subscription $subscription = null;
+    private array $subscriptionOptions = [];
 
     /**
      * @param string $dsn Must be `gps:`
@@ -28,6 +27,7 @@ class Client
      *      topic_name: string,
      *      subscription_name: ?string
      *      auto_setup: ?bool
+     *      subscription_filter: ?string
      *  } $options
      */
     public static function fromDsn(
@@ -44,22 +44,27 @@ class Client
             'topic_name' => null,
             'subscription_name' => null,
             'auto_setup' => false,
+            'filter' => null,
         ];
         $options = array_merge($defaultOptions, $options);
+        $subscriptionOptions = isset($options['subscription_filter'])
+            ? ['filter' => $options['subscription_filter']]
+            : []
+        ;
+
+        Assert::string($options['project_id']);
+        Assert::string($options['topic_name']);
 
         foreach (['project_id', 'topic_name'] as $key) {
-            if (!is_string($options[$key])) {
-                throw new \InvalidArgumentException(
-                    sprintf('Option "%s" is missing or invalid.', $key)
-                );
-            }
+            Assert::string($options[$key], sprintf('Option "%s" is missing or invalid.', $key));
         }
 
         $client = new self(
             $pubSubClientFactory,
             $options['project_id'],
             $options['topic_name'],
-            $options['subscription_name']
+            $options['subscription_name'],
+            $subscriptionOptions
         );
 
         if (true === $options['auto_setup']) {
@@ -73,8 +78,10 @@ class Client
         PubSubClientFactory $pubSubClientFactory,
         string $projectId,
         string $topicName,
-        ?string $subscriptionName
+        ?string $subscriptionName,
+        array $subscriptionOptions = []
     ) {
+        $this->subscriptionOptions = $subscriptionOptions;
         $pubSubClient = $pubSubClientFactory->createPubSubClient([
             'projectId' => $projectId
         ]);
@@ -85,14 +92,16 @@ class Client
         }
     }
 
-    public function setup(): void
+    public function setup(array $options = []): void
     {
         if (!$this->topic->exists()) {
             $this->topic->create();
         }
 
         if (null !== $this->subscription && !$this->subscription->exists()) {
-            $this->subscription->create();
+//            print_r("Create [" . $this->subscription->name() . "] with:\n");
+//            print_r($this->subscriptionOptions);
+            $this->subscription->create($this->subscriptionOptions);
         }
     }
 
