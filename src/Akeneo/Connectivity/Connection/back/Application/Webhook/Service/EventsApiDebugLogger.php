@@ -75,7 +75,7 @@ class EventsApiDebugLogger implements
                 'status_code' => $statusCode,
                 'headers' => $headers,
                 'events' => array_map(function ($webhookEvent) {
-                    $this->normalizeEvent($webhookEvent->getPimEvent());
+                    return $this->normalizeEvent($webhookEvent->getPimEvent());
                 }, $events),
             ]
         ]);
@@ -126,7 +126,7 @@ class EventsApiDebugLogger implements
                 'status_code' => $statusCode,
                 'headers' => $headers,
                 'events' => array_map(function ($webhookEvent) {
-                    $this->normalizeEvent($webhookEvent->getPimEvent());
+                    return $this->normalizeEvent($webhookEvent->getPimEvent());
                 }, $webhookEvents),
             ]
         ]);
@@ -146,7 +146,7 @@ class EventsApiDebugLogger implements
             'context' => [
                 'event_subscription_url' => $url,
                 'events' => array_map(function ($webhookEvent) {
-                    $this->normalizeEvent($webhookEvent->getPimEvent());
+                    return $this->normalizeEvent($webhookEvent->getPimEvent());
                 }, $events),
             ],
         ]);
