@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\UrlReachabilityCheckerInterface;
+use Akeneo\Connectivity\Connection\Application\Webhook\Validation\NotPrivateNetworkUrl;
 use Akeneo\Connectivity\Connection\Domain\Webhook\DTO\UrlReachabilityStatus;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\Signature;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
@@ -42,7 +44,11 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
 
     public function check(string $url, string $secret): UrlReachabilityStatus
     {
-        $violations = $this->validator->validate($url, [new Assert\Url(), new Assert\NotBlank(),]);
+        $violations = $this->validator->validate($url, [
+            new Assert\NotBlank(),
+            new Assert\Url(),
+            new NotPrivateNetworkUrl()
+        ]);
 
         if (0 !== count($violations)) {
             return new UrlReachabilityStatus(
@@ -61,11 +67,27 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
         ];
 
         try {
-            $response = $this->client->send(new Request(self::POST, $url, $headers));
+            $response = $this->client->send(new Request(self::POST, $url, $headers), [
+                'allow_redirects' => false /* Block http redirect to limit security risks (SSRF) */,
+            ]);
+
+            $statusCode = $response->getStatusCode();
+
+            // Treat redirection as error.
+            if ($statusCode >= 300 and $statusCode < 400) {
+                return new UrlReachabilityStatus(
+                    false,
+                    sprintf(
+                        '%s %s. Redirection are not allowed.',
+                        $statusCode,
+                        $response->getReasonPhrase()
+                    )
+                );
+            }
 
             return new UrlReachabilityStatus(
                 true,
-                sprintf("%s %s", $response->getStatusCode(), $response->getReasonPhrase())
+                sprintf("%s %s", $statusCode, $response->getReasonPhrase())
             );
         } catch (GuzzleException $e) {
             if ($e instanceof RequestException && $e->hasResponse()) {

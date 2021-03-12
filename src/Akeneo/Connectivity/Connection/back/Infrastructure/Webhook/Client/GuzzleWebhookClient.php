@@ -76,6 +76,7 @@ class GuzzleWebhookClient implements WebhookClient
                 'concurrency' => $this->config['concurrency'] ?? null,
                 'options' => [
                     'timeout' => $this->config['timeout'] ?? null,
+                    'allow_redirects' => false /* Block http redirect to limit security risks (SSRF) */,
                 ],
                 'fulfilled' => function (Response $response, int $index) use (&$logs) {
                     $webhookRequestLog = $logs[$index];

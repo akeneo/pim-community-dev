@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9704: Fix SSRF vulnerability on the Event Subscription URL
+
 # 5.0.7 (2021-03-09)
 
 # 5.0.6 (2021-03-09)
