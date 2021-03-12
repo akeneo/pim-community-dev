@@ -12,7 +12,7 @@
     "requirements": "node $npm_package_config_source/frontend/build/check-requirements.js",
     "webpack": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
     "webpack-dev": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
-    "webpack-watch": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config.js --watch --strict",
+    "webpack-watch": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config.js --watch",
     "prettier:run": "prettier --config $npm_package_config_source/.prettierrc.json --parser typescript --write \"./{src,tests}/**/*.{ts,tsx,js}\"",
     "prettier:check": "prettier --check --config $npm_package_config_source/.prettierrc.json --parser typescript \"./{src,tests}/**/*.{ts,tsx,js}\"",
     "before-commit": "yarn lint && yarn test",
