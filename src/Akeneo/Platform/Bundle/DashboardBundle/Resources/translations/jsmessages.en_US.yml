@@ -1,7 +1,14 @@
 pim_dashboard:
+    title: Activity Dashboard
+    greetings: Hello {{ name }}!
+    welcome_sentence:
+        message1: Keep up the great work.
     widget:
         completeness:
             load_more: 'Load more...'
+            title: Completeness Over Channels and Locales
+        last_operations:
+            title: Last operations
 
 pim_title:
     pim_dashboard_index: Dashboard

@@ -7,7 +7,6 @@ const Container = styled.div`
   height: 142px;
   border: 1px solid ${({theme}) => theme.color.grey80};
   margin-right: 20px;
-  border-radius: 4px;
   display: flex;
   overflow: hidden;
   flex-basis: 142px;
