@@ -47,14 +47,6 @@ extensions:
             title: pim_menu.item.dashboard
             to: pim_dashboard_index
 
-    pim-menu-activity-catalog-volume:
-        module: pim/menu/item
-        parent: pim-menu-activity-navigation-block
-        position: 101
-        config:
-            title: pim_menu.item.catalog_volume
-            to: pim_enrich_catalog_volume_index
-
     pim-menu-activity-job-tracker:
         module: pim/menu/item
         parent: pim-menu-activity-navigation-block
@@ -246,6 +238,14 @@ extensions:
         targetZone: navigation
         config:
             title: pim_menu.navigation.system
+
+    pim-menu-system-catalog-volume:
+        module: pim/menu/item
+        parent: pim-menu-system-navigation-block
+        position: 90
+        config:
+            title: pim_menu.item.catalog_volume
+            to: pim_enrich_catalog_volume_index
 
     pim-menu-system-configuration:
         module: pim/menu/item
