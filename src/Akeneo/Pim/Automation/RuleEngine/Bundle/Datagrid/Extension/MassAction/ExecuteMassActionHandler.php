@@ -11,10 +11,12 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\MassAction;
 
-use Akeneo\Tool\Component\Console\CommandLauncher;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -25,26 +27,26 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ExecuteMassActionHandler implements MassActionHandlerInterface
 {
-    /** @var CommandLauncher */
-    protected $launcher;
+    protected const RULE_EXECUTION_JOB = 'rule_engine_execute_rules';
 
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
+    protected JobLauncherInterface $jobLauncher;
+    protected TokenStorageInterface $tokenStorage;
+    protected IdentifiableObjectRepositoryInterface $jobInstanceRepo;
 
-    /**
-     * @param CommandLauncher       $launcher
-     * @param TokenStorageInterface $tokenStorage
-     */
-    public function __construct(CommandLauncher $launcher, TokenStorageInterface $tokenStorage)
-    {
-        $this->launcher = $launcher;
+    public function __construct(
+        JobLauncherInterface $jobLauncher,
+        TokenStorageInterface $tokenStorage,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepo
+    ) {
+        $this->jobLauncher = $jobLauncher;
         $this->tokenStorage = $tokenStorage;
+        $this->jobInstanceRepo = $jobInstanceRepo;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function handle(DatagridInterface $datagrid, MassActionInterface $massAction)
+    public function handle(DatagridInterface $datagrid, MassActionInterface $massAction): MassActionResponseInterface
     {
         $results = $datagrid->getDatasource()->getResults();
         $rules = [];
@@ -60,11 +62,14 @@ class ExecuteMassActionHandler implements MassActionHandlerInterface
             );
         }
 
-        $this->launcher->executeBackground(sprintf(
-            'akeneo:rule:run %s --username=%s',
-            join(',', $rules),
-            $this->tokenStorage->getToken()->getUsername()
-        ));
+        $jobInstance = $this->jobInstanceRepo->findOneByIdentifier(static::RULE_EXECUTION_JOB);
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        $configuration = [
+            'rule_codes' => $rules,
+            'user_to_notify' => $user->getUsername(),
+        ];
+        $this->jobLauncher->launch($jobInstance, $user, $configuration);
 
         return new MassActionResponse(true, 'pimee_catalog_rule.datagrid.rule-grid.mass_action.execute.success');
     }
