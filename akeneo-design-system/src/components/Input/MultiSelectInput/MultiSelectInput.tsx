@@ -180,7 +180,7 @@ type MultiMultiSelectInputProps = Override<
     verticalPosition?: VerticalPosition;
 
     /**
-     * Callback called when the user hit enter on the field
+     * Callback called when the user hit enter on the field.
      */
     onSubmit?: () => void;
   }
@@ -243,7 +243,7 @@ const MultiSelectInput = ({
       setSearchValue('');
       closeOverlay();
     } else {
-      onSubmit?.();
+      !readOnly && onSubmit?.();
     }
   };
 

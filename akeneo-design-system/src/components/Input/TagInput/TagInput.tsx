@@ -27,10 +27,23 @@ type TagInputProps = Override<
      * Defines if the input is valid on not
      */
     invalid?: boolean;
+
+    /**
+     * Callback called when the user hit enter on the field.
+     */
+    onSubmit?: () => void;
   }
 >;
 
-const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = [], readOnly, ...inputProps}) => {
+const TagInput: FC<TagInputProps> = ({
+  onChange,
+  placeholder,
+  invalid,
+  value = [],
+  readOnly,
+  onSubmit,
+  ...inputProps
+}) => {
   const [isLastTagSelected, setLastTagAsSelected] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLUListElement>(null);
@@ -98,6 +111,12 @@ const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = []
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
+      if (Key.Enter === event.key && !isLastTagSelected && !readOnly) {
+        onSubmit?.();
+
+        return;
+      }
+
       const isDeleteKeyPressed = [Key.Backspace.toString(), Key.Delete.toString()].includes(event.key);
       const tagsAreEmpty = value.length === 0;
       const inputFieldIsNotEmpty = inputRef && inputRef.current && inputRef.current.value.trim() !== '';
@@ -114,7 +133,7 @@ const TagInput: FC<TagInputProps> = ({onChange, placeholder, invalid, value = []
 
       setLastTagAsSelected(!isLastTagSelected);
     },
-    [isLastTagSelected, setLastTagAsSelected, onChange, value, inputRef]
+    [isLastTagSelected, setLastTagAsSelected, onChange, value, inputRef, onSubmit, readOnly]
   );
 
   return (

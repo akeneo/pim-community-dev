@@ -82,7 +82,7 @@ type TextInputProps = Override<
     characterLeftLabel?: string;
 
     /**
-     * Callback called when the user hit enter on the field
+     * Callback called when the user hit enter on the field.
      */
     onSubmit?: () => void;
   }
@@ -104,7 +104,7 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
     );
 
     const handleEnter = () => {
-      if (!readOnly) onSubmit?.();
+      !readOnly && onSubmit?.();
     };
     useShortcut(Key.Enter, handleEnter, forwardedRef);
 

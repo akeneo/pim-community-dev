@@ -105,7 +105,7 @@ type NumberInputProps = Override<
     invalid?: boolean;
 
     /**
-     * Callback called when the user hit enter on the field
+     * Callback called when the user hit enter on the field.
      */
     onSubmit?: () => void;
   }
@@ -127,7 +127,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
     );
 
     const handleEnter = () => {
-      if (!readOnly) onSubmit?.();
+      !readOnly && onSubmit?.();
     };
     useShortcut(Key.Enter, handleEnter, forwardedRef);
 
