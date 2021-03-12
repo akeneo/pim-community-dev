@@ -36,7 +36,10 @@ class ElasticsearchEventsApiDebugRepositoryIntegration extends TestCase
             'connection_code' => null,
             'context' => [
                 'data' => 'Some more informations.',
-                'other_data' => 'Another informations.',
+                'other_data' => 'Other important data',
+                'more' => [
+                    'more_other_data' => 'Deep data'
+                ],
             ],
         ]);
         $this->elasticsearchEventsApiDebugRepository->persist([
@@ -61,9 +64,12 @@ class ElasticsearchEventsApiDebugRepositoryIntegration extends TestCase
                 'connection_code' => null,
                 'context' => [
                     'data' => 'Some more informations.',
-                    'other_data' => 'Another informations.',
+                    'other_data' => 'Other important data',
+                    'more' => [
+                        'more_other_data' => 'Deep data'
+                    ],
                 ],
-                'context_flattened' => 'Some more informations. Another informations.',
+                'context_flattened' => 'Some more informations. Other important data Deep data',
             ],
             $result['hits']['hits'][0]['_source']
         );
