@@ -1,7 +1,7 @@
 import { GraphIllustration, Information } from 'akeneo-design-system';
 import React, { FC, useRef } from 'react';
 import { NoEventLogs } from './NoEventLogs';
-import useInfiniteEventSubscriptionLogs from '../hooks/api/useInfiniteEventSubscriptionLogs';
+import useInfiniteEventSubscriptionLogs from '../hooks/api/use-infinite-event-subscription-logs';
 
 export const EventLogList: FC<{connectionCode: string}> = ({ connectionCode }) => {
     const scrollContainer = useRef(null);
