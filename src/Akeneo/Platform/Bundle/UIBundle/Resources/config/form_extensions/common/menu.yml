@@ -112,104 +112,113 @@ extensions:
             tab: pim-menu-settings
             navigationTitle: pim_menu.navigation.settings
 
-    pim-menu-settings-navigation-block:
+    # Settings > Structure settings
+    pim-menu-structure-settings-block:
         module: pim/menu/navigation-block
         parent: pim-menu-settings-column
+        position: 50
         targetZone: navigation
         config:
-            title: pim_menu.navigation.settings
+            title: pim_menu.navigation.settings.structure
+
+    pim-menu-settings-product-category:
+        module: pim/menu/item
+        parent: pim-menu-structure-settings-block
+        aclResourceId: pim_enrich_product_category_list
+        position: 10
+        config:
+            title: pim_enrich.entity.category.plural_label
+            to: pim_enrich_categorytree_index
+
+    pim-menu-settings-channel:
+        module: pim/menu/item
+        parent: pim-menu-structure-settings-block
+        aclResourceId: pim_enrich_channel_index
+        position: 20
+        config:
+            title: pim_menu.item.channel
+            to: pim_enrich_channel_index
+
+    pim-menu-settings-locale:
+        module: pim/menu/item
+        parent: pim-menu-structure-settings-block
+        aclResourceId: pim_enrich_locale_index
+        position: 30
+        config:
+            title: pim_enrich.entity.locale.plural_label
+            to: pim_enrich_locale_index
+
+    pim-menu-settings-currency:
+        module: pim/menu/item
+        parent: pim-menu-structure-settings-block
+        aclResourceId: pim_enrich_currency_index
+        position: 40
+        config:
+            title: pim_menu.item.currency
+            to: pim_enrich_currency_index
+
+    # Settings > Catalog settings
+    pim-menu-catalog-settings-block:
+        module: pim/menu/navigation-block
+        parent: pim-menu-settings-column
+        position: 100
+        targetZone: navigation
+        config:
+            title: pim_menu.navigation.settings.catalog
 
     pim-menu-settings-attribute-group:
         module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
+        parent: pim-menu-catalog-settings-block
         aclResourceId: pim_enrich_attributegroup_index
-        position: 100
+        position: 10
         config:
             title: pim_enrich.entity.attribute_group.plural_label
             to: pim_enrich_attributegroup_index
 
     pim-menu-settings-attribute:
         module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
+        parent: pim-menu-catalog-settings-block
         aclResourceId: pim_enrich_attribute_index
-        # TODO Set this position back to origin when all the screens will be PEFized
-        # position: 110
-        position: 0
+        position: 20
         config:
             title: pim_enrich.entity.attribute.plural_label
             to: pim_enrich_attribute_index
 
-    pim-menu-settings-product-category:
-        module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        aclResourceId: pim_enrich_product_category_list
-        position: 120
-        config:
-            title: pim_enrich.entity.category.plural_label
-            to: pim_enrich_categorytree_index
-
     pim-menu-settings-family:
         module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
+        parent: pim-menu-catalog-settings-block
         aclResourceId: pim_enrich_family_index
-        position: 130
+        position: 30
         config:
             title: pim_menu.item.family
             to: pim_enrich_family_index
 
+    pim-menu-settings-association-type:
+        module: pim/menu/item
+        parent: pim-menu-catalog-settings-block
+        aclResourceId: pim_enrich_associationtype_index
+        position: 50
+        config:
+            title: pim_menu.item.association_type
+            to: pim_enrich_associationtype_index
+
     pim-menu-settings-group-type:
         module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
+        parent: pim-menu-catalog-settings-block
         aclResourceId: pim_enrich_grouptype_index
-        position: 140
+        position: 60
         config:
             title: pim_menu.item.group_type
             to: pim_enrich_grouptype_index
 
     pim-menu-settings-group:
         module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
+        parent: pim-menu-catalog-settings-block
         aclResourceId: pim_enrich_group_index
-        position: 150
+        position: 70
         config:
             title: pim_menu.item.group
             to: pim_enrich_group_index
-
-    pim-menu-settings-association-type:
-        module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        aclResourceId: pim_enrich_associationtype_index
-        position: 170
-        config:
-            title: pim_menu.item.association_type
-            to: pim_enrich_associationtype_index
-
-    pim-menu-settings-currency:
-        module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        aclResourceId: pim_enrich_currency_index
-        position: 180
-        config:
-            title: pim_menu.item.currency
-            to: pim_enrich_currency_index
-
-    pim-menu-settings-locale:
-        module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        aclResourceId: pim_enrich_locale_index
-        position: 190
-        config:
-            title: pim_enrich.entity.locale.plural_label
-            to: pim_enrich_locale_index
-
-    pim-menu-settings-channel:
-        module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        aclResourceId: pim_enrich_channel_index
-        position: 200
-        config:
-            title: pim_menu.item.channel
-            to: pim_enrich_channel_index
 
     # System
     pim-menu-system:
