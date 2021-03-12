@@ -359,7 +359,9 @@ pim_menu:
         activity: Activity navigation
         system: System navigation
         user: Users management navigation
-        settings: Settings navigation
+        settings:
+            structure: Structure settings
+            catalog: Catalog settings
         product: Product navigation
         product_infos: Product infos
 
