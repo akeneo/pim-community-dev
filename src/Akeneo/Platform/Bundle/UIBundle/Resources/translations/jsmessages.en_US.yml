@@ -337,7 +337,7 @@ pim_menu:
         attribute_group: Attribute groups
         channel: Channels
         currency: Currencies
-        dashboard: Dashboard
+        dashboard: Activity dashboard
         family: Families
         group: Groups
         group_type: Group types
