@@ -33,7 +33,6 @@ authentication:
           label: Abmelde-URL
         certificate:
           label: Zertifikat
-          expiration_warning: Dieses Zertifikat läuft ab am {{date}}.
         private_key:
           label: Privater Schlüssel
         metadata_url:
