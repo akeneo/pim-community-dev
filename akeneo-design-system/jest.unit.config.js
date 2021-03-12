@@ -24,8 +24,6 @@ module.exports = {
       'src/storybook',
       'generator',
       'src/shared/PreviewGallery',
-      //TODO revert this
-      'MediaFileInput'
   ],
   coverageReporters: ['text-summary', 'html'],
   coverageDirectory: 'coverage',

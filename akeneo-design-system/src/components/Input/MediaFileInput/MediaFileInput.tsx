@@ -67,8 +67,8 @@ const MediaFileLabel = styled.div`
   overflow: hidden;
 `;
 
-const MediaFilePlaceholder = styled(MediaFileLabel)<{invalid: boolean} & AkeneoThemedProps>`
-  color: ${({invalid}) => invalid ? getColor('red', 100) : getColor('grey', 100)};
+const MediaFilePlaceholder = styled(MediaFileLabel)`
+  color: ${getColor('grey', 100)};
 `;
 
 const ReadOnlyIcon = styled(LockIcon)`
@@ -171,7 +171,7 @@ type MediaFileInputProps = Override<
     /**
      * Defines if the input is compact or not.
      */
-    size: 'default' | 'small';
+    size?: 'default' | 'small';
 
     /**
      * Defines if the input is valid on not.
@@ -231,14 +231,12 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
     }, [value]);
 
     const handleUpload = async (file: File) => {
-      if (!onChange || readOnly) return;
-
       startUploading();
 
       try {
         const uploadedFile = await uploader(file, setProgress);
         uploadSucceeded();
-        onChange(uploadedFile);
+        onChange?.(uploadedFile);
       } catch (error) {
         uploadFailed();
         console.error(error);
@@ -273,6 +271,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
               onChange={handleChange}
               readOnly={readOnly}
               disabled={readOnly}
+              placeholder={placeholder}
               {...rest}
             />
           )}
@@ -304,9 +303,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
           ) : (
             <>
               <ImportIllustration size={isCompact ? 47 : 180} />
-              <MediaFilePlaceholder invalid={hasUploadFailed}>
-                {hasUploadFailed ? uploadErrorLabel : placeholder}
-              </MediaFilePlaceholder>
+              <MediaFilePlaceholder>{hasUploadFailed ? uploadErrorLabel : placeholder}</MediaFilePlaceholder>
             </>
           )}
 
