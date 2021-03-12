@@ -4,6 +4,8 @@ import {getColor, placeholderStyle} from '../../theme';
 import {AkeneoThemedProps} from '../../theme';
 import {Override} from '../../shared';
 
+const EMPTY_IMAGE = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>';
+
 type Fit = 'cover' | 'contain';
 
 const ImageContainer = styled.img<
@@ -69,7 +71,14 @@ type ImageProps = Override<
 const Image = React.forwardRef<HTMLImageElement, ImageProps>(
   ({fit = 'cover', isStacked = false, src, ...rest}: ImageProps, forwardedRef: Ref<HTMLImageElement>) => {
     return (
-      <ImageContainer isLoading={null === src} src={src} ref={forwardedRef} fit={fit} isStacked={isStacked} {...rest} />
+      <ImageContainer
+        isLoading={null === src}
+        src={src ?? EMPTY_IMAGE}
+        ref={forwardedRef}
+        fit={fit}
+        isStacked={isStacked}
+        {...rest}
+      />
     );
   }
 );
