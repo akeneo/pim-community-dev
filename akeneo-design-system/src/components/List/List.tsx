@@ -1,71 +1,157 @@
-import React, {ReactNode} from 'react';
+import React, {isValidElement, ReactElement, ReactNode} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
+import {Override} from '../../shared';
+import {Button, ButtonProps} from '../Button/Button';
+import {IconButton} from '../IconButton/IconButton';
 
 const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const Row = styled.div`
-  display: flex;
-  gap: 10px;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid ${getColor('grey', 60)};
-  }
-`;
-const CellContainer = styled.div<{width: 'auto' | number; rowTitle: boolean} & AkeneoThemedProps>`
+const CellContainer = styled.div<{width: 'auto' | number} & AkeneoThemedProps>`
   min-height: 54px;
   padding: 17px 0;
   box-sizing: border-box;
   font-size: ${getFontSize('default')};
-
-  ${({rowTitle}) =>
-    rowTitle
-      ? css`
-          color: ${getColor('purple', 100)};
-          font-style: italic;
-        `
-      : css`
-          color: ${getColor('grey', 140)};
-        `};
+  color: ${getColor('grey', 140)};
+  display: flex;
 
   ${({width}) =>
-    'auto' === width
-      ? css`
+  'auto' === width
+    ? css`
           flex: 1;
         `
-      : css`
+    : css`
           width: ${width}px;
         `};
 `;
 
-const CellAligner = styled.div`
-  display: flex;
-  align-items: center;
-  height: 40px;
+const TitleCell = styled(CellContainer)`
+  color: ${getColor('purple', 100)};
+  font-style: italic;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
-type CellProps = {
-  width: 'auto' | number;
-  rowTitle?: true | undefined;
-  extensible?: true | undefined;
-} & React.HTMLAttributes<HTMLDivElement>;
+const ActionCellContainer = styled(CellContainer)`
+  opacity: 0;
+  display: flex;
+  gap: 10px
+`;
 
-const Cell = ({title, width, rowTitle, extensible, children, ...rest}: CellProps) => {
+const RemoveCellContainer = styled(CellContainer)``;
+
+type RemoveCellProps = React.HTMLAttributes<HTMLDivElement>;
+const RemoveCell = ({children, ...rest}: RemoveCellProps) => {
+  return (
+    <RemoveCellContainer width='auto' {...rest}>{children}</RemoveCellContainer>
+  );
+};
+
+const RowActionContainer = styled.div`
+  display: flex;
+  margin-left: 30px;
+  gap: 10px;
+`;
+
+const RowContainer = styled.div<{multiline: boolean} & AkeneoThemedProps>`
+  display: flex;
+  &:not(:last-child) {
+    border-bottom: 1px solid ${getColor('grey', 60)};
+  }
+
+  &:hover ${ActionCellContainer} {
+    opacity: 1;
+  }
+  ${CellContainer} {
+    align-items: ${({multiline}) => multiline ? 'start' : 'center'};
+  }
+
+  ${TitleCell}, ${RemoveCellContainer} {
+    height: ${({multiline}) => multiline ? '74px' : 'auto'};
+    align-items: center;
+  }
+`;
+
+const RowContentContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+`;
+
+type RowProps = Override<React.HTMLAttributes<HTMLDivElement>, {
+  /**
+   * Define if line contain multiline content
+   */
+  multiline?: boolean;
+}>;
+
+const Row = ({children, multiline = false}: RowProps) => {
+  const actionCellChild: ReactElement[] = [];
+  const cells: ReactNode[] = [];
+
+  React.Children.forEach(children, child => {
+    if (isValidElement(child) && (child.type === RemoveCell || child.type === ActionCell)) {
+      actionCellChild.push(child);
+    } else {
+      cells.push(child);
+    }
+  });
+
+  return (
+   <RowContainer multiline={multiline}>
+     <RowContentContainer>{cells}</RowContentContainer>
+     {actionCellChild.length > 0 && (<RowActionContainer>{actionCellChild}</RowActionContainer>)}
+   </RowContainer>
+  );
+};
+
+
+type CellProps = Override<React.HTMLAttributes<HTMLDivElement>, {
+  /**
+   * The width of the cell.
+   */
+  width: 'auto' | number;
+}>;
+
+const Cell = ({title, width, children, ...rest}: CellProps) => {
   title = undefined === title && typeof children === 'string' ? children : title;
 
   return (
-    <CellContainer width={width} rowTitle={rowTitle === true} title={title} {...rest}>
-      {extensible ? children : <CellAligner>{children}</CellAligner>}
+    <CellContainer width={width} title={title} {...rest}>
+      {children}
     </CellContainer>
+  );
+};
+
+type ActionCellProps = React.HTMLAttributes<HTMLDivElement>;
+const ActionCell = ({children, ...rest}: ActionCellProps) => {
+  const decoratedChildren = React.Children.map(children, child => {
+    if (React.isValidElement<ButtonProps>(child) && (child.type === Button || child.type === IconButton)) {
+      return React.cloneElement(child, {
+        size: 'small',
+        ghost: true,
+        level: 'tertiary'
+      });
+    }
+
+    return child;
+  });
+
+  return (
+    <ActionCellContainer {...rest}>
+      {decoratedChildren}
+    </ActionCellContainer>
   );
 };
 
 type ListProps = {
   /**
-   * TODO.
+   * The rows of the list
    */
   children?: ReactNode;
 };
@@ -82,5 +168,8 @@ Cell.displayName = 'List.Cell';
 
 List.Row = Row;
 List.Cell = Cell;
+List.Title = TitleCell;
+List.ActionCell = ActionCell;
+List.RemoveCell = RemoveCell;
 
 export {List};
