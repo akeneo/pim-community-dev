@@ -87,6 +87,12 @@ type Theme = {
   scoringPalette: ScoringPalette;
   fontSize: FontSize;
   color: Color;
+  fontFamily: FontFamily;
+};
+
+type FontFamily = {
+  default: string;
+  monospace: string;
 };
 
 type Level = 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
@@ -109,6 +115,10 @@ const getFontSize = (fontSize: keyof FontSize): ((props: AkeneoThemedProps) => s
   theme,
 }: AkeneoThemedProps): string => theme.fontSize[fontSize];
 
+const getFontFamily = (fontFamilyType: keyof FontFamily): ((props: AkeneoThemedProps) => string) => ({
+  theme,
+}: AkeneoThemedProps): string => theme.fontFamily[fontFamilyType];
+
 const sanitizeScoring = (score: string | null): Score | 'n/a' | null => {
   if (typeof score === 'string' && ['a', 'b', 'c', 'd', 'e', 'n/a'].includes(score.toLowerCase())) {
     return score.toLowerCase() as Score | 'n/a';
@@ -117,5 +127,5 @@ const sanitizeScoring = (score: string | null): Score | 'n/a' | null => {
   return null;
 };
 export type AkeneoThemedProps<P = Record<string, unknown>> = ThemedStyledProps<P, Theme>;
-export type {Theme, FontSize, Color, Level, Score, Palette, ScoringPalette};
-export {getColor, getColorForLevel, getColorForScoring, getFontSize, sanitizeScoring};
+export type {Theme, FontSize, FontFamily, Color, Level, Score, Palette, ScoringPalette};
+export {getColor, getFontFamily, getColorForLevel, getColorForScoring, getFontSize, sanitizeScoring};

@@ -1,5 +1,5 @@
 import {Theme} from '../theme';
-import {color, fontSize, palette, scoringPalette} from '../common';
+import {color, fontSize, palette, fontFamily, scoringPalette} from '../common';
 
 const pimTheme: Theme = {
   name: 'PIM',
@@ -15,6 +15,7 @@ const pimTheme: Theme = {
   },
   fontSize,
   palette,
+  fontFamily,
   scoringPalette,
 };
 

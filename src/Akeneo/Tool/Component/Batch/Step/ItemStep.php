@@ -11,6 +11,7 @@ use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\NonBlockingWarningAggregatorInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
@@ -200,12 +201,21 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
     protected function process($readItem)
     {
         try {
-            return $this->processor->process($readItem);
+            $processedItem = $this->processor->process($readItem);
         } catch (InvalidItemException $e) {
             $this->handleStepExecutionWarning($this->stepExecution, $this->processor, $e);
 
             return null;
         }
+
+        if ($this->processor instanceof NonBlockingWarningAggregatorInterface) {
+            $nonBlockingWarnings = $this->processor->flushNonBlockingWarnings();
+            foreach ($nonBlockingWarnings as $nonBlockingWarning) {
+                $this->jobRepository->addWarning($nonBlockingWarning);
+            }
+        }
+
+        return $processedItem;
     }
 
     /**
