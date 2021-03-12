@@ -34,7 +34,7 @@ const ScoreCellContainer = styled.div<{score: Score} & ScoreCellProps & AkeneoTh
     `}
 `;
 
-const ScoreCellWrapper = styled.p<{score: Score} & ScoreCellProps & AkeneoThemedProps>`
+const ScoreCellWrapper = styled.div<{score: Score} & ScoreCellProps & AkeneoThemedProps>`
   font-size: ${getFontSize('default')};
   color: ${({score}) => getColorForScoring(score, getColorGradient(score))};
   margin: 0;
