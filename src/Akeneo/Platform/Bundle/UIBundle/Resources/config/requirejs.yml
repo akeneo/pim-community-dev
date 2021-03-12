@@ -214,6 +214,8 @@ config:
       defaultController:
         module: pim/controller/template
       controllers:
+        pim_dashboard_index:
+          module: pim/controller/dashboard
         pim_enrich_associationtype_edit:
           module: pim/controller/association-type
           aclResourceId: pim_enrich_associationtype_edit
@@ -529,6 +531,7 @@ config:
     pim/controller/mass-edit:              pimui/js/controller/mass-edit
     pim/controller/logout:                 pimui/js/controller/logout
     pim/controller/locales/index:          akeneopimstructure/js/controller/LocalesSettings
+    pim/controller/dashboard:              pimui/js/controller/dashboard.tsx
 
     jstree/jquery.jstree.tree_selector: pimui/js/jstree/jquery.jstree.tree_selector
     jstree/nested_switch:               pimui/js/jstree/jquery.jstree.nested_switch

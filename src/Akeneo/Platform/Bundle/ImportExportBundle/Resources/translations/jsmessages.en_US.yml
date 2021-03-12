@@ -153,7 +153,7 @@ pim_import_export:
             file_path: File path
     widget:
         last_operations:
-            empty: No operations found
+            empty: There is no operation to display for now.
             date: Date
             profile_name: Profile name
             details: Details
