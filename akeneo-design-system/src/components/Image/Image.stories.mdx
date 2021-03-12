@@ -54,3 +54,20 @@ Image allow to embed an image in a page
     }}
   </Story>
 </Canvas>
+
+## Variation on loading
+
+When the `src` prop is set to `null`, the Image will display itself as loading.
+
+<Canvas>
+  <Story name="Loading">
+    {args => {
+      return (
+        <>
+          <Image {...args} />
+          <Image {...args} src={null} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
