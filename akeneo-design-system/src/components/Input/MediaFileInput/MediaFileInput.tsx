@@ -67,8 +67,8 @@ const MediaFileLabel = styled.div`
   overflow: hidden;
 `;
 
-const MediaFilePlaceholder = styled(MediaFileLabel)`
-  color: ${getColor('grey', 100)};
+const MediaFilePlaceholder = styled(MediaFileLabel)<{invalid: boolean} & AkeneoThemedProps>`
+  color: ${({invalid}) => invalid ? getColor('red', 100) : getColor('grey', 100)};
 `;
 
 const ReadOnlyIcon = styled(LockIcon)`
@@ -164,6 +164,11 @@ type MediaFileInputProps = Override<
     closeTitle: string;
 
     /**
+     * Label displayed when the upload failed.
+     */
+    uploadErrorLabel: string;
+
+    /**
      * Defines if the input is compact or not.
      */
     size: 'default' | 'small';
@@ -194,6 +199,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
       fullscreenLabel,
       clearTitle,
       closeTitle,
+      uploadErrorLabel,
       invalid = false,
       readOnly = false,
       ...rest
@@ -204,6 +210,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
     const internalInputRef = useRef<HTMLInputElement>(null);
     const isCompact = size === 'small';
     const [isUploading, startUploading, stopUploading] = useBooleanState(false);
+    const [hasUploadFailed, uploadFailed, uploadSucceeded] = useBooleanState(false);
     const [progress, setProgress] = useState<number>(0);
     const [isFullScreenModalOpen, openFullScreenModal, closeFullScreenModal] = useBooleanState(false);
     const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
@@ -230,8 +237,10 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
 
       try {
         const uploadedFile = await uploader(file, setProgress);
+        uploadSucceeded();
         onChange(uploadedFile);
       } catch (error) {
+        uploadFailed();
         console.error(error);
       } finally {
         setProgress(0);
@@ -253,7 +262,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
         <MediaFileInputContainer
           ref={containerRef}
           tabIndex={readOnly ? -1 : 0}
-          invalid={invalid}
+          invalid={invalid || hasUploadFailed}
           readOnly={readOnly}
           isCompact={isCompact}
         >
@@ -295,7 +304,9 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
           ) : (
             <>
               <ImportIllustration size={isCompact ? 47 : 180} />
-              <MediaFilePlaceholder>{placeholder}</MediaFilePlaceholder>
+              <MediaFilePlaceholder invalid={hasUploadFailed}>
+                {hasUploadFailed ? uploadErrorLabel : placeholder}
+              </MediaFilePlaceholder>
             </>
           )}
 
