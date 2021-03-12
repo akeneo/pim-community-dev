@@ -383,6 +383,10 @@ class FamilyUpdater implements ObjectUpdaterInterface
     {
         if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($data)) {
             $family->setAttributeAsLabel($attribute);
+        }
+        if (null === $this->attributeRepository->findOneByIdentifier($data)) {
+            $attribute = $this->attributeRepository->getAttributeCodesByType(AttributeTypes::IDENTIFIER);
+            $family->setAttributeAsLabel($this->attributeRepository->findOneByIdentifier($attribute));
         } else {
             throw InvalidPropertyException::validEntityCodeExpected(
                 'attribute_as_label',

@@ -68,3 +68,11 @@ services:
             - '@event_dispatcher'
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.update_family_attribute_as_label:
+        class: Akeneo\Pim\Structure\Bundle\EventSubscriber\UpdateFamilyAttributeAsLabel
+        arguments:
+            - '@database_connection'
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: kernel.event_subscriber }
