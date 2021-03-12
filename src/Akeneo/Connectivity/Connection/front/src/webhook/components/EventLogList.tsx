@@ -1,64 +1,11 @@
-import { Button, GraphIllustration, Information, RefreshIcon } from 'akeneo-design-system';
-import React, { FC, useState, useRef } from 'react';
+import { GraphIllustration, Information } from 'akeneo-design-system';
+import React, { FC, useRef } from 'react';
 import { NoEventLogs } from './NoEventLogs';
-import {useInfiniteScroll} from '../../common/hooks/useInfiniteScroll';
-import {EventSubscriptionLog} from '../model/EventSubscriptionLog';
-import {useRoute} from '../../shared/router';
-
-type SearchEventSubscriptionLogsResponse = {
-    results: EventSubscriptionLog[];
-    total?: number;
-    searchAfter?: string;
-};
-
-type EventSubscriptionLogs = {
-    logs: EventSubscriptionLog[];
-    searchAfter?: string;
-    page: number,
-    //initialized: boolean;
-    total?: number;
-    //fetchNextLogs: () => void;
-    maxScrollReached: boolean;
-    endScrollReached: boolean;
-};
+import useInfiniteEventSubscriptionLogs from '../hooks/api/useInfiniteEventSubscriptionLogs';
 
 export const EventLogList: FC<{connectionCode: string}> = ({ connectionCode }) => {
-    const [eventSubscriptionLogs, setEventSubscriptionLogs] = useState<EventSubscriptionLogs>({
-        logs: [],
-        page: 0,
-        maxScrollReached: false,
-        endScrollReached: false,
-    });
-    const url = useRoute(
-        'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs',
-        {
-            connection_code: connectionCode,
-            search_after: eventSubscriptionLogs.searchAfter || null
-        }
-    );
-    const fetchNextResponse = async () => {
-        if (eventSubscriptionLogs.maxScrollReached || eventSubscriptionLogs.endScrollReached) {
-            return;
-        }
-        console.log(url);
-        const response = await fetch(url);
-        const nextLogs = await response.json();
-
-        setEventSubscriptionLogs(state => ({
-            ...state,
-            logs: [...state.logs, ...nextLogs.results],
-            total: nextLogs.total,
-            page: state.page + 1,
-            searchAfter: nextLogs.search_after,
-            endScrollReached: nextLogs.results.length === 0,
-            maxScrollReached: state.page >= 3,
-        }));
-    };
     const scrollContainer = useRef(null);
-
-    useInfiniteScroll<SearchEventSubscriptionLogsResponse>(fetchNextResponse, scrollContainer);
-
-    const {logs, page, total} = eventSubscriptionLogs;
+    const { logs, page, total } = useInfiniteEventSubscriptionLogs(connectionCode, scrollContainer);
 
     if (page === 0) {
         return null;

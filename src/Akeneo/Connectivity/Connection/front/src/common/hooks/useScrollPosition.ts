@@ -1,20 +1,45 @@
-import {RefObject, useEffect, useLayoutEffect, useState} from 'react';
+import { DependencyList, RefObject, useCallback, useEffect, useLayoutEffect } from 'react';
+import { debounceCallback } from '@akeneo-pim-community/shared';
+import { findScrollParent } from './useScrollParent';
 
-const useScrollPosition = (element: RefObject<HTMLElement>): DOMRect|null => {
-    const [position, setPosition] = useState<DOMRect|null>(null);
+export type ScrollPosition = {
+    scrollTop: number;
+    clientHeight: number;
+    scrollHeight: number;
+}
+
+const useScrollPosition = (
+    ref: RefObject<HTMLElement>,
+    callback: (position: ScrollPosition) => void,
+    deps: DependencyList = [],
+    delay: number = 300
+): void => {
+    const handleScroll = useCallback(() => {
+        if (null === ref.current) {
+            return;
+        }
+
+        const scrollParent = findScrollParent(ref.current);
+        const { scrollTop, clientHeight, scrollHeight } = scrollParent;
+
+        callback({
+            scrollTop,
+            clientHeight,
+            scrollHeight,
+        });
+    }, [...deps, ref, callback]);
+
+    const debounceHandleScroll = debounceCallback(handleScroll, delay);
+
+    useEffect(() => {
+        debounceHandleScroll();
+    }, deps);
 
     useLayoutEffect(() => {
-        const handleScroll = () => {
-            const position = element.current?.getBoundingClientRect();
-            setPosition(position ? position : null);
-        };
+        window.addEventListener('scroll', debounceHandleScroll, true);
 
-        window.addEventListener('scroll', handleScroll, true);
-
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [element]);
-
-    return position;
+        return () => window.removeEventListener('scroll', debounceHandleScroll);
+    }, [debounceHandleScroll]);
 };
 
 export default useScrollPosition;
