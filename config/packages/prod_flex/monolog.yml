@@ -1,13 +1,15 @@
 monolog:
-    handlers:
-        main:
-            type:         fingers_crossed
-            action_level: warning
-            handler:      nested
-            buffer_size:  1000
-        nested:
-            type: stream
-            path: '%kernel.logs_dir%/%kernel.environment%.log'
-            level: info
-        console:
-            type:  console
+  handlers:
+    authentication:
+      type: service
+      id: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\DbTableLogHandler'
+      channels: ['security']
+    main:
+      type: stream
+      level: '%env(LOGGING_LEVEL)%'
+      path: '%kernel.logs_dir%/%kernel.environment%.log'
+      channels: ['!event_api', '!business_event']
+    console:
+      type:  console
+      channels: ['!event', '!doctrine', '!event_api', '!business_event']
+

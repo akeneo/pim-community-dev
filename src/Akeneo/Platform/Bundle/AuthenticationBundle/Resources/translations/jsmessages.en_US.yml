@@ -35,7 +35,7 @@ authentication:
                     label: Logout URL
                 certificate:
                     label: Certificate
-                    expiration_warning: This certificate expires on {{date}}.
+                    expiration_warning: This certificate expires on {{ date }}.
                 private_key:
                     label: Private key
                 metadata_url:
@@ -44,3 +44,4 @@ authentication:
                 acs_url:
                     label: ACS URL
                     tooltip_label: Copy URL
+                copy: Copy

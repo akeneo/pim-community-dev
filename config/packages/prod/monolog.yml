@@ -1,13 +1,18 @@
 monolog:
-    handlers:
-        main:
-            type:         fingers_crossed
-            action_level: info
-            handler:      nested
-            buffer_size:  1000
-        nested:
-            type:  stream
-            path:  "php://stderr"
-            formatter: 'monolog.formatter.json'
-            channels: ['!security']
-            bubble: false
+  handlers:
+    authentication:
+      type:       service
+      id:         'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\DbTableLogHandler'
+      channels:   ['security']
+    main:
+      type:       stream
+      level:      '%env(LOGGING_LEVEL)%'
+      path:       'php://stderr'
+      formatter:  'monolog.formatter.json'
+      channels:   ['!event_api', '!business_event']
+    event_and_business_api:
+      type: stream
+      path: 'php://stderr'
+      level: info
+      channels: ['event_api','business_event']
+      formatter: 'monolog.formatter.json'
