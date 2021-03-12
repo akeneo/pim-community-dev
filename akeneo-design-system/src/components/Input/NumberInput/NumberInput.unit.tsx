@@ -1,6 +1,7 @@
 import React from 'react';
 import {NumberInput} from './NumberInput';
 import {fireEvent, render, screen} from '../../../storybook/test-util';
+import userEvent from '@testing-library/user-event';
 
 test('it renders and handle changes', () => {
   const handleChange = jest.fn();
@@ -38,6 +39,23 @@ test('it renders and handle changes on up/down buttons', () => {
   const decrement = screen.getByTestId('decrement-number-input');
   fireEvent.click(decrement);
   expect(handleChange).toHaveBeenCalledWith('12');
+});
+
+test('it handles on submit callback', () => {
+  const handleChange = jest.fn();
+  const handleSubmit = jest.fn();
+
+  render(
+    <>
+      <label htmlFor="myInput">My label</label>
+      <NumberInput id="myInput" value="12" onChange={handleChange} onSubmit={handleSubmit} />
+    </>
+  );
+
+  const input = screen.getByLabelText('My label');
+  userEvent.type(input, '{enter}');
+  expect(handleChange).not.toHaveBeenCalled();
+  expect(handleSubmit).toHaveBeenCalled();
 });
 
 test('it renders and does not call onChange if readOnly', () => {

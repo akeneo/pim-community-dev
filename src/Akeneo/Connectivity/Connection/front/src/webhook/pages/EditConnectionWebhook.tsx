@@ -15,7 +15,7 @@ import {EventSubscriptionHelper} from '../components/EventSubscriptionHelper';
 import {useUpdateWebhook} from '../hooks/api/use-update-webhook';
 import {useFetchEventSubscriptionFormData} from '../hooks/api/use-fetch-event-subscription-form-data';
 import {Webhook} from '../model/Webhook';
-import {Breadcrumb, SectionTitle} from 'akeneo-design-system';
+import {Breadcrumb, SectionTitle, Button} from 'akeneo-design-system';
 import {useFetchConnection} from '../hooks/api/use-fetch-connection';
 
 export type FormInput = {
@@ -84,8 +84,9 @@ export const EditConnectionWebhook: FC = () => {
                         null === connection.image ? defaultImageUrl : generateMediaUrl(connection.image, 'thumbnail')
                     }
                     buttons={[
+                        <DownloadLogsButton key={0} webhook={eventSubscription} />,
                         <SaveButton
-                            key={0}
+                            key={1}
                             webhook={eventSubscription}
                             onSaveSuccess={fetchEventSubscriptionFormData}
                         />,
@@ -149,6 +150,21 @@ const SaveButton: FC<SaveButtonProps> = ({webhook, onSaveSuccess}) => {
         >
             <Translate id='pim_common.save' />
         </ApplyButton>
+    );
+};
+
+type DownloadLogsButtonProps = {
+    webhook: Webhook;
+};
+
+const DownloadLogsButton: FC<DownloadLogsButtonProps> = ({webhook}) => {
+    const url = useRoute('akeneo_connectivity_connection_events_api_debug_rest_download_event_subscription_logs', {
+        connection_code: webhook.connectionCode,
+    });
+    return (
+        <Button disabled={!webhook.enabled} ghost href={url} level='tertiary' size='default' target='_blank'>
+            <Translate id='akeneo_connectivity.connection.webhook.download_logs' />
+        </Button>
     );
 };
 

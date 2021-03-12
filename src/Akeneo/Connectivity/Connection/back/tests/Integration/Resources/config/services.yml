@@ -1,0 +1,3 @@
+services:
+    akeneo_connectivity.connection.clock:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock

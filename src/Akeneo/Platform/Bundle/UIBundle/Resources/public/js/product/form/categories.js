@@ -98,39 +98,42 @@ define([
      * {@inheritdoc}
      */
     render: function () {
-      this.loadTrees().done(
-        function (trees) {
-          this.trees = trees;
+      if (null === this.treeAssociate || 0 === this.trees.length) {
+        this.loadTrees().done(
+          function (trees) {
+            this.trees = trees;
 
-          if (undefined === this.state.toJSON().currentTree) {
-            this.state.set('currentTree', _.first(this.trees).code);
-            this.state.set('currentTreeId', _.first(this.trees).id);
-          }
+            if (undefined === this.state.toJSON().currentTree) {
+              this.state.set('currentTree', _.first(this.trees).code);
+              this.state.set('currentTreeId', _.first(this.trees).id);
+            }
 
-          this.$el.html(
-            this.template({
-              product: this.getFormData(),
-              locale: UserContext.get('catalogLocale'),
-              state: this.state.toJSON(),
-              trees: this.trees,
-            })
-          );
+            this.$el.html(
+              this.template({
+                product: this.getFormData(),
+                locale: UserContext.get('catalogLocale'),
+                state: this.state.toJSON(),
+                trees: this.trees,
+              })
+            );
 
-          const lockedCategoryIds = this.getFormData().meta.ascendant_category_ids;
+            const lockedCategoryIds = this.getFormData().meta.ascendant_category_ids;
 
-          this.treeAssociate = new TreeAssociate(
-            {
-              list_categories: this.config.itemCategoryListRoute,
-              children: 'pim_enrich_categorytree_children',
-            },
-            this.isReadOnly(),
-            lockedCategoryIds
-          );
+            this.treeAssociate = new TreeAssociate(
+              {
+                list_categories: this.config.itemCategoryListRoute,
+                children: 'pim_enrich_categorytree_children',
+              },
+              this.isReadOnly(),
+              lockedCategoryIds
+            );
 
-          this.initCategoryCount();
-          this.renderCategorySwitcher();
-        }.bind(this)
-      );
+            this.initCategoryCount();
+            this.renderCategorySwitcher();
+          }.bind(this)
+        );
+      }
+      this.delegateEvents();
 
       return this;
     },
