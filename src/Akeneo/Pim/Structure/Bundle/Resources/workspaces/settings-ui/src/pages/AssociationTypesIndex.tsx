@@ -103,8 +103,6 @@ const AssociationTypesIndex = () => {
     DatagridState.set('association-type-grid', {searchString, sortDirection, page});
   }, [searchString, sortDirection, page]);
 
-  console.log('render');
-
   return (
     <>
       <PageHeader>

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {AssociationTypesIllustration} from 'akeneo-design-system';
+import {AssociationTypesIllustration, Link} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
@@ -10,16 +10,20 @@ const Container = styled.div`
 
 const Title = styled.div`
   font-size: ${({theme}) => theme.fontSize.title};
-  color: ${({theme}) => theme.color.grey140};
   margin-top: 5px;
 `;
 
-// Fixme: Should be a link
 const Hint = styled.div`
   font-size: ${({theme}) => theme.fontSize.bigger};
   color: ${({theme}) => theme.color.grey120};
   margin-top: 15px;
 `;
+
+const createAssociationType = (event: any) => {
+  event.preventDefault();
+  event.stopPropagation();
+  document.getElementById('create-button-extension').click();
+};
 
 const NoAssociationTypes = () => {
   const translate = useTranslate();
@@ -28,7 +32,11 @@ const NoAssociationTypes = () => {
     <Container>
       <AssociationTypesIllustration />
       <Title>{translate('pim_enrich.entity.association_type.no_association_types.title')}</Title>
-      <Hint>{translate('pim_enrich.entity.association_type.no_association_types.hint')}</Hint>
+      <Hint>
+        <Link onClick={createAssociationType}>
+          {translate('pim_enrich.entity.association_type.no_association_types.hint')}
+        </Link>
+      </Hint>
     </Container>
   );
 };
