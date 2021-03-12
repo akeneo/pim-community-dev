@@ -5,7 +5,7 @@ namespace Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler;
 
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
-use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -49,7 +49,7 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
         $this->consumer = $consumer;
     }
 
-    public function __invoke(JobExecutionMessage $jobExecutionMessage)
+    public function __invoke(JobExecutionMessageInterface $jobExecutionMessage)
     {
         if (!$this->consumer) {
             $this->consumer = Uuid::uuid4();
@@ -86,7 +86,7 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
         $this->logger->notice(sprintf('Job execution "%s" is finished.', $jobExecutionMessage->getJobExecutionId()));
     }
 
-    private function executeProcess(Process $process, JobExecutionMessage $jobExecutionMessage)
+    private function executeProcess(Process $process, JobExecutionMessageInterface $jobExecutionMessage)
     {
         $this->executionManager->updateHealthCheck($jobExecutionMessage);
         $process->start();
@@ -113,7 +113,7 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
      * Return all the arguments of the command to execute.
      * Options are considered as arguments.
      */
-    private function extractArgumentsFromMessage(JobExecutionMessage $jobExecutionMessage): array
+    private function extractArgumentsFromMessage(JobExecutionMessageInterface $jobExecutionMessage): array
     {
         $jobInstanceCode = $this->executionMessageRepository->getJobInstanceCode($jobExecutionMessage);
 
