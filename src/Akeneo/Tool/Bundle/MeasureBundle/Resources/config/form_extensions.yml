@@ -1,9 +1,9 @@
 extensions:
     pim-menu-measurements-settings:
         module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
+        parent: pim-menu-catalog-settings-block
         aclResourceId: akeneo_measurements_manage_settings
-        position: 175
+        position: 40
         config:
             title: pim_menu.item.measurements
             to: akeneo_measurements_settings_index
