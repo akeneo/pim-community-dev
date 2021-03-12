@@ -30,7 +30,7 @@ class SearchEventSubscriptionDebugLogsQuerySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(SearchEventSubscriptionDebugLogsQuery::class);
     }
 
-    public function it_throws_an_exception_when_given_filter_level_are_invalid(): void
+    public function it_throws_an_exception_when_given_level_filter_is_invalid(): void
     {
         $this
             ->shouldThrow(InvalidOptionsException::class)
@@ -38,6 +38,28 @@ class SearchEventSubscriptionDebugLogsQuerySpec extends ObjectBehavior
                 'erp',
                 null,
                 ['levels' => 'red']
+            ]);
+    }
+
+    public function it_throws_an_exception_when_given_timestamp_from_filter_is_invalid(): void
+    {
+        $this
+            ->shouldThrow(InvalidOptionsException::class)
+            ->during('execute', [
+                'erp',
+                null,
+                ['timestamp_from' => 'not_a_correct_timestamp_from']
+            ]);
+    }
+
+    public function it_throws_an_exception_when_given_timestamp_to_filter_is_invalid(): void
+    {
+        $this
+            ->shouldThrow(InvalidOptionsException::class)
+            ->during('execute', [
+                'erp',
+                null,
+                ['timestamp_to' => 'not_a_correct_timestamp_to']
             ]);
     }
 }

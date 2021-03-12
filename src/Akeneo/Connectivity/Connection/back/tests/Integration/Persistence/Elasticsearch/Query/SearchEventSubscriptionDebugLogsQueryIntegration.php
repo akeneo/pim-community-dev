@@ -264,7 +264,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         // The first page returned 25 logs, and we want to be sure the second page returns the 5 next logs
         // and is not returning logs that were added between the requests.
         Assert::assertCount(5, $secondPage['results']);
-        foreach($secondPage['results'] as $log) {
+        foreach ($secondPage['results'] as $log) {
             Assert::assertEquals($firstTimestamp, $log['timestamp']);
         }
     }
@@ -319,15 +319,124 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         $result = $this->query->execute('a_connection_code', null, $filters);
 
-        usort($result['results'], function($a, $b) {
-            return strcmp($a['level'], $b['level']);
-        });
+        usort(
+            $result['results'],
+            function ($a, $b) {
+                return strcmp($a['level'], $b['level']);
+            }
+        );
 
         Assert::assertEquals(3, $result['total']);
         Assert::assertCount(3, $result['results']);
         Assert::assertEquals(EventsApiDebugLogLevels::INFO, $result['results'][0]['level']);
         Assert::assertEquals(EventsApiDebugLogLevels::NOTICE, $result['results'][1]['level']);
         Assert::assertEquals(EventsApiDebugLogLevels::NOTICE, $result['results'][2]['level']);
+    }
+
+    public function test_it_filters_on_log_timestamp_from()
+    {
+        $timestampFrom = $this->clock->now()->getTimestamp();
+
+        $this->insertLogs(
+            [
+                [
+                    'timestamp' => $timestampFrom + 20,
+                    'level' => EventsApiDebugLogLevels::WARNING,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestampFrom,
+                    'level' => EventsApiDebugLogLevels::INFO,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'whatever',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestampFrom - 20,
+                    'level' => EventsApiDebugLogLevels::ERROR,
+                    'message' => 'Foo bar',
+                    'connection_code' => null,
+                    'context' => [],
+                ],
+            ]
+        );
+
+        $filters = [
+            'timestamp_from' => $timestampFrom,
+        ];
+
+        $result = $this->query->execute('a_connection_code', null, $filters);
+
+        usort(
+            $result['results'],
+            function ($a, $b) {
+                if ($a['timestamp'] === $b['timestamp']) {
+                    return 0;
+                }
+
+                return ($a['timestamp'] < $b['timestamp']) ? -1 : 1;
+            }
+        );
+
+        Assert::assertEquals(2, $result['total']);
+        Assert::assertCount(2, $result['results']);
+        Assert::assertEquals($timestampFrom, $result['results'][0]['timestamp']);
+        Assert::assertEquals($timestampFrom + 20, $result['results'][1]['timestamp']);
+    }
+
+    public function test_it_filters_on_log_timestamp_to()
+    {
+        $timestampTo = $this->clock->now()->getTimestamp();
+
+        $this->insertLogs(
+            [
+                [
+                    'timestamp' => $timestampTo + 20,
+                    'level' => EventsApiDebugLogLevels::WARNING,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestampTo,
+                    'level' => EventsApiDebugLogLevels::INFO,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'whatever',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestampTo - 20,
+                    'level' => EventsApiDebugLogLevels::ERROR,
+                    'message' => 'Foo bar',
+                    'connection_code' => null,
+                    'context' => [],
+                ],
+            ]
+        );
+
+        $filters = [
+            'timestamp_to' => $timestampTo,
+        ];
+
+        $result = $this->query->execute('a_connection_code', null, $filters);
+
+        usort(
+            $result['results'],
+            function ($a, $b) {
+                if ($a['timestamp'] === $b['timestamp']) {
+                    return 0;
+                }
+
+                return ($a['timestamp'] < $b['timestamp']) ? -1 : 1;
+            }
+        );
+
+        Assert::assertEquals(2, $result['total']);
+        Assert::assertCount(2, $result['results']);
+        Assert::assertEquals($timestampTo -20, $result['results'][0]['timestamp']);
+        Assert::assertEquals($timestampTo, $result['results'][1]['timestamp']);
     }
 
     private function generateLogs(callable $generator, int $number): void
