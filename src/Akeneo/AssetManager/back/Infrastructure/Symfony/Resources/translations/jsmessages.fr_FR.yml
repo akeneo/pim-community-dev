@@ -133,10 +133,16 @@ pim_asset_manager:
       transformations: Transformations
       product_link_rules: Règles de rattachement aux produits
     transformations:
+      help:
+        description: Vous pouvez définir ici jusqu'à 10 transformations par famille de ressources.
+        link: Si vous souhaitez mieux comprendre comment fonctionnent les transformations des ressources, cliquez ici.
       subsection: 'Propriétés de la transformation'
     product_link_rules:
       naming_convention_subsection: 'Propriétés de la convention de nommage'
       product_link_rules_subsection: 'Propriétés des règles de rattachement aux produits'
+      help:
+        description: 'Vous pouvez définir ici jusqu''à 2 règles de rattachement automatique aux produits pour chaque famille de ressources.'
+        link: 'Si vous souhaitez en savoir plus sur les règles de rattachement automatique aux produits, cliquez ici.'
       execute_rules:
         confirm_title: Confirmer l’exécution
         confirm_content: Êtes-vous certain de vouloir exécuter toutes les règles ? (cela peut prendre un certain temps)
@@ -147,6 +153,10 @@ pim_asset_manager:
         confirm_content: Êtes-vous certain de vouloir exécuter la convention de nommage ? (cela peut prendre un certain temps)
         execute_naming_convention: Exécuter la convention de nommage
         cancel: Annuler
+    naming_convention:
+      help:
+        description: Vous pouvez définir ici les propriétés de la convention de nommage.
+        link: Apprenez tout ce que vous devez savoir sur leur format.
     properties:
       title: Propriétés de la famille de ressources
       identifier: Code
@@ -238,6 +248,7 @@ pim_asset_manager:
       code:
         pattern: 'Ce champ ne peut être composé que de lettres, de chiffres et d''underscores.'
         should_be_unique: 'Ce code existe déjà pour une autre ressource.'
+      server_error: 'Une erreur est survenue lors de la création de la ressource'
     no_data:
       title: Il n'y a aucune ressource pour {{ entityLabel }}.
       subtitle: Cliquez sur le bouton "Créer" pour ajouter la première ressource
@@ -332,6 +343,7 @@ pim_asset_manager:
     delete_all:
       confirm: Êtes-vous sûr de vouloir supprimer toutes les ressources "{{ entityIdentifier }}" ? Si elles sont liées à des produits, les liens vers les produits seront supprimés.
     mass_delete:
+      confirm: '[0,1]Êtes-vous sûr(e) de vouloir supprimer la sélection de {{ assetCount }} ressources ?|]1,Inf]Êtes-vous sûr(e) de vouloir supprimer les {{ assetCount }} ressources sélectionnées ?'
       extra_information: Si ces ressources sont liées à des produits, les liens seront également supprimés.
       confirm_label: 'Merci de saisir le code de la famille de ressources suivant : "{{ assetFamilyIdentifier }}"'
       title: Ressources

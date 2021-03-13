@@ -349,3 +349,14 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: Import des enregistrements d'entité référentielle en XLSX
     import.label: Import des enregistrements
+pim_analytics:
+  info_type:
+    nb_reference_entities: Nombre d'entités référentielles
+    max_number_of_records_per_reference_entity: Nombre maximum d'enregistrements par entité référentielle
+    average_number_of_values_per_records: Nombre moyen de valeurs par enregistrement sur toutes les entités référentielles
+    average_number_of_records_per_reference_entity: Nombre moyen d'enregistrements par entité référentielle
+    max_number_of_attributes_per_reference_entity: Nombre maximum d'attributs par entité référentielle
+    average_number_of_attributes_per_reference_entity: Nombre moyen d'attributs par entité référentielle
+    average_percentage_localizable_only_attributes: Pourcentage moyen d’attributs uniquement localisables par entité référentielle
+    average_percentage_scopable_only_attributes: Pourcentage moyen d'attributs uniquement scopables par entité référentielle
+    average_percentage_scopable_and_localizable_attributes: Pourcentage moyen d’attributs scopables et localisables par entité de référence
