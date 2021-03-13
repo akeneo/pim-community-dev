@@ -99,6 +99,9 @@ pim_import_export:
           with_header:
             title: Met koptekst
             help: Of de kolomnaam geprint moet worden
+          with_media:
+            title: Media exporteren
+            help: Wel of niet media exporteren
           lines_per_file:
             title: Aantal regels per bestand
             help: Het maximum aantal regels per bestand definiëren
@@ -126,6 +129,9 @@ pim_import_export:
           real_time_versioning:
             title: Real-time geschiedenis bijwerken
             help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren
+          convert_variant_to_simple:
+            title: Variantproducten omzetten naar eenvoudige producten
+            help: Probeer variantproducten om te zetten in eenvoudige producten wanneer de kolom "modelproduct" leeg is. Indien ingesteld op "Nee", wordt een lege kolom "modelproducten" genegeerd
           family_variant_column:
             title: Familie variant kolom
           with_label:
@@ -155,6 +161,7 @@ pim_import_export:
         compute_family_variant_structure_changes: Wijzigingen van de familie variant structuur berekenen
         compute_completeness_of_products_family: Berekenen van de volledigheid van de producten-familie
         mass_delete: Groepsgewijs producten verwijderen
+        clean_removed_attribute_job: Verwijderde attribuutwaarden opruimen
       header.view_all: Alles weergeven
   batch_status:
     1: Voltooid
