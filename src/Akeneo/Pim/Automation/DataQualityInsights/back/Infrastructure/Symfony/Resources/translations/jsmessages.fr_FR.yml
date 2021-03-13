@@ -87,6 +87,7 @@ akeneo_data_quality_insights:
       spelling_quality: Qualité orthographique
   dictionary:
     helper:
+      content: Le dictionnaire vous permet d'enregistrer des mots qui seront ignorés par Data Quality Insight.
       link_label: Plus d'informations sur notre centre d'aide.
     words: Mots
     searchPlaceholder: Recherche
@@ -96,13 +97,16 @@ akeneo_data_quality_insights:
       subtitle: Veuillez réessayer avec de nouveaux critères de recherche.
     no_data:
       title: Aucun mot pour l'instant
+      subtitle: Ajoutez le premier ci-dessus, cliquez sur "Ajouter" ou appuyez sur Entrée.
 pimee_enrich.entity.locale:
   grid:
     columns:
       dictionary_words_count:
         title: Nombre de mots
+        label: "]-Inf, 1]{{ count }} mot|]1, Inf[{{ count }} mots"
         not_available: Non disponible
     add_words: Ajouter mots
+    items_selected: "{1}1 élément sélectionné|[2, Inf[{{ count }} éléments sélectionnés"
     modal:
       title: Ajouter des mots à {{ count }} locales
       subtitle: Saisissez les mots ci-dessous. Ils seront ajoutés aux dictionnaires de toutes les locales sélectionnées.

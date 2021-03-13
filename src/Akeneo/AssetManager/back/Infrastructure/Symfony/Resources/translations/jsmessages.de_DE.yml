@@ -248,6 +248,7 @@ pim_asset_manager:
       code:
         pattern: 'Dieses Feld darf nur Buchstaben, Zahlen und Unterstriche enthalten.'
         should_be_unique: 'Dieser Code existiert bereits für ein anderes Asset.'
+      server_error: 'Beim Erstellen des Assets ist ein Fehler aufgetreten'
     no_data:
       title: Es gibt kein Asset für {{ entityLabel }}
       subtitle: Klicken Sie auf den Button "Neu hinzufügen", um das erste Asset zu erstellen

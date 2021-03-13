@@ -33,6 +33,7 @@ authentication:
           label: Abmelde-URL
         certificate:
           label: Zertifikat
+          expiration_warning: Dieses Zertifikat läuft am {{ date }} ab.
         private_key:
           label: Privater Schlüssel
         metadata_url:
@@ -41,3 +42,4 @@ authentication:
         acs_url:
           label: ACS URL
           tooltip_label: URL kopieren
+        copy: Kopieren
