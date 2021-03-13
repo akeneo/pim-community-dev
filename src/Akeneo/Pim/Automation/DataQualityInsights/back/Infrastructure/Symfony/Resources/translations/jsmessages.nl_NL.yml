@@ -46,6 +46,10 @@ akeneo_data_quality_insights:
         recommendation: Vereiste attributen met ontbrekende waarden
       completeness_of_non_required_attributes:
         recommendation: Niet-vereiste attributen met ontbrekende waarden
+      consistency_textarea_uppercase_words:
+        recommendation: Attributen met afwijkend hoofdlettergebruik
+      consistency_textarea_lowercase_words:
+        recommendation: Attributen met afwijkend kleine-lettergebruik
       consistency_spelling:
         recommendation: Attributen met spellingsproblemen
     axis:
