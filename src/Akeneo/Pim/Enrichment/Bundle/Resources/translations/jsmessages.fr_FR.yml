@@ -284,11 +284,10 @@ pim_enrich.export.product:
         NOT BETWEEN: Pas entre
     quality-score:
       title: Score de qualité
-      operator_choice_title: Filtrer sur le score de qualité
       empty_selection: Aucune condition sur le score de qualité
       operators:
-        IN AT LEAST ONE LOCALE: Appliquer les scores sélectionnés sur au moins 1 locale
-        IN ALL LOCALES: Appliquer les scores sélectionnés sur toutes les locales
+        IN AT LEAST ONE LOCALE: Au moins une locale
+        IN ALL LOCALES: Toutes les locales sélectionnées
   global_settings:
     title: Paramètres généraux
 pim_enrich.mass_edit.product:

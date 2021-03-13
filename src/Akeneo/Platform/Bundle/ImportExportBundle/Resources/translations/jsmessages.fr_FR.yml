@@ -48,6 +48,7 @@ pim_import_export:
   form:
     job_execution:
       title.details: Détails d'exécution
+      refreshing: Actualisation des détails d'exécution
       refreshBtn.title: Mettre à jour
       button:
         show_profile.title: Afficher le profil
