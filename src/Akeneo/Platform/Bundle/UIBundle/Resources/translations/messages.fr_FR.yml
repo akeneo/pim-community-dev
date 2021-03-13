@@ -547,3 +547,6 @@ job_tracker:
     started_at: Démarré à
 pim_login:
   logo_title: Akeneo PIM
+  footer:
+    powered: Powered by
+    powered_image_title: logo Akeneo
