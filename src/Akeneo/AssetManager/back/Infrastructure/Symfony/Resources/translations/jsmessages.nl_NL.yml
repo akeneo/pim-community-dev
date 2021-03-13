@@ -8,6 +8,7 @@ pim_asset_manager:
   asset_collection:
     upload_asset: 'Upload asset'
     helper:
+      title: 'Welkom bij de gloednieuwe module voor productassetbeheer!'
       text: 'Er is geen asset collectie voor deze familie. Om deze functionaliteit te gebruiken hoef je alleen maar een asset collectie attribuut toe te voegen. '
     no_asset:
       title: 'Sorry, er is geen asset voor dit product.'
@@ -49,8 +50,21 @@ pim_asset_manager:
         unknown_extra_field: 'De eigenschap {{ {{ field }} }} werd niet verwacht.'
       naming_convention:
         property_should_exist: 'De eigenschap "{{ %property% }}" bestaat niet voor deze asset familie'
+        not_main_media_attribute_code: 'De eigenschap moet overeenkomen met de code van het attribuut dat is gedefinieerd als de belangrijkste media'
       rule_template:
+        limit_reached: 'Je hebt de limiet bereikt van {{ %limit% }} product link regels voor de "{{ %asset_family_identifier% }}" asset familie.'
+        product_selection_cannot_be_empty: 'U moet ten minste één product selectie opgeven in de product link regel'
+        product_assignment_cannot_be_empty: 'U moet ten minste één product toewijzen in de product link regel'
         extrapolated_attribute_should_exist: 'Het attribuut "{{ %attribute_code% }}" bestaat niet voor deze asset familie'
+        extrapolated_attribute_type_should_be_supported: 'Het attribuut "{{ %attribute_code% }}" van het type "{{ %attribute_type% }}" wordt niet ondersteund, alleen de volgende attribuuttypes worden ondersteund voor dit veld: {{ %supported_attribute_type%}}'
+        channel_should_exist: 'Het kanaal "{{ %channel_code% }}" bestaat niet'
+        locale_should_exist: 'De landinstelling "{{ %locale_code% }}" is niet geactiveerd of bestaat niet'
+        extrapolated_attribute_type_should_not_have_one_value_per_channel: 'Het attribuut "{{ %attribute_code% }}" kan niet worden gebruikt voor extrapolatie omdat het één waarde per kanaal heeft'
+        extrapolated_attribute_type_should_not_have_one_value_per_locale: 'Het attribuut "{{ %attribute_code% }}" kan niet worden gebruikt voor extrapolatie omdat het één waarde per taal heeft'
+        assignment_mode_not_supported: 'Ongeldige toewijzingsmodus "{{ %assignment_mode% }}" gevonden in een product link regel, verwacht te zijn "vervangen" of "toevoegen"'
+        channel_not_supported_for_field: 'Je kunt geen kanaal opgeven voor het veld "{{ %product_field%}}"'
+        locale_not_supported_for_field: 'Je kunt geen landinstelling opgeven voor het veld "{{ %product_field%}}"'
+        assignmement_attribute_does_not_support_this_asset_family: 'Het productattribuut "{{ %product_attribute_code% }}" kan geen assets van de asset familie "{{ %asset_family_identifier% }}" bevatten'
         assignmement_attribute_does_not_exist: 'productattribuut "{{ %product_attribute_code% }}" bestaat niet'
         assignmement_attribute_is_not_an_asset_collection: 'productattribuut "{{ %product_attribute_code% }}" is geen attribuut van het type asset collectie'
     button:
@@ -85,6 +99,8 @@ pim_asset_manager:
         link: 'Als u meer wilt weten over de Product Link Regels functie, klik hier'
       execute_rules:
         confirm_title: Uitvoering bevestigen
+        confirm_content: Weet u zeker dat u alle regels wilt uitvoeren? (dit kan lang duren)
+        execute_rules: Voer regels uit
         cancel: Annuleren
     properties:
       title: Eigenschappen assetfamilie
@@ -124,6 +140,8 @@ pim_asset_manager:
     delete:
       message: Weet u zeker dat u de asset familie "{{ assetFamilyLabel }}" wilt verwijderen?
       title: Attribuut
+    edit:
+      discard_changes: Als u de pagina verlaat, verliest u wijzigingen in de asset familie "{{ assetFamilyLabel }}".
     notification:
       save:
         success: Asset familie is succesvol bijgewerkt.
@@ -137,11 +155,19 @@ pim_asset_manager:
       compute_transformations:
         success: Transformaties zijn gestart. Zodra deze taak is voltooid, ziet u de nieuwe variaties in uw assets.
         fail: Er is een fout opgetreden bij het uitvoeren van de transformaties
+      execute_product_link_rules:
+        success: Product link regels zijn gestart
+        fail: Er is een fout opgetreden bij het starten van de product link regels
     helper:
+      title: Welkom bij de Asset Manager!
+      no_asset:
+        text: Er is geen asset in de familie {{ family }} . Klik op "Maak" en kies of je een lege asset of massa upload assets wilt maken.
       no_asset_family:
+        text: Een bibliotheek die je assets verzamelt (afbeeldingen, video's, documenten...), gefilterd door asset families. Maak je eerste asset familie aan, stel haar attributen in en upload assets!
         link: Voor meer details nodigen we je uit om dit artikel te bekijken.
     no_data:
       no_asset:
+        title: Sorry, er is geen asset!
         link: Klik hier om een asset toe te voegen
       no_asset_family:
         title: Sorry, er is geen asset familie!
@@ -163,6 +189,7 @@ pim_asset_manager:
         pattern: 'Dit veld mag alleen letters, cijfers en een laag streepje bevatten.'
         should_be_unique: 'Deze code bestaat al voor een andere asset.'
     no_data:
+      title: Er is geen asset voor {{ entityLabel }}
       subtitle: Klik op de knop "Nieuwe toevoegen" om de eerste asset te maken
     no_result:
       title: Er is geen resultaat voor uw zoekopdracht
@@ -189,10 +216,15 @@ pim_asset_manager:
         subtitle: 'Om te beginnen met het koppelen van producten aan deze asset familie kunt u een nieuwe maken: '
         link: Productattribuut aanmaken
       not_enough_items:
+        title: U kunt slechts {{ productCount }}/{{ totalCount }} producten zien.
+        subtitle:
+          usable_in_grid: Klik hieronder om alle gekoppelde producten te ontdekken!
+          not_usable_in_grid: Om alle gekoppelde producten te ontdekken, moet het productattribuut worden ingesteld als "bruikbaar in grid".
         button: Bekijk alle producten
       no_product:
         title: Deze asset is niet gekoppeld aan een product via het "{{ entityLabel }}" product attribuut.
         subtitle: 'Begin met het koppelen van producten aan dit attribuut om ze hier te zien'
+    no_linked_products: Deze asset is niet gekoppeld aan producten
     enrich:
       title: Asset attributen
       code: Code
@@ -219,7 +251,11 @@ pim_asset_manager:
       add_to_product: Aan product toevoegen
       drop_or_click_here: Sleep uw bestanden of klik hier
       will_appear_here: Upload assets om ze hier weer te geven!
+      files_limit: U probeert te veel bestanden te uploaden, alleen de eerste {{ limit }} wordt geüpload.
       discard_changes: Uw assets worden niet opgeslagen als u dit scherm sluit zonder ze aan te maken.
+      disabled_for_media_link: U kunt geen assets uploaden in deze familie omdat het attribuut dat gebruikt wordt als belangrijkste media een mediaklink attribuut is
+      upload_failure: Fout opgetreden tijdens het uploaden van het bestand.
+      cannot_retry: Er is een fout opgetreden tijdens het uploaden van het bestand.
       list:
         asset: Asset
         filename: Bestandsnaam
@@ -235,6 +271,7 @@ pim_asset_manager:
         invalid: fout
         created: aangemaakt
     delete:
+      message: Weet u zeker dat u het product{{ assetLabel }}"wilt verwijderen? Als het gekoppeld is aan producten, worden de links verwijderd.
       title: Asset
     delete_all:
       confirm: Weet u zeker dat u alle "{{ entityIdentifier }}" assets wilt verwijderen? Als deze gekoppeld zijn aan producten, worden de koppelingen naar deze producten verwijderd.
