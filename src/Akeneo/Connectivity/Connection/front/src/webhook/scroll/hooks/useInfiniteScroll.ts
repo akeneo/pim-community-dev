@@ -68,6 +68,10 @@ const useInfiniteScroll = <T>(
     }, [shouldFetch]);
 
     const handleScrollPosition = useCallback((scrollPosition: ScrollPosition) => {
+        if (!isMounted()) {
+            return;
+        }
+
         const { scrollTop, clientHeight, scrollHeight } = scrollPosition;
         // see https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight
         // basically, clientHeight is the visible height.
