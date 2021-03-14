@@ -1,6 +1,6 @@
 import { DependencyList, RefObject, useCallback, useEffect, useLayoutEffect } from 'react';
-import debounce from '../../shared/utils/debounce';
-import { findScrollParent } from './useScrollParent';
+import debounce from '../../../shared/utils/debounce';
+import findScrollParent from '../utils/findScrollParent';
 
 export type ScrollPosition = {
     scrollTop: number;

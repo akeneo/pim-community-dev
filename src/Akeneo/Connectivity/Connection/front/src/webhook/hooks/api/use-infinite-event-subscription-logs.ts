@@ -1,14 +1,14 @@
 import { EventSubscriptionLog } from '../../model/EventSubscriptionLog';
 import { RefObject, useState } from 'react';
 import { useRoute } from '../../../shared/router';
-import { useInfiniteScroll } from '../../../common/hooks/useInfiniteScroll';
+import { useInfiniteScroll } from '../../scroll';
 
 const MAX_PAGES = 20;
 
 type SearchEventSubscriptionLogsResponse = {
     results: EventSubscriptionLog[];
     total?: number;
-    searchAfter?: string;
+    search_after?: string;
 };
 
 type EventSubscriptionLogs = {
@@ -19,6 +19,9 @@ type EventSubscriptionLogs = {
     endScrollReached: boolean;
 };
 
+/**
+ * Scroll through the logs.
+ */
 const useInfiniteEventSubscriptionLogs = (
     connectionCode: string,
     container: RefObject<HTMLElement>,
@@ -37,7 +40,7 @@ const useInfiniteEventSubscriptionLogs = (
         'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs',
         {
             connection_code: connectionCode,
-            search_after: searchAfter || ''
+            search_after: searchAfter
         }
     );
 

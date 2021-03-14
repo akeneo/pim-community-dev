@@ -1,7 +1,7 @@
 import {useContext, useMemo} from 'react';
 import {RouterContext} from './router-context';
 
-export const useRoute = (route: string, parameters?: {[param: string]: string}) => {
+export const useRoute = (route: string, parameters?: {[param: string]: string|null}) => {
     const {generate} = useContext(RouterContext);
 
     return useMemo(() => generate(route, parameters), [generate, route, parameters]);

@@ -2,73 +2,122 @@ import {Index} from '@src/webhook/pages/Index';
 import {createMemoryHistory} from 'history';
 import React from 'react';
 import {Router} from 'react-router-dom';
-import {fetchMockResponseOnce, renderWithProviders} from '../../../test-utils';
+import {MockFetchResponses, mockFetchResponses, renderWithProviders} from '../../../test-utils';
+import '@testing-library/jest-dom/extend-expect';
+import fetchMock from 'jest-fetch-mock';
+import {screen} from '@testing-library/react';
+import {EventSubscriptionLogLevel} from '@src/webhook/model/EventSubscriptionLogLevel';
 
 describe('testing events logs page', () => {
     const history = createMemoryHistory({
         initialEntries: ['/connections/alkemics/event-logs'],
     });
 
-    const mockFetchConnection = () =>
-        fetchMockResponseOnce(
-            'akeneo_connectivity_connection_rest_get?code=alkemics',
-            JSON.stringify({
+    const fetchConnectionResponses: MockFetchResponses = {
+        'akeneo_connectivity_connection_rest_get?code=alkemics': {
+            json: {
                 code: 'alkemics',
                 label: 'Alkemics',
                 image: null,
-            })
-        );
+            },
+        },
+    };
 
-    const mockFetchEventSubscription = ({enabled} = {enabled: true}) =>
-        fetchMockResponseOnce(
-            'akeneo_connectivity_connection_webhook_rest_get?code=alkemics',
-            JSON.stringify({
+    const fetchEventSubscriptionResponses: MockFetchResponses = {
+        'akeneo_connectivity_connection_webhook_rest_get?code=alkemics': {
+            json: {
                 event_subscription: {
-                    enabled,
+                    enabled: true,
                 },
-            })
-        );
+            },
+        },
+    };
+
+    const fetchEventSubscriptionLogsResponses: MockFetchResponses = {
+        'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics&search_after=null': {
+            json: {
+                results: [
+                    {
+                        level: EventSubscriptionLogLevel.INFO,
+                        timestamp: 1615741520,
+                        connection_code: null,
+                        message: 'a log message',
+                        context: {},
+                    }
+                ],
+                total: 1,
+                search_after: 'search_after_1',
+            },
+        },
+        'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics&search_after=search_after_1': {
+            json: {
+                results: [],
+                total: 1,
+                search_after: 'search_after_2',
+            },
+        },
+    };
 
     beforeEach(() => {
         fetchMock.resetMocks();
     });
 
     test('renders the events logs page for the "Alkemics" connection', async () => {
-        mockFetchConnection();
-        mockFetchEventSubscription();
+        mockFetchResponses({
+            ...fetchConnectionResponses,
+            ...fetchEventSubscriptionResponses,
+            ...fetchEventSubscriptionLogsResponses,
+        });
 
-        const {findByText} = renderWithProviders(
+        renderWithProviders(
             <Router history={history}>
-                <Index />
+                <Index/>
             </Router>
         );
 
-        await findByText('Alkemics');
+        expect(await screen.findByText('Alkemics')).toBeInTheDocument();
+        expect(await screen.findByText('a log message', {exact: false})).toBeInTheDocument();
     });
 
     test('displays a message when the connection event subscription is not enabled', async () => {
-        mockFetchConnection();
-        mockFetchEventSubscription({enabled: false});
+        mockFetchResponses({
+            ...fetchConnectionResponses,
+            'akeneo_connectivity_connection_webhook_rest_get?code=alkemics': {
+                json: {
+                    event_subscription: {
+                        enabled: false,
+                    },
+                }
+            },
+        });
 
-        const {findByText} = renderWithProviders(
+        renderWithProviders(
             <Router history={history}>
-                <Index />
+                <Index/>
             </Router>
         );
 
-        await findByText('akeneo_connectivity.connection.webhook.event_logs.event_subscription_disabled.title');
+        expect(await screen.findByText('akeneo_connectivity.connection.webhook.event_logs.event_subscription_disabled.title')).toBeInTheDocument();
     });
 
     test('displays a message when there is no logs', async () => {
-        mockFetchConnection();
-        mockFetchEventSubscription();
+        mockFetchResponses({
+            ...fetchConnectionResponses,
+            ...fetchEventSubscriptionResponses,
+            'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics&search_after=null': {
+                json: {
+                    results: [],
+                    total: 0,
+                }
+            }
+        });
 
-        const {findByText} = renderWithProviders(
+        renderWithProviders(
             <Router history={history}>
-                <Index />
+                <Index/>
             </Router>
         );
 
-        await findByText('akeneo_connectivity.connection.webhook.event_logs.no_event_logs.title');
+        expect(await screen.findByText('akeneo_connectivity.connection.webhook.event_logs.no_event_logs.title')).toBeInTheDocument();
     });
 });
