@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\Queue;
 
 use Akeneo\Tool\Bundle\BatchQueueBundle\Hydrator\JobExecutionMessageHydrator;
-use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -40,10 +39,7 @@ class JobExecutionMessageRepository
         $this->jobExecutionHydrator = $jobExecutionHydrator;
     }
 
-    /**
-     * @param JobExecutionMessage $jobExecutionMessage
-     */
-    public function createJobExecutionMessage(JobExecutionMessage $jobExecutionMessage)
+    public function createJobExecutionMessage(JobExecutionMessageInterface $jobExecutionMessage): void
     {
         $sql = <<<SQL
 INSERT INTO akeneo_batch_job_execution_queue (job_execution_id, options, consumer, create_time, updated_time)
@@ -64,11 +60,9 @@ SQL;
      * Update a job execution message.
      * Only an unconsumed job execution message can be updated.
      *
-     * @param JobExecutionMessage $jobExecutionMessage
-     *
      * @return bool return whether the job has been updated or not
      */
-    public function updateJobExecutionMessage(JobExecutionMessage $jobExecutionMessage): bool
+    public function updateJobExecutionMessage(JobExecutionMessageInterface $jobExecutionMessage): bool
     {
         $sql = <<<SQL
 UPDATE 
@@ -99,10 +93,8 @@ SQL;
     /**
      * Gets a job execution message that has not been consumed yet.
      * If there is no job execution available, it returns null.
-     *
-     * @return JobExecutionMessage|null
      */
-    public function getAvailableJobExecutionMessage(): ?JobExecutionMessage
+    public function getAvailableJobExecutionMessage(): ?JobExecutionMessageInterface
     {
         $sql = <<<SQL
 SELECT 
@@ -128,10 +120,8 @@ SQL;
      * If there is no job execution available, it returns null.
      *
      * @param string[] $jobInstanceCodes
-     *
-     * @return JobExecutionMessage|null
      */
-    public function getAvailableJobExecutionMessageFilteredByCodes(array $jobInstanceCodes): ?JobExecutionMessage
+    public function getAvailableJobExecutionMessageFilteredByCodes(array $jobInstanceCodes): ?JobExecutionMessageInterface
     {
         $sql = <<<SQL
 SELECT 
@@ -162,7 +152,7 @@ SQL;
      * Gets a job execution message which is not blacklisted and that has not been consumed yet
      * If there is no job execution available, it returns null.
      */
-    public function getAvailableNotBlacklistedJobExecutionMessageFilteredByCodes(array $blacklistedJobInstanceCodes): ?JobExecutionMessage
+    public function getAvailableNotBlacklistedJobExecutionMessageFilteredByCodes(array $blacklistedJobInstanceCodes): ?JobExecutionMessageInterface
     {
         $sql = <<<SQL
 SELECT 
@@ -191,12 +181,8 @@ SQL;
 
     /**
      * Gets the job instance code associated to a job execution message.
-     *
-     * @param JobExecutionMessage $jobExecutionMessage
-     *
-     * @return string|null
      */
-    public function getJobInstanceCode(JobExecutionMessage $jobExecutionMessage): ?string
+    public function getJobInstanceCode(JobExecutionMessageInterface $jobExecutionMessage): ?string
     {
         $sql = <<<SQL
 SELECT 

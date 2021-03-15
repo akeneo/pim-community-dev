@@ -138,5 +138,6 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@akeneo_batch.job_repository'
+            - '@akeneo_batch_queue.factory.job_execution_message'
             - '@logger'
             - '%kernel.project_dir%'

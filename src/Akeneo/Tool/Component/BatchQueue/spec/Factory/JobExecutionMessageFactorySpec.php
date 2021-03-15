@@ -35,32 +35,29 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
 
     function it_builds_an_ui_job_execution_message(JobInstance $jobInstance)
     {
-        $jobInstance->getId()->willReturn(10);
         $jobInstance->getType()->willReturn('mass_delete');
 
-        $jobExecutionMessage = $this->buildFromJobInstance($jobInstance, []);
+        $jobExecutionMessage = $this->buildFromJobInstance($jobInstance, 1, []);
         $jobExecutionMessage->shouldBeAnInstanceOf(UiJobExecutionMessage::class);
-        $jobExecutionMessage->getJobExecutionId()->shouldBe(10);
+        $jobExecutionMessage->getJobExecutionId()->shouldBe(1);
     }
 
     function it_builds_an_export_job_execution_message(JobInstance $jobInstance)
     {
-        $jobInstance->getId()->willReturn(10);
         $jobInstance->getType()->willReturn('quick_export');
 
-        $jobExecutionMessage = $this->buildFromJobInstance($jobInstance, []);
+        $jobExecutionMessage = $this->buildFromJobInstance($jobInstance, 2, []);
         $jobExecutionMessage->shouldBeAnInstanceOf(ExportJobExecutionMessage::class);
-        $jobExecutionMessage->getJobExecutionId()->shouldBe(10);
+        $jobExecutionMessage->getJobExecutionId()->shouldBe(2);
     }
 
     function it_builds_a_backend_job_execution_message(JobInstance $jobInstance)
     {
-        $jobInstance->getId()->willReturn(10);
         $jobInstance->getType()->willReturn('other');
 
-        $jobExecutionMessage = $this->buildFromJobInstance($jobInstance, []);
+        $jobExecutionMessage = $this->buildFromJobInstance($jobInstance, 3, []);
         $jobExecutionMessage->shouldBeAnInstanceOf(BackendJobExecutionMessage::class);
-        $jobExecutionMessage->getJobExecutionId()->shouldBe(10);
+        $jobExecutionMessage->getJobExecutionId()->shouldBe(3);
     }
 
     function it_builds_an_ui_job_execution_message_from_normalized(

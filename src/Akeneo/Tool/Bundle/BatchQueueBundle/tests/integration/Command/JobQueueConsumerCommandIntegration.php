@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\tests\integration\Command;
 
+use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\BackendJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
-use Akeneo\Test\Integration\TestCase;
-use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Doctrine\DBAL\Driver\Connection;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Process\Process;
@@ -93,7 +93,7 @@ class JobQueueConsumerCommandIntegration extends TestCase
         $jobExecution = $this->createJobExecutionInQueue('infinite_loop_job');
 
         $options = ['email' => 'ziggy@akeneo.com', 'env' => $this->getParameter('kernel.environment')];
-        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
+        $jobExecutionMessage = BackendJobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
 
         $this->getQueue()->publish($jobExecutionMessage);
 
@@ -194,7 +194,7 @@ class JobQueueConsumerCommandIntegration extends TestCase
     {
         $jobExecution = $this->createJobExecution($jobInstanceCode, 'mary');
         $options = ['email' => 'ziggy@akeneo.com', 'env' => $this->getParameter('kernel.environment')];
-        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
+        $jobExecutionMessage = BackendJobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
         $this->getQueue()->publish($jobExecutionMessage);
 
         return $jobExecution;

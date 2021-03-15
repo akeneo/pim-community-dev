@@ -13,6 +13,7 @@ use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -55,6 +56,8 @@ class PublishJobToQueue
     /** @var JobExecutionQueueInterface */
     private $jobExecutionQueue;
 
+    private JobExecutionMessageFactory $jobExecutionMessageFactory;
+
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
@@ -68,6 +71,7 @@ class PublishJobToQueue
         EntityManagerInterface $entityManager,
         JobParametersValidator $jobParametersValidator,
         JobExecutionQueueInterface $jobExecutionQueue,
+        JobExecutionMessageFactory $jobExecutionMessageFactory,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->jobInstanceClass = $jobInstanceClass;
@@ -79,6 +83,7 @@ class PublishJobToQueue
         $this->entityManager = $entityManager;
         $this->jobParametersValidator = $jobParametersValidator;
         $this->jobExecutionQueue = $jobExecutionQueue;
+        $this->jobExecutionMessageFactory = $jobExecutionMessageFactory;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -126,8 +131,11 @@ class PublishJobToQueue
 
         $this->jobRepository->updateJobExecution($jobExecution);
 
-        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
-
+        $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromJobInstance(
+            $jobInstance,
+            $jobExecution->getId(),
+            $options
+        );
         $this->jobExecutionQueue->publish($jobExecutionMessage);
 
         $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_CREATED, $jobExecution);

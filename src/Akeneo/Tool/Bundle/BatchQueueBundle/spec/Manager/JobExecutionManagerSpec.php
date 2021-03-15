@@ -135,16 +135,11 @@ class JobExecutionManagerSpec extends ObjectBehavior
         $this->getExitStatus($jobExecutionMessage)->shouldBeLike(new ExitStatus('COMPLETED'));
     }
 
-    function it_marks_as_failed(
-        $connection,
-        JobExecutionMessage $jobExecutionMessage,
-        Statement $stmt
-    ) {
+    function it_marks_as_failed(Connection $connection, Statement $stmt)
+    {
         $connection
             ->prepare(Argument::type('string'))
             ->willReturn($stmt);
-
-        $jobExecutionMessage->getJobExecutionId()->willReturn(1);
 
         $stmt->bindValue('id', 1)->shouldBeCalled();
         $stmt->bindValue('status', BatchStatus::FAILED)->shouldBeCalled();
@@ -152,7 +147,7 @@ class JobExecutionManagerSpec extends ObjectBehavior
         $stmt->bindValue('updated_time', Argument::type(\DateTime::class), Type::DATETIME)->shouldBeCalled();
         $stmt->execute()->shouldBeCalled();
 
-        $this->markAsFailed($jobExecutionMessage);
+        $this->markAsFailed(1);
     }
 
     function it_updates_healthcheck(

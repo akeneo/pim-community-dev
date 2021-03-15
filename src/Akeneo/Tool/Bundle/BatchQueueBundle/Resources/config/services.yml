@@ -45,6 +45,7 @@ services:
             - '@akeneo_batch.job.job_registry'
             - '@akeneo_batch.job.job_parameters_validator'
             - '@akeneo_batch_queue.queue.database_job_execution_queue'
+            - '@akeneo_batch_queue.factory.job_execution_message'
             - '@event_dispatcher'
             - '@akeneo_batch.logger.batch_log_handler'
             - '%kernel.environment%'
@@ -61,6 +62,7 @@ services:
             - '@doctrine.orm.default_entity_manager'
             - '@akeneo_batch.job.job_parameters_validator'
             - '@akeneo_batch_queue.queue.database_job_execution_queue'
+            - '@akeneo_batch_queue.factory.job_execution_message'
             - '@event_dispatcher'
 
     # override of the original Akeneo Batch simple job launcher
@@ -72,6 +74,7 @@ services:
             - '@akeneo_batch.job.job_registry'
             - '@akeneo_batch.job.job_parameters_validator'
             - '@akeneo_batch_queue.queue.database_job_execution_queue'
+            - '@akeneo_batch_queue.factory.job_execution_message'
             - '@event_dispatcher'
             - '@akeneo_batch.logger.batch_log_handler'
             - '%kernel.environment%'
@@ -102,12 +105,25 @@ services:
         tags:
             - { name: console.command }
 
+    akeneo_batch_queue.factory.job_execution_message:
+        class: Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory
+        arguments:
+            - '@pim_enrich.repository.job_execution'
+            -
+                'Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage': ['mass_edit', 'mass_delete']
+                'Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage': ['import']
+                'Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage': ['export', 'quick_export']
+            - 'Akeneo\Tool\Component\BatchQueue\Queue\BackendJobExecutionMessage'
+
     akeneo_batch_queue.messenger.serializer:
         class: Akeneo\Tool\Bundle\MessengerBundle\Serialization\JsonSerializer
         arguments:
             - !tagged akeneo_batch_queue.messenger.normalizer
 
-    Akeneo\Tool\Component\BatchQueue\Normalizer\JobExecutionMessageNormalizer:
+    akeneo_batch_queue.normalizer.job_execution_message:
+        class: Akeneo\Tool\Component\BatchQueue\Normalizer\JobExecutionMessageNormalizer
+        arguments:
+            - '@akeneo_batch_queue.factory.job_execution_message'
         tags:
             - { name: akeneo_batch_queue.messenger.normalizer, priority: 0 }
 

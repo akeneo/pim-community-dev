@@ -8,7 +8,9 @@ use Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler\JobExecutionMessageHandle
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\BatchQueue\Queue\BackendJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
@@ -46,9 +48,9 @@ final class JobExecutionMessageHandlerIntegration extends TestCase
         Assert::assertEquals(ExitStatus::COMPLETED, $jobExecution->getExitStatus()->getExitCode());
     }
 
-    private function createAndPublishJobExecutionMessageInQueue(JobExecution $jobExecution): JobExecutionMessage
+    private function createAndPublishJobExecutionMessageInQueue(JobExecution $jobExecution): JobExecutionMessageInterface
     {
-        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), [
+        $jobExecutionMessage = BackendJobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), [
             'email' => 'ziggy@akeneo.com',
             'env' => $this->getParameter('kernel.environment'),
         ]);

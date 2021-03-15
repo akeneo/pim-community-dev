@@ -8,7 +8,7 @@ use Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -69,12 +69,8 @@ class JobExecutionManager
 
     /**
      * Get the exit status of job execution associated to a job execution message.
-     *
-     * @param JobExecutionMessage $jobExecutionMessage
-     *
-     * @return ExitStatus|null
      */
-    public function getExitStatus(JobExecutionMessage $jobExecutionMessage): ?ExitStatus
+    public function getExitStatus(JobExecutionMessageInterface $jobExecutionMessage): ?ExitStatus
     {
         $sql = 'SELECT je.exit_code FROM akeneo_batch_job_execution je WHERE je.id = :id';
 
@@ -88,10 +84,8 @@ class JobExecutionManager
 
     /**
      * Update the status of a job execution associated to a job execution message.
-     *
-     * @param JobExecutionMessage $jobExecutionMessage
      */
-    public function markAsFailed(JobExecutionMessage $jobExecutionMessage): void
+    public function markAsFailed(int $jobExecutionId): void
     {
         $sql = <<<SQL
 UPDATE 
@@ -105,7 +99,7 @@ WHERE
 SQL;
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $stmt->bindValue('id', $jobExecutionMessage->getJobExecutionId());
+        $stmt->bindValue('id', $jobExecutionId);
         $stmt->bindValue('status', BatchStatus::FAILED);
         $stmt->bindValue('exit_code', ExitStatus::FAILED);
         $stmt->bindValue('updated_time', new \DateTime('now', new \DateTimeZone('UTC')), Type::DATETIME);
@@ -114,10 +108,8 @@ SQL;
 
     /**
      * Update the health check of the job execution associated to a job execution message.
-     *
-     * @param JobExecutionMessage $jobExecutionMessage
      */
-    public function updateHealthCheck(JobExecutionMessage $jobExecutionMessage): void
+    public function updateHealthCheck(JobExecutionMessageInterface $jobExecutionMessage): void
     {
         $sql = <<<SQL
 UPDATE 
