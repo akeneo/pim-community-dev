@@ -59,12 +59,17 @@ const RowActionContainer = styled.div`
 
 const RowContainer = styled.div<{multiline: boolean} & AkeneoThemedProps>`
   display: flex;
+  outline-style: none;
   &:not(:last-child) {
     border-bottom: 1px solid ${getColor('grey', 60)};
   }
 
   &:hover {
     background-color: ${getColor('grey', 20)};
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px ${getColor('blue', 40)};
   }
 
   &:hover ${ActionCellContainer} {
@@ -108,7 +113,7 @@ const Row = ({children, multiline = false}: RowProps) => {
   });
 
   return (
-   <RowContainer multiline={multiline}>
+   <RowContainer multiline={multiline} tabIndex={0}>
      <RowContentContainer>{cells}</RowContentContainer>
      {actionCellChild.length > 0 && (<RowActionContainer>{actionCellChild}</RowActionContainer>)}
    </RowContainer>
