@@ -56,3 +56,8 @@ batch_jobs:
     send_for_approval: Soumettre pour validation
 pim_title:
   pimee_enrich_locale_edit: Locale | Édition
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Nombre de locales avec un accès personnalisé
+    nb_custom_category_accesses: Nombre de catégories avec un accès personnalisé
+    nb_custom_attribute_group_accesses: Nombre de groupes d'attributs avec un accès personnalisé

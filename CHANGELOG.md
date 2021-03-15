@@ -19,6 +19,8 @@
 - PIM-9723: Fix Mysql memory size issue during ordering in SQL when getting category trees in product grid
 - PIM-9722: Fix the increasing amount of requests when editing attribute with options
 - PIM-9698: Fix product and product model deletion events when entity does not have any category
+- PIM-9710: Fix rule execution job status stuck in STARTED or STOPPING 
+- PIM-9731: Fix proposals on boolean attributes when comparing an empty and a false value 
 
 ## Improvements
 

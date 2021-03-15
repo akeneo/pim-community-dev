@@ -51,7 +51,7 @@ class Kernel extends BaseKernel
         $eeConfDir = $this->getProjectDir() . '/config';
         $ceConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config';
 
-        $this->loadPackagesConfigurationExceptSecurity($loader, $ceConfDir);
+        $this->loadPackagesConfigurationExceptSecurityAndMonolog($loader, $ceConfDir);
         $this->loadPackagesConfiguration($loader, $eeConfDir);
 
         $this->loadContainerConfiguration($loader, $ceConfDir);
@@ -97,16 +97,17 @@ class Kernel extends BaseKernel
      * Thus, we don't load it from the Community Edition.
      * We copied/pasted its content into Enterprise Edition and added what was missing.
      */
-    private function loadPackagesConfigurationExceptSecurity(LoaderInterface $loader, string $confDir): void
+    private function loadPackagesConfigurationExceptSecurityAndMonolog(LoaderInterface $loader, string $confDir): void
     {
         $files = array_merge(
             glob($confDir . '/{packages}/*.yml', GLOB_BRACE),
         );
 
+        $excludedConfigFiles = ['security.yml', 'monolog.yml'];
         $files = array_filter(
             $files,
-            function ($file) {
-                return 'security.yml' !== basename($file);
+            function ($file) use ($excludedConfigFiles) {
+                return !in_array(basename($file), $excludedConfigFiles);
             }
         );
 

@@ -12,7 +12,6 @@ services:
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
             - '@pim_catalog_rule.datagrid.oro_to_pim_grid_filter'
-            - '@pim_catalog.command_launcher'
             - '@oro_datagrid.mass_action.parameters_parser'
 
     pimee_enrich.controller.rule_relation:

@@ -14,7 +14,6 @@ namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Controller;
 use Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\OroToPimGridFilterAdapter;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
-use Akeneo\Tool\Component\Console\CommandLauncher;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
@@ -33,60 +32,32 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class RuleController
 {
-    const MASS_RULE_IMPACTED_PRODUCTS = 'rule_impacted_product_count';
-    const RUN_COMMAND = 'akeneo:rule:run --username=%s';
+    protected const MASS_RULE_IMPACTED_PRODUCTS = 'rule_impacted_product_count';
+    protected const RULE_EXECUTION_JOB = 'rule_engine_execute_rules';
 
-    /** @var RuleDefinitionRepositoryInterface */
-    protected $repository;
+    protected RuleDefinitionRepositoryInterface $repository;
+    protected RemoverInterface $remover;
+    protected TokenStorageInterface $tokenStorage;
+    protected JobLauncherInterface $jobLauncher;
+    protected IdentifiableObjectRepositoryInterface $jobInstanceRepo;
+    protected OroToPimGridFilterAdapter $gridFilterAdapter;
+    protected MassActionParametersParser $parameterParser;
 
-    /** @var RemoverInterface */
-    protected $remover;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
-    /** @var JobLauncherInterface */
-    protected $simpleJobLauncher;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $jobInstanceRepo;
-
-    /** @var OroToPimGridFilterAdapter */
-    protected $gridFilterAdapter;
-
-    /** @var CommandLauncher */
-    protected $commandLauncher;
-
-    /** @var MassActionParametersParser */
-    protected $parameterParser;
-
-    /**
-     * @param RuleDefinitionRepositoryInterface     $repository
-     * @param RemoverInterface                      $remover
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param JobLauncherInterface                  $simpleJobLauncher
-     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepo
-     * @param OroToPimGridFilterAdapter             $gridFilterAdapter
-     * @param CommandLauncher                       $commandLauncher
-     * @param MassActionParametersParser            $parameterParser
-     */
     public function __construct(
         RuleDefinitionRepositoryInterface $repository,
         RemoverInterface $remover,
         TokenStorageInterface $tokenStorage,
-        JobLauncherInterface $simpleJobLauncher,
+        JobLauncherInterface $jobLauncher,
         IdentifiableObjectRepositoryInterface $jobInstanceRepo,
         OroToPimGridFilterAdapter $gridFilterAdapter,
-        CommandLauncher $commandLauncher,
         MassActionParametersParser $parameterParser
     ) {
         $this->repository = $repository;
         $this->remover = $remover;
         $this->tokenStorage = $tokenStorage;
-        $this->simpleJobLauncher = $simpleJobLauncher;
+        $this->jobLauncher = $jobLauncher;
         $this->jobInstanceRepo = $jobInstanceRepo;
         $this->gridFilterAdapter = $gridFilterAdapter;
-        $this->commandLauncher = $commandLauncher;
         $this->parameterParser = $parameterParser;
     }
 
@@ -102,7 +73,7 @@ class RuleController
      *
      * @return Response
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request, $id): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -126,10 +97,14 @@ class RuleController
      *
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function massImpactedProductCountAction(Request $request)
+    public function massImpactedProductCountAction(Request $request): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $request->request->add(['actionName' => 'massImpactedProductCount']);
         $parameters = $this->parameterParser->parse($request);
         $filters = $this->gridFilterAdapter->adapt($parameters);
@@ -141,7 +116,7 @@ class RuleController
             'user_to_notify' => $user->getUsername(),
         ];
 
-        $this->simpleJobLauncher->launch($jobInstance, $user, $configuration);
+        $this->jobLauncher->launch($jobInstance, $user, $configuration);
 
         return new JsonResponse(
             [
@@ -158,21 +133,28 @@ class RuleController
      *
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function executeRulesAction(Request $request)
+    public function executeRulesAction(Request $request): Response
     {
-        $command = sprintf(
-            static::RUN_COMMAND,
-            $this->tokenStorage->getToken()->getUsername()
-        );
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
 
         $ruleCode = $request->get('code');
         if (null !== $ruleCode) {
-            $command = sprintf('%s %s', $command, $ruleCode);
+            $ruleCode = [$ruleCode];
         }
 
-        $this->commandLauncher->executeBackground($command);
+        $jobInstance = $this->jobInstanceRepo->findOneByIdentifier(static::RULE_EXECUTION_JOB);
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        $configuration = [
+            'rule_codes' => $ruleCode,
+            'user_to_notify' => $user->getUsername(),
+        ];
+
+        $this->jobLauncher->launch($jobInstance, $user, $configuration);
 
         return new JsonResponse(
             [

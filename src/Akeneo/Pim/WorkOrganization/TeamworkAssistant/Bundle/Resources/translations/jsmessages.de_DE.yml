@@ -68,3 +68,6 @@ pim_notification:
     project_finished: Projekt abgeschlossen
     project_calculation: Projekt-Kalkulation
     project_due_date: Projekt-Fälligkeitsdatum festlegen
+pim_analytics:
+  info_type:
+    nb_projects: Anzahl der Projekte

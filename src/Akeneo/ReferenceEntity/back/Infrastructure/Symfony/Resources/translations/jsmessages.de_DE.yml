@@ -349,3 +349,14 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: Referenz Datensatz-Import in XLSX
     import.label: Datensatzimport
+pim_analytics:
+  info_type:
+    nb_reference_entities: Anzahl der Referenzobjekte
+    max_number_of_records_per_reference_entity: Maximale Anzahl von Datensätzen pro Referenzobjekt
+    average_number_of_values_per_records: Durchschnittliche Anzahl der Werte pro Datensatz auf allen Referenzobjekten
+    average_number_of_records_per_reference_entity: Durchschnittliche Anzahl der Datensätze pro Referenzobjekten
+    max_number_of_attributes_per_reference_entity: Maximale Anzahl von Datensätzen pro Referenzobjekt
+    average_number_of_attributes_per_reference_entity: Durchschnittliche Anzahl der Attribute pro Referenzobjekt
+    average_percentage_localizable_only_attributes: Durchschnittlicher Prozentsatz der gebietsschemaspezifischen Attribute pro Referenzobjekt
+    average_percentage_scopable_only_attributes: Durchschnittlicher Prozentsatz der kanalspezifischen Attribute pro Referenzobjekt
+    average_percentage_scopable_and_localizable_attributes: Durchschnittlicher Prozentsatz der gebietsschemaspezifischen und kanalspezifischen Attribute pro Referenzobjekt
