@@ -236,14 +236,13 @@ akeneo_connectivity.connection:
                 link: Enable the event subscription
             no_event_logs:
                 title: There is no log for the moment.
-
-    event_logs:
-        info:
-            logs_total: '{1} There is {{ total }} log. |[2,Inf] There are {{ total }} logs.'
-        headers:
-            datetime: Datetime
-            level: Level
-            message: Message
+            list:
+                info:
+                    logs_total: '{1} There is {{ total }} log. |[2,Inf] There are {{ total }} logs.'
+                headers:
+                    datetime: Datetime
+                    level: Level
+                    message: Message
 
     error_management:
         connection_monitoring:

@@ -1,27 +1,25 @@
 import {
     ArrowRightIcon,
-    Badge,
     ClockIcon,
     DateIcon,
     GraphIllustration,
     Information,
-    Level,
     Table
 } from 'akeneo-design-system';
-import React, {FC, useContext, useRef} from 'react';
+import React, {FC, useRef} from 'react';
 import {NoEventLogs} from './NoEventLogs';
 import {Translate} from '../../shared/translate';
-import {UserContext} from '../../shared/user';
 import styled from 'styled-components';
 import {theme} from '../../common/styled-with-theme';
-import {EventSubscriptionLogLevel} from '../model/EventSubscriptionLogLevel';
 import useInfiniteEventSubscriptionLogs from '../hooks/api/use-infinite-event-subscription-logs';
+import {EventLogBadge} from './EventLogBadge';
+import {useDateFormatter} from '../../shared/formatter/use-date-formatter';
 
 const ExtraSmallColumnHeaderCell = styled(Table.HeaderCell)`
-    width: 9%;
+    width: 125px;
 `;
 const SmallColumnHeaderCell = styled(Table.HeaderCell)`
-    width: 15%;
+    width: 220px;
 `;
 const StyledDateIcon = styled(DateIcon)`
     vertical-align: text-top;
@@ -53,9 +51,9 @@ const ContextContainer = styled.span`
 `;
 
 export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => {
-    const userLocale = useContext(UserContext).get('uiLocale').replace('_', '-');
     const scrollContainer = useRef(null);
     const {logs, page, total} = useInfiniteEventSubscriptionLogs(connectionCode, scrollContainer);
+    const dateFormatter = useDateFormatter();
 
     if (page === 0) {
         return null;
@@ -64,18 +62,6 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
     if (total === 0) {
         return <NoEventLogs />;
     }
-    const defineBadgeLevel = (level: EventSubscriptionLogLevel): Level => {
-        switch (level) {
-            case EventSubscriptionLogLevel.WARNING:
-                return 'warning';
-            case EventSubscriptionLogLevel.ERROR:
-                return 'danger';
-            case EventSubscriptionLogLevel.INFO:
-                return 'primary';
-            case EventSubscriptionLogLevel.NOTICE:
-                return 'tertiary';
-        }
-    };
 
     return (
         <>
@@ -83,7 +69,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                 illustration={<GraphIllustration/>}
                 title={
                     <Translate
-                        id={'akeneo_connectivity.connection.event_logs.info.logs_total'}
+                        id={'akeneo_connectivity.connection.webhook.event_logs.list.info.logs_total'}
                         placeholders={{total: total ? total.toString() : '0'}}
                         count={total}
                     />
@@ -94,13 +80,13 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
             <Table>
                 <Table.Header>
                     <SmallColumnHeaderCell>
-                        <Translate id={'akeneo_connectivity.connection.event_logs.headers.datetime'} />
+                        <Translate id={'akeneo_connectivity.connection.webhook.event_logs.list.headers.datetime'} />
                     </SmallColumnHeaderCell>
                     <ExtraSmallColumnHeaderCell>
-                        <Translate id={'akeneo_connectivity.connection.event_logs.headers.level'} />
+                        <Translate id={'akeneo_connectivity.connection.webhook.event_logs.list.headers.level'} />
                     </ExtraSmallColumnHeaderCell>
                     <Table.HeaderCell>
-                        <Translate id={'akeneo_connectivity.connection.event_logs.headers.message'} />
+                        <Translate id={'akeneo_connectivity.connection.webhook.event_logs.list.headers.message'} />
                     </Table.HeaderCell>
                 </Table.Header>
                 <Table.Body ref={scrollContainer}>
@@ -112,27 +98,27 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                                     <div>
                                         <StyledDateIcon size={16} color={theme.color.grey100} />
                                         <Box>
-                                            {new Intl.DateTimeFormat(userLocale, {
+                                            {dateFormatter(timestamp * 1000, {
                                                 year: 'numeric',
                                                 month: '2-digit',
-                                                day: '2-digit',
-                                            }).format(new Date(timestamp))}
+                                                day: '2-digit'
+                                            })}
                                         </Box>
                                     </div>
                                     <TimeContainer>
                                         <StyledClockIcon size={16} color={theme.color.grey100} />
                                         <Box>
-                                            {new Intl.DateTimeFormat(userLocale, {
+                                            {dateFormatter(timestamp * 1000, {
                                                 hour: '2-digit',
                                                 minute: '2-digit',
                                                 second: '2-digit',
-                                            }).format(new Date(timestamp))}
+                                            })}
                                         </Box>
                                     </TimeContainer>
                                 </DatetimeContainer>
                             </Table.Cell>
                             <Table.Cell>
-                                <Badge level={defineBadgeLevel(level)}>{level.toUpperCase()}</Badge>
+                                <EventLogBadge level={level}>{level.toUpperCase()}</EventLogBadge>
                             </Table.Cell>
                             <Table.Cell>
                                 <MessageContainer>{message}</MessageContainer>
