@@ -17,18 +17,11 @@ interface JobExecutionQueueInterface
 {
     /**
      * Publishes a message into the queue.
-     *
-     * @param JobExecutionMessage $jobExecutionMessage
      */
-    public function publish(JobExecutionMessage $jobExecutionMessage): void;
+    public function publish(JobExecutionMessageInterface $jobExecutionMessage): void;
 
     /**
      * Gets the last job execution message from the queue, that is not consumed yet.
-     *
-     * @param string $consumer name of the consumer
-     * @param JobQueueConsumerConfiguration consumer configuration
-     *
-     * @return JobExecutionMessage|null
      */
-    public function consume(string $consumer, JobQueueConsumerConfiguration $configuration): ?JobExecutionMessage;
+    public function consume(string $consumer, JobQueueConsumerConfiguration $configuration): ?JobExecutionMessageInterface;
 }

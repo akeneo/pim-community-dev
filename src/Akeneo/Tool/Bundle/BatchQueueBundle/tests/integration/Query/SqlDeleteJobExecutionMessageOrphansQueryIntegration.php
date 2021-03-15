@@ -8,7 +8,7 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
-use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\BackendJobExecutionMessage;
 use Doctrine\DBAL\Driver\Connection;
 
 class SqlDeleteJobExecutionMessageOrphansQueryIntegration extends TestCase
@@ -57,7 +57,7 @@ class SqlDeleteJobExecutionMessageOrphansQueryIntegration extends TestCase
 
     private function createJobExecutionMessage(int $jobExecutionId): void
     {
-        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecutionId, []);
+        $jobExecutionMessage = BackendJobExecutionMessage::createJobExecutionMessage($jobExecutionId, []);
 
         $this->get('akeneo_batch_queue.queue.job_execution_message_repository')->createJobExecutionMessage($jobExecutionMessage);
     }
