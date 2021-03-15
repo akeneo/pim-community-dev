@@ -43,7 +43,7 @@ describe('testing events logs page', () => {
                         connection_code: null,
                         message: 'a log message',
                         context: {},
-                    }
+                    },
                 ],
                 total: 1,
                 search_after: 'search_after_1',
@@ -71,7 +71,7 @@ describe('testing events logs page', () => {
 
         renderWithProviders(
             <Router history={history}>
-                <Index/>
+                <Index />
             </Router>
         );
 
@@ -87,17 +87,21 @@ describe('testing events logs page', () => {
                     event_subscription: {
                         enabled: false,
                     },
-                }
+                },
             },
         });
 
         renderWithProviders(
             <Router history={history}>
-                <Index/>
+                <Index />
             </Router>
         );
 
-        expect(await screen.findByText('akeneo_connectivity.connection.webhook.event_logs.event_subscription_disabled.title')).toBeInTheDocument();
+        expect(
+            await screen.findByText(
+                'akeneo_connectivity.connection.webhook.event_logs.event_subscription_disabled.title'
+            )
+        ).toBeInTheDocument();
     });
 
     test('displays a message when there is no logs', async () => {
@@ -108,16 +112,18 @@ describe('testing events logs page', () => {
                 json: {
                     results: [],
                     total: 0,
-                }
-            }
+                },
+            },
         });
 
         renderWithProviders(
             <Router history={history}>
-                <Index/>
+                <Index />
             </Router>
         );
 
-        expect(await screen.findByText('akeneo_connectivity.connection.webhook.event_logs.no_event_logs.title')).toBeInTheDocument();
+        expect(
+            await screen.findByText('akeneo_connectivity.connection.webhook.event_logs.no_event_logs.title')
+        ).toBeInTheDocument();
     });
 });

@@ -36,12 +36,12 @@ export const fetchMockResponseOnce = (requestUrl: string, responseBody: string) 
 
 export type MockFetchResponses = {
     [url: string]: {
-        reject?: boolean,
+        reject?: boolean;
         status?: number;
         statusText?: string;
-        headers?: string[][]|{[key: string]: string};
-        json: object,
-    },
+        headers?: string[][] | {[key: string]: string};
+        json: object;
+    };
 };
 
 export const mockFetchResponses = (responses: MockFetchResponses) => {
@@ -52,7 +52,7 @@ export const mockFetchResponses = (responses: MockFetchResponses) => {
             throw Error('Fetch was called with a non mocked url: ' + request.url);
         }
 
-        const { reject, json, ...params } = response;
+        const {reject, json, ...params} = response;
 
         if (true === reject) {
             return Promise.reject();

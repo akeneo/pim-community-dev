@@ -10,7 +10,7 @@ beforeEach(() => {
     `;
 });
 
-test('The callback is called when scrolling', (done) => {
+test('The callback is called when scrolling', done => {
     const ref = {
         current: document.getElementById('content'),
     };

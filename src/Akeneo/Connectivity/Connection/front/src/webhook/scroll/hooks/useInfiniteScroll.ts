@@ -1,6 +1,6 @@
-import { RefObject, useCallback, useEffect, useState } from 'react';
+import {RefObject, useCallback, useEffect, useState} from 'react';
 import useIsMounted from './useIsMounted';
-import useScrollPosition, { ScrollPosition } from './useScrollPosition';
+import useScrollPosition, {ScrollPosition} from './useScrollPosition';
 
 type InfiniteScrollStatus = {
     isLoading: boolean;
@@ -17,15 +17,15 @@ type InfiniteScrollStatus = {
  * The container argument is used to find the scrollable element, to watch for the scroll position of its content.
  */
 const useInfiniteScroll = <T>(
-    loadNextPage: (prev: T|null) => Promise<T|null>,
+    loadNextPage: (prev: T | null) => Promise<T | null>,
     containerRef: RefObject<HTMLElement>,
     threshold = 300
 ): InfiniteScrollStatus => {
     const [state, setState] = useState<{
-        lastPage: T|null,
-        isStopped: boolean,
-        isLoading: boolean,
-        shouldFetch: boolean,
+        lastPage: T | null;
+        isStopped: boolean;
+        isLoading: boolean;
+        shouldFetch: boolean;
     }>({
         lastPage: null,
         isStopped: false,
@@ -33,7 +33,7 @@ const useInfiniteScroll = <T>(
         shouldFetch: true,
     });
 
-    const { lastPage, isStopped, isLoading, shouldFetch } = state;
+    const {lastPage, isStopped, isLoading, shouldFetch} = state;
 
     const isMounted = useIsMounted();
 
@@ -67,27 +67,30 @@ const useInfiniteScroll = <T>(
         })();
     }, [shouldFetch]);
 
-    const handleScrollPosition = useCallback((scrollPosition: ScrollPosition) => {
-        if (!isMounted()) {
-            return;
-        }
+    const handleScrollPosition = useCallback(
+        (scrollPosition: ScrollPosition) => {
+            if (!isMounted()) {
+                return;
+            }
 
-        const { scrollTop, clientHeight, scrollHeight } = scrollPosition;
-        // see https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight
-        // basically, clientHeight is the visible height.
-        // scrollTop is the distance between the top and the visible part.
-        // scrollHeight is real height of the content, including content outside the view.
-        // The trigger is reached when, the content is smaller than the available container,
-        // or when we are at #{threshold}px of the bottom.
-        const scrollThresholdIsReached = scrollHeight <= scrollTop + clientHeight + threshold;
+            const {scrollTop, clientHeight, scrollHeight} = scrollPosition;
+            // see https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight
+            // basically, clientHeight is the visible height.
+            // scrollTop is the distance between the top and the visible part.
+            // scrollHeight is real height of the content, including content outside the view.
+            // The trigger is reached when, the content is smaller than the available container,
+            // or when we are at #{threshold}px of the bottom.
+            const scrollThresholdIsReached = scrollHeight <= scrollTop + clientHeight + threshold;
 
-        if (scrollThresholdIsReached) {
-            setState(state => ({
-                ...state,
-                shouldFetch: true,
-            }));
-        }
-    }, [threshold]);
+            if (scrollThresholdIsReached) {
+                setState(state => ({
+                    ...state,
+                    shouldFetch: true,
+                }));
+            }
+        },
+        [threshold]
+    );
 
     // This hook will call our callback, with a 100ms debounce, each time the container is scrolled.
     // By giving it an array of dependencies with the lastPage, each time we load a new page,

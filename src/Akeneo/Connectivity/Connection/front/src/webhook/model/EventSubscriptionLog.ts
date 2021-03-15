@@ -4,6 +4,6 @@ export type EventSubscriptionLog = {
     timestamp: number;
     level: EventSubscriptionLogLevel;
     message: string;
-    connection_code: string|null;
+    connection_code: string | null;
     context: object;
 };

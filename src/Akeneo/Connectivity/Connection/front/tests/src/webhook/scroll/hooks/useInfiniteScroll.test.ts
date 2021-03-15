@@ -31,14 +31,15 @@ test('The second page is fetched, with the first response as parameter', async (
         current: document.getElementById('content'),
     };
 
-    const loadNextPage = jest.fn()
+    const loadNextPage = jest
+        .fn()
         .mockImplementationOnce(() => {
             return Promise.resolve({
                 results: ['foo', 'bar'],
                 search_after: 'bar',
             });
         })
-        .mockImplementationOnce((prev) => {
+        .mockImplementationOnce(prev => {
             expect(prev).toEqual({
                 results: ['foo', 'bar'],
                 search_after: 'bar',

@@ -24,7 +24,7 @@ type EventSubscriptionLogs = {
  */
 const useInfiniteEventSubscriptionLogs = (
     connectionCode: string,
-    container: RefObject<HTMLElement>,
+    container: RefObject<HTMLElement>
 ): EventSubscriptionLogs => {
     const [state, setState] = useState<EventSubscriptionLogs>({
         logs: [],
@@ -33,13 +33,13 @@ const useInfiniteEventSubscriptionLogs = (
         maxScrollReached: false,
         endScrollReached: false,
     });
-    const [searchAfter, setSearchAfter] = useState<string|null>(null);
+    const [searchAfter, setSearchAfter] = useState<string | null>(null);
     const {maxScrollReached, endScrollReached} = state;
 
     const parameters: {
-        [name: string]: string,
+        [name: string]: string;
     } = {
-        connection_code: connectionCode
+        connection_code: connectionCode,
     };
 
     if (null !== searchAfter) {
@@ -51,7 +51,7 @@ const useInfiniteEventSubscriptionLogs = (
         parameters
     );
 
-    const fetchNextResponse = async (): Promise<SearchEventSubscriptionLogsResponse|null> => {
+    const fetchNextResponse = async (): Promise<SearchEventSubscriptionLogsResponse | null> => {
         if (maxScrollReached || endScrollReached) {
             return null;
         }
