@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\Hydrator;
 
-use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\BackendJobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
@@ -36,13 +37,9 @@ class JobExecutionMessageHydrator
     }
 
     /**
-     * @param array $row
-     *
      * @throws MissingOptionsException
-     *
-     * @return JobExecutionMessage
      */
-    public function hydrate(array $row): JobExecutionMessage
+    public function hydrate(array $row): JobExecutionMessageInterface
     {
         $this->resolver->resolve($row);
 
@@ -55,7 +52,7 @@ class JobExecutionMessageHydrator
         $updatedTime = Type::getType(Type::DATETIME)->convertToPhpValue($row['updated_time'], $platform);
         $consumer = Type::getType(Type::STRING)->convertToPhpValue($row['consumer'], $platform);
 
-        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessageFromDatabase(
+        $jobExecutionMessage = BackendJobExecutionMessage::createJobExecutionMessageFromDatabase(
             $id,
             $jobExecutionId,
             $consumer,

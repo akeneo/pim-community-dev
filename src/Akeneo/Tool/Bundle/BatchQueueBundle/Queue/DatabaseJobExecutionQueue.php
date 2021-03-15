@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\Queue;
 
-use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobQueueConsumerConfiguration;
 
@@ -30,7 +30,7 @@ class DatabaseJobExecutionQueue implements JobExecutionQueueInterface
     /**
      * {@inheritdoc}
      */
-    public function publish(JobExecutionMessage $jobExecutionMessage): void
+    public function publish(JobExecutionMessageInterface $jobExecutionMessage): void
     {
         $this->jobExecutionMessageRepository->createJobExecutionMessage($jobExecutionMessage);
     }
@@ -38,7 +38,7 @@ class DatabaseJobExecutionQueue implements JobExecutionQueueInterface
     /**
      * {@inheritdoc}
      */
-    public function consume(string $consumer, JobQueueConsumerConfiguration $configuration): ?JobExecutionMessage
+    public function consume(string $consumer, JobQueueConsumerConfiguration $configuration): ?JobExecutionMessageInterface
     {
         $hasBeenUpdated = false;
         $jobExecutionMessage = null;

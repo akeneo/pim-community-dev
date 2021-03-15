@@ -79,7 +79,7 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
             // update status if the job execution failed due to an uncatchable error as a fatal error
             $exitStatus = $this->executionManager->getExitStatus($jobExecutionMessage);
             if ($exitStatus && $exitStatus->isRunning()) {
-                $this->executionManager->markAsFailed($jobExecutionMessage);
+                $this->executionManager->markAsFailed($jobExecutionMessage->getJobExecutionId());
             }
         }
 
