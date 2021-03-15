@@ -1,1 +1,60 @@
+pim_analytics:
+  system_info:
+    title: Systeminformationen
+    download: Herunterladen
+  info_header:
+    property: Eigenschaft
+    information: Information
+  info_type:
+    pim_edition: Edition
+    pim_version: Version
+    pim_storage_driver: Speicher
+    pim_environment: Umgebung
+    pim_install_time: Installationszeit
+    registered_bundles: Registrierte Bundles
+    nb_channels: Anzahl der Kanäle
+    nb_products: Anzahl der Produkte
+    nb_product_models: Anzahl der Produktmodelle
+    nb_variant_products: Anzahl der Produktvarianten
+    nb_family_variants: Anzahl der Familienvarianten
+    nb_attributes: Anzahl der Attribute
+    nb_scopable_attributes: Anzahl der Attribute mit Gültigkeitsbereiche
+    nb_localizable_attributes: Anzahl der lokalisierbaren Attribute
+    nb_scopable_localizable_attributes: Anzahl der lokalisierbaren Attribute mit Gültigkeitsbereiche
+    nb_useable_as_grid_filter_attributes: Anzahl der Attribute, die als Rasterfilter verwendet werden können
+    avg_percentage_scopable_attributes_per_family: Durchschnittlicher Prozentsatz von skalierbaren Attribute pro Produktfamilie
+    avg_percentage_localizable_attributes_per_family: Durchschnittlicher Prozentsatz der lokalisierbaren Attribute pro Produktfamilie
+    avg_percentage_scopable_localizable_attributes_per_family: Durchschnittlicher Prozentsatz der lokalisierbaren und skalierbaren Attribute pro Familie
+    avg_number_attributes_per_family: Durchschnittliche Anzahl der Attribute pro Familie
+    nb_locales: Anzahl der Gebietsschemas
+    nb_families: Anzahl der Familien
+    nb_users: Anzahl der Benutzer
+    nb_categories: Anzahl der Kategorien
+    nb_category_trees: Anzahl der Kategorie-Bäume
+    max_category_in_one_category: Maximalanzahl der Kategorien in einer Kategorie
+    max_category_levels: Maximalanzahl der Kategorieebenen
+    nb_product_values: Anzahl der Produktwerte
+    avg_product_values_by_product: Durchschnittliche Anzahl der Produktwerte nach Produkt
+    avg_product_values_by_family: Durchschnittliche Anzahl von potenziellen Produktwerten nach Produktfamilie
+    max_product_values_by_family: Durchschnittliche Anzahl von potenziellen Produktwerten nach Produktfamilie
+    pim_storage_version: Speicherversion
+    os_version: OS-Version
+    php_version: PHP-Version
+    mysql_version: MySQL-Version
+    mariadb_version: MariaDB-Version
+    mongodb_version: MongoDB-Version
+    server_version: Server-Version
+    php_extensions: PHP-Erweiterungen
+    email_domains: Zugeordnete E-Mail-Domains
+    api_connection: API-Verbindungen
+    nb_media_files_in_products: Anzahl der Mediendateien in den Produkten
+    nb_media_images_in_products: Anzahl der Medienbilder in den Produkten
+    is_demo_catalog: Demokatalog installiert
+    nb_active_event_subscription: Anzahl aktivierter Web-Hooks
+    data_source.tracked: Anzahl der verfolgten API-Quellverbindungen
+    data_source.untracked: Anzahl der nicht verfolgten API-Quellenverbindungen
+    data_destination.tracked: Anzahl der verfolgten API-Zielverbindungen
+    data_destination.untracked: Anzahl der nicht verfolgten API-Zielverbindungen
+    other.tracked: Anzahl der anderen verfolgten API-Verbindungen
+    other.untracked: Anzahl der anderen nicht verfolgten API-Verbindungen 
 

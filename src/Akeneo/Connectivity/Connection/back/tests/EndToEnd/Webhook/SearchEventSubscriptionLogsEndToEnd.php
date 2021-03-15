@@ -27,7 +27,7 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
         parent::setUp();
 
         $this->webhookLoader = $this->get('akeneo_connectivity.connection.fixtures.webhook_loader');
-        $this->clock = $this->get('akeneo_connectivity.connection.system_clock');
+        $this->clock = $this->get('akeneo_connectivity.connection.clock');
         $this->eventSubscriptionLogLoader = $this->get(
             'akeneo_connectivity.connection.fixtures.event_subscription_log_loader'
         );
@@ -84,7 +84,7 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
     {
         $this->eventSubscriptionLogLoader->bulkInsert(array_map($generator, range(0, $number - 1)));
     }
-    
+
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();

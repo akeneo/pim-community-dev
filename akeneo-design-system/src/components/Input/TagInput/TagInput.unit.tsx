@@ -38,6 +38,24 @@ test('it allows tags to be created', () => {
   expect(result.container.textContent).toBe(expectedTags(['gucci', 'samsung']));
 });
 
+test('it handles on submit callback', () => {
+  const handleChange = jest.fn();
+  const handleSubmit = jest.fn();
+
+  render(
+    <>
+      <label htmlFor="myInput">My label</label>
+      <TagInput id="myInput" value={['12']} onChange={handleChange} onSubmit={handleSubmit} />
+    </>
+  );
+
+  const input = screen.getByLabelText('My label');
+  userEvent.type(input, 'nice{space}');
+  userEvent.type(input, '{enter}');
+  expect(handleChange).toHaveBeenCalled();
+  expect(handleSubmit).toHaveBeenCalled();
+});
+
 test('it supports the copy past of multiple tags', () => {
   const TagInputContainer = () => {
     const [tags, setTags] = useState<string[]>([]);

@@ -29,7 +29,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
             'akeneo_connectivity.connection.persistence.query.search_event_subscription_debug_logs_query'
         );
         $this->elasticsearchClient = $this->get('akeneo_connectivity.client.events_api_debug');
-        $this->clock = $this->get('akeneo_connectivity.connection.system_clock');
+        $this->clock = $this->get('akeneo_connectivity.connection.clock');
 
         $this->clock->setNow(new \DateTimeImmutable('2021-03-02T04:30:11'));
     }

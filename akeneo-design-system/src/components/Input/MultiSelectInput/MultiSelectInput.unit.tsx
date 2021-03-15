@@ -131,10 +131,12 @@ test('it handles removing a Chip', () => {
 
 test('it handles keyboard events', () => {
   const onChange = jest.fn();
+  const onSubmit = jest.fn();
   render(
     <MultiSelectInput
       value={['en_US']}
       onChange={onChange}
+      onSubmit={onSubmit}
       placeholder="Placeholder"
       removeLabel="Remove"
       emptyResultLabel="Empty result"
@@ -157,6 +159,10 @@ test('it handles keyboard events', () => {
 
   const germanOption = screen.queryByText('German');
   expect(germanOption).toBeInTheDocument();
+
+  const input = screen.getByDisplayValue('');
+  userEvent.type(input, '{enter}{enter}');
+  expect(onSubmit).toHaveBeenCalled();
 });
 
 test('it closes the overlay when hitting Escape', () => {

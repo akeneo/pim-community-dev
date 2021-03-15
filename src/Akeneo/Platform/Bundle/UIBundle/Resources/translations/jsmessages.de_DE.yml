@@ -170,6 +170,7 @@ pim_common:
   created: Erstellt
   delete: Löschen
   done: Fertig
+  duplicate: Duplizieren
   edit: Bearbeiten
   entity_updated: Es gibt ungespeicherte Änderungen.
   export: Export
@@ -184,6 +185,7 @@ pim_common:
   less_than: Weniger als
   loading: Lädt...
   media_upload: Upload per Drag & Drop oder hier klicken
+  more_actions: Weitere Aktionen
   more_than: Mehr als
   next: Vor
   "no": "Nein"
@@ -225,6 +227,8 @@ pim_common:
     STARTS WITH: Beginnt mit
     ENDS WITH: Endet mit
   read_more: Mehr lesen
+  channel: Kanal
+  locale: Gebietsschema
 error:
   exception: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
   forbidden: Sie haben keine Berechtigung, diese Seite anzuzeigen

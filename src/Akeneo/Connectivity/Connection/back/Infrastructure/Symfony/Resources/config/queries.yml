@@ -90,6 +90,12 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_connectivity.connection.persistence.query.get_event_subscription_logs_query:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\GetAllEventSubscriptionDebugLogsQuery
+        arguments:
+            - '@akeneo_connectivity.client.events_api_debug'
+            - '@akeneo_connectivity.connection.clock'
+
     akeneo_connectivity_connection.persistence.query.purge_events_api_success_logs:
         class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\PurgeEventsApiSuccessLogsQuery
         arguments:
@@ -104,5 +110,5 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\SearchEventSubscriptionDebugLogsQuery
         arguments:
             - '@akeneo_connectivity.client.events_api_debug'
-            - '@akeneo_connectivity.connection.system_clock'
+            - '@akeneo_connectivity.connection.clock'
             - '@akeneo_connectivity.connection.encrypter'
