@@ -79,7 +79,7 @@ export const EditConnectionWebhook: FC = () => {
                         <SaveButton
                             key={1}
                             webhook={eventSubscription}
-                            onSaveSuccess={fetchEventSubscriptionFormData}
+                            onSaveSuccess={fetchEventSubscription}
                         />,
                     ]}
                     state={<FormState />}
