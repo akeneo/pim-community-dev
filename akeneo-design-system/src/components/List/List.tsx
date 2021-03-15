@@ -63,9 +63,14 @@ const RowContainer = styled.div<{multiline: boolean} & AkeneoThemedProps>`
     border-bottom: 1px solid ${getColor('grey', 60)};
   }
 
+  &:hover {
+    background-color: ${getColor('grey', 20)};
+  }
+
   &:hover ${ActionCellContainer} {
     opacity: 1;
   }
+
   ${CellContainer} {
     align-items: ${({multiline}) => multiline ? 'start' : 'center'};
   }
@@ -165,6 +170,9 @@ const List = ({children, ...rest}: ListProps) => {
 
 Row.displayName = 'List.Row';
 Cell.displayName = 'List.Cell';
+TitleCell.displayName = 'List.Title';
+ActionCell.displayName = 'List.ActionCell';
+RemoveCell.displayName = 'List.RemoveCell';
 
 List.Row = Row;
 List.Cell = Cell;
