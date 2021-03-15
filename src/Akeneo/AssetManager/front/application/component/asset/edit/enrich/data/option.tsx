@@ -8,14 +8,7 @@ import {isOptionData} from 'akeneoassetmanager/domain/model/asset/data/option';
 import {getOptionLabel} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
 
-const View = ({
-  id,
-  value,
-  onChange,
-  locale,
-  canEditData,
-  invalid
-}: ViewGeneratorProps) => {
+const View = ({id, value, onChange, locale, canEditData, invalid}: ViewGeneratorProps) => {
   const translate = useTranslate();
   if (!isOptionData(value.data) || !isOptionAttribute(value.attribute)) {
     return null;
