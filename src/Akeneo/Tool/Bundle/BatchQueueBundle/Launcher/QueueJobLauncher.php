@@ -14,6 +14,7 @@ use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -29,46 +30,23 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class QueueJobLauncher implements JobLauncherInterface
 {
-    /** @var JobRepositoryInterface */
-    private $jobRepository;
+    private JobRepositoryInterface $jobRepository;
+    private JobParametersFactory $jobParametersFactory;
+    private JobRegistry $jobRegistry;
+    private JobParametersValidator $jobParametersValidator;
+    private JobExecutionQueueInterface $queue;
+    private JobExecutionMessageFactory $jobExecutionMessageFactory;
+    private string $environment;
+    private EventDispatcherInterface $eventDispatcher;
+    private BatchLogHandler $batchLogHandler;
 
-    /** @var JobParametersFactory */
-    private $jobParametersFactory;
-
-    /** @var JobRegistry */
-    private $jobRegistry;
-
-    /** @var JobParametersValidator */
-    private $jobParametersValidator;
-
-    /** @var JobExecutionQueueInterface */
-    private $queue;
-
-    /** @var string */
-    private $environment;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
-    /** @var BatchLogHandler */
-    private $batchLogHandler;
-
-    /**
-     * @param JobRepositoryInterface     $jobRepository
-     * @param JobParametersFactory       $jobParametersFactory
-     * @param JobRegistry                $jobRegistry
-     * @param JobParametersValidator     $jobParametersValidator
-     * @param JobExecutionQueueInterface $queue
-     * @param EventDispatcherInterface   $eventDispatcher
-     * @param BatchLogHandler            $batchLogHandler
-     * @param string                     $environment
-     */
     public function __construct(
         JobRepositoryInterface $jobRepository,
         JobParametersFactory $jobParametersFactory,
         JobRegistry $jobRegistry,
         JobParametersValidator $jobParametersValidator,
         JobExecutionQueueInterface $queue,
+        JobExecutionMessageFactory $jobExecutionMessageFactory,
         EventDispatcherInterface $eventDispatcher,
         BatchLogHandler $batchLogHandler,
         string $environment
@@ -77,6 +55,7 @@ class QueueJobLauncher implements JobLauncherInterface
         $this->jobParametersFactory = $jobParametersFactory;
         $this->jobRegistry = $jobRegistry;
         $this->jobParametersValidator = $jobParametersValidator;
+        $this->jobExecutionMessageFactory = $jobExecutionMessageFactory;
         $this->queue = $queue;
         $this->eventDispatcher = $eventDispatcher;
         $this->batchLogHandler = $batchLogHandler;
@@ -95,7 +74,11 @@ class QueueJobLauncher implements JobLauncherInterface
         }
 
         $jobExecution = $this->createJobExecution($jobInstance, $user, $configuration);
-        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
+        $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromJobInstance(
+            $jobInstance,
+            $jobExecution->getId(),
+            $options
+        );
 
         $this->queue->publish($jobExecutionMessage);
 

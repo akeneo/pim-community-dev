@@ -14,10 +14,12 @@ use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory;
+use Akeneo\Tool\Component\BatchQueue\Queue\BackendJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
-use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\User;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -32,10 +34,11 @@ class QueueJobLauncherSpec extends ObjectBehavior
         JobRegistry $jobRegistry,
         JobParametersValidator $jobParametersValidator,
         JobExecutionQueueInterface $queue,
+        JobExecutionMessageFactory $jobExecutionMessageFactory,
         EventDispatcherInterface $eventDispatcher,
         BatchLogHandler $batchLogHandler
     ) {
-        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, $jobParametersValidator, $queue, $eventDispatcher, $batchLogHandler, 'test');
+        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, $jobParametersValidator, $queue, $jobExecutionMessageFactory, $eventDispatcher, $batchLogHandler, 'test');
     }
 
     function it_is_a_job_launcher()
@@ -49,6 +52,7 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $jobParametersValidator,
         $jobRepository,
         $queue,
+        JobExecutionMessageFactory $jobExecutionMessageFactory,
         JobInstance $jobInstance,
         UserInterface $user,
         JobExecution $jobExecution,
@@ -67,6 +71,9 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $jobParametersFactory->create($job, ['foo' => 'bar', 'baz' => 'foz'])->willReturn($jobParameters);
         $jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution'])->willReturn($constraintViolationList);
         $jobRepository->createJobExecution($jobInstance, $jobParameters)->willReturn($jobExecution);
+        $jobExecutionMessageFactory->buildFromJobInstance($jobInstance, 1, ['env' => 'test'])->willReturn(
+            BackendJobExecutionMessage::createJobExecutionMessage(1, ['env' => 'test'])
+        );
         $jobExecution->setUser('julia')->shouldBeCalled();
         $jobRepository->updateJobExecution($jobExecution)->shouldBeCalled();
 
@@ -83,6 +90,7 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $jobParametersValidator,
         $jobRepository,
         $queue,
+        JobExecutionMessageFactory $jobExecutionMessageFactory,
         JobInstance $jobInstance,
         User $user,
         JobExecution $jobExecution,
@@ -103,6 +111,9 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $jobParametersFactory->create($job, ['foo' => 'bar', 'baz' => 'foz'])->willReturn($jobParameters);
         $jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution'])->willReturn($constraintViolationList);
         $jobRepository->createJobExecution($jobInstance, $jobParameters)->willReturn($jobExecution);
+        $jobExecutionMessageFactory->buildFromJobInstance($jobInstance, 1, ['env' => 'test', 'email' => 'julia@akeneo.com'])->willReturn(
+            BackendJobExecutionMessage::createJobExecutionMessage(1, ['env' => 'test'])
+        );
         $jobExecution->setUser('julia')->shouldBeCalled();
         $jobRepository->updateJobExecution($jobExecution)->shouldBeCalled();
 
