@@ -20,7 +20,7 @@ class JobExecutionMessageFactory
     private string $jobMessageTypeFallback;
 
     /**
-     * Map the JobExecutionMessageInterface implementation to the job instance type.
+     * Map the class of the JobExecutionMessageInterface implementation to the job instance type.
      * Example:
      * [
      *      UiJobExecutionMessage::class => ['mass_edit', 'mass_delete'],
