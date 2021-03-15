@@ -299,6 +299,7 @@ const MultiSelectInput = ({
               icon={<OpenButton />}
               title={openLabel}
               onClick={openOverlay}
+              onFocus={handleBlur}
               tabIndex={0}
             />
           </ActionContainer>

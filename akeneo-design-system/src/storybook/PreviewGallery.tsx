@@ -64,7 +64,16 @@ const Content = styled.div<{width: number; height: number} & AkeneoThemedProps>`
   justify-content: center;
   border: 1px solid ${getColor('blue', 40)};
   background-color: ${getColor('blue', 10)};
-  margin-top: 30px;
+  box-sizing: border-box;
+`;
+
+const ListContextContainer = styled.div`
+  display: flex;
+  gap: 10px;
+
+  & > * {
+    max-width: 120px;
+  }
 `;
 
 const MessageBarContainer = styled.div`
@@ -97,5 +106,6 @@ export {
   MessageBarContainer,
   Scrollable,
   SpaceContainer,
+  ListContextContainer,
   useSelection,
 };
