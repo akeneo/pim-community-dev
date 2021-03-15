@@ -185,7 +185,7 @@ ROLE_NEWa;"No permission role";
 
 CSV;
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Export failed, "role.role: The role should begin with "ROLE_" and should contain only underscores and alphanumeric characters in uppercase.: ROLE_NEWa');
+        $this->expectExceptionMessageMatches('/role\.role: The role should begin with "ROLE_" and should contain only underscores and alphanumeric characters in uppercase.: ROLE_NEWa/');
         $this->jobLauncher->launchImport(static::CSV_IMPORT_JOB_CODE, $csvContent);
     }
 
@@ -198,7 +198,7 @@ ROLE_NEW WITH_SPACE;"No permission role";
 
 CSV;
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Export failed, "role.role: The role should begin with "ROLE_" and should contain only underscores and alphanumeric characters in uppercase.: ROLE_NEW WITH_SPACE');
+        $this->expectExceptionMessageMatches('/role\.role: The role should begin with "ROLE_" and should contain only underscores and alphanumeric characters in uppercase.: ROLE_NEW WITH_SPACE/');
         $this->jobLauncher->launchImport(static::CSV_IMPORT_JOB_CODE, $csvContent);
     }
 
@@ -211,7 +211,7 @@ ROLE_NEW_(WITH_BRACKET;"No permission role";
 
 CSV;
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Export failed, "role.role: The role should begin with "ROLE_" and should contain only underscores and alphanumeric characters in uppercase.: ROLE_NEW_(WITH_BRACKET');
+        $this->expectExceptionMessageMatches('/role\.role: The role should begin with "ROLE_" and should contain only underscores and alphanumeric characters in uppercase.: ROLE_NEW_\(WITH_BRACKET/');
         $this->jobLauncher->launchImport(static::CSV_IMPORT_JOB_CODE, $csvContent);
     }
 
