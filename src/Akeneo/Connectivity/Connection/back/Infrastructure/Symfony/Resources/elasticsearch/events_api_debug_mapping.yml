@@ -11,3 +11,5 @@ mappings:
         context:
             type: 'object'
             enabled: false
+        context_flattened:
+            type: 'text'

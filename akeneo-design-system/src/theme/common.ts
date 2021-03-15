@@ -1,10 +1,18 @@
 import styled, {css, keyframes} from 'styled-components';
-import {Color, FontSize, getColor, getFontSize, Palette} from './theme';
+import {Color, FontFamily, FontSize, getColor, getFontSize, Palette} from './theme';
 
 const CommonStyle = css`
+  input,
+  button,
+  select,
+  textarea {
+    font-family: 'Lato';
+    font-size: ${getFontSize('default')};
+  }
+
   font-family: 'Lato';
-  color: ${getColor('grey', 120)};
   font-size: ${getFontSize('default')};
+  color: ${getColor('grey', 120)};
   line-height: 20px;
   box-sizing: border-box;
 `;
@@ -107,8 +115,13 @@ const palette: Palette = {
   danger: 'red',
 };
 
+const fontFamily: FontFamily = {
+  default: 'Lato, "Helvetica Neue", Helvetica, Arial, sans-serif',
+  monospace: 'Courier, "MS Courier New", Prestige, "Everson Mono"',
+};
+
 const BrandedPath = styled.path`
   fill: ${getColor('brand', 100)};
 `;
 
-export {color, fontSize, palette, CommonStyle, BrandedPath, placeholderStyle};
+export {color, fontFamily, fontSize, palette, CommonStyle, BrandedPath, placeholderStyle};

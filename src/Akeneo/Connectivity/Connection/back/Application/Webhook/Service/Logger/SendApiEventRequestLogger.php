@@ -44,6 +44,7 @@ class SendApiEventRequestLogger
             'message' => $message,
             'success' => $success,
             'response' => $response ? ['status_code' => $response->getStatusCode()] : null,
+            'event_count' => count($webhookRequest->apiEvents()),
             'events' => array_map(function (WebhookEvent $event) {
                 $date = \DateTime::createFromFormat(\DateTime::ATOM, $event->eventDateTime());
                 return [

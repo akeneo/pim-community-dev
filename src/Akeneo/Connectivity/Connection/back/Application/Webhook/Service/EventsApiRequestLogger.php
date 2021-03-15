@@ -14,6 +14,18 @@ interface EventsApiRequestLogger
 {
     /**
      * @param array<WebhookEvent> $events
+     * @param array<array<string>> $headers
+     */
+    public function logEventsApiRequestSucceed(
+        string $connectionCode,
+        array $events,
+        string $url,
+        int $statusCode,
+        array $headers
+    ): void;
+
+    /**
+     * @param array<WebhookEvent> $events
      */
     public function logEventsApiRequestTimedOut(
         string $connectionCode,
