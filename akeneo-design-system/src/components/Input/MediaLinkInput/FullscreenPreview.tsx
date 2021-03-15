@@ -23,14 +23,6 @@ const Actions = styled.div`
   gap: 10px;
 `;
 
-const PreviewImage = styled(Image)`
-  width: auto;
-  min-height: 250px;
-  max-width: 100%;
-  object-fit: contain;
-  max-height: calc(-250px + 100vh);
-`;
-
 type FullscreenPreviewProps = {
   closeTitle: string;
   onClose: () => void;

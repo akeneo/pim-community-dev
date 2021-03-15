@@ -1,12 +1,12 @@
 import React, {ChangeEvent, Ref, ReactNode, useRef, isValidElement, cloneElement, createElement} from 'react';
 import styled, {css} from 'styled-components';
-import {Override} from '../../../shared';
+import {Key, Override} from '../../../shared';
 import {InputProps} from '../InputProps';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {DefaultPictureIllustration} from '../../../illustrations';
 import {IconButton, IconButtonProps, Image, Button} from '../../../components';
 import {FullscreenIcon, LockIcon} from '../../../icons';
-import {useBooleanState} from '../../../hooks';
+import {useBooleanState, useShortcut} from '../../../hooks';
 import {FullscreenPreview} from './FullscreenPreview';
 
 const MediaLinkInputContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
@@ -78,6 +78,7 @@ type MediaLinkInputProps = Override<
 
     /**
      * Url of the thumbnail (can be base64).
+     * //TODO set as nullable when RAC-483 is merged
      */
     thumbnailUrl: string;
 
@@ -110,6 +111,11 @@ type MediaLinkInputProps = Override<
      * Defines if the input is valid or not.
      */
     invalid?: boolean;
+
+    /**
+     * Callback called when the user hit enter on the field.
+     */
+    onSubmit?: () => void;
   }
 >;
 
@@ -130,6 +136,7 @@ const MediaLinkInput = React.forwardRef<HTMLInputElement, MediaLinkInputProps>(
       children,
       invalid = false,
       readOnly = false,
+      onSubmit,
       ...rest
     }: MediaLinkInputProps,
     forwardedRef: Ref<HTMLInputElement>
@@ -158,6 +165,11 @@ const MediaLinkInput = React.forwardRef<HTMLInputElement, MediaLinkInputProps>(
 
       return null;
     });
+
+    const handleEnter = () => {
+      !readOnly && onSubmit?.();
+    };
+    useShortcut(Key.Enter, handleEnter, forwardedRef);
 
     return (
       <>
