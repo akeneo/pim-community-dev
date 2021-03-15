@@ -1,12 +1,4 @@
-import React, {
-  ForwardedRef,
-  isValidElement,
-  KeyboardEvent,
-  ReactNode,
-  SyntheticEvent,
-  useCallback,
-  useRef
-} from 'react';
+import React, {isValidElement, KeyboardEvent, ReactNode, Ref, SyntheticEvent, useCallback, useRef} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {Image} from '../../../components/Image/Image';
@@ -71,11 +63,6 @@ type ItemProps = Override<
     disabled?: boolean;
 
     /**
-     * Called when the user click (or hit enter/space) on the item
-     */
-    onClick: () => void;
-
-    /**
      * The content of the item.
      */
     children: ReactNode;
@@ -84,24 +71,19 @@ type ItemProps = Override<
 
 const Item = React.forwardRef<HTMLDivElement, ItemProps>(
   (
-    {children, onKeyDown, onClick, disabled = false, ...rest}: ItemProps,
-    forwardedRef: ForwardedRef<HTMLDivElement>
+    {children, onKeyDown, disabled = false, ...rest}: ItemProps,
+    forwardedRef: Ref<HTMLDivElement>
   ): React.ReactElement => {
     let tall = false;
     const actionableRef = useRef<HTMLAnchorElement>(null);
-    const internalRef = useRef(
-      null === forwardedRef || 'function' === typeof forwardedRef ? null : forwardedRef.current
+    const handleClick = useCallback(
+      (event: SyntheticEvent) => {
+        if (null !== actionableRef.current && actionableRef.current !== event.target && !disabled) {
+          actionableRef.current.click();
+        }
+      },
+      [disabled]
     );
-
-    const handleClick = useCallback((event: SyntheticEvent) => {
-      if (disabled) return;
-      if (null !== actionableRef.current && actionableRef.current !== event.target) {
-        actionableRef.current.click();
-      } else {
-        onClick();
-      }
-    }, [disabled]);
-
     const handleKeyDown = useCallback(
       (event: KeyboardEvent<HTMLDivElement>) => {
         if (Key.Enter === event.key || Key.Space === event.key) {
@@ -161,14 +143,6 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
         });
       }
 
-      if (isValidElement(child)) {
-        return React.cloneElement(child, {
-          ref: actionableRef,
-          readOnly: disabled,
-          tabIndex: -1,
-        });
-      }
-
       return child;
     });
 
@@ -181,7 +155,7 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
         disabled={disabled}
         aria-disabled={disabled}
         {...rest}
-        ref={internalRef}
+        ref={forwardedRef}
       >
         {decoratedChildren}
       </ItemContainer>
