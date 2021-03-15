@@ -1,7 +1,7 @@
-import { EventSubscriptionLog } from '../../model/EventSubscriptionLog';
-import { RefObject, useState } from 'react';
-import { useRoute } from '../../../shared/router';
-import { useInfiniteScroll } from '../../scroll';
+import {EventSubscriptionLog} from '../../model/EventSubscriptionLog';
+import {RefObject, useState} from 'react';
+import {useRoute} from '../../../shared/router';
+import {useInfiniteScroll} from '../../scroll';
 
 const MAX_PAGES = 20;
 
@@ -34,14 +34,21 @@ const useInfiniteEventSubscriptionLogs = (
         endScrollReached: false,
     });
     const [searchAfter, setSearchAfter] = useState<string|null>(null);
-    const { maxScrollReached, endScrollReached } = state;
+    const {maxScrollReached, endScrollReached} = state;
+
+    const parameters: {
+        [name: string]: string,
+    } = {
+        connection_code: connectionCode
+    };
+
+    if (null !== searchAfter) {
+        parameters.search_after = searchAfter;
+    }
 
     const url = useRoute(
         'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs',
-        {
-            connection_code: connectionCode,
-            search_after: searchAfter
-        }
+        parameters
     );
 
     const fetchNextResponse = async (): Promise<SearchEventSubscriptionLogsResponse|null> => {

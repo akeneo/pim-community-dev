@@ -2,13 +2,11 @@ const debounce = (callback: (...args: any[]) => any, delay: number) => {
     let timer: number;
 
     return (...args: any[]) => {
-        const context = this;
+        if (timer) {
+            window.clearTimeout(timer);
+        }
 
-        clearTimeout(timer);
-        // @ts-ignore
-        timer = setTimeout(() => {
-            callback.apply(context, args);
-        }, delay);
+        timer = window.setTimeout(() => callback(...args), delay);
     };
 };
 

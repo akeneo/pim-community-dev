@@ -34,7 +34,7 @@ describe('testing events logs page', () => {
     };
 
     const fetchEventSubscriptionLogsResponses: MockFetchResponses = {
-        'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics&search_after=null': {
+        'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics': {
             json: {
                 results: [
                     {
@@ -104,7 +104,7 @@ describe('testing events logs page', () => {
         mockFetchResponses({
             ...fetchConnectionResponses,
             ...fetchEventSubscriptionResponses,
-            'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics&search_after=null': {
+            'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics': {
                 json: {
                     results: [],
                     total: 0,

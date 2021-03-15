@@ -12,7 +12,7 @@ const useScrollPosition = (
     ref: RefObject<HTMLElement>,
     callback: (position: ScrollPosition) => void,
     deps: DependencyList = [],
-    delay: number = 300
+    delay = 300
 ): void => {
     const handleScroll = useCallback(() => {
         if (null === ref.current) {

@@ -19,7 +19,7 @@ type InfiniteScrollStatus = {
 const useInfiniteScroll = <T>(
     loadNextPage: (prev: T|null) => Promise<T|null>,
     containerRef: RefObject<HTMLElement>,
-    threshold: number = 300
+    threshold = 300
 ): InfiniteScrollStatus => {
     const [state, setState] = useState<{
         lastPage: T|null,
