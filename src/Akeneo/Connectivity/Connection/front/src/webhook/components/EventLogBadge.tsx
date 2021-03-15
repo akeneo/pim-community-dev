@@ -20,5 +20,5 @@ export const EventLogBadge: FC<PropsWithChildren<Props>> = ({level, children}) =
         }
     };
 
-    return <Badge level={defineBadgeLevel(level)} >{children}</Badge>;
+    return <Badge level={defineBadgeLevel(level)}>{children}</Badge>;
 };
