@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\Queue;
 
-use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobQueueConsumerConfiguration;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -22,12 +22,12 @@ final class MessengerJobExecutionQueue implements JobExecutionQueueInterface
         $this->bus = $bus;
     }
 
-    public function publish(JobExecutionMessage $jobExecutionMessage): void
+    public function publish(JobExecutionMessageInterface $jobExecutionMessage): void
     {
         $this->bus->dispatch($jobExecutionMessage);
     }
 
-    public function consume(string $consumer, JobQueueConsumerConfiguration $configuration): ?JobExecutionMessage
+    public function consume(string $consumer, JobQueueConsumerConfiguration $configuration): ?JobExecutionMessageInterface
     {
         throw new \LogicException('You cannot consume messages here. Use symfony messenger command to consume.');
     }

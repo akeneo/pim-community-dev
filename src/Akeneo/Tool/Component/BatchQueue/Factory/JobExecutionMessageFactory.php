@@ -44,11 +44,11 @@ class JobExecutionMessageFactory
         $this->jobMessageTypeFallback = $jobMessageTypeFallback;
     }
 
-    public function buildFromJobInstance(JobInstance $jobInstance, array $options): JobExecutionMessageInterface
+    public function buildFromJobInstance(JobInstance $jobInstance, int $jobExecutionId, array $options): JobExecutionMessageInterface
     {
         $class = $this->getJobMessageClass($jobInstance->getType() ?? '');
 
-        return $class::createJobExecutionMessage($jobInstance->getId(), $options);
+        return $class::createJobExecutionMessage($jobExecutionId, $options);
     }
 
     public function buildFromNormalized(array $normalized): JobExecutionMessageInterface

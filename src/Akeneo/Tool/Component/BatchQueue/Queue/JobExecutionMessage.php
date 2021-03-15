@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\BatchQueue\Queue;
 
-use Webmozart\Assert\Assert;
-
 /**
- * @TODO: CPM-156: make it abstract
- *
  * Object representing the message pushed into a queue to process a job execution asynchronously.
  *
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobExecutionMessage implements JobExecutionMessageInterface
+abstract class JobExecutionMessage implements JobExecutionMessageInterface
 {
     /** @var int */
     private $id;
@@ -35,14 +31,6 @@ class JobExecutionMessage implements JobExecutionMessageInterface
     /** @var array */
     private $options = [];
 
-    /**
-     * @param int       $id
-     * @param int       $jobExecutionId
-     * @param string    $consumer
-     * @param \DateTime $createTime
-     * @param \DateTime $updatedTime
-     * @param array     $options
-     */
     private function __construct(
         ?int $id,
         int $jobExecutionId,
@@ -61,13 +49,8 @@ class JobExecutionMessage implements JobExecutionMessageInterface
 
     /**
      * Create a new JobExecutionMessage that has never been persisted into database.
-     *
-     * @param int   $jobExecutionId
-     * @param array $options
-     *
-     * @return JobExecutionMessage
      */
-    public static function createJobExecutionMessage(int $jobExecutionId, array $options): JobExecutionMessage
+    public static function createJobExecutionMessage(int $jobExecutionId, array $options): JobExecutionMessageInterface
     {
         $createTime = new \DateTime('now', new \DateTimeZone('UTC'));
 
@@ -76,15 +59,6 @@ class JobExecutionMessage implements JobExecutionMessageInterface
 
     /**
      * Create a JobExecutionMessage that has already been persisted in database.
-     *
-     * @param int            $id
-     * @param int            $jobExecutionId
-     * @param null|string    $consumer
-     * @param \DateTime      $createTime
-     * @param \DateTime|null $updatedTime
-     * @param array          $options
-     *
-     * @return JobExecutionMessage
      */
     public static function createJobExecutionMessageFromDatabase(
         int $id,
@@ -93,7 +67,7 @@ class JobExecutionMessage implements JobExecutionMessageInterface
         \DateTime $createTime,
         ?\DateTime $updatedTime,
         array $options
-    ): JobExecutionMessage {
+    ): JobExecutionMessageInterface {
         return new static($id, $jobExecutionId, $consumer, $createTime, $updatedTime, $options);
     }
 
@@ -109,43 +83,26 @@ class JobExecutionMessage implements JobExecutionMessageInterface
         );
     }
 
-    /**
-     * @return null|int
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return int
-     */
     public function getJobExecutionId(): ?int
     {
         return $this->jobExecutionId;
     }
 
-    /**
-     * @return null|string
-     */
     public function getConsumer(): ?string
     {
         return $this->consumer;
     }
 
-    /**
-     * @param string $consumer
-     *
-     * @return JobExecutionMessage
-     */
     public function consumedBy(string $consumer): void
     {
         $this->consumer = $consumer;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getCreateTime(): \DateTime
     {
         return $this->createTime;
