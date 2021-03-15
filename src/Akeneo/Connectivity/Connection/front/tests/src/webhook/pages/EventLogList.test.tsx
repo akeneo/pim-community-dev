@@ -5,7 +5,7 @@ import {Router} from 'react-router-dom';
 import {MockFetchResponses, mockFetchResponses, renderWithProviders} from '../../../test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import fetchMock from 'jest-fetch-mock';
-import {screen} from '@testing-library/react';
+import {screen, within} from '@testing-library/react';
 import {EventSubscriptionLogLevel} from '@src/webhook/model/EventSubscriptionLogLevel';
 
 describe('testing events logs page', () => {
@@ -42,7 +42,9 @@ describe('testing events logs page', () => {
                         timestamp: 1615741520,
                         connection_code: null,
                         message: 'a log message',
-                        context: {},
+                        context: {
+                            foo: "bar",
+                        },
                     },
                 ],
                 total: 1,
@@ -76,7 +78,14 @@ describe('testing events logs page', () => {
         );
 
         expect(await screen.findByText('Alkemics')).toBeInTheDocument();
-        expect(await screen.findByText('a log message', {exact: false})).toBeInTheDocument();
+        expect(await screen.findByText('akeneo_connectivity.connection.webhook.event_logs.list.info.logs_total?total=1')).toBeInTheDocument();
+
+        const row = (await screen.findByText('a log message')).closest('tr') as HTMLTableRowElement;
+        expect(within(row).getByText('03/14/2021')).toBeInTheDocument();
+        expect(within(row).getByText('05:05:20 PM')).toBeInTheDocument();
+        expect(within(row).getByText('INFO')).toBeInTheDocument();
+        expect(within(row).getByText('a log message')).toBeInTheDocument();
+        expect(within(row).getByText('{"foo":"bar"}')).toBeInTheDocument();
     });
 
     test('displays a message when the connection event subscription is not enabled', async () => {
