@@ -85,9 +85,13 @@ class UserProcessorSpec extends ObjectBehavior
         $user->getId()->willReturn(null);
         $factory->create()->shouldBeCalled()->willReturn($user);
         $updater->update($user, $item)->shouldBeCalled();
+        $updater->update(
+            $user,
+            Argument::that(
+                fn ($argument): bool => \is_array($argument) && 1 === \count($argument) && \is_string($argument['password'] ?? null)
+            )
+        )->shouldBeCalled();
         $validator->validate($user)->shouldBeCalled()->willReturn(new ConstraintViolationList([]));
-
-        $user->setPlainPassword(Argument::type('string'))->shouldBeCalled();
 
         $this->process($item)->shouldReturn($user);
     }
@@ -101,6 +105,7 @@ class UserProcessorSpec extends ObjectBehavior
         DatagridView $productGridView
     ) {
         $repository->getIdentifierProperties()->willReturn(['username']);
+        $julia->getId()->willReturn(44);
         $repository->findOneByIdentifier('julia')->willReturn($julia);
         $productGridView->getId()->willReturn(42);
         $gridViewRepository->findOneBy(['label' => 'My product grid view'])->willReturn($productGridView);
@@ -131,6 +136,7 @@ class UserProcessorSpec extends ObjectBehavior
         FileInfoInterface $fileInfo
     ) {
         $repository->getIdentifierProperties()->willReturn(['username']);
+        $julia->getId()->willReturn(44);
         $repository->findOneByIdentifier('julia')->willReturn($julia);
 
         $fileStorer->store(Argument::type(\SplFileInfo::class), 'catalogStorage')->shouldBeCalled()->willReturn($fileInfo);

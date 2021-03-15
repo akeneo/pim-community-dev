@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -68,10 +69,28 @@ class UserProcessor extends Processor
             }
         }
 
-        $user =  parent::process($item);
-        if (null === $user->getId()) {
-            $user->setPlainPassword(\uniqid('tmp_pwd'));
+        $itemIdentifier = $this->getItemIdentifier($this->repository, $item);
+        $user = $this->findOrCreateObject($itemIdentifier);
+
+        try {
+            $this->updater->update($user, $item);
+            if (null === $user->getId()) {
+                $this->updater->update($user, ['password' => \uniqid('tmp_pwd')]);
+            }
+        } catch (PropertyException $exception) {
+            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
+
+        $violations = $this->validate($user);
+        if ($violations->count() > 0) {
+            $this->objectDetacher->detach($user);
+            $this->skipItemWithConstraintViolations($item, $violations);
+        }
+
+        if (null !== $this->stepExecution) {
+            $this->saveProcessedItemInStepExecutionContext($itemIdentifier, $user);
+        }
+
 
         return $user;
     }
