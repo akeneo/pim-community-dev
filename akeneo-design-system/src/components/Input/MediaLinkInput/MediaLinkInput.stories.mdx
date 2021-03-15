@@ -1,0 +1,138 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {MediaLinkInput} from './MediaLinkInput.tsx';
+import {FullscreenPreview} from './FullscreenPreview.tsx';
+import {Image, IconButton} from '../../../components';
+import {RefreshIcon, CopyIcon, DownloadIcon} from '../../../icons';
+
+<Meta
+  title="Components/Inputs/MediaLink input"
+  component={MediaLinkInput}
+  args={{
+    value: null,
+    placeholder: 'Put your media link here',
+  }}
+/>
+
+# MediaLinkInput
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [value, setValue] = useState('https://picsum.photos/seed/strixos/500/500');
+      return (
+        <MediaLinkInput
+          {...args}
+          value={value}
+          onChange={setValue}
+          thumbnailUrl={value}
+          preview={<FullscreenPreview.Image src={value} />}
+        >
+          <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
+          <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
+          <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
+        </MediaLinkInput>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+# Variation on readOnly
+
+<Canvas>
+  <Story name="Read only">
+    {args => {
+      const [value, setValue] = useState('https://picsum.photos/seed/strixos/500/500');
+      return (
+        <>
+          <MediaLinkInput
+            {...args}
+            readOnly={false}
+            value=""
+            onChange={setValue}
+            thumbnailUrl={value}
+            preview={<FullscreenPreview.Image src={value} />}
+          >
+            <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
+            <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
+            <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
+          </MediaLinkInput>
+          <MediaLinkInput
+            {...args}
+            readOnly={true}
+            value=""
+            onChange={setValue}
+            thumbnailUrl={value}
+            preview={<FullscreenPreview.Image src={value} />}
+          >
+            <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
+            <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
+            <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
+          </MediaLinkInput>
+          <MediaLinkInput
+            {...args}
+            readOnly={true}
+            value={value}
+            onChange={setValue}
+            thumbnailUrl={value}
+            preview={<FullscreenPreview.Image src={value} />}
+          >
+            <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
+            <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
+            <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
+          </MediaLinkInput>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+# Variation on invalid
+
+<Canvas>
+  <Story name="Invalid">
+    {args => {
+      const [value, setValue] = useState('https://picsum.photos/seed/strixos/500/500');
+      return (
+        <>
+          <MediaLinkInput
+            {...args}
+            invalid={false}
+            value={value}
+            onChange={setValue}
+            thumbnailUrl={value}
+            preview={<FullscreenPreview.Image src={value} />}
+          >
+            <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
+            <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
+            <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
+          </MediaLinkInput>
+          <MediaLinkInput
+            {...args}
+            invalid={true}
+            value={value}
+            onChange={setValue}
+            thumbnailUrl={value}
+            preview={<FullscreenPreview.Image src={value} />}
+          >
+            <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
+            <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
+            <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
+          </MediaLinkInput>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
