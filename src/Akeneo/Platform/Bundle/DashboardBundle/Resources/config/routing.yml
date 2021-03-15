@@ -5,4 +5,7 @@ pim_dashboard_widget_data:
 
 pim_dashboard_index:
     path: /dashboard
+
+pim_dashboard_index_old:
+    path: /dashboard-old
     defaults: { _controller: FrameworkBundle:Template:template, template: PimDashboardBundle:Dashboard:index.html.twig }

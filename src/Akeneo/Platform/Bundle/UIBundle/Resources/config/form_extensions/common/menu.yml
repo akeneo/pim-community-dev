@@ -47,6 +47,14 @@ extensions:
             title: pim_menu.item.dashboard
             to: pim_dashboard_index
 
+    pim-menu-activity-dashboard-old:
+        module: pim/menu/item
+        parent: pim-menu-activity-navigation-block
+        position: 101
+        config:
+            title: Dashboard (old)
+            to: pim_dashboard_index_old
+
     pim-menu-activity-job-tracker:
         module: pim/menu/item
         parent: pim-menu-activity-navigation-block
