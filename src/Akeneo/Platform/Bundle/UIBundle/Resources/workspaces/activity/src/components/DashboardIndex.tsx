@@ -7,13 +7,13 @@ import {LastOperationsWidget} from './Widgets/LastOperationsWidget';
 const DashboardIndex = () => {
   return (
     <>
-      <Header/>
+      <Header />
       <PageContent>
-        <CompletenessWidget/>
-        <LastOperationsWidget/>
+        <CompletenessWidget />
+        <LastOperationsWidget />
       </PageContent>
     </>
   );
-}
+};
 
 export {DashboardIndex};

@@ -13,10 +13,8 @@ const LastOperationsWidget = () => {
       </SectionTitle>
 
       <NoDataSection style={{marginTop: 0}}>
-        <SettingsIllustration width={128} height={128}/>
-        <NoDataText>
-          {translate('pim_import_export.widget.last_operations.empty')}
-        </NoDataText>
+        <SettingsIllustration width={128} height={128} />
+        <NoDataText>{translate('pim_import_export.widget.last_operations.empty')}</NoDataText>
       </NoDataSection>
     </>
   );

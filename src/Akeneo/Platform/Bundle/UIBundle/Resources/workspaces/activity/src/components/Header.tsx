@@ -2,6 +2,7 @@ import React from 'react';
 import {PageHeader} from '@akeneo-pim-community/shared';
 import {Breadcrumb} from 'akeneo-design-system';
 import {PimView, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {generateRandomNumber} from '../helpers';
 
 const UserContext = require('pim/user-context');
 const MediaUrlGenerator = require('pim/media-url-generator');
@@ -10,12 +11,10 @@ const Header = () => {
   const translate = useTranslate();
 
   const getRandomWelcomeSentence = (): string => {
-    const welcomeSentences: string[] = [
-      'pim_dashboard.welcome_sentence.message1',
-    ];
+    const welcomeSentences: string[] = ['pim_dashboard.welcome_sentence.message1'];
 
     return welcomeSentences[generateRandomNumber(welcomeSentences.length - 1)];
-  }
+  };
 
   return (
     <PageHeader>
@@ -36,16 +35,13 @@ const Header = () => {
       </PageHeader.UserActions>
       <PageHeader.Title>
         {translate('pim_dashboard.greetings', {
-          name: UserContext.get('first_name').charAt(0).toUpperCase() + UserContext.get('first_name').slice(1)
-        })}&nbsp;
+          name: UserContext.get('first_name').charAt(0).toUpperCase() + UserContext.get('first_name').slice(1),
+        })}
+        &nbsp;
         {translate(getRandomWelcomeSentence())}
       </PageHeader.Title>
     </PageHeader>
   );
-};
-
-const generateRandomNumber = (max: number): number => {
-  return Math.round(Math.random() * max);
 };
 
 export {Header};

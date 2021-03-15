@@ -1,9 +1,15 @@
 import React from 'react';
 import {SectionTitle} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import styled from 'styled-components';
+import {useDashboardCompleteness} from '../../hooks';
+import {ChannelsLocalesCompletenesses} from '../../domain';
+import {ChannelLocalesCompletenesses} from '../ChannelLocalesCompletenesses';
 
 const CompletenessWidget = () => {
   const translate = useTranslate();
+  const userContext = useUserContext();
+  const data: ChannelsLocalesCompletenesses | null = useDashboardCompleteness(userContext.get('catalogLocale'));
 
   return (
     <>
@@ -11,9 +17,13 @@ const CompletenessWidget = () => {
         <SectionTitle.Title>{translate('pim_dashboard.widget.completeness.title')}</SectionTitle.Title>
       </SectionTitle>
 
-      Completeness content
+      <Container>{data != null && <ChannelLocalesCompletenesses data={data} />}</Container>
     </>
   );
 };
 
-export {CompletenessWidget};
+const Container = styled.div`
+  margin: 30px 0 40px 0;
+`;
+
+export {CompletenessWidget, ChannelsLocalesCompletenesses};
