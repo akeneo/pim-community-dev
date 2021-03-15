@@ -10,12 +10,8 @@ test('it renders its children properly', () => {
   render(
     <List>
       <List.Row>
-        <List.TitleCell width="auto">
-          A text
-        </List.TitleCell>
-        <List.Cell width={150}>
-          An information
-        </List.Cell>
+        <List.TitleCell width="auto">A text</List.TitleCell>
+        <List.Cell width={150}>An information</List.Cell>
         <List.ActionCell>
           <Button>First action</Button>
           <Button>Second action</Button>
@@ -26,12 +22,8 @@ test('it renders its children properly', () => {
         </List.RemoveCell>
       </List.Row>
       <List.Row>
-        <List.TitleCell width="auto">
-          Another text
-        </List.TitleCell>
-        <List.Cell width={150}>
-          Another information
-        </List.Cell>
+        <List.TitleCell width="auto">Another text</List.TitleCell>
+        <List.Cell width={150}>Another information</List.Cell>
         <List.ActionCell>
           <Button>Another action</Button>
         </List.ActionCell>

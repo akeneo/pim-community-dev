@@ -19,11 +19,11 @@ const CellContainer = styled.div<{width: 'auto' | number} & AkeneoThemedProps>`
   display: flex;
 
   ${({width}) =>
-  'auto' === width
-    ? css`
+    'auto' === width
+      ? css`
           flex: 1;
         `
-    : css`
+      : css`
           width: ${width}px;
         `};
 `;
@@ -39,7 +39,7 @@ const TitleCell = styled(CellContainer)`
 const ActionCellContainer = styled(CellContainer)`
   opacity: 0;
   display: flex;
-  gap: 10px
+  gap: 10px;
 `;
 
 const RemoveCellContainer = styled(CellContainer)``;
@@ -47,7 +47,9 @@ const RemoveCellContainer = styled(CellContainer)``;
 type RemoveCellProps = React.HTMLAttributes<HTMLDivElement>;
 const RemoveCell = ({children, ...rest}: RemoveCellProps) => {
   return (
-    <RemoveCellContainer width='auto' {...rest}>{children}</RemoveCellContainer>
+    <RemoveCellContainer width="auto" {...rest}>
+      {children}
+    </RemoveCellContainer>
   );
 };
 
@@ -80,11 +82,11 @@ const RowContainer = styled.div<{multiline: boolean} & AkeneoThemedProps>`
   }
 
   ${CellContainer} {
-    align-items: ${({multiline}) => multiline ? 'start' : 'center'};
+    align-items: ${({multiline}) => (multiline ? 'start' : 'center')};
   }
 
   ${TitleCell}, ${RemoveCellContainer} {
-    height: ${({multiline}) => multiline ? '74px' : 'auto'};
+    height: ${({multiline}) => (multiline ? '74px' : 'auto')};
     align-items: center;
   }
 `;
@@ -107,12 +109,15 @@ const RowHelpers = styled.div`
   margin-bottom: 10px;
 `;
 
-type RowProps = Override<React.HTMLAttributes<HTMLDivElement>, {
-  /**
-   * Define if line contain multiline content
-   */
-  multiline?: boolean;
-}>;
+type RowProps = Override<
+  React.HTMLAttributes<HTMLDivElement>,
+  {
+    /**
+     * Define if line contain multiline content
+     */
+    multiline?: boolean;
+  }
+>;
 
 const Row = ({children, multiline = false}: RowProps) => {
   const actionCellChild: ReactElement[] = [];
@@ -130,23 +135,25 @@ const Row = ({children, multiline = false}: RowProps) => {
   });
 
   return (
-   <RowContainer multiline={multiline} tabIndex={0}>
-     <RowContentContainer>
-       <RowDataContainer>{cells}</RowDataContainer>
-       {actionCellChild.length > 0 && (<RowActionContainer>{actionCellChild}</RowActionContainer>)}
-     </RowContentContainer>
-     {helpers}
-   </RowContainer>
+    <RowContainer multiline={multiline} tabIndex={0}>
+      <RowContentContainer>
+        <RowDataContainer>{cells}</RowDataContainer>
+        {actionCellChild.length > 0 && <RowActionContainer>{actionCellChild}</RowActionContainer>}
+      </RowContentContainer>
+      {helpers}
+    </RowContainer>
   );
 };
 
-
-type CellProps = Override<React.HTMLAttributes<HTMLDivElement>, {
-  /**
-   * The width of the cell.
-   */
-  width: 'auto' | number;
-}>;
+type CellProps = Override<
+  React.HTMLAttributes<HTMLDivElement>,
+  {
+    /**
+     * The width of the cell.
+     */
+    width: 'auto' | number;
+  }
+>;
 
 const Cell = ({title, width, children, ...rest}: CellProps) => {
   title = undefined === title && typeof children === 'string' ? children : title;
@@ -165,18 +172,14 @@ const ActionCell = ({children, ...rest}: ActionCellProps) => {
       return React.cloneElement(child, {
         size: 'small',
         ghost: true,
-        level: 'tertiary'
+        level: 'tertiary',
       });
     }
 
     return child;
   });
 
-  return (
-    <ActionCellContainer {...rest}>
-      {decoratedChildren}
-    </ActionCellContainer>
-  );
+  return <ActionCellContainer {...rest}>{decoratedChildren}</ActionCellContainer>;
 };
 
 type ListProps = {
@@ -187,7 +190,7 @@ type ListProps = {
 };
 
 /**
- * TODO.
+ * List allow users to analyze and manipulate data.
  */
 const List = ({children, ...rest}: ListProps) => {
   return <ListContainer {...rest}>{children}</ListContainer>;
