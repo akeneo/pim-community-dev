@@ -79,11 +79,11 @@ const UpdaterRow = ({updater, uiLocale, readOnly = false, errors, onChange, onRe
 
   return (
     <List.Row multiline>
-      <List.Title width="auto">
+      <List.TitleCell width="auto">
         <AttributeName htmlFor={id}>
           {getLabel(updater.attribute.labels, uiLocale, updater.attribute.code)}
         </AttributeName>
-      </List.Title>
+      </List.TitleCell>
       <List.Cell width={400}>
         <InputField>
           <InputView
