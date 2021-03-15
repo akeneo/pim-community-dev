@@ -59,7 +59,10 @@ const RowActionContainer = styled.div`
 
 const RowContainer = styled.div<{multiline: boolean} & AkeneoThemedProps>`
   display: flex;
+  flex-direction: column;
   outline-style: none;
+  padding: 0 10px;
+
   &:not(:last-child) {
     border-bottom: 1px solid ${getColor('grey', 60)};
   }
@@ -88,9 +91,20 @@ const RowContainer = styled.div<{multiline: boolean} & AkeneoThemedProps>`
 
 const RowContentContainer = styled.div`
   display: flex;
+`;
+
+const RowDataContainer = styled.div`
+  display: flex;
   gap: 10px;
   flex: 1;
   min-width: 0;
+`;
+
+const RowHelpers = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
 `;
 
 type RowProps = Override<React.HTMLAttributes<HTMLDivElement>, {
@@ -103,10 +117,13 @@ type RowProps = Override<React.HTMLAttributes<HTMLDivElement>, {
 const Row = ({children, multiline = false}: RowProps) => {
   const actionCellChild: ReactElement[] = [];
   const cells: ReactNode[] = [];
+  const helpers: ReactNode[] = [];
 
   React.Children.forEach(children, child => {
     if (isValidElement(child) && (child.type === RemoveCell || child.type === ActionCell)) {
       actionCellChild.push(child);
+    } else if (isValidElement(child) && child.type === RowHelpers) {
+      helpers.push(child);
     } else {
       cells.push(child);
     }
@@ -114,8 +131,11 @@ const Row = ({children, multiline = false}: RowProps) => {
 
   return (
    <RowContainer multiline={multiline} tabIndex={0}>
-     <RowContentContainer>{cells}</RowContentContainer>
-     {actionCellChild.length > 0 && (<RowActionContainer>{actionCellChild}</RowActionContainer>)}
+     <RowContentContainer>
+       <RowDataContainer>{cells}</RowDataContainer>
+       {actionCellChild.length > 0 && (<RowActionContainer>{actionCellChild}</RowActionContainer>)}
+     </RowContentContainer>
+     {helpers}
    </RowContainer>
   );
 };
@@ -175,14 +195,15 @@ const List = ({children, ...rest}: ListProps) => {
 
 Row.displayName = 'List.Row';
 Cell.displayName = 'List.Cell';
-TitleCell.displayName = 'List.Title';
+TitleCell.displayName = 'List.TitleCell';
 ActionCell.displayName = 'List.ActionCell';
 RemoveCell.displayName = 'List.RemoveCell';
 
 List.Row = Row;
 List.Cell = Cell;
-List.Title = TitleCell;
+List.TitleCell = TitleCell;
 List.ActionCell = ActionCell;
 List.RemoveCell = RemoveCell;
+List.RowHelpers = RowHelpers;
 
 export {List};
