@@ -64,10 +64,7 @@ const RowContainer = styled.div<{multiline: boolean} & AkeneoThemedProps>`
   flex-direction: column;
   outline-style: none;
   padding: 0 10px;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid ${getColor('grey', 60)};
-  }
+  border-bottom: 1px solid ${getColor('grey', 60)};
 
   &:hover {
     background-color: ${getColor('grey', 20)};
@@ -105,7 +102,7 @@ const RowDataContainer = styled.div`
 const RowHelpers = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 4px;
   margin-bottom: 10px;
 `;
 
