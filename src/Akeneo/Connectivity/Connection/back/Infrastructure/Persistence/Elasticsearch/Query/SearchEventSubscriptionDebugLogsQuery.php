@@ -114,6 +114,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
      *  levels?: array,
      *  timestamp_from?: int,
      *  timestamp_to?: int,
+     *  text?: string,
      * } $filters
      * @return array<mixed>
      */
@@ -190,7 +191,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
             $query['query']['bool']['must']['range']['timestamp']['lte'] = $filters['timestamp_to'];
         }
 
-        if ($filters['text']) {
+        if (null !== $filters['text']) {
             $query['query']['bool']['must']['bool']['should'] = [
                 [
                     'match' => [
@@ -201,7 +202,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
                 ],
                 [
                     'match' => [
-                        'context' => [
+                        'context_flattened' => [
                             'query' => $filters['text'],
                         ],
                     ],

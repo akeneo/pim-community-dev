@@ -7,8 +7,8 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Persistence\Elasticse
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\SearchEventSubscriptionDebugLogsQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventSubscriptionLogLoader;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -17,7 +17,7 @@ use PHPUnit\Framework\Assert;
  */
 class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 {
-    private Client $elasticsearchClient;
+    private EventSubscriptionLogLoader $eventSubscriptionLogLoader;
     private SearchEventSubscriptionDebugLogsQuery $query;
     private FakeClock $clock;
 
@@ -28,7 +28,9 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $this->query = $this->get(
             'akeneo_connectivity.connection.persistence.query.search_event_subscription_debug_logs_query'
         );
-        $this->elasticsearchClient = $this->get('akeneo_connectivity.client.events_api_debug');
+        $this->eventSubscriptionLogLoader = $this->get(
+            'akeneo_connectivity.connection.fixtures.event_subscription_log_loader'
+        );
         $this->clock = $this->get('akeneo_connectivity.connection.clock');
 
         $this->clock->setNow(new \DateTimeImmutable('2021-03-02T04:30:11'));
@@ -581,8 +583,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
     private function insertLogs(array $logs): void
     {
-        $this->elasticsearchClient->bulkIndexes($logs);
-        $this->elasticsearchClient->refreshIndex();
+        $this->eventSubscriptionLogLoader->bulkInsert($logs);
     }
 
     protected function getConfiguration()
