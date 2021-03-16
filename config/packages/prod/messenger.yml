@@ -20,4 +20,4 @@ framework:
         routing:
             'Akeneo\Platform\Component\EventQueue\Event': webhook
             'Akeneo\Platform\Component\EventQueue\BulkEvent': webhook
-            'Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage': job
+            'Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface': job
