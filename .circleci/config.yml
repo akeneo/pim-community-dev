@@ -28,7 +28,9 @@ jobs:
       - checkout
       - run:
           name: Persist default IMAGE_TAG to be the repo last commit SHA1
-          command: echo export IMAGE_TAG=$CIRCLE_SHA1 >> persisted_env_vars
+          command: |
+              echo export IMAGE_TAG=$CIRCLE_SHA1>> persisted_env_vars
+              echo export IMAGE_TAG_SHORTED=$(echo $CIRCLE_SHA1 | cut -c -7)>> persisted_env_vars
       - persist_to_workspace:
           root: ~/
           paths:
@@ -446,6 +448,9 @@ jobs:
                 at: ~/
           - set_gcloud_config_dev
           - restore_persisted_env_vars
+          - run: 
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?cols=service%2Ccomponent%2Cpfid&from_ts=0&index=main&live=true&messageDisplay=inline&query=kube_namespace%3Asrnt-pimci-${IMAGE_TAG_SHORTED}&stream_sort=time%2Casc&to_ts=-1"
           - run:
               name: Deploy PIM on kubernetes
               command: PIM_CONTEXT=deployment make deploy-serenity
@@ -482,7 +487,7 @@ jobs:
                     ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                     echo export IMAGE_TAG=${LATEST_RELEASE} >> $BASH_ENV
                     echo export INSTANCE_NAME_PREFIX=pimup >> $BASH_ENV
-                    echo export INSTANCE_NAME=pimup-${CIRCLE_SHA1} >> $BASH_ENV
+                    echo export INSTANCE_NAME=pimup-$(echo $CIRCLE_SHA1 | cut -c -7) >> $BASH_ENV
                     echo export CIRCLE_SHA1=${CIRCLE_SHA1} >> $BASH_ENV
           - run:
                 name: Deploy instance with latest release
@@ -498,7 +503,7 @@ jobs:
                 command: PIM_CONTEXT=deployment make test-prod
           - run:
                 name: Check that upgrader pod ran
-                command: kubectl get pods --namespace=srnt-pimup-$CIRCLE_SHA1 | grep pim-upgrader
+                command: kubectl get pods --namespace=srnt-pimup-$(echo $CIRCLE_SHA1 | cut -c -7) | grep pim-upgrader
           - run:
                 name: Prepare infrastructure artifacts
                 command: PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
@@ -937,7 +942,7 @@ workflows:
                         ignore:
                             - master
                 requires:
-                    - build_prod
+                    - test_cronjobs_existence
           - delete_pr_environment:
                 requires:
                     - delete_pr_environment?

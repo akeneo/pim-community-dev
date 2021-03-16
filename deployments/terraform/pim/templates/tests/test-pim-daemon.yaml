@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ .Release.Name }}-auth-test"
+  name: "{{ .Release.Name }}-pim-daemon-test"
   labels:
-    app.kubernetes.io/component: auth-test
+    app.kubernetes.io/component: pim-daemon-test
     {{- include "pim.standardLabels" . | indent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
     "helm.sh/hook": test-success
 spec:
   containers:
-  - name: auth-test
+  - name: pim-daemon-test
     image: debian:buster-slim
     env:
       - name: TARGET
@@ -19,7 +19,7 @@ spec:
         value: {{ .Values.pim.defaultAdminUser.email }}
       - name: PASSWORD
         value: {{ .Values.pim.defaultAdminUser.password }}
-    command: ["bash", "/scripts-dir/test-auth.sh"]
+    command: ["bash", "/scripts-dir/test-daemon.sh"]
     volumeMounts:
     - name: pim-test-scripts
       mountPath: /scripts-dir

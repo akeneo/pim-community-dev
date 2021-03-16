@@ -2,11 +2,15 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: "{{ .Release.Name }}-api-test"
+  labels:
+    app.kubernetes.io/component: api-test
+    {{- include "pim.standardLabels" . | indent 4 }}
+    {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
     "helm.sh/hook": test-success
 spec:
   containers:
-  - name: {{ .Release.Name }}-auth-test
+  - name: api-test
     image: curlimages/curl
     env:
       - name: TARGET
