@@ -16,6 +16,7 @@ import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-fa
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {FileInfo} from 'akeneo-design-system';
 
 const CONCURRENCY = 5;
 const queue = createQueue(CONCURRENCY);
@@ -24,13 +25,18 @@ const queuedFiles: {[key: string]: File} = {};
 
 export const getCurrentQueuedFiles = () => queuedFiles;
 
-const uploadAndDispatch = (line: Line, file: File, dispatch: (action: any) => void) => {
+const uploadAndDispatch = (
+  uploader: (file: File, onProgress: (ratio: number) => void) => Promise<FileInfo>,
+  line: Line,
+  file: File,
+  dispatch: (action: any) => void
+) => {
   queue(() => {
     queuedFiles[line.id] = file;
 
     dispatch(fileUploadStartAction(line));
 
-    return uploadFile(file, line, (line: Line, progress: number) => {
+    return uploadFile(uploader, file, line, (line: Line, progress: number) => {
       dispatch(fileUploadProgressAction(line, progress));
     });
   })
@@ -44,6 +50,7 @@ const uploadAndDispatch = (line: Line, file: File, dispatch: (action: any) => vo
 };
 
 export const onFileDrop = (
+  uploader: (file: File, onProgress: (ratio: number) => void) => Promise<FileInfo>,
   files: File[],
   assetFamily: AssetFamily,
   channels: Channel[],
@@ -62,7 +69,7 @@ export const onFileDrop = (
       dispatch(fileThumbnailGenerationDoneAction(thumbnail, line))
     );
 
-    uploadAndDispatch(line, file, dispatch);
+    uploadAndDispatch(uploader, line, file, dispatch);
 
     return line;
   });
@@ -70,7 +77,11 @@ export const onFileDrop = (
   dispatch(linesAddedAction(lines));
 };
 
-export const retryFileUpload = (line: Line, dispatch: (action: any) => void) => {
+export const retryFileUpload = (
+  uploader: (file: File, onProgress: (ratio: number) => void) => Promise<FileInfo>,
+  line: Line,
+  dispatch: (action: any) => void
+) => {
   const file = queuedFiles[line.id];
 
   if (!file) {
@@ -78,5 +89,5 @@ export const retryFileUpload = (line: Line, dispatch: (action: any) => void) => 
     return;
   }
 
-  uploadAndDispatch(line, file, dispatch);
+  uploadAndDispatch(uploader, line, file, dispatch);
 };

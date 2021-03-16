@@ -29,7 +29,12 @@ const expectQueueInMemoryToContain = (file: File) =>
   expect(Object.values(getCurrentQueuedFiles())).toContainEqual(file);
 const storeInQueueInMemory = (key: string, file: File) => (getCurrentQueuedFiles()[key] = file);
 
-const uploadFileSuccessImpl = (file: File, line: Line, updateProgress: (line: Line, progress: number) => void) => {
+const uploadFileSuccessImpl = (
+  _uploader: Function,
+  file: File,
+  line: Line,
+  updateProgress: (line: Line, progress: number) => void
+) => {
   updateProgress(line, 0);
   updateProgress(line, 1);
 
@@ -39,6 +44,7 @@ const uploadFileSuccessImpl = (file: File, line: Line, updateProgress: (line: Li
   });
 };
 const uploadFileFailureImpl = () => Promise.reject();
+const uploader = jest.fn();
 
 jest.mock('akeneoassetmanager/application/asset-upload/utils/file', () => ({
   uploadFile: jest.fn().mockImplementation(uploadFileSuccessImpl),
@@ -65,7 +71,7 @@ describe('onFileDrop', () => {
     const files: File[] = [];
     const dispatch = jest.fn();
 
-    onFileDrop(files, assetFamily, channels, locales, dispatch);
+    onFileDrop(uploader, files, assetFamily, channels, locales, dispatch);
     await flushPromises();
 
     expect(dispatch).not.toHaveBeenCalled();
@@ -80,7 +86,7 @@ describe('onFileDrop', () => {
     const files: File[] = [file];
     const dispatch = jest.fn();
 
-    onFileDrop(files, assetFamily, channels, locales, dispatch);
+    onFileDrop(uploader, files, assetFamily, channels, locales, dispatch);
     await flushPromises();
 
     const line = createLineFromFilename(file.name, assetFamily, channels, locales);
@@ -96,7 +102,7 @@ describe('onFileDrop', () => {
     const files = [file];
     const dispatch = jest.fn();
 
-    onFileDrop(files, assetFamily, channels, locales, dispatch);
+    onFileDrop(uploader, files, assetFamily, channels, locales, dispatch);
     await flushPromises();
 
     const line = createLineFromFilename(file.name, assetFamily, channels, locales);
@@ -113,7 +119,7 @@ describe('onFileDrop', () => {
     const files = [file];
     const dispatch = jest.fn();
 
-    onFileDrop(files, assetFamily, channels, locales, dispatch);
+    onFileDrop(uploader, files, assetFamily, channels, locales, dispatch);
     await flushPromises();
 
     const line = createLineFromFilename(file.name, assetFamily, channels, locales);
@@ -135,7 +141,7 @@ describe('onFileDrop', () => {
     const files = [file];
     const dispatch = jest.fn();
 
-    onFileDrop(files, assetFamily, channels, locales, dispatch);
+    onFileDrop(uploader, files, assetFamily, channels, locales, dispatch);
     await flushPromises();
 
     const line = createLineFromFilename(file.name, assetFamily, channels, locales);
@@ -152,7 +158,7 @@ describe('onFileDrop', () => {
     const files = [file];
     const dispatch = jest.fn();
 
-    onFileDrop(files, assetFamily, channels, locales, dispatch);
+    onFileDrop(uploader, files, assetFamily, channels, locales, dispatch);
     await flushPromises();
 
     expectQueueInMemoryToContain(file);
@@ -171,7 +177,7 @@ describe('retryFileUpload', () => {
 
     storeInQueueInMemory(line.id, file);
 
-    retryFileUpload(line, dispatch);
+    retryFileUpload(uploader, line, dispatch);
     await flushPromises();
 
     expectQueueInMemoryToContain(file);
@@ -188,7 +194,7 @@ describe('retryFileUpload', () => {
 
     storeInQueueInMemory(line.id, file);
 
-    retryFileUpload(line, dispatch);
+    retryFileUpload(uploader, line, dispatch);
     await flushPromises();
 
     expectQueueInMemoryToBeEmpty();
@@ -209,7 +215,7 @@ describe('retryFileUpload', () => {
     const dispatch = jest.fn();
     const line = createLineFromFilename(file.name, assetFamily, channels, locales);
 
-    retryFileUpload(line, dispatch);
+    retryFileUpload(uploader, line, dispatch);
     await flushPromises();
 
     expectQueueInMemoryToBeEmpty();
