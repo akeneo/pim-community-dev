@@ -25,7 +25,7 @@ const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedP
   line-height: 40px;
   padding: 0 15px;
   outline-style: none;
-
+  cursor: ${({readOnly}) => readOnly ? 'not-allowed' : 'auto'};
   &:focus {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};
   }
