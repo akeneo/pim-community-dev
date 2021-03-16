@@ -31,40 +31,28 @@ class VersionProviderSpec extends ObjectBehavior
         $this->getFullVersion()->shouldReturn('CE 12.42.20-BETA2 STATIC TEST VERSION');
     }
 
-    function it_tells_if_its_not_a_saas_version()
+    function it_provides_serenity_edition()
     {
-        $this->beConstructedWith(StaticCommunityVersion::class);
-        $this->isSaaSVersion()->shouldReturn(false);
+        $this->beConstructedWith(StaticSerenityVersion::class);
+        $this->getEdition()->shouldReturn('Serenity');
     }
 
-    function it_provides_saas_edition()
+    function it_provides_serenity_patch()
     {
-        $this->beConstructedWith(StaticSaaSVersion::class);
-        $this->getEdition()->shouldReturn('EE SaaS');
-    }
-
-    function it_provides_saas_patch()
-    {
-        $this->beConstructedWith(StaticSaaSVersion::class);
+        $this->beConstructedWith(StaticSerenityVersion::class);
         $this->getPatch()->shouldReturn('20200130151605');
     }
 
-    function it_provides_saas_minor_version()
+    function it_provides_serenity_minor_version()
     {
-        $this->beConstructedWith(StaticSaaSVersion::class);
+        $this->beConstructedWith(StaticSerenityVersion::class);
         $this->getMinorVersion()->shouldReturn('20200130151605');
     }
 
-    function it_provides_full_saas_version()
+    function it_provides_full_serenity_version()
     {
-        $this->beConstructedWith(StaticSaaSVersion::class);
-        $this->getFullVersion()->shouldReturn('EE SaaS 20200130151605 STATIC TEST VERSION');
-    }
-
-    function it_tells_if_its_a_saas_version()
-    {
-        $this->beConstructedWith(StaticSaaSVersion::class);
-        $this->isSaaSVersion()->shouldReturn(true);
+        $this->beConstructedWith(StaticSerenityVersion::class);
+        $this->getFullVersion()->shouldReturn('Serenity 20200130151605 STATIC TEST VERSION');
     }
 }
 
@@ -80,7 +68,7 @@ class StaticCommunityVersion
     const EDITION = 'CE';
 }
 
-class StaticSaaSVersion
+class StaticSerenityVersion
 {
     /** @staticvar string */
     const VERSION = '20200130151605';
@@ -89,5 +77,5 @@ class StaticSaaSVersion
     const VERSION_CODENAME = 'STATIC TEST VERSION';
 
     /** @staticvar string */
-    const EDITION = 'EE SaaS';
+    const EDITION = 'Serenity';
 }

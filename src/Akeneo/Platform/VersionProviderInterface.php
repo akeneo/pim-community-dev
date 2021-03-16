@@ -20,6 +20,4 @@ interface VersionProviderInterface
     public function getMinorVersion(): string;
 
     public function getFullVersion(): string;
-
-    public function isSaaSVersion(): bool;
 }

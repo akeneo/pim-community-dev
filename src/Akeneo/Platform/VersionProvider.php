@@ -45,34 +45,26 @@ class VersionProvider implements VersionProviderInterface
      */
     public function getPatch(): string
     {
-        if (!$this->isSaaSVersion()) {
-            $matches = [];
-            $isMatching = preg_match('/^(?P<patch>\d+.\d+.\d+)/', $this->version, $matches);
+        $matches = [];
+        $isMatching = preg_match('/^(?P<patch>\d+.\d+.\d+)/', $this->version, $matches);
 
-            if (!$isMatching) {
-                return $this->version;
-            }
-
-            return $matches['patch'];
+        if (!$isMatching) {
+            return $this->version;
         }
 
-        return $this->version;
+        return $matches['patch'];
     }
 
     public function getMinorVersion(): string
     {
-        if (!$this->isSaaSVersion()) {
-            $matches = [];
-            $isMatching = preg_match('/^(?P<minor>\d+.\d+).\d+/', $this->version, $matches);
+        $matches = [];
+        $isMatching = preg_match('/^(?P<minor>\d+.\d+).\d+/', $this->version, $matches);
 
-            if (!$isMatching) {
-                return $this->version;
-            }
-
-            return $matches['minor'];
+        if (!$isMatching) {
+            return $this->version;
         }
 
-        return $this->version;
+        return $matches['minor'];
     }
 
     /**
@@ -81,13 +73,5 @@ class VersionProvider implements VersionProviderInterface
     public function getFullVersion(): string
     {
         return sprintf('%s %s %s', $this->edition, $this->version, $this->codeName);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isSaaSVersion(): bool
-    {
-        return false !== strpos(strtolower($this->getEdition()), 'saas');
     }
 }
