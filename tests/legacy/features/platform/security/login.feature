@@ -5,3 +5,4 @@ Feature: Login as a user into the application
     Given the "default" catalog configuration
     When I am logged in through the UI as "Mary"
     Then I am on the dashboard page
+    And I should see the text "Hello Mary"
