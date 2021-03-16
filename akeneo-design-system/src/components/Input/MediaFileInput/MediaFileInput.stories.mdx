@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {MediaFileInput} from './MediaFileInput.tsx';
 import {useFakeMediaStorage} from '../../../storybook/hooks/useFakeMediaStorage';
+import {FullscreenPreview} from './FullscreenPreview'; import {IconButton} from "../../IconButton/IconButton"; import {DownloadIcon} from "../../../icons";
 
 <Meta
   title="Components/Inputs/Media File input"
@@ -9,7 +10,6 @@ import {useFakeMediaStorage} from '../../../storybook/hooks/useFakeMediaStorage'
   args={{
     value: null,
     placeholder: 'Drag and drop to upload or click here',
-    downloadLabel: 'Download',
     fullscreenTitle: 'Show fullscreen',
     closeTitle: 'Close',
     clearTitle: 'Clear',
@@ -29,17 +29,20 @@ Media File input allows the user to enter content when the expected user input i
 <Canvas>
   <Story name="Standard">
     {args => {
-      const [uploader, downloader, previewer] = useFakeMediaStorage();
+      const [thumbnailUrl, uploader] = useFakeMediaStorage('https://picsum.photos/seed/akeneo/200');
       const [value, setValue] = useState(null);
       return (
         <MediaFileInput
           {...args}
           value={value}
           onChange={setValue}
+          thumbnailUrl={thumbnailUrl}
+          onChange={setValue}
           uploader={uploader}
-          downloader={downloader}
-          previewer={previewer}
-        />
+          preview={<FullscreenPreview.Image src={thumbnailUrl} />}
+        >
+          <IconButton href={value} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+        </MediaFileInput>
       );
     }}
   </Story>
@@ -56,27 +59,31 @@ Media File input allows the user to enter content when the expected user input i
         filePath: '/file/path.jpg',
         originalFilename: 'nice-name.jpg',
       };
-      const [uploader, downloader, previewer] = useFakeMediaStorage('https://picsum.photos/seed/akeneo/200');
+      const [thumbnailUrl, uploader] = useFakeMediaStorage('https://picsum.photos/seed/akeneo/200');
       const [value, setValue] = useState(file);
       return (
         <>
           <MediaFileInput
             {...args}
             value={value}
+            thumbnailUrl={thumbnailUrl}
             onChange={setValue}
             uploader={uploader}
-            downloader={downloader}
-            previewer={previewer}
-          />
+            preview={<FullscreenPreview.Image src={thumbnailUrl} />}
+          >
+            <IconButton href={value} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+          </MediaFileInput>
           <MediaFileInput
             {...args}
             size="small"
             value={value}
+            thumbnailUrl={thumbnailUrl}
             onChange={setValue}
             uploader={uploader}
-            downloader={downloader}
-            previewer={previewer}
-          />
+            preview={<FullscreenPreview.Image src={thumbnailUrl} />}
+          >
+            <IconButton href={value} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+          </MediaFileInput>
         </>
       );
     }}
@@ -92,9 +99,7 @@ Media File input allows the user to enter content when the expected user input i
         filePath: '/file/path.jpg',
         originalFilename: 'nice-name.jpg',
       };
-      const uploader = () => {};
-      const downloader = () => 'https://picsum.photos/seed/akened/200';
-      const previewer = () => 'https://picsum.photos/seed/akened/200';
+      const [thumbnailUrl, uploader] = useFakeMediaStorage('https://picsum.photos/seed/akeneo/200');
       return (
         <>
           <MediaFileInput
@@ -102,35 +107,43 @@ Media File input allows the user to enter content when the expected user input i
             value={null}
             readOnly
             uploader={uploader}
-            downloader={downloader}
-            previewer={previewer}
-          />
+            thumbnailUrl={thumbnailUrl}
+            preview={<FullscreenPreview.Image src={thumbnailUrl} />}
+          >
+            <IconButton href={thumbnailUrl} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+          </MediaFileInput>
           <MediaFileInput
             {...args}
             value={file}
             readOnly
             uploader={uploader}
-            downloader={downloader}
-            previewer={previewer}
-          />
+            thumbnailUrl={thumbnailUrl}
+            preview={<FullscreenPreview.Image src={thumbnailUrl} />}
+          >
+            <IconButton href={thumbnailUrl} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+          </MediaFileInput>
           <MediaFileInput
             {...args}
             value={null}
             size="small"
             readOnly
             uploader={uploader}
-            downloader={downloader}
-            previewer={previewer}
-          />
+            thumbnailUrl={thumbnailUrl}
+            preview={<FullscreenPreview.Image src={thumbnailUrl} />}
+          >
+            <IconButton href={thumbnailUrl} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+          </MediaFileInput>
           <MediaFileInput
             {...args}
             value={file}
             size="small"
             readOnly
             uploader={uploader}
-            downloader={downloader}
-            previewer={previewer}
-          />
+            thumbnailUrl={thumbnailUrl}
+            preview={<FullscreenPreview.Image src={thumbnailUrl} />}
+          >
+            <IconButton href={thumbnailUrl} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+          </MediaFileInput>
         </>
       );
     }}
@@ -140,35 +153,39 @@ Media File input allows the user to enter content when the expected user input i
 ## Variation on invalid
 
 <Canvas>
-  <Story name="invalid">
+  <Story name="Invalid">
     {args => {
       const file = {
         filePath: '/file/path.jpg',
         originalFilename: 'invalid-image.jpg',
       };
-      const [uploader, downloader, previewer] = useFakeMediaStorage('https://picsum.photos/seed/akenew/400/100');
+      const [thumbnailUrl, uploader] = useFakeMediaStorage('https://picsum.photos/seed/akeneo/200');
       const [value, setValue] = useState(file);
       return (
         <>
           <MediaFileInput
             {...args}
             value={value}
+            thumbnailUrl={thumbnailUrl}
             onChange={setValue}
             uploader={uploader}
-            downloader={downloader}
-            previewer={previewer}
+            preview={<FullscreenPreview.Image src={thumbnailUrl} />}
             invalid={true}
-          />
+          >
+            <IconButton href={value} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+          </MediaFileInput>
           <MediaFileInput
             {...args}
             size="small"
             value={value}
+            thumbnailUrl={thumbnailUrl}
             onChange={setValue}
             uploader={uploader}
-            downloader={downloader}
-            previewer={previewer}
+            preview={<FullscreenPreview.Image src={thumbnailUrl} />}
             invalid={true}
-          />
+          >
+            <IconButton href={value} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+          </MediaFileInput>
         </>
       );
     }}
