@@ -178,6 +178,11 @@ type MultiMultiSelectInputProps = Override<
      * Force the vertical position of the overlay.
      */
     verticalPosition?: VerticalPosition;
+
+    /**
+     * Callback called when the user hit enter on the field.
+     */
+    onSubmit?: () => void;
   }
 >;
 
@@ -194,6 +199,7 @@ const MultiSelectInput = ({
   children = [],
   onChange,
   removeLabel,
+  onSubmit,
   openLabel = '',
   readOnly = false,
   verticalPosition = 'down',
@@ -236,6 +242,8 @@ const MultiSelectInput = ({
       onChange?.(arrayUnique([...value, newValue]));
       setSearchValue('');
       closeOverlay();
+    } else {
+      !readOnly && onSubmit?.();
     }
   };
 
@@ -291,6 +299,7 @@ const MultiSelectInput = ({
               icon={<OpenButton />}
               title={openLabel}
               onClick={openOverlay}
+              onFocus={handleBlur}
               tabIndex={0}
             />
           </ActionContainer>

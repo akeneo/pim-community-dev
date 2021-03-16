@@ -34,7 +34,7 @@ type TableCellProps = {
   children?: ReactNode;
 
   /**
-   * Define the content as title for the row.
+   * Define the cell as the title of the row.
    */
   rowTitle?: boolean;
 };

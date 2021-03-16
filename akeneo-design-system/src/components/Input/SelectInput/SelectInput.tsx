@@ -323,6 +323,7 @@ const SelectInput = ({
               icon={<OpenButton />}
               title={openLabel}
               onClick={handleFocus}
+              onFocus={handleBlur}
               tabIndex={0}
             />
           </ActionContainer>

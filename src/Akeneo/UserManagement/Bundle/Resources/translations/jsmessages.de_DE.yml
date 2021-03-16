@@ -98,3 +98,11 @@ pim_user_management:
       module:
         create:
           button: Gruppe anlegen
+  form:
+    error:
+      required: Dieses Feld ist erforderlich.
+    duplication:
+      title: '"{{ username }}" Benutzer duplizieren'
+      notification:
+        success: Der Benutzer wurde erfolgreich dupliziert
+        failure: Fehler beim Duplizieren

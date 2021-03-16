@@ -42,11 +42,7 @@ class JobQueueConsumerCommandIntegration extends TestCase
     {
         $jobExecution = $this->createJobExecutionInQueue('csv_product_export');
 
-        $output = $this->jobLauncher->launchConsumerOnce();
-
-        $standardOutput = $output->fetch();
-
-        Assert::assertStringContainsString(sprintf('Job execution "%s" is finished.', $jobExecution->getId()), $standardOutput);
+        $this->jobLauncher->launchConsumerOnce();
 
         $row = $this->getJobExecutionDatabaseRow($jobExecution);
 
@@ -71,9 +67,7 @@ class JobQueueConsumerCommandIntegration extends TestCase
     {
         $jobExecution = $this->createJobExecutionInQueue('csv_product_export');
 
-        $output = $this->jobLauncher->launchConsumerOnce(['-j' => ['csv_product_export']]);
-        $standardOutput = $output->fetch();
-        Assert::assertStringContainsString(sprintf('Job execution "%s" is finished.', $jobExecution->getId()), $standardOutput);
+        $this->jobLauncher->launchConsumerOnce(['-j' => ['csv_product_export']]);
 
         $row = $this->getJobExecutionDatabaseRow($jobExecution);
 

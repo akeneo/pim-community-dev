@@ -2,8 +2,9 @@ import React, {ChangeEvent, useCallback, useRef} from 'react';
 import styled from 'styled-components';
 import {InputProps} from '../InputProps';
 import {ArrowDownIcon, ArrowUpIcon, LockIcon} from '../../../icons';
-import {Override} from '../../../shared';
+import {Key, Override} from '../../../shared';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
+import {useShortcut} from '../../../hooks';
 
 const NumberInputContainer = styled.div`
   position: relative;
@@ -58,6 +59,7 @@ const IncrementIconContainer = styled.div`
   height: 100%;
   justify-content: center;
   cursor: pointer;
+  color: ${getColor('grey', 100)};
 `;
 
 type NumberInputProps = Override<
@@ -102,6 +104,11 @@ type NumberInputProps = Override<
      * Defines if the input is valid on not.
      */
     invalid?: boolean;
+
+    /**
+     * Callback called when the user hit enter on the field.
+     */
+    onSubmit?: () => void;
   }
 >;
 
@@ -109,7 +116,7 @@ type NumberInputProps = Override<
  * Number input allows the user to enter content and data when the expected user input is only numbers.
  */
 const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
-  ({invalid, onChange, readOnly, step, ...rest}: NumberInputProps, forwardedRef) => {
+  ({invalid, onChange, readOnly, step, onSubmit, ...rest}: NumberInputProps, forwardedRef) => {
     const internalRef = useRef<HTMLInputElement | null>(null);
     forwardedRef = forwardedRef ?? internalRef;
 
@@ -120,18 +127,23 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       [readOnly, onChange]
     );
 
+    const handleEnter = () => {
+      !readOnly && onSubmit?.();
+    };
+    useShortcut(Key.Enter, handleEnter, forwardedRef);
+
     const handleIncrement = useCallback(() => {
       if (forwardedRef && 'function' !== typeof forwardedRef && forwardedRef.current && !readOnly && onChange) {
         forwardedRef.current.stepUp(step);
         onChange(forwardedRef.current.value);
       }
-    }, [forwardedRef, step]);
+    }, [forwardedRef, step, readOnly]);
     const handleDecrement = useCallback(() => {
       if (forwardedRef && 'function' !== typeof forwardedRef && forwardedRef.current && !readOnly && onChange) {
         forwardedRef.current.stepDown(step);
         onChange(forwardedRef.current.value);
       }
-    }, [forwardedRef, step]);
+    }, [forwardedRef, step, readOnly]);
 
     return (
       <NumberInputContainer>

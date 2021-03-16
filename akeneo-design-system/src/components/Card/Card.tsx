@@ -1,7 +1,7 @@
 import React, {isValidElement, ReactElement, ReactNode, useRef, MouseEvent} from 'react';
 import styled, {css} from 'styled-components';
-import {Checkbox, Link, LinkProps} from '../../components';
-import {AkeneoThemedProps, getColor, getFontSize, placeholderStyle} from '../../theme';
+import {Checkbox, Link, LinkProps, Image} from '../../components';
+import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
 
 type StackProps = {
@@ -74,7 +74,9 @@ const Overlay = styled.div<{stacked: boolean} & AkeneoThemedProps>`
   transition: opacity 0.3s ease-in;
 `;
 
-const CardContainer = styled.div<{fit: string; disabled: boolean; actionable: boolean} & AkeneoThemedProps>`
+const CardContainer = styled.div<
+  {disabled: boolean; actionable: boolean; isLoading: boolean; isSelected: boolean} & AkeneoThemedProps
+>`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -87,13 +89,16 @@ const CardContainer = styled.div<{fit: string; disabled: boolean; actionable: bo
   img {
     position: absolute;
     top: 0;
-    object-fit: ${({fit}) => fit};
     width: ${({stacked}) => (stacked ? '95%' : '100%')};
     height: ${({stacked}) => (stacked ? '95%' : '100%')};
     box-sizing: border-box;
-    border-style: solid;
-    border-width: ${({isSelected}) => (isSelected ? 2 : 1)}px;
-    border-color: ${({isSelected}) => getColor(isSelected ? 'blue' : 'grey', 100)};
+    ${({isLoading, isSelected}) =>
+      !isLoading &&
+      css`
+        border-style: solid;
+        border-width: ${isSelected ? 2 : 1}px;
+        border-color: ${getColor(isSelected ? 'blue' : 'grey', 100)};
+      `}
   }
 
   a,
@@ -104,9 +109,7 @@ const CardContainer = styled.div<{fit: string; disabled: boolean; actionable: bo
   }
 `;
 
-const ImageContainer = styled.div<{isLoading: boolean}>`
-  ${({isLoading}) => isLoading && placeholderStyle}
-
+const ImageContainer = styled.div`
   position: relative;
 
   ::before {
@@ -243,18 +246,18 @@ const Card = ({
 
   return (
     <CardContainer
-      fit={fit}
       isSelected={isSelected}
       actionable={0 < links.length || undefined !== onClick}
       onClick={handleClick}
       disabled={disabled}
       stacked={stacked}
+      isLoading={null === src}
       {...rest}
     >
-      <ImageContainer isLoading={null === src}>
+      <ImageContainer>
         {stacked && <Stack isSelected={isSelected} data-testid="stack" />}
         <Overlay stacked={stacked} />
-        <img src={src ?? ''} alt={texts[0]} />
+        <Image fit={fit} src={src} alt={texts[0]} />
       </ImageContainer>
       <CardLabel>
         {undefined !== onSelect && (

@@ -199,6 +199,7 @@ akeneo_connectivity.connection:
     webhook:
         title: Event subscription
         event_subscription: Event subscription
+        download_logs: Download logs
         helper:
             message: You can be notified of events happening in the PIM for products synchronized with this connected app. You just need to define a URL.
             link: Learn more about event subscription configuration...

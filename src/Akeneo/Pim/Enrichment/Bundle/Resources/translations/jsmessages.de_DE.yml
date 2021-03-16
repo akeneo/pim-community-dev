@@ -284,7 +284,11 @@ pim_enrich.export.product:
         NOT BETWEEN: Nicht zwischen
     quality-score:
       title: Qualitätspunktzahl
+      operator_choice_title: Qualitätspunkte exportieren für
       empty_selection: Keine Bedingung für Qualitätspunktzahl
+      operators:
+        IN AT LEAST ONE LOCALE: Mindestens ein Gebietsschema
+        IN ALL LOCALES: Alle ausgewählten Gebietsschemata
   global_settings:
     title: Globale Einstellungen
 pim_enrich.mass_edit.product:

@@ -23,7 +23,7 @@ module.exports = {
       'src/theme',
       'src/storybook',
       'generator',
-      'src/shared/PreviewGallery'
+      'src/shared/PreviewGallery',
   ],
   coverageReporters: ['text-summary', 'html'],
   coverageDirectory: 'coverage',

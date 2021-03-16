@@ -27,7 +27,8 @@ const placeholderStyle = css`
   animation: ${loadingBreath} 2s infinite;
   background: linear-gradient(270deg, #fdfdfd, #eee);
   background-size: 400% 400%;
-  border: none;
+  border-color: transparent;
+  border-style: none;
   color: transparent;
   border-radius: 3px;
   cursor: default;

@@ -170,6 +170,7 @@ pim_common:
   created: Créé
   delete: Supprimer
   done: Fermer
+  duplicate: Dupliquer
   edit: Modifier
   entity_updated: Des modifications n'ont pas encore été sauvegardées.
   export: Export
@@ -184,6 +185,7 @@ pim_common:
   less_than: Moins de
   loading: Chargement en cours...
   media_upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
+  more_actions: Autres actions
   more_than: Plus de
   next: Suivant
   "no": "Non"
@@ -225,6 +227,8 @@ pim_common:
     STARTS WITH: Commence par
     ENDS WITH: Finit par
   read_more: En savoir plus
+  channel: Canal
+  locale: Locale
 error:
   exception: Oups! Une erreur {{ status_code }} s'est produite...
   forbidden: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page

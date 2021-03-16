@@ -11,6 +11,7 @@ export * from './Image/Image';
 export * from './Information/Information';
 export * from './Input';
 export * from './Link/Link';
+export * from './List/List';
 export * from './Locale/Locale';
 export * from './MessageBar/MessageBar';
 export * from './Modal/Modal';
