@@ -6,4 +6,4 @@ framework:
         routing:
             'Akeneo\Platform\Component\EventQueue\Event': business_event
             'Akeneo\Platform\Component\EventQueue\BulkEvent': business_event
-            'Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage': job
+            'Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface': job
