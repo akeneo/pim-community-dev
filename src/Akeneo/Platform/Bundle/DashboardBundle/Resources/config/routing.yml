@@ -9,3 +9,7 @@ pim_dashboard_index:
 pim_dashboard_index_old:
     path: /dashboard-old
     defaults: { _controller: FrameworkBundle:Template:template, template: PimDashboardBundle:Dashboard:index.html.twig }
+
+pim_dashboard_version_data:
+    path: /dashboard/version_data
+    defaults: { _controller: Akeneo\Platform\Bundle\DashboardBundle\Controller\VersionController }
