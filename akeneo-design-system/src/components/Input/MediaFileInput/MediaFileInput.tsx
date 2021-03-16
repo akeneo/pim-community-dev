@@ -12,10 +12,6 @@ import {FileInfo} from './FileInfo';
 import {FullscreenPreview} from './FullscreenPreview';
 import DefaultPictureIllustration from '../../../../static/illustrations/DefaultPicture.svg';
 
-const ActionButton = styled(IconButton)`
-  color: ${getColor('grey', 100)};
-`;
-
 const MediaFileInputContainer = styled.div<{isCompact: boolean; readOnly: boolean} & AkeneoThemedProps>`
   position: relative;
   display: flex;
@@ -296,7 +292,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
             </>
           ) : null !== value ? (
             <>
-              <Image
+              <MediaFileImage
                 height={isCompact ? 47 : 120}
                 width={isCompact ? 47 : 120}
                 src={thumbnailUrl}
@@ -319,7 +315,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
           <ActionContainer isCompact={isCompact}>
             {value && (
               <>
-                <ActionButton
+                <IconButton
                   size="small"
                   level="tertiary"
                   ghost="borderless"
@@ -327,7 +323,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
                   title={fullscreenTitle}
                   onClick={openFullScreenModal}
                 />
-                <ActionButton
+                <IconButton
                   size="small"
                   href={downloader(value)}
                   target="_blank"
@@ -338,7 +334,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
                   title={downloadLabel}
                 />
                 {!readOnly && (
-                  <ActionButton
+                  <IconButton
                     size="small"
                     level="tertiary"
                     ghost="borderless"

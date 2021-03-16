@@ -82,9 +82,8 @@ type MediaLinkInputProps = Override<
 
     /**
      * Url of the thumbnail (can be base64).
-     * //TODO set as nullable when RAC-483 is merged
      */
-    thumbnailUrl: string;
+    thumbnailUrl: string | null;
 
     /**
      * Component to render the preview.
