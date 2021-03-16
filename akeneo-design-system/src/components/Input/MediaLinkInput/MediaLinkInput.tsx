@@ -58,6 +58,10 @@ const ActionContainer = styled.div`
   color: ${getColor('grey', 100)};
 `;
 
+const MediaLinkImage = styled(Image)`
+  border: none;
+`;
+
 type PreviewType = 'preview' | 'thumbnail';
 
 type MediaLinkInputProps = Override<
@@ -175,7 +179,7 @@ const MediaLinkInput = React.forwardRef<HTMLInputElement, MediaLinkInputProps>(
       <>
         <MediaLinkInputContainer ref={containerRef} tabIndex={readOnly ? -1 : 0} invalid={invalid} readOnly={readOnly}>
           {'' !== value ? (
-            <Image src={thumbnailUrl} height={47} width={47} alt={value} />
+            <MediaLinkImage src={thumbnailUrl} height={47} width={47} alt={value} />
           ) : (
             <DefaultPictureIllustration size={47} />
           )}
