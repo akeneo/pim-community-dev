@@ -15,6 +15,13 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  */
 class NotPrivateNetworkUrlValidator extends ConstraintValidator
 {
+    private \Closure $gethostbynamel;
+
+    public function __construct(\Closure $gethostbynamel = null)
+    {
+        $this->gethostbynamel = $gethostbynamel ?? fn (string $hostname) => gethostbynamel($hostname);
+    }
+
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof NotPrivateNetworkUrl) {
@@ -39,7 +46,7 @@ class NotPrivateNetworkUrlValidator extends ConstraintValidator
             return;
         }
 
-        if (!$ip = gethostbynamel($host)) {
+        if (!$ip = ($this->gethostbynamel)($host)) {
             $this->context->buildViolation($constraint->unresolvableHostMessage)
                 ->setParameter('{{ host }}', $this->formatValue($host))
                 ->addViolation();

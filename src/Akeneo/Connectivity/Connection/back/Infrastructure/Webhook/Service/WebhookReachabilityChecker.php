@@ -36,10 +36,16 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
     /** @var ValidatorInterface */
     private $validator;
 
-    public function __construct(ClientInterface $client, ValidatorInterface $validator)
-    {
+    private \Closure $time;
+
+    public function __construct(
+        ClientInterface $client,
+        ValidatorInterface $validator,
+        \closure $time = null
+    ) {
         $this->client = $client;
         $this->validator = $validator;
+        $this->time = $time ?? fn () => time();
     }
 
     public function check(string $url, string $secret): UrlReachabilityStatus
@@ -57,7 +63,7 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
             );
         }
 
-        $timestamp = time();
+        $timestamp = ($this->time)();
         $signature = Signature::createSignature($secret, $timestamp);
 
         $headers = [

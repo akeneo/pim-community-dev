@@ -1,24 +1,27 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\UrlReachabilityCheckerInterface;
+use Akeneo\Connectivity\Connection\Application\Webhook\Validation\NotPrivateNetworkUrl;
 use Akeneo\Connectivity\Connection\Domain\Webhook\DTO\UrlReachabilityStatus;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\Signature;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
 use GuzzleHttp\ClientInterface;
 use PhpSpec\ObjectBehavior;
-use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Validator\Constraints as ValidatorAssert;
-use PHPUnit\Framework\Assert;
+use Symfony\Component\Validator\Constraints as Assert;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\RequestInterface;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -31,7 +34,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         ClientInterface $client,
         ValidatorInterface $validator
     ): void {
-        $this->beConstructedWith($client, $validator);
+        $this->beConstructedWith($client, $validator, fn () => 1577836800);
     }
 
     public function it_is_initializable(): void
@@ -39,148 +42,109 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         $this->shouldHaveType(UrlReachabilityCheckerInterface::class);
     }
 
-    public function it_checks_url_is_good_and_reachable($client, $validator): void
-    {
-        $validUrl = 'http://172.17.0.1:8000/webhook';
-        $secret = '1234';
-
-        $client->send(Argument::that(function ($object) use ($validUrl) {
-            return $object instanceof Request &&
-                $object->hasHeader('Content-Type') &&
-                $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
-                $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
-                $this->getWrappedObject()::POST === $object->getMethod() &&
-                $validUrl === (string) $object->getUri();
-        }))->willReturn(new Response(200, [], null, '1.1', 'OK'));
-        $validator->validate($validUrl, [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),])->willReturn([]);
-
-        $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
-
-        Assert::assertEquals(
-            $resultUrlReachabilityStatus->getWrappedObject(),
-            new UrlReachabilityStatus(true, "200 OK")
-        );
-    }
-
-    public function it_checks_url_has_invalid_format(
+    public function it_validates_the_url(
         $validator,
         ConstraintViolationInterface $violation
     ): void {
-        $notValidUrl = 'I_AM_NOT_A_VALID_URL';
-        $secret = '1234';
+        $violation->getMessage()
+            ->willReturn('error_message');
         $violationList = new ConstraintViolationList([$violation->getWrappedObject()]);
 
-        $violation->getMessage()->willReturn($notValidUrl);
+        $validator->validate('invalid_url', [
+            new Assert\NotBlank(),
+            new Assert\Url(),
+            new NotPrivateNetworkUrl()
+        ])->willReturn($violationList);
 
-        $validator->validate(
-            $notValidUrl,
-            [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),]
-        )->willReturn($violationList);
-
-        $resultUrlReachabilityStatus = $this->check($notValidUrl, $secret);
-
-        Assert::assertEquals(
-            $resultUrlReachabilityStatus->getWrappedObject(),
-            new UrlReachabilityStatus(false, $notValidUrl)
-        );
+        $this->check('invalid_url', 'secret')
+            ->shouldBeLike(new UrlReachabilityStatus(false, 'error_message'));
     }
 
-    public function it_checks_url_has_invalid_format_because_url_is_blank(
-        $validator,
-        ConstraintViolationInterface $violation
-    ): void {
-        $emptyUrl = '';
-        $secret = '1234';
-        $violationList = new ConstraintViolationList([$violation->getWrappedObject()]);
-
-        $violation->getMessage()->willReturn($emptyUrl);
-
-        $validator->validate(
-            $emptyUrl,
-            [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),]
-        )->willReturn($violationList);
-
-        $resultUrlReachabilityStatus = $this->check($emptyUrl, $secret);
-
-        Assert::assertEquals(
-            $resultUrlReachabilityStatus->getWrappedObject(),
-            new UrlReachabilityStatus(false, $emptyUrl)
-        );
-    }
-
-    public function it_checks_url_is_not_reachable_and_has_response($client, $validator): void
+    public function it_sends_the_request($client, $validator): void
     {
-        $validUrl = 'http://172.17.0.1:8000/webhook';
-        $secret = '1234';
+        $request = new Request('POST', 'url', [
+            'Content-Type' => 'application/json',
+            RequestHeaders::HEADER_REQUEST_SIGNATURE => Signature::createSignature('secret', 1577836800),
+            RequestHeaders::HEADER_REQUEST_TIMESTAMP => 1577836800,
+        ]);
+        $options = ['allow_redirects' => false];
 
-        $request = new Request($this->getWrappedObject()::POST, $validUrl, []);
+        $validator->validate(Argument::cetera())
+            ->willReturn([]);
+        $client->send($request, $options)
+            ->shouldBeCalled()
+            ->willReturn(new Response());
+
+        $this->check('url', 'secret');
+    }
+
+    public function it_succeeds_when_the_response_is_a_success($client, $validator): void
+    {
+        $validator->validate(Argument::cetera())
+            ->willReturn([]);
+        $client->send(Argument::cetera())
+            ->willReturn(new Response(200, [], null, '1.1', 'OK'));
+
+        $this->check('url', 'secret')
+            ->shouldBeLike(new UrlReachabilityStatus(true, '200 OK'));
+    }
+
+    public function it_fails_when_the_response_is_an_error(
+        $client,
+        $validator,
+        RequestInterface $request
+    ): void {
         $response = new Response(451, [], null, '1.1', 'Unavailable For Legal Reasons');
-        $requestException = new RequestException('RequestException message', $request, $response);
+        $requestException = new RequestException('RequestException message', $request->getWrappedObject(), $response);
 
-        $client->send(Argument::that(function ($object) use ($validUrl) {
-            return $object instanceof Request &&
-                $object->hasHeader('Content-Type') &&
-                $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
-                $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
-                $this->getWrappedObject()::POST === $object->getMethod() &&
-                $validUrl === (string) $object->getUri();
-        }))->willThrow($requestException);
-        $validator->validate($validUrl, [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),])->willReturn([]);
+        $validator->validate(Argument::cetera())
+            ->willReturn([]);
+        $client->send(Argument::cetera())
+            ->willThrow($requestException);
 
-        $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
-
-        Assert::assertEquals(
-            $resultUrlReachabilityStatus->getWrappedObject(),
-            new UrlReachabilityStatus(false, "451 Unavailable For Legal Reasons")
-        );
+        $this->check('url', 'secret')
+            ->shouldBeLike(new UrlReachabilityStatus(false, '451 Unavailable For Legal Reasons'));
     }
 
-    public function it_checks_url_is_not_reachable_and_has_no_response($client, $validator): void
-    {
-        $validUrl = 'http://172.17.0.1:8000/webhook';
-        $secret = '1234';
-        $request = new Request($this->getWrappedObject()::POST, $validUrl, []);
-        $connectException = new ConnectException('ConnectException message', $request);
+    public function it_fails_when_the_connection_can_not_be_established(
+        $client,
+        $validator,
+        RequestInterface $request
+    ): void {
+        $connectException = new ConnectException('ConnectException message', $request->getWrappedObject());
 
-        $client->send(Argument::that(function ($object) use ($validUrl) {
-            return $object instanceof Request &&
-                $object->hasHeader('Content-Type') &&
-                $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
-                $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
-                $this->getWrappedObject()::POST === $object->getMethod() &&
-                $validUrl === (string) $object->getUri();
-        }))->willThrow($connectException);
-        $validator->validate($validUrl, [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),])->willReturn([]);
+        $validator->validate(Argument::cetera())
+            ->willReturn([]);
+        $client->send(Argument::cetera())
+            ->willThrow($connectException);
 
-        $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
-
-        Assert::assertEquals(
-            $resultUrlReachabilityStatus->getWrappedObject(),
-            new UrlReachabilityStatus(false, "Failed to connect to server")
-        );
+        $this->check('url', 'secret')
+            ->shouldBeLike(new UrlReachabilityStatus(false, 'Failed to connect to server'));
     }
 
-    public function it_checks_url_is_not_reachable_and_no_request_exception_has_been_raised($client, $validator): void
+    public function it_fails_when_an_unknown_error_is_raised($client, $validator): void
     {
-        $validUrl = 'http://172.17.0.1:8000/webhook';
-        $secret = '1234';
         $transferException = new TransferException('TransferException message');
 
-        $client->send(Argument::that(function ($object) use ($validUrl) {
-            return $object instanceof Request &&
-                $object->hasHeader('Content-Type') &&
-                $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
-                $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
-                $this->getWrappedObject()::POST === $object->getMethod() &&
-                $validUrl === (string) $object->getUri();
-        }))->willThrow($transferException);
-        $validator->validate($validUrl, [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),])->willReturn([]);
+        $validator->validate(Argument::cetera())
+            ->willReturn([]);
+        $client->send(Argument::cetera())
+            ->willThrow($transferException);
 
-        $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
+        $this->check('url', 'secret')
+            ->shouldBeLike(new UrlReachabilityStatus(false, 'Failed to connect to server'));
+    }
 
-        Assert::assertEquals(
-            $resultUrlReachabilityStatus->getWrappedObject(),
-            new UrlReachabilityStatus(false, "Failed to connect to server")
-        );
+    public function it_fails_when_the_request_is_redirected($client, $validator)
+    {
+        $response = new Response(301, [], null, '1.1', 'Moved Permanently');
+
+        $validator->validate(Argument::cetera())
+            ->willReturn([]);
+        $client->send(Argument::cetera())
+            ->willReturn($response);
+
+        $this->check('url', 'secret')
+            ->shouldBeLike(new UrlReachabilityStatus(false, '301 Moved Permanently. Redirection are not allowed.'));
     }
 }
