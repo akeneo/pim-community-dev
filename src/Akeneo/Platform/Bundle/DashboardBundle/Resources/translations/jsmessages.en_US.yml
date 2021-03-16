@@ -7,6 +7,11 @@ pim_dashboard:
         completeness:
             load_more: 'Load more...'
             title: Completeness Over Channels and Locales
+            progress_messages:
+                completeness_incomplete:
+                    message1: You still have some work to do to improve your completness. Keep up!
+                completeness_complete:
+                    message1: Congratulations !
         last_operations:
             title: Last operations
 
