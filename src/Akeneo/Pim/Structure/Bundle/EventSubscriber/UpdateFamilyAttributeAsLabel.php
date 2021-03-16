@@ -48,7 +48,7 @@ class UpdateFamilyAttributeAsLabel implements EventSubscriberInterface
     {
         $attributes = $event->getSubject();
         if (!is_array($attributes)) {
-             return;
+            return;
         }
         $attributes = array_filter(
             $attributes,
