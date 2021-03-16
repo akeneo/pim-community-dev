@@ -4,9 +4,11 @@ import {Header} from './Header';
 import {CompletenessWidget} from './Widgets/CompletenessWidget';
 import {LastOperationsWidget} from './Widgets/LastOperationsWidget';
 import styled from 'styled-components';
+import {PimVersion} from './PimVersion';
 
 const StyledPageContent = styled(PageContent)`
-  height: calc(100vh - 240px);
+  height: calc(100vh - 202px);
+  padding-bottom: 30px;
 `;
 
 const DashboardIndex = () => {
@@ -16,6 +18,7 @@ const DashboardIndex = () => {
       <StyledPageContent>
         <CompletenessWidget />
         <LastOperationsWidget />
+        <PimVersion />
       </StyledPageContent>
     </>
   );
