@@ -95,6 +95,10 @@ const UploadProgress = styled(ProgressBar)`
   width: 100%;
 `;
 
+const MediaFileImage = styled(Image)`
+  border: none;
+`;
+
 type PreviewType = 'preview' | 'thumbnail';
 
 type MediaFileInputProps = Override<
@@ -277,7 +281,12 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
           )}
           {isUploading ? (
             <>
-              <Image height={isCompact ? 47 : 120} width={isCompact ? 47 : 120} src={null} alt={uploadingLabel} />
+              <MediaFileImage
+                height={isCompact ? 47 : 120}
+                width={isCompact ? 47 : 120}
+                src={null}
+                alt={uploadingLabel}
+              />
               <UploadProgress
                 title={uploadingLabel}
                 progressLabel={`${Math.round(progress * 100)}%`}
