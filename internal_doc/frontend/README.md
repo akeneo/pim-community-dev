@@ -1,13 +1,13 @@
 # Frontend documentation reference
 
-- (wip) [Project overview](./project_overview.md)
+- [Project overview](./project_overview.md)
 - [FAQ](./faq.md)
-- (wip) [Frontend developer toolkit](./frontend_developer_toolkit.md)
+- [Frontend developer toolkit](./frontend_developer_toolkit.md)
 
 ## Cookbooks
 
 - Backbone
-    - (wip) [Creating a new Backbone page](./cookbooks/creating_backbone_page.md)
+    - [Creating a new Backbone page](./cookbooks/creating_backbone_page.md)
 - React
     - [Creating a new independent React app](./cookbooks/creating_react_app.md)
 - Backbone ↦ React

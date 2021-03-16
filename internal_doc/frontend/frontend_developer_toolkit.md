@@ -2,9 +2,10 @@
 
 ## Tooling
 
-Our front is running with [NodeJS](https://nodejs.org/en/), built with [Webpack](https://webpack.js.org/concepts/) and
-the dependencies are handled by [Yarn](https://yarnpkg.com/) (and not mpn).
-In order to keep a good code quality we use [ESLint](https://eslint.org/) and the code is formatting with [Prettier](https://prettier.io/).
+The frontend is built with [NodeJS](https://nodejs.org/) and [Webpack](https://webpack.js.org/) and
+the dependencies are handled by [Yarn](https://yarnpkg.com/) (not NPM).
+
+In order to keep a good code quality we use [ESLint](https://eslint.org/) and the code is formatted with [Prettier](https://prettier.io/).
 
 ## Common commands
 
@@ -17,7 +18,9 @@ Here is the most common commands you will use during your front developments:
 - `docker-compose run -u node --rm node yarn lint` Check the code quality and formatting rules with Prettier and ESLint.
 - `docker-compose run -u node --rm node yarn lint-fix` Fix the code quality and formatting rules with Prettier and ESLint.
 
-To go deeper in front commands, you can explore the `scripts` part of the `/package.json` file, and you can run `make` in you command line see available make commands.
+To see all the remaining frontend commands you can explore the `scripts` part of the `package.json` file.
+
+You can also run `make` in your terminal to display a list of all the commands available in the PIM (frontend & backend).
 
 ## Recommended Browser extensions
 

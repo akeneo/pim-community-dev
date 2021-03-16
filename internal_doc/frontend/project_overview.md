@@ -2,13 +2,13 @@
 
 - [Frontend architecture history](#frontend-architecture-history)
 - [Legacy stack](#legacy-stack)
+  - [Backbone](#backbone)
   - [BEM](#bem-deprecated)
 - [React stack](#react-stack)
-  - [External packages](#external-packages)
+  - [External packages](#external-packages-📦)
   - [Internal packages](#internal-packages)
   - [React tests](#react-tests)
 - [Akeneo Design System](#akeneo-design-system)
-- [Translations](#translations)
 
 ## Frontend architecture history
 
@@ -16,15 +16,15 @@
 
    Those javascript modules used Backbone to render views and "form extensions" to compose and extend the UI.
 
-1. The Block Element Modifier (BEM) methodology was introduced, with the goal of rewriting and organize properly all the CSS stylesheets going forward.
+1. The Block Element Modifier (BEM) methodology was introduced, to replace and organize properly all the CSS stylesheets.
 
-1. Typescript was introduced for new development to beneficy from the static typing and avoid a whole class of bugs, as a result javascript is rarely used directly anymore.
+1. Typescript was introduced for new development to benefit from static typing and avoid a whole class of bugs, as a results javascript is rarely used directly anymore.
 
-   The team started to convert javascript module to typescript when necessary.
+   The team started to convert javascript modules to typescript when necessary.
 
 1. The team introduced React to develop new features or easily embed components inside existing backbone pages.
 
-   The goal with React was to get closer to the mainstream stacks and improve the developer experience as well as the onboarding of new teammates. Also, with a SaaS first approache, the ability to extends directly the PIM UI is gone.
+   The goal with React was to get closer to the mainstream stacks and improve the developer experience as well as the onboarding of new teammates. Also, with a SaaS first approach, the ability to extends directly the PIM UI is gone.
 
 1. The new [Design System](https://en.wikipedia.org/wiki/Design_system) created by our UX team started to be implemented in React and allow to re-use standard components everywhere.
 
@@ -32,18 +32,15 @@
 
 ## Legacy stack
 
-<!-- ## Backbone
+### Backbone
 
-`requirejs.yml` files define javascript or typescript modules, they need to be in the `Resources/config/` folder of the Symfony bundle.
+Take a look at the [Akeneo PIM Frontend Guide (medium.com/akeneo-labs)](https://medium.com/akeneo-labs/akeneo-pim-frontend-guide-part-1-bd398b6483a2) for a detailed explanation on the architecture and utilization of Backbone inside the PIM.
 
-In the article available
-[medium.com/akeneo-labs/akeneo-pim-frontend-guide](https://medium.com/akeneo-labs/akeneo-pim-frontend-guide-part-1-bd398b6483a2)
-
-Schema of the relations between requirejs, form-extensions, data-drop-zone, etc... -->
+The documentation (< 4.0) [Design the user interfaces (docs.akeneo.com)](https://docs.akeneo.com/4.0/design_pim/index.html) is also available for the oldest part of the PIM.
 
 ### BEM
 
-The "BEM" refer to the UI styles reimplemented in [less](http://lesscss.org/) and following the [Block Element Modifier methodology](http://getbem.com/).
+The "BEM" refers to the UI styles reimplemented in [less](http://lesscss.org/) and following the [Block Element Modifier methodology](http://getbem.com/).
 
 The documentation is available on [docs.akeneo.com](https://docs.akeneo.com/4.0/design_pim/styleguide/index.html#Overview) (outdated).
 
@@ -51,37 +48,34 @@ As of now, the BEM is deprecated and **not** the source of truth for the UI styl
 
 It is still allowed to use the BEM in Backbone views, and update it if necessary.
 
-<!-- ## Legacy Tests
-
-Quick explanation about _Behat legacy_ used to test the frontend with e2e and the fact that it's deprecated. -->
-
 ## React stack
 
-### External packages
+### External packages 📦
 
- :package: This is a list of some of the external libraries that exists inside the PIM.
+This is a list of some of the external libraries that exist inside the PIM.
 
-- `react-hook-form`
+- `react-hook-form` ([react-hook-form.com](https://react-hook-form.com/))
 
-  Documentation on [react-hook-form.com](https://react-hook-form.com/)
+  To create and manage forms more easily.
 
   Do not use `formik` (deprecated).
 
-- `styled-component`
+- `styled-component` ([styled-components.com](https://styled-components.com/))
 
-  Documentation on [styled-components.com](https://styled-components.com/)
+  To style everything that is not available as a component from the Design System.
 
-- `redux` , `redux-thunk` (EE)
+- `redux` ([redux.js.org](https://redux.js.org/) & `redux-thunk` (EE)
 
-  Documentation on [redux.js.org](https://redux.js.org/)
+  To manage complex states. Must be used with care as most of the time simple states & hooks are enough.
 
-- `react-router`
+- `react-router` ([reactrouter.com](https://reactrouter.com/))
 
-  Documentation on [reactrouter.com](https://reactrouter.com/)
+  To define frontend routing at the app level, without relying on the Symfony route definition.
 
-- `victory`
+- `victory` ([formidable.com](https://formidable.com/open-source/victory/))
 
-  Victory to make charts. Documentation on [formidable.com](https://formidable.com/open-source/victory/)
+  Victory to make charts.
+
 
 - `jquery`
 
@@ -91,32 +85,26 @@ Quick explanation about _Behat legacy_ used to test the frontend with e2e and th
 
   Documentation of the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
 
-These libraries are not mandatory to use (not every form require `react-hook-form` nor `redux`).
+These libraries are not mandatory to use (not every form requires `react-hook-form` nor `redux`).
 
 ### Internal packages
 
-- `@akeneo-pim-community/shared`
+- `@akeneo-pim-community/legacy-bridge` ([sources](https://github.com/akeneo/pim-community-dev/tree/master/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge))
 
-  [Sources](https://github.com/akeneo/pim-community-dev/tree/master/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared)
+  Define a Backbone controller & view to bridge easily with React, as well as all the services coming from the Backbone stack (router, notify, security, translate, ...) that can be injected inside a React app.
 
+- `@akeneo-pim-community/shared` ([sources](https://github.com/akeneo/pim-community-dev/tree/master/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared))
 
-- `@akeneo-pim-community/legacy-bridge`
-
-  [Sources](https://github.com/akeneo/pim-community-dev/tree/master/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge)
-
-
-- `akeneo-design-system`
-
-  Check the [Akeneo Design System](#akeneo-design-system) section.
+  Give access to some utility hooks, components, ...
 
 ### React Tests
 
-TODO
+
 
 ## Akeneo Design System
 
-Checkout the [Akeneo Design System Repository](https://github.com/akeneo/pim-community-dev/tree/master/akeneo-design-system#akeneo-design-system-repository) documentation.
+Check out the [Akeneo Design System Repository](https://github.com/akeneo/pim-community-dev/tree/master/akeneo-design-system#akeneo-design-system-repository) documentation.
 
-## Translations
+The reference environment is available at https://akeneo.github.io/akeneo-design-system/
 
-TODO
+Ask your engineering manager if you are interested in training on the Akeneo Design System.
