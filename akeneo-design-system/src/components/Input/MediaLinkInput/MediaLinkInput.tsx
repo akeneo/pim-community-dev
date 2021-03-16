@@ -8,7 +8,7 @@ import React, {
   createElement,
   useState,
   useEffect,
-  ReactElement
+  ReactElement,
 } from 'react';
 import styled, {css} from 'styled-components';
 import {Key, Override} from '../../../shared';
@@ -169,18 +169,22 @@ const MediaLinkInput = React.forwardRef<HTMLInputElement, MediaLinkInputProps>(
 
     React.Children.forEach(children, (child, index) => {
       if (isValidElement<IconButtonProps>(child) && IconButton === child.type) {
-        actions.push(cloneElement(child, {
-          key: index,
-          level: 'tertiary',
-          ghost: 'borderless',
-          size: 'small'
-        }));
-        fullScreenActions.push(createElement(Button, {
-          key: index,
-          level: 'tertiary',
-          ghost: true,
-          children: [child.props.icon, child.props.title],
-        }));
+        actions.push(
+          cloneElement(child, {
+            key: index,
+            level: 'tertiary',
+            ghost: 'borderless',
+            size: 'small',
+          })
+        );
+        fullScreenActions.push(
+          createElement(Button, {
+            key: index,
+            level: 'tertiary',
+            ghost: true,
+            children: [child.props.icon, child.props.title],
+          })
+        );
       }
     });
 
