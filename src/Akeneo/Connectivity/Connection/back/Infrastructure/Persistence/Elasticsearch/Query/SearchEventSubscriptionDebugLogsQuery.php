@@ -66,7 +66,6 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
     {
         $filters = $this->resolveFilters($filters);
         $parameters = $this->buildParameters($encryptedSearchAfter);
-        $nowTimestamp = $this->clock->now()->getTimestamp();
 
         if (null !== $parameters['first_notice_and_info_id']
             && null !== $parameters['first_notice_and_info_search_after']
@@ -115,6 +114,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
      *  levels?: array,
      *  timestamp_from?: int,
      *  timestamp_to?: int,
+     *  text?: string,
      * } $filters
      * @return array<mixed>
      */
@@ -159,9 +159,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
                                         'bool' => [
                                             'should' => [
                                                 ['term' => ['connection_code' => $connectionCode]],
-                                                // connection_code IS NULL
-                                                ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]],
-
+                                                ['bool' => ['must_not' => ['exists' => ['field' => 'connection_code']]]], // connection_code IS NULL
                                             ],
                                         ],
                                     ],
@@ -191,6 +189,25 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
 
         if (null !== $filters['timestamp_to']) {
             $query['query']['bool']['must']['range']['timestamp']['lte'] = $filters['timestamp_to'];
+        }
+
+        if (null !== $filters['text']) {
+            $query['query']['bool']['must']['bool']['should'] = [
+                [
+                    'match' => [
+                        'message' => [
+                            'query' => $filters['text'],
+                        ],
+                    ],
+                ],
+                [
+                    'match' => [
+                        'context_flattened' => [
+                            'query' => $filters['text'],
+                        ],
+                    ],
+                ],
+            ];
         }
 
         if (null !== $searchAfter) {
@@ -319,12 +336,14 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         $resolver = new OptionsResolver();
 
         $resolver->setDefault('levels', null);
-
         $resolver->setDefault('timestamp_from', null);
         $resolver->setDefault('timestamp_to', null);
+        $resolver->setDefault('text', null);
+
         $resolver->setAllowedTypes('levels', ['null', 'string[]']);
         $resolver->setAllowedTypes('timestamp_from', ['null', 'int']);
         $resolver->setAllowedTypes('timestamp_to', ['null', 'int']);
+        $resolver->setAllowedTypes('text', ['null', 'string']);
 
         $resolver->setAllowedValues(
             'levels',

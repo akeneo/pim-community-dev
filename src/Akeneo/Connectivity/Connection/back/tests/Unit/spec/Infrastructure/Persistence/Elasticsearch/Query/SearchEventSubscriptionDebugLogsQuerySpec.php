@@ -62,4 +62,15 @@ class SearchEventSubscriptionDebugLogsQuerySpec extends ObjectBehavior
                 ['timestamp_to' => 'not_a_correct_timestamp_to']
             ]);
     }
+
+    public function it_throws_an_exception_when_given_text_filter_is_invalid(): void
+    {
+        $this
+            ->shouldThrow(InvalidOptionsException::class)
+            ->during('execute', [
+                'erp',
+                null,
+                ['text' => []]
+            ]);
+    }
 }

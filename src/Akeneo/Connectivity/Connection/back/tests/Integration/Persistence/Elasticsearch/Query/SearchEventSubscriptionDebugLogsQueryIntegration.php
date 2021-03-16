@@ -7,8 +7,8 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Persistence\Elasticse
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\SearchEventSubscriptionDebugLogsQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventSubscriptionLogLoader;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -17,7 +17,7 @@ use PHPUnit\Framework\Assert;
  */
 class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 {
-    private Client $elasticsearchClient;
+    private EventSubscriptionLogLoader $eventSubscriptionLogLoader;
     private SearchEventSubscriptionDebugLogsQuery $query;
     private FakeClock $clock;
 
@@ -28,7 +28,9 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $this->query = $this->get(
             'akeneo_connectivity.connection.persistence.query.search_event_subscription_debug_logs_query'
         );
-        $this->elasticsearchClient = $this->get('akeneo_connectivity.client.events_api_debug');
+        $this->eventSubscriptionLogLoader = $this->get(
+            'akeneo_connectivity.connection.fixtures.event_subscription_log_loader'
+        );
         $this->clock = $this->get('akeneo_connectivity.connection.clock');
 
         $this->clock->setNow(new \DateTimeImmutable('2021-03-02T04:30:11'));
@@ -39,7 +41,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $timestamp = $this->clock->now()->getTimestamp() - 10;
 
         $this->generateLogs(
-            function ($index) use ($timestamp) {
+            function () use ($timestamp) {
                 return [
                     'timestamp' => $timestamp,
                     'level' => EventsApiDebugLogLevels::INFO,
@@ -228,7 +230,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
     {
         $firstTimestamp = $this->clock->now()->getTimestamp();
         $this->generateLogs(
-            function ($index) use ($firstTimestamp) {
+            function () use ($firstTimestamp) {
                 return [
                     'timestamp' => $firstTimestamp,
                     'level' => EventsApiDebugLogLevels::INFO,
@@ -246,7 +248,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $this->clock->setNow($this->clock->now()->modify('+30 seconds'));
         $secondTimestamp = $this->clock->now()->getTimestamp();
         $this->generateLogs(
-            function ($index) use ($secondTimestamp) {
+            function () use ($secondTimestamp) {
                 return [
                     'timestamp' => $secondTimestamp,
                     'level' => EventsApiDebugLogLevels::INFO,
@@ -435,8 +437,143 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         Assert::assertEquals(2, $result['total']);
         Assert::assertCount(2, $result['results']);
-        Assert::assertEquals($timestampTo -20, $result['results'][0]['timestamp']);
+        Assert::assertEquals($timestampTo - 20, $result['results'][0]['timestamp']);
         Assert::assertEquals($timestampTo, $result['results'][1]['timestamp']);
+    }
+
+    public function test_it_searches_a_pattern_on_message()
+    {
+        $timestamp = $this->clock->now()->getTimestamp() - 10;
+        $firstTimestampToFind = $timestamp - 20;
+        $secondTimestampToFind = $timestamp - 10;
+
+        $this->insertLogs(
+            [
+                [
+                    'timestamp' => $firstTimestampToFind,
+                    'level' => EventsApiDebugLogLevels::WARNING,
+                    'message' => 'to find',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $secondTimestampToFind,
+                    'level' => EventsApiDebugLogLevels::ERROR,
+                    'message' => 'the message to find',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::WARNING,
+                    'message' => '',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+            ]
+        );
+
+        $filters = [
+            'text' => 'to find',
+        ];
+
+        $result = $this->query->execute('a_connection_code', null, $filters);
+
+        $resultTimestamps = array_map(
+            function ($log) {
+                return $log['timestamp'];
+            },
+            $result['results']
+        );
+        sort($resultTimestamps);
+
+        Assert::assertEquals(2, $result['total']);
+        Assert::assertEquals($firstTimestampToFind, $resultTimestamps[0]);
+        Assert::assertEquals($secondTimestampToFind, $resultTimestamps[1]);
+    }
+
+    public function test_it_searches_a_pattern_on_context()
+    {
+        $timestamp = $this->clock->now()->getTimestamp() - 10;
+        $firstTimestampToFind = $timestamp - 20;
+        $secondTimestampToFind = $timestamp - 10;
+
+        $this->insertLogs(
+            [
+                [
+                    'timestamp' => $firstTimestampToFind,
+                    'level' => EventsApiDebugLogLevels::NOTICE,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [
+                        'event' => [
+                            'action' => 'action to find',
+                            'event_id' => '9979c367-595d-42ad-9070-05f62f31f49c',
+                            'event_datetime' => '1970-01-01T00:00:00+00:00',
+                            'author' => 'julia',
+                            'author_type' => 'ui',
+                        ],
+                    ],
+                ],
+                [
+                    'timestamp' => $secondTimestampToFind,
+                    'level' => EventsApiDebugLogLevels::ERROR,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [
+                        'event_subscription_url' => 'event_subscription_url',
+                        'events' => [
+                            'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
+                            'author' => 'julia',
+                            'author_type' => 'ui',
+                            'name' => 'product.created',
+                            'timestamp' => 1577836800,
+                        ],
+                        [
+                            'uuid' => '8bdfe74c-da2e-4bda-a2b1-b5e2a3006ea3',
+                            'author' => 'author to find',
+                            'author_type' => 'ui',
+                            'name' => 'product.updated',
+                            'timestamp' => 1577836811,
+                        ],
+                    ],
+                ],
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::NOTICE,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [
+                        'event' => [
+                            'action' => 'product.created',
+                            'event_id' => '9979c367-595d-42ad-9070-05f62f31f49b',
+                            'event_datetime' => '1970-01-01T00:00:00+00:00',
+                            'author' => 'julia',
+                            'author_type' => 'ui',
+                        ],
+                    ],
+                ],
+            ],
+
+        );
+
+        $filters = [
+            'text' => 'to find',
+        ];
+
+        $result = $this->query->execute('a_connection_code', null, $filters);
+
+        $resultTimestamps = array_map(
+            function ($log) {
+                return $log['timestamp'];
+            },
+            $result['results']
+        );
+        sort($resultTimestamps);
+
+        Assert::assertEquals(2, $result['total']);
+        Assert::assertEquals($firstTimestampToFind, $resultTimestamps[0]);
+        Assert::assertEquals($secondTimestampToFind, $resultTimestamps[1]);
     }
 
     private function generateLogs(callable $generator, int $number): void
@@ -446,8 +583,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
     private function insertLogs(array $logs): void
     {
-        $this->elasticsearchClient->bulkIndexes($logs);
-        $this->elasticsearchClient->refreshIndex();
+        $this->eventSubscriptionLogLoader->bulkInsert($logs);
     }
 
     protected function getConfiguration()

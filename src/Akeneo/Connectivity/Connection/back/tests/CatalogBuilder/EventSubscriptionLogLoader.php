@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\CatalogBuilder;
 
+use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Repository\ElasticsearchEventsApiDebugRepository;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 /**
@@ -13,11 +14,11 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class EventSubscriptionLogLoader
 {
-    private Client $elasticsearchClient;
+    private ElasticsearchEventsApiDebugRepository $elasticsearchEventsApiDebugRepository;
 
-    public function __construct(Client $elasticsearchClient)
+    public function __construct(ElasticsearchEventsApiDebugRepository $elasticsearchEventsApiDebugRepository)
     {
-        $this->elasticsearchClient = $elasticsearchClient;
+        $this->elasticsearchEventsApiDebugRepository = $elasticsearchEventsApiDebugRepository;
     }
 
     /**
@@ -33,7 +34,10 @@ class EventSubscriptionLogLoader
      */
     public function bulkInsert(array $logs): void
     {
-        $this->elasticsearchClient->bulkIndexes($logs);
-        $this->elasticsearchClient->refreshIndex();
+        foreach ($logs as $log) {
+            $this->elasticsearchEventsApiDebugRepository->persist($log);
+        }
+
+        $this->elasticsearchEventsApiDebugRepository->flush();
     }
 }

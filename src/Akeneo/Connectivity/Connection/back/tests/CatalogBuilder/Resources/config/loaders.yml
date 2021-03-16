@@ -78,7 +78,7 @@ services:
     akeneo_connectivity.connection.fixtures.event_subscription_log_loader:
         class: Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventSubscriptionLogLoader
         arguments:
-            - '@akeneo_connectivity.client.events_api_debug'
+            - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
 
     akeneo_connectivity.connection.fixtures.events_api_request_count_loader:
         class: Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventsApiRequestCountLoader

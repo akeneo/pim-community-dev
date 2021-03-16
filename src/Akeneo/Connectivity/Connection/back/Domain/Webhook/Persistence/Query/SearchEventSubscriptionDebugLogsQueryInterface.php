@@ -18,6 +18,7 @@ interface SearchEventSubscriptionDebugLogsQueryInterface
      *  levels?: array,
      *  timestamp_from?: int,
      *  timestamp_to?: int,
+     *  text?: string,
      * } $filters
      *
      * @return array{

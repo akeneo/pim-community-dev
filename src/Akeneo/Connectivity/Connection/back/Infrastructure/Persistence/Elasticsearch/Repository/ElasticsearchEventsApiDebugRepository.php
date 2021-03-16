@@ -52,6 +52,7 @@ final class ElasticsearchEventsApiDebugRepository implements EventsApiDebugRepos
         }
 
         $this->client->bulkIndexes($this->buffer);
+        $this->client->refreshIndex();
         $this->buffer = [];
     }
 }
