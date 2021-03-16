@@ -7,7 +7,6 @@
 - [React stack](#react-stack)
   - [External packages](#external-packages-📦)
   - [Internal packages](#internal-packages)
-  - [React tests](#react-tests)
 - [Akeneo Design System](#akeneo-design-system)
 
 ## Frontend architecture history
@@ -96,10 +95,6 @@ These libraries are not mandatory to use (not every form requires `react-hook-fo
 - `@akeneo-pim-community/shared` ([sources](https://github.com/akeneo/pim-community-dev/tree/master/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared))
 
   Give access to some utility hooks, components, ...
-
-### React Tests
-
-
 
 ## Akeneo Design System
 
