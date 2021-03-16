@@ -24,7 +24,6 @@ const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedP
   font-size: ${getFontSize('default')};
   line-height: 40px;
   padding: 0 15px;
-  box-sizing: border-box;
   outline-style: none;
 
   &:focus {

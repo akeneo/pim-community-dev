@@ -1,5 +1,5 @@
 import React, {Ref, ReactElement} from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {IconProps} from '../../icons';
 import {Button, ButtonProps, ButtonSize} from '../../components/Button/Button';
 import {Override} from '../../shared';
@@ -11,6 +11,11 @@ const IconButtonContainer = styled(Button)<ButtonProps & {borderless: boolean}>`
   padding: 0;
   width: ${({size}) => (size === 'small' ? 24 : 32)}px;
   border-style: ${({borderless, ghost}) => (!borderless && ghost ? 'solid' : 'none')};
+  ${({borderless}) =>
+    borderless &&
+    css`
+      background: transparent;
+    `};
 `;
 
 const getIconSize = (size: ButtonSize): number => {

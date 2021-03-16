@@ -1,0 +1,176 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {MediaFileInput} from './MediaFileInput.tsx';
+import {useFakeMediaStorage} from '../../../storybook/hooks/useFakeMediaStorage';
+
+<Meta
+  title="Components/Inputs/Media File input"
+  component={MediaFileInput}
+  args={{
+    value: null,
+    placeholder: 'Drag and drop to upload or click here',
+    downloadLabel: 'Download',
+    fullscreenTitle: 'Show fullscreen',
+    closeTitle: 'Close',
+    clearTitle: 'Clear',
+    uploadingLabel: 'Uploading...',
+    uploadErrorLabel: 'An error occurred during upload',
+  }}
+/>
+
+# Media File input
+
+## Usage
+
+Media File input allows the user to enter content when the expected user input is a file.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [uploader, downloader, previewer] = useFakeMediaStorage();
+      const [value, setValue] = useState(null);
+      return (
+        <MediaFileInput
+          {...args}
+          value={value}
+          onChange={setValue}
+          uploader={uploader}
+          downloader={downloader}
+          previewer={previewer}
+        />
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on size
+
+<Canvas>
+  <Story name="Size">
+    {args => {
+      const file = {
+        filePath: '/file/path.jpg',
+        originalFilename: 'nice-name.jpg',
+      };
+      const [uploader, downloader, previewer] = useFakeMediaStorage('https://picsum.photos/seed/akeneo/200');
+      const [value, setValue] = useState(file);
+      return (
+        <>
+          <MediaFileInput
+            {...args}
+            value={value}
+            onChange={setValue}
+            uploader={uploader}
+            downloader={downloader}
+            previewer={previewer}
+          />
+          <MediaFileInput
+            {...args}
+            size="small"
+            value={value}
+            onChange={setValue}
+            uploader={uploader}
+            downloader={downloader}
+            previewer={previewer}
+          />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on readonly
+
+<Canvas>
+  <Story name="Read only">
+    {args => {
+      const file = {
+        filePath: '/file/path.jpg',
+        originalFilename: 'nice-name.jpg',
+      };
+      const uploader = () => {};
+      const downloader = () => 'https://picsum.photos/seed/akened/200';
+      const previewer = () => 'https://picsum.photos/seed/akened/200';
+      return (
+        <>
+          <MediaFileInput
+            {...args}
+            value={null}
+            readOnly
+            uploader={uploader}
+            downloader={downloader}
+            previewer={previewer}
+          />
+          <MediaFileInput
+            {...args}
+            value={file}
+            readOnly
+            uploader={uploader}
+            downloader={downloader}
+            previewer={previewer}
+          />
+          <MediaFileInput
+            {...args}
+            value={null}
+            size="small"
+            readOnly
+            uploader={uploader}
+            downloader={downloader}
+            previewer={previewer}
+          />
+          <MediaFileInput
+            {...args}
+            value={file}
+            size="small"
+            readOnly
+            uploader={uploader}
+            downloader={downloader}
+            previewer={previewer}
+          />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on invalid
+
+<Canvas>
+  <Story name="invalid">
+    {args => {
+      const file = {
+        filePath: '/file/path.jpg',
+        originalFilename: 'invalid-image.jpg',
+      };
+      const [uploader, downloader, previewer] = useFakeMediaStorage('https://picsum.photos/seed/akenew/400/100');
+      const [value, setValue] = useState(file);
+      return (
+        <>
+          <MediaFileInput
+            {...args}
+            value={value}
+            onChange={setValue}
+            uploader={uploader}
+            downloader={downloader}
+            previewer={previewer}
+            invalid={true}
+          />
+          <MediaFileInput
+            {...args}
+            size="small"
+            value={value}
+            onChange={setValue}
+            uploader={uploader}
+            downloader={downloader}
+            previewer={previewer}
+            invalid={true}
+          />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
