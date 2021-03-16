@@ -17,7 +17,10 @@ class Descriptions extends BaseView {
       this.setData(data);
     };
 
-    ReactDOM.render(<AttributeDescriptionsApp defaultValue={this.getFormData().descriptions || {}} onChange={onChange} />, this.el);
+    ReactDOM.render(
+      <AttributeDescriptionsApp defaultValue={this.getFormData().descriptions || {}} onChange={onChange} />,
+      this.el
+    );
     return this;
   }
 

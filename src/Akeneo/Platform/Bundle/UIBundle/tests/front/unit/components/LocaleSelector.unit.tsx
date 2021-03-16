@@ -2,7 +2,7 @@ import React from 'react';
 import {act, screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {fireEvent} from '@testing-library/dom';
-import { LocaleSelector } from "../../../../Resources/workspaces/shared";
+import {LocaleSelector} from '../../../../Resources/workspaces/shared';
 
 const locales = [
   {
@@ -10,19 +10,17 @@ const locales = [
     label: 'English (United States)',
     region: 'United States',
     language: 'English',
-  }, {
+  },
+  {
     code: 'fr_FR',
     label: 'French (France)',
     region: 'France',
-    language: 'French'
-  }
-]
+    language: 'French',
+  },
+];
 
 test('It renders current locale', () => {
-  renderWithProviders(<LocaleSelector
-    values={locales}
-    value={'fr_FR'}
-  />);
+  renderWithProviders(<LocaleSelector values={locales} value={'fr_FR'} />);
 
   expect(screen.getByText('pim_enrich.entity.locale.plural_label:')).toBeInTheDocument();
   expect(screen.getByText('French (France)')).toBeInTheDocument();
@@ -31,11 +29,7 @@ test('It renders current locale', () => {
 test('It triggers callback on change', async () => {
   const onChange = jest.fn();
 
-  renderWithProviders(<LocaleSelector
-    values={locales}
-    value={'fr_FR'}
-    onChange={onChange}
-  />);
+  renderWithProviders(<LocaleSelector values={locales} value={'fr_FR'} onChange={onChange} />);
 
   await act(async () => {
     fireEvent.click(screen.getAllByRole('button')[0]);
@@ -48,11 +42,7 @@ test('It triggers callback on change', async () => {
 });
 
 test('It displays badges for incomplete values', async () => {
-  renderWithProviders(<LocaleSelector
-    values={locales}
-    value={'fr_FR'}
-    completeValues={['en_US']}
-  />);
+  renderWithProviders(<LocaleSelector values={locales} value={'fr_FR'} completeValues={['en_US']} />);
 
   await act(async () => {
     fireEvent.click(screen.getAllByRole('button')[0]);

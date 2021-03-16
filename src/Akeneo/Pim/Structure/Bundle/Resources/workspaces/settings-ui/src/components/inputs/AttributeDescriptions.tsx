@@ -1,9 +1,9 @@
 import React from 'react';
-import { Field, TextAreaInput, LoaderIcon } from 'akeneo-design-system';
+import {Field, TextAreaInput, LoaderIcon} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import { LocaleCode, LocaleSelector, Locale } from '@akeneo-pim-community/shared';
+import {LocaleCode, LocaleSelector, Locale} from '@akeneo-pim-community/shared';
 import {Descriptions} from '../../models';
-import styled from "styled-components";
+import styled from 'styled-components';
 const FetcherRegistry = require('pim/fetcher-registry');
 const UserContext = require('pim/user-context');
 
@@ -11,7 +11,7 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-`
+`;
 
 type AttributeDescriptionsProps = {
   defaultValue: Descriptions;
@@ -32,7 +32,7 @@ const AttributeDescriptions = ({defaultValue, onChange}: AttributeDescriptionsPr
   }, []);
 
   if (!locales) {
-    return <LoaderIcon/>;
+    return <LoaderIcon />;
   }
 
   const handleDescriptionsChange = (description: string) => {
@@ -54,15 +54,17 @@ const AttributeDescriptions = ({defaultValue, onChange}: AttributeDescriptionsPr
       </Header>
       <div className="AknFormContainer AknFormContainer--withPadding" data-drop-zone="content">
         <Field label={translate('pim_enrich.entity.attribute.property.descriptions')}>
-          {locales.filter(locale => locale.code === localeCode).map((locale) =>
-            <TextAreaInput
-              key={locale.code}
-              name={'descriptions'}
-              type={'text'}
-              onChange={handleDescriptionsChange}
-              value={descriptions[localeCode]}
-            />
-          )}
+          {locales
+            .filter(locale => locale.code === localeCode)
+            .map(locale => (
+              <TextAreaInput
+                key={locale.code}
+                name={'descriptions'}
+                type={'text'}
+                onChange={handleDescriptionsChange}
+                value={descriptions[localeCode]}
+              />
+            ))}
         </Field>
       </div>
     </>

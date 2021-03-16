@@ -8,7 +8,7 @@ import {
   SearchIcon,
   getColor,
   AkeneoThemedProps,
-  SwitcherButton
+  SwitcherButton,
 } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {CategoryTreeRoot} from './CategoryTrees';
@@ -21,7 +21,7 @@ const CategoryTreeSwitcherButtonContainer = styled.div`
 const CategoryTreeSwitcherButton = styled(SwitcherButton)`
   height: 40px;
   width: 100%;
-`
+`;
 
 const CategoryTreeSwitcherContainer = styled(Dropdown)`
   width: 100%;
