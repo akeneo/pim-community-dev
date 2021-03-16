@@ -68,7 +68,7 @@ const MediaFilePlaceholder = styled(MediaFileLabel)`
 `;
 
 const ReadOnlyIcon = styled(LockIcon)`
-  padding: 4px;
+  margin-left: 4px;
 `;
 
 const ActionContainer = styled.div<{isCompact: boolean} & AkeneoThemedProps>`
@@ -315,24 +315,6 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
           <ActionContainer isCompact={isCompact}>
             {value && (
               <>
-                <IconButton
-                  size="small"
-                  level="tertiary"
-                  ghost="borderless"
-                  icon={<FullscreenIcon />}
-                  title={fullscreenTitle}
-                  onClick={openFullScreenModal}
-                />
-                <IconButton
-                  size="small"
-                  href={downloader(value)}
-                  target="_blank"
-                  download={value.originalFilename}
-                  level="tertiary"
-                  ghost="borderless"
-                  icon={<DownloadIcon />}
-                  title={downloadLabel}
-                />
                 {!readOnly && (
                   <IconButton
                     size="small"
@@ -343,6 +325,24 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
                     onClick={handleClear}
                   />
                 )}
+                <IconButton
+                  size="small"
+                  href={downloader(value)}
+                  target="_blank"
+                  download={value.originalFilename}
+                  level="tertiary"
+                  ghost="borderless"
+                  icon={<DownloadIcon />}
+                  title={downloadLabel}
+                />
+                <IconButton
+                  size="small"
+                  level="tertiary"
+                  ghost="borderless"
+                  icon={<FullscreenIcon />}
+                  title={fullscreenTitle}
+                  onClick={openFullScreenModal}
+                />
               </>
             )}
             {readOnly && <ReadOnlyIcon size={16} />}

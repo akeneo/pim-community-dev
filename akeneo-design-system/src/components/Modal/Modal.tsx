@@ -22,7 +22,6 @@ const ModalContainer = styled.div`
   justify-content: center;
   z-index: 2000;
   overflow: hidden;
-  cursor: default;
   padding: 20px 80px;
   box-sizing: border-box;
 `;

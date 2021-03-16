@@ -52,14 +52,16 @@ const Input = styled.input<{readOnly: boolean} & AkeneoThemedProps>`
   color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
   background: transparent;
   cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'auto')};
+  height: 100%;
 
   &::placeholder {
+    opacity: 1;
     color: ${getColor('grey', 100)};
   }
 `;
 
 const ReadOnlyIcon = styled(LockIcon)`
-  padding: 4px;
+  margin-left: 4px;
 `;
 
 const ActionContainer = styled.div`

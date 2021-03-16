@@ -19,7 +19,7 @@ const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedP
   border: 1px solid ${({invalid}) => (invalid ? getColor('red', 100) : getColor('grey', 80))};
   border-radius: 2px;
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
-  color: ${getColor('grey', 140)};
+  color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
   font-size: ${getFontSize('default')};
   line-height: 40px;
   padding: 0 15px;
@@ -37,6 +37,7 @@ const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedP
   }
 
   &::placeholder {
+    opacity: 1;
     color: ${getColor('grey', 100)};
   }
 `;
