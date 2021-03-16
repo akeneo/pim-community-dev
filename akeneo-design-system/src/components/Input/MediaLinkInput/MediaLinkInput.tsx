@@ -1,4 +1,15 @@
-import React, {ChangeEvent, Ref, ReactNode, useRef, isValidElement, cloneElement, createElement} from 'react';
+import React, {
+  ChangeEvent,
+  Ref,
+  ReactNode,
+  useRef,
+  isValidElement,
+  cloneElement,
+  createElement,
+  useState,
+  useEffect,
+  ReactElement
+} from 'react';
 import styled, {css} from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {InputProps} from '../InputProps';
@@ -8,6 +19,7 @@ import {IconButton, IconButtonProps, Image, Button} from '../../../components';
 import {FullscreenIcon, LockIcon} from '../../../icons';
 import {useBooleanState, useShortcut} from '../../../hooks';
 import {FullscreenPreview} from './FullscreenPreview';
+import DefaultPicture from '../../../../static/illustrations/DefaultPicture.svg';
 
 const MediaLinkInputContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
   position: relative;
@@ -15,7 +27,6 @@ const MediaLinkInputContainer = styled.div<{readOnly: boolean} & AkeneoThemedPro
   flex-direction: row;
   align-items: center;
   padding: 12px;
-  padding-top: 12px;
   border: 1px solid ${({invalid}) => (invalid ? getColor('red', 100) : getColor('grey', 80))};
   border-radius: 2px;
   height: 74px;
@@ -146,39 +157,52 @@ const MediaLinkInput = React.forwardRef<HTMLInputElement, MediaLinkInputProps>(
   ) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [isFullScreenModalOpen, openFullScreenModal, closeFullScreenModal] = useBooleanState(false);
+    const [displayedThumbnailUrl, setDisplayedThumbnailUrl] = useState(thumbnailUrl);
+    const actions: ReactElement[] = [];
+    const fullScreenActions: ReactElement[] = [];
+
+    useEffect(() => {
+      setDisplayedThumbnailUrl(thumbnailUrl);
+    }, [thumbnailUrl]);
+
+    React.Children.forEach(children, (child, index) => {
+      if (isValidElement<IconButtonProps>(child) && IconButton === child.type) {
+        actions.push(cloneElement(child, {
+          key: index,
+          level: 'tertiary',
+          ghost: 'borderless',
+          size: 'small'
+        }));
+        fullScreenActions.push(createElement(Button, {
+          key: index,
+          level: 'tertiary',
+          ghost: true,
+          children: [child.props.icon, child.props.title],
+        }));
+      }
+    });
+
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
       if (!readOnly && onChange) onChange(event.currentTarget.value);
     };
 
-    const actions = React.Children.map(children, child => {
-      if (isValidElement<IconButtonProps>(child) && IconButton === child.type) {
-        return cloneElement(child, {level: 'tertiary', ghost: 'borderless', size: 'small'});
-      }
-
-      return null;
-    });
-    const fullScreenActions = React.Children.map(children, child => {
-      if (isValidElement<IconButtonProps>(child) && IconButton === child.type) {
-        return createElement(Button, {
-          level: 'tertiary',
-          ghost: true,
-          children: [child.props.icon, child.props.title],
-        });
-      }
-
-      return null;
-    });
-
     const handleEnter = () => {
       !readOnly && onSubmit?.();
     };
+
     useShortcut(Key.Enter, handleEnter, forwardedRef);
 
     return (
       <>
         <MediaLinkInputContainer ref={containerRef} tabIndex={readOnly ? -1 : 0} invalid={invalid} readOnly={readOnly}>
           {'' !== value ? (
-            <MediaLinkImage src={thumbnailUrl} height={47} width={47} alt={value} />
+            <MediaLinkImage
+              src={displayedThumbnailUrl}
+              height={47}
+              width={47}
+              alt={value}
+              onError={() => setDisplayedThumbnailUrl(DefaultPicture)}
+            />
           ) : (
             <DefaultPictureIllustration size={47} />
           )}
