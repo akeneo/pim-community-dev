@@ -13,6 +13,12 @@ class VersionProviderSpec extends ObjectBehavior
         $this->getEdition()->shouldReturn('CE');
     }
 
+    function it_provides_ce_version()
+    {
+        $this->beConstructedWith(StaticCommunityVersion::class);
+        $this->getEdition()->shouldReturn('12.42.20-BETA2');
+    }
+
     function it_provides_ce_patch()
     {
         $this->beConstructedWith(StaticCommunityVersion::class);
