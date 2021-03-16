@@ -1,11 +1,4 @@
-import {
-    ArrowRightIcon,
-    ClockIcon,
-    DateIcon,
-    GraphIllustration,
-    Information,
-    Table
-} from 'akeneo-design-system';
+import {ArrowRightIcon, ClockIcon, DateIcon, GraphIllustration, Information, Table} from 'akeneo-design-system';
 import React, {FC, useRef} from 'react';
 import {NoEventLogs} from './NoEventLogs';
 import {Translate} from '../../shared/translate';
@@ -47,7 +40,7 @@ const ContextContainer = styled.span`
     white-space: nowrap;
     text-overflow: ellipsis;
     display: block;
-    overflow: hidden
+    overflow: hidden;
 `;
 
 export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => {
@@ -66,7 +59,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
     return (
         <>
             <Information
-                illustration={<GraphIllustration/>}
+                illustration={<GraphIllustration />}
                 title={
                     <Translate
                         id={'akeneo_connectivity.connection.webhook.event_logs.list.info.logs_total'}
@@ -93,7 +86,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                     {logs.map(({timestamp, level, message, context}, index) => (
                         <Table.Row key={index} onClick={() => undefined}>
                             <Table.Cell>
-                                <ArrowRightIcon/>
+                                <ArrowRightIcon />
                                 <DatetimeContainer>
                                     <div>
                                         <StyledDateIcon size={16} color={theme.color.grey100} />
@@ -101,7 +94,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                                             {dateFormatter(timestamp * 1000, {
                                                 year: 'numeric',
                                                 month: '2-digit',
-                                                day: '2-digit'
+                                                day: '2-digit',
                                             })}
                                         </Box>
                                     </div>
@@ -128,7 +121,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                     ))}
                 </Table.Body>
             </Table>
-            <br/>
+            <br />
         </>
     );
 };

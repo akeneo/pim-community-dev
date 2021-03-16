@@ -3,7 +3,7 @@ import {Badge, Level} from 'akeneo-design-system';
 import React, {FC, PropsWithChildren} from 'react';
 
 type Props = {
-    level: EventSubscriptionLogLevel
+    level: EventSubscriptionLogLevel;
 };
 
 export const EventLogBadge: FC<PropsWithChildren<Props>> = ({level, children}) => {
