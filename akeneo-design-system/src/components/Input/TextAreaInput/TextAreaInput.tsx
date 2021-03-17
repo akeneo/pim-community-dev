@@ -24,7 +24,7 @@ const CommonStyle = css<{readOnly: boolean; invalid: boolean} & AkeneoThemedProp
   font-family: inherit;
   outline-style: none;
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
-  cursor: ${({readOnly}) => readOnly ? 'not-allowed' : 'auto'};
+  cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'auto')};
 
   &:focus-within {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};

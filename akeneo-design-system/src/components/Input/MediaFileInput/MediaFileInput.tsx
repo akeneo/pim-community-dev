@@ -7,7 +7,7 @@ import React, {
   Ref,
   useEffect,
   useRef,
-  useState
+  useState,
 } from 'react';
 import styled, {css} from 'styled-components';
 import {Key, Override} from '../../../shared';
@@ -269,7 +269,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
         );
         fullScreenActions.push(
           createElement(Button, {
-            key: index,
+            ...child.props,
             level: 'tertiary',
             ghost: true,
             children: [child.props.icon, child.props.title],

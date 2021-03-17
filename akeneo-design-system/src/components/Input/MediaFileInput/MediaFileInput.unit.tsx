@@ -3,7 +3,7 @@ import {MediaFileInput} from './MediaFileInput';
 import {act, fireEvent, render, screen} from '../../../storybook/test-util';
 import userEvent from '@testing-library/user-event';
 import {FileInfo} from './FileInfo';
-import { FullscreenPreview } from './FullscreenPreview';
+import {FullscreenPreview} from './FullscreenPreview';
 import {DownloadIcon} from '../../../icons';
 import {IconButton} from '../../IconButton/IconButton';
 
@@ -156,7 +156,13 @@ test('it displays the preview and action buttons when the value is not null', ()
       thumbnailUrl={thumbnailUrl}
       preview={<FullscreenPreview.Image src={thumbnailUrl} alt="" />}
     >
-      <IconButton href={thumbnailUrl} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+      <IconButton
+        href={thumbnailUrl}
+        target="_blank"
+        download={thumbnailUrl}
+        icon={<DownloadIcon />}
+        title="Download"
+      />
     </MediaFileInput>
   );
 
