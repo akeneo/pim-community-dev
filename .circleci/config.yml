@@ -772,15 +772,6 @@ commands:
             export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
             gcloud auth configure-docker --quiet
 
-  prepare_terraform:
-    description: "Prepare terraform configuration."
-    steps:
-      - run:
-          name: "Prepare terraform configuration."
-          shell: "/bin/bash -eo pipefail"
-          command: |
-            IMAGE_TAG=$CIRCLE_SHA1 IMAGE_TAG_SHORTED=$(echo $CIRCLE_SHA1 | cut -c -7) PIM_CONTEXT=deployment make create-ci-release-files
-
   restore_persisted_env_vars:
     description: "Restore env vars that have been persisted by the previous job."
     steps:
