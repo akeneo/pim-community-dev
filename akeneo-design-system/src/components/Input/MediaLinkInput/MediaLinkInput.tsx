@@ -210,7 +210,7 @@ const MediaLinkInput = React.forwardRef<HTMLInputElement, MediaLinkInputProps>(
               onError={() => setDisplayedThumbnailUrl(DefaultPicture)}
             />
           ) : (
-            <DefaultPictureIllustration size={47} />
+            <DefaultPictureIllustration title={placeholder} size={47} />
           )}
           <Input
             ref={forwardedRef}
