@@ -217,7 +217,31 @@ jobs:
                 path: var/tests/phpunit
           - store_artifacts:
                 path: var/logs
-
+  test_front_cypress:
+    machine:
+      image: ubuntu-1604:201903-01
+    parallelism: 40
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Change owner on project dir in order to archive the project into the workspace
+          command: sudo chown -R 1000:1000 ../project
+      - run:
+          name: Start containers
+          command: |
+            docker load -i php-pim-image.tar
+            APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage selenium pubsub-emulator' make up
+            docker/wait_docker_up.sh
+      - run:
+          name: Install database
+          command: APP_ENV=behat make database
+      - run:
+          name: End to end Behat tests
+          command: PIM_CONTEXT=test make end-to-end-legacy SUITE=$TESTSUITE
+      - run:
+          name: Launch Cypress
+          command: docker-compose run -u node yarn ./node_modules/.bin/cypress run
   test_back_behat_legacy:
     machine:
         image: ubuntu-1604:201903-01
@@ -648,7 +672,9 @@ workflows:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
                     - test_back_phpunit
-
+          - test_front_cypress:
+              requires:
+                - build_dev
           - ready_to_build_only_ce?:
                 type: approval
                 filters:
