@@ -2,7 +2,7 @@ import React, {ReactElement, ReactNode, useEffect, useRef} from 'react';
 import {createPortal} from 'react-dom';
 import styled from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor, getFontSize} from '../../theme';
-import {IconButton} from '../../components';
+import {IconButton} from '../IconButton/IconButton';
 import {CloseIcon} from '../../icons';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
 import {useShortcut} from '../../hooks';
