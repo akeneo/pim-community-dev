@@ -1,12 +1,22 @@
-import React, {Ref, useEffect, useRef, useState} from 'react';
+import React, {
+  cloneElement,
+  createElement,
+  isValidElement,
+  ReactElement,
+  ReactNode,
+  Ref,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import styled, {css} from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {InputProps} from '../InputProps';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
 import {ImportIllustration} from '../../../illustrations';
-import {IconButton, Image} from '../../../components';
+import {Button, IconButton, IconButtonProps, Image} from '../../../components';
 import {ProgressBar} from '../../ProgressBar/ProgressBar';
-import {CloseIcon, DownloadIcon, FullscreenIcon, LockIcon} from '../../../icons';
+import {CloseIcon, FullscreenIcon, LockIcon} from '../../../icons';
 import {useBooleanState, useShortcut} from '../../../hooks';
 import {FileInfo} from './FileInfo';
 import {FullscreenPreview} from './FullscreenPreview';
@@ -95,8 +105,6 @@ const MediaFileImage = styled(Image)`
   border: none;
 `;
 
-type PreviewType = 'preview' | 'thumbnail';
-
 type MediaFileInputProps = Override<
   Override<React.InputHTMLAttributes<HTMLInputElement>, InputProps<FileInfo | null>>,
   (
@@ -114,19 +122,19 @@ type MediaFileInputProps = Override<
     value: FileInfo | null;
 
     /**
-     * Method called to generate the file preview url (can be base64).
+     * Component to render the preview.
      */
-    previewer: (value: FileInfo, type: PreviewType) => string;
+    preview: ReactNode;
+
+    /**
+     * Url of the thumbnail (can be base64).
+     */
+    thumbnailUrl: string | null;
 
     /**
      * Method called to upload the file.
      */
     uploader: (file: File, onProgress: (ratio: number) => void) => Promise<FileInfo>;
-
-    /**
-     * Method called to generate the file download url.
-     */
-    downloader: (value: FileInfo) => string;
 
     /**
      * Placeholder displayed when the input is empty.
@@ -137,11 +145,6 @@ type MediaFileInputProps = Override<
      * Label displayed during image uploading.
      */
     uploadingLabel: string;
-
-    /**
-     * Label of the download button in the fullscreen preview and title of the download icon button.
-     */
-    downloadLabel: string;
 
     /**
      * Title of the clear icon button.
@@ -188,17 +191,17 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
     {
       onChange,
       value,
-      previewer,
+      thumbnailUrl,
+      preview,
       uploadingLabel,
       uploader,
-      downloader,
       size = 'default',
       placeholder,
-      downloadLabel,
       fullscreenTitle,
       fullscreenLabel,
       clearTitle,
       closeTitle,
+      children,
       uploadErrorLabel,
       invalid = false,
       readOnly = false,
@@ -210,25 +213,21 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
     const internalInputRef = useRef<HTMLInputElement>(null);
     const isCompact = size === 'small';
     const [isUploading, startUploading, stopUploading] = useBooleanState(false);
+    const [displayedThumbnailUrl, setDisplayedThumbnailUrl] = useState(thumbnailUrl);
     const [hasUploadFailed, uploadFailed, uploadSucceeded] = useBooleanState(false);
     const [progress, setProgress] = useState<number>(0);
     const [isFullScreenModalOpen, openFullScreenModal, closeFullScreenModal] = useBooleanState(false);
-    const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
     forwardedRef = forwardedRef ?? internalInputRef;
+
+    useEffect(() => {
+      setDisplayedThumbnailUrl(thumbnailUrl);
+    }, [thumbnailUrl]);
 
     const openFileExplorer = () => {
       if (forwardedRef && 'function' !== typeof forwardedRef && forwardedRef.current && !readOnly && onChange) {
         forwardedRef.current.click();
       }
     };
-
-    useEffect(() => {
-      if (!value) {
-        setThumbnailUrl(null);
-      } else {
-        setThumbnailUrl(previewer(value, 'thumbnail'));
-      }
-    }, [value]);
 
     const handleUpload = async (file: File) => {
       startUploading();
@@ -254,6 +253,30 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
     const handleClear = () => !readOnly && onChange?.(null);
 
     useShortcut(Key.Enter, openFileExplorer, containerRef);
+
+    const actions: ReactElement[] = [];
+    const fullScreenActions: ReactElement[] = [];
+
+    React.Children.forEach(children, (child, index) => {
+      if (isValidElement<IconButtonProps>(child) && IconButton === child.type) {
+        actions.push(
+          cloneElement(child, {
+            key: index,
+            level: 'tertiary',
+            ghost: 'borderless',
+            size: 'small',
+          })
+        );
+        fullScreenActions.push(
+          createElement(Button, {
+            ...child.props,
+            level: 'tertiary',
+            ghost: true,
+            children: [child.props.icon, child.props.title],
+          })
+        );
+      }
+    });
 
     return (
       <>
@@ -295,9 +318,9 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
               <MediaFileImage
                 height={isCompact ? 47 : 120}
                 width={isCompact ? 47 : 120}
-                src={thumbnailUrl}
+                src={displayedThumbnailUrl}
                 alt={value.originalFilename}
-                onError={() => setThumbnailUrl(DefaultPictureIllustration)}
+                onError={() => setDisplayedThumbnailUrl(DefaultPictureIllustration)}
               />
               {readOnly ? (
                 <MediaFilePlaceholder>{value.originalFilename}</MediaFilePlaceholder>
@@ -325,16 +348,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
                     onClick={handleClear}
                   />
                 )}
-                <IconButton
-                  size="small"
-                  href={downloader(value)}
-                  target="_blank"
-                  download={value.originalFilename}
-                  level="tertiary"
-                  ghost="borderless"
-                  icon={<DownloadIcon />}
-                  title={downloadLabel}
-                />
+                {actions}
                 <IconButton
                   size="small"
                   level="tertiary"
@@ -349,15 +363,13 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
           </ActionContainer>
         </MediaFileInputContainer>
         {isFullScreenModalOpen && value && (
-          <FullscreenPreview
-            value={value}
-            previewUrl={previewer(value, 'preview')}
-            downloadUrl={downloader(value)}
-            downloadLabel={downloadLabel}
-            closeTitle={closeTitle}
-            label={fullscreenLabel ?? value.originalFilename}
-            onClose={closeFullScreenModal}
-          />
+          <FullscreenPreview closeTitle={closeTitle} onClose={closeFullScreenModal}>
+            <FullscreenPreview.Title>{fullscreenLabel ?? value.originalFilename}</FullscreenPreview.Title>
+            <FullscreenPreview.Content>
+              {preview}
+              <FullscreenPreview.Actions>{fullScreenActions}</FullscreenPreview.Actions>
+            </FullscreenPreview.Content>
+          </FullscreenPreview>
         )}
       </>
     );

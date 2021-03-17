@@ -13,6 +13,14 @@ const Border = styled.div`
   gap: 20px;
 `;
 
+const PreviewImage = styled(Image)`
+  width: auto;
+  min-height: 250px;
+  max-width: 100%;
+  object-fit: contain;
+  max-height: calc(-250px + 100vh);
+`;
+
 const BrandedTitle = styled(Modal.Title)`
   color: ${getColor('brand', 100)};
 `;
@@ -40,6 +48,6 @@ const FullscreenPreview = ({closeTitle, onClose, children}: FullscreenPreviewPro
 FullscreenPreview.Content = Border;
 FullscreenPreview.Title = BrandedTitle;
 FullscreenPreview.Actions = Actions;
-FullscreenPreview.Image = Image;
+FullscreenPreview.Image = PreviewImage;
 
 export {FullscreenPreview};

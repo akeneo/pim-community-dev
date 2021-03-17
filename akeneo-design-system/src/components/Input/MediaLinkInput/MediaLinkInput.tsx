@@ -179,7 +179,7 @@ const MediaLinkInput = React.forwardRef<HTMLInputElement, MediaLinkInputProps>(
         );
         fullScreenActions.push(
           createElement(Button, {
-            key: index,
+            ...child.props,
             level: 'tertiary',
             ghost: true,
             children: [child.props.icon, child.props.title],

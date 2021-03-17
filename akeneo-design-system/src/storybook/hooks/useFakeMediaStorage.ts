@@ -2,12 +2,12 @@ import {useState} from 'react';
 import {FileInfo} from '../../components';
 
 const useFakeMediaStorage = (defaultPath: string | null = null) => {
-  const [uploadedFile, setUploadedFile] = useState<string | null>(defaultPath);
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(defaultPath);
 
   const uploader = (file: File, onProgress: (ratio: number) => void): Promise<FileInfo> =>
     new Promise(resolve => {
       const normalizedFile = URL.createObjectURL(file);
-      setUploadedFile(normalizedFile);
+      setThumbnailUrl(normalizedFile);
 
       let progress = 0;
       const interval = setInterval(() => {
@@ -24,10 +24,7 @@ const useFakeMediaStorage = (defaultPath: string | null = null) => {
       }, 2000);
     });
 
-  const downloader = () => uploadedFile;
-  const previewer = () => uploadedFile;
-
-  return [uploader, downloader, previewer];
+  return [thumbnailUrl, uploader];
 };
 
 export {useFakeMediaStorage};

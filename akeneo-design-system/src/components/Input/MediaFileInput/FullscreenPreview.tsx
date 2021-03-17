@@ -1,10 +1,8 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import styled from 'styled-components';
-import {Button, Image} from '../../../components';
+import {Image} from '../../../components';
 import {Modal} from '../../Modal/Modal';
 import {getColor} from '../../../theme';
-import {DownloadIcon} from '../../../icons';
-import {FileInfo} from './FileInfo';
 
 const Border = styled.div`
   display: flex;
@@ -22,6 +20,7 @@ const BrandedTitle = styled(Modal.Title)`
 const Actions = styled.div`
   display: flex;
   justify-content: center;
+  gap: 10px;
 `;
 
 const PreviewImage = styled(Image)`
@@ -33,38 +32,22 @@ const PreviewImage = styled(Image)`
 `;
 
 type FullscreenPreviewProps = {
-  value: FileInfo;
-  previewUrl: string;
-  downloadUrl: string;
-  downloadLabel: string;
   closeTitle: string;
-  label: string;
   onClose: () => void;
+  children: ReactNode;
 };
 
-const FullscreenPreview = ({
-  value,
-  previewUrl,
-  downloadUrl,
-  downloadLabel,
-  closeTitle,
-  label,
-  onClose,
-}: FullscreenPreviewProps) => {
+const FullscreenPreview = ({closeTitle, onClose, children}: FullscreenPreviewProps) => {
   return (
     <Modal onClose={onClose} closeTitle={closeTitle}>
-      <BrandedTitle>{label}</BrandedTitle>
-      <Border>
-        <PreviewImage src={previewUrl} alt={label} />
-        <Actions>
-          <Button ghost={true} href={downloadUrl} download={value.originalFilename} level="tertiary">
-            <DownloadIcon />
-            {downloadLabel}
-          </Button>
-        </Actions>
-      </Border>
+      {children}
     </Modal>
   );
 };
+
+FullscreenPreview.Content = Border;
+FullscreenPreview.Title = BrandedTitle;
+FullscreenPreview.Actions = Actions;
+FullscreenPreview.Image = PreviewImage;
 
 export {FullscreenPreview};

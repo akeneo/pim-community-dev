@@ -3,6 +3,9 @@ import {MediaFileInput} from './MediaFileInput';
 import {act, fireEvent, render, screen} from '../../../storybook/test-util';
 import userEvent from '@testing-library/user-event';
 import {FileInfo} from './FileInfo';
+import {FullscreenPreview} from './FullscreenPreview';
+import {DownloadIcon} from '../../../icons';
+import {IconButton} from '../../IconButton/IconButton';
 
 jest.mock('../../../../static/illustrations/DefaultPicture.svg', () => 'FALLBACK_IMAGE');
 
@@ -10,7 +13,6 @@ const flushPromises = () => new Promise(setImmediate);
 
 const defaultProps = {
   placeholder: 'Upload your file here',
-  downloadLabel: 'Download',
   fullscreenTitle: 'Show fullscreen',
   closeTitle: 'Close',
   clearTitle: 'Clear',
@@ -27,8 +29,6 @@ const fileInfo: FileInfo = {
 test('it renders and handle changes', async () => {
   const handleChange = jest.fn();
   const uploader = jest.fn().mockResolvedValue(fileInfo);
-  const previewer = jest.fn();
-  const downloader = jest.fn();
 
   render(
     <MediaFileInput
@@ -36,9 +36,8 @@ test('it renders and handle changes', async () => {
       value={null}
       onChange={handleChange}
       uploader={uploader}
-      previewer={previewer}
-      downloader={downloader}
-      size="small"
+      thumbnailUrl={null}
+      preview={<FullscreenPreview.Image src={null} alt="" />}
     />
   );
 
@@ -57,8 +56,6 @@ test('it renders and handle changes', async () => {
 test('it can open the file upload explorer using the keyboard', async () => {
   const handleChange = jest.fn();
   const uploader = jest.fn().mockResolvedValue(fileInfo);
-  const previewer = jest.fn();
-  const downloader = jest.fn();
 
   render(
     <MediaFileInput
@@ -66,8 +63,8 @@ test('it can open the file upload explorer using the keyboard', async () => {
       value={null}
       onChange={handleChange}
       uploader={uploader}
-      previewer={previewer}
-      downloader={downloader}
+      thumbnailUrl={null}
+      preview={<FullscreenPreview.Image src={null} alt="" />}
       size="small"
     />
   );
@@ -89,8 +86,6 @@ test('it can open the file upload explorer using the keyboard', async () => {
 test('it does not call onChange if readOnly', async () => {
   const handleChange = jest.fn();
   const uploader = jest.fn().mockResolvedValue(fileInfo);
-  const previewer = jest.fn();
-  const downloader = jest.fn();
 
   render(
     <MediaFileInput
@@ -98,8 +93,8 @@ test('it does not call onChange if readOnly', async () => {
       value={null}
       onChange={handleChange}
       uploader={uploader}
-      previewer={previewer}
-      downloader={downloader}
+      thumbnailUrl={null}
+      preview={<FullscreenPreview.Image src={null} alt="" />}
       readOnly={true}
     />
   );
@@ -119,8 +114,6 @@ test('it does not call onChange if readOnly', async () => {
 test('it display the upload error label when the upload failed', async () => {
   const handleChange = jest.fn();
   const uploader = jest.fn().mockRejectedValue(undefined);
-  const previewer = jest.fn();
-  const downloader = jest.fn();
 
   jest.spyOn(console, 'error').mockImplementationOnce(jest.fn());
 
@@ -130,8 +123,8 @@ test('it display the upload error label when the upload failed', async () => {
       value={null}
       onChange={handleChange}
       uploader={uploader}
-      previewer={previewer}
-      downloader={downloader}
+      thumbnailUrl={null}
+      preview={<FullscreenPreview.Image src={null} alt="" />}
       size="small"
     />
   );
@@ -152,8 +145,7 @@ test('it display the upload error label when the upload failed', async () => {
 test('it displays the preview and action buttons when the value is not null', () => {
   const handleChange = jest.fn();
   const uploader = jest.fn().mockResolvedValue(fileInfo);
-  const downloader = jest.fn(({filePath}: FileInfo) => `https://${filePath}`);
-  const previewer = jest.fn();
+  const thumbnailUrl = `https://${fileInfo.filePath}`;
 
   render(
     <MediaFileInput
@@ -161,18 +153,20 @@ test('it displays the preview and action buttons when the value is not null', ()
       value={fileInfo}
       onChange={handleChange}
       uploader={uploader}
-      previewer={previewer}
-      downloader={downloader}
-    />
+      thumbnailUrl={thumbnailUrl}
+      preview={<FullscreenPreview.Image src={thumbnailUrl} alt="" />}
+    >
+      <IconButton
+        href={thumbnailUrl}
+        target="_blank"
+        download={thumbnailUrl}
+        icon={<DownloadIcon />}
+        title="Download"
+      />
+    </MediaFileInput>
   );
 
-  expect(previewer).toHaveBeenCalledWith(fileInfo, 'thumbnail');
-  expect(downloader).toHaveBeenCalledWith(fileInfo);
-
-  const downloadButton = screen.getByTitle(/Download/i);
-  expect(downloadButton).toBeInTheDocument();
-  expect(downloadButton).toHaveAttribute('download', fileInfo.originalFilename);
-  expect(downloadButton).toHaveAttribute('href', `https://${fileInfo.filePath}`);
+  expect(screen.getByTitle(/Download/i)).toBeInTheDocument();
   expect(screen.getByTitle(/Clear/i)).toBeInTheDocument();
   expect(screen.getByTitle(/Show fullscreen/i)).toBeInTheDocument();
   expect(screen.getByAltText(fileInfo.originalFilename)).toBeInTheDocument();
@@ -181,8 +175,7 @@ test('it displays the preview and action buttons when the value is not null', ()
 test('it clears the value when clicking on the clear button', () => {
   const handleChange = jest.fn();
   const uploader = jest.fn().mockResolvedValue(fileInfo);
-  const previewer = jest.fn();
-  const downloader = jest.fn();
+  const thumbnailUrl = `https://${fileInfo.filePath}`;
 
   render(
     <MediaFileInput
@@ -190,8 +183,8 @@ test('it clears the value when clicking on the clear button', () => {
       value={fileInfo}
       onChange={handleChange}
       uploader={uploader}
-      previewer={previewer}
-      downloader={downloader}
+      thumbnailUrl={thumbnailUrl}
+      preview={<FullscreenPreview.Image src={thumbnailUrl} alt="" />}
     />
   );
 
@@ -203,8 +196,7 @@ test('it clears the value when clicking on the clear button', () => {
 test('it displays the default picture when the image previewer fails', () => {
   const handleChange = jest.fn();
   const uploader = jest.fn().mockResolvedValue(fileInfo);
-  const previewer = jest.fn();
-  const downloader = jest.fn();
+  const thumbnailUrl = `https://${fileInfo.filePath}`;
 
   render(
     <MediaFileInput
@@ -212,8 +204,8 @@ test('it displays the default picture when the image previewer fails', () => {
       value={fileInfo}
       onChange={handleChange}
       uploader={uploader}
-      previewer={previewer}
-      downloader={downloader}
+      thumbnailUrl={thumbnailUrl}
+      preview={<FullscreenPreview.Image src={thumbnailUrl} alt="" />}
     />
   );
 
@@ -227,8 +219,7 @@ test('it displays the default picture when the image previewer fails', () => {
 test('it opens the fullscreen preview when clicking on the fullscreen button', () => {
   const handleChange = jest.fn();
   const uploader = jest.fn().mockResolvedValue(fileInfo);
-  const previewer = jest.fn();
-  const downloader = jest.fn();
+  const thumbnailUrl = `https://${fileInfo.filePath}`;
 
   render(
     <MediaFileInput
@@ -236,8 +227,8 @@ test('it opens the fullscreen preview when clicking on the fullscreen button', (
       value={fileInfo}
       onChange={handleChange}
       uploader={uploader}
-      previewer={previewer}
-      downloader={downloader}
+      thumbnailUrl={thumbnailUrl}
+      preview={<FullscreenPreview.Image src={thumbnailUrl} alt="Nice fullscreen" />}
       fullscreenLabel="Nice label"
     />
   );
@@ -245,14 +236,12 @@ test('it opens the fullscreen preview when clicking on the fullscreen button', (
   userEvent.click(screen.getByTitle(/Show fullscreen/i));
 
   expect(screen.getByText(/Nice label/i)).toBeInTheDocument();
-  expect(screen.getByAltText(/Nice label/i)).toBeInTheDocument();
+  expect(screen.getByAltText(/Nice fullscreen/i)).toBeInTheDocument();
 });
 
 test('MediaFileInput supports forwardRef', () => {
   const handleChange = jest.fn();
   const uploader = jest.fn().mockResolvedValue(fileInfo);
-  const previewer = jest.fn();
-  const downloader = jest.fn();
   const ref = {current: null};
 
   render(
@@ -261,8 +250,8 @@ test('MediaFileInput supports forwardRef', () => {
       value={null}
       onChange={handleChange}
       uploader={uploader}
-      previewer={previewer}
-      downloader={downloader}
+      thumbnailUrl={null}
+      preview={<FullscreenPreview.Image src={null} alt="" />}
       ref={ref}
     />
   );
@@ -273,8 +262,6 @@ test('MediaFileInput supports forwardRef', () => {
 test('MediaFileInput supports ...rest props', () => {
   const handleChange = jest.fn();
   const uploader = jest.fn().mockResolvedValue(fileInfo);
-  const previewer = jest.fn();
-  const downloader = jest.fn();
 
   render(
     <MediaFileInput
@@ -282,8 +269,8 @@ test('MediaFileInput supports ...rest props', () => {
       value={null}
       onChange={handleChange}
       uploader={uploader}
-      previewer={previewer}
-      downloader={downloader}
+      thumbnailUrl={null}
+      preview={<FullscreenPreview.Image src={null} alt="" />}
       data-testid="my_value"
     />
   );
