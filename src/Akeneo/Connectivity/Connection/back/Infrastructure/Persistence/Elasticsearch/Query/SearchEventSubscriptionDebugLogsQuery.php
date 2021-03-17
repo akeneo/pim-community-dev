@@ -357,15 +357,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
                 }
 
                 foreach ($levels as $level) {
-                    if (!in_array(
-                        $level,
-                        [
-                            EventsApiDebugLogLevels::WARNING,
-                            EventsApiDebugLogLevels::ERROR,
-                            EventsApiDebugLogLevels::INFO,
-                            EventsApiDebugLogLevels::NOTICE,
-                        ]
-                    )) {
+                    if (!in_array($level, EventsApiDebugLogLevels::ALL)) {
                         return false;
                     }
                 }
@@ -373,6 +365,15 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
                 return true;
             }
         );
+
+        // If all the levels are selected, replace by `null`
+        $resolver->setNormalizer('levels', function ($options, $value) {
+            if (is_array($value) && empty(array_diff(EventsApiDebugLogLevels::ALL, $value))) {
+                return null;
+            }
+
+            return $value;
+        });
 
         return $resolver->resolve($filters);
     }

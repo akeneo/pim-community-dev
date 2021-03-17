@@ -237,7 +237,18 @@ akeneo_connectivity.connection:
                 link: Enable the event subscription
             no_event_logs:
                 title: There is no log for the moment.
+            level:
+                info: Info
+                notice: Notice
+                warning: Warning
+                error: Error
             list:
+                search:
+                    title: Event Logs
+                    total: '{1} {{ total }} result |[2,Inf] {{ total }} results'
+                    level: Level
+                    all: All
+                    none: None
                 info:
                     logs_total: '{1} There is {{ total }} log. |[2,Inf] There are {{ total }} logs.'
                 headers:

@@ -1,11 +1,13 @@
-import {ArrowRightIcon, GraphIllustration, Information, Table} from 'akeneo-design-system';
-import React, {FC, useRef} from 'react';
-import {NoEventLogs} from './NoEventLogs';
-import {Translate} from '../../shared/translate';
+import React, {FC, useRef, useState} from 'react';
 import styled from 'styled-components';
-import useInfiniteEventSubscriptionLogs from '../hooks/api/use-infinite-event-subscription-logs';
+import {ArrowRightIcon, GraphIllustration, Information, Table} from 'akeneo-design-system';
+import {NoEventLogs} from './NoEventLogs';
+import {useTranslate} from '../../shared/translate';
 import {EventLogBadge} from './EventLogBadge';
 import EventLogDatetime from './EventLogDatetime';
+import useInfiniteEventSubscriptionLogs, {Filters} from '../hooks/api/use-infinite-event-subscription-logs';
+import {EventSubscriptionLogLevel} from '../model/EventSubscriptionLogLevel';
+import {EventLogListFilters} from './EventLogListFilters';
 
 const ExtraSmallColumnHeaderCell = styled(Table.HeaderCell)`
     width: 125px;
@@ -25,14 +27,30 @@ const ContextContainer = styled.span`
 `;
 
 export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => {
+    const translate = useTranslate();
     const scrollContainer = useRef(null);
-    const {logs, page, total} = useInfiniteEventSubscriptionLogs(connectionCode, scrollContainer);
+    const [filters, setFilters] = useState<Filters>({
+        levels: [
+            EventSubscriptionLogLevel.INFO,
+            EventSubscriptionLogLevel.NOTICE,
+            EventSubscriptionLogLevel.WARNING,
+            EventSubscriptionLogLevel.ERROR,
+        ],
+    });
+    // This is kinda crappy
+    const [isSearchActive, setSearchActive] = useState(false);
+    const {logs, page, total} = useInfiniteEventSubscriptionLogs(connectionCode, filters, scrollContainer);
 
-    if (page === 0) {
+    const handleFiltersChange = (filters: Filters) => {
+        setFilters(filters);
+        setSearchActive(true);
+    };
+
+    if (!isSearchActive && page === 0) {
         return null;
     }
 
-    if (total === 0) {
+    if (!isSearchActive && total === 0) {
         return <NoEventLogs />;
     }
 
@@ -40,26 +58,21 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
         <>
             <Information
                 illustration={<GraphIllustration />}
-                title={
-                    <Translate
-                        id={'akeneo_connectivity.connection.webhook.event_logs.list.info.logs_total'}
-                        placeholders={{total: total ? total.toString() : '0'}}
-                        count={total}
-                    />
-                }
+                title={translate('akeneo_connectivity.connection.webhook.event_logs.list.info.logs_total', {total: total ? total.toString() : '0'}, total)}
             >
                 {null}
             </Information>
+            <EventLogListFilters filters={filters} onChange={handleFiltersChange} total={total}/>
             <Table>
                 <Table.Header>
                     <SmallColumnHeaderCell>
-                        <Translate id={'akeneo_connectivity.connection.webhook.event_logs.list.headers.datetime'} />
+                        {translate('akeneo_connectivity.connection.webhook.event_logs.list.headers.datetime')}
                     </SmallColumnHeaderCell>
                     <ExtraSmallColumnHeaderCell>
-                        <Translate id={'akeneo_connectivity.connection.webhook.event_logs.list.headers.level'} />
+                        {translate('akeneo_connectivity.connection.webhook.event_logs.list.headers.level')}
                     </ExtraSmallColumnHeaderCell>
                     <Table.HeaderCell>
-                        <Translate id={'akeneo_connectivity.connection.webhook.event_logs.list.headers.message'} />
+                        {translate('akeneo_connectivity.connection.webhook.event_logs.list.headers.message')}
                     </Table.HeaderCell>
                 </Table.Header>
                 <Table.Body ref={scrollContainer}>
@@ -80,7 +93,6 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                     ))}
                 </Table.Body>
             </Table>
-            <br />
         </>
     );
 };
