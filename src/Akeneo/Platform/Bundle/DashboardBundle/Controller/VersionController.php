@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 final class VersionController
 {
+    private const GENERAL_AVAILABILITY_TAG_PATTERN = '~^\d\.\d\.\d~'; 
+
     private VersionProviderInterface $versionProvider;
 
     private ConfigManager $configManager;
@@ -30,7 +32,7 @@ final class VersionController
     {
         $dashboardData = [
             'version' => $this->versionProvider->getFullVersion(),
-            'is_last_patch_displayed' => boolval($this->configManager->get('pim_analytics.version_update')),
+            'is_last_patch_displayed' => $this->isLastPatchDisplayed(),
             'analytics_url' => $this->getAnalyticsUrl(),
             'is_analytics_wanted' => ($this->versionProvider->getVersion() !== 'master')
         ];
@@ -46,5 +48,11 @@ final class VersionController
             $this->versionProvider->getEdition(),
             $this->versionProvider->getMinorVersion()
         );
+    }
+
+    private function isLastPatchDisplayed(): bool
+    {
+        return boolval($this->configManager->get('pim_analytics.version_update')) &&
+            1 === preg_match('~^\d\.\d\.\d~', $this->versionProvider->getVersion());
     }
 }
