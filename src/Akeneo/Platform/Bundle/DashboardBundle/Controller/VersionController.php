@@ -7,9 +7,9 @@ use Akeneo\Platform\VersionProviderInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-final class VersionController
+class VersionController
 {
-    private const GENERAL_AVAILABILITY_TAG_PATTERN = '~^\d\.\d\.\d~'; 
+    private const GENERAL_AVAILABILITY_TAG_PATTERN = '~^\d\.\d\.\d~';
 
     private VersionProviderInterface $versionProvider;
 
@@ -53,6 +53,6 @@ final class VersionController
     private function isLastPatchDisplayed(): bool
     {
         return boolval($this->configManager->get('pim_analytics.version_update')) &&
-            1 === preg_match('~^\d\.\d\.\d~', $this->versionProvider->getVersion());
+            1 === preg_match(self::GENERAL_AVAILABILITY_TAG_PATTERN, $this->versionProvider->getVersion());
     }
 }
