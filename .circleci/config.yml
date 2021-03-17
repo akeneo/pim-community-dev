@@ -39,7 +39,9 @@ jobs:
             sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json
       - run:
           name: Persist default IMAGE_TAG to be the repo last commit SHA1
-          command: echo export IMAGE_TAG=$CIRCLE_SHA1 >> persisted_env_vars
+          command: |
+            echo export IMAGE_TAG_SHORTED=$(echo $CIRCLE_SHA1 | cut -c -7) >> persisted_env_vars
+            echo export IMAGE_TAG=$CIRCLE_SHA1 >> persisted_env_vars
       - persist_to_workspace:
           root: ~/
           paths:
@@ -338,7 +340,7 @@ jobs:
           - restore_persisted_env_vars
           - run:
               name: Build PROD PIM docker image
-              command: PIM_CONTEXT=deployment IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
+              command:  PIM_CONTEXT=deployment IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
           - run:
               name: Push PROD PIM image on docker registry
               command: PIM_CONTEXT=deployment make push-php-image-prod
