@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56201ecc3196ca3f423236aae764f62f",
+    "content-hash": "543e43bc7d1cc05ffd74f6619897db61",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -2535,16 +2535,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v3.0.2",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "eb1c1977bd904fe93981908861d508c1952f7dfe"
+                "reference": "b4302ede2e247a6cc884b302a5f7146e08bd1b18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/eb1c1977bd904fe93981908861d508c1952f7dfe",
-                "reference": "eb1c1977bd904fe93981908861d508c1952f7dfe",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/b4302ede2e247a6cc884b302a5f7146e08bd1b18",
+                "reference": "b4302ede2e247a6cc884b302a5f7146e08bd1b18",
                 "shasum": ""
             },
             "require": {
@@ -2625,10 +2625,10 @@
             "support": {
                 "email": "gediminas.morkevicius@gmail.com",
                 "issues": "https://github.com/Atlantic18/DoctrineExtensions/issues",
-                "source": "https://github.com/Atlantic18/DoctrineExtensions/tree/v3.0.2",
+                "source": "https://github.com/Atlantic18/DoctrineExtensions/tree/v3.0.3",
                 "wiki": "https://github.com/Atlantic18/DoctrineExtensions/tree/main/doc"
             },
-            "time": "2021-01-23T23:26:55+00:00"
+            "time": "2021-01-23T23:40:14+00:00"
         },
         {
             "name": "google/auth",
