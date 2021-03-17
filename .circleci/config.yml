@@ -779,14 +779,14 @@ commands:
           name: "Prepare terraform configuration."
           shell: "/bin/bash -eo pipefail"
           command: |
-            IMAGE_TAG=$CIRCLE_SHA1 PIM_CONTEXT=deployment make create-ci-release-files
+            IMAGE_TAG=$CIRCLE_SHA1 IMAGE_TAG_SHORTED=$(echo $CIRCLE_SHA1 | cut -c -7) PIM_CONTEXT=deployment make create-ci-release-files
 
   restore_persisted_env_vars:
     description: "Restore env vars that have been persisted by the previous job."
     steps:
       - run:
-         name: Restore persisted env vars
-         command: |
+          name: Restore persisted env vars
+          command: |
             echo "Persisted env vars:"
             cat persisted_env_vars
             cat persisted_env_vars >> $BASH_ENV
