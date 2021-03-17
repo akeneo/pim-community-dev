@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import useInfiniteEventSubscriptionLogs from '../hooks/api/use-infinite-event-subscription-logs';
 import {EventLogBadge} from './EventLogBadge';
 import EventLogDatetime from './EventLogDatetime';
-import ExpandableTableRow from '../../common/components/Table/ExpandableTableRow';
+import ExpandableTableRow from '../../common/components/ExpandableTableRow';
 import FormattedJSON from '../../common/components/FormattedJSON';
 
 const ExtraSmallColumnHeaderCell = styled(Table.HeaderCell)`
