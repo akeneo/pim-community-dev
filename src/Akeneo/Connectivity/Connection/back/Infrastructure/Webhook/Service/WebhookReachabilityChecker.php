@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\UrlReachabilityCheckerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\Validation\NotPrivateNetworkUrl;
+use Akeneo\Connectivity\Connection\Domain\Clock;
 use Akeneo\Connectivity\Connection\Domain\Webhook\DTO\UrlReachabilityStatus;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\Signature;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
@@ -36,16 +37,16 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
     /** @var ValidatorInterface */
     private $validator;
 
-    private \Closure $time;
+    private Clock $clock;
 
     public function __construct(
         ClientInterface $client,
         ValidatorInterface $validator,
-        \closure $time = null
+        Clock $clock
     ) {
         $this->client = $client;
         $this->validator = $validator;
-        $this->time = $time ?? fn () => time();
+        $this->clock = $clock;
     }
 
     public function check(string $url, string $secret): UrlReachabilityStatus
@@ -63,7 +64,7 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
             );
         }
 
-        $timestamp = ($this->time)();
+        $timestamp = $this->clock->now()->getTimestamp();
         $signature = Signature::createSignature($secret, $timestamp);
 
         $headers = [

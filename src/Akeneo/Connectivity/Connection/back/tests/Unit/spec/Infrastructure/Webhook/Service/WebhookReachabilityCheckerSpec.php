@@ -7,6 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\UrlReachabilityCheckerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\Validation\NotPrivateNetworkUrl;
 use Akeneo\Connectivity\Connection\Domain\Webhook\DTO\UrlReachabilityStatus;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\Signature;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
 use GuzzleHttp\ClientInterface;
@@ -34,7 +35,11 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         ClientInterface $client,
         ValidatorInterface $validator
     ): void {
-        $this->beConstructedWith($client, $validator, fn () => 1577836800);
+        $this->beConstructedWith(
+            $client,
+            $validator,
+            new FakeClock(new \DateTimeImmutable('@1577836800'))
+        );
     }
 
     public function it_is_initializable(): void

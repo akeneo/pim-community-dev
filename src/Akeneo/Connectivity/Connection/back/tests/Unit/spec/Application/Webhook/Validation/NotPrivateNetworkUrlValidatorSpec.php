@@ -6,9 +6,9 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Validation;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Validation\NotPrivateNetworkUrl;
 use Akeneo\Connectivity\Connection\Application\Webhook\Validation\NotPrivateNetworkUrlValidator;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\DnsLookup\FakeDnsLookup;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
@@ -20,6 +20,11 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
  */
 class NotPrivateNetworkUrlValidatorSpec extends ObjectBehavior
 {
+    public function let(): void
+    {
+        $this->beConstructedWith(new FakeDnsLookup(['8.8.8.8']));
+    }
+
     public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(NotPrivateNetworkUrlValidator::class);
@@ -72,7 +77,7 @@ class NotPrivateNetworkUrlValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $builder
     ) {
-        $this->beConstructedWith(fn () => false);
+        $this->beConstructedWith(new FakeDnsLookup());
         $this->initialize($context);
 
         $constraint = new NotPrivateNetworkUrl();
@@ -90,8 +95,6 @@ class NotPrivateNetworkUrlValidatorSpec extends ObjectBehavior
 
     public function it_validates_public_network_url()
     {
-        $this->beConstructedWith(fn () => ['8.8.8.8']);
-
         $url = 'https://public-network-url.dev/';
 
         $this->validate($url, new NotPrivateNetworkUrl());
@@ -101,7 +104,7 @@ class NotPrivateNetworkUrlValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $builder
     ) {
-        $this->beConstructedWith(fn () => ['127.0.0.1']);
+        $this->beConstructedWith(new FakeDnsLookup(['127.0.0.1']));
         $this->initialize($context);
 
         $constraint = new NotPrivateNetworkUrl();

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
@@ -6,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\DnsLookup\FakeDnsLookup;
 use Akeneo\Test\Integration\Configuration;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
@@ -21,6 +23,16 @@ use PHPUnit\Framework\Assert;
  */
 class CheckWebhookReachabilityEndToEnd extends WebTestCase
 {
+    private FakeDnsLookup $fakeDnsLookup;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->fakeDnsLookup = $this->get('akeneo_connectivity.connection.dns_lookup');
+        $this->fakeDnsLookup->setResolvedIps(['8.8.8.8']);
+    }
+
     public function test_it_does_reach_webhook(): void
     {
         $sapConnection = $this->getConnection();
@@ -153,6 +165,38 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
 
         Assert::assertIsArray($result);
         Assert::assertEquals(['success' => false, 'message' => 'Failed to connect to server'], $result);
+    }
+
+    /**
+     * Safeguard against SSRF attack by preventing the server to call a private network addresse like 'localhost'.
+     */
+    public function test_it_does_not_call_a_private_network_url(): void
+    {
+        $this->fakeDnsLookup->setResolvedIps(['127.0.0.1']);
+        $stack = $this->getHandlerStack();
+
+        // Ensure that it will fail if the Guzzle Client is called
+        $stack->setHandler(new MockHandler([new \Exception()]));
+
+        $this->authenticateAsAdmin();
+        $this->client->request(
+            'POST',
+            sprintf('/rest/connections/%s/webhook/check-reachability', 'erp'),
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode(['url' => 'http://localhost'])
+        );
+
+        $result = json_decode($this->client->getResponse()->getContent(), true);
+
+        Assert::assertEquals(
+            [
+                'success' => false,
+                'message' => 'IP "127.0.0.1" is blocked for "http://localhost".'
+            ],
+            $result
+        );
     }
 
     protected function getConfiguration(): Configuration

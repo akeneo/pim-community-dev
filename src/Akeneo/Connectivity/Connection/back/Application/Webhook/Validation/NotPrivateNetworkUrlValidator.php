@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Validation;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\DnsLookupInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -15,11 +16,11 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  */
 class NotPrivateNetworkUrlValidator extends ConstraintValidator
 {
-    private \Closure $gethostbynamel;
+    private DnsLookupInterface $dnsLookup;
 
-    public function __construct(\Closure $gethostbynamel = null)
+    public function __construct(DnsLookupInterface $dnsLookup)
     {
-        $this->gethostbynamel = $gethostbynamel ?? fn (string $hostname) => gethostbynamel($hostname);
+        $this->dnsLookup = $dnsLookup;
     }
 
     public function validate($value, Constraint $constraint): void
@@ -46,7 +47,7 @@ class NotPrivateNetworkUrlValidator extends ConstraintValidator
             return;
         }
 
-        if (!$ip = ($this->gethostbynamel)($host)) {
+        if (!$ip = $this->dnsLookup->lookupHost($host)) {
             $this->context->buildViolation($constraint->unresolvableHostMessage)
                 ->setParameter('{{ host }}', $this->formatValue($host))
                 ->addViolation();

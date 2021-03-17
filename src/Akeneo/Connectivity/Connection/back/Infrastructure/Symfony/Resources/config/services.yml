@@ -68,6 +68,7 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.webhook.guzzle_client'
             - '@validator'
+            - '@akeneo_connectivity.connection.clock'
 
     akeneo_connectivity.connection.webhook.generate_secret:
         class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\GenerateSecret
@@ -85,3 +86,9 @@ services:
 
     akeneo_connectivity.connection.webhook.sleep:
         class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep
+
+    akeneo_connectivity.connection.clock:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock
+
+    akeneo_connectivity.connection.dns_lookup:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Service\DnsLookup\DnsLookup

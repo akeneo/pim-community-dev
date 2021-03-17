@@ -1,0 +1,6 @@
+services:
+    akeneo_connectivity.connection.clock:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock
+
+    akeneo_connectivity.connection.dns_lookup:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Service\DnsLookup\FakeDnsLookup
