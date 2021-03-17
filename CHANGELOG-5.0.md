@@ -4,6 +4,8 @@
 
 - PIM-9704: Fix SSRF vulnerability on the Event Subscription URL
 
+# 5.0.8 (2021-03-17)
+
 # 5.0.7 (2021-03-09)
 
 # 5.0.6 (2021-03-09)
