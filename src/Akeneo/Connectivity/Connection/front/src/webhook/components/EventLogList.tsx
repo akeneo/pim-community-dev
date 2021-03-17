@@ -68,7 +68,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                     {logs.map(({timestamp, level, message, context}, index) => (
                         <ExpandableTableRow
                             key={index}
-                            contentToExpand={<FormattedJSON>{context}</FormattedJSON>}
+                            contentToExpand={() => <FormattedJSON>{context}</FormattedJSON>}
                         >
                             <Table.Cell>
                                 <ArrowRightIcon />
