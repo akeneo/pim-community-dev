@@ -1,25 +1,14 @@
-import React, {
-  cloneElement,
-  createElement,
-  isValidElement,
-  ReactElement,
-  ReactNode,
-  Ref,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, {cloneElement, isValidElement, Ref, useEffect, useRef, useState} from 'react';
 import styled, {css} from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {InputProps} from '../InputProps';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
 import {ImportIllustration} from '../../../illustrations';
-import {Button, IconButton, IconButtonProps, Image} from '../../../components';
+import {IconButton, IconButtonProps, Image} from '../../../components';
 import {ProgressBar} from '../../ProgressBar/ProgressBar';
-import {CloseIcon, FullscreenIcon, LockIcon} from '../../../icons';
+import {CloseIcon, LockIcon} from '../../../icons';
 import {useBooleanState, useShortcut} from '../../../hooks';
 import {FileInfo} from './FileInfo';
-import {FullscreenPreview} from './FullscreenPreview';
 import DefaultPictureIllustration from '../../../../static/illustrations/DefaultPicture.svg';
 
 const MediaFileInputContainer = styled.div<{isCompact: boolean; readOnly: boolean} & AkeneoThemedProps>`
@@ -122,11 +111,6 @@ type MediaFileInputProps = Override<
     value: FileInfo | null;
 
     /**
-     * Component to render the preview.
-     */
-    preview: ReactNode;
-
-    /**
      * Url of the thumbnail (can be base64).
      */
     thumbnailUrl: string | null;
@@ -150,21 +134,6 @@ type MediaFileInputProps = Override<
      * Title of the clear icon button.
      */
     clearTitle: string;
-
-    /**
-     * Title of the fullscreen icon button.
-     */
-    fullscreenTitle: string;
-
-    /**
-     * Label displayed at the top of the fullscreen preview.
-     */
-    fullscreenLabel?: string;
-
-    /**
-     * Title of the close icon button in the fullscreen preview.
-     */
-    closeTitle: string;
 
     /**
      * Label displayed when the upload failed.
@@ -192,15 +161,11 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
       onChange,
       value,
       thumbnailUrl,
-      preview,
       uploadingLabel,
       uploader,
       size = 'default',
       placeholder,
-      fullscreenTitle,
-      fullscreenLabel,
       clearTitle,
-      closeTitle,
       children,
       uploadErrorLabel,
       invalid = false,
@@ -216,7 +181,6 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
     const [displayedThumbnailUrl, setDisplayedThumbnailUrl] = useState(thumbnailUrl);
     const [hasUploadFailed, uploadFailed, uploadSucceeded] = useBooleanState(false);
     const [progress, setProgress] = useState<number>(0);
-    const [isFullScreenModalOpen, openFullScreenModal, closeFullScreenModal] = useBooleanState(false);
     forwardedRef = forwardedRef ?? internalInputRef;
 
     useEffect(() => {
@@ -254,28 +218,16 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
 
     useShortcut(Key.Enter, openFileExplorer, containerRef);
 
-    const actions: ReactElement[] = [];
-    const fullScreenActions: ReactElement[] = [];
-
-    React.Children.forEach(children, (child, index) => {
+    const actions = React.Children.map(children, child => {
       if (isValidElement<IconButtonProps>(child) && IconButton === child.type) {
-        actions.push(
-          cloneElement(child, {
-            key: index,
-            level: 'tertiary',
-            ghost: 'borderless',
-            size: 'small',
-          })
-        );
-        fullScreenActions.push(
-          createElement(Button, {
-            ...child.props,
-            level: 'tertiary',
-            ghost: true,
-            children: [child.props.icon, child.props.title],
-          })
-        );
+        return cloneElement(child, {
+          level: 'tertiary',
+          ghost: 'borderless',
+          size: 'small',
+        });
       }
+
+      return null;
     });
 
     return (
@@ -287,7 +239,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
           readOnly={readOnly}
           isCompact={isCompact}
         >
-          {!value && (
+          {!value && !isUploading && (
             <Input
               ref={forwardedRef}
               type="file"
@@ -334,7 +286,6 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
               <MediaFilePlaceholder>{hasUploadFailed ? uploadErrorLabel : placeholder}</MediaFilePlaceholder>
             </>
           )}
-
           <ActionContainer isCompact={isCompact}>
             {value && (
               <>
@@ -349,28 +300,11 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
                   />
                 )}
                 {actions}
-                <IconButton
-                  size="small"
-                  level="tertiary"
-                  ghost="borderless"
-                  icon={<FullscreenIcon />}
-                  title={fullscreenTitle}
-                  onClick={openFullScreenModal}
-                />
               </>
             )}
             {readOnly && <ReadOnlyIcon size={16} />}
           </ActionContainer>
         </MediaFileInputContainer>
-        {isFullScreenModalOpen && value && (
-          <FullscreenPreview closeTitle={closeTitle} onClose={closeFullScreenModal}>
-            <FullscreenPreview.Title>{fullscreenLabel ?? value.originalFilename}</FullscreenPreview.Title>
-            <FullscreenPreview.Content>
-              {preview}
-              <FullscreenPreview.Actions>{fullScreenActions}</FullscreenPreview.Actions>
-            </FullscreenPreview.Content>
-          </FullscreenPreview>
-        )}
       </>
     );
   }

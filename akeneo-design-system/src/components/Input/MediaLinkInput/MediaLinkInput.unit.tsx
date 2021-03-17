@@ -9,22 +9,12 @@ jest.mock('../../../../static/illustrations/DefaultPicture.svg', () => 'FALLBACK
 
 const defaultProps = {
   placeholder: 'Put your media link here',
-  closeTitle: 'Close',
-  fullscreenTitle: 'Fullscreen',
 };
 
 test('it renders an empty MediaLinkInput', () => {
   const handleChange = jest.fn();
 
-  render(
-    <MediaLinkInput
-      {...defaultProps}
-      value=""
-      thumbnailUrl="some.jpg"
-      preview={<img alt="nice image" />}
-      onChange={handleChange}
-    />
-  );
+  render(<MediaLinkInput {...defaultProps} value="" thumbnailUrl="some.jpg" onChange={handleChange} />);
 
   expect(screen.getByTitle(/Put your media link here/i)).toBeInTheDocument();
   expect(screen.getByPlaceholderText(/Put your media link here/i)).toBeInTheDocument();
@@ -34,13 +24,7 @@ test('it can handle change', () => {
   const handleChange = jest.fn();
 
   render(
-    <MediaLinkInput
-      {...defaultProps}
-      value="some"
-      thumbnailUrl="some.jpg"
-      preview={<img alt="nice image" />}
-      onChange={handleChange}
-    >
+    <MediaLinkInput {...defaultProps} value="some" thumbnailUrl="some.jpg" onChange={handleChange}>
       <IconButton icon={<CopyIcon />} title="Copy" />
     </MediaLinkInput>
   );
@@ -52,43 +36,23 @@ test('it can handle change', () => {
   expect(screen.getByTitle(/Copy/i)).toBeInTheDocument();
 });
 
-test('it displays Media link actions and the fullscreen preview when hitting the fullscreen button', () => {
+test('it does not display invalid children', () => {
   const handleChange = jest.fn();
 
   render(
-    <MediaLinkInput
-      {...defaultProps}
-      value="some"
-      thumbnailUrl="some.jpg"
-      preview={<img alt="nice image" />}
-      onChange={handleChange}
-    >
-      <IconButton icon={<CopyIcon />} title="Copy" />
+    <MediaLinkInput {...defaultProps} value="" onChange={handleChange} thumbnailUrl="nice.jpg">
+      <span>not valid child</span>
     </MediaLinkInput>
   );
 
-  const fullscreenButton = screen.getByTitle(/Fullscreen/i);
-
-  expect(fullscreenButton).toBeInTheDocument();
-  expect(screen.getByTitle(/Copy/i)).toBeInTheDocument();
-
-  userEvent.click(fullscreenButton);
-
-  expect(screen.getByAltText('nice image')).toBeInTheDocument();
+  expect(screen.queryByText(/not valid child/i)).not.toBeInTheDocument();
 });
 
 test('it does not call onChange when read only', () => {
   const handleChange = jest.fn();
 
   render(
-    <MediaLinkInput
-      {...defaultProps}
-      value="some"
-      thumbnailUrl="some.jpg"
-      preview={<img alt="nice image" />}
-      onChange={handleChange}
-      readOnly={true}
-    >
+    <MediaLinkInput {...defaultProps} value="some" thumbnailUrl="some.jpg" onChange={handleChange} readOnly={true}>
       <IconButton icon={<CopyIcon />} title="Copy" />
     </MediaLinkInput>
   );
@@ -103,14 +67,7 @@ test('it calls onSubmit handler when hitting the enter key', () => {
   const onSubmit = jest.fn();
 
   render(
-    <MediaLinkInput
-      {...defaultProps}
-      value=""
-      thumbnailUrl="some.jpg"
-      preview={<img alt="nice image" />}
-      onChange={handleChange}
-      onSubmit={onSubmit}
-    />
+    <MediaLinkInput {...defaultProps} value="" thumbnailUrl="some.jpg" onChange={handleChange} onSubmit={onSubmit} />
   );
 
   userEvent.type(screen.getByPlaceholderText(/Put your media link here/i), 'some-other.jpg{enter}');
@@ -121,15 +78,7 @@ test('it calls onSubmit handler when hitting the enter key', () => {
 test('it displays the default picture when the image previewer fails', () => {
   const handleChange = jest.fn();
 
-  render(
-    <MediaLinkInput
-      {...defaultProps}
-      value="some.jpg"
-      thumbnailUrl="some.jpg"
-      preview={<img alt="nice image" />}
-      onChange={handleChange}
-    />
-  );
+  render(<MediaLinkInput {...defaultProps} value="some.jpg" thumbnailUrl="some.jpg" onChange={handleChange} />);
 
   const thumbnail = screen.getByAltText(/some.jpg/i);
 
@@ -141,29 +90,13 @@ test('it displays the default picture when the image previewer fails', () => {
 test('MediaLinkInput supports forwardRef', () => {
   const ref = {current: null};
 
-  render(
-    <MediaLinkInput
-      {...defaultProps}
-      value=""
-      thumbnailUrl="some.jpg"
-      preview={<img alt="nice image" />}
-      onChange={jest.fn()}
-      ref={ref}
-    />
-  );
+  render(<MediaLinkInput {...defaultProps} value="" thumbnailUrl="some.jpg" onChange={jest.fn()} ref={ref} />);
   expect(ref.current).not.toBe(null);
 });
 
 test('MediaLinkInput supports ...rest props', () => {
   render(
-    <MediaLinkInput
-      {...defaultProps}
-      value=""
-      thumbnailUrl="some.jpg"
-      preview={<img alt="nice image" />}
-      onChange={jest.fn()}
-      data-testid="my_value"
-    />
+    <MediaLinkInput {...defaultProps} value="" thumbnailUrl="some.jpg" onChange={jest.fn()} data-testid="my_value" />
   );
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });

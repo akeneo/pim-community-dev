@@ -1,8 +1,7 @@
 import React, {ReactNode} from 'react';
 import styled from 'styled-components';
-import {Image} from '../../../components';
-import {Modal} from '../../Modal/Modal';
-import {getColor} from '../../../theme';
+import {Image, Modal} from '../../components';
+import {getColor} from '../../theme';
 
 const Border = styled.div`
   display: flex;
@@ -32,22 +31,22 @@ const PreviewImage = styled(Image)`
 `;
 
 type FullscreenPreviewProps = {
-  closeTitle: string;
+  title: string;
+  src: string;
   onClose: () => void;
   children: ReactNode;
 };
 
-const FullscreenPreview = ({closeTitle, onClose, children}: FullscreenPreviewProps) => {
+const FullscreenPreview = ({title, src, onClose, children}: FullscreenPreviewProps) => {
   return (
-    <Modal onClose={onClose} closeTitle={closeTitle}>
-      {children}
+    <Modal onClose={onClose} closeTitle="Close">
+      <BrandedTitle>{title}</BrandedTitle>
+      <Border>
+        <PreviewImage src={src} alt={title} />
+        <Actions>{children}</Actions>
+      </Border>
     </Modal>
   );
 };
-
-FullscreenPreview.Content = Border;
-FullscreenPreview.Title = BrandedTitle;
-FullscreenPreview.Actions = Actions;
-FullscreenPreview.Image = PreviewImage;
 
 export {FullscreenPreview};

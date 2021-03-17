@@ -1,24 +1,12 @@
-import React, {
-  ChangeEvent,
-  Ref,
-  ReactNode,
-  useRef,
-  isValidElement,
-  cloneElement,
-  createElement,
-  useState,
-  useEffect,
-  ReactElement,
-} from 'react';
+import React, {ChangeEvent, Ref, useRef, isValidElement, cloneElement, useState, useEffect} from 'react';
 import styled, {css} from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {InputProps} from '../InputProps';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {DefaultPictureIllustration} from '../../../illustrations';
-import {IconButton, IconButtonProps, Image, Button} from '../../../components';
-import {FullscreenIcon, LockIcon} from '../../../icons';
-import {useBooleanState, useShortcut} from '../../../hooks';
-import {FullscreenPreview} from './FullscreenPreview';
+import {IconButton, IconButtonProps, Image} from '../../../components';
+import {LockIcon} from '../../../icons';
+import {useShortcut} from '../../../hooks';
 import DefaultPicture from '../../../../static/illustrations/DefaultPicture.svg';
 
 const MediaLinkInputContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
@@ -99,29 +87,9 @@ type MediaLinkInputProps = Override<
     thumbnailUrl: string | null;
 
     /**
-     * Component to render the preview.
-     */
-    preview: ReactNode;
-
-    /**
      * Placeholder displayed when the input is empty.
      */
     placeholder?: string;
-
-    /**
-     * Title of the fullscreen icon button.
-     */
-    fullscreenTitle: string;
-
-    /**
-     * Label displayed at the top of the fullscreen preview.
-     */
-    fullscreenLabel?: string;
-
-    /**
-     * Title of the close icon button in the fullscreen preview.
-     */
-    closeTitle: string;
 
     /**
      * Defines if the input is valid or not.
@@ -143,12 +111,8 @@ const MediaLinkInput = React.forwardRef<HTMLInputElement, MediaLinkInputProps>(
     {
       onChange,
       value,
-      preview,
       placeholder,
       thumbnailUrl,
-      fullscreenTitle,
-      fullscreenLabel,
-      closeTitle,
       children,
       invalid = false,
       readOnly = false,
@@ -158,34 +122,22 @@ const MediaLinkInput = React.forwardRef<HTMLInputElement, MediaLinkInputProps>(
     forwardedRef: Ref<HTMLInputElement>
   ) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const [isFullScreenModalOpen, openFullScreenModal, closeFullScreenModal] = useBooleanState(false);
     const [displayedThumbnailUrl, setDisplayedThumbnailUrl] = useState(thumbnailUrl);
-    const actions: ReactElement[] = [];
-    const fullScreenActions: ReactElement[] = [];
 
     useEffect(() => {
       setDisplayedThumbnailUrl(thumbnailUrl);
     }, [thumbnailUrl]);
 
-    React.Children.forEach(children, (child, index) => {
+    const actions = React.Children.map(children, child => {
       if (isValidElement<IconButtonProps>(child) && IconButton === child.type) {
-        actions.push(
-          cloneElement(child, {
-            key: index,
-            level: 'tertiary',
-            ghost: 'borderless',
-            size: 'small',
-          })
-        );
-        fullScreenActions.push(
-          createElement(Button, {
-            ...child.props,
-            level: 'tertiary',
-            ghost: true,
-            children: [child.props.icon, child.props.title],
-          })
-        );
+        return cloneElement(child, {
+          level: 'tertiary',
+          ghost: 'borderless',
+          size: 'small',
+        });
       }
+
+      return null;
     });
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -223,31 +175,10 @@ const MediaLinkInput = React.forwardRef<HTMLInputElement, MediaLinkInputProps>(
             {...rest}
           />
           <ActionContainer>
-            {'' !== value && (
-              <>
-                {actions}
-                <IconButton
-                  size="small"
-                  level="tertiary"
-                  ghost="borderless"
-                  icon={<FullscreenIcon />}
-                  title={fullscreenTitle}
-                  onClick={openFullScreenModal}
-                />
-              </>
-            )}
+            {'' !== value && actions}
             {readOnly && <ReadOnlyIcon size={16} />}
           </ActionContainer>
         </MediaLinkInputContainer>
-        {isFullScreenModalOpen && '' !== value && (
-          <FullscreenPreview closeTitle={closeTitle} onClose={closeFullScreenModal}>
-            <FullscreenPreview.Title>{fullscreenLabel ?? value}</FullscreenPreview.Title>
-            <FullscreenPreview.Content>
-              {preview}
-              <FullscreenPreview.Actions>{fullScreenActions}</FullscreenPreview.Actions>
-            </FullscreenPreview.Content>
-          </FullscreenPreview>
-        )}
       </>
     );
   }
