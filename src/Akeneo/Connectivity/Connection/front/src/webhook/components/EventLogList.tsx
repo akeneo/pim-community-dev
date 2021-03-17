@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import useInfiniteEventSubscriptionLogs from '../hooks/api/use-infinite-event-subscription-logs';
 import {EventLogBadge} from './EventLogBadge';
 import EventLogDatetime from './EventLogDatetime';
+import ExpandableTableRow from '../../common/components/Table/ExpandableTableRow';
+import FormattedJSON from '../../common/components/FormattedJSON';
 
 const ExtraSmallColumnHeaderCell = styled(Table.HeaderCell)`
     width: 125px;
@@ -64,7 +66,10 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                 </Table.Header>
                 <Table.Body ref={scrollContainer}>
                     {logs.map(({timestamp, level, message, context}, index) => (
-                        <Table.Row key={index} onClick={() => undefined}>
+                        <ExpandableTableRow
+                            key={index}
+                            contentToExpand={<FormattedJSON>{context}</FormattedJSON>}
+                        >
                             <Table.Cell>
                                 <ArrowRightIcon />
                                 <EventLogDatetime timestamp={timestamp * 1000} />
@@ -76,7 +81,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                                 <MessageContainer>{message}</MessageContainer>
                                 <ContextContainer>{JSON.stringify(context)}</ContextContainer>
                             </Table.Cell>
-                        </Table.Row>
+                        </ExpandableTableRow>
                     ))}
                 </Table.Body>
             </Table>
