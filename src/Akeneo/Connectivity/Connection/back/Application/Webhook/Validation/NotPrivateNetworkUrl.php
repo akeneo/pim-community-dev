@@ -12,6 +12,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class NotPrivateNetworkUrl extends Constraint
 {
-    public $unresolvableHostMessage = 'Could not resolve host {{ host }}.';
-    public $ipBlockedMessage = 'IP {{ ip }} is blocked for {{ url }}.';
+    public string $unresolvableHostMessage = 'Could not resolve host {{ host }}.';
+    public string $ipBlockedMessage = 'IP {{ ip }} is blocked for {{ url }}.';
 }

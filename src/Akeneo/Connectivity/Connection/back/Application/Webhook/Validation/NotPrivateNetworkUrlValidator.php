@@ -22,10 +22,10 @@ class NotPrivateNetworkUrlValidator extends ConstraintValidator
         $this->gethostbynamel = $gethostbynamel ?? fn (string $hostname) => gethostbynamel($hostname);
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof NotPrivateNetworkUrl) {
-            throw new UnexpectedTypeException($constraint, NoPrivateNetworkUrl::class);
+            throw new UnexpectedTypeException($constraint, NotPrivateNetworkUrl::class);
         }
 
         if (null === $value || '' === $value) {
