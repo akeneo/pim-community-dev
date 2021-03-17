@@ -1,90 +1,56 @@
 akeneo_channel:
     resource: "@AkeneoChannelBundle/Resources/config/routing.yml"
     prefix:   /
-    options:
-        expose: true
 
 akeneo_pim_structure:
     resource: "@AkeneoPimStructureBundle/Resources/config/routing.yml"
-    options:
-        expose: true
 
 akeneo_pim_enrichment:
     resource: "@AkeneoPimEnrichmentBundle/Resources/config/routing.yml"
-    options:
-        expose: true
 
 akeneo_connectivity_connection:
     resource: "@AkeneoConnectivityConnectionBundle/Resources/config/routing.yml"
-    options:
-        expose: true
 
 akeneo_measure:
     resource: "@AkeneoMeasureBundle/Resources/config/routing.yml"
-    options:
-        expose: true
 
 akeneo_feature_flag:
     resource: "@AkeneoFeatureFlagBundle/Resources/config/routing.yml"
-    options:
-        expose: true
 
 akeneo_communication_channel:
     resource: "@AkeneoCommunicationChannelBundle/Resources/config/routing.yml"
-    options:
-        expose: true
 
 # PIM
 pim_analytics:
     resource: "@PimAnalyticsBundle/Resources/config/routing.yml"
-    options:
-        expose: true
 
 pim_datagrid:
     resource: "@PimDataGridBundle/Resources/config/routing.yml"
-    options:
-        expose: true
 
 pim_dashboard:
     resource: "@PimDashboardBundle/Resources/config/routing.yml"
-    options:
-        expose: true
 
 pim_ui:
     resource: "@PimUIBundle/Resources/config/routing.yml"
-    options:
-        expose: true
 
 pim_user:
     resource: "@PimUserBundle/Resources/config/routing.yml"
-    options:
-        expose: true
 
 pim_importexport:
     resource: "@PimImportExportBundle/Resources/config/routing.yml"
-    options:
-        expose: true
 
 pim_notification:
     resource: "@PimNotificationBundle/Resources/config/routing.yml"
-    options:
-        expose: true
 
 pim_api:
     resource: "@PimApiBundle/Resources/config/routing.yml"
     prefix: /api
-    options:
-        expose: true
 
 pim_volume_monitoring:
     resource: "@PimCatalogVolumeMonitoringBundle/Resources/config/routing.yml"
-    options:
-        expose: true
 
 pim_data_quality_insights:
     resource: "@AkeneoDataQualityInsightsBundle/Resources/config/routing.yml"
-    options:
-        expose: true
 
 # Oro platform
 
@@ -93,23 +59,15 @@ oro_default:
     defaults:
         template:    PimUIBundle::index.html.twig
         _controller: FrameworkBundle:Template:template
-    options:
-        expose: true
 
 oro_config:
     resource: "@OroConfigBundle/Resources/config/oro/routing.yml"
-    options:
-        expose: true
 
 oro_datagrid:
     resource: "@OroDataGridBundle/Resources/config/oro/routing.yml"
-    options:
-        expose: true
 
 oro_translation:
     resource: "@OroTranslationBundle/Resources/config/oro/routing.yml"
-    options:
-        expose: true
 
 # other third party
 fos_js_routing:
