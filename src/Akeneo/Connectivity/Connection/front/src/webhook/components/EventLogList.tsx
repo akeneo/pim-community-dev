@@ -1,7 +1,28 @@
-import {GraphIllustration, Information} from 'akeneo-design-system';
+import {ArrowRightIcon, GraphIllustration, Information, Table} from 'akeneo-design-system';
 import React, {FC, useRef} from 'react';
 import {NoEventLogs} from './NoEventLogs';
+import {Translate} from '../../shared/translate';
+import styled from 'styled-components';
 import useInfiniteEventSubscriptionLogs from '../hooks/api/use-infinite-event-subscription-logs';
+import {EventLogBadge} from './EventLogBadge';
+import EventLogDatetime from './EventLogDatetime';
+
+const ExtraSmallColumnHeaderCell = styled(Table.HeaderCell)`
+    width: 125px;
+`;
+const SmallColumnHeaderCell = styled(Table.HeaderCell)`
+    width: 220px;
+`;
+const MessageContainer = styled.span`
+    padding-right: 15px;
+`;
+const ContextContainer = styled.span`
+    color: ${({theme}) => theme.color.grey100};
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+    overflow: hidden;
+`;
 
 export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => {
     const scrollContainer = useRef(null);
@@ -17,16 +38,49 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
 
     return (
         <>
-            <Information illustration={<GraphIllustration />} title={`There is ${total} logs.`}>
+            <Information
+                illustration={<GraphIllustration />}
+                title={
+                    <Translate
+                        id={'akeneo_connectivity.connection.webhook.event_logs.list.info.logs_total'}
+                        placeholders={{total: total ? total.toString() : '0'}}
+                        count={total}
+                    />
+                }
+            >
                 {null}
             </Information>
-            <ul ref={scrollContainer}>
-                {logs.map((log, index) => (
-                    <li key={index} style={{height: '50px'}}>
-                        {log.timestamp} - {log.level} - {log.message}
-                    </li>
-                ))}
-            </ul>
+            <Table>
+                <Table.Header>
+                    <SmallColumnHeaderCell>
+                        <Translate id={'akeneo_connectivity.connection.webhook.event_logs.list.headers.datetime'} />
+                    </SmallColumnHeaderCell>
+                    <ExtraSmallColumnHeaderCell>
+                        <Translate id={'akeneo_connectivity.connection.webhook.event_logs.list.headers.level'} />
+                    </ExtraSmallColumnHeaderCell>
+                    <Table.HeaderCell>
+                        <Translate id={'akeneo_connectivity.connection.webhook.event_logs.list.headers.message'} />
+                    </Table.HeaderCell>
+                </Table.Header>
+                <Table.Body ref={scrollContainer}>
+                    {logs.map(({timestamp, level, message, context}, index) => (
+                        <Table.Row key={index} onClick={() => undefined}>
+                            <Table.Cell>
+                                <ArrowRightIcon />
+                                <EventLogDatetime timestamp={timestamp * 1000} />
+                            </Table.Cell>
+                            <Table.Cell>
+                                <EventLogBadge level={level}>{level.toUpperCase()}</EventLogBadge>
+                            </Table.Cell>
+                            <Table.Cell>
+                                <MessageContainer>{message}</MessageContainer>
+                                <ContextContainer>{JSON.stringify(context)}</ContextContainer>
+                            </Table.Cell>
+                        </Table.Row>
+                    ))}
+                </Table.Body>
+            </Table>
+            <br />
         </>
     );
 };
