@@ -3,19 +3,17 @@ import {BreadcrumbFox} from './BreadcrumbFox';
 import {render, screen} from '../../storybook/test-util';
 
 test('it renders its children properly', () => {
-  render(<BreadcrumbFox>BreadcrumbFox content</BreadcrumbFox>);
+  render(
+    <BreadcrumbFox>
+      <BreadcrumbFox.Item>First</BreadcrumbFox.Item>
+      <BreadcrumbFox.Item>Second</BreadcrumbFox.Item>
+      Last
+    </BreadcrumbFox>
+  );
 
-  expect(screen.getByText('BreadcrumbFox content')).toBeInTheDocument();
-});
-
-// Those tests should pass directly if you follow the contributing guide.
-// If you add required props to your Component, these tests will fail
-// and you will need to add these required props here as well
-test('BreadcrumbFox supports forwardRef', () => {
-  const ref = {current: null};
-
-  render(<BreadcrumbFox ref={ref} />);
-  expect(ref.current).not.toBe(null);
+  expect(screen.getByText('First')).toBeInTheDocument();
+  expect(screen.getByText('Second')).toBeInTheDocument();
+  expect(screen.queryByText('Last')).not.toBeInTheDocument();
 });
 
 test('BreadcrumbFox supports ...rest props', () => {
