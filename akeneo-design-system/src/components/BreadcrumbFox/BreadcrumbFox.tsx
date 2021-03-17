@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {getFontSize, getColor, AkeneoThemedProps} from '../../theme';
 
 //TODO be sure to select the appropriate container element here
-const BreadcrumbFoxContainer = styled.div``;
+const BreadcrumbFoxContainer = styled.nav``;
 const Item = styled.a<{gradient: number; color: string} & AkeneoThemedProps>`
   color: ${({gradient, color}) => getColor(color, gradient)};
   font-size: ${getFontSize('default')};
@@ -36,15 +36,15 @@ const BreadcrumbFox = ({children, color = 'red', ...rest}: BreadcrumbFoxProps) =
     if (!isValidElement(child) || child.type !== Item) return null;
     //return cloneElement(child, {color, gradient: i === itemCounts - 1 ? 100 : 120 });
     return i === itemCounts - 1 ? (
-      cloneElement(child, {color, gradient: 100})
+      cloneElement(child, {color, gradient: 100, 'aria-current': 'page'})
     ) : (
       <>
         {cloneElement(child, {color, gradient: 120})}
-        <Sep>/</Sep>
+        <Sep aria-hidden>/</Sep>
       </>
     );
   });
-  return <BreadcrumbFoxContainer {...rest}>{decoratedChildren}</BreadcrumbFoxContainer>;
+  return <BreadcrumbFoxContainer aria-label="Breadcrumb" {...rest}>{decoratedChildren}</BreadcrumbFoxContainer>;
 };
 
 BreadcrumbFox.Item = Item;

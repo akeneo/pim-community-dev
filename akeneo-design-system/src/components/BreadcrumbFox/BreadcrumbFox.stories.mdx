@@ -30,3 +30,36 @@ Breadcrumbs are very effective for products and experience with a large amount o
 
 <ArgsTable story="Standard" />
 
+## Variations on colors
+
+<Canvas>
+  <Story name="Colors">
+    {args => {
+      return <>
+		  <BreadcrumbFox color="red">
+				<BreadcrumbFox.Item href="/a">first</BreadcrumbFox.Item>
+				<BreadcrumbFox.Item href="/b">second</BreadcrumbFox.Item>
+				<BreadcrumbFox.Item>third</BreadcrumbFox.Item>
+			</BreadcrumbFox>
+			
+		  <BreadcrumbFox color="green">
+				<BreadcrumbFox.Item href="/a">first</BreadcrumbFox.Item>
+				<BreadcrumbFox.Item href="/b">second</BreadcrumbFox.Item>
+				<BreadcrumbFox.Item>third</BreadcrumbFox.Item>
+			</BreadcrumbFox>
+			
+		  <BreadcrumbFox color="blue">
+				<BreadcrumbFox.Item href="/a">first</BreadcrumbFox.Item>
+				<BreadcrumbFox.Item href="/b">second</BreadcrumbFox.Item>
+				<BreadcrumbFox.Item>third</BreadcrumbFox.Item>
+			</BreadcrumbFox>
+		  <BreadcrumbFox color="yellow">
+				<BreadcrumbFox.Item href="/a">first</BreadcrumbFox.Item>
+				<BreadcrumbFox.Item href="/b">second</BreadcrumbFox.Item>
+				<BreadcrumbFox.Item>third</BreadcrumbFox.Item>
+			</BreadcrumbFox>
+		</>
+    }}
+  </Story>
+</Canvas>
+
