@@ -1,0 +1,34 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {BreadcrumbFox} from './BreadcrumbFox.tsx';
+
+<Meta
+  title="Components/BreadcrumbFox"
+  component={BreadcrumbFox}
+/>
+
+# BreadcrumbFox
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <BreadcrumbFox {...args}>
+            <BreadcrumbFox.Item href="/a">first</BreadcrumbFox.Item>
+            <BreadcrumbFox.Item href="/b">second</BreadcrumbFox.Item>
+            <BreadcrumbFox.Item>third</BreadcrumbFox.Item>
+        </BreadcrumbFox>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
