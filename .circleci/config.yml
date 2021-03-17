@@ -870,6 +870,7 @@ jobs:
               command: |
                   echo export CE_COMMIT_HASH=$CE_COMMIT_HASH > persisted_env_vars
                   echo export IMAGE_TAG=$IMAGE_TAG >> persisted_env_vars
+                  echo export IMAGE_TAG_SHORTED=$(echo $CIRCLE_SHA1 | cut -c -7) >> persisted_env_vars
                   echo export GROWTH_RELEASE_NAME=$GROWTH_RELEASE_NAME >> persisted_env_vars
                   echo export TYPE="grth" >> persisted_env_vars
                   echo export PRODUCT_REFERENCE_TYPE="growth_edition_instance" >> persisted_env_vars
@@ -1012,17 +1013,17 @@ workflows:
                         only:
                             - master
       jobs:
-           - checkout
-           - prepare_growth_edition:
+          - checkout
+          - prepare_growth_edition:
                 requires:
                     - checkout
-           - test_cronjobs_existence:
+          - test_cronjobs_existence:
                 requires:
                     - prepare_growth_edition
-           - test_deploy:
+          - test_deploy:
                 requires:
                     - test_cronjobs_existence
-           - release_growth_edition:
+          - release_growth_edition:
                     requires:
                         - test_deploy
 
@@ -1219,26 +1220,26 @@ workflows:
 
   on_demand_growth_edition_release:
       jobs:
-           - ready_to_build?:
-                type: approval
-                filters:
-                    branches:
-                        only: master
-           - checkout:
-                requires:
-                    - ready_to_build?
-           - prepare_growth_edition:
-                requires:
-                    - checkout
-           - test_cronjobs_existence:
-                requires:
-                    - prepare_growth_edition
-           - test_deploy:
-                requires:
-                    - test_cronjobs_existence
-           - release_growth_edition:
-                    requires:
-                        - test_deploy
+          - ready_to_build?:
+              type: approval
+              filters:
+                  branches:
+                      only: master
+          - checkout:
+              requires:
+                  - ready_to_build?
+          - prepare_growth_edition:
+              requires:
+                  - checkout
+          - test_cronjobs_existence:
+              requires:
+                  - prepare_growth_edition
+          - test_deploy:
+              requires:
+                  - test_cronjobs_existence
+          - release_growth_edition:
+              requires:
+                  - test_deploy
 
 commands:
   set_gcloud_config_dev:
@@ -1277,8 +1278,8 @@ commands:
     description: "Restore env vars that have been persisted by the previous job."
     steps:
       - run:
-         name: Restore persisted env vars
-         command: |
+          name: Restore persisted env vars
+          command: |
             echo "Persisted env vars:"
             cat persisted_env_vars
             cat persisted_env_vars >> $BASH_ENV
