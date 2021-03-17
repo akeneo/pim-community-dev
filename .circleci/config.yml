@@ -388,17 +388,17 @@ jobs:
                     LATEST_RELEASE=$(head -n 1 /tmp/pim-tags.txt)
                     echo $LATEST_RELEASE
                     export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
-                    INSTANCE_NAME=pimup-$IMAGE_TAG IMAGE_TAG=$LATEST_RELEASE PIM_CONTEXT=deployment make deploy-serenity
+                    INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$LATEST_RELEASE PIM_CONTEXT=deployment make deploy-serenity
           - run:
                 name: Upgrade
                 command: |
-                    INSTANCE_NAME=pimup-$IMAGE_TAG PIM_CONTEXT=deployment make deploy-serenity
+                    INSTANCE_NAME_PREFIX=pimup PIM_CONTEXT=deployment make deploy-serenity
           - run:
                 name: Production tests on upgraded env
-                command: INSTANCE_NAME=pimup-$IMAGE_TAG PIM_CONTEXT=deployment make test-prod
+                command: INSTANCE_NAME_PREFIX=pimup PIM_CONTEXT=deployment make test-prod
           - run:
                 name: Prepare infrastructure artifacts
-                command: INSTANCE_NAME=pimup-$IMAGE_TAG PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
+                command: INSTANCE_NAME_PREFIX=pimup PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
                 when: on_fail
           - store_artifacts:
                 path: ~/artifacts/infra
