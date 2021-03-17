@@ -13,11 +13,14 @@ const ShowContextContainer = styled.div`
     background-color: ${getColor('white')};
 `;
 const ExpandableRow = styled(Table.Row)<{isExpanded: boolean}>`
-    ${({isExpanded}) => (isExpanded ? `
+    ${({isExpanded}) =>
+        isExpanded
+            ? `
     > td {
         border-bottom: none;
     }
-    ` : '')};
+    `
+            : ''};
 `;
 
 type Props = {
@@ -30,20 +33,20 @@ const ExpandableTableRow: FC<Props> = ({contentToExpand, children}) => {
         setDisplay(!display);
     };
 
-    return <>
-        <ExpandableRow onClick={handleClick} isExpanded={display}>
-            {children}
-        </ExpandableRow>
-        {display &&
-            <Table.Row>
-                <LargeCell colSpan={Children.count(children)} data-testid='expanded-row-large-cell'>
-                    <ShowContextContainer>
-                        {contentToExpand}
-                    </ShowContextContainer>
-                </LargeCell>
-            </Table.Row>
-        }
-    </>;
+    return (
+        <>
+            <ExpandableRow onClick={handleClick} isExpanded={display}>
+                {children}
+            </ExpandableRow>
+            {display && (
+                <Table.Row>
+                    <LargeCell colSpan={Children.count(children)} data-testid='expanded-row-large-cell'>
+                        <ShowContextContainer>{contentToExpand}</ShowContextContainer>
+                    </LargeCell>
+                </Table.Row>
+            )}
+        </>
+    );
 };
 
 export default ExpandableTableRow;

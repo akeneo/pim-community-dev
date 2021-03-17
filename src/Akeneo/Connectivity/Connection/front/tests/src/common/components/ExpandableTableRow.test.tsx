@@ -64,18 +64,18 @@ describe('testing expandable table row', () => {
         renderWithProviders(
             <table>
                 <thead>
-                <tr>
-                    <th>header 1</th>
-                    <th>header 2</th>
-                    <th>header 3</th>
-                </tr>
+                    <tr>
+                        <th>header 1</th>
+                        <th>header 2</th>
+                        <th>header 3</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <ExpandableTableRow contentToExpand={contentToExpand}>
-                    <td>Cell 1</td>
-                    <td>Cell 2</td>
-                    <td>Cell 3</td>
-                </ExpandableTableRow>
+                    <ExpandableTableRow contentToExpand={contentToExpand}>
+                        <td>Cell 1</td>
+                        <td>Cell 2</td>
+                        <td>Cell 3</td>
+                    </ExpandableTableRow>
                 </tbody>
             </table>
         );
