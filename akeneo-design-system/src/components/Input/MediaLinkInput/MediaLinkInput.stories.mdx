@@ -27,17 +27,17 @@ Media link input allows the user to enter content when the expected user input i
   <Story name="Standard">
     {args => {
       const [value, setValue] = useState('https://picsum.photos/seed/strixos/500/500');
-      const [isFullScreenModalOpen, openFullScreenModal, closeFullScreenModal] = useBooleanState();
+      const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
       return (
         <>
           <MediaLinkInput {...args} value={value} onChange={setValue} thumbnailUrl={value}>
             <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
             <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
             <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
-            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullScreenModal} />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
           </MediaLinkInput>
-          {isFullScreenModalOpen && value && (
-            <FullscreenPreview title={value.originalFilename} src={value} onClose={closeFullScreenModal}>
+          {isFullscreenModalOpen && value && (
+            <FullscreenPreview title={value.originalFilename} src={value} onClose={closeFullscreenModal}>
               <Button href={value} ghost={true} level="tertiary" target="_blank" download={value}>
                 <DownloadIcon /> Download
               </Button>
@@ -57,29 +57,29 @@ Media link input allows the user to enter content when the expected user input i
   <Story name="Read only">
     {args => {
       const [value, setValue] = useState('https://picsum.photos/seed/strixos/500/500');
-      const [isFullScreenModalOpen, openFullScreenModal, closeFullScreenModal] = useBooleanState();
+      const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
       return (
         <>
           <MediaLinkInput {...args} readOnly={false} value="" onChange={setValue} thumbnailUrl={value}>
             <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
             <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
             <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
-            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullScreenModal} />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
           </MediaLinkInput>
           <MediaLinkInput {...args} readOnly={true} value="" onChange={setValue} thumbnailUrl={value}>
             <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
             <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
             <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
-            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullScreenModal} />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
           </MediaLinkInput>
           <MediaLinkInput {...args} readOnly={true} value={value} onChange={setValue} thumbnailUrl={value}>
             <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
             <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
             <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
-            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullScreenModal} />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
           </MediaLinkInput>
-          {isFullScreenModalOpen && value && (
-            <FullscreenPreview title={value.originalFilename} src={value} onClose={closeFullScreenModal}>
+          {isFullscreenModalOpen && value && (
+            <FullscreenPreview title={value.originalFilename} src={value} onClose={closeFullscreenModal}>
               <Button href={value} ghost={true} level="tertiary" target="_blank" download={value}>
                 <DownloadIcon /> Download
               </Button>
@@ -97,23 +97,23 @@ Media link input allows the user to enter content when the expected user input i
   <Story name="Invalid">
     {args => {
       const [value, setValue] = useState('https://picsum.photos/seed/strixos/500/500');
-      const [isFullScreenModalOpen, openFullScreenModal, closeFullScreenModal] = useBooleanState();
+      const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
       return (
         <>
           <MediaLinkInput {...args} invalid={false} value={value} onChange={setValue} thumbnailUrl={value}>
             <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
             <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
             <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
-            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullScreenModal} />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
           </MediaLinkInput>
           <MediaLinkInput {...args} invalid={true} value={value} onChange={setValue} thumbnailUrl={value}>
             <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
             <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
             <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
-            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullScreenModal} />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
           </MediaLinkInput>
-          {isFullScreenModalOpen && value && (
-            <FullscreenPreview title={value.originalFilename} src={value} onClose={closeFullScreenModal}>
+          {isFullscreenModalOpen && value && (
+            <FullscreenPreview title={value.originalFilename} src={value} onClose={closeFullscreenModal}>
               <Button href={value} ghost={true} level="tertiary" target="_blank" download={value}>
                 <DownloadIcon /> Download
               </Button>
