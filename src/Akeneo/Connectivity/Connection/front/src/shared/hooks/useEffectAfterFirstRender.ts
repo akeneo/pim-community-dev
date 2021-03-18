@@ -10,7 +10,7 @@ const useEffectAfterFirstRender = (effect: EffectCallback, deps?: DependencyList
         }
 
         effect();
-    }, [effect, deps]);
+    }, deps);
 };
 
 export {useEffectAfterFirstRender};
