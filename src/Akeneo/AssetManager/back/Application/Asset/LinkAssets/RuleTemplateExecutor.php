@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\FindPropertyAccessibleAssetInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 class RuleTemplateExecutor
 {
@@ -56,8 +57,11 @@ class RuleTemplateExecutor
         foreach ($ruleTemplateCollection as $ruleTemplate) {
             try {
                 $this->run($ruleTemplate, $asset);
-            } catch (\InvalidArgumentException $exception) {
-                $errors[] = $exception->getMessage();
+            } catch (\Exception $exception) {
+                if ($exception instanceof \InvalidArgumentException
+                    || $exception instanceof InvalidPropertyTypeException) {
+                    $errors[] = $exception->getMessage();
+                }
             }
         }
 
