@@ -31,7 +31,7 @@ use Webmozart\Assert\Assert;
 class JobLauncher
 {
     private const MESSENGER_COMMAND_NAME = 'messenger:consume';
-    private const MESSENGER_RECEIVERS = ['job'];
+    private const MESSENGER_RECEIVERS = ['ui_job', 'import_export_job', 'data_maintenance_job'];
 
     const EXPORT_DIRECTORY = 'pim-integration-tests-export';
 

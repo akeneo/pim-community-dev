@@ -25,12 +25,35 @@ framework:
                     max_retries: 0
                 serializer: pim_enrich.messenger.serializer.business_event
 
-            job:
+            ui_job:
                 dsn: 'gps:'
                 options:
                     project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
-                    topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE)%'
-                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE)%'
+                    topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE_UI)%'
+                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_UI)%'
+                    ack_message_right_after_pull: true
+                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
+                retry_strategy:
+                    max_retries: 0
+                serializer: akeneo_batch_queue.messenger.serializer
+            import_export_job:
+                dsn: 'gps:'
+                options:
+                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
+                    topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE_IMPORT_EXPORT)%'
+                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT)%'
+                    ack_message_right_after_pull: true
+                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
+                retry_strategy:
+                    max_retries: 0
+                serializer: akeneo_batch_queue.messenger.serializer
+            data_maintenance_job:
+                dsn: 'gps:'
+                options:
+                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
+                    topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE_DATA_MAINTENANCE)%'
+                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE)%'
+                    ack_message_right_after_pull: true
                     auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
                 retry_strategy:
                     max_retries: 0
@@ -39,4 +62,7 @@ framework:
         routing:
             'Akeneo\Platform\Component\EventQueue\Event': business_event
             'Akeneo\Platform\Component\EventQueue\BulkEvent': business_event
-            'Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface': job
+            'Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage': ui_job
+            'Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage': import_export_job
+            'Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage': import_export_job
+            'Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage': data_maintenance_job
