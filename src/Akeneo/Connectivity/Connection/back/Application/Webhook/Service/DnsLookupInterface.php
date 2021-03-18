@@ -11,7 +11,7 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Service;
 interface DnsLookupInterface
 {
     /**
-     * @return array|false
+     * @return array<string>|false
      */
     public function lookupHost(string $host);
 }
