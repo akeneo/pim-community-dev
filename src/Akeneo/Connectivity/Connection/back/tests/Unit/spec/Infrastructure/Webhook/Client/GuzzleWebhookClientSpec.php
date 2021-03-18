@@ -12,11 +12,15 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\GuzzleWebhookClient;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\Signature;
 use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
+use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
@@ -59,7 +63,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $request1 = new WebhookRequest(
-            new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook1'),
+            new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://webhook-1.test'),
             [
                 new WebhookEvent(
                     'product.created',
@@ -73,7 +77,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         );
 
         $request2 = new WebhookRequest(
-            new ActiveWebhook('erp', 1, 'a_secret', 'http://localhost/webhook2'),
+            new ActiveWebhook('erp', 1, 'a_secret', 'http://webhook-2.test'),
             [
                 new WebhookEvent(
                     'product.created',
@@ -92,7 +96,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
         // Request 1
 
-        $request = $this->findRequest($container, 'http://localhost/webhook1');
+        $request = $this->findRequest($container, 'http://webhook-1.test');
 
         Assert::assertNotNull($request);
 
@@ -105,7 +109,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
         // Request 2
 
-        $request = $this->findRequest($container, 'http://localhost/webhook2');
+        $request = $this->findRequest($container, 'http://webhook-2.test');
         Assert::assertNotNull($request);
 
         $body = '{"events":[{"action":"product.created","event_id":"7abae2fe-759a-4fce-aa43-f413980671b3","event_datetime":"2020-01-01T00:00:00+00:00","author":"julia","author_type":"ui","pim_source":"staging.akeneo.com","data":["data_2"]}]}';
@@ -114,6 +118,68 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $timestamp = (int)$request->getHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP)[0];
         $signature = Signature::createSignature('a_secret', $timestamp, $body);
         Assert::assertEquals($signature, $request->getHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE)[0]);
+    }
+
+    public function it_logs_an_error_when_the_response_is_a_redirection(LoggerInterface $logger): void
+    {
+        $mockedResponses = [
+            new Response(301),
+        ];
+
+        $handlerStack = HandlerStack::create(new MockHandler($mockedResponses));
+        $client = new Client(['handler' => $handlerStack]);
+
+        $container = [];
+        $history = Middleware::history($container);
+        $handlerStack->push($history);
+
+        $this->beConstructedWith($client, new JsonEncoder(), $logger, []);
+
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
+        $request = new WebhookRequest(
+            new ActiveWebhook('ecommerce', 0, 'secret', 'http://webhook.test'),
+            [
+                new WebhookEvent(
+                    'product.created',
+                    '7abae2fe-759a-4fce-aa43-f413980671b3',
+                    '2020-01-01T00:00:00+00:00',
+                    $author,
+                    'staging.akeneo.com',
+                    ['data_1']
+                )
+            ]
+        );
+
+        $this->bulkSend([$request]);
+
+        $expectedLog = [
+            'type' => 'event_api.send_api_event_request',
+            'duration' => 0,
+            'message' => 'Moved Permanently',
+            'success' => false,
+            'response' => [
+                'status_code' => 301,
+            ],
+            'events' => [
+                [
+                    'uuid' => '7abae2fe-759a-4fce-aa43-f413980671b3',
+                    'author' => 'julia',
+                    'author_type' => 'ui',
+                    'name' => 'product.created',
+                    'timestamp' => 1577836800,
+                ],
+            ],
+        ];
+
+        $logger->info(Argument::that(function (string $value) use ($expectedLog) {
+            $log = json_decode($value, true);
+
+            unset($log['headers']);
+            Assert::assertEquals($expectedLog, $log);
+
+            return true;
+        }))
+            ->shouldBeCalled();
     }
 
     private function findRequest(array $container, string $url): ?Request

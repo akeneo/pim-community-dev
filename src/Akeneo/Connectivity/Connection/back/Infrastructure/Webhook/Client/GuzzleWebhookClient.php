@@ -79,6 +79,27 @@ class GuzzleWebhookClient implements WebhookClient
                     'allow_redirects' => false /* Block http redirect to limit security risks (SSRF) */,
                 ],
                 'fulfilled' => function (Response $response, int $index) use (&$logs) {
+                    $statusCode = $response->getStatusCode();
+
+                    // Treat redirection as error.
+                    if ($statusCode >= 300 and $statusCode < 400) {
+
+                        // Todo Pull-up master, refactor the logging.
+                        $webhookRequestLog = $logs[$index];
+                        $webhookRequestLog->setMessage($response->getReasonPhrase());
+                        $webhookRequestLog->setSuccess(false);
+                        $webhookRequestLog->setEndTime(microtime(true));
+                        $webhookRequestLog->setResponse($response);
+
+                        $this->logger->info(
+                            json_encode(
+                                $webhookRequestLog->toLog()
+                            )
+                        );
+
+                        return;
+                    }
+
                     $webhookRequestLog = $logs[$index];
                     $webhookRequestLog->setSuccess(true);
                     $webhookRequestLog->setEndTime(microtime(true));

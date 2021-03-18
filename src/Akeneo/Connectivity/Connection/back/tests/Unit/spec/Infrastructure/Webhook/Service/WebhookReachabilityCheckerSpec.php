@@ -67,7 +67,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
 
     public function it_sends_the_request($client, $validator): void
     {
-        $request = new Request('POST', 'url', [
+        $request = new Request('POST', 'http://valid-url.test', [
             'Content-Type' => 'application/json',
             RequestHeaders::HEADER_REQUEST_SIGNATURE => Signature::createSignature('secret', 1577836800),
             RequestHeaders::HEADER_REQUEST_TIMESTAMP => 1577836800,
@@ -80,7 +80,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(new Response());
 
-        $this->check('url', 'secret');
+        $this->check('http://valid-url.test', 'secret');
     }
 
     public function it_succeeds_when_the_response_is_a_success($client, $validator): void
@@ -90,7 +90,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         $client->send(Argument::cetera())
             ->willReturn(new Response(200, [], null, '1.1', 'OK'));
 
-        $this->check('url', 'secret')
+        $this->check('http://valid-url.test', 'secret')
             ->shouldBeLike(new UrlReachabilityStatus(true, '200 OK'));
     }
 
@@ -107,7 +107,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         $client->send(Argument::cetera())
             ->willThrow($requestException);
 
-        $this->check('url', 'secret')
+        $this->check('http://valid-url.test', 'secret')
             ->shouldBeLike(new UrlReachabilityStatus(false, '451 Unavailable For Legal Reasons'));
     }
 
@@ -123,7 +123,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         $client->send(Argument::cetera())
             ->willThrow($connectException);
 
-        $this->check('url', 'secret')
+        $this->check('http://valid-url.test', 'secret')
             ->shouldBeLike(new UrlReachabilityStatus(false, 'Failed to connect to server'));
     }
 
@@ -136,7 +136,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         $client->send(Argument::cetera())
             ->willThrow($transferException);
 
-        $this->check('url', 'secret')
+        $this->check('http://valid-url.test', 'secret')
             ->shouldBeLike(new UrlReachabilityStatus(false, 'Failed to connect to server'));
     }
 
@@ -149,7 +149,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         $client->send(Argument::cetera())
             ->willReturn($response);
 
-        $this->check('url', 'secret')
+        $this->check('http://valid-url.test', 'secret')
             ->shouldBeLike(new UrlReachabilityStatus(false, '301 Moved Permanently. Redirection are not allowed.'));
     }
 }

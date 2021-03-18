@@ -83,19 +83,19 @@ class NotPrivateNetworkUrlValidatorSpec extends ObjectBehavior
         $constraint = new NotPrivateNetworkUrl();
         $context->buildViolation($constraint->unresolvableHostMessage)
             ->willReturn($builder);
-        $builder->setParameter('{{ host }}', '"unresolvable-url.dev"')
+        $builder->setParameter('{{ host }}', '"unresolvable-url.test"')
             ->willReturn($builder);
         $builder->addViolation()
             ->shouldBeCalled();
 
-        $url = 'https://unresolvable-url.dev/';
+        $url = 'https://unresolvable-url.test/';
 
         $this->validate($url, $constraint);
     }
 
     public function it_validates_public_network_url()
     {
-        $url = 'https://public-network-url.dev/';
+        $url = 'https://public-network-url.test/';
 
         $this->validate($url, new NotPrivateNetworkUrl());
     }
@@ -112,12 +112,12 @@ class NotPrivateNetworkUrlValidatorSpec extends ObjectBehavior
             ->willReturn($builder);
         $builder->setParameter('{{ ip }}', '"127.0.0.1"')
             ->willReturn($builder);
-        $builder->setParameter('{{ url }}', '"https://private-network-url.dev/"')
+        $builder->setParameter('{{ url }}', '"https://private-network-url.test/"')
             ->willReturn($builder);
         $builder->addViolation()
             ->shouldBeCalled();
 
-        $url = 'https://private-network-url.dev/';
+        $url = 'https://private-network-url.test/';
 
         $this->validate($url, $constraint);
     }
