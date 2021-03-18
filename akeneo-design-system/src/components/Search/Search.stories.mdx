@@ -1,0 +1,122 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Search} from './Search';
+import {SwitcherButton} from '../SwitcherButton/SwitcherButton';
+import {Dropdown} from '../Dropdown/Dropdown';
+import {ArrowDownIcon} from '../../icons';
+import {SpaceContainer} from '../../storybook';
+import {Button} from '../Button/Button';
+import {useBooleanState} from '../../hooks';
+
+<Meta
+    title="Components/Search"
+    component={Search}
+    args={{
+        title: 'Search',
+        placeholder: 'Search',
+    }}
+    argTypes={{
+        onSearchChange: {
+            table: {type: {summary: '(searchValue: string) => void'}},
+        }
+    }}
+/>
+
+# Search
+
+## Usage
+
+Search allows users to specify a word or phrase to find relevant content without using navigation. Search can be used as the primary means of discovering content or as a filter to help the user find content.
+
+## Playground
+
+<Canvas>
+    <Story name="Standard">
+        {args => {
+            const [searchValue, setSearch] = useState('');
+            return (
+                <Search onSearchChange={setSearch} searchValue={searchValue} {...args}>
+                    <Search.ResultCount>34 results</Search.ResultCount>
+                </Search>
+            );
+        }}
+    </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+# Example with only the search input
+
+<Canvas>
+    <Story name="Example with only the search input">
+        {args => {
+            const [searchValue, setSearch] = useState('');
+            return (
+                <Search onSearchChange={setSearch} searchValue={searchValue} {...args} />
+            )
+        }}
+    </Story>
+</Canvas>
+
+# Example with results and a filter
+
+<Canvas>
+    <Story name="Example with results and a filter">
+        {args => {
+            const [searchValue, setSearch] = useState('');
+            return (
+                <Search onSearchChange={setSearch} searchValue={searchValue} {...args}>
+                    <Search.ResultCount>34 results</Search.ResultCount>
+                    <SwitcherButton label={'Label'}>Value</SwitcherButton>
+                </Search>
+            )
+        }}
+    </Story>
+</Canvas>
+
+# Example with a filter
+
+<Canvas>
+    <Story name="Example with only a filter">
+        {args => {
+            const [searchValue, setSearch] = useState('');
+            return (
+                <Search onSearchChange={setSearch} searchValue={searchValue} {...args}>
+                    <SwitcherButton label={'Label'}>Value</SwitcherButton>
+                </Search>
+            )
+        }}
+    </Story>
+</Canvas>
+
+# Example inside a dropdown
+
+<Canvas>
+    <Story name="Example inside a dropdown">
+        {args => {
+            const [searchValue, setSearch] = useState('');
+            const [isOpen, open, close] = useBooleanState(true);
+            return (
+                <SpaceContainer height={200}>
+                    <Dropdown>
+                        <Button onClick={open}>
+                            Simple <ArrowDownIcon />
+                        </Button>
+                        {isOpen && (
+                            <Dropdown.Overlay verticalPosition="down" onClose={close}>
+                                <Dropdown.Header>
+                                    <Search onSearchChange={setSearch} searchValue={searchValue} {...args}/>
+                                </Dropdown.Header>
+                                <Dropdown.ItemCollection>
+                                    <Dropdown.Item>Item 1</Dropdown.Item>
+                                    <Dropdown.Item>Item 2</Dropdown.Item>
+                                    <Dropdown.Item>Item 3</Dropdown.Item>
+                                </Dropdown.ItemCollection>
+                            </Dropdown.Overlay>
+                        )}
+                    </Dropdown>
+                </SpaceContainer>
+            )
+        }}
+    </Story>
+</Canvas>
