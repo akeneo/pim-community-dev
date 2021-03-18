@@ -19,12 +19,14 @@ import {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
 import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
 import {ViewGeneratorProps} from 'akeneoassetmanager/application/configuration/value';
 import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
+import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-closing';
 
 const View = ({id, value, locale, canEditData, onChange, invalid}: ViewGeneratorProps) => {
   const translate = useTranslate();
-  const uploader = useImageUploader('akeneo_asset_manager_file_upload');
-  const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
+  const [isUploading, uploader] = useImageUploader('akeneo_asset_manager_file_upload');
+  usePreventClosing(isUploading, translate('pim_enrich.confirmation.discard_changes', {entity: 'asset'}));
 
+  const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
   if (!isMediaFileData(value.data) || !isMediaFileAttribute(value.attribute)) {
     return null;
   }
