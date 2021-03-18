@@ -15,7 +15,7 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory;
-use Akeneo\Tool\Component\BatchQueue\Queue\BackendJobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Akeneo\UserManagement\Component\Model\User;
@@ -72,7 +72,7 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution'])->willReturn($constraintViolationList);
         $jobRepository->createJobExecution($jobInstance, $jobParameters)->willReturn($jobExecution);
         $jobExecutionMessageFactory->buildFromJobInstance($jobInstance, 1, ['env' => 'test'])->willReturn(
-            BackendJobExecutionMessage::createJobExecutionMessage(1, ['env' => 'test'])
+            DataMaintenanceJobExecutionMessage::createJobExecutionMessage(1, ['env' => 'test'])
         );
         $jobExecution->setUser('julia')->shouldBeCalled();
         $jobRepository->updateJobExecution($jobExecution)->shouldBeCalled();
@@ -112,7 +112,7 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution'])->willReturn($constraintViolationList);
         $jobRepository->createJobExecution($jobInstance, $jobParameters)->willReturn($jobExecution);
         $jobExecutionMessageFactory->buildFromJobInstance($jobInstance, 1, ['env' => 'test', 'email' => 'julia@akeneo.com'])->willReturn(
-            BackendJobExecutionMessage::createJobExecutionMessage(1, ['env' => 'test'])
+            DataMaintenanceJobExecutionMessage::createJobExecutionMessage(1, ['env' => 'test'])
         );
         $jobExecution->setUser('julia')->shouldBeCalled();
         $jobRepository->updateJobExecution($jobExecution)->shouldBeCalled();

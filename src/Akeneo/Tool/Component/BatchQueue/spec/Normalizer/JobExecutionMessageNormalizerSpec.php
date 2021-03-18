@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Tool\Component\BatchQueue\Normalizer;
 
 use Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory;
-use Akeneo\Tool\Component\BatchQueue\Queue\BackendJobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage;
@@ -36,7 +36,7 @@ class JobExecutionMessageNormalizerSpec extends ObjectBehavior
         $jobMessenger = ExportJobExecutionMessage::createJobExecutionMessage(1, []);
         $this->supportsNormalization($jobMessenger, '')->shouldBe(true);
 
-        $jobMessenger = BackendJobExecutionMessage::createJobExecutionMessage(1, []);
+        $jobMessenger = DataMaintenanceJobExecutionMessage::createJobExecutionMessage(1, []);
         $this->supportsNormalization($jobMessenger, '')->shouldBe(true);
 
         $this->supportsNormalization(new \StdClass(), '')->shouldBe(false);
@@ -87,7 +87,7 @@ class JobExecutionMessageNormalizerSpec extends ObjectBehavior
         $this->supportsDenormalization([], UiJobExecutionMessage::class)->shouldBe(true);
         $this->supportsDenormalization([], ImportJobExecutionMessage::class)->shouldBe(true);
         $this->supportsDenormalization([], ExportJobExecutionMessage::class)->shouldBe(true);
-        $this->supportsDenormalization([], BackendJobExecutionMessage::class)->shouldBe(true);
+        $this->supportsDenormalization([], DataMaintenanceJobExecutionMessage::class)->shouldBe(true);
         $this->supportsDenormalization([], 'Unknown')->shouldBe(false);
     }
 
