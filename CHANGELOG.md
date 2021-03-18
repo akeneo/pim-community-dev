@@ -33,6 +33,7 @@
 - PIM-9711: Check that a category root isn't linked to a user or a channel before moving it to a sub-category
 - PIM-9730: Fix category tree initialization in the PEF when switching tabs
 - PIM-9679: Clean existing text attribute values removing linebreaks
+- PIM-9740: Prevent to delete a channel used in a product export job
 
 ## New features
 
