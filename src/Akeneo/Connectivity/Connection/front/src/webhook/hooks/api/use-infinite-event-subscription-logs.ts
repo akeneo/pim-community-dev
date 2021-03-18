@@ -33,7 +33,9 @@ const useInfiniteEventSubscriptionLogs = (
     connectionCode: string,
     filters: Filters,
     container: RefObject<HTMLElement>
-): EventSubscriptionLogs => {
+): EventSubscriptionLogs & {
+    isLoading: boolean
+} => {
     const [state, setState] = useState<EventSubscriptionLogs>({
         logs: [],
         total: undefined,
@@ -83,10 +85,9 @@ const useInfiniteEventSubscriptionLogs = (
         return payload;
     };
 
-    const {reset} = useInfiniteScroll<SearchEventSubscriptionLogsResponse>(fetchNextResponse, container);
+    const {reset, isLoading} = useInfiniteScroll<SearchEventSubscriptionLogsResponse>(fetchNextResponse, container);
 
-    const isResetInitialized = useRef(false);
-    const handleReset = useCallback(() => {
+    const clear = useCallback(() => {
         setState({
             logs: [],
             total: undefined,
@@ -95,9 +96,10 @@ const useInfiniteEventSubscriptionLogs = (
             endScrollReached: false,
         });
         setSearchAfter(null);
-        reset();
-    }, [reset, setState, setSearchAfter]);
-    const debounceReset = useDebounceCallback(handleReset, 1000);
+    }, [setState, setSearchAfter]);
+
+    const isResetInitialized = useRef(false);
+    const debounceReset = useDebounceCallback(reset, 1000);
 
     // write a custom useEffect, something like useEffectAfterRender
     useEffect(() => {
@@ -106,10 +108,14 @@ const useInfiniteEventSubscriptionLogs = (
             return;
         }
 
+        clear();
         debounceReset();
     }, [filters, debounceReset, isResetInitialized]);
 
-    return state;
+    return {
+        ...state,
+        isLoading: isLoading,
+    };
 };
 
 export default useInfiniteEventSubscriptionLogs;

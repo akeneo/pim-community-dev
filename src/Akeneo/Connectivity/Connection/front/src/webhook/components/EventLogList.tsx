@@ -1,4 +1,4 @@
-import React, {FC, useRef, useState} from 'react';
+import React, {FC, useCallback, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {ArrowRightIcon, GraphIllustration, Information, Table} from 'akeneo-design-system';
 import {NoEventLogs} from './NoEventLogs';
@@ -37,32 +37,32 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
             EventSubscriptionLogLevel.ERROR,
         ],
     });
-    // This is kinda crappy
     const [isSearchActive, setSearchActive] = useState(false);
-    const {logs, page, total} = useInfiniteEventSubscriptionLogs(connectionCode, filters, scrollContainer);
 
-    const handleFiltersChange = (filters: Filters) => {
+    const handleChangeFilters = useCallback((filters: Filters) => {
         setFilters(filters);
         setSearchActive(true);
-    };
+    }, []);
 
-    if (!isSearchActive && page === 0) {
-        return null;
+    const {logs, total, isLoading} = useInfiniteEventSubscriptionLogs(connectionCode, filters, scrollContainer);
+
+    if (!isSearchActive && !isLoading && total === 0) {
+        return <NoEventLogs/>;
     }
 
-    if (!isSearchActive && total === 0) {
-        return <NoEventLogs />;
-    }
+    const title = !isLoading && undefined !== total
+        ? translate('akeneo_connectivity.connection.webhook.event_logs.list.info.logs_total', {total: total.toString()}, total)
+        : '';
 
     return (
         <>
             <Information
-                illustration={<GraphIllustration />}
-                title={translate('akeneo_connectivity.connection.webhook.event_logs.list.info.logs_total', {total: total ? total.toString() : '0'}, total)}
+                illustration={<GraphIllustration/>}
+                title={title}
             >
                 {null}
             </Information>
-            <EventLogListFilters filters={filters} onChange={handleFiltersChange} total={total}/>
+            <EventLogListFilters filters={filters} onChange={handleChangeFilters} total={total}/>
             <Table>
                 <Table.Header>
                     <SmallColumnHeaderCell>
@@ -79,8 +79,8 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                     {logs.map(({timestamp, level, message, context}, index) => (
                         <Table.Row key={index} onClick={() => undefined}>
                             <Table.Cell>
-                                <ArrowRightIcon />
-                                <EventLogDatetime timestamp={timestamp * 1000} />
+                                <ArrowRightIcon/>
+                                <EventLogDatetime timestamp={timestamp * 1000}/>
                             </Table.Cell>
                             <Table.Cell>
                                 <EventLogBadge level={level}>{level.toUpperCase()}</EventLogBadge>
@@ -93,6 +93,9 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                     ))}
                 </Table.Body>
             </Table>
+            {total === 0 &&
+            <NoEventLogs/>
+            }
         </>
     );
 };

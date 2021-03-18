@@ -23,17 +23,13 @@ export const EventLogListFilters: FC<{
             </SectionTitle.Title>
             <SectionTitle.Spacer/>
             <SectionTitle.Information>
-                {translate('akeneo_connectivity.connection.webhook.event_logs.list.search.total', {total: total ? total.toString() : '0'}, total)}
+                {undefined !== total ? translate('akeneo_connectivity.connection.webhook.event_logs.list.search.total', {total: total.toString()}, total) : ''}
             </SectionTitle.Information>
             <SectionTitle.Separator/>
             <EventLogLevelFilter
                 levels={filters.levels}
                 onChange={levels => onChange({...filters, levels: levels})}
             />
-                {/*onChange={levels => onChange({...filters, levels: levels})}*/}
-            {/*<Button>Action</Button>*/}
-            {/*<Button>Action</Button>*/}
-            {/*<IconButton icon={<MoreIcon />} title="More" />*/}
         </StyledSectionTitle>
     );
 };
