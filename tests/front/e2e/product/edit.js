@@ -11,9 +11,10 @@ describe('edit product', () => {
     cy.login();
 
     cy.goToProductsGridFindActivityItem();
-    
-    const groups = cy.findAllByRole('rowgroup')
+    cy.wait(2000);
 
-    groups[1].click()
+    cy.findAllByRole('row').eq(1).click();
+
+    cy.findByText('Last update').should('exist');
   });
 });
