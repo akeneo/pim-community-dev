@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Tool\Bundle\BatchQueueBundle\Hydrator;
 
 use Akeneo\Tool\Bundle\BatchQueueBundle\Hydrator\JobExecutionMessageHydrator;
-use Akeneo\Tool\Component\BatchQueue\Queue\BackendJobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,7 +40,7 @@ class JobExecutionMessageHydratorSpec extends ObjectBehavior
         $createdTime = new \DateTime('2017-09-19 13:30:00');
         $updatedTime = new \DateTime('2017-09-19 13:30:15');
 
-        $jobExecutionMessage = BackendJobExecutionMessage::createJobExecutionMessageFromDatabase(1, 2, 'consumer_name', $createdTime, $updatedTime, ['env' => 'test']);
+        $jobExecutionMessage = DataMaintenanceJobExecutionMessage::createJobExecutionMessageFromDatabase(1, 2, 'consumer_name', $createdTime, $updatedTime, ['env' => 'test']);
 
         $this->hydrate($row)->shouldBeLike($jobExecutionMessage);
     }
