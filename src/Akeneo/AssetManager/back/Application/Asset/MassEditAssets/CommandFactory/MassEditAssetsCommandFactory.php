@@ -58,7 +58,7 @@ class MassEditAssetsCommandFactory
 
             $attribute = $attributesIndexedByIdentifier[$normalizedUpdater['attribute']];
 
-            return !$this->isAttributeTargetOrATransformation($attribute, $normalizedUpdater);
+            return !$this->isAttributeTransformationTarget($attribute, $normalizedUpdater);
         });
 
         $updaters = array_reduce($filteredUpdaters, function ($result, $normalizedUpdater) use ($attributesIndexedByIdentifier) {
@@ -83,7 +83,7 @@ class MassEditAssetsCommandFactory
         return array_key_exists($normalizedValue['attribute'], $attributesIndexedByIdentifier);
     }
 
-    private function isAttributeTargetOrATransformation(AbstractAttribute $attribute, array $normalizedValue)
+    private function isAttributeTransformationTarget(AbstractAttribute $attribute, array $normalizedValue): bool
     {
         return $this->checkIfTransformationTarget->forAttribute(
             $attribute,

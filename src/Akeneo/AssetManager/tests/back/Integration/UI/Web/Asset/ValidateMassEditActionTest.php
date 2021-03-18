@@ -175,6 +175,72 @@ class ValidateMassEditActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
+    public function it_returns_error_if_updater_is_duplicated(): void
+    {
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::MASS_EDIT_ASSETS_ROUTE,
+            [
+                'assetFamilyIdentifier' => 'designer',
+            ],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json'
+            ],
+            [
+                'query' => [
+                    'page' => 0,
+                    'size' => 50,
+                    'locale' => 'en_US',
+                    'channel' => 'ecommerce',
+                    'filters' => [
+                        [
+                            'field' => 'asset_family',
+                            'value' => 'designer',
+                            'context' => [],
+                            'operator' => '='
+                        ]
+                    ]
+                ],
+                'type' => 'edit',
+                'updaters' => [
+                    [
+                        'id' => 'an_uuid',
+                        'attribute' => 'label_designer_d00de54460082b239164135175588647',
+                        'channel' => null,
+                        'locale' => 'fr_FR',
+                        'data' => 'My new data',
+                        'action' => 'replace',
+                    ],
+                    [
+                        'id' => 'another_uuid',
+                        'attribute' => 'label_designer_d00de54460082b239164135175588647',
+                        'channel' => null,
+                        'locale' => 'fr_FR',
+                        'data' => 'My new data',
+                        'action' => 'replace',
+                    ],
+                ],
+            ],
+        );
+
+        $this->webClientHelper->assert400BadRequest($this->client->getResponse());
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        Assert::assertEquals(
+            'pim_asset_manager.asset.validation.mass_edit.updater_must_be_unique',
+            $content[0]['messageTemplate']
+        );
+
+        Assert::assertEquals(
+            'updaters.another_uuid',
+            $content[0]['propertyPath']
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_redirects_if_not_xmlhttp_request(): void
     {
         $this->client->followRedirects(false);

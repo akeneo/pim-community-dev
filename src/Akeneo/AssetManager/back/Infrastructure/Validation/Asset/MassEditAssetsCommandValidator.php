@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
 use Akeneo\AssetManager\Application\Asset\MassEditAssets\MassEditAssetsCommand;
 use Akeneo\AssetManager\Infrastructure\Validation\Asset\MassEditAssetsCommand as MassEditAssetsCommandConstraint;
 use Symfony\Component\Validator\Constraint;
@@ -43,6 +44,7 @@ class MassEditAssetsCommandValidator extends ConstraintValidator
                 ->addViolation();
         }
 
+        $this->editValueCommandsAreUnique($constraint, $massEditAssetsCommand->editValueCommands);
         foreach ($massEditAssetsCommand->editValueCommands as $id => $command) {
             $violations = $this->validator->validate($command);
             foreach ($violations as $violation) {
@@ -80,6 +82,32 @@ class MassEditAssetsCommandValidator extends ConstraintValidator
                     get_class($command)
                 )
             );
+        }
+    }
+
+    /**
+     * @param AbstractEditValueCommand[] $editValueCommands
+     */
+    private function editValueCommandsAreUnique(Constraint $constraint, array $editValueCommands): void
+    {
+        $uniqueEditValueContextCommands = [];
+        foreach ($editValueCommands as $id => $editValueCommand) {
+            $normalizedEditValueCommand = $editValueCommand->normalize();
+            $editValueContextCommand = [
+                'attribute' => $normalizedEditValueCommand['attribute'],
+                'channel' => $normalizedEditValueCommand['channel'],
+                'locale' => $normalizedEditValueCommand['locale'],
+            ];
+
+            if (in_array($editValueContextCommand, $uniqueEditValueContextCommands)) {
+                $this->context->buildViolation($constraint->duplicatedUpdater)
+                    ->atPath(sprintf('updaters.%s', $id))
+                    ->addViolation();
+
+                continue;
+            }
+
+            $uniqueEditValueContextCommands[] = $editValueContextCommand;
         }
     }
 }

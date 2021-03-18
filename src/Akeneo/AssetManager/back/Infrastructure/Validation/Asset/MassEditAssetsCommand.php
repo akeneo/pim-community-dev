@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraint;
 class MassEditAssetsCommand extends Constraint
 {
     public string $emptyValueCommandMessage = 'pim_asset_manager.asset.validation.mass_edit.updater_cannot_be_empty';
+    public string $duplicatedUpdater = 'pim_asset_manager.asset.validation.mass_edit.updater_must_be_unique';
 
     public function getTargets()
     {

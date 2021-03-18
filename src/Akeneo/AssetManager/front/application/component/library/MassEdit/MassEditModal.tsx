@@ -22,6 +22,7 @@ import Channel from 'akeneoassetmanager/domain/model/channel';
 import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
 import {useMassEdit} from 'akeneoassetmanager/application/component/library/MassEdit/hooks/useMassEdit';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {getErrorsForPath} from '@akeneo-pim-community/shared';
 
 const Container = styled.div`
   width: 100%;
@@ -96,6 +97,11 @@ const MassEditModal = ({
     try {
       const errors = await validateMassEdit(assetFamily.identifier, selectionQuery, updaterCollection);
       if (errors.length) {
+        const [globalError] = getErrorsForPath(errors, '');
+        if (globalError) {
+          notify(NotificationLevel.ERROR, translate(globalError.messageTemplate));
+        }
+
         setErrors(errors);
 
         return;

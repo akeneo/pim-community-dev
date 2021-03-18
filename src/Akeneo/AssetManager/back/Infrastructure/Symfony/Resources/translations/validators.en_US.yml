@@ -52,7 +52,8 @@ pim_asset_manager:
     asset:
         validation:
             mass_edit:
-                updater_cannot_be_empty: 'You must specify at least one action in your mass edit'
+                updater_cannot_be_empty: 'No valid action found on non read only and existing attribute.'
+                updater_must_be_unique: 'This action is duplicated.'
             code:
                 pattern: 'This field may only contain letters, numbers and underscores.'
                 should_be_unique: 'An asset already exists with code "%code%"'
