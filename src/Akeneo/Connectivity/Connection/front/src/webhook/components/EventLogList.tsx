@@ -36,6 +36,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
             EventSubscriptionLogLevel.WARNING,
             EventSubscriptionLogLevel.ERROR,
         ],
+        text: '',
     });
     const [isSearchActive, setSearchActive] = useState(false);
 

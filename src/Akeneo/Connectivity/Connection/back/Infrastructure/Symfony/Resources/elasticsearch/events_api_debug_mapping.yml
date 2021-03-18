@@ -13,3 +13,12 @@ mappings:
             enabled: false
         context_flattened:
             type: 'text'
+            analyzer: 'flattened_context_analyzer'
+
+settings:
+    analysis:
+        analyzer:
+            flattened_context_analyzer:
+                filter: ['lowercase']
+                type: 'custom'
+                tokenizer: 'standard'

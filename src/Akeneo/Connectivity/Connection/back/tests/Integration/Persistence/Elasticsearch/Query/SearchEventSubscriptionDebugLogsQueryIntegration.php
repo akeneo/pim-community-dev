@@ -444,27 +444,42 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
     public function test_it_searches_a_pattern_on_message()
     {
         $timestamp = $this->clock->now()->getTimestamp() - 10;
-        $firstTimestampToFind = $timestamp - 20;
-        $secondTimestampToFind = $timestamp - 10;
+        $firstTimestampToFind = $timestamp - 40;
+        $secondTimestampToFind = $timestamp - 30;
+        $anotherTimestamp = $timestamp - 20;
 
         $this->insertLogs(
             [
                 [
                     'timestamp' => $firstTimestampToFind,
                     'level' => EventsApiDebugLogLevels::WARNING,
-                    'message' => 'to find',
+                    'message' => 'Message a word to find',
                     'connection_code' => 'a_connection_code',
                     'context' => [],
                 ],
                 [
                     'timestamp' => $secondTimestampToFind,
                     'level' => EventsApiDebugLogLevels::ERROR,
-                    'message' => 'the message to find',
+                    'message' => 'the messagE to finD',
                     'connection_code' => 'a_connection_code',
                     'context' => [],
                 ],
                 [
                     'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::ERROR,
+                    'message' => 'a message not found because the second word is missing',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $anotherTimestamp,
+                    'level' => EventsApiDebugLogLevels::WARNING,
+                    'message' => 'no word here',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $anotherTimestamp,
                     'level' => EventsApiDebugLogLevels::WARNING,
                     'message' => '',
                     'connection_code' => 'a_connection_code',
@@ -474,7 +489,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         );
 
         $filters = [
-            'text' => 'to find',
+            'text' => 'SsaGe ind',
         ];
 
         $result = $this->query->execute('a_connection_code', null, $filters);

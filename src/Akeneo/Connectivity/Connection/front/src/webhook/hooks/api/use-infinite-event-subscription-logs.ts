@@ -25,6 +25,7 @@ type EventSubscriptionLogs = {
 
 export type Filters = {
     levels: EventSubscriptionLogLevel[],
+    text: string,
 };
 
 /**
@@ -56,7 +57,7 @@ const useInfiniteEventSubscriptionLogs = (
     };
 
     if (null !== searchAfter) {
-        parameters['search_after'] = searchAfter;
+        parameters.search_after = searchAfter;
     }
 
     // This damn hook forbid us to build the url inside fetchNextResponse()
@@ -99,7 +100,7 @@ const useInfiniteEventSubscriptionLogs = (
         setSearchAfter(null);
     }, [setState, setSearchAfter]);
 
-    const resetInfiniteScroll = useDebounceCallback(reset, 1000);
+    const resetInfiniteScroll = useDebounceCallback(reset, 300);
 
     // By default, an useEffect is always executed during the first render.
     // Here, we want to trigger this useEffect only after the initial render,
