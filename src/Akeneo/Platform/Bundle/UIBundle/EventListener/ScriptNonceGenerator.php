@@ -42,7 +42,11 @@ class ScriptNonceGenerator
     public function getGeneratedNonce(): string
     {
         $request = $this->request->getCurrentRequest();
-        $bapId = $request->cookies->get('BAPID');
+
+        $bapId = '';
+        if ($request !== null && isset($request->cookies)) {
+            $bapId = $request->cookies->get('BAPID');
+        }
 
         return hash_hmac('ripemd160', $bapId, $this->kernelSecret);
     }
