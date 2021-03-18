@@ -14,6 +14,7 @@ pim_dashboard:
                     message1: Congratulations !
         last_operations:
             title: Last operations
+    version: Version
 
 pim_title:
     pim_dashboard_index: Dashboard

@@ -10,7 +10,7 @@ const PimVersion = () => {
 
   return (
     <Container>
-      {pimVersion.version}
+      {translate('pim_dashboard.version')}: {pimVersion.version}
       {pimVersion.lastPatch && ` | ${translate('pim_analytics.new_patch_available')}: ${pimVersion.lastPatch}`}
     </Container>
   );
