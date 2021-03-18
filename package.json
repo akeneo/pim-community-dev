@@ -117,7 +117,7 @@
     "dep-diff": "1.0.1",
     "dropzone": "4.0.1",
     "formik": "^2.0.6",
-    "jquery": "3.6.0",
+    "jquery": "3.5.0",
     "json-schema-ref-parser": "^7.1.2",
     "json-schema-to-typescript": "^7.1.0",
     "less": "^3.9.0",
