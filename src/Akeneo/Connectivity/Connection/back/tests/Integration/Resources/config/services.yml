@@ -4,3 +4,5 @@ services:
 
     akeneo_connectivity.connection.dns_lookup:
         class: Akeneo\Connectivity\Connection\Infrastructure\Service\DnsLookup\FakeDnsLookup
+        arguments:
+            - ['8.8.8.8']
