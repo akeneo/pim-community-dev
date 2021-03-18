@@ -113,7 +113,7 @@ services:
                 'Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage': ['mass_edit', 'mass_delete']
                 'Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage': ['import']
                 'Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage': ['export', 'quick_export']
-            - 'Akeneo\Tool\Component\BatchQueue\Queue\BackendJobExecutionMessage'
+            - 'Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage'
 
     akeneo_batch_queue.messenger.serializer:
         class: Akeneo\Tool\Bundle\MessengerBundle\Serialization\JsonSerializer
