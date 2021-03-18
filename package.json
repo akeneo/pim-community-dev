@@ -29,7 +29,8 @@
     "dsm:build": "yarn --cwd=front-packages/akeneo-design-system install --frozen-lockfile; yarn --cwd=front-packages/akeneo-design-system lib:build",
     "shared:build": "yarn --cwd=front-packages/shared install --frozen-lockfile; yarn --cwd=front-packages/shared lib:build",
     "packages:build": "yarn dsm:build; yarn shared:build",
-    "packages:unit": "yarn --cwd=front-packages/shared test:unit:run"
+    "packages:unit": "yarn --cwd=front-packages/shared test:unit:run",
+    "test:e2e:open": "cypress open",
   },
   "repository": {
     "type": "git",

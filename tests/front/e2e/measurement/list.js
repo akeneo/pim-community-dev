@@ -1,4 +1,4 @@
-describe('list measurment families', () => {
+describe('list measurement families', () => {
   it('It can display measurement families', () => {
     cy.login().visit('/#/configuration/measurement')
 
