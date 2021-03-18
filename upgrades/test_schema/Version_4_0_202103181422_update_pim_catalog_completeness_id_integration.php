@@ -42,8 +42,9 @@ SQL;
 
     private function ensureCompletenessUsesNormalInt(): void
     {
-        $sql = "ALTER TABLE pim_catalog_completeness MODIFY id int AUTO_INCREMENT";
-        $this->get('database_connection')->executeQuery($sql);
+        $this->get('database_connection')->executeQuery(
+            "ALTER TABLE pim_catalog_completeness MODIFY id int AUTO_INCREMENT"
+        );
     }
 
     protected function getConfiguration()
