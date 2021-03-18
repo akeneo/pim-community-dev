@@ -1,10 +1,11 @@
 import {EventSubscriptionLog} from '../../model/EventSubscriptionLog';
-import {RefObject, useCallback, useEffect, useRef, useState} from 'react';
+import {RefObject, useCallback, useState} from 'react';
 import {useRoute} from '../../../shared/router';
 import {useInfiniteScroll} from '../../scroll';
 import {EventSubscriptionLogLevel} from '../../model/EventSubscriptionLogLevel';
-// TODO import
+// TODO import from our context
 import {useDebounceCallback} from '@akeneo-pim-community/shared';
+import {useEffectAfterFirstRender} from '../../../shared/hooks/useEffectAfterFirstRender';
 
 const MAX_PAGES = 20;
 
@@ -87,7 +88,7 @@ const useInfiniteEventSubscriptionLogs = (
 
     const {reset, isLoading} = useInfiniteScroll<SearchEventSubscriptionLogsResponse>(fetchNextResponse, container);
 
-    const clear = useCallback(() => {
+    const resetState = useCallback(() => {
         setState({
             logs: [],
             total: undefined,
@@ -98,19 +99,17 @@ const useInfiniteEventSubscriptionLogs = (
         setSearchAfter(null);
     }, [setState, setSearchAfter]);
 
-    const isResetInitialized = useRef(false);
-    const debounceReset = useDebounceCallback(reset, 1000);
+    const resetInfiniteScroll = useDebounceCallback(reset, 1000);
 
-    // write a custom useEffect, something like useEffectAfterRender
-    useEffect(() => {
-        if (!isResetInitialized.current) {
-            isResetInitialized.current = true;
-            return;
-        }
-
-        clear();
-        debounceReset();
-    }, [filters, debounceReset, isResetInitialized]);
+    // By default, an useEffect is always executed during the first render.
+    // Here, we want to trigger this useEffect only after the initial render,
+    // when the filters are updated.
+    useEffectAfterFirstRender(() => {
+        // First, reset the local state, empty logs.
+        resetState();
+        // Then, reset the infinite scroll to start fetching from the beginning
+        resetInfiniteScroll();
+    }, [filters, resetState, resetInfiniteScroll]);
 
     return {
         ...state,
