@@ -1,4 +1,4 @@
-import {Breadcrumb} from 'akeneo-design-system';
+import {Breadcrumb, Button} from 'akeneo-design-system';
 import React, {FC, useEffect} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import {Loading, PageContent, PageHeader} from '../../common';
@@ -9,24 +9,56 @@ import {EventSubscriptionDisabled} from '../components/EventSubscriptionDisabled
 import {EventLogList} from '../components/EventLogList';
 import {useFetchConnection} from '../hooks/api/use-fetch-connection';
 import {useFetchEventSubscription} from '../hooks/api/use-fetch-event-subscription';
+import {useRouter} from '../../shared/router/use-router';
 
 export const EventLogs: FC = () => {
+    const generateUrl = useRouter();
     const {connectionCode} = useParams<{connectionCode: string}>();
     const {connection} = useFetchConnection(connectionCode);
+    const {eventSubscription, fetchEventSubscription} = useFetchEventSubscription(connectionCode);
+
+    useEffect(() => {
+        fetchEventSubscription();
+    }, [fetchEventSubscription]);
+
+    if (undefined === connection || undefined === eventSubscription) {
+        return (
+            <>
+                <PageHeader
+                    breadcrumb={<EventLogsBreadcrumb />}
+                    userButtons={<UserButtons />}
+                    buttons={[
+                        <DownloadLogsButton key={0} disabled={true}/>,
+                    ]}
+                />
+                <PageContent>
+                    <Loading />
+                </PageContent>
+            </>
+        );
+    }
+
+    const downloadUrl = generateUrl('akeneo_connectivity_connection_events_api_debug_rest_download_event_subscription_logs', {
+        connection_code: eventSubscription.connectionCode
+    });
 
     return (
         <>
-            <PageHeader breadcrumb={<EventLogsBreadcrumb />} userButtons={<UserButtons />}>
-                {connection?.label}
+            <PageHeader
+                breadcrumb={<EventLogsBreadcrumb />}
+                userButtons={<UserButtons />}
+                buttons={[
+                    <DownloadLogsButton key={0} href={downloadUrl} disabled={!eventSubscription.enabled}/>,
+                ]}
+            >
+                {connection.label}
             </PageHeader>
             <PageContent>
-                {undefined === connection ? (
-                    <Loading />
-                ) : (
-                    <EnabledEventSubscriptionGuard connectionCode={connection.code}>
-                        <EventLogList connectionCode={connection.code} />
-                    </EnabledEventSubscriptionGuard>
-                )}
+                {
+                    eventSubscription.enabled
+                        ? <EventLogList connectionCode={connectionCode} />
+                        : <EventSubscriptionDisabled connectionCode={connectionCode} />
+                }
             </PageContent>
         </>
     );
@@ -50,19 +82,15 @@ const EventLogsBreadcrumb: FC = () => {
     );
 };
 
-const EnabledEventSubscriptionGuard: FC<{connectionCode: string}> = ({children, connectionCode}) => {
-    const {eventSubscription, fetchEventSubscription} = useFetchEventSubscription(connectionCode);
-    useEffect(() => {
-        fetchEventSubscription();
-    }, [fetchEventSubscription]);
+type DownloadLogsButtonProps = {
+    disabled?: boolean;
+    href?: string
+};
 
-    if (undefined === eventSubscription) {
-        return <Loading />;
-    }
-
-    if (false === eventSubscription.enabled) {
-        return <EventSubscriptionDisabled connectionCode={connectionCode} />;
-    }
-
-    return <>{children}</>;
+const DownloadLogsButton: FC<DownloadLogsButtonProps> = (props) => {
+    return (
+        <Button {...props} ghost level='tertiary' size='default' target='_blank'>
+            <Translate id='akeneo_connectivity.connection.webhook.download_logs' />
+        </Button>
+    );
 };
