@@ -35,6 +35,8 @@ class WebhookEvent
     /** @var EventInterface */
     private $pimEvent;
 
+    private ?string $version;
+
     /**
      * @param array<mixed> $data
      */
@@ -45,6 +47,7 @@ class WebhookEvent
         Author $author,
         string $pimSource,
         array $data,
+        ?string $version,
         EventInterface $pimEvent
     ) {
         $this->action = $action;
@@ -54,6 +57,7 @@ class WebhookEvent
         $this->author = $author;
         $this->pimSource = $pimSource;
         $this->pimEvent = $pimEvent;
+        $this->version = $version;
     }
 
     public function action(): string
@@ -79,6 +83,11 @@ class WebhookEvent
     public function pimSource(): string
     {
         return $this->pimSource;
+    }
+
+    public function version(): ?string
+    {
+        return $this->version;
     }
 
     /**
