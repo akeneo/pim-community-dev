@@ -31,7 +31,7 @@ class GpsReceiverSpec extends ObjectBehavior
         $this->shouldHaveType(GpsReceiver::class);
     }
 
-    public function it_gets_messages($subscription, $serializer): void
+    public function it_gets_messages(Subscription $subscription, SerializerInterface $serializer): void
     {
         $gpsMessage = new Message(
             [
@@ -54,6 +54,8 @@ class GpsReceiverSpec extends ObjectBehavior
         ])
             ->willReturn($envelope);
 
+        $subscription->acknowledge($gpsMessage)->shouldNotBeCalled();
+
         $this->get()
             ->shouldBeLike([
                 $envelope
@@ -62,7 +64,42 @@ class GpsReceiverSpec extends ObjectBehavior
             ]);
     }
 
-    public function it_ackownledges_a_message($subscription): void
+    public function it_gets_and_acks_message_when_mode_is_activated(Subscription $subscription, $serializer): void
+    {
+        $this->beConstructedWith($subscription, $serializer, ['ack_message_right_after_pull' => true]);
+
+        $gpsMessage = new Message(
+            [
+                'data' => 'My message!',
+                'messageId' => '123',
+                'attributes' => ['my_attribute' => 'My attribute!']
+            ]
+        );
+        $envelope = new Envelope((object)['message' => 'My message!']);
+
+        $subscription->pull([
+            'maxMessages' => 1,
+            'returnImmediately' => true,
+        ])
+            ->willReturn([$gpsMessage]);
+
+        $serializer->decode([
+            'body' => 'My message!',
+            'headers' => ['my_attribute' => 'My attribute!']
+        ])
+            ->willReturn($envelope);
+
+        $subscription->acknowledge($gpsMessage)->shouldBeCalledOnce();
+
+        $this->get()
+            ->shouldBeLike([
+                $envelope
+                    ->with(new TransportMessageIdStamp('123'))
+                    ->with(new NativeMessageStamp($gpsMessage))
+            ]);
+    }
+
+    public function it_acknowledges_a_message(Subscription $subscription): void
     {
         $gpsMessage = new Message(
             [
@@ -78,7 +115,21 @@ class GpsReceiverSpec extends ObjectBehavior
         $this->ack($envelope);
     }
 
-    public function it_rejects_a_message($subscription): void
+    public function it_does_not_acknowledges_a_message_when_it_was_acknowledged_after_pull(
+        Subscription $subscription,
+        SerializerInterface $serializer
+    ): void {
+        $this->beConstructedWith($subscription, $serializer, ['ack_message_right_after_pull' => true]);
+
+        $gpsMessage = new Message(['data' => 'My message!']);
+        $envelope = new Envelope((object)['message' => 'My message!'], [new NativeMessageStamp($gpsMessage)]);
+
+        $subscription->acknowledge($gpsMessage)->shouldNotBeCalled();
+
+        $this->ack($envelope);
+    }
+
+    public function it_rejects_a_message(Subscription $subscription): void
     {
         $gpsMessage = new Message(
             [
@@ -94,8 +145,9 @@ class GpsReceiverSpec extends ObjectBehavior
         $this->reject($envelope);
     }
 
-    public function it_throws_a_transport_exception_if_an_error_is_raised_while_fetching_a_message($subscription): void
-    {
+    public function it_throws_a_transport_exception_if_an_error_is_raised_while_fetching_a_message(
+        Subscription $subscription
+    ): void {
         $subscription->pull([
             'maxMessages' => 1,
             'returnImmediately' => true,
@@ -107,7 +159,7 @@ class GpsReceiverSpec extends ObjectBehavior
     }
 
     public function it_throws_a_transport_exception_if_an_error_is_raised_while_acknowledging_a_message(
-        $subscription
+        Subscription $subscription
     ): void {
         $gpsMessage = new Message(
             [
@@ -124,8 +176,9 @@ class GpsReceiverSpec extends ObjectBehavior
             ->during('ack', [$envelope]);
     }
 
-    public function it_throws_a_transport_exception_if_an_error_is_raised_while_rejecting_a_message($subscription): void
-    {
+    public function it_throws_a_transport_exception_if_an_error_is_raised_while_rejecting_a_message(
+        Subscription $subscription
+    ): void {
         $gpsMessage = new Message(
             [
                 'data' => 'My message!',
