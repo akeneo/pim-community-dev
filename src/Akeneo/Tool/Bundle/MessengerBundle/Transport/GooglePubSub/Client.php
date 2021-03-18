@@ -92,15 +92,13 @@ class Client
         }
     }
 
-    public function setup(array $options = []): void
+    public function setup(): void
     {
         if (!$this->topic->exists()) {
             $this->topic->create();
         }
 
         if (null !== $this->subscription && !$this->subscription->exists()) {
-//            print_r("Create [" . $this->subscription->name() . "] with:\n");
-//            print_r($this->subscriptionOptions);
             $this->subscription->create($this->subscriptionOptions);
         }
     }

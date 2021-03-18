@@ -20,16 +20,18 @@ use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
  */
 final class GpsReceiver implements ReceiverInterface
 {
-    /** @var SerializerInterface */
-    private $serializer;
+    private const ACK_MESSAGE_RIGHT_AFTER_PULL_OPTION = 'ack_message_right_after_pull';
+    public const AVAILABLE_OPTIONS = [self::ACK_MESSAGE_RIGHT_AFTER_PULL_OPTION];
 
-    /** @var Subscription */
-    private $subscription;
+    private SerializerInterface $serializer;
+    private Subscription $subscription;
+    private array $options;
 
-    public function __construct(Subscription $subscription, SerializerInterface $serializer)
+    public function __construct(Subscription $subscription, SerializerInterface $serializer, array $options = [])
     {
         $this->subscription = $subscription;
         $this->serializer = $serializer;
+        $this->options = $options;
     }
 
     public function get(): iterable
@@ -48,6 +50,10 @@ final class GpsReceiver implements ReceiverInterface
         }
 
         $message = $messages[0];
+        if ($this->ackMessageRightAfterPullMode()) {
+            $this->ackMessage($message);
+        }
+
         $envelope = $this->serializer->decode([
             'body' => $message->data(),
             'headers' => $message->attributes(),
@@ -62,8 +68,17 @@ final class GpsReceiver implements ReceiverInterface
 
     public function ack(Envelope $envelope): void
     {
+        if ($this->ackMessageRightAfterPullMode()) {
+            return;
+        }
+
+        $this->ackMessage($this->getNativeMessage($envelope));
+    }
+
+    private function ackMessage(Message $message): void
+    {
         try {
-            $this->subscription->acknowledge($this->getNativeMessage($envelope));
+            $this->subscription->acknowledge($message);
         } catch (GoogleException $e) {
             throw new TransportException($e->getMessage(), 0, $e);
         }
@@ -86,5 +101,10 @@ final class GpsReceiver implements ReceiverInterface
         }
 
         return $nativeMessageStamp->getNativeMessage();
+    }
+
+    private function ackMessageRightAfterPullMode(): bool
+    {
+        return $this->options[static::ACK_MESSAGE_RIGHT_AFTER_PULL_OPTION] ?? false;
     }
 }
