@@ -79,7 +79,7 @@ $(INSTANCE_DIR):
 .PHONY: terraform-init
 terraform-init: $(INSTANCE_DIR)
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
-    ifeq ($(INSTANCE_NAME),pimup-$(IMAGE_TAG_SORTED))
+    ifeq ($(INSTANCE_NAME),pimup-$(IMAGE_TAG_SHORTED))
 		@echo "We are in the second step of update"
 		cd $(INSTANCE_DIR) && STEP='PRE_INIT' INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/automation/upgrade.sh
     endif
@@ -94,7 +94,7 @@ terraform-plan: terraform-init
 .PHONY: terraform-apply
 terraform-apply:
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
-    ifeq ($(INSTANCE_NAME),pimup-$(IMAGE_TAG_SORTED))
+    ifeq ($(INSTANCE_NAME),pimup-$(IMAGE_TAG_SHORTED))
 		@echo "We are in the second step of update"
 		cd $(INSTANCE_DIR) && STEP='PRE_APPLY' INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/automation/upgrade.sh
     endif
