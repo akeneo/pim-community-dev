@@ -6,7 +6,7 @@ namespace spec\Akeneo\Tool\Component\BatchQueue\Factory;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory;
-use Akeneo\Tool\Component\BatchQueue\Queue\BackendJobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage;
@@ -24,7 +24,7 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
                 ImportJobExecutionMessage::class => ['import'],
                 ExportJobExecutionMessage::class => ['export', 'quick_export'],
             ],
-            BackendJobExecutionMessage::class
+            DataMaintenanceJobExecutionMessage::class
         );
     }
 
@@ -56,7 +56,7 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
         $jobInstance->getType()->willReturn('other');
 
         $jobExecutionMessage = $this->buildFromJobInstance($jobInstance, 3, []);
-        $jobExecutionMessage->shouldBeAnInstanceOf(BackendJobExecutionMessage::class);
+        $jobExecutionMessage->shouldBeAnInstanceOf(DataMaintenanceJobExecutionMessage::class);
         $jobExecutionMessage->getJobExecutionId()->shouldBe(3);
     }
 
@@ -129,7 +129,7 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
             'updated_time' => '2021-03-09T15:37:23+01:00',
             'options' => [],
         ]);
-        $jobExecutionMessage->shouldBeAnInstanceOf(BackendJobExecutionMessage::class);
+        $jobExecutionMessage->shouldBeAnInstanceOf(DataMaintenanceJobExecutionMessage::class);
         $jobExecutionMessage->getId()->shouldBeNull();
         $jobExecutionMessage->getJobExecutionId()->shouldBe(10);
         $jobExecutionMessage->getConsumer()->shouldBeNull();

@@ -16,7 +16,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory;
-use Akeneo\Tool\Component\BatchQueue\Queue\BackendJobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage;
@@ -96,7 +96,7 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
             'updated_time' => null,
             'options' => ['option1' => 'value1'],
         ]);
-        self::assertInstanceOf(BackendJobExecutionMessage::class, $jobExecutionMessage);
+        self::assertInstanceOf(DataMaintenanceJobExecutionMessage::class, $jobExecutionMessage);
     }
 
     protected function createJobExecution(
