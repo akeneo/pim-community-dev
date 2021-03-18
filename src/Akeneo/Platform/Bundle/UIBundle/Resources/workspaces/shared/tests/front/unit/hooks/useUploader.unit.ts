@@ -1,5 +1,5 @@
 import {act} from '@testing-library/react-hooks';
-import {useImageUploader} from '../../../../src/hooks/useImageUploader';
+import {useUploader} from '../../../../src/hooks/useUploader';
 import {renderHookWithProviders} from '../utils';
 
 const imageFile = new File(['foo'], 'foo.jpg', {type: 'image/jpeg'});
@@ -33,7 +33,7 @@ const timeoutXhrMock: Partial<XMLHttpRequest> = {
 jest.spyOn(window, 'XMLHttpRequest').mockImplementation(() => xhrMock as XMLHttpRequest);
 
 test('It returns an image uploader that can upload a file', async () => {
-  const {result} = renderHookWithProviders(() => useImageUploader('fake_route'));
+  const {result} = renderHookWithProviders(() => useUploader('fake_route'));
 
   const [,uploader] = result.current;
   const onProgress = jest.fn();
@@ -58,7 +58,7 @@ test('It returns an image uploader that can handle failure', async () => {
       } as XMLHttpRequest)
   );
 
-  const {result} = renderHookWithProviders(() => useImageUploader('fake_route'));
+  const {result} = renderHookWithProviders(() => useUploader('fake_route'));
 
   const [,uploader] = result.current;
   const onProgress = jest.fn();
@@ -73,7 +73,7 @@ test('It returns if an upload is in progress', async () => {
   jest.spyOn(window, 'XMLHttpRequest').mockImplementationOnce(() => timeoutXhrMock as XMLHttpRequest);
 
   jest.useFakeTimers();
-  const {result} = renderHookWithProviders(() => useImageUploader('fake_route'));
+  const {result} = renderHookWithProviders(() => useUploader('fake_route'));
 
   let [isUploading, uploader] = result.current;
   const onProgress = jest.fn();
