@@ -38,9 +38,7 @@ const View = ({id, value, invalid, onChange, onSubmit, canEditData}: ViewGenerat
           value={textDataStringValue(value.data)}
           invalid={invalid}
           onChange={onValueChange}
-          onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-            if (Key.Enter === event.key) onSubmit?.();
-          }}
+          onSubmit={onSubmit}
           disabled={!canEditData}
         />
       )}

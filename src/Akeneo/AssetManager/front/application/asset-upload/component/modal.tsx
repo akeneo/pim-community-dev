@@ -28,7 +28,7 @@ import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-cl
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {getColor, getFontSize, Key, useShortcut} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {useImageUploader} from '@akeneo-pim-community/shared';
+import {useUploader} from '@akeneo-pim-community/shared';
 
 const Header = styled.div`
   background: ${getColor('white')};
@@ -106,7 +106,7 @@ const UploadModal = ({
   onAssetCreated,
 }: UploadModalProps) => {
   const translate = useTranslate();
-  const [,uploader] = useImageUploader('akeneo_asset_manager_file_upload');
+  const [, uploader] = useUploader('akeneo_asset_manager_file_upload');
   const [state, dispatch] = useReducer<Reducer<State>>(reducer, {lines: []});
   const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
   const valuePerLocale = attributeAsMainMedia.value_per_locale;

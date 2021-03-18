@@ -8,7 +8,7 @@ import {
   useBooleanState,
 } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {useImageUploader} from '@akeneo-pim-community/shared';
+import {useUploader} from '@akeneo-pim-community/shared';
 import {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
 import {isMediaFileAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
@@ -23,8 +23,8 @@ import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-cl
 
 const View = ({id, value, locale, canEditData, onChange, invalid}: ViewGeneratorProps) => {
   const translate = useTranslate();
-  const [isUploading, uploader] = useImageUploader('akeneo_asset_manager_file_upload');
-  usePreventClosing(isUploading, translate('pim_enrich.confirmation.discard_changes', {entity: 'asset'}));
+  const [isUploading, uploader] = useUploader('akeneo_asset_manager_file_upload');
+  usePreventClosing(() => isUploading, translate('pim_enrich.confirmation.discard_changes', {entity: 'asset'}));
 
   const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
   if (!isMediaFileData(value.data) || !isMediaFileAttribute(value.attribute)) {
