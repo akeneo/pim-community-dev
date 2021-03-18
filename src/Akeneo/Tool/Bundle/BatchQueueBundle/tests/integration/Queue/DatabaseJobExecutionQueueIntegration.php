@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\tests\integration\Queue;
 
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\BatchQueue\Queue\BackendJobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobQueueConsumerConfiguration;
 use Doctrine\DBAL\Driver\Connection;
@@ -14,7 +14,7 @@ class DatabaseJobExecutionQueueIntegration extends TestCase
 {
     public function testPublishAJobExecutionMessage()
     {
-        $jobExecutionMessage = BackendJobExecutionMessage::createJobExecutionMessage(1, ['email' => 'ziggy@akeneo.com']);
+        $jobExecutionMessage = DataMaintenanceJobExecutionMessage::createJobExecutionMessage(1, ['email' => 'ziggy@akeneo.com']);
 
         $this->getQueue()->publish($jobExecutionMessage);
 
