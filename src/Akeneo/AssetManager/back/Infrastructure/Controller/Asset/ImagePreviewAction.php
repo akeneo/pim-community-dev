@@ -77,7 +77,7 @@ class ImagePreviewAction
         string $attributeIdentifier,
         string $type
     ): Response {
-        $data = $request->get('data');
+        $data = urldecode($request->get('data'));
         $regenerate = $request->isMethod('POST');
 
         try {
