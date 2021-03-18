@@ -1,7 +1,6 @@
 import React from 'react';
 import {renderHook} from '@testing-library/react-hooks';
-import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
-import {useConfig} from './useConfig';
+import {useConfig, ConfigProvider} from './useConfig';
 
 test('It returns the config', () => {
   const {result} = renderHook(() => useConfig('value'), {

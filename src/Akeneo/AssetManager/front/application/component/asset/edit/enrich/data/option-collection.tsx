@@ -25,7 +25,7 @@ const View = ({value, id, locale, canEditData, invalid, onChange}: ViewGenerator
     <MultiSelectInput
       id={id}
       value={value.data ?? []}
-      placeholder={translate('pim_asset_manager.attribute.options.no_value')}
+      placeholder={!canEditData ? '' : translate('pim_asset_manager.attribute.options.no_value')}
       emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
       removeLabel={translate('pim_common.remove')}
       readOnly={!canEditData}

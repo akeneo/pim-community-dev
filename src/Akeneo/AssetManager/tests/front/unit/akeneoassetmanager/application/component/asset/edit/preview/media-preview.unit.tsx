@@ -4,9 +4,8 @@ import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribu
 import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
-import {Provider} from 'react-redux';
-import {createStore} from 'redux';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {ReloadPreviewProvider} from 'akeneoassetmanager/application/hooks/useReloadPreview';
+import {renderWithAssetManagerProviders} from '../../../../../tools';
 
 const routing = require('routing');
 jest.mock('routing');
@@ -46,7 +45,7 @@ const otherData = {some: 'thing'};
 
 describe('Tests media preview component', () => {
   test('It renders a empty media preview', () => {
-    renderWithProviders(<MediaPreview data={null} label="" attribute={mediaFileAttribute} />);
+    renderWithAssetManagerProviders(<MediaPreview data={null} label="" attribute={mediaFileAttribute} />);
 
     expect(screen.getByText('pim_asset_manager.asset_preview.empty_main_media')).toBeInTheDocument();
   });
@@ -56,11 +55,7 @@ describe('Tests media preview component', () => {
       .fn()
       .mockImplementation((route: string, parameters: any) => route + '?' + new URLSearchParams(parameters).toString());
 
-    renderWithProviders(
-      <Provider store={createStore(() => ({reloadPreview: false}))}>
-        <MediaPreview data={mediaFileData} label="" attribute={mediaFileAttribute} />
-      </Provider>
-    );
+    renderWithAssetManagerProviders(<MediaPreview data={mediaFileData} label="" attribute={mediaFileAttribute} />);
 
     const previewImg = screen.getByRole('img');
     fireEvent(previewImg, new Event('error'));
@@ -72,10 +67,8 @@ describe('Tests media preview component', () => {
   });
 
   test('It renders a media file preview', () => {
-    renderWithProviders(
-      <Provider store={createStore(() => ({reloadPreview: false}))}>
-        <MediaPreview data={mediaFileData} label="nice img" attribute={mediaFileAttribute} />
-      </Provider>
+    renderWithAssetManagerProviders(
+      <MediaPreview data={mediaFileData} label="nice img" attribute={mediaFileAttribute} />
     );
 
     expect(screen.getByRole('img')).toBeInTheDocument();
@@ -85,10 +78,10 @@ describe('Tests media preview component', () => {
   test('It renders a media file reloaded preview', () => {
     global.fetch = jest.fn().mockImplementation(() => new Promise(() => {}));
 
-    renderWithProviders(
-      <Provider store={createStore(() => ({reloadPreview: true}))}>
+    renderWithAssetManagerProviders(
+      <ReloadPreviewProvider initialValue={true}>
         <MediaPreview data={mediaLinkData} label="loading" attribute={mediaLinkImageAttribute} />
-      </Provider>
+      </ReloadPreviewProvider>
     );
 
     expect(screen.getByTitle('loading')).toBeInTheDocument();
@@ -98,30 +91,34 @@ describe('Tests media preview component', () => {
   });
 
   test('It renders a media link image preview', () => {
-    renderWithProviders(
-      <Provider store={createStore(() => ({reloadPreview: false}))}>
-        <MediaPreview data={mediaLinkData} label="media link preview" attribute={mediaLinkImageAttribute} />
-      </Provider>
+    renderWithAssetManagerProviders(
+      <MediaPreview data={mediaLinkData} label="media link preview" attribute={mediaLinkImageAttribute} />
     );
 
     expect(screen.getByAltText('media link preview')).toBeInTheDocument();
   });
 
   test('It renders a media link youtube preview', () => {
-    renderWithProviders(<MediaPreview data={mediaLinkData} label="youtube" attribute={mediaLinkYouTubeAttribute} />);
+    renderWithAssetManagerProviders(
+      <MediaPreview data={mediaLinkData} label="youtube" attribute={mediaLinkYouTubeAttribute} />
+    );
 
     expect(screen.getByTitle('youtube')).toBeInTheDocument();
   });
 
   test('It renders a media link vimeo preview', () => {
-    renderWithProviders(<MediaPreview data={mediaLinkData} label="vimeo" attribute={mediaLinkVimeoAttribute} />);
+    renderWithAssetManagerProviders(
+      <MediaPreview data={mediaLinkData} label="vimeo" attribute={mediaLinkVimeoAttribute} />
+    );
 
     expect(screen.getByTitle('vimeo')).toBeInTheDocument();
   });
 
   test('It tells when the provided media link media type is unknown', () => {
     const mockedConsole = jest.spyOn(console, 'error').mockImplementation(() => {});
-    renderWithProviders(<MediaPreview data={mediaLinkData} label="" attribute={mediaLinkUnknownAttribute} />);
+    renderWithAssetManagerProviders(
+      <MediaPreview data={mediaLinkData} label="" attribute={mediaLinkUnknownAttribute} />
+    );
 
     expect(screen.getByText('The preview type UNKNOWN is not supported')).toBeInTheDocument();
     mockedConsole.mockRestore();
@@ -129,7 +126,7 @@ describe('Tests media preview component', () => {
 
   test('It tells when the provided media link data is invalid', () => {
     const mockedConsole = jest.spyOn(console, 'error').mockImplementation(() => {});
-    renderWithProviders(<MediaPreview data={otherData} label="" attribute={mediaLinkImageAttribute} />);
+    renderWithAssetManagerProviders(<MediaPreview data={otherData} label="" attribute={mediaLinkImageAttribute} />);
 
     expect(screen.getByText('The media link data is not valid')).toBeInTheDocument();
     mockedConsole.mockRestore();
@@ -137,7 +134,7 @@ describe('Tests media preview component', () => {
 
   test('It tells when the provided media file data is invalid', () => {
     const mockedConsole = jest.spyOn(console, 'error').mockImplementation(() => {});
-    renderWithProviders(<MediaPreview data={otherData} label="" attribute={mediaFileAttribute} />);
+    renderWithAssetManagerProviders(<MediaPreview data={otherData} label="" attribute={mediaFileAttribute} />);
 
     expect(screen.getByText('The media file data is not valid')).toBeInTheDocument();
     mockedConsole.mockRestore();

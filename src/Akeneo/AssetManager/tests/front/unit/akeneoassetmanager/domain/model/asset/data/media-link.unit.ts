@@ -53,6 +53,12 @@ describe('akeneo > asset family > domain > model > asset > data --- media-link',
 
   test('I can get the full URL of a media link', () => {
     expect(getMediaLinkUrl(mediaLinkData, mediaLinkAttribute)).toEqual('https://my-link.jpg');
+    expect(getMediaLinkUrl(mediaLinkData, {...mediaLinkAttribute, media_type: 'youtube'})).toEqual(
+      'https://youtube.com/watch?v=' + mediaLinkData
+    );
+    expect(getMediaLinkUrl(mediaLinkData, {...mediaLinkAttribute, media_type: 'vimeo'})).toEqual(
+      'https://vimeo.com/' + mediaLinkData
+    );
     expect(() => getMediaLinkUrl(mediaLinkData, {...mediaLinkAttribute, type: 'text'})).toThrow();
   });
 

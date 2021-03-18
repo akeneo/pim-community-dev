@@ -1,5 +1,12 @@
 import React from 'react';
-import {MediaFileInput, FileInfo} from 'akeneo-design-system';
+import {
+  MediaFileInput,
+  FileInfo,
+  IconButton,
+  DownloadIcon,
+  FullscreenIcon,
+  useBooleanState,
+} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {useImageUploader} from '@akeneo-pim-community/shared';
 import {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
@@ -8,14 +15,22 @@ import {isMediaFileAttribute} from 'akeneoassetmanager/domain/model/attribute/ty
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
 import {getImageDownloadUrl, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
 import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
 import {ViewGeneratorProps} from 'akeneoassetmanager/application/configuration/value';
+import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
 
-const View = ({value, locale, canEditData, onChange, invalid}: ViewGeneratorProps) => {
+const View = ({id, value, locale, canEditData, onChange, invalid}: ViewGeneratorProps) => {
   const translate = useTranslate();
   const uploader = useImageUploader('akeneo_asset_manager_file_upload');
+  const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
+
   if (!isMediaFileData(value.data) || !isMediaFileAttribute(value.attribute)) {
     return null;
+  }
+
+  if (id === undefined) {
+    id = `pim_asset_manager.asset.enrich.${value.attribute.code}`;
   }
 
   const attributeLabel = getLabelInCollection(
@@ -29,31 +44,52 @@ const View = ({value, locale, canEditData, onChange, invalid}: ViewGeneratorProp
     onChange(setValueData(value, fileInfo));
   };
 
+  const downloadFilename = value.data?.originalFilename;
+  const downloadUrl = getImageDownloadUrl(value.data);
+  const previewUrl = getMediaPreviewUrl({
+    type: MediaPreviewType.Thumbnail,
+    attributeIdentifier: value.attribute.identifier,
+    data: getMediaData(value.data),
+  });
+
   return (
-    <MediaFileInput
-      value={value.data}
-      onChange={handleChange}
-      previewer={(file, type) =>
-        getMediaPreviewUrl({
-          type: type as MediaPreviewType,
-          attributeIdentifier: value.attribute.identifier,
-          data: file.filePath,
-        })
-      }
-      readOnly={!canEditData}
-      placeholder={translate(`pim_asset_manager.attribute.media_file.${!canEditData ? 'read_only' : 'placeholder'}`)}
-      invalid={invalid}
-      uploader={uploader}
-      downloader={fileInfo => getImageDownloadUrl(fileInfo)}
-      fullscreenLabel={attributeLabel}
-      uploadingLabel={translate('pim_asset_manager.attribute.media_file.uploading')}
-      downloadLabel={translate('pim_asset_manager.asset_preview.download')}
-      clearTitle={translate('pim_common.clear')}
-      fullscreenTitle={translate('pim_asset_manager.asset.button.fullscreen')}
-      closeTitle={translate('pim_common.close')}
-      size="small"
-      uploadErrorLabel={translate('pim_asset_manager.asset.upload.upload_failure')}
-    />
+    <>
+      <MediaFileInput
+        id={id}
+        value={value.data}
+        onChange={handleChange}
+        thumbnailUrl={previewUrl}
+        readOnly={!canEditData}
+        placeholder={!canEditData ? '' : translate('pim_asset_manager.attribute.media_file.placeholder')}
+        invalid={invalid}
+        uploader={uploader}
+        uploadingLabel={translate('pim_asset_manager.attribute.media_file.uploading')}
+        clearTitle={translate('pim_common.clear')}
+        size="small"
+        uploadErrorLabel={translate('pim_asset_manager.asset.upload.upload_failure')}
+      >
+        <IconButton
+          href={downloadUrl}
+          target="_blank"
+          download={downloadFilename}
+          icon={<DownloadIcon />}
+          title={translate('pim_asset_manager.asset_preview.download')}
+        />
+        <IconButton
+          onClick={openFullscreenModal}
+          icon={<FullscreenIcon />}
+          title={translate('pim_asset_manager.asset.button.fullscreen')}
+        />
+      </MediaFileInput>
+      {isFullscreenModalOpen && (
+        <FullscreenPreview
+          onClose={closeFullscreenModal}
+          attribute={value.attribute}
+          data={value.data}
+          label={attributeLabel}
+        />
+      )}
+    </>
   );
 };
 

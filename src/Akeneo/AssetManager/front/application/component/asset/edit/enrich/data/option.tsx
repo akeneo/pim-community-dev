@@ -24,7 +24,7 @@ const View = ({id, value, onChange, locale, canEditData, invalid}: ViewGenerator
       value={value.data}
       readOnly={!canEditData}
       invalid={invalid}
-      placeholder={translate('pim_asset_manager.attribute.options.no_value')}
+      placeholder={!canEditData ? '' : translate('pim_asset_manager.attribute.options.no_value')}
       emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
       clearLabel={translate('pim_common.remove')}
       onChange={(optionCode: OptionData) => {

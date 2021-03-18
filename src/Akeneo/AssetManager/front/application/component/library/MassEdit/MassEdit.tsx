@@ -8,6 +8,7 @@ import {Context} from 'akeneoassetmanager/domain/model/context';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import {Updater} from './model/updater';
 import {useMassEdit} from './hooks/useMassEdit';
+import {ReloadPreviewProvider} from 'akeneoassetmanager/application/hooks/useReloadPreview';
 
 type MassEditProps = {
   selectionQuery: Query | null;
@@ -44,7 +45,7 @@ const MassEdit = ({selectionQuery, assetFamily, context, onConfirm, selectedCoun
   if (null === selectionQuery) return null;
 
   return (
-    <>
+    <ReloadPreviewProvider>
       <Button level="secondary" onClick={openMassEditModal}>
         {translate('pim_common.edit')}
       </Button>
@@ -59,7 +60,7 @@ const MassEdit = ({selectionQuery, assetFamily, context, onConfirm, selectedCoun
           channels={channels}
         />
       )}
-    </>
+    </ReloadPreviewProvider>
   );
 };
 

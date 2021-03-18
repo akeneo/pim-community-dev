@@ -58,6 +58,7 @@ import {
 import {AssetsIllustration, Information, Link, LockIcon} from 'akeneo-design-system';
 import {ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import {RulesNumberByAttribute} from 'akeneoassetmanager/platform/model/structure/rule-relation';
+import {ReloadPreviewProvider} from 'akeneoassetmanager/application/hooks/useReloadPreview';
 
 type ListStateProps = {
   attributes: Attribute[];
@@ -235,37 +236,39 @@ const List = ({
   productLabels,
   onChange,
 }: ListStateProps & ListDispatchProps) => (
-  <AssetCollectionList>
-    {hasValues(values) ? (
-      <DisplayValues
-        values={values}
-        attributeGroups={attributeGroups}
-        family={family}
-        context={context}
-        rulesNumberByAttribute={rulesNumberByAttribute}
-        onChange={onChange}
-        errors={errors}
-        productIdentifier={productIdentifier}
-        productLabels={productLabels}
-      />
-    ) : (
-      <>
-        <Information
-          illustration={<AssetsIllustration />}
-          title={`👋  ${__('pim_asset_manager.asset_collection.helper.title')}`}
-        >
-          <p>{__('pim_asset_manager.asset_collection.helper.text')}</p>
-          <Link href="https://help.akeneo.com/pim/v4/articles/manage-your-attributes.html" target="_blank">
-            {__('pim_asset_manager.asset_collection.helper.link')}
-          </Link>
-        </Information>
-        <NoDataSection>
-          <AssetsIllustration size={256} />
-          <NoDataTitle>{__('pim_asset_manager.asset_collection.no_asset.title')}</NoDataTitle>
-        </NoDataSection>
-      </>
-    )}
-  </AssetCollectionList>
+  <ReloadPreviewProvider>
+    <AssetCollectionList>
+      {hasValues(values) ? (
+        <DisplayValues
+          values={values}
+          attributeGroups={attributeGroups}
+          family={family}
+          context={context}
+          rulesNumberByAttribute={rulesNumberByAttribute}
+          onChange={onChange}
+          errors={errors}
+          productIdentifier={productIdentifier}
+          productLabels={productLabels}
+        />
+      ) : (
+        <>
+          <Information
+            illustration={<AssetsIllustration />}
+            title={`👋  ${__('pim_asset_manager.asset_collection.helper.title')}`}
+          >
+            <p>{__('pim_asset_manager.asset_collection.helper.text')}</p>
+            <Link href="https://help.akeneo.com/pim/v4/articles/manage-your-attributes.html" target="_blank">
+              {__('pim_asset_manager.asset_collection.helper.link')}
+            </Link>
+          </Information>
+          <NoDataSection>
+            <AssetsIllustration size={256} />
+            <NoDataTitle>{__('pim_asset_manager.asset_collection.no_asset.title')}</NoDataTitle>
+          </NoDataSection>
+        </>
+      )}
+    </AssetCollectionList>
+  </ReloadPreviewProvider>
 );
 
 export default connect(

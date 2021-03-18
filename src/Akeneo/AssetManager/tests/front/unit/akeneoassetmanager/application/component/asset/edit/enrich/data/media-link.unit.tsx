@@ -3,10 +3,8 @@ import {fireEvent, screen} from '@testing-library/react';
 import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {view as MediaLinkView} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media-link';
 import {ReloadAction} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
-import {Provider} from 'react-redux';
-import {createStore, applyMiddleware} from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {ReloadPreviewProvider} from 'akeneoassetmanager/application/hooks/useReloadPreview';
+import {renderWithAssetManagerProviders} from '../../../../../../tools';
 
 const mediaLinkImageAttribute = {
   code: 'mlimage',
@@ -38,16 +36,14 @@ const mediaFileValue = {
 
 describe('Tests media link attribute component', () => {
   test('It renders the media link attribute with its preview and its actions', () => {
-    renderWithProviders(
-      <Provider store={createStore(() => ({reloadPreview: false}))}>
-        <MediaLinkView
-          value={mediaLinkValue}
-          locale={locale}
-          onChange={() => {}}
-          onSubmit={() => {}}
-          canEditData={true}
-        />
-      </Provider>
+    renderWithAssetManagerProviders(
+      <MediaLinkView
+        value={mediaLinkValue}
+        locale={locale}
+        onChange={() => {}}
+        onSubmit={() => {}}
+        canEditData={true}
+      />
     );
 
     const inputElement = screen.getByPlaceholderText(
@@ -58,14 +54,35 @@ describe('Tests media link attribute component', () => {
     expect(inputElement.value).toEqual('pim');
     expect(screen.getAllByTitle('pim_asset_manager.asset_preview.download')[0]).toBeInTheDocument();
     expect(screen.getByTitle('pim_asset_manager.asset.button.fullscreen')).toBeInTheDocument();
-    expect(screen.getByAltText('pim_asset_manager.attribute.media_type_preview')).toBeInTheDocument();
+    expect(screen.getByAltText('pim')).toBeInTheDocument();
+  });
+
+  test('It copies the media link value when clicking on the copy button', () => {
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: jest.fn(),
+      },
+    });
+
+    renderWithAssetManagerProviders(
+      <MediaLinkView
+        value={mediaLinkValue}
+        locale={locale}
+        onChange={() => {}}
+        onSubmit={() => {}}
+        canEditData={true}
+      />
+    );
+
+    fireEvent.click(screen.getByTitle('pim_asset_manager.asset_preview.copy_url'));
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith('http://pim.png');
   });
 
   test('It renders the media link attribute with its reloaded preview', () => {
     global.fetch = jest.fn().mockImplementation(() => new Promise(() => {}));
 
-    renderWithProviders(
-      <Provider store={createStore(() => ({reloadPreview: true}), applyMiddleware(thunkMiddleware))}>
+    renderWithAssetManagerProviders(
+      <ReloadPreviewProvider initialValue={true}>
         <MediaLinkView
           value={mediaLinkValue}
           locale={locale}
@@ -73,7 +90,7 @@ describe('Tests media link attribute component', () => {
           onSubmit={() => {}}
           canEditData={true}
         />
-      </Provider>
+      </ReloadPreviewProvider>
     );
 
     expect(screen.getAllByTitle('pim_asset_manager.asset_preview.download')[0]).toBeInTheDocument();
@@ -85,7 +102,7 @@ describe('Tests media link attribute component', () => {
   });
 
   test('It does not render a reload action if it is not a media link', () => {
-    renderWithProviders(
+    renderWithAssetManagerProviders(
       <ReloadAction
         data={mediaFileValue.data}
         onReload={() => {}}
@@ -99,24 +116,19 @@ describe('Tests media link attribute component', () => {
 
   test('It renders the an empty preview and the placeholder when the value is empty', () => {
     const emptyValue = {...mediaLinkValue, data: null};
-    renderWithProviders(
-      <Provider store={createStore(() => ({reloadPreview: false}))}>
-        <MediaLinkView value={emptyValue} locale={locale} onChange={() => {}} onSubmit={() => {}} canEditData={true} />
-      </Provider>
+    renderWithAssetManagerProviders(
+      <MediaLinkView value={emptyValue} locale={locale} onChange={() => {}} onSubmit={() => {}} canEditData={true} />
     );
 
     expect(screen.queryByTitle('pim_asset_manager.asset_preview.download')).not.toBeInTheDocument();
     expect(screen.queryByTitle('pim_asset_manager.asset.button.fullscreen')).not.toBeInTheDocument();
     expect(screen.getByPlaceholderText('pim_asset_manager.attribute.media_link.placeholder')).toBeInTheDocument();
-    expect(screen.getByAltText('pim_asset_manager.attribute.media_type_preview')).toBeInTheDocument();
   });
 
   test('It does not render if the data is not a media link data', () => {
     const otherValue = {...mediaLinkValue, data: {some: 'thing'}};
-    renderWithProviders(
-      <Provider store={createStore(() => ({reloadPreview: false}))}>
-        <MediaLinkView value={otherValue} locale={locale} onChange={() => {}} onSubmit={() => {}} canEditData={true} />
-      </Provider>
+    renderWithAssetManagerProviders(
+      <MediaLinkView value={otherValue} locale={locale} onChange={() => {}} onSubmit={() => {}} canEditData={true} />
     );
 
     expect(screen.queryByTitle('pim_asset_manager.asset_preview.download')).not.toBeInTheDocument();
@@ -127,10 +139,8 @@ describe('Tests media link attribute component', () => {
   test('It can change the media link value', () => {
     let editionValue = mediaLinkValue;
     const change = jest.fn().mockImplementationOnce(value => (editionValue = value));
-    renderWithProviders(
-      <Provider store={createStore(() => ({reloadPreview: false}))}>
-        <MediaLinkView value={editionValue} locale={locale} onChange={change} onSubmit={() => {}} canEditData={true} />
-      </Provider>
+    renderWithAssetManagerProviders(
+      <MediaLinkView value={editionValue} locale={locale} onChange={change} onSubmit={() => {}} canEditData={true} />
     );
 
     const inputElement = screen.getByPlaceholderText(
@@ -144,16 +154,8 @@ describe('Tests media link attribute component', () => {
 
   test('It can submit the media link value by hitting the Enter key', () => {
     const submit = jest.fn().mockImplementationOnce(() => {});
-    renderWithProviders(
-      <Provider store={createStore(() => ({reloadPreview: false}))}>
-        <MediaLinkView
-          value={mediaLinkValue}
-          locale={locale}
-          onChange={() => {}}
-          onSubmit={submit}
-          canEditData={true}
-        />
-      </Provider>
+    renderWithAssetManagerProviders(
+      <MediaLinkView value={mediaLinkValue} locale={locale} onChange={() => {}} onSubmit={submit} canEditData={true} />
     );
 
     const inputElement = screen.getByPlaceholderText(

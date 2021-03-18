@@ -111,9 +111,7 @@ const renderUpdaterRow = (row: ReactNode) => {
         },
       }}
     >
-      <table>
-        <tbody>{row}</tbody>
-      </table>
+      {row}
     </ConfigProvider>
   );
 };

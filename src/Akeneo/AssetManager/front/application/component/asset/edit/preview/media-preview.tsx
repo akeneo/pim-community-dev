@@ -22,9 +22,8 @@ import {MediaPreviewType, emptyMediaPreview} from 'akeneoassetmanager/domain/mod
 import {getMediaData, MediaData, isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
-import {connect} from 'react-redux';
-import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useReloadPreview} from 'akeneoassetmanager/application/hooks/useReloadPreview';
 
 const Image = styled.img`
   width: auto;
@@ -67,16 +66,14 @@ const LazyLoadedImage = ({src, alt, isLoading = false, ...props}: LazyLoadedImag
   );
 };
 
-const DisconnectedMediaDataPreview = ({
+const MediaDataPreview = ({
   label,
   mediaData,
   attribute,
-  reloadPreview,
 }: {
   label: string;
   mediaData: MediaData;
   attribute: NormalizedMediaFileAttribute | NormalizedMediaLinkAttribute;
-  reloadPreview: boolean;
 }) => {
   const translate = useTranslate();
   const url = getMediaPreviewUrl({
@@ -86,6 +83,7 @@ const DisconnectedMediaDataPreview = ({
   });
   const [regenerate, doRegenerate, refreshedUrl] = useRegenerate(url);
   const [previewError, setPreviewError] = useState(false);
+  const [reloadPreview] = useReloadPreview();
 
   useEffect(() => {
     if (reloadPreview) {
@@ -116,10 +114,6 @@ const DisconnectedMediaDataPreview = ({
     </>
   );
 };
-
-const MediaDataPreview = connect((state: EditState) => ({
-  reloadPreview: state.reloadPreview,
-}))(DisconnectedMediaDataPreview);
 
 const MediaLinkPreview = ({
   label,
