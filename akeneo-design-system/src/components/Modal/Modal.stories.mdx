@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useContext} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import LinkTo from '@storybook/addon-links/react';
 import {useArgs, updateArgs} from '@storybook/client-api';
@@ -70,11 +70,7 @@ It can be used with or without an Illustration and adapts its content accordingl
       return (
         <>
           {isOpen && (
-            <Modal
-              {...args}
-              onClose={close}
-              illustration={<Illustrations.ChannelsIllustration />}
-            >
+            <Modal {...args} onClose={close} illustration={<Illustrations.ChannelsIllustration />}>
               Such nice Illustration
               <Modal.BottomButtons>
                 <Button onClick={close}>Close</Button>
