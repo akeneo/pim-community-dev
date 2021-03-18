@@ -229,6 +229,7 @@ const InputContainer = styled.li<AkeneoThemedProps>`
     background-color: transparent;
 
     &::placeholder {
+      opacity: 1;
       color: ${getColor('grey', 100)};
       font-family: ${getFontFamily('default')};
     }
