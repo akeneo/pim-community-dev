@@ -12,7 +12,7 @@ use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Component\BatchQueue\Queue\BackendJobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Doctrine\DBAL\Driver\Connection;
 use PHPUnit\Framework\Assert;
@@ -93,7 +93,7 @@ class JobQueueConsumerCommandIntegration extends TestCase
         $jobExecution = $this->createJobExecutionInQueue('infinite_loop_job');
 
         $options = ['email' => 'ziggy@akeneo.com', 'env' => $this->getParameter('kernel.environment')];
-        $jobExecutionMessage = BackendJobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
+        $jobExecutionMessage = DataMaintenanceJobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
 
         $this->getQueue()->publish($jobExecutionMessage);
 
@@ -194,7 +194,7 @@ class JobQueueConsumerCommandIntegration extends TestCase
     {
         $jobExecution = $this->createJobExecution($jobInstanceCode, 'mary');
         $options = ['email' => 'ziggy@akeneo.com', 'env' => $this->getParameter('kernel.environment')];
-        $jobExecutionMessage = BackendJobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
+        $jobExecutionMessage = DataMaintenanceJobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
         $this->getQueue()->publish($jobExecutionMessage);
 
         return $jobExecution;

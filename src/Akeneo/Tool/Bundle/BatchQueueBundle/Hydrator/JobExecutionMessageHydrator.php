@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\Hydrator;
 
-use Akeneo\Tool\Component\BatchQueue\Queue\BackendJobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
@@ -52,7 +52,7 @@ class JobExecutionMessageHydrator
         $updatedTime = Type::getType(Type::DATETIME)->convertToPhpValue($row['updated_time'], $platform);
         $consumer = Type::getType(Type::STRING)->convertToPhpValue($row['consumer'], $platform);
 
-        $jobExecutionMessage = BackendJobExecutionMessage::createJobExecutionMessageFromDatabase(
+        $jobExecutionMessage = DataMaintenanceJobExecutionMessage::createJobExecutionMessageFromDatabase(
             $id,
             $jobExecutionId,
             $consumer,

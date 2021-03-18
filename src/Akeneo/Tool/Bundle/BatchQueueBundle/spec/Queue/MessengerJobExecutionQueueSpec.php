@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Tool\Bundle\BatchQueueBundle\Queue;
 
 use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\MessengerJobExecutionQueue;
-use Akeneo\Tool\Component\BatchQueue\Queue\BackendJobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Messenger\Envelope;
@@ -25,7 +25,7 @@ class MessengerJobExecutionQueueSpec extends ObjectBehavior
 
     function it_publishes_job_execution_in_the_queue(MessageBusInterface $bus)
     {
-        $jobExecutionMessage = BackendJobExecutionMessage::createJobExecutionMessage(1, []);
+        $jobExecutionMessage = DataMaintenanceJobExecutionMessage::createJobExecutionMessage(1, []);
         $enveloppe = new Envelope($jobExecutionMessage);
         $bus->dispatch($jobExecutionMessage)->willReturn($enveloppe);
         $bus->dispatch($jobExecutionMessage)->shouldBeCalledOnce();

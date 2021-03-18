@@ -8,7 +8,7 @@ use Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler\JobExecutionMessageHandle
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use Akeneo\Tool\Component\BatchQueue\Queue\BackendJobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Doctrine\DBAL\Connection;
@@ -50,7 +50,7 @@ final class JobExecutionMessageHandlerIntegration extends TestCase
 
     private function createAndPublishJobExecutionMessageInQueue(JobExecution $jobExecution): JobExecutionMessageInterface
     {
-        $jobExecutionMessage = BackendJobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), [
+        $jobExecutionMessage = DataMaintenanceJobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), [
             'email' => 'ziggy@akeneo.com',
             'env' => $this->getParameter('kernel.environment'),
         ]);
