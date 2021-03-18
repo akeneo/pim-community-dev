@@ -27,9 +27,7 @@ export const EventLogs: FC = () => {
                 <PageHeader
                     breadcrumb={<EventLogsBreadcrumb />}
                     userButtons={<UserButtons />}
-                    buttons={[
-                        <DownloadLogsButton key={0} disabled={true}/>,
-                    ]}
+                    buttons={[<DownloadLogsButton key={0} disabled={true} />]}
                 />
                 <PageContent>
                     <Loading />
@@ -38,27 +36,28 @@ export const EventLogs: FC = () => {
         );
     }
 
-    const downloadUrl = generateUrl('akeneo_connectivity_connection_events_api_debug_rest_download_event_subscription_logs', {
-        connection_code: eventSubscription.connectionCode
-    });
+    const downloadUrl = generateUrl(
+        'akeneo_connectivity_connection_events_api_debug_rest_download_event_subscription_logs',
+        {
+            connection_code: eventSubscription.connectionCode,
+        }
+    );
 
     return (
         <>
             <PageHeader
                 breadcrumb={<EventLogsBreadcrumb />}
                 userButtons={<UserButtons />}
-                buttons={[
-                    <DownloadLogsButton key={0} href={downloadUrl} disabled={!eventSubscription.enabled}/>,
-                ]}
+                buttons={[<DownloadLogsButton key={0} href={downloadUrl} disabled={!eventSubscription.enabled} />]}
             >
                 {connection.label}
             </PageHeader>
             <PageContent>
-                {
-                    eventSubscription.enabled
-                        ? <EventLogList connectionCode={connectionCode} />
-                        : <EventSubscriptionDisabled connectionCode={connectionCode} />
-                }
+                {eventSubscription.enabled ? (
+                    <EventLogList connectionCode={connectionCode} />
+                ) : (
+                    <EventSubscriptionDisabled connectionCode={connectionCode} />
+                )}
             </PageContent>
         </>
     );
@@ -84,10 +83,10 @@ const EventLogsBreadcrumb: FC = () => {
 
 type DownloadLogsButtonProps = {
     disabled?: boolean;
-    href?: string
+    href?: string;
 };
 
-const DownloadLogsButton: FC<DownloadLogsButtonProps> = (props) => {
+const DownloadLogsButton: FC<DownloadLogsButtonProps> = props => {
     return (
         <Button {...props} ghost level='tertiary' size='default' target='_blank'>
             <Translate id='akeneo_connectivity.connection.webhook.download_logs' />

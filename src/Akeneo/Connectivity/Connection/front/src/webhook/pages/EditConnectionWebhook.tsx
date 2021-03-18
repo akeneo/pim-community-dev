@@ -14,7 +14,7 @@ import {EventSubscriptionHelper} from '../components/EventSubscriptionHelper';
 import {useUpdateWebhook} from '../hooks/api/use-update-webhook';
 import {useFetchEventSubscription} from '../hooks/api/use-fetch-event-subscription';
 import {Webhook} from '../model/Webhook';
-import {Breadcrumb, SectionTitle, Button} from 'akeneo-design-system';
+import {Breadcrumb, SectionTitle} from 'akeneo-design-system';
 import {useFetchConnection} from '../hooks/api/use-fetch-connection';
 import {UserButtons} from '../../shared/user';
 
