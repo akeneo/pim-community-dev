@@ -14,8 +14,7 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
  */
 final class GpsTransportFactory implements TransportFactoryInterface
 {
-    /** @var PubSubClientFactory */
-    private $pubSubClientFactory;
+    private PubSubClientFactory $pubSubClientFactory;
 
     public function __construct(PubSubClientFactory $pubSubClientFactory)
     {
@@ -30,7 +29,12 @@ final class GpsTransportFactory implements TransportFactoryInterface
 
         $receiver = null;
         if (null !== $subscription = $client->getSubscription()) {
-            $receiver = new GpsReceiver($subscription, $serializer);
+            $receiverOptions = array_filter(
+                $options,
+                fn (string $key): bool => in_array($key, GpsReceiver::AVAILABLE_OPTIONS),
+                ARRAY_FILTER_USE_KEY
+            );
+            $receiver = new GpsReceiver($subscription, $serializer, $receiverOptions);
         }
 
         return new GpsTransport($client, $sender, $receiver);
