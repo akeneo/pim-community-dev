@@ -23,3 +23,4 @@ export * from './SwitcherButton/SwitcherButton';
 export * from './Table/Table';
 export * from './Toolbar/Toolbar';
 export * from './Tree/Tree';
+export * from './Search/Search';
