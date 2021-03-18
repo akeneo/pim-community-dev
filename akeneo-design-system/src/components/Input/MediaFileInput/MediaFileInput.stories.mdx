@@ -1,8 +1,10 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {MediaFileInput} from './MediaFileInput.tsx';
-import {useFakeMediaStorage} from '../../../storybook/hooks/useFakeMediaStorage';
-import {FullscreenPreview} from './FullscreenPreview'; import {IconButton} from "../../IconButton/IconButton"; import {DownloadIcon} from "../../../icons";
+import {useFakeMediaStorage, FullscreenPreview} from '../../../storybook';
+import {IconButton, Button} from '../../../components';
+import {DownloadIcon, FullscreenIcon} from '../../../icons';
+import {useBooleanState} from '../../../hooks';
 
 <Meta
   title="Components/Inputs/Media File input"
@@ -10,8 +12,6 @@ import {FullscreenPreview} from './FullscreenPreview'; import {IconButton} from 
   args={{
     value: null,
     placeholder: 'Drag and drop to upload or click here',
-    fullscreenTitle: 'Show fullscreen',
-    closeTitle: 'Close',
     clearTitle: 'Clear',
     uploadingLabel: 'Uploading...',
     uploadErrorLabel: 'An error occurred during upload',
@@ -30,19 +30,35 @@ Media File input allows the user to enter content when the expected user input i
   <Story name="Standard">
     {args => {
       const [thumbnailUrl, uploader] = useFakeMediaStorage('https://picsum.photos/seed/akeneo/200');
+      const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
       const [value, setValue] = useState(null);
       return (
-        <MediaFileInput
-          {...args}
-          value={value}
-          onChange={setValue}
-          thumbnailUrl={thumbnailUrl}
-          onChange={setValue}
-          uploader={uploader}
-          preview={<FullscreenPreview.Image src={thumbnailUrl} />}
-        >
-          <IconButton href={value} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
-        </MediaFileInput>
+        <>
+          <MediaFileInput
+            {...args}
+            value={value}
+            onChange={setValue}
+            thumbnailUrl={thumbnailUrl}
+            onChange={setValue}
+            uploader={uploader}
+          >
+            <IconButton
+              href={thumbnailUrl}
+              target="_blank"
+              download={thumbnailUrl}
+              icon={<DownloadIcon />}
+              title="Download"
+            />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
+          </MediaFileInput>
+          {isFullscreenModalOpen && value && (
+            <FullscreenPreview title={value.originalFilename} src={thumbnailUrl} onClose={closeFullscreenModal}>
+              <Button href={thumbnailUrl} ghost={true} level="tertiary" target="_blank" download={thumbnailUrl}>
+                <DownloadIcon /> Download
+              </Button>
+            </FullscreenPreview>
+          )}
+        </>
       );
     }}
   </Story>
@@ -60,18 +76,19 @@ Media File input allows the user to enter content when the expected user input i
         originalFilename: 'nice-name.jpg',
       };
       const [thumbnailUrl, uploader] = useFakeMediaStorage('https://picsum.photos/seed/akeneo/200');
+      const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
       const [value, setValue] = useState(file);
       return (
         <>
-          <MediaFileInput
-            {...args}
-            value={value}
-            thumbnailUrl={thumbnailUrl}
-            onChange={setValue}
-            uploader={uploader}
-            preview={<FullscreenPreview.Image src={thumbnailUrl} />}
-          >
-            <IconButton href={value} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+          <MediaFileInput {...args} value={value} thumbnailUrl={thumbnailUrl} onChange={setValue} uploader={uploader}>
+            <IconButton
+              href={thumbnailUrl}
+              target="_blank"
+              download={thumbnailUrl}
+              icon={<DownloadIcon />}
+              title="Download"
+            />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
           </MediaFileInput>
           <MediaFileInput
             {...args}
@@ -80,10 +97,23 @@ Media File input allows the user to enter content when the expected user input i
             thumbnailUrl={thumbnailUrl}
             onChange={setValue}
             uploader={uploader}
-            preview={<FullscreenPreview.Image src={thumbnailUrl} />}
           >
-            <IconButton href={value} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+            <IconButton
+              href={thumbnailUrl}
+              target="_blank"
+              download={thumbnailUrl}
+              icon={<DownloadIcon />}
+              title="Download"
+            />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
           </MediaFileInput>
+          {isFullscreenModalOpen && value && (
+            <FullscreenPreview title={value.originalFilename} src={thumbnailUrl} onClose={closeFullscreenModal}>
+              <Button href={thumbnailUrl} ghost={true} level="tertiary" target="_blank" download={thumbnailUrl}>
+                <DownloadIcon /> Download
+              </Button>
+            </FullscreenPreview>
+          )}
         </>
       );
     }}
@@ -100,50 +130,56 @@ Media File input allows the user to enter content when the expected user input i
         originalFilename: 'nice-name.jpg',
       };
       const [thumbnailUrl, uploader] = useFakeMediaStorage('https://picsum.photos/seed/akeneo/200');
+      const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
       return (
         <>
-          <MediaFileInput
-            {...args}
-            value={null}
-            readOnly
-            uploader={uploader}
-            thumbnailUrl={thumbnailUrl}
-            preview={<FullscreenPreview.Image src={thumbnailUrl} />}
-          >
-            <IconButton href={thumbnailUrl} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+          <MediaFileInput {...args} value={null} readOnly uploader={uploader} thumbnailUrl={thumbnailUrl}>
+            <IconButton
+              href={thumbnailUrl}
+              target="_blank"
+              download={thumbnailUrl}
+              icon={<DownloadIcon />}
+              title="Download"
+            />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
           </MediaFileInput>
-          <MediaFileInput
-            {...args}
-            value={file}
-            readOnly
-            uploader={uploader}
-            thumbnailUrl={thumbnailUrl}
-            preview={<FullscreenPreview.Image src={thumbnailUrl} />}
-          >
-            <IconButton href={thumbnailUrl} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+          <MediaFileInput {...args} value={file} readOnly uploader={uploader} thumbnailUrl={thumbnailUrl}>
+            <IconButton
+              href={thumbnailUrl}
+              target="_blank"
+              download={thumbnailUrl}
+              icon={<DownloadIcon />}
+              title="Download"
+            />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
           </MediaFileInput>
-          <MediaFileInput
-            {...args}
-            value={null}
-            size="small"
-            readOnly
-            uploader={uploader}
-            thumbnailUrl={thumbnailUrl}
-            preview={<FullscreenPreview.Image src={thumbnailUrl} />}
-          >
-            <IconButton href={thumbnailUrl} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+          <MediaFileInput {...args} value={null} size="small" readOnly uploader={uploader} thumbnailUrl={thumbnailUrl}>
+            <IconButton
+              href={thumbnailUrl}
+              target="_blank"
+              download={thumbnailUrl}
+              icon={<DownloadIcon />}
+              title="Download"
+            />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
           </MediaFileInput>
-          <MediaFileInput
-            {...args}
-            value={file}
-            size="small"
-            readOnly
-            uploader={uploader}
-            thumbnailUrl={thumbnailUrl}
-            preview={<FullscreenPreview.Image src={thumbnailUrl} />}
-          >
-            <IconButton href={thumbnailUrl} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+          <MediaFileInput {...args} value={file} size="small" readOnly uploader={uploader} thumbnailUrl={thumbnailUrl}>
+            <IconButton
+              href={thumbnailUrl}
+              target="_blank"
+              download={thumbnailUrl}
+              icon={<DownloadIcon />}
+              title="Download"
+            />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
           </MediaFileInput>
+          {isFullscreenModalOpen && file && (
+            <FullscreenPreview title={file.originalFilename} src={thumbnailUrl} onClose={closeFullscreenModal}>
+              <Button href={thumbnailUrl} ghost={true} level="tertiary" target="_blank" download={thumbnailUrl}>
+                <DownloadIcon /> Download
+              </Button>
+            </FullscreenPreview>
+          )}
         </>
       );
     }}
@@ -160,6 +196,7 @@ Media File input allows the user to enter content when the expected user input i
         originalFilename: 'invalid-image.jpg',
       };
       const [thumbnailUrl, uploader] = useFakeMediaStorage('https://picsum.photos/seed/akeneo/200');
+      const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
       const [value, setValue] = useState(file);
       return (
         <>
@@ -169,10 +206,16 @@ Media File input allows the user to enter content when the expected user input i
             thumbnailUrl={thumbnailUrl}
             onChange={setValue}
             uploader={uploader}
-            preview={<FullscreenPreview.Image src={thumbnailUrl} />}
             invalid={true}
           >
-            <IconButton href={value} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+            <IconButton
+              href={thumbnailUrl}
+              target="_blank"
+              download={thumbnailUrl}
+              icon={<DownloadIcon />}
+              title="Download"
+            />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
           </MediaFileInput>
           <MediaFileInput
             {...args}
@@ -181,11 +224,24 @@ Media File input allows the user to enter content when the expected user input i
             thumbnailUrl={thumbnailUrl}
             onChange={setValue}
             uploader={uploader}
-            preview={<FullscreenPreview.Image src={thumbnailUrl} />}
             invalid={true}
           >
-            <IconButton href={value} target="_blank" download={thumbnailUrl} icon={<DownloadIcon />} title="Download" />
+            <IconButton
+              href={thumbnailUrl}
+              target="_blank"
+              download={thumbnailUrl}
+              icon={<DownloadIcon />}
+              title="Download"
+            />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
           </MediaFileInput>
+          {isFullscreenModalOpen && value && (
+            <FullscreenPreview title={value.originalFilename} src={thumbnailUrl} onClose={closeFullscreenModal}>
+              <Button href={thumbnailUrl} ghost={true} level="tertiary" target="_blank" download={thumbnailUrl}>
+                <DownloadIcon /> Download
+              </Button>
+            </FullscreenPreview>
+          )}
         </>
       );
     }}

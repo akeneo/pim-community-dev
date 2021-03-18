@@ -3,7 +3,6 @@ import {MediaFileInput} from './MediaFileInput';
 import {act, fireEvent, render, screen} from '../../../storybook/test-util';
 import userEvent from '@testing-library/user-event';
 import {FileInfo} from './FileInfo';
-import {FullscreenPreview} from './FullscreenPreview';
 import {DownloadIcon} from '../../../icons';
 import {IconButton} from '../../IconButton/IconButton';
 
@@ -13,8 +12,6 @@ const flushPromises = () => new Promise(setImmediate);
 
 const defaultProps = {
   placeholder: 'Upload your file here',
-  fullscreenTitle: 'Show fullscreen',
-  closeTitle: 'Close',
   clearTitle: 'Clear',
   uploadingLabel: 'Uploading...',
   uploadErrorLabel: 'An error occurred during upload',
@@ -31,14 +28,7 @@ test('it renders and handle changes', async () => {
   const uploader = jest.fn().mockResolvedValue(fileInfo);
 
   render(
-    <MediaFileInput
-      {...defaultProps}
-      value={null}
-      onChange={handleChange}
-      uploader={uploader}
-      thumbnailUrl={null}
-      preview={<FullscreenPreview.Image src={null} alt="" />}
-    />
+    <MediaFileInput {...defaultProps} value={null} onChange={handleChange} uploader={uploader} thumbnailUrl={null} />
   );
 
   const fileInput = screen.getByPlaceholderText(/Upload your file here/i);
@@ -53,6 +43,19 @@ test('it renders and handle changes', async () => {
   expect(handleChange).toHaveBeenCalledWith(fileInfo);
 });
 
+test('it does not display invalid children', () => {
+  const handleChange = jest.fn();
+  const uploader = jest.fn();
+
+  render(
+    <MediaFileInput {...defaultProps} value={null} onChange={handleChange} uploader={uploader} thumbnailUrl={null}>
+      <span>not valid child</span>
+    </MediaFileInput>
+  );
+
+  expect(screen.queryByText(/not valid child/i)).not.toBeInTheDocument();
+});
+
 test('it can open the file upload explorer using the keyboard', async () => {
   const handleChange = jest.fn();
   const uploader = jest.fn().mockResolvedValue(fileInfo);
@@ -64,7 +67,6 @@ test('it can open the file upload explorer using the keyboard', async () => {
       onChange={handleChange}
       uploader={uploader}
       thumbnailUrl={null}
-      preview={<FullscreenPreview.Image src={null} alt="" />}
       size="small"
     />
   );
@@ -94,7 +96,6 @@ test('it does not call onChange if readOnly', async () => {
       onChange={handleChange}
       uploader={uploader}
       thumbnailUrl={null}
-      preview={<FullscreenPreview.Image src={null} alt="" />}
       readOnly={true}
     />
   );
@@ -124,7 +125,6 @@ test('it display the upload error label when the upload failed', async () => {
       onChange={handleChange}
       uploader={uploader}
       thumbnailUrl={null}
-      preview={<FullscreenPreview.Image src={null} alt="" />}
       size="small"
     />
   );
@@ -154,7 +154,6 @@ test('it displays the preview and action buttons when the value is not null', ()
       onChange={handleChange}
       uploader={uploader}
       thumbnailUrl={thumbnailUrl}
-      preview={<FullscreenPreview.Image src={thumbnailUrl} alt="" />}
     >
       <IconButton
         href={thumbnailUrl}
@@ -168,7 +167,6 @@ test('it displays the preview and action buttons when the value is not null', ()
 
   expect(screen.getByTitle(/Download/i)).toBeInTheDocument();
   expect(screen.getByTitle(/Clear/i)).toBeInTheDocument();
-  expect(screen.getByTitle(/Show fullscreen/i)).toBeInTheDocument();
   expect(screen.getByAltText(fileInfo.originalFilename)).toBeInTheDocument();
 });
 
@@ -184,7 +182,6 @@ test('it clears the value when clicking on the clear button', () => {
       onChange={handleChange}
       uploader={uploader}
       thumbnailUrl={thumbnailUrl}
-      preview={<FullscreenPreview.Image src={thumbnailUrl} alt="" />}
     />
   );
 
@@ -205,7 +202,6 @@ test('it displays the default picture when the image previewer fails', () => {
       onChange={handleChange}
       uploader={uploader}
       thumbnailUrl={thumbnailUrl}
-      preview={<FullscreenPreview.Image src={thumbnailUrl} alt="" />}
     />
   );
 
@@ -214,29 +210,6 @@ test('it displays the default picture when the image previewer fails', () => {
   fireEvent.error(thumbnail);
 
   expect(thumbnail).toHaveAttribute('src', 'FALLBACK_IMAGE');
-});
-
-test('it opens the fullscreen preview when clicking on the fullscreen button', () => {
-  const handleChange = jest.fn();
-  const uploader = jest.fn().mockResolvedValue(fileInfo);
-  const thumbnailUrl = `https://${fileInfo.filePath}`;
-
-  render(
-    <MediaFileInput
-      {...defaultProps}
-      value={fileInfo}
-      onChange={handleChange}
-      uploader={uploader}
-      thumbnailUrl={thumbnailUrl}
-      preview={<FullscreenPreview.Image src={thumbnailUrl} alt="Nice fullscreen" />}
-      fullscreenLabel="Nice label"
-    />
-  );
-
-  userEvent.click(screen.getByTitle(/Show fullscreen/i));
-
-  expect(screen.getByText(/Nice label/i)).toBeInTheDocument();
-  expect(screen.getByAltText(/Nice fullscreen/i)).toBeInTheDocument();
 });
 
 test('MediaFileInput supports forwardRef', () => {
@@ -251,7 +224,6 @@ test('MediaFileInput supports forwardRef', () => {
       onChange={handleChange}
       uploader={uploader}
       thumbnailUrl={null}
-      preview={<FullscreenPreview.Image src={null} alt="" />}
       ref={ref}
     />
   );
@@ -270,7 +242,6 @@ test('MediaFileInput supports ...rest props', () => {
       onChange={handleChange}
       uploader={uploader}
       thumbnailUrl={null}
-      preview={<FullscreenPreview.Image src={null} alt="" />}
       data-testid="my_value"
     />
   );
