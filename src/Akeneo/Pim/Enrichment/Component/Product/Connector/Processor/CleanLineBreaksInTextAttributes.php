@@ -39,7 +39,7 @@ class CleanLineBreaksInTextAttributes
             foreach ($valuesForField as $key => $value) {
                 if (is_string($value['data'])) {
                     $cleanedData = str_replace(
-                        ['\r\n', '\r', '\n'],
+                        ["\r\n", "\r", "\n"],
                         ' ',
                         $value['data']
                     );
@@ -63,7 +63,7 @@ class CleanLineBreaksInTextAttributes
             foreach ($values as $value) {
                 if (
                     is_string($value['data'])
-                    && (false !== strpos($value['data'], '\r') || false !== strpos($value['data'], '\n') )
+                    && (false !== strpos($value['data'], "\r") || false !== strpos($value['data'], "\n") )
                 ) {
                     $fieldsWithLineBreak[] = $field;
 

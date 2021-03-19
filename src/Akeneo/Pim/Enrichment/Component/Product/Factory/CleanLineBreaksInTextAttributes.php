@@ -22,7 +22,7 @@ class CleanLineBreaksInTextAttributes
                             continue;
                         }
                         $cleanedData = str_replace(
-                            ['\r\n', '\r', '\n'],
+                            ["\r\n", "\r", "\n"],
                             ' ',
                             $data
                         );

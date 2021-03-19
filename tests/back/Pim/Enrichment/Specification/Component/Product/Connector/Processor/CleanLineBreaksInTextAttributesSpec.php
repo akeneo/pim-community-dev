@@ -23,7 +23,7 @@ final class CleanLineBreaksInTextAttributesSpec extends ObjectBehavior
                 ['data' => "line\nbreak"],
             ],
             'subtitle' => [
-                ['data' => "another line\nbreak"],
+                ['data' => "another line\nbreak with |pipe|"],
             ],
             'description' => [
                 ['data' => 'ok'],
@@ -43,7 +43,7 @@ final class CleanLineBreaksInTextAttributesSpec extends ObjectBehavior
                 ['data' => 'line break'],
             ],
             'subtitle' => [
-                ['data' => 'another line break'],
+                ['data' => 'another line break with |pipe|'],
             ],
             'description' => [
                 ['data' => 'ok'],
@@ -105,7 +105,7 @@ final class CleanLineBreaksInTextAttributesSpec extends ObjectBehavior
                 ['data' => 'line break1'],
                 ['data' => 'line break2'],
                 ['data' => 'line break3'],
-                ['data' => 'line break4'],
+                ['data' => 'line   break4'],
             ],
         ]]);
     }
