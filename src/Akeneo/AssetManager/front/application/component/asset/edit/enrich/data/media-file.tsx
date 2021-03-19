@@ -24,7 +24,7 @@ import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-cl
 
 const View = ({id, value, locale, canEditData, onChange, invalid}: ViewGeneratorProps) => {
   const translate = useTranslate();
-  const [isUploading, uploader] = useUploader('akeneo_asset_manager_file_upload');
+  const [uploader, isUploading] = useUploader('akeneo_asset_manager_file_upload');
   usePreventClosing(() => isUploading, translate('pim_enrich.confirmation.discard_changes', {entity: 'asset'}));
 
   const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();

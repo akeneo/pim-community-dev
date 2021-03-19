@@ -106,7 +106,7 @@ const UploadModal = ({
   onAssetCreated,
 }: UploadModalProps) => {
   const translate = useTranslate();
-  const [, uploader] = useUploader('akeneo_asset_manager_file_upload');
+  const [uploader] = useUploader('akeneo_asset_manager_file_upload');
   const [state, dispatch] = useReducer<Reducer<State>>(reducer, {lines: []});
   const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
   const valuePerLocale = attributeAsMainMedia.value_per_locale;
