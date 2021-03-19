@@ -1,10 +1,10 @@
 # 4.0.x
 
-# 4.0.98 (2021-03-16)
-
 ## Bug fixes
 
 - PIM-9750: Auto_increment reaches max value for pim_catalog_completeness table
+
+# 4.0.98 (2021-03-16)
 
 # 4.0.97 (2021-03-10)
 
