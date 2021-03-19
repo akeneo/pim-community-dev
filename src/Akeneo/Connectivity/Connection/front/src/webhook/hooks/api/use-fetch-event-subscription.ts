@@ -3,7 +3,7 @@ import {fetchResult} from '../../../shared/fetch-result';
 import {isErr} from '../../../shared/fetch-result/result';
 import {useRoute} from '../../../shared/router';
 
-type EventSubscription = {
+export type EventSubscription = {
     connectionCode: string;
     enabled: boolean;
     secret: string | null;

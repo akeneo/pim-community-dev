@@ -1,4 +1,4 @@
-import {Breadcrumb, Button} from 'akeneo-design-system';
+import {Breadcrumb} from 'akeneo-design-system';
 import React, {FC, useEffect} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import {Loading, PageContent, PageHeader} from '../../common';
@@ -9,10 +9,9 @@ import {EventSubscriptionDisabled} from '../components/EventSubscriptionDisabled
 import {EventLogList} from '../components/EventLogList';
 import {useFetchConnection} from '../hooks/api/use-fetch-connection';
 import {useFetchEventSubscription} from '../hooks/api/use-fetch-event-subscription';
-import {useRouter} from '../../shared/router/use-router';
+import {DownloadLogsButton} from '../components/DownloadLogsButton';
 
 export const EventLogs: FC = () => {
-    const generateUrl = useRouter();
     const {connectionCode} = useParams<{connectionCode: string}>();
     const {connection} = useFetchConnection(connectionCode);
     const {eventSubscription, fetchEventSubscription} = useFetchEventSubscription(connectionCode);
@@ -36,19 +35,12 @@ export const EventLogs: FC = () => {
         );
     }
 
-    const downloadUrl = generateUrl(
-        'akeneo_connectivity_connection_events_api_debug_rest_download_event_subscription_logs',
-        {
-            connection_code: eventSubscription.connectionCode,
-        }
-    );
-
     return (
         <>
             <PageHeader
                 breadcrumb={<EventLogsBreadcrumb />}
                 userButtons={<UserButtons />}
-                buttons={[<DownloadLogsButton key={0} href={downloadUrl} disabled={!eventSubscription.enabled} />]}
+                buttons={[<DownloadLogsButton key={0} eventSubscription={eventSubscription} />]}
             >
                 {connection.label}
             </PageHeader>
@@ -78,18 +70,5 @@ const EventLogsBreadcrumb: FC = () => {
                 <Translate id='akeneo_connectivity.connection.webhook.title' />
             </Breadcrumb.Step>
         </Breadcrumb>
-    );
-};
-
-type DownloadLogsButtonProps = {
-    disabled?: boolean;
-    href?: string;
-};
-
-const DownloadLogsButton: FC<DownloadLogsButtonProps> = props => {
-    return (
-        <Button {...props} ghost level='tertiary' size='default' target='_blank'>
-            <Translate id='akeneo_connectivity.connection.webhook.download_logs' />
-        </Button>
     );
 };
