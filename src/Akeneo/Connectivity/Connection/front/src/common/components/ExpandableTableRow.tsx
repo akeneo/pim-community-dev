@@ -1,4 +1,4 @@
-import React, {Children, FC, ReactNode, useState} from 'react';
+import React, {Children, createContext, FC, ReactNode, useState} from 'react';
 import {getColor, Table} from 'akeneo-design-system';
 import styled from 'styled-components';
 
@@ -8,6 +8,7 @@ const LargeCell = styled.td.attrs(({colSpan}) => ({colSpan: colSpan}))`
 const ShowContextContainer = styled.div`
     display: block;
     margin: 0 auto 20px auto;
+    padding-left: 10px;
     width: 70%;
     border: 1px solid ${getColor('grey', 80)};
     background-color: ${getColor('white')};
@@ -27,6 +28,8 @@ type Props = {
     contentToExpand: ReactNode;
 };
 
+export const IsExpanded = createContext<boolean>(false);
+
 const ExpandableTableRow: FC<Props> = ({contentToExpand, children}) => {
     const [display, setDisplay] = useState(false);
     const handleClick = () => {
@@ -36,7 +39,9 @@ const ExpandableTableRow: FC<Props> = ({contentToExpand, children}) => {
     return (
         <>
             <ExpandableRow onClick={handleClick} isExpanded={display}>
-                {children}
+                <IsExpanded.Provider value={display}>
+                    {children}
+                </IsExpanded.Provider>
             </ExpandableRow>
             {display && (
                 <Table.Row>

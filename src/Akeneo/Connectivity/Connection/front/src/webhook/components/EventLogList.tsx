@@ -1,12 +1,12 @@
-import {ArrowRightIcon, GraphIllustration, Information, Table} from 'akeneo-design-system';
-import React, {FC, useRef} from 'react';
+import {ArrowRightIcon, ArrowDownIcon, GraphIllustration, Information, Table} from 'akeneo-design-system';
+import React, {FC, useContext, useRef} from 'react';
 import {NoEventLogs} from './NoEventLogs';
 import {Translate} from '../../shared/translate';
 import styled from 'styled-components';
 import useInfiniteEventSubscriptionLogs from '../hooks/api/use-infinite-event-subscription-logs';
 import {EventLogBadge} from './EventLogBadge';
 import EventLogDatetime from './EventLogDatetime';
-import ExpandableTableRow from '../../common/components/ExpandableTableRow';
+import ExpandableTableRow, {IsExpanded} from '../../common/components/ExpandableTableRow';
 import FormattedJSON from '../../common/components/FormattedJSON';
 
 const ExtraSmallColumnHeaderCell = styled(Table.HeaderCell)`
@@ -25,6 +25,12 @@ const ContextContainer = styled.span`
     display: block;
     overflow: hidden;
 `;
+
+const Arrow: FC = () => {
+    const isExpanded = useContext(IsExpanded);
+
+    return isExpanded ? <ArrowDownIcon /> : <ArrowRightIcon />;
+};
 
 export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => {
     const scrollContainer = useRef(null);
@@ -66,9 +72,12 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                 </Table.Header>
                 <Table.Body ref={scrollContainer}>
                     {logs.map(({timestamp, level, message, context}, index) => (
-                        <ExpandableTableRow key={index} contentToExpand={<FormattedJSON>{context}</FormattedJSON>}>
+                        <ExpandableTableRow
+                            key={index}
+                            contentToExpand={<FormattedJSON>{context}</FormattedJSON>}
+                        >
                             <Table.Cell>
-                                <ArrowRightIcon />
+                                <Arrow />
                                 <EventLogDatetime timestamp={timestamp * 1000} />
                             </Table.Cell>
                             <Table.Cell>
