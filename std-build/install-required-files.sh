@@ -11,6 +11,22 @@ set -e
 DEV_DISTRIB_DIR=$(dirname $0)/..
 STANDARD_DISTRIB_DIR=./
 
+# Step: Install and upgrade
+###########################
+
+# Update doctrine migratation files
+mkdir -p $STANDARD_DISTRIB_DIR/upgrades/
+cp -R $DEV_DISTRIB_DIR/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
+
+# Dot env file
+cp $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
+
+# Akeneo managed Kernel
+[ -d $STANDARD_DISTRIB_DIR/src ] && cp $DEV_DISTRIB_DIR/std-build/Kernel.php
+
+
+# Step: Install
+###########################
 [ -d $STANDARD_DISTRIB_DIR/src ] && echo "src/ directory already exists. Not preparing the directory content." && exit 0
 
 # Required directories
@@ -38,9 +54,6 @@ cp $DEV_DISTRIB_DIR/bin/console $STANDARD_DISTRIB_DIR/bin/
 chmod +x $STANDARD_DISTRIB_DIR/bin/console
 cp $DEV_DISTRIB_DIR/public/* $STANDARD_DISTRIB_DIR/public/
 
-# We provide a kernel that loads configuration from the CE dev and override it with the one in standard
-cp $DEV_DISTRIB_DIR/std-build/Kernel.php $STANDARD_DISTRIB_DIR/src
-
 # This is a skeleton file to encourage them to put their bundles inside it
 cp $DEV_DISTRIB_DIR/std-build/bundles.php $STANDARD_DISTRIB_DIR/config
 
@@ -59,9 +72,6 @@ cp $DEV_DISTRIB_DIR/std-build/tsconfig.json $STANDARD_DISTRIB_DIR/tsconfig.json
 
 # Needed to define Elasticsearch mapping file location inside CE-dev
 cp $DEV_DISTRIB_DIR/std-build/services.yml $STANDARD_DISTRIB_DIR/config/services/
-
-# Skeleton .env file
-cp $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
 
 # Skeleton .env file
 cp $DEV_DISTRIB_DIR/.gitignore $STANDARD_DISTRIB_DIR/
