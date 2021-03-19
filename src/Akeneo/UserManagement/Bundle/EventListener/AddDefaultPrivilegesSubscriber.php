@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Bundle\EventListener;
 
-use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Akeneo\UserManagement\Component\Model\RoleInterface;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
 /**
@@ -21,6 +20,8 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
  */
 class AddDefaultPrivilegesSubscriber implements EventSubscriberInterface
 {
+    private const FIXTURE_ROLE_JOB_NAME = 'fixtures_user_role_csv';
+
     private ObjectRepository $roleRepository;
     private AclManager $aclManager;
 
@@ -33,38 +34,41 @@ class AddDefaultPrivilegesSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::POST_SAVE => 'loadDefaultPrivileges',
+            InstallerEvents::POST_LOAD_FIXTURE => 'loadDefaultPrivileges',
         ];
     }
 
-    public function loadDefaultPrivileges(GenericEvent $event): void
+    public function loadDefaultPrivileges(InstallerEvent $event): void
     {
-        $role = $event->getSubject();
-        if (!$role instanceof RoleInterface || User::ROLE_ANONYMOUS === $role->getRole()) {
-            return;
-        }
-        if (!$event->hasArgument('is_new') || true !== $event->getArgument('is_new')) {
+        if (!$event->hasArgument('job_name') || static::FIXTURE_ROLE_JOB_NAME !== $event->getArgument('job_name')) {
             return;
         }
 
-        $sid = $this->aclManager->getSid($role);
-        foreach ($this->aclManager->getAllExtensions() as $extension) {
-            $rootOid = $this->aclManager->getRootOid($extension->getExtensionKey());
-            foreach ($extension->getAllMaskBuilders() as $maskBuilder) {
-                $fullAccessMask = $maskBuilder->hasConst('GROUP_SYSTEM')
-                    ? $maskBuilder->getConst('GROUP_SYSTEM')
-                    : $maskBuilder->getConst('GROUP_ALL');
-                $this->aclManager->setPermission($sid, $rootOid, $fullAccessMask, true);
+        $roles = $this->roleRepository->findAll();
+        foreach ($roles as $role) {
+            if (User::ROLE_ANONYMOUS === $role->getRole()) {
+                continue;
             }
 
-            foreach ($extension->getClasses() as $class) {
-                if (!$class->isEnabledAtCreation()) {
-                    $oid = new ObjectIdentity($extension->getExtensionKey(), $class->getClassName());
-                    $this->aclManager->setPermission($sid, $oid, 0, true);
+            $sid = $this->aclManager->getSid($role);
+            foreach ($this->aclManager->getAllExtensions() as $extension) {
+                $rootOid = $this->aclManager->getRootOid($extension->getExtensionKey());
+                foreach ($extension->getAllMaskBuilders() as $maskBuilder) {
+                    $fullAccessMask = $maskBuilder->hasConst('GROUP_SYSTEM')
+                        ? $maskBuilder->getConst('GROUP_SYSTEM')
+                        : $maskBuilder->getConst('GROUP_ALL');
+                    $this->aclManager->setPermission($sid, $rootOid, $fullAccessMask, true);
+                }
+
+                foreach ($extension->getClasses() as $class) {
+                    if (!$class->isEnabledAtCreation()) {
+                        $oid = new ObjectIdentity($extension->getExtensionKey(), $class->getClassName());
+                        $this->aclManager->setPermission($sid, $oid, 0, true);
+                    }
                 }
             }
-        }
 
-        $this->aclManager->flush();
+            $this->aclManager->flush();
+        }
     }
 }
