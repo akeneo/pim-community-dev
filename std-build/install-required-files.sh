@@ -14,7 +14,7 @@ STANDARD_DISTRIB_DIR=./
 # Step: Install and upgrade
 ###########################
 
-# Update doctrine migratation files
+# Update doctrine migration files
 mkdir -p $STANDARD_DISTRIB_DIR/upgrades/
 cp -R $DEV_DISTRIB_DIR/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
 
