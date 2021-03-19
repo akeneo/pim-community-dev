@@ -71,9 +71,10 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
 
             $data = [
                 'resource' => $this->connectorProductNormalizer->normalizeConnectorProduct($product),
-                'version_id' => sprintf('%s%s', $product->identifier(), $product->updatedDate()->getTimestamp()),
             ];
-            $collection->setEventData($event, $data);
+            $dataVersion = sprintf('%s%s', $product->identifier(), $product->updatedDate()->getTimestamp());
+
+            $collection->setEventData($event, $data, $dataVersion);
         }
 
         return $collection;

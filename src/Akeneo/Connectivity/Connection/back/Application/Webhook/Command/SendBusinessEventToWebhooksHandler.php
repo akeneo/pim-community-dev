@@ -106,6 +106,8 @@ final class SendBusinessEventToWebhooksHandler
                         ]
                     );
 
+                    dump($apiEvents);
+
                     if (0 === count($apiEvents)) {
                         continue;
                     }
