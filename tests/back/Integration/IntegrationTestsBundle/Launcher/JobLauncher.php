@@ -481,8 +481,8 @@ class JobLauncher
     public function flushMessengerJobQueue(): void
     {
         do {
-            $enveloppes = $this->jobQueueTransport->get();
-            $count = is_array($enveloppes) ? count($enveloppes) : iterator_count($enveloppes);
+            $envelopes = $this->jobQueueTransport->get();
+            $count = is_array($envelopes) ? count($envelopes) : iterator_count($envelopes);
         } while(0 < $count);
     }
 }
