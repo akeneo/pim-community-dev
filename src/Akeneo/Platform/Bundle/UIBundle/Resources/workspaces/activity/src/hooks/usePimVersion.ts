@@ -31,15 +31,22 @@ const usePimVersion = () => {
   }, []);
 
   useEffect(() => {
-    if (isAnalyticsWanted && analyticsUrl) {
+    if (isAnalyticsWanted && analyticsUrl && !sessionStorage.getItem('analytics-called')) {
       (async () => {
         const collectedData = await DataCollector.collect('pim_analytics_data_collect');
         const response = await fetch(`${analyticsUrl}?${$.param(collectedData)}`);
-        if (isLastPatchDisplayed) {
+        sessionStorage.setItem('analytics-called', '1');
+        if (isLastPatchDisplayed && response.status === 200) {
           const lastPatchInfo: {last_patch: {name: string}} = await response.json();
-          setLastPatch(lastPatchInfo.last_patch.name);
+          if (lastPatchInfo.hasOwnProperty('last_patch')) {
+            setLastPatch(lastPatchInfo.last_patch.name);
+            sessionStorage.setItem('last-patch-available', lastPatchInfo.last_patch.name);
+          }
         }
       })();
+    } else if(isLastPatchDisplayed) {
+      const storedLastPatch = sessionStorage.getItem('last-patch-available');
+      storedLastPatch !== null && setLastPatch(storedLastPatch);
     }
   }, [isAnalyticsWanted, analyticsUrl]);
 
