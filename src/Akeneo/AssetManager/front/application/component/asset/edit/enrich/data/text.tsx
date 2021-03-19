@@ -1,7 +1,7 @@
 import React from 'react';
 import {isTextData, textDataStringValue, textDataFromString} from 'akeneoassetmanager/domain/model/asset/data/text';
 import {isTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {Key, TextAreaInput, TextInput} from 'akeneo-design-system';
+import {TextAreaInput, TextInput} from 'akeneo-design-system';
 import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
 import {ViewGeneratorProps} from 'akeneoassetmanager/application/configuration/value';
 
