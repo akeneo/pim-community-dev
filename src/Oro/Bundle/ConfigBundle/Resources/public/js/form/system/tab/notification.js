@@ -34,7 +34,11 @@ define([
     render: function () {
       this.$el.html(
         this.template({
-          notification: (this.getFormData()['pim_analytics___version_update'].value === '1' || this.getFormData()['pim_analytics___version_update'].value === true   ? '1' : '0'),
+          notification:
+            this.getFormData()['pim_analytics___version_update'].value === '1' ||
+            this.getFormData()['pim_analytics___version_update'].value === true
+              ? '1'
+              : '0',
           label_system_notification: __('oro_config.form.config.group.notification.system_notification'),
           label_yes: __('pim_common.yes'),
           label_no: __('pim_common.no'),
