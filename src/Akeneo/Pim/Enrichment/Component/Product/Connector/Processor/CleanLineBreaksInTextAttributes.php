@@ -63,7 +63,7 @@ class CleanLineBreaksInTextAttributes
             foreach ($values as $value) {
                 if (
                     is_string($value['data'])
-                    && (false !== strpos($value['data'], "\r") || false !== strpos($value['data'], "\n") )
+                    && (false !== strpos($value['data'], "\r") || false !== strpos($value['data'], "\n"))
                 ) {
                     $fieldsWithLineBreak[] = $field;
 
@@ -84,7 +84,7 @@ class CleanLineBreaksInTextAttributes
 
         return array_keys(array_filter(
             $attributes,
-            fn(Attribute $attribute): bool => AttributeTypes::TEXT === $attribute->type()
+            fn (Attribute $attribute): bool => AttributeTypes::TEXT === $attribute->type()
         ));
     }
 }
