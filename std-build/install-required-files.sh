@@ -34,6 +34,7 @@ mkdir -p $STANDARD_DISTRIB_DIR/src \
          $STANDARD_DISTRIB_DIR/bin \
          $STANDARD_DISTRIB_DIR/public \
          $STANDARD_DISTRIB_DIR/config/packages/dev \
+         $STANDARD_DISTRIB_DIR/config/packages/prod \
          $STANDARD_DISTRIB_DIR/config/services \
          $STANDARD_DISTRIB_DIR/docker \
          $STANDARD_DISTRIB_DIR/docker/initdb.d
