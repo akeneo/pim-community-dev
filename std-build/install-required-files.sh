@@ -22,7 +22,7 @@ cp -R $DEV_DISTRIB_DIR/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
 cp $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
 
 # Akeneo managed Kernel
-[ -d $STANDARD_DISTRIB_DIR/src ] && cp $DEV_DISTRIB_DIR/std-build/Kernel.php
+[ -d $STANDARD_DISTRIB_DIR/src ] && cp $DEV_DISTRIB_DIR/std-build/Kernel.php $STANDARD_DISTRIB_DIR/src
 
 
 # Step: Install
