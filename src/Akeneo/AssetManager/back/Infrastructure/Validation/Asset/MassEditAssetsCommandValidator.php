@@ -53,7 +53,6 @@ class MassEditAssetsCommandValidator extends ConstraintValidator
                     ->atPath(sprintf('updaters.%s', $id))
                     ->setCode($violation->getCode())
                     ->setPlural($violation->getPlural())
-                    ->setInvalidValue($command)
                     ->addViolation();
             }
         }

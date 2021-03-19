@@ -6,6 +6,7 @@ import {
   DownloadIcon,
   FullscreenIcon,
   useBooleanState,
+  useInModal
 } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {useUploader} from '@akeneo-pim-community/shared';
@@ -27,9 +28,6 @@ const View = ({id, value, locale, canEditData, onChange, invalid}: ViewGenerator
   usePreventClosing(() => isUploading, translate('pim_enrich.confirmation.discard_changes', {entity: 'asset'}));
 
   const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
-  if (!isMediaFileData(value.data) || !isMediaFileAttribute(value.attribute)) {
-    return null;
-  }
 
   if (id === undefined) {
     id = `pim_asset_manager.asset.enrich.${value.attribute.code}`;
@@ -45,6 +43,11 @@ const View = ({id, value, locale, canEditData, onChange, invalid}: ViewGenerator
   const handleChange = (fileInfo: FileInfo) => {
     onChange(setValueData(value, fileInfo));
   };
+  const inModal = useInModal();
+
+  if (!isMediaFileData(value.data) || !isMediaFileAttribute(value.attribute)) {
+    return null;
+  }
 
   const downloadFilename = value.data?.originalFilename;
   const downloadUrl = getImageDownloadUrl(value.data);
@@ -77,13 +80,13 @@ const View = ({id, value, locale, canEditData, onChange, invalid}: ViewGenerator
           icon={<DownloadIcon />}
           title={translate('pim_asset_manager.asset_preview.download')}
         />
-        <IconButton
+        {!inModal && <IconButton
           onClick={openFullscreenModal}
           icon={<FullscreenIcon />}
           title={translate('pim_asset_manager.asset.button.fullscreen')}
-        />
+        />}
       </MediaFileInput>
-      {isFullscreenModalOpen && (
+      {isFullscreenModalOpen && !inModal && (
         <FullscreenPreview
           onClose={closeFullscreenModal}
           attribute={value.attribute}
