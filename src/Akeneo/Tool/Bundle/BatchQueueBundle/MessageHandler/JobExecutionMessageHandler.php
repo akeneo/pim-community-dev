@@ -60,6 +60,7 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
         $pathFinder = new PhpExecutableFinder();
         $console = sprintf('%s%sbin%sconsole', $this->projectDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
 
+        $startTime = time();
         try {
             $arguments = array_merge(
                 [$pathFinder->find(), $console, 'akeneo:batch:job'],
@@ -68,7 +69,9 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
             $process = new Process($arguments);
             $process->setTimeout(null);
 
-            $this->logger->notice(sprintf('Launching job execution "%s".', $jobExecutionMessage->getJobExecutionId()));
+            $this->logger->notice('Launching job execution "{job_execution_id}".', [
+                'job_execution_id' => $jobExecutionMessage->getJobExecutionId(),
+            ]);
             $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
 
             $this->executeProcess($process, $jobExecutionMessage);
@@ -83,7 +86,11 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
             }
         }
 
-        $this->logger->notice(sprintf('Job execution "%s" is finished.', $jobExecutionMessage->getJobExecutionId()));
+        $executionTimeInSec = time() - $startTime;
+        $this->logger->notice('Job execution "{job_execution_id}" is finished in {execution_time_in_sec} seconds.', [
+            'job_execution_id' => $jobExecutionMessage->getJobExecutionId(),
+            'execution_time_in_sec' => $executionTimeInSec,
+        ]);
     }
 
     private function executeProcess(Process $process, JobExecutionMessageInterface $jobExecutionMessage)
@@ -122,13 +129,11 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
             $jobExecutionMessage->getJobExecutionId(),
         ];
 
-        foreach ($jobExecutionMessage->getOptions() as $optionsName => $optionValue) {
-            // todo: check this code, it's weird
+        foreach ($jobExecutionMessage->getOptions() as $optionName => $optionValue) {
             if (true === $optionValue) {
-                $arguments[] = sprintf('--%s', $optionValue);
-            }
-            if (false !== $optionValue) {
-                $arguments[] = sprintf('--%s=%s', $optionsName, $optionValue);
+                $arguments[] = sprintf('--%s', $optionName);
+            } elseif (false !== $optionValue) {
+                $arguments[] = sprintf('--%s=%s', $optionName, $optionValue);
             }
         }
 
