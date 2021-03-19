@@ -14,8 +14,6 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
  */
 class CleanLineBreaksInTextAttributes
 {
-    private const LINE_BREAK_CHARACTERS = ['\r\n', '\r', '\n'];
-
     private GetAttributes $getAttributes;
 
     public function __construct(GetAttributes $getAttributes)
@@ -41,7 +39,7 @@ class CleanLineBreaksInTextAttributes
             foreach ($valuesForField as $key => $value) {
                 if (is_string($value['data'])) {
                     $cleanedData = str_replace(
-                        static::LINE_BREAK_CHARACTERS,
+                        ['\r\n', '\r', '\n'],
                         ' ',
                         $value['data']
                     );
