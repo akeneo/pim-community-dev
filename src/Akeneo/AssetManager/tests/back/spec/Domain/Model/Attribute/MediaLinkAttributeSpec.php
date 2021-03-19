@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\Attribute;
@@ -90,8 +91,8 @@ class MediaLinkAttributeSpec extends ObjectBehavior
                 AttributeIsRequired::fromBoolean(true),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
-                Prefix::empty(),
-                Suffix::empty(),
+                Prefix::createEmpty(),
+                Suffix::createEmpty(),
                 MediaType::fromString('image'),
             ]
         );
