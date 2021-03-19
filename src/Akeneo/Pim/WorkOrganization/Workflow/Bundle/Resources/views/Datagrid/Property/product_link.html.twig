@@ -1,7 +1,0 @@
-{% set locale = app.user.catalogLocale.code %}
-
-{% if record.getValue('document_type') == 'product_draft' %}
-    <a href="#{{ path('pim_enrich_product_edit', {'id': value.id}) }}">{{ value.getLabel(locale) }}</a>
-{% else %}
-    <a href="#{{ path('pim_enrich_product_model_edit', {'id': value.id}) }}">{{ value.getLabel(locale) }}</a>
-{% endif %}

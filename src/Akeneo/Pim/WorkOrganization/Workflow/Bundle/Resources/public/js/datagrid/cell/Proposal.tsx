@@ -13,7 +13,7 @@ const Header = styled.div`
   }
 `;
 
-const Document = styled.a`
+const DocumentLink = styled.a`
   color: #9452ba;
   font-size: 17px;
   font-style: italic;
@@ -112,7 +112,7 @@ type ReadyProposal = {
 
 type ProposalProps = {
   formattedChanges: InProgressProposal | ReadyProposal;
-  documentType: 'product_draft';
+  documentType: 'product_draft' | 'product_model_draft';
   documentId: number;
   documentLabel: string;
   authorLabel: string;
@@ -132,14 +132,16 @@ const Proposal: React.FC<ProposalProps> = ({
   const translate = useTranslate();
 
   const isSame: (change: ProposalChange) => boolean = (change) => change.before == change.after;
+  const documentUrl = `#${router.generate(documentType === 'product_draft' ? 'pim_enrich_product_edit' : 'pim_enrich_product_model_edit', { id: documentId })}`;
 
   return (
     <>
       <Header>
-        <Document href={`#${router.generate(documentType === 'product_draft' ? 'pim_enrich_product_edit' : 'pim_enrich_product_model_edit', { id: documentId })}`}>
-          {documentLabel}
-        </Document>
-        <Badge level="tertiary" title={ translate(`pim_datagrid.workflow.status_message.${formattedChanges.status_label}`) }>
+        <DocumentLink href={documentUrl}>{documentLabel}</DocumentLink>
+        <Badge
+          level="tertiary"
+          title={ translate(`pim_datagrid.workflow.status_message.${formattedChanges.status_label}`) }
+        >
           { translate(`pim_datagrid.workflow.status.${formattedChanges.status_label}`) }
         </Badge>
         <span>
