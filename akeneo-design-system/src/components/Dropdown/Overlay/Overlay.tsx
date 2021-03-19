@@ -1,7 +1,13 @@
 import React, {ReactNode, useRef, useState, useEffect} from 'react';
 import styled, {css} from 'styled-components';
 import {Key} from '../../../shared';
-import {HorizontalPosition, useHorizontalPosition, useShortcut, useVerticalPosition, VerticalPosition} from '../../../hooks';
+import {
+  HorizontalPosition,
+  useHorizontalPosition,
+  useShortcut,
+  useVerticalPosition,
+  VerticalPosition,
+} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 
 const Container = styled.div<
