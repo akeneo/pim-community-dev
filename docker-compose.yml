@@ -49,6 +49,17 @@ services:
     networks:
       - 'pim'
 
+  cypress:
+    build:
+      context: .
+      dockerfile: docker/cypress/Dockerfile
+    volumes:
+      - ./cypress:/cypress
+      - ./cypress.json:/cypress.json
+      - ./tests/front/e2e:/tests/front/e2e
+    networks:
+      - 'pim'
+
   selenium:
     image: 'selenium/standalone-chrome-debug:3'
     volumes:

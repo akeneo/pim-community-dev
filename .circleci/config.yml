@@ -220,7 +220,39 @@ jobs:
                 path: var/tests/phpunit
           - store_artifacts:
                 path: var/logs
-
+  test_front_cypress:
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Change owner on project dir in order to archive the project into the workspace
+          command: sudo chown -R 1000:1000 ../project
+      - run:
+          name: Create yarn cache folder
+          command: mkdir -p  ~/.cache/yarn
+      - run:
+          name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+          command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+      - run:
+          name: Start containers
+          command: |
+            docker load -i php-pim-image.tar
+            APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage selenium pubsub-emulator' make up
+            docker/wait_docker_up.sh
+      - run:
+          name: Install database
+          command: APP_ENV=behat O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
+      - run:
+          name: Launch Cypress
+          command: make end-to-end-front
+      - store_artifacts:
+          path: cypress/screenshots
+      - store_artifacts:
+          path: cypress/videos
+      - store_artifacts:
+          path: var/logs
   test_back_behat_legacy:
     machine:
         image: ubuntu-2004:202101-01
@@ -651,7 +683,9 @@ workflows:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
                     - test_back_phpunit
-
+          - test_front_cypress:
+              requires:
+                - build_dev
           - ready_to_build_only_ce?:
                 type: approval
                 filters:
@@ -666,6 +700,10 @@ workflows:
                 is_ee_built: false
                 requires:
                     - checkout_ce
+          - test_front_cypress:
+                name: test_front_cypress_ce
+                requires:
+                  - build_dev_ce
           - test_back_static_and_acceptance:
                 name: test_back_static_and_acceptance_ce
                 requires:

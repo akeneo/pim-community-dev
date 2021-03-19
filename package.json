@@ -31,6 +31,7 @@
     "packages:build": "yarn dsm:build; yarn shared:build",
     "packages:unit": "yarn --cwd=front-packages/shared test:unit:run",
     "test:e2e:open": "cypress open",
+    "test:e2e:run": "cypress run"
   },
   "repository": {
     "type": "git",

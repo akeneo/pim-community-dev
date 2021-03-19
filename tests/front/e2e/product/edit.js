@@ -11,7 +11,6 @@ describe('edit product', () => {
     cy.login();
 
     cy.goToProductsGridFindActivityItem();
-    cy.wait(2000);
 
     cy.findAllByRole('row').eq(1).click();
 
