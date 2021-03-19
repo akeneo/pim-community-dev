@@ -153,7 +153,7 @@ final class CleanLineBreaksInTextAttributesSpec extends ObjectBehavior
             ],
             'subtitle' => [
                 'print' => [
-                    'en_US' => 'The GoGEAR Tap 4.3 MP3 line break',
+                    'en_US' => 'The GoGEAR Tap 4.3 MP3 line   break',
                 ],
             ],
             'comment' => [
