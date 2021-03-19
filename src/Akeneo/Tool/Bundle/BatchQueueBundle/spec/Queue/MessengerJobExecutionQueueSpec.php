@@ -26,8 +26,8 @@ class MessengerJobExecutionQueueSpec extends ObjectBehavior
     function it_publishes_job_execution_in_the_queue(MessageBusInterface $bus)
     {
         $jobExecutionMessage = DataMaintenanceJobExecutionMessage::createJobExecutionMessage(1, []);
-        $enveloppe = new Envelope($jobExecutionMessage);
-        $bus->dispatch($jobExecutionMessage)->willReturn($enveloppe);
+        $envelope = new Envelope($jobExecutionMessage);
+        $bus->dispatch($jobExecutionMessage)->willReturn($envelope);
         $bus->dispatch($jobExecutionMessage)->shouldBeCalledOnce();
 
         $this->publish($jobExecutionMessage);
