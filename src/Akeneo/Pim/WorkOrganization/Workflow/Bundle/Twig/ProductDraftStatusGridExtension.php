@@ -40,11 +40,6 @@ class ProductDraftStatusGridExtension extends \Twig_Extension
                 'get_draft_status_grid',
                 [$this, 'getDraftStatusGrid'],
                 ['is_safe' => ['html']]
-            ),
-            new \Twig_SimpleFunction(
-                'get_draft_status_tooltip_grid',
-                [$this, 'getDraftStatusTooltipGrid'],
-                ['is_safe' => ['html']]
             )
         ];
     }
@@ -65,53 +60,20 @@ class ProductDraftStatusGridExtension extends \Twig_Extension
 
         if ($toReview) {
             if ($canReviewAll) {
-                return 'pimee_workflow.product_draft.status.ready';
+                return 'ready';
             }
 
             if ($canReview) {
-                return 'pimee_workflow.product_draft.status.can_be_partially_reviewed';
+                return 'can_be_partially_reviewed';
             }
 
-            return 'pimee_workflow.product_draft.status.can_not_be_approved';
+            return 'can_not_be_approved';
         }
 
         if ($canDelete) {
-            return 'pimee_workflow.product_draft.status.in_progress';
+            return 'status.in_progress';
         }
 
-        return 'pimee_workflow.product_draft.status.can_not_be_deleted';
-    }
-
-    /**
-     * Get the human readable draft status tooltip for the grid
-     *
-     * @param EntityWithValuesDraftInterface $productDraft
-     *
-     * @return string
-     */
-    public function getDraftStatusTooltipGrid(EntityWithValuesDraftInterface $productDraft)
-    {
-        $toReview = $productDraft->getStatus() === EntityWithValuesDraftInterface::READY;
-        $canReview = $this->permissionHelper->canEditOneChangeToReview($productDraft);
-        $canDelete = $this->permissionHelper->canEditOneChangeDraft($productDraft);
-        $canReviewAll = $this->permissionHelper->canEditAllChangesToReview($productDraft);
-
-        if ($toReview) {
-            if ($canReviewAll) {
-                return '';
-            }
-
-            if ($canReview) {
-                return 'pimee_workflow.product_draft.status_message.can_be_partially_reviewed';
-            }
-
-            return 'pimee_workflow.product_draft.status_message.can_not_be_approved';
-        }
-
-        if ($canDelete) {
-            return 'pimee_workflow.product_draft.status_message.in_progress';
-        }
-
-        return 'pimee_workflow.product_draft.status_message.can_not_be_deleted';
+        return 'can_not_be_deleted';
     }
 }

@@ -31,6 +31,7 @@ services:
             - '@pimee_workflow.product_draft_renderer'
             - '@translator'
             - '@akeneo.pim.enrichment.factory.value'
+            -
         tags:
             - { name: twig.extension }
 

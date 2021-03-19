@@ -26,6 +26,11 @@ services:
             - '@pim_datagrid_serializer'
             - '@akeneo.pim.enrichment.factory.value'
             - '@akeneo.pim.structure.query.get_attributes'
+            - '@pimee_workflow.twig.extension.product_draft_changes'
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.locale'
+            - '@pimee_workflow.twig.extension.product_draft_status_grid'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
         lazy: true

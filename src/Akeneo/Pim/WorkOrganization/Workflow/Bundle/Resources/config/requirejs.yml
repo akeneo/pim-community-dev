@@ -73,6 +73,7 @@ config:
         pimee/templates/proposals/grid/filters: akeneopimworkflow/templates/proposal/grid/filters.html
 
         oro/datagrid/expand-cell:                  akeneopimworkflow/js/datagrid/cell/expand-cell
+        oro/datagrid/proposal-cell:                akeneopimworkflow/js/datagrid/cell/proposal-cell.tsx
         oro/datagrid/approve-proposal-action:      akeneopimworkflow/js/datagrid/action/approve-proposal-action
         oro/datagrid/refuse-proposal-action:       akeneopimworkflow/js/datagrid/action/refuse-proposal-action
         oro/datagrid/remove-proposal-action:       akeneopimworkflow/js/datagrid/action/remove-proposal-action

@@ -12,22 +12,10 @@ pimee_workflow:
         status:
             label: Status
             working_copy: Working copy
-            in_progress: In progress
-            ready: Waiting for approval
-            can_be_partially_reviewed: Can be partially reviewed
-            can_not_be_approved: Can't be reviewed
-            can_not_be_deleted: Can't be deleted
-        status_message:
-            can_be_partially_reviewed: You can review this proposal only partially because some changes apply on values you can't edit. Please contact your administrator to change your rights.
-            can_not_be_approved: You can't review this proposal because all changes apply on values you can't edit. Please contact your administrator to change your rights.
-            can_not_be_deleted: You can't delete this proposal because all changes apply on values you can't edit. Please contact your administrator to change your rights.
-            in_progress: This proposal is currently in progress and has not been submitted yet.
         action:
             approve: Approve all
             refuse:  Reject all
             remove:  Remove
-            partial_approve: Approve changes on attribute %attribute% of the product %product%
-            partial_reject: Reject changes on attribute %attribute% of the product %product%
         notification:
             partial_approve: '%owner% has accepted value(s) for %attributes% for the product %product%'
             partial_approve_number: '%owner% has accepted values for %attributes_count% attributes for the product %product%'
@@ -52,9 +40,6 @@ pimee_workflow:
         individual_import: '%author.firstname% %author.lastname% has sent proposals to review from job import'
         generic_import: You have proposals to review from job import
         original_value: Original
-        new_value: New
-        no_diff: The value "%value%" is the same between the proposal and the working copy.
-        draft_in_progress: A draft is in progress by %author% for this product.
     published_product:
         index: Published Products
         title:  Published product

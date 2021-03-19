@@ -13,11 +13,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftChangesExtension;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftStatusGridExtension;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -28,28 +35,36 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductProposalNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /** @var NormalizerInterface */
-    private $standardNormalizer;
-
-    /** @var NormalizerInterface */
-    private $datagridNormlizer;
-
-    /** @var ValueFactory */
-    private $valueFactory;
-
-    /** @var GetAttributes */
-    private $getAttributesQuery;
+    private NormalizerInterface $standardNormalizer;
+    private NormalizerInterface $datagridNormlizer;
+    private ValueFactory $valueFactory;
+    private GetAttributes $getAttributesQuery;
+    private ProductDraftChangesExtension $changesExtension;
+    private AuthorizationCheckerInterface $authorizationChecker;
+    private AttributeRepositoryInterface $attributeRepository;
+    private LocaleRepositoryInterface $localeRepository;
+    private ProductDraftStatusGridExtension $statusExtension;
 
     public function __construct(
         NormalizerInterface $standardNormalizer,
         NormalizerInterface $datagridNormlizer,
         ValueFactory $valueFactory,
-        GetAttributes $getAttributesQuery
+        GetAttributes $getAttributesQuery,
+        ProductDraftChangesExtension $changesExtension,
+        AuthorizationCheckerInterface $authorizationChecker,
+        AttributeRepositoryInterface $attributeRepository,
+        LocaleRepositoryInterface $localeRepository,
+        ProductDraftStatusGridExtension $statusExtension
     ) {
         $this->standardNormalizer = $standardNormalizer;
         $this->datagridNormlizer = $datagridNormlizer;
         $this->valueFactory = $valueFactory;
         $this->getAttributesQuery = $getAttributesQuery;
+        $this->changesExtension = $changesExtension;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->attributeRepository = $attributeRepository;
+        $this->localeRepository = $localeRepository;
+        $this->statusExtension = $statusExtension;
     }
 
     /**
@@ -57,7 +72,11 @@ class ProductProposalNormalizer implements NormalizerInterface, CacheableSupport
      */
     public function normalize($proposalProduct, $format = null, array $context = []): array
     {
+        /** @var ProductDraft $proposalProduct */
         $data = [];
+
+        /** @var ProductInterface $product */
+        $product = $proposalProduct->getEntityWithValue();
 
         $data['changes'] = $this->getChanges($proposalProduct, $context);
         $data['createdAt'] = $this->datagridNormlizer->normalize($proposalProduct->getCreatedAt(), $format, $context);
@@ -71,9 +90,60 @@ class ProductProposalNormalizer implements NormalizerInterface, CacheableSupport
         $data['search_id'] = $proposalProduct->getEntityWithValue()->getIdentifier();
         $data['id'] = 'product_draft_' . (string) $proposalProduct->getId();
         $data['document_type'] = 'product_draft';
+        $data['document_id'] = $product->getId();
         $data['proposal_id'] = $proposalProduct->getId();
+        $data['document_label'] = $product->getLabel();
+        $data['formatted_changes'] = $this->formatChanges($proposalProduct, $context);
 
         return $data;
+    }
+
+    private function formatChanges(ProductDraft $proposalProduct, $context)
+    {
+        $changesWithEmptyValues = $this->getChanges($proposalProduct, $context);
+        if ($proposalProduct->getStatus() === EntityWithValuesDraftInterface::IN_PROGRESS) {
+            return [
+                'status_label' => $this->statusExtension->getDraftStatusGrid($proposalProduct),
+                'status' => 'in_progress',
+            ];
+        }
+        $proposalChanges = [];
+        foreach ($changesWithEmptyValues as $attributeCode => $changes) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+            $canView = $this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute);
+            if ($canView) {
+                $proposalChanges[$attributeCode] = [];
+                foreach ($changes as $change) {
+                    $locale = $this->localeRepository->findOneByIdentifier($change['locale']);
+                    $canViewLocale = !$attribute->isLocalizable() || $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale);
+                    if ($canViewLocale) {
+                        $canReview =
+                            $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute) &&
+                            $this->authorizationChecker->isGranted(Attributes::OWN, $proposalProduct->getEntityWithValue()) &&
+                            (!$attribute->isLocalizable() || $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale));
+                        $present = $this->changesExtension->presentChange($proposalProduct, $change, $attributeCode);
+                        if (count($present) > 0) {
+                            $present['attributeLabel'] = $attribute->getLabel();
+                            $present['scope'] = $change['scope'];
+                            $present['locale'] = $change['locale'];
+                            $present['localeLabel'] = $locale ? $locale->getName() : null;
+                            $present['canReview'] = $canReview;
+                            $proposalChanges[$attributeCode][] = $present;
+                        }
+                    }
+                }
+            }
+        }
+
+        return [
+            'status' => 'ready',
+            'status_label' => $this->statusExtension->getDraftStatusGrid($proposalProduct),
+            'search_id' => $proposalProduct->getEntityWithValue()->getIdentifier(),
+            'document_type' => 'product_dragft',
+            'changes' => $proposalChanges,
+            'author_code' => $proposalProduct->getAuthor(),
+            'id' => $proposalProduct->getId(),
+        ];
     }
 
     /**
