@@ -69,7 +69,7 @@ test('It returns an image uploader that can handle failure', async () => {
   }).rejects.toBe('Internal server error');
 });
 
-test('It returns if an upload is in progress', async () => {
+test('It returns if an upload is in progress', () => {
   jest.spyOn(window, 'XMLHttpRequest').mockImplementationOnce(() => timeoutXhrMock as XMLHttpRequest);
 
   jest.useFakeTimers();
@@ -78,19 +78,19 @@ test('It returns if an upload is in progress', async () => {
   let [uploader, isUploading] = result.current;
   const onProgress = jest.fn();
 
-  expect(isUploading()).toEqual(false);
+  expect(isUploading).toEqual(false);
 
   void act(() => {
     uploader(imageFile, onProgress);
   });
 
   [, isUploading] = result.current;
-  expect(isUploading()).toEqual(true);
+  expect(isUploading).toEqual(true);
 
-  await act(() => {
+  act(() => {
     jest.runAllTimers();
   });
 
   [, isUploading] = result.current;
-  expect(isUploading()).toEqual(false);
+  expect(isUploading).toEqual(false);
 });
