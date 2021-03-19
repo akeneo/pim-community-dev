@@ -7,7 +7,7 @@ import {
   MediaLinkInput,
   RefreshIcon,
   useBooleanState,
-  useInModal
+  useInModal,
 } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {canCopyToClipboard, copyToClipboard, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
@@ -33,7 +33,6 @@ const View = ({id, value, locale, onChange, onSubmit, canEditData}: ViewGenerato
   const translate = useTranslate();
   const [reloadPreview, onReloadPreview] = useReloadPreview();
   const [isFullscreenModalOpen, openFullscreenModal, closeFullScreenModal] = useBooleanState();
-
 
   if (id === undefined) {
     id = `pim_asset_manager.asset.enrich.${value.attribute.code}`;
@@ -98,11 +97,13 @@ const View = ({id, value, locale, onChange, onSubmit, canEditData}: ViewGenerato
             title={translate('pim_asset_manager.asset_preview.download')}
           />
         )}
-        {!inModal && <IconButton
-          onClick={openFullscreenModal}
-          icon={<FullscreenIcon />}
-          title={translate('pim_asset_manager.asset.button.fullscreen')}
-        />}
+        {!inModal && (
+          <IconButton
+            onClick={openFullscreenModal}
+            icon={<FullscreenIcon />}
+            title={translate('pim_asset_manager.asset.button.fullscreen')}
+          />
+        )}
       </MediaLinkInput>
       {isFullscreenModalOpen && !inModal && (
         <FullscreenPreview

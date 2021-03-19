@@ -6,7 +6,7 @@ import {
   DownloadIcon,
   FullscreenIcon,
   useBooleanState,
-  useInModal
+  useInModal,
 } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {useUploader} from '@akeneo-pim-community/shared';
@@ -80,11 +80,13 @@ const View = ({id, value, locale, canEditData, onChange, invalid}: ViewGenerator
           icon={<DownloadIcon />}
           title={translate('pim_asset_manager.asset_preview.download')}
         />
-        {!inModal && <IconButton
-          onClick={openFullscreenModal}
-          icon={<FullscreenIcon />}
-          title={translate('pim_asset_manager.asset.button.fullscreen')}
-        />}
+        {!inModal && (
+          <IconButton
+            onClick={openFullscreenModal}
+            icon={<FullscreenIcon />}
+            title={translate('pim_asset_manager.asset.button.fullscreen')}
+          />
+        )}
       </MediaFileInput>
       {isFullscreenModalOpen && !inModal && (
         <FullscreenPreview
