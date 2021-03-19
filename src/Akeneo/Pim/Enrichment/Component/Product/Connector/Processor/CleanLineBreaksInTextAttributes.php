@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Tool\Component\Batch\Model\Warning;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -15,7 +14,7 @@ use Akeneo\Tool\Component\Batch\Model\Warning;
  */
 class CleanLineBreaksInTextAttributes
 {
-    private const LINE_BREAK_REGULAR_EXPRESSION = '/[\r\n|\r|\n]+/';
+    private const LINE_BREAK_CHARACTERS = ['\r\n', '\r', '\n'];
 
     private GetAttributes $getAttributes;
 
@@ -41,8 +40,8 @@ class CleanLineBreaksInTextAttributes
             $valuesForField = $item['values'][$field] ?? null;
             foreach ($valuesForField as $key => $value) {
                 if (is_string($value['data'])) {
-                    $cleanedData = preg_replace(
-                        static::LINE_BREAK_REGULAR_EXPRESSION,
+                    $cleanedData = str_replace(
+                        static::LINE_BREAK_CHARACTERS,
                         ' ',
                         $value['data']
                     );
@@ -64,7 +63,10 @@ class CleanLineBreaksInTextAttributes
         $fieldsWithLineBreak = [];
         foreach ($item['values'] as $field => $values) {
             foreach ($values as $value) {
-                if (is_string($value['data']) && preg_match(static::LINE_BREAK_REGULAR_EXPRESSION, $value['data'])) {
+                if (
+                    is_string($value['data'])
+                    && (false !== strpos($value['data'], '\r') || false !== strpos($value['data'], '\n') )
+                ) {
                     $fieldsWithLineBreak[] = $field;
 
                     break;
@@ -84,7 +86,7 @@ class CleanLineBreaksInTextAttributes
 
         return array_keys(array_filter(
             $attributes,
-            fn (Attribute $attribute): bool => AttributeTypes::TEXT === $attribute->type()
+            fn(Attribute $attribute): bool => AttributeTypes::TEXT === $attribute->type()
         ));
     }
 }
