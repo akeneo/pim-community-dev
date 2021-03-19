@@ -35,7 +35,7 @@ jest.spyOn(window, 'XMLHttpRequest').mockImplementation(() => xhrMock as XMLHttp
 test('It returns an image uploader that can upload a file', async () => {
   const {result} = renderHookWithProviders(() => useUploader('fake_route'));
 
-  const [,uploader] = result.current;
+  const [uploader] = result.current;
   const onProgress = jest.fn();
 
   await act(async () => {
@@ -60,7 +60,7 @@ test('It returns an image uploader that can handle failure', async () => {
 
   const {result} = renderHookWithProviders(() => useUploader('fake_route'));
 
-  const [,uploader] = result.current;
+  const [uploader] = result.current;
   const onProgress = jest.fn();
   await expect(async () => {
     await act(async () => {
@@ -75,7 +75,7 @@ test('It returns if an upload is in progress', async () => {
   jest.useFakeTimers();
   const {result} = renderHookWithProviders(() => useUploader('fake_route'));
 
-  let [isUploading, uploader] = result.current;
+  let [uploader, isUploading] = result.current;
   const onProgress = jest.fn();
 
   expect(isUploading()).toEqual(false);
@@ -84,13 +84,13 @@ test('It returns if an upload is in progress', async () => {
     uploader(imageFile, onProgress);
   });
 
-  [isUploading] = result.current;
+  [, isUploading] = result.current;
   expect(isUploading()).toEqual(true);
 
   await act(() => {
     jest.runAllTimers();
   });
 
-  [isUploading] = result.current;
+  [, isUploading] = result.current;
   expect(isUploading()).toEqual(false);
 });

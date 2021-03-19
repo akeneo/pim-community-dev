@@ -3,7 +3,7 @@ import styled, {css} from 'styled-components';
 import {arrayUnique, Key, Override} from '../../../shared';
 import {InputProps} from '../InputProps';
 import {IconButton} from '../../../components';
-import {useBooleanState, useShortcut} from '../../../hooks';
+import {useBooleanState, useShortcut, useVerticalPosition} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {ArrowDownIcon} from '../../../icons';
 import {ChipInput, ChipValue} from './ChipInput';
@@ -198,13 +198,15 @@ const MultiSelectInput = ({
   onSubmit,
   openLabel = '',
   readOnly = false,
-  verticalPosition = 'down',
+  verticalPosition,
   'aria-labelledby': ariaLabelledby,
   ...rest
 }: MultiMultiSelectInputProps) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [dropdownIsOpen, openOverlay, closeOverlay] = useBooleanState();
   const inputRef = useRef<HTMLInputElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  verticalPosition = useVerticalPosition(overlayRef, verticalPosition);
 
   const validChildren = React.Children.toArray(children).filter((child): child is ReactElement<OptionProps> =>
     isValidElement<OptionProps>(child)
@@ -305,7 +307,7 @@ const MultiSelectInput = ({
         {dropdownIsOpen && !readOnly && (
           <>
             <Backdrop data-testid="backdrop" onClick={handleBlur} />
-            <Overlay verticalPosition={verticalPosition} onClose={handleBlur}>
+            <Overlay verticalPosition={verticalPosition} onClose={handleBlur} ref={overlayRef}>
               <OptionCollection>
                 {0 === filteredChildren.length ? (
                   <EmptyResultContainer>{emptyResultLabel}</EmptyResultContainer>

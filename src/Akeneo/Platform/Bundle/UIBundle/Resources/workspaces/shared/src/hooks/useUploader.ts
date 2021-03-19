@@ -31,7 +31,7 @@ const useUploader = (uploadRoute: string) => {
     [router, uploadRoute]
   );
 
-  return [isUploading, uploader] as const;
+  return [uploader, isUploading] as const;
 };
 
 export {useUploader};

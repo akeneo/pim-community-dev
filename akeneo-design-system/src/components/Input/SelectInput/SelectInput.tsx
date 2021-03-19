@@ -3,7 +3,7 @@ import styled, {css} from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {InputProps} from '../InputProps';
 import {IconButton, TextInput} from '../../../components';
-import {useBooleanState, useShortcut} from '../../../hooks';
+import {useBooleanState, useShortcut, useVerticalPosition} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {ArrowDownIcon, CloseIcon} from '../../../icons';
 
@@ -213,13 +213,15 @@ const SelectInput = ({
   clearLabel = '',
   openLabel = '',
   readOnly = false,
-  verticalPosition = 'down',
+  verticalPosition,
   'aria-labelledby': ariaLabelledby,
   ...rest
 }: SelectInputProps) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [dropdownIsOpen, openOverlay, closeOverlay] = useBooleanState();
   const inputRef = useRef<HTMLInputElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  verticalPosition = useVerticalPosition(overlayRef, verticalPosition);
 
   const validChildren = React.Children.toArray(children).filter((child): child is ReactElement<
     {value: string} & React.HTMLAttributes<HTMLSpanElement>
@@ -331,7 +333,7 @@ const SelectInput = ({
         {dropdownIsOpen && !readOnly && (
           <>
             <Backdrop data-testid="backdrop" onClick={handleBlur} />
-            <Overlay verticalPosition={verticalPosition} onClose={handleBlur}>
+            <Overlay verticalPosition={verticalPosition} onClose={handleBlur} ref={overlayRef}>
               <OptionCollection>
                 {filteredChildren.length === 0 ? (
                   <EmptyResultContainer>{emptyResultLabel}</EmptyResultContainer>

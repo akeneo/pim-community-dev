@@ -53,7 +53,7 @@ test('it calls the onClose handler when hitting the Escape key', () => {
 
 const Component = () => {
   const isInModal = useInModal();
-  return <span onClick={() => {}}>An element {isInModal ? 'inside' : 'outside'} of a modal</span>;
+  return <span>An element {isInModal ? 'inside' : 'outside'} of a modal</span>;
 };
 
 test('it provides a hook to know if an element is inside a modal', () => {
@@ -73,7 +73,6 @@ test('it provides a hook to know if an element is outside a modal', () => {
   render(
     <>
       <Modal closeTitle="Close" onClose={onClose}></Modal>
-
       <Component />
     </>
   );
