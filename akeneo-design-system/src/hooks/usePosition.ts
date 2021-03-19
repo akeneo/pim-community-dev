@@ -1,38 +1,39 @@
 import {RefObject, useState, useEffect} from 'react';
 
 type VerticalPosition = 'up' | 'down';
-const useVerticalPosition = (ref: RefObject<HTMLElement>, defaultPosition: VerticalPosition = 'down') => {
-  const [verticalPosition, setVerticalPosition] = useState<VerticalPosition>(defaultPosition);
+type HorizontalPosition = 'left' | 'right';
+
+const useVerticalPosition = (ref: RefObject<HTMLElement>, forcedPosition?: VerticalPosition) => {
+  const [verticalPosition, setVerticalPosition] = useState<VerticalPosition | undefined>(forcedPosition);
 
   useEffect(() => {
-    if (null !== ref.current && undefined === defaultPosition) {
+    if (null !== ref.current && undefined === forcedPosition) {
       const {height: elementHeight, top: distanceToTop} = ref.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
       const distanceToBottom = windowHeight - (elementHeight + distanceToTop);
 
       setVerticalPosition(distanceToTop > distanceToBottom ? 'up' : 'down');
     }
-  }, [defaultPosition]);
+  }, [forcedPosition]);
 
-  return verticalPosition
-}
+  return verticalPosition;
+};
 
-type HorizontalPosition = 'left' | 'right';
-const useHorizontalPosition = (ref: RefObject<HTMLElement>, defaultPosition: HorizontalPosition = 'right') => {
-  const [horizontalPosition, setHorizontalPosition] = useState<HorizontalPosition>(defaultPosition);
+const useHorizontalPosition = (ref: RefObject<HTMLElement>, forcedPosition?: HorizontalPosition) => {
+  const [horizontalPosition, setHorizontalPosition] = useState<HorizontalPosition | undefined>(forcedPosition);
 
   useEffect(() => {
-    if (null !== ref.current && undefined === defaultPosition) {
+    if (null !== ref.current && undefined === forcedPosition) {
       const {width: elementWidth, left: distanceToLeft} = ref.current.getBoundingClientRect();
       const windowWidth = window.innerWidth;
       const distanceToRight = windowWidth - (elementWidth + distanceToLeft);
 
       setHorizontalPosition(distanceToLeft > distanceToRight ? 'left' : 'right');
     }
-  }, [defaultPosition]);
+  }, [forcedPosition]);
 
-  return horizontalPosition
-}
+  return horizontalPosition;
+};
 
 export {useVerticalPosition, useHorizontalPosition};
 export type {VerticalPosition, HorizontalPosition};
