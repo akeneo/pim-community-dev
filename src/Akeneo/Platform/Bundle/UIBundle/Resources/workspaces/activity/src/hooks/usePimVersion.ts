@@ -44,7 +44,7 @@ const usePimVersion = () => {
           }
         }
       })();
-    } else if(isLastPatchDisplayed) {
+    } else if (isLastPatchDisplayed) {
       const storedLastPatch = sessionStorage.getItem('last-patch-available');
       storedLastPatch !== null && setLastPatch(storedLastPatch);
     }
