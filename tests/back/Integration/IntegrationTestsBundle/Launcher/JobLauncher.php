@@ -10,13 +10,13 @@ use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Doctrine\DBAL\Driver\Connection;
+use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 use Webmozart\Assert\Assert;
@@ -40,18 +40,18 @@ class JobLauncher
     private KernelInterface $kernel;
     private Connection $dbConnection;
     private JobExecutionMessageRepository $jobExecutionMessageRepository;
-    private TransportInterface $jobQueueTransport;
+    private ContainerInterface $receiverLocator;
 
     public function __construct(
         KernelInterface $kernel,
         Connection $dbConnection,
         JobExecutionMessageRepository $jobExecutionMessageRepository,
-        TransportInterface $jobQueueTransport
+        ContainerInterface $receiverLocator
     ) {
         $this->kernel = $kernel;
         $this->dbConnection = $dbConnection;
         $this->jobExecutionMessageRepository = $jobExecutionMessageRepository;
-        $this->jobQueueTransport = $jobQueueTransport;
+        $this->receiverLocator = $receiverLocator;
     }
 
     /**
@@ -480,9 +480,16 @@ class JobLauncher
 
     public function flushMessengerJobQueue(): void
     {
-        do {
-            $envelopes = $this->jobQueueTransport->get();
-            $count = is_array($envelopes) ? count($envelopes) : iterator_count($envelopes);
-        } while(0 < $count);
+        foreach (static::MESSENGER_RECEIVERS as $receiverName) {
+            Assert::true($this->receiverLocator->has($receiverName), sprintf(
+                'The "%s" transport does not exist',
+                $receiverName
+            ));
+            do {
+                $receiver = $this->receiverLocator->get($receiverName);
+                $envelopes = $receiver->get();
+                $count = is_array($envelopes) ? count($envelopes) : iterator_count($envelopes);
+            } while (0 < $count);
+        }
     }
 }

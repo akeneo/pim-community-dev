@@ -157,7 +157,7 @@ services:
             - '@kernel'
             - '@database_connection'
             - '@akeneo_batch_queue.queue.job_execution_message_repository'
-            - '@messenger.transport.job'
+            - '@messenger.receiver_locator'
 
     akeneo_integration_tests.launcher.job_execution_observer:
         class: '%akeneo_integration_tests.launcher.job_execution_observer.class%'
