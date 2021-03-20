@@ -94,7 +94,7 @@ pim_asset_manager:
       assets: Assetit
       attribute: Attribuutit
       properties: Ominaisuudet
-      permission: Käyttöoikeudert
+      permission: Käyttöoikeudet
       transformations: Muunnokset
     transformations:
       help:
