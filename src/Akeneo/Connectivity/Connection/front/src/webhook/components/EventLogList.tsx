@@ -1,19 +1,21 @@
+import {ArrowDownIcon, ArrowRightIcon, GraphIllustration, Information, Link, Table} from 'akeneo-design-system';
 import React, {FC, useContext, useRef, useState} from 'react';
 import styled from 'styled-components';
-import {ArrowRightIcon, ArrowDownIcon, GraphIllustration, Information, Table, Link} from 'akeneo-design-system';
-import {NoEventLogs} from './NoEventLogs';
-import {useTranslate} from '../../shared/translate';
-import {EventLogBadge} from './EventLogBadge';
-import EventLogDatetime from './EventLogDatetime';
-import useInfiniteEventSubscriptionLogs from '../hooks/api/use-infinite-event-subscription-logs';
-import {EventLogListFilters} from './EventLogListFilters';
 import ExpandableTableRow, {IsExpanded} from '../../common/components/ExpandableTableRow';
 import FormattedJSON from '../../common/components/FormattedJSON';
+import {useTranslate} from '../../shared/translate';
+import useInfiniteEventSubscriptionLogs from '../hooks/api/use-infinite-event-subscription-logs';
 import {
     EventSubscriptionLogFilters,
-    DEFAULT_EVENT_SUBSCRIPTION_LOG_FILTERS,
+    FiltersConfig,
+    getDefaultFilters,
+    getFiltersConfig,
     isSameAsDefaultFiltersValues,
 } from '../model/EventSubscriptionLogFilters';
+import {EventLogBadge} from './EventLogBadge';
+import EventLogDatetime from './EventLogDatetime';
+import {EventLogListFilters} from './EventLogListFilters';
+import {NoEventLogs} from './NoEventLogs';
 import {NoEventLogsWithThoseFilters} from './NoEventLogsWithThoseFilters';
 
 const ExtraSmallColumnHeaderCell = styled(Table.HeaderCell)`
@@ -42,7 +44,11 @@ const Arrow: FC = () => {
 export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => {
     const translate = useTranslate();
     const scrollContainer = useRef(null);
-    const [filters, setFilters] = useState<EventSubscriptionLogFilters>(DEFAULT_EVENT_SUBSCRIPTION_LOG_FILTERS);
+
+    const [{filters, config}, setFilters] = useState<{
+        filters: EventSubscriptionLogFilters;
+        config: FiltersConfig;
+    }>({filters: getDefaultFilters(), config: getFiltersConfig()});
     const isSearchActive = !isSameAsDefaultFiltersValues(filters);
 
     const {logs, total, isLoading} = useInfiniteEventSubscriptionLogs(connectionCode, filters, scrollContainer);
@@ -50,6 +56,9 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
     if (!isSearchActive && !isLoading && total === 0) {
         return <NoEventLogs />;
     }
+
+    const handleFiltersChange = (filters: EventSubscriptionLogFilters) =>
+        setFilters(state => ({...state, filters, isDefaultFilters: false}));
 
     return (
         <>
@@ -65,7 +74,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                     {translate('akeneo_connectivity.connection.webhook.event_logs.list.info.link')}
                 </Link>
             </Information>
-            <EventLogListFilters filters={filters} onChange={setFilters} total={total} />
+            <EventLogListFilters filters={filters} config={config} onChange={handleFiltersChange} total={total} />
             <Table>
                 <Table.Header>
                     <SmallColumnHeaderCell>

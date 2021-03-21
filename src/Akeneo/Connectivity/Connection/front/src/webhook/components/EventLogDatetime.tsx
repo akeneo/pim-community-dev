@@ -31,7 +31,7 @@ const EventLogDatetime: FC<{timestamp: number}> = ({timestamp}) => {
             <div>
                 <StyledDateIcon size={16} color={theme.color.grey100} />
                 <Box>
-                    {dateFormatter(timestamp, {
+                    {dateFormatter(new Date(timestamp), {
                         year: 'numeric',
                         month: '2-digit',
                         day: '2-digit',
@@ -41,7 +41,7 @@ const EventLogDatetime: FC<{timestamp: number}> = ({timestamp}) => {
             <TimeContainer>
                 <StyledClockIcon size={16} color={theme.color.grey100} />
                 <Box>
-                    {dateFormatter(timestamp, {
+                    {dateFormatter(new Date(timestamp), {
                         hour: '2-digit',
                         minute: '2-digit',
                         second: '2-digit',

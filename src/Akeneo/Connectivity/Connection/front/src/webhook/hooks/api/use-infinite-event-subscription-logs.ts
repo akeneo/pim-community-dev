@@ -54,7 +54,12 @@ const useInfiniteEventSubscriptionLogs = (
     }
 
     if (!isSameAsDefaultFiltersValues(filters)) {
-        parameters.filters = JSON.stringify(filters);
+        parameters.filters = JSON.stringify({
+            levels: filters.levels,
+            text: filters.text,
+            timestamp_from: filters.dateTime.start || null,
+            timestamp_to: filters.dateTime.end || null,
+        });
     }
 
     // This damn hook forbid us to build the url inside fetchNextResponse()

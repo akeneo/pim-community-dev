@@ -50,8 +50,8 @@ export const WrongCombinationWarningList = ({combinations, goodUsername}: Props)
                                     <span class='AknConnectivityConnection-helper--highlight'>
                                         ${lastLogin.username}
                                     </span>`,
-                                        date: formatDate(lastLogin.date, {month: 'short', day: 'numeric'}),
-                                        time: formatDate(lastLogin.date, {
+                                        date: formatDate(new Date(lastLogin.date), {month: 'short', day: 'numeric'}),
+                                        time: formatDate(new Date(lastLogin.date), {
                                             hour: '2-digit',
                                             minute: '2-digit',
                                             second: '2-digit',
