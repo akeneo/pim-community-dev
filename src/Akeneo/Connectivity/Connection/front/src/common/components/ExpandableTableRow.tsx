@@ -39,9 +39,7 @@ const ExpandableTableRow: FC<Props> = ({contentToExpand, children}) => {
     return (
         <>
             <ExpandableRow onClick={handleClick} isExpanded={display}>
-                <IsExpanded.Provider value={display}>
-                    {children}
-                </IsExpanded.Provider>
+                <IsExpanded.Provider value={display}>{children}</IsExpanded.Provider>
             </ExpandableRow>
             {display && (
                 <Table.Row>
