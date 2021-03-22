@@ -5,10 +5,9 @@ import styled from 'styled-components';
 import {SpaceContainer} from '../../storybook/PreviewGallery';
 
 <Meta
-  title="Components/SwitcherButton"
+  title="Components/Switcher Button"
   component={SwitcherButton}
-  argTypes={{
-  }}
+  argTypes={{}}
   args={{label: 'Label', children: 'Value'}}
 />
 
@@ -25,11 +24,11 @@ Most of the time, when you click on a switcher, a dropdown appears.
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <SpaceContainer width={200}>
-        <SwitcherButton {...args}>
-          {args.children}
-        </SwitcherButton>
-      </SpaceContainer>
+      return (
+        <SpaceContainer width={200}>
+          <SwitcherButton {...args}>{args.children}</SwitcherButton>
+        </SpaceContainer>
+      );
     }}
   </Story>
 </Canvas>
@@ -43,9 +42,7 @@ Most of the time, when you click on a switcher, a dropdown appears.
     {args => {
       return (
         <>
-          <SwitcherButton label="Inline">
-            True
-          </SwitcherButton>
+          <SwitcherButton label="Inline">True</SwitcherButton>
           <SwitcherButton label="Inline" inline={false}>
             False
           </SwitcherButton>
@@ -86,10 +83,10 @@ Most of the time, when you click on a switcher, a dropdown appears.
       return (
         <>
           <SwitcherButton label="Locale">
-            <Locale code='en_US' languageLabel='English'/>
+            <Locale code="en_US" languageLabel="English" />
           </SwitcherButton>
           <SwitcherButton label="Locale" inline={false}>
-            <Locale code='fr_FR' languageLabel='French'/>
+            <Locale code="fr_FR" languageLabel="French" />
           </SwitcherButton>
         </>
       );

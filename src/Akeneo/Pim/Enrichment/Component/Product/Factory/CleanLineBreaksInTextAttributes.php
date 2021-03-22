@@ -21,10 +21,11 @@ class CleanLineBreaksInTextAttributes
                         if (!is_string($data)) {
                             continue;
                         }
-                        $cleanedData = preg_replace(
-                            '/[\r\n|\r|\n]+/',
+                        $cleanedData = str_replace(
+                            ["\r\n", "\r", "\n"],
                             ' ',
-                            $data);
+                            $data
+                        );
                         $rawValueCollections[$productIdentifier][$attributeCode][$channelCode][$localeCode] = $cleanedData;
                     }
                 }
