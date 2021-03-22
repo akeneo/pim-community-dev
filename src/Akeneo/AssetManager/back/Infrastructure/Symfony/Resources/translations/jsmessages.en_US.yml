@@ -578,6 +578,7 @@ batch_jobs:
     default_steps:
         execute_naming_convention: Execute Asset Family naming convention
         mass_delete_assets: Execute Asset mass delete
+        link_assets_to_products: Link assets to products
 
 job_execution:
     summary:
