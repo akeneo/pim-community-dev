@@ -1,15 +1,11 @@
-import React from "react";
-import { LocaleCode } from "@akeneo-pim-community/shared";
+import React from 'react';
+import {LocaleCode} from '@akeneo-pim-community/shared';
 import {useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import styled from "styled-components";
-import {
-  Badge,
-  getColor,
-  getFontSize,
-} from 'akeneo-design-system';
-import { ApproveAllButton, ApproveButton, RejectAllButton, RejectButton, RemoveAllButton } from "./proposalActions";
-import { ScopeLabel } from "./ScopeLabel";
-import { LocaleLabel } from "./LocaleLabel";
+import styled from 'styled-components';
+import {Badge, getColor, getFontSize} from 'akeneo-design-system';
+import {ApproveAllButton, ApproveButton, RejectAllButton, RejectButton, RemoveAllButton} from './proposalActions';
+import {ScopeLabel} from './ScopeLabel';
+import {LocaleLabel} from './LocaleLabel';
 
 const Header = styled.div`
   display: flex;
@@ -42,21 +38,21 @@ const Change = styled.div<{isSame: boolean}>`
   grid-template-rows: 1fr;
   gap: 10px 18px;
   min-height: 54px;
-  
+
   & > * {
     padding: 19px 0;
   }
-  
+
   del {
     text-decoration: none;
     background: #f6dfdc;
   }
-  
+
   ins {
     text-decoration: none;
     background: #e1f0e3;
   }
-`
+`;
 
 const Attribute = styled.span`
   color: #11324d;
@@ -66,7 +62,7 @@ const Attribute = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-`
+`;
 const OldValue = styled.span`
   color: #d4604f;
   margin-right: 5px;
@@ -75,13 +71,13 @@ const OldValue = styled.span`
 const NewValue = styled.span`
   color: #67b373;
   margin-right: 5px;
-`
+`;
 
 const ActionsContainer = styled.div`
   & > *:nth-child(1) {
     margin-right: 10px;
   }
-`
+`;
 
 const LocaleScope = styled.div`
   white-space: nowrap;
@@ -123,8 +119,8 @@ type ReadyProposal = {
   approve: boolean;
   refuse: boolean;
   changes: {
-    [attributeCode: string]: ProposalChange[]
-  }
+    [attributeCode: string]: ProposalChange[];
+  };
 };
 
 type ProposalProps = {
@@ -135,7 +131,7 @@ type ProposalProps = {
   authorLabel: string;
   createdAt: string;
   proposalId: number;
-}
+};
 
 const Proposal: React.FC<ProposalProps> = ({
   formattedChanges,
@@ -149,14 +145,17 @@ const Proposal: React.FC<ProposalProps> = ({
   const router = useRouter();
   const translate = useTranslate();
 
-  const isSame: (change: ProposalChange) => boolean = (change) => change.before == change.after;
-  const documentUrl = `#${router.generate(documentType === 'product_draft' ? 'pim_enrich_product_edit' : 'pim_enrich_product_model_edit', { id: documentId })}`;
+  const isSame: (change: ProposalChange) => boolean = change => change.before == change.after;
+  const documentUrl = `#${router.generate(
+    documentType === 'product_draft' ? 'pim_enrich_product_edit' : 'pim_enrich_product_model_edit',
+    {id: documentId}
+  )}`;
 
   const flatChanges = [];
   if (formattedChanges.status === 'ready') {
-    Object.keys(formattedChanges.changes).forEach((attributeCode) => {
-      formattedChanges.changes[attributeCode].forEach((change) => {
-        flatChanges.push({ ...change, attributeCode: attributeCode });
+    Object.keys(formattedChanges.changes).forEach(attributeCode => {
+      formattedChanges.changes[attributeCode].forEach(change => {
+        flatChanges.push({...change, attributeCode: attributeCode});
       });
     });
   }
@@ -168,94 +167,87 @@ const Proposal: React.FC<ProposalProps> = ({
           <DocumentLink href={documentUrl}>{documentLabel}</DocumentLink>
           <Badge
             level="tertiary"
-            title={ translate(`pim_datagrid.workflow.status_message.${formattedChanges.status_label}`) }
+            title={translate(`pim_datagrid.workflow.status_message.${formattedChanges.status_label}`)}
           >
-            { translate(`pim_datagrid.workflow.status.${formattedChanges.status_label}`) }
+            {translate(`pim_datagrid.workflow.status.${formattedChanges.status_label}`)}
           </Badge>
           <span>
-            { translate('pim_datagrid.workflow.by') }
-            <Highlight>{ authorLabel }</Highlight>
-            { translate('pim_datagrid.workflow.at') }&nbsp;
-            <Highlight>{ createdAt }</Highlight>
+            {translate('pim_datagrid.workflow.by')}
+            <Highlight>{authorLabel}</Highlight>
+            {translate('pim_datagrid.workflow.at')}&nbsp;
+            <Highlight>{createdAt}</Highlight>
           </span>
         </ProposalDescription>
         <ProposalDescription>
-          {formattedChanges.approve &&
-          <ApproveAllButton productDraftType={documentType} id={proposalId}/>
-          }
-          {formattedChanges.refuse &&
-          <RejectAllButton productDraftType={documentType} id={proposalId}/>
-          }
-          {formattedChanges.remove &&
-          <RemoveAllButton productDraftType={documentType} id={proposalId}/>
-          }
+          {formattedChanges.approve && <ApproveAllButton productDraftType={documentType} id={proposalId} />}
+          {formattedChanges.refuse && <RejectAllButton productDraftType={documentType} id={proposalId} />}
+          {formattedChanges.remove && <RemoveAllButton productDraftType={documentType} id={proposalId} />}
         </ProposalDescription>
       </Header>
       {formattedChanges.status === 'in_progress' &&
-        translate('pim_datagrid.workflow.draft_in_progress', { author: authorLabel })
-      }
-      {formattedChanges.status === 'ready' &&
-      <>
-        {flatChanges.map((change) =>
+        translate('pim_datagrid.workflow.draft_in_progress', {author: authorLabel})}
+      {formattedChanges.status === 'ready' && (
+        <>
+          {flatChanges.map(change => (
             <Change key={`${change.attributeCode}-${change.scope}-${change.locale}`} isSame={isSame(change)}>
               <div style={{display: 'flex', overflow: 'hidden'}}>
                 <Attribute title={change.attributeLabel}>{change.attributeLabel}</Attribute>
-                { change.scope && change.locale &&
+                {change.scope && change.locale && (
                   <LocaleScope>
-                    {change.scope &&
+                    {change.scope && (
                       <span>
-                        <ScopeLabel scopeCode={change.scope}/>
+                        <ScopeLabel scopeCode={change.scope} />
                       </span>
-                    }
-                    {change.locale &&
-                    <LocaleLabel localeCode={change.locale}/>
-                    }
+                    )}
+                    {change.locale && <LocaleLabel localeCode={change.locale} />}
                   </LocaleScope>
-                }
+                )}
               </div>
-              {!isSame(change) &&
+              {!isSame(change) && (
                 <div>
                   <OldValue>{translate('pim_datagrid.workflow.old_value')}</OldValue>
-                  <span dangerouslySetInnerHTML={{__html: change.before}}/>
+                  <span dangerouslySetInnerHTML={{__html: change.before}} />
                 </div>
-              }
-              {!isSame(change) &&
+              )}
+              {!isSame(change) && (
                 <div>
                   <NewValue>{translate('pim_datagrid.workflow.new_value')}</NewValue>
-                  <span dangerouslySetInnerHTML={{__html: change.after}}/>
+                  <span dangerouslySetInnerHTML={{__html: change.after}} />
                 </div>
-              }
-              {isSame(change) &&
-                <div dangerouslySetInnerHTML={{__html: translate('pim_datagrid.workflow.no_diff', { value: change.before })}}/>
-              }
-              {change.canReview &&
-              <ActionsContainer>
-                <ApproveButton
-                  id={proposalId}
-                  productDraftType={documentType}
-                  attributeCode={change.attributeCode}
-                  attributeLabel={change.attributeLabel}
-                  documentLabel={documentLabel}
-                  locale={change.locale}
-                  scope={change.scope}
+              )}
+              {isSame(change) && (
+                <div
+                  dangerouslySetInnerHTML={{__html: translate('pim_datagrid.workflow.no_diff', {value: change.before})}}
                 />
-                <RejectButton
-                  id={proposalId}
-                  productDraftType={documentType}
-                  attributeCode={change.attributeCode}
-                  attributeLabel={change.attributeLabel}
-                  documentLabel={documentLabel}
-                  locale={change.locale}
-                  scope={change.scope}
-                />
-              </ActionsContainer>
-            }
+              )}
+              {change.canReview && (
+                <ActionsContainer>
+                  <ApproveButton
+                    id={proposalId}
+                    productDraftType={documentType}
+                    attributeCode={change.attributeCode}
+                    attributeLabel={change.attributeLabel}
+                    documentLabel={documentLabel}
+                    locale={change.locale}
+                    scope={change.scope}
+                  />
+                  <RejectButton
+                    id={proposalId}
+                    productDraftType={documentType}
+                    attributeCode={change.attributeCode}
+                    attributeLabel={change.attributeLabel}
+                    documentLabel={documentLabel}
+                    locale={change.locale}
+                    scope={change.scope}
+                  />
+                </ActionsContainer>
+              )}
             </Change>
-        )}
-      </>
-      }
+          ))}
+        </>
+      )}
     </>
   );
 };
 
-export { Proposal }
+export {Proposal};

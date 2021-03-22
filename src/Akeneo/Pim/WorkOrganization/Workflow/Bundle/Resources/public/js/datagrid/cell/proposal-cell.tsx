@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import { Proposal } from "./Proposal";
+import {Proposal} from './Proposal';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 const StringCell = require('oro/datagrid/string-cell');
 
