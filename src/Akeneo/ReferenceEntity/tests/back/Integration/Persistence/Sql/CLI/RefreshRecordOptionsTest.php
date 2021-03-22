@@ -96,7 +96,6 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             'command' => $command->getName(),
-            '--all'   => true,
         ]);
     }
 

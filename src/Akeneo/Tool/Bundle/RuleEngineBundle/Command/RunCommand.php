@@ -132,7 +132,7 @@ class RunCommand extends Command
         $ruleRunDuration = $startedTime->diff(new \DateTimeImmutable('now'));
         $this->logger->notice(
             'rules run stats',
-            ['duration' => $ruleRunDuration->format('%s.%fs'), 'rules count' => $numberOfExecutedRules]
+            ['duration' => $ruleRunDuration->format('%s.%fs'), 'rules_count' => $numberOfExecutedRules]
         );
         return $result;
     }

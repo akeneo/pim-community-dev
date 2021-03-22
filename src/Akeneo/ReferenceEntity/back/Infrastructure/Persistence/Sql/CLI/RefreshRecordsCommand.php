@@ -7,6 +7,7 @@ use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshRecord;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,8 +35,11 @@ class RefreshRecordsCommand extends Command
 
     /** @var RefreshRecord */
     private $refreshRecord;
+    
+    private LoggerInterface $logger;
 
     public function __construct(
+        LoggerInterface $logger,
         FindAllRecordIdentifiers $findAllRecordIdentifiers,
         RefreshRecord $refreshRecord,
         Connection $sqlConnection
@@ -45,6 +49,7 @@ class RefreshRecordsCommand extends Command
         $this->sqlConnection = $sqlConnection;
         $this->findAllRecordIdentifiers = $findAllRecordIdentifiers;
         $this->refreshRecord = $refreshRecord;
+        $this->logger = $logger;
     }
 
     /**
@@ -52,37 +57,39 @@ class RefreshRecordsCommand extends Command
      */
     protected function configure()
     {
-        $this
-            ->addOption(
-                'all',
-                true,
-                InputOption::VALUE_NONE,
-                'Refresh all existing records'
-            )
-            ->setDescription('Refresh all records referencing a deleted record or a deleted attribute option.');
+        $this->setDescription('Refresh all records referencing a deleted record or a deleted attribute option.');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $isIndexAll = $input->getOption('all');
-        if (!$isIndexAll) {
-            $output->writeln('Please use the flag --all to refresh all records');
-        }
+        $verbose = $input->getOption('verbose') ?: false;
 
         $totalRecords = $this->getTotalRecords();
-        $progressBar = new ProgressBar($output, $totalRecords);
-        $progressBar->start();
+        if ($verbose) {
+            $progressBar = new ProgressBar($output, $totalRecords);
+            $progressBar->start();
+        }
+        $startedTime = new \DateTimeImmutable('now');
 
         $recordIdentifiers = $this->findAllRecordIdentifiers->fetch();
         $i = 0;
         foreach ($recordIdentifiers as $recordIdentifier) {
             $this->refreshRecord->refresh($recordIdentifier);
             if ($i % self::BULK_SIZE === 0) {
-                $progressBar->advance(self::BULK_SIZE);
+                if ($verbose) {
+                    $progressBar->advance(self::BULK_SIZE);
+                }
             }
             $i++;
         }
-        $progressBar->finish();
+        if ($verbose) {
+            $progressBar->finish();
+        }
+        $ruleRunDuration = $startedTime->diff(new \DateTimeImmutable('now'));
+        $this->logger->notice(
+            'reference-entity refresh-records',
+            ['duration' => $ruleRunDuration->format('%s.%fs'), 'refresh_records' => $totalRecords]
+        );
     }
 
     private function getTotalRecords(): int
