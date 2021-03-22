@@ -3,7 +3,6 @@ import {ProgressBar} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {ChannelsLocalesCompletenesses} from '../domain';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {generateRandomNumber} from '../helpers';
 
 type ChannelLocalesCompletenessesProps = {
   data: ChannelsLocalesCompletenesses;
@@ -26,11 +25,7 @@ const ChannelLocalesCompletenesses: FC<ChannelLocalesCompletenessesProps> = ({da
                   percent={channelRatio}
                   progressLabel={`${channelRatio} %`}
                 />
-                <ProgressMessage>
-                  {translate(
-                    channelRatio < 100 ? getIncompleteCompletenessMessage() : getCompleteCompletenessMessage()
-                  )}
-                </ProgressMessage>
+                <ProgressMessage>{translate(getProgressMessageByChannelRatio(channelRatio))}</ProgressMessage>
               </div>
               <LocaleCompleteness>
                 {Object.entries(locales).map(([localeLabel, localeRatio]: [string, number]) => {
@@ -53,16 +48,14 @@ const ChannelLocalesCompletenesses: FC<ChannelLocalesCompletenessesProps> = ({da
   );
 };
 
-const getIncompleteCompletenessMessage = (): string => {
-  const messages: string[] = ['pim_dashboard.widget.completeness.progress_messages.completeness_incomplete.message1'];
-
-  return messages[generateRandomNumber(messages.length - 1)];
-};
-
-const getCompleteCompletenessMessage = (): string => {
-  const messages: string[] = ['pim_dashboard.widget.completeness.progress_messages.completeness_complete.message1'];
-
-  return messages[generateRandomNumber(messages.length - 1)];
+const getProgressMessageByChannelRatio = (channelRatio: number): string => {
+  return channelRatio < 1
+    ? 'pim_dashboard.widget.completeness.progress_messages.message1'
+    : channelRatio < 50
+    ? 'pim_dashboard.widget.completeness.progress_messages.message2'
+    : channelRatio < 100
+    ? 'pim_dashboard.widget.completeness.progress_messages.message3'
+    : 'pim_dashboard.widget.completeness.progress_messages.message4';
 };
 
 const getProgressbarLevel = (score: number) => {

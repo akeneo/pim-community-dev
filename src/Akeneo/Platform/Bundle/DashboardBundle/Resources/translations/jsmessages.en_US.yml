@@ -8,10 +8,10 @@ pim_dashboard:
             load_more: 'Load more...'
             title: Completeness Over Channels and Locales
             progress_messages:
-                completeness_incomplete:
-                    message1: You still have some work to do to improve your completness. Keep up!
-                completeness_complete:
-                    message1: Congratulations !
+                message1: Be ready to start the enrichment journey towards completeness.
+                message2: You still have some work to do, but you’re on the right path.
+                message3: Keep up the great work to complete your product information.
+                message4: Congratulations! You reached perfect product completeness for this channel!
         last_operations:
             title: Last operations
     version: Version
