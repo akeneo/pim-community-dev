@@ -16,7 +16,6 @@ class Role implements RoleInterface
     public function __construct(?string $role = null)
     {
         $this->role = $role;
-        $this->label = '';
     }
 
     /**
@@ -61,8 +60,6 @@ class Role implements RoleInterface
 
     /**
      * Return the role name field
-     *
-     * @return string
      */
     public function __toString(): string
     {
