@@ -1,5 +1,17 @@
 # 4.0.x
 
+# 4.0.98 (2021-03-16)
+
+# 4.0.97 (2021-03-10)
+
+## Bug fixes
+
+- PIM-9717: Fix 500 error when filtering with invalid identifiers value during an API call
+
+## Technical Improvements
+
+- AOB-1340: Add InMemory implem for GetExistingReferenceDataCodes query 
+
 # 4.0.96 (2021-02-23)
 
 ## Bug fixes

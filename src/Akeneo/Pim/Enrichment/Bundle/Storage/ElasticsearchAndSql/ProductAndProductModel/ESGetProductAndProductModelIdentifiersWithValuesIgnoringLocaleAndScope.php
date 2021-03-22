@@ -35,6 +35,8 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
     {
         $attributePath = sprintf('values.%s-%s.*', $attributeCode, $backendType);
 
+        $query = ([] === $values) ? '*' : implode(' OR ', $values);
+
         $baseQuery = [
             '_source' => ['identifier'],
             'size' => $this->batchSize,
@@ -43,7 +45,7 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
                     'filter' => [
                         [
                             'query_string' => [
-                                'query' => implode(' OR ', $values),
+                                'query' => $query,
                                 'fields' => [$attributePath],
                             ],
                         ],

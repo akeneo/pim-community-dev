@@ -277,6 +277,19 @@ class InvalidPropertyTypeException extends PropertyException
         );
     }
 
+    public static function arrayOfStringsExpected($propertyName, $className, $propertyValue)
+    {
+        $message = 'Property "%s" expects an array of strings as data.';
+
+        return new static(
+            $propertyName,
+            $propertyValue,
+            $className,
+            sprintf($message, $propertyName),
+            self::ARRAY_OF_OBJECTS_EXPECTED_CODE
+        );
+    }
+
     /**
      * Build an exception when the data is an array that does not contain an expected key.
      *
