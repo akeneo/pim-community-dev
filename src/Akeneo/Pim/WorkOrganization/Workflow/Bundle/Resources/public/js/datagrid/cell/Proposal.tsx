@@ -8,7 +8,7 @@ import {
   getColor,
   getFontSize,
 } from 'akeneo-design-system';
-import { ApproveAllButton, ApproveButton, RejectAllButton, RejectButton } from "./proposalActions";
+import { ApproveAllButton, ApproveButton, RejectAllButton, RejectButton, RemoveAllButton } from "./proposalActions";
 
 const Header = styled.div`
   display: flex;
@@ -97,8 +97,7 @@ type ScopeCode = string;
 type InProgressProposal = {
   status: 'in_progress';
   status_label: string;
-  approve: boolean;
-  refuse: boolean;
+  remove: boolean;
 };
 
 type ProposalChange = {
@@ -184,6 +183,9 @@ const Proposal: React.FC<ProposalProps> = ({
           }
           {formattedChanges.refuse &&
           <RejectAllButton productDraftType={documentType} id={proposalId}/>
+          }
+          {formattedChanges.remove &&
+          <RemoveAllButton productDraftType={documentType} id={proposalId}/>
           }
         </ProposalDescription>
       </Header>

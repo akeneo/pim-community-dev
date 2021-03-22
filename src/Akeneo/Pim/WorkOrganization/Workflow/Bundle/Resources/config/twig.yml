@@ -3,8 +3,6 @@ services:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftStatusGridExtension'
         arguments:
             - '@pimee_workflow.helper.product_draft_changes_permission'
-        tags:
-            - { name: twig.extension }
 
     pimee_enrich.twig.attribute_extension:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\AttributeExtension'

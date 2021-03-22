@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { Button, Field, Modal, ProposalsIllustration, TextAreaInput } from "akeneo-design-system";
-import { NotificationLevel, useNotify, useTranslate } from "@akeneo-pim-community/legacy-bridge";
+import { NotificationLevel, useMediator, useNotify, useTranslate } from "@akeneo-pim-community/legacy-bridge";
 
 const ProposalModal = ({action, url, onClose, titleParams}: {
-  action: 'approve' | 'reject' | 'partial_approve' | 'partial_reject',
+  action: 'approve' | 'reject' | 'remove' | 'partial_approve' | 'partial_reject',
   url: (comment: string) => string,
   onClose: () => void,
   titleParams?: any,
 }) => {
   const translate = useTranslate();
   const notify = useNotify();
+  const mediator = useMediator();
   const [ comment, setComment ] = useState<string>('');
 
   const handleSend = async () => {
@@ -56,8 +57,8 @@ const ProposalModal = ({action, url, onClose, titleParams}: {
          />
        </Field>
        <Modal.BottomButtons>
-         <Button onClick={onClose} level="tertiary">{translate('pim_common.cancel')}</Button>
-         <Button onClick={handleSend} level="primary">{translate('pimee_enrich.entity.product_draft.module.proposal.confirm')}</Button>
+         <Button onClick={() => { onClose(); mediator.trigger('datagrid:doRefresh:proposal-grid' ); }} level="tertiary">{translate('pim_common.cancel')}</Button>
+         <Button onClick={handleSend} level="primary">{translate('pim_common.confirm')}</Button>
        </Modal.BottomButtons>
      </Modal>
   );

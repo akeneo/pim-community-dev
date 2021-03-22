@@ -51,6 +51,20 @@ const RejectAllButton: (props: AllProps) => JSX.Element = ({productDraftType, id
   </>
 }
 
+const RemoveAllButton: (props: AllProps) => JSX.Element = ({productDraftType, id}) => {
+  const [ isOpen, open, close ] = useBooleanState();
+  const translate = useTranslate();
+  const router = useRouter();
+  const url = (comment: string) => router.generate(`pimee_workflow_${productDraftType}_rest_remove`, {id, comment});
+
+  return <>
+    <Button level="danger" onClick={open} size="default">{ translate('pim_common.remove') }</Button>
+    { isOpen &&
+    <ProposalModal action={'remove'} onClose={close} url={url}/>
+    }
+  </>
+}
+
 const ApproveButton: (props: PartialProps) => JSX.Element = ({
   productDraftType,
   id,
@@ -126,4 +140,4 @@ const RejectButton: (props: PartialProps) => JSX.Element = ({
     }
   </>
 }
-export { ApproveAllButton, RejectAllButton, ApproveButton, RejectButton }
+export { ApproveAllButton, RejectAllButton, RemoveAllButton, ApproveButton, RejectButton }

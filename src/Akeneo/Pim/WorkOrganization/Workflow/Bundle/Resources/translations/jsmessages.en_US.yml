@@ -62,14 +62,18 @@ pimee_workflow:
             title: Approve proposal
             success: The proposal has been applied successfully.
             error: "The proposal can't be applied due to the following error: {{ error }}"
-        partial_approve:
-            title: Approve partial information
-            success: The proposal has been successfully partially validated
-            error: "The proposal can't be partially approved due to the following error: {{ error }}"
         reject:
             title: Reject proposal
             success: The proposal has been rejected
             error: "The proposal can't be rejected due to the following error: {{ error }}"
+        remove:
+            title: Remove proposal
+            success: The proposal has been removed
+            error: "The proposal can't be removed due to the following error: {{ error }}"
+        partial_approve:
+            title: Approve partial information
+            success: The proposal has been successfully partially validated
+            error: "The proposal can't be partially approved due to the following error: {{ error }}"
         partial_reject:
             title: Partially reject changes
             success: The changes have been successfully rejected
@@ -199,8 +203,6 @@ pimee_enrich.entity.published_product:
 
 pimee_enrich.entity.product_draft:
     flash:
-        remove:
-            success: The proposal has been removed.
         update:
             success: Product draft has been successfully saved
             fail: Product draft could not be updated
@@ -212,10 +214,6 @@ pimee_enrich.entity.product_draft:
         proposal:
             accept_selected: Accept selected proposal(s)
             reject_selected: Reject selected proposal(s)
-            remove: Remove proposal
-            comment_title: Comment your proposal (optional - 255 characters max.)
-            comment_chars: chars.
-            confirm: Send
         edit:
             discard_changes: Unsaved changes will be lost. Are you sure you want to send your draft for approval without unsaved changes?
             discard_changes_title: Are you sure you want to send this draft?

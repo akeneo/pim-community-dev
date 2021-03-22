@@ -11,47 +11,18 @@ datagrid:
             entity: '%pimee_workflow.model.product_draft.class%'
             repository_method: createDatagridQueryBuilder
         columns:
-            author_label:
-                label: pimee_workflow.product_draft.author
-                type: field
-                frontend_type: string
-            changes:
-                label: pimee_workflow.product_draft.changes
-                type: twig
-                template: AkeneoPimWorkflowBundle:Datagrid:Property/changes.html.twig
-                frontend_type: html
-            createdAt:
+            formatted_changes:
                 label: pimee_workflow.product_draft.created
                 type: field
-            status:
-                label: pimee_workflow.product_draft.status.label
-                type: twig
-                template: AkeneoPimWorkflowBundle:Datagrid:Property/product_draft_status.html.twig
-                frontend_type: html
+                frontend_type: proposal
         properties:
             id: ~
             proposal_id: ~
             document_type: ~
-        actions:
-            approve:
-                type: approve-proposal
-                label: pimee_workflow.product_draft.action.approve
-                launcherOptions:
-                    className: AknButton AknButton--apply
-                link: approve_link
-            refuse:
-                type: refuse-proposal
-                label: pimee_workflow.product_draft.action.refuse
-                launcherOptions:
-                    className: AknButton AknButton--important
-                link: refuse_link
-            remove:
-                type: remove-proposal
-                label: pimee_workflow.product_draft.action.remove
-                launcherOptions:
-                    className: AknButton AknButton--important
-                link: remove_link
-        action_configuration: '@pimee_workflow.datagrid.configuration.product_draft.grid_helper->getActionConfigurationClosure'
+            document_id: ~
+            document_label: ~
+            author_label: ~
+            createdAt: ~
         filters:
             columns:
                 attribute:
@@ -63,14 +34,11 @@ datagrid:
                             multiple: true
         sorters:
             columns:
-                author_label:
-                    data_name: author
-                status:
-                    data_name: status
-                createdAt:
+                formatted_changes:
                     data_name: createdAt
+#                    sorter:    product_field
             default:
-                createdAt: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                formatted_changes: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
     product-grid:
         filters:
             columns:

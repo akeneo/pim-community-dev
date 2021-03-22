@@ -25,7 +25,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftChangesExtension extends \Twig_Extension
+class ProductDraftChangesExtension
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
@@ -37,9 +37,6 @@ class ProductDraftChangesExtension extends \Twig_Extension
 
     /** @var PresenterInterface[] */
     protected $presenters = [];
-
-    /** @var \Twig_Environment */
-    protected $twig;
 
     /** @var ValueFactory */
     protected $valueFactory;
@@ -54,20 +51,6 @@ class ProductDraftChangesExtension extends \Twig_Extension
         $this->renderer = $renderer;
         $this->translator = $translator;
         $this->valueFactory = $valueFactory;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
-    {
-        return [
-            new \Twig_SimpleFunction(
-                'present_product_draft_change',
-                [$this, 'presentChange'],
-                ['is_safe' => ['html']]
-            ),
-        ];
     }
 
     /**
