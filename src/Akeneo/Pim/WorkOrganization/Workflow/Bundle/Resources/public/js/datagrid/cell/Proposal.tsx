@@ -4,11 +4,12 @@ import {useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import styled from "styled-components";
 import {
   Badge,
-  Locale,
   getColor,
   getFontSize,
 } from 'akeneo-design-system';
 import { ApproveAllButton, ApproveButton, RejectAllButton, RejectButton, RemoveAllButton } from "./proposalActions";
+import { ScopeLabel } from "./ScopeLabel";
+import { LocaleLabel } from "./LocaleLabel";
 
 const Header = styled.div`
   display: flex;
@@ -61,6 +62,7 @@ const Attribute = styled.span`
   color: #11324d;
   font-style: italic;
   font-weight: bold;
+  padding-right: 5px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -83,9 +85,10 @@ const ActionsContainer = styled.div`
 
 const LocaleScope = styled.div`
   white-space: nowrap;
+  display: flex;
   &:before {
     content: ' - ';
-    margin-left: 5px;
+    margin-right: 5px;
   }
   & > :nth-child(2) {
     margin-left: 5px;
@@ -142,7 +145,6 @@ const Proposal: React.FC<ProposalProps> = ({
   authorLabel,
   createdAt,
   proposalId,
-  children
 }) => {
   const router = useRouter();
   const translate = useTranslate();
@@ -201,11 +203,12 @@ const Proposal: React.FC<ProposalProps> = ({
                 { change.scope && change.locale &&
                   <LocaleScope>
                     {change.scope &&
-                    <span>{change.scope}</span>
+                      <span>
+                        <ScopeLabel scopeCode={change.scope}/>
+                      </span>
                     }
                     {change.locale &&
-                    <Locale code={change.locale} languageLabel={change.localeLabel}
-                    />
+                    <LocaleLabel localeCode={change.locale}/>
                     }
                   </LocaleScope>
                 }

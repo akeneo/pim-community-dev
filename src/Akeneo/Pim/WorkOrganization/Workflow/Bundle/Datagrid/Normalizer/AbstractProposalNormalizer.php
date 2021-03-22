@@ -123,7 +123,6 @@ abstract class AbstractProposalNormalizer implements NormalizerInterface, Cachea
                             $present['attributeLabel'] = $attribute->getLabel();
                             $present['scope'] = $change['scope'];
                             $present['locale'] = $change['locale'];
-                            $present['localeLabel'] = $locale ? $locale->getName() : null;
                             $present['canReview'] = $canReview;
                             $proposalChanges[$attributeCode][] = $present;
                         }
