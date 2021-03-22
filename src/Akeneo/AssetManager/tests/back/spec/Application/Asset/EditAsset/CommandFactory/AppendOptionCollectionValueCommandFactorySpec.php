@@ -37,12 +37,12 @@ class AppendOptionCollectionValueCommandFactorySpec extends ObjectBehavior
         $this->supports($optionCollectionAttribute, $normalizedValue)->shouldReturn(false);
 
         $normalizedValue = ['data' => [], 'action' => 'append'];
-        $this->supports($optionCollectionAttribute, $normalizedValue)->shouldReturn(false);
+        $this->supports($optionCollectionAttribute, $normalizedValue)->shouldReturn(true);
         $normalizedValue = ['data' => 'blue', 'action' => 'append'];
         $this->supports($optionCollectionAttribute, $normalizedValue)->shouldReturn(false);
     }
 
-    function it_creates_an_edit_option_collection_value_command(
+    function it_creates_an_append_option_collection_value_command(
         OptionCollectionAttribute $optionCollectionAttribute
     ) {
         $normalizedValue = [
@@ -57,5 +57,23 @@ class AppendOptionCollectionValueCommandFactorySpec extends ObjectBehavior
         $command->attribute->shouldBeAnInstanceOf(OptionCollectionAttribute::class);
         $command->channel->shouldBe('mobile');
         $command->locale->shouldBe('fr_FR');
+    }
+
+    function it_creates_an_empty_append_option_collection_value_command(
+        OptionCollectionAttribute $optionCollectionAttribute
+    ) {
+        $normalizedValue = [
+            'data' => null,
+            'channel' => 'mobile',
+            'locale' => 'fr_FR',
+            'action' => 'append',
+        ];
+
+        $command = $this->create($optionCollectionAttribute, $normalizedValue);
+        $command->shouldBeAnInstanceOf(AppendOptionCollectionValueCommand::class);
+        $command->attribute->shouldBeAnInstanceOf(OptionCollectionAttribute::class);
+        $command->channel->shouldBe('mobile');
+        $command->locale->shouldBe('fr_FR');
+        $command->optionCodes->shouldBe([]);
     }
 }

@@ -246,7 +246,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             Prefix::fromString('http://google.com/'),
-            Suffix::empty(),
+            Suffix::createEmpty(),
             MediaLinkMediaType::fromString('image')
         );
 

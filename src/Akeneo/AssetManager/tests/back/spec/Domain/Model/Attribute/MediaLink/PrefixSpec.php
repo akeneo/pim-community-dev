@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\Attribute\MediaLink;
@@ -25,14 +26,14 @@ class PrefixSpec extends ObjectBehavior
 
     function it_can_be_created_with_no_prefix()
     {
-        $noPrefix = $this::empty();
+        $noPrefix = $this::createEmpty();
         $noPrefix->normalize()->shouldReturn(null);
     }
 
     function it_says_if_it_holds_no_prefix()
     {
         $this->isEmpty()->shouldReturn(false);
-        $this::empty()->isEmpty()->shouldReturn(true);
+        $this::createEmpty()->isEmpty()->shouldReturn(true);
     }
 
     function it_normalizes_itself()

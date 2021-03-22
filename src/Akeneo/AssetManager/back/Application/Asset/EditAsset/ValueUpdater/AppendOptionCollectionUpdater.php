@@ -42,6 +42,10 @@ class AppendOptionCollectionUpdater implements ValueUpdaterInterface
             throw new \RuntimeException('Impossible to update the value of the asset with the given command.');
         }
 
+        if (empty($command->optionCodes)) {
+            return;
+        }
+
         /** @var AppendOptionCollectionValueCommand $command */
         $attributeIdentifier = $command->attribute->getIdentifier();
         $channelReference = (null !== $command->channel) ?

@@ -11,7 +11,7 @@ import {isNumberAttribute} from 'akeneoassetmanager/domain/model/attribute/type/
 import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
 import {ViewGeneratorProps} from 'akeneoassetmanager/application/configuration/value';
 
-const View = ({value, id, invalid, canEditData, onChange}: ViewGeneratorProps) => {
+const View = ({value, id, invalid, canEditData, onChange, onSubmit}: ViewGeneratorProps) => {
   if (!isNumberData(value.data) || !isNumberAttribute(value.attribute)) {
     return null;
   }
@@ -34,7 +34,14 @@ const View = ({value, id, invalid, canEditData, onChange}: ViewGeneratorProps) =
   };
 
   return (
-    <NumberInput id={id} value={valueToDisplay} onChange={onValueChange} readOnly={!canEditData} invalid={invalid} />
+    <NumberInput
+      id={id}
+      value={valueToDisplay}
+      onChange={onValueChange}
+      readOnly={!canEditData}
+      invalid={invalid}
+      onSubmit={onSubmit}
+    />
   );
 };
 

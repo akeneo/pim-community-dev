@@ -7,6 +7,7 @@ import {
   MediaLinkInput,
   RefreshIcon,
   useBooleanState,
+  useInModal,
 } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {canCopyToClipboard, copyToClipboard, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
@@ -33,10 +34,6 @@ const View = ({id, value, locale, onChange, onSubmit, canEditData}: ViewGenerato
   const [reloadPreview, onReloadPreview] = useReloadPreview();
   const [isFullscreenModalOpen, openFullscreenModal, closeFullScreenModal] = useBooleanState();
 
-  if (!isMediaLinkData(value.data) || !isMediaLinkAttribute(value.attribute)) {
-    return null;
-  }
-
   if (id === undefined) {
     id = `pim_asset_manager.asset.enrich.${value.attribute.code}`;
   }
@@ -53,6 +50,7 @@ const View = ({id, value, locale, onChange, onSubmit, canEditData}: ViewGenerato
     }
   }, [reloadPreview]);
   const [regenerate, doRegenerate, refreshedUrl] = useRegenerate(mediaPreviewUrl);
+  const inModal = useInModal();
 
   const attributeLabel = getLabelInCollection(
     value.attribute.labels,
@@ -60,6 +58,10 @@ const View = ({id, value, locale, onChange, onSubmit, canEditData}: ViewGenerato
     true,
     value.attribute.code
   );
+
+  if (!isMediaLinkData(value.data) || !isMediaLinkAttribute(value.attribute)) {
+    return null;
+  }
 
   const mediaLinkUrl = getMediaLinkUrl(value.data, value.attribute);
 
@@ -95,13 +97,15 @@ const View = ({id, value, locale, onChange, onSubmit, canEditData}: ViewGenerato
             title={translate('pim_asset_manager.asset_preview.download')}
           />
         )}
-        <IconButton
-          onClick={openFullscreenModal}
-          icon={<FullscreenIcon />}
-          title={translate('pim_asset_manager.asset.button.fullscreen')}
-        />
+        {!inModal && (
+          <IconButton
+            onClick={openFullscreenModal}
+            icon={<FullscreenIcon />}
+            title={translate('pim_asset_manager.asset.button.fullscreen')}
+          />
+        )}
       </MediaLinkInput>
-      {isFullscreenModalOpen && (
+      {isFullscreenModalOpen && !inModal && (
         <FullscreenPreview
           onClose={closeFullScreenModal}
           attribute={value.attribute}

@@ -27,8 +27,7 @@ class AppendOptionCollectionValueCommandFactory implements EditValueCommandFacto
     {
         return
             $attribute instanceof OptionCollectionAttribute
-            && [] !== $normalizedValue['data']
-            && is_array($normalizedValue['data'])
+            && (is_array($normalizedValue['data']) || null === $normalizedValue['data'])
             && isset($normalizedValue['action'])
             && 'append' === $normalizedValue['action'];
     }
@@ -39,7 +38,7 @@ class AppendOptionCollectionValueCommandFactory implements EditValueCommandFacto
             $attribute,
             $normalizedValue['channel'],
             $normalizedValue['locale'],
-            $normalizedValue['data']
+            $normalizedValue['data'] ?? []
         );
 
         return $command;

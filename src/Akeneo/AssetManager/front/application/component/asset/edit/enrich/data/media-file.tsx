@@ -6,9 +6,10 @@ import {
   DownloadIcon,
   FullscreenIcon,
   useBooleanState,
+  useInModal,
 } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {useImageUploader} from '@akeneo-pim-community/shared';
+import {useUploader} from '@akeneo-pim-community/shared';
 import {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
 import {isMediaFileAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
@@ -19,15 +20,14 @@ import {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
 import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
 import {ViewGeneratorProps} from 'akeneoassetmanager/application/configuration/value';
 import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
+import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-closing';
 
 const View = ({id, value, locale, canEditData, onChange, invalid}: ViewGeneratorProps) => {
   const translate = useTranslate();
-  const uploader = useImageUploader('akeneo_asset_manager_file_upload');
-  const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
+  const [uploader, isUploading] = useUploader('akeneo_asset_manager_file_upload');
+  usePreventClosing(() => isUploading, translate('pim_enrich.confirmation.discard_changes', {entity: 'asset'}));
 
-  if (!isMediaFileData(value.data) || !isMediaFileAttribute(value.attribute)) {
-    return null;
-  }
+  const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
 
   if (id === undefined) {
     id = `pim_asset_manager.asset.enrich.${value.attribute.code}`;
@@ -43,6 +43,11 @@ const View = ({id, value, locale, canEditData, onChange, invalid}: ViewGenerator
   const handleChange = (fileInfo: FileInfo) => {
     onChange(setValueData(value, fileInfo));
   };
+  const inModal = useInModal();
+
+  if (!isMediaFileData(value.data) || !isMediaFileAttribute(value.attribute)) {
+    return null;
+  }
 
   const downloadFilename = value.data?.originalFilename;
   const downloadUrl = getImageDownloadUrl(value.data);
@@ -75,13 +80,15 @@ const View = ({id, value, locale, canEditData, onChange, invalid}: ViewGenerator
           icon={<DownloadIcon />}
           title={translate('pim_asset_manager.asset_preview.download')}
         />
-        <IconButton
-          onClick={openFullscreenModal}
-          icon={<FullscreenIcon />}
-          title={translate('pim_asset_manager.asset.button.fullscreen')}
-        />
+        {!inModal && (
+          <IconButton
+            onClick={openFullscreenModal}
+            icon={<FullscreenIcon />}
+            title={translate('pim_asset_manager.asset.button.fullscreen')}
+          />
+        )}
       </MediaFileInput>
-      {isFullscreenModalOpen && (
+      {isFullscreenModalOpen && !inModal && (
         <FullscreenPreview
           onClose={closeFullscreenModal}
           attribute={value.attribute}

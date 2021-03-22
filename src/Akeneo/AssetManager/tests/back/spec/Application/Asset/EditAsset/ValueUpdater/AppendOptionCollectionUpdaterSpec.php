@@ -26,6 +26,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class AppendOptionCollectionUpdaterSpec extends ObjectBehavior
 {
@@ -45,6 +46,21 @@ class AppendOptionCollectionUpdaterSpec extends ObjectBehavior
     ) {
         $this->supports($appendOptionValueCommand)->shouldReturn(true);
         $this->supports($editOptionValueCommand)->shouldReturn(false);
+    }
+
+    function it_does_nothing_when_option_collection_value_is_empty(Asset $asset)
+    {
+        $attribute = $this->getAttribute();
+        $command = new AppendOptionCollectionValueCommand(
+            $attribute,
+            'mobile',
+            'en_US',
+            []
+        );
+
+        $asset->setValue(Argument::any())->shouldNotBeCalled();
+
+        $this->__invoke($asset, $command);
     }
 
     function it_append_option_collection_value_on_existing_value(Asset $asset)

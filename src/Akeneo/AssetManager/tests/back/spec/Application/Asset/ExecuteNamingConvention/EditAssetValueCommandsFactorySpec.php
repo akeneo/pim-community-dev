@@ -116,8 +116,8 @@ class EditAssetValueCommandsFactorySpec extends ObjectBehavior
             ->shouldBe([$editTextValueCommand, $editNumberValueCommand, $editMediaLinkValueCommand]);
     }
 
-     function it_returns_an_empty_list_if_string_dont_match_in_non_strict_mode(NamingConvention $namingConvention)
-     {
+    function it_returns_an_empty_list_if_string_dont_match_in_non_strict_mode(NamingConvention $namingConvention)
+    {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('family');
         $sourceValue = 'dont_match';
 
@@ -128,8 +128,8 @@ class EditAssetValueCommandsFactorySpec extends ObjectBehavior
         $this->create($assetFamilyIdentifier, $namingConvention, $sourceValue)->shouldBe([]);
     }
 
-     function it_throws_an_exception_if_string_dont_match_in_strict_mode(NamingConvention $namingConvention)
-     {
+    function it_throws_an_exception_if_string_dont_match_in_strict_mode(NamingConvention $namingConvention)
+    {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('family');
         $sourceValue = 'dont_match';
 
@@ -267,8 +267,8 @@ class EditAssetValueCommandsFactorySpec extends ObjectBehavior
             AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::empty(),
-            Suffix::empty(),
+            Prefix::createEmpty(),
+            Suffix::createEmpty(),
             MediaType::fromString(MediaType::OTHER)
         );
     }

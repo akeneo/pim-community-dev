@@ -484,8 +484,8 @@ SQL;
             AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::empty(),
-            Suffix::empty(),
+            Prefix::createEmpty(),
+            Suffix::createEmpty(),
             MediaLinkMediaType::fromString(MediaLinkMediaType::IMAGE)
         );
         $order++;
@@ -607,8 +607,8 @@ SQL;
             AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::empty(),
-            Suffix::empty(),
+            Prefix::createEmpty(),
+            Suffix::createEmpty(),
             MediaLinkMediaType::fromString(MediaLinkMediaType::PDF)
         );
         $order++;
@@ -721,8 +721,8 @@ SQL;
             AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::empty(),
-            Suffix::empty(),
+            Prefix::createEmpty(),
+            Suffix::createEmpty(),
             MediaLinkMediaType::fromString(MediaLinkMediaType::YOUTUBE)
         );
         $this->attributeRepository->create($youtube);
@@ -1150,7 +1150,8 @@ SQL;
     private function defaultAttributeAsLabel(AssetFamilyIdentifier $atmosphereAssetFamilyIdentifier): AbstractAttribute
     {
         $attributes = $this->attributeRepository->findByAssetFamily($atmosphereAssetFamilyIdentifier);
-        $attributeAsLabel = current(array_filter($attributes,
+        $attributeAsLabel = current(array_filter(
+            $attributes,
             function (AbstractAttribute $attribute) {
                 return $attribute->getCode()->equals(AttributeCode::fromString('label'));
             }
@@ -1162,7 +1163,8 @@ SQL;
     private function defaultAttributeAsMainMedia(AssetFamilyIdentifier $atmosphereAssetFamilyIdentifier): AbstractAttribute
     {
         $attributes = $this->attributeRepository->findByAssetFamily($atmosphereAssetFamilyIdentifier);
-        $attributeAsMainMedia = current(array_filter($attributes,
+        $attributeAsMainMedia = current(array_filter(
+            $attributes,
             function (AbstractAttribute $attribute) {
                 return $attribute->getCode()->equals(AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE));
             }
