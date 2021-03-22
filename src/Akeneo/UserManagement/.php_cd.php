@@ -70,6 +70,10 @@ $rules = [
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType',
 
         'Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException',
+
+        // TIP-1539: clean installer events
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
     ])->in('Akeneo\UserManagement\Bundle'),
 ];
 
