@@ -91,7 +91,6 @@ class UserProcessor extends Processor
             $this->saveProcessedItemInStepExecutionContext($itemIdentifier, $user);
         }
 
-
         return $user;
     }
 }

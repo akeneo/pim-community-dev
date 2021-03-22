@@ -68,6 +68,7 @@ final class RoleWithPermissionsSaver implements BulkSaverInterface
         $this->objectManager->flush();
 
         foreach ($rolesWithPermissions as $i => $roleWithPermissions) {
+            $this->updatePermissions($roleWithPermissions);
             $this->eventDispatcher->dispatch(
                 new GenericEvent($roleWithPermissions->role(), array_merge($options, ['is_new' => $areObjectsNew[$i]])),
                 StorageEvents::POST_SAVE
@@ -75,10 +76,6 @@ final class RoleWithPermissionsSaver implements BulkSaverInterface
         }
 
         $this->eventDispatcher->dispatch(new GenericEvent($userRoles, $options), StorageEvents::POST_SAVE_ALL);
-
-        foreach ($rolesWithPermissions as $roleWithPermissions) {
-            $this->updatePermissions($roleWithPermissions);
-        }
     }
 
     private function updatePermissions(RoleWithPermissions $roleWithPermissions): void
