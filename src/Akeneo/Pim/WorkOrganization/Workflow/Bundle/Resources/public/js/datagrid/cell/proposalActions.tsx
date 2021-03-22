@@ -1,4 +1,4 @@
-import { useRouter, useTranslate } from "@akeneo-pim-community/legacy-bridge";
+import { useMediator, useRouter, useTranslate } from "@akeneo-pim-community/legacy-bridge";
 import { ProposalModal } from "./ProposalModal";
 import React from "react";
 import { Button, IconButton, useBooleanState, CheckIcon, CloseIcon } from "akeneo-design-system";
@@ -28,11 +28,19 @@ const ApproveAllButton: (props: AllProps) => JSX.Element = ({productDraftType, i
   const translate = useTranslate();
   const router = useRouter();
   const url = (comment: string) => router.generate(`pimee_workflow_${productDraftType}_rest_approve`, {id, comment});
+  const mediator = useMediator();
+
+  const handleClose = (successReponse?: any) => {
+    if (successReponse) {
+      mediator.trigger('pim_enrich:form:proposal:post_approve:success', successReponse);
+    }
+    close();
+  }
 
   return <>
     <Button level="primary" onClick={open} size="default">{ translate('pim_datagrid.workflow.actions.approve_all') }</Button>
     { isOpen &&
-    <ProposalModal action={"approve"} onClose={close} url={url}/>
+    <ProposalModal action={"approve"} onClose={handleClose} url={url}/>
     }
   </>
 }

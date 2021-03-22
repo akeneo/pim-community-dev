@@ -2,8 +2,6 @@ datagrid:
     proposal-grid:
         options:
             entityHint: proposal
-            requireJSModules:
-                - pimee/proposal/partial-proposal-builder
             manageFilters: true
         source:
             type: pimee_datasource_proposal_product

@@ -3,7 +3,6 @@ datagrid:
         options:
             entityHint: product_model_draft
             requireJSModules:
-                - pimee/proposal/partial-proposal-builder
                 - oro/datafilter-builder
                 - oro/datagrid/pagination-input
         source:

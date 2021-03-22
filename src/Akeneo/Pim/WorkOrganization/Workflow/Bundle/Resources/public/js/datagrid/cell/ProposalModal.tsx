@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { Button, Field, Modal, ProposalsIllustration, TextAreaInput } from "akeneo-design-system";
 import { NotificationLevel, useMediator, useNotify, useTranslate } from "@akeneo-pim-community/legacy-bridge";
 
-const ProposalModal = ({action, url, onClose, titleParams}: {
+const ProposalModal = ({action, url, onClose}: {
   action: 'approve' | 'reject' | 'remove' | 'partial_approve' | 'partial_reject',
   url: (comment: string) => string,
-  onClose: () => void,
-  titleParams?: any,
+  onClose: (hasSucceed?: boolean) => void,
 }) => {
   const translate = useTranslate();
   const notify = useNotify();
@@ -21,22 +20,15 @@ const ProposalModal = ({action, url, onClose, titleParams}: {
       },
       method: 'POST',
     })
-      .then((response) => {
+      .then(async (response) => {
         notify(NotificationLevel.SUCCESS, translate(`pimee_workflow.proposal.${action}.success`));
-        /**
-         * Hard reload of the page, if deleted the last grid proposal,
-         * in order to refresh proposal grid filters.
-          if (1 === $('table.proposal-changes').length) {
-            window.location.reload();
-          } else {
-            mediator.trigger('datagrid:doRefresh:' + gridName);
-          }
-         */
+        /** datagrid name can not be extracted from an Oro cell, so we call refresh on the 3 possible grids */
+        ['proposal-grid', 'product-draft-grid', 'product-model-draft-grid'].forEach((gridName) =>
+          mediator.trigger(`datagrid:doRefresh:${gridName}`));
+        onClose(await response.json());
       })
       .catch((error) => {
         notify(NotificationLevel.ERROR, translate(`pimee_workflow.proposal.${action}.error`, { error }));
-      })
-      .finally(() => {
         onClose();
       });
   }
@@ -44,7 +36,7 @@ const ProposalModal = ({action, url, onClose, titleParams}: {
   return (
     <Modal
       onClose={onClose}
-      closeTitle={translate('pim_common.close', titleParams || {})}
+      closeTitle={translate('pim_common.close')}
       illustration={<ProposalsIllustration/>}
      >
        <Modal.Title>{translate(`pimee_workflow.proposal.${action}.title`)}</Modal.Title>
@@ -57,7 +49,7 @@ const ProposalModal = ({action, url, onClose, titleParams}: {
          />
        </Field>
        <Modal.BottomButtons>
-         <Button onClick={() => { onClose(); mediator.trigger('datagrid:doRefresh:proposal-grid' ); }} level="tertiary">{translate('pim_common.cancel')}</Button>
+         <Button onClick={onClose} level="tertiary">{translate('pim_common.cancel')}</Button>
          <Button onClick={handleSend} level="primary">{translate('pim_common.confirm')}</Button>
        </Modal.BottomButtons>
      </Modal>

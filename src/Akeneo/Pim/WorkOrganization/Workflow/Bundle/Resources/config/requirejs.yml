@@ -31,7 +31,6 @@ config:
         pimee/published-product-manager:         akeneopimworkflow/js/manager/published-product-manager
         pimee/product-draft-fetcher:             akeneopimworkflow/js/fetcher/product-draft-fetcher
         pimee/product-model-draft-fetcher:       akeneopimworkflow/js/fetcher/product-model-draft-fetcher
-        pimee/proposal/partial-proposal-builder: akeneopimworkflow/js/datagrid/partial-proposal-builder
 
         # Controller
         pimee/proposal/controller/index: akeneopimworkflow/js/controller/proposals-index.ts
@@ -50,7 +49,6 @@ config:
         pimee/product-edit-form/send-for-approval-comment: akeneopimworkflow/js/product/form/send-for-approval-comment
         pimee/product-edit-form/proposal-add-comment:      akeneopimworkflow/js/product/form/proposal-add-comment
         pimee/product-edit-form/abstract-add-notification-comment: akeneopimworkflow/js/product/form/abstract-add-notification-comment
-        pimee/proposal/partial-approve-proposal-comment:   akeneopimworkflow/js/proposal/form/partial-approve-proposal-comment
         pimee/dashboard/proposal-widget:                   akeneopimworkflow/js/proposal/widget/proposal-widget
         pimee/user/fields/visible-boolean:                 akeneopimworkflow/js/user/fields/visible-boolean.ts
         pimee/mass-edit-form/product/send-for-approval:    akeneopimworkflow/js/mass-edit/product/send-for-approval.ts
@@ -74,8 +72,5 @@ config:
 
         oro/datagrid/expand-cell:                  akeneopimworkflow/js/datagrid/cell/expand-cell
         oro/datagrid/proposal-cell:                akeneopimworkflow/js/datagrid/cell/proposal-cell.tsx
-        oro/datagrid/approve-proposal-action:      akeneopimworkflow/js/datagrid/action/approve-proposal-action
-        oro/datagrid/refuse-proposal-action:       akeneopimworkflow/js/datagrid/action/refuse-proposal-action
-        oro/datagrid/remove-proposal-action:       akeneopimworkflow/js/datagrid/action/remove-proposal-action
         oro/datagrid/mass-approve-proposal-action: akeneopimworkflow/js/datagrid/action/mass-approve-proposal-action
         oro/datagrid/mass-refuse-proposal-action:  akeneopimworkflow/js/datagrid/action/mass-refuse-proposal-action
