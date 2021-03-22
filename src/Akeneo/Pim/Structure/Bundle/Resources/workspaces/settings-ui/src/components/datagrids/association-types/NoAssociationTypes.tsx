@@ -22,7 +22,8 @@ const Hint = styled.div`
 const createAssociationType = (event: any) => {
   event.preventDefault();
   event.stopPropagation();
-  document.getElementById('create-button-extension').click();
+  const createButton = document.getElementById('create-button-extension');
+  if (null !== createButton) createButton.click();
 };
 
 const NoAssociationTypes = () => {

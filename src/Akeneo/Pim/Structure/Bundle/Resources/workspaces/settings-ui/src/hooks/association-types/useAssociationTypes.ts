@@ -4,17 +4,34 @@ import {AssociationType} from '../../models';
 
 const UserContext = require('pim/user-context');
 
-const useAssociationTypes = () => {
-  const [associationTypes, setAssociationTypes] = useState<AssociationType[]>([]);
-  const [countAssociationTypes, setCountAssociationTypes] = useState<number>(0);
+export type AssociationTypes = {
+  total: number;
+  currentPage: number;
+  list: AssociationType[];
+};
 
+const useAssociationTypes = () => {
+  const [associationTypes, setAssociationTypes] = useState<AssociationTypes | null>(null);
   const localeCode = UserContext.get('catalogLocale');
   const router = useRouter();
 
-  const load = async (params: any) => {
+  const search = async (searchString: string, sortDirection: string, page: number) => {
     const url = router.generate('pim_datagrid_load', {
-      ...params,
       alias: 'association-type-grid',
+      'association-type-grid': {
+        localeCode: localeCode,
+        _sort_by: {
+          label: sortDirection,
+        },
+        _filter: {
+          label: {
+            value: searchString,
+          },
+        },
+        _pager: {
+          _page: page > 0 ? page : 1,
+        },
+      },
     });
 
     const result = await fetch(url, {
@@ -27,8 +44,16 @@ const useAssociationTypes = () => {
     const response = await result.json();
     const dataGridInfo = JSON.parse(response.data);
 
-    setAssociationTypes(
-      dataGridInfo.data.map((associationTypeData: any) => {
+    // Reload from page 1 if the requested page is inconsistent (i.e. no results above the first page).
+    if (dataGridInfo.data.length === 0 && page > 1) {
+      search(searchString, sortDirection, 1);
+      return;
+    }
+
+    setAssociationTypes({
+      total: dataGridInfo.options.totalRecords,
+      currentPage: parseInt(response.metadata.state.currentPage),
+      list: dataGridInfo.data.map((associationTypeData: any) => {
         return {
           id: associationTypeData['id'],
           label: associationTypeData['label'],
@@ -37,32 +62,11 @@ const useAssociationTypes = () => {
           editLink: associationTypeData['edit_link'],
           deleteLink: associationTypeData['delete_link'],
         };
-      })
-    );
-
-    setCountAssociationTypes(dataGridInfo.options.totalRecords);
-  };
-
-  const search = (searchString: string, sortDirection: string, page: number) => {
-    load({
-      'association-type-grid': {
-        localeCode: localeCode,
-        _sort_by: {
-          label: sortDirection,
-        },
-        _filter: {
-          label: {
-            value: searchString,
-          },
-        },
-        _pager: {
-          _page: page,
-        },
-      },
+      }),
     });
   };
 
-  return {associationTypes, countAssociationTypes, search};
+  return {associationTypes, search};
 };
 
 export {useAssociationTypes};
