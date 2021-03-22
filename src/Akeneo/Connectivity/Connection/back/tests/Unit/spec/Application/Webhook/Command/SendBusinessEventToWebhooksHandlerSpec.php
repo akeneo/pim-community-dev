@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEvent
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventBuildLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataVersionLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SkipOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
@@ -41,9 +42,10 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         WebhookUserAuthenticator $webhookUserAuthenticator,
         WebhookClient $client,
         WebhookEventBuilder $builder,
+        LoggerInterface $logger,
         EventBuildLogger $eventBuildLogger,
         SkipOwnEventLogger $skipOwnEventLogger,
-        LoggerInterface $logger,
+        EventDataVersionLogger $eventDataVersionLogger,
         DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
         EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
@@ -54,10 +56,11 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $webhookUserAuthenticator,
             $client,
             $builder,
+            $logger,
             $eventBuildLogger,
             $skipOwnEventLogger,
-            $logger,
             $eventSubscriptionSkippedOwnEventLogger,
+            $eventDataVersionLogger,
             $eventsApiDebugRepository,
             $eventsApiRequestRepository,
             $cacheClearer,
@@ -118,7 +121,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                         $author,
                         'staging.akeneo.com',
                         ['data'],
-                        $this->createEvent($author, ['data'])
+                        $this->createEvent($author, ['data']),
+                        'product_version'
                     ),
                 ]
             );
@@ -214,7 +218,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                         $erpAuthor,
                         'staging.akeneo.com',
                         ['data'],
-                        $this->createEvent($erpAuthor, ['data'])
+                        $this->createEvent($erpAuthor, ['data']),
+                        'product_version'
                     ),
                 ]
             );
@@ -316,15 +321,16 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
     }
 
     public function it_logs_the_time_it_take_to_build_the_api_events(
-        $selectActiveWebhooksQuery,
-        $webhookUserAuthenticator,
-        $client,
-        $builder,
+        SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
+        WebhookUserAuthenticator $webhookUserAuthenticator,
+        WebhookClient $client,
+        WebhookEventBuilder $builder,
+        LoggerInterface $logger,
         EventBuildLogger $eventBuildLogger,
         SkipOwnEventLogger $skipOwnEventLogger,
-        $eventsApiRequestRepository,
-        $cacheClearer,
-        LoggerInterface $logger,
+        EventDataVersionLogger $eventDataVersionLogger,
+        DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
+        CacheClearerInterface $cacheClearer,
         EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
         EventsApiDebugRepository $eventsApiDebugRepository
     ): void {
@@ -349,10 +355,11 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $webhookUserAuthenticator,
             $client,
             $builder,
+            $logger,
             $eventBuildLogger,
             $skipOwnEventLogger,
-            $logger,
             $eventSubscriptionSkippedOwnEventLogger,
+            $eventDataVersionLogger,
             $eventsApiDebugRepository,
             $eventsApiRequestRepository,
             $cacheClearer,

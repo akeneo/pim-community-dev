@@ -77,6 +77,29 @@ class WebhookEventSpec extends ObjectBehavior
         $this->data()->shouldReturn(['data']);
     }
 
+    public function it_returns_version(UserInterface $user):void
+    {
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+
+        $author = Author::fromUser($user->getWrappedObject());
+        $this->beConstructedWith(
+            'product.created',
+            '21f7f779-f094-4305-8ee4-65fdddd5a418',
+            '2020-01-01T00:00:00+00:00',
+            $author,
+            'staging.akeneo.com',
+            ['data'],
+            $this->createEvent($author, ['data']),
+            'version'
+        );
+
+        $this->version()
+            ->shouldReturn('version');
+    }
+
     private function createEvent(Author $author, array $data): EventInterface
     {
         $timestamp = 1577836800;
