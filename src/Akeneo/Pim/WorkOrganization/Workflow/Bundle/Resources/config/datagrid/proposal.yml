@@ -9,31 +9,8 @@ datagrid:
             type: pimee_datasource_proposal_product
             entity: '%pimee_workflow.model.product_draft.class%'
         columns:
-#            product:
-#                label: pimee_workflow.product_draft.product.label
-#                type: twig
-#                template: AkeneoPimWorkflowBundle:Datagrid/Property:product_link.html.twig
-#                frontend_type: html
-#            author_label:
-#                label: pimee_workflow.product_draft.author
-#                type: field
-#                frontend_type: string
-#            changes:
-#                label: pimee_workflow.product_draft.changes
-#                type: twig
-#                template: AkeneoPimWorkflowBundle:Datagrid:Property/changes.html.twig
-#                frontend_type: html
-#            createdAt:
-#                label: pimee_workflow.product_draft.created
-#                type: field
-#            status:
-#                label: pimee_workflow.product_draft.status.label
-#                type: twig
-#                template: AkeneoPimWorkflowBundle:Datagrid:Property/product_draft_status.html.twig
-#                frontend_type: html
             formatted_changes:
-                label: 'Test'
-                data_name: formatted_changes # useless
+                label: pimee_workflow.product_draft.created
                 type: field
                 frontend_type: proposal
         properties:
@@ -44,20 +21,6 @@ datagrid:
             document_label: ~
             author_label: ~
             createdAt: ~
-#        actions:
-#            approve:
-#                type: approve-proposal
-#                label: pimee_workflow.product_draft.action.approve
-#                launcherOptions:
-#                    className: AknButton AknButton--apply
-#                link: approve_link
-#            refuse:
-#                type: refuse-proposal
-#                label: pimee_workflow.product_draft.action.refuse
-#                launcherOptions:
-#                    className: AknButton AknButton--important
-#                link: refuse_link
-#        action_configuration: '@pimee_workflow.datagrid.configuration.proposal.grid_helper->getActionConfigurationClosure'
         mass_actions:
             mass_approve:
                 type: mass-approve-proposal
@@ -117,13 +80,10 @@ datagrid:
                         field_options:
                             attr:
                                 choice_list: true
-#        sorters:
-#            columns:
-#                author_label:
-#                    data_name: author
-#                    sorter:    product_field
-#                createdAt:
-#                    data_name: created
-#                    sorter:    product_field
-#            default:
-#                createdAt: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+        sorters:
+            columns:
+                formatted_changes:
+                    data_name: created
+                    sorter:    product_field
+            default:
+                formatted_changes: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'

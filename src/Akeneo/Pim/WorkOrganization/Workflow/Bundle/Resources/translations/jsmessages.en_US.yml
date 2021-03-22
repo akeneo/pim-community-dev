@@ -33,6 +33,10 @@ pim_datagrid:
         no_diff: The value "{{ value }}" is the same between the proposal and the working copy.
         new_value: 'New value:'
         old_value: 'Old value:'
+        actions:
+            approve_all: Approve all
+            refuse_all: Reject all
+        characters_left: ]-Inf, 1]{{ count }} character left|]1, Inf[{{ count }} characters left
 
 pimee_datagrid:
   cells:
@@ -54,23 +58,22 @@ pimee_workflow:
         mass_action_group:
             review:
                 label: Bulk Action
-        partial_accept:
-            modal.title: Approve partial information
-            modal.label: Leave a comment (optional)
-            modal.error: An error occurred, the proposal has not been partially approved
-            modal.success: The proposal has been successfully partially validated
+        approve:
+            title: Approve proposal
+            success: The proposal has been applied successfully.
+            error: "The proposal can't be applied due to the following error: {{ error }}"
         partial_approve:
-            modal:
-                title: Partially approve changes
-                label: Leave a comment (optional)
-                error: An error occurred, the proposal has not been partially approved
-                success: The changes have been successfully approved
+            title: Approve partial information
+            success: The proposal has been successfully partially validated
+            error: "The proposal can't be partially approved due to the following error: {{ error }}"
+        reject:
+            title: Reject proposal
+            success: The proposal has been rejected
+            error: "The proposal can't be rejected due to the following error: {{ error }}"
         partial_reject:
-            modal:
-                title: Partially reject changes
-                label: Leave a comment (optional)
-                error: An error occurred, the proposal has not been partially rejected
-                success: The changes have been successfully rejected
+            title: Partially reject changes
+            success: The changes have been successfully rejected
+            error: "The proposal can't be partially rejected due to the following error: {{ error }}"
 
 batch_jobs:
     csv_published_product_export:
@@ -196,11 +199,6 @@ pimee_enrich.entity.published_product:
 
 pimee_enrich.entity.product_draft:
     flash:
-        approve:
-            success: The proposal has been applied successfully.
-            fail: "The proposal can't be applied due to the following error: {{ error }}"
-        reject:
-            success: The proposal has been rejected.
         remove:
             success: The proposal has been removed.
         update:
@@ -212,9 +210,7 @@ pimee_enrich.entity.product_draft:
             skip: Product draft hasn't been sent for approval as no value has been edited
     module:
         proposal:
-            accept: Accept proposal
             accept_selected: Accept selected proposal(s)
-            reject: Reject proposal
             reject_selected: Reject selected proposal(s)
             remove: Remove proposal
             comment_title: Comment your proposal (optional - 255 characters max.)

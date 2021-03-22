@@ -20,6 +20,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\ProductDraftChangesPermissionHelper;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftChangesExtension;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftStatusGridExtension;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
@@ -44,6 +45,7 @@ class ProductProposalNormalizer implements NormalizerInterface, CacheableSupport
     private AttributeRepositoryInterface $attributeRepository;
     private LocaleRepositoryInterface $localeRepository;
     private ProductDraftStatusGridExtension $statusExtension;
+    private ProductDraftChangesPermissionHelper $permissionHelper;
 
     public function __construct(
         NormalizerInterface $standardNormalizer,
@@ -54,7 +56,8 @@ class ProductProposalNormalizer implements NormalizerInterface, CacheableSupport
         AuthorizationCheckerInterface $authorizationChecker,
         AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
-        ProductDraftStatusGridExtension $statusExtension
+        ProductDraftStatusGridExtension $statusExtension,
+        ProductDraftChangesPermissionHelper $permissionHelper
     ) {
         $this->standardNormalizer = $standardNormalizer;
         $this->datagridNormlizer = $datagridNormlizer;
@@ -65,6 +68,7 @@ class ProductProposalNormalizer implements NormalizerInterface, CacheableSupport
         $this->attributeRepository = $attributeRepository;
         $this->localeRepository = $localeRepository;
         $this->statusExtension = $statusExtension;
+        $this->permissionHelper = $permissionHelper;
     }
 
     /**
@@ -72,40 +76,36 @@ class ProductProposalNormalizer implements NormalizerInterface, CacheableSupport
      */
     public function normalize($proposalProduct, $format = null, array $context = []): array
     {
-        /** @var ProductDraft $proposalProduct */
         $data = [];
-
-        /** @var ProductInterface $product */
         $product = $proposalProduct->getEntityWithValue();
 
-        $data['changes'] = $this->getChanges($proposalProduct, $context);
-        $data['createdAt'] = $this->datagridNormlizer->normalize($proposalProduct->getCreatedAt(), $format, $context);
-        $data['product'] = $proposalProduct->getEntityWithValue();
-        $data['author'] = $proposalProduct->getAuthor();
-        $data['author_label'] = $proposalProduct->getAuthorLabel();
-        $data['source'] = $proposalProduct->getSource();
-        $data['source_label'] = $proposalProduct->getSourceLabel();
-        $data['status'] = $proposalProduct->getStatus();
-        $data['proposal'] = $proposalProduct;
-        $data['search_id'] = $proposalProduct->getEntityWithValue()->getIdentifier();
-        $data['id'] = 'product_draft_' . (string) $proposalProduct->getId();
-        $data['document_type'] = 'product_draft';
-        $data['document_id'] = $product->getId();
         $data['proposal_id'] = $proposalProduct->getId();
+        $data['createdAt'] = $this->datagridNormlizer->normalize($proposalProduct->getCreatedAt(), $format, $context);
+        $data['author_label'] = $proposalProduct->getAuthorLabel();
+        $data['document_id'] = $product->getId();
         $data['document_label'] = $product->getLabel();
         $data['formatted_changes'] = $this->formatChanges($proposalProduct, $context);
 
         return $data;
     }
 
-    private function formatChanges(ProductDraft $proposalProduct, $context)
+    private function formatChanges(ProductDraft $proposalProduct, $context): array
     {
+        $canReview = $this->permissionHelper->canEditOneChangeToReview($proposalProduct);
+        $toReview = $proposalProduct->getStatus() === EntityWithValuesDraftInterface::READY;
+        $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $proposalProduct->getEntityWithValue());
+
+        $result = [
+            'status_label' => $this->statusExtension->getDraftStatusGrid($proposalProduct),
+            'approve' => $isOwner && $toReview && $canReview,
+            'refuse'  => $isOwner && $toReview && $canReview,
+        ];
+
         $changesWithEmptyValues = $this->getChanges($proposalProduct, $context);
         if ($proposalProduct->getStatus() === EntityWithValuesDraftInterface::IN_PROGRESS) {
-            return [
-                'status_label' => $this->statusExtension->getDraftStatusGrid($proposalProduct),
+            return array_merge($result, [
                 'status' => 'in_progress',
-            ];
+            ]);
         }
         $proposalChanges = [];
         foreach ($changesWithEmptyValues as $attributeCode => $changes) {
@@ -121,6 +121,7 @@ class ProductProposalNormalizer implements NormalizerInterface, CacheableSupport
                             $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute) &&
                             $this->authorizationChecker->isGranted(Attributes::OWN, $proposalProduct->getEntityWithValue()) &&
                             (!$attribute->isLocalizable() || $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale));
+                        /** @var array $present */
                         $present = $this->changesExtension->presentChange($proposalProduct, $change, $attributeCode);
                         if (count($present) > 0) {
                             $present['attributeLabel'] = $attribute->getLabel();
@@ -135,15 +136,14 @@ class ProductProposalNormalizer implements NormalizerInterface, CacheableSupport
             }
         }
 
-        return [
+        return array_merge($result, [
             'status' => 'ready',
-            'status_label' => $this->statusExtension->getDraftStatusGrid($proposalProduct),
             'search_id' => $proposalProduct->getEntityWithValue()->getIdentifier(),
             'document_type' => 'product_dragft',
             'changes' => $proposalChanges,
             'author_code' => $proposalProduct->getAuthor(),
             'id' => $proposalProduct->getId(),
-        ];
+        ]);
     }
 
     /**

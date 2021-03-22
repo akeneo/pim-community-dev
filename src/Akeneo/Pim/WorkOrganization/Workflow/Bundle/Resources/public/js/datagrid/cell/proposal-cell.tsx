@@ -21,6 +21,7 @@ class ProposalCell extends StringCell {
     const documentLabel = this.model.get('document_label');
     const authorLabel = this.model.get('author_label');
     const createdAt = this.model.get('createdAt');
+    const proposalId = this.model.get('proposal_id');
 
     ReactDOM.render(
       <DependenciesProvider>
@@ -32,6 +33,7 @@ class ProposalCell extends StringCell {
             authorLabel={authorLabel}
             formattedChanges={formattedChanges}
             createdAt={createdAt}
+            proposalId={proposalId}
           />
         </ThemeProvider>
       </DependenciesProvider>,

@@ -2,7 +2,6 @@ parameters:
     pimee_workflow.datagrid.event_listener.inject_entity_with_values_for_product_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\EventListener\InjectEntityWithValuesForProductDraftSubscriber
     pimee_workflow.event_listener.configure_proposal_grid_listener.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\EventListener\ConfigureProposalGridListener
     pimee_workflow.datagrid.configuration.product_draft.grid_helper.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Configuration\ProductDraft\GridHelper
-    pimee_workflow.datagrid.configuration.proposal.grid_helper.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Configuration\Proposal\GridHelper
     pimee_workflow.datasource.result_record.hydrator.product_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ResultRecord\ProductDraftHydrator
     pimee_workflow.datagrid.mass_action.handler.mass_approve.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassAction\Handler\MassApproveActionHandler
     pimee_workflow.datagrid.datasource.product_proposal.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ProductProposalDatasource
@@ -107,13 +106,6 @@ services:
     # Configuration
     pimee_workflow.datagrid.configuration.product_draft.grid_helper:
         class: '%pimee_workflow.datagrid.configuration.product_draft.grid_helper.class%'
-        public: true
-        arguments:
-            - '@security.authorization_checker'
-            - '@pimee_workflow.helper.product_draft_changes_permission'
-
-    pimee_workflow.datagrid.configuration.proposal.grid_helper:
-        class: '%pimee_workflow.datagrid.configuration.proposal.grid_helper.class%'
         public: true
         arguments:
             - '@security.authorization_checker'

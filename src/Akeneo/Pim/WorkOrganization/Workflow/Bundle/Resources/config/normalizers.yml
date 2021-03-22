@@ -31,6 +31,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.locale'
             - '@pimee_workflow.twig.extension.product_draft_status_grid'
+            - '@pimee_workflow.helper.product_draft_changes_permission'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
         lazy: true

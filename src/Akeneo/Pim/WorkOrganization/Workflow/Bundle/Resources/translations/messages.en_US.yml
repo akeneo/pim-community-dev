@@ -13,8 +13,6 @@ pimee_workflow:
             label: Status
             working_copy: Working copy
         action:
-            approve: Approve all
-            refuse:  Reject all
             remove:  Remove
         notification:
             partial_approve: '%owner% has accepted value(s) for %attributes% for the product %product%'

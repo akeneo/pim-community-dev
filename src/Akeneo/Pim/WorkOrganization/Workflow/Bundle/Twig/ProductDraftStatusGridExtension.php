@@ -17,7 +17,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftIn
 /**
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class ProductDraftStatusGridExtension extends \Twig_Extension
+class ProductDraftStatusGridExtension
 {
     /** @var ProductDraftChangesPermissionHelper */
     protected $permissionHelper;
@@ -28,20 +28,6 @@ class ProductDraftStatusGridExtension extends \Twig_Extension
     public function __construct(ProductDraftChangesPermissionHelper $permissionHelper)
     {
         $this->permissionHelper = $permissionHelper;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
-    {
-        return [
-            new \Twig_SimpleFunction(
-                'get_draft_status_grid',
-                [$this, 'getDraftStatusGrid'],
-                ['is_safe' => ['html']]
-            )
-        ];
     }
 
     /**
@@ -71,7 +57,7 @@ class ProductDraftStatusGridExtension extends \Twig_Extension
         }
 
         if ($canDelete) {
-            return 'status.in_progress';
+            return 'in_progress';
         }
 
         return 'can_not_be_deleted';
