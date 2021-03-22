@@ -42,9 +42,8 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
         $this->webhookLoader->initWebhook($sapConnection->code());
         $this->authenticateAsAdmin();
 
-
         $this->generateLogs(
-            function ($index) use ($timestamp) {
+            function () use ($timestamp) {
                 return [
                     'timestamp' => $timestamp,
                     'level' => EventsApiDebugLogLevels::NOTICE,
@@ -80,9 +79,59 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
         Assert::assertCount(5, $response['results']);
     }
 
+    public function test_it_filters_on_event_subscription_logs(): void
+    {
+        $timestamp = $this->clock->now()->getTimestamp();
+        $sapConnection = $this->createConnection('sap', 'SAP', FlowType::DATA_SOURCE, true);
+        $this->webhookLoader->initWebhook($sapConnection->code());
+        $this->authenticateAsAdmin();
+
+        $this->insertLogs([
+            [
+                'timestamp' => $timestamp,
+                'level' => EventsApiDebugLogLevels::NOTICE,
+                'message' => 'Foo bar',
+                'connection_code' => null,
+                'context' => [],
+            ],
+            [
+                'timestamp' => $timestamp,
+                'level' => EventsApiDebugLogLevels::ERROR,
+                'message' => 'Foo bar',
+                'connection_code' => null,
+                'context' => [],
+            ],
+        ]);
+
+        $filters = [
+            'levels' => [
+                EventsApiDebugLogLevels::NOTICE,
+            ],
+        ];
+
+        $this->client->request(
+            'GET',
+            '/rest/events-api-debug/search-event-subscription-logs',
+            [
+                'connection_code' => $sapConnection->code(),
+                'filters' => json_encode($filters),
+            ],
+        );
+
+        $response = json_decode($this->client->getResponse()->getContent(), true);
+
+        Assert::assertCount(1, $response['results']);
+        Assert::assertEquals(1, $response['total']);
+    }
+
     private function generateLogs(callable $generator, int $number): void
     {
         $this->eventSubscriptionLogLoader->bulkInsert(array_map($generator, range(0, $number - 1)));
+    }
+
+    private function insertLogs(array $logs): void
+    {
+        $this->eventSubscriptionLogLoader->bulkInsert($logs);
     }
 
     protected function getConfiguration()
