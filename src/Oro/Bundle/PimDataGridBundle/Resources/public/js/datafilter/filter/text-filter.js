@@ -31,7 +31,7 @@ define([
         '<span class="AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited filter-criteria-hint"><%= criteriaHint %></span>' +
         '<span class="AknFilterBox-filterCaret"></span>' +
         '</div>' +
-        '<div class="filter-criteria dropdown-menu" />' +
+        '<div class="filter-criteria dropdown-menu"></div>' +
         '<% if (canDisable) { %><div class="AknFilterBox-disableFilter AknIconButton AknIconButton--remove disable-filter"></div><% } %>'
     ),
 

@@ -1050,7 +1050,7 @@
         create_node: function (obj, position, js, callback, is_loaded) {
           obj = this._get_node(obj);
           position = typeof position === 'undefined' ? 'last' : position;
-          var d = $('<li />'),
+          var d = $('<li></li>'),
             s = this._get_settings().core,
             tmp;
 
@@ -1090,7 +1090,7 @@
             js.data.push(tmp);
           }
           $.each(js.data, function (i, m) {
-            tmp = $('<a />');
+            tmp = $('<a></a>');
             if ($.isFunction(m)) {
               m = m.call(this, js);
             }
@@ -1143,21 +1143,21 @@
             case 'inside':
             case 'first':
               if (!obj.children('ul').length) {
-                obj.append('<ul />');
+                obj.append('<ul></ul>');
               }
               obj.children('ul').prepend(d);
               tmp = obj;
               break;
             case 'last':
               if (!obj.children('ul').length) {
-                obj.append('<ul />');
+                obj.append('<ul></ul>');
               }
               obj.children('ul').append(d);
               tmp = obj;
               break;
             default:
               if (!obj.children('ul').length) {
-                obj.append('<ul />');
+                obj.append('<ul></ul>');
               }
               if (!position) {
                 position = 0;
@@ -1384,7 +1384,7 @@
             obj.or.before(o);
           } else {
             if (!obj.np.children('ul').length) {
-              $('<ul />').appendTo(obj.np);
+              $('<ul></ul>').appendTo(obj.np);
             }
             obj.np.children('ul:eq(0)').append(o);
           }
@@ -1429,10 +1429,10 @@
         scrollbar_width = e1.width() - e2.width();
         e1.add(e2).remove();
       } else {
-        e1 = $('<div />')
+        e1 = $('<div></div>')
           .css({width: 100, height: 100, overflow: 'auto', position: 'absolute', top: -1000, left: 0})
           .prependTo('body')
-          .append('<div />')
+          .append('<div></div>')
           .find('div')
           .css({width: '100%', height: 200});
         scrollbar_width = 100 - e1.width();
@@ -1842,7 +1842,7 @@
             w1 = obj.children('ins').width(),
             w2 = obj.find('> a:visible > ins').width() * obj.find('> a:visible > ins').length,
             t = this.get_text(obj),
-            h1 = $('<div />', {
+            h1 = $('<div></div>', {
               css: {position: 'absolute', top: '-200px', left: rtl ? '0px' : '-1000px', visibility: 'hidden'},
             }).appendTo('body'),
             h2 = obj
@@ -2608,7 +2608,7 @@
             if (!js.data && js.data !== '') {
               return d;
             }
-            d = $('<li />');
+            d = $('<li></li>');
             if (js.attr) {
               d.attr(js.attr);
             }
@@ -2624,7 +2624,7 @@
               js.data.push(tmp);
             }
             $.each(js.data, function (i, m) {
-              tmp = $('<a />');
+              tmp = $('<a></a>');
               if ($.isFunction(m)) {
                 m = m.call(this, js);
               }
@@ -2666,7 +2666,7 @@
                 if ($.isArray(js.children) && js.children.length) {
                   tmp = this._parse_json(js.children, obj, true);
                   if (tmp.length) {
-                    ul2 = $('<ul />');
+                    ul2 = $('<ul></ul>');
                     ul2.append(tmp);
                     d.append(ul2);
                   }
@@ -2675,7 +2675,7 @@
             }
           }
           if (!is_callback) {
-            ul1 = $('<ul />');
+            ul1 = $('<ul></ul>');
             ul1.append(d);
             d = ul1;
           }
@@ -3150,7 +3150,7 @@
         $.vakata.dnd.init_y = e.pageY;
         $.vakata.dnd.user_data = data;
         $.vakata.dnd.is_down = true;
-        $.vakata.dnd.helper = $("<div id='vakata-dragged' />").html(html); //.fadeTo(10,0.25);
+        $.vakata.dnd.helper = $("<div id='vakata-dragged'></div>").html(html); //.fadeTo(10,0.25);
         $(document).bind('mousemove', $.vakata.dnd.drag);
         $(document).bind('mouseup', $.vakata.dnd.drag_stop);
         return false;
@@ -3883,7 +3883,7 @@
         '}' +
         '';
       $.vakata.css.add_sheet({str: css_string, title: 'jstree'});
-      m = $('<div />')
+      m = $('<div></div>')
         .attr({id: 'jstree-marker'})
         .hide()
         .html('&raquo;')
@@ -3895,7 +3895,7 @@
           return false;
         })
         .appendTo('body');
-      ml = $('<div />')
+      ml = $('<div></div>')
         .attr({id: 'jstree-marker-line'})
         .hide()
         .bind('mouseup', function (e) {
@@ -4346,7 +4346,7 @@
         p = new XSLTProcessor();
         p.importStylesheet(xsl);
         r = p.transformToFragment(xml, document);
-        r = $('<div />').append(r).html();
+        r = $('<div></div>').append(r).html();
       }
       // OLD IE
       if (r === false && typeof xml.transformNode !== 'undefined') {
@@ -5047,7 +5047,7 @@
     $.vakata.context = {
       hide_on_mouseleave: false,
 
-      cnt: $("<div id='vakata-contextmenu' />"),
+      cnt: $("<div id='vakata-contextmenu'></div>"),
       vis: false,
       tgt: false,
       par: false,
@@ -5800,7 +5800,7 @@
                   if (d && d !== '' && d.toString && d.toString().replace(/^[\s\n]+$/, '') !== '') {
                     d = $(d);
                     if (!d.is('ul')) {
-                      d = $('<ul />').append(d);
+                      d = $('<ul></ul>').append(d);
                     }
                     if (obj == -1 || !obj) {
                       this.get_container()
@@ -5886,7 +5886,7 @@
               if (!obj || obj == -1) {
                 d = $(s.data);
                 if (!d.is('ul')) {
-                  d = $('<ul />').append(d);
+                  d = $('<ul></ul>').append(d);
                 }
                 this.get_container()
                   .children('ul')
@@ -5941,7 +5941,7 @@
                 if (d) {
                   d = $(d);
                   if (!d.is('ul')) {
-                    d = $('<ul />').append(d);
+                    d = $('<ul></ul>').append(d);
                   }
                   if (obj == -1 || !obj) {
                     this.get_container()
@@ -6530,7 +6530,7 @@
               o
                 .clone()
                 .removeClass('jstree-wholerow-real')
-                .wrapAll("<div class='jstree-wholerow' />")
+                .wrapAll("<div class='jstree-wholerow'></div>")
                 .parent()
                 .width(o.parent()[0].scrollWidth)
                 .css('top', (o.height() + (is_ie7 ? 5 : 0)) * -1)

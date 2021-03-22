@@ -34,26 +34,26 @@
   w(function () {
     w('body').append(
       w([
-        (H = w('<div id="lbOverlay" />')[0]),
-        (a = w('<div id="lbCenter" />')[0]),
-        (G = w('<div id="lbBottomContainer" />')[0]),
+        (H = w('<div id="lbOverlay"></div>')[0]),
+        (a = w('<div id="lbCenter"></div>')[0]),
+        (G = w('<div id="lbBottomContainer"></div>')[0]),
       ]).css('display', 'none')
     );
-    g = w('<div id="lbImage" />')
+    g = w('<div id="lbImage"></div>')
       .appendTo(a)
       .append(
-        (p = w('<div style="position: relative;" />').append([
-          (I = w('<a id="lbPrevLink" href="#" />').click(B)[0]),
-          (d = w('<a id="lbNextLink" href="#" />').click(e)[0]),
+        (p = w('<div style="position: relative;"></div>').append([
+          (I = w('<a id="lbPrevLink" href="#"></a>').click(B)[0]),
+          (d = w('<a id="lbNextLink" href="#"></a>').click(e)[0]),
         ])[0])
       )[0];
-    c = w('<div id="lbBottom" />')
+    c = w('<div id="lbBottom"></div>')
       .appendTo(G)
       .append([
-        w('<a id="lbCloseLink" href="#" />').add(H).click(C)[0],
-        (A = w('<div id="lbCaption" />')[0]),
-        (K = w('<div id="lbNumber" />')[0]),
-        w('<div style="clear: both;" />')[0],
+        w('<a id="lbCloseLink" href="#"></a>').add(H).click(C)[0],
+        (A = w('<div id="lbCaption"></div>')[0]),
+        (K = w('<div id="lbNumber"></div>')[0]),
+        w('<div style="clear: both;"></div>')[0],
       ])[0];
   });
   w.slimbox = function (O, N, M) {
