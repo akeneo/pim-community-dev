@@ -35,11 +35,13 @@ const AssociationTypesIndex = () => {
   const notify = useNotify();
   const settingsHomeRoute = useRoute('pim_enrich_attribute_rest_index');
 
-  const {associationTypes, countAssociationTypes, search} = useAssociationTypes();
+  const {associationTypes, search} = useAssociationTypes();
+
+  // The current page state is managed by the hook to avoid inconsistency with the total number of association types.
+  const currentPage = null === associationTypes ? 0 : associationTypes.currentPage;
 
   const [searchString, setSearchString] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<string>('ASC');
-  const [page, setPage] = useState<number>(1);
   const [deleteAssociationTypeRequest, setDeleteAssociationTypeRequest] = useState<DeleteAssociationTypeRequest>({
     showConfirm: false,
     associationType: null,
@@ -49,19 +51,17 @@ const AssociationTypesIndex = () => {
 
   const onSearch = (searchValue: string) => {
     setSearchString(searchValue);
-    setPage(1);
     debouncedSearch(searchValue, sortDirection, 1);
   };
 
   const onDirectionChange = (direction: string) => {
     const newSortDirection = direction === 'descending' ? 'DESC' : 'ASC';
     setSortDirection(newSortDirection);
-    search(searchString, newSortDirection, page);
+    search(searchString, newSortDirection, currentPage);
   };
 
   const followPage = (newPage: any) => {
-    if (newPage !== page) {
-      setPage(newPage);
+    if (newPage !== currentPage) {
       search(searchString, sortDirection, newPage);
     }
   };
@@ -78,9 +78,8 @@ const AssociationTypesIndex = () => {
     setDeleteAssociationTypeRequest({showConfirm: false, associationType: null});
 
     if (deleteAssociationTypeSuccess) {
-      const searchPage = associationTypes.length === 1 && page > 1 ? 1 : page;
-      search(searchString, sortDirection, searchPage);
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.association_type.flash.delete.success'));
+      search(searchString, sortDirection, currentPage);
     } else {
       notify(NotificationLevel.ERROR, translate('pim_enrich.entity.association_type.flash.delete.fail'));
     }
@@ -93,15 +92,14 @@ const AssociationTypesIndex = () => {
     const defaultSearchString = DatagridState.get('association-type-grid', 'searchString') || '';
     setSearchString(defaultSearchString);
 
-    const defaultPage = parseInt(DatagridState.get('association-type-grid', 'page') || '1');
-    setPage(defaultPage);
+    const defaultPage = parseInt(DatagridState.get('association-type-grid', 'currentPage') || '0') || currentPage;
 
     search(defaultSearchString, defaultSortDirection, defaultPage);
   }, []);
 
   useEffect(() => {
-    DatagridState.set('association-type-grid', {searchString, sortDirection, page});
-  }, [searchString, sortDirection, page]);
+    DatagridState.set('association-type-grid', {searchString, sortDirection, currentPage});
+  }, [searchString, sortDirection, currentPage]);
 
   return (
     <>
@@ -121,49 +119,47 @@ const AssociationTypesIndex = () => {
         <PageHeader.Actions>
           <CreatePimView viewName="pim-association-type-index-create-button" />
         </PageHeader.Actions>
-        <PageHeader.Title>
-          {translate(
-            'pim_enrich.entity.association_type.page_title.index',
-            {count: countAssociationTypes},
-            countAssociationTypes
-          )}
-        </PageHeader.Title>
+        {null !== associationTypes && (
+          <PageHeader.Title>
+            {translate(
+              'pim_enrich.entity.association_type.page_title.index',
+              {count: associationTypes.total},
+              associationTypes.total
+            )}
+          </PageHeader.Title>
+        )}
       </PageHeader>
       <PageContent>
-        {countAssociationTypes === 0 && searchString === '' ? (
-          <NoAssociationTypes />
-        ) : (
-          <>
-            <AssociationTypesSearchBar
-              count={countAssociationTypes}
-              searchValue={searchString}
-              placeholder={translate('pim_common.search')}
-              onSearchChange={onSearch}
-            />
-            <Pagination
-              currentPage={countAssociationTypes > 0 ? page : 0}
-              totalItems={countAssociationTypes}
-              followPage={followPage}
-            />
-            <AssociationTypesDataGrid
-              associationTypes={associationTypes}
-              searchString={searchString}
-              sortDirection={sortDirection}
-              onDirectionChange={onDirectionChange}
-              deleteAssociationType={(associationType: AssociationType) => {
-                setDeleteAssociationTypeRequest({showConfirm: true, associationType});
-              }}
-            />
-            {deleteAssociationTypeRequest.showConfirm && (
-              <DeleteConfirmation
-                deleteAction={() =>
-                  deleteAssociationType(deleteAssociationTypeRequest.associationType, setDeleteAssociationTypeRequest)
-                }
-                cancelDelete={() => setDeleteAssociationTypeRequest({showConfirm: false, associationType: null})}
+        {null !== associationTypes &&
+          (associationTypes.total === 0 && searchString === '' ? (
+            <NoAssociationTypes />
+          ) : (
+            <>
+              <AssociationTypesSearchBar
+                count={associationTypes.total}
+                searchValue={searchString}
+                placeholder={translate('pim_common.search')}
+                onSearchChange={onSearch}
               />
-            )}
-          </>
-        )}
+              <Pagination currentPage={currentPage} totalItems={associationTypes.total} followPage={followPage} />
+              <AssociationTypesDataGrid
+                associationTypes={associationTypes.list}
+                sortDirection={sortDirection}
+                onDirectionChange={onDirectionChange}
+                deleteAssociationType={(associationType: AssociationType) => {
+                  setDeleteAssociationTypeRequest({showConfirm: true, associationType});
+                }}
+              />
+              {deleteAssociationTypeRequest.showConfirm && (
+                <DeleteConfirmation
+                  deleteAction={() =>
+                    deleteAssociationType(deleteAssociationTypeRequest.associationType, setDeleteAssociationTypeRequest)
+                  }
+                  cancelDelete={() => setDeleteAssociationTypeRequest({showConfirm: false, associationType: null})}
+                />
+              )}
+            </>
+          ))}
       </PageContent>
     </>
   );

@@ -6,7 +6,6 @@ import styled from 'styled-components';
 
 type Props = {
   associationTypes: any[];
-  searchString: string;
   sortDirection: string;
   onDirectionChange: (direction: string) => void;
   deleteAssociationType: (associationType: AssociationType) => void;
@@ -33,7 +32,6 @@ const TableActionCell = styled(Table.ActionCell)`
 
 const AssociationTypesDataGrid = ({
   associationTypes,
-  searchString,
   sortDirection,
   onDirectionChange,
   deleteAssociationType,
@@ -46,7 +44,7 @@ const AssociationTypesDataGrid = ({
       {cellValue ? translate('pim_common.yes') : translate('pim_common.no')}
     </Badge>
   );
-  if (associationTypes.length === 0 && searchString !== '') {
+  if (associationTypes.length === 0) {
     return (
       <NoResults
         title={translate('pim_datagrid.no_results', {
