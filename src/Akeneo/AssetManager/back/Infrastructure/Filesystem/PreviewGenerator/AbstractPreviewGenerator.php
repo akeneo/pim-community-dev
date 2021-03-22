@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Imagine\Exception\RuntimeException;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
@@ -94,6 +95,20 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
                     $previewType
                 );
             }
+        } catch (RuntimeException $exception) {
+            $this->logger->error(
+                'Exception when trying to create a thumbnail',
+                [
+                    'data'        => $data,
+                    'attribute'   => $attribute->normalize(),
+                    'exception'   => [
+                        'type'    => get_class($exception),
+                        'message' => $exception->getMessage(),
+                    ],
+                ]
+            );
+
+            throw new CouldNotGeneratePreviewException($exception->getMessage());
         } catch (\Exception $exception) {
             $this->logger->error(
                 'Exception when trying to create a thumbnail',

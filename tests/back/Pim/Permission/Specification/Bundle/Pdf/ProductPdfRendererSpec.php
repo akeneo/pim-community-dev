@@ -20,6 +20,7 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ProductPdfRendererSpec extends ObjectBehavior
 {
@@ -51,7 +52,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
             self::TEMPLATE_NAME,
             $attributeOptionRepository,
             $authorizationChecker,
-            null
+            null,
+            $authorizationChecker
         );
     }
 

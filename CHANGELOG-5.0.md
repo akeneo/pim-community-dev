@@ -1,5 +1,17 @@
 # 5.0.x
 
+# 5.0.9 (2021-03-19)
+
+## Bug fixes
+
+- PIM-9747: Preview of URL containing cyrilic characters crashed the page on the Asset Manager
+
+# 5.0.8 (2021-03-17)
+
+# 5.0.7 (2021-03-09)
+
+# 5.0.6 (2021-03-09)
+
 # 5.0.5 (2021-02-19)
 
 ## Improvements

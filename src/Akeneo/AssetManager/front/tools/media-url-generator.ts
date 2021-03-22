@@ -17,7 +17,7 @@ export const getImageDownloadUrl = (image: File): string => {
 export const getMediaPreviewUrl = (mediaPreview: MediaPreview): string =>
   routing.generate('akeneo_asset_manager_image_preview', {
     ...mediaPreview,
-    data: btoa(mediaPreview.data),
+    data: btoa(encodeURI(mediaPreview.data)),
   });
 
 export const getAssetEditUrl = (asset: ListAsset): string =>
