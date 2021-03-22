@@ -22,6 +22,7 @@ const SelectInputContainer = styled.div<{value: string | null; readOnly: boolean
 
 const InputContainer = styled.div`
   position: relative;
+  background: ${getColor('white')};
 `;
 
 const ActionContainer = styled.div`
@@ -41,13 +42,10 @@ const SelectedOptionContainer = styled.div<{readOnly: boolean} & AkeneoThemedPro
   height: 100%;
   display: flex;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 16px;
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
   box-sizing: border-box;
-`;
-
-const OpenButton = styled(ArrowDownIcon)`
-  color: ${getColor('grey', 100)};
+  color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
 `;
 
 const OptionContainer = styled.div`
@@ -320,7 +318,7 @@ const SelectInput = ({
               ghost="borderless"
               level="tertiary"
               size="small"
-              icon={<OpenButton />}
+              icon={<ArrowDownIcon />}
               title={openLabel}
               onClick={handleFocus}
               onFocus={handleBlur}

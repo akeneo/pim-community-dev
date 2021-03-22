@@ -33,6 +33,8 @@
 - PIM-9711: Check that a category root isn't linked to a user or a channel before moving it to a sub-category
 - PIM-9730: Fix category tree initialization in the PEF when switching tabs
 - PIM-9679: Clean existing text attribute values removing linebreaks
+- PIM-9758: Fix bad replacement for line breaks introduced in PIM-9658
+- PIM-9743: Add the "change input" event so that the SKU/code doesn't disappear when doing copy/paste 
 
 ## New features
 

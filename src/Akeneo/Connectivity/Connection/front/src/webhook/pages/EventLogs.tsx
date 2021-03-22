@@ -9,23 +9,46 @@ import {EventSubscriptionDisabled} from '../components/EventSubscriptionDisabled
 import {EventLogList} from '../components/EventLogList';
 import {useFetchConnection} from '../hooks/api/use-fetch-connection';
 import {useFetchEventSubscription} from '../hooks/api/use-fetch-event-subscription';
+import {DownloadLogsButton} from '../components/DownloadLogsButton';
 
 export const EventLogs: FC = () => {
     const {connectionCode} = useParams<{connectionCode: string}>();
     const {connection} = useFetchConnection(connectionCode);
+    const {eventSubscription, fetchEventSubscription} = useFetchEventSubscription(connectionCode);
+
+    useEffect(() => {
+        fetchEventSubscription();
+    }, [fetchEventSubscription]);
+
+    if (undefined === connection || undefined === eventSubscription) {
+        return (
+            <>
+                <PageHeader
+                    breadcrumb={<EventLogsBreadcrumb />}
+                    userButtons={<UserButtons />}
+                    buttons={[<DownloadLogsButton key={0} disabled={true} />]}
+                />
+                <PageContent>
+                    <Loading />
+                </PageContent>
+            </>
+        );
+    }
 
     return (
         <>
-            <PageHeader breadcrumb={<EventLogsBreadcrumb />} userButtons={<UserButtons />}>
-                {connection?.label}
+            <PageHeader
+                breadcrumb={<EventLogsBreadcrumb />}
+                userButtons={<UserButtons />}
+                buttons={[<DownloadLogsButton key={0} eventSubscription={eventSubscription} />]}
+            >
+                {connection.label}
             </PageHeader>
             <PageContent>
-                {undefined === connection ? (
-                    <Loading />
+                {eventSubscription.enabled ? (
+                    <EventLogList connectionCode={connectionCode} />
                 ) : (
-                    <EnabledEventSubscriptionGuard connectionCode={connection.code}>
-                        <EventLogList connectionCode={connection.code} />
-                    </EnabledEventSubscriptionGuard>
+                    <EventSubscriptionDisabled connectionCode={connectionCode} />
                 )}
             </PageContent>
         </>
@@ -48,21 +71,4 @@ const EventLogsBreadcrumb: FC = () => {
             </Breadcrumb.Step>
         </Breadcrumb>
     );
-};
-
-const EnabledEventSubscriptionGuard: FC<{connectionCode: string}> = ({children, connectionCode}) => {
-    const {eventSubscription, fetchEventSubscription} = useFetchEventSubscription(connectionCode);
-    useEffect(() => {
-        fetchEventSubscription();
-    }, [fetchEventSubscription]);
-
-    if (undefined === eventSubscription) {
-        return <Loading />;
-    }
-
-    if (false === eventSubscription.enabled) {
-        return <EventSubscriptionDisabled connectionCode={connectionCode} />;
-    }
-
-    return <>{children}</>;
 };

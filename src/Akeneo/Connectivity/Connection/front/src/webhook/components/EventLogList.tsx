@@ -1,6 +1,6 @@
-import React, {FC, useCallback, useRef, useState} from 'react';
+import React, {FC, useCallback, useContext, useRef, useState} from 'react';
 import styled from 'styled-components';
-import {ArrowRightIcon, GraphIllustration, Information, Table} from 'akeneo-design-system';
+import {ArrowRightIcon, ArrowDownIcon, GraphIllustration, Information, Table} from 'akeneo-design-system';
 import {NoEventLogs} from './NoEventLogs';
 import {useTranslate} from '../../shared/translate';
 import {EventLogBadge} from './EventLogBadge';
@@ -8,6 +8,8 @@ import EventLogDatetime from './EventLogDatetime';
 import useInfiniteEventSubscriptionLogs, {Filters} from '../hooks/api/use-infinite-event-subscription-logs';
 import {EventSubscriptionLogLevel} from '../model/EventSubscriptionLogLevel';
 import {EventLogListFilters} from './EventLogListFilters';
+import ExpandableTableRow, {IsExpanded} from '../../common/components/ExpandableTableRow';
+import FormattedJSON from '../../common/components/FormattedJSON';
 
 const ExtraSmallColumnHeaderCell = styled(Table.HeaderCell)`
     width: 125px;
@@ -25,6 +27,12 @@ const ContextContainer = styled.span`
     display: block;
     overflow: hidden;
 `;
+
+const Arrow: FC = () => {
+    const isExpanded = useContext(IsExpanded);
+
+    return isExpanded ? <ArrowDownIcon /> : <ArrowRightIcon />;
+};
 
 export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => {
     const translate = useTranslate();
@@ -77,9 +85,9 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                 </Table.Header>
                 <Table.Body ref={scrollContainer}>
                     {logs.map(({timestamp, level, message, context}, index) => (
-                        <Table.Row key={index} onClick={() => undefined}>
+                        <ExpandableTableRow key={index} contentToExpand={<FormattedJSON>{context}</FormattedJSON>}>
                             <Table.Cell>
-                                <ArrowRightIcon/>
+                                <Arrow/>
                                 <EventLogDatetime timestamp={timestamp * 1000}/>
                             </Table.Cell>
                             <Table.Cell>
@@ -89,7 +97,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                                 <MessageContainer>{message}</MessageContainer>
                                 <ContextContainer>{JSON.stringify(context)}</ContextContainer>
                             </Table.Cell>
-                        </Table.Row>
+                        </ExpandableTableRow>
                     ))}
                 </Table.Body>
             </Table>
