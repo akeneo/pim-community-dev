@@ -11,7 +11,7 @@ type ProductOrProductModelLabel = string;
 type ScopeCode = string;
 
 type AllProps = {
-  productDraftType: 'product_draft';
+  productDraftType: 'product_draft' | 'product_model_draft';
   id: ProposalId;
 };
 

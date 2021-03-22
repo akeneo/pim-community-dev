@@ -7,7 +7,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 const StringCell = require('oro/datagrid/string-cell');
 
 class ProposalCell extends StringCell {
-  constructor(options) {
+  constructor(options: any) {
     super({
       ...options,
       className: 'AknGrid-bodyCell AknGrid-bodyCell--full',
@@ -15,7 +15,7 @@ class ProposalCell extends StringCell {
   }
 
   render() {
-    const formattedChanges: string = this.model.get('formatted_changes');
+    const formattedChanges = this.model.get('formatted_changes');
     const documentType = this.model.get('document_type');
     const documentId = this.model.get('document_id');
     const documentLabel = this.model.get('document_label');

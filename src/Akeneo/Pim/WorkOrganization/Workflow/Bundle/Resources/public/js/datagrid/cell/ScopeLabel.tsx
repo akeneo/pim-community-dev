@@ -27,7 +27,7 @@ const ScopeLabel: React.FC<ScopeProps> = ({scopeCode}) => {
     FetcherRegistry.initialize().then(() => {
       FetcherRegistry.getFetcher('channel')
         .fetch(scopeCode)
-        .then(scope => {
+        .then((scope: Scope) => {
           setScope(scope);
         });
     });

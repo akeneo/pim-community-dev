@@ -92,6 +92,7 @@ const LocaleScope = styled.div`
 `;
 
 type ScopeCode = string;
+type AttributeCode = string;
 
 type InProgressProposal = {
   status: 'in_progress';
@@ -151,7 +152,7 @@ const Proposal: React.FC<ProposalProps> = ({
     {id: documentId}
   )}`;
 
-  const flatChanges = [];
+  const flatChanges: (ProposalChange & {attributeCode: AttributeCode})[] = [];
   if (formattedChanges.status === 'ready') {
     Object.keys(formattedChanges.changes).forEach(attributeCode => {
       formattedChanges.changes[attributeCode].forEach(change => {
@@ -179,9 +180,15 @@ const Proposal: React.FC<ProposalProps> = ({
           </span>
         </ProposalDescription>
         <ProposalDescription>
-          {formattedChanges.approve && <ApproveAllButton productDraftType={documentType} id={proposalId} />}
-          {formattedChanges.refuse && <RejectAllButton productDraftType={documentType} id={proposalId} />}
-          {formattedChanges.remove && <RemoveAllButton productDraftType={documentType} id={proposalId} />}
+          {formattedChanges.status === 'ready' && formattedChanges.approve && (
+            <ApproveAllButton productDraftType={documentType} id={proposalId} />
+          )}
+          {formattedChanges.status === 'ready' && formattedChanges.refuse && (
+            <RejectAllButton productDraftType={documentType} id={proposalId} />
+          )}
+          {formattedChanges.status === 'in_progress' && formattedChanges.remove && (
+            <RemoveAllButton productDraftType={documentType} id={proposalId} />
+          )}
         </ProposalDescription>
       </Header>
       {formattedChanges.status === 'in_progress' &&

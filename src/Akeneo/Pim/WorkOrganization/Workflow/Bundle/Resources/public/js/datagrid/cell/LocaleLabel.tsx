@@ -14,7 +14,7 @@ const LocaleLabel: React.FC<LocaleProps> = ({localeCode}) => {
     FetcherRegistry.initialize().then(() => {
       FetcherRegistry.getFetcher('locale')
         .fetch(localeCode)
-        .then(locale => {
+        .then((locale: Locale) => {
           setLocale(locale);
         });
     });

@@ -54,7 +54,12 @@ const ProposalModal = ({
         />
       </Field>
       <Modal.BottomButtons>
-        <Button onClick={onClose} level="tertiary">
+        <Button
+          onClick={() => {
+            onClose();
+          }}
+          level="tertiary"
+        >
           {translate('pim_common.cancel')}
         </Button>
         <Button onClick={handleSend} level="primary">

@@ -19,19 +19,23 @@ services:
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 130 }
 
-    pimee_workflow.normalizer.proposal_product:
-        class: '%pimee_workflow.normalizer.proposal_product.class%'
+    pimee_workflow.normalizer.proposal_changes:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer\ProposalChangesNormalizer'
         arguments:
             - '@pim_standard_format_serializer'
-            - '@pim_datagrid_serializer'
             - '@akeneo.pim.enrichment.factory.value'
-            - '@akeneo.pim.structure.query.get_attributes'
             - '@pimee_workflow.twig.extension.product_draft_changes'
             - '@security.authorization_checker'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.locale'
             - '@pimee_workflow.twig.extension.product_draft_status_grid'
             - '@pimee_workflow.helper.product_draft_changes_permission'
+
+    pimee_workflow.normalizer.proposal_product:
+        class: '%pimee_workflow.normalizer.proposal_product.class%'
+        arguments:
+            - '@pim_datagrid_serializer'
+            - '@pimee_workflow.normalizer.proposal_changes'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
         lazy: true
@@ -39,16 +43,8 @@ services:
     pimee_workflow.normalizer.proposal_product_model:
         class: '%pimee_workflow.normalizer.proposal_product_model.class%'
         arguments:
-            - '@pim_standard_format_serializer'
             - '@pim_datagrid_serializer'
-            - '@akeneo.pim.enrichment.factory.value'
-            - '@akeneo.pim.structure.query.get_attributes'
-            - '@pimee_workflow.twig.extension.product_draft_changes'
-            - '@security.authorization_checker'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.locale'
-            - '@pimee_workflow.twig.extension.product_draft_status_grid'
-            - '@pimee_workflow.helper.product_draft_changes_permission'
+            - '@pimee_workflow.normalizer.proposal_changes'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
         lazy: true
