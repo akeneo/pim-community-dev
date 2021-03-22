@@ -4,8 +4,8 @@ import {useRoute} from '../../../shared/router';
 import {useInfiniteScroll} from '../../scroll';
 import {EventSubscriptionLogLevel} from '../../model/EventSubscriptionLogLevel';
 // TODO import from our context
-import {useDebounceCallback} from '@akeneo-pim-community/shared';
 import {useEffectAfterFirstRender} from '../../../shared/hooks/useEffectAfterFirstRender';
+import {useDebounceCallback} from '../../../shared/utils/use-debounce-callback';
 
 const MAX_PAGES = 20;
 
@@ -56,7 +56,7 @@ const useInfiniteEventSubscriptionLogs = (
     };
 
     if (null !== searchAfter) {
-        parameters['search_after'] = searchAfter;
+        parameters.search_after = searchAfter;
     }
 
     // This damn hook forbid us to build the url inside fetchNextResponse()
