@@ -59,7 +59,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
     protected function checkValue($property, $operator, $value)
     {
         if (Operators::IN_LIST === $operator || Operators::NOT_IN_LIST === $operator) {
-            FieldFilterHelper::checkArray($property, $value, self::class);
+            FieldFilterHelper::checkArrayOfStrings($property, $value, self::class);
         } else {
             FieldFilterHelper::checkString($property, $value, self::class);
         }
