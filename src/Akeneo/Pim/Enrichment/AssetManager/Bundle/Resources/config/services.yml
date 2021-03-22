@@ -45,3 +45,14 @@ services:
                 asset_manager_xlsx_asset_import: pim-job-instance-xlsx-asset-import
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
+
+    # event subscribers
+    Akeneo\Pim\Enrichment\AssetManager\Bundle\EventSubscriber\RemoveNonExistentAssetValuesSubscriber:
+        arguments:
+            - '@security.token_storage'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance'
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }

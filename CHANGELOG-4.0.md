@@ -1,5 +1,13 @@
 # 4.0.x
 
+# 4.0.98 (2021-03-16)
+
+## Bug fixes
+
+- PIM-9736: Remove references to deleted assets from product values in a background task
+
+# 4.0.97 (2021-03-10)
+
 # 4.0.96 (2021-02-23)
 
 ## Bug fixes
