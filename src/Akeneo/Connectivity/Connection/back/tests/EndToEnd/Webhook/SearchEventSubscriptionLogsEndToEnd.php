@@ -42,7 +42,6 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
         $this->webhookLoader->initWebhook($sapConnection->code());
         $this->authenticateAsAdmin();
 
-
         $this->generateLogs(
             function ($index) use ($timestamp) {
                 return [
@@ -59,7 +58,10 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
         $this->client->request(
             'GET',
             '/rest/events-api-debug/search-event-subscription-logs',
-            ['connection_code' => $sapConnection->code()]
+            [
+                'connection_code' => $sapConnection->code(),
+                'filters' => '{}',
+            ]
         );
 
         $response = json_decode($this->client->getResponse()->getContent(), true);
@@ -72,7 +74,7 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
         $this->client->request(
             'GET',
             '/rest/events-api-debug/search-event-subscription-logs',
-            ['connection_code' => $sapConnection->code(), 'search_after' => $searchAfter]
+            ['connection_code' => $sapConnection->code(), 'search_after' => $searchAfter, 'filters' => '{}']
         );
 
         $response = json_decode($this->client->getResponse()->getContent(), true);
