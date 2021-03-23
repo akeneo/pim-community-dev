@@ -4,6 +4,7 @@ import {Button, Image, Badge, Link, Checkbox} from '../../components';
 import {useBooleanState} from '../../hooks';
 import {SpaceContainer, useSelection} from '../../storybook';
 import {ArrowDownIcon} from '../../icons';
+import {action} from '@storybook/addon-actions';
 
 <Meta
   title="Components/Dropdown"
@@ -60,7 +61,7 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                   <Dropdown.Title>Elements</Dropdown.Title>
                 </Dropdown.Header>
                 <Dropdown.ItemCollection>
-                  <Dropdown.Item>Item 1</Dropdown.Item>
+                  <Dropdown.Item onClick={action('Clicked')}>Item 1</Dropdown.Item>
                   <Dropdown.Item>Item 2</Dropdown.Item>
                   <Dropdown.Item>Item 3</Dropdown.Item>
                   <Dropdown.Item>Item 4</Dropdown.Item>
