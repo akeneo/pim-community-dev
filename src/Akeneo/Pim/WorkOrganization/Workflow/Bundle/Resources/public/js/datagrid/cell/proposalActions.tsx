@@ -27,7 +27,7 @@ const ApproveAllButton: (props: AllProps) => JSX.Element = ({productDraftType, i
   const [isOpen, open, close] = useBooleanState();
   const translate = useTranslate();
   const router = useRouter();
-  const url = (comment: string) => router.generate(`pimee_workflow_${productDraftType}_rest_approve`, {id, comment});
+  const getUrl = (comment: string) => router.generate(`pimee_workflow_${productDraftType}_rest_approve`, {id, comment});
   const mediator = useMediator();
 
   const handleClose = (successReponse?: any) => {
@@ -42,7 +42,7 @@ const ApproveAllButton: (props: AllProps) => JSX.Element = ({productDraftType, i
       <Button level="primary" onClick={open} size="default">
         {translate('pim_datagrid.workflow.actions.approve_all')}
       </Button>
-      {isOpen && <ProposalModal action={'approve'} onClose={handleClose} url={url} />}
+      {isOpen && <ProposalModal action="approve" onClose={handleClose} getUrl={getUrl} />}
     </>
   );
 };
@@ -51,14 +51,14 @@ const RejectAllButton: (props: AllProps) => JSX.Element = ({productDraftType, id
   const [isOpen, open, close] = useBooleanState();
   const translate = useTranslate();
   const router = useRouter();
-  const url = (comment: string) => router.generate(`pimee_workflow_${productDraftType}_rest_refuse`, {id, comment});
+  const getUrl = (comment: string) => router.generate(`pimee_workflow_${productDraftType}_rest_refuse`, {id, comment});
 
   return (
     <>
       <Button level="danger" onClick={open} size="default">
         {translate('pim_datagrid.workflow.actions.refuse_all')}
       </Button>
-      {isOpen && <ProposalModal action={'reject'} onClose={close} url={url} />}
+      {isOpen && <ProposalModal action="reject" onClose={close} getUrl={getUrl} />}
     </>
   );
 };
@@ -67,14 +67,14 @@ const RemoveAllButton: (props: AllProps) => JSX.Element = ({productDraftType, id
   const [isOpen, open, close] = useBooleanState();
   const translate = useTranslate();
   const router = useRouter();
-  const url = (comment: string) => router.generate(`pimee_workflow_${productDraftType}_rest_remove`, {id, comment});
+  const getUrl = (comment: string) => router.generate(`pimee_workflow_${productDraftType}_rest_remove`, {id, comment});
 
   return (
     <>
       <Button level="danger" onClick={open} size="default">
         {translate('pim_common.remove')}
       </Button>
-      {isOpen && <ProposalModal action={'remove'} onClose={close} url={url} />}
+      {isOpen && <ProposalModal action="remove" onClose={close} getUrl={getUrl} />}
     </>
   );
 };
@@ -91,7 +91,7 @@ const ApproveButton: (props: PartialProps) => JSX.Element = ({
   const [isOpen, open, close] = useBooleanState();
   const translate = useTranslate();
   const router = useRouter();
-  const url = (comment: string) =>
+  const getUrl = (comment: string) =>
     router.generate(`pimee_workflow_${productDraftType}_rest_partial_approve`, {
       id,
       code: attributeCode,
@@ -112,7 +112,7 @@ const ApproveButton: (props: PartialProps) => JSX.Element = ({
           product: documentLabel,
         })}
       />
-      {isOpen && <ProposalModal action={'partial_approve'} onClose={close} url={url} />}
+      {isOpen && <ProposalModal action="partial_approve" onClose={close} getUrl={getUrl} />}
     </>
   );
 };
@@ -129,7 +129,7 @@ const RejectButton: (props: PartialProps) => JSX.Element = ({
   const [isOpen, open, close] = useBooleanState();
   const translate = useTranslate();
   const router = useRouter();
-  const url = (comment: string) =>
+  const getUrl = (comment: string) =>
     router.generate(`pimee_workflow_${productDraftType}_rest_partial_reject`, {
       id,
       code: attributeCode,
@@ -143,7 +143,7 @@ const RejectButton: (props: PartialProps) => JSX.Element = ({
       <IconButton
         onClick={open}
         ghost
-        level={'danger'}
+        level="danger"
         icon={<CloseIcon />}
         size="small"
         title={translate('pim_datagrid.workflow.partial_reject', {
@@ -151,7 +151,7 @@ const RejectButton: (props: PartialProps) => JSX.Element = ({
           product: documentLabel,
         })}
       />
-      {isOpen && <ProposalModal action={'partial_reject'} onClose={close} url={url} />}
+      {isOpen && <ProposalModal action="partial_reject" onClose={close} getUrl={getUrl} />}
     </>
   );
 };

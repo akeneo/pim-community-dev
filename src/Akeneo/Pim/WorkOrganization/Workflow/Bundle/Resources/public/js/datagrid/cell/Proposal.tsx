@@ -22,14 +22,14 @@ const ProposalDescription = styled.div`
 `;
 
 const DocumentLink = styled.a`
-  color: ${getColor('purple', 100)};
+  color: ${getColor('brand', 100)};
   font-size: ${getFontSize('bigger')};
   font-style: italic;
   font-weight: bold;
 `;
 
 const Highlight = styled.span`
-  color: #9452ba;
+  color: ${getColor('brand', 100)};
 `;
 
 const Change = styled.div<{isSame: boolean}>`
@@ -45,17 +45,17 @@ const Change = styled.div<{isSame: boolean}>`
 
   del {
     text-decoration: none;
-    background: #f6dfdc;
+    background: ${getColor('red', 20)};
   }
 
   ins {
     text-decoration: none;
-    background: #e1f0e3;
+    background: ${getColor('green', 20)};
   }
 `;
 
 const Attribute = styled.span`
-  color: #11324d;
+  color: ${getColor('grey', 140)};
   font-style: italic;
   font-weight: bold;
   padding-right: 5px;
@@ -64,12 +64,12 @@ const Attribute = styled.span`
   white-space: nowrap;
 `;
 const OldValue = styled.span`
-  color: #d4604f;
+  color: ${getColor('red', 100)};
   margin-right: 5px;
 `;
 
 const NewValue = styled.span`
-  color: #67b373;
+  color: ${getColor('green', 100)};
   margin-right: 5px;
 `;
 

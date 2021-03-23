@@ -1,6 +1,6 @@
 import React from 'react';
 import {LoaderIcon, Locale as LocaleWithFlag} from 'akeneo-design-system';
-import {Locale, LocaleCode} from '@akeneo-pim-community/shared';
+import {Locale, LocaleCode, useIsMounted} from '@akeneo-pim-community/shared';
 const FetcherRegistry = require('pim/fetcher-registry');
 
 type LocaleProps = {
@@ -9,13 +9,16 @@ type LocaleProps = {
 
 const LocaleLabel: React.FC<LocaleProps> = ({localeCode}) => {
   const [locale, setLocale] = React.useState<Locale>();
+  const isMounted = useIsMounted();
 
   React.useEffect(() => {
     FetcherRegistry.initialize().then(() => {
       FetcherRegistry.getFetcher('locale')
         .fetch(localeCode)
         .then((locale: Locale) => {
-          setLocale(locale);
+          if (isMounted) {
+            setLocale(locale);
+          }
         });
     });
   }, []);

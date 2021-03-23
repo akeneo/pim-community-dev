@@ -4,11 +4,11 @@ import {NotificationLevel, useMediator, useNotify, useTranslate} from '@akeneo-p
 
 const ProposalModal = ({
   action,
-  url,
+  getUrl,
   onClose,
 }: {
   action: 'approve' | 'reject' | 'remove' | 'partial_approve' | 'partial_reject';
-  url: (comment: string) => string;
+  getUrl: (comment: string) => string;
   onClose: (hasSucceed?: boolean) => void;
 }) => {
   const translate = useTranslate();
@@ -17,7 +17,7 @@ const ProposalModal = ({
   const [comment, setComment] = useState<string>('');
 
   const handleSend = async () => {
-    fetch(url(comment), {
+    fetch(getUrl(comment), {
       headers: {
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest',

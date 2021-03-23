@@ -1,6 +1,7 @@
 import React from 'react';
 import {LoaderIcon} from 'akeneo-design-system';
-import {LabelCollection, Locale} from '@akeneo-pim-community/shared';
+import {LabelCollection, Locale, useIsMounted} from '@akeneo-pim-community/shared';
+import {getLabel} from 'pim-community-dev/public/bundles/pimui/js/i18n';
 const FetcherRegistry = require('pim/fetcher-registry');
 const UserContext = require('pim/user-context');
 
@@ -22,13 +23,16 @@ type ScopeProps = {
 
 const ScopeLabel: React.FC<ScopeProps> = ({scopeCode}) => {
   const [scope, setScope] = React.useState<Scope>();
+  const isMounted = useIsMounted();
 
   React.useEffect(() => {
     FetcherRegistry.initialize().then(() => {
       FetcherRegistry.getFetcher('channel')
         .fetch(scopeCode)
         .then((scope: Scope) => {
-          setScope(scope);
+          if (isMounted) {
+            setScope(scope);
+          }
         });
     });
   }, []);
@@ -37,7 +41,7 @@ const ScopeLabel: React.FC<ScopeProps> = ({scopeCode}) => {
     return <LoaderIcon />;
   }
 
-  return <>{scope.labels[UserContext.get('uiLocale') ?? `[${scope.code}]`]}</>;
+  return <>{getLabel(scope.labels, UserContext.get('uiLocale'), scope.code)}</>;
 };
 
 export {ScopeLabel};
