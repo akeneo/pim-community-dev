@@ -63,6 +63,19 @@ test('It transmit click and keydown events to checkboxes', () => {
   expect(handleChange).toHaveBeenCalledTimes(3);
 });
 
+test('It transmit click and keydown events to normal item', () => {
+  const clickHandler = jest.fn();
+
+  render(<Item onClick={clickHandler}>The Item</Item>);
+
+  fireEvent.click(screen.getByText('The Item'));
+  fireEvent.keyDown(screen.getByText('The Item'), {key: ' ', code: 'Space'});
+  fireEvent.keyDown(screen.getByText('The Item'), {key: 'Enter', code: 'Enter'});
+  expect(clickHandler).toHaveBeenCalledTimes(3);
+  fireEvent.keyDown(screen.getByText('The Item'), {key: 'ArrowDown', code: 'ArrowDown'});
+  expect(clickHandler).toHaveBeenCalledTimes(3);
+});
+
 it('It does not allow click or selection if the Item is disabled', () => {
   const handler = jest.fn();
 
