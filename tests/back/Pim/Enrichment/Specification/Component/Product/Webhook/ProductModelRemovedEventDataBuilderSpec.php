@@ -64,8 +64,8 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
         $bulkEvent = new BulkEvent([$blueJeanEvent, $redJeanEvent]);
 
         $expectedCollection = new EventDataCollection();
-        $expectedCollection->setEventData($blueJeanEvent, ['resource' => ['code' => 'blue_jean']]);
-        $expectedCollection->setEventData($redJeanEvent, ['resource' => ['code' => 'red_jean']]);
+        $expectedCollection->setEventData($blueJeanEvent, ['resource' => ['code' => 'blue_jean']], 'product_model_blue_jean');
+        $expectedCollection->setEventData($redJeanEvent, ['resource' => ['code' => 'red_jean']], 'product_model_red_jean');
 
         $collection = $this->build($bulkEvent, $user)->getWrappedObject();
 

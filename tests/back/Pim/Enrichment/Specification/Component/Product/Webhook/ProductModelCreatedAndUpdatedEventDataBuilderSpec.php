@@ -109,34 +109,42 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
             ->willReturn($productModelList);
 
         $expectedCollection = new EventDataCollection();
-        $expectedCollection->setEventData($jeanEvent, [
-            'resource' => [
-                'code' => 'jean',
-                'family' => 'another_family',
-                'family_variant' => 'another_family_variant',
-                'parent' => null,
-                'categories' => [],
-                'values' => (object)[],
-                'created' => '2020-04-23T15:55:50+00:00',
-                'updated' => '2020-04-25T15:55:50+00:00',
-                'associations' => (object)[],
-                'quantified_associations' => (object)[],
+        $expectedCollection->setEventData(
+            $jeanEvent,
+            [
+                'resource' => [
+                    'code' => 'jean',
+                    'family' => 'another_family',
+                    'family_variant' => 'another_family_variant',
+                    'parent' => null,
+                    'categories' => [],
+                    'values' => (object)[],
+                    'created' => '2020-04-23T15:55:50+00:00',
+                    'updated' => '2020-04-25T15:55:50+00:00',
+                    'associations' => (object)[],
+                    'quantified_associations' => (object)[],
+                ],
             ],
-        ]);
-        $expectedCollection->setEventData($shoesEvent, [
-            'resource' => [
-                'code' => 'shoes',
-                'family' => 'another_family',
-                'family_variant' => 'another_family_variant',
-                'parent' => null,
-                'categories' => [],
-                'values' => (object)[],
-                'created' => '2020-04-23T15:55:50+00:00',
-                'updated' => '2020-04-25T15:55:50+00:00',
-                'associations' => (object)[],
-                'quantified_associations' => (object)[],
+            'product_model_jean_1587830150',
+        );
+        $expectedCollection->setEventData(
+            $shoesEvent,
+            [
+                'resource' => [
+                    'code' => 'shoes',
+                    'family' => 'another_family',
+                    'family_variant' => 'another_family_variant',
+                    'parent' => null,
+                    'categories' => [],
+                    'values' => (object)[],
+                    'created' => '2020-04-23T15:55:50+00:00',
+                    'updated' => '2020-04-25T15:55:50+00:00',
+                    'associations' => (object)[],
+                    'quantified_associations' => (object)[],
+                ],
             ],
-        ]);
+            'product_model_shoes_1587830150',
+        );
 
         $collection = $this->build($bulkEvent, $user)->getWrappedObject();
 
@@ -167,20 +175,24 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $bulkEvent = new BulkEvent([$jeanEvent, $shoesEvent]);
 
         $expectedCollection = new EventDataCollection();
-        $expectedCollection->setEventData($jeanEvent, [
-            'resource' => [
-                'code' => 'jean',
-                'family' => 'another_family',
-                'family_variant' => 'another_family_variant',
-                'parent' => null,
-                'categories' => [],
-                'values' => (object)[],
-                'created' => '2020-04-23T15:55:50+00:00',
-                'updated' => '2020-04-25T15:55:50+00:00',
-                'associations' => (object)[],
-                'quantified_associations' => (object)[],
+        $expectedCollection->setEventData(
+            $jeanEvent,
+            [
+                'resource' => [
+                    'code' => 'jean',
+                    'family' => 'another_family',
+                    'family_variant' => 'another_family_variant',
+                    'parent' => null,
+                    'categories' => [],
+                    'values' => (object)[],
+                    'created' => '2020-04-23T15:55:50+00:00',
+                    'updated' => '2020-04-25T15:55:50+00:00',
+                    'associations' => (object)[],
+                    'quantified_associations' => (object)[],
+                ],
             ],
-        ]);
+            'product_model_jean_1587830150',
+        );
         $expectedCollection->setEventDataError($shoesEvent, new ProductModelNotFoundException('shoes'));
 
         $collection = $this->build($bulkEvent, $user)->getWrappedObject();
