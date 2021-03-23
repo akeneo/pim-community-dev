@@ -51,8 +51,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             self::TEMPLATE_NAME,
             $attributeOptionRepository,
             $authorizationChecker,
-            null,
-            $authorizationChecker
+            null
         );
     }
 
