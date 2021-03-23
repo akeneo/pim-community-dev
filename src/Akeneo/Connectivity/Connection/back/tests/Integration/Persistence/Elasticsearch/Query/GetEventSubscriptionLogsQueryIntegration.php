@@ -60,7 +60,7 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
     {
         $timestampNow = $this->clock->now()->getTimestamp() - 10;
         $timestampStep = 10;
-        $NumberOfGeneratedLogs = 101;
+        $countOfGeneratedLogs = 101;
         $excludeTimestamp = $timestampNow - $timestampStep * $NumberOfGeneratedLogs;
 
         $this->generateLogs(
