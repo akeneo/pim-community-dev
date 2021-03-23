@@ -54,6 +54,7 @@ final class RoleWithPermissionsUpdater implements ObjectUpdaterInterface
 
     private function setPermissions(RoleWithPermissions $roleWithPermissions, array $grantedPermissions): void
     {
+        $this->aclManager->clearCache();
         $privileges = [];
         $aclPrivileges = $this->aclManager->getPrivilegeRepository()->getPrivileges(
             $this->aclManager->getSid($roleWithPermissions->role())

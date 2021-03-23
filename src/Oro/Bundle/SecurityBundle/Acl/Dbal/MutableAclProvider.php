@@ -125,6 +125,14 @@ class MutableAclProvider extends BaseMutableAclProvider
     }
 
     /**
+     * Returns the result using the storage.
+     */
+    public function isObjectIdentityExists(ObjectIdentityInterface $oid): bool
+    {
+        return false !== $this->retrieveObjectIdentityPrimaryKey($oid);
+    }
+
+    /**
      * Constructs the SQL for updating a security identity.
      *
      * @param SecurityIdentityInterface $sid

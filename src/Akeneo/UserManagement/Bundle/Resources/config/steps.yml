@@ -129,7 +129,7 @@ services:
             - '@pim_connector.reader.file.import.csv_user_role'
             - '@pim_connector.processor.denormalization.user_role_with_permissions'
             - '@pim_connector.writer.database.user_role_with_permission'
-            - 100
+            - 1
             - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_user_role_import.import:
@@ -141,5 +141,5 @@ services:
             - '@pim_connector.reader.file.import.xlsx_user_role'
             - '@pim_connector.processor.denormalization.user_role_with_permissions'
             - '@pim_connector.writer.database.user_role_with_permission'
-            - 100
+            - 1
             - '@akeneo_batch.job.job_stopper'
