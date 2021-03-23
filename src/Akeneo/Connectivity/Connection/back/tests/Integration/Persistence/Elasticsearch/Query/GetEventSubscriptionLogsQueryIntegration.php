@@ -61,7 +61,7 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
         $timestampNow = $this->clock->now()->getTimestamp() - 10;
         $timestampStep = 10;
         $countOfGeneratedLogs = 101;
-        $excludeTimestamp = $timestampNow - $timestampStep * $NumberOfGeneratedLogs;
+        $excludeTimestamp = $timestampNow - $timestampStep * $countOfGeneratedLogs;
 
         $this->generateLogs(
             function ($index) use (&$timestampNow, $timestampStep) {
@@ -75,7 +75,7 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
                     'context' => [],
                 ];
             },
-            $NumberOfGeneratedLogs
+            $countOfGeneratedLogs
         );
 
         $logs = iterator_to_array($this->getEventSubscriptionLogsQuery->execute('a_connection_code'));
