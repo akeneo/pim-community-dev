@@ -4,7 +4,6 @@ import {useHistory, useParams} from 'react-router';
 import styled from 'styled-components';
 import {ApplyButton, DropdownLink, PageContent, PageHeader, SecondaryActionsDropdownButton} from '../../common';
 import defaultImageUrl from '../../common/assets/illustrations/NewAPI.svg';
-import {PimView} from '../../infrastructure/pim-view/PimView';
 import {Connection} from '../../model/connection';
 import {FlowType} from '../../model/flow-type.enum';
 import {WrongCredentialsCombinations} from '../../model/wrong-credentials-combinations';
@@ -26,6 +25,7 @@ import {
     useWrongCredentialsCombinationsState,
 } from '../wrong-credentials-combinations-context';
 import {Breadcrumb} from 'akeneo-design-system';
+import {UserButtons} from '../../shared/user';
 
 export type FormValues = {
     label: string;
@@ -186,12 +186,7 @@ const HeaderContent = ({connection}: {connection: Connection}) => {
                 </SecondaryActionsDropdownButton>,
                 <SaveButton key={1} />,
             ]}
-            userButtons={
-                <PimView
-                    className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-                    viewName='pim-connectivity-connection-user-navigation'
-                />
-            }
+            userButtons={<UserButtons />}
             state={<FormState />}
             imageSrc={
                 null === formik.values.image ? defaultImageUrl : generateMediaUrl(formik.values.image, 'thumbnail')

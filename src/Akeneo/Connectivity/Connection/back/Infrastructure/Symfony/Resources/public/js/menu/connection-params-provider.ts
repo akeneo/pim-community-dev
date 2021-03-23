@@ -8,6 +8,7 @@ class ConnectionParamsProvider extends View {
         case 'akeneo_connectivity_connection_settings_edit':
         case 'akeneo_connectivity_connection_error_management_connection_monitoring':
         case 'akeneo_connectivity_connection_webhook_edit':
+        case 'akeneo_connectivity_connection_webhook_event_logs':
           this.getRoot().trigger('pim_menu:item:update_route_params', {
             route: 'akeneo_connectivity_connection_settings_edit',
             routeParams: {code: params.code},
@@ -18,6 +19,10 @@ class ConnectionParamsProvider extends View {
           });
           this.getRoot().trigger('pim_menu:item:update_route_params', {
             route: 'akeneo_connectivity_connection_webhook_edit',
+            routeParams: {code: params.code},
+          });
+          this.getRoot().trigger('pim_menu:item:update_route_params', {
+            route: 'akeneo_connectivity_connection_webhook_event_logs',
             routeParams: {code: params.code},
           });
       }

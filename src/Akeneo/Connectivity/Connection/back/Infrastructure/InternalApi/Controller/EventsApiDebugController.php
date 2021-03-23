@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetAllEventSubscriptionDebugLogsQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SearchEventSubscriptionDebugLogsQueryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\HeaderUtils;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -18,14 +20,17 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class EventsApiDebugController
 {
-    private GetAllEventSubscriptionDebugLogsQueryInterface $getEventSubscriptionLogsQuery;
+    private GetAllEventSubscriptionDebugLogsQueryInterface $getAllEventSubscriptionDebugLogsQuery;
+    private SearchEventSubscriptionDebugLogsQueryInterface $searchEventSubscriptionDebugLogsQuery;
     private SecurityFacade $securityFacade;
 
     public function __construct(
-        GetAllEventSubscriptionDebugLogsQueryInterface $getEventSubscriptionLogsQuery,
+        GetAllEventSubscriptionDebugLogsQueryInterface $getAllEventSubscriptionDebugLogsQuery,
+        SearchEventSubscriptionDebugLogsQueryInterface $searchEventSubscriptionDebugLogsQuery,
         SecurityFacade $securityFacade
     ) {
-        $this->getEventSubscriptionLogsQuery = $getEventSubscriptionLogsQuery;
+        $this->getAllEventSubscriptionDebugLogsQuery = $getAllEventSubscriptionDebugLogsQuery;
+        $this->searchEventSubscriptionDebugLogsQuery = $searchEventSubscriptionDebugLogsQuery;
         $this->securityFacade = $securityFacade;
     }
 
@@ -37,7 +42,7 @@ class EventsApiDebugController
 
         $connectionCode = $request->query->get('connection_code');
 
-        $logs = $this->getEventSubscriptionLogsQuery->execute($connectionCode);
+        $logs = $this->getAllEventSubscriptionDebugLogsQuery->execute($connectionCode);
 
         $disposition = HeaderUtils::makeDisposition(
             HeaderUtils::DISPOSITION_ATTACHMENT,
@@ -78,5 +83,19 @@ class EventsApiDebugController
         );
 
         return $response;
+    }
+
+    public function searchEventSubscriptionLogs(Request $request): Response
+    {
+        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
+            throw new AccessDeniedException();
+        }
+
+        $connectionCode = $request->query->get('connection_code');
+        $searchAfter = $request->query->get('search_after');
+
+        $logs = $this->searchEventSubscriptionDebugLogsQuery->execute($connectionCode, $searchAfter);
+
+        return new JsonResponse($logs);
     }
 }

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {PageContent, PageHeader, RuntimeError} from '../../common/components';
-import {PimView} from '../../infrastructure/pim-view/PimView';
 import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {Breadcrumb} from 'akeneo-design-system';
+import {UserButtons} from '../../shared/user';
 
 const SettingsBreadcrumb = () => {
     const systemHref = `#${useRoute('oro_config_configuration_system')}`;
@@ -34,15 +34,7 @@ export class SettingsErrorBoundary extends Component<unknown, {hasError: boolean
         if (this.state.hasError) {
             return (
                 <>
-                    <PageHeader
-                        breadcrumb={<SettingsBreadcrumb />}
-                        userButtons={
-                            <PimView
-                                className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-                                viewName='pim-connectivity-connection-user-navigation'
-                            />
-                        }
-                    />
+                    <PageHeader breadcrumb={<SettingsBreadcrumb />} userButtons={<UserButtons />} />
 
                     <PageContent>
                         <RuntimeError />

@@ -3,7 +3,7 @@ import {fetchResult} from '../../../shared/fetch-result';
 import {isErr} from '../../../shared/fetch-result/result';
 import {useRoute} from '../../../shared/router';
 
-type EventSubscription = {
+export type EventSubscription = {
     connectionCode: string;
     enabled: boolean;
     secret: string | null;
@@ -20,13 +20,13 @@ type FormData = {
     active_event_subscriptions_limit: EventSubscriptionsLimit;
 };
 
-export const useFetchEventSubscriptionFormData = (connectionCode: string) => {
+export const useFetchEventSubscription = (connectionCode: string) => {
     const url = useRoute('akeneo_connectivity_connection_webhook_rest_get', {code: connectionCode});
 
     const [eventSubscription, setEventSubscription] = useState<EventSubscription>();
     const [eventSubscriptionsLimit, setEventSubscriptionsLimit] = useState<EventSubscriptionsLimit>();
 
-    const fetchEventSubscriptionFormData = useCallback(() => {
+    const fetchEventSubscription = useCallback(() => {
         fetchResult<FormData, unknown>(url).then(result => {
             if (isErr(result)) {
                 throw new Error(`Webhook for connection '${connectionCode}' not found.`);
@@ -37,5 +37,5 @@ export const useFetchEventSubscriptionFormData = (connectionCode: string) => {
         });
     }, [url]);
 
-    return {eventSubscription, eventSubscriptionsLimit, fetchEventSubscriptionFormData};
+    return {eventSubscription, eventSubscriptionsLimit, fetchEventSubscription};
 };
