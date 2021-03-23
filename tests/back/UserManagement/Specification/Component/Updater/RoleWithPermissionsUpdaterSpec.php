@@ -72,6 +72,8 @@ class RoleWithPermissionsUpdaterSpec extends ObjectBehavior
         $privilege2->getExtensionKey()->willReturn('action');
         $privilege2->getIdentity()->willReturn(new AclPrivilegeIdentity('action:privilege2', 'privilege2'));
 
+        $aclManager->clearCache()->shouldBeCalled();
+
         $this->update($roleWithPermissions, ['permissions' => ['action:privilege1']]);
         Assert::same(
             $roleWithPermissions->permissions(),
@@ -104,6 +106,8 @@ class RoleWithPermissionsUpdaterSpec extends ObjectBehavior
         $rootPrivilege->getIdentity()->willReturn(new AclPrivilegeIdentity('action:(default)', '(default)'));
         $privilege1->getExtensionKey()->willReturn('action');
         $privilege1->getIdentity()->willReturn(new AclPrivilegeIdentity('action:privilege1', 'privilege1'));
+
+        $aclManager->clearCache()->shouldBeCalled();
 
         $this->update($roleWithPermissions, ['permissions' => ['action:non_existent_privilege']]);
         Assert::same(
