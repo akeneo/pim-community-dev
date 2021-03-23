@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Pim\Enrichment\Integration;
 
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
-use Akeneo\AssetManager\Application\Asset\DeleteAllAssets\DeleteAllAssetFamilyAssetsCommand;
 use Akeneo\AssetManager\Application\Asset\DeleteAsset\DeleteAssetCommand;
+use Akeneo\AssetManager\Application\Asset\DeleteAssets\DeleteAssetsCommand;
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
 use Akeneo\Test\Integration\Configuration;
@@ -58,7 +58,7 @@ final class RemoveNonExistentAssetCollectionValuesIntegration extends TestCase
 
         // delete all assets from "packshot" asset family
         ($this->get('akeneo_assetmanager.application.asset.delete_all_asset_family_assets_handler'))(
-            new DeleteAllAssetFamilyAssetsCommand('packshot')
+            new DeleteAssetsCommand('packshot', [])
         );
         $jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         while ($jobLauncher->hasJobInQueue()) {
