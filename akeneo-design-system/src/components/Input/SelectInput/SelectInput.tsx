@@ -1,11 +1,12 @@
 import React, {ReactNode, useState, useRef, isValidElement, ReactElement} from 'react';
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {InputProps} from '../InputProps';
 import {IconButton, TextInput} from '../../../components';
-import {useBooleanState, useShortcut} from '../../../hooks';
+import {useBooleanState, useShortcut, VerticalPosition} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {ArrowDownIcon, CloseIcon} from '../../../icons';
+import {Overlay} from './Overlay/Overlay';
 
 const SelectInputContainer = styled.div<{value: string | null; readOnly: boolean} & AkeneoThemedProps>`
   width: 100%;
@@ -88,41 +89,6 @@ const EmptyResultContainer = styled.div`
   color: ${getColor('grey', 100)};
   line-height: 20px;
   text-align: center;
-`;
-
-type VerticalPosition = 'up' | 'down';
-
-const OverlayContainer = styled.div`
-  position: relative;
-`;
-
-const Overlay = styled.div<{verticalPosition: VerticalPosition} & AkeneoThemedProps>`
-  background: ${getColor('white')};
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.3);
-  padding: 10px 0 10px 0;
-  position: absolute;
-  transition: opacity 0.15s ease-in-out;
-  z-index: 2;
-  left: 0;
-  right: 0;
-
-  ${({verticalPosition}) =>
-    'up' === verticalPosition
-      ? css`
-          bottom: 46px;
-        `
-      : css`
-          top: 6px;
-        `};
-`;
-
-const Backdrop = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
 `;
 
 const OptionCollection = styled.div`
@@ -213,7 +179,7 @@ const SelectInput = ({
   clearLabel = '',
   openLabel = '',
   readOnly = false,
-  verticalPosition = 'down',
+  verticalPosition,
   'aria-labelledby': ariaLabelledby,
   ...rest
 }: SelectInputProps) => {
@@ -327,30 +293,25 @@ const SelectInput = ({
           </ActionContainer>
         )}
       </InputContainer>
-      <OverlayContainer>
-        {dropdownIsOpen && !readOnly && (
-          <>
-            <Backdrop data-testid="backdrop" onClick={handleBlur} />
-            <Overlay verticalPosition={verticalPosition} onClose={handleBlur}>
-              <OptionCollection>
-                {filteredChildren.length === 0 ? (
-                  <EmptyResultContainer>{emptyResultLabel}</EmptyResultContainer>
-                ) : (
-                  filteredChildren.map(child => {
-                    const value = child.props.value;
+      {dropdownIsOpen && !readOnly && (
+        <Overlay verticalPosition={verticalPosition} onClose={handleBlur}>
+          <OptionCollection>
+            {filteredChildren.length === 0 ? (
+              <EmptyResultContainer>{emptyResultLabel}</EmptyResultContainer>
+            ) : (
+              filteredChildren.map(child => {
+                const value = child.props.value;
 
-                    return (
-                      <OptionContainer key={value} onClick={handleOptionClick(value)}>
-                        {React.cloneElement(child)}
-                      </OptionContainer>
-                    );
-                  })
-                )}
-              </OptionCollection>
-            </Overlay>
-          </>
-        )}
-      </OverlayContainer>
+                return (
+                  <OptionContainer key={value} onClick={handleOptionClick(value)}>
+                    {React.cloneElement(child)}
+                  </OptionContainer>
+                );
+              })
+            )}
+          </OptionCollection>
+        </Overlay>
+      )}
     </SelectInputContainer>
   );
 };

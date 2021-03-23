@@ -35,6 +35,7 @@
 - PIM-9679: Clean existing text attribute values removing linebreaks
 - PIM-9758: Fix bad replacement for line breaks introduced in PIM-9658
 - PIM-9743: Add the "change input" event so that the SKU/code doesn't disappear when doing copy/paste 
+- PIM-9759: Fix step name translation for product models csv import
 - PIM-9740: Prevent to delete a channel used in a product export job
 
 ## New features

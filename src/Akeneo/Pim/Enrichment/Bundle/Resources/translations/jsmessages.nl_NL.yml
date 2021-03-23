@@ -52,6 +52,11 @@ pim_enrich.entity.product:
       select: Selecteer
       all_visible: Alle zichtbare
       copy: kopiëren
+    convert_variant_to_simple:
+      label: Converteren naar een eenvoudig product
+      dialog:
+        title: Conversie bevestigen
+        content: "Weet u zeker dat u dit variantproduct wilt converteren naar een eenvoudig product? Alle oude waarden, categorieën en associaties blijven behouden."
     history:
       version: Versie
       author: Auteur
@@ -340,6 +345,10 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Voeg sommige <span class=\"AknFullPage-title--highlight\">producten</span> toe aan een bestaand productmodel|{1}Voeg <span class=\"AknFullPage-title--highlight\">1 product</span> toe aan een bestaand productmodel|]1, Inf[Voeg <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> toe aan een bestaand productmodel"
       description: Het geselecteerde productmodel verzamelt de producten en maakt de verrijking van hun gemeenschappelijke eigenschappen mogelijk.
       no_update: Selecteer een product model voordat u wilt doorgaan
+    convert_to_simple_products:
+      label: Converteren naar een eenvoudig product
+      label_count: "{0}Converteer een selectie van <span class=\"AknFullPage-title--highlight\">producten</span> naar eenvoudige producten|{1}Converteer <span class=\"AknFullPage-title--highlight\">één product</span> naar een simpel product|]1, Inf[Converteer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> naar eenvoudige producten"
+      description: Alle bestaande waarden, categorieën en associaties worden behouden.
     associate_to_product_and_product_model:
       label: Associëren
       label_count: "{0}Koppel sommige <span class=\"AknFullPage-title--highlight\">producten</span> aan producten of product modellen|{1}Koppel <span class=\"AknFullPage-title--highlight\">1 product</span> aan producten of product modellen|]1, Inf[Koppel <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> aan producten of product modellen"
@@ -375,6 +384,8 @@ pim_datagrid:
         all_attributes: Alle attributen
         with_codes: Met codes
         with_labels: Met labels
+        without_media: Zonder media
+        with_media: Met media
       flash:
         message: "Je kunt hier de voortgang van je export volgen."
     mass_edit: Bulk acties
@@ -444,6 +455,9 @@ batch_jobs:
   add_to_existing_product_model:
     label: Toevoegen aan een bestaand productmodel
     perform.label: Toevoegen aan een bestaand productmodel
+  convert_to_simple_products:
+    label: Converteren naar een eenvoudig product
+    perform.label: Converteren naar een eenvoudig product
   csv_product_grid_context_quick_export:
     quick_export.label: Csv productoverzicht context snelle export
     quick_export_product_model.label: CSV product model raster context snel exporteren

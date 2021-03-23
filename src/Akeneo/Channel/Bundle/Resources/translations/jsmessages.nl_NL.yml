@@ -64,6 +64,15 @@ pim_enrich.entity.locale:
   label: lokalisatie
   uppercase_label: Lokalisatie
   plural_label: Lokalisaties
+  page_title:
+    index: "]-Inf, 1]{{ count }} geactiveerde locale|]1, Inf[{{ count }} geactiveerde locales"
+  helper: "Om een locale te activeren of te deactiveren, ga naar een van <a href={{ href }}>uw kanalen</a> en voeg een locale toe of verwijder deze."
+  grid:
+    columns:
+      code: Geactiveerde locales
+    filters:
+      search_placeholder: Zoek een geactiveerde locale
+    no_search_result: Sorry, er is geen resultaat voor uw zoekopdracht.
 pim_enrich.entity.currency:
   plural_label: Valuta's
   page_title:

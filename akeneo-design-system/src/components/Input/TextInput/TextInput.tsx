@@ -1,4 +1,4 @@
-import React, {ChangeEvent, Ref, useCallback} from 'react';
+import React, {ChangeEvent, Ref, useCallback, useRef} from 'react';
 import styled from 'styled-components';
 import {InputProps} from '../InputProps';
 import {LockIcon} from '../../../icons';
@@ -96,6 +96,8 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
     {invalid, onChange, readOnly, characterLeftLabel, onSubmit, ...rest}: TextInputProps,
     forwardedRef: Ref<HTMLInputElement>
   ) => {
+    const internalRef = useRef<HTMLInputElement | null>(null);
+    forwardedRef = forwardedRef ?? internalRef;
     const handleChange = useCallback(
       (event: ChangeEvent<HTMLInputElement>) => {
         if (!readOnly && onChange) onChange(event.currentTarget.value);

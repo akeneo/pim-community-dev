@@ -27,7 +27,7 @@ const MediaLinkInputContainer = styled.div<{readOnly: boolean} & AkeneoThemedPro
   ${({readOnly}) =>
     !readOnly &&
     css`
-      &:focus {
+      &:focus-within {
         box-shadow: 0 0 0 2px ${getColor('blue', 40)};
       }
     `}
@@ -121,6 +121,8 @@ const MediaLinkInput = React.forwardRef<HTMLInputElement, MediaLinkInputProps>(
     }: MediaLinkInputProps,
     forwardedRef: Ref<HTMLInputElement>
   ) => {
+    const internalRef = useRef<HTMLInputElement | null>(null);
+    forwardedRef = forwardedRef ?? internalRef;
     const containerRef = useRef<HTMLDivElement>(null);
     const [displayedThumbnailUrl, setDisplayedThumbnailUrl] = useState(thumbnailUrl);
 
