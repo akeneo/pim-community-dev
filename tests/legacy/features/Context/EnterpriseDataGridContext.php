@@ -209,4 +209,20 @@ class EnterpriseDataGridContext extends BaseDataGridContext
             ));
         }
     }
+
+    public function iClickOnTheActionOfTheRowWhichContains($actionName, $element)
+    {
+        if (in_array(strtolower($actionName), ['approve all', 'delete', 'approve all', 'reject all'])) {
+            $this->spin(function () use ($element, $actionName) {
+                $datagrid = $this->getDatagrid();
+                $row = $datagrid->getRow($element);
+
+                return $row->find('css', sprintf('.proposalActionButton:contains("%s")', $actionName));
+            }, sprintf('Can not find proposal action %s for the row %s', $actionName, $element))->click();
+
+            return;
+        }
+
+        parent::iClickOnTheActionOfTheRowWhichContains($actionName, $element);
+    }
 }

@@ -212,6 +212,7 @@ pimee_enrich.entity.product_draft:
             skip: Product draft hasn't been sent for approval as no value has been edited
     module:
         proposal:
+            confirm: Send
             accept_selected: Accept selected proposal(s)
             reject_selected: Reject selected proposal(s)
         edit:

@@ -63,7 +63,7 @@ const ProposalModal = ({
           {translate('pim_common.cancel')}
         </Button>
         <Button onClick={handleSend} level="primary">
-          {translate('pim_common.confirm')}
+          {translate('pimee_enrich.entity.product_draft.module.proposal.confirm')}
         </Button>
       </Modal.BottomButtons>
     </Modal>
