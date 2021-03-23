@@ -34,6 +34,7 @@ ONBOARDER_PIM_GEN_FILE ?=
 WITH_SUPPLIERS ?= false
 USE_ONBOARDER_CATALOG ?= false
 
+
 ifeq ($(CI),true)
 	TF_INPUT_FALSE ?= -input=false
 	TF_AUTO_APPROVE ?= -auto-approve
@@ -232,6 +233,7 @@ endif
 	MYSQL_DISK_SIZE=$(MYSQL_DISK_SIZE) \
 	MYSQL_DISK_NAME=$(PFID)-mysql \
 	MYSQL_SOURCE_SNAPSHOT=$(MYSQL_SOURCE_SNAPSHOT) \
+	MAILGUN_API_KEY=${MAILGUN_API_KEY} \
 	envsubst < $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp
 
@@ -307,7 +309,7 @@ test-helm-cronjob: #Doc: Test declared cronjob job are available via the PIM con
 .PHONY: test_helm_generated_k8s_files
 test_helm_generated_k8s_files: #Doc Test helm generated templates are K8S compliant
 	bash $(PWD)/deployments/bin/test_helm_generated_k8s_files.sh
-	
-.PHONY: mr-proper 
+
+.PHONY: mr-proper
 mr-proper: #Doc: Clean olds or orphans google resources
 	bash $(PWD)/deployments/bin/ci-mrproper.sh
