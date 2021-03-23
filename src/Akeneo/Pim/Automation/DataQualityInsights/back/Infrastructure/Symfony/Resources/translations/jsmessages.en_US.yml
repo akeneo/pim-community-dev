@@ -152,10 +152,12 @@ akeneo_data_quality_insights:
         filter_label:
             quality_score: Quality score
             enrichment_quality: Enrichment quality
-            images_quality: Images quality
+            images_quality: Product image
         filter_value:
             good: Good
             to_improve: To improve
+            yes: Yes
+            no: No
 
 pim_title:
     akeneo_data_quality_insights_dashboard: Data Quality Insights
