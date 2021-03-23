@@ -34,7 +34,7 @@ describe('testing events logs page', () => {
     };
 
     const fetchEventSubscriptionLogsResponses: MockFetchResponses = {
-        'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics': {
+        'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics&filters=%7B%22levels%22%3A%5B%22info%22%2C%22notice%22%2C%22warning%22%2C%22error%22%5D%7D': {
             json: {
                 results: [
                     {
@@ -51,7 +51,7 @@ describe('testing events logs page', () => {
                 search_after: 'search_after_1',
             },
         },
-        'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics&search_after=search_after_1': {
+        'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics&filters=%7B%22levels%22%3A%5B%22info%22%2C%22notice%22%2C%22warning%22%2C%22error%22%5D%7D&search_after=search_after_1': {
             json: {
                 results: [],
                 total: 1,
@@ -119,10 +119,11 @@ describe('testing events logs page', () => {
         mockFetchResponses({
             ...fetchConnectionResponses,
             ...fetchEventSubscriptionResponses,
-            'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics': {
+            'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics&filters=%7B%22levels%22%3A%5B%22info%22%2C%22notice%22%2C%22warning%22%2C%22error%22%5D%7D': {
                 json: {
                     results: [],
                     total: 0,
+                    isLoading: false
                 },
             },
         });
