@@ -9,7 +9,7 @@ const Label = styled.span<{readOnly?: boolean; isCode?: boolean} & AkeneoThemedP
   overflow: hidden;
 
   ::first-letter {
-    text-transform: ${(props: ThemedProps<LabelProps>) => (true === props.isCode ? 'initial' : 'capitalize')};
+    text-transform: ${({isCode}) => (true === isCode ? 'initial' : 'capitalize')};
   }
 `;
 

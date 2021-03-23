@@ -13,7 +13,6 @@ import {
   notifyAttributeWellSaved,
   notifyAttributeSaveFailed,
   notifyAttributeSaveValidationError,
-  notifyAttributeWellSaved,
 } from 'akeneoassetmanager/application/action/attribute/notify';
 import {updateAttributeList} from 'akeneoassetmanager/application/action/attribute/list';
 import AttributeCode from 'akeneoassetmanager/domain/model/code';
