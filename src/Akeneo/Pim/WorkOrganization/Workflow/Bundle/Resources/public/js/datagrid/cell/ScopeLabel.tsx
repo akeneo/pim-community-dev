@@ -1,7 +1,7 @@
 import React from 'react';
 import {LoaderIcon} from 'akeneo-design-system';
 import {LabelCollection, Locale, useIsMounted} from '@akeneo-pim-community/shared';
-import {getLabel} from 'pim-community-dev/public/bundles/pimui/js/i18n';
+import {getLabel} from 'pimui/js/i18n';
 const FetcherRegistry = require('pim/fetcher-registry');
 const UserContext = require('pim/user-context');
 
@@ -30,7 +30,7 @@ const ScopeLabel: React.FC<ScopeProps> = ({scopeCode}) => {
       FetcherRegistry.getFetcher('channel')
         .fetch(scopeCode)
         .then((scope: Scope) => {
-          if (isMounted) {
+          if (isMounted()) {
             setScope(scope);
           }
         });

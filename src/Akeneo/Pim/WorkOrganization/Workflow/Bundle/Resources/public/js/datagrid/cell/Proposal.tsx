@@ -2,10 +2,20 @@ import React from 'react';
 import {LocaleCode} from '@akeneo-pim-community/shared';
 import {useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
-import {Badge, getColor, getFontSize} from 'akeneo-design-system';
+import {AkeneoThemedProps, Badge, getColor, getFontSize} from 'akeneo-design-system';
 import {ApproveAllButton, ApproveButton, RejectAllButton, RejectButton, RemoveAllButton} from './proposalActions';
 import {ScopeLabel} from './ScopeLabel';
 import {LocaleLabel} from './LocaleLabel';
+
+const ProposalContainer = styled.div`
+  .proposalActionButton {
+    transition: opacity 0.2s ease-in;
+    opacity: 0;
+  }
+  &:hover .proposalActionButton {
+    opacity: 1;
+  }
+`;
 
 const Header = styled.div`
   display: flex;
@@ -32,7 +42,7 @@ const Highlight = styled.span`
   color: ${getColor('brand', 100)};
 `;
 
-const Change = styled.div<{isSame: boolean}>`
+const Change = styled.div<{isSame: boolean} & AkeneoThemedProps>`
   display: grid;
   grid-template-columns: ${({isSame}) => (isSame ? 'minmax(0, 0.7fr) 2fr 60px' : 'minmax(0, 0.7fr) 1fr 1fr 60px')};
   grid-template-rows: 1fr;
@@ -162,7 +172,7 @@ const Proposal: React.FC<ProposalProps> = ({
   }
 
   return (
-    <>
+    <ProposalContainer>
       <Header>
         <ProposalDescription>
           <DocumentLink href={documentUrl}>{documentLabel}</DocumentLink>
@@ -253,7 +263,7 @@ const Proposal: React.FC<ProposalProps> = ({
           ))}
         </>
       )}
-    </>
+    </ProposalContainer>
   );
 };
 

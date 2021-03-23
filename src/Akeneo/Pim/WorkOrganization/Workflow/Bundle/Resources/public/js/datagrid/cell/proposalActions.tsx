@@ -39,7 +39,7 @@ const ApproveAllButton: (props: AllProps) => JSX.Element = ({productDraftType, i
 
   return (
     <>
-      <Button level="primary" onClick={open} size="default">
+      <Button level="primary" onClick={open} size="default" className="proposalActionButton">
         {translate('pim_datagrid.workflow.actions.approve_all')}
       </Button>
       {isOpen && <ProposalModal action="approve" onClose={handleClose} getUrl={getUrl} />}
@@ -55,7 +55,7 @@ const RejectAllButton: (props: AllProps) => JSX.Element = ({productDraftType, id
 
   return (
     <>
-      <Button level="danger" onClick={open} size="default">
+      <Button level="danger" onClick={open} size="default" className="proposalActionButton">
         {translate('pim_datagrid.workflow.actions.refuse_all')}
       </Button>
       {isOpen && <ProposalModal action="reject" onClose={close} getUrl={getUrl} />}
@@ -71,7 +71,7 @@ const RemoveAllButton: (props: AllProps) => JSX.Element = ({productDraftType, id
 
   return (
     <>
-      <Button level="danger" onClick={open} size="default">
+      <Button level="danger" onClick={open} size="default" className="proposalActionButton">
         {translate('pim_common.remove')}
       </Button>
       {isOpen && <ProposalModal action="remove" onClose={close} getUrl={getUrl} />}
@@ -111,6 +111,7 @@ const ApproveButton: (props: PartialProps) => JSX.Element = ({
           attribute: attributeLabel,
           product: documentLabel,
         })}
+        className="proposalActionButton"
       />
       {isOpen && <ProposalModal action="partial_approve" onClose={close} getUrl={getUrl} />}
     </>
@@ -150,6 +151,7 @@ const RejectButton: (props: PartialProps) => JSX.Element = ({
           attribute: attributeLabel,
           product: documentLabel,
         })}
+        className="proposalActionButton"
       />
       {isOpen && <ProposalModal action="partial_reject" onClose={close} getUrl={getUrl} />}
     </>
