@@ -113,14 +113,6 @@ class ProductPdfRenderer implements RendererInterface
     }
 
     /**
-     * Return true if the attribute should be rendered
-     */
-    protected function canRenderAttribute(?AttributeInterface $attribute): bool
-    {
-        return null !== $attribute;
-    }
-
-    /**
      * Get attributes grouped by attribute group
      *
      * @return AttributeInterface[]
