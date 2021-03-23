@@ -56,6 +56,40 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
         Assert::assertEquals(100, iterator_count($result));
     }
 
+    public function test_it_returns_only_the_newest_notice_and_info_logs()
+    {
+        $timestampNow = $this->clock->now()->getTimestamp() - 10;
+        $timestampStep = 10;
+        $NumberOfGeneratedLogs = 101;
+        $excludeTimestamp = $timestampNow - $timestampStep * $NumberOfGeneratedLogs;
+
+        $this->generateLogs(
+            function ($index) use (&$timestampNow, $timestampStep) {
+                $timestampNow -= $timestampStep;
+
+                return [
+                    'timestamp' => $timestampNow,
+                    'level' => $index % 2 ? EventsApiDebugLogLevels::NOTICE : EventsApiDebugLogLevels::INFO,
+                    'message' => 'Foo bar',
+                    'connection_code' => null,
+                    'context' => [],
+                ];
+            },
+            $NumberOfGeneratedLogs
+        );
+
+        $logs = iterator_to_array($this->getEventSubscriptionLogsQuery->execute('a_connection_code'));
+
+        $timestamps = array_map(
+            function ($log) {
+                return $log['timestamp'];
+            },
+            $logs
+        );
+
+        Assert::assertNotContains($excludeTimestamp, $timestamps);
+    }
+
     public function test_it_returns_the_last_warning_and_error_logs()
     {
         // The limit is 72 hours before now.
