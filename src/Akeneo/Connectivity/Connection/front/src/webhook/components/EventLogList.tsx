@@ -9,7 +9,12 @@ import useInfiniteEventSubscriptionLogs from '../hooks/api/use-infinite-event-su
 import {EventLogListFilters} from './EventLogListFilters';
 import ExpandableTableRow, {IsExpanded} from '../../common/components/ExpandableTableRow';
 import FormattedJSON from '../../common/components/FormattedJSON';
-import {EventSubscriptionLogFilters, DEFAULT_EVENT_SUBSCRIPTION_LOG_FILTERS} from '../model/EventSubscriptionLogFilters';
+import {
+    EventSubscriptionLogFilters,
+    DEFAULT_EVENT_SUBSCRIPTION_LOG_FILTERS,
+    isSameAsDefaultFiltersValues
+} from '../model/EventSubscriptionLogFilters';
+import {NoEventLogsWithThoseFilters} from './NoEventLogsWithThoseFilters';
 
 const ExtraSmallColumnHeaderCell = styled(Table.HeaderCell)`
     width: 125px;
@@ -38,12 +43,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
     const translate = useTranslate();
     const scrollContainer = useRef(null);
     const [filters, setFilters] = useState<EventSubscriptionLogFilters>(DEFAULT_EVENT_SUBSCRIPTION_LOG_FILTERS);
-    const [isSearchActive, setSearchActive] = useState(false);
-
-    const handleChangeFilters = useCallback((filters: EventSubscriptionLogFilters) => {
-        setFilters(filters);
-        setSearchActive(true);
-    }, []);
+    const isSearchActive = !isSameAsDefaultFiltersValues(filters);
 
     const {logs, total, isLoading} = useInfiniteEventSubscriptionLogs(connectionCode, filters, scrollContainer);
 
@@ -63,7 +63,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
             >
                 {null}
             </Information>
-            <EventLogListFilters filters={filters} onChange={handleChangeFilters} total={total}/>
+            <EventLogListFilters filters={filters} onChange={setFilters} total={total}/>
             <Table>
                 <Table.Header>
                     <SmallColumnHeaderCell>
@@ -94,9 +94,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                     ))}
                 </Table.Body>
             </Table>
-            {total === 0 &&
-            <NoEventLogs/>
-            }
+            {isSearchActive && total === 0 && <NoEventLogsWithThoseFilters/>}
         </>
     );
 };
