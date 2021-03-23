@@ -2,6 +2,7 @@
 
 namespace Akeneo\Channel\Bundle\Doctrine\Remover;
 
+use Akeneo\Channel\Component\Query\IsChannelUsedInProductExportJobInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -26,11 +27,14 @@ class ChannelRemover implements RemoverInterface
     protected TranslatorInterface $translator;
     protected string $entityClass;
 
+    private IsChannelUsedInProductExportJobInterface $isChannelUsedInProductExportJob;
+
     public function __construct(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
         ChannelRepositoryInterface $channelRepository,
         TranslatorInterface $translator,
+        IsChannelUsedInProductExportJobInterface $isChannelUsedInProductExportJob,
         $entityClass
     ) {
         $this->objectManager = $objectManager;
@@ -38,6 +42,7 @@ class ChannelRemover implements RemoverInterface
         $this->channelRepository = $channelRepository;
         $this->translator = $translator;
         $this->entityClass = $entityClass;
+        $this->isChannelUsedInProductExportJob = $isChannelUsedInProductExportJob;
     }
 
     /**
@@ -81,6 +86,12 @@ class ChannelRemover implements RemoverInterface
             throw new \LogicException($this->translator->trans(
                 'pim_enrich.channel.flash.delete.error',
                 ['%channelCode%' => $object->getCode() ]
+            ));
+        }
+
+        if (true === $this->isChannelUsedInProductExportJob->execute($object->getCode())) {
+            throw new \LogicException($this->translator->trans(
+                'pim_enrich.channel.flash.delete.linked_to_export_profile'
             ));
         }
     }
