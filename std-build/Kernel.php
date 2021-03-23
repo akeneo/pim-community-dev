@@ -66,15 +66,17 @@ class Kernel extends BaseKernel
         $eeConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-enterprise-dev/config';
         $projectConfDir = $this->getProjectDir() . '/config';
 
+        # The first packages configuration, for CE dependency are loaded from the CE package configuration root dir
         $this->loadPackagesConfigurationFromDependencyExceptSecurity($loader, $ceConfDir);
-        $this->loadPackagesConfigurationFromDependencyExceptSecurity($loader, $eeConfDir);
-        $this->loadPackagesConfigurationExceptSecurity($loader, $projectConfDir, $baseEnv);
+
+        # The 2nd packages configuration for EE dependency and flexibility or on prem are loaded from EE config dirs
+        $this->loadPackagesConfigurationExceptSecurity($loader, $eeConfDir, $baseEnv);# Finally, the packages configuration for local environnement is loaded from the project
         $this->loadPackagesConfiguration($loader, $projectConfDir, $this->environment);
 
-        $this->loadContainerConfiguration($loader, $ceConfDir, $baseEnv);
-        $this->loadContainerConfiguration($loader, $eeConfDir, $baseEnv);
-        $this->loadContainerConfiguration($loader, $projectConfDir, $baseEnv);
-        $this->loadContainerConfiguration($loader, $projectConfDir, $this->environment);
+        $this->loadServicesConfiguration($loader, $ceConfDir, $baseEnv);
+        $this->loadServicesConfiguration($loader, $eeConfDir, $baseEnv);
+        $this->loadServicesConfiguration($loader, $projectConfDir, $baseEnv);
+        $this->loadServicesConfiguration($loader, $projectConfDir, $this->environment);
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
@@ -160,7 +162,7 @@ class Kernel extends BaseKernel
             $loader->load($file, 'yaml');
         }
     }
-    private function loadContainerConfiguration(LoaderInterface $loader, string $confDir, string $environment): void
+    private function loadServicesConfiguration(LoaderInterface $loader, string $confDir, string $environment): void
     {
         $loader->load($confDir . '/{services}/*.yml', 'glob');
         $loader->load($confDir . '/{services}/' . $environment . '/**/*.yml', 'glob');

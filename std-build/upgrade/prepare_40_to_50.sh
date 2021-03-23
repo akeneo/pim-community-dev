@@ -5,10 +5,10 @@ set -e
 DEV_DISTRIB_DIR=$(dirname $0)/../..
 STANDARD_DISTRIB_DIR=./
 
-# We use the same bootstrap.php to load .env file on standard as on CE-dev
+# We use the same bootstrap.php to load .env file on standard as on EE-dev
 cp $DEV_DISTRIB_DIR/config/bootstrap.php $STANDARD_DISTRIB_DIR/config/
 
-# Security configuration cannot be read on CE-dev and overriden in standard. We need to fully copy it
+# Security configuration cannot be read on EE-dev and overriden in standard. We need to fully copy it
 cp $DEV_DISTRIB_DIR/config/packages/security.yml $STANDARD_DISTRIB_DIR/config/packages/security.yml
 
 # Partners are most likely to develop and deploy using local filesystem, not MinIO
@@ -22,7 +22,7 @@ cp $DEV_DISTRIB_DIR/bin/console $STANDARD_DISTRIB_DIR/bin/
 chmod +x $STANDARD_DISTRIB_DIR/bin/console
 cp $DEV_DISTRIB_DIR/public/* $STANDARD_DISTRIB_DIR/public/
 
-# We provide a kernel that loads configuration from the CE dev and override it with the one in standard
+# We provide a kernel that loads configuration from the EE dev and override it with the one in standard
 cp $DEV_DISTRIB_DIR/std-build/Kernel.php $STANDARD_DISTRIB_DIR/src
 
 # Copy STD configuration
@@ -31,17 +31,17 @@ cp $DEV_DISTRIB_DIR/../pim-community-dev/docker-compose.yml $STANDARD_DISTRIB_DI
 # Usable example Makefile
 cp $DEV_DISTRIB_DIR/std-build/Makefile $STANDARD_DISTRIB_DIR/Makefile
 
-# Front dependencies using workspace to depends on CE-dev and inherits its deps
+# Front dependencies using workspace to depends on EE-dev and inherits its deps
 cp $DEV_DISTRIB_DIR/std-build/package.json $STANDARD_DISTRIB_DIR/package.json
 cp $DEV_DISTRIB_DIR/yarn.lock $STANDARD_DISTRIB_DIR/yarn.lock
 
-# Needed to define the loader path to target the CE-dev
+# Needed to define the loader path to target the EE-dev
 cp $DEV_DISTRIB_DIR/std-build/tsconfig.json $STANDARD_DISTRIB_DIR/tsconfig.json
 
-# Needed to define Elasticsearch mapping file location inside CE-dev
+# Needed to define Elasticsearch mapping file location inside EE-dev
 cp $DEV_DISTRIB_DIR/std-build/services.yml $STANDARD_DISTRIB_DIR/config/services/
 
-# We use the same bootstrap.php to load .env file on standard as on CE-dev
+# We use the same bootstrap.php to load .env file on standard as on EE-dev
 cp $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
 
 # Prepare database upgrades to run

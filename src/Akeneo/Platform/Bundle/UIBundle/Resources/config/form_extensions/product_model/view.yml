@@ -132,7 +132,7 @@ extensions:
         module: pimee/product-edit-form/categories
         parent: pimee-product-model-view-form-column-tabs
         targetZone: container
-        aclResourceId: pim_enrich_product_categories_view
+        aclResourceId: pim_enrich_product_model_categories_view
         position: 100
         config:
             tabCode: pim-product-edit-form-categories

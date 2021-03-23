@@ -72,6 +72,7 @@ const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, o
           <CompletenessBadge completeness={Completeness.createFromNormalized(asset.completeness)} />
         </Card.BadgeContainer>
       )}
+
       {getAssetLabel(asset, context.locale)}
     </Card>
   );
