@@ -30,7 +30,7 @@ type ViewBuilder = {
 };
 
 type Mediator = {
-  trigger(event: string): void;
+  trigger(event: string, args?: any): void;
   on(event: string, callback: () => void): void;
 };
 
