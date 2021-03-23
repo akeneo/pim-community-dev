@@ -27,7 +27,6 @@ use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * PDF renderer used to render PDF for a Product
@@ -40,9 +39,6 @@ class ProductPdfRenderer extends PimProductPdfRenderer
     protected ChannelRepositoryInterface $channelRepository;
     protected LocaleRepositoryInterface $localeRepository;
     protected AuthorizationCheckerInterface $authorizationChecker;
-
-    /** @var AuthorizationCheckerInterface|null */
-    protected $authorizationChecker;
 
     public function __construct(
         Environment $templating,
@@ -57,9 +53,7 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         string $template,
         IdentifiableObjectRepositoryInterface $attributeOptionRepository,
         AuthorizationCheckerInterface $authorizationChecker,
-        ?string $customFont = null,
-        // @todo @pull-up To remove on master (already fixed with PIM-9649)
-        ?AuthorizationCheckerInterface $authorizationChecker = null
+        ?string $customFont = null
     ) {
         parent::__construct(
             $templating,

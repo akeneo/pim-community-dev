@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Enrichment\AssetManager\Bundle\EventSubscriber;
 
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetsDeletedEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -66,8 +67,7 @@ class RemoveNonExistentAssetValuesSubscriber implements EventSubscriberInterface
     {
         return [
             AssetDeletedEvent::class => 'onAssetDeleted',
-            // @todo @merge 5.0 / master: replace deprecated AssetFamilyAssetsDeletedEvent by AssetsDeletedEvent
-            AssetFamilyAssetsDeletedEvent::class => 'onBulkAssetsDeleted',
+            AssetsDeletedEvent::class => 'onBulkAssetsDeleted',
         ];
     }
 
@@ -76,10 +76,9 @@ class RemoveNonExistentAssetValuesSubscriber implements EventSubscriberInterface
         $this->launchJob($event->getAssetFamilyIdentifier()->normalize(), [$event->getAssetCode()]);
     }
 
-    public function onBulkAssetsDeleted(AssetFamilyAssetsDeletedEvent $event): void
+    public function onBulkAssetsDeleted(AssetsDeletedEvent $event): void
     {
-        // @todo @merge 5.0/master replace the second argument by AssetsDeletedEvent::getAssetCodes()
-        $this->launchJob($event->getAssetFamilyIdentifier()->normalize(), []);
+        $this->launchJob($event->getAssetFamilyIdentifier()->normalize(), $event->getAssetCodes());
     }
 
     private function launchJob(string $assetFamilyIdentifier, array $assetCodes): void
@@ -113,24 +112,7 @@ class RemoveNonExistentAssetValuesSubscriber implements EventSubscriberInterface
 
     private function getOrCreateJobInstance(): JobInstance
     {
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::REMOVE_NON_EXISTENT_VALUES_JOB);
-
-        // Create the job instance if the migration was not played
-        // @todo @merge 5.0/master remove the whole block on master: the job should exist because we always run migrations
-        if (null === $jobInstance && null !== $this->createJobInstance) {
-            $this->createJobInstance->createJobInstance(
-                [
-                    'code' => self::REMOVE_NON_EXISTENT_VALUES_JOB,
-                    'label' => 'Remove the non existing values of product and product models',
-                    'job_name' => self::REMOVE_NON_EXISTENT_VALUES_JOB,
-                    'type' => self::REMOVE_NON_EXISTENT_VALUES_JOB,
-                ]
-            );
-
-            $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::REMOVE_NON_EXISTENT_VALUES_JOB);
-        }
-
-        return $jobInstance;
+        return $this->jobInstanceRepository->findOneByIdentifier(self::REMOVE_NON_EXISTENT_VALUES_JOB);
     }
 
     private function getAssetCollectionAttributesForAssetFamily(string $assetFamily): array

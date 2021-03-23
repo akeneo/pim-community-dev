@@ -31,7 +31,6 @@ const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, o
   const emptyMediaUrl = getMediaPreviewUrl(emptyMediaPreview());
 
   let isDisplayed = true;
-  const label = getAssetLabel(asset, context.locale);
   useEffect(() => {
     loadImage(refreshedUrl)
       .then(() => {
@@ -73,19 +72,9 @@ const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, o
           <CompletenessBadge completeness={Completeness.createFromNormalized(asset.completeness)} />
         </Card.BadgeContainer>
       )}
-      <Title>
-        {!onClick && (
-          <Checkbox
-            value={isSelected}
-            onChange={(value: boolean) => onSelectionChange(asset.code, value)}
-            readOnly={isDisabled}
-          />
-        )}
-        <Label color={isSelected ? akeneoTheme.color.blue100 : undefined} isCode={label === `[${asset.code}]`}>
-          {label}
-        </Label>
-      </Title>
-    </Container>
+
+      {getAssetLabel(asset, context.locale)}
+    </Card>
   );
 };
 
