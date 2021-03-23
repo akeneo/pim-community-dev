@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Elasticsearch\Query;
@@ -20,6 +21,7 @@ class PurgeEventsApiErrorLogsQueryIntegration extends TestCase
         $interval = new \DateInterval('PT1H');
         // We generate logs for each hour and we iterate 10 times
         $this->generateLogs(
+            '2021-05-15 16:17:00',
             $interval,
             10,
             [
@@ -30,10 +32,10 @@ class PurgeEventsApiErrorLogsQueryIntegration extends TestCase
             ]
         );
 
-        // We want to purge errors that are older than 4h
+        // We want to purge errors that are older than 2h
         $this->purgeErrorLogsQuery->execute(
             (new \DateTimeImmutable('2021-05-15 16:17:00', new \DateTimeZone('UTC')))
-                ->sub(new \DateInterval('PT4H'))
+                ->sub(new \DateInterval('PT2H'))
         );
         $this->esClient->refreshIndex();
         $infoResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::INFO);
@@ -43,8 +45,20 @@ class PurgeEventsApiErrorLogsQueryIntegration extends TestCase
 
         Assert::assertEquals(10, $infoResults['hits']['total']['value']);
         Assert::assertEquals(10, $noticeResults['hits']['total']['value']);
-        Assert::assertEquals(5, $errorResults['hits']['total']['value']);
-        Assert::assertEquals(5, $warnResults['hits']['total']['value']);
+        Assert::assertEquals(3, $errorResults['hits']['total']['value']);
+        Assert::assertEquals(3, $warnResults['hits']['total']['value']);
+
+        $now = (new \DateTimeImmutable('2021-05-15 16:17:00', new \DateTimeZone('UTC')))->getTimestamp();
+        $oneHourAgo = (new \DateTimeImmutable('2021-05-15 15:17:00', new \DateTimeZone('UTC')))->getTimestamp();
+        $twoHoursAgo = (new \DateTimeImmutable('2021-05-15 14:17:00', new \DateTimeZone('UTC')))->getTimestamp();
+
+        Assert::assertEquals($now, $warnResults['hits']['hits'][0]['_source']['timestamp']);
+        Assert::assertEquals($oneHourAgo, $warnResults['hits']['hits'][1]['_source']['timestamp']);
+        Assert::assertEquals($twoHoursAgo, $warnResults['hits']['hits'][2]['_source']['timestamp']);
+
+        Assert::assertEquals($now, $errorResults['hits']['hits'][0]['_source']['timestamp']);
+        Assert::assertEquals($oneHourAgo, $errorResults['hits']['hits'][1]['_source']['timestamp']);
+        Assert::assertEquals($twoHoursAgo, $errorResults['hits']['hits'][2]['_source']['timestamp']);
     }
 
     public function test_it_purges_nothing_if_there_is_no_error_logs_to_purge()
@@ -52,6 +66,7 @@ class PurgeEventsApiErrorLogsQueryIntegration extends TestCase
         $interval = new \DateInterval('PT1H');
         // We generate logs for each hour and we iterate 10 times
         $this->generateLogs(
+            '2021-05-15 16:17:00',
             $interval,
             10,
             [EventsApiDebugLogLevels::INFO, EventsApiDebugLogLevels::NOTICE]
@@ -87,28 +102,32 @@ class PurgeEventsApiErrorLogsQueryIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function buildDocument(\DateInterval $interval, string $level, int $number): array
+    private function buildDocument(\DateTime $fromDatetime, \DateInterval $interval, string $level, int $number): array
     {
         $content = [
             'message' => 'There is something to log, you may not have the permission to see the product or it does not exist.'
         ];
         $documents = [];
-        $datetime = new \DateTime('2021-05-15 16:17:00', new \DateTimeZone('UTC'));
         for ($i = 0 ; $i < $number ; $i++) {
             $documents[] = [
                 'content' => $content,
                 'level' => $level,
-                'timestamp' => $datetime->getTimestamp(),
+                'timestamp' => $fromDatetime->getTimestamp(),
             ];
-            $datetime->sub($interval);
+            $fromDatetime->sub($interval);
         }
         return $documents;
     }
 
-    private function generateLogs(\DateInterval $interval, int $number, array $levels): void
+    private function generateLogs(string $fromDatetime, \DateInterval $interval, int $number, array $levels): void
     {
         foreach ($levels as $level) {
-            $documents = $this->buildDocument($interval, $level, $number);
+            $documents = $this->buildDocument(
+                new \DateTime($fromDatetime, new \DateTimeZone('UTC')),
+                $interval,
+                $level,
+                $number
+            );
 
             $this->esClient->bulkIndexes($documents);
         }
