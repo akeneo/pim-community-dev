@@ -5,11 +5,11 @@ import {NoEventLogs} from './NoEventLogs';
 import {useTranslate} from '../../shared/translate';
 import {EventLogBadge} from './EventLogBadge';
 import EventLogDatetime from './EventLogDatetime';
-import useInfiniteEventSubscriptionLogs, {Filters} from '../hooks/api/use-infinite-event-subscription-logs';
-import {EventSubscriptionLogLevel} from '../model/EventSubscriptionLogLevel';
+import useInfiniteEventSubscriptionLogs from '../hooks/api/use-infinite-event-subscription-logs';
 import {EventLogListFilters} from './EventLogListFilters';
 import ExpandableTableRow, {IsExpanded} from '../../common/components/ExpandableTableRow';
 import FormattedJSON from '../../common/components/FormattedJSON';
+import {EventSubscriptionLogFilters, DEFAULT_EVENT_SUBSCRIPTION_LOG_FILTERS} from '../model/EventSubscriptionLogFilters';
 
 const ExtraSmallColumnHeaderCell = styled(Table.HeaderCell)`
     width: 125px;
@@ -37,17 +37,10 @@ const Arrow: FC = () => {
 export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => {
     const translate = useTranslate();
     const scrollContainer = useRef(null);
-    const [filters, setFilters] = useState<Filters>({
-        levels: [
-            EventSubscriptionLogLevel.INFO,
-            EventSubscriptionLogLevel.NOTICE,
-            EventSubscriptionLogLevel.WARNING,
-            EventSubscriptionLogLevel.ERROR,
-        ],
-    });
+    const [filters, setFilters] = useState<EventSubscriptionLogFilters>(DEFAULT_EVENT_SUBSCRIPTION_LOG_FILTERS);
     const [isSearchActive, setSearchActive] = useState(false);
 
-    const handleChangeFilters = useCallback((filters: Filters) => {
+    const handleChangeFilters = useCallback((filters: EventSubscriptionLogFilters) => {
         setFilters(filters);
         setSearchActive(true);
     }, []);

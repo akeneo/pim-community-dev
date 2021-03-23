@@ -3,15 +3,15 @@ import React, {FC} from 'react';
 import {useTranslate} from '../../shared/translate';
 import styled from 'styled-components';
 import {EventLogLevelFilter} from './EventLogLevelFilter';
-import {Filters} from '../hooks/api/use-infinite-event-subscription-logs';
+import {EventSubscriptionLogFilters} from '../model/EventSubscriptionLogFilters';
 
 const StyledSectionTitle = styled(SectionTitle)`
     margin-bottom: 18px;
 `;
 
 export const EventLogListFilters: FC<{
-    filters: Filters,
-    onChange: (filters: Filters) => void,
+    filters: EventSubscriptionLogFilters,
+    onChange: (filters: EventSubscriptionLogFilters) => void,
     total?: number,
 }> = ({filters, onChange, total}) => {
     const translate = useTranslate();

@@ -34,7 +34,7 @@ describe('testing events logs page', () => {
     };
 
     const fetchEventSubscriptionLogsResponses: MockFetchResponses = {
-        'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics&filters=%7B%22levels%22%3A%5B%22info%22%2C%22notice%22%2C%22warning%22%2C%22error%22%5D%7D': {
+        'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics': {
             json: {
                 results: [
                     {
@@ -51,7 +51,7 @@ describe('testing events logs page', () => {
                 search_after: 'search_after_1',
             },
         },
-        'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics&filters=%7B%22levels%22%3A%5B%22info%22%2C%22notice%22%2C%22warning%22%2C%22error%22%5D%7D&search_after=search_after_1': {
+        'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics&search_after=search_after_1': {
             json: {
                 results: [],
                 total: 1,
@@ -119,11 +119,10 @@ describe('testing events logs page', () => {
         mockFetchResponses({
             ...fetchConnectionResponses,
             ...fetchEventSubscriptionResponses,
-            'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics&filters=%7B%22levels%22%3A%5B%22info%22%2C%22notice%22%2C%22warning%22%2C%22error%22%5D%7D': {
+            'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics': {
                 json: {
                     results: [],
                     total: 0,
-                    isLoading: false
                 },
             },
         });
@@ -134,8 +133,9 @@ describe('testing events logs page', () => {
             </Router>
         );
 
-        expect(
-            await screen.findByText('akeneo_connectivity.connection.webhook.event_logs.no_event_logs.title')
-        ).toBeInTheDocument();
+        // Due to how useFetchEventSubscription is used, we must wait for the page to be hydrated with the data.
+        // To do so, we can wait for the name of the event subscription.
+        expect(await screen.findByText('Alkemics')).toBeInTheDocument();
+        expect(await screen.findByText('akeneo_connectivity.connection.webhook.event_logs.no_event_logs.title')).toBeInTheDocument();
     });
 });

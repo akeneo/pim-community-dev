@@ -2,10 +2,9 @@ import {EventSubscriptionLog} from '../../model/EventSubscriptionLog';
 import {RefObject, useCallback, useState} from 'react';
 import {useRoute} from '../../../shared/router';
 import {useInfiniteScroll} from '../../scroll';
-import {EventSubscriptionLogLevel} from '../../model/EventSubscriptionLogLevel';
-// TODO import from our context
 import {useEffectAfterFirstRender} from '../../../shared/hooks/useEffectAfterFirstRender';
 import {useDebounceCallback} from '../../../shared/utils/use-debounce-callback';
+import {EventSubscriptionLogFilters, isSameAsDefaultFiltersValues} from '../../model/EventSubscriptionLogFilters';
 
 const MAX_PAGES = 20;
 
@@ -23,16 +22,12 @@ type EventSubscriptionLogs = {
     endScrollReached: boolean;
 };
 
-export type Filters = {
-    levels: EventSubscriptionLogLevel[],
-};
-
 /**
  * Scroll through the logs.
  */
 const useInfiniteEventSubscriptionLogs = (
     connectionCode: string,
-    filters: Filters,
+    filters: EventSubscriptionLogFilters,
     container: RefObject<HTMLElement>
 ): EventSubscriptionLogs & {
     isLoading: boolean
@@ -52,11 +47,14 @@ const useInfiniteEventSubscriptionLogs = (
         [name: string]: string;
     } = {
         connection_code: connectionCode,
-        filters: JSON.stringify(filters),
     };
 
     if (null !== searchAfter) {
         parameters.search_after = searchAfter;
+    }
+
+    if (!isSameAsDefaultFiltersValues(filters)) {
+        parameters.filters = JSON.stringify(filters);
     }
 
     // This damn hook forbid us to build the url inside fetchNextResponse()
