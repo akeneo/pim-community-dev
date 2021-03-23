@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\AssetManager\Bundle\EventSubscriber;
 
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
-use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetsDeletedEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -72,7 +72,7 @@ class RemoveNonExistentAssetValuesSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_deleted_assets_events()
     {
         $this::getSubscribedEvents()->shouldHaveKey(AssetDeletedEvent::class);
-        $this::getSubscribedEvents()->shouldHaveKey(AssetFamilyAssetsDeletedEvent::class);
+        $this::getSubscribedEvents()->shouldHaveKey(AssetsDeletedEvent::class);
     }
 
     function it_does_nothing_if_no_asset_collection_attribute_is_linked_to_the_asset_family(
@@ -148,37 +148,9 @@ class RemoveNonExistentAssetValuesSubscriberSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $this->onBulkAssetsDeleted(
-            new AssetFamilyAssetsDeletedEvent(
-                AssetFamilyIdentifier::fromString('packshot')
-            )
-        );
-    }
-
-    function it_creates_the_job_instance_if_it_does_not_exist_yet(
-        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
-        JobLauncherInterface $jobLauncher,
-        CreateJobInstanceInterface $createJobInstance,
-        JobInstance $jobInstance
-    ) {
-        $jobInstanceRepository->findOneByIdentifier('remove_non_existing_product_values')
-                              ->shouldBeCalledTimes(2)
-                              ->willReturn(null, $jobInstance);
-        $createJobInstance->createJobInstance(
-            [
-                'code' => 'remove_non_existing_product_values',
-                'label' => 'Remove the non existing values of product and product models',
-                'job_name' => 'remove_non_existing_product_values',
-                'type' => 'remove_non_existing_product_values',
-            ]
-        )->shouldBeCalled();
-
-        $jobLauncher->launch($jobInstance, Argument::cetera())->shouldBeCalledTimes(2);
-
-        $this->onAssetDeleted(
-            new AssetDeletedEvent(
-                AssetIdentifier::fromString('packshot_packshot_1'),
-                AssetCode::fromString('packshot_1'),
-                AssetFamilyIdentifier::fromString('packshot')
+            new AssetsDeletedEvent(
+                AssetFamilyIdentifier::fromString('packshot'),
+                []
             )
         );
     }
