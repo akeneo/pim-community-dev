@@ -23,7 +23,7 @@ export const WeeklyAuditChart: FC<Props> = ({title, theme, weeklyAuditData, smal
     const formatNumber = useNumberFormatter();
     const formatDate = useDateFormatter();
 
-    const formatDateOptions = small
+    const formatDateOptions: Intl.DateTimeFormatOptions = small
         ? {month: 'short', day: 'numeric'}
         : {weekday: 'long', month: 'short', day: 'numeric'};
 

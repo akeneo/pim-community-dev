@@ -14,3 +14,12 @@ services:
         class: 'Akeneo\Channel\Bundle\Query\Sql\SqlIsCategoryTreeLinkedToChannel'
         arguments:
             - '@database_connection'
+
+    Akeneo\Channel\Bundle\Query\Sql\IsChannelUsedInProductProductExportJob:
+        arguments:
+            - '@database_connection'
+            -
+                - '%pim_connector.job_name.xlsx_product_export%'
+                - '%pim_connector.job_name.xlsx_product_model_export%'
+                - '%pim_connector.job_name.csv_product_export%'
+                - '%pim_connector.job_name.csv_product_model_export%'

@@ -71,7 +71,7 @@ type ItemProps = Override<
 
 const Item = React.forwardRef<HTMLDivElement, ItemProps>(
   (
-    {children, onKeyDown, disabled = false, ...rest}: ItemProps,
+    {children, onKeyDown, disabled = false, onClick, ...rest}: ItemProps,
     forwardedRef: Ref<HTMLDivElement>
   ): React.ReactElement => {
     let tall = false;
@@ -80,6 +80,8 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
       (event: SyntheticEvent) => {
         if (null !== actionableRef.current && actionableRef.current !== event.target && !disabled) {
           actionableRef.current.click();
+        } else if (undefined !== onClick) {
+          onClick(event as React.MouseEvent<HTMLDivElement, MouseEvent>);
         }
       },
       [disabled]

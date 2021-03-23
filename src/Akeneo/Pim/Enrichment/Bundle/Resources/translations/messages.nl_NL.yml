@@ -70,6 +70,9 @@ pim_enrich:
       description: De volgende attribuutvereisten zullen worden toegepast op de geselecteerde families
       success_flash: De attribuutvereisten zijn toegepast op de geselecteerde families
       launched_flash: De bulk actie "stel attribuutvereisten in" wordt gelanceerd. U wordt meegedeeld wanneer het zal worden gedaan.
+    convert_to_simple_products:
+      warning:
+        non_variant_product: Het "{{ identifier }}" product is al een eenvoudig product, geen noodzaak om het te converteren.
     mass_action:
       quick_export:
         launched_flash: De taak "export van producten" is momenteel aan het lopen

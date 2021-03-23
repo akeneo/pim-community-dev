@@ -200,6 +200,10 @@ pim_enrich.entity.attribute_group:
   label: attribuuttiryhmä
   uppercase_label: Attribuuttiryhmä
   plural_label: Attribuuttiryhmät
+  show_more_attribute:
+    title: Täällä on hiukan tungosta. Näytämme {{ productCount }}/{{ totalCount }} tuotteista.
+    subtitle: Löytääksesi kaikki tämän ryhmän attribuutit, klikkaa vain alta!
+    button: Näytä kaikki attribuutit
   flash:
     update:
       success: Attribuuttiryhmän päivittäminen onnistui
