@@ -91,7 +91,7 @@ From the Symfony Messenger point of view, these are three independent queues. Bu
   (See the `ackDeadlineSeconds` option in https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/create)    
   Note: with a doctrine transport, the `redeliver_timeout` is the equivalent of `ackDeadlineSeconds`
 
-- `filter: ?string`
+- `subscription_filter: ?string`
 
   Default to `null`, it allows to filter messages. See https://cloud.google.com/pubsub/docs/filtering for the syntax.  
   Be careful with this feature, currently the filter cannot be updated. It is defined only at the subscription creation.  
