@@ -100,28 +100,23 @@ define([
      * Render elements of this field in different available positions
      */
     renderElements: function () {
-      _.each(
-        this.elements,
-        function (elements, position) {
-          var $container =
-            'field-input' === position
-              ? this.$('.original-field .field-input')
-              : this.$('.' + position + '-elements-container');
+      Object.keys(this.elements).sort().forEach((position) => {
+        const $container =
+          'field-input' === position
+            ? this.$('.original-field .field-input')
+            : this.$('.' + position + '-elements-container');
 
-          $container.empty();
+        $container.empty();
 
-          _.each(
-            elements,
-            function (element) {
-              if (typeof element.render === 'function') {
-                $container.append(element.render().$el);
-              } else {
-                $container.append(element);
-              }
-            }.bind(this)
-          );
-        }.bind(this)
-      );
+        Object.keys(this.elements[position]).sort().forEach((elementKey) => {
+          const element = this.elements[position][elementKey];
+          if (typeof element.render === 'function') {
+            $container.append(element.render().$el);
+          } else {
+            $container.append(element);
+          }
+        });
+      });
     },
 
     /**
