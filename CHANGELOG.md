@@ -24,6 +24,7 @@
 - PIM-9731: Fix proposals on boolean attributes when comparing an empty and a false value
 - PIM-9756: Use PNG format for Asset transformations targets
 - PIM-9760: Fix link assets to products job not translated in job tracker
+- PIM-9693: Fix Asset creation modal failing when no label
 
 ## Improvements
 
