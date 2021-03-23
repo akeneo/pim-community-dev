@@ -17,6 +17,7 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\ProductDraftChangesPermissionHelper;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftChangesExtension;
@@ -35,6 +36,7 @@ class ProposalChangesNormalizer
     private LocaleRepositoryInterface $localeRepository;
     private ProductDraftStatusGridExtension $statusExtension;
     private ProductDraftChangesPermissionHelper $permissionHelper;
+    private GetAttributes $getAttributes;
 
     public function __construct(
         NormalizerInterface $standardNormalizer,
@@ -44,7 +46,8 @@ class ProposalChangesNormalizer
         AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
         ProductDraftStatusGridExtension $statusExtension,
-        ProductDraftChangesPermissionHelper $permissionHelper
+        ProductDraftChangesPermissionHelper $permissionHelper,
+        GetAttributes $getAttributes
     ) {
         $this->standardNormalizer = $standardNormalizer;
         $this->valueFactory = $valueFactory;
@@ -54,28 +57,30 @@ class ProposalChangesNormalizer
         $this->localeRepository = $localeRepository;
         $this->statusExtension = $statusExtension;
         $this->permissionHelper = $permissionHelper;
+        $this->getAttributes = $getAttributes;
     }
 
-    public function normalize(EntityWithValuesDraftInterface $proposal, array $context = []): array
+    public function normalize(EntityWithValuesDraftInterface $entityWithValuesDraft, array $context = []): array
     {
-        $canReview = $this->permissionHelper->canEditOneChangeToReview($proposal);
-        $canDelete = $this->permissionHelper->canEditOneChangeDraft($proposal);
-        $toReview = $proposal->getStatus() === EntityWithValuesDraftInterface::READY;
-        $inProgress = $proposal->isInProgress();
-        $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $proposal->getEntityWithValue());
+        $canReview = $this->permissionHelper->canEditOneChangeToReview($entityWithValuesDraft);
+        $canDelete = $this->permissionHelper->canEditOneChangeDraft($entityWithValuesDraft);
+        $toReview = $entityWithValuesDraft->getStatus() === EntityWithValuesDraftInterface::READY;
+        $inProgress = $entityWithValuesDraft->isInProgress();
+        $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $entityWithValuesDraft->getEntityWithValue());
 
         $result = [
-            'status_label' => $this->statusExtension->getDraftStatusGrid($proposal),
+            'status_label' => $this->statusExtension->getDraftStatusGrid($entityWithValuesDraft),
         ];
 
-        $changesWithEmptyValues = $this->getChanges($proposal, $context);
-        if ($proposal->getStatus() === EntityWithValuesDraftInterface::IN_PROGRESS) {
+        if ($entityWithValuesDraft->getStatus() === EntityWithValuesDraftInterface::IN_PROGRESS) {
             return array_merge($result, [
                 'status' => 'in_progress',
                 'remove'  => $inProgress && $isOwner && $canDelete
             ]);
         }
+
         $proposalChanges = [];
+        $changesWithEmptyValues = $this->getChanges($entityWithValuesDraft, $context);
         foreach ($changesWithEmptyValues as $attributeCode => $changes) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
             $canView = $this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute);
@@ -87,10 +92,10 @@ class ProposalChangesNormalizer
                     if ($canViewLocale) {
                         $canReview =
                             $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute) &&
-                            $this->authorizationChecker->isGranted(Attributes::OWN, $proposal->getEntityWithValue()) &&
+                            $this->authorizationChecker->isGranted(Attributes::OWN, $entityWithValuesDraft->getEntityWithValue()) &&
                             (!$attribute->isLocalizable() || $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale));
                         /** @var array $present */
-                        $present = $this->changesExtension->presentChange($proposal, $change, $attributeCode);
+                        $present = $this->changesExtension->presentChange($entityWithValuesDraft, $change, $attributeCode);
                         if (count($present) > 0) {
                             $present['attributeLabel'] = $attribute->getLabel();
                             $present['scope'] = $change['scope'];
@@ -105,12 +110,12 @@ class ProposalChangesNormalizer
 
         return array_merge($result, [
             'status' => 'ready',
-            'search_id' => $proposal->getEntityWithValue()->getIdentifier(),
+            'search_id' => $entityWithValuesDraft->getEntityWithValue()->getIdentifier(),
             'changes' => $proposalChanges,
-            'author_code' => $proposal->getAuthor(),
+            'author_code' => $entityWithValuesDraft->getAuthor(),
             'approve' => $isOwner && $toReview && $canReview,
             'refuse'  => $isOwner && $toReview && $canReview,
-            'id' => $proposal->getId(),
+            'id' => $entityWithValuesDraft->getId(),
         ]);
     }
 
@@ -153,7 +158,7 @@ class ProposalChangesNormalizer
         $valueCollection = new WriteValueCollection();
 
         foreach ($changes['values'] as $code => $changeset) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($code);
+            $attribute = $this->getAttributes->forCode($code);
             foreach ($changeset as $index => $change) {
                 if (true === $this->isChangeDataNull($change['data'])) {
                     continue;
