@@ -57,8 +57,8 @@ final class RemoveNonExistentAssetCollectionValuesIntegration extends TestCase
         $this->assertAssetCollectionValues('test2', ['packshot2']);
 
         // delete all assets from "packshot" asset family
-        ($this->get('akeneo_assetmanager.application.asset.delete_all_asset_family_assets_handler'))(
-            new DeleteAssetsCommand('packshot', [])
+        ($this->get('akeneo_assetmanager.application.asset.delete_assets_handler'))(
+            new DeleteAssetsCommand('packshot', ['packshot1', 'packshot2'])
         );
         $jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         while ($jobLauncher->hasJobInQueue()) {
