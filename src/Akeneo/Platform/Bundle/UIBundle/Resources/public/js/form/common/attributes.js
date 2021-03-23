@@ -283,6 +283,7 @@ define([
               scope: scope.code,
               scopeLabel: i18n.getLabel(scope.labels, locale, scope.code),
               uiLocale: UserContext.get('catalogLocale'),
+              descriptionLocale: UserContext.get('uiLocale'),
               optional: isOptional,
               removable: SecurityContext.isGranted(this.config.removeAttributeACL),
             });

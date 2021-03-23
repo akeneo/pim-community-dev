@@ -69,12 +69,12 @@ define([
       var promises = [];
       mediator.trigger('pim_enrich:form:field:extension:add', {field: this, promises: promises});
 
-      if (this.attribute.descriptions[this.context.uiLocale]) {
+      if (this.attribute.descriptions[this.context.descriptionLocale]) {
         this.addElement(
           'footer',
           'description',
           this.descriptionTemplate({
-            description: this.attribute.descriptions[this.context.uiLocale],
+            description: this.attribute.descriptions[this.context.descriptionLocale],
           })
         );
       }
