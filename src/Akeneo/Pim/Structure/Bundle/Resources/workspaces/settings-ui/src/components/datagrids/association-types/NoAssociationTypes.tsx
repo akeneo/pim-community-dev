@@ -9,7 +9,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: ${({theme}) => theme.fontSize.title};
+  font-size: ${getFontSize('title')};
   margin-top: 5px;
 `;
 
