@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7c66929958b434c07a98f969ae0f26a",
+    "content-hash": "543e43bc7d1cc05ffd74f6619897db61",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -6895,6 +6895,7 @@
                     "type": "tidelift"
                 }
             ],
+            "abandoned": "use `EnglishInflector` from the String component instead",
             "time": "2021-01-10T16:29:19+00:00"
         },
         {

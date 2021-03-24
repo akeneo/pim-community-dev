@@ -28,11 +28,11 @@ class BatchLogHandler extends StreamHandler
      * @param string          $logDir         Batch log directory
      */
     public function __construct(
-        $level = Logger::DEBUG,
-        $bubble = true,
-        $filePermission = null,
-        $useLocking = false,
-        $logDir
+        int $level,
+        bool $bubble,
+        ?int $filePermission,
+        bool $useLocking,
+        string $logDir
     ) {
         $this->level = $level;
         $this->bubble = $bubble;

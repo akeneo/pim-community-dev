@@ -2,7 +2,7 @@
 
 define(['routing'], function (Routing) {
   var matchUrl = function (url) {
-    var routes = Routing.getRoutes().c;
+    var routes = Routing.getRoutes();
     var route;
 
     if (url.indexOf('?') !== -1) {
