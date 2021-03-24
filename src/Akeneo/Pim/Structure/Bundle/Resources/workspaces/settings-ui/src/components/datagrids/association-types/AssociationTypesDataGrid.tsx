@@ -56,7 +56,7 @@ const AssociationTypesDataGrid = ({
   }
 
   return (
-    <Table>
+    <Table className={'grid'}>
       <Table.Header>
         <TableHeaderCellLabel
           isSortable
