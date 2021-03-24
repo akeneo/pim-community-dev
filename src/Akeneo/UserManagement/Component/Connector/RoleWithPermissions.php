@@ -14,21 +14,22 @@ use Webmozart\Assert\Assert;
 final class RoleWithPermissions
 {
     private RoleInterface $role;
-    private array $allowedPermissionIds;
+    private array $permissions;
 
-    private function __construct(RoleInterface $role, array $allowedPermissionIds)
+    private function __construct(RoleInterface $role, array $privileges)
     {
         $this->role = $role;
-        $this->allowedPermissionIds = $allowedPermissionIds;
+        $this->setPermissions($privileges);
     }
 
-    public static function createFromRoleAndPermissionIds(
-        RoleInterface $role,
-        array $allowedPermissionIds
-    ): RoleWithPermissions {
-        Assert::allString($allowedPermissionIds);
+    public static function createFromRoleAndPermissions(RoleInterface $role, array $permissions): RoleWithPermissions
+    {
+        return new self($role, $permissions);
+    }
 
-        return new self($role, $allowedPermissionIds);
+    public function getId(): ?int
+    {
+        return $this->role->getId();
     }
 
     public function role(): RoleInterface
@@ -36,8 +37,15 @@ final class RoleWithPermissions
         return $this->role;
     }
 
-    public function allowedPermissionIds(): array
+    public function permissions(): array
     {
-        return $this->allowedPermissionIds;
+        return $this->permissions;
+    }
+
+    public function setPermissions(array $permissions): void
+    {
+        Assert::allBoolean($permissions);
+        Assert::allStringNotEmpty(\array_keys($permissions));
+        $this->permissions = $permissions;
     }
 }

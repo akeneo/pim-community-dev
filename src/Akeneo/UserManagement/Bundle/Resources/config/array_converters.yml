@@ -19,7 +19,7 @@ services:
             - ['role', 'label']
 
     pim_connector.array_converter.flat_to_standard.import.user_role:
-        class: 'Akeneo\UserManagement\Component\Connector\ArrayConverter\FlatToStandard\Role'
+        class: 'Akeneo\UserManagement\Component\Connector\ArrayConverter\FlatToStandard\RoleWithPermissions'
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
 

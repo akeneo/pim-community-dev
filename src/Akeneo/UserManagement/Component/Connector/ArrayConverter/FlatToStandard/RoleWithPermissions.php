@@ -11,9 +11,9 @@ use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class Role implements ArrayConverterInterface
+final class RoleWithPermissions implements ArrayConverterInterface
 {
-    private const FIELDS_PRESENCE = ['role', 'label'];
+    private const FIELDS_PRESENCE = ['role'];
 
     private FieldsRequirementChecker $fieldsRequirementChecker;
 
@@ -51,7 +51,11 @@ final class Role implements ArrayConverterInterface
         foreach ($item as $property => $data) {
             switch ($property) {
                 case 'permissions':
-                    $convertedItem[$property] = \explode(',', $data);
+                    if ('' === $data) {
+                        $convertedItem[$property] = [];
+                    } else {
+                        $convertedItem[$property] = \explode(',', $data);
+                    }
                     break;
                 default:
                     $convertedItem[$property] = (string) $data;

@@ -31,9 +31,9 @@ services:
       - '@akeneo_file_storage.file_storage.file.file_storer'
 
   pim_connector.processor.denormalization.user_role_with_permissions:
-    class: Akeneo\UserManagement\Component\Connector\Processor\Denormalization\RoleWithPermissionsProcessor
+    class: 'Akeneo\UserManagement\Component\Connector\Processor\Denormalization\RoleWithPermissionsProcessor'
     arguments:
-      - '@pim_user.repository.role'
+      - '@pim_user.repository.role_with_permissions'
+      - '@pim_user.factory.role_with_permissions'
+      - '@pim_user.updater.role_with_permissions'
       - '@validator'
-      - '@akeneo_storage_utils.doctrine.object_detacher'
-      - '@oro_security.acl.annotation_provider'
