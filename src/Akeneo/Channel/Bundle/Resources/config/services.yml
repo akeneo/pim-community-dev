@@ -139,6 +139,7 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.repository.channel'
             - '@translator'
+            - '@Akeneo\Channel\Bundle\Query\Sql\IsChannelUsedInProductProductExportJob'
             - '%pim_catalog.entity.channel.class%'
 
     pim_enrich.normalizer.channel:

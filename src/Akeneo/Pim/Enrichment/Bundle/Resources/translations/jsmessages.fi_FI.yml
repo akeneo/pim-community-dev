@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Asetukset
+    mass_delete: Poistaminen
 flash:
   comment:
     create:
@@ -370,6 +371,7 @@ pim_datagrid:
   filters:
     label: Suodattimet
     system: Järjestelmä
+  search: Etsi {{ label }}
 batch_jobs:
   add_association:
     label: Liitä
@@ -428,3 +430,5 @@ batch_jobs:
     quick_export.label: Tuotteen nopea vienti XLSX-muodossa
     quick_export_product_model.label: Tuotemallin nopea vienti XLSX-muodossa
     perform.label: Tuotteen nopea vienti XLSX-muodossa
+  default_steps:
+    delete_products_and_product_models: Poista tuotteet ja tuotemallit

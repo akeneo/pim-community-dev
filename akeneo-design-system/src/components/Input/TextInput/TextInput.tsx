@@ -1,4 +1,4 @@
-import React, {ChangeEvent, Ref, useCallback} from 'react';
+import React, {ChangeEvent, Ref, useCallback, useRef} from 'react';
 import styled from 'styled-components';
 import {InputProps} from '../InputProps';
 import {LockIcon} from '../../../icons';
@@ -20,17 +20,18 @@ const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedP
   border-radius: 2px;
   box-sizing: border-box;
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
-  color: ${getColor('grey', 140)};
+  color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
   font-size: ${getFontSize('default')};
   line-height: 40px;
   padding: 0 15px;
   outline-style: none;
-
+  cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'auto')};
   &:focus {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};
   }
 
   &::placeholder {
+    opacity: 1;
     color: ${getColor('grey', 100)};
   }
 `;
@@ -95,6 +96,8 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
     {invalid, onChange, readOnly, characterLeftLabel, onSubmit, ...rest}: TextInputProps,
     forwardedRef: Ref<HTMLInputElement>
   ) => {
+    const internalRef = useRef<HTMLInputElement | null>(null);
+    forwardedRef = forwardedRef ?? internalRef;
     const handleChange = useCallback(
       (event: ChangeEvent<HTMLInputElement>) => {
         if (!readOnly && onChange) onChange(event.currentTarget.value);

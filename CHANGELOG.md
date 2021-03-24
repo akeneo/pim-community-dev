@@ -3,6 +3,7 @@
 
 ## Bug fixes
 
+- PIM-9748: Upgrade JQuery for security reasons
 - PIM-9678: The time counter is still running despite the job failed
 - PIM-9672: Error 500 on the API when inputing [null] on an array
 - PIM-9595: Avoid 403 error when launching import with no view rights on import details
@@ -33,6 +34,10 @@
 - PIM-9711: Check that a category root isn't linked to a user or a channel before moving it to a sub-category
 - PIM-9730: Fix category tree initialization in the PEF when switching tabs
 - PIM-9679: Clean existing text attribute values removing linebreaks
+- PIM-9758: Fix bad replacement for line breaks introduced in PIM-9658
+- PIM-9743: Add the "change input" event so that the SKU/code doesn't disappear when doing copy/paste 
+- PIM-9759: Fix step name translation for product models csv import
+- PIM-9740: Prevent to delete a channel used in a product export job
 
 ## New features
 

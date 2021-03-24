@@ -99,6 +99,7 @@ pim_enrich:
       comment: Geef commentaar op producten
       download: Download het product als PDF
       history: Bekijk productgeschiedenis
+      convert_variant_to_simple: Converteer een variant product naar een eenvoudig product
     product_model:
       create: Een product model aanmaken
       edit_attributes: Wijzig attributen van een productmodel
@@ -544,3 +545,9 @@ job_tracker:
     title: Procesopvolger
   filter:
     started_at: Begonnen om
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: Mogelijk gemaakt door
+    powered_image_title: logo Akeneo
+    baseline: Productervaringen maken groei mogelijk

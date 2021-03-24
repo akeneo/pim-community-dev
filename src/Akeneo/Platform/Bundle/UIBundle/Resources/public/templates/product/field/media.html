@@ -2,7 +2,7 @@
     <% if (!value || !value.data || value.data.filePath === null) { %>
         <input class="AknMediaField-fileUploaderInput" id="<%- fieldId %>" type="file" data-locale="<%- locale %>" data-scope="<%- scope %>" <%- editMode === 'view' ? 'disabled' : '' %>/>
         <div class="AknMediaField-emptyContainer">
-            <span title="upload icon" class="AknMediaField-uploadIcon"/>
+            <span title="upload icon" class="AknMediaField-uploadIcon"></span>
             <span><%- _.__('pim_common.media_upload')%></span>
         </div>
     <% } else { %>
@@ -14,7 +14,7 @@
                 <div class="AknMediaField-thumb file"><img src="<%- mediaThumbnailUrl %>" class="AknMediaField-image"/></div>
             <% } else { %>
                 <div class="AknMediaField-thumb file">
-                    <span title="upload icon" class="AknMediaField-uploadIcon"/>
+                    <span title="upload icon" class="AknMediaField-uploadIcon"></span>
                 </div>
             <% } %>
             <div class="AknMediaField-info info">

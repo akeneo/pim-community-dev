@@ -1,11 +1,14 @@
 import React, {ReactNode, useRef, useState, useEffect} from 'react';
 import styled, {css} from 'styled-components';
 import {Key} from '../../../shared';
-import {useShortcut} from '../../../hooks';
+import {
+  HorizontalPosition,
+  useHorizontalPosition,
+  useShortcut,
+  useVerticalPosition,
+  VerticalPosition,
+} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
-
-type VerticalPosition = 'up' | 'down';
-type HorizontalPosition = 'left' | 'right';
 
 const Container = styled.div<
   {
@@ -65,35 +68,16 @@ const Backdrop = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
   z-index: 1;
 `;
 
-const Overlay = ({verticalPosition: defaultVerticalPosition, onClose, children}: OverlayProps) => {
+const Overlay = ({verticalPosition, onClose, children}: OverlayProps) => {
   const overlayRef = useRef<HTMLDivElement>(null);
-  const [verticalPosition, setVerticalPosition] = useState<VerticalPosition>(defaultVerticalPosition ?? 'down');
-  const [horizontalPosition, setHorizontalPosition] = useState<HorizontalPosition>('right');
+  verticalPosition = useVerticalPosition(overlayRef, verticalPosition);
+  const horizontalPosition = useHorizontalPosition(overlayRef);
   const [visible, setVisible] = useState<boolean>(false);
   useShortcut(Key.Escape, onClose);
 
   useEffect(() => {
-    if (null !== overlayRef.current) {
-      if (undefined === defaultVerticalPosition) {
-        const elementHeight = overlayRef.current.getBoundingClientRect().height;
-        const windowHeight = window.innerHeight;
-        const distanceToTop = overlayRef.current.getBoundingClientRect().top;
-        const distanceToBottom = windowHeight - (elementHeight + distanceToTop);
-
-        setVerticalPosition(distanceToTop > distanceToBottom ? 'up' : 'down');
-      }
-
-      if (null !== overlayRef.current) {
-        const elementWidth = overlayRef.current.getBoundingClientRect().width;
-        const windowWidth = window.innerWidth;
-        const distanceToLeft = overlayRef.current.getBoundingClientRect().left;
-        const distanceToRight = windowWidth - (elementWidth + distanceToLeft);
-
-        setHorizontalPosition(distanceToLeft > distanceToRight ? 'left' : 'right');
-      }
-      setVisible(true);
-    }
-  }, [defaultVerticalPosition]);
+    setVisible(true);
+  }, []);
 
   return (
     <>

@@ -3,7 +3,7 @@ import React, {FC} from 'react';
 import {useTranslate} from '../../shared/translate';
 import styled from 'styled-components';
 import {EventLogLevelFilter} from './EventLogLevelFilter';
-import {Filters} from '../hooks/api/use-infinite-event-subscription-logs';
+import {EventSubscriptionLogFilters} from '../model/EventSubscriptionLogFilters';
 import SearchInput from './SearchInput';
 
 const StyledSectionTitle = styled(SectionTitle)`
@@ -11,8 +11,8 @@ const StyledSectionTitle = styled(SectionTitle)`
 `;
 
 export const EventLogListFilters: FC<{
-    filters: Filters,
-    onChange: (filters: Filters) => void,
+    filters: EventSubscriptionLogFilters,
+    onChange: (filters: EventSubscriptionLogFilters) => void,
     total?: number,
 }> = ({filters, onChange, total}) => {
     const translate = useTranslate();

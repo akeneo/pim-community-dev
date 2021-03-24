@@ -12,6 +12,11 @@ batch_jobs:
     compute_family_variant_structure_changes: Wijzigingen van de familie variant structuur berekenen
     compute_completeness_of_products_family: Berekenen van de volledigheid van de producten-familie
     delete_products_and_product_models: Groepsgewijs producten verwijderen
+    clean_attribute:
+      register_clean_job: Code toevoegen aan zwarte lijst
+      clean_product_model: Opschonen productmodellen
+      clean_product: Opschonen producten
+      remove_attribute_codes_from_blacklist: Verwijder code van zwarte lijst
   csv_product_export:
     label: Productexport in CSV
     export.label: Productexport

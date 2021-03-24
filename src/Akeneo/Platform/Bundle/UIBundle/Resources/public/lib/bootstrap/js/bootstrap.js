@@ -441,7 +441,7 @@
       if (!isActive) {
         if ('ontouchstart' in document.documentElement) {
           // if mobile we we use a backdrop because click events don't delegate
-          $('<div class="dropdown-backdrop"/>').insertBefore($(this)).on('click', clearMenus);
+          $('<div class="dropdown-backdrop"></div>').insertBefore($(this)).on('click', clearMenus);
         }
 
         // This little code block will set correct position for dropdown elements.
@@ -719,7 +719,7 @@
       if (this.isShown && this.options.backdrop) {
         var doAnimate = $.support.transition && animate;
 
-        this.$backdrop = $('<div class="modal-backdrop ' + animate + '" />').appendTo(document.body);
+        this.$backdrop = $('<div class="modal-backdrop ' + animate + '"></div>').appendTo(document.body);
 
         this.$backdrop.click(
           this.options.backdrop == 'static'

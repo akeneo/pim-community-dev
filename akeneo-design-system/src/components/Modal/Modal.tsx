@@ -7,6 +7,7 @@ import {CloseIcon} from '../../icons';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
 import {useShortcut} from '../../hooks';
 import {Key, Override} from '../../shared';
+import {ModalContext, useInModal} from './ModalContext';
 
 const ModalContainer = styled.div`
   ${CommonStyle}
@@ -22,7 +23,6 @@ const ModalContainer = styled.div`
   justify-content: center;
   z-index: 2000;
   overflow: hidden;
-  cursor: default;
   padding: 20px 80px;
   box-sizing: border-box;
 `;
@@ -132,17 +132,25 @@ const Modal: React.FC<ModalProps> & {
   }, []);
 
   return createPortal(
-    <ModalContainer role="dialog" {...rest}>
-      <ModalCloseButton title={closeTitle} level="tertiary" ghost="borderless" icon={<CloseIcon />} onClick={onClose} />
-      {undefined === illustration ? (
-        children
-      ) : (
-        <ModalContent>
-          <IconContainer>{React.cloneElement(illustration, {size: 220})}</IconContainer>
-          <ModalChildren>{children}</ModalChildren>
-        </ModalContent>
-      )}
-    </ModalContainer>,
+    <ModalContext.Provider value={true}>
+      <ModalContainer role="dialog" {...rest}>
+        <ModalCloseButton
+          title={closeTitle}
+          level="tertiary"
+          ghost="borderless"
+          icon={<CloseIcon />}
+          onClick={onClose}
+        />
+        {undefined === illustration ? (
+          children
+        ) : (
+          <ModalContent>
+            <IconContainer>{React.cloneElement(illustration, {size: 220})}</IconContainer>
+            <ModalChildren>{children}</ModalChildren>
+          </ModalContent>
+        )}
+      </ModalContainer>
+    </ModalContext.Provider>,
     containerRef.current
   );
 };
@@ -152,4 +160,4 @@ Modal.TopRightButtons = TopRightButtons;
 Modal.Title = Title;
 Modal.SectionTitle = SectionTitle;
 
-export {Modal};
+export {Modal, useInModal};

@@ -1,5 +1,43 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9750: Auto_increment reaches max value for pim_catalog_completeness table
+
+# 4.0.98 (2021-03-16)
+
+# 4.0.97 (2021-03-10)
+
+## Bug fixes
+
+- PIM-9717: Fix 500 error when filtering with invalid identifiers value during an API call
+
+## Technical Improvements
+
+- AOB-1340: Add InMemory implem for GetExistingReferenceDataCodes query 
+
+# 4.0.96 (2021-02-23)
+
+## Bug fixes
+
+- PIM-9696: Associations and categories display according to the ownership rights
+
+# 4.0.95 (2021-02-19)
+
+# 4.0.94 (2021-02-17)
+
+# 4.0.93 (2021-02-12)
+
+# 4.0.92 (2021-02-11)
+
+# 4.0.91 (2021-02-09)
+
+## Bug fixes
+
+- PIM-9665: [Backport] PIM-9533: Update wysiwyg editor's style in order to differentiate new paragraphs from mere line breaks
+- PIM-9663: Fix PDF product renderer disregarding permissions on attribute groups (backport of PIM-9649)
+- PIM-9669: [Backport] PIM-9610: Force displaying years with 4 digits in dates for every locale
+
 # 4.0.90 (2021-02-02)
 
 # 4.0.89 (2021-01-29)

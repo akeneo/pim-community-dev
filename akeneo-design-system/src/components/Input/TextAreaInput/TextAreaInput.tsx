@@ -16,7 +16,7 @@ const TextAreaInputContainer = styled.div`
 const CommonStyle = css<{readOnly: boolean; invalid: boolean} & AkeneoThemedProps>`
   border: 1px solid ${({invalid}) => (invalid ? getColor('red', 100) : getColor('grey', 80))};
   border-radius: 2px;
-  color: ${getColor('grey', 140)};
+  color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
   font-size: ${getFontSize('default')};
   line-height: 20px;
   width: 100%;
@@ -24,6 +24,7 @@ const CommonStyle = css<{readOnly: boolean; invalid: boolean} & AkeneoThemedProp
   font-family: inherit;
   outline-style: none;
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
+  cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'auto')};
 
   &:focus-within {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};
@@ -69,6 +70,7 @@ const Textarea = styled.textarea<{readOnly: boolean; invalid: boolean} & AkeneoT
   padding: 10px 30px 10px 15px;
 
   &::placeholder {
+    opacity: 1;
     color: ${getColor('grey', 100)};
   }
 `;

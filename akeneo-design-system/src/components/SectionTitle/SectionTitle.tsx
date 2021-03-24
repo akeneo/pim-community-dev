@@ -47,6 +47,7 @@ const Information = styled.div`
   font-size: ${getFontSize('default')};
   font-weight: normal;
   color: ${getColor('brand', 100)};
+  white-space: nowrap;
 `;
 
 type SectionTitleProps = Override<
