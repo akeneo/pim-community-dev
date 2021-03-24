@@ -142,6 +142,8 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\ConnectivityContext:
                     - '@messenger.transport.business_event'
+                - Pim\Behat\Context\Domain\Structure\AssociationTypeContext:
+                    - 'Context\EnterpriseFeatureContext'
         all:
             paths:
                 - tests/legacy/features
@@ -287,6 +289,8 @@ legacy:
                       - 'Context\EnterpriseFeatureContext'
                 - Context\ConnectivityContext:
                      - '@messenger.transport.business_event'
+                - Pim\Behat\Context\Domain\Structure\AssociationTypeContext:
+                    - 'Context\EnterpriseFeatureContext'
         chipmunk:
             paths:
                 - tests/legacy/features/pim/enrichment/
@@ -432,6 +436,8 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\ConnectivityContext:
                     - '@messenger.transport.business_event'
+                - Pim\Behat\Context\Domain\Structure\AssociationTypeContext:
+                    - 'Context\EnterpriseFeatureContext'
         raccoon:
             paths:
                 - vendor/akeneo/pim-community-dev/tests/legacy/features/user-management/
