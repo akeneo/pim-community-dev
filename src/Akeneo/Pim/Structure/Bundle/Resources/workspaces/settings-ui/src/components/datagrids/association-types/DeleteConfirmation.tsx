@@ -3,8 +3,8 @@ import {Button, Modal, DeleteIllustration} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 interface DeleteConfirmationProps {
-  deleteAction: any;
-  cancelDelete: any;
+  deleteAction: () => void;
+  cancelDelete: () => void;
 }
 
 const DeleteConfirmation = ({deleteAction, cancelDelete}: DeleteConfirmationProps) => {
