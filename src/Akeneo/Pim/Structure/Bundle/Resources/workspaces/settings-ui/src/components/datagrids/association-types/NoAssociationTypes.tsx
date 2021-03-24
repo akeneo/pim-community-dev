@@ -19,7 +19,7 @@ const Hint = styled.div`
   margin-top: 15px;
 `;
 
-const createAssociationType = (event: any) => {
+const createAssociationType = (event: React.MouseEvent) => {
   event.preventDefault();
   event.stopPropagation();
   const createButton = document.getElementById('create-button-extension');
