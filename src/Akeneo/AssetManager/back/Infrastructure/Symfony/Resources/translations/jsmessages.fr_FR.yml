@@ -568,6 +568,7 @@ batch_jobs:
   default_steps:
     execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
     mass_delete_assets: Lancer la suppression en masse des ressources
+    link_assets_to_products: Lier les ressources aux produits
 job_execution:
   summary:
     assets: Ressources
