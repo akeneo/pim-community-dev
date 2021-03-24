@@ -44,7 +44,7 @@ define([
                  */
       const values = _.find(parameters, function (parameter) {
         return 'values' === parameter.key;
-      }).value.split('%2C'); // %2C = ,
+      }).value.split(',');
       const queryWithoutValues = query.replace(/&values=[^&]+/, '');
 
       return $.ajax({
