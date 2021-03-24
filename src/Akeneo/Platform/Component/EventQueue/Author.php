@@ -20,10 +20,10 @@ class Author
     const TYPE_UI = 'ui';
 
     /** @var string */
-    private $name;
+    const TYPE_SYSTEM = 'system';
 
-    /** @var string */
-    private $type;
+    private string $name;
+    private string $type;
 
     private function __construct(string $name, string $type)
     {
@@ -33,14 +33,18 @@ class Author
 
     public static function fromUser(UserInterface $user): Author
     {
-        $type = $user->isApiUser() ? self::TYPE_API : self::TYPE_UI;
+        if (UserInterface::SYSTEM_USER_NAME === $user->getUsername()) {
+            $type = self::TYPE_SYSTEM;
+        } else {
+            $type = $user->isApiUser() ? self::TYPE_API : self::TYPE_UI;
+        }
 
         return new self($user->getUsername(), $type);
     }
 
     public static function fromNameAndType(string $name, string $type): Author
     {
-        Assert::oneOf($type, [self::TYPE_API, self::TYPE_UI]);
+        Assert::oneOf($type, [self::TYPE_API, self::TYPE_UI, self::TYPE_SYSTEM]);
 
         return new self($name, $type);
     }

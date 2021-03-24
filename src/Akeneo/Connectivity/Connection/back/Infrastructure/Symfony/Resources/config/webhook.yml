@@ -47,6 +47,11 @@ services:
         arguments:
             - '@monolog.logger.event_api'
 
+    akeneo_connectivity.connection.webhook.event_origin_logger:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventOriginLogger
+        arguments:
+            - '@monolog.logger.event_api'
+
     akeneo_connectivity.connection.webhook.event_data_build_error_logger:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataBuildErrorLogger
         arguments:

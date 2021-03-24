@@ -105,6 +105,7 @@ services:
             - '@akeneo_connectivity.connection.webhook.skip_own_event_logger'
             - '@akeneo_connectivity.connection.webhook.events_api_debug_logger'
             - '@akeneo_connectivity.connection.webhook.event_data_version_logger'
+            - '@akeneo_connectivity.connection.webhook.event_origin_logger'
             - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
             - '@akeneo_connectivity.connection.persistence.repository.events_api_request_count'
             - '@akeneo_connectivity.connection.webhook.cache_clearer'

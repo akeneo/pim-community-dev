@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInter
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventBuildLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataVersionLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventOriginLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SkipOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
@@ -44,6 +45,10 @@ final class SendBusinessEventToWebhooksHandler
     private CacheClearerInterface $cacheClearer;
     private string $pimSource;
     private ?\Closure $getTimeCallable;
+    /**
+     * @var EventOriginLogger
+     */
+    private EventOriginLogger $eventOriginLogger;
 
     public function __construct(
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
@@ -55,6 +60,7 @@ final class SendBusinessEventToWebhooksHandler
         SkipOwnEventLogger $skipOwnEventLogger,
         EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
         EventDataVersionLogger $eventDataVersionLogger,
+        EventOriginLogger $eventOriginLogger,
         EventsApiDebugRepository $eventsApiDebugRepository,
         EventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
@@ -69,6 +75,7 @@ final class SendBusinessEventToWebhooksHandler
         $this->eventBuildLogger = $eventBuildLogger;
         $this->skipOwnEventLogger = $skipOwnEventLogger;
         $this->eventSubscriptionSkippedOwnEventLogger = $eventSubscriptionSkippedOwnEventLogger;
+        $this->eventOriginLogger = $eventOriginLogger;
         $this->eventDataVersionLogger = $eventDataVersionLogger;
         $this->eventsApiDebugRepository = $eventsApiDebugRepository;
         $this->eventsApiRequestRepository = $eventsApiRequestRepository;
@@ -86,6 +93,11 @@ final class SendBusinessEventToWebhooksHandler
         }
 
         $pimEventBulk = $command->event();
+
+        /** @var EventInterface $pimEvent */
+        foreach ($pimEventBulk as $pimEvent) {
+            $this->eventOriginLogger->log($pimEvent->getAuthor()->type());
+        }
 
         $requests = function () use ($pimEventBulk, $webhooks) {
             $apiEventsRequestCount = 0;
