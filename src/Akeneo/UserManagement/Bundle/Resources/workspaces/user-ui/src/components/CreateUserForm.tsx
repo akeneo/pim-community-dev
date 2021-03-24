@@ -126,7 +126,7 @@ const CreateUserForm = ({userId, onCancel, onSuccess, onError}: CreateUserFormPr
         <Button onClick={onCancel} level={'tertiary'}>
           {translate('pim_common.cancel')}
         </Button>
-        <Button type="submit" disabled={!allInputsAreFilled()}>
+        <Button type="submit" disabled={!allInputsAreFilled() || Object.keys(errors).length > 0}>
           {translate('pim_common.confirm')}
         </Button>
       </Modal.BottomButtons>
