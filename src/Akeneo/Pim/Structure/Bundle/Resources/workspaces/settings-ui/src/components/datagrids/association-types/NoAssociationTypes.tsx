@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {AssociationTypesIllustration, Link} from 'akeneo-design-system';
+import {AssociationTypesIllustration, Link, getFontSize, getColor} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`

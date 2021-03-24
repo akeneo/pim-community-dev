@@ -5,7 +5,7 @@ import {AssociationType, NoResults} from '@akeneo-pim-community/settings-ui';
 import styled from 'styled-components';
 
 type Props = {
-  associationTypes: any[];
+  associationTypes: AssociationType[];
   sortDirection: string;
   onDirectionChange: (direction: string) => void;
   deleteAssociationType: (associationType: AssociationType) => void;
@@ -56,6 +56,7 @@ const AssociationTypesDataGrid = ({
   }
 
   return (
+    // Class name "grid" to keep compatibility with the legacy end-to-end tests
     <Table className={'grid'}>
       <Table.Header>
         <TableHeaderCellLabel

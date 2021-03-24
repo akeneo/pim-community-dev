@@ -1,12 +1,12 @@
 import React from 'react';
 import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
-import {AssociationTypeApp} from '@akeneo-pim-community/settings-ui';
+import {AssociationTypesApp} from '@akeneo-pim-community/settings-ui';
 
 const mediator = require('oro/mediator');
 
 class AssociationTypesSettings extends ReactController {
   reactElementToMount() {
-    return <AssociationTypeApp />;
+    return <AssociationTypesApp />;
   }
 
   routeGuardToUnmount() {
