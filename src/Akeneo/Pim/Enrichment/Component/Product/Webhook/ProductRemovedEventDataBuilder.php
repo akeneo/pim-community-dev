@@ -42,7 +42,9 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
                     'identifier' => $event->getIdentifier()
                 ],
             ];
-            $collection->setEventData($event, $data);
+            $dataVersion = sprintf('%s_%s', 'product', $event->getIdentifier());
+
+            $collection->setEventData($event, $data, $dataVersion);
         }
 
         return $collection;
