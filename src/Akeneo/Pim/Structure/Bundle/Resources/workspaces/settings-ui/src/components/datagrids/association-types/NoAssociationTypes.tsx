@@ -14,7 +14,7 @@ const Title = styled.div`
 `;
 
 const Hint = styled.div`
-  font-size: ${({theme}) => theme.fontSize.bigger};
+  font-size: ${getFontSize('bigger')};
   color: ${({theme}) => theme.color.grey120};
   margin-top: 15px;
 `;
