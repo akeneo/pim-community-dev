@@ -14,6 +14,7 @@ const SearchInput: FC<Props> = ({value, onSearch, placeholder}) => {
             value={value}
             onChange={event => onSearch(event.target.value)}
             placeholder={placeholder}
+            data-testid={'event-logs-list-search-text-filter'}
         />
     );
 };

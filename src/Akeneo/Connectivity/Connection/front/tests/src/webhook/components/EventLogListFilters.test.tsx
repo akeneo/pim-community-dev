@@ -7,13 +7,13 @@ import {EventLogListFilters} from '@src/webhook/components/EventLogListFilters';
 test('It displays the filters for the event log list.', () => {
     renderWithProviders(
         <EventLogListFilters
-            filters={{levels: []}}
+            filters={{levels: [], text: 'I search'}}
             onChange={jest.fn()}
             total={42}
         />
     );
 
-    const title = screen.getByText('akeneo_connectivity.connection.webhook.event_logs.list.search.title');
+    const searchText = screen.getByTestId('event-logs-list-search-text-filter');
     const countTitle = screen.getByText(
         'akeneo_connectivity.connection.webhook.event_logs.list.search.total',
         {exact: false}
@@ -23,7 +23,8 @@ test('It displays the filters for the event log list.', () => {
         'akeneo_connectivity.connection.webhook.event_logs.list.search.level',
         {exact: false}
     );
-    expect(title).toBeInTheDocument();
+    expect(searchText).toBeInTheDocument();
+    expect(searchText.getAttribute('value')).toEqual('I search');
     expect(countTitle).toBeInTheDocument();
     expect(count).toBeInTheDocument();
     expect(searchLevelTitle).toBeInTheDocument();
@@ -32,13 +33,14 @@ test('It displays the filters for the event log list.', () => {
 test('it does not display the total if it is undefined.', () => {
     renderWithProviders(
         <EventLogListFilters
-            filters={{levels: []}}
+            filters={{levels: [], text: 'I search'}}
             onChange={jest.fn()}
         />
     );
 
-    const title = screen.getByText('akeneo_connectivity.connection.webhook.event_logs.list.search.title');
+    const searchText = screen.getByTestId('event-logs-list-search-text-filter');
     const countTitle = screen.queryByText('akeneo_connectivity.connection.webhook.event_logs.list.search.total');
+    expect(searchText.getAttribute('value')).toEqual('I search');
     expect(countTitle).not.toBeInTheDocument();
-    expect(title).toBeInTheDocument();
+    expect(searchText).toBeInTheDocument();
 });

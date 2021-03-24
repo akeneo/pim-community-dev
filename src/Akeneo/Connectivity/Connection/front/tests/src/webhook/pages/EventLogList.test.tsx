@@ -78,9 +78,6 @@ describe('testing events logs page', () => {
         );
 
         expect(await screen.findByText('Alkemics')).toBeInTheDocument();
-        expect(
-            await screen.findByText('akeneo_connectivity.connection.webhook.event_logs.list.info.logs_total?total=1')
-        ).toBeInTheDocument();
 
         const row = (await screen.findByText('a log message')).closest('tr') as HTMLTableRowElement;
         expect(within(row).getByText('03/14/2021')).toBeInTheDocument();
