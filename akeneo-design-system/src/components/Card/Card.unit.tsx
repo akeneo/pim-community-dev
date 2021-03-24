@@ -8,7 +8,10 @@ test('it renders its children properly', () => {
   render(
     <CardGrid>
       <Card src="some.jpg">
-        <Badge>100%</Badge>Card text
+        <Card.BadgeContainer>
+          <Badge>100%</Badge>
+        </Card.BadgeContainer>
+        Card text
       </Card>
     </CardGrid>
   );
@@ -107,11 +110,7 @@ test('it calls its child Link handler when clicking on the image', () => {
 });
 
 test('it does not display a Checkbox if no handler is provided', () => {
-  render(
-    <Card src="some.jpg">
-      <Badge>100%</Badge>Card text
-    </Card>
-  );
+  render(<Card src="some.jpg">Card text</Card>);
 
   expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
 });
@@ -119,7 +118,7 @@ test('it does not display a Checkbox if no handler is provided', () => {
 test('it displays a Checkbox if a handler is provided', () => {
   render(
     <Card src="some.jpg" onSelect={jest.fn()}>
-      <Badge>100%</Badge>Card text
+      Card text
     </Card>
   );
 
@@ -128,10 +127,7 @@ test('it displays a Checkbox if a handler is provided', () => {
 
 test('it displays a stack style when the card is marked as stacked', () => {
   render(
-    <Card src="some.jpg" stacked>
-      <Card.BadgeContainer>
-        <Badge>100%</Badge>
-      </Card.BadgeContainer>
+    <Card src="some.jpg" stacked={true}>
       Card text
     </Card>
   );
