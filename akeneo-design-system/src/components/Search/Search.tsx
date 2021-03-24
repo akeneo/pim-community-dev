@@ -1,42 +1,7 @@
-import React, {ChangeEvent, ReactNode, useRef} from 'react';
+import React, {ChangeEvent, ReactNode} from 'react';
 import styled from 'styled-components';
 import {getColor} from '../../theme';
 import {SearchIcon} from '../../icons';
-import {useAutoFocus} from '../../hooks';
-import {ResultCount} from './ResultCount';
-
-type SearchProps = {
-  children?: ReactNode;
-  placeholder?: string;
-  title?: string;
-  searchValue: string;
-  onSearchChange: (searchValue: string) => void;
-};
-
-const Search = ({children, placeholder, title, searchValue, onSearchChange}: SearchProps) => {
-  const searchFieldRef = useRef<HTMLInputElement | null>(null);
-  useAutoFocus(searchFieldRef);
-
-  const decoratedChildren = React.Children.map(children, (child, index) => {
-    return index === 0 ? child : <ChildWithSeparator>{child}</ChildWithSeparator>;
-  });
-
-  return (
-    <Container>
-      <SearchContainer>
-        <SearchIcon width={20} height={20} />
-        <SearchInput
-          title={title}
-          ref={searchFieldRef}
-          placeholder={placeholder}
-          value={searchValue}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => onSearchChange(event.target.value)}
-        />
-      </SearchContainer>
-      {decoratedChildren}
-    </Container>
-  );
-};
 
 const Container = styled.div`
   display: flex;
@@ -52,7 +17,7 @@ const Container = styled.div`
   box-sizing: border-box;
 
   :focus-within {
-    border-bottom: 1px solid ${getColor('purple', 100)};
+    border-bottom: 1px solid ${getColor('brand', 100)};
   }
 `;
 
@@ -74,7 +39,7 @@ const SearchInput = styled.input`
   }
 `;
 
-const ChildWithSeparator = styled.div`
+const Separator = styled.div`
   margin-left: 20px;
   border-left: 1px ${getColor('grey', 100)} solid;
   padding-left: 20px;
@@ -82,6 +47,59 @@ const ChildWithSeparator = styled.div`
   display: flex;
 `;
 
+const ResultCount = styled.span`
+  white-space: nowrap;
+  color: ${getColor('brand', 100)};
+  margin-left: 10px;
+  line-height: 16px;
+  text-transform: none;
+`;
+
+type SearchProps = {
+  /**
+   * Content of the Search component
+   */
+  children?: ReactNode;
+
+  /**
+   * Placeholder displayed when the search input is empty.
+   */
+  placeholder?: string;
+
+  /**
+   * Text displayed on the rollover of the Search component
+   */
+  title?: string;
+
+  /**
+   * The search string
+   */
+  searchValue: string;
+
+  /**
+   * Handle called when the search input is updated
+   */
+  onSearchChange: (searchValue: string) => void;
+};
+
+const Search = ({children, placeholder, title, searchValue, onSearchChange}: SearchProps) => {
+  return (
+    <Container>
+      <SearchContainer>
+        <SearchIcon size={20} />
+        <SearchInput
+          title={title}
+          placeholder={placeholder}
+          value={searchValue}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => onSearchChange(event.target.value)}
+        />
+      </SearchContainer>
+      {children}
+    </Container>
+  );
+};
+
 Search.ResultCount = ResultCount;
+Search.Separator = Separator;
 
 export {Search};

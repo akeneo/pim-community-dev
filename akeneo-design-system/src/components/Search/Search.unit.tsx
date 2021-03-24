@@ -1,7 +1,8 @@
 import React from 'react';
-import {fireEvent, render, screen} from '../../storybook/test-util';
+import {render, screen} from '../../storybook/test-util';
 import {Search} from './Search';
 import {SwitcherButton} from '../SwitcherButton/SwitcherButton';
+import userEvent from '@testing-library/user-event';
 
 test('It renders the Search component with its children', () => {
   const onSearchChange = jest.fn();
@@ -19,9 +20,9 @@ test('It renders the Search component with its children', () => {
 
 test('It calls the onSearchChange callback when the value is changed', () => {
   const onSearchChange = jest.fn();
-  render(<Search onSearchChange={onSearchChange} searchValue="hey" title="Search" />);
+  render(<Search onSearchChange={onSearchChange} searchValue="" title="Search" />);
 
-  fireEvent.change(screen.getByTitle('Search'), {target: {value: 'hey!'}});
+  userEvent.paste(screen.getByTitle('Search'), 'hey!');
 
   expect(onSearchChange).toBeCalledWith('hey!');
 });
