@@ -16,6 +16,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -141,6 +142,10 @@ class ProductModelProposalNormalizer implements NormalizerInterface, CacheableSu
                     continue;
                 }
 
+                if (false === $this->changeNeedsReview($proposal, $code, $change['locale'], $change['scope'])) {
+                    continue;
+                }
+
                 $valueCollection->add(
                     $this->valueFactory->createByCheckingData(
                         $attribute,
@@ -158,5 +163,14 @@ class ProductModelProposalNormalizer implements NormalizerInterface, CacheableSu
     private function isChangeDataNull($changeData): bool
     {
         return null === $changeData || '' === $changeData || [] === $changeData;
+    }
+
+    private function changeNeedsReview(
+        ProductModelDraft $proposal,
+        string $code,
+        ?string $localeCode,
+        ?string $channelCode
+    ): bool {
+        return EntityWithValuesDraftInterface::CHANGE_TO_REVIEW === $proposal->getReviewStatusForChange($code, $localeCode, $channelCode);
     }
 }

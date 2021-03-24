@@ -25,6 +25,7 @@
 - PIM-9756: Use PNG format for Asset transformations targets
 - PIM-9760: Fix link assets to products job not translated in job tracker
 - PIM-9693: Fix Asset creation modal failing when no label
+- PIM-9755: Hide product model proposal changes that are already reviewed
 
 ## Improvements
 
