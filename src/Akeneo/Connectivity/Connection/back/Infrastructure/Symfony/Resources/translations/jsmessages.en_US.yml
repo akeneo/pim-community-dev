@@ -247,7 +247,7 @@ akeneo_connectivity.connection:
                 error: Error
             list:
                 search:
-                    title: Event Logs
+                    placeholder: Search in messages
                     total: '{0} 0 results|{1} 1 result|[2,Inf] {{ total }} results'
                     level: Level
                     all: All

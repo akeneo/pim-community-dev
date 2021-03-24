@@ -97,7 +97,7 @@ const useInfiniteEventSubscriptionLogs = (
         setSearchAfter(null);
     }, [setState, setSearchAfter]);
 
-    const resetInfiniteScroll = useDebounceCallback(reset, 1000);
+    const resetInfiniteScroll = useDebounceCallback(reset, 300);
 
     // By default, an useEffect is always executed during the first render.
     // Here, we want to trigger this useEffect only after the initial render,

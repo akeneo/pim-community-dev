@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SearchEventSubscriptionDebugLogsQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Component\Elasticsearch\QueryString;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -192,21 +193,11 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         }
 
         if (null !== $filters['text']) {
-            $query['query']['bool']['must']['bool']['should'] = [
-                [
-                    'match' => [
-                        'message' => [
-                            'query' => $filters['text'],
-                        ],
-                    ],
-                ],
-                [
-                    'match' => [
-                        'context_flattened' => [
-                            'query' => $filters['text'],
-                        ],
-                    ],
-                ],
+            $query['query']['bool']['must']['query_string'] = [
+                'fields' => ['message', 'context_flattened'],
+                'query'=> $this->formatTextSearch(strtolower($filters['text'])),
+                'fuzziness' => 0,
+                'default_operator' => 'AND'
             ];
         }
 
@@ -215,6 +206,20 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         }
 
         return $query;
+    }
+
+    private function formatTextSearch(string $value): string
+    {
+        $regex = '#[-+=|!&(){}\[\]^"~*<>?:/\\\]#';
+
+        $escaped =  preg_replace($regex, '\\\$0', $value);
+        $split = preg_split('/ /', $escaped);
+        $formatted = '';
+        foreach ($split as $item) {
+            $formatted .= sprintf('*%s* ', $item);
+        }
+
+        return $formatted;
     }
 
     /**
@@ -369,6 +374,13 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         // If all the levels are selected, replace by `null`
         $resolver->setNormalizer('levels', function ($options, $value) {
             if (is_array($value) && empty(array_diff(EventsApiDebugLogLevels::ALL, $value))) {
+                return null;
+            }
+
+            return $value;
+        });
+        $resolver->setNormalizer('text', function ($options, $value) {
+            if (is_string($value) && '' === trim($value)) {
                 return null;
             }
 

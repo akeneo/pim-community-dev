@@ -3,6 +3,7 @@ import {isEqual} from 'lodash';
 
 export type EventSubscriptionLogFilters = {
     levels: EventSubscriptionLogLevel[],
+    text: string,
 };
 
 export const DEFAULT_EVENT_SUBSCRIPTION_LOG_FILTERS = {
@@ -12,6 +13,7 @@ export const DEFAULT_EVENT_SUBSCRIPTION_LOG_FILTERS = {
         EventSubscriptionLogLevel.WARNING,
         EventSubscriptionLogLevel.ERROR,
     ],
+    text: '',
 };
 
 export const isSameAsDefaultFiltersValues = (filters: EventSubscriptionLogFilters): boolean => {

@@ -4,6 +4,7 @@ import {useTranslate} from '../../shared/translate';
 import styled from 'styled-components';
 import {EventLogLevelFilter} from './EventLogLevelFilter';
 import {EventSubscriptionLogFilters} from '../model/EventSubscriptionLogFilters';
+import SearchInput from './SearchInput';
 
 const StyledSectionTitle = styled(SectionTitle)`
     margin-bottom: 18px;
@@ -18,9 +19,11 @@ export const EventLogListFilters: FC<{
 
     return (
         <StyledSectionTitle>
-            <SectionTitle.Title>
-                {translate('akeneo_connectivity.connection.webhook.event_logs.list.search.title')}
-            </SectionTitle.Title>
+            <SearchInput
+                value={filters.text}
+                onSearch={(searchText: string) => onChange({...filters, text: searchText})}
+                placeholder={translate('akeneo_connectivity.connection.webhook.event_logs.list.search.placeholder')}
+            />
             <SectionTitle.Spacer/>
             <SectionTitle.Information>
                 {undefined !== total ? translate('akeneo_connectivity.connection.webhook.event_logs.list.search.total', {total: total.toString()}, total) : ''}
