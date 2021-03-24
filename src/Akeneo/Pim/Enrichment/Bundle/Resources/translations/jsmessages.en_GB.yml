@@ -286,7 +286,7 @@ pim_enrich.export.product:
     title: Global settings
 pim_enrich.mass_edit.product:
   title: Products bulk action
-  confirm: "Select the products you want to associate to the {{ productCount }} selected product(s)"
+  confirm: "{0}You are about to update some products with the following information, please confirm.|{1}You are about to update a product with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, please confirm."
   step:
     select:
       label: Choose products

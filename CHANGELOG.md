@@ -38,6 +38,7 @@
 - PIM-9743: Add the "change input" event so that the SKU/code doesn't disappear when doing copy/paste 
 - PIM-9759: Fix step name translation for product models csv import
 - PIM-9740: Prevent to delete a channel used in a product export job
+- PIM-9765: Fix missing translation key in bulk actions when adding attributes values for some product
 
 ## New features
 
