@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.99 (2021-03-24)
+
 ## Bug fixes
 
 - PIM-9757: Fix product grid context being lost when clicking on view all linked products in Asset Manager
