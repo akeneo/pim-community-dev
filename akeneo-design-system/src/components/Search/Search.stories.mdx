@@ -1,11 +1,9 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Search} from './Search';
-import {SwitcherButton} from '../SwitcherButton/SwitcherButton';
-import {Dropdown} from '../Dropdown/Dropdown';
+import {Button, Dropdown, SwitcherButton} from '../../components';
 import {ArrowDownIcon} from '../../icons';
 import {SpaceContainer} from '../../storybook';
-import {Button} from '../Button/Button';
 import {useBooleanState} from '../../hooks';
 
 <Meta
@@ -14,11 +12,6 @@ import {useBooleanState} from '../../hooks';
     args={{
         title: 'Search',
         placeholder: 'Search',
-    }}
-    argTypes={{
-        onSearchChange: {
-            table: {type: {summary: '(searchValue: string) => void'}},
-        }
     }}
 />
 
@@ -45,10 +38,10 @@ Search allows users to specify a word or phrase to find relevant content without
 
 <ArgsTable story="Standard" />
 
-# Example with only the search input
+## Example with only the search input
 
 <Canvas>
-    <Story name="Example with only the search input">
+    <Story name="Basic search input">
         {args => {
             const [searchValue, setSearch] = useState('');
             return (
@@ -58,15 +51,16 @@ Search allows users to specify a word or phrase to find relevant content without
     </Story>
 </Canvas>
 
-# Example with results and a filter
+## Example with results and a filter
 
 <Canvas>
-    <Story name="Example with results and a filter">
+    <Story name="With results and a filter">
         {args => {
             const [searchValue, setSearch] = useState('');
             return (
                 <Search onSearchChange={setSearch} searchValue={searchValue} {...args}>
                     <Search.ResultCount>34 results</Search.ResultCount>
+                    <Search.Separator />
                     <SwitcherButton label={'Label'}>Value</SwitcherButton>
                 </Search>
             )
@@ -74,10 +68,10 @@ Search allows users to specify a word or phrase to find relevant content without
     </Story>
 </Canvas>
 
-# Example with a filter
+## Example with only a filter
 
 <Canvas>
-    <Story name="Example with only a filter">
+    <Story name="With only a filter">
         {args => {
             const [searchValue, setSearch] = useState('');
             return (
@@ -89,10 +83,10 @@ Search allows users to specify a word or phrase to find relevant content without
     </Story>
 </Canvas>
 
-# Example inside a dropdown
+## Example inside a dropdown
 
 <Canvas>
-    <Story name="Example inside a dropdown">
+    <Story name="Inside a dropdown">
         {args => {
             const [search, setSearch] = useState('');
             const [isOpen, open, close] = useBooleanState(true);
