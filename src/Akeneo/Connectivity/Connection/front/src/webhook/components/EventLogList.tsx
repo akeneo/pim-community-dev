@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useContext, useRef, useState} from 'react';
+import React, {FC, useContext, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {ArrowRightIcon, ArrowDownIcon, GraphIllustration, Information, Table} from 'akeneo-design-system';
 import {NoEventLogs} from './NoEventLogs';

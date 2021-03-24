@@ -1,7 +1,7 @@
 import {GraphIllustration} from 'akeneo-design-system';
 import React, {FC} from 'react';
 import {EmptyState} from '../../common';
-import {Translate, useTranslate} from '../../shared/translate';
+import {useTranslate} from '../../shared/translate';
 
 const NoEventLogsWithThoseFilters: FC = () => {
     const translate = useTranslate();
