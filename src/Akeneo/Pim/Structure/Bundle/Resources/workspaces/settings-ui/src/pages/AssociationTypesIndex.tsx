@@ -140,6 +140,7 @@ const AssociationTypesIndex = () => {
                 searchValue={searchString}
                 placeholder={translate('pim_common.search')}
                 onSearchChange={onSearch}
+                className={'association-type-grid-search'}
               />
               <Pagination currentPage={currentPage} totalItems={associationTypes.total} followPage={followPage} />
               <AssociationTypesDataGrid
