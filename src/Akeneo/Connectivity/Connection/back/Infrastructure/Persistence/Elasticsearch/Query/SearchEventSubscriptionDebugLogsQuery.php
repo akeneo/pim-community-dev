@@ -9,7 +9,6 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SearchEventSubscriptionDebugLogsQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Tool\Component\Elasticsearch\QueryString;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

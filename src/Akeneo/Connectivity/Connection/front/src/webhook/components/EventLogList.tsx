@@ -1,6 +1,6 @@
 import React, {FC, useContext, useRef, useState} from 'react';
 import styled from 'styled-components';
-import {ArrowRightIcon, ArrowDownIcon, GraphIllustration, Information, Table} from 'akeneo-design-system';
+import {ArrowRightIcon, ArrowDownIcon, GraphIllustration, Information, Table, Link} from 'akeneo-design-system';
 import {NoEventLogs} from './NoEventLogs';
 import {useTranslate} from '../../shared/translate';
 import {EventLogBadge} from './EventLogBadge';
@@ -51,17 +51,19 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
         return <NoEventLogs/>;
     }
 
-    const title = !isLoading && undefined !== total
-        ? translate('akeneo_connectivity.connection.webhook.event_logs.list.info.logs_total', {total: total.toString()}, total)
-        : '';
-
     return (
         <>
             <Information
                 illustration={<GraphIllustration/>}
-                title={title}
+                title={translate('akeneo_connectivity.connection.webhook.event_logs.list.info.title')}
             >
-                {null}
+                <div>{translate('akeneo_connectivity.connection.webhook.event_logs.list.info.content')}</div>
+                <Link
+                    target={'_blank'}
+                    href={'https://api.akeneo.com/events-documentation/subscription.html#debugging-events'}
+                >
+                    {translate('akeneo_connectivity.connection.webhook.event_logs.list.info.link')}
+                </Link>
             </Information>
             <EventLogListFilters filters={filters} onChange={setFilters} total={total}/>
             <Table>

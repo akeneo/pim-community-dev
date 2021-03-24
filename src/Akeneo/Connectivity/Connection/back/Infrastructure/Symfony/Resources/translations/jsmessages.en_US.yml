@@ -232,6 +232,7 @@ akeneo_connectivity.connection:
             message: You can connect up to {{ limit }} connections to the Event subscription feature. You have reached this limit.
             link: Learn more about event subscription configuration.
         event_logs:
+            title: Event logs
             event_subscription_disabled:
                 title: The event subscription isn’t enabled for this connection.
                 link: Enable the event subscription
@@ -253,7 +254,9 @@ akeneo_connectivity.connection:
                     all: All
                     none: None
                 info:
-                    logs_total: '{0} There is 0 logs.|{1} There is 1 log.|[2,Inf] There are {{ total }} logs.'
+                    title: Here are the logs related to all the event requests sent to this connection.
+                    content: This page displays error and warning logs for the past 72h, and the last 100 info and notice logs.
+                    link: More information about event logs.
                 headers:
                     datetime: Datetime
                     level: Level
