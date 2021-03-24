@@ -568,6 +568,7 @@ batch_jobs:
   default_steps:
     execute_naming_convention: Asset-Familien-Namenskonvention ausführen
     mass_delete_assets: Asset Massenlöschung ausführen
+    link_assets_to_products: Assets mit Produkten verknüpfen
 job_execution:
   summary:
     assets: Assets
