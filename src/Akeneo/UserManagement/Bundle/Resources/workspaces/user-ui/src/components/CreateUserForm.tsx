@@ -22,7 +22,7 @@ type CreateUserFormProps = {
 };
 
 const CreateUserForm = ({userId, onCancel, onSuccess, onError}: CreateUserFormProps) => {
-  const {register, handleSubmit, errors, watch} = useForm();
+  const {register, handleSubmit, errors, watch} = useForm({mode: 'onBlur'});
   const router = useRouter();
   const translate = useTranslate();
   const [backendErrors, setBackendErrors] = React.useState<BackendErrors>({});
@@ -39,7 +39,7 @@ const CreateUserForm = ({userId, onCancel, onSuccess, onError}: CreateUserFormPr
         response.json().then((data: any) => {
           const newBackendErrors: BackendErrors = {};
           if (typeof data.values === 'undefined' || !Array.isArray(data.values)) {
-            console.error('Unable to hadnle the HTTP response.');
+            console.error('Unable to handle the HTTP response.');
           }
 
           data.values.forEach((errorValue: any) => {
@@ -78,6 +78,22 @@ const CreateUserForm = ({userId, onCancel, onSuccess, onError}: CreateUserFormPr
     return 'username' === fieldName ? 'off' : 'on';
   };
 
+  const shouldNotBeBlank = (value: string): true | string =>
+    '' === value ? translate('pim_user_management.form.error.required') : true;
+  const shouldNotContainSpace = (value: string): true | string =>
+    /\s/.test(value) ? translate('pim_user_management.form.error.should_not_contain_space') : true;
+  const shouldContain3Characters = (value: string): true | string =>
+    value.length < 3 ? translate('pim_user_management.form.error.too_short_value', {count: 3}) : true;
+
+  const getRegisterParameters = (fieldName: string): {[key: string]: any} => {
+    switch (fieldName) {
+      case 'username':
+        return {validate: {shouldNotContainSpace, shouldNotBeBlank, shouldContain3Characters}};
+      default:
+        return {validate: shouldNotBeBlank};
+    }
+  };
+
   return (
     <FormContainer onSubmit={handleSubmit(onSubmit)} data-testid="form-create-user">
       {['username', 'password', 'password_repeat', 'first_name', 'last_name', 'email'].map(
@@ -92,12 +108,12 @@ const CreateUserForm = ({userId, onCancel, onSuccess, onError}: CreateUserFormPr
               name={fieldName}
               placeholder={translate('pim_user_management.entity.user.properties.' + fieldName)}
               onChange={() => {}}
-              ref={register({required: true})}
+              ref={register(getRegisterParameters(fieldName))}
               invalid={!!errors[fieldName] || Object.prototype.hasOwnProperty.call(backendErrors, fieldName)}
               required={true}
               autoComplete={getAutoComplete(fieldName)}
             />
-            {errors[fieldName] && <Helper level="error">{translate('pim_user_management.form.error.required')}</Helper>}
+            {errors[fieldName] && <Helper level="error">{errors[fieldName].message}</Helper>}
             {(backendErrors[fieldName] ?? []).map((errorMessage: string, key: number) => (
               <Helper key={key} level="error">
                 {errorMessage}
