@@ -4,7 +4,7 @@ import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {AssociationTypesIndex} from '@akeneo-pim-community/settings-ui';
 
-const AssociationTypeApp = () => {
+const AssociationTypesApp = () => {
   return (
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
@@ -14,4 +14,4 @@ const AssociationTypeApp = () => {
   );
 };
 
-export {AssociationTypeApp};
+export {AssociationTypesApp};
