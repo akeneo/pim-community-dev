@@ -90,11 +90,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_catalog.event_subscriber.check_attribute_on_deletion_subscriber:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family\CheckAttributeOnDeletionSubscriber'
-        tags:
-            - { name: kernel.event_subscriber }
-
     pim_catalog.event_subscriber.category.update_indexes_on_category_deletion:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\UpdateIndexesOnCategoryDeletion'
         arguments:
