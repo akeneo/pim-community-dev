@@ -1,9 +1,9 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Exception;
+namespace Akeneo\Pim\Structure\Component\Exception;
 
 /**
- * Exception raises when try to remove an attribute used as label for any family
+ * Exception raised when trying to remove an attribute used as label for any family
  *
  */
 class AttributeAsLabelException extends \Exception

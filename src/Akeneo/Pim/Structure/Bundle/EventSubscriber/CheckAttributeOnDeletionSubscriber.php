@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
-use Akeneo\Pim\Enrichment\Component\Exception\AttributeAsLabelException;
+use Akeneo\Pim\Structure\Component\Exception\AttributeAsLabelException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -54,7 +54,7 @@ class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
         $families = $this->getFamiliesWhoseAttributeAsLabelIsTheSameAsTheOneAffectedByTheDeletion($event);
 
         foreach($families as $family) {
-            if ($attribute->getId() === $family->getAttributeAsLabel()) {
+            if ($attribute === $family['attribute_as_label']) {
                 $message = sprintf(
                     'Attributes used as labels in a family cannot be removed.'
                 );
@@ -89,7 +89,8 @@ class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
 
         foreach ($attributes as $attribute) {
             foreach($families as $family) {
-                if ($attribute->getId() === $family->getAttributeAsLabel()) {
+                var_dump($family);
+                if ($attribute === $family['attribute_as_label']) {
                     $message = sprintf(
                         'Attributes used as labels in a family cannot be removed.'
                     );
@@ -106,18 +107,16 @@ class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
 
         $attribute = $event->getSubject();
         $sql = <<<SQL
-SELECT id 
+SELECT id, label_attribute_id
 FROM pim_catalog_family
 WHERE label_attribute_id = :attribute_id;
 SQL;
 
-        $families = $this->dbConnection->executeQuery(
+        return $this->dbConnection->executeQuery(
             $sql,
             [
                 'attribute_id' => $attribute->getId()
             ]
         );
-
-        return $families;
     }
 }
