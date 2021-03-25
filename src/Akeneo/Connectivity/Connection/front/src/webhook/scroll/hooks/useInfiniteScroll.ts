@@ -4,7 +4,7 @@ import useIsMounted from './useIsMounted';
 
 type InfiniteScrollStatus = {
     isLoading: boolean;
-    reset: () => void,
+    reset: () => void;
 };
 
 /**

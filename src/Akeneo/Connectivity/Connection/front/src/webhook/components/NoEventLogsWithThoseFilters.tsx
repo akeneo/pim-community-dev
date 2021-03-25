@@ -13,7 +13,9 @@ const NoEventLogsWithThoseFilters: FC = () => {
                 {translate('akeneo_connectivity.connection.webhook.event_logs.no_event_logs_with_those_filters.title')}
             </EmptyState.Heading>
             <EmptyState.Caption>
-                {translate('akeneo_connectivity.connection.webhook.event_logs.no_event_logs_with_those_filters.caption')}
+                {translate(
+                    'akeneo_connectivity.connection.webhook.event_logs.no_event_logs_with_those_filters.caption'
+                )}
             </EmptyState.Caption>
         </EmptyState.EmptyState>
     );

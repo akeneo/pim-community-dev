@@ -30,7 +30,7 @@ const useInfiniteEventSubscriptionLogs = (
     filters: EventSubscriptionLogFilters,
     container: RefObject<HTMLElement>
 ): EventSubscriptionLogs & {
-    isLoading: boolean
+    isLoading: boolean;
 } => {
     const [state, setState] = useState<EventSubscriptionLogs>({
         logs: [],
