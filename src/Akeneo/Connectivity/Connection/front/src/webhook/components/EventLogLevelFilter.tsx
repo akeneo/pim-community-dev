@@ -17,19 +17,23 @@ const Container = styled.div`
 `;
 
 export const EventLogLevelFilter: FC<{
-    levels: EventSubscriptionLogLevel[],
-    onChange: (levels: EventSubscriptionLogLevel[]) => void
+    levels: EventSubscriptionLogLevel[];
+    onChange: (levels: EventSubscriptionLogLevel[]) => void;
 }> = ({levels, onChange}) => {
     const translate = useTranslate();
-    const translateLevel = (level: EventSubscriptionLogLevel) => translate('akeneo_connectivity.connection.webhook.event_logs.level.' + level);
+    const translateLevel = (level: EventSubscriptionLogLevel) =>
+        translate('akeneo_connectivity.connection.webhook.event_logs.level.' + level);
     const [isOpen, open, close] = useToggleState(false);
-    const handleChange = useCallback((level, checked) => {
-        if (checked) {
-            onChange([...levels, level].sort((a, b) => LEVELS.indexOf(a) - LEVELS.indexOf(b)));
-        } else {
-            onChange(levels.filter(v => v !== level));
-        }
-    }, [levels, onChange]);
+    const handleChange = useCallback(
+        (level, checked) => {
+            if (checked) {
+                onChange([...levels, level].sort((a, b) => LEVELS.indexOf(a) - LEVELS.indexOf(b)));
+            } else {
+                onChange(levels.filter(v => v !== level));
+            }
+        },
+        [levels, onChange]
+    );
 
     return (
         <Container>
@@ -37,32 +41,32 @@ export const EventLogLevelFilter: FC<{
                 label={translate('akeneo_connectivity.connection.webhook.event_logs.list.search.level')}
                 onClick={open}
             >
-                {
-                    levels.length === 0
+                {levels.length === 0
                     ? translate('akeneo_connectivity.connection.webhook.event_logs.list.search.none')
                     : levels.length === LEVELS.length
                     ? translate('akeneo_connectivity.connection.webhook.event_logs.list.search.all')
-                    : levels.map(level => translateLevel(level)).join(', ')
-                }
+                    : levels.map(level => translateLevel(level)).join(', ')}
             </SwitcherButton>
-            {isOpen &&
-            <Dropdown.Overlay verticalPosition="down" onClose={close}>
-                <Dropdown.Header>
-                    <Dropdown.Title>{translate('akeneo_connectivity.connection.webhook.event_logs.list.search.level')}</Dropdown.Title>
-                </Dropdown.Header>
-                <Dropdown.ItemCollection>
-                    {LEVELS.map(level => (
-                        <Dropdown.Item key={level}>
-                            <Checkbox
-                                checked={levels.includes(level)}
-                                onChange={(checked) => handleChange(level, checked)}
-                            />
-                            {translateLevel(level)}
-                        </Dropdown.Item>
-                    ))}
-                </Dropdown.ItemCollection>
-            </Dropdown.Overlay>
-            }
+            {isOpen && (
+                <Dropdown.Overlay verticalPosition='down' onClose={close}>
+                    <Dropdown.Header>
+                        <Dropdown.Title>
+                            {translate('akeneo_connectivity.connection.webhook.event_logs.list.search.level')}
+                        </Dropdown.Title>
+                    </Dropdown.Header>
+                    <Dropdown.ItemCollection>
+                        {LEVELS.map(level => (
+                            <Dropdown.Item key={level}>
+                                <Checkbox
+                                    checked={levels.includes(level)}
+                                    onChange={checked => handleChange(level, checked)}
+                                />
+                                {translateLevel(level)}
+                            </Dropdown.Item>
+                        ))}
+                    </Dropdown.ItemCollection>
+                </Dropdown.Overlay>
+            )}
         </Container>
     );
 };

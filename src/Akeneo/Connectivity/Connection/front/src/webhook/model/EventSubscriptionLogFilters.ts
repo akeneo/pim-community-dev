@@ -2,8 +2,8 @@ import {EventSubscriptionLogLevel} from './EventSubscriptionLogLevel';
 import {isEqual} from 'lodash';
 
 export type EventSubscriptionLogFilters = {
-    levels: EventSubscriptionLogLevel[],
-    text: string,
+    levels: EventSubscriptionLogLevel[];
+    text: string;
 };
 
 export const DEFAULT_EVENT_SUBSCRIPTION_LOG_FILTERS = {

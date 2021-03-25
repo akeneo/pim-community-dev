@@ -12,7 +12,7 @@ import FormattedJSON from '../../common/components/FormattedJSON';
 import {
     EventSubscriptionLogFilters,
     DEFAULT_EVENT_SUBSCRIPTION_LOG_FILTERS,
-    isSameAsDefaultFiltersValues
+    isSameAsDefaultFiltersValues,
 } from '../model/EventSubscriptionLogFilters';
 import {NoEventLogsWithThoseFilters} from './NoEventLogsWithThoseFilters';
 
@@ -48,13 +48,13 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
     const {logs, total, isLoading} = useInfiniteEventSubscriptionLogs(connectionCode, filters, scrollContainer);
 
     if (!isSearchActive && !isLoading && total === 0) {
-        return <NoEventLogs/>;
+        return <NoEventLogs />;
     }
 
     return (
         <>
             <Information
-                illustration={<GraphIllustration/>}
+                illustration={<GraphIllustration />}
                 title={translate('akeneo_connectivity.connection.webhook.event_logs.list.info.title')}
             >
                 <div>{translate('akeneo_connectivity.connection.webhook.event_logs.list.info.content')}</div>
@@ -65,7 +65,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                     {translate('akeneo_connectivity.connection.webhook.event_logs.list.info.link')}
                 </Link>
             </Information>
-            <EventLogListFilters filters={filters} onChange={setFilters} total={total}/>
+            <EventLogListFilters filters={filters} onChange={setFilters} total={total} />
             <Table>
                 <Table.Header>
                     <SmallColumnHeaderCell>
@@ -82,8 +82,8 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                     {logs.map(({timestamp, level, message, context}, index) => (
                         <ExpandableTableRow key={index} contentToExpand={<FormattedJSON>{context}</FormattedJSON>}>
                             <Table.Cell>
-                                <Arrow/>
-                                <EventLogDatetime timestamp={timestamp * 1000}/>
+                                <Arrow />
+                                <EventLogDatetime timestamp={timestamp * 1000} />
                             </Table.Cell>
                             <Table.Cell>
                                 <EventLogBadge level={level}>{level.toUpperCase()}</EventLogBadge>
@@ -96,7 +96,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                     ))}
                 </Table.Body>
             </Table>
-            {isSearchActive && total === 0 && <NoEventLogsWithThoseFilters/>}
+            {isSearchActive && total === 0 && <NoEventLogsWithThoseFilters />}
         </>
     );
 };

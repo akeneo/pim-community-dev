@@ -11,9 +11,9 @@ const StyledSectionTitle = styled(SectionTitle)`
 `;
 
 export const EventLogListFilters: FC<{
-    filters: EventSubscriptionLogFilters,
-    onChange: (filters: EventSubscriptionLogFilters) => void,
-    total?: number,
+    filters: EventSubscriptionLogFilters;
+    onChange: (filters: EventSubscriptionLogFilters) => void;
+    total?: number;
 }> = ({filters, onChange, total}) => {
     const translate = useTranslate();
 
@@ -24,15 +24,18 @@ export const EventLogListFilters: FC<{
                 onSearch={(searchText: string) => onChange({...filters, text: searchText})}
                 placeholder={translate('akeneo_connectivity.connection.webhook.event_logs.list.search.placeholder')}
             />
-            <SectionTitle.Spacer/>
+            <SectionTitle.Spacer />
             <SectionTitle.Information>
-                {undefined !== total ? translate('akeneo_connectivity.connection.webhook.event_logs.list.search.total', {total: total.toString()}, total) : ''}
+                {undefined !== total
+                    ? translate(
+                          'akeneo_connectivity.connection.webhook.event_logs.list.search.total',
+                          {total: total.toString()},
+                          total
+                      )
+                    : ''}
             </SectionTitle.Information>
-            <SectionTitle.Separator/>
-            <EventLogLevelFilter
-                levels={filters.levels}
-                onChange={levels => onChange({...filters, levels: levels})}
-            />
+            <SectionTitle.Separator />
+            <EventLogLevelFilter levels={filters.levels} onChange={levels => onChange({...filters, levels: levels})} />
         </StyledSectionTitle>
     );
 };
