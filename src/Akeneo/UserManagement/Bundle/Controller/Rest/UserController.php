@@ -44,7 +44,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UserController
 {
     private const PASSWORD_MINIMUM_LENGTH = 8;
-    private const PASSWORD_MAXIMUM_LENGTH = 64;
+    private const PASSWORD_MAXIMUM_LENGTH = 4096;
 
     protected TokenStorageInterface $tokenStorage;
     protected NormalizerInterface $normalizer;
@@ -224,12 +224,15 @@ class UserController
         $user = $this->factory->create();
         $content = json_decode($request->getContent(), true);
 
+        $violations = new ConstraintViolationList();
         $passwordViolations = $this->validatePasswordCreate($content);
+
         unset($content['password_repeat']);
 
-        $this->updater->update($user, $content);
-
-        $violations = $this->validator->validate($user);
+        if (0 === $passwordViolations->count()) {
+            $this->updater->update($user, $content);
+            $violations = $this->validator->validate($user);
+        }
 
         if ($violations->count() > 0 || $passwordViolations->count() > 0) {
             $normalizedViolations = [];
@@ -267,12 +270,18 @@ class UserController
 
         $baseUser = $this->getUserOr404($identifier);
         $targetUser = $baseUser->duplicate();
-
         $content = \json_decode($request->getContent(), true);
+
+        $violations = new ConstraintViolationList();
         $passwordViolations = $this->validatePasswordCreate($content);
+
         unset($content['password_repeat']);
-        $this->updater->update($targetUser, $content);
-        $violations = $this->validator->validate($targetUser);
+
+        if (0 === $passwordViolations->count()) {
+            $this->updater->update($targetUser, $content);
+            $violations = $this->validator->validate($targetUser);
+        }
+
         if ($violations->count() > 0 || $passwordViolations->count() > 0) {
             $normalizedViolations = [];
             foreach ($violations as $violation) {
@@ -348,6 +357,9 @@ class UserController
      */
     private function updateUser(UserInterface $user, array $data): JsonResponse
     {
+        $violations = new ConstraintViolationList();
+        $passwordViolations = new ConstraintViolationList();
+
         $previousUserName = $user->getUsername();
         if ($this->isPasswordUpdating($data)) {
             $passwordViolations = $this->validatePassword($user, $data);
@@ -358,9 +370,11 @@ class UserController
 
         unset($data['current_password'], $data['new_password'], $data['new_password_repeat']);
 
-        $this->updater->update($user, $data);
+        if (0 === $passwordViolations->count()) {
+            $this->updater->update($user, $data);
+            $violations = $this->validator->validate($user);
+        }
 
-        $violations = $this->validator->validate($user);
         if (0 < $violations->count() || (isset($passwordViolations) && 0 < $passwordViolations->count())) {
             $normalizedViolations = [];
             foreach ($violations as $violation) {

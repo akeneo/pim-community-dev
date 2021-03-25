@@ -6,6 +6,7 @@ namespace AkeneoTest\UserManagement\Integration\Bundle;
 
 use Akeneo\Test\Integration\Configuration;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 final class UserPasswordIntegration extends ControllerIntegrationTestCase
 {
@@ -42,15 +43,16 @@ final class UserPasswordIntegration extends ControllerIntegrationTestCase
 }
 JSON;
 
+        $this->assertStatusCode($response, Response::HTTP_BAD_REQUEST);
         self::assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
-    public function test_it_can_not_create_a_user_with_password_more_than_64_characters(): void
+    public function test_it_can_not_create_a_user_with_password_more_than_4096_characters(): void
     {
         $params = [
             'username' => 'test2',
-            'password' => str_repeat('a', 65),
-            'password_repeat' => str_repeat('a', 65),
+            'password' => str_repeat('a', 4097),
+            'password_repeat' => str_repeat('a', 4097),
             'first_name' => 'first',
             'last_name' => 'last',
             'email' => 'new@example.com',
@@ -71,13 +73,14 @@ JSON;
   "values": [
     {
       "path": "password",
-      "message": "Password must contain less than 64 characters",
+      "message": "Password must contain less than 4096 characters",
       "global": false
     }
   ]
 }
 JSON;
 
+        $this->assertStatusCode($response, Response::HTTP_BAD_REQUEST);
         self::assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
@@ -114,6 +117,7 @@ JSON;
 }
 JSON;
 
+        $this->assertStatusCode($response, Response::HTTP_BAD_REQUEST);
         self::assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 

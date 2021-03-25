@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints\Length;
 class ResetType extends AbstractType
 {
     private const PASSWORD_MINIMUM_LENGTH = 8;
-    private const PASSWORD_MAXIMUM_LENGTH = 64;
+    private const PASSWORD_MAXIMUM_LENGTH = 4096;
 
     /**
      * @var string
