@@ -25,7 +25,7 @@ const Container = styled.div<
   position: absolute;
   opacity: ${({visible}) => (visible ? 1 : 0)};
   transition: opacity 0.15s ease-in-out;
-  z-index: 2;
+  z-index: 11;
 
   ${({verticalPosition}) =>
     'up' === verticalPosition
@@ -65,7 +65,7 @@ const Backdrop = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1;
+  z-index: 10;
 `;
 
 const Overlay = ({verticalPosition, onClose, children}: OverlayProps) => {
