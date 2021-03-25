@@ -43,8 +43,8 @@ cp $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
 
 # Prepare database upgrades to run
 mkdir -p $STANDARD_DISTRIB_DIR/upgrades/
-cp -R $DEV_DISTRIB_DIR/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
+cp -r $DEV_DISTRIB_DIR/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
 
-cp $DEV_DISTRIB_DIR/std-build/migration/40_to_50/* $STANDARD_DISTRIB_DIR/
+cp -r $DEV_DISTRIB_DIR/std-build/migration/40_to_50/* $STANDARD_DISTRIB_DIR/
 
 printf "Done. \n"
