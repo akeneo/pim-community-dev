@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks';
+import {renderHook, act} from '@testing-library/react-hooks';
 import useInfiniteScroll from '@src/webhook/scroll/hooks/useInfiniteScroll';
 import {fireEvent} from '@testing-library/dom';
 
@@ -57,6 +57,33 @@ test('The second page is fetched, with the first response as parameter', async (
     fireEvent.scroll(document.body, {target: {scrollY: 100}});
 
     await waitForNextUpdate();
+    expect(loadNextPage).toHaveBeenCalledTimes(2);
+
+    unmount();
+});
+
+test('Reset the scroll should fetch the first page', async () => {
+    const ref = {
+        current: document.getElementById('content'),
+    };
+
+    const loadNextPage = jest.fn().mockImplementation(() => {
+        return Promise.resolve(null);
+    });
+
+    const {result, waitForNextUpdate, unmount} = renderHook(() => useInfiniteScroll(loadNextPage, ref));
+
+    expect(loadNextPage).toHaveBeenCalledTimes(1);
+    expect(result.current.isLoading).toBeTruthy();
+
+    await waitForNextUpdate();
+
+    expect(result.current.isLoading).toBeFalsy();
+
+    act(() => {
+        result.current.reset();
+    });
+
     expect(loadNextPage).toHaveBeenCalledTimes(2);
 
     unmount();
