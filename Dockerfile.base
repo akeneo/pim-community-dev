@@ -13,7 +13,10 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     echo 'path-exclude=/usr/share/man/*' > /etc/dpkg/dpkg.cfg.d/path_exclusions && \
     echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/path_exclusions && \
     apt-get update && \
-    apt-get --yes install imagemagick libmagickcore-6.q16-2-extra \
+    apt-get --yes install \
+        wget \
+        imagemagick \
+        libmagickcore-6.q16-2-extra \
         ghostscript \
         php7.3-fpm \
         php7.3-cli \
