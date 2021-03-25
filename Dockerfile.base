@@ -14,6 +14,7 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/path_exclusions && \
     apt-get update && \
     apt-get --yes install \
+        ca-certificates \
         wget \
         imagemagick \
         libmagickcore-6.q16-2-extra \

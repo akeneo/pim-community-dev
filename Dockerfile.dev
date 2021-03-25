@@ -2,15 +2,14 @@ FROM akeneo/pim-php-base:4.0
 
 ENV PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=1
 
-RUN apt-get update && \
-    apt-get --yes install gnupg &&\
-    sh -c 'wget -q -O - https://packages.blackfire.io/gpg.key |APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add -' &&\
-    sh -c 'echo "deb http://packages.blackfire.io/debian any main" >  /etc/apt/sources.list.d/blackfire.list' &&\
-    apt-get update && \
+RUN apt-get update
+RUN    apt-get --yes install gnupg
+RUN    sh -c 'wget -q -O - https://packages.blackfire.io/gpg.key |APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add -'
+RUN    sh -c 'echo "deb http://packages.blackfire.io/debian any main" >  /etc/apt/sources.list.d/blackfire.list'
+RUN    apt-get update && \
     apt-get --yes install \
         blackfire-agent \
         blackfire-php \
-        ca-certificates \
         curl \
         default-mysql-client \
         git \
