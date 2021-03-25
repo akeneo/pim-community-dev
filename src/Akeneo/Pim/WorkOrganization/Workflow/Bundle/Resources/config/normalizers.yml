@@ -46,6 +46,16 @@ services:
             - { name: pim_datagrid_serializer.normalizer }
         lazy: true
 
+    pimee_workflow.normalizer.proposal_product_model:
+        class: '%pimee_workflow.normalizer.proposal_product_model.class%'
+        arguments:
+            - '@pim_datagrid_serializer'
+            - '@pimee_workflow.normalizer.proposal_changes'
+            - '@pim_user.context.user'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+        lazy: true
+
     pimee_workflow.normalizer.datagrid.published_product:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer\PublishedProductNormalizer'
         arguments:
