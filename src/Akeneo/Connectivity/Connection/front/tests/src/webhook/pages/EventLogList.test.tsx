@@ -78,9 +78,6 @@ describe('testing events logs page', () => {
         );
 
         expect(await screen.findByText('Alkemics')).toBeInTheDocument();
-        expect(
-            await screen.findByText('akeneo_connectivity.connection.webhook.event_logs.list.info.logs_total?total=1')
-        ).toBeInTheDocument();
 
         const row = (await screen.findByText('a log message')).closest('tr') as HTMLTableRowElement;
         expect(within(row).getByText('03/14/2021')).toBeInTheDocument();
@@ -133,6 +130,9 @@ describe('testing events logs page', () => {
             </Router>
         );
 
+        // Due to how useFetchEventSubscription is used, we must wait for the page to be hydrated with the data.
+        // To do so, we can wait for the name of the event subscription.
+        expect(await screen.findByText('Alkemics')).toBeInTheDocument();
         expect(
             await screen.findByText('akeneo_connectivity.connection.webhook.event_logs.no_event_logs.title')
         ).toBeInTheDocument();

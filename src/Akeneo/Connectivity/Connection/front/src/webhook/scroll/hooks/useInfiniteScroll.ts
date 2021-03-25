@@ -1,9 +1,10 @@
 import {RefObject, useCallback, useEffect, useState} from 'react';
-import useIsMounted from './useIsMounted';
 import useScrollPosition, {ScrollPosition} from './useScrollPosition';
+import useIsMounted from './useIsMounted';
 
 type InfiniteScrollStatus = {
     isLoading: boolean;
+    reset: () => void;
 };
 
 /**
@@ -101,8 +102,22 @@ const useInfiniteScroll = <T>(
     // there is no scrollbar, you cannot scroll, the following pages are never requested.
     useScrollPosition(containerRef, handleScrollPosition, [lastPage], 100);
 
+    const reset = useCallback(() => {
+        setState({
+            lastPage: null,
+            isStopped: false,
+            isLoading: false,
+            shouldFetch: false,
+        });
+        setState(state => ({
+            ...state,
+            shouldFetch: true,
+        }));
+    }, []);
+
     return {
         isLoading: isLoading,
+        reset: reset,
     };
 };
 

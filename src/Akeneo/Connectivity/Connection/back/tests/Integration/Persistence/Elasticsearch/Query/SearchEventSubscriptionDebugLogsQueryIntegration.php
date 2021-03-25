@@ -335,6 +335,67 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         Assert::assertEquals(EventsApiDebugLogLevels::NOTICE, $result['results'][2]['level']);
     }
 
+    public function test_it_does_not_filter()
+    {
+        $timestamp = $this->clock->now()->getTimestamp() - 10;
+
+        $this->insertLogs(
+            [
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::WARNING,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::INFO,
+                    'message' => 'Foo bar',
+                    'connection_code' => null,
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::ERROR,
+                    'message' => 'Foo bar',
+                    'connection_code' => null,
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::NOTICE,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::NOTICE,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+            ]
+        );
+
+        $filters = [
+            'levels' => [EventsApiDebugLogLevels::NOTICE, EventsApiDebugLogLevels::INFO, EventsApiDebugLogLevels::WARNING, EventsApiDebugLogLevels::ERROR]
+        ];
+
+        $result = $this->query->execute('a_connection_code', null, $filters);
+
+        usort(
+            $result['results'],
+            function ($a, $b) {
+                return strcmp($a['level'], $b['level']);
+            }
+        );
+
+        Assert::assertEquals(5, $result['total']);
+        Assert::assertCount(5, $result['results']);
+    }
+
     public function test_it_filters_on_log_timestamp_from()
     {
         $timestampFrom = $this->clock->now()->getTimestamp();
@@ -444,27 +505,42 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
     public function test_it_searches_a_pattern_on_message()
     {
         $timestamp = $this->clock->now()->getTimestamp() - 10;
-        $firstTimestampToFind = $timestamp - 20;
-        $secondTimestampToFind = $timestamp - 10;
+        $firstTimestampToFind = $timestamp - 40;
+        $secondTimestampToFind = $timestamp - 30;
+        $anotherTimestamp = $timestamp - 20;
 
         $this->insertLogs(
             [
                 [
                     'timestamp' => $firstTimestampToFind,
                     'level' => EventsApiDebugLogLevels::WARNING,
-                    'message' => 'to find',
+                    'message' => 'Message a word to find',
                     'connection_code' => 'a_connection_code',
                     'context' => [],
                 ],
                 [
                     'timestamp' => $secondTimestampToFind,
                     'level' => EventsApiDebugLogLevels::ERROR,
-                    'message' => 'the message to find',
+                    'message' => 'the messagE to finD',
                     'connection_code' => 'a_connection_code',
                     'context' => [],
                 ],
                 [
                     'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::ERROR,
+                    'message' => 'a message not found because the second word is missing',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $anotherTimestamp,
+                    'level' => EventsApiDebugLogLevels::WARNING,
+                    'message' => 'no word here',
+                    'connection_code' => 'a_connection_code',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $anotherTimestamp,
                     'level' => EventsApiDebugLogLevels::WARNING,
                     'message' => '',
                     'connection_code' => 'a_connection_code',
@@ -474,7 +550,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         );
 
         $filters = [
-            'text' => 'to find',
+            'text' => 'SsaGe ind',
         ];
 
         $result = $this->query->execute('a_connection_code', null, $filters);
