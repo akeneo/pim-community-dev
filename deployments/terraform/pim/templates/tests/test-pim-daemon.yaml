@@ -21,10 +21,10 @@ spec:
         value: {{ .Values.pim.defaultAdminUser.password }}
     command: ["bash", "/scripts-dir/test-daemon.sh"]
     volumeMounts:
-    - name: pim-test-scripts
+    - name: pim-scripts
       mountPath: /scripts-dir
   restartPolicy: Never
   volumes:
-  - name: pim-test-scripts
+  - name: pim-scripts
     configMap:
-      name:  pim-test-scripts
+      name:  pim-scripts
