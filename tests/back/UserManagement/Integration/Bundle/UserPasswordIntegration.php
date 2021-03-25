@@ -7,6 +7,7 @@ namespace AkeneoTest\UserManagement\Integration\Bundle;
 use Akeneo\Test\Integration\Configuration;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class UserPasswordIntegration extends ControllerIntegrationTestCase
 {
@@ -33,13 +34,13 @@ final class UserPasswordIntegration extends ControllerIntegrationTestCase
 
         $expectedResponse = <<<JSON
 {
-  "values": [
-    {
-      "path": "password",
-      "message": "Password must contain at least 8 characters",
-      "global": false
-    }
-  ]
+    "values": [
+        {
+            "path": "password",
+            "message": "Password must contain at least 8 characters",
+            "global": false
+        }
+    ]
 }
 JSON;
 
@@ -70,13 +71,13 @@ JSON;
 
         $expectedResponse = <<<JSON
 {
-  "values": [
-    {
-      "path": "password",
-      "message": "Password must contain less than 4096 characters",
-      "global": false
-    }
-  ]
+    "values": [
+        {
+            "path": "password",
+            "message": "Password must contain less than 4096 characters",
+            "global": false
+        }
+    ]
 }
 JSON;
 
@@ -107,18 +108,43 @@ JSON;
 
         $expectedResponse = <<<JSON
 {
-  "values": [
-    {
-      "path": "password_repeat",
-      "message": "Passwords do not match",
-      "global": false
-    }
-  ]
+    "values": [
+        {
+            "path": "password_repeat",
+            "message": "Passwords do not match",
+            "global": false
+        }
+    ]
 }
 JSON;
 
         $this->assertStatusCode($response, Response::HTTP_BAD_REQUEST);
         self::assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
+    public function test_it_can_still_login_existing_users_with_short_password(): void
+    {
+        $this->createUser('Short_User', '2short');
+        $csrfToken = $this->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
+
+        $response = $this->callRoute(
+            'pim_user_security_check',
+            [],
+            Request::METHOD_POST,
+            [],
+            [
+                '_username' => 'Short_User',
+                '_password' => '2short',
+                '_submit' => '',
+                '_target_path' => '',
+                '_csrf_token' => $csrfToken
+            ]
+        );
+
+        $expectedRoute = $this->router->generate('oro_default', [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        $this->assertStatusCode($response, Response::HTTP_FOUND);
+        $this->assertEquals($expectedRoute, $response->getTargetUrl());
     }
 
     /**

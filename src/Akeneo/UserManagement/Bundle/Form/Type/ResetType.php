@@ -36,11 +36,11 @@ class ResetType extends AbstractType
             'plainPassword',
             RepeatedType::class,
             [
-                'type'            => PasswordType::class,
-                'required'        => true,
-                'first_options'   => ['label' => 'Password'],
-                'second_options'  => ['label' => 'Again'],
-                'constraints' => [
+                'type'           => PasswordType::class,
+                'required'       => true,
+                'first_options'  => ['label' => 'Password'],
+                'second_options' => ['label' => 'Again'],
+                'constraints'    => [
                     new Length([
                         'min' => self::PASSWORD_MINIMUM_LENGTH,
                         'max' => self::PASSWORD_MAXIMUM_LENGTH
