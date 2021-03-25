@@ -1,4 +1,4 @@
-import React, {isValidElement, ReactElement, ReactNode, useRef, MouseEvent} from 'react';
+import React, {isValidElement, ReactElement, ReactNode, MouseEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {Checkbox, Link, LinkProps, Image} from '../../components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
@@ -85,6 +85,7 @@ const CardContainer = styled.div<
   font-size: ${getFontSize('default')};
   color: ${getColor('grey', 120)};
   cursor: ${({actionable, disabled}) => (disabled ? 'not-allowed' : actionable ? 'pointer' : 'auto')};
+  text-decoration: none;
 
   img {
     position: absolute;
@@ -99,13 +100,6 @@ const CardContainer = styled.div<
         border-width: ${isSelected ? 2 : 1}px;
         border-color: ${getColor(isSelected ? 'blue' : 'grey', 100)};
       `}
-  }
-
-  a,
-  a:hover {
-    color: inherit;
-    text-decoration: none;
-    background-color: ${getColor('white')};
   }
 `;
 
@@ -139,7 +133,8 @@ const CardText = styled.span`
   overflow: hidden;
 `;
 
-const BadgeContainer = styled.div<{stacked: boolean} & AkeneoThemedProps>`
+type BadgeContainerProps = {stacked: boolean} & AkeneoThemedProps;
+const BadgeContainer = styled.div<BadgeContainerProps>`
   position: absolute;
   z-index: 5;
   top: 10px;
@@ -205,68 +200,63 @@ const Card = ({
   stacked = false,
   ...rest
 }: CardProps) => {
-  const linkRef = useRef<HTMLAnchorElement>(null);
-
   const nonLabelChildren: ReactElement[] = [];
-  const links: ReactElement<LinkProps>[] = [];
   const texts: string[] = [];
+  let linkProps: Partial<LinkProps> = {};
 
-  React.Children.forEach(children, (child, key) => {
+  React.Children.forEach(children, child => {
     if (typeof child === 'string') {
       texts.push(child);
-    } else if (isValidElement(child)) {
-      if (Link === child.type) {
-        links.push(React.cloneElement(child, {key, ref: linkRef, disabled}));
-      } else {
-        let props: {stacked?: boolean} & React.Attributes = {key: child.key};
-        if (child.type === BadgeContainer) {
-          props = {
-            ...props,
-            stacked,
-          };
-        }
-        nonLabelChildren.push(React.cloneElement(child, props));
+    } else {
+      if (isValidElement<LinkProps>(child) && Link === child.type) {
+        linkProps = {...child.props, href: disabled ? undefined : child.props.href};
+      } else if (isValidElement<BadgeContainerProps>(child) && BadgeContainer === child.type) {
+        nonLabelChildren.push(React.cloneElement(child, {key: child.key, stacked}));
       }
     }
   });
 
+  const isLink = 'href' in linkProps;
+  const cardText = 'string' === typeof linkProps.children ? linkProps.children : texts[0];
+
   const handleClick = (event: MouseEvent<HTMLDivElement>) => {
-    if (disabled || (null !== linkRef.current && linkRef.current === event.target)) {
+    if (disabled) {
       return;
     }
 
-    if (null !== linkRef.current && linkRef.current !== event.target) {
-      linkRef.current.click();
-    } else if (undefined !== onClick) {
+    if (undefined !== onClick) {
       onClick(event);
-    } else {
-      onSelect?.(!isSelected);
+
+      return;
+    }
+
+    if (undefined !== onSelect && !isLink) {
+      onSelect(!isSelected);
     }
   };
 
   return (
     <CardContainer
       isSelected={isSelected}
-      actionable={0 < links.length || undefined !== onClick}
+      as={isLink ? 'a' : undefined}
+      actionable={isLink || undefined !== onClick}
       onClick={handleClick}
       disabled={disabled}
       stacked={stacked}
       isLoading={null === src}
+      {...linkProps}
       {...rest}
     >
       <ImageContainer>
         {stacked && <Stack isSelected={isSelected} data-testid="stack" />}
         <Overlay stacked={stacked} />
-        <Image fit={fit} src={src} alt={texts[0]} />
+        <Image fit={fit} src={src} alt={cardText} />
       </ImageContainer>
       <CardLabel>
         {undefined !== onSelect && (
-          <Checkbox aria-label={texts[0]} checked={isSelected} readOnly={disabled} onChange={onSelect} />
+          <Checkbox aria-label={cardText} checked={isSelected} readOnly={disabled} onChange={onSelect} />
         )}
-        <CardText title={texts[0]}>
-          {texts}
-          {links}
-        </CardText>
+        <CardText title={cardText}>{cardText}</CardText>
       </CardLabel>
       {nonLabelChildren}
     </CardContainer>

@@ -102,7 +102,7 @@ if [ -d "vendor/akeneo/pim-onboarder" ]; then
 fi
 
 echo "Export env vars from .env..."
-export $(cat .env)
+export $(cat .env | grep -v "^#")
 
 echo "Use the database akeneo_pim_test..."
 echo "APP_DATABASE_NAME=akeneo_pim_test" >> .env.test.local

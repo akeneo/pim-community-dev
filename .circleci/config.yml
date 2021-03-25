@@ -39,7 +39,9 @@ jobs:
             sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json
       - run:
           name: Persist default IMAGE_TAG to be the repo last commit SHA1
-          command: echo export IMAGE_TAG=$CIRCLE_SHA1 >> persisted_env_vars
+          command: |
+            echo export IMAGE_TAG_SHORTED=$(echo $CIRCLE_SHA1 | cut -c -7) >> persisted_env_vars
+            echo export IMAGE_TAG=$CIRCLE_SHA1 >> persisted_env_vars
       - persist_to_workspace:
           root: ~/
           paths:
@@ -338,7 +340,7 @@ jobs:
           - restore_persisted_env_vars
           - run:
               name: Build PROD PIM docker image
-              command: PIM_CONTEXT=deployment IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
+              command:  PIM_CONTEXT=deployment IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
           - run:
               name: Push PROD PIM image on docker registry
               command: PIM_CONTEXT=deployment make push-php-image-prod
@@ -386,17 +388,17 @@ jobs:
                     LATEST_RELEASE=$(head -n 1 /tmp/pim-tags.txt)
                     echo $LATEST_RELEASE
                     export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
-                    INSTANCE_NAME=pimup-$IMAGE_TAG IMAGE_TAG=$LATEST_RELEASE PIM_CONTEXT=deployment make deploy-serenity
+                    INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$LATEST_RELEASE PIM_CONTEXT=deployment make deploy-serenity
           - run:
                 name: Upgrade
                 command: |
-                    INSTANCE_NAME=pimup-$IMAGE_TAG PIM_CONTEXT=deployment make deploy-serenity
+                    INSTANCE_NAME_PREFIX=pimup PIM_CONTEXT=deployment make deploy-serenity
           - run:
                 name: Production tests on upgraded env
-                command: INSTANCE_NAME=pimup-$IMAGE_TAG PIM_CONTEXT=deployment make test-prod
+                command: INSTANCE_NAME_PREFIX=pimup PIM_CONTEXT=deployment make test-prod
           - run:
                 name: Prepare infrastructure artifacts
-                command: INSTANCE_NAME=pimup-$IMAGE_TAG PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
+                command: INSTANCE_NAME_PREFIX=pimup PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
                 when: on_fail
           - store_artifacts:
                 path: ~/artifacts/infra
@@ -772,21 +774,12 @@ commands:
             export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
             gcloud auth configure-docker --quiet
 
-  prepare_terraform:
-    description: "Prepare terraform configuration."
-    steps:
-      - run:
-          name: "Prepare terraform configuration."
-          shell: "/bin/bash -eo pipefail"
-          command: |
-            IMAGE_TAG=$CIRCLE_SHA1 PIM_CONTEXT=deployment make create-ci-release-files
-
   restore_persisted_env_vars:
     description: "Restore env vars that have been persisted by the previous job."
     steps:
       - run:
-         name: Restore persisted env vars
-         command: |
+          name: Restore persisted env vars
+          command: |
             echo "Persisted env vars:"
             cat persisted_env_vars
             cat persisted_env_vars >> $BASH_ENV

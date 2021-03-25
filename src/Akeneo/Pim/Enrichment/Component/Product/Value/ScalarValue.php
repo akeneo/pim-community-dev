@@ -25,7 +25,7 @@ class ScalarValue extends AbstractValue implements ValueInterface
     /**
      * {@inheritdoc}
      */
-    protected function __construct(string $attributeCode, $data = null, ?string $scopeCode, ?string $localeCode)
+    protected function __construct(string $attributeCode, $data, ?string $scopeCode, ?string $localeCode)
     {
         parent::__construct($attributeCode, $data, $scopeCode, $localeCode);
     }

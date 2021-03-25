@@ -124,6 +124,7 @@ const Container = styled.button<
   transition: background-color 0.1s ease;
   outline-style: none;
   text-decoration: none;
+  white-space: nowrap;
 
   &:focus {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};

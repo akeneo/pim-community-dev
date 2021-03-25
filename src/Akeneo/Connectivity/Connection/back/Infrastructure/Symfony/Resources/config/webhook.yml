@@ -66,3 +66,8 @@ services:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SkipOwnEventLogger
         arguments:
             - '@monolog.logger.event_api'
+
+    akeneo_connectivity.connection.webhook.event_data_version_logger:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataVersionLogger
+        arguments:
+            - '@monolog.logger.event_api'

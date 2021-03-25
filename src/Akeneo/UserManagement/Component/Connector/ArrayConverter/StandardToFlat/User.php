@@ -25,7 +25,11 @@ class User extends AbstractSimpleArrayConverter implements ArrayConverterInterfa
                 break;
             case 'roles':
             case 'groups':
+            case 'product_grid_filters':
                 $convertedItem[$property] = implode(',', $data);
+                break;
+            case 'avatar':
+                $convertedItem[$property] = $data['filePath'] ?? null;
                 break;
             default:
                 $convertedItem[$property] = (string) $data;

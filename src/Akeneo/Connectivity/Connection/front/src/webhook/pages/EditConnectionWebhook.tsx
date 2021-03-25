@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import defaultImageUrl from '../../common/assets/illustrations/NewAPI.svg';
 import {ApplyButton, PageContent, PageHeader} from '../../common/components';
 import {Loading} from '../../common/components/Loading';
-import {PimView} from '../../infrastructure/pim-view/PimView';
 import {useMediaUrlGenerator} from '../../settings/use-media-url-generator';
 import {isErr} from '../../shared/fetch-result/result';
 import {useRoute} from '../../shared/router';
@@ -13,10 +12,11 @@ import {Translate} from '../../shared/translate';
 import {EditForm} from '../components/EditForm';
 import {EventSubscriptionHelper} from '../components/EventSubscriptionHelper';
 import {useUpdateWebhook} from '../hooks/api/use-update-webhook';
-import {useFetchEventSubscriptionFormData} from '../hooks/api/use-fetch-event-subscription-form-data';
+import {useFetchEventSubscription} from '../hooks/api/use-fetch-event-subscription';
 import {Webhook} from '../model/Webhook';
-import {Breadcrumb, SectionTitle, Button} from 'akeneo-design-system';
+import {Breadcrumb, SectionTitle} from 'akeneo-design-system';
 import {useFetchConnection} from '../hooks/api/use-fetch-connection';
+import {UserButtons} from '../../shared/user';
 
 export type FormInput = {
     connectionCode: string;
@@ -32,16 +32,14 @@ export const EditConnectionWebhook: FC = () => {
     const systemHref = `#${useRoute('oro_config_configuration_system')}`;
 
     const {connectionCode} = useParams<{connectionCode: string}>();
-    const {data: connection} = useFetchConnection(connectionCode);
-    const {
-        eventSubscription,
-        eventSubscriptionsLimit,
-        fetchEventSubscriptionFormData,
-    } = useFetchEventSubscriptionFormData(connectionCode);
+    const {connection} = useFetchConnection(connectionCode);
+    const {eventSubscription, eventSubscriptionsLimit, fetchEventSubscription} = useFetchEventSubscription(
+        connectionCode
+    );
 
     useEffect(() => {
-        fetchEventSubscriptionFormData();
-    }, [fetchEventSubscriptionFormData]);
+        fetchEventSubscription();
+    }, [fetchEventSubscription]);
 
     useEffect(() => {
         if (eventSubscription) {
@@ -67,29 +65,17 @@ export const EditConnectionWebhook: FC = () => {
         </Breadcrumb>
     );
 
-    const userButtons = (
-        <PimView
-            className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-            viewName='pim-connectivity-connection-user-navigation'
-        />
-    );
-
     return (
         <FormContext {...formMethods}>
             <form>
                 <PageHeader
                     breadcrumb={breadcrumb}
-                    userButtons={userButtons}
+                    userButtons={<UserButtons />}
                     imageSrc={
                         null === connection.image ? defaultImageUrl : generateMediaUrl(connection.image, 'thumbnail')
                     }
                     buttons={[
-                        <DownloadLogsButton key={0} webhook={eventSubscription} />,
-                        <SaveButton
-                            key={1}
-                            webhook={eventSubscription}
-                            onSaveSuccess={fetchEventSubscriptionFormData}
-                        />,
+                        <SaveButton key={0} webhook={eventSubscription} onSaveSuccess={fetchEventSubscription} />,
                     ]}
                     state={<FormState />}
                 >
@@ -150,21 +136,6 @@ const SaveButton: FC<SaveButtonProps> = ({webhook, onSaveSuccess}) => {
         >
             <Translate id='pim_common.save' />
         </ApplyButton>
-    );
-};
-
-type DownloadLogsButtonProps = {
-    webhook: Webhook;
-};
-
-const DownloadLogsButton: FC<DownloadLogsButtonProps> = ({webhook}) => {
-    const url = useRoute('akeneo_connectivity_connection_events_api_debug_rest_download_event_subscription_logs', {
-        connection_code: webhook.connectionCode,
-    });
-    return (
-        <Button disabled={!webhook.enabled} ghost href={url} level='tertiary' size='default' target='_blank'>
-            <Translate id='akeneo_connectivity.connection.webhook.download_logs' />
-        </Button>
     );
 };
 

@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Form\Handler;
 
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Form\Type\AclRoleType;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -107,11 +108,6 @@ class AclRoleHandler
             if ($this->form->isValid()) {
                 $appendUsers = $this->form->get('appendUsers')->getData();
                 $removeUsers = $this->form->get('removeUsers')->getData();
-
-                if (empty($role->getRole())) {
-                    $role->setRole(strtoupper(trim(preg_replace('/[^\w\-]/i', '_', $role->getLabel()))));
-                }
-
                 $this->onSuccess($role, $appendUsers, $removeUsers);
 
                 $this->processPrivileges($role);

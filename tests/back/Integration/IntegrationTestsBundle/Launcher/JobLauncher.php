@@ -18,6 +18,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
+use Webmozart\Assert\Assert;
 
 /**
  * Launch jobs for the integration tests.
@@ -57,12 +58,13 @@ class JobLauncher
      *
      * @return string
      */
-    public function launchExport(string $jobCode, string $username = null, array $config = []) : string
+    public function launchExport(string $jobCode, string $username = null, array $config = [], string $format = 'csv') : string
     {
+        Assert::stringNotEmpty($format);
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
 
-        $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR. self::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'export.csv';
+        $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR. self::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'export.' . $format;
         if (file_exists($filePath)) {
             unlink($filePath);
         }
@@ -181,14 +183,16 @@ class JobLauncher
         string $content,
         string $username = null,
         array $fixturePaths = [],
-        array $config = []
+        array $config = [],
+        string $format = 'csv'
     ) : void {
+        Assert::stringNotEmpty($format);
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
 
         $importDirectoryPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::IMPORT_DIRECTORY;
         $fixturesDirectoryPath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'fixtures';
-        $filePath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'import.csv';
+        $filePath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'import.' . $format;
 
         $fs = new Filesystem();
         $fs->remove($importDirectoryPath);

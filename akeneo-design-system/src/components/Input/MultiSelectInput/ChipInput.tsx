@@ -34,6 +34,7 @@ const Chip = styled.li<AkeneoThemedProps & {isSelected: boolean; readOnly: boole
   align-items: center;
   height: 30px;
   box-sizing: border-box;
+  color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
 `;
 
 const Input = styled.input`
@@ -46,6 +47,7 @@ const Input = styled.input`
   font-size: ${getFontSize('default')};
 
   &::placeholder {
+    opacity: 1;
     color: ${getColor('grey', 100)};
   }
 `;
@@ -163,6 +165,7 @@ const ChipInput = React.forwardRef<HTMLInputElement, ChipInputProps>(
             onBlur={unselectLast}
             aria-invalid={invalid}
             readOnly={readOnly}
+            disabled={readOnly}
             onFocus={onFocus}
           />
           {readOnly && <ReadOnlyIcon size={16} />}

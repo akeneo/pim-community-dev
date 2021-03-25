@@ -48,7 +48,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      */
     public function flush(
         FlatItemBuffer $buffer,
-        array $writerOptions = [],
+        array $writerOptions,
         $basePathname,
         $maxLinesPerFile = -1
     ) {

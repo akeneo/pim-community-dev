@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import {useHistory} from 'react-router';
 import {ApplyButton, Helper, HelperLink, HelperTitle, PageContent, PageHeader} from '../../common';
-import {PimView} from '../../infrastructure/pim-view/PimView';
 import {Connection} from '../../model/connection';
 import {FlowType} from '../../model/flow-type.enum';
 import {fetchResult} from '../../shared/fetch-result';
@@ -19,6 +18,7 @@ import {
     useWrongCredentialsCombinationsState,
 } from '../wrong-credentials-combinations-context';
 import {Breadcrumb} from 'akeneo-design-system';
+import {UserButtons} from '../../shared/user';
 
 const MAXIMUM_NUMBER_OF_ALLOWED_CONNECTIONS = 50;
 
@@ -70,13 +70,6 @@ export const ListConnections = () => {
         </Breadcrumb>
     );
 
-    const userButtons = (
-        <PimView
-            className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-            viewName='pim-connectivity-connection-user-navigation'
-        />
-    );
-
     const createButton = (
         <ApplyButton
             onClick={handleCreate}
@@ -97,7 +90,7 @@ export const ListConnections = () => {
 
     return (
         <>
-            <PageHeader breadcrumb={breadcrumb} buttons={[createButton]} userButtons={userButtons}>
+            <PageHeader breadcrumb={breadcrumb} buttons={[createButton]} userButtons={<UserButtons />}>
                 <Translate id='pim_menu.item.connection_settings' />
             </PageHeader>
 

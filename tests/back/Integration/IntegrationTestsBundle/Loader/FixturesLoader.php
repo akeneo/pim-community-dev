@@ -6,6 +6,8 @@ namespace Akeneo\Test\IntegrationTestsBundle\Loader;
 
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
@@ -18,6 +20,7 @@ use Elasticsearch\ClientBuilder;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Plugin\ListPaths;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -99,6 +102,8 @@ class FixturesLoader implements FixturesLoaderInterface
     /** @var TransportInterface */
     private $transport;
 
+    private EventDispatcherInterface $eventDispatcher;
+
     public function __construct(
         KernelInterface $kernel,
         DatabaseSchemaHandler $databaseSchemaHandler,
@@ -115,6 +120,7 @@ class FixturesLoader implements FixturesLoaderInterface
         Connection $dbConnection,
         MeasurementInstaller $measurementInstaller,
         TransportInterface $transport,
+        EventDispatcherInterface $eventDispatcher,
         string $databaseHost,
         string $databaseName,
         string $databaseUser,
@@ -149,6 +155,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->nativeElasticsearchClient = $clientBuilder->build();
         $this->measurementInstaller = $measurementInstaller;
         $this->transport = $transport;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __destruct()
@@ -276,6 +283,13 @@ class FixturesLoader implements FixturesLoaderInterface
             if (0 !== $exitCode) {
                 throw new \RuntimeException(sprintf('Catalog not installable! "%s"', $output->fetch()));
             }
+
+            $this->eventDispatcher->dispatch(
+                new InstallerEvent(null, $jobInstance->getCode(), [
+                    'job_name' => $jobInstance->getJobName(),
+                ]),
+                InstallerEvents::POST_LOAD_FIXTURE
+            );
         }
 
         $this->fixtureJobLoader->deleteJobInstances();

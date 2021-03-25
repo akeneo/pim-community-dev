@@ -43,7 +43,7 @@ class UserSpec extends ObjectBehavior
         $duplicated->getUsername()->shouldBeNull();
         $duplicated->isEnabled()->shouldBe(true);
 
-        $role = new Role();
+        $role = new Role('ROLE_USER');
         $group = new Group();
         $this->setId(10);
         $this->setUsername('test username');
@@ -96,7 +96,8 @@ class UserSpec extends ObjectBehavior
         $duplicated->getMiddleName()->shouldBeNull();
         $duplicated->getNamePrefix()->shouldBeNull();
         $duplicated->getNameSuffix()->shouldBeNull();
-        $duplicated->getRoles()->shouldBe([$role]);
+        $duplicated->getRoles()->shouldBe(['ROLE_USER']);
+        $duplicated->getRolesCollection()->getValues()->shouldBe([$role]);
         $duplicated->getGroups()->shouldBeAnInstanceOf(ArrayCollection::class);
         $duplicated->getGroups()->toArray()->shouldBe([$group]);
         $duplicated->isApiUser()->shouldBe(true);

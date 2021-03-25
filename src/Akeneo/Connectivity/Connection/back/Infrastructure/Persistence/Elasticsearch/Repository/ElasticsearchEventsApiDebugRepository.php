@@ -34,6 +34,14 @@ final class ElasticsearchEventsApiDebugRepository implements EventsApiDebugRepos
 
     public function persist(array $log): void
     {
+        $flattenedContext = '';
+
+        array_walk_recursive($log['context'], function ($value, $key) use (&$flattenedContext) {
+            $flattenedContext .= $value . ' ';
+        });
+
+        $log['context_flattened'] = trim($flattenedContext);
+
         $this->buffer[] = $log;
     }
 
@@ -44,6 +52,7 @@ final class ElasticsearchEventsApiDebugRepository implements EventsApiDebugRepos
         }
 
         $this->client->bulkIndexes($this->buffer);
+        $this->client->refreshIndex();
         $this->buffer = [];
     }
 }

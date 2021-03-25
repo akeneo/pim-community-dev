@@ -104,7 +104,7 @@ class AssetsCommand extends Command
         }
 
         $this->commandExecutor
-            ->runCommand('fos:js-routing:dump', ['--target' => $webDir.'js/routes.js'])
+            ->runCommand('fos:js-routing:dump', ['--format' => 'json', '--target' => $webDir.'js/fos_js_routes.json'])
             ->runCommand('assets:install');
 
         $this->eventDispatcher->dispatch($event, InstallerEvents::POST_SYMFONY_ASSETS_DUMP);

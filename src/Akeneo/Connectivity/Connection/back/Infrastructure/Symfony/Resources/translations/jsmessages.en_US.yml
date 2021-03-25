@@ -10,6 +10,7 @@ pim_menu:
         connection_settings_edit: Connection settings
         connection_monitoring: Monitoring
         connection_webhook_edit: Event subscription
+        connection_webhook_event_logs: Event logs
 
 pim_title:
     akeneo_connectivity_connection_settings_index: Connections
@@ -21,6 +22,7 @@ pim_title:
     akeneo_connectivity_connection_error_management_connection_monitoring: Connection monitoring
     akeneo_connectivity_connection_webhook_edit: Event subscription
     akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
+    akeneo_connectivity_connection_webhook_event_logs: Event logs
 
 akeneo_connectivity.connection:
     connections: Connections
@@ -229,6 +231,37 @@ akeneo_connectivity.connection:
         active_event_subscriptions_limit_reached:
             message: You can connect up to {{ limit }} connections to the Event subscription feature. You have reached this limit.
             link: Learn more about event subscription configuration.
+        event_logs:
+            title: Event logs
+            event_subscription_disabled:
+                title: The event subscription isn’t enabled for this connection.
+                link: Enable the event subscription
+            no_event_logs:
+                title: There is no log for the moment.
+            no_event_logs_with_those_filters:
+                title: Sorry, there is no log for your search.
+                caption: Try again with new search criteria.
+            level:
+                info: Info
+                notice: Notice
+                warning: Warning
+                error: Error
+            list:
+                search:
+                    placeholder: Search in messages
+                    total: '{0} 0 results|{1} 1 result|[2,Inf] {{ total }} results'
+                    level: Level
+                    all: All
+                    none: None
+                info:
+                    title: Here are the logs related to all the event requests sent to this connection.
+                    content: This page displays error and warning logs for the past 72h, and the last 100 info and notice logs.
+                    link: More information about event logs.
+                headers:
+                    datetime: Datetime
+                    level: Level
+                    message: Message
+
     error_management:
         connection_monitoring:
             title: Monitoring

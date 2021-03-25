@@ -1,7 +1,6 @@
 import React, {FC, memo} from 'react';
 import {useHistory, useParams} from 'react-router';
 import {Loading, PageContent, PageHeader} from '../../common';
-import {PimView} from '../../infrastructure/pim-view/PimView';
 import {FlowType} from '../../model/flow-type.enum';
 import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
@@ -10,6 +9,7 @@ import {NotAuditableConnection} from '../components/NotAuditableConnection';
 import {NotDataSourceConnection} from '../components/NotDataSourceConnection';
 import {useConnection} from '../hooks/api/use-connection';
 import {Breadcrumb} from 'akeneo-design-system';
+import {UserButtons} from '../../shared/user';
 
 const ConnectionMonitoring: FC = memo(() => {
     const history = useHistory();
@@ -35,16 +35,9 @@ const ConnectionMonitoring: FC = memo(() => {
         </Breadcrumb>
     );
 
-    const userButtons = (
-        <PimView
-            className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-            viewName='pim-connectivity-connection-user-navigation'
-        />
-    );
-
     return (
         <>
-            <PageHeader breadcrumb={breadcrumb} userButtons={userButtons}>
+            <PageHeader breadcrumb={breadcrumb} userButtons={<UserButtons />}>
                 {connection.label}
             </PageHeader>
 

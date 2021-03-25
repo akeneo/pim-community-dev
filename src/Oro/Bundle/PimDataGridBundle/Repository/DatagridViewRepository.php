@@ -27,11 +27,14 @@ FROM pim_datagrid_view
 WHERE type = :public_type OR (type = :private_type AND owner_id = :owner_id)
 SQL;
 
-        $statement = $this->getConnection()->executeQuery($sql, [
-            'public_type' => DatagridView::TYPE_PUBLIC,
-            'private_type' => DatagridView::TYPE_PRIVATE,
-            'owner_id' => $user->getId(),
-        ]);
+        $statement = $this->getConnection()->executeQuery(
+            $sql,
+            [
+                'public_type' => DatagridView::TYPE_PUBLIC,
+                'private_type' => DatagridView::TYPE_PRIVATE,
+                'owner_id' => $user->getId(),
+            ]
+        );
 
         return $statement->fetchAll(\PDO::FETCH_COLUMN);
     }
@@ -46,7 +49,7 @@ SQL;
         array $options = []
     ): array {
         $options += ['limit' => 20, 'page' => 1];
-        $offset = (int) $options['limit'] * ((int) $options['page'] - 1);
+        $offset = (int)$options['limit'] * ((int)$options['page'] - 1);
 
         $identifiers = null;
         if (isset($options['identifiers'])) {
@@ -54,16 +57,16 @@ SQL;
         }
 
         $qb = $this->createQueryBuilder('v')
-            ->where('v.type = :public_type OR (v.type = :private_type AND v.owner = :owner)')
-                ->setParameter('public_type', DatagridView::TYPE_PUBLIC)
-                ->setParameter('private_type', DatagridView::TYPE_PRIVATE)
-                ->setParameter('owner', $user)
-            ->andWhere('v.datagridAlias = :alias')
-                ->setParameter('alias', $alias)
-            ->andWhere('v.label LIKE :term')
-                ->setParameter('term', sprintf('%%%s%%', $term))
-            ->setMaxResults((int) $options['limit'])
-            ->setFirstResult($offset);
+                   ->where('v.type = :public_type OR (v.type = :private_type AND v.owner = :owner)')
+                   ->setParameter('public_type', DatagridView::TYPE_PUBLIC)
+                   ->setParameter('private_type', DatagridView::TYPE_PRIVATE)
+                   ->setParameter('owner', $user)
+                   ->andWhere('v.datagridAlias = :alias')
+                   ->setParameter('alias', $alias)
+                   ->andWhere('v.label LIKE :term')
+                   ->setParameter('term', sprintf('%%%s%%', $term))
+                   ->setMaxResults((int)$options['limit'])
+                   ->setFirstResult($offset);
 
         if (null !== $identifiers) {
             $qb->andWhere('v.id IN (:ids)');

@@ -1,6 +1,5 @@
 import React, {memo, useEffect} from 'react';
 import {Helper, HelperLink, HelperTitle, PageContent, PageHeader} from '../../common';
-import {PimView} from '../../infrastructure/pim-view/PimView';
 import {AuditEventType} from '../../model/audit-event-type.enum';
 import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
@@ -10,6 +9,7 @@ import {useDashboardDispatch} from '../dashboard-context';
 import {useConnections} from '../hooks/api/use-connections';
 import {useFetchConnectionsAuditData} from '../hooks/api/use-fetch-connections-audit-data';
 import {Breadcrumb} from 'akeneo-design-system';
+import {UserButtons} from '../../shared/user';
 
 export const Dashboard = memo(() => {
     const {connections} = useConnections();
@@ -40,16 +40,9 @@ export const Dashboard = memo(() => {
         </Breadcrumb>
     );
 
-    const userButtons = (
-        <PimView
-            className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-            viewName='pim-connectivity-connection-user-navigation'
-        />
-    );
-
     return (
         <>
-            <PageHeader breadcrumb={breadcrumb} userButtons={userButtons}>
+            <PageHeader breadcrumb={breadcrumb} userButtons={<UserButtons />}>
                 <Translate id='pim_menu.item.connection_audit' />
             </PageHeader>
 

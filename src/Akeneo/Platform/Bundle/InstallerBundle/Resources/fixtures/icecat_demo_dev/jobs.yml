@@ -706,6 +706,110 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
+    csv_user_group_export:
+        connector: Akeneo CSV Connector
+        alias: csv_user_group_export
+        label: Demo CSV user group export
+        type: export
+        configuration:
+            delimiter: ;
+            enclosure: '"'
+            withHeader: true
+    xlsx_user_group_export:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_user_group_export
+        label: Demo XLSX user group export
+        type: export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+    csv_user_role_export:
+        connector: Akeneo CSV Connector
+        alias: csv_user_role_export
+        label: Demo CSV user role export
+        type: export
+        configuration:
+            delimiter: ;
+            enclosure: '"'
+            withHeader: true
+    xlsx_user_role_export:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_user_role_export
+        label: Demo XLSX user role export
+        type: export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+    csv_user_export:
+        connector: Akeneo CSV Connector
+        alias: csv_user_export
+        label: Demo CSV user export
+        type: export
+        configuration:
+            delimiter: ;
+            enclosure: '"'
+            withHeader: true
+    xlsx_user_export:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_user_export
+        label: Demo XLSX user export
+        type: export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+    csv_user_group_import:
+        connector: Akeneo CSV Connector
+        alias: csv_user_group_import
+        label: Demo CSV user group import
+        type: import
+        configuration:
+            filePath: /tmp/user_group.csv
+            uploadAllowed: true
+            delimiter: ;
+            enclosure: '"'
+    xlsx_user_group_import:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_user_group_import
+        label: Demo XLSX user group import
+        type: import
+        configuration:
+            filePath: /tmp/user_group.xlsx
+            uploadAllowed: true
+    csv_user_import:
+        connector: Akeneo CSV Connector
+        alias: csv_user_import
+        label: Demo CSV user import
+        type: import
+        configuration:
+            filePath: /tmp/user.csv
+            uploadAllowed: true
+            delimiter: ;
+            enclosure: '"'
+    xlsx_user_import:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_user_import
+        label: Demo XLSX user import
+        type: import
+        configuration:
+            filePath: /tmp/user.xlsx
+    csv_user_role_import:
+        connector: Akeneo CSV Connector
+        alias: csv_user_role_import
+        label: Demo CSV user role import
+        type: import
+        configuration:
+            filePath: /tmp/user_role.csv
+            uploadAllowed: true
+            delimiter: ;
+            enclosure: '"'
+    xlsx_user_role_import:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_user_role_import
+        label: Demo XLSX user role import
+        type: import
+        configuration:
+            filePath: /tmp/user_role.xlsx
+            uploadAllowed: true
     compute_completeness_of_products_family:
         connector: internal
         alias:     compute_completeness_of_products_family
