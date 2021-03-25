@@ -40,6 +40,7 @@
 - PIM-9740: Prevent to delete a channel used in a product export job
 - PIM-9764: Fix DSM Card component to handle links properly
 - PIM-9773: Fix unique variant axis validator considering 01 and 1 as equal
+- PIM-9767: Fix minimum & maximum user password validation
 
 ## New features
 
