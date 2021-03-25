@@ -39,6 +39,7 @@
 - PIM-9759: Fix step name translation for product models csv import
 - PIM-9740: Prevent to delete a channel used in a product export job
 - PIM-9764: Fix DSM Card component to handle links properly
+- PIM-9773: Fix unique variant axis validator considering 01 and 1 as equal
 
 ## New features
 
