@@ -195,6 +195,7 @@ akeneo_connectivity.connection:
   webhook:
     title: Event-Abonnement
     event_subscription: Event-Abonnement
+    download_logs: Logs herunterladen
     helper:
       message: Sie können über Ereignisse im PIM für Produkte, die mit dieser verbundenen App synchronisiert wurden, benachrichtigt werden. Sie müssen nur eine URL definieren.
       link: Erfahren Sie mehr über Eventabonnement-Konfiguration...

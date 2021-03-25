@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query;
@@ -39,7 +40,7 @@ class PurgeEventsApiErrorLogsQuery
                                 ],
                             ],
                         ],
-                        ['range' => ['timestamp' => ['gte' => $olderThanDatetime->getTimestamp()]]],
+                        ['range' => ['timestamp' => ['lt' => $olderThanDatetime->getTimestamp()]]],
                     ],
                 ],
             ],

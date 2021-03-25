@@ -26,14 +26,9 @@ class IdFilter extends AbstractFieldFilter
      */
     private $fieldName;
 
-    /**
-     * @param array $supportedFields
-     * @param array $supportedOperators
-     * @param string $prefix
-     */
     public function __construct(
-        array $supportedFields = [],
-        array $supportedOperators = [],
+        array $supportedFields,
+        array $supportedOperators,
         string $prefix
     ) {
         $this->supportedFields = $supportedFields;

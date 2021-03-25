@@ -30,7 +30,7 @@ doctrine:
                 type: annotation
                 alias: Gedmo
                 prefix: Gedmo\Tree\Entity
-                dir: '%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity'
+                dir: '%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/src/Tree/Entity'
 
 services:
     doctrine.result_cache_provider:

@@ -10,6 +10,7 @@ const ShowContextContainer = styled.div`
     margin: 0 auto 20px auto;
     padding-left: 10px;
     width: 70%;
+    overflow-x: scroll;
     border: 1px solid ${getColor('grey', 80)};
     background-color: ${getColor('white')};
 `;

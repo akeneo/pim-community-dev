@@ -151,6 +151,7 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
           break;
       }
 
+      event.preventDefault();
       event.stopPropagation();
     };
     const ref = useShortcut(Key.Space, handleChange, forwardedRef);

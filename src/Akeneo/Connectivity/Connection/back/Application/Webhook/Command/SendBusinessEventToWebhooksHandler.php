@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventBuildLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataVersionLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SkipOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
@@ -33,10 +34,11 @@ final class SendBusinessEventToWebhooksHandler
     private WebhookUserAuthenticator $webhookUserAuthenticator;
     private WebhookClient $client;
     private WebhookEventBuilder $builder;
+    private LoggerInterface $logger;
     private EventBuildLogger $eventBuildLogger;
     private SkipOwnEventLogger $skipOwnEventLogger;
-    private LoggerInterface $logger;
     private EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger;
+    private EventDataVersionLogger $eventDataVersionLogger;
     private EventsApiDebugRepository $eventsApiDebugRepository;
     private EventsApiRequestCountRepository $eventsApiRequestRepository;
     private CacheClearerInterface $cacheClearer;
@@ -48,10 +50,11 @@ final class SendBusinessEventToWebhooksHandler
         WebhookUserAuthenticator $webhookUserAuthenticator,
         WebhookClient $client,
         WebhookEventBuilder $builder,
+        LoggerInterface $logger,
         EventBuildLogger $eventBuildLogger,
         SkipOwnEventLogger $skipOwnEventLogger,
-        LoggerInterface $logger,
         EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
+        EventDataVersionLogger $eventDataVersionLogger,
         EventsApiDebugRepository $eventsApiDebugRepository,
         EventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
@@ -62,10 +65,11 @@ final class SendBusinessEventToWebhooksHandler
         $this->webhookUserAuthenticator = $webhookUserAuthenticator;
         $this->client = $client;
         $this->builder = $builder;
+        $this->logger = $logger;
         $this->eventBuildLogger = $eventBuildLogger;
         $this->skipOwnEventLogger = $skipOwnEventLogger;
-        $this->logger = $logger;
         $this->eventSubscriptionSkippedOwnEventLogger = $eventSubscriptionSkippedOwnEventLogger;
+        $this->eventDataVersionLogger = $eventDataVersionLogger;
         $this->eventsApiDebugRepository = $eventsApiDebugRepository;
         $this->eventsApiRequestRepository = $eventsApiRequestRepository;
         $this->cacheClearer = $cacheClearer;
@@ -87,6 +91,7 @@ final class SendBusinessEventToWebhooksHandler
             $apiEventsRequestCount = 0;
             $cumulatedTimeMs = 0;
             $startTime = $this->getTime();
+            $versions = [];
 
             foreach ($webhooks as $webhook) {
                 $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
@@ -106,6 +111,12 @@ final class SendBusinessEventToWebhooksHandler
                         ]
                     );
 
+                    foreach ($apiEvents as $apiEvent) {
+                        if (null !== $apiEvent->version()) {
+                            $versions[$apiEvent->getPimEvent()->getUuid()] = $apiEvent->version();
+                        }
+                    }
+
                     if (0 === count($apiEvents)) {
                         continue;
                     }
@@ -123,6 +134,10 @@ final class SendBusinessEventToWebhooksHandler
                 } catch (WebhookEventDataBuilderNotFoundException $dataBuilderNotFoundException) {
                     $this->logger->warning($dataBuilderNotFoundException->getMessage());
                 }
+            }
+
+            foreach ($versions as $version) {
+                $this->eventDataVersionLogger->log($version);
             }
 
             $this->eventsApiRequestRepository

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Clock;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetAllEventSubscriptionDebugLogsQueryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
@@ -44,7 +45,7 @@ class GetAllEventSubscriptionDebugLogsQuery implements GetAllEventSubscriptionDe
                 'bool' => [
                     'should' => [
                         ['bool' => ['must' => [
-                            ['terms' => ['level' => ['info', 'notice']]],
+                            ['terms' => ['level' => [EventsApiDebugLogLevels::NOTICE, EventsApiDebugLogLevels::INFO]]],
                             ['terms' => ['_id' => $lastNoticeAndInfoIdentifiers]],
                             ['bool' => ['should' => [
                                 ['term' => ['connection_code' => $connectionCode]],
@@ -52,7 +53,7 @@ class GetAllEventSubscriptionDebugLogsQuery implements GetAllEventSubscriptionDe
                             ]]],
                         ]]],
                         ['bool' => ['must' => [
-                            ['terms' => ['level' => ['error', 'warning']]],
+                            ['terms' => ['level' => [EventsApiDebugLogLevels::ERROR, EventsApiDebugLogLevels::WARNING]]],
                             ['range' => ['timestamp' => ['gte' => $nowTimestamp - self::MAX_LIFETIME_OF_WARNING_AND_ERROR_LOGS]]],
                             ['bool' => ['should' => [
                                 ['term' => ['connection_code' => $connectionCode]],
@@ -81,12 +82,12 @@ class GetAllEventSubscriptionDebugLogsQuery implements GetAllEventSubscriptionDe
         $result = $this->elasticsearchClient->search(
             [
                 '_source' => ['id'],
-                'sort' => [['timestamp' => ['order' => 'ASC']]],
+                'sort' => [['timestamp' => ['order' => 'DESC']]],
                 'size' => self::MAX_NUMBER_OF_NOTICE_AND_INFO_LOGS,
                 'query' => [
                     'bool' => [
                         'must' => [
-                            ['terms' => ['level' => ['info', 'notice']]],
+                            ['terms' => ['level' => [EventsApiDebugLogLevels::INFO, EventsApiDebugLogLevels::NOTICE]]],
                             [
                                 'bool' => [
                                     'should' => [
