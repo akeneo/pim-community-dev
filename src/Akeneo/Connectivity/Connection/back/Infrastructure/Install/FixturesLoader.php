@@ -195,20 +195,20 @@ class FixturesLoader
 
         $this->userRoleUpdater->update($role, $data);
         $this->validate($role);
-        $this->userRoleSaver->save($role);
+        $this->userRoleSaver->save($role, ['is_fixture' => true]);
 
         return $role;
     }
 
     private function createUserGroup(array $data): GroupInterface
     {
-        $role = $this->userGroupFactory->create();
+        $group = $this->userGroupFactory->create();
 
-        $this->userGroupUpdater->update($role, $data);
-        $this->validate($role);
-        $this->userGroupSaver->save($role);
+        $this->userGroupUpdater->update($group, $data);
+        $this->validate($group);
+        $this->userGroupSaver->save($group);
 
-        return $role;
+        return $group;
     }
 
     private function createUser(array $data): UserInterface

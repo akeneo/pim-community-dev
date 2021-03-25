@@ -39,7 +39,7 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
     private $properties;
 
     /** @var array */
-    protected $supportedFormats = ['array', 'standard', 'internal_api'];
+    protected $supportedFormats = ['internal_api'];
 
     /** @var array */
     private $userNormalizers;

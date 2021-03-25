@@ -25,3 +25,9 @@ services:
         arguments: ['%pim_user.entity.user.class%']
         tags:
             - { name: pim_repository }
+
+    pim_user.repository.role_with_permissions:
+        class: 'Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository'
+        arguments:
+            - '@pim_user.repository.role'
+            - '@oro_security.acl.manager'

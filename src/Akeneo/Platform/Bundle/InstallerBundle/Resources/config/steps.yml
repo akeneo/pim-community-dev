@@ -67,7 +67,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.file.csv_user'
-            - '@pim_connector.processor.denormalization.user'
+            - '@pim_installer.processor.denormalization.user'
             - '@pim_connector.writer.database.user'
             - 100
             - '@akeneo_batch.job.job_stopper'

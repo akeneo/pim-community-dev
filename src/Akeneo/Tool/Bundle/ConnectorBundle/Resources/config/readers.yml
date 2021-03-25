@@ -51,18 +51,6 @@ services:
             - '@pim_connector.reader.file.csv_iterator_factory'
             - '@pim_connector.array_converter.flat_to_standard.group_type'
 
-    pim_connector.reader.file.csv_user:
-        class: '%pim_connector.reader.file.csv.class%'
-        arguments:
-            - '@pim_connector.reader.file.csv_iterator_factory'
-            - '@pim_connector.array_converter.flat_to_standard.user'
-
-    pim_connector.reader.file.csv_user_group:
-        class: '%pim_connector.reader.file.csv.class%'
-        arguments:
-            - '@pim_connector.reader.file.csv_iterator_factory'
-            - '@pim_connector.array_converter.flat_to_standard.user_group'
-
     pim_connector.reader.file.csv_user_role:
         class: '%pim_connector.reader.file.csv.class%'
         arguments:

@@ -3,6 +3,7 @@
 namespace Akeneo\UserManagement\Component\Updater;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -50,9 +51,14 @@ class GroupUpdater implements ObjectUpdaterInterface
     protected function setData(GroupInterface $group, $field, $data)
     {
         switch ($field) {
+            case 'code':
+                // required for fixtures loading
+                break;
             case 'name':
                 $group->setName($data);
                 break;
+            default:
+                throw UnknownPropertyException::unknownProperty($field);
         }
     }
 }
