@@ -15,6 +15,10 @@ namespace AkeneoTestEnterprise\Pim\Automation\Integration;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\SecurityBundle\Model\AclPermission;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -66,5 +70,25 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
         $connectionCloser->closeConnections();
 
         $this->ensureKernelShutdown();
+    }
+
+    protected function enableAcl(string $aclId) : void
+    {
+        $aclManager = $this->get('oro_security.acl.manager');
+        $roles = $this->get('pim_user.repository.role')->findAll();
+
+        foreach ($roles as $role) {
+            $privilege = new AclPrivilege();
+            $identity = new AclPrivilegeIdentity($aclId);
+            $privilege
+                ->setIdentity($identity)
+                ->addPermission(new AclPermission('EXECUTE', 1));
+
+            $aclManager->getPrivilegeRepository()
+                ->savePrivileges($aclManager->getSid($role), new ArrayCollection([$privilege]));
+        }
+
+        $aclManager->flush();
+        $aclManager->clearCache();
     }
 }

@@ -9,13 +9,8 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Common\Saver\RuleDefinitionSave
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use AkeneoTestEnterprise\Pim\Automation\Integration\ControllerIntegrationTestCase;
-use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\SecurityBundle\Model\AclPermission;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 
 class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTestCase
 {
@@ -46,7 +41,7 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
 
     public function test_it_creates_a_rule_definition()
     {
-        $this->enableAcl();
+        $this->enableAcl('action:pimee_catalog_rule_rule_create_permissions');
         $normalizedRuleDefinition = [
             'code' => '345',
             'content' => [
@@ -68,7 +63,7 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
         Assert::assertSame($response->getStatusCode(), Response::HTTP_OK);
 
         $content = json_decode($response->getContent(), true);
-        Assert::arrayHasKey($content, 'id');
+        Assert::assertArrayHasKey('id', $content);
 
         $expectedContent = $normalizedRuleDefinition;
         $expectedContent['id'] = $content['id'];
@@ -82,7 +77,7 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
 
     public function test_it_creates_a_disabled_rule_definition()
     {
-        $this->enableAcl();
+        $this->enableAcl('action:pimee_catalog_rule_rule_create_permissions');
         $normalizedRuleDefinition = [
             'code' => '345',
             'enabled' => false,
@@ -102,7 +97,7 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
 
     public function test_it_creates_a_rule_definition_with_only_code()
     {
-        $this->enableAcl();
+        $this->enableAcl('action:pimee_catalog_rule_rule_create_permissions');
         $normalizedRuleDefinition = [
             'code' => 'my_new_code',
             'enabled' => true,
@@ -130,7 +125,7 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
 
     public function test_it_fails_on_existing_code()
     {
-        $this->enableAcl();
+        $this->enableAcl('action:pimee_catalog_rule_rule_create_permissions');
         $normalizedRuleDefinition = [
             'code' => '123',
             'content' => [
@@ -150,7 +145,7 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
 
     public function test_if_fails_with_a_wrong_format()
     {
-        $this->enableAcl();
+        $this->enableAcl('action:pimee_catalog_rule_rule_create_permissions');
         $normalizedRuleDefinition = [
             'code' => 'abc',
             'content' => [
@@ -193,26 +188,6 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
             [],
             \json_encode($normalizedRuleDefinition)
         );
-    }
-
-    private function enableAcl() : void
-    {
-        $aclManager = $this->get('oro_security.acl.manager');
-        $roles = $this->get('pim_user.repository.role')->findAll();
-
-        foreach ($roles as $role) {
-            $privilege = new AclPrivilege();
-            $identity = new AclPrivilegeIdentity('action:pimee_catalog_rule_rule_create_permissions');
-            $privilege
-                ->setIdentity($identity)
-                ->addPermission(new AclPermission('EXECUTE', 1));
-
-            $aclManager->getPrivilegeRepository()
-                ->savePrivileges(new RoleSecurityIdentity($role), new ArrayCollection([$privilege]));
-        }
-
-        $aclManager->flush();
-        $aclManager->clearCache();
     }
 
     protected function getConfiguration(): Configuration

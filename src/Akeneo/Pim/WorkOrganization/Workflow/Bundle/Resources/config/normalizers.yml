@@ -154,3 +154,11 @@ services:
             - '@pimee_security.cached_authorization_checker'
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.repository.cached_locale'
+
+    Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Standard\UserNormalizer:
+        decorates: 'pim_user.normalizer.user.standard'
+        decoration_inner_name: 'pim_user.normalizer.user.standard.base'
+        arguments:
+            - '@pim_user.normalizer.user.standard.base'
+        tags:
+            - { name: pim_standard_format_serializer.normalizer }
