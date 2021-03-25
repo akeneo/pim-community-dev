@@ -133,3 +133,9 @@ services:
 
     # Clock
     Akeneo\AssetManager\Infrastructure\Clock: ~
+
+    Akeneo\AssetManager\Infrastructure\EventSubscriber\CleanAssetFamilyIdentifierOnAttributeCreationSubscriber:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+        tags:
+            - { name: kernel.event_subscriber }

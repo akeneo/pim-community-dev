@@ -54,3 +54,9 @@ services:
             - '@database_connection'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\AssetManager\Bundle\Command\CleanAssetFamilyIdentifiersInAssetCollectionAttributes:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: console.command }
