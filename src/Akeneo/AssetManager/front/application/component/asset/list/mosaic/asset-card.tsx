@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Context} from 'akeneoassetmanager/domain/model/context';
-import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {getAssetEditUrl, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import ListAsset, {
   assetHasCompleteness,
   getAssetLabel,
@@ -10,7 +10,7 @@ import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import loadImage from 'akeneoassetmanager/tools/image-loader';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 import {emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
-import {Card} from 'akeneo-design-system';
+import {Card, Link} from 'akeneo-design-system';
 import {CompletenessBadge} from 'akeneoassetmanager/application/component/app/completeness';
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
 
@@ -19,16 +19,26 @@ type AssetCardProps = {
   context: Context;
   isSelected: boolean;
   isDisabled: boolean;
+  assetWithLink?: boolean;
   onSelectionChange?: (code: AssetCode, value: boolean) => void;
   onClick?: (code: AssetCode) => void;
 };
 
-const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, onClick}: AssetCardProps) => {
-  const [url, setUrl] = React.useState<string | null>(null);
-
+const AssetCard = ({
+  asset,
+  context,
+  isSelected,
+  onSelectionChange,
+  isDisabled,
+  assetWithLink = false,
+  onClick,
+}: AssetCardProps) => {
+  const [url, setUrl] = useState<string | null>(null);
   const imageUrl = getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
   const [, , refreshedUrl] = useRegenerate(imageUrl);
   const emptyMediaUrl = getMediaPreviewUrl(emptyMediaPreview());
+  const assetEditUrl = getAssetEditUrl(asset);
+  const assetLabel = getAssetLabel(asset, context.locale);
 
   let isDisplayed = true;
   useEffect(() => {
@@ -48,7 +58,7 @@ const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, o
   }, [asset, context.channel, context.locale]);
 
   const handleClick = useCallback(() => {
-    onClick && onClick(asset.code);
+    onClick?.(asset.code);
   }, [onClick]);
 
   const handleSelect = useCallback(
@@ -72,8 +82,7 @@ const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, o
           <CompletenessBadge completeness={Completeness.createFromNormalized(asset.completeness)} />
         </Card.BadgeContainer>
       )}
-
-      {getAssetLabel(asset, context.locale)}
+      {assetWithLink && undefined !== onClick ? <Link href={assetEditUrl}>{assetLabel}</Link> : assetLabel}
     </Card>
   );
 };

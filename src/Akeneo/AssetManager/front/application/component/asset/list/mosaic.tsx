@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
+import {CardGrid, Helper} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import AssetCard from 'akeneoassetmanager/application/component/asset/list/mosaic/asset-card';
 import EmptyResult from 'akeneoassetmanager/application/component/asset/list/mosaic/empty-result';
 import ListAsset, {ASSET_COLLECTION_LIMIT} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import {CardGrid, Helper} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+
+const MAX_DISPLAYED_ASSETS = 500;
 
 const Container = styled.div`
   height: 100%;
@@ -18,7 +20,18 @@ const MoreResults = styled.div`
   margin-top: 20px;
 `;
 
-const MAX_DISPLAYED_ASSETS = 500;
+type MosaicProps = {
+  scrollContainerRef?: React.RefObject<HTMLDivElement>;
+  assetCollection: ListAsset[];
+  context: Context;
+  resultCount: number | null;
+  hasReachMaximumSelection: boolean;
+  selectionState: 'mixed' | boolean;
+  assetWithLink?: boolean;
+  onSelectionChange?: (assetCode: AssetCode, newValue: boolean) => void;
+  isItemSelected: (assetCode: AssetCode) => boolean;
+  onAssetClick?: (asset: AssetCode) => void;
+};
 
 const Mosaic = ({
   scrollContainerRef = React.useRef<null | HTMLDivElement>(null),
@@ -30,17 +43,8 @@ const Mosaic = ({
   resultCount,
   onAssetClick,
   selectionState,
-}: {
-  scrollContainerRef?: React.RefObject<HTMLDivElement>;
-  assetCollection: ListAsset[];
-  context: Context;
-  resultCount: number | null;
-  hasReachMaximumSelection: boolean;
-  onSelectionChange?: (assetCode: AssetCode, newValue: boolean) => void;
-  isItemSelected: (assetCode: AssetCode) => boolean;
-  onAssetClick?: (asset: AssetCode) => void;
-  selectionState: 'mixed' | boolean;
-}) => {
+  assetWithLink = false,
+}: MosaicProps) => {
   const translate = useTranslate();
 
   return (
@@ -65,6 +69,7 @@ const Mosaic = ({
                   isDisabled={hasReachMaximumSelection && !isSelected}
                   onSelectionChange={onSelectionChange}
                   onClick={!selectionState ? onAssetClick : undefined}
+                  assetWithLink={assetWithLink}
                 />
               );
             })}
