@@ -114,3 +114,14 @@ up:
 .PHONY: down
 down:
 	docker-compose down -v
+
+.PHONY: upgrade-front
+upgrade-front:
+	$(MAKE) node_modules
+	$(MAKE) cache
+	$(MAKE) assets
+	$(MAKE) dsm
+	$(MAKE) javascript-prod
+	$(MAKE) css
+	$(MAKE) javascript-extensions
+
