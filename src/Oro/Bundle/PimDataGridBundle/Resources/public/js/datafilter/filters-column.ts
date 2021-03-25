@@ -179,7 +179,7 @@ class FiltersColumn extends BaseView {
     }
 
     return this.fetchFilters(searchValue, 1).then((loadedFilters: GridFilter[]) => {
-      const defaultFilters: GridFilter[] = this.mergeAddedFilters(this.defaultFilters, loadedFilters)
+      const defaultFilters: GridFilter[] = this.mergeAddedFilters(this.defaultFilters, loadedFilters);
       this.loadedFilters = this.mergeAddedFilters(this.loadedFilters, defaultFilters);
       this.searchedFilters = this.filterBySearchTerm(defaultFilters, searchValue);
 
@@ -231,7 +231,7 @@ class FiltersColumn extends BaseView {
   loadFilterList(gridCollection: any, gridElement: JQuery<HTMLElement>): void {
     const metadata = gridElement.data('metadata') || {};
 
-    this.defaultFilters = Object.values(metadata.filters);
+    this.defaultFilters = 'filters' in metadata ? Object.values(metadata.filters) : [];
     this.gridCollection = gridCollection;
     this.showLoading();
 
