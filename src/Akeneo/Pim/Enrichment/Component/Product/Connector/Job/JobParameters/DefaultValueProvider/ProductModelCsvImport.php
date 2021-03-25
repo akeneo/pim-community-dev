@@ -43,6 +43,7 @@ class ProductModelCsvImport implements DefaultValuesProviderInterface
         $parameters['familyVariantColumn'] = 'family_variant';
         $parameters['enabledComparison'] = true;
         $parameters['realTimeVersioning'] = true;
+        $parameters['origin'] = 'IMPORT';
 
         return $parameters;
     }

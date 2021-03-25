@@ -108,6 +108,7 @@ final class DispatchProductModelCreatedAndUpdatedEventSubscriber implements Even
                                 'author' => $event->getAuthor()->name(),
                                 'author_type' => $event->getAuthor()->type(),
                                 'timestamp' => $event->getTimestamp(),
+                                'origin' => $event->getOrigin(),
                             ];
                         }, $this->events)
                     ],

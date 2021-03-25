@@ -222,7 +222,7 @@ class ProductModelController
             return new JsonResponse($normalizedViolations, 400);
         }
 
-        $this->productModelSaver->save($productModel);
+        $this->productModelSaver->save($productModel, ['origin' => 'API']);
         $normalizedProductModel = $this->normalizeProductModel($productModel);
 
         return new JsonResponse($normalizedProductModel);
@@ -252,7 +252,7 @@ class ProductModelController
         $violations->addAll($this->localizedConverter->getViolations());
 
         if (0 === $violations->count()) {
-            $this->productModelSaver->save($productModel);
+            $this->productModelSaver->save($productModel, ['origin' => 'API']);
             $normalizedProductModel = $this->normalizeProductModel($productModel);
 
             return new JsonResponse($normalizedProductModel);

@@ -36,7 +36,8 @@ class ProductAndProductModelMassDelete implements DefaultValuesProviderInterface
             'actions'               => [],
             'realTimeVersioning'    => true,
             'user_to_notify'        => null,
-            'is_user_authenticated' => true
+            'is_user_authenticated' => true,
+            'origin'                => 'MASS_EDIT',
         ];
     }
 

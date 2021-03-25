@@ -73,6 +73,8 @@ final class DispatchProductCreatedAndUpdatedEventSubscriber implements EventSubs
         $author = Author::fromUser($user);
         $data = [
             'identifier' => $product->getIdentifier(),
+            'origin' => $postSaveEvent->hasArgument('origin') ?
+                $postSaveEvent->getArgument('origin') : null,
         ];
 
         if ($postSaveEvent->hasArgument('is_new') && true === $postSaveEvent->getArgument('is_new')) {
@@ -108,6 +110,7 @@ final class DispatchProductCreatedAndUpdatedEventSubscriber implements EventSubs
                                 'author' => $event->getAuthor()->name(),
                                 'author_type' => $event->getAuthor()->type(),
                                 'timestamp' => $event->getTimestamp(),
+                                'origin' => $event->getOrigin(),
                             ];
                         }, $this->events)
                     ],

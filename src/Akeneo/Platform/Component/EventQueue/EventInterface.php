@@ -19,4 +19,6 @@ interface EventInterface
     public function getTimestamp(): int;
 
     public function getUuid(): string;
+
+    public function getOrigin(): string;
 }

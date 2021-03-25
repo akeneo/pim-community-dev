@@ -227,7 +227,7 @@ class ProductController
         $violations = $this->validator->validate($product);
 
         if (0 === $violations->count()) {
-            $this->productSaver->save($product);
+            $this->productSaver->save($product, ['origin' => 'UI']);
             $this->productAndProductModelClient->refreshIndex();
 
             return new JsonResponse($this->normalizer->normalize(
@@ -273,7 +273,7 @@ class ProductController
         $violations->addAll($this->localizedConverter->getViolations());
 
         if (0 === $violations->count()) {
-            $this->productSaver->save($product);
+            $this->productSaver->save($product, ['origin' => 'UI']);
 
             $normalizedProduct = $this->normalizer->normalize(
                 $product,
@@ -351,7 +351,7 @@ class ProductController
                 $product->removeValue($value);
             }
         }
-        $this->productSaver->save($product);
+        $this->productSaver->save($product, ['origin' => 'UI']);
 
         return new JsonResponse();
     }
@@ -384,7 +384,7 @@ class ProductController
 
         $violations = $this->validator->validate($product);
         if (0 === $violations->count()) {
-            $this->productSaver->save($product);
+            $this->productSaver->save($product, ['origin' => 'UI']);
 
             $normalizedProduct = $this->normalizer->normalize(
                 $product,

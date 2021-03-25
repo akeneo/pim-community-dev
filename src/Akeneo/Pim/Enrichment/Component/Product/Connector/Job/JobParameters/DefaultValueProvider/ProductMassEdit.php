@@ -35,7 +35,8 @@ class ProductMassEdit implements DefaultValuesProviderInterface
             'actions'               => [],
             'realTimeVersioning'    => true,
             'user_to_notify'        => null,
-            'is_user_authenticated' => false
+            'is_user_authenticated' => false,
+            'origin'                => 'MASS_EDIT',
         ];
     }
 

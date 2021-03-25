@@ -15,7 +15,7 @@ use Webmozart\Assert\Assert;
 class ProductUpdated extends Event
 {
     /**
-     * @var array{identifier: string} $data
+     * @var array{identifier: string, origin: string} $data
      */
     public function __construct(Author $author, array $data, int $timestamp = null, string $uuid = null)
     {

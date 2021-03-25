@@ -389,7 +389,7 @@ class ProductController
 
         $this->updateProduct($product, $data, 'post_products');
         $this->validateProduct($product);
-        $this->saver->save($product);
+        $this->saver->save($product, ['origin' => 'API']);
 
         $response = $this->getResponse($product, Response::HTTP_CREATED);
 
@@ -452,7 +452,7 @@ class ProductController
 
         $this->updateProduct($product, $data, 'patch_products__code_');
         $this->validateProduct($product);
-        $this->saver->save($product);
+        $this->saver->save($product, ['origin' => 'API']);
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
         $response = $this->getResponse($product, $status);

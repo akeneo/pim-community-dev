@@ -46,6 +46,7 @@ class ProductCsvImport implements DefaultValuesProviderInterface
         $parameters['enabledComparison'] = true;
         $parameters['realTimeVersioning'] = true;
         $parameters['convertVariantToSimple'] = false;
+        $parameters['origin'] = 'IMPORT';
 
         return $parameters;
     }

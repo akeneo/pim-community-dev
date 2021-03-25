@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Component\EventQueue;
 
 use Ramsey\Uuid\Uuid;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 202O Akeneo SAS (http://www.akeneo.com)
@@ -23,6 +24,8 @@ abstract class Event implements EventInterface
         int $timestamp = null,
         string $uuid = null
     ) {
+        Assert::keyExists($data, 'origin');
+
         $this->author = $author;
         $this->data = $data;
         $this->timestamp = $timestamp ?? time();
@@ -49,5 +52,10 @@ abstract class Event implements EventInterface
     public function getUuid(): string
     {
         return $this->uuid;
+    }
+
+    public function getOrigin(): string
+    {
+        return $this->data['origin'];
     }
 }
