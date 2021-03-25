@@ -26,6 +26,7 @@ class ProductModelProposalNormalizer extends AbstractProposalNormalizer
     {
         $result = parent::normalize($proposalProduct, $format, $context);
         $result['document_type'] = 'product_model_draft';
+        $result['id'] = 'product_model_draft_' . (string) $proposalProduct->getId();
 
         return $result;
     }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -20,13 +21,16 @@ abstract class AbstractProposalNormalizer implements NormalizerInterface, Cachea
 {
     private NormalizerInterface $datagridNormalizer;
     private ProposalChangesNormalizer $changesNormalizer;
+    private UserContext $userContext;
 
     public function __construct(
         NormalizerInterface $datagridNormalizer,
-        ProposalChangesNormalizer $changesNormalizer
+        ProposalChangesNormalizer $changesNormalizer,
+        UserContext $userContext
     ) {
         $this->datagridNormalizer = $datagridNormalizer;
         $this->changesNormalizer = $changesNormalizer;
+        $this->userContext = $userContext;
     }
 
     abstract public function supportsNormalization($data, $format = null): bool;
@@ -42,8 +46,9 @@ abstract class AbstractProposalNormalizer implements NormalizerInterface, Cachea
         $data['proposal_id'] = $proposalProduct->getId();
         $data['createdAt'] = $this->datagridNormalizer->normalize($proposalProduct->getCreatedAt(), $format, $context);
         $data['author_label'] = $proposalProduct->getAuthorLabel();
+        $data['author_code'] = $proposalProduct->getAuthor();
         $data['document_id'] = $product->getId();
-        $data['document_label'] = $product->getLabel();
+        $data['document_label'] = $product->getLabel($this->userContext->getUser()->getCatalogLocale()->getCode());
         $data['formatted_changes'] = $this->changesNormalizer->normalize($proposalProduct, $context);
 
         return $data;

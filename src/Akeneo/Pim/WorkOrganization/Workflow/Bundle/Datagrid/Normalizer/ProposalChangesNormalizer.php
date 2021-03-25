@@ -97,6 +97,7 @@ class ProposalChangesNormalizer
                         /** @var array $present */
                         $present = $this->changesExtension->presentChange($entityWithValuesDraft, $change, $attributeCode);
                         if (count($present) > 0) {
+                            $present['data'] = $change['data'];
                             $present['attributeLabel'] = $attribute->getLabel();
                             $present['scope'] = $change['scope'];
                             $present['locale'] = $change['locale'];

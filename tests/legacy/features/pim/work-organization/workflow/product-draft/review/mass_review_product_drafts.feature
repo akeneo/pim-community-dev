@@ -76,6 +76,9 @@ Feature: Approve or refuse several product drafts at once
     And I should see the text "Skipped 1"
     And I should see the text "You can't edit the attributes modified by this proposal"
 
+    #| 100 |             309 | NULL | Julia |      2 | NULL                | NULL                | 2021-03-25 08:33:00 | NULL                | NULL                | UNKNOWN   |                  | a:0:{}             | NULL                                                                          | {"comment": null, "user_to_notify": "Julia", "productDraftIds": [17, 18], "realTimeVersioning": true, "productModelDraftIds": [], "is_user_authenticated": null} |
+    # | 47 |             131 |  113 | Julia |      1 | 2021-03-25 08:43:30 | 2021-03-25 08:43:30 | 2021-03-25 08:43:29 | 2021-03-25 08:43:29 | 2021-03-25 08:43:29 | COMPLETED |                  | a:0:{}             | /srv/pim/var/logs/batch/47/batch_44f3a9e952730bb4a48b419bdf6d0e773ef748d1.log | {"comment": null, "user_to_notify": "Julia", "productDraftIds": [1, 2], "realTimeVersioning": true, "productModelDraftIds": [], "is_user_authenticated": null} |
+
   Scenario: Successfully approve all proposals
     Given the following product drafts:
       | product        | status | source | source_label | author                               | author_label                         | result                                                                                                                                                                   |

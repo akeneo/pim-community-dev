@@ -20,6 +20,7 @@ class ProposalCell extends StringCell {
     const documentId = this.model.get('document_id');
     const documentLabel = this.model.get('document_label');
     const authorLabel = this.model.get('author_label');
+    const authorCode = this.model.get('author_code');
     const createdAt = this.model.get('createdAt');
     const proposalId = this.model.get('proposal_id');
 
@@ -34,6 +35,7 @@ class ProposalCell extends StringCell {
             formattedChanges={formattedChanges}
             createdAt={createdAt}
             proposalId={proposalId}
+            authorCode={authorCode}
           />
         </ThemeProvider>
       </DependenciesProvider>,

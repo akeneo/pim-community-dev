@@ -21,6 +21,7 @@ datagrid:
             document_id: ~
             document_label: ~
             author_label: ~
+            author_code: ~
             createdAt: ~
         filters:
             columns:

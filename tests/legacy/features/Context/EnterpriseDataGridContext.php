@@ -86,7 +86,7 @@ class EnterpriseDataGridContext extends BaseDataGridContext
 
         foreach ($table->getHash() as $hash) {
             $this->spin(function () use ($datagrid, $hash) {
-                $selector = 'table.proposal-changes[data-product="%s"][data-attribute="%s"][data-author="%s"]';
+                $selector = '*[data-product="%s"][data-attribute="%s"][data-author="%s"]';
                 $params   = [
                     $hash['product'],
                     $hash['attribute'],
@@ -212,7 +212,7 @@ class EnterpriseDataGridContext extends BaseDataGridContext
 
     public function iClickOnTheActionOfTheRowWhichContains($actionName, $element)
     {
-        if (in_array(strtolower($actionName), ['approve all', 'delete', 'approve all', 'reject all'])) {
+        if (in_array($actionName, ['Approve all', 'Remove', 'Reject all'])) {
             $this->spin(function () use ($element, $actionName) {
                 $datagrid = $this->getDatagrid();
                 $row = $datagrid->getRow($element);

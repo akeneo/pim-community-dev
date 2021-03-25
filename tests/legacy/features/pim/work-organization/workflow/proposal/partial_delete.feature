@@ -31,11 +31,11 @@ Feature: Delete only possible values
     And I am logged in as "Julia"
     And I edit the "sp-1" product
     And I visit the "Proposals" column tab
-    And I click on the "remove" action of the row which contains "Mary"
+    And I click on the "Remove" action of the row which contains "Mary"
     And I press the "Send" button in the popin
-    Then the row "Mary" should contain:
-      | column | value            |
-      | Status | Can't be deleted |
+    Then the row "Mary" should contain the texts:
+      | column      | value            |
+      | Proposed at | Can't be deleted |
     When I logout
     And I am logged in as "Mary"
     And I edit the "sp-1" product

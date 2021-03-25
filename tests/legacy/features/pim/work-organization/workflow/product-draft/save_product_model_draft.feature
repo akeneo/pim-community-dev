@@ -19,5 +19,5 @@ Feature: Save a product model draft
     When I am logged in as "Julia"
     And I am on the proposals page
     Then I should see the following proposals:
-      | product    | author | attribute | original | new   |
-      | brookspink | Mary   | supplier  |          | mongo |
+      | product     | author | attribute | original | new   |
+      | Brooks pink | Mary   | supplier  |          | mongo |

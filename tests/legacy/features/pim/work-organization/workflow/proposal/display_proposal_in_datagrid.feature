@@ -22,8 +22,8 @@ Feature: Display proposals in datagrid
     And I edit the "my-jacket" product
     And I visit the "Proposals" column tab
     Then I should see the following proposals:
-      | product   | author | attribute | original | new |
-      | my-jacket | Mary   | name      | Jackets  |     |
+      | product | author | attribute | original | new |
+      | Jackets | Mary   | name      | Jackets  |     |
 
   Scenario: Successfully display an updated price attribute
     Given Mary proposed the following change to "my-jacket":
@@ -33,5 +33,5 @@ Feature: Display proposals in datagrid
     And I edit the "my-jacket" product
     And I visit the "Proposals" column tab
     Then I should see the following proposals:
-      | product   | author | attribute | original | new   |
-      | my-jacket | Mary   | price     | $45.00   | $5.00 |
+      | product | author | attribute | original | new   |
+      | Jackets | Mary   | price     | $45.00   | $5.00 |

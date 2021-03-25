@@ -35,8 +35,8 @@ Feature: Review a product draft
     And I click on the "Reject all" action of the row which contains "Name"
     And I press the "Send" button in the popin
     Then the grid should contain 1 element
-    And the row "Mary" should contain:
-      | column | value       |
-      | Status | In progress |
+    Then the row "Mary" should contain the texts:
+      | column      | value       |
+      | Proposed at | In progress |
     When I visit the "Attributes" column tab
     Then the product Name should be "Jacket"

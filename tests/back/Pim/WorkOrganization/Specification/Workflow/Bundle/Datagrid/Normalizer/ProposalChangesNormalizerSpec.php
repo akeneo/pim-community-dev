@@ -151,6 +151,7 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
                     [
                         'before' => 'before proposal',
                         'after' => 'proposal data',
+                        'data' => 'proposal data',
                         'attributeLabel' => 'Name',
                         'scope' => null,
                         'locale' => null,

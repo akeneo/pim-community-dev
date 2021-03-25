@@ -18,6 +18,7 @@ datagrid:
             document_id: ~
             document_label: ~
             author_label: ~
+            author_code: ~
             createdAt: ~
         mass_actions:
             mass_approve:

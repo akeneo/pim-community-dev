@@ -115,6 +115,7 @@ type ProposalChange = {
   attributeLabel: string;
   before: string;
   after: string;
+  data: any;
   canReview: boolean;
   locale: LocaleCode | null;
   scope: ScopeCode | null;
@@ -140,6 +141,7 @@ type ProposalProps = {
   documentId: number;
   documentLabel: string;
   authorLabel: string;
+  authorCode: string;
   createdAt: string;
   proposalId: number;
 };
@@ -150,6 +152,7 @@ const Proposal: React.FC<ProposalProps> = ({
   documentType,
   documentLabel,
   authorLabel,
+  authorCode,
   createdAt,
   proposalId,
 }) => {
@@ -206,7 +209,15 @@ const Proposal: React.FC<ProposalProps> = ({
       {formattedChanges.status === 'ready' && (
         <>
           {flatChanges.map(change => (
-            <Change key={`${change.attributeCode}-${change.scope}-${change.locale}`} isSame={isSame(change)}>
+            <Change
+              key={`${change.attributeCode}-${change.scope}-${change.locale}`}
+              isSame={isSame(change)}
+              data-product={documentLabel}
+              data-author={authorCode}
+              data-attribute={change.attributeCode}
+              data-scope={change.scope}
+              data-locale={change.locale}
+            >
               <div style={{display: 'flex', overflow: 'hidden'}}>
                 <Attribute title={change.attributeLabel}>{change.attributeLabel}</Attribute>
                 {change.scope && change.locale && (
@@ -223,18 +234,18 @@ const Proposal: React.FC<ProposalProps> = ({
               {!isSame(change) && (
                 <div>
                   <OldValue>{translate('pim_datagrid.workflow.old_value')}</OldValue>
-                  <span dangerouslySetInnerHTML={{__html: change.before}} />
+                  <span dangerouslySetInnerHTML={{__html: change.before}} className="original-value" />
                 </div>
               )}
               {!isSame(change) && (
                 <div>
                   <NewValue>{translate('pim_datagrid.workflow.new_value')}</NewValue>
-                  <span dangerouslySetInnerHTML={{__html: change.after}} />
+                  <span dangerouslySetInnerHTML={{__html: change.after}} className="new-value" />
                 </div>
               )}
               {isSame(change) && (
                 <div
-                  dangerouslySetInnerHTML={{__html: translate('pim_datagrid.workflow.no_diff', {value: change.before})}}
+                  dangerouslySetInnerHTML={{__html: translate('pim_datagrid.workflow.no_diff', {value: change.data})}}
                 />
               )}
               {change.canReview && (

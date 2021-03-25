@@ -5,6 +5,8 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Nor
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer\ProposalChangesNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -12,9 +14,10 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $datagridNormalizer,
-        ProposalChangesNormalizer $changesNormalizer
+        ProposalChangesNormalizer $changesNormalizer,
+        UserContext $userContext
     ) {
-        $this->beConstructedWith($datagridNormalizer, $changesNormalizer);
+        $this->beConstructedWith($datagridNormalizer, $changesNormalizer, $userContext);
     }
 
     function it_should_implement()
@@ -32,8 +35,10 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
     function it_normalizes_product_proposal(
         NormalizerInterface $datagridNormalizer,
         ProposalChangesNormalizer $changesNormalizer,
+        UserContext $userContext,
         ProductDraft $productProposal,
-        ProductInterface $product
+        ProductInterface $product,
+        UserInterface $user
     ) {
         $context = ['locales' => ['en_US']];
         $changes = [
@@ -43,13 +48,16 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
             ]
         ];
         $created = new \DateTime('2017-01-01T01:03:34+01:00');
+        $userContext->getUser()->willReturn($user);
+        $user->getCatalogLocale()->willReturn('en_US');
 
         $productProposal->getEntityWithValue()->willReturn($product);
         $productProposal->getId()->willReturn(42);
         $productProposal->getCreatedAt()->willReturn($created);
         $productProposal->getAuthorLabel()->willReturn('Mary Smith');
+        $productProposal->getAuthor()->willReturn('mary');
         $product->getId()->willReturn(69);
-        $product->getLabel()->willReturn('Banana');
+        $product->getLabel('en_US')->willReturn('Banana');
 
         $datagridNormalizer->normalize($created, 'datagrid', $context)->willReturn('2017-01-01');
         $changesNormalizer->normalize($productProposal, $context)->willReturn($changes);
@@ -59,10 +67,12 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
                 'proposal_id' => 42,
                 'createdAt' => '2017-01-01',
                 'author_label' => 'Mary Smith',
+                'author_code' => 'mary',
                 'document_id' => 69,
                 'document_label' => 'Banana',
                 'formatted_changes' => $changes,
                 'document_type' => 'product_draft',
+                'id' => 'product_draft_42',
             ]
         );
     }

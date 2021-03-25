@@ -37,6 +37,7 @@ services:
         arguments:
             - '@pim_datagrid_serializer'
             - '@pimee_workflow.normalizer.proposal_changes'
+            - '@pim_user.context.user'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
         lazy: true
@@ -46,6 +47,7 @@ services:
         arguments:
             - '@pim_datagrid_serializer'
             - '@pimee_workflow.normalizer.proposal_changes'
+            - '@pim_user.context.user'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
         lazy: true

@@ -18,7 +18,7 @@ define([
     render: function() {
       this.$el.html(
         this.template({
-          label: __('pimee_enrich.entity.product_draft.module.proposal.comment_title'),
+          label: __('pimee_workflow.entity.proposal.modal.title'),
           characters: __('pimee_enrich.entity.product_draft.module.proposal.comment_chars'),
         })
       );
