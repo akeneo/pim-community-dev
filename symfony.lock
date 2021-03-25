@@ -250,6 +250,9 @@
     "guzzlehttp/psr7": {
         "version": "1.6.1"
     },
+    "hslavich/oneloginsaml-bundle": {
+        "version": "v1.5.1"
+    },
     "imagine/imagine": {
         "version": "v0.7.1"
     },
@@ -328,6 +331,9 @@
     "ocramius/proxy-manager": {
         "version": "2.1.1"
     },
+    "onelogin/php-saml": {
+        "version": "3.6.1"
+    },
     "oneup/flysystem-bundle": {
         "version": "3.0",
         "recipe": {
@@ -366,6 +372,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "1.0.1"
+    },
+    "phpseclib/phpseclib": {
+        "version": "2.0.29"
     },
     "phpspec/php-diff": {
         "version": "v1.1.0"
@@ -474,6 +483,9 @@
     },
     "rize/uri-template": {
         "version": "0.3.2"
+    },
+    "robrichards/xmlseclibs": {
+        "version": "3.1.1"
     },
     "sabberworm/php-css-parser": {
         "version": "8.3.0"
