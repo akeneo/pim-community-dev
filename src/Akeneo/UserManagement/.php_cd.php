@@ -14,6 +14,7 @@ $rules = [
         'Doctrine\Common',
         'Doctrine\Inflector',
         'Akeneo\Tool',
+        'Webmozart\Assert\Assert',
         // TODO: The feature uses the datagrid
         'Oro\Bundle\PimDataGridBundle',
 
@@ -28,6 +29,9 @@ $rules = [
 
         // TODO: This dependency should be removed, Bundle dependency
         'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager',
+        'Oro\Bundle\SecurityBundle\Acl\AccessLevel',
+        'Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository',
+        'Oro\Bundle\SecurityBundle\Model\AclPrivilege',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
 
         'Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException',
@@ -41,6 +45,7 @@ $rules = [
         'Symfony\Contracts',
         'Akeneo\Tool',
         'Akeneo\UserManagement',
+        'Webmozart\Assert\Assert',
         'Oro\Bundle\SecurityBundle',
         'Sensio\Bundle\FrameworkExtraBundle',
         'Symfony\Bundle\FrameworkBundle',
@@ -65,6 +70,10 @@ $rules = [
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType',
 
         'Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException',
+
+        // TIP-1539: clean installer events
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
     ])->in('Akeneo\UserManagement\Bundle'),
 ];
 

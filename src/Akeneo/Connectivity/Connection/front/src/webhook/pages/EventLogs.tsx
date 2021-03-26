@@ -67,7 +67,7 @@ const EventLogsBreadcrumb: FC = () => {
                 <Translate id='pim_menu.item.connection_settings' />
             </Breadcrumb.Step>
             <Breadcrumb.Step>
-                <Translate id='akeneo_connectivity.connection.webhook.title' />
+                <Translate id='akeneo_connectivity.connection.webhook.event_logs.title' />
             </Breadcrumb.Step>
         </Breadcrumb>
     );

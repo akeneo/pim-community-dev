@@ -93,15 +93,6 @@ services:
             - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
-    pim_connector.processor.denormalization.user:
-        class: '%pim_connector.processor.denormalization.class%'
-        arguments:
-            - '@pim_user.repository.user'
-            - '@pim_user.factory.user'
-            - '@pim_user.updater.user'
-            - '@validator'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-
     pim_connector.processor.denormalization.user_group:
         class: '%pim_connector.processor.denormalization.class%'
         arguments:

@@ -5,9 +5,9 @@ namespace Akeneo\UserManagement\Bundle\EventListener;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Exception\ForbiddenToRemoveRoleException;
+use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Storage\Query\GetUserCountInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\Role\Role;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -25,7 +25,7 @@ class RemoveRoleSubscriber implements EventSubscriberInterface
     public function checkRoleIsRemovable(RemoveEvent $event): void
     {
         $role = $event->getSubject();
-        if (!$role instanceof Role) {
+        if (!$role instanceof RoleInterface) {
             return;
         }
 

@@ -93,8 +93,9 @@ class EventsApiDebugController
 
         $connectionCode = $request->query->get('connection_code');
         $searchAfter = $request->query->get('search_after');
+        $filters = json_decode($request->query->get('filters', ''), true) ?: [];
 
-        $logs = $this->searchEventSubscriptionDebugLogsQuery->execute($connectionCode, $searchAfter);
+        $logs = $this->searchEventSubscriptionDebugLogsQuery->execute($connectionCode, $searchAfter, $filters);
 
         return new JsonResponse($logs);
     }

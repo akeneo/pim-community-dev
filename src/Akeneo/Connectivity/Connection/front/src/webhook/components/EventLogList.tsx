@@ -1,13 +1,20 @@
-import {ArrowRightIcon, ArrowDownIcon, GraphIllustration, Information, Table} from 'akeneo-design-system';
-import React, {FC, useContext, useRef} from 'react';
-import {NoEventLogs} from './NoEventLogs';
-import {Translate} from '../../shared/translate';
+import React, {FC, useContext, useRef, useState} from 'react';
 import styled from 'styled-components';
-import useInfiniteEventSubscriptionLogs from '../hooks/api/use-infinite-event-subscription-logs';
+import {ArrowRightIcon, ArrowDownIcon, GraphIllustration, Information, Table, Link} from 'akeneo-design-system';
+import {NoEventLogs} from './NoEventLogs';
+import {useTranslate} from '../../shared/translate';
 import {EventLogBadge} from './EventLogBadge';
 import EventLogDatetime from './EventLogDatetime';
+import useInfiniteEventSubscriptionLogs from '../hooks/api/use-infinite-event-subscription-logs';
+import {EventLogListFilters} from './EventLogListFilters';
 import ExpandableTableRow, {IsExpanded} from '../../common/components/ExpandableTableRow';
 import FormattedJSON from '../../common/components/FormattedJSON';
+import {
+    EventSubscriptionLogFilters,
+    DEFAULT_EVENT_SUBSCRIPTION_LOG_FILTERS,
+    isSameAsDefaultFiltersValues,
+} from '../model/EventSubscriptionLogFilters';
+import {NoEventLogsWithThoseFilters} from './NoEventLogsWithThoseFilters';
 
 const ExtraSmallColumnHeaderCell = styled(Table.HeaderCell)`
     width: 125px;
@@ -33,14 +40,14 @@ const Arrow: FC = () => {
 };
 
 export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => {
+    const translate = useTranslate();
     const scrollContainer = useRef(null);
-    const {logs, page, total} = useInfiniteEventSubscriptionLogs(connectionCode, scrollContainer);
+    const [filters, setFilters] = useState<EventSubscriptionLogFilters>(DEFAULT_EVENT_SUBSCRIPTION_LOG_FILTERS);
+    const isSearchActive = !isSameAsDefaultFiltersValues(filters);
 
-    if (page === 0) {
-        return null;
-    }
+    const {logs, total, isLoading} = useInfiniteEventSubscriptionLogs(connectionCode, filters, scrollContainer);
 
-    if (total === 0) {
+    if (!isSearchActive && !isLoading && total === 0) {
         return <NoEventLogs />;
     }
 
@@ -48,26 +55,27 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
         <>
             <Information
                 illustration={<GraphIllustration />}
-                title={
-                    <Translate
-                        id={'akeneo_connectivity.connection.webhook.event_logs.list.info.logs_total'}
-                        placeholders={{total: total ? total.toString() : '0'}}
-                        count={total}
-                    />
-                }
+                title={translate('akeneo_connectivity.connection.webhook.event_logs.list.info.title')}
             >
-                {null}
+                <div>{translate('akeneo_connectivity.connection.webhook.event_logs.list.info.content')}</div>
+                <Link
+                    target={'_blank'}
+                    href={'https://api.akeneo.com/events-documentation/subscription.html#debugging-events'}
+                >
+                    {translate('akeneo_connectivity.connection.webhook.event_logs.list.info.link')}
+                </Link>
             </Information>
+            <EventLogListFilters filters={filters} onChange={setFilters} total={total} />
             <Table>
                 <Table.Header>
                     <SmallColumnHeaderCell>
-                        <Translate id={'akeneo_connectivity.connection.webhook.event_logs.list.headers.datetime'} />
+                        {translate('akeneo_connectivity.connection.webhook.event_logs.list.headers.datetime')}
                     </SmallColumnHeaderCell>
                     <ExtraSmallColumnHeaderCell>
-                        <Translate id={'akeneo_connectivity.connection.webhook.event_logs.list.headers.level'} />
+                        {translate('akeneo_connectivity.connection.webhook.event_logs.list.headers.level')}
                     </ExtraSmallColumnHeaderCell>
                     <Table.HeaderCell>
-                        <Translate id={'akeneo_connectivity.connection.webhook.event_logs.list.headers.message'} />
+                        {translate('akeneo_connectivity.connection.webhook.event_logs.list.headers.message')}
                     </Table.HeaderCell>
                 </Table.Header>
                 <Table.Body ref={scrollContainer}>
@@ -88,7 +96,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                     ))}
                 </Table.Body>
             </Table>
-            <br />
+            {isSearchActive && total === 0 && <NoEventLogsWithThoseFilters />}
         </>
     );
 };

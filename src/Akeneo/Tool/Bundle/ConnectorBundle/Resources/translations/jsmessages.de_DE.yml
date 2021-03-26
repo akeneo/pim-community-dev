@@ -4,6 +4,7 @@ batch_jobs:
     export: Export
     validation: Dateivalidierung
     import_associations: Verbindungen-Import
+    import_model_associations: Verbindungen-Import
     import_root_product_model: Produktmodell-Import Hauptebene
     import_sub_product_model: Produktmodell-Import Subebene
     compute_data_related_to_family_root_product_models: Ursprüngliche Produktdaten-Modell berechnen
