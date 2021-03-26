@@ -64,16 +64,10 @@ class User implements ArrayConverterInterface
      *      'timezone'               => 'UTC',
      * ]
      */
-    public function convert(array $item, array $options = [])
+    public function convert(array $item, array $options = []): array
     {
-        $this->fieldsChecker->checkFieldsPresence(
-            $item,
-            ['username', 'email', 'password', 'enabled', 'roles', 'first_name', 'last_name', 'groups']
-        );
-        $this->fieldsChecker->checkFieldsFilling(
-            $item,
-            ['username', 'email', 'password', 'enabled', 'roles', 'first_name', 'last_name']
-        );
+        $this->fieldsChecker->checkFieldsPresence($item, ['username']);
+        $this->fieldsChecker->checkFieldsFilling($item, ['username']);
 
         $convertedItem = [];
         foreach ($item as $field => $data) {
@@ -84,24 +78,48 @@ class User implements ArrayConverterInterface
     }
 
     /**
-     * @param array  $convertedItem
+     * @param array $convertedItem
      * @param string $field
-     * @param mixed  $data
+     * @param mixed $data
      *
      * @return array
      */
-    protected function convertField(array $convertedItem, $field, $data)
+    protected function convertField(array $convertedItem, string $field, $data): array
     {
-        if (in_array($field, ['roles', 'groups'])) {
-            $convertedItem[$field] = '' !== $data ? explode(',', $data) : [];
-        } elseif (in_array($field, ['enabled', 'email_notifications'])) {
-            $convertedItem[$field] = '1' == $data ? true : false;
-        } elseif (in_array($field, ['timezone'])) {
-            $convertedItem[$field] = '' !== $data ? $data : null;
-        } else {
-            $convertedItem[$field] = $data;
+        if ('' === $data) {
+            $convertedItem[$field] = null;
+
+            return $convertedItem;
+        }
+
+        switch ($field) {
+            case 'roles':
+            case 'groups':
+            case 'product_grid_filters':
+                $convertedItem[$field] = \explode(',', $data);
+                break;
+            case 'enabled':
+                $convertedItem[$field] = $this->convertBoolean((string)$data);
+                break;
+            case 'avatar':
+                $convertedItem['avatar'] = ['filePath' => $data];
+                break;
+            default:
+                $convertedItem[$field] = $data;
+                break;
         }
 
         return $convertedItem;
+    }
+
+    private function convertBoolean(string $data)
+    {
+        if ('1' === $data) {
+            return true;
+        } elseif ('0' === $data) {
+            return false;
+        }
+
+        return $data;
     }
 }

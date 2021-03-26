@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AkeneoTest\UserManagement\Integration\Bundle;
@@ -23,7 +24,7 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
 {
     protected KernelBrowser $client;
     protected CatalogInterface $catalog;
-    private RouterInterface $router;
+    protected RouterInterface $router;
 
     abstract protected function getConfiguration(): Configuration;
 
@@ -106,13 +107,14 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
         $this->client->getCookieJar()->set($cookie);
     }
 
-    private function createUser(string $username): User
+    protected function createUser(string $username, string $password = 'fake'): User
     {
         $user = $this->get('pim_user.factory.user')->create();
         $user->setId(uniqid());
         $user->setUsername($username);
         $user->setEmail(sprintf('%s@example.com', uniqid()));
-        $user->setPassword('fake');
+        $user->setPlainPassword($password);
+        $this->get('pim_user.manager')->updatePassword($user);
 
         $groups = $this->get('pim_user.repository.group')->findAll();
         foreach ($groups as $group) {

@@ -15,8 +15,8 @@ Feature: Create a user
       | Username          | jack                 |
       | First name        | Jack                 |
       | Last name         | Doe                  |
-      | Password          | DoeDoe               |
-      | Password (repeat) | DoeDoe               |
+      | Password          | DoeDoeDoe            |
+      | Password (repeat) | DoeDoeDoe            |
       | Email             | jack+doe@example.com |
     When I press the "Save" button
     Then there should be a "jack" user
