@@ -54,12 +54,9 @@ class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
         }
 
         if ($this->areAttributesUsedAsLabelInAFamily([$attribute->getId()])) {
-            $message = 'Attributes used as labels in a family cannot be removed.';
-
-            throw new AttributeRemovalException($message);
+            throw new AttributeRemovalException('pim_enrich.entity.attribute.flash.update.cant_remove_attributes_used_as_label');
         }
     }
-
 
     /**
      * Check if the attributes are used as label by any family
@@ -88,9 +85,7 @@ class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
         );
 
         if ($this->areAttributesUsedAsLabelInAFamily($attributeIds)) {
-            $message = 'Attributes used as labels in a family cannot be removed.';
-
-            throw new AttributeRemovalException($message);
+            throw new AttributeRemovalException('pim_enrich.entity.attribute.flash.update.cant_remove_attributes_used_as_label');
         }
     }
 

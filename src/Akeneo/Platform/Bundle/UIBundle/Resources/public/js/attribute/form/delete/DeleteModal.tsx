@@ -80,7 +80,8 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
         onSuccess();
       } else {
         const {message} = await response.json();
-        notify(NotificationLevel.ERROR, message ?? translate('pim_enrich.entity.attribute.flash.delete.fail'));
+        //try to translate a key if there is one
+        notify(NotificationLevel.ERROR, message ? translate(message) : translate('pim_enrich.entity.attribute.flash.delete.fail'));
       }
     } catch (error) {
       setLoading(false);
