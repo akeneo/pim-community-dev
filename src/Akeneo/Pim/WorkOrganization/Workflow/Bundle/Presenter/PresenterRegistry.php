@@ -9,12 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\RendererAwareInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TranslatorAwareInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -25,7 +22,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftChangesExtension
+class PresenterRegistry
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;

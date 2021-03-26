@@ -17,10 +17,11 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\ProductDraftChangesPermissionHelper;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftChangesExtension;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterRegistry;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -29,7 +30,7 @@ class ProposalChangesNormalizer
 {
     private NormalizerInterface $standardNormalizer;
     private ValueFactory $valueFactory;
-    private ProductDraftChangesExtension $changesExtension;
+    private PresenterRegistry $changesExtension;
     private AuthorizationCheckerInterface $authorizationChecker;
     private AttributeRepositoryInterface $attributeRepository;
     private LocaleRepositoryInterface $localeRepository;
@@ -39,7 +40,7 @@ class ProposalChangesNormalizer
     public function __construct(
         NormalizerInterface $standardNormalizer,
         ValueFactory $valueFactory,
-        ProductDraftChangesExtension $changesExtension,
+        PresenterRegistry $changesExtension,
         AuthorizationCheckerInterface $authorizationChecker,
         AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
@@ -58,9 +59,8 @@ class ProposalChangesNormalizer
 
     public function normalize(EntityWithValuesDraftInterface $entityWithValuesDraft, array $context = []): array
     {
-        $canReview = $this->permissionHelper->canEditOneChangeToReview($entityWithValuesDraft);
+        $canReviewAll = $this->permissionHelper->canEditOneChangeToReview($entityWithValuesDraft);
         $canDelete = $this->permissionHelper->canEditOneChangeDraft($entityWithValuesDraft);
-        $toReview = $entityWithValuesDraft->getStatus() === EntityWithValuesDraftInterface::READY;
         $inProgress = $entityWithValuesDraft->isInProgress();
         $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $entityWithValuesDraft->getEntityWithValue());
 
@@ -68,10 +68,10 @@ class ProposalChangesNormalizer
             'status_label' => $this->getDraftStatusGrid($entityWithValuesDraft),
         ];
 
-        if ($entityWithValuesDraft->getStatus() === EntityWithValuesDraftInterface::IN_PROGRESS) {
+        if ($inProgress) {
             return array_merge($result, [
                 'status' => 'in_progress',
-                'remove'  => $inProgress && $isOwner && $canDelete
+                'remove'  => $isOwner && $canDelete
             ]);
         }
 
@@ -80,27 +80,30 @@ class ProposalChangesNormalizer
         foreach ($changesWithEmptyValues as $attributeCode => $changes) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
             $canView = $this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute);
-            if ($canView) {
-                $proposalChanges[$attributeCode] = [];
-                foreach ($changes as $change) {
-                    $locale = $this->localeRepository->findOneByIdentifier($change['locale']);
-                    $canViewLocale = !$attribute->isLocalizable() || $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale);
-                    if ($canViewLocale) {
-                        $canReview =
-                            $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute) &&
-                            $this->authorizationChecker->isGranted(Attributes::OWN, $entityWithValuesDraft->getEntityWithValue()) &&
-                            (!$attribute->isLocalizable() || $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale));
-                        /** @var array $present */
-                        $present = $this->changesExtension->presentChange($entityWithValuesDraft, $change, $attributeCode);
-                        if (count($present) > 0) {
-                            $present['data'] = $change['data'];
-                            $present['attributeLabel'] = $attribute->getLabel();
-                            $present['scope'] = $change['scope'];
-                            $present['locale'] = $change['locale'];
-                            $present['canReview'] = $canReview;
-                            $proposalChanges[$attributeCode][] = $present;
-                        }
-                    }
+            if (!$canView) {
+                continue;
+            }
+
+            $proposalChanges[$attributeCode] = [];
+            foreach ($changes as $change) {
+                if (!$this->canViewLocale($attribute, $change['locale'])) {
+                    continue;
+                }
+
+                $canReview =
+                    $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute) &&
+                    $this->authorizationChecker->isGranted(Attributes::OWN, $entityWithValuesDraft->getEntityWithValue()) &&
+                    $this->canEditLocale($attribute, $change['locale']);
+
+                /** @var array $present */
+                $present = $this->changesExtension->presentChange($entityWithValuesDraft, $change, $attributeCode);
+                if (count($present) > 0) {
+                    $present['data'] = $change['data'];
+                    $present['attributeLabel'] = $attribute->getLabel();
+                    $present['scope'] = $change['scope'];
+                    $present['locale'] = $change['locale'];
+                    $present['canReview'] = $canReview;
+                    $proposalChanges[$attributeCode][] = $present;
                 }
             }
         }
@@ -110,8 +113,8 @@ class ProposalChangesNormalizer
             'search_id' => $entityWithValuesDraft->getEntityWithValue()->getIdentifier(),
             'changes' => $proposalChanges,
             'author_code' => $entityWithValuesDraft->getAuthor(),
-            'approve' => $isOwner && $toReview && $canReview,
-            'refuse'  => $isOwner && $toReview && $canReview,
+            'approve' => $isOwner && $canReviewAll,
+            'refuse'  => $isOwner && $canReviewAll,
             'id' => $entityWithValuesDraft->getId(),
         ]);
     }
@@ -193,7 +196,7 @@ class ProposalChangesNormalizer
 
     private function getDraftStatusGrid(EntityWithValuesDraftInterface $productDraft): string
     {
-        $toReview = $productDraft->getStatus() === EntityWithValuesDraftInterface::READY;
+        $toReview = !$productDraft->isInProgress();
         $canReview = $this->permissionHelper->canEditOneChangeToReview($productDraft);
         $canDelete = $this->permissionHelper->canEditOneChangeDraft($productDraft);
         $canReviewAll = $this->permissionHelper->canEditAllChangesToReview($productDraft);
@@ -215,5 +218,23 @@ class ProposalChangesNormalizer
         }
 
         return 'can_not_be_deleted';
+    }
+
+    private function canViewLocale(AttributeInterface $attribute, ?string $locale): bool
+    {
+        if (!$attribute->isLocalizable() || null === $locale) {
+            return true;
+        }
+
+        return $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $this->localeRepository->findOneByIdentifier($locale));
+    }
+
+    private function canEditLocale(AttributeInterface $attribute, ?string $locale): bool
+    {
+        if (!$attribute->isLocalizable() || null === $locale) {
+            return true;
+        }
+
+        return $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $this->localeRepository->findOneByIdentifier($locale));
     }
 }

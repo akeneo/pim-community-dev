@@ -139,13 +139,13 @@ services:
         class: '%pimee_workflow.datasource.result_record.hydrator.product_draft.class%'
         arguments:
           - '@pim_datagrid.datagrid.request.parameters_extractor'
-          - '@pimee_workflow.normalizer.proposal_product'
+          - '@pimee_workflow.normalizer.entity_with_values_proposal'
 
     pim_datagrid.datasource.result_record.hydrator.product_model_draft:
         class: '%pimee_workflow.datasource.result_record.hydrator.product_draft.class%'
         arguments:
           - '@pim_datagrid.datagrid.request.parameters_extractor'
-          - '@pimee_workflow.normalizer.proposal_product_model'
+          - '@pimee_workflow.normalizer.entity_with_values_proposal'
 
     pimee_workflow.datagrid.datasource.result_record.hydrator.published_product_history:
         class: '%pimee_workflow.datagrid.datasource.result_record.hydrator.published_product_history.class%'

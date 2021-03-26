@@ -2,15 +2,17 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer\ProposalChangesNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductProposalNormalizerSpec extends ObjectBehavior
+class EntityWithValuesProposalNormalizerSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $datagridNormalizer,
@@ -25,10 +27,12 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(NormalizerInterface::class);
     }
 
-    function it_supports_product_proposal_normalization(
-        ProductDraft $productProposal
+    function it_supports_entity_with_values_proposal_normalization(
+        ProductDraft $productProposal,
+        ProductModelDraft $productModelDraft
     ) {
         $this->supportsNormalization($productProposal, 'datagrid')->shouldReturn(true);
+        $this->supportsNormalization($productModelDraft, 'datagrid')->shouldReturn(true);
         $this->supportsNormalization('Foobar', 'datagrid')->shouldReturn(false);
     }
 
@@ -36,6 +40,7 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         NormalizerInterface $datagridNormalizer,
         ProposalChangesNormalizer $changesNormalizer,
         UserContext $userContext,
+        LocaleInterface $locale,
         ProductDraft $productProposal,
         ProductInterface $product,
         UserInterface $user
@@ -49,7 +54,8 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         ];
         $created = new \DateTime('2017-01-01T01:03:34+01:00');
         $userContext->getUser()->willReturn($user);
-        $user->getCatalogLocale()->willReturn('en_US');
+        $user->getCatalogLocale()->willReturn($locale);
+        $locale->getCode()->willReturn('en_US');
 
         $productProposal->getEntityWithValue()->willReturn($product);
         $productProposal->getId()->willReturn(42);

@@ -1,8 +1,7 @@
 parameters:
     pimee_workflow.normalizer.product_draft.class:     Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\ProductDraftNormalizer
     pimee_workflow.normalizer.published_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\PublishedProductNormalizer
-    pimee_workflow.normalizer.proposal_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer\ProductProposalNormalizer
-    pimee_workflow.normalizer.proposal_product_model.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer\ProductModelProposalNormalizer
+    pimee_workflow.normalizer.entity_with_values_proposal.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer\EntityWithValuesProposalNormalizer
     pimee_workflow.normalizer.published_product_version.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Versioning\VersionNormalizer
 
 services:
@@ -24,25 +23,15 @@ services:
         arguments:
             - '@pim_standard_format_serializer'
             - '@akeneo.pim.enrichment.factory.value'
-            - '@pimee_workflow.twig.extension.product_draft_changes'
+            - '@pimee_workflow.presenter.registry'
             - '@security.authorization_checker'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.locale'
             - '@pimee_workflow.helper.product_draft_changes_permission'
             - '@akeneo.pim.structure.query.get_attributes'
 
-    pimee_workflow.normalizer.proposal_product:
-        class: '%pimee_workflow.normalizer.proposal_product.class%'
-        arguments:
-            - '@pim_datagrid_serializer'
-            - '@pimee_workflow.normalizer.proposal_changes'
-            - '@pim_user.context.user'
-        tags:
-            - { name: pim_datagrid_serializer.normalizer }
-        lazy: true
-
-    pimee_workflow.normalizer.proposal_product_model:
-        class: '%pimee_workflow.normalizer.proposal_product_model.class%'
+    pimee_workflow.normalizer.entity_with_values_proposal:
+        class: '%pimee_workflow.normalizer.entity_with_values_proposal.class%'
         arguments:
             - '@pim_datagrid_serializer'
             - '@pimee_workflow.normalizer.proposal_changes'

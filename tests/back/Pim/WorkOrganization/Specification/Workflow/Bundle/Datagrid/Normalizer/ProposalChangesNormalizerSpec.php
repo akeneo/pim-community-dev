@@ -14,7 +14,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\ProductDraftChangesPermissionHelper;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftChangesExtension;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterRegistry;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftStatusGridExtension;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use PhpSpec\ObjectBehavior;
@@ -27,7 +27,7 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
     function let(
         NormalizerInterface $standardNormalizer,
         ValueFactory $valueFactory,
-        ProductDraftChangesExtension $changesExtension,
+        PresenterRegistry $changesExtension,
         AuthorizationCheckerInterface $authorizationChecker,
         AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
@@ -53,7 +53,6 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
         EntityWithValuesInterface $entityWithValues
     ) {
         $context = ['locales' => ['en_US']];
-        $entityWithValuesDraft->getStatus()->willReturn(0); // in progress
         $entityWithValuesDraft->isInProgress()->willReturn(true);
         $entityWithValuesDraft->getEntityWithValue()->willReturn($entityWithValues);
         $entityWithValuesDraft->getChanges()->willReturn(['values' => []]);
@@ -73,7 +72,7 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
     function it_normalizes_ready_draft(
         NormalizerInterface $standardNormalizer,
         ValueFactory $valueFactory,
-        ProductDraftChangesExtension $changesExtension,
+        PresenterRegistry $changesExtension,
         AuthorizationCheckerInterface $authorizationChecker,
         AttributeRepositoryInterface $attributeRepository,
         ProductDraftChangesPermissionHelper $permissionHelper,
@@ -91,7 +90,6 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
         ];
 
         $entityWithValuesDraft->getId()->willReturn(42);
-        $entityWithValuesDraft->getStatus()->willReturn(1); // ready
         $entityWithValuesDraft->isInProgress()->willReturn(false);
         $entityWithValuesDraft->getEntityWithValue()->willReturn($entityWithValues);
         $entityWithValuesDraft->getChanges()->willReturn(['values' => ['name' => [$change]]]);

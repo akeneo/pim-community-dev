@@ -73,6 +73,7 @@ const Attribute = styled.span`
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
+
 const OldValue = styled.span`
   color: ${getColor('red', 100)};
   margin-right: 5px;
@@ -111,7 +112,6 @@ type InProgressProposal = {
 };
 
 type ProposalChange = {
-  localeLabel: string;
   attributeLabel: string;
   before: string;
   after: string;
@@ -159,7 +159,7 @@ const Proposal: React.FC<ProposalProps> = ({
   const router = useRouter();
   const translate = useTranslate();
 
-  const isSame: (change: ProposalChange) => boolean = change => change.before == change.after;
+  const isSame: (change: ProposalChange) => boolean = change => change.before === change.after;
   const documentUrl = `#${router.generate(
     documentType === 'product_draft' ? 'pim_enrich_product_edit' : 'pim_enrich_product_model_edit',
     {id: documentId}
@@ -220,7 +220,7 @@ const Proposal: React.FC<ProposalProps> = ({
             >
               <div style={{display: 'flex', overflow: 'hidden'}}>
                 <Attribute title={change.attributeLabel}>{change.attributeLabel}</Attribute>
-                {change.scope && change.locale && (
+                {(change.scope || change.locale) && (
                   <LocaleScope>
                     {change.scope && (
                       <span>

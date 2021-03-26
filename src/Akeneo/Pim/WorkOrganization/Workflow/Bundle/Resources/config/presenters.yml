@@ -1,5 +1,5 @@
 parameters:
-    pimee_workflow.twig.extension.product_draft_changes.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftChangesExtension
+    pimee_workflow.presenter.registry.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterRegistry
     pimee_workflow.rendering.diff_factory.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\DiffFactory
     pimee_workflow.renderer.html.simple_list.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Diff\Renderer\Html\SimpleList
     pimee_workflow.product_draft_renderer.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\PhpDiffRenderer
@@ -24,14 +24,6 @@ services:
     ##
     # Twig Extension
     ##
-    pimee_workflow.twig.extension.product_draft_changes:
-        class: '%pimee_workflow.twig.extension.product_draft_changes.class%'
-        arguments:
-            - '@pim_catalog.repository.cached_attribute'
-            - '@pimee_workflow.product_draft_renderer'
-            - '@translator'
-            - '@akeneo.pim.enrichment.factory.value'
-
     pimee_workflow.product_draft_renderer:
         class: '%pimee_workflow.product_draft_renderer.class%'
         arguments:
@@ -49,6 +41,14 @@ services:
     ##
     # Presenters
     ##
+    pimee_workflow.presenter.registry:
+        class: '%pimee_workflow.presenter.registry.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pimee_workflow.product_draft_renderer'
+            - '@translator'
+            - '@akeneo.pim.enrichment.factory.value'
+            -
     pimee_workflow.presenter.default:
         class: '%pimee_workflow.presenter.default.class%'
         tags:

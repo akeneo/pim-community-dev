@@ -36,7 +36,6 @@ datagrid:
             columns:
                 formatted_changes:
                     data_name: createdAt
-#                    sorter:    product_field
             default:
                 formatted_changes: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
     product-grid:
