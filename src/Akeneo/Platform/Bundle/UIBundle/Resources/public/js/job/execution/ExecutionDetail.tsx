@@ -83,6 +83,7 @@ const ExecutionDetail = () => {
   const downloadLogIsVisible = canDownloadLog(security, jobExecution);
   const downloadArchiveLinks = getDownloadLinks(jobExecution?.meta.archives ?? null);
   const downloadArchiveLinkIsVisible = canDownloadArchive(security, jobExecution) && 0 < downloadArchiveLinks.length;
+  const downloadZipArchive = jobExecution?.meta?.generateZipArchive ?? false;
 
   const downloadArchiveTitle = translate('pim_enrich.entity.job_execution.module.download.output');
   const showProfileIsVisible = jobTypeWithProfile.includes(jobExecution?.jobInstance.type || '');
@@ -168,7 +169,7 @@ const ExecutionDetail = () => {
           )}
           {jobExecution &&
             downloadArchiveLinkIsVisible &&
-            (downloadArchiveLinks.length === 1 ? (
+            (downloadArchiveLinks.length === 1 && !downloadZipArchive ? (
               <Button
                 level="secondary"
                 href={router.generate('pim_enrich_job_tracker_download_file', {
@@ -203,6 +204,15 @@ const ExecutionDetail = () => {
                           </Link>
                         </Dropdown.Item>
                       ))}
+                      <Dropdown.Item key="zip_archive">
+                        <Link
+                          href={router.generate('pim_enrich_job_tracker_download_zip_archive', {
+                            jobExecutionId: jobExecutionId
+                          })}
+                        >
+                          {translate('pim_import_export.form.job_execution.button.download_archive.title')}
+                        </Link>
+                      </Dropdown.Item>
                     </Dropdown.ItemCollection>
                   </Dropdown.Overlay>
                 )}

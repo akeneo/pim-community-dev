@@ -67,6 +67,7 @@ class JobExecutionController
         $jobResponse['meta'] = [
             'logExists' => file_exists($jobExecution->getLogFile()),
             'archives' => $this->archives($jobExecution),
+            'generateZipArchive' => ($this->archivist->totalArchivesCount($jobExecution) > 1),
             'id' => $identifier,
         ];
 
