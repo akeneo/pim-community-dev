@@ -350,7 +350,7 @@ class ProductController
             throw new NotFoundHttpException($exception->getMessage(), $exception);
         }
 
-        $this->remover->remove($product);
+        $this->remover->remove($product, ['origin' => 'API']);
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }

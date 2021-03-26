@@ -70,6 +70,8 @@ final class DispatchProductModelRemovedEventSubscriber implements EventSubscribe
         $data = [
             'code' => $productModel->getCode(),
             'category_codes' => $productModel->getCategoryCodes(),
+            'origin' => $postSaveEvent->hasArgument('origin') ?
+                $postSaveEvent->getArgument('origin') : null,
         ];
 
         $this->events[] = new ProductModelRemoved($author, $data);
@@ -101,6 +103,7 @@ final class DispatchProductModelRemovedEventSubscriber implements EventSubscribe
                                 'author' => $event->getAuthor()->name(),
                                 'author_type' => $event->getAuthor()->type(),
                                 'timestamp' => $event->getTimestamp(),
+                                'origin' => $event->getOrigin(),
                             ];
                         }, $this->events)
                     ],

@@ -69,6 +69,8 @@ final class DispatchProductRemovedEventSubscriber implements EventSubscriberInte
         $data = [
             'identifier' => $product->getIdentifier(),
             'category_codes' => $product->getCategoryCodes(),
+            'origin' => $postSaveEvent->hasArgument('origin') ?
+                $postSaveEvent->getArgument('origin') : null,
         ];
 
         $this->events[] = new ProductRemoved($author, $data);
@@ -100,6 +102,7 @@ final class DispatchProductRemovedEventSubscriber implements EventSubscriberInte
                                 'author' => $event->getAuthor()->name(),
                                 'author_type' => $event->getAuthor()->type(),
                                 'timestamp' => $event->getTimestamp(),
+                                'origin' => $event->getOrigin(),
                             ];
                         }, $this->events)
                     ],
