@@ -52,7 +52,10 @@ class ProductModelWriter implements ItemWriterInterface, StepExecutionAwareInter
             $this->stepExecution->incrementSummaryInfo($action);
         }
 
-        $this->productModelSaver->saveAll($items);
+        $parameters = $this->stepExecution->getJobParameters();
+        $origin = $parameters->has('origin') ? $parameters->get('origin') : null;
+
+        $this->productModelSaver->saveAll($items,  ['origin' => $origin]);
     }
 
     /**
