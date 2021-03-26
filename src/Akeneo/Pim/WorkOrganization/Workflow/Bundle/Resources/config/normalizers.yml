@@ -18,17 +18,23 @@ services:
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 130 }
 
+
+    pimee_workflow.normalizer.value_collection_without_empty_values_provider:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer\ValueCollectionWithoutEmptyValuesProvider'
+        arguments:
+            - '@akeneo.pim.enrichment.factory.value'
+            - '@pim_standard_format_serializer'
+            - '@akeneo.pim.structure.query.get_attributes'
+            -
     pimee_workflow.normalizer.proposal_changes:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer\ProposalChangesNormalizer'
         arguments:
-            - '@pim_standard_format_serializer'
-            - '@akeneo.pim.enrichment.factory.value'
             - '@pimee_workflow.presenter.registry'
             - '@security.authorization_checker'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.locale'
             - '@pimee_workflow.helper.product_draft_changes_permission'
-            - '@akeneo.pim.structure.query.get_attributes'
+            - '@pimee_workflow.normalizer.value_collection_without_empty_values_provider'
 
     pimee_workflow.normalizer.entity_with_values_proposal:
         class: '%pimee_workflow.normalizer.entity_with_values_proposal.class%'
