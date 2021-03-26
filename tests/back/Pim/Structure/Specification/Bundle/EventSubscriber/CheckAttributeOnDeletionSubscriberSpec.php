@@ -6,10 +6,11 @@ use Akeneo\Pim\Structure\Component\Exception\AttributeRemovalException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
 use PhpSpec\ObjectBehavior;
 
-class UpdateFamilyAttributeAsLabelSpec extends ObjectBehavior
+class CheckAttributeOnDeletionSubscriberSpec extends ObjectBehavior
 {
     public function let(
         Connection $dbConnection
@@ -19,14 +20,16 @@ class UpdateFamilyAttributeAsLabelSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_if_it_is_an_attribute_used_as_label_by_any_family(
-        RemoveEvent $event,
-        $dbConnection,
-        AttributeInterface $attribute
+        Connection $dbConnection,
+        AttributeInterface $attribute,
+        Statement $statement
     )
     {
-        $event->getSubject()->willReturn($attribute);
-        $dbConnection->executeQuery(Argument::cetera())->shouldBeCalled();
-        $this->preRemove($event)->willReturn(AttributeRemovalException::class);
+        $event = new RemoveEvent($attribute->getWrappedObject(), 42, ['unitary' => true]);
+        $attribute->getId()->willReturn(42);
+        $statement->fetchColumn()->willReturn('1');
+        $dbConnection->executeQuery(Argument::type('string'), ['attributeIds' => [42]], Argument::cetera())->shouldBeCalled()->willReturn($statement);
+        $this->shouldThrow(AttributeRemovalException::class)->during('preRemove', [$event]);
     }
 
     public function it_does_nothing_if_it_is_not_an_attribute(

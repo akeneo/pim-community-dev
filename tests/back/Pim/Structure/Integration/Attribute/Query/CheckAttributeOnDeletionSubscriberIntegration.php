@@ -36,10 +36,10 @@ class CheckAttributeOnDeletionSubscriberIntegration extends TestCase
         ]);
 
         $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('name');
+        $this->expectException(AttributeRemovalException::class);
         $this->get('pim_catalog.remover.attribute')->remove($attribute);
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
-        $this->expectException(AttributeRemovalException::class);
-        $this->assertNotNull('Attributes used as labels in a family cannot be removed.');
+        $this->assertNotNull($this->get('pim_catalog.repository.attribute')->findOneByIdentifier('name'));
     }
 
     public function test_it_throws_an_exception_when_the_attributes_are_used_as_label_by_any_family()
@@ -65,11 +65,11 @@ class CheckAttributeOnDeletionSubscriberIntegration extends TestCase
             ]
         ]);
 
-        $attributes = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('name', 'title');
-        $this->get('pim_catalog.remover.attribute')->removeAll($attributes);
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+        $attributes = $this->get('pim_catalog.repository.attribute')->findBy(['code' => ['name', 'title']]);
         $this->expectException(AttributeRemovalException::class);
-        $this->assertNotNull('Attributes used as labels in a family cannot be removed.');
+        $this->get('pim_catalog.remover.attribute')->removeAll($attributes);
+        $this->assertNotNull($this->get('pim_catalog.repository.attribute')->findOneByIdentifier('name'));
+        $this->assertNotNull($this->get('pim_catalog.repository.attribute')->findOneByIdentifier('title'));
     }
 
     /**
