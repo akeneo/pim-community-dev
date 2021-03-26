@@ -10,7 +10,7 @@ class ProposalCell extends StringCell {
   constructor(options: any) {
     super({
       ...options,
-      className: 'AknGrid-bodyCell AknGrid-bodyCell--full',
+      className: 'AknGrid-bodyCell AknGrid-bodyCell--unclickable',
     });
   }
 

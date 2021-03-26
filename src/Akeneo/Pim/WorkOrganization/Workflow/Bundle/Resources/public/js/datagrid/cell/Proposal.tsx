@@ -62,6 +62,11 @@ const Change = styled.div<{isSame: boolean} & AkeneoThemedProps>`
     text-decoration: none;
     background: ${getColor('green', 20)};
   }
+
+  img {
+    display: block;
+    margin-top: 5px;
+  }
 `;
 
 const Attribute = styled.span`
