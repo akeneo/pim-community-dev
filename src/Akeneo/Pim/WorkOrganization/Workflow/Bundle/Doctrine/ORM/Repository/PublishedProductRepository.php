@@ -13,6 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Doctrine\ORM\NoResultException;
@@ -116,6 +117,32 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
             ->innerJoin('pp.associations', 'ppa')
             ->andWhere('ppa.associationType = :association_type')
             ->setParameter('association_type', $associationType);
+
+        return $this->getCountFromQB($qb);
+    }
+
+    /**
+     * Count published variant products for a product model
+     *
+     * @param ProductModelInterface $productModel
+     *
+     * @return int
+     */
+    public function countPublishedVariantProductsForProductModel(ProductModelInterface $productModel): int
+    {
+        $qb = $this->createQueryBuilder('pp');
+
+        $productModelIds = [$productModel->getId()];
+
+        /** @var ProductModelInterface $child **/
+        foreach ($productModel->getProductModels() as $child) {
+            $productModelIds[] = $child->getId();
+        }
+
+        $qb
+            ->innerJoin('pp.originalProduct', 'p')
+            ->andWhere($qb->expr()->in('p.parent', ':product_model_ids'))
+            ->setParameter('product_model_ids', $productModelIds);
 
         return $this->getCountFromQB($qb);
     }

@@ -16,6 +16,7 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
@@ -150,6 +151,10 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
 
         if ($subject instanceof ProductInterface) {
             return null !== $this->publishedRepository->findOneByOriginalProduct($subject);
+        }
+
+        if ($subject instanceof ProductModelInterface) {
+            return $this->publishedRepository->countPublishedVariantProductsForProductModel($subject) > 0;
         }
 
         return false;

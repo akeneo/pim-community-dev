@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
@@ -338,6 +339,34 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
             ->shouldThrow(
                 new PublishedProductConsistencyException(
                     'Impossible to remove association type linked to a published product'
+                )
+            )
+            ->duringPreRemove($event);
+    }
+
+    function it_checks_if_the_product_model_is_linked_to_a_published_product(
+        $publishedRepository,
+        GenericEvent $event
+    ) {
+        $productModel = new ProductModel();
+        $event->getSubject()->willReturn($productModel);
+        $publishedRepository->countPublishedVariantProductsForProductModel($productModel)->willReturn(0);
+
+        $this->preRemove($event);
+    }
+
+    function it_throws_an_exception_if_the_product_model_is_linked_to_a_published_product(
+        $publishedRepository,
+        GenericEvent $event
+    ) {
+        $productModel = new ProductModel();
+        $event->getSubject()->willReturn($productModel);
+        $publishedRepository->countPublishedVariantProductsForProductModel($productModel)->willReturn(1);
+
+        $this
+            ->shouldThrow(
+                new PublishedProductConsistencyException(
+                    'Impossible to remove product model linked to a published product'
                 )
             )
             ->duringPreRemove($event);
