@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.100 (2021-03-26)
+
 ## Bug fixes
 
 - PIM-9770: Fix proposal filters not loading when no permissions on attribute groups
