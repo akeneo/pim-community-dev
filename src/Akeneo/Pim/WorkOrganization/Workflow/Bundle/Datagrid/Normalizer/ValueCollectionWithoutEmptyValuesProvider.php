@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -10,6 +12,7 @@ declare(strict_types=1);
  */
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
+
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;

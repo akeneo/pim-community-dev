@@ -50,18 +50,18 @@ class ProposalChangesNormalizer
     public function normalize(EntityWithValuesDraftInterface $entityWithValuesDraft, array $context = []): array
     {
         $canReviewAll = $this->permissionHelper->canEditOneChangeToReview($entityWithValuesDraft);
-        $canDelete = $this->permissionHelper->canEditOneChangeDraft($entityWithValuesDraft);
-        $inProgress = $entityWithValuesDraft->isInProgress();
-        $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $entityWithValuesDraft->getEntityWithValue());
+        $canDeleteDraft = $this->permissionHelper->canEditOneChangeDraft($entityWithValuesDraft);
+        $isDraftInProgress = $entityWithValuesDraft->isInProgress();
+        $isDraftOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $entityWithValuesDraft->getEntityWithValue());
 
         $result = [
             'status_label' => $this->getDraftStatusGrid($entityWithValuesDraft),
         ];
 
-        if ($inProgress) {
+        if ($isDraftInProgress) {
             return array_merge($result, [
                 'status' => 'in_progress',
-                'remove'  => $isOwner && $canDelete
+                'remove'  => $isDraftOwner && $canDeleteDraft
             ]);
         }
 
@@ -69,21 +69,19 @@ class ProposalChangesNormalizer
         $changesWithEmptyValues = $this->valueCollectionWithoutEmptyValuesProvider->getChanges($entityWithValuesDraft, $context);
         foreach ($changesWithEmptyValues as $attributeCode => $changes) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-            $canView = $this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute);
-            if (!$canView) {
+            $canViewAttribute = $this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute);
+            if (!$canViewAttribute) {
                 continue;
             }
 
-            $proposalChanges[$attributeCode] = [];
+            $canEditAttribute = $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute);
+
             foreach ($changes as $change) {
                 if (!$this->canViewLocale($attribute, $change['locale'])) {
                     continue;
                 }
 
-                $canReview =
-                    $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute) &&
-                    $this->authorizationChecker->isGranted(Attributes::OWN, $entityWithValuesDraft->getEntityWithValue()) &&
-                    $this->canEditLocale($attribute, $change['locale']);
+                $canReview = $canEditAttribute && $isDraftOwner && $this->canEditLocale($attribute, $change['locale']);
 
                 /** @var array $present */
                 $present = $this->changesExtension->presentChange($entityWithValuesDraft, $change, $attributeCode);
@@ -93,6 +91,9 @@ class ProposalChangesNormalizer
                     $present['scope'] = $change['scope'];
                     $present['locale'] = $change['locale'];
                     $present['canReview'] = $canReview;
+                    if (!isset($proposalChanges[$attributeCode])) {
+                        $proposalChanges[$attributeCode] = [];
+                    }
                     $proposalChanges[$attributeCode][] = $present;
                 }
             }
@@ -103,8 +104,8 @@ class ProposalChangesNormalizer
             'search_id' => $entityWithValuesDraft->getEntityWithValue()->getIdentifier(),
             'changes' => $proposalChanges,
             'author_code' => $entityWithValuesDraft->getAuthor(),
-            'approve' => $isOwner && $canReviewAll,
-            'refuse'  => $isOwner && $canReviewAll,
+            'approve' => $isDraftOwner && $canReviewAll,
+            'refuse' => $isDraftOwner && $canReviewAll,
             'id' => $entityWithValuesDraft->getId(),
         ]);
     }
