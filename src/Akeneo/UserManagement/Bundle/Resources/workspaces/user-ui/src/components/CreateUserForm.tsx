@@ -78,20 +78,17 @@ const CreateUserForm = ({userId, onCancel, onSuccess, onError}: CreateUserFormPr
     return 'username' === fieldName ? 'off' : 'on';
   };
 
-  const shouldNotBeBlank = (value: string): true | string =>
-    '' === value ? translate('pim_user_management.form.error.required') : true;
   const shouldNotContainSpace = (value: string): true | string =>
     /\s/.test(value) ? translate('pim_user_management.form.error.should_not_contain_space') : true;
   const shouldContain3Characters = (value: string): true | string =>
     value.length < 3 ? translate('pim_user_management.form.error.too_short_value', {count: 3}) : true;
 
   const getRegisterParameters = (fieldName: string): {[key: string]: any} => {
-    switch (fieldName) {
-      case 'username':
-        return {validate: {shouldNotContainSpace, shouldNotBeBlank, shouldContain3Characters}};
-      default:
-        return {validate: shouldNotBeBlank};
+    const parameters: {[key: string]: any} = {required: translate('pim_user_management.form.error.required')};
+    if ('username' === fieldName) {
+      parameters.validate = {shouldNotContainSpace, shouldContain3Characters};
     }
+    return parameters;
   };
 
   return (
