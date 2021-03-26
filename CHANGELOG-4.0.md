@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.100 (2021-03-26)
+
 ## Bug fixes
 
 - PIM-9735: Prevent asset family identifiers to be stored with a different case in attributes properties
