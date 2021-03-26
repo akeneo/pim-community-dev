@@ -43,7 +43,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => ['en_US' => 'this is the sku'],
+            'guidelines'             => ['en_US' => 'this is the sku'],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -80,7 +80,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => ['en_US' => 'date description'],
+            'guidelines'             => ['en_US' => 'date guidelines'],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -117,7 +117,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -154,7 +154,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -191,7 +191,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -228,7 +228,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -265,7 +265,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -302,7 +302,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -339,7 +339,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => false,
             'default_value'          => null,
         ];
@@ -376,7 +376,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -413,7 +413,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -450,7 +450,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -487,7 +487,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -524,7 +524,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -561,7 +561,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -598,7 +598,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -635,7 +635,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -672,7 +672,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => true,
             'default_value'          => null,
         ];
@@ -709,7 +709,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -746,7 +746,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -783,7 +783,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -820,7 +820,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => true,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -857,7 +857,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => true,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -894,7 +894,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => true,
             'scopable'               => true,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -931,7 +931,7 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -973,7 +973,7 @@ class AttributeIntegration extends TestCase
             'localizable' => false,
             'scopable' => false,
             'labels' => [],
-            'descriptions' => [],
+            'guidelines' => [],
             'auto_option_sorting' => null,
             'default_value' => false,
         ];

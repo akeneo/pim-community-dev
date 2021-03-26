@@ -65,7 +65,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'scopable'               => false,
                 'labels'                 => [],
                 'auto_option_sorting'    => null,
-                'descriptions'           => ['en_US' => 'the description'],
+                'guidelines'             => ['en_US' => 'the guidelines'],
             ]
         );
 
@@ -106,7 +106,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'scopable'               => false,
                 'labels'                 => [],
                 'auto_option_sorting'    => null,
-                'descriptions'           => ['en_US' => 'the description'],
+                'guidelines'             => ['en_US' => 'the guidelines'],
                 'empty_value'            => [],
                 'field_type'             => 'akeneo-text-field',
                 'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
@@ -153,7 +153,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'scopable'               => false,
                 'labels'                 => [],
                 'auto_option_sorting'    => null,
-                'descriptions'           => ['en_US' => 'the description'],
+                'guidelines'             => ['en_US' => 'the guidelines'],
             ]
         );
 
@@ -196,7 +196,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'scopable'               => false,
                 'labels'                 => [],
                 'auto_option_sorting'    => null,
-                'descriptions'           => ['en_US' => 'the description'],
+                'guidelines'             => ['en_US' => 'the guidelines'],
                 'empty_value'            => [],
                 'field_type'             => 'akeneo-text-field',
                 'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],

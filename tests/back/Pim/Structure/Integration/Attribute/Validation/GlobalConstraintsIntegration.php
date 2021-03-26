@@ -510,7 +510,7 @@ class GlobalConstraintsIntegration extends AbstractAttributeTestCase
         $this->assertSame('maxCharacters', $violations->get(0)->getPropertyPath());
     }
 
-    public function testDescriptionMaxLength(): void
+    public function testGuidelinesMaxLength(): void
     {
         $attribute = $this->createAttribute();
         $this->updateAttribute(
@@ -519,20 +519,20 @@ class GlobalConstraintsIntegration extends AbstractAttributeTestCase
                 'code'  => 'new_text',
                 'type'  => 'pim_catalog_text',
                 'group' => 'attributeGroupA',
-                'descriptions' => [
-                    'en_US' => 'valid description',
+                'guidelines' => [
+                    'en_US' => 'valid guidelines',
                     'fr_FR' => str_repeat('a', 501),
                 ],
             ]
         );
         $violations = $this->validateAttribute($attribute);
 
-        $this->assertCount(1, $violations);
-        $this->assertSame('This value is too long. It should have 500 characters or less.', $violations->get(0)->getMessage());
-        $this->assertSame('descriptions[fr_FR]', $violations->get(0)->getPropertyPath());
+        self::assertCount(1, $violations);
+        self::assertSame('This value is too long. It should have 500 characters or less.', $violations->get(0)->getMessage());
+        self::assertSame('guidelines[fr_FR]', $violations->get(0)->getPropertyPath());
     }
 
-    public function testDescriptionUnknownLocale(): void
+    public function testGuidelinesUnknownLocale(): void
     {
         $attribute = $this->createAttribute();
         $this->updateAttribute(
@@ -541,16 +541,16 @@ class GlobalConstraintsIntegration extends AbstractAttributeTestCase
                 'code'  => 'new_text',
                 'type'  => 'pim_catalog_text',
                 'group' => 'attributeGroupA',
-                'descriptions' => [
-                    'en_US' => 'valid description',
-                    'unknown' => 'valid description',
+                'guidelines' => [
+                    'en_US' => 'valid guidelines',
+                    'unknown' => 'valid guidelines',
                 ],
             ]
         );
         $violations = $this->validateAttribute($attribute);
 
-        $this->assertCount(1, $violations);
-        $this->assertSame('The locale "unknown" does not exist.', $violations->get(0)->getMessage());
-        $this->assertSame('descriptions', $violations->get(0)->getPropertyPath());
+        self::assertCount(1, $violations);
+        self::assertSame('The locale "unknown" does not exist.', $violations->get(0)->getMessage());
+        self::assertSame('guidelines', $violations->get(0)->getPropertyPath());
     }
 }

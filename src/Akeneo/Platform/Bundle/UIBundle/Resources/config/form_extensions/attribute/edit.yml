@@ -168,8 +168,8 @@ extensions:
             label: pim_enrich.entity.attribute.property.localizable
             readOnly: true
 
-    pim-attribute-edit-form-properties-descriptions:
-        module: pim/attribute-edit-form/properties/descriptions
+    pim-attribute-edit-form-properties-guidelines:
+        module: pim/attribute-edit-form/properties/guidelines
         parent: pim-attribute-edit-form-properties
         targetZone: secondColumn
         position: 100

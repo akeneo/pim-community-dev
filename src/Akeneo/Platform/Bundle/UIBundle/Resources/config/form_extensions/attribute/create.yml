@@ -152,8 +152,8 @@ extensions:
             fieldName: localizable
             label: pim_enrich.entity.attribute.property.localizable
 
-    pim-attribute-create-form-properties-descriptions:
-        module: pim/attribute-edit-form/properties/descriptions
+    pim-attribute-create-form-properties-guidelines:
+        module: pim/attribute-edit-form/properties/guidelines
         parent: pim-attribute-create-form-properties
         targetZone: secondColumn
         position: 100

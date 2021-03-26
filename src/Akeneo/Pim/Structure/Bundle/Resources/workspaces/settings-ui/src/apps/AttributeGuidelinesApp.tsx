@@ -2,21 +2,21 @@ import React from 'react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {AttributeDescriptions} from '../components';
+import {AttributeGuidelines} from '../components';
 
-type AttributeDescriptionsAppProps = {
+type AttributeGuidelinesAppProps = {
   defaultValue: {[key: string]: string};
   onChange: (defaultValue: {[key: string]: string}) => void;
 };
 
-const AttributeDescriptionsApp = ({defaultValue, onChange}: AttributeDescriptionsAppProps) => {
+const AttributeGuidelinesApp = ({defaultValue, onChange}: AttributeGuidelinesAppProps) => {
   return (
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
-        <AttributeDescriptions defaultValue={defaultValue} onChange={onChange} />
+        <AttributeGuidelines defaultValue={defaultValue} onChange={onChange} />
       </ThemeProvider>
     </DependenciesProvider>
   );
 };
 
-export {AttributeDescriptionsApp};
+export {AttributeGuidelinesApp};

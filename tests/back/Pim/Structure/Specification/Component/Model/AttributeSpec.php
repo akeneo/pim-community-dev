@@ -13,13 +13,13 @@ class AttributeSpec extends ObjectBehavior
         $this->isRequired()->shouldReturn(true);
     }
 
-    function it_returns_the_descriptions()
+    function it_returns_the_guidelines()
     {
-        $this->addDescription('en_US', 'the description');
-        $this->addDescription('fr_FR', 'la description');
-        $this->getDescriptions()->shouldReturn([
-            'en_US' => 'the description',
-            'fr_FR' => 'la description',
+        $this->addGuidelines('en_US', 'the guidelines');
+        $this->addGuidelines('fr_FR', 'les indications');
+        $this->getGuidelines()->shouldReturn([
+            'en_US' => 'the guidelines',
+            'fr_FR' => 'les indications',
         ]);
     }
 }

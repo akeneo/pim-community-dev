@@ -131,7 +131,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             type: datetime
         updated:
             type: datetime
-        descriptions:
+        guidelines:
             type: json
             columnDefinition: JSON NOT NULL DEFAULT (JSON_OBJECT())
     oneToMany:

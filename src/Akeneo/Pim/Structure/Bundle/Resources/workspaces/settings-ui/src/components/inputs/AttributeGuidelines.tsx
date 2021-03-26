@@ -2,7 +2,7 @@ import React from 'react';
 import {Field, TextAreaInput, LoaderIcon} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {LocaleCode, LocaleSelector, Locale} from '@akeneo-pim-community/shared';
-import {Descriptions} from '../../models';
+import {Guidelines} from '../../models';
 import styled from 'styled-components';
 const FetcherRegistry = require('pim/fetcher-registry');
 const UserContext = require('pim/user-context');
@@ -13,14 +13,14 @@ const Header = styled.div`
   align-items: baseline;
 `;
 
-type AttributeDescriptionsProps = {
-  defaultValue: Descriptions;
-  onChange: (value: Descriptions) => void;
+type AttributeGuidelinesProps = {
+  defaultValue: Guidelines;
+  onChange: (value: Guidelines) => void;
 };
 
-const AttributeDescriptions = ({defaultValue, onChange}: AttributeDescriptionsProps) => {
+const AttributeGuidelines = ({defaultValue, onChange}: AttributeGuidelinesProps) => {
   const translate = useTranslate();
-  const [descriptions, setDescriptions] = React.useState<Descriptions>(defaultValue);
+  const [guidelines, setGuidelines] = React.useState<Guidelines>(defaultValue);
   const [localeCode, setLocaleCode] = React.useState<LocaleCode>(UserContext.get('uiLocale'));
   const [locales, setLocales] = React.useState<Locale[]>();
 
@@ -35,34 +35,34 @@ const AttributeDescriptions = ({defaultValue, onChange}: AttributeDescriptionsPr
     return <LoaderIcon />;
   }
 
-  const handleDescriptionsChange = (description: string) => {
-    descriptions[localeCode] = description;
-    setDescriptions({...descriptions});
-    onChange({...descriptions});
+  const handleGuidelinesChange = (guideline: string) => {
+    guidelines[localeCode] = guideline;
+    setGuidelines({...guidelines});
+    onChange({...guidelines});
   };
 
   return (
     <>
       <Header className="tabsection-title">
-        {translate('pim_enrich.entity.attribute.property.descriptions')}
+        {translate('pim_enrich.entity.attribute.property.guidelines')}
         <LocaleSelector
           value={localeCode}
           onChange={setLocaleCode}
           values={locales}
-          completeValues={locales.map(locale => locale.code).filter(localeCode => !!descriptions[localeCode])}
+          completeValues={locales.map(locale => locale.code).filter(localeCode => !!guidelines[localeCode])}
         />
       </Header>
       <div className="AknFormContainer AknFormContainer--withPadding" data-drop-zone="content">
-        <Field label={translate('pim_enrich.entity.attribute.property.descriptions')}>
+        <Field label={translate('pim_enrich.entity.attribute.property.guidelines')}>
           {locales
             .filter(locale => locale.code === localeCode)
             .map(locale => (
               <TextAreaInput
                 key={locale.code}
-                name={'descriptions'}
+                name={'guidelines'}
                 type={'text'}
-                onChange={handleDescriptionsChange}
-                value={descriptions[localeCode]}
+                onChange={handleGuidelinesChange}
+                value={guidelines[localeCode]}
               />
             ))}
         </Field>
@@ -71,4 +71,4 @@ const AttributeDescriptions = ({defaultValue, onChange}: AttributeDescriptionsPr
   );
 };
 
-export {AttributeDescriptions};
+export {AttributeGuidelines};

@@ -1,6 +1,6 @@
-code;allowed_extensions;auto_option_sorting;available_locales;date_max;date_min;decimals_allowed;default_metric_unit;group;localizable;max_characters;max_file_size;metric_family;minimum_input_length;negative_allowed;number_max;number_min;reference_data_name;scopable;sort_order;type;unique;useable_as_grid_filter;validation_regexp;validation_rule;wysiwyg_enabled;description-en_US
+code;allowed_extensions;auto_option_sorting;available_locales;date_max;date_min;decimals_allowed;default_metric_unit;group;localizable;max_characters;max_file_size;metric_family;minimum_input_length;negative_allowed;number_max;number_min;reference_data_name;scopable;sort_order;type;unique;useable_as_grid_filter;validation_regexp;validation_rule;wysiwyg_enabled;guidelines-en_US
 sku;;;;;;;;attributeGroupA;0;;;;;;;;;0;0;pim_catalog_identifier;1;1;;;;this is the sku
-a_date;;;;2050-12-31;2005-05-25;;;attributeGroupA;0;;;;;;;;;0;2;pim_catalog_date;0;0;;;;date description
+a_date;;;;2050-12-31;2005-05-25;;;attributeGroupA;0;;;;;;;;;0;2;pim_catalog_date;0;0;;;;date guidelines
 a_file;pdf,doc,docx,txt;;;;;;;attributeGroupA;0;;;;;;;;;0;1;pim_catalog_file;0;0;;;;
 an_image;jpg,gif,png;;;;;;;attributeGroupA;0;;500;;;;;;;0;0;pim_catalog_image;0;0;;;;
 a_metric;;;;;;1;KILOWATT;attributeGroupB;0;;;Power;;0;;;;0;0;pim_catalog_metric;0;0;;;;

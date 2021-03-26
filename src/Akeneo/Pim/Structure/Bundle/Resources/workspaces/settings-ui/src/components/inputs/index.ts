@@ -1,1 +1,1 @@
-export * from './AttributeDescriptions';
+export * from './AttributeGuidelines';

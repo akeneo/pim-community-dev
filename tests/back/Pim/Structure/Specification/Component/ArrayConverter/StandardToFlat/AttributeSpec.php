@@ -47,8 +47,8 @@ class AttributeSpec extends ObjectBehavior
             'wysiwyg_enabled'        => '0',
             'decimals_allowed'       => '1',
             'negative_allowed'       => '1',
-            'description-en_US'      => 'the description',
-            'description-fr_FR'      => 'la description',
+            'guidelines-en_US'       => 'the guidelines',
+            'guidelines-fr_FR'       => 'les indications',
         ];
 
         $item = [
@@ -80,9 +80,9 @@ class AttributeSpec extends ObjectBehavior
             'wysiwyg_enabled'        => false,
             'decimals_allowed'       => true,
             'negative_allowed'       => true,
-            'descriptions'           => [
-                'en_US' => 'the description',
-                'fr_FR' => 'la description',
+            'guidelines'             => [
+                'en_US' => 'the guidelines',
+                'fr_FR' => 'les indications',
             ],
         ];
 

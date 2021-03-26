@@ -1,24 +1,24 @@
 import BaseView = require('pimui/js/view/base');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {AttributeDescriptionsApp} from '@akeneo-pim-community/settings-ui';
+import {AttributeGuidelinesApp} from '@akeneo-pim-community/settings-ui';
 
 const propertyAccessor = require('pim/common/property');
 
-class Descriptions extends BaseView {
+class Guidelines extends BaseView {
   initialize(): void {
     BaseView.prototype.initialize.apply(this, arguments);
   }
 
   render(): any {
-    const onChange = (newDescriptions: {[key: string]: string}) => {
+    const onChange = (newGuidelines: {[key: string]: string}) => {
       const data = this.getFormData();
-      propertyAccessor.updateProperty(data, 'descriptions', newDescriptions);
+      propertyAccessor.updateProperty(data, 'guidelines', newGuidelines);
       this.setData(data);
     };
 
     ReactDOM.render(
-      <AttributeDescriptionsApp defaultValue={this.getFormData().descriptions || {}} onChange={onChange} />,
+      <AttributeGuidelinesApp defaultValue={this.getFormData().guidelines || {}} onChange={onChange} />,
       this.el
     );
     return this;
@@ -31,4 +31,4 @@ class Descriptions extends BaseView {
   }
 }
 
-export = Descriptions;
+export = Guidelines;

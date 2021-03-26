@@ -62,14 +62,14 @@ class Attribute implements ArrayConverterInterface
             $labelTokens = explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
-        } elseif (0 === strpos($field, 'description-')) {
-            if (!array_key_exists('descriptions', $convertedItem)) {
-                $convertedItem['descriptions'] = [];
+        } elseif (0 === strpos($field, 'guidelines-')) {
+            if (!array_key_exists('guidelines', $convertedItem)) {
+                $convertedItem['guidelines'] = [];
             }
 
-            $descriptionTokens = explode('-', $field);
-            $descriptionLocale = $descriptionTokens[1];
-            $convertedItem['descriptions'][$descriptionLocale] = $data;
+            $guidelinesTokens = explode('-', $field);
+            $guidelinesLocaleCode = $guidelinesTokens[1];
+            $convertedItem['guidelines'][$guidelinesLocaleCode] = $data;
         } elseif ('number_min' === $field ||
             'number_max' === $field ||
             'max_file_size'=== $field

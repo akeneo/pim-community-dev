@@ -167,7 +167,7 @@ JSON;
             "localizable": false,
             "scopable": false,
             "labels": [],
-            "descriptions": {"en_US": "this is the sku"},
+            "guidelines": {"en_US": "this is the sku"},
             "auto_option_sorting": null,
             "default_value": null,
             "empty_value": null,
@@ -212,7 +212,7 @@ JSON;
             "localizable": false,
             "scopable": false,
             "labels": [],
-            "descriptions": [],
+            "guidelines": [],
             "auto_option_sorting": null,
             "default_value": null,
             "empty_value": {

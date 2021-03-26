@@ -43,7 +43,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => ['en_US' => 'this is the sku'],
+            'guidelines'             => ['en_US' => 'this is the sku'],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -81,7 +81,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => ['en_US' => 'date description'],
+            'guidelines'             => ['en_US' => 'date guidelines'],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -119,7 +119,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -157,7 +157,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -195,7 +195,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -233,7 +233,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -271,7 +271,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -309,7 +309,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -347,7 +347,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => false,
             'default_value'          => null,
         ];
@@ -385,7 +385,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -423,7 +423,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -461,7 +461,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -499,7 +499,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -537,7 +537,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -575,7 +575,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -613,7 +613,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -651,7 +651,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -689,7 +689,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => true,
             'default_value'          => null,
         ];
@@ -727,7 +727,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -765,7 +765,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -803,7 +803,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -846,7 +846,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable' => false,
             'scopable' => false,
             'labels' => new \StdClass(),
-            'descriptions' => new \stdClass(),
+            'guidelines' => new \stdClass(),
             'auto_option_sorting' => null,
             'default_value' => true,
         ];
@@ -884,7 +884,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => true,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -922,7 +922,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => true,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -960,7 +960,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => true,
             'scopable'               => true,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -998,7 +998,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => new \StdClass(),
-            'descriptions'           => new \StdClass(),
+            'guidelines'             => new \StdClass(),
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];

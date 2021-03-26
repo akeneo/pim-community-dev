@@ -453,7 +453,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                 exactMessage: This attribute cannot have available locales.
                 groups:
                     - pim_catalog_identifier
-        descriptions:
+        guidelines:
             - Type: array
             - All:
                 - Type: string
@@ -462,10 +462,10 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
     getters:
         group:
             - Valid: ~
-        descriptionLocales:
+        guidelinesLocaleCodes:
             - All:
                 - Akeneo\Channel\Component\Validator\Constraint\Locale:
-                    propertyPath: descriptions
+                    propertyPath: guidelines
 
 Akeneo\Pim\Structure\Component\Model\AttributeTranslation:
     properties:

@@ -78,7 +78,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -125,7 +125,7 @@ JSON;
         "labels":[],
         "auto_option_sorting":null,
         "default_value":null,
-        "descriptions": {"en_US": "the description", "fr_FR": "la description", "de_DE": ""}
+        "guidelines": {"en_US": "the guidelines", "fr_FR": "les indications", "de_DE": ""}
     }
 JSON;
 
@@ -160,7 +160,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => ['en_US' => 'the description', 'fr_FR' => 'la description'],
+            'guidelines'             => ['en_US' => 'the guidelines', 'fr_FR' => 'les indications'],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -220,7 +220,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
-            'descriptions'           => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -277,7 +277,7 @@ JSON;
             'localizable' => false,
             'scopable' => false,
             'labels' => [],
-            'descriptions' => [],
+            'guidelines' => [],
             'auto_option_sorting' => null,
             'default_value' => false,
         ];

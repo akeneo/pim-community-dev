@@ -1,3 +1,3 @@
-type Descriptions = {[key: string]: string};
+type Guidelines = {[key: string]: string};
 
-export {Descriptions};
+export {Guidelines};

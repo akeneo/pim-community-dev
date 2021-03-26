@@ -59,8 +59,8 @@ class AttributeSpec extends ObjectBehavior
             'reference_data_name'    => 'color',
             'localizable'            => '0',
             'scopable'               => '0',
-            'description-en_US'      => 'the description',
-            'description-fr_FR'      => 'la description',
+            'guidelines-en_US'       => 'the guidelines',
+            'guidelines-fr_FR'       => 'les indications',
         ];
 
         $result = [
@@ -80,9 +80,9 @@ class AttributeSpec extends ObjectBehavior
             'reference_data_name'    => 'color',
             'localizable'            => false,
             'scopable'               => false,
-            'descriptions'           => [
-                'en_US' => 'the description',
-                'fr_FR' => 'la description',
+            'guidelines'             => [
+                'en_US' => 'the guidelines',
+                'fr_FR' => 'les indications',
             ],
         ];
 

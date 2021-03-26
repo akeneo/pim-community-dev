@@ -162,7 +162,7 @@ pim_enrich.entity.attribute:
         default_metric_unit:
             label: Default measurement unit
             choose: Choose a unit
-        descriptions: Attribute description
+        guidelines: Attribute guidelines
         group:
             label: Attribute group
             choose: Choose the attribute group

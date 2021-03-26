@@ -36,7 +36,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     {
         $normalizedAttribute = $this->stdNormalizer->normalize($attribute, 'standard', $context);
 
-        foreach (['labels', 'descriptions'] as $field) {
+        foreach (['labels', 'guidelines'] as $field) {
             if (array_key_exists($field, $normalizedAttribute) && empty($normalizedAttribute[$field])) {
                 $normalizedAttribute[$field] = (object)$normalizedAttribute[$field];
             }
