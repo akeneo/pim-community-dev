@@ -27,6 +27,7 @@
 - PIM-9693: Fix Asset creation modal failing when no label
 - PIM-9755: Hide product model proposal changes that are already reviewed
 - PIM-9764: Fix open Asset in new tab in Asset Manager library
+- PIM-9767: Fix minimum & maximum user password validation
 
 ## Improvements
 
