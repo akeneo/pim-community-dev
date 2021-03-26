@@ -33,7 +33,7 @@ spec:
         - name: pim-install-catalog
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'cd /srv/pim && su www-data -s /bin/bash -c "php bin/console pim:installer:db --catalog {{ .Values.pim.defaultCatalog }} "']
+          command: ['setpriv','--reuid=www-data','--regid=www-data','--init-groups','bin/console','pim:installer:db','--catalog','{{ .Values.pim.defaultCatalog }}']
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }

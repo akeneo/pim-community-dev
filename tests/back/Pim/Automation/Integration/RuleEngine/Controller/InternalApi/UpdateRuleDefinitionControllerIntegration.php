@@ -9,13 +9,8 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Common\Saver\RuleDefinitionSave
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use AkeneoTestEnterprise\Pim\Automation\Integration\ControllerIntegrationTestCase;
-use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\SecurityBundle\Model\AclPermission;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 
 class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTestCase
 {
@@ -46,7 +41,7 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
 
     public function test_it_updates_a_rule_definition()
     {
-        $this->enableAcl();
+        $this->enableAcl('action:pimee_catalog_rule_rule_edit_permissions');
         $normalizedRuleDefinition = [
             'code' => '123',
             'content' => [
@@ -78,7 +73,7 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
 
     public function test_it_disables_and_enables_rule()
     {
-        $this->enableAcl();
+        $this->enableAcl('action:pimee_catalog_rule_rule_edit_permissions');
         $normalizedRuleDefinition = [
             'code' => '123',
             'enabled' => false,
@@ -108,7 +103,7 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
 
     public function test_it_fails_on_non_existing_code()
     {
-        $this->enableAcl();
+        $this->enableAcl('action:pimee_catalog_rule_rule_edit_permissions');
         $normalizedRuleDefinition = [
             'code' => 'abc',
             'content' => [
@@ -155,26 +150,6 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
             [],
             \json_encode($normalizedRuleDefinition)
         );
-    }
-
-    private function enableAcl() : void
-    {
-        $aclManager = $this->get('oro_security.acl.manager');
-        $roles = $this->get('pim_user.repository.role')->findAll();
-
-        foreach ($roles as $role) {
-            $privilege = new AclPrivilege();
-            $identity = new AclPrivilegeIdentity('action:pimee_catalog_rule_rule_edit_permissions');
-            $privilege
-                ->setIdentity($identity)
-                ->addPermission(new AclPermission('EXECUTE', 1));
-
-            $aclManager->getPrivilegeRepository()
-                ->savePrivileges(new RoleSecurityIdentity($role), new ArrayCollection([$privilege]));
-        }
-
-        $aclManager->flush();
-        $aclManager->clearCache();
     }
 
     protected function getConfiguration(): Configuration

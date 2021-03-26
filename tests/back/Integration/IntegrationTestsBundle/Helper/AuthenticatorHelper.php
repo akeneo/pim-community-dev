@@ -31,26 +31,13 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  */
 final class AuthenticatorHelper
 {
-    /** @var UserRepositoryInterface */
-    private $userRepository;
-
-    /** @var UserFactory */
-    private $userFactory;
-
-    /** @var SaverInterface */
-    private $userSaver;
-
-    /** @var GroupRepositoryInterface */
-    private $groupRepository;
-
-    /** @var RoleRepositoryInterface */
-    private $roleRepository;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var SessionInterface */
-    private $session;
+    private UserRepositoryInterface $userRepository;
+    private UserFactory $userFactory;
+    private SaverInterface $userSaver;
+    private GroupRepositoryInterface $groupRepository;
+    private RoleRepositoryInterface $roleRepository;
+    private TokenStorageInterface $tokenStorage;
+    private SessionInterface $session;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
@@ -95,7 +82,7 @@ final class AuthenticatorHelper
         $user = $this->userFactory->create();
         $user->setId(uniqid());
         $user->setUsername($username);
-        $user->setEmail(sprintf('%s²example.com', uniqid()));
+        $user->setEmail(sprintf('%s@example.com', uniqid()));
         $user->setPassword('fake');
         $groups = $this->groupRepository->findAll();
 

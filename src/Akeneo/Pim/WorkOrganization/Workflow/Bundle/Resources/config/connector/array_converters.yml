@@ -7,3 +7,17 @@ services:
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product_delocalized'
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+
+    Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\ArrayConverter\StandardToFlat\User:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\ArrayConverter\StandardToFlat\User'
+        decorates: 'pim_connector.array_converter.standard_to_flat.user'
+        decoration_inner_name: 'pim_connector.array_converter.standard_to_flat.user.base'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.user.base'
+
+    Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\ArrayConverter\FlatToStandard\User:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\ArrayConverter\FlatToStandard\User'
+        decorates: 'pim_connector.array_converter.flat_to_standard.user'
+        decoration_inner_name: 'pim_connector.array_converter.flat_to_standard.user.base'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.user.base'

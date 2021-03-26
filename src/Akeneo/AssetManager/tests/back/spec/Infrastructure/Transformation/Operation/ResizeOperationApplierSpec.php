@@ -64,6 +64,7 @@ class ResizeOperationApplierSpec extends ObjectBehavior
                     ],
                 ],
                 'quality' => 100,
+                'format' => 'png'
             ]
         )->shouldBeCalledOnce()->willReturn($computedImage);
         $filesystem->dumpFile('/path/to/my/file.png', 'imageContent')->shouldBeCalled();

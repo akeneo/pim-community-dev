@@ -3,6 +3,6 @@ admin;John;Doe;admin@example.com;admin;en_US;en_US;mobile;2014_collection;ROLE_A
 Julia;Julia;Stark;Julia@example.com;Julia;en_US;en_US;tablet;2014_collection;ROLE_CATALOG_MANAGER;Manager;1
 Peter;Peter;Williams;Peter@example.com;Peter;en_US;en_US;mobile;2014_collection;ROLE_ADMINISTRATOR;IT support;1
 Mary;Mary;Smith;Mary@example.com;Mary;en_US;en_US;mobile;2014_collection;ROLE_USER;Redactor;1
-Sandra;Sandra;Harvey;Sandra@example.com;Sandra;en_US;en_US;mobile;winter_collection;ROLE_USER;Redactor;1
-Pamela;Pamela;Rose;Pamela@example.com;Pamela;en_US;en_US;mobile;winter_collection;ROLE_ASSET_MANAGER;Manager;1
-Julien;Julien;Février;Julien@example.com;Julien;fr_FR;fr_FR;mobile;winter_collection;ROLE_USER;Redactor;1
+Sandra;Sandra;Harvey;Sandra@example.com;Sandra;en_US;en_US;mobile;2014_collection;ROLE_USER;Redactor;1
+Pamela;Pamela;Rose;Pamela@example.com;Pamela;en_US;en_US;mobile;2014_collection;ROLE_ASSET_MANAGER;Manager;1
+Julien;Julien;Février;Julien@example.com;Julien;fr_FR;fr_FR;mobile;2014_collection;ROLE_USER;Redactor;1

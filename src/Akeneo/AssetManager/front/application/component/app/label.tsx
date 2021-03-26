@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from 'akeneo-design-system';
 
-const Label = styled.span<{readOnly?: boolean} & AkeneoThemedProps>`
+const Label = styled.span<{readOnly?: boolean; isCode?: boolean} & AkeneoThemedProps>`
   color: ${({readOnly}) => getColor('grey', readOnly ? 100 : 120)};
   font-size: ${getFontSize('default')};
   text-overflow: ellipsis;
@@ -9,7 +9,7 @@ const Label = styled.span<{readOnly?: boolean} & AkeneoThemedProps>`
   overflow: hidden;
 
   ::first-letter {
-    text-transform: capitalize;
+    text-transform: ${({isCode}) => (true === isCode ? 'initial' : 'capitalize')};
   }
 `;
 

@@ -9,12 +9,7 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleDefinit
 use Akeneo\Test\Integration\Configuration;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use AkeneoTestEnterprise\Pim\Automation\Integration\ControllerIntegrationTestCase;
-use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\SecurityBundle\Model\AclPermission;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 
 final class DuplicateRuleDefinitionControllerIntegration extends ControllerIntegrationTestCase
 {
@@ -51,7 +46,7 @@ final class DuplicateRuleDefinitionControllerIntegration extends ControllerInteg
      */
     public function it_duplicates_an_existing_rule_and_disabled_the_new_one()
     {
-        $this->enableAcl();
+        $this->enableAcl('action:pimee_catalog_rule_rule_edit_permissions');
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pimee_enrich_rule_definition_duplicate',
@@ -111,7 +106,7 @@ final class DuplicateRuleDefinitionControllerIntegration extends ControllerInteg
      */
     public function it_throws_an_error_if_the_code_already_exists()
     {
-        $this->enableAcl();
+        $this->enableAcl('action:pimee_catalog_rule_rule_edit_permissions');
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pimee_enrich_rule_definition_duplicate',
@@ -144,7 +139,7 @@ final class DuplicateRuleDefinitionControllerIntegration extends ControllerInteg
      */
     public function it_returns_not_found_if_the_original_rule_does_not_exist()
     {
-        $this->enableAcl();
+        $this->enableAcl('action:pimee_catalog_rule_rule_edit_permissions');
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pimee_enrich_rule_definition_duplicate',
@@ -233,27 +228,5 @@ final class DuplicateRuleDefinitionControllerIntegration extends ControllerInteg
         $violations = $this->get('validator')->validate($otherCommand, null, ['import']);
         Assert::assertCount(0, $violations);
         ($this->createRuleHandler)($otherCommand);
-    }
-
-    private function enableAcl(): void
-    {
-        $aclManager = $this->get('oro_security.acl.manager');
-        $roles = $this->get('pim_user.repository.role')->findAll();
-
-        foreach ($roles as $role) {
-            $privilege = new AclPrivilege();
-            $identity = new AclPrivilegeIdentity('action:pimee_catalog_rule_rule_edit_permissions');
-            $privilege
-                ->setIdentity($identity)
-                ->addPermission(new AclPermission('EXECUTE', 1));
-
-            $aclManager->getPrivilegeRepository()->savePrivileges(
-                new RoleSecurityIdentity($role),
-                new ArrayCollection([$privilege])
-            );
-        }
-
-        $aclManager->flush();
-        $aclManager->clearCache();
     }
 }

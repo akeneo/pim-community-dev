@@ -4,7 +4,7 @@
 SHELL := /bin/bash
 
 INSTANCE_NAME_PREFIX ?= pimci
-INSTANCE_NAME ?= $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG)
+INSTANCE_NAME ?=  $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG_SHORTED)
 TYPE ?= srnt
 PFID ?= $(TYPE)-$(INSTANCE_NAME)
 CI ?= false
@@ -33,6 +33,7 @@ MAX_DNS_TEST_TIMEOUT ?= 300
 ONBOARDER_PIM_GEN_FILE ?=
 WITH_SUPPLIERS ?= false
 USE_ONBOARDER_CATALOG ?= false
+
 
 ifeq ($(CI),true)
 	TF_INPUT_FALSE ?= -input=false
@@ -79,7 +80,7 @@ $(INSTANCE_DIR):
 .PHONY: terraform-init
 terraform-init: $(INSTANCE_DIR)
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
-    ifeq ($(INSTANCE_NAME),pimup-$(IMAGE_TAG))
+    ifeq ($(INSTANCE_NAME),pimup-$(IMAGE_TAG_SHORTED))
 		@echo "We are in the second step of update"
 		cd $(INSTANCE_DIR) && STEP='PRE_INIT' INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/automation/upgrade.sh
     endif
@@ -94,7 +95,7 @@ terraform-plan: terraform-init
 .PHONY: terraform-apply
 terraform-apply:
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
-    ifeq ($(INSTANCE_NAME),pimup-$(IMAGE_TAG))
+    ifeq ($(INSTANCE_NAME),pimup-$(IMAGE_TAG_SHORTED))
 		@echo "We are in the second step of update"
 		cd $(INSTANCE_DIR) && STEP='PRE_APPLY' INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/automation/upgrade.sh
     endif
@@ -232,6 +233,7 @@ endif
 	MYSQL_DISK_SIZE=$(MYSQL_DISK_SIZE) \
 	MYSQL_DISK_NAME=$(PFID)-mysql \
 	MYSQL_SOURCE_SNAPSHOT=$(MYSQL_SOURCE_SNAPSHOT) \
+	MAILGUN_API_KEY=${MAILGUN_API_KEY} \
 	envsubst < $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp
 
@@ -307,7 +309,7 @@ test-helm-cronjob: #Doc: Test declared cronjob job are available via the PIM con
 .PHONY: test_helm_generated_k8s_files
 test_helm_generated_k8s_files: #Doc Test helm generated templates are K8S compliant
 	bash $(PWD)/deployments/bin/test_helm_generated_k8s_files.sh
-	
-.PHONY: mr-proper 
+
+.PHONY: mr-proper
 mr-proper: #Doc: Clean olds or orphans google resources
 	bash $(PWD)/deployments/bin/ci-mrproper.sh

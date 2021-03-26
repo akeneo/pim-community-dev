@@ -26,6 +26,7 @@ services:
     akeneo_referenceentity.command.refresh_records:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\CLI\RefreshRecordsCommand
         arguments:
+            - '@logger'
             - '@akeneo_referenceentity.infrastructure.persistence.cli.all_records_identifiers'
             - '@akeneo_referenceentity.infrastructure.persistence.sql.record.refresh_records.refresh_record'
             - '@doctrine.dbal.default_connection'

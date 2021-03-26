@@ -1,0 +1,75 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wait-es-pim
+  labels:
+    component: "hook-wait-es-pim"
+    app.kubernetes.io/component: "hook-wait-es-pim"
+    {{- include "pim.standardLabels" . | indent 4 }}
+    {{- include "pim.extraLabels" . | indent 4 }}
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+spec:
+  template:
+    metadata:
+      labels:
+        component: "hook-wait-es-pim"
+        app.kubernetes.io/component: "hook-wait-es-pim"
+        {{- include "pim.standardLabels" . | indent 8 }}
+        {{- include "pim.extraLabels" . | indent 8 }}
+      annotations:
+        checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: wait-es-pim
+          image: {{ template "pim.imageNameAndTag" . }}
+          imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
+          command: ["bash", "/scripts-dir/hook-waiting-es.sh"]
+          envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
+          env:
+            - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
+            - { name: MAILER_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerPassword } } }
+            - { name: APP_DATABASE_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mysqlPimUserPassword } } }
+            - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
+            - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
+{{- if .Values.common.phpConfCLI }}
+{{ toYaml .Values.common.phpConfCLI  | indent 12 }}
+{{- end }}
+          volumeMounts:
+            - name: google-cloud-pim-storage-key
+              mountPath: /var/secrets/google/srnt.json
+              subPath: srnt.json
+              readOnly: true
+            {{- if .Values.onboarder.enabled }}
+            - name: google-cloud-onboarder-key
+              mountPath: /var/secrets/google/key.json
+              subPath: key.json
+              readOnly: true
+            {{- end }}
+            - name: pim-scripts
+              mountPath: /scripts-dir
+      volumes:
+        - name: google-cloud-pim-storage-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: srntPimStorageKey
+              path: srnt.json
+        {{- if .Values.onboarder.enabled }}
+        - name: google-cloud-onboarder-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: akobOnboarderKey
+              path: key.json
+        {{- end }}
+        - name: pim-scripts
+          configMap:
+            name:  pim-scripts

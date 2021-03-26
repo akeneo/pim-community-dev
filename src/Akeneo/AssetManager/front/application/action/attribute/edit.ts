@@ -10,9 +10,9 @@ import AttributeIdentifier, {attributeidentifiersAreEqual} from 'akeneoassetmana
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
+  notifyAttributeWellSaved,
   notifyAttributeSaveFailed,
   notifyAttributeSaveValidationError,
-  notifyAttributeWellSaved,
 } from 'akeneoassetmanager/application/action/attribute/notify';
 import {updateAttributeList} from 'akeneoassetmanager/application/action/attribute/list';
 import AttributeCode from 'akeneoassetmanager/domain/model/code';
@@ -64,6 +64,8 @@ export const saveAttribute = (dismiss: boolean = true) => async (
     dispatch(attributeEditionCancel());
   }
   await dispatch(updateAttributeList());
+
+  dispatch(notifyAttributeWellSaved());
 
   return;
 };

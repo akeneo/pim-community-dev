@@ -294,6 +294,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 hasReachMaximumSelection={false}
                 onSelectionChange={canSelectAssets ? onSelectionChange : undefined}
                 isItemSelected={isItemSelected}
+                assetWithLink={true}
                 onAssetClick={(assetCode: AssetCode) => {
                   if (null !== currentAssetFamilyIdentifier) {
                     redirectToAsset(currentAssetFamilyIdentifier, assetCode);

@@ -605,6 +605,7 @@ batch_jobs:
         execute_naming_convention: Execute Asset Family naming convention
         mass_delete_assets: Execute Asset mass delete
         mass_edit_assets: Execute Asset mass edit
+        link_assets_to_products: Link assets to products
 
 job_execution:
     summary:

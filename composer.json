@@ -65,7 +65,7 @@
         "phpseclib/phpseclib": "2.0.29",
         "superbalist/flysystem-google-storage": "7.2.2",
         "grpc/grpc": "1.30.0",
-        "mekras/php-speller": "^2.1.2"
+        "mekras/php-speller": "^2.1.4"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",
@@ -89,10 +89,10 @@
         "sebastian/exporter": "^4.0.0",
         "sensiolabs/behat-page-object-extension": "2.1.0",
         "friends-of-behat/symfony-extension": "^2.0",
-        "liuggio/fastest": "1.6.*",
+        "liuggio/fastest": "1.8.*",
         "phpstan/phpstan": "^0.12.25",
         "phpstan/phpstan-symfony": "^0.12.6",
-        "mcustiel/phiremock": "2.1.0",
+        "mcustiel/phiremock": "2.1.1",
         "phpstan/phpstan-webmozart-assert": "^0.12.7"
     },
     "repositories": [

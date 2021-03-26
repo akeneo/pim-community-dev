@@ -209,6 +209,16 @@ extensions:
         config:
             entity: pim_enrich.entity.product.label
 
+    pimee-product-view-form-categories:
+        module: pimee/product-edit-form/categories
+        parent: pimee-product-view-column-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_product_categories_view
+        position: 100
+        config:
+            itemCategoryListRoute: pim_enrich_product_listcategories
+            itemCategoryTreeRoute: pim_enrich_product_category_rest_list
+
     pimee-product-view-associations:
         module: pimee/product-edit-form/associations
         parent: pimee-product-view-column-tabs

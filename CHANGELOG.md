@@ -1,5 +1,6 @@
 ## Bug fixes
 
+- PIM-9742: Asset. Product link rules "Failed" without informations instead of sending Warning.
 - PIM-9675: Api search_after on asset issue for Serenity clients
 - PIM-9617: Configure clean_removed_attribute_job to be run on a single daemon
 - PIM-9629: Fix filtering issue on product value "identifier" via the API for published products
@@ -20,7 +21,12 @@
 - PIM-9722: Fix the increasing amount of requests when editing attribute with options
 - PIM-9698: Fix product and product model deletion events when entity does not have any category
 - PIM-9710: Fix rule execution job status stuck in STARTED or STOPPING 
-- PIM-9731: Fix proposals on boolean attributes when comparing an empty and a false value 
+- PIM-9731: Fix proposals on boolean attributes when comparing an empty and a false value
+- PIM-9756: Use PNG format for Asset transformations targets
+- PIM-9760: Fix link assets to products job not translated in job tracker
+- PIM-9693: Fix Asset creation modal failing when no label
+- PIM-9755: Hide product model proposal changes that are already reviewed
+- PIM-9764: Fix open Asset in new tab in Asset Manager library
 
 ## Improvements
 

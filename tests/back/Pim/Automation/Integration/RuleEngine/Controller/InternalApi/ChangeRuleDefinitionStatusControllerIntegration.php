@@ -19,14 +19,9 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use AkeneoTestEnterprise\Pim\Automation\Integration\ControllerIntegrationTestCase;
-use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\SecurityBundle\Model\AclPermission;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 
 class ChangeRuleDefinitionStatusControllerIntegration extends ControllerIntegrationTestCase
 {
@@ -61,7 +56,7 @@ class ChangeRuleDefinitionStatusControllerIntegration extends ControllerIntegrat
 
     public function test_it_enables_a_rule_definition()
     {
-        $this->enableAcl();
+        $this->enableAcl('action:pimee_catalog_rule_rule_edit_permissions');
         $ruleDefinition = $this->ruleDefinitionRepository->findOneByIdentifier('foo');
         $this->assertNotNull($ruleDefinition);
         $this->assertFalse($ruleDefinition->isEnabled());
@@ -79,7 +74,7 @@ class ChangeRuleDefinitionStatusControllerIntegration extends ControllerIntegrat
 
     public function test_it_disables_a_rule_definition()
     {
-        $this->enableAcl();
+        $this->enableAcl('action:pimee_catalog_rule_rule_edit_permissions');
         $ruleDefinition = $this->ruleDefinitionRepository->findOneByIdentifier('bar');
         $this->assertNotNull($ruleDefinition);
         $this->assertTrue($ruleDefinition->isEnabled());
@@ -97,7 +92,7 @@ class ChangeRuleDefinitionStatusControllerIntegration extends ControllerIntegrat
 
     public function test_it_cannot_enable_an_unknown_rule_definition()
     {
-        $this->enableAcl();
+        $this->enableAcl('action:pimee_catalog_rule_rule_edit_permissions');
 
         $this->doRequest('unknown', true);
 
@@ -147,26 +142,6 @@ class ChangeRuleDefinitionStatusControllerIntegration extends ControllerIntegrat
     private function clearCache(): void
     {
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
-    }
-
-    private function enableAcl() : void
-    {
-        $aclManager = $this->get('oro_security.acl.manager');
-        $roles = $this->get('pim_user.repository.role')->findAll();
-
-        foreach ($roles as $role) {
-            $privilege = new AclPrivilege();
-            $identity = new AclPrivilegeIdentity('action:pimee_catalog_rule_rule_edit_permissions');
-            $privilege
-                ->setIdentity($identity)
-                ->addPermission(new AclPermission('EXECUTE', 1));
-
-            $aclManager->getPrivilegeRepository()
-                ->savePrivileges(new RoleSecurityIdentity($role), new ArrayCollection([$privilege]));
-        }
-
-        $aclManager->flush();
-        $aclManager->clearCache();
     }
 
     protected function getConfiguration(): Configuration

@@ -152,14 +152,14 @@ export const Thumbnail = ({
               <ArrowLeftIcon />
             </MoveButton>
           ) : (
-            <div />
+            <div></div>
           )}
           {!assetWillNotMoveInCollection(assetCollection, asset, MoveDirection.After) ? (
             <MoveButton title={moveAfterLabel} onClick={() => onMove(MoveDirection.After)} data-move-right={asset.code}>
               <ArrowRightIcon />
             </MoveButton>
           ) : (
-            <div />
+            <div></div>
           )}
         </Overlay>
       )}

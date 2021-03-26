@@ -16,10 +16,12 @@ namespace Akeneo\AssetManager\Infrastructure\Controller\Asset;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\CouldNotGeneratePreviewException;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\DefaultImageProviderInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\OtherGenerator;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorInterface;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -75,7 +77,7 @@ class ImagePreviewAction
         string $attributeIdentifier,
         string $type
     ): Response {
-        $data = $request->get('data');
+        $data = urldecode($request->get('data'));
         $regenerate = $request->isMethod('POST');
 
         try {
@@ -86,6 +88,8 @@ class ImagePreviewAction
             $imagePreview = $this->previewGenerator->generate($data, $attribute, $type);
         } catch (AttributeNotFoundException $e) {
             $imagePreview = $this->defaultImageProvider->getImageUrl(OtherGenerator::DEFAULT_OTHER, $type);
+        } catch (CouldNotGeneratePreviewException $e) {
+            return new JsonResponse(null, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $file = $this->imageLoader->find(str_replace(self::ROOT_FLAG, '', $imagePreview));

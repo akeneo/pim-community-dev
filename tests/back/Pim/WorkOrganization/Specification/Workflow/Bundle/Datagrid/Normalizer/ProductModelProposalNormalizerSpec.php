@@ -62,6 +62,7 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
         ];
         $datagridNormalizer->normalize($created, 'datagrid', $context)->willReturn('2017-01-01');
 
+        $productModelProposal->getReviewStatusForChange('text', null, null)->willReturn('to_review');
         $productModelProposal->getId()->willReturn(1);
         $productModelProposal->getAuthor()->willReturn('Mary');
         $productModelProposal->getAuthorLabel()->willReturn('Mary Smith');
@@ -85,7 +86,8 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
             $valueCollection,
             'standard',
             $context
-        )->willReturn([
+        )->willReturn(
+            [
                 'text' => [
                     [
                         'locale' => null,
@@ -137,6 +139,8 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
 
         $createdAt = \DateTime::createFromFormat('Y-m-d', '2020-05-07');
         $datagridNormalizer->normalize($createdAt, 'datagrid', [])->willReturn('2020-05-07');
+
+        $productModelDraft->getReviewStatusForChange('name', 'fr_FR', null)->willReturn('to_review');
         $productModelDraft->getCreatedAt()->willReturn($createdAt);
         $productModelDraft->getEntityWithValue()->willReturn($originalPM);
         $productModelDraft->getAuthor()->willReturn('john_doe');
@@ -160,7 +164,7 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
 
         $valueFactory->createByCheckingData($nameAttribute, null, 'en_US', null)->shouldNotBeCalled();
         $valueFactory->createByCheckingData($nameAttribute, null, 'fr_FR', 'changed')
-                     ->shouldBeCalled()->willReturn(ScalarValue::localizableValue('name', 'changed', 'fr_FR'));
+            ->shouldBeCalled()->willReturn(ScalarValue::localizableValue('name', 'changed', 'fr_FR'));
 
         $standardNormalizer->normalize(Argument::type(WriteValueCollection::class), 'standard', [])
             ->shouldBeCalled()->willReturn([

@@ -159,8 +159,8 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
     public function it_applies_a_scale_and_optimize_operation()
     {
         $this->setFamilyTransformations([
-            OptimizeJpegOperation::create(['quality' => 70]),
             ScaleOperation::create(['ratio' => 50]),
+            OptimizeJpegOperation::create(['quality' => 70]),
         ]);
         $asset = $this->getAsset('starck');
         $this->launchTransformationJob($asset->getIdentifier());
