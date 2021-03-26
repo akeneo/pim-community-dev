@@ -72,7 +72,9 @@ final class DispatchProductModelCreatedAndUpdatedEventSubscriber implements Even
 
         $author = Author::fromUser($user);
         $data = [
-            'code' => $productModel->getCode()
+            'code' => $productModel->getCode(),
+            'origin' => $postSaveEvent->hasArgument('origin') ?
+                $postSaveEvent->getArgument('origin') : null,
         ];
 
         if ($postSaveEvent->hasArgument('is_new') && true === $postSaveEvent->getArgument('is_new')) {
