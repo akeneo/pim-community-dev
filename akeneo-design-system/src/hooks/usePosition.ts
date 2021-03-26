@@ -13,10 +13,14 @@ const useVerticalPosition = (ref: RefObject<HTMLElement>, forcedPosition?: Verti
   useEffect(() => {
     if (null !== ref.current && undefined === forcedPosition) {
       const {height: elementHeight, top: distanceToTop} = ref.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
+
+      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
       const distanceToBottom = windowHeight - (elementHeight + distanceToTop);
 
-      setVerticalPosition(distanceToTop > distanceToBottom ? 'up' : 'down');
+      const elementIsOverlappingBottom = distanceToBottom < 0;
+      const elementIsOverlappingTop = distanceToTop < 0;
+
+      setVerticalPosition(elementIsOverlappingBottom ? (elementIsOverlappingTop ? 'down' : 'up') : 'down');
     }
   }, [forcedPosition]);
 
