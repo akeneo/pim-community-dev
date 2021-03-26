@@ -41,14 +41,14 @@ abstract class AbstractProposalNormalizer implements NormalizerInterface, Cachea
     public function normalize($proposalProduct, $format = null, array $context = []): array
     {
         $data = [];
-        $product = $proposalProduct->getEntityWithValue();
+        $entityWithValue = $proposalProduct->getEntityWithValue();
 
         $data['proposal_id'] = $proposalProduct->getId();
         $data['createdAt'] = $this->datagridNormalizer->normalize($proposalProduct->getCreatedAt(), $format, $context);
         $data['author_label'] = $proposalProduct->getAuthorLabel();
         $data['author_code'] = $proposalProduct->getAuthor();
-        $data['document_id'] = $product->getId();
-        $data['document_label'] = $product->getLabel($this->userContext->getUser()->getCatalogLocale()->getCode());
+        $data['document_id'] = $entityWithValue->getId();
+        $data['document_label'] = $entityWithValue->getLabel($this->userContext->getUser()->getCatalogLocale()->getCode());
         $data['formatted_changes'] = $this->changesNormalizer->normalize($proposalProduct, $context);
 
         return $data;

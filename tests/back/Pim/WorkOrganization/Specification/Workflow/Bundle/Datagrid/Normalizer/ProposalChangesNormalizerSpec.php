@@ -31,7 +31,6 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
         AuthorizationCheckerInterface $authorizationChecker,
         AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
-        ProductDraftStatusGridExtension $statusExtension,
         ProductDraftChangesPermissionHelper $permissionHelper,
         GetAttributes $getAttributes
     ) {
@@ -42,14 +41,12 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
             $authorizationChecker,
             $attributeRepository,
             $localeRepository,
-            $statusExtension,
             $permissionHelper,
             $getAttributes
         );
     }
 
     function it_normalizes_in_progress_draft(
-        ProductDraftStatusGridExtension $statusExtension,
         AuthorizationCheckerInterface $authorizationChecker,
         ProductDraftChangesPermissionHelper $permissionHelper,
         EntityWithValuesDraftInterface $entityWithValuesDraft,
@@ -61,10 +58,10 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
         $entityWithValuesDraft->getEntityWithValue()->willReturn($entityWithValues);
         $entityWithValuesDraft->getChanges()->willReturn(['values' => []]);
 
-        $statusExtension->getDraftStatusGrid($entityWithValuesDraft)->willReturn('in_progress');
         $authorizationChecker->isGranted('OWN_RESOURCE', $entityWithValues)->willReturn(true);
         $permissionHelper->canEditOneChangeToReview($entityWithValuesDraft)->willReturn(true);
         $permissionHelper->canEditOneChangeDraft($entityWithValuesDraft)->willReturn(true);
+        $permissionHelper->canEditAllChangesToReview($entityWithValuesDraft)->willReturn(true);
 
         $this->normalize($entityWithValuesDraft, $context)->shouldReturn([
             'status_label' => 'in_progress',
@@ -77,7 +74,6 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
         NormalizerInterface $standardNormalizer,
         ValueFactory $valueFactory,
         ProductDraftChangesExtension $changesExtension,
-        ProductDraftStatusGridExtension $statusExtension,
         AuthorizationCheckerInterface $authorizationChecker,
         AttributeRepositoryInterface $attributeRepository,
         ProductDraftChangesPermissionHelper $permissionHelper,
@@ -102,13 +98,13 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
         $entityWithValuesDraft->getAuthor()->willReturn('mary');
         $entityWithValues->getIdentifier()->willReturn('product_69');
         $entityWithValuesDraft->getReviewStatusForChange('name', null, null)->willReturn('to_review');
-        $statusExtension->getDraftStatusGrid($entityWithValuesDraft)->willReturn('ready');
 
         $authorizationChecker->isGranted('OWN_RESOURCE', $entityWithValues)->willReturn(true);
         $authorizationChecker->isGranted('VIEW_ATTRIBUTES', $attribute)->willReturn(true);
         $authorizationChecker->isGranted('EDIT_ATTRIBUTES', $attribute)->willReturn(true);
         $permissionHelper->canEditOneChangeToReview($entityWithValuesDraft)->willReturn(true);
         $permissionHelper->canEditOneChangeDraft($entityWithValuesDraft)->willReturn(true);
+        $permissionHelper->canEditAllChangesToReview($entityWithValuesDraft)->willReturn(true);
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
         $attribute->getLabel()->willReturn('Name');

@@ -21,7 +21,6 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\ProductDraftChangesPermissionHelper;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftChangesExtension;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftStatusGridExtension;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -34,7 +33,6 @@ class ProposalChangesNormalizer
     private AuthorizationCheckerInterface $authorizationChecker;
     private AttributeRepositoryInterface $attributeRepository;
     private LocaleRepositoryInterface $localeRepository;
-    private ProductDraftStatusGridExtension $statusExtension;
     private ProductDraftChangesPermissionHelper $permissionHelper;
     private GetAttributes $getAttributes;
 
@@ -45,7 +43,6 @@ class ProposalChangesNormalizer
         AuthorizationCheckerInterface $authorizationChecker,
         AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
-        ProductDraftStatusGridExtension $statusExtension,
         ProductDraftChangesPermissionHelper $permissionHelper,
         GetAttributes $getAttributes
     ) {
@@ -55,7 +52,6 @@ class ProposalChangesNormalizer
         $this->authorizationChecker = $authorizationChecker;
         $this->attributeRepository = $attributeRepository;
         $this->localeRepository = $localeRepository;
-        $this->statusExtension = $statusExtension;
         $this->permissionHelper = $permissionHelper;
         $this->getAttributes = $getAttributes;
     }
@@ -69,7 +65,7 @@ class ProposalChangesNormalizer
         $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $entityWithValuesDraft->getEntityWithValue());
 
         $result = [
-            'status_label' => $this->statusExtension->getDraftStatusGrid($entityWithValuesDraft),
+            'status_label' => $this->getDraftStatusGrid($entityWithValuesDraft),
         ];
 
         if ($entityWithValuesDraft->getStatus() === EntityWithValuesDraftInterface::IN_PROGRESS) {
@@ -193,5 +189,31 @@ class ProposalChangesNormalizer
         ?string $channelCode
     ): bool {
         return EntityWithValuesDraftInterface::CHANGE_TO_REVIEW === $proposal->getReviewStatusForChange($code, $localeCode, $channelCode);
+    }
+
+    private function getDraftStatusGrid(EntityWithValuesDraftInterface $productDraft): string
+    {
+        $toReview = $productDraft->getStatus() === EntityWithValuesDraftInterface::READY;
+        $canReview = $this->permissionHelper->canEditOneChangeToReview($productDraft);
+        $canDelete = $this->permissionHelper->canEditOneChangeDraft($productDraft);
+        $canReviewAll = $this->permissionHelper->canEditAllChangesToReview($productDraft);
+
+        if ($toReview) {
+            if ($canReviewAll) {
+                return 'ready';
+            }
+
+            if ($canReview) {
+                return 'can_be_partially_reviewed';
+            }
+
+            return 'can_not_be_approved';
+        }
+
+        if ($canDelete) {
+            return 'in_progress';
+        }
+
+        return 'can_not_be_deleted';
     }
 }
