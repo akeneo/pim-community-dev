@@ -8,5 +8,4 @@ namespace Akeneo\Pim\Structure\Component\Exception;
  */
 class AttributeRemovalException extends \RuntimeException
 {
-
 }
