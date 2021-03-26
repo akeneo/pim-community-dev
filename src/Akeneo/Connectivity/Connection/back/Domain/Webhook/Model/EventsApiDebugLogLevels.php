@@ -14,4 +14,11 @@ class EventsApiDebugLogLevels
     const INFO = 'info';
     const WARNING = 'warning';
     const ERROR = 'error';
+
+    const ALL = [
+        self::INFO,
+        self::NOTICE,
+        self::WARNING,
+        self::ERROR,
+    ];
 }

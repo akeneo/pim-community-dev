@@ -230,6 +230,49 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $this->validate($entity, $constraint);
     }
 
+    function it_raises_no_violation_if_there_is_no_duplicate_in_any_sibling_variant_with_similar_values(
+        ExecutionContextInterface $context,
+        EntityWithFamilyVariantAttributesProvider $axesProvider,
+        UniqueAxesCombinationSet $uniqueAxesCombinationSet,
+        GetValuesOfSiblings $getValuesOfSiblings,
+        FamilyVariantInterface $familyVariant,
+        ProductModelInterface $parent,
+        ProductInterface $entity,
+        AttributeInterface $brand,
+        WriteValueCollection $values,
+        ValueInterface $niceBrand,
+        ValueInterface $anotherBrand,
+        UniqueVariantAxis $constraint
+    ) {
+        $axes = [$brand];
+
+        $entity->getParent()->willReturn($parent);
+        $entity->getFamilyVariant()->willReturn($familyVariant);
+        $entity->getValuesForVariation()->willReturn($values);
+        $values->getByCodes('brand')->willReturn($niceBrand);
+
+        $axesProvider->getAxes($entity)->willReturn($axes);
+        $brand->getCode()->willReturn('brand');
+
+        $niceBrand->__toString()->willReturn('01');
+        $anotherBrand->__toString()->willReturn('1');
+        $anotherBrand->getAttributeCode()->willReturn('brand');
+        $anotherBrand->getLocaleCode()->willReturn(null);
+        $anotherBrand->getScopeCode()->willReturn(null);
+
+        $getValuesOfSiblings->for($entity, ['brand'])->willReturn(
+            [
+                'sibling_identifier' => new WriteValueCollection([$anotherBrand->getWrappedObject()]),
+            ]
+        );
+
+        $uniqueAxesCombinationSet->addCombination($entity, '01')->shouldBeCalled();
+
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate($entity, $constraint);
+    }
+
     function it_raises_a_violation_if_there_is_a_duplicate_value_in_any_sibling_product_model(
         ExecutionContextInterface $context,
         EntityWithFamilyVariantAttributesProvider $axesProvider,

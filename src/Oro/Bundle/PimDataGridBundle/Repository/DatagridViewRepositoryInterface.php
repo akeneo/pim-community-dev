@@ -3,6 +3,7 @@
 namespace Oro\Bundle\PimDataGridBundle\Repository;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 
 /**
  * Datagrid view repository interface

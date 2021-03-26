@@ -2,12 +2,11 @@
 
 namespace spec\Akeneo\Test\Acceptance\User;
 
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\User\InMemoryRoleRepository;
-use PhpSpec\ObjectBehavior;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
-use Prophecy\Argument;
+use PhpSpec\ObjectBehavior;
 
 class InMemoryRoleRepositorySpec extends ObjectBehavior
 {
@@ -40,7 +39,7 @@ class InMemoryRoleRepositorySpec extends ObjectBehavior
     function it_finds_a_role_by_its_identifier()
     {
         $role = new Role();
-        $role->setRole('role');
+        $role->setRole('ROLE_ROLE');
         $this->save($role);
         $this->findOneByIdentifier('ROLE_ROLE')->shouldReturn($role);
     }

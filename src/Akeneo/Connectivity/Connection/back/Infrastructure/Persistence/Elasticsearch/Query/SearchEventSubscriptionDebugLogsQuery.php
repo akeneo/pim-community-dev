@@ -192,21 +192,11 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         }
 
         if (null !== $filters['text']) {
-            $query['query']['bool']['must']['bool']['should'] = [
-                [
-                    'match' => [
-                        'message' => [
-                            'query' => $filters['text'],
-                        ],
-                    ],
-                ],
-                [
-                    'match' => [
-                        'context_flattened' => [
-                            'query' => $filters['text'],
-                        ],
-                    ],
-                ],
+            $query['query']['bool']['must']['query_string'] = [
+                'fields' => ['message', 'context_flattened'],
+                'query'=> $this->formatTextSearch(strtolower($filters['text'])),
+                'fuzziness' => 0,
+                'default_operator' => 'AND'
             ];
         }
 
@@ -215,6 +205,20 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         }
 
         return $query;
+    }
+
+    private function formatTextSearch(string $value): string
+    {
+        $regex = '#[-+=|!&(){}\[\]^"~*<>?:/\\\]#';
+
+        $escaped =  preg_replace($regex, '\\\$0', $value);
+        $split = preg_split('/ /', $escaped);
+        $formatted = '';
+        foreach ($split as $item) {
+            $formatted .= sprintf('*%s* ', $item);
+        }
+
+        return $formatted;
     }
 
     /**
@@ -357,15 +361,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
                 }
 
                 foreach ($levels as $level) {
-                    if (!in_array(
-                        $level,
-                        [
-                            EventsApiDebugLogLevels::WARNING,
-                            EventsApiDebugLogLevels::ERROR,
-                            EventsApiDebugLogLevels::INFO,
-                            EventsApiDebugLogLevels::NOTICE,
-                        ]
-                    )) {
+                    if (!in_array($level, EventsApiDebugLogLevels::ALL)) {
                         return false;
                     }
                 }
@@ -373,6 +369,22 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
                 return true;
             }
         );
+
+        // If all the levels are selected, replace by `null`
+        $resolver->setNormalizer('levels', function ($options, $value) {
+            if (is_array($value) && empty(array_diff(EventsApiDebugLogLevels::ALL, $value))) {
+                return null;
+            }
+
+            return $value;
+        });
+        $resolver->setNormalizer('text', function ($options, $value) {
+            if (is_string($value) && '' === trim($value)) {
+                return null;
+            }
+
+            return $value;
+        });
 
         return $resolver->resolve($filters);
     }

@@ -1,7 +1,10 @@
 import {EventSubscriptionLog} from '../../model/EventSubscriptionLog';
-import {RefObject, useState} from 'react';
+import {RefObject, useCallback, useState} from 'react';
 import {useRoute} from '../../../shared/router';
 import {useInfiniteScroll} from '../../scroll';
+import {useEffectAfterFirstRender} from '../../../shared/hooks/useEffectAfterFirstRender';
+import {useDebounceCallback} from '../../../shared/utils/use-debounce-callback';
+import {EventSubscriptionLogFilters, isSameAsDefaultFiltersValues} from '../../model/EventSubscriptionLogFilters';
 
 const MAX_PAGES = 20;
 
@@ -24,8 +27,11 @@ type EventSubscriptionLogs = {
  */
 const useInfiniteEventSubscriptionLogs = (
     connectionCode: string,
+    filters: EventSubscriptionLogFilters,
     container: RefObject<HTMLElement>
-): EventSubscriptionLogs => {
+): EventSubscriptionLogs & {
+    isLoading: boolean;
+} => {
     const [state, setState] = useState<EventSubscriptionLogs>({
         logs: [],
         total: undefined,
@@ -33,6 +39,7 @@ const useInfiniteEventSubscriptionLogs = (
         maxScrollReached: false,
         endScrollReached: false,
     });
+
     const [searchAfter, setSearchAfter] = useState<string | null>(null);
     const {maxScrollReached, endScrollReached} = state;
 
@@ -46,6 +53,11 @@ const useInfiniteEventSubscriptionLogs = (
         parameters.search_after = searchAfter;
     }
 
+    if (!isSameAsDefaultFiltersValues(filters)) {
+        parameters.filters = JSON.stringify(filters);
+    }
+
+    // This damn hook forbid us to build the url inside fetchNextResponse()
     const url = useRoute(
         'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs',
         parameters
@@ -72,9 +84,35 @@ const useInfiniteEventSubscriptionLogs = (
         return payload;
     };
 
-    useInfiniteScroll<SearchEventSubscriptionLogsResponse>(fetchNextResponse, container);
+    const {reset, isLoading} = useInfiniteScroll<SearchEventSubscriptionLogsResponse>(fetchNextResponse, container);
 
-    return state;
+    const resetState = useCallback(() => {
+        setState({
+            logs: [],
+            total: undefined,
+            page: 0,
+            maxScrollReached: false,
+            endScrollReached: false,
+        });
+        setSearchAfter(null);
+    }, [setState, setSearchAfter]);
+
+    const resetInfiniteScroll = useDebounceCallback(reset, 300);
+
+    // By default, an useEffect is always executed during the first render.
+    // Here, we want to trigger this useEffect only after the initial render,
+    // when the filters are updated.
+    useEffectAfterFirstRender(() => {
+        // First, reset the local state, empty logs.
+        resetState();
+        // Then, reset the infinite scroll to start fetching from the beginning
+        resetInfiniteScroll();
+    }, [filters, resetState, resetInfiniteScroll]);
+
+    return {
+        ...state,
+        isLoading: isLoading,
+    };
 };
 
 export default useInfiniteEventSubscriptionLogs;

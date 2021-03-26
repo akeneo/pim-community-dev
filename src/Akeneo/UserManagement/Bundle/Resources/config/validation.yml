@@ -3,6 +3,7 @@ Akeneo\UserManagement\Component\Model\User:
         - Akeneo\UserManagement\Bundle\Validator\Constraints\CreateUser: ~
         - Akeneo\UserManagement\Bundle\Validator\Constraints\UserPreferences:
             groups: [User]
+        - Akeneo\UserManagement\Bundle\Validator\Constraints\UserOwnsDefaultGridViews: ~
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: username
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email
     properties:
@@ -52,17 +53,32 @@ Akeneo\UserManagement\Component\Model\User:
         catalogLocale:
             - NotBlank: ~
             - Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale: ~
+        defaultTree:
+            - NotBlank: ~
+            - Akeneo\Channel\Component\Validator\Constraint\IsRootCategory: ~
         phone:
             - Regex:
                 pattern: '/^\+[0-9]+$/'
                 message: "The phone has to respect the international format (eg: +33755667788)."
             - Length:
                 max: 20
+        timezone:
+            - NotBlank: ~
+            - Timezone: ~
 
 Akeneo\UserManagement\Component\Model\Role:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: label
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: role
+        - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
+            properties:
+                - role
     properties:
+        role:
+            - NotBlank: ~
+            - Regex:
+                  pattern: '/^(IS_AUTHENTICATED_ANONYMOUSLY|ROLE_[0-9A-Z_]*)$/'
+                  message: pim_user.role.invalid_role_format
         label:
             - NotBlank:     ~
             - Length:
@@ -76,3 +92,11 @@ Akeneo\UserManagement\Component\Model\Group:
             - NotBlank:     ~
             - Length:
                 max:        30
+
+Akeneo\UserManagement\Component\Connector\RoleWithPermissions:
+    properties:
+        role:
+            - Valid: ~
+        permissions:
+            - Akeneo\UserManagement\Bundle\Validator\Constraints\UserRolePrivileges: ~
+
