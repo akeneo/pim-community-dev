@@ -8,7 +8,9 @@ use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
-use League\Flysystem\Filesystem;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use League\Flysystem\FilesystemInterface;
 
 /**
  * Archive job execution files into conventional directories
@@ -19,31 +21,26 @@ use League\Flysystem\Filesystem;
  */
 class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
 {
-    /** @var ZipFilesystemFactory */
-    protected $factory;
+    protected ZipFilesystemFactory $factory;
+    private JobRegistry $jobRegistry;
+    private FilesystemProvider $filesystemProvider;
 
-    /** @var string */
-    protected $directory;
-
-    /** @var JobRegistry */
-    private $jobRegistry;
-
-    /**
-     * @param ZipFilesystemFactory $factory
-     * @param Filesystem           $filesystem
-     * @param JobRegistry          $jobRegistry
-     */
-    public function __construct(ZipFilesystemFactory $factory, Filesystem $filesystem, JobRegistry $jobRegistry)
-    {
+    public function __construct(
+        ZipFilesystemFactory $factory,
+        FilesystemInterface $filesystem,
+        JobRegistry $jobRegistry,
+        FilesystemProvider $filesystemProvider
+    ) {
         $this->factory = $factory;
         $this->filesystem = $filesystem;
         $this->jobRegistry = $jobRegistry;
+        $this->filesystemProvider = $filesystemProvider;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function archive(JobExecution $jobExecution)
+    public function archive(JobExecution $jobExecution): void
     {
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
@@ -52,21 +49,29 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
             }
             $writer = $step->getWriter();
             if ($this->isWriterUsable($writer)) {
-                $zipName = sprintf('%s.zip', pathinfo($writer->getPath(), PATHINFO_FILENAME));
+                $zipName = \sprintf('%s.zip', pathinfo($writer->getPath(), PATHINFO_FILENAME));
 
-                $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
-                $localZipPath = $workingDirectory.DIRECTORY_SEPARATOR.$zipName;
+                $workingDirectory = $jobExecution->getExecutionContext()->get(
+                    JobInterface::WORKING_DIRECTORY_PARAMETER
+                );
+                $localZipPath = $workingDirectory . DIRECTORY_SEPARATOR . $zipName;
 
                 $localZipFilesystem = $this->factory->createZip(
                     $localZipPath
                 );
 
-                foreach ($writer->getWrittenFiles() as $fullPath => $localPath) {
-                    $stream = fopen($fullPath, 'r');
-                    $localZipFilesystem->putStream($localPath, $stream);
+                /** @var WrittenFileInfo $writtenFile */
+                foreach ($writer->getWrittenFiles() as $writtenFile) {
+                    if ($writtenFile->isLocalFile()) {
+                        $stream = \fopen($writtenFile->sourceKey(), 'r');
+                    } else {
+                        $stream = $this->filesystemProvider->getFilesystem($writtenFile->sourceStorage())
+                                                           ->readStream($writtenFile->sourceKey());
+                    }
+                    $localZipFilesystem->putStream($writtenFile->outputFilepath(), $stream);
 
-                    if (is_resource($stream)) {
-                        fclose($stream);
+                    if (\is_resource($stream)) {
+                        \fclose($stream);
                     }
                 }
 
@@ -74,7 +79,7 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
 
                 $this->archiveZip($jobExecution, $localZipPath, $zipName);
 
-                unlink($localZipPath);
+                \unlink($localZipPath);
             }
         }
     }
@@ -104,21 +109,9 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'archive';
-    }
-
-    /**
-     * Verify if the writer is usable or not
-     *
-     * @param ItemWriterInterface $writer
-     *
-     * @return bool
-     */
-    protected function isWriterUsable(ItemWriterInterface $writer)
-    {
-        return $writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1;
     }
 
     /**
@@ -128,7 +121,7 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
      *
      * @return bool
      */
-    public function supports(JobExecution $jobExecution)
+    public function supports(JobExecution $jobExecution): bool
     {
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
@@ -138,5 +131,17 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
         }
 
         return false;
+    }
+
+    /**
+     * Verify if the writer is usable or not
+     *
+     * @param ItemWriterInterface $writer
+     *
+     * @return bool
+     */
+    protected function isWriterUsable(ItemWriterInterface $writer): bool
+    {
+        return $writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1;
     }
 }

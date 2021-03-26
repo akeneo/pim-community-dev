@@ -12,6 +12,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 
 /**
  * Write data into a csv file on the filesystem
@@ -75,7 +76,7 @@ class Writer extends AbstractFileWriter implements
     /**
      * {@inheritdoc}
      */
-    public function getWrittenFiles()
+    public function getWrittenFiles(): array
     {
         return $this->writtenFiles;
     }
@@ -124,7 +125,7 @@ class Writer extends AbstractFileWriter implements
         );
 
         foreach ($writtenFiles as $writtenFile) {
-            $this->writtenFiles[$writtenFile] = basename($writtenFile);
+            $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($writtenFile, \basename($writtenFile));
         }
     }
 }

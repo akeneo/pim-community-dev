@@ -20,42 +20,26 @@ final class WrittenFileInfo
     private string $sourceKey;
     private string $sourceStorage;
     private string $outputFilepath;
-    /**
-     * Whether the file is meant to be archived or not in the output storage
-     */
-    private bool $sendToOutputStorage;
 
-    private function __construct(
-        string $key,
-        string $storage,
-        string $outputFilepath,
-        bool $sendToOutputStorage
-    ) {
-        $this->sourceKey = $key;
-        $this->sourceStorage = $storage;
-        $this->outputFilepath = $outputFilepath;
-        $this->sendToOutputStorage = $sendToOutputStorage;
-    }
-
-    public static function fromFileStorage(
-        string $sourceKey,
-        string $sourceStorage,
-        string $outputFilepath,
-        bool $sendToOutputStorage = true
-    ): self {
+    private function __construct(string $sourceKey, string $sourceStorage, string $outputFilepath)
+    {
         Assert::stringNotEmpty($sourceKey);
         Assert::stringNotEmpty($sourceStorage);
         Assert::stringNotEmpty($outputFilepath);
 
-        return new self($sourceKey, $sourceStorage, $outputFilepath, $sendToOutputStorage);
+        $this->sourceKey = $sourceKey;
+        $this->sourceStorage = $sourceStorage;
+        $this->outputFilepath = $outputFilepath;
     }
 
-    public static function fromLocalFile(
-        string $localFilepath,
-        string $outputFilepath,
-        bool $sendToOutputStorage = true
-    ): self {
-        return new self($localFilepath, self::LOCAL_FILESYSTEM, $outputFilepath, $sendToOutputStorage);
+    public static function fromFileStorage(string $sourceKey, string $sourceStorage, string $outputFilepath): self
+    {
+        return new self($sourceKey, $sourceStorage, $outputFilepath);
+    }
+
+    public static function fromLocalFile(string $localFilepath, string $outputFilepath): self
+    {
+        return new self($localFilepath, self::LOCAL_FILESYSTEM, $outputFilepath);
     }
 
     public function sourceKey(): string
@@ -76,10 +60,5 @@ final class WrittenFileInfo
     public function isLocalFile(): bool
     {
         return self::LOCAL_FILESYSTEM === $this->sourceStorage;
-    }
-
-    public function sendToOutputStorage(): bool
-    {
-        return $this->sendToOutputStorage;
     }
 }

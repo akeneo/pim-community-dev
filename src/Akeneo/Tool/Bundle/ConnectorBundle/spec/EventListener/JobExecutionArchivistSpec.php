@@ -6,8 +6,8 @@ use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\Archiver\ArchiverInterface;
+use PhpSpec\ObjectBehavior;
 
 class JobExecutionArchivistSpec extends ObjectBehavior
 {
@@ -46,11 +46,11 @@ class JobExecutionArchivistSpec extends ObjectBehavior
         $jobExecution->isRunning()->willReturn(false);
 
         $archiver->getName()->willReturn('output');
-        $archiver->getArchives($jobExecution)->willReturn(['a', 'b']);
+        $archiver->getArchives($jobExecution, false)->willReturn(['a', 'b']);
         $this->registerArchiver($archiver);
 
         $archiver2->getName()->willReturn('input');
-        $archiver2->getArchives($jobExecution)->willReturn(['a', 'b']);
+        $archiver2->getArchives($jobExecution, false)->willReturn(['a', 'b']);
         $this->registerArchiver($archiver2);
 
         $this->getArchives($jobExecution)->shouldReturn(['output' => ['a', 'b'], 'input' => ['a', 'b']]);

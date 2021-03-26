@@ -2,7 +2,6 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Archiver;
 
-use Akeneo\Tool\Component\Connector\Archiver\ArchivableFileWriterArchiver;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\Job;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
@@ -10,11 +9,15 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Step\AbstractStep;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
-use League\Flysystem\ZipArchive\ZipArchiveAdapter;
-use League\Flysystem\Filesystem;
-use PhpSpec\ObjectBehavior;
+use Akeneo\Tool\Component\Connector\Archiver\ArchivableFileWriterArchiver;
 use Akeneo\Tool\Component\Connector\Archiver\ZipFilesystemFactory;
 use Akeneo\Tool\Component\Connector\Writer\File\Csv\Writer;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
+use League\Flysystem\ZipArchive\ZipArchiveAdapter;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class ArchivableFileWriterArchiverSpec extends ObjectBehavior
@@ -22,13 +25,14 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
     function let(
         ZipFilesystemFactory $zipFactory,
         Filesystem $zipFilesystem,
-        Filesystem $archivistFilesystem,
+        FilesystemInterface $archivistFilesystem,
         ZipArchiveAdapter $zipAdapter,
+        FilesystemProvider $filesystemProvider,
         JobRegistry $jobRegistry
     ) {
         $zipFilesystem->getAdapter()->willReturn($zipAdapter);
         $zipFactory->createZip(Argument::any())->willReturn($zipFilesystem);
-        $this->beConstructedWith($zipFactory, $archivistFilesystem, $jobRegistry);
+        $this->beConstructedWith($zipFactory, $archivistFilesystem, $jobRegistry, $filesystemProvider);
     }
 
     function it_is_initializable()
@@ -37,8 +41,8 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
     }
 
     function it_doesnt_create_a_file_when_writer_is_invalid(
-        $zipFilesystem,
-        $jobRegistry,
+        Filesystem $zipFilesystem,
+        JobRegistry $jobRegistry,
         Writer $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
@@ -67,7 +71,7 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
     }
 
     function it_returns_true_for_the_supported_job(
-        $jobRegistry,
+        JobRegistry $jobRegistry,
         Writer $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
@@ -88,7 +92,7 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
     }
 
     function it_returns_false_for_the_unsupported_job(
-        $jobRegistry,
+        JobRegistry $jobRegistry,
         ItemWriterInterface $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
@@ -107,8 +111,8 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
     }
 
     function it_doesnt_create_a_file_if_step_is_not_an_item_step(
-        $zipFilesystem,
-        $jobRegistry,
+        Filesystem $zipFilesystem,
+        JobRegistry $jobRegistry,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
@@ -127,11 +131,12 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
     }
 
     function it_creates_a_file_if_writer_is_correct(
-        $jobRegistry,
-        $zipAdapter,
-        $zipFactory,
-        $zipFilesystem,
-        $archivistFilesystem,
+        JobRegistry $jobRegistry,
+        ZipArchiveAdapter $zipAdapter,
+        FilesystemProvider $filesystemProvider,
+        Filesystem $zipFilesystem,
+        FilesystemInterface $archivistFilesystem,
+        FilesystemInterface $catalogStorageFilesystem,
         Writer $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
@@ -140,7 +145,6 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
         \ZipArchive $zipArchive
     ) {
         $file1 = tempnam(sys_get_temp_dir(), 'spec');
-        $file2 = tempnam(sys_get_temp_dir(), 'spec');
         $zipFile = tempnam(sys_get_temp_dir(), 'spec');
         rename($zipFile, $zipFile.'.zip');
         $zipFile = $zipFile.'.zip';
@@ -158,15 +162,22 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
 
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
-        $writer->getWrittenFiles()->willReturn([$file1 => 'file1', $file2 => 'file2']);
+        $writer->getWrittenFiles()->willReturn([
+            WrittenFileInfo::fromLocalFile($file1, 'file1'),
+            WrittenFileInfo::fromFileStorage('a/b/c/media.png', 'catalogStorage', 'media.png')
+        ]);
 
         $writer->getPath()->willReturn($zipFile);
 
         $archivistFilesystem->has('type/my_job_name/12/archive')->willReturn(false);
         $archivistFilesystem->createDir('type/my_job_name/12/archive')->shouldBeCalled();
 
+        $filesystemProvider->getFilesystem('catalogStorage')->shouldBeCalled()->willReturn($catalogStorageFilesystem);
+        $remoteStream = \tmpfile();
+        $catalogStorageFilesystem->readStream('a/b/c/media.png')->shouldBeCalled()->willReturn($remoteStream);
+
         $zipFilesystem->putStream('file1', Argument::type('resource'))->shouldBeCalled();
-        $zipFilesystem->putStream('file2', Argument::type('resource'))->shouldBeCalled();
+        $zipFilesystem->putStream('media.png', $remoteStream)->shouldBeCalled();
 
         $zipAdapter->getArchive()->willReturn($zipArchive);
 
@@ -175,6 +186,8 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
         $this->archive($jobExecution);
 
         unlink($file1);
-        unlink($file2);
+        if (\is_resource($remoteStream)) {
+            \fclose($remoteStream);
+        }
     }
 }

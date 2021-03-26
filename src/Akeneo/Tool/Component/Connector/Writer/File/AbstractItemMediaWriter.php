@@ -4,17 +4,21 @@ namespace Akeneo\Tool\Component\Connector\Writer\File;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -25,59 +29,33 @@ abstract class AbstractItemMediaWriter implements
     ItemWriterInterface,
     InitializableInterface,
     FlushableInterface,
-    StepExecutionAwareInterface
+    StepExecutionAwareInterface,
+    ArchivableWriterInterface
 {
     protected const DEFAULT_FILE_PATH = 'filePath';
 
-    /** @var ArrayConverterInterface */
-    protected $arrayConverter;
-
-    /** @var FlatItemBufferFlusher */
-    protected $flusher;
-
-    /** @var BufferFactory */
-    protected $bufferFactory;
-
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var FileExporterPathGeneratorInterface */
-    protected $fileExporterPath;
-
+    protected ArrayConverterInterface $arrayConverter;
+    protected FlatItemBufferFlusher $flusher;
+    protected BufferFactory $bufferFactory;
+    protected AttributeRepositoryInterface $attributeRepository;
+    protected FileExporterPathGeneratorInterface $fileExporterPath;
+    private FlatTranslatorInterface $flatTranslator;
+    private FileInfoRepositoryInterface $fileInfoRepository;
+    private FilesystemProvider $filesystemProvider;
+    private FileFetcherInterface $outputFileFetcher;
+    private VersionProviderInterface $versionProvider;
     /** @var string[] */
-    protected $mediaAttributeTypes;
+    protected array $mediaAttributeTypes;
+    protected string $jobParamFilePath;
 
-    /** @var StepExecution */
-    protected $stepExecution;
+    protected ?StepExecution $stepExecution = null;
 
-    /** @var Filesystem */
-    protected $localFs;
+    protected Filesystem $localFs;
+    protected ?FlatItemBuffer $flatRowBuffer = null;
+    /** @var WrittenFileInfo[] */
+    protected array $writtenFiles = [];
+    protected string $datetimeFormat = 'Y-m-d_H-i-s';
 
-    /** @var array */
-    protected $writtenFiles = [];
-
-    /** @var FlatItemBuffer */
-    protected $flatRowBuffer;
-
-    /** @var string DateTime format for the file path placeholder */
-    protected $datetimeFormat = 'Y-m-d_H-i-s';
-
-    /** @var String */
-    protected $jobParamFilePath;
-
-    /** @var FlatTranslatorInterface */
-    private $flatTranslator;
-
-    /**
-     * @param ArrayConverterInterface            $arrayConverter
-     * @param BufferFactory                      $bufferFactory
-     * @param FlatItemBufferFlusher              $flusher
-     * @param AttributeRepositoryInterface       $attributeRepository
-     * @param FileExporterPathGeneratorInterface $fileExporterPath
-     * @param FlatTranslatorInterface $flatTranslator
-     * @param array                              $mediaAttributeTypes
-     * @param String                             $jobParamFilePath
-     */
     public function __construct(
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
@@ -85,6 +63,10 @@ abstract class AbstractItemMediaWriter implements
         AttributeRepositoryInterface $attributeRepository,
         FileExporterPathGeneratorInterface $fileExporterPath,
         FlatTranslatorInterface $flatTranslator,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FilesystemProvider $filesystemProvider,
+        FileFetcherInterface $fileFetcher,
+        VersionProviderInterface $versionProvider,
         array $mediaAttributeTypes,
         string $jobParamFilePath = self::DEFAULT_FILE_PATH
     ) {
@@ -96,6 +78,10 @@ abstract class AbstractItemMediaWriter implements
         $this->fileExporterPath = $fileExporterPath;
         $this->jobParamFilePath = $jobParamFilePath;
         $this->flatTranslator = $flatTranslator;
+        $this->fileInfoRepository = $fileInfoRepository;
+        $this->filesystemProvider = $filesystemProvider;
+        $this->outputFileFetcher = $fileFetcher;
+        $this->versionProvider = $versionProvider;
 
         $this->localFs = new Filesystem();
     }
@@ -103,7 +89,7 @@ abstract class AbstractItemMediaWriter implements
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
         if (null === $this->flatRowBuffer) {
             $this->flatRowBuffer = $this->bufferFactory->create();
@@ -118,18 +104,15 @@ abstract class AbstractItemMediaWriter implements
     /**
      * {@inheritdoc}
      */
-    public function write(array $items)
+    public function write(array $items): void
     {
         $parameters = $this->stepExecution->getJobParameters();
         $converterOptions = $this->getConverterOptions($parameters);
 
         $flatItems = [];
-        $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
-            ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
-
         foreach ($items as $item) {
             if ($parameters->has('with_media') && $parameters->get('with_media')) {
-                $item = $this->resolveMediaPaths($item, $directory);
+                $item = $this->resolveMediaPaths($item);
             }
 
             $flatItems[] = $this->arrayConverter->convert($item, $converterOptions);
@@ -164,7 +147,7 @@ abstract class AbstractItemMediaWriter implements
         return array_replace_recursive($additionalHeadersFilledInFlatItemFormat, $items);
     }
 
-    protected function getAdditionalHeaders()
+    protected function getAdditionalHeaders(): array
     {
         return [];
     }
@@ -172,21 +155,24 @@ abstract class AbstractItemMediaWriter implements
     /**
      * Flush items into a file
      */
-    public function flush()
+    public function flush(): void
     {
         $this->flusher->setStepExecution($this->stepExecution);
 
         $parameters = $this->stepExecution->getJobParameters();
 
-        $writtenFiles = $this->flusher->flush(
+        $flatFiles = $this->flusher->flush(
             $this->flatRowBuffer,
             $this->getWriterConfiguration(),
             $this->getPath(),
             ($parameters->has('linesPerFile') ? $parameters->get('linesPerFile') : -1)
         );
 
-        foreach ($writtenFiles as $writtenFile) {
-            $this->writtenFiles[$writtenFile] = basename($writtenFile);
+        foreach ($flatFiles as $flatFile) {
+            $this->writtenFiles[] = WrittenFileInfo::fromLocalFile(
+                $flatFile,
+                \basename($flatFile)
+            );
         }
 
         $this->exportMedias();
@@ -199,12 +185,12 @@ abstract class AbstractItemMediaWriter implements
      *
      * @return string
      */
-    public function getPath(array $placeholders = [])
+    public function getPath(array $placeholders = []): string
     {
         $parameters = $this->stepExecution->getJobParameters();
         $filePath = $parameters->get($this->jobParamFilePath);
 
-        if (false !== strpos($filePath, '%')) {
+        if (false !== \strpos($filePath, '%')) {
             $datetime = $this->stepExecution->getStartTime()->format($this->datetimeFormat);
             $defaultPlaceholders = ['%datetime%' => $datetime, '%job_label%' => ''];
             $jobExecution = $this->stepExecution->getJobExecution();
@@ -224,7 +210,7 @@ abstract class AbstractItemMediaWriter implements
     /**
      * {@inheritdoc}
      */
-    public function getWrittenFiles()
+    public function getWrittenFiles(): array
     {
         return $this->writtenFiles;
     }
@@ -232,7 +218,7 @@ abstract class AbstractItemMediaWriter implements
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -242,7 +228,7 @@ abstract class AbstractItemMediaWriter implements
      *
      * @return array
      */
-    abstract protected function getWriterConfiguration();
+    abstract protected function getWriterConfiguration(): array;
 
     /**
      * Return the identifier of the item (e.q sku or variant group code)
@@ -251,10 +237,10 @@ abstract class AbstractItemMediaWriter implements
      *
      * @return string
      */
-    abstract protected function getItemIdentifier(array $item);
+    abstract protected function getItemIdentifier(array $item): string;
 
     /**
-     * - Add the media to the $this->writtenFiles to be archive later
+     * - Add the media to the $this->writtenFiles to be archived later
      * - Update the value of each media in the standard format to add the final path of media in archive.
      *
      * The standard format for a media contains only the filePath (which is the unique key of the media):
@@ -290,18 +276,16 @@ abstract class AbstractItemMediaWriter implements
      *     }
      * }
      *
-     * @param array  $item          standard format of an item
-     * @param string $tmpDirectory  directory where media have been copied before to be exported
+     * @param array $item standard format of an item
      *
      * @return array
      */
-    protected function resolveMediaPaths(array $item, $tmpDirectory)
+    final protected function resolveMediaPaths(array $item): array
     {
         $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($item['values']));
         $mediaAttributeTypes = array_filter($attributeTypes, function ($attributeCode) {
             return in_array($attributeCode, $this->mediaAttributeTypes);
         });
-
         $identifier = $this->getItemIdentifier($item);
 
         foreach ($mediaAttributeTypes as $attributeCode => $attributeType) {
@@ -316,21 +300,28 @@ abstract class AbstractItemMediaWriter implements
                         'code'       => $attributeCode,
                     ]);
 
-                    $finder = new Finder();
-                    if (is_dir($tmpDirectory . $exportDirectory)) {
-                        $files = iterator_to_array($finder->files()->in($tmpDirectory . $exportDirectory));
-                        if (!empty($files)) {
-                            if (array_key_exists('paths', $value)) {
-                                foreach ($files as $file) {
-                                    $path = $exportDirectory . $file->getFilename();
-                                    $this->writtenFiles[$tmpDirectory . $path] = $path;
-                                }
-                            } else {
-                                $path = $exportDirectory . current($files)->getFilename();
-                                $this->writtenFiles[$tmpDirectory . $path] = $path;
-                                $item['values'][$attributeCode][$index]['data'] = $path;
-                            }
+                    if (array_key_exists('paths', $value)) {
+                        $paths = [];
+                        foreach ($value['paths'] as $fileKey) {
+                            $fileInfo = $this->fileInfoRepository->findOneByIdentifier($fileKey);
+                            $filepath = $exportDirectory . $fileInfo->getOriginalFilename();
+                            $paths[] = $filepath;
+                            $this->writtenFiles[] = WrittenFileInfo::fromFileStorage(
+                                $fileInfo->getKey(),
+                                $fileInfo->getStorage(),
+                                $filepath
+                            );
                         }
+                        $item['values'][$attributeCode][$index]['paths'] = $paths;
+                    } else {
+                        $fileInfo = $this->fileInfoRepository->findOneByIdentifier($value['data']);
+                        $filepath = $exportDirectory . $fileInfo->getOriginalFilename();
+                        $item['values'][$attributeCode][$index]['data'] = $filepath;
+                        $this->writtenFiles[] = WrittenFileInfo::fromFileStorage(
+                            $fileInfo->getKey(),
+                            $fileInfo->getStorage(),
+                            $filepath
+                        );
                     }
                 }
             }
@@ -344,7 +335,7 @@ abstract class AbstractItemMediaWriter implements
      *
      * @return array
      */
-    protected function getConverterOptions(JobParameters $parameters)
+    protected function getConverterOptions(JobParameters $parameters): array
     {
         $options = [];
 
@@ -367,25 +358,53 @@ abstract class AbstractItemMediaWriter implements
      * Export medias from the working directory to the output expected directory.
      *
      * Basically, we first remove the content of /path/where/my/user/expects/the/export/files/.
-     * (This path can exist of an export was launched previously)
+     * (This path can exist if an export was launched previously)
      *
-     * Then we copy /path/of/the/working/directory/files/ to /path/where/my/user/expects/the/export/files/.
+     * Then we fetch each remote file from $this->>writtenFiles into /path/where/my/user/expects/the/export/.
      */
-    protected function exportMedias()
+    final protected function exportMedias(): void
     {
+        if ($this->versionProvider->isSaaSVersion()) {
+            return;
+        }
+
         $outputDirectory = dirname($this->getPath());
-        $workingDirectory = $this->stepExecution->getJobExecution()->getExecutionContext()
-            ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
-
         $outputFilesDirectory = $outputDirectory . DIRECTORY_SEPARATOR . 'files';
-        $workingFilesDirectory = $workingDirectory . 'files';
-
         if ($this->localFs->exists($outputFilesDirectory)) {
             $this->localFs->remove($outputFilesDirectory);
         }
 
-        if ($this->localFs->exists($workingFilesDirectory)) {
-            $this->localFs->mirror($workingFilesDirectory, $outputFilesDirectory);
+        foreach ($this->writtenFiles as $writtenFile) {
+            if ($writtenFile->isLocalFile()) {
+                continue;
+            }
+            $filesystem = $this->filesystemProvider->getFilesystem($writtenFile->sourceStorage());
+            try {
+                $outputFilePath = \sprintf(
+                    '%s%s%s',
+                    \dirname($this->getPath()),
+                    DIRECTORY_SEPARATOR,
+                    \dirname($writtenFile->outputFilepath())
+                );
+                $outputFileName = \basename($writtenFile->outputFilepath());
+                $this->outputFileFetcher->fetch(
+                    $filesystem,
+                    $writtenFile->sourceKey(),
+                    [
+                        'filePath' => $outputFilePath,
+                        'filename' => $outputFileName,
+                    ]
+                );
+            } catch (\LogicException|FileTransferException $e) {
+                $this->stepExecution->addWarning($e->getMessage(), [], new DataInvalidItem([
+                    'from' => $writtenFile->sourceKey(),
+                    'to' => [
+                        'filePath' => $outputFilePath,
+                        'filename' => $outputFileName,
+                    ],
+                    'storage' => $writtenFile->sourceStorage()
+                ]));
+            }
         }
     }
 
@@ -396,7 +415,7 @@ abstract class AbstractItemMediaWriter implements
      *
      * @return string
      */
-    protected function sanitize($value)
+    protected function sanitize(string $value): string
     {
         return preg_replace('#[^A-Za-z0-9\.]#', '_', $value);
     }

@@ -38,10 +38,4 @@ class WrittenFileInfoSpec extends ObjectBehavior
         $this->shouldHaveType(WrittenFileInfo::class);
         $this->isLocalFile()->shouldBe(true);
     }
-
-    function it_can_tell_if_the_file_is_meant_to_be_archived()
-    {
-        $this->beConstructedThrough('fromFileStorage', ['a/b/c/media.png', 'catalogStorage', 'files/media.png', false]);
-        $this->sendToOutputStorage()->shouldBe(false);
-    }
 }

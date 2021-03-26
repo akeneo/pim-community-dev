@@ -13,22 +13,14 @@ namespace Akeneo\Platform;
  */
 class VersionProvider implements VersionProviderInterface
 {
-    /** @var string */
-    private $edition;
+    private string $edition;
+    private string $version;
+    private string $codeName;
 
-    /** @var string */
-    private $version;
-
-    /** @var string */
-    private $codeName;
-
-    /**
-     * @param string $versionClass
-     */
-    public function __construct(string $versionClass)
+    public function __construct(string $versionClass, ?string $edition = null)
     {
         $this->version = constant(sprintf('%s::VERSION', $versionClass));
-        $this->edition = constant(sprintf('%s::EDITION', $versionClass));
+        $this->edition = $edition ?? constant(sprintf('%s::EDITION', $versionClass));
         $this->codeName = constant(sprintf('%s::VERSION_CODENAME', $versionClass));
     }
 
@@ -88,6 +80,6 @@ class VersionProvider implements VersionProviderInterface
      */
     public function isSaaSVersion(): bool
     {
-        return false !== strpos(strtolower($this->getEdition()), 'saas');
+        return false !== strpos(strtolower($this->edition), 'saas');
     }
 }

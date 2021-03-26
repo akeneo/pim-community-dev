@@ -33,6 +33,7 @@ services:
         arguments:
             - '@oneup_flysystem.archivist_filesystem'
             - '@akeneo_batch.job.job_registry'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
         tags:
             - { name: pim_connector.archiver }
 
@@ -42,6 +43,7 @@ services:
             - '@pim_connector.factory.zip_filesystem'
             - '@oneup_flysystem.archivist_filesystem'
             - '@akeneo_batch.job.job_registry'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
         tags:
             - { name: pim_connector.archiver }
 

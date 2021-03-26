@@ -5,31 +5,40 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv\ProductWriter;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\FlatFileHeader;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromAttributeCodesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Platform\VersionProviderInterface;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
+use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
+use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use League\Flysystem\FilesystemInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
 
 class ProductWriterSpec extends ObjectBehavior
 {
-    /** @var Filesystem */
-    private $filesystem;
-
-    /** @var string */
-    private $directory;
+    private string $directory;
+    private Filesystem $filesystem;
 
     function let(
         ArrayConverterInterface $arrayConverter,
@@ -39,11 +48,19 @@ class ProductWriterSpec extends ObjectBehavior
         FileExporterPathGeneratorInterface $fileExporterPath,
         GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes,
         GenerateFlatHeadersFromAttributeCodesInterface $generateHeadersFromAttributeCodes,
-        FlatTranslatorInterface $flatTranslator
+        FlatTranslatorInterface $flatTranslator,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FilesystemProvider $filesystemProvider,
+        FileFetcherInterface $fileFetcher,
+        VersionProviderInterface $versionProvider,
+        FlatItemBuffer $flatRowBuffer,
+        StepExecution $stepExecution
     ) {
         $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spec' . DIRECTORY_SEPARATOR;
         $this->filesystem = new Filesystem();
         $this->filesystem->mkdir($this->directory);
+
+        $bufferFactory->create()->willReturn($flatRowBuffer);
 
         $this->beConstructedWith(
             $arrayConverter,
@@ -54,8 +71,15 @@ class ProductWriterSpec extends ObjectBehavior
             $generateHeadersFromFamilyCodes,
             $generateHeadersFromAttributeCodes,
             $flatTranslator,
+            $fileInfoRepository,
+            $filesystemProvider,
+            $fileFetcher,
+            $versionProvider,
             ['pim_catalog_file', 'pim_catalog_image']
         );
+
+        $stepExecution->getStartTime()->willReturn(\DateTime::createFromFormat('Y-m-d H:i:s', '2021-03-24 16:00:00'));
+        $this->setStepExecution($stepExecution);
     }
 
     function letGo()
@@ -66,347 +90,288 @@ class ProductWriterSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(ProductWriter::class);
+        $this->shouldImplement(ItemWriterInterface::class);
+        $this->shouldImplement(InitializableInterface::class);
+        $this->shouldImplement(FlushableInterface::class);
+        $this->shouldImplement(StepExecutionAwareInterface::class);
+        $this->shouldImplement(ArchivableWriterInterface::class);
     }
 
     function it_prepares_the_export(
-        $arrayConverter,
-        $attributeRepository,
-        $fileExporterPath,
-        $bufferFactory,
+        ArrayConverterInterface $arrayConverter,
+        AttributeRepositoryInterface $attributeRepository,
+        FileExporterPathGeneratorInterface $fileExporterPath,
+        GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes,
         FlatItemBuffer $flatRowBuffer,
+        FileInfoRepositoryInterface $fileInfoRepository,
         StepExecution $stepExecution,
-        JobParameters $jobParameters,
         JobExecution $jobExecution,
-        JobInstance $jobInstance,
-        ExecutionContext $executionContext,
-        GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes
+        FileInfoInterface $fileInfo
     ) {
-        $this->setStepExecution($stepExecution);
+        $jobParameters = new JobParameters(
+            [
+                'withHeader' => true,
+                'filePath' => $this->directory . '%job_label%_product.csv',
+                'with_media' => true,
+                'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],
+            ]
+        );
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $stepExecution->getStartTime()->willReturn(new \DateTime());
-        $jobParameters->has('withHeader')->willReturn(true);
-        $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
-        $jobParameters->has('ui_locale')->willReturn(false);
-        $jobParameters->has('decimalSeparator')->willReturn(false);
-        $jobParameters->has('dateFormat')->willReturn(false);
-        $jobParameters->has('with_media')->willReturn(true);
-        $jobParameters->get('with_media')->willReturn(true);
-        $jobParameters->has('with_label')->willReturn(true);
-        $jobParameters->get('with_label')->willReturn(false);
-        $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
-        $jobParameters->has('selected_properties')->willReturn(false);
-        $generateHeadersFromFamilyCodes->__invoke(["clothes"], "ecommerce", ["fr_FR", "en_US"]);
 
-        $productStandard1 = [
-            'identifier' => 'jackets',
-            'enabled'    => true,
+        $productStandard = [
+            'identifier' => 'jacket',
+            'enabled' => true,
             'categories' => ['2015_clothes', '2016_clothes'],
-            'groups'     => [],
-            'family'     => 'clothes',
-            'values'     => [
-                'sku' => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => 'jackets',
-                    ]
-                ],
-                'description' => [
-                    [
-                        'locale' => 'en_US',
-                        'scope'  => 'ecommerce',
-                        'data'   => 'A wonderful description...',
-                    ],
-                    [
-                        'locale' => 'en_US',
-                        'scope'  => 'mobile',
-                        'data'   => 'Simple description',
-                    ],
-                    [
-                        'locale' => 'fr_FR',
-                        'scope'  => 'ecommerce',
-                        'data'   => 'Une description merveilleuse...',
-                    ],
-                    [
-                        'locale' => 'fr_FR',
-                        'scope'  => 'mobile',
-                        'data'   => 'Une simple description',
-                    ],
-                ],
-                'media' => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        // the file paths are resolved before the conversion to the standard format
-                        'data'   => 'files/jackets/media/it\'s the filename.jpg',
-                    ]
-                ]
-            ]
-        ];
-
-        $productFlat1 = [
-            'enabled'                     => '1',
-            'categories'                  => '2015_clothes, 2016_clothes',
-            'groups'                      => '',
-            'family'                      => 'clothes',
-            'sku'                         => 'jackets',
-            'description-en_US-ecommerce' => 'A wonderful description...',
-            'description-en_US-mobile'    => 'Simple description',
-            'description-fr_FR-ecommerce' => 'Une description merveilleuse...',
-            'description-fr_FR-mobile'    => 'Une simple description',
-            'media'                       => 'files/jackets/media/it\'s the filename.jpg',
-        ];
-
-        $productStandard2 = [
-            'identifier' => 'sweaters',
-            'type'   => 'product',
-            'labels' => [
-                'en_US' => 'Sweaters',
-                'en_GB' => 'Chandails',
-            ],
+            'groups' => [],
+            'family' => 'clothes',
             'values' => [
                 'sku' => [
                     [
                         'locale' => null,
-                        'scope'  => null,
-                        'data'   => 'sweaters'
-                    ]
+                        'scope' => null,
+                        'data' => 'jacket',
+                    ],
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' => 'ecommerce',
+                        'data' => 'A wonderful description...',
+                    ],
                 ],
                 'media' => [
                     [
                         'locale' => null,
-                        'scope'  => null,
-                        'data'   => 'wrong/path',
-                    ]
-                ]
-            ]
+                        'scope' => null,
+                        'data' => 'a/b/c/123456_filename.jpg',
+                    ],
+                ],
+            ],
         ];
-
-        $productFlat2 = [
-            'type'        => 'product',
-            'label-en_US' => 'Sweaters',
-            'label-en_GB' => 'Chandails',
-            'sku'         => 'sweaters',
-            'media'       => 'wrong/path',
-        ];
-
-        $items = [$productStandard1, $productStandard2];
-
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobExecution->getId()->willReturn(100);
-        $jobInstance->getCode()->willReturn('csv_product_export');
-        $jobInstance->getLabel()->willReturn('CSV Product export');
-
-        $jobExecution->getExecutionContext()->willReturn($executionContext);
-        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
-
-        $productPathMedia1 = $this->directory . 'files/jackets/media/';
-        $originalFilename = "it's the filename.jpg";
-
-        $this->filesystem->mkdir($productPathMedia1);
-        $this->filesystem->touch($productPathMedia1 . $originalFilename);
-
-        $bufferFactory->create()->willReturn($flatRowBuffer);
 
         $attributeRepository->getAttributeTypeByCodes(['sku', 'description', 'media'])
-            ->willReturn(['media' => 'pim_catalog_image']);
-        $attributeRepository->getAttributeTypeByCodes(['sku', 'media'])
-            ->willReturn(['media' => 'pim_catalog_image']);
+            ->shouldBeCalled()
+            ->willReturn([
+                'sku' => 'pim_catalog_identifier',
+                'description' => 'pim_catalog_textarea',
+                'media' => 'pim_catalog_image',
+            ]);
+        $fileExporterPath->generate(
+            [
+                'locale' => null,
+                'scope' => null,
+                'data' => 'a/b/c/123456_filename.jpg',
+            ],
+            [
+                'identifier' => 'jacket',
+                'code' => 'media',
+            ]
+        )->shouldBeCalled()->willReturn('files/jacket/media/');
 
-        $fileExporterPath->generate($productStandard1['values']['media'][0], [
-            'identifier' => 'jackets', 'code' => 'media'
-        ])->willReturn('files/jackets/media/');
+        $fileInfo->getOriginalFilename()->willReturn('the file name.jpg');
+        $fileInfo->getKey()->willReturn('a/b/c/123456_filename.jpg');
+        $fileInfo->getStorage()->willReturn('catalogStorage');
+        $fileInfoRepository->findOneByIdentifier('a/b/c/123456_filename.jpg')->shouldBeCalled()->willReturn($fileInfo);
 
-        $fileExporterPath->generate($productStandard2['values']['media'][0], [
-            'identifier' => 'sweaters', 'code' => 'media'
-        ])->willReturn('files/sweaters/media/');
+        $productStandardWithMedia = \array_replace_recursive(
+            $productStandard,
+            [
+                'values' => [
+                    'media' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'files/jacket/media/the file name.jpg',
+                        ],
+                    ],
+                ],
+            ]
+        );
+        $flatProduct = [
+            'identifier' => 'jacket',
+            'enabled' => '1',
+            'categories' => '2015_clothes,2016_clothes',
+            'groups' => '',
+            'family' => 'clothes',
+            'description-en_US-ecommerce' => 'A wonderful description...',
+            'media' => 'files/jacket/media/the file name.jpg',
+        ];
 
-        $productStandard1['values']['media'][0]['data'] = 'files/jackets/media/' . $originalFilename;
-        $arrayConverter->convert($productStandard1, [])->willReturn($productFlat1);
-        $arrayConverter->convert($productStandard2, [])->willReturn($productFlat2);
+        $arrayConverter->convert($productStandardWithMedia, [])->shouldBeCalled()->willReturn($flatProduct);
+        $generateHeadersFromFamilyCodes->__invoke(["clothes"], "ecommerce", ["fr_FR", "en_US"])->shouldBeCalled()
+                                       ->willReturn([]);
 
-        $flatRowBuffer->write([$productFlat1, $productFlat2], ['withHeader' => true])->shouldBeCalled();
+        $flatRowBuffer->write([$flatProduct], ['withHeader' => true])->shouldBeCalled();
 
         $this->initialize();
-        $this->write($items);
+        $this->write([$productStandard]);
 
-        $this->getWrittenFiles()->shouldBeEqualTo([
-            $productPathMedia1 . 'it\'s the filename.jpg' => 'files/jackets/media/it\'s the filename.jpg'
-        ]);
+        $this->getWrittenFiles()->shouldBeLike(
+            [
+                WrittenFileInfo::fromFileStorage(
+                    'a/b/c/123456_filename.jpg',
+                    'catalogStorage',
+                    'files/jacket/media/the file name.jpg'
+                ),
+            ]
+        );
     }
 
-    function it_does_not_export_media_if_option_is_false(
-        $arrayConverter,
-        $attributeRepository,
-        $fileExporterPath,
-        $bufferFactory,
+    function it_does_not_resolve_media_paths_if_option_is_false(
+        ArrayConverterInterface $arrayConverter,
+        AttributeRepositoryInterface $attributeRepository,
+        FileExporterPathGeneratorInterface $fileExporterPath,
+        GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes,
         FlatItemBuffer $flatRowBuffer,
+        FileInfoRepositoryInterface $fileInfoRepository,
         StepExecution $stepExecution,
-        JobParameters $jobParameters,
-        JobExecution $jobExecution,
-        JobInstance $jobInstance,
-        ExecutionContext $executionContext,
-        GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes
+        JobExecution $jobExecution
     ) {
-        $this->setStepExecution($stepExecution);
+        $jobParameters = new JobParameters(
+            [
+                'withHeader' => true,
+                'filePath' => $this->directory . '%job_label%_product.csv',
+                'with_media' => false,
+                'with_label' => false,
+                'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],
+            ]
+        );
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $stepExecution->getStartTime()->willReturn(new \DateTime());
-        $jobParameters->has('withHeader')->willReturn(true);
-        $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
-        $jobParameters->has('ui_locale')->willReturn(false);
-        $jobParameters->has('decimalSeparator')->willReturn(false);
-        $jobParameters->has('dateFormat')->willReturn(false);
-        $jobParameters->has('with_media')->willReturn(true);
-        $jobParameters->get('with_media')->willReturn(false);
-        $jobParameters->has('with_label')->willReturn(true);
-        $jobParameters->get('with_label')->willReturn(false);
-        $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
-        $jobParameters->has('selected_properties')->willReturn(false);
-        $generateHeadersFromFamilyCodes->__invoke(["clothes"], "ecommerce", ["fr_FR", "en_US"]);
+
         $productStandard = [
-            'code'       => 'jackets',
-            'enabled'    => true,
+            'identifier' => 'jacket',
+            'enabled' => true,
             'categories' => ['2015_clothes', '2016_clothes'],
-            'groups'     => [],
-            'family'     => 'clothes',
-            'values'     => [
+            'groups' => [],
+            'family' => 'clothes',
+            'values' => [
                 'sku' => [
                     [
                         'locale' => null,
-                        'scope'  => null,
-                        'data'   => 'jackets'
-                    ]
+                        'scope' => null,
+                        'data' => 'jacket',
+                    ],
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' => 'ecommerce',
+                        'data' => 'A wonderful description...',
+                    ],
                 ],
                 'media' => [
                     [
                         'locale' => null,
-                        'scope'  => null,
-                        // the file paths are resolved before the conversion to the standard format
-                        'data'   => 'files/jackets/media/it\'s the filename.jpg',
-                    ]
-                ]
-            ]
+                        'scope' => null,
+                        'data' => 'a/b/c/123456_filename.jpg',
+                    ],
+                ],
+            ],
         ];
 
-        $productFlat1 = [
-            'code'       => 'jackets',
-            'enabled'    => '1',
-            'categories' => '2015_clothes, 2016_clothes',
-            'groups'     => '',
-            'family'     => 'clothes',
-            'sku--'      => 'jackets',
-            'media--'    => 'a/b/c/d/it_s_the_filename.jpg',
-        ];
-
-        $items = [$productStandard];
-
-        $jobExecution->getExecutionContext()->willReturn($executionContext);
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobInstance->getLabel()->willReturn('CSV Product export');
-        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
-
-        $bufferFactory->create()->willReturn($flatRowBuffer);
-
-        $attributeRepository->getAttributeTypeByCodes(['media'])->shouldNotBeCalled();
+        $attributeRepository->getAttributeTypeByCodes(Argument::any())->shouldNotBeCalled();
         $fileExporterPath->generate(Argument::cetera())->shouldNotBeCalled();
+        $fileInfoRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
+        $flatProduct = [
+            'identifier' => 'jacket',
+            'enabled' => '1',
+            'categories' => '2015_clothes,2016_clothes',
+            'groups' => '',
+            'family' => 'clothes',
+            'description-en_US-ecommerce' => 'A wonderful description...',
+            'media' => 'a/b/c/123456_filename.jpg',
+        ];
 
-        $arrayConverter->convert($productStandard, [])->willReturn($productFlat1);
+        $arrayConverter->convert($productStandard, [])->shouldBeCalled()->willReturn($flatProduct);
+        $generateHeadersFromFamilyCodes->__invoke(["clothes"], "ecommerce", ["fr_FR", "en_US"])->shouldBeCalled()
+                                       ->willReturn([]);
 
-        $flatRowBuffer->write([$productFlat1], ['withHeader' => true])->shouldBeCalled();
+        $flatRowBuffer->write([$flatProduct], ['withHeader' => true])->shouldBeCalled();
 
         $this->initialize();
-        $this->write($items);
+        $this->write([$productStandard]);
 
-        $this->getWrittenFiles()->shouldBeEqualTo([]);
+        $this->getWrittenFiles()->shouldBe([]);
     }
 
     function it_writes_the_csv_file_without_headers(
-        $bufferFactory,
-        $flusher,
+        FlatItemBufferFlusher $flusher,
         FlatItemBuffer $flatRowBuffer,
+        VersionProviderInterface $versionProvider,
         StepExecution $stepExecution,
-        JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         ExecutionContext $executionContext
     ) {
-        $this->setStepExecution($stepExecution);
-
-        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
+        $jobParameters = new JobParameters(
+            [
+                'delimiter' => ';',
+                'enclosure' => '"',
+                'filePath' => $this->directory . '%job_label%_product.csv',
+                'with_label' => false,
+            ]
+        );
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $stepExecution->getStartTime()->willReturn(new \DateTime());
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getLabel()->willReturn('CSV Product export');
         $jobExecution->getExecutionContext()->willReturn($executionContext);
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->has('linesPerFile')->willReturn(false);
-        $jobParameters->get('delimiter')->willReturn(';');
-        $jobParameters->get('enclosure')->willReturn('"');
-        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
-        $jobParameters->has('ui_locale')->willReturn(false);
-        $jobParameters->has('withHeader')->willReturn(false);
-        $jobParameters->has('with_label')->willReturn(true);
-        $jobParameters->get('with_label')->willReturn(false);
 
-        $bufferFactory->create()->willReturn($flatRowBuffer);
-        $flusher->flush(
-            $flatRowBuffer,
-            Argument::type('array'),
-            Argument::type('string'),
-            -1
-        )->willReturn([
-            $this->directory . 'CSV_Product_export_product1.csv',
-            $this->directory . 'CSV_Product_export_product2.csv'
-        ]);
+        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
+        $flusher->flush($flatRowBuffer, Argument::type('array'), Argument::type('string'), -1)
+                ->shouldBeCalled()
+                ->willReturn(
+                    [
+                        $this->directory . 'CSV_Product_export_product.csv',
+                    ]
+                );
+        $versionProvider->isSaaSVersion()->shouldBeCalled()->willReturn(false);
 
         $this->initialize();
         $this->flush();
+
+        $this->getWrittenFiles()->shouldBeLike(
+            [
+                WrittenFileInfo::fromLocalFile(
+                    $this->directory . 'CSV_Product_export_product.csv',
+                    'CSV_Product_export_product.csv'
+                ),
+            ]
+        );
     }
 
     function it_writes_the_csv_file_with_headers(
-        $bufferFactory,
-        $flusher,
-        $generateHeadersFromFamilyCodes,
+        FlatItemBufferFlusher $flusher,
+        GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes,
         FlatItemBuffer $flatRowBuffer,
+        VersionProviderInterface $versionProvider,
         StepExecution $stepExecution,
-        JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         ExecutionContext $executionContext
     ) {
-        $this->setStepExecution($stepExecution);
-
-        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
-
+        $jobParameters = new JobParameters(
+            [
+                'delimiter' => ';',
+                'enclosure' => '"',
+                'filePath' => $this->directory . '%job_label%_product.csv',
+                'withHeader' => true,
+                'with_label' => false,
+                'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],
+            ]
+        );
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $stepExecution->getStartTime()->willReturn(new \DateTime());
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getLabel()->willReturn('CSV Product export');
         $jobExecution->getExecutionContext()->willReturn($executionContext);
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
-
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->has('linesPerFile')->willReturn(false);
-        $jobParameters->get('delimiter')->willReturn(';');
-        $jobParameters->get('enclosure')->willReturn('"');
-        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
-        $jobParameters->has('ui_locale')->willReturn(false);
-        $jobParameters->has('decimalSeparator')->willReturn(false);
-        $jobParameters->has('dateFormat')->willReturn(false);
-        $jobParameters->has('with_media')->willReturn(false);
-        $jobParameters->has('selected_properties')->willReturn(false);
-        $jobParameters->has('withHeader')->willReturn(true);
-        $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->has('with_label')->willReturn(true);
-        $jobParameters->get('with_label')->willReturn(false);
-        $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
 
         $descHeader = new FlatFileHeader(
             "description",
@@ -421,70 +386,68 @@ class ProductWriterSpec extends ObjectBehavior
             ->__invoke(["family_1", "family_2"], 'ecommerce', ['fr_FR', 'en_US'])
             ->willReturn([$descHeader, $nameHeader, $brandHeader]);
 
-
-        $bufferFactory->create()->willReturn($flatRowBuffer);
-        $flusher->flush(
-            $flatRowBuffer,
-            Argument::type('array'),
-            Argument::type('string'),
-            -1
-        )->willReturn([
-            $this->directory . 'CSV_Product_export_product1.csv',
-            $this->directory . 'CSV_Product_export_product2.csv'
-        ]);
+        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
+        $flusher->flush($flatRowBuffer, Argument::type('array'), Argument::type('string'), -1)
+                ->shouldBeCalled()
+                ->willReturn(
+                    [
+                        $this->directory . 'CSV_Product_export_product.csv',
+                    ]
+                );
+        $versionProvider->isSaaSVersion()->shouldBeCalled()->willReturn(false);
 
         $this->initialize();
-        $this->write([
+        $this->write(
             [
-                'sku' => 'sku-01',
-                'family' => 'family_1'
-            ],
-            [
-                'sku' => 'sku-02',
-                'family' => 'family_2'
+                [
+                    'sku' => 'sku-01',
+                    'family' => 'family_1',
+                ],
+                [
+                    'sku' => 'sku-02',
+                    'family' => 'family_2',
+                ],
             ]
-        ]);
+        );
         $this->flush();
+
+        $this->getWrittenFiles()->shouldBeLike(
+            [
+                WrittenFileInfo::fromLocalFile(
+                    $this->directory . 'CSV_Product_export_product.csv',
+                    'CSV_Product_export_product.csv'
+                ),
+            ]
+        );
     }
 
     function it_writes_the_csv_file_with_headers_and_selected_attributes(
-        $bufferFactory,
-        $flusher,
-        $generateHeadersFromAttributeCodes,
+        FlatItemBufferFlusher $flusher,
+        GenerateFlatHeadersFromAttributeCodesInterface $generateHeadersFromAttributeCodes,
         FlatItemBuffer $flatRowBuffer,
+        VersionProviderInterface $versionProvider,
         StepExecution $stepExecution,
-        JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         ExecutionContext $executionContext
     ) {
-        $this->setStepExecution($stepExecution);
-
-        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
-
+        $jobParameters = new JobParameters(
+            [
+                'delimiter' => ';',
+                'enclosure' => '"',
+                'filePath' => $this->directory . '%job_label%_product.csv',
+                'withHeader' => true,
+                'with_label' => false,
+                'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],
+                'selected_properties' => ['name', 'description'],
+            ]
+        );
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $stepExecution->getStartTime()->willReturn(new \DateTime());
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getLabel()->willReturn('CSV Product export');
         $jobExecution->getExecutionContext()->willReturn($executionContext);
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
-
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->has('linesPerFile')->willReturn(false);
-        $jobParameters->get('delimiter')->willReturn(';');
-        $jobParameters->get('enclosure')->willReturn('"');
-        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
-        $jobParameters->has('ui_locale')->willReturn(false);
-        $jobParameters->has('decimalSeparator')->willReturn(false);
-        $jobParameters->has('dateFormat')->willReturn(false);
-        $jobParameters->has('with_media')->willReturn(false);
-        $jobParameters->has('selected_properties')->willReturn(true);
-        $jobParameters->get('selected_properties')->willReturn(['name', 'description']);
-        $jobParameters->has('withHeader')->willReturn(true);
-        $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->has('with_label')->willReturn(true);
-        $jobParameters->get('with_label')->willReturn(false);
-        $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
 
         $descHeader = new FlatFileHeader(
             "description",
@@ -498,130 +461,109 @@ class ProductWriterSpec extends ObjectBehavior
             ->__invoke(["name", "description"], 'ecommerce', ['fr_FR', 'en_US'])
             ->willReturn([$nameHeader, $descHeader]);
 
-        $bufferFactory->create()->willReturn($flatRowBuffer);
-        $flusher->flush(
-            $flatRowBuffer,
-            Argument::type('array'),
-            Argument::type('string'),
-            -1
-        )->willReturn([
-            $this->directory . 'CSV_Product_export_product1.csv',
-            $this->directory . 'CSV_Product_export_product2.csv'
-        ]);
+        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
+        $flusher->flush($flatRowBuffer, Argument::type('array'), Argument::type('string'), -1)
+                ->shouldBeCalled()
+                ->willReturn(
+                    [
+                        $this->directory . 'CSV_Product_export_product.csv',
+                    ]
+                );
+        $versionProvider->isSaaSVersion()->shouldBeCalled()->willReturn(false);
 
         $this->initialize();
-        $this->write([
+        $this->write(
             [
-                'sku' => 'sku-01',
-                'family' => 'family_1'
-            ],
-            [
-                'sku' => 'sku-02',
-                'family' => 'family_2'
+                [
+                    'sku' => 'sku-01',
+                    'family' => 'family_1',
+                ],
+                [
+                    'sku' => 'sku-02',
+                    'family' => 'family_2',
+                ],
             ]
-        ]);
+        );
         $this->flush();
     }
 
     function it_writes_the_csv_file_with_label(
-        $bufferFactory,
-        JobExecution $jobExecution,
-        JobParameters $jobParameters,
-        StepExecution $stepExecution,
-        JobInstance $jobInstance,
-        ExecutionContext $executionContext,
         ArrayConverterInterface $arrayConverter,
         FlatTranslatorInterface $flatTranslator,
-        FlatItemBuffer $flatRowBuffer
+        FlatItemBuffer $flatRowBuffer,
+        GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes,
+        JobExecution $jobExecution,
+        StepExecution $stepExecution,
+        JobInstance $jobInstance,
+        ExecutionContext $executionContext
     ) {
-        $this->setStepExecution($stepExecution);
-
+        $jobParameters = new JobParameters(
+            [
+                'filePath' => $this->directory . '%job_label%_product.csv',
+                'withHeader' => true,
+                'with_label' => true,
+                'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],
+                'file_locale' => 'fr_FR',
+                'header_with_label' => true,
+            ]
+        );
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $stepExecution->getStartTime()->willReturn(new \DateTime());
-
         $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $jobInstance->getLabel()->willReturn('CSV Product export');
         $jobExecution->getJobInstance()->willReturn($jobInstance);
-
-        $bufferFactory->create()->willReturn($flatRowBuffer);
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
-
-        $jobParameters->has('decimalSeparator')->willReturn(false);
-        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
-        $jobParameters->has('ui_locale')->willReturn(false);
-        $jobParameters->has('dateFormat')->willReturn(false);
-        $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->has('with_media')->willReturn(false);
-        $jobParameters->has('withHeader')->willReturn(false);
-        $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
-
-        $jobParameters->has('with_label')->willReturn(true);
-        $jobParameters->get('with_label')->willReturn(true);
-        $jobParameters->has('file_locale')->willReturn(true);
-        $jobParameters->get('file_locale')->willReturn('fr_FR');
-        $jobParameters->has('header_with_label')->willReturn(true);
-        $jobParameters->get('header_with_label')->willReturn(true);
 
         $productStandard1 = [
             'identifier' => 'jackets',
-            'enabled'    => true,
+            'enabled' => true,
             'categories' => ['2015_clothes', '2016_clothes'],
-            'groups'     => [],
-            'family'     => 'clothes',
-            'values'     => [
+            'groups' => [],
+            'family' => 'clothes',
+            'values' => [
                 'sku' => [
                     [
                         'locale' => null,
-                        'scope'  => null,
-                        'data'   => 'jackets',
-                    ]
+                        'scope' => null,
+                        'data' => 'jackets',
+                    ],
                 ],
                 'description' => [
                     [
                         'locale' => 'en_US',
-                        'scope'  => 'ecommerce',
-                        'data'   => 'A wonderful description...',
+                        'scope' => 'ecommerce',
+                        'data' => 'A wonderful description...',
                     ],
                     [
                         'locale' => 'en_US',
-                        'scope'  => 'mobile',
-                        'data'   => 'Simple description',
+                        'scope' => 'mobile',
+                        'data' => 'Simple description',
                     ],
                     [
                         'locale' => 'fr_FR',
-                        'scope'  => 'ecommerce',
-                        'data'   => 'Une description merveilleuse...',
+                        'scope' => 'ecommerce',
+                        'data' => 'Une description merveilleuse...',
                     ],
                     [
                         'locale' => 'fr_FR',
-                        'scope'  => 'mobile',
-                        'data'   => 'Une simple description',
+                        'scope' => 'mobile',
+                        'data' => 'Une simple description',
                     ],
                 ],
-                'media' => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        // the file paths are resolved before the conversion to the standard format
-                        'data'   => 'files/jackets/media/it\'s the filename.jpg',
-                    ]
-                ]
-            ]
+            ],
         ];
 
         $productFlat1 = [
-            'enabled'                     => '1',
-            'categories'                  => '2015_clothes, 2016_clothes',
-            'groups'                      => '',
-            'family'                      => 'clothes',
-            'sku'                         => 'jackets',
+            'enabled' => '1',
+            'categories' => '2015_clothes, 2016_clothes',
+            'groups' => '',
+            'family' => 'clothes',
+            'sku' => 'jackets',
             'description-en_US-ecommerce' => 'A wonderful description...',
-            'description-en_US-mobile'    => 'Simple description',
+            'description-en_US-mobile' => 'Simple description',
             'description-fr_FR-ecommerce' => 'Une description merveilleuse...',
-            'description-fr_FR-mobile'    => 'Une simple description',
-            'media'                       => 'files/jackets/media/it\'s the filename.jpg',
+            'description-fr_FR-mobile' => 'Une simple description',
         ];
-
         $arrayConverter->convert($productStandard1, [])->willReturn($productFlat1);
 
         $productStandard2 = [
@@ -634,32 +576,57 @@ class ProductWriterSpec extends ObjectBehavior
                 'sku' => [
                     [
                         'locale' => null,
-                        'scope'  => null,
-                        'data'   => 'sweaters'
-                    ]
+                        'scope' => null,
+                        'data' => 'sweaters',
+                    ],
                 ],
                 'media' => [
                     [
                         'locale' => null,
-                        'scope'  => null,
-                        'data'   => 'wrong/path',
-                    ]
-                ]
-            ]
+                        'scope' => null,
+                        'data' => 'wrong/path',
+                    ],
+                ],
+            ],
         ];
+        $generateHeadersFromFamilyCodes->__invoke(["clothes"], 'ecommerce', ['fr_FR', 'en_US'])->willReturn([]);
 
         $productFlat2 = [
             'label-en_US' => 'Sweaters',
             'label-fr_FR' => 'Chandails',
-            'sku'         => 'sweaters',
-            'media'       => 'wrong/path',
+            'sku' => 'sweaters',
+            'media' => 'wrong/path',
         ];
 
         $arrayConverter->convert($productStandard2, [])->willReturn($productFlat2);
         $flatTranslator
             ->translate([$productFlat1, $productFlat2], 'fr_FR', 'ecommerce', true)
             ->shouldBeCalled()
-            ->willReturn([
+            ->willReturn(
+                [
+                    [
+                        'Activé' => 'Oui',
+                        'Catégories' => 'Vêtements 2015, Vêtements 2016',
+                        'Groupes' => '',
+                        'Famille' => 'Vêtements',
+                        'Sku' => 'jackets',
+                        'Description (Anglais, ecommerce)' => 'A wonderful description...',
+                        'Description (Anglais, mobile)' => 'Simple description',
+                        'Description (Français, ecommerce)' => 'Une description merveilleuse...',
+                        'Description (Francais, mobile)' => 'Une simple description',
+                        'Média' => 'files/jackets/media/it\'s the filename.jpg',
+                    ],
+                    [
+                        'Nom (Anglais)' => 'Sweaters',
+                        'Nom (Français)' => 'Chandails',
+                        'Sku' => 'sweaters',
+                        'Média' => 'wrong/path',
+                    ],
+                ]
+            );
+
+        $flatRowBuffer->write(
+            [
                 [
                     'Activé' => 'Oui',
                     'Catégories' => 'Vêtements 2015, Vêtements 2016',
@@ -677,71 +644,129 @@ class ProductWriterSpec extends ObjectBehavior
                     'Nom (Français)' => 'Chandails',
                     'Sku' => 'sweaters',
                     'Média' => 'wrong/path',
-                ]
-        ]);
-
-        $flatRowBuffer->write([
-            [
-                'Activé' => 'Oui',
-                'Catégories' => 'Vêtements 2015, Vêtements 2016',
-                'Groupes' => '',
-                'Famille' => 'Vêtements',
-                'Sku' => 'jackets',
-                'Description (Anglais, ecommerce)' => 'A wonderful description...',
-                'Description (Anglais, mobile)' => 'Simple description',
-                'Description (Français, ecommerce)' => 'Une description merveilleuse...',
-                'Description (Francais, mobile)' => 'Une simple description',
-                'Média' => 'files/jackets/media/it\'s the filename.jpg',
+                ],
             ],
-            [
-                'Nom (Anglais)' => 'Sweaters',
-                'Nom (Français)' => 'Chandails',
-                'Sku' => 'sweaters',
-                'Média' => 'wrong/path',
-            ]
-        ], ["withHeader" => true])->shouldBeCalled();
+            ["withHeader" => true]
+        )->shouldBeCalled();
         $this->initialize();
         $this->write([$productStandard1, $productStandard2]);
     }
 
-    function it_does_not_add_selected_attributes_in_headers_if_there_is_no_content(
-        $bufferFactory,
-        $generateHeadersFromAttributeCodes,
+    function it_fetches_media_files_into_the_output_directory(
+        ArrayConverterInterface $arrayConverter,
+        AttributeRepositoryInterface $attributeRepository,
+        FileExporterPathGeneratorInterface $fileExporterPath,
         FlatItemBuffer $flatRowBuffer,
+        FlatItemBufferFlusher $flusher,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FilesystemProvider $filesystemProvider,
+        FileFetcherInterface $fileFetcher,
+        VersionProviderInterface $versionProvider,
         StepExecution $stepExecution,
-        JobParameters $jobParameters,
         JobExecution $jobExecution,
-        JobInstance $jobInstance,
-        ExecutionContext $executionContext
+        FilesystemInterface $filesystem,
+        FileInfoInterface $fileInfo
     ) {
-        $this->setStepExecution($stepExecution);
-
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $stepExecution->getStartTime()->willReturn(new \DateTime());
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobInstance->getLabel()->willReturn('CSV Product export');
-        $jobExecution->getExecutionContext()->willReturn($executionContext);
-        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
-
+        $jobParameters = new JobParameters(
+            [
+                'delimiter' => ';',
+                'enclosure' => '"',
+                'withHeader' => true,
+                'filePath' => $this->directory . '%job_label%_product.csv',
+                'with_media' => true,
+                'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],
+            ]
+        );
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->has('decimalSeparator')->willReturn(false);
-        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
-        $jobParameters->has('ui_locale')->willReturn(false);
-        $jobParameters->has('dateFormat')->willReturn(false);
-        $jobParameters->has('withHeader')->willReturn(true);
-        $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->has('with_label')->willReturn(true);
-        $jobParameters->get('with_label')->willReturn(false);
-        $jobParameters->has('with_media')->willReturn(false);
-        $jobParameters->has('selected_properties')->willReturn(false);
-        $jobParameters->get('filters')->willReturn(['structure' => ['scope' => 'ecommerce', 'locales' => ['en_US']]]);
-        $generateHeadersFromAttributeCodes
-            ->__invoke(Argument::cetera())
-            ->shouldNotBeCalled();
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $productStandard = [
+            'identifier' => 'jacket',
+            'values' => [
+                'media' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'a/b/c/123456_filename.jpg',
+                    ],
+                ],
+            ],
+        ];
+
+        $attributeRepository->getAttributeTypeByCodes(['media'])->shouldBeCalled()
+            ->willReturn(['media' => 'pim_catalog_image']);
+        $fileExporterPath->generate(
+            [
+                'locale' => null,
+                'scope' => null,
+                'data' => 'a/b/c/123456_filename.jpg',
+            ],
+            [
+                'identifier' => 'jacket',
+                'code' => 'media',
+            ]
+        )->shouldBeCalled()->willReturn('files/jacket/media/');
+
+        $fileInfo->getOriginalFilename()->willReturn('the file name.jpg');
+        $fileInfo->getKey()->willReturn('a/b/c/123456_filename.jpg');
+        $fileInfo->getStorage()->willReturn('catalogStorage');
+        $fileInfoRepository->findOneByIdentifier('a/b/c/123456_filename.jpg')->shouldBeCalled()->willReturn($fileInfo);
+        $productStandardWithMedia = \array_replace_recursive(
+            $productStandard,
+            [
+                'values' => [
+                    'media' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'files/jacket/media/the file name.jpg',
+                        ],
+                    ],
+                ],
+            ]
+        );
+        $flatProduct = [
+            'identifier' => 'jacket',
+            'enabled' => '1',
+            'categories' => '2015_clothes,2016_clothes',
+            'groups' => '',
+            'family' => 'clothes',
+            'description-en_US-ecommerce' => 'A wonderful description...',
+            'media' => 'files/jacket/media/the file name.jpg',
+        ];
+
+        $arrayConverter->convert($productStandardWithMedia, [])->shouldBeCalled()->willReturn($flatProduct);
+
+        $flatRowBuffer->write([$flatProduct], ['withHeader' => true])->shouldBeCalled();
 
         $this->initialize();
-        $this->write([]);
+        $this->write([$productStandard]);
+
+        $this->getWrittenFiles()->shouldBeLike(
+            [
+                WrittenFileInfo::fromFileStorage(
+                    'a/b/c/123456_filename.jpg',
+                    'catalogStorage',
+                    'files/jacket/media/the file name.jpg'
+                ),
+            ]
+        );
+
+        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
+        $flusher->flush($flatRowBuffer, Argument::type('array'), Argument::type('string'), -1)
+                ->shouldBeCalled()
+                ->willReturn([$this->directory . 'CSV_Product_export_product.csv']);
+        $versionProvider->isSaaSVersion()->shouldBeCalled()->willReturn(false);
+        $filesystemProvider->getFilesystem('catalogStorage')->shouldBeCalled()->willReturn($filesystem);
+        $fileFetcher->fetch(
+            $filesystem,
+            'a/b/c/123456_filename.jpg',
+            [
+                'filePath' => $this->directory . 'files/jacket/media',
+                'filename' => 'the file name.jpg',
+            ]
+        )->shouldBeCalled();
+
+        $this->flush();
     }
 }
