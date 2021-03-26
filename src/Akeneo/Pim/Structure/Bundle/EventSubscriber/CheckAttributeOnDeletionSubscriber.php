@@ -21,8 +21,7 @@ class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
 
     public function __construct(
         Connection $dbConnection
-    )
-    {
+    ) {
         $this->dbConnection = $dbConnection;
     }
 
@@ -73,14 +72,14 @@ class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
         }
         $attributes = array_filter(
             $attributes,
-            fn($attr): bool => $attr instanceof AttributeInterface
+            fn ($attr): bool => $attr instanceof AttributeInterface
         );
         if ([] === $attributes) {
             return;
         }
 
         $attributeIds = array_map(
-            fn(AttributeInterface $attr):int => $attr->getId(),
+            fn (AttributeInterface $attr):int => $attr->getId(),
             $attributes
         );
 
