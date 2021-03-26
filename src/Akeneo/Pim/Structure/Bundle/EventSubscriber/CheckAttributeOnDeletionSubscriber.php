@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
-use Akeneo\Pim\Structure\Component\Exception\AttributeAsLabelException;
+use Akeneo\Pim\Structure\Component\Exception\AttributeRemovalException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -21,7 +21,8 @@ class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
 
     public function __construct(
         Connection $dbConnection
-    ) {
+    )
+    {
         $this->dbConnection = $dbConnection;
     }
 
@@ -32,6 +33,7 @@ class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
     {
         return [
             StorageEvents::PRE_REMOVE => 'preRemove',
+            StorageEvents::PRE_REMOVE_ALL => 'bulkPreRemove',
         ];
     }
 
@@ -39,7 +41,7 @@ class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
      * Check if the attribute is used as label by any family
      *
      * @param RemoveEvent $event
-     * @throws AttributeAsLabelException
+     * @throws AttributeRemovalException
      */
     public function preRemove(RemoveEvent $event)
     {
@@ -51,24 +53,19 @@ class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $families = $this->getFamiliesWhoseAttributeAsLabelIsTheSameAsTheOneAffectedByTheDeletion($event);
+        if ($this->areAttributesUsedAsLabelInAFamily([$attribute->getId()])) {
+            $message = 'Attributes used as labels in a family cannot be removed.';
 
-        foreach($families as $family) {
-            if ($attribute === $family['attribute_as_label']) {
-                $message = sprintf(
-                    'Attributes used as labels in a family cannot be removed.'
-                );
-
-                throw new AttributeAsLabelException($message);
-            }
+            throw new AttributeRemovalException($message);
         }
     }
+
 
     /**
      * Check if the attributes are used as label by any family
      *
      * @param RemoveEvent $event
-     * @throws AttributeAsLabelException
+     * @throws AttributeRemovalException
      */
     public function bulkPreRemove(RemoveEvent $event)
     {
@@ -85,38 +82,37 @@ class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $families = $this->getFamiliesWhoseAttributeAsLabelIsTheSameAsTheOneAffectedByTheDeletion($event);
+        $attributeIds = array_map(
+            fn(AttributeInterface $attr):int => $attr->getId(),
+            $attributes
+        );
 
-        foreach ($attributes as $attribute) {
-            foreach($families as $family) {
-                var_dump($family);
-                if ($attribute === $family['attribute_as_label']) {
-                    $message = sprintf(
-                        'Attributes used as labels in a family cannot be removed.'
-                    );
+        if ($this->areAttributesUsedAsLabelInAFamily($attributeIds)) {
+            $message = 'Attributes used as labels in a family cannot be removed.';
 
-                    throw new AttributeAsLabelException($message);
-                }
-            }
+            throw new AttributeRemovalException($message);
         }
     }
 
-
-        private function getFamiliesWhoseAttributeAsLabelIsTheSameAsTheOneAffectedByTheDeletion(RemoveEvent $event): array
+    private function areAttributesUsedAsLabelInAFamily(array $attributeIds): bool
     {
-
-        $attribute = $event->getSubject();
         $sql = <<<SQL
-SELECT id, label_attribute_id
-FROM pim_catalog_family
-WHERE label_attribute_id = :attribute_id;
+SELECT EXISTS(
+    SELECT * FROM pim_catalog_family
+    WHERE label_attribute_id IN (:attributeIds)
+)
 SQL;
 
-        return $this->dbConnection->executeQuery(
+        $result = $this->dbConnection->executeQuery(
             $sql,
             [
-                'attribute_id' => $attribute->getId()
+                'attributeIds' => $attributeIds
+            ],
+            [
+                'attributeIds' => Connection::PARAM_INT_ARRAY
             ]
-        );
+        )->fetchColumn();
+
+        return (bool)$result;
     }
 }
