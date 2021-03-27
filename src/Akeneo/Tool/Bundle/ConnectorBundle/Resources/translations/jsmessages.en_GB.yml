@@ -2,8 +2,10 @@
 batch_jobs:
   default_steps:
     export: Export
+    import: Import
     validation: File validation
     import_associations: Association import
+    import_model_associations: Association import
     import_root_product_model: Root product model import
     import_sub_product_model: Sub product model import
     compute_data_related_to_family_root_product_models: Compute root product models data
@@ -44,6 +46,15 @@ batch_jobs:
   csv_family_variant_export:
     label: Family variant export in CSV
     export.label: Family variant export
+  csv_user_group_export:
+    label: User group export in CSV
+    export.label: User group export
+  csv_user_role_export:
+    label: User role export in CSV
+    export.label: User role export
+  csv_user_export:
+    label: User export in CSV
+    export.label: User export
   csv_product_import:
     label: Product import in CSV
     import.label: Product import
@@ -84,6 +95,15 @@ batch_jobs:
   csv_group_type_import:
     label: Group type import in CSV
     import.label: Group type import
+  csv_user_group_import:
+    label: User group import in CSV
+    import.label: User group import
+  csv_user_import:
+    label: User import in CSV
+    import.label: User import
+  csv_user_role_import:
+    label: User role import in CSV
+    import.label: User role import
   xlsx_category_import:
     label: Category import in XLSX
     import.label: Category import
@@ -144,9 +164,27 @@ batch_jobs:
   xlsx_group_type_export:
     label: Group type export in XLSX
     export.label: Group type export
+  xlsx_user_group_export:
+    label: User group export in XLSX
+    export.label: User group export
+  xlsx_user_role_export:
+    label: User role export in XLSX
+    export.label: User role export
+  xlsx_user_export:
+    label: User export in XLSX
+    export.label: User export
   xlsx_attribute_group_import:
     label: Attribute group import in XLSX
     import.label: Attribute group import
   xlsx_group_type_import:
     label: Group type import in XLSX
     import.label: Group type import
+  xlsx_user_group_import:
+    label: User group import in XLSX
+    import.label: User group import
+  xlsx_user_import:
+    label: User import in XLSX
+    import.label: User import
+  xlsx_user_role_import:
+    label: User role import in XLSX
+    import.label: User role import
