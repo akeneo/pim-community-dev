@@ -86,6 +86,9 @@ akeneo_data_quality_insights:
     filter_label:
       spelling_quality: Spelling quality
   dictionary:
+    helper:
+      content: The dictionary allows you to register words that will be ignored by Data Quality Insights.
+      link_label: More info on our helpcenter.
     words: Words
     searchPlaceholder: Search a word
     add_words: Add words here
@@ -95,3 +98,21 @@ akeneo_data_quality_insights:
     no_data:
       title: No words yet
       subtitle: Add the first one above, click on "Add" or press Enter.
+pimee_enrich.entity.locale:
+  grid:
+    columns:
+      dictionary_words_count:
+        title: Number of words
+        label: "]-Inf, 1]{{ count }} word|]1, Inf[{{ count }} words"
+        not_available: Not available
+    add_words: Add words
+    items_selected: "{1}1 item selected|[2, Inf[{{ count }} items selected"
+    modal:
+      title: Add words to {{ count }} locales
+      subtitle: Type your words below. They will be added to all the selected locales.
+      locales_added_notification:
+        title: Words added to {{ count }} locales
+        content: The new words have been added to the dictionaries of selected locales.
+      no_supported_locales:
+        title: The selected locales cannot be spell-checked by Data Quality Insights.
+        content: To know the list of supported locales, please check our <a href="{{ link }}" target="_blank">Help Center</a>
