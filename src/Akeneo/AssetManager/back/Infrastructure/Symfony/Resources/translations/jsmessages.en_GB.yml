@@ -10,6 +10,7 @@ pim_asset_manager:
         message: Sorry, we do not display this embed item but it will be correctly saved
   result_counter: '{0} No result|{1} {{ count }} result|]1,Inf] {{ count }} results'
   asset_counter: '{0} No asset|{1} {{ count }} asset|]1,Inf] {{ count }} assets'
+  asset_selected: '{0} {{ assetCount }} asset selected|{1} {{ assetCount }} asset selected|]1,Inf] {{ assetCount }} assets selected'
   asset_collection:
     add_asset: 'Add asset'
     upload_asset: 'Upload asset'
@@ -133,17 +134,15 @@ pim_asset_manager:
       product_link_rules: Product link rules
     transformations:
       help:
-        title: 'Welcome to your new asset management area!'
-        description: 'You can define here up to 10 transformations by asset family.'
-        link: 'If you want to dig into the new Asset Manager transformations, click here'
+        description: Here you can define here up to 10 transformations by asset family.
+        link: If you want to dig into the asset transformations, click here.
       subsection: 'Transformation properties'
     product_link_rules:
       naming_convention_subsection: 'Naming convention properties'
       product_link_rules_subsection: 'Product link rules properties'
       help:
-        title: 'Welcome to your new asset management area!'
-        description: 'You can define here up to 2 product link rules by asset family.'
-        link: 'If you want to dig into the Product Link Rules feature, click here'
+        description: 'Here, you can define up to 2 product link rules for each asset family.'
+        link: 'If you want to dig into the Product Link Rules feature, click here.'
       execute_rules:
         confirm_title: Confirm execution
         confirm_content: Are you sure you want to execute all the rules? (It can take a while)
@@ -154,6 +153,10 @@ pim_asset_manager:
         confirm_content: Are you sure you want to execute the naming convention? (this could take a long time)
         execute_naming_convention: Execute naming convention
         cancel: Cancel
+    naming_convention:
+      help:
+        description: Here is where you can define naming convention properties.
+        link: Learn everything you need to know about their format.
     properties:
       title: Asset family properties
       identifier: Code
@@ -245,6 +248,7 @@ pim_asset_manager:
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
         should_be_unique: 'This code already exists for another asset.'
+      server_error: 'An error occured during the creation of the asset'
     no_data:
       title: There is no asset for {{ entityLabel }}
       subtitle: Click on the button "Add new" to create the first asset
@@ -339,6 +343,9 @@ pim_asset_manager:
     delete_all:
       confirm: Are you sure you want to delete all "{{ entityIdentifier }}" assets? If they are linked to products, the links to the products will be removed.
     mass_delete:
+      confirm: '[0,1]Are you sure you want to delete the {{ assetCount }} selected asset?|]1,Inf]Are you sure you want to delete the {{ assetCount }} selected assets?'
+      extra_information: If they are linked to products, the links to the products will be removed.
+      confirm_label: Please type "{{ assetFamilyIdentifier }}"
       title: Assets
     grid:
       search: Search on label, code and text attributes
@@ -384,6 +391,9 @@ pim_asset_manager:
       delete_all:
         success: All "{{ entityIdentifier }}" assets successfully deleted.
         fail: An error occurred during the deletion of all this asset family's assets
+      mass_delete:
+        success: The bulk action "Mass delete" has been launched. You will be notified when it is completed.
+        fail: "Error occured during mass delete job launching: {{ error }}"
       execute_naming_convention:
         success: Naming convention successfully executed
         fail: An error occurred during the execution of the naming convention
@@ -553,9 +563,13 @@ pim_datagrid:
   cells:
     type:
       asset_manager_execute_naming_convention: Execute Asset Family naming convention
+      asset_manager_mass_delete_assets: Execute Asset mass delete
 batch_jobs:
   default_steps:
     execute_naming_convention: Execute Asset Family naming convention
+    mass_delete_assets: Execute Asset mass delete
+    link_assets_to_products: Link assets to products
 job_execution:
   summary:
     assets: Assets
+pim_notification.types.asset_manager_mass_delete_assets: Mass delete assets
