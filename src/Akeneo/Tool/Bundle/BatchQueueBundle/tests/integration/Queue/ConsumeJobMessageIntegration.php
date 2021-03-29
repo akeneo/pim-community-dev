@@ -42,7 +42,7 @@ class ConsumeJobMessageIntegration extends TestCase
     {
         $jobExecution = $this->createJobExecutionInQueue('csv_product_export');
 
-        $this->jobLauncher->launchConsumerOnceUsingMessenger();
+        $this->jobLauncher->launchConsumerOnce();
 
         $row = $this->getJobExecutionDatabaseRow($jobExecution);
 
@@ -66,7 +66,7 @@ class ConsumeJobMessageIntegration extends TestCase
 
         $this->getQueue()->publish($jobExecutionMessage);
 
-        $daemonProcess = $this->jobLauncher->launchConsumerOnceInBackgroundUsingMessenger();
+        $daemonProcess = $this->jobLauncher->launchConsumerOnceInBackground();
 
         $jobExecutionProcessPid = $this->getJobExecutionProcessPid($daemonProcess);
 
@@ -93,7 +93,7 @@ class ConsumeJobMessageIntegration extends TestCase
     {
         $jobExecution = $this->createJobExecutionInQueue('infinite_loop_job');
 
-        $daemonProcess = $this->jobLauncher->launchConsumerOnceInBackgroundUsingMessenger(5);
+        $daemonProcess = $this->jobLauncher->launchConsumerOnceInBackground(5);
 
         $jobExecutionProcessPid = $this->getJobExecutionProcessPid($daemonProcess);
 
