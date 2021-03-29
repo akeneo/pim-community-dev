@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9766: Prevent letter usage in grid Number filters
+
 # 4.0.101 (2021-03-29)
 
 # 4.0.100 (2021-03-26)
