@@ -87,7 +87,7 @@ abstract class AbstractMetric implements MetricInterface
      */
     public function isEqual(MetricInterface $metric)
     {
-        return $metric->getData() === $this->data && $metric->getUnit() === $this->unit;
+        return (float) $metric->getData() === (float) $this->data && $metric->getUnit() === $this->unit;
     }
 
     /**

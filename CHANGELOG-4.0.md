@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9774: Fix variant axis 'metric' validation on import.
+
 # 4.0.101 (2021-03-29)
 
 # 4.0.100 (2021-03-26)
