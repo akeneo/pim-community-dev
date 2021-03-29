@@ -101,14 +101,19 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
             );
 
             try {
+                $stream = null;
                 if ($fileToArchive->isLocalFile()) {
-                    $this->filesystem->write($archivedFilePath, $fileToArchive->sourceKey());
+                    $stream = \fopen($fileToArchive->sourceKey(), 'r');
                 } else {
-                    $sourceFilesystem = $this->filesystemProvider->getFilesystem($fileToArchive->sourceStorage());
-                    $this->filesystem->writeStream(
-                        $archivedFilePath,
-                        $sourceFilesystem->readStream($fileToArchive->sourceKey())
+                    $stream = $this->filesystemProvider->getFilesystem($fileToArchive->sourceStorage())->readStream(
+                        $fileToArchive->sourceKey()
                     );
+                }
+                if ($stream) {
+                    $this->filesystem->putStream($archivedFilePath, $stream);
+                }
+                if (\is_resource($stream)) {
+                    \fclose($stream);
                 }
             } catch (FileNotFoundException $e) {
                 // TODO: log?

@@ -17,6 +17,7 @@ use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -304,24 +305,28 @@ abstract class AbstractItemMediaWriter implements
                         $paths = [];
                         foreach ($value['paths'] as $fileKey) {
                             $fileInfo = $this->fileInfoRepository->findOneByIdentifier($fileKey);
+                            if ($fileInfo instanceof FileInfoInterface) {
+                                $filepath = $exportDirectory . $fileInfo->getOriginalFilename();
+                                $paths[] = $filepath;
+                                $this->writtenFiles[] = WrittenFileInfo::fromFileStorage(
+                                    $fileInfo->getKey(),
+                                    $fileInfo->getStorage(),
+                                    $filepath
+                                );
+                            }
+                        }
+                        $item['values'][$attributeCode][$index]['paths'] = $paths;
+                    } else {
+                        $fileInfo = $this->fileInfoRepository->findOneByIdentifier($value['data']);
+                        if ($fileInfo instanceof FileInfoInterface) {
                             $filepath = $exportDirectory . $fileInfo->getOriginalFilename();
-                            $paths[] = $filepath;
+                            $item['values'][$attributeCode][$index]['data'] = $filepath;
                             $this->writtenFiles[] = WrittenFileInfo::fromFileStorage(
                                 $fileInfo->getKey(),
                                 $fileInfo->getStorage(),
                                 $filepath
                             );
                         }
-                        $item['values'][$attributeCode][$index]['paths'] = $paths;
-                    } else {
-                        $fileInfo = $this->fileInfoRepository->findOneByIdentifier($value['data']);
-                        $filepath = $exportDirectory . $fileInfo->getOriginalFilename();
-                        $item['values'][$attributeCode][$index]['data'] = $filepath;
-                        $this->writtenFiles[] = WrittenFileInfo::fromFileStorage(
-                            $fileInfo->getKey(),
-                            $fileInfo->getStorage(),
-                            $filepath
-                        );
                     }
                 }
             }

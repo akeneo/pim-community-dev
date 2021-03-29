@@ -13,6 +13,7 @@ use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Akeneo\UserManagement\Component\Connector\Writer\File\XlsxUserWriter;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Filesystem\Filesystem;
@@ -95,9 +96,14 @@ class XlsxUserWriterSpec extends ObjectBehavior
 
         $this->flush();
 
-        $this->getWrittenFiles()->shouldReturn([
-            '/tmp/akeneo_batch1234/files/julia/avatar/julia.png' => 'files/julia/avatar/julia.png',
-            '/tmp/output_dir/users.xlsx' => 'users.xlsx',
-        ]);
+        $this->getWrittenFiles()->shouldBeLike(
+            [
+                WrittenFileInfo::fromLocalFile(
+                    '/tmp/akeneo_batch1234/files/julia/avatar/julia.png',
+                    'files/julia/avatar/julia.png'
+                ),
+                WrittenFileInfo::fromLocalFile('/tmp/output_dir/users.xlsx', 'users.xlsx'),
+            ]
+        );
     }
 }

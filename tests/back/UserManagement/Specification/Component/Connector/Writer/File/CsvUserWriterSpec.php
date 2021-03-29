@@ -13,6 +13,7 @@ use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Akeneo\UserManagement\Component\Connector\Writer\File\CsvUserWriter;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Filesystem\Filesystem;
@@ -101,9 +102,14 @@ class CsvUserWriterSpec extends ObjectBehavior
 
         $this->flush();
 
-        $this->getWrittenFiles()->shouldReturn([
-            '/tmp/akeneo_batch1234/files/julia/avatar/julia.png' => 'files/julia/avatar/julia.png',
-            '/tmp/output_dir/users.csv' => 'users.csv',
-        ]);
+        $this->getWrittenFiles()->shouldBeLike(
+            [
+                WrittenFileInfo::fromLocalFile(
+                    '/tmp/akeneo_batch1234/files/julia/avatar/julia.png',
+                    'files/julia/avatar/julia.png'
+                ),
+                WrittenFileInfo::fromLocalFile('/tmp/output_dir/users.csv', 'users.csv'),
+            ]
+        );
     }
 }

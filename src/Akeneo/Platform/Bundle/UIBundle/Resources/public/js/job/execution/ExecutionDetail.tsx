@@ -204,15 +204,17 @@ const ExecutionDetail = () => {
                           </Link>
                         </Dropdown.Item>
                       ))}
-                      <Dropdown.Item key="zip_archive">
-                        <Link
-                          href={router.generate('pim_enrich_job_tracker_download_zip_archive', {
-                            jobExecutionId: jobExecutionId
-                          })}
-                        >
-                          {translate('pim_import_export.form.job_execution.button.download_archive.title')}
-                        </Link>
-                      </Dropdown.Item>
+                      {downloadZipArchive && (
+                        <Dropdown.Item key="zip_archive">
+                          <Link
+                            href={router.generate('pim_enrich_job_tracker_download_zip_archive', {
+                              jobExecutionId: jobExecutionId,
+                            })}
+                          >
+                            {translate('pim_import_export.form.job_execution.button.download_archive.title')}
+                          </Link>
+                        </Dropdown.Item>
+                      )}
                     </Dropdown.ItemCollection>
                   </Dropdown.Overlay>
                 )}

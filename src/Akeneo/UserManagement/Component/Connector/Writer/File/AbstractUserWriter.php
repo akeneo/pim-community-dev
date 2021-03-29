@@ -13,6 +13,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -82,7 +83,7 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
             if (null !== $avatarPath) {
                 $fullPath = \sprintf('%s/%s', $workingDirectory, $avatarPath);
                 if ($this->localFs->exists($fullPath)) {
-                    $this->writtenFiles[$fullPath] = $avatarPath;
+                    $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($fullPath, $avatarPath);
                 }
             }
             $flatItems[] = $this->arrayConverter->convert($item, []);
@@ -109,7 +110,7 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
         );
 
         foreach ($writtenFiles as $writtenFile) {
-            $this->writtenFiles[$writtenFile] = basename($writtenFile);
+            $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($writtenFile, \basename($writtenFile));
         }
     }
 

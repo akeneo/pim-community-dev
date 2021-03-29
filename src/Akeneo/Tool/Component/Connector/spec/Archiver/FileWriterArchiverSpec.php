@@ -17,6 +17,7 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class FileWriterArchiverSpec extends ObjectBehavior
 {
@@ -105,6 +106,11 @@ class FileWriterArchiverSpec extends ObjectBehavior
         Job $job,
         ItemStep $itemStep
     ) {
+        if (!is_dir('/tmp/spec')) {
+            mkdir('/tmp/spec');
+        }
+        \touch('/tmp/spec/export.csv');
+
         $jobInstance->getJobName()->willReturn('my_job_name');
         $jobInstance->getType()->willReturn('export');
         $jobExecution->getId()->willReturn(42);
@@ -120,7 +126,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
                         'files/my_media.png'
                     ),
                     WrittenFileInfo::fromLocalFile(
-                        '/tmp/export.csv',
+                        '/tmp/spec/export.csv',
                         'export.csv',
                     )
                 ];
@@ -136,18 +142,16 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $remoteStream = \tmpfile();
         $catalogFilesystem->readStream('a/b/c/file.png')->willReturn($remoteStream);
 
-        $filesystem->writeStream(
+        $filesystem->putStream(
             'export/my_job_name/42/output/files/my_media.png',
             $remoteStream
         )->shouldBeCalled();
-        $filesystem->write(
-            'export/my_job_name/42/output/export.csv',
-            '/tmp/export.csv'
-        )->shouldBeCalled();
+        $filesystem->putStream('export/my_job_name/42/output/export.csv', Argument::type('resource'))->shouldBeCalled();
 
         $this->archive($jobExecution);
         if (\is_resource($remoteStream)) {
             \fclose($remoteStream);
         }
+        \unlink('/tmp/spec/export.csv');
     }
 }
