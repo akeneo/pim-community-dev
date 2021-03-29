@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\BatchQueue\Queue;
 
+use Akeneo\Tool\Bundle\MessengerBundle\Message\OrderedMessageInterface;
+
 /**
  * Object representing the message pushed into a queue to process a job execution asynchronously.
  *
@@ -11,8 +13,10 @@ namespace Akeneo\Tool\Component\BatchQueue\Queue;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class JobExecutionMessage implements JobExecutionMessageInterface
+abstract class JobExecutionMessage implements JobExecutionMessageInterface, OrderedMessageInterface
 {
+    private const ORDERING_KEY = 'job_key';
+
     /** @var int */
     private $id;
 
@@ -122,5 +126,10 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface
     public function getOptions(): array
     {
         return $this->options;
+    }
+
+    public function getOrderingKey(): string
+    {
+        return static::ORDERING_KEY;
     }
 }
