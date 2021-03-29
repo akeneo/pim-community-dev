@@ -22,34 +22,6 @@ extensions:
         config:
             template: pim/template/common/drop-zone
 
-    pim-attribute-form-reference-entity-useable-as-grid-filter:
-        module: pim/form/common/fields/boolean
-        parent: pim-attribute-form-reference-entity
-        targetZone: content
-        position: 60
-        config:
-            fieldName: useable_as_grid_filter
-            label: pim_enrich.entity.attribute.property.useable_as_grid_filter
-
-    pim-attribute-form-reference-entity-is-locale-specific:
-        module: pim/attribute-edit-form/properties/is-locale-specific
-        parent: pim-attribute-form-reference-entity
-        targetZone: content
-        position: 70
-        config:
-            fieldName: is_locale_specific
-            label: pim_enrich.entity.attribute.property.is_locale_specific
-
-    pim-attribute-form-reference-entity-form-available-locales:
-        module: pim/attribute-edit-form/properties/available-locales
-        parent: pim-attribute-form-reference-entity
-        targetZone: content
-        position: 80
-        config:
-            fieldName: available_locales
-            label: pim_enrich.entity.attribute.property.available_locales
-            isMultiple: true
-
     pim-attribute-form-reference-entity-type-specific-params:
         module: pim/common/simple-view
         parent: pim-attribute-form-reference-entity
@@ -60,6 +32,34 @@ extensions:
             templateParams:
                 sectionTitle: pim_enrich.entity.attribute.property.section.type_specific
                 dropZone: content
+
+    pim-attribute-form-reference-entity-useable-as-grid-filter:
+        module: pim/form/common/fields/boolean
+        parent: pim-attribute-form-reference-entity-type-specific-params
+        targetZone: content
+        position: 60
+        config:
+            fieldName: useable_as_grid_filter
+            label: pim_enrich.entity.attribute.property.useable_as_grid_filter
+
+    pim-attribute-form-reference-entity-is-locale-specific:
+        module: pim/attribute-edit-form/properties/is-locale-specific
+        parent: pim-attribute-form-reference-entity-type-specific-params
+        targetZone: content
+        position: 70
+        config:
+            fieldName: is_locale_specific
+            label: pim_enrich.entity.attribute.property.is_locale_specific
+
+    pim-attribute-form-reference-entity-form-available-locales:
+        module: pim/attribute-edit-form/properties/available-locales
+        parent: pim-attribute-form-reference-entity-type-specific-params
+        targetZone: content
+        position: 80
+        config:
+            fieldName: available_locales
+            label: pim_enrich.entity.attribute.property.available_locales
+            isMultiple: true
 
     pim-attribute-form-reference-entity-type-specific-params-ref-data-name:
         module: pim/attribute-edit-form/properties/reference-entity
