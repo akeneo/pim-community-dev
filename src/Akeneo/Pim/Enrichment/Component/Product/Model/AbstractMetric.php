@@ -27,6 +27,8 @@ abstract class AbstractMetric implements MetricInterface
     protected $family;
 
     /**
+     * TODO master: add type hiting for more strict data
+     *
      * @param string $family
      * @param string $unit
      * @param float  $data
