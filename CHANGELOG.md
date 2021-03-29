@@ -42,6 +42,7 @@
 - PIM-9773: Fix unique variant axis validator considering 01 and 1 as equal
 - PIM-9767: Fix minimum & maximum user password validation
 - PIM-9765: Fix missing translation key in bulk actions when adding attributes values for some product
+- PIM-9780: Fix completed import/export job notification broken link
 
 ## New features
 
