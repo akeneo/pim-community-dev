@@ -50,7 +50,6 @@ const Limit = ({assetCode, productCount, totalCount, attribute}: LimitProps) => 
       {attribute.useable_as_grid_filter && (
         <Button
           href={`#${productIndexRoute}`}
-          target="_blank"
           onClick={() => updateDatagridStateWithFilterOnAssetCode(attribute.code, assetCode)}
         >
           {translate('pim_asset_manager.asset.product.not_enough_items.button')}
