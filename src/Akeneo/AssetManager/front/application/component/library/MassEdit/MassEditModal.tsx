@@ -143,7 +143,6 @@ const MassEditModal = ({
           <Modal.Title>
             {translate('pim_asset_manager.asset.mass_edit.title', {count: selectedAssetCount}, selectedAssetCount)}
           </Modal.Title>
-          {translate('pim_asset_manager.asset.mass_edit.extra_information')}
           <SectionTitle>
             <SectionTitle.Title>{translate('Attributes')}</SectionTitle.Title>
             <SectionTitle.Spacer />

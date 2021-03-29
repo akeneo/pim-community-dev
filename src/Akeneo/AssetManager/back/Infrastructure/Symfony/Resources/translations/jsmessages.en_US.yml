@@ -352,7 +352,6 @@ pim_asset_manager:
       subtitle: Asset bulk action
       title: "[0, 1]Edit attribute values of {{ count }} asset|]1,Inf] Edit attribute values of {{ count }} assets"
       attribute_selected: "{0}No attribute selected|{1}One attribute selected|]1,Inf]{{ count }} attributes selected"
-      extra_information: "Only the attributes belonging to the asset family of the selected assets will be edited with the following data."
       empty_selection:
         title: Your attribute selection is empty, please add attributes to edit.
         body: You don't know what a bulk action is?
