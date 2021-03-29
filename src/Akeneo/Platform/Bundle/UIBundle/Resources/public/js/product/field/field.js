@@ -12,10 +12,11 @@ define([
   'backbone',
   'underscore',
   'pim/template/product/field/field',
+  'pim/template/product/field/field-guidelines',
   'pim/attribute-manager',
   'pim/i18n',
   'oro/mediator',
-], function ($, Backbone, _, fieldTemplate, AttributeManager, i18n, mediator) {
+], function ($, Backbone, _, fieldTemplate, guidelinesTemplate, AttributeManager, i18n, mediator) {
   var FieldModel = Backbone.Model.extend({
     values: [],
   });
@@ -33,6 +34,7 @@ define([
     context: {},
     model: FieldModel,
     template: _.template(fieldTemplate),
+    guidelinesTemplate: _.template(guidelinesTemplate),
     elements: {},
     editable: true,
     ready: true,
@@ -67,6 +69,16 @@ define([
       var promises = [];
       mediator.trigger('pim_enrich:form:field:extension:add', {field: this, promises: promises});
 
+      if (this.attribute.guidelines[this.context.guidelinesLocale]) {
+        this.addElement(
+          'footer',
+          'guidelines',
+          this.guidelinesTemplate({
+            guidelines: this.attribute.guidelines[this.context.guidelinesLocale],
+          })
+        );
+      }
+
       $.when
         .apply($, promises)
         .then(this.getTemplateContext.bind(this))
@@ -88,28 +100,27 @@ define([
      * Render elements of this field in different available positions
      */
     renderElements: function () {
-      _.each(
-        this.elements,
-        function (elements, position) {
-          var $container =
+      Object.keys(this.elements)
+        .sort()
+        .forEach(position => {
+          const $container =
             'field-input' === position
               ? this.$('.original-field .field-input')
               : this.$('.' + position + '-elements-container');
 
           $container.empty();
 
-          _.each(
-            elements,
-            function (element) {
+          Object.keys(this.elements[position])
+            .sort()
+            .forEach(elementKey => {
+              const element = this.elements[position][elementKey];
               if (typeof element.render === 'function') {
                 $container.append(element.render().$el);
               } else {
                 $container.append(element);
               }
-            }.bind(this)
-          );
-        }.bind(this)
-      );
+            });
+        });
     },
 
     /**
