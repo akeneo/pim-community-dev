@@ -330,9 +330,6 @@ workflows:
           - test_front_static_acceptance_and_integration:
                 requires:
                     - build_dev
-          - test_back_missing_structure_migrations:
-                requires:
-                    - build_dev
           - test_back_phpunit:
                 requires:
                     - build_dev
@@ -344,7 +341,6 @@ workflows:
                     - build_dev
           - back_behat_legacy:
                 requires:
-                    - test_back_missing_structure_migrations
                     - test_back_phpunit
 
   nightly:

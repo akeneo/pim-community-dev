@@ -5,6 +5,7 @@
 ## Bug fixes
 
 - PIM-9735: Prevent asset family identifiers to be stored with a different case in attributes properties
+- PIM-9775: Fix Asset codes filtering being case sensitive
 
 # 4.0.99 (2021-03-24)
 
