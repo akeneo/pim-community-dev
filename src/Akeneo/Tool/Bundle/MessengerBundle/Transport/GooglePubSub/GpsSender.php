@@ -33,11 +33,16 @@ final class GpsSender implements SenderInterface
     {
         $encodedMessage = $this->serializer->encode($envelope);
 
+        $message = [
+            'data' => $encodedMessage['body'],
+            'attributes' => $encodedMessage['headers'],
+        ];
+        if (isset($encodedMessage['orderingKey'])) {
+            $message['orderingKey'] = $encodedMessage['orderingKey'];
+        }
+
         try {
-            $this->topic->publish([
-                'data' => $encodedMessage['body'],
-                'attributes' => $encodedMessage['headers'],
-            ]);
+            $this->topic->publish($message);
         } catch (GoogleException $e) {
             throw new TransportException($e->getMessage(), 0, $e);
         }
