@@ -13,14 +13,14 @@ namespace Akeneo\Platform;
  */
 class VersionProvider implements VersionProviderInterface
 {
-    private string $edition;
+    private PimEdition $edition;
     private string $version;
     private string $codeName;
 
     public function __construct(string $versionClass, ?string $edition = null)
     {
+        $this->edition = PimEdition::fromString($edition ?? constant(sprintf('%s::EDITION', $versionClass)));
         $this->version = constant(sprintf('%s::VERSION', $versionClass));
-        $this->edition = $edition ?? constant(sprintf('%s::EDITION', $versionClass));
         $this->codeName = constant(sprintf('%s::VERSION_CODENAME', $versionClass));
     }
 
@@ -29,7 +29,7 @@ class VersionProvider implements VersionProviderInterface
      */
     public function getEdition(): string
     {
-        return $this->edition;
+        return $this->edition->asString();
     }
 
     /**
@@ -72,7 +72,7 @@ class VersionProvider implements VersionProviderInterface
      */
     public function getFullVersion(): string
     {
-        return sprintf('%s %s %s', $this->edition, $this->version, $this->codeName);
+        return sprintf('%s %s %s', $this->edition->asString(), $this->version, $this->codeName);
     }
 
     /**
@@ -80,6 +80,6 @@ class VersionProvider implements VersionProviderInterface
      */
     public function isSaaSVersion(): bool
     {
-        return false !== strpos(strtolower($this->edition), 'saas');
+        return $this->edition->isSaasVersion();
     }
 }

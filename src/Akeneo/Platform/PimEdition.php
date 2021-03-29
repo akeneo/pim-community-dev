@@ -12,7 +12,7 @@ use Webmozart\Assert\Assert;
  */
 final class PimEdition
 {
-    private const EDITIONS = ['Serenity', 'EE', 'CE', 'Growth'];
+    private const SAAS_EDITIONS = ['Serenity', 'GE'];
 
     private string $edition;
 
@@ -23,7 +23,7 @@ final class PimEdition
 
     public static function fromString(string $edition): self
     {
-        Assert::inArray($edition, self::EDITIONS);
+        Assert::stringNotEmpty($edition);
 
         return new self($edition);
     }
@@ -35,6 +35,6 @@ final class PimEdition
 
     public function isSaasVersion(): bool
     {
-        return \in_array($this->edition, ['Serenity', 'Growth'], true);
+        return \in_array($this->edition, self::SAAS_EDITIONS, true);
     }
 }
