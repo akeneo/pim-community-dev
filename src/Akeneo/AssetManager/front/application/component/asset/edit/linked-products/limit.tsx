@@ -52,7 +52,7 @@ export const Limit = ({assetCode, productCount, totalCount, attribute}: LimitPro
         )}
       </LimitSubtitle>
       {attribute.useable_as_grid_filter && (
-        <a href={getProductIndexUrl()} target="_blank">
+        <a href={getProductIndexUrl()}>
           <StyledButton
             tabIndex="0"
             role="button"
