@@ -6,7 +6,12 @@ import {EventLogListFilters} from '@src/webhook/components/EventLogListFilters';
 
 test('It displays the filters for the event log list.', () => {
     renderWithProviders(
-        <EventLogListFilters filters={{levels: [], text: 'I search'}} onChange={jest.fn()} total={42} />
+        <EventLogListFilters
+            filters={{levels: [], text: 'I search', dateTime: {}}}
+            config={{dateTime: {min: 0, max: 0}}}
+            onChange={jest.fn()}
+            total={42}
+        />
     );
 
     const searchText = screen.getByTestId('event-logs-list-search-text-filter');
@@ -25,7 +30,13 @@ test('It displays the filters for the event log list.', () => {
 });
 
 test('it does not display the total if it is undefined.', () => {
-    renderWithProviders(<EventLogListFilters filters={{levels: [], text: 'I search'}} onChange={jest.fn()} />);
+    renderWithProviders(
+        <EventLogListFilters
+            filters={{levels: [], text: 'I search', dateTime: {}}}
+            config={{dateTime: {min: 0, max: 0}}}
+            onChange={jest.fn()}
+        />
+    );
 
     const searchText = screen.getByTestId('event-logs-list-search-text-filter');
     const countTitle = screen.queryByText('akeneo_connectivity.connection.webhook.event_logs.list.search.total');
