@@ -95,7 +95,7 @@ abstract class AbstractAssetWriter extends AbstractFileWriter implements Initial
     /**
      * {@inheritdoc}
      */
-    public function getWrittenFiles()
+    public function getWrittenFiles(): array
     {
         return $this->writtenFiles;
     }

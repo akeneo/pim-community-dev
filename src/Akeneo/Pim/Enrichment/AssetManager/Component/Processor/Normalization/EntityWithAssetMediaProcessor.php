@@ -126,8 +126,6 @@ final class EntityWithAssetMediaProcessor implements ItemProcessorInterface, Ste
         ?array $scopeCodes,
         ?array $localeCodes
     ): array {
-        $basePath = DIRECTORY_SEPARATOR !== substr($basePath, -1) ? $basePath . DIRECTORY_SEPARATOR : $basePath;
-
         foreach ($entityStandard['values'] as $attributeCode => $values) {
             foreach ($values as $valueKey => $value) {
                 if (!$this->productValueSatisfiesLocaleAndScopeFilters($value, $scopeCodes, $localeCodes)) {

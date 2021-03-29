@@ -38,6 +38,7 @@ abstract class AbstractRecordWriter extends AbstractFileWriter implements Initia
     private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
     private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels;
     private FileExporterPathGeneratorInterface $fileExporterPath;
+
     /** @var FlatItemBuffer */
     private $flatRowBuffer;
     /** @var AbstractAttribute[] */
@@ -81,7 +82,7 @@ abstract class AbstractRecordWriter extends AbstractFileWriter implements Initia
     /**
      * {@inheritdoc}
      */
-    public function getWrittenFiles()
+    public function getWrittenFiles(): array
     {
         return $this->writtenFiles;
     }

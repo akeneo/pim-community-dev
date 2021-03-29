@@ -49,7 +49,6 @@ services:
             - '@pimee_workflow.normalizer.published_product'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
-            - '@pim_connector.processor.bulk_media_fetcher'
             - '@pim_catalog.product_model.fill_missing_values'
 
     pimee_workflow.processor.mark_product_draft_as_ready:
