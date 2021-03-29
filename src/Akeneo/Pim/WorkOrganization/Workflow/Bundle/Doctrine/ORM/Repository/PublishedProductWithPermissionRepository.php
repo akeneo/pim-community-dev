@@ -13,6 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Permission\Component\Authorization\DenyNotGrantedCategorizedEntity;
 use Akeneo\Pim\Permission\Component\Factory\FilteredEntityFactory;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
@@ -218,6 +219,11 @@ class PublishedProductWithPermissionRepository extends EntityRepository implemen
         $qb->select(sprintf("COUNT(%s.id)", $rootAlias));
 
         return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function countPublishedVariantProductsForProductModel(ProductModelInterface $productModel): int
+    {
+        return $this->publishedProductRepository->countPublishedVariantProductsForProductModel($productModel);
     }
 
     /**

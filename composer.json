@@ -58,7 +58,7 @@
     "require": {
         "ext-json": "*",
         "akeneo/pim-community-dev": "dev-master",
-        "akeneo/pim-onboarder": "^4.2.1",
+        "akeneo/pim-onboarder": "^4.3.3",
         "hslavich/oneloginsaml-bundle": "1.5.1",
         "justinrainbow/json-schema": "^5.2",
         "phpspec/php-diff": "1.1.3",

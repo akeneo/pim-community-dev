@@ -12,6 +12,7 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
@@ -87,4 +88,13 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
      * @return int
      */
     public function countPublishedProductsForAssociationType(AssociationTypeInterface $associationType);
+
+    /**
+     * Count published variant products for a product model
+     *
+     * @param ProductModelInterface $productModel
+     *
+     * @return int
+     */
+    public function countPublishedVariantProductsForProductModel(ProductModelInterface $productModel): int;
 }

@@ -46,34 +46,6 @@ extensions:
         config:
             template: pim/template/common/drop-zone
 
-    pim-attribute-form-asset-useable-as-grid-filter:
-        module: pim/form/common/fields/boolean
-        parent: pim-attribute-form-asset
-        targetZone: content
-        position: 60
-        config:
-            fieldName: useable_as_grid_filter
-            label: pim_enrich.entity.attribute.property.useable_as_grid_filter
-
-    pim-attribute-form-asset-is-locale-specific:
-        module: pim/attribute-edit-form/properties/is-locale-specific
-        parent: pim-attribute-form-asset
-        targetZone: content
-        position: 70
-        config:
-            fieldName: is_locale_specific
-            label: pim_enrich.entity.attribute.property.is_locale_specific
-
-    pim-attribute-form-asset-form-available-locales:
-        module: pim/attribute-edit-form/properties/available-locales
-        parent: pim-attribute-form-asset
-        targetZone: content
-        position: 80
-        config:
-            fieldName: available_locales
-            label: pim_enrich.entity.attribute.property.available_locales
-            isMultiple: true
-
     pim-attribute-form-asset-type-specific-params:
         module: pim/common/simple-view
         parent: pim-attribute-form-asset
@@ -84,6 +56,34 @@ extensions:
             templateParams:
                 sectionTitle: pim_enrich.entity.attribute.property.section.type_specific
                 dropZone: content
+
+    pim-attribute-form-asset-useable-as-grid-filter:
+        module: pim/form/common/fields/boolean
+        parent: pim-attribute-form-asset-type-specific-params
+        targetZone: content
+        position: 60
+        config:
+            fieldName: useable_as_grid_filter
+            label: pim_enrich.entity.attribute.property.useable_as_grid_filter
+
+    pim-attribute-form-asset-is-locale-specific:
+        module: pim/attribute-edit-form/properties/is-locale-specific
+        parent: pim-attribute-form-asset-type-specific-params
+        targetZone: content
+        position: 70
+        config:
+            fieldName: is_locale_specific
+            label: pim_enrich.entity.attribute.property.is_locale_specific
+
+    pim-attribute-form-asset-form-available-locales:
+        module: pim/attribute-edit-form/properties/available-locales
+        parent: pim-attribute-form-asset-type-specific-params
+        targetZone: content
+        position: 80
+        config:
+            fieldName: available_locales
+            label: pim_enrich.entity.attribute.property.available_locales
+            isMultiple: true
 
     pim-attribute-form-asset-type-specific-params-ref-data-name:
         module: pim/attribute-edit-form/properties/asset-family
