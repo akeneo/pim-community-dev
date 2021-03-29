@@ -79,6 +79,8 @@ extensions:
         targetZone: self
         config:
             template: pim/template/form/tab/sections
+            templateParams:
+                twoColumns: true
 
     pim-attribute-create-form-properties-common:
         module: pim/common/simple-view
@@ -150,10 +152,16 @@ extensions:
             fieldName: localizable
             label: pim_enrich.entity.attribute.property.localizable
 
+    pim-attribute-create-form-properties-guidelines:
+        module: pim/attribute-edit-form/properties/guidelines
+        parent: pim-attribute-create-form-properties
+        targetZone: secondColumn
+        position: 100
+
     pim-attribute-create-form-properties-type-specific:
         module: pim/attribute-edit-form/type-specific-form
         parent: pim-attribute-create-form-properties
-        targetZone: accordion
+        targetZone: secondColumn
         position: 110
         config:
             mode: create

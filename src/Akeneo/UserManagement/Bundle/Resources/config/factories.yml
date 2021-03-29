@@ -18,3 +18,8 @@ services:
         class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
             - '%pim_user.entity.role.class%'
+
+    pim_user.factory.role_with_permissions:
+        class: 'Akeneo\UserManagement\Component\Factory\RoleWithPermissionsFactory'
+        arguments:
+            - '@pim_user.factory.role'

@@ -159,6 +159,9 @@ abstract class AbstractAttribute implements AttributeInterface
     /** @var ArrayCollection */
     protected $translations;
 
+    /** @var string[] */
+    protected array $guidelines = [];
+
     /**
      * Constructor
      */
@@ -1072,5 +1075,29 @@ abstract class AbstractAttribute implements AttributeInterface
             AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION,
             AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS
         ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getGuidelines(): array
+    {
+        return $this->guidelines;
+    }
+
+    public function addGuidelines(string $locale, string $localeGuidelines): void
+    {
+        $this->guidelines[$locale] = $localeGuidelines;
+    }
+
+
+    public function removeGuidelines(string $locale): void
+    {
+        unset($this->guidelines[$locale]);
+    }
+
+    public function getGuidelinesLocaleCodes(): array
+    {
+        return array_keys($this->guidelines);
     }
 }

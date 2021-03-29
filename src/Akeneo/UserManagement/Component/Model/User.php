@@ -635,16 +635,9 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getRoles()
+    public function getRoles(): array
     {
-        $roles = $this->roles->toArray();
-
-        /** @var GroupInterface $group */
-        foreach ($this->getGroups() as $group) {
-            $roles = array_merge($roles, $group->getRoles()->toArray());
-        }
-
-        return array_unique($roles);
+        return $this->roles->map(fn (RoleInterface $role): string => $role->getRole())->getValues();
     }
 
     /**
@@ -661,7 +654,7 @@ class User implements UserInterface
     public function getRole($roleName)
     {
         /** @var Role $item */
-        foreach ($this->getRoles() as $item) {
+        foreach ($this->roles as $item) {
             if ($roleName == $item->getRole()) {
                 return $item;
             }

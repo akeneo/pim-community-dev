@@ -1,0 +1,39 @@
+services:
+  pim_connector.processor.normalization.user_group:
+    class: '%pim_connector.processor.normalization.class%'
+    arguments:
+      - '@pim_user.normalizer.user_group'
+      - '@akeneo_storage_utils.doctrine.object_detacher'
+
+  pim_connector.processor.normalization.user_role:
+    class: '%pim_connector.processor.normalization.class%'
+    arguments:
+      - '@pim_user.normalizer.user_role'
+      - '@akeneo_storage_utils.doctrine.object_detacher'
+
+  pim_connector.processor.normalization.user:
+    class: 'Akeneo\UserManagement\Component\Connector\Processor\Normalization\UserProcessor'
+    arguments:
+      - '@pim_user.normalizer.user.standard'
+      - '@akeneo_storage_utils.doctrine.object_detacher'
+      - '@akeneo_file_storage.file_storage.filesystem_provider'
+      - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
+
+  pim_connector.processor.denormalization.user:
+    class: 'Akeneo\UserManagement\Component\Connector\Processor\Denormalization\UserProcessor'
+    arguments:
+      - '@pim_user.repository.user'
+      - '@pim_user.factory.user'
+      - '@pim_user.updater.user'
+      - '@validator'
+      - '@akeneo_storage_utils.doctrine.object_detacher'
+      - '@pim_datagrid.repository.datagrid_view'
+      - '@akeneo_file_storage.file_storage.file.file_storer'
+
+  pim_connector.processor.denormalization.user_role_with_permissions:
+    class: 'Akeneo\UserManagement\Component\Connector\Processor\Denormalization\RoleWithPermissionsProcessor'
+    arguments:
+      - '@pim_user.repository.role_with_permissions'
+      - '@pim_user.factory.role_with_permissions'
+      - '@pim_user.updater.role_with_permissions'
+      - '@validator'

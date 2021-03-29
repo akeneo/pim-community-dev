@@ -23,15 +23,23 @@ const getFakeRef = (width: number, height: number, top: number, left: number) =>
     },
   } as RefObject<HTMLElement>);
 
-test('It returns up when there is more space above the element', () => {
+test('It returns down when there is enough space above the element', () => {
   const ref = getFakeRef(0, 100, 100, 0);
 
   const {result} = renderHook(() => useVerticalPosition(ref));
 
-  expect(result.current).toEqual('up');
+  expect(result.current).toEqual('down');
 });
 
-test('It returns down when there is more space below the element', () => {
+test('It returns down when there is enough space below the element', () => {
+  const ref = getFakeRef(0, 100, 50, 0);
+
+  const {result} = renderHook(() => useVerticalPosition(ref));
+
+  expect(result.current).toEqual('down');
+});
+
+test('It returns down when there is not enough space below and above the element', () => {
   const ref = getFakeRef(0, 100, 50, 0);
 
   const {result} = renderHook(() => useVerticalPosition(ref));

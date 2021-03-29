@@ -315,7 +315,9 @@ class DatabaseCommand extends Command
             }
             $this->commandExecutor->runCommand('akeneo:batch:job', $params);
             $this->eventDispatcher->dispatch(
-                new InstallerEvent($this->commandExecutor, $jobInstance->getCode()),
+                new InstallerEvent($this->commandExecutor, $jobInstance->getCode(), [
+                    'job_name' => $jobInstance->getJobName(),
+                ]),
                 InstallerEvents::POST_LOAD_FIXTURE
             );
         }

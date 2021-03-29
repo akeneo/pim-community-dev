@@ -18,6 +18,7 @@ export * from './Modal/Modal';
 export * from './Pagination/Pagination';
 export * from './ProgressBar/ProgressBar';
 export * from './ProgressIndicator/ProgressIndicator';
+export * from './Search/Search';
 export * from './SectionTitle/SectionTitle';
 export * from './SwitcherButton/SwitcherButton';
 export * from './Table/Table';

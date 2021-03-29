@@ -54,6 +54,7 @@ services:
             - '@database_connection'
             - '@akeneo_measure.installer.measurement_installer'
             - '@messenger.transport.business_event'
+            - '@event_dispatcher'
             - '%env(APP_DATABASE_HOST)%'
             - '%env(APP_DATABASE_NAME)%'
             - '%env(APP_DATABASE_USER)%'
