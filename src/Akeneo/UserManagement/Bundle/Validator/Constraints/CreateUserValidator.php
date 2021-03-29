@@ -37,7 +37,7 @@ class CreateUserValidator extends ConstraintValidator
     {
         if (preg_match('/\s/', $user->getUsername()) !== 0) {
             $this->context->buildViolation($constraint->errorSpaceInUsername)
-                ->atPath('[username]')
+                ->atPath('username')
                 ->addViolation();
         }
     }

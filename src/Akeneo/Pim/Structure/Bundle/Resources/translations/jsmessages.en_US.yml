@@ -162,6 +162,7 @@ pim_enrich.entity.attribute:
         default_metric_unit:
             label: Default measurement unit
             choose: Choose a unit
+        guidelines: Attribute guidelines
         group:
             label: Attribute group
             choose: Choose the attribute group
@@ -217,6 +218,7 @@ pim_enrich.entity.attribute:
             common: General parameters
             type_specific: Type specific parameters
             validation: Validation parameters
+            select_locale: Select your locale
         delete:
             confirm: Are you sure you want to delete this attribute?
             product_count: '{0}0 products|{1}1 product|]1, Inf[{{ count }} products'

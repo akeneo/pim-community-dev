@@ -38,7 +38,7 @@ class Index extends Grid
                     'css'        => '.AknColumn-innerTop',
                     'decorators' => [ContextSwitcherDecorator::class],
                 ],
-                'Tree select'             => ['css' => '#tree [aria-haspopup="listbox"]'],
+                'Tree select'             => ['css' => '#tree [aria-haspopup="listbox"] button'],
                 'Locales dropdown'        => ['css' => '#locale-switcher'],
                 'Sidebar collapse button' => ['css' => '.sidebar .sidebar-controls i.icon-double-angle-left'],
                 'Sidebar expand button'   => ['css' => '.separator.collapsed i.icon-double-angle-right'],
@@ -106,6 +106,9 @@ class Index extends Grid
         if (!$this->find('css', '#tree [role="listbox"]')) {
             $button = $this->getElement('Tree select');
             $button->click();
+            $this->spin(function () {
+                return $this->find('css', '#tree [role="listbox"]');
+            }, 'Can not open Tree Selector');
         }
 
         $matchingCategoryTree = null;

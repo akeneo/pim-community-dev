@@ -847,6 +847,7 @@ config:
     pim/attribute-edit-form/properties/type:                pimui/js/attribute/form/properties/type
     pim/attribute-edit-form/properties/unique:              pimui/js/attribute/form/properties/unique
     pim/attribute-edit-form/properties/validation-regexp:   pimui/js/attribute/form/properties/validation-regexp
+    pim/attribute-edit-form/properties/guidelines:          pimui/js/attribute/form/properties/guidelines.tsx
     pim/attribute-edit-form/type-specific-form:             pimui/js/attribute/form/type-specific-form
     pim/attribute-edit-form/type-specific-form-registry:    pimui/js/attribute/form/type-specific-form-registry
     pim/attribute-edit-form:                                pimui/js/attribute/form/edit-form
@@ -1119,6 +1120,7 @@ config:
     pim/template/product/meta/updated:                   pimui/templates/product/meta/updated.html
     pim/template/product/scope-switcher:                 pimui/templates/product/scope-switcher.html
     pim/template/product/field/field:                    pimui/templates/product/field/field.html
+    pim/template/product/field/field-guidelines:         pimui/templates/product/field/field-guidelines.html
     pim/template/product/field/date:                     pimui/templates/product/field/date.html
     pim/template/product/field/media:                    pimui/templates/product/field/media.html
     pim/template/product/field/metric:                   pimui/templates/product/field/metric.html

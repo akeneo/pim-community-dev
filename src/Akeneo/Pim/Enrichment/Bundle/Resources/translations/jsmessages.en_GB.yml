@@ -282,11 +282,18 @@ pim_enrich.export.product:
       operators:
         BETWEEN: Between
         NOT BETWEEN: Not between
+    quality-score:
+      title: Quality Score
+      operator_choice_title: Export Quality Score(s) for
+      empty_selection: No condition on Quality Score
+      operators:
+        IN AT LEAST ONE LOCALE: At least one locale
+        IN ALL LOCALES: All selected locales
   global_settings:
     title: Global settings
 pim_enrich.mass_edit.product:
   title: Products bulk action
-  confirm: "Select the products you want to associate to the {{ productCount }} selected product(s)"
+  confirm: "{0}You are about to update some products with the following information, please confirm.|{1}You are about to update a product with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, please confirm."
   step:
     select:
       label: Choose products

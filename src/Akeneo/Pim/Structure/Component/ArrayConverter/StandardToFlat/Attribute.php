@@ -50,6 +50,12 @@ class Attribute extends AbstractSimpleArrayConverter implements ArrayConverterIn
 
                 $convertedItem[$property] = (true === $data) ? '1' : '0';
                 break;
+            case 'guidelines':
+                foreach ($data as $localeCode => $label) {
+                    $key = sprintf('guidelines-%s', $localeCode);
+                    $convertedItem[$key] = $label;
+                }
+                break;
             default:
                 $convertedItem[$property] = (string) $data;
         }
