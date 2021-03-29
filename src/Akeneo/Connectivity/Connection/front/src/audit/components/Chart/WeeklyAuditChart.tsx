@@ -32,7 +32,7 @@ export const WeeklyAuditChart: FC<Props> = ({title, theme, weeklyAuditData, smal
         y: value,
         xLabel:
             index + 1 !== Object.keys(weeklyAuditData.daily).length
-                ? formatDate(new Date(date), formatDateOptions)
+                ? formatDate(date, formatDateOptions)
                 : translate('akeneo_connectivity.connection.dashboard.charts.legend.today'),
         yLabel: 0 === index ? '' : formatNumber(value),
     }));

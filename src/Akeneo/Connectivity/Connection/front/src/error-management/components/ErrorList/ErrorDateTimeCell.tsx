@@ -11,7 +11,7 @@ type Props = {
 const useFormatTimestampToDate = () => {
     const formatDateTime = useDateFormatter();
     return (timestamp: number) =>
-        formatDateTime(new Date(timestamp), {
+        formatDateTime(timestamp, {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit',
@@ -21,7 +21,7 @@ const useFormatTimestampToDate = () => {
 const useFormatTimestampToTime = () => {
     const formatDateTime = useDateFormatter();
     return (timestamp: number) =>
-        formatDateTime(new Date(timestamp), {
+        formatDateTime(timestamp, {
             hour: '2-digit',
             minute: '2-digit',
             second: '2-digit',

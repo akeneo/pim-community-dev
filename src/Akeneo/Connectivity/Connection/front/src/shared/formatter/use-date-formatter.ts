@@ -1,19 +1,22 @@
-import {useCallback} from 'react';
-import {useUser} from '../user';
+import {useCallback, useContext} from 'react';
+import {UserContext} from '../user';
 
-export const useDateFormatter = (): ((date: Date, options: Intl.DateTimeFormatOptions) => string) => {
-    const {locale, timeZone} = useUser();
+export const useDateFormatter = () => {
+    const user = useContext(UserContext);
+
+    const locale = user.get('uiLocale').replace('_', '-');
+    const timeZone = user.get('timezone');
 
     return useCallback(
-        (date: Date, options?: Intl.DateTimeFormatOptions) => {
+        (date: string | number, options?: Intl.DateTimeFormatOptions) => {
             options = {timeZone, ...options};
 
             try {
-                return new Intl.DateTimeFormat(locale, options).format(date);
+                return new Intl.DateTimeFormat(locale, options).format(new Date(date));
             } catch (error) {
                 if (error instanceof RangeError) {
                     return new Intl.DateTimeFormat(locale, {...options, timeZone: 'UTC', timeZoneName: 'short'}).format(
-                        date
+                        new Date(date)
                     );
                 }
 
