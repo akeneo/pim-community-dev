@@ -43,6 +43,7 @@
 - PIM-9767: Fix minimum & maximum user password validation
 - PIM-9765: Fix missing translation key in bulk actions when adding attributes values for some product
 - PIM-9780: Fix completed import/export job notification broken link
+- PIM-9781: Fix Category tree not refreshing when switching locale
 
 ## New features
 
