@@ -89,7 +89,18 @@ abstract class AbstractMetric implements MetricInterface
      */
     public function isEqual(MetricInterface $metric)
     {
-        return (float) $metric->getData() === (float) $this->data && $metric->getUnit() === $this->unit;
+        if ($metric->getUnit() !== $this->unit) {
+            return false;
+        }
+
+        if (!is_string($metric->getData()) || !is_string($this->data)) {
+            return $metric->getData() === $this->data;
+        }
+
+        return 0 === strcmp(
+                preg_replace('/\.0*$/', '', $metric->getData()),
+                preg_replace('/\.0*$/', '', $this->data)
+            );
     }
 
     /**
@@ -99,7 +110,7 @@ abstract class AbstractMetric implements MetricInterface
     {
         return join(' ', array_filter([
             $this->data !== null ? sprintf('%.4F', $this->data) : null,
-            $this->unit
+            $this->unit,
         ]));
     }
 }
