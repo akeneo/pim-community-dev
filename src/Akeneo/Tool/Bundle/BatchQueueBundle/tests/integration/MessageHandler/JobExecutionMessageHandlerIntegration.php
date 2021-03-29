@@ -54,7 +54,7 @@ final class JobExecutionMessageHandlerIntegration extends TestCase
             'email' => 'ziggy@akeneo.com',
             'env' => $this->getParameter('kernel.environment'),
         ]);
-        $this->get('akeneo_batch_queue.queue.database_job_execution_queue')->publish($jobExecutionMessage);
+        $this->get('akeneo_batch_queue.queue.job_execution_queue')->publish($jobExecutionMessage);
 
         return $jobExecutionMessage;
     }

@@ -101,7 +101,7 @@ SQL;
      */
     protected function getQueue(): JobExecutionQueueInterface
     {
-        return $this->get('akeneo_batch_queue.queue.database_job_execution_queue');
+        return $this->get('akeneo_batch_queue.queue.job_execution_queue');
     }
 
     /**
