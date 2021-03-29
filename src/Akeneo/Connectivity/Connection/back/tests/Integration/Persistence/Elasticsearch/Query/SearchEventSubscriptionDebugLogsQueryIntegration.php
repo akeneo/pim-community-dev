@@ -89,6 +89,38 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         Assert::assertEquals(100, $result['total']);
     }
 
+    public function test_it_returns_the_total_amount_of_logs_filtered_by_level()
+    {
+        $timestamp = $this->clock->now()->getTimestamp() - 10;
+
+        $this->generateLogs(
+            function ($index) use ($timestamp) {
+                return [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::NOTICE,
+                    'message' => 'Foo bar',
+                    'connection_code' => null,
+                    'context' => [],
+                ];
+            },
+            101
+        );
+
+        $count = 0;
+        $searchAfter = null;
+        $filters = [
+            'levels' => [EventsApiDebugLogLevels::NOTICE]
+        ];
+        do {
+            $result = $this->query->execute('a_connection_code', $searchAfter, $filters);
+            $count += count($result['results']);
+            $searchAfter = $result['search_after'];
+        } while (count($result['results']) === 25);
+
+        Assert::assertEquals(100, $count);
+        Assert::assertEquals(100, $result['total']);
+    }
+
     public function test_it_returns_the_last_warning_and_error_logs()
     {
         // The limit is 72 hours before now.
@@ -279,7 +311,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
             [
                 [
                     'timestamp' => $timestamp,
-                    'level' => EventsApiDebugLogLevels::WARNING,
+                    'level' => EventsApiDebugLogLevels::INFO,
                     'message' => 'Foo bar',
                     'connection_code' => 'a_connection_code',
                     'context' => [],
@@ -307,9 +339,9 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
                 ],
                 [
                     'timestamp' => $timestamp,
-                    'level' => EventsApiDebugLogLevels::NOTICE,
+                    'level' => EventsApiDebugLogLevels::WARNING,
                     'message' => 'Foo bar',
-                    'connection_code' => null,
+                    'connection_code' => 'a_connection_code',
                     'context' => [],
                 ],
             ]
@@ -328,11 +360,10 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
             }
         );
 
-        Assert::assertEquals(3, $result['total']);
-        Assert::assertCount(3, $result['results']);
+        Assert::assertEquals(2, $result['total']);
+        Assert::assertCount(2, $result['results']);
         Assert::assertEquals(EventsApiDebugLogLevels::INFO, $result['results'][0]['level']);
         Assert::assertEquals(EventsApiDebugLogLevels::NOTICE, $result['results'][1]['level']);
-        Assert::assertEquals(EventsApiDebugLogLevels::NOTICE, $result['results'][2]['level']);
     }
 
     public function test_it_does_not_filter()
@@ -411,9 +442,16 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
                 ],
                 [
                     'timestamp' => $timestampFrom,
-                    'level' => EventsApiDebugLogLevels::INFO,
+                    'level' => EventsApiDebugLogLevels::NOTICE,
                     'message' => 'Foo bar',
                     'connection_code' => 'whatever',
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestampFrom,
+                    'level' => EventsApiDebugLogLevels::INFO,
+                    'message' => 'Foo bar',
+                    'connection_code' => 'a_connection_code',
                     'context' => [],
                 ],
                 [
@@ -446,6 +484,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         Assert::assertEquals(2, $result['total']);
         Assert::assertCount(2, $result['results']);
         Assert::assertEquals($timestampFrom, $result['results'][0]['timestamp']);
+        Assert::assertEquals(EventsApiDebugLogLevels::INFO, $result['results'][0]['level']);
         Assert::assertEquals($timestampFrom + 20, $result['results'][1]['timestamp']);
     }
 
@@ -465,6 +504,13 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
                 [
                     'timestamp' => $timestampTo,
                     'level' => EventsApiDebugLogLevels::INFO,
+                    'message' => 'Foo bar',
+                    'connection_code' => null,
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestampTo,
+                    'level' => EventsApiDebugLogLevels::NOTICE,
                     'message' => 'Foo bar',
                     'connection_code' => 'whatever',
                     'context' => [],
@@ -500,6 +546,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         Assert::assertCount(2, $result['results']);
         Assert::assertEquals($timestampTo - 20, $result['results'][0]['timestamp']);
         Assert::assertEquals($timestampTo, $result['results'][1]['timestamp']);
+        Assert::assertEquals(EventsApiDebugLogLevels::INFO, $result['results'][1]['level']);
     }
 
     public function test_it_searches_a_pattern_on_message()

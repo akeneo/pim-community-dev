@@ -125,15 +125,8 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         array $filters
     ): array {
         $nowTimestamp = $this->clock->now()->getTimestamp();
-
-        $query = [
-            'size' => 25,
-            'sort' => [
-                'timestamp' => 'DESC',
-                '_id' => 'ASC',
-            ],
-            'track_total_hits' => true,
-            'query' => [
+        $constraints = [
+            [
                 'bool' => [
                     'should' => [
                         [
@@ -170,35 +163,58 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
                 ],
             ],
         ];
-
         if (null !== $filters['levels']) {
-            $query['query']['bool']['must'] = [
+            $constraints[] = [
                 'terms' => [
-                    'level' => $filters['levels']
-                ]
+                    'level' => $filters['levels'],
+                ],
             ];
-        }
-
-        if (null !== $searchAfter) {
-            $query['search_after'] = $searchAfter;
         }
 
         if (null !== $filters['timestamp_from']) {
-            $query['query']['bool']['must']['range']['timestamp']['gte'] = $filters['timestamp_from'];
+            $constraints[] = [
+                'range' => [
+                    'timestamp' => [
+                        'gte' => $filters['timestamp_from'],
+                    ],
+                ],
+            ];
         }
 
         if (null !== $filters['timestamp_to']) {
-            $query['query']['bool']['must']['range']['timestamp']['lte'] = $filters['timestamp_to'];
+            $constraints[] = [
+                'range' => [
+                    'timestamp' => [
+                        'lte' => $filters['timestamp_to'],
+                    ],
+                ],
+            ];
         }
 
         if (null !== $filters['text']) {
-            $query['query']['bool']['must']['query_string'] = [
-                'fields' => ['message', 'context_flattened'],
-                'query'=> $this->formatTextSearch(strtolower($filters['text'])),
-                'fuzziness' => 0,
-                'default_operator' => 'AND'
+            $constraints[] = [
+                'query_string' => [
+                    'fields' => ['message', 'context_flattened'],
+                    'query'=> $this->formatTextSearch(strtolower($filters['text'])),
+                    'fuzziness' => 0,
+                    'default_operator' => 'AND'
+                ],
             ];
         }
+
+        $query = [
+            'size' => 25,
+            'sort' => [
+                'timestamp' => 'DESC',
+                '_id' => 'ASC',
+            ],
+            'track_total_hits' => true,
+            'query' => [
+                'bool' => [
+                    'filter' => $constraints,
+                ],
+            ],
+        ];
 
         if (null !== $searchAfter) {
             $query['search_after'] = $searchAfter;
