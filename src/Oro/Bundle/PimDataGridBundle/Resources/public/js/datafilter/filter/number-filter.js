@@ -1,6 +1,4 @@
-/* global define */
-define(['underscore', 'oro/datafilter/choice-filter'],
-function(_, ChoiceFilter) {
+define(['oro/datafilter/choice-filter'], function(ChoiceFilter) {
     'use strict';
 
     /**
@@ -10,5 +8,20 @@ function(_, ChoiceFilter) {
      * @class   oro.datafilter.NumberFilter
      * @extends oro.datafilter.ChoiceFilter
      */
-    return ChoiceFilter.extend({});
+    return ChoiceFilter.extend({
+        /**
+         * {@inheritdoc}
+         */
+        _onClickUpdateCriteria: function() {
+            const numberValue = Number(this._getInputValue(this.criteriaValueSelectors.value));
+
+            if (isNaN(numberValue)) {
+                this._setInputValue(this.criteriaValueSelectors.value, '');
+                this._focusCriteria();
+            } else {
+                this._hideCriteria();
+                this.setValue(this._formatRawValue(this._readDOMValue()));
+            }
+        },
+    });
 });
