@@ -149,3 +149,9 @@ services:
             - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetCommandFactory'
             - '@akeneo_assetmanager.application.asset.edit_asset_handler'
             - '@validator'
+
+    Akeneo\AssetManager\Infrastructure\EventSubscriber\CleanAssetFamilyIdentifierOnAttributeCreationSubscriber:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+        tags:
+            - { name: kernel.event_subscriber }
