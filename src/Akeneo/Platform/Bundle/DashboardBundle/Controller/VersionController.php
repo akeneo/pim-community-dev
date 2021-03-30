@@ -21,8 +21,7 @@ class VersionController
         VersionProviderInterface $versionProvider,
         ConfigManager $configManager,
         string $analyticsUri
-    )
-    {
+    ) {
         $this->versionProvider = $versionProvider;
         $this->configManager = $configManager;
         $this->analyticsUri = $analyticsUri;
