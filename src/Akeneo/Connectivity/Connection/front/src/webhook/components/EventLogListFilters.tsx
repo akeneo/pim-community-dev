@@ -2,7 +2,7 @@ import {SectionTitle} from 'akeneo-design-system';
 import React, {FC} from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '../../shared/translate';
-import {EventSubscriptionLogFilters, FiltersConfig} from '../model/EventSubscriptionLogFilters';
+import {EventSubscriptionLogFilters, getFiltersConfig} from '../model/EventSubscriptionLogFilters';
 import {EventLogDateTimeRangeFilter} from './DateRangeFilter/EventLogDateTimeRangeFilter';
 import {EventLogLevelFilter} from './EventLogLevelFilter';
 import SearchInput from './SearchInput';
@@ -13,11 +13,12 @@ const StyledSectionTitle = styled(SectionTitle)`
 
 export const EventLogListFilters: FC<{
     filters: EventSubscriptionLogFilters;
-    config: FiltersConfig;
     onChange: (filters: EventSubscriptionLogFilters) => void;
     total?: number;
-}> = ({filters, config, onChange, total}) => {
+}> = ({filters, onChange, total}) => {
     const translate = useTranslate();
+
+    const filtersConfig = getFiltersConfig();
 
     return (
         <StyledSectionTitle>
@@ -40,7 +41,7 @@ export const EventLogListFilters: FC<{
             <EventLogLevelFilter levels={filters.levels} onChange={levels => onChange({...filters, levels: levels})} />
             <EventLogDateTimeRangeFilter
                 value={filters.dateTime}
-                limit={config.dateTime}
+                limit={filtersConfig.dateTime}
                 isDirty={undefined !== filters.dateTime.start || undefined !== filters.dateTime.end}
                 onChange={(start, end) =>
                     onChange({

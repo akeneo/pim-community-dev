@@ -7,9 +7,7 @@ import {useTranslate} from '../../shared/translate';
 import useInfiniteEventSubscriptionLogs from '../hooks/api/use-infinite-event-subscription-logs';
 import {
     EventSubscriptionLogFilters,
-    FiltersConfig,
     getDefaultFilters,
-    getFiltersConfig,
     isSameAsDefaultFiltersValues,
 } from '../model/EventSubscriptionLogFilters';
 import {EventLogBadge} from './EventLogBadge';
@@ -45,10 +43,9 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
     const translate = useTranslate();
     const scrollContainer = useRef(null);
 
-    const [{filters, config}, setFilters] = useState<{
+    const [{filters}, setFilters] = useState<{
         filters: EventSubscriptionLogFilters;
-        config: FiltersConfig;
-    }>({filters: getDefaultFilters(), config: getFiltersConfig()});
+    }>({filters: getDefaultFilters()});
     const isSearchActive = !isSameAsDefaultFiltersValues(filters);
 
     const {logs, total, isLoading} = useInfiniteEventSubscriptionLogs(connectionCode, filters, scrollContainer);
@@ -74,7 +71,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                     {translate('akeneo_connectivity.connection.webhook.event_logs.list.info.link')}
                 </Link>
             </Information>
-            <EventLogListFilters filters={filters} config={config} onChange={handleFiltersChange} total={total} />
+            <EventLogListFilters filters={filters} onChange={handleFiltersChange} total={total} />
             <Table>
                 <Table.Header>
                     <SmallColumnHeaderCell>
