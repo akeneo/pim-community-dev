@@ -40,6 +40,9 @@ export const DateTimeInput: FC<Props> = ({value, min, max, onChange, invalid}) =
 
     const handleTimeChange = (timeString: string) => {
         const newTime = DateTime.fromFormat(timeString, TIME_INPUT_FORMAT, {zone});
+        if (undefined === value) {
+            return;
+        }
 
         const newZonedDateTime = DateTime.fromSeconds(value, {zone}).set({
             hour: newTime.hour,
