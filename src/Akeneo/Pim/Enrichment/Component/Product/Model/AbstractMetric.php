@@ -97,10 +97,7 @@ abstract class AbstractMetric implements MetricInterface
             return $metric->getData() === $this->data;
         }
 
-        return 0 === strcmp(
-                preg_replace('/\.0*$/', '', $metric->getData()),
-                preg_replace('/\.0*$/', '', $this->data)
-            );
+        return 0 === bccomp($metric->getData(), $this->data, 100);
     }
 
     /**
