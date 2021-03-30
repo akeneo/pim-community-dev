@@ -31,7 +31,7 @@ abstract class AbstractMetric implements MetricInterface
      *
      * @param string $family
      * @param string $unit
-     * @param float  $data
+     * @param float  $data (TODO: should not be float becaause of precision issues)
      * @param string $baseUnit
      * @param float  $baseData
      */
