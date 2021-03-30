@@ -156,7 +156,13 @@ define([
      * Load category trees
      */
     loadTrees: function () {
-      return $.getJSON(Routing.generate(this.config.itemCategoryTreeRoute, {id: this.getFormData().meta.id})).then(
+      const params = {
+        id: this.getFormData().meta.id,
+        // Passing the locale as request parameter will force to refresh the current user locale in session
+        // @see \Akeneo\UserManagement\Bundle\Context\UserContext::getCurrentLocale
+        dataLocale: UserContext.get('catalogLocale'),
+      };
+      return $.getJSON(Routing.generate(this.config.itemCategoryTreeRoute, params)).then(
         function (data) {
           const selectedCategories = {};
           _.each(
