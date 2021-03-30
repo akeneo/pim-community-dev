@@ -23,7 +23,7 @@ class DatabaseInspector
         $this->db = $db;
     }
 
-    public function getTableList(): array
+    public function getTableList(string $db_name): array
     {
         $sql = <<<"SQL"
 select
@@ -34,12 +34,12 @@ from information_schema.tables
 where table_schema=?
 order by table_name ASC
 SQL;
-        $result = $this->db->executeQuery($sql, ["akeneo_pim"]);
+        $result = $this->db->executeQuery($sql, [$db_name]);
 
         return $result->fetchAll(FetchMode::ASSOCIATIVE);
     }
 
-    public function getColumnInfo(): array
+    public function getColumnInfo(string $db_name): array
     {
         $sql = <<<"SQL"
 select
@@ -53,7 +53,7 @@ where TABLE_SCHEMA=?
 order by TABLE_NAME asc, ORDINAL_POSITION asc
 SQL;
 
-        $result = $this->db->executeQuery($sql, ["akeneo_pim"]);
+        $result = $this->db->executeQuery($sql, [$db_name]);
 
         return $result->fetchAll(FetchMode::ASSOCIATIVE);
     }

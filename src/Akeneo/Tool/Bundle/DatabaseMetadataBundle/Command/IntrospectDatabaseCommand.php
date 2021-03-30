@@ -13,6 +13,7 @@ namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\Command;
 use Symfony\Component\Console\Command\Command;
 use Akeneo\Tool\Component\DatabaseMetadata\DatabaseInspector;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class IntrospectDatabaseCommand extends Command
@@ -28,21 +29,23 @@ class IntrospectDatabaseCommand extends Command
         $this->inspector = $inspector;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function configure()
     {
        $this
          ->setDescription("Output the database structural informations.")
          ->addUsage('Dump database structure informations.') 
          ->setHelp('This command is used to either compare the PIM database structure with a reference or to troubleshoot problems.')
+         ->addOption('db-name', 'd', InputOption::VALUE_REQUIRED, 'The database name when different from "akenep_pim".', 'akeneo_pim')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        foreach($this->inspector->getTableList() as $row) {
+        $db_name = $input->getOption('db-name');
+        foreach($this->inspector->getTableList($db_name) as $row) {
             $output->writeln(sprintf("%s | %s | %s", $row['table_name'], $row['table_type'], $row['auto_increment']));
         }
-        foreach($this->inspector->getColumnInfo() as $row) {
+        foreach($this->inspector->getColumnInfo($db_name) as $row) {
             $output->writeln(sprintf(
                 "%s | %s | %s | %s | %s",
                 $row['table_name'],
