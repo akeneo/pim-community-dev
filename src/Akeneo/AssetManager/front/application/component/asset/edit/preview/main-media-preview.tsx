@@ -1,7 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import styled from 'styled-components';
-import {FullscreenIcon, SectionTitle} from 'akeneo-design-system';
+import {SectionTitle, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {Section} from '@akeneo-pim-community/shared';
 import EditionAsset, {getEditionAssetMediaData} from 'akeneoassetmanager/domain/model/asset/edition-asset';
@@ -13,13 +12,12 @@ import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import {
-  Action,
   DownloadAction,
   CopyUrlAction,
   ReloadAction,
+  FullscreenAction,
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 import {isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
-import {doReloadAllPreviews} from 'akeneoassetmanager/application/action/asset/reloadPreview';
 
 const Container = styled.div`
   display: flex;
@@ -31,6 +29,11 @@ const Container = styled.div`
   position: relative;
 `;
 
+const Actions = styled.div`
+  display: flex;
+  gap: 2px;
+`;
+
 type MainMediaPreviewProps = {
   asset: EditionAsset;
   context: {
@@ -39,10 +42,9 @@ type MainMediaPreviewProps = {
   };
 };
 
-const MainMediaPreview = connect(null, dispatch => ({
-  onReloadPreview: () => dispatch(doReloadAllPreviews() as any),
-}))(({asset, context, onReloadPreview}: MainMediaPreviewProps & {onReloadPreview: () => void}) => {
+const MainMediaPreview = ({asset, context}: MainMediaPreviewProps) => {
   const translate = useTranslate();
+  const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
   const attributeAsMainMedia = getAttributeAsMainMedia(asset.assetFamily);
   const data = getEditionAssetMediaData(asset, context.channel, context.locale);
   const attributeLabel = getLabelInCollection(
@@ -58,14 +60,20 @@ const MainMediaPreview = connect(null, dispatch => ({
         <SectionTitle.Title>{translate('pim_asset_manager.asset.enrich.main_media_preview')}</SectionTitle.Title>
         <SectionTitle.Spacer />
         {!isDataEmpty(data) && (
-          <>
-            <ReloadAction size={20} data={data} attribute={attributeAsMainMedia} onReload={onReloadPreview} />
-            <CopyUrlAction size={20} data={data} attribute={attributeAsMainMedia} />
-            <DownloadAction size={20} data={data} attribute={attributeAsMainMedia} />
-            <FullscreenPreview anchor={Action} label={attributeLabel} data={data} attribute={attributeAsMainMedia}>
-              <FullscreenIcon title={translate('pim_asset_manager.asset.button.fullscreen')} size={20} />
-            </FullscreenPreview>
-          </>
+          <Actions>
+            <ReloadAction data={data} attribute={attributeAsMainMedia} />
+            <CopyUrlAction data={data} attribute={attributeAsMainMedia} />
+            <DownloadAction data={data} attribute={attributeAsMainMedia} />
+            <FullscreenAction onClick={openFullscreenModal} />
+            {isFullscreenModalOpen && (
+              <FullscreenPreview
+                onClose={closeFullscreenModal}
+                label={attributeLabel}
+                data={data}
+                attribute={attributeAsMainMedia}
+              />
+            )}
+          </Actions>
         )}
       </SectionTitle>
       <Container>
@@ -73,6 +81,6 @@ const MainMediaPreview = connect(null, dispatch => ({
       </Container>
     </Section>
   );
-});
+};
 
 export {MainMediaPreview};

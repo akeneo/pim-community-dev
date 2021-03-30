@@ -1,30 +1,25 @@
 import * as React from 'react';
-import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {
   numberDataStringValue,
   numberDataFromString,
   areNumberDataEqual,
 } from 'akeneoassetmanager/domain/model/asset/data/number';
-import {Key} from 'akeneo-design-system';
+import {NumberInput} from 'akeneo-design-system';
 import {unformatNumber, formatNumberForUILocale} from 'akeneoassetmanager/tools/format-number';
 import {isNumberData} from 'akeneoassetmanager/domain/model/asset/data/number';
 import {isNumberAttribute} from 'akeneoassetmanager/domain/model/attribute/type/number';
 import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
+import {ViewGeneratorProps} from 'akeneoassetmanager/application/configuration/value';
 
-const View = ({
-  value,
-  onChange,
-  onSubmit,
-  canEditData,
-}: {
-  value: EditionValue;
-  onChange: (value: EditionValue) => void;
-  onSubmit: () => void;
-  canEditData: boolean;
-}) => {
+const View = ({value, id, invalid, canEditData, onChange, onSubmit}: ViewGeneratorProps) => {
   if (!isNumberData(value.data) || !isNumberAttribute(value.attribute)) {
     return null;
   }
+
+  if (id === undefined) {
+    id = `pim_asset_manager.asset.enrich.${value.attribute.code}`;
+  }
+
   const valueToDisplay = formatNumberForUILocale(numberDataStringValue(value.data));
 
   const onValueChange = (number: string) => {
@@ -39,24 +34,14 @@ const View = ({
   };
 
   return (
-    <React.Fragment>
-      <input
-        id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
-        autoComplete="off"
-        className={`AknTextField AknTextField--narrow AknTextField--light
-          ${value.attribute.value_per_locale ? 'AknTextField--localizable' : ''}
-          ${!canEditData ? 'AknTextField--disabled' : ''}`}
-        value={valueToDisplay}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          onValueChange(event.currentTarget.value);
-        }}
-        onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-          if (Key.Enter === event.key) onSubmit();
-        }}
-        disabled={!canEditData}
-        readOnly={!canEditData}
-      />
-    </React.Fragment>
+    <NumberInput
+      id={id}
+      value={valueToDisplay}
+      onChange={onValueChange}
+      readOnly={!canEditData}
+      invalid={invalid}
+      onSubmit={onSubmit}
+    />
   );
 };
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -20,13 +21,22 @@ use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
  */
 class EditTextValueCommand extends AbstractEditValueCommand
 {
-    /** @var string */
-    public $text;
+    public string $text;
 
     public function __construct(TextAttribute $attribute, ?string $channel, ?string $locale, string $text)
     {
         parent::__construct($attribute, $channel, $locale);
 
         $this->text = $text;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'attribute' => (string) $this->attribute->getIdentifier(),
+            'channel' => $this->channel,
+            'locale' => $this->locale,
+            'data' => $this->text
+        ];
     }
 }

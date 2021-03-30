@@ -11,16 +11,11 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @api
  */
-class AbstractEditValueCommand
+abstract class AbstractEditValueCommand
 {
-    /** @var AbstractAttribute */
-    public $attribute;
-
-    /** @var string|null */
-    public $channel;
-
-    /** @var string|null */
-    public $locale;
+    public AbstractAttribute $attribute;
+    public ?string $channel;
+    public ?string $locale;
 
     public function __construct(AbstractAttribute $attribute, ?string $channel, ?string $locale)
     {
@@ -28,4 +23,6 @@ class AbstractEditValueCommand
         $this->channel = $channel;
         $this->locale = $locale;
     }
+
+    abstract public function normalize(): array;
 }

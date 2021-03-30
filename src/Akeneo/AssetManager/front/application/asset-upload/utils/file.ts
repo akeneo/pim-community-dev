@@ -1,7 +1,7 @@
 import Line, {Thumbnail} from 'akeneoassetmanager/application/asset-upload/model/line';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
-import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
+import {FileInfo} from 'akeneo-design-system';
 
 type ThumbnailForLine = {
   thumbnail: Thumbnail;
@@ -29,6 +29,7 @@ export const getThumbnailFromFile = async (file: File, line: Line): Promise<Thum
 };
 
 export const uploadFile = async (
+  uploader: (file: File, onProgress: (ratio: number) => void) => Promise<FileInfo>,
   file: File,
   line: Line,
   updateProgress: (line: Line, progress: number) => void
@@ -41,10 +42,9 @@ export const uploadFile = async (
     updateProgress(line, 0);
 
     try {
-      imageUploader
-        .upload(file, (ratio: number) => {
-          updateProgress(line, ratio);
-        })
+      uploader(file, (ratio: number) => {
+        updateProgress(line, ratio);
+      })
         .then(resolve)
         .catch(reject);
     } catch (error) {

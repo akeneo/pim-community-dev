@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -20,14 +21,11 @@ namespace Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
  */
 class EditAssetCommand
 {
-    /** @var string */
-    public $assetFamilyIdentifier;
-
-    /** @var string */
-    public $code;
+    public string $assetFamilyIdentifier;
+    public string $code;
 
     /** @var AbstractEditValueCommand[] */
-    public $editAssetValueCommands = [];
+    public array $editAssetValueCommands = [];
 
     public function __construct(
         string $assetFamilyIdentifier,

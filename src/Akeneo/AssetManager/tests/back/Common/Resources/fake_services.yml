@@ -287,6 +287,9 @@ services:
     akeneo_assetmanager.infrastructure.job.mass_delete_launcher:
         class: 'Akeneo\AssetManager\Common\Fake\MassDeleteAssetsLauncherSpy'
 
+    akeneo_assetmanager.infrastructure.job.mass_edit_launcher:
+        class: 'Akeneo\AssetManager\Common\Fake\MassEditAssetsLauncherSpy'
+
     akeneo_assetmanager.infrastructure.job.naming_convention_launcher:
         class: Akeneo\AssetManager\Common\Fake\NamingConventionLauncherSpy
 

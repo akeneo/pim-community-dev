@@ -29,7 +29,8 @@ class EditOptionCollectionValueCommandFactory implements EditValueCommandFactory
         return
             $attribute instanceof OptionCollectionAttribute
             && [] !== $normalizedValue['data']
-            && is_array($normalizedValue['data']);
+            && is_array($normalizedValue['data'])
+            && (!isset($normalizedValue['action']) || 'replace' === $normalizedValue['action']);
     }
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand

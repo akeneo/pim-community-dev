@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -94,7 +95,8 @@ class EditAssetValueCommandsValidator extends ConstraintValidator
         if (!$command instanceof EditAssetCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected argument to be of class "%s", "%s" given', EditTextValueCommand::class,
+                    'Expected argument to be of class "%s", "%s" given',
+                    EditTextValueCommand::class,
                     get_class($command)
                 )
             );

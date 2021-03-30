@@ -13,7 +13,6 @@ class MassDeleteAssetsLauncherSpy implements MassDeleteAssetsLauncherInterface
 {
     private ?AssetFamilyIdentifier $assetFamilyIdentifier;
     private ?AssetQuery $assetQuery;
-    private array $launches = [];
 
     public function launchForAssetFamilyAndQuery(AssetFamilyIdentifier $assetFamilyIdentifier, AssetQuery $assetQuery): void
     {
@@ -23,11 +22,6 @@ class MassDeleteAssetsLauncherSpy implements MassDeleteAssetsLauncherInterface
 
     public function hasLaunchedMassDelete(string $assetFamilyIdentifier, AssetQuery $assetQuery)
     {
-        $allLaunches = [];
-        foreach ($this->launches as $launches) {
-            $allLaunches = array_merge($allLaunches, $launches);
-        }
-
         Assert::assertEquals(
             $assetFamilyIdentifier,
             (string) $this->assetFamilyIdentifier,

@@ -87,8 +87,8 @@ const WordsGrid: FC = () => {
                       <ActionContainer>
                         <IconButton
                           icon={<CloseIcon />}
-                          title={''}
-                          ghost={'borderless'}
+                          title={translate('pim_common.remove')}
+                          ghost="borderless"
                           level="tertiary"
                           size="small"
                           onClick={() => onDeleteWord(word.id)}

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\MassDeleteAssets;
 
-use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
-
 /**
  * Command to mass delete assets from a family
  * @author Julien Sanchez <julien@akeneo.com>

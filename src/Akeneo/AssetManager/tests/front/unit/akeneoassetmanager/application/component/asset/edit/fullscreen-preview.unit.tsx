@@ -1,10 +1,9 @@
 import React from 'react';
-import {screen, fireEvent} from '@testing-library/react';
+import {screen} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
-import {Provider} from 'react-redux';
-import {createStore} from 'redux';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithAssetManagerProviders} from '../../../../tools';
 
 const mediaFileAttribute = {
   identifier: 'image_attribute_identifier',
@@ -14,39 +13,19 @@ const mediaFileData = {
   originalFilename: 'fef3232.jpg',
   filePath: 'f/e/wq/fefwf.png',
 };
-const Anchor = (props: any) => <button title="anchor" {...props} />;
 
-describe('Tests fullscreen preview component', () => {
-  test('It renders with a closed modal by default', () => {
-    renderWithProviders(
-      <FullscreenPreview anchor={Anchor} data={mediaFileData} label="nice label" attribute={mediaFileAttribute} />
-    );
+test('It renders a fullscreen preview with its actions', () => {
+  const onClose = jest.fn();
 
-    expect(screen.queryByText('nice label')).not.toBeInTheDocument();
-  });
+  renderWithAssetManagerProviders(
+    <FullscreenPreview onClose={onClose} data={mediaFileData} label="nice label" attribute={mediaFileAttribute} />
+  );
 
-  test('It opens the modal when clicking on the anchor', () => {
-    renderWithProviders(
-      <Provider store={createStore(() => ({reloadPreview: false}))}>
-        <FullscreenPreview anchor={Anchor} data={mediaFileData} label="nice label" attribute={mediaFileAttribute} />
-      </Provider>
-    );
+  expect(screen.getByText(/nice label/i)).toBeInTheDocument();
+  expect(screen.getByAltText(/nice label/i)).toBeInTheDocument();
+  expect(screen.getByText(/pim_asset_manager.asset_preview.download/i)).toBeInTheDocument();
 
-    fireEvent.click(screen.getByTitle('anchor'));
+  userEvent.click(screen.getByTitle(/pim_common.close/i));
 
-    expect(screen.getByText('nice label')).toBeInTheDocument();
-  });
-
-  test('It closes the modal when clicking on the close button', () => {
-    renderWithProviders(
-      <Provider store={createStore(() => ({reloadPreview: false}))}>
-        <FullscreenPreview anchor={Anchor} data={mediaFileData} label="nice label" attribute={mediaFileAttribute} />
-      </Provider>
-    );
-
-    fireEvent.click(screen.getByTitle('anchor'));
-    fireEvent.click(screen.getByTitle('pim_common.close'));
-
-    expect(screen.queryByText('nice label')).not.toBeInTheDocument();
-  });
+  expect(onClose).toHaveBeenCalled();
 });

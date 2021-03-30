@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '../../../dependenciesTools/hooks';
+import {getFontFamily} from 'akeneo-design-system';
 
 const PreviewBlock = styled.div`
   background-color: black;
   color: #ccc;
   width: calc((100vw - 580px) / 2);
-  font-family: ${props => props.theme.fontFamily.monospaced};
+  font-family: ${getFontFamily('monospace')};
 `;
 
 const PreviewOption: React.FC<{

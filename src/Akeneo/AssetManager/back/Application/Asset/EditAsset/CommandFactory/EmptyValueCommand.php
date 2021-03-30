@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -18,4 +19,13 @@ namespace Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory;
  */
 class EmptyValueCommand extends AbstractEditValueCommand
 {
+    public function normalize(): array
+    {
+        return [
+            'attribute' => (string) $this->attribute->getIdentifier(),
+            'channel' => $this->channel,
+            'locale' => $this->locale,
+            'data' => null
+        ];
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -23,14 +24,9 @@ use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifier
  */
 class EditAssetCommandFactory
 {
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $sqlFindAttributesIndexedByIdentifier;
-
-    /** @var EditValueCommandFactoryRegistryInterface */
-    private $editValueCommandFactoryRegistry;
-
-    /** @var CheckIfTransformationTarget */
-    private $checkIfTransformationTarget;
+    private FindAttributesIndexedByIdentifierInterface $sqlFindAttributesIndexedByIdentifier;
+    private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry;
+    private CheckIfTransformationTarget $checkIfTransformationTarget;
 
     public function __construct(
         EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry,

@@ -117,6 +117,13 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_asset_value_commands' }
 
+    akeneo_assetmanager.infrastructure.validation.asset.mass_edit_command_validator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\MassEditAssetsCommandValidator
+        arguments:
+            - '@validator'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.mass_edit_command_validator' }
+
     akeneo_assetmanager.infrastructure.validation.asset.asset_should_exist:
         class: Akeneo\AssetManager\Infrastructure\Validation\Asset\AssetShouldExistValidator
         arguments:

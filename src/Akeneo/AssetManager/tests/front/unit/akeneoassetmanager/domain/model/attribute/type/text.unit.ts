@@ -6,6 +6,7 @@ import {
   createRegularExpressionFromString,
   regularExpressionStringValue,
   isTextAttribute,
+  isTextAreaAttribute,
 } from 'akeneoassetmanager/domain/model/attribute/type/text';
 
 const normalizedDescription = {
@@ -116,5 +117,12 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
   test('I can check if it is a text attribute', () => {
     expect(isTextAttribute(normalizedDescription)).toBe(true);
     expect(isTextAttribute({...normalizedDescription, type: 'noice'})).toBe(false);
+  });
+
+  test('I can check if it is a text area attribute', () => {
+    expect(isTextAreaAttribute(normalizedDescription)).toBe(false);
+    expect(isTextAreaAttribute({...normalizedDescription, type: 'noice'})).toBe(false);
+    expect(isTextAreaAttribute({...normalizedDescription, type: 'noice', is_textarea: true})).toBe(false);
+    expect(isTextAreaAttribute({...normalizedDescription, is_textarea: true})).toBe(true);
   });
 });

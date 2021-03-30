@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -40,26 +41,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
-    /** @var EditAssetCommandFactory */
-    private $editAssetCommandFactory;
-
-    /** @var EditAssetHandler */
-    private $editAssetHandler;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var NormalizerInterface */
-    private $normalizer;
-
-    /** @var CanEditAssetFamilyQueryHandler */
-    private $canEditAssetFamilyQueryHandler;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var IndexAssetEventAggregator */
-    private $indexAssetEventAggregator;
+    private EditAssetCommandFactory $editAssetCommandFactory;
+    private EditAssetHandler $editAssetHandler;
+    private ValidatorInterface $validator;
+    private NormalizerInterface $normalizer;
+    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
+    private TokenStorageInterface $tokenStorage;
+    private EventAggregatorInterface $indexAssetEventAggregator;
 
     /** @var ComputeTransformationEventAggregatorInterface */
     private $computeTransformationEventAggregator;

@@ -4,7 +4,6 @@ import {Provider} from 'react-redux';
 import * as React from 'react';
 import {Store} from 'redux';
 import __ from 'akeneoassetmanager/tools/translator';
-import {AssetFamilyEdit} from 'akeneoassetmanager/application/component/asset-family/edit';
 import createStore from 'akeneoassetmanager/infrastructure/store';
 import assetFamilyReducer from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import assetFamilyFetcher, {AssetFamilyResult} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
@@ -34,7 +33,9 @@ import {attributeListUpdated} from 'akeneoassetmanager/domain/event/attribute/li
 import {getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {pimTheme, Key} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-
+import {getValueConfig} from 'akeneoassetmanager/application/configuration/value';
+import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
+import {AssetFamilyEdit} from 'akeneoassetmanager/application/component/asset-family/edit';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -90,21 +91,23 @@ class AssetFamilyEditController extends BaseController {
         ReactDOM.render(
           <Provider store={this.store}>
             <DependenciesProvider>
-              <ThemeProvider theme={pimTheme}>
-                <AssetFamilyEdit
-                  initialTab={route.params.tab}
-                  onTabChange={(tabCode: string) => {
-                    const route = router.match(window.location.hash);
-                    if (undefined !== route.params.tab) {
-                      history.replaceState(
-                        null,
-                        '',
-                        '#' + Routing.generate(route.name, {...route.params, tab: tabCode})
-                      );
-                    }
-                  }}
-                />
-              </ThemeProvider>
+              <ConfigProvider config={{value: getValueConfig()}}>
+                <ThemeProvider theme={pimTheme}>
+                  <AssetFamilyEdit
+                    initialTab={route.params.tab}
+                    onTabChange={(tabCode: string) => {
+                      const route = router.match(window.location.hash);
+                      if (undefined !== route.params.tab) {
+                        history.replaceState(
+                          null,
+                          '',
+                          '#' + Routing.generate(route.name, {...route.params, tab: tabCode})
+                        );
+                      }
+                    }}
+                  />
+                </ThemeProvider>
+              </ConfigProvider>
             </DependenciesProvider>
           </Provider>,
           this.el

@@ -1,35 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
-import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
-import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
+import LocaleReference, {
+  localeReferenceAreEqual,
+  localeReferenceStringValue,
+} from 'akeneoassetmanager/domain/model/locale-reference';
+import ChannelReference, {channelReferenceAreEqual} from 'akeneoassetmanager/domain/model/channel-reference';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getDataFieldView} from 'akeneoassetmanager/application/configuration/value';
-import {getErrorsView} from 'akeneoassetmanager/application/component/asset/edit/validation-error';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
-import Flag from 'akeneoassetmanager/tools/component/flag';
-import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
-import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {getValuesForChannelAndLocale, isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
 import {hasFieldAsTarget} from 'akeneoassetmanager/domain/model/asset-family/transformation';
-import {getColor, Helper, LockIcon} from 'akeneo-design-system';
+import {Field, Helper} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {isTextAreaAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 
-const NoZIndexFieldContainer = styled.div.attrs(() => ({className: 'AknFieldContainer'}))`
-  z-index: unset;
-`;
-
-const ValueLabel = styled.label`
+const ValueCollectionContainer = styled.div`
   display: flex;
-  flex-grow: 1;
-  color: ${getColor('grey', 100)};
-  margin-bottom: 5px;
-
-  > :first-child {
-    margin-right: 5px;
-  }
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 20px;
 `;
 
 type ValueCollectionProps = {
@@ -59,7 +52,7 @@ const ValueCollection = ({
   );
 
   return (
-    <div>
+    <ValueCollectionContainer>
       {visibleValues.map((value: EditionValue) => {
         const DataView = getDataFieldView(value);
         const attributeLabel = getLabelInCollection(
@@ -76,66 +69,50 @@ const ValueCollection = ({
         });
 
         const canEditAttribute = !value.attribute.is_read_only;
-        const canEditData =
-          canEditAsset &&
-          canEditAttribute &&
-          (!value.attribute.value_per_locale || canEditLocale) &&
-          !isTransformationTarget;
+        const canEditData = canEditAsset && canEditAttribute && canEditLocale && !isTransformationTarget;
+        const fieldErrors = errors.filter(
+          (error: ValidationError) =>
+            `values.${value.attribute.code}` === error.propertyPath &&
+            channelReferenceAreEqual(error.invalidValue.channel, value.channel) &&
+            localeReferenceAreEqual(error.invalidValue.locale, value.locale)
+        );
 
         return (
-          <NoZIndexFieldContainer
+          <ErrorBoundary
             key={attributeIdentifierStringValue(value.attribute.identifier)}
-            data-code={value.attribute.code}
+            errorMessage={translate('pim_asset_manager.asset.error.value', {
+              fieldName: attributeLabel,
+            })}
           >
-            <div className="AknFieldContainer-header AknFieldContainer-header--light AknFieldContainer-header AknFieldContainer-header--light--small">
-              <ValueLabel title={attributeLabel} htmlFor={`pim_asset_manager.asset.enrich.${value.attribute.code}`}>
-                {!canEditData && <LockIcon size={20} />}
-                <span
-                  className={`AknBadge AknBadge--small AknBadge--highlight AknBadge--floating ${
-                    value.attribute.is_required && isValueEmpty(value) ? '' : 'AknBadge--hidden'
-                  }`}
-                />
-                {attributeLabel}
-              </ValueLabel>
-              <span className="AknFieldContainer-fieldInfo">
-                <span>
-                  <span>{value.attribute.value_per_channel ? channelReferenceStringValue(value.channel) : null}</span>
-                  &nbsp;
-                  <span>
-                    {value.attribute.value_per_locale ? (
-                      <Flag
-                        locale={createLocaleFromCode(localeReferenceStringValue(value.locale))}
-                        displayLanguage={true}
-                      />
-                    ) : null}
-                  </span>
-                </span>
-              </span>
-            </div>
-            <div className="AknFieldContainer-inputContainer">
-              <ErrorBoundary
-                errorMessage={translate('pim_asset_manager.asset.error.value', {
-                  fieldName: attributeLabel,
-                })}
-              >
-                <DataView
-                  value={value}
-                  onChange={onValueChange}
-                  onSubmit={onFieldSubmit}
-                  channel={channel}
-                  locale={locale}
-                  canEditData={canEditData}
-                />
-              </ErrorBoundary>
-            </div>
-            {isTransformationTarget && (
-              <Helper inline={true}>{translate('pim_asset_manager.attribute.used_as_transformation_target')}</Helper>
-            )}
-            {getErrorsView(errors, value)}
-          </NoZIndexFieldContainer>
+            <Field
+              label={attributeLabel}
+              incomplete={value.attribute.is_required && isValueEmpty(value)}
+              channel={value.channel}
+              locale={value.locale}
+              fullWidth={isTextAreaAttribute(value.attribute)}
+            >
+              <DataView
+                value={value}
+                onChange={onValueChange}
+                onSubmit={onFieldSubmit}
+                channel={channel}
+                locale={locale}
+                invalid={0 !== fieldErrors.length}
+                canEditData={canEditData}
+              />
+              {fieldErrors.map(({messageTemplate, parameters}: ValidationError, index: number) => (
+                <Helper key={index} level="error">
+                  {translate(messageTemplate, parameters)}
+                </Helper>
+              ))}
+              {isTransformationTarget && (
+                <Helper inline={true}>{translate('pim_asset_manager.attribute.used_as_transformation_target')}</Helper>
+              )}
+            </Field>
+          </ErrorBoundary>
         );
       })}
-    </div>
+    </ValueCollectionContainer>
   );
 };
 

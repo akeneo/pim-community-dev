@@ -28,6 +28,7 @@ import styled from 'styled-components';
 import {saveAndExecuteNamingConvention} from 'akeneoassetmanager/application/action/asset/save-and-execute-naming-convention';
 import {Button, Dropdown, IconButton, MoreIcon, useBooleanState} from 'akeneo-design-system';
 import {useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {ReloadPreviewProvider} from 'akeneoassetmanager/application/hooks/useReloadPreview';
 
 interface StateProps {
   form: {
@@ -144,7 +145,7 @@ const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnA
     hasEditRightOnAssetFamily;
 
   return (
-    <>
+    <ReloadPreviewProvider>
       <div className="AknDefault-contentWithColumn">
         <div className="AknDefault-thirdColumnContainer">
           <div className="AknDefault-thirdColumn" />
@@ -263,7 +264,7 @@ const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnA
           onCancel={closeDeleteModal}
         />
       )}
-    </>
+    </ReloadPreviewProvider>
   );
 };
 

@@ -1,11 +1,7 @@
+import {FileInfo} from 'akeneo-design-system';
+
 export type FilePath = string;
-export type File = {
-  filePath: FilePath;
-  originalFilename: string;
-  size?: number;
-  mimeType?: string;
-  extension?: string;
-} | null;
+export type File = FileInfo | null;
 
 export const createEmptyFile = (): File => null;
 export const createFileFromNormalized = (file: any): File => file;

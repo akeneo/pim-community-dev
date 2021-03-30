@@ -87,8 +87,8 @@ class MediaLinkUpdaterSpec extends ObjectBehavior
             AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            Prefix::empty(),
-            Suffix::empty(),
+            Prefix::createEmpty(),
+            Suffix::createEmpty(),
             MediaType::fromString('image')
         );
     }

@@ -80,6 +80,13 @@ Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand:
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetValueCommands: ~
 
+Akeneo\AssetManager\Application\Asset\MassEditAssets\MassEditAssetsCommand:
+    properties:
+        assetFamilyIdentifier:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
+    constraints:
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\MassEditAssetsCommand: ~
+
 Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand:
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditValueCommand: ~
@@ -102,6 +109,10 @@ Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionValueCo
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditOptionValueCommand: ~
 
 Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionCollectionValueCommand:
+    constraints:
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditOptionCollectionValueCommand: ~
+
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AppendOptionCollectionValueCommand:
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditOptionCollectionValueCommand: ~
 

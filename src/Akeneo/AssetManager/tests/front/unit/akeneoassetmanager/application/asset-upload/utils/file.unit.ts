@@ -1,20 +1,17 @@
 import {uploadFile, shouldCreateThumbnailFromFile} from 'akeneoassetmanager/application/asset-upload/utils/file';
-import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
 import {createFakeAssetFamily, createFakeLine} from '../tools';
 
-jest.mock('akeneoassetmanager/infrastructure/uploader/image', () => ({
-  upload: jest.fn().mockImplementation((file, updateProgress) => {
-    updateProgress(0);
-    updateProgress(1);
+const uploader = jest.fn((file, updateProgress) => {
+  updateProgress(0);
+  updateProgress(1);
 
-    return new Promise(resolve => {
-      resolve({
-        originalFilename: file.name,
-        filePath: '/public/' + file.name,
-      });
+  return new Promise(resolve => {
+    resolve({
+      originalFilename: file.name,
+      filePath: '/public/' + file.name,
     });
-  }),
-}));
+  });
+});
 
 const createFakeLineFromFilename = (filename: string) => {
   const valuePerLocale = false;
@@ -28,7 +25,7 @@ const createFakeLineFromFilename = (filename: string) => {
 
 describe('akeneoassetmanager/application/asset-upload/utils/file.ts -> uploadFile', () => {
   test('I cannot upload an undefined file', async () => {
-    const uploadedFile = await uploadFile();
+    const uploadedFile = await uploadFile(uploader);
 
     expect(uploadedFile).toBe(null);
   });
@@ -38,7 +35,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/file.ts -> uploadFil
     const file = new File(['foo'], 'foo.png', {type: 'image/png'});
     const handleProgress = jest.fn();
 
-    const uploadedFile = await uploadFile(file, line, handleProgress);
+    const uploadedFile = await uploadFile(uploader, file, line, handleProgress);
 
     expect(handleProgress).toHaveBeenCalledWith(line, 0);
     expect(handleProgress).toHaveBeenCalledWith(line, 1);
@@ -50,7 +47,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/file.ts -> uploadFil
   });
 
   test('I get an error if the upload is refused', async () => {
-    imageUploader.upload.mockImplementationOnce(() => Promise.reject());
+    uploader.mockImplementationOnce(() => Promise.reject());
 
     const handleCatch = jest.fn();
 
@@ -58,13 +55,13 @@ describe('akeneoassetmanager/application/asset-upload/utils/file.ts -> uploadFil
     const file = new File(['foo'], 'foo.png', {type: 'image/png'});
     const handleProgress = jest.fn();
 
-    await uploadFile(file, line, handleProgress).catch(handleCatch);
+    await uploadFile(uploader, file, line, handleProgress).catch(handleCatch);
 
     expect(handleCatch).toHaveBeenCalled();
   });
 
   test('I get an error if the upload failed', async () => {
-    imageUploader.upload.mockImplementationOnce(() => {
+    uploader.mockImplementationOnce(() => {
       throw new Error();
     });
 
@@ -74,7 +71,7 @@ describe('akeneoassetmanager/application/asset-upload/utils/file.ts -> uploadFil
     const file = new File(['foo'], 'foo.png', {type: 'image/png'});
     const handleProgress = jest.fn();
 
-    await uploadFile(file, line, handleProgress).catch(handleCatch);
+    await uploadFile(uploader, file, line, handleProgress).catch(handleCatch);
 
     expect(handleCatch).toHaveBeenCalled();
   });

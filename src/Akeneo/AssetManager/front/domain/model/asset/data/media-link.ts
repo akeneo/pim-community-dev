@@ -1,8 +1,12 @@
 import Data from 'akeneoassetmanager/domain/model/asset/data';
-import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
+import {
+  isMediaLinkAttribute,
+  NormalizedMediaLinkAttribute,
+} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {suffixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
 import {prefixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
+import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 
 const YOUTUBE_WATCH_URL = 'https://youtube.com/watch?v=';
 const YOUTUBE_EMBED_URL = 'https://youtube.com/embed/';
@@ -30,10 +34,20 @@ export const getMediaLinkUrl = (data: MediaLinkData, attribute: NormalizedAttrib
     throw Error('EditionValue should be a MediaLinkValue');
   }
 
-  return `${prefixStringValue(attribute.prefix)}${mediaLinkDataStringValue(data)}${suffixStringValue(
-    attribute.suffix
-  )}`;
+  switch (attribute.media_type) {
+    case MediaTypes.youtube:
+      return getYouTubeWatchUrl(data);
+    case MediaTypes.vimeo:
+      return getVimeoWatchUrl(data);
+    default:
+      return `${prefixStringValue(attribute.prefix)}${mediaLinkDataStringValue(data)}${suffixStringValue(
+        attribute.suffix
+      )}`;
+  }
 };
+
+export const canDownloadMediaLink = (attribute: NormalizedMediaLinkAttribute): boolean =>
+  MediaTypes.youtube !== attribute.media_type && MediaTypes.vimeo !== attribute.media_type;
 
 export const getYouTubeWatchUrl = (data: MediaLinkData): string =>
   `${YOUTUBE_WATCH_URL}${mediaLinkDataStringValue(data)}`;

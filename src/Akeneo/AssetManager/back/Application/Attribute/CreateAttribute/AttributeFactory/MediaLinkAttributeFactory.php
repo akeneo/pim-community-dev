@@ -76,12 +76,12 @@ class MediaLinkAttributeFactory implements AttributeFactoryInterface
     private function prefix(CreateMediaLinkAttributeCommand $command): Prefix
     {
         return Prefix::EMPTY !== $command->prefix
-           ? Prefix::fromString($command->prefix) : Prefix::empty();
+            ? Prefix::fromString($command->prefix) : Prefix::createEmpty();
     }
 
     private function suffix(CreateMediaLinkAttributeCommand $command): Suffix
     {
         return Suffix::EMPTY !== $command->suffix
-            ? Suffix::fromString($command->suffix) : Suffix::empty();
+            ? Suffix::fromString($command->suffix) : Suffix::createEmpty();
     }
 }

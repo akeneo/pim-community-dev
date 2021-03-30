@@ -15,17 +15,10 @@ namespace Akeneo\AssetManager\Application\Attribute\AppendAttributeOption;
 
 class AppendAttributeOptionCommand
 {
-    /**@var string */
-    public $assetFamilyIdentifier;
-
-    /**@var string */
-    public $attributeCode;
-
-    /**@var string */
-    public $optionCode;
-
-    /** @var array|null */
-    public $labels;
+    public string $assetFamilyIdentifier;
+    public string $attributeCode;
+    public string $optionCode;
+    public ?array $labels;
 
     public function __construct(
         string $assetFamilyIdentifier,

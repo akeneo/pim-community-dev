@@ -8,14 +8,18 @@ import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 export class InvalidArgument extends Error {}
 
-export type ViewGenerator = React.SFC<{
+type ViewGeneratorProps = {
+  id?: string;
   value: EditionValue;
   channel: ChannelReference;
   locale: LocaleReference;
   onChange: (value: EditionValue) => void;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   canEditData: boolean;
-}>;
+  invalid?: boolean;
+};
+
+export type ViewGenerator = React.FC<ViewGeneratorProps>;
 /**
  * @api
  */
@@ -29,7 +33,7 @@ export type FilterViewProps = {
   };
 };
 
-export type FilterView = React.SFC<FilterViewProps>;
+export type FilterView = React.FC<FilterViewProps>;
 
 type ValueConfig = {
   [type: string]: {
@@ -140,7 +144,10 @@ export const getFilterViews = (config: ValueConfig) => (attributes: NormalizedAt
  * This loader looks at the requirejs.yml file and find every configuration related to this module. It transform it
  * into a javascript object and add it automatically to the file on the fly.
  */
+export const getValueConfig = () => __moduleConfig as ValueConfig;
 export const getDataFieldView = getFieldView(__moduleConfig as ValueConfig);
 export const getDataFilterView = getFilterView(__moduleConfig as ValueConfig);
 export const hasDataFilterView = hasFilterView(__moduleConfig as ValueConfig);
 export const getDataFilterViews = getFilterViews(__moduleConfig as ValueConfig);
+
+export {ValueConfig, ViewGeneratorProps};

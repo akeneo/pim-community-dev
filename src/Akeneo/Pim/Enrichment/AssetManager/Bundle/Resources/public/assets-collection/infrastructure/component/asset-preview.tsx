@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import {ArrowLeftIcon, ArrowRightIcon, EditIcon, getColor, Key, Modal, useShortcut} from 'akeneo-design-system';
+import {ArrowLeftIcon, ArrowRightIcon, Button, EditIcon, getColor, Key, Modal, useShortcut} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {Carousel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/carousel';
-import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
+import {ButtonContainer, TransparentButton} from 'akeneoassetmanager/application/component/app/button';
 import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import ListAsset, {
   getAssetByCode,
@@ -21,13 +21,7 @@ import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {useAssetFamily, AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
 import {getAssetEditUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
-import {
-  Action,
-  ActionLabel,
-  Actions,
-  DownloadAction,
-  CopyUrlAction,
-} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
+import {DownloadAction, CopyUrlAction} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 
 const Container = styled.div`
   position: relative;
@@ -43,6 +37,7 @@ const Container = styled.div`
 const Border = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 20px;
   border: 1px solid ${getColor('grey', 80)};
   max-height: 100%;
@@ -80,13 +75,6 @@ const PreviewContainer = styled.div`
 const BrandedTitle = styled(Modal.Title)`
   color: ${getColor('brand', 100)};
 `;
-
-const EditAction = ({url, label}: {url: string; label: string}) => (
-  <Action className="edit-asset-from-preview" title={label} href={url} target="_blank">
-    <EditIcon />
-    <ActionLabel title={label}>{label}</ActionLabel>
-  </Action>
-);
 
 type AssetPreviewProps = {
   assetCollection: ListAsset[];
@@ -145,7 +133,7 @@ const AssetPreview = ({
           <PreviewContainer>
             <Border>
               <MediaPreview data={data} label={selectedAssetLabel} attribute={attributeAsMainMedia} />
-              <Actions margin={20}>
+              <ButtonContainer>
                 <CopyUrlAction
                   data={data}
                   attribute={attributeAsMainMedia}
@@ -156,8 +144,10 @@ const AssetPreview = ({
                   attribute={attributeAsMainMedia}
                   label={translate('pim_asset_manager.asset_preview.download')}
                 />
-                <EditAction url={editUrl} label={translate('pim_asset_manager.asset_preview.edit_asset')} />
-              </Actions>
+                <Button level="tertiary" ghost={true} href={editUrl} target="_blank">
+                  <EditIcon /> {translate('pim_asset_manager.asset_preview.edit_asset')}
+                </Button>
+              </ButtonContainer>
             </Border>
           </PreviewContainer>
           <Carousel

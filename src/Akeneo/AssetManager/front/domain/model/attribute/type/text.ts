@@ -56,6 +56,9 @@ export interface NormalizedTextAttribute extends NormalizedAttribute {
 export const isTextAttribute = (textAttribute: NormalizedAttribute): textAttribute is NormalizedTextAttribute =>
   textAttribute.type === TEXT_ATTRIBUTE_TYPE;
 
+export const isTextAreaAttribute = (textAttribute: NormalizedAttribute): textAttribute is NormalizedTextAttribute =>
+  isTextAttribute(textAttribute) && textAttribute.is_textarea;
+
 export interface TextAttribute extends Attribute {
   maxLength: MaxLength;
   isTextarea: IsTextarea;

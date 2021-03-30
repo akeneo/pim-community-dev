@@ -28,6 +28,7 @@ import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-cl
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {getColor, getFontSize, Key, useShortcut} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useUploader} from '@akeneo-pim-community/shared';
 
 const Header = styled.div`
   background: ${getColor('white')};
@@ -105,6 +106,7 @@ const UploadModal = ({
   onAssetCreated,
 }: UploadModalProps) => {
   const translate = useTranslate();
+  const [uploader] = useUploader('akeneo_asset_manager_file_upload');
   const [state, dispatch] = useReducer<Reducer<State>>(reducer, {lines: []});
   const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
   const valuePerLocale = attributeAsMainMedia.value_per_locale;
@@ -140,14 +142,16 @@ const UploadModal = ({
       let files = event.target.files ? Object.values(event.target.files) : [];
       files = limitFileUpload(files, state.lines.length);
 
-      onFileDrop(files, assetFamily, channels, locales, dispatch);
+      onFileDrop(uploader, files, assetFamily, channels, locales, dispatch);
     },
-    [assetFamily, channels, locales, dispatch, state.lines.length]
+    [assetFamily, channels, locales, dispatch, state.lines.length, uploader]
   );
 
   const handleLineChange = React.useCallback((line: Line) => dispatch(editLineAction(line)), [dispatch]);
 
-  const handleLineUploadRetry = React.useCallback((line: Line) => retryFileUpload(line, dispatch), [dispatch]);
+  const handleLineUploadRetry = React.useCallback((line: Line) => retryFileUpload(uploader, line, dispatch), [
+    dispatch,
+  ]);
 
   const handleLineRemove = React.useCallback((line: Line) => dispatch(removeLineAction(line)), [dispatch]);
 

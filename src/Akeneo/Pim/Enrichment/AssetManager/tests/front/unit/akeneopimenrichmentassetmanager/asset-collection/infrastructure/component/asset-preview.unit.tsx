@@ -4,11 +4,9 @@ import {AssetPreview} from 'akeneopimenrichmentassetmanager/assets-collection/in
 import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
-import {Provider} from 'react-redux';
-import {createStore} from 'redux';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithAssetManagerProviders} from '../../../../../../../../../../AssetManager/tests/front/unit/akeneoassetmanager/tools';
 
-jest.mock('akeneoassetmanager/tools/security-context', () => ({isGranted: (permission: string) => true}));
+jest.mock('akeneoassetmanager/tools/security-context', () => ({isGranted: (_permission: string) => true}));
 
 const context = {locale: 'en_US', channel: 'ecommerce'};
 const mediaLinkImageAttribute = {
@@ -248,23 +246,19 @@ const dataProvider = (attributeAsMainMedia: string = 'media_link_image_attribute
   },
 });
 
-const store = createStore(() => ({reloadPreview: false}));
-
 test('It can display the previous asset in the collection', async () => {
   const initialAssetCode = 'iphone8_pack';
 
   await act(async () => {
-    renderWithProviders(
-      <Provider store={store}>
-        <AssetPreview
-          context={context}
-          assetCollection={simpleAssetCollection}
-          initialAssetCode={initialAssetCode}
-          productAttribute={mediaLinkImageAttribute}
-          dataProvider={dataProvider()}
-          onClose={jest.fn()}
-        />
-      </Provider>
+    renderWithAssetManagerProviders(
+      <AssetPreview
+        context={context}
+        assetCollection={simpleAssetCollection}
+        initialAssetCode={initialAssetCode}
+        productAttribute={mediaLinkImageAttribute}
+        dataProvider={dataProvider()}
+        onClose={jest.fn()}
+      />
     );
   });
 
@@ -277,17 +271,15 @@ test('It can display the next asset in the collection', async () => {
   const initialAssetCode = 'iphone8_pack';
 
   await act(async () => {
-    renderWithProviders(
-      <Provider store={store}>
-        <AssetPreview
-          context={context}
-          assetCollection={simpleAssetCollection}
-          initialAssetCode={initialAssetCode}
-          productAttribute={mediaLinkImageAttribute}
-          dataProvider={dataProvider()}
-          onClose={jest.fn()}
-        />
-      </Provider>
+    renderWithAssetManagerProviders(
+      <AssetPreview
+        context={context}
+        assetCollection={simpleAssetCollection}
+        initialAssetCode={initialAssetCode}
+        productAttribute={mediaLinkImageAttribute}
+        dataProvider={dataProvider()}
+        onClose={jest.fn()}
+      />
     );
   });
 
@@ -300,17 +292,15 @@ test('It can select an asset from the carousel', async () => {
   const initialAssetCode = 'iphone8_pack';
 
   await act(async () => {
-    renderWithProviders(
-      <Provider store={store}>
-        <AssetPreview
-          context={context}
-          assetCollection={simpleAssetCollection}
-          initialAssetCode={initialAssetCode}
-          productAttribute={mediaLinkImageAttribute}
-          dataProvider={dataProvider()}
-          onClose={jest.fn()}
-        />
-      </Provider>
+    renderWithAssetManagerProviders(
+      <AssetPreview
+        context={context}
+        assetCollection={simpleAssetCollection}
+        initialAssetCode={initialAssetCode}
+        productAttribute={mediaLinkImageAttribute}
+        dataProvider={dataProvider()}
+        onClose={jest.fn()}
+      />
     );
   });
 
@@ -325,7 +315,7 @@ test('It should not display the modal when the provided asset code is null', asy
   const initialAssetCode = null;
 
   await act(async () => {
-    renderWithProviders(
+    renderWithAssetManagerProviders(
       <AssetPreview
         context={context}
         assetCollection={assetCollection}
@@ -344,7 +334,7 @@ test('It should not display the modal when the provided asset code does not exis
   const initialAssetCode = '404_not_found';
 
   await act(async () => {
-    renderWithProviders(
+    renderWithAssetManagerProviders(
       <AssetPreview
         context={context}
         assetCollection={assetCollection}
@@ -363,7 +353,7 @@ test('It should display the YouTube player when the product attribute is a YouTu
   const initialAssetCode = 'iphone14_pack';
 
   await act(async () => {
-    renderWithProviders(
+    renderWithAssetManagerProviders(
       <AssetPreview
         context={context}
         assetCollection={assetCollection}
@@ -395,7 +385,7 @@ test('I should get the YouTube link when I click on the Copy URL button on the p
   const initialAssetCode = 'iphone14_pack';
 
   await act(async () => {
-    renderWithProviders(
+    renderWithAssetManagerProviders(
       <AssetPreview
         context={context}
         assetCollection={assetCollection}
@@ -407,7 +397,7 @@ test('I should get the YouTube link when I click on the Copy URL button on the p
     );
   });
 
-  fireEvent.click(screen.getByTitle('pim_asset_manager.asset_preview.copy_url'));
+  fireEvent.click(screen.getByText('pim_asset_manager.asset_preview.copy_url'));
 
   expect(mockClipboard.readText()).toEqual('https://youtube.com/watch?v=nice_file_path');
 });

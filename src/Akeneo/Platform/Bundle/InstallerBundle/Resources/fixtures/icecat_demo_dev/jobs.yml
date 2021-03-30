@@ -1184,6 +1184,11 @@ jobs:
         alias: asset_manager_mass_delete_assets
         label: Mass delete assets
         type: asset_manager_mass_delete_assets
+    asset_manager_mass_edit_assets:
+        connector: internal
+        alias: asset_manager_mass_edit_assets
+        label: Mass edit assets
+        type: asset_manager_mass_edit_assets
     clean_removed_attribute_job:
         connector: internal
         alias:     clean_removed_attribute_job

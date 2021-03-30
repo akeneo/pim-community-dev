@@ -152,7 +152,7 @@ services:
     akeneo_assetmanager.factory.mass_operation_notification:
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Factory\MassEditNotificationFactory'
         arguments:
-            - ['asset_manager_mass_delete_assets']
+            - ['asset_manager_mass_delete_assets', 'asset_manager_mass_edit_assets']
             - '%pim_notification.entity.notification.class%'
         tags:
             - { name: pim_notification.factory.notification }

@@ -29,8 +29,10 @@ export const PimView: React.FunctionComponent<Props> = ({
       );
     }
     viewBuilder.build(viewName).then((view: View) => {
-      view.setElement(el.current).render();
-      setView(view);
+      if (null !== el.current) {
+        view.setElement(el.current).render();
+        setView(view);
+      }
     });
   }, [viewBuilder, viewName]);
 

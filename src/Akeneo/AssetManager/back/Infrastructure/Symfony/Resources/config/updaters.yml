@@ -120,6 +120,11 @@ services:
         tags:
             - { name: akeneo_assetmanager.asset_value_updater }
 
+    akeneo_assetmanager.application.edit_asset.asset_value_updater.append_option_collection_updater:
+        class: Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\AppendOptionCollectionUpdater
+        tags:
+            - { name: akeneo_assetmanager.asset_value_updater }
+
     akeneo_assetmanager.application.edit_asset.asset_value_updater.number_updater:
         class: Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\NumberUpdater
         tags:
