@@ -1,4 +1,4 @@
-# How to create an independant frontend package
+# Creating a new independent React app
 
 This guide explains the setup of an independent frontend package inside the PIM.
 
@@ -11,7 +11,7 @@ They also are limited by the underlying stack: backbone.js + custom code
 
 More on this in the frontend controller section of this guide.
 
-# Create a new React package 📦
+## Create a new React package 📦
 
 Create a new folder for your frontend code, it can be located anywhere inside the PIM `src` folder apart from the `Resources/public/` folder of the Symfony bundles.
 
@@ -58,9 +58,9 @@ Create a new folder for your frontend code, it can be located anywhere inside th
 
    > Only export components and/or functions that you want to expose to the outside world
 
-# Setup the yarn workspace
+## Setup the yarn workspace
 
-See the documentation on [Yarn workspaces](./yarn-workspaces.md)
+See the documentation on [Yarn workspaces](../other/yarn-workspaces.md)
 
 Add the yarn workspace to the root `package.json`
 
@@ -76,7 +76,7 @@ This allows you to use the package anywhere in the PIM via:
 import { HelloZiggy } from "@akeneo-pim-enterprise/ziggy";
 ```
 
-# Create a new page 📄 with React
+## Create a new page 📄 with React
 
 > For the following examples we will enable and use the **AcmeEnterpriseBundle**
 >
