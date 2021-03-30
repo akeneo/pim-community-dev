@@ -20,7 +20,7 @@ const Container = styled.div<
   background: ${getColor('white')};
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.3);
   padding: 0 0 10px 0;
-  max-width: 320px;
+  max-width: 400px;
   min-width: 150px;
   position: absolute;
   opacity: ${({visible}) => (visible ? 1 : 0)};
