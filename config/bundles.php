@@ -60,6 +60,7 @@ return [
     Akeneo\Tool\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle::class => ['all' => true],
     Akeneo\Pim\Automation\RuleEngine\Bundle\AkeneoPimRuleEngineBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle::class => ['all' => true],
+    Akeneo\Tool\Bundle\DatabaseMetadataBundle\AkeneoDatabaseMetadataBundle::class => ['all' => true],
     Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle::class => ['all' => true],
     Akeneo\Pim\Permission\Bundle\AkeneoPimPermissionBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\InstallerBundle\PimEnterpriseInstallerBundle::class => ['all' => true],

@@ -1,0 +1,18 @@
+parameters:
+    akeneo.pim.database_inspector.class: 'Akeneo\Tool\Component\DatabaseMetadata\DatabaseInspector'
+    akeneo.pim.database_introspect.command.class: 'Akeneo\Tool\Bundle\DatabaseMetadataBundle\Command\IntrospectDatabaseCommand'
+
+services:
+    _defaults: 
+        public: true
+    akeneo.pim.database_inspector.service:
+        class: '%akeneo.pim.database_inspector.class%'
+        arguments:
+            - '@doctrine.dbal.default_connection'
+    akeneo.pim.database_inspector.command:
+        class: '%akeneo.pim.database_introspect.command.class%'
+        arguments:
+            - '@akeneo.pim.database_inspector.service'
+        tags: 
+            - { name: console.command }
+
