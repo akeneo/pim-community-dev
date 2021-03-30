@@ -171,6 +171,7 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'variant axis'
       create: Add new
+      title_create_label: "]-Inf, 1]Add a new {{ axes }}|]1, Inf[Add a new {{ axes }}"
       required_label: '(variant axis)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variant product|]1, Inf[{{ complete }} / {{ total }} variant products"
@@ -281,6 +282,13 @@ pim_enrich.export.product:
       operators:
         BETWEEN: Between
         NOT BETWEEN: Not between
+    quality-score:
+      title: Quality Score
+      operator_choice_title: Export Quality Score(s) for
+      empty_selection: No condition on Quality Score
+      operators:
+        IN AT LEAST ONE LOCALE: At least one locale
+        IN ALL LOCALES: All selected locales
   global_settings:
     title: Global settings
 pim_enrich.mass_edit.product:
