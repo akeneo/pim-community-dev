@@ -81,17 +81,16 @@ define([
         label: __('pim_enrich.entity.category.plural_label'),
       });
 
-      this.listenTo(
-        this.getRoot(),
-        'pim_enrich:form:locale_switcher:change',
-        function (localeEvent) {
-          if ('base_product' === localeEvent.context) {
-            this.render();
-          }
-        }.bind(this)
-      );
+      this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', this.handleLocaleChange.bind(this));
 
       return BaseForm.prototype.configure.apply(this, arguments);
+    },
+
+    handleLocaleChange: function ({context}) {
+      if ('base_product' === context && null !== this.treeAssociate) {
+        this.trees = [];
+        this.render();
+      }
     },
 
     /**
@@ -157,7 +156,14 @@ define([
      * Load category trees
      */
     loadTrees: function () {
-      return $.getJSON(Routing.generate(this.config.itemCategoryTreeRoute, {id: this.getFormData().meta.id})).then(
+      return $.getJSON(
+        Routing.generate(this.config.itemCategoryTreeRoute, {
+          id: this.getFormData().meta.id,
+          // Passing the locale as request parameter will force to refresh the current user locale in session
+          // @see \Akeneo\UserManagement\Bundle\Context\UserContext::getCurrentLocale
+          dataLocale: UserContext.get('catalogLocale'),
+        })
+      ).then(
         function (data) {
           const selectedCategories = {};
           _.each(
