@@ -1,7 +1,7 @@
 import {useContext} from 'react';
 import {UserContext} from './user-context';
 
-export const useUser = () => {
+export const useUser = (): {locale: string; timeZone: string} => {
     const user = useContext(UserContext);
 
     const locale = user.get('uiLocale').replace('_', '-');

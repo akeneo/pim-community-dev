@@ -35,7 +35,7 @@ export type FiltersConfig = {
 
 export const getFiltersConfig: () => FiltersConfig = () => ({
     dateTime: {
-        min: DateTime.utc().minus({hours: 72}).toSeconds(),
+        min: 0,
         max: DateTime.utc().toSeconds(),
     },
 });

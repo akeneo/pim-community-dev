@@ -31,13 +31,13 @@ export const EventLogDateTimeRangeFilter: FC<Props> = ({value, limit, isDirty, o
         const str = [];
         if (undefined !== start && start !== limit.min) {
             str.push(
-                translate('akeneo_connectivity.connection.webhook.event_logs.list.date_range_filter.to'),
+                translate('akeneo_connectivity.connection.webhook.event_logs.list.date_range_filter.from'),
                 DateTime.fromSeconds(start, {zone}).toLocaleString({...DateTime.DATETIME_SHORT, locale})
             );
         }
         if (undefined !== end && end !== limit.min) {
             str.push(
-                translate('akeneo_connectivity.connection.webhook.event_logs.list.date_range_filter.from'),
+                translate('akeneo_connectivity.connection.webhook.event_logs.list.date_range_filter.to'),
                 DateTime.fromSeconds(end, {zone}).toLocaleString({...DateTime.DATETIME_SHORT, locale})
             );
         }

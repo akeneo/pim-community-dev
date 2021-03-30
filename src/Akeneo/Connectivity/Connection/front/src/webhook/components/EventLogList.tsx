@@ -43,9 +43,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
     const translate = useTranslate();
     const scrollContainer = useRef(null);
 
-    const [{filters}, setFilters] = useState<{
-        filters: EventSubscriptionLogFilters;
-    }>({filters: getDefaultFilters()});
+    const [filters, setFilters] = useState<EventSubscriptionLogFilters>(getDefaultFilters());
     const isSearchActive = !isSameAsDefaultFiltersValues(filters);
 
     const {logs, total, isLoading, isInitialized} = useInfiniteEventSubscriptionLogs(
@@ -62,9 +60,6 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
         return <NoEventLogs />;
     }
 
-    const handleFiltersChange = (filters: EventSubscriptionLogFilters) =>
-        setFilters(state => ({...state, filters, isDefaultFilters: false}));
-
     return (
         <>
             <Information
@@ -79,7 +74,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                     {translate('akeneo_connectivity.connection.webhook.event_logs.list.info.link')}
                 </Link>
             </Information>
-            <EventLogListFilters filters={filters} onChange={handleFiltersChange} total={total} />
+            <EventLogListFilters filters={filters} onChange={setFilters} total={total} />
             <Table>
                 <Table.Header>
                     <SmallColumnHeaderCell>
