@@ -147,6 +147,7 @@ pim_enrich.entity.attribute:
             success: Attribute successfully updated.
             fail: The attribute could not be updated.
             fields_not_ready: "The attribute cannot be saved right now. The following fields are not ready: {{ fields }}"
+            cant_remove_attributes_used_as_label: Attributes used as labels in a family cannot be removed.
         delete:
             success: Attribute successfully removed
             fail: Cannot delete this attribute
