@@ -88,6 +88,8 @@ class ProposalChangesNormalizer
                 if (count($present) > 0) {
                     $present['data'] = $change['data'];
                     $present['attributeLabel'] = $attribute->getLabel();
+                    $present['attributeType'] = $attribute->getType();
+                    $present['attributeReferenceDataName'] = $attribute->getReferenceDataName();
                     $present['scope'] = $change['scope'];
                     $present['locale'] = $change['locale'];
                     $present['canReview'] = $canReview;

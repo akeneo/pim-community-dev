@@ -65,6 +65,11 @@ class PricesPresenter extends AbstractProductValuePresenter
             }
         }
 
+        return [
+            'before_data' => array_values($value),
+            'after_data' => array_values($change),
+        ];
+
         return $this->renderer->renderDiff(array_values($value), array_values($change));
     }
 

@@ -50,7 +50,7 @@ class FilePresenter implements PresenterInterface
      */
     public function present($formerData, array $change)
     {
-        $result = ['before' => '', 'after' => ''];
+        $result = ['before_data' => null, 'after_data' => null];
 
         $originalMedia = $formerData;
         $changedMedia  = isset($change['data']) ? $this->fileInfoRepository->findOneByIdentifier($change['data']) : null;
@@ -60,12 +60,21 @@ class FilePresenter implements PresenterInterface
         }
 
         if (null !== $originalMedia && null !== $originalMedia->getKey() && null !== $originalMedia->getOriginalFilename()) {
+            $result['before_data'] = $this->createFileElement($originalMedia->getKey(), $originalMedia->getOriginalFilename());
+        }
+
+        if (null !== $changedMedia && null !== $changedMedia->getKey() && null !== $changedMedia->getOriginalFilename()) {
+            $result['after_data'] = $this->createFileElement($changedMedia->getKey(), $changedMedia->getOriginalFilename());
+        }
+
+        /*
+        if (null !== $originalMedia && null !== $originalMedia->getKey() && null !== $originalMedia->getOriginalFilename()) {
             $result['before'] = $this->createFileElement($originalMedia->getKey(), $originalMedia->getOriginalFilename());
         }
 
         if (null !== $changedMedia && null !== $changedMedia->getKey() && null !== $changedMedia->getOriginalFilename()) {
             $result['after'] = $this->createFileElement($changedMedia->getKey(), $changedMedia->getOriginalFilename());
-        }
+        } */
 
         return $result;
     }
@@ -80,6 +89,11 @@ class FilePresenter implements PresenterInterface
      */
     protected function createFileElement($fileKey, $originalFilename)
     {
+        return [
+            'fileKey' => $fileKey,
+            'originalFileName' => $originalFilename,
+        ];
+
         return sprintf(
             '<i class="icon-file"></i><a target="_blank" class="no-hash" href="%s">%s</a>',
             $this->generator->generate('pim_enrich_media_show', ['filename' => urlencode($fileKey)]),

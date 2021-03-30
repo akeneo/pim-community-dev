@@ -33,6 +33,7 @@ class TextareaPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeData($data)
     {
+        return $data;
         return $this->explodeText($data);
     }
 
@@ -41,6 +42,7 @@ class TextareaPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
+        return $change['data'];
         return $this->explodeText($change['data']);
     }
 

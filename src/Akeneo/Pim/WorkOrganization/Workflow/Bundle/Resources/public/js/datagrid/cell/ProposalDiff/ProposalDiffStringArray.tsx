@@ -1,0 +1,61 @@
+import React from "react";
+import { diffArrays } from "diff";
+
+type ProposalDiffStringArrayProps = {
+  accessor: 'before_data' | 'after_data',
+  change: {
+    before_data: string[] | null,
+    after_data: string[] | null;
+  }
+}
+
+const ProposalDiffStringArray: React.FC<ProposalDiffStringArrayProps> = ({
+  accessor,
+  change,
+  ...rest
+}) => {
+  const elements = [];
+  diffArrays(change.before_data || [], change.after_data || []).forEach((change) => {
+    if (accessor === 'before_data' && change.removed) {
+      change.value.forEach((value) => {
+        elements.push(<del key={`ProposalDiffStringArray-${elements.length}`}>{value}</del>);
+      });
+    }
+    else if (accessor === 'after_data' && change.added) {
+      change.value.forEach((value) => {
+        elements.push(<ins key={`ProposalDiffStringArray-${elements.length}`}>{value}</ins>);
+      });
+    }
+    else if ((accessor === 'before_data' && !change.added) || (accessor === 'after_data' && !change.removed)) {
+      change.value.forEach((value) => {
+        elements.push(<span key={`ProposalDiffStringArray-${elements.length}`}>{value}</span>);
+      });
+    }
+  });
+
+  if (elements.length) {
+    const [firstElement, ...otherElements] = elements;
+    return <span {...rest}>
+      {firstElement}
+      {otherElements.reduce((current, previous) => [current, ', ', previous], null)}
+    </span>
+  }
+
+  return null;
+}
+
+class ProposalDiffStringArrayMatcher {
+  static supports(attributeType: string) {
+    return [
+      'pim_catalog_multiselect', // OK
+      'pim_reference_data_multiselect',
+      'pim_catalog_price_collection', // OK
+    ].includes(attributeType);
+  }
+
+  static render() {
+    return ProposalDiffStringArray
+  }
+}
+
+export {ProposalDiffStringArrayMatcher};

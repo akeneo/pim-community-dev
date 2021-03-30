@@ -14,6 +14,7 @@ const View = ({
   channel,
   locale,
   canEditData,
+  ...rest
 }: {
   value: Value;
   channel: ChannelReference;
@@ -28,7 +29,7 @@ const View = ({
   const attribute = value.attribute as RecordAttribute;
 
   return (
-    <div className="record-selector-container">
+    <div className="record-selector-container" {...rest}>
       <RecordSelector
         id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
         value={value.data.recordData}

@@ -39,6 +39,11 @@ class OptionPresenter extends AbstractProductValuePresenter
             $change['attribute'].'.'.$formerData
         );
 
+        return [
+            'before_data' => $this->normalizeData($option),
+            'after_data' => $this->normalizeChange($change),
+        ];
+
         return $this->renderer->renderDiff(
             $this->normalizeData($option),
             $this->normalizeChange($change)

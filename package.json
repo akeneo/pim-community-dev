@@ -47,6 +47,8 @@
     "tslint-react": "^4.0.0"
   },
   "dependencies": {
+    "@types/diff": "^5.0.0",
+    "diff": "^5.0.0",
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",
     "html-to-draftjs": "^1.4.0",

@@ -25,6 +25,11 @@ abstract class AbstractProductValuePresenter implements PresenterInterface, Rend
      */
     public function present($formerData, array $change)
     {
+        return [
+            'before_data' => $this->normalizeData($formerData),
+            'after_data' => $this->normalizeChange($change),
+        ];
+
         return $this->renderer->renderDiff(
             $this->normalizeData($formerData),
             $this->normalizeChange($change)

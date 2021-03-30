@@ -38,6 +38,11 @@ class ImagePresenter extends FilePresenter
      */
     protected function createFileElement($fileKey, $originalFilename)
     {
+        return [
+            'fileKey' => urlencode($fileKey),
+            'originalFileName' => $originalFilename,
+        ];
+
         return sprintf(
             '<img src="%s" title="%s" />',
             $this->generator->generate(
