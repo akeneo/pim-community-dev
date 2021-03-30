@@ -8,10 +8,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\FlatFileHeader
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromAttributeCodesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Platform\VersionProviderInterface;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -26,7 +26,6 @@ use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterfa
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
-use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
@@ -51,8 +50,6 @@ class ProductWriterSpec extends ObjectBehavior
         FlatTranslatorInterface $flatTranslator,
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
-        FileFetcherInterface $fileFetcher,
-        VersionProviderInterface $versionProvider,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution
     ) {
@@ -73,8 +70,6 @@ class ProductWriterSpec extends ObjectBehavior
             $flatTranslator,
             $fileInfoRepository,
             $filesystemProvider,
-            $fileFetcher,
-            $versionProvider,
             ['pim_catalog_file', 'pim_catalog_image']
         );
 
@@ -104,9 +99,11 @@ class ProductWriterSpec extends ObjectBehavior
         GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes,
         FlatItemBuffer $flatRowBuffer,
         FileInfoRepositoryInterface $fileInfoRepository,
+        FilesystemProvider $filesystemProvider,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        FileInfoInterface $fileInfo
+        FileInfoInterface $fileInfo,
+        FilesystemInterface $catalogFilesystem
     ) {
         $jobParameters = new JobParameters(
             [
@@ -157,6 +154,11 @@ class ProductWriterSpec extends ObjectBehavior
                 'description' => 'pim_catalog_textarea',
                 'media' => 'pim_catalog_image',
             ]);
+
+        $fileInfo->getOriginalFilename()->willReturn('the file name.jpg');
+        $fileInfo->getKey()->willReturn('a/b/c/123456_filename.jpg');
+        $fileInfo->getStorage()->willReturn('catalogStorage');
+        $fileInfoRepository->findOneByIdentifier('a/b/c/123456_filename.jpg')->shouldBeCalled()->willReturn($fileInfo);
         $fileExporterPath->generate(
             [
                 'locale' => null,
@@ -169,10 +171,8 @@ class ProductWriterSpec extends ObjectBehavior
             ]
         )->shouldBeCalled()->willReturn('files/jacket/media/');
 
-        $fileInfo->getOriginalFilename()->willReturn('the file name.jpg');
-        $fileInfo->getKey()->willReturn('a/b/c/123456_filename.jpg');
-        $fileInfo->getStorage()->willReturn('catalogStorage');
-        $fileInfoRepository->findOneByIdentifier('a/b/c/123456_filename.jpg')->shouldBeCalled()->willReturn($fileInfo);
+        $filesystemProvider->getFilesystem('catalogStorage')->willReturn($catalogFilesystem);
+        $catalogFilesystem->has('a/b/c/123456_filename.jpg')->shouldBeCalled()->willReturn(true);
 
         $productStandardWithMedia = \array_replace_recursive(
             $productStandard,
@@ -216,6 +216,90 @@ class ProductWriterSpec extends ObjectBehavior
                 ),
             ]
         );
+    }
+
+    function it_adds_a_warning_if_a_media_file_is_not_found(
+        ArrayConverterInterface $arrayConverter,
+        AttributeRepositoryInterface $attributeRepository,
+        FileExporterPathGeneratorInterface $fileExporterPath,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FilesystemProvider $filesystemProvider,
+        StepExecution $stepExecution,
+        JobExecution $jobExecution,
+        FileInfoInterface $fileInfo,
+        FilesystemInterface $catalogFilesystem
+    ) {
+        $jobParameters = new JobParameters(
+            [
+                'withHeader' => true,
+                'filePath' => $this->directory . '%job_label%_product.csv',
+                'with_media' => true,
+                'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],
+            ]
+        );
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+
+        $productStandard = [
+            'identifier' => 'sku042',
+            'values' => [
+                'sku' => [['locale' => null, 'scope' => null, 'data' => 'sku042']],
+                'media' => [['locale' => null, 'scope' => null, 'data' => 'a/b/c/abc123_filename.png']],
+            ],
+        ];
+        $attributeRepository->getAttributeTypeByCodes(['sku', 'media'])
+            ->shouldBeCalled()
+            ->willReturn([
+                'sku' => 'pim_catalog_identifier',
+                'media' => 'pim_catalog_image',
+            ]);
+
+        $fileExporterPath->generate(
+            [
+                'locale' => null,
+                'scope' => null,
+                'data' => 'a/b/c/abc123_filename.png',
+            ],
+            [
+                'identifier' => 'sku042',
+                'code' => 'media',
+            ]
+        )->shouldBeCalled()->willReturn('files/sku042/media/');
+
+        $fileInfo->getOriginalFilename()->willReturn('filename.png');
+        $fileInfo->getKey()->willReturn('a/b/c/abc123_filename.png');
+        $fileInfo->getStorage()->willReturn('catalogStorage');
+
+        $fileInfoRepository->findOneByIdentifier('a/b/c/abc123_filename.png')->shouldBeCalled()->willReturn($fileInfo);
+        $filesystemProvider->getFilesystem('catalogStorage')->willReturn($catalogFilesystem);
+        $catalogFilesystem->has('a/b/c/abc123_filename.png')->shouldBeCalled()->willReturn(false);
+
+        $stepExecution->addWarning(
+            'The media has not been found or is not currently available',
+            [],
+            Argument::that(
+                function ($argument): bool {
+                    return $argument instanceof InvalidItemInterface && $argument->getInvalidData() == [
+                            'from' => 'a/b/c/abc123_filename.png',
+                            'to' => [
+                                'filePath' => 'files/sku042/media',
+                                'filename' => 'filename.png',
+                            ],
+                            'storage' => 'catalogStorage',
+                        ];
+                }
+            )
+        )->shouldBeCalled();
+
+        // product standard has not been updated with the generated file path
+        $arrayConverter->convert($productStandard, [])->shouldBeCalled()->willReturn([
+            'identifier' => 'sku042',
+            'media' => 'a/b/c/abc123_filename.png',
+        ]);
+
+        $this->initialize();
+        $this->write([$productStandard]);
+        $this->getWrittenFiles()->shouldReturn([]);
     }
 
     function it_does_not_resolve_media_paths_if_option_is_false(
@@ -300,7 +384,6 @@ class ProductWriterSpec extends ObjectBehavior
     function it_writes_the_csv_file_without_headers(
         FlatItemBufferFlusher $flusher,
         FlatItemBuffer $flatRowBuffer,
-        VersionProviderInterface $versionProvider,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
@@ -331,7 +414,6 @@ class ProductWriterSpec extends ObjectBehavior
                         $this->directory . 'CSV_Product_export_product.csv',
                     ]
                 );
-        $versionProvider->isSaaSVersion()->shouldBeCalled()->willReturn(false);
 
         $this->initialize();
         $this->flush();
@@ -350,7 +432,6 @@ class ProductWriterSpec extends ObjectBehavior
         FlatItemBufferFlusher $flusher,
         GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes,
         FlatItemBuffer $flatRowBuffer,
-        VersionProviderInterface $versionProvider,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
@@ -394,7 +475,6 @@ class ProductWriterSpec extends ObjectBehavior
                         $this->directory . 'CSV_Product_export_product.csv',
                     ]
                 );
-        $versionProvider->isSaaSVersion()->shouldBeCalled()->willReturn(false);
 
         $this->initialize();
         $this->write(
@@ -425,7 +505,6 @@ class ProductWriterSpec extends ObjectBehavior
         FlatItemBufferFlusher $flusher,
         GenerateFlatHeadersFromAttributeCodesInterface $generateHeadersFromAttributeCodes,
         FlatItemBuffer $flatRowBuffer,
-        VersionProviderInterface $versionProvider,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
@@ -469,7 +548,6 @@ class ProductWriterSpec extends ObjectBehavior
                         $this->directory . 'CSV_Product_export_product.csv',
                     ]
                 );
-        $versionProvider->isSaaSVersion()->shouldBeCalled()->willReturn(false);
 
         $this->initialize();
         $this->write(
@@ -650,123 +728,5 @@ class ProductWriterSpec extends ObjectBehavior
         )->shouldBeCalled();
         $this->initialize();
         $this->write([$productStandard1, $productStandard2]);
-    }
-
-    function it_fetches_media_files_into_the_output_directory(
-        ArrayConverterInterface $arrayConverter,
-        AttributeRepositoryInterface $attributeRepository,
-        FileExporterPathGeneratorInterface $fileExporterPath,
-        FlatItemBuffer $flatRowBuffer,
-        FlatItemBufferFlusher $flusher,
-        FileInfoRepositoryInterface $fileInfoRepository,
-        FilesystemProvider $filesystemProvider,
-        FileFetcherInterface $fileFetcher,
-        VersionProviderInterface $versionProvider,
-        StepExecution $stepExecution,
-        JobExecution $jobExecution,
-        FilesystemInterface $filesystem,
-        FileInfoInterface $fileInfo
-    ) {
-        $jobParameters = new JobParameters(
-            [
-                'delimiter' => ';',
-                'enclosure' => '"',
-                'withHeader' => true,
-                'filePath' => $this->directory . '%job_label%_product.csv',
-                'with_media' => true,
-                'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],
-            ]
-        );
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-
-        $productStandard = [
-            'identifier' => 'jacket',
-            'values' => [
-                'media' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => 'a/b/c/123456_filename.jpg',
-                    ],
-                ],
-            ],
-        ];
-
-        $attributeRepository->getAttributeTypeByCodes(['media'])->shouldBeCalled()
-            ->willReturn(['media' => 'pim_catalog_image']);
-        $fileExporterPath->generate(
-            [
-                'locale' => null,
-                'scope' => null,
-                'data' => 'a/b/c/123456_filename.jpg',
-            ],
-            [
-                'identifier' => 'jacket',
-                'code' => 'media',
-            ]
-        )->shouldBeCalled()->willReturn('files/jacket/media/');
-
-        $fileInfo->getOriginalFilename()->willReturn('the file name.jpg');
-        $fileInfo->getKey()->willReturn('a/b/c/123456_filename.jpg');
-        $fileInfo->getStorage()->willReturn('catalogStorage');
-        $fileInfoRepository->findOneByIdentifier('a/b/c/123456_filename.jpg')->shouldBeCalled()->willReturn($fileInfo);
-        $productStandardWithMedia = \array_replace_recursive(
-            $productStandard,
-            [
-                'values' => [
-                    'media' => [
-                        [
-                            'locale' => null,
-                            'scope' => null,
-                            'data' => 'files/jacket/media/the file name.jpg',
-                        ],
-                    ],
-                ],
-            ]
-        );
-        $flatProduct = [
-            'identifier' => 'jacket',
-            'enabled' => '1',
-            'categories' => '2015_clothes,2016_clothes',
-            'groups' => '',
-            'family' => 'clothes',
-            'description-en_US-ecommerce' => 'A wonderful description...',
-            'media' => 'files/jacket/media/the file name.jpg',
-        ];
-
-        $arrayConverter->convert($productStandardWithMedia, [])->shouldBeCalled()->willReturn($flatProduct);
-
-        $flatRowBuffer->write([$flatProduct], ['withHeader' => true])->shouldBeCalled();
-
-        $this->initialize();
-        $this->write([$productStandard]);
-
-        $this->getWrittenFiles()->shouldBeLike(
-            [
-                WrittenFileInfo::fromFileStorage(
-                    'a/b/c/123456_filename.jpg',
-                    'catalogStorage',
-                    'files/jacket/media/the file name.jpg'
-                ),
-            ]
-        );
-
-        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
-        $flusher->flush($flatRowBuffer, Argument::type('array'), Argument::type('string'), -1)
-                ->shouldBeCalled()
-                ->willReturn([$this->directory . 'CSV_Product_export_product.csv']);
-        $versionProvider->isSaaSVersion()->shouldBeCalled()->willReturn(false);
-        $filesystemProvider->getFilesystem('catalogStorage')->shouldBeCalled()->willReturn($filesystem);
-        $fileFetcher->fetch(
-            $filesystem,
-            'a/b/c/123456_filename.jpg',
-            [
-                'filePath' => $this->directory . 'files/jacket/media',
-                'filename' => 'the file name.jpg',
-            ]
-        )->shouldBeCalled();
-
-        $this->flush();
     }
 }

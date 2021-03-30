@@ -21,3 +21,13 @@ services:
             - '@oneup_flysystem.jobs_storage_filesystem'
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_connector.event_subscriber.store_remote_files_after_export:
+        class: 'Akeneo\Tool\Bundle\ConnectorBundle\EventListener\FetchRemoteFilesAfterExport'
+        arguments:
+            - '@akeneo_batch.job.job_registry'
+            - '@pim_catalog.version_provider'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
+        tags:
+            - { name: kernel.event_subscriber }

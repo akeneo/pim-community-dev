@@ -6,7 +6,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTransla
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromAttributeCodesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Platform\VersionProviderInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
@@ -14,7 +13,6 @@ use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractItemMediaWriter;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
-use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 
@@ -43,8 +41,6 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
         FlatTranslatorInterface $flatTranslator,
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
-        FileFetcherInterface $fileFetcher,
-        VersionProviderInterface $versionProvider,
         array $mediaAttributeTypes,
         string $jobParamFilePath = self::DEFAULT_FILE_PATH
     ) {
@@ -57,8 +53,6 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
             $flatTranslator,
             $fileInfoRepository,
             $filesystemProvider,
-            $fileFetcher,
-            $versionProvider,
             $mediaAttributeTypes,
             $jobParamFilePath
         );

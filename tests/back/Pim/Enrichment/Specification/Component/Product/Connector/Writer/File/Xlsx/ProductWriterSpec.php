@@ -49,8 +49,6 @@ class ProductWriterSpec extends ObjectBehavior
         FlatTranslatorInterface $flatTranslator,
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
-        FileFetcherInterface $fileFetcher,
-        VersionProviderInterface $versionProvider,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution
     ) {
@@ -71,8 +69,6 @@ class ProductWriterSpec extends ObjectBehavior
             $flatTranslator,
             $fileInfoRepository,
             $filesystemProvider,
-            $fileFetcher,
-            $versionProvider,
             ['pim_catalog_file', 'pim_catalog_image']
         );
 
@@ -102,7 +98,6 @@ class ProductWriterSpec extends ObjectBehavior
     function it_writes_the_xlsx_file_without_headers(
         FlatItemBufferFlusher $flusher,
         FlatItemBuffer $flatRowBuffer,
-        VersionProviderInterface $versionProvider,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
@@ -140,7 +135,6 @@ class ProductWriterSpec extends ObjectBehavior
                         $this->directory . 'XLSX_Product_export_product2.xlsx',
                     ]
                 );
-        $versionProvider->isSaaSVersion()->shouldBeCalled()->willReturn(false);
 
         $this->initialize();
         $this->flush();
@@ -163,7 +157,6 @@ class ProductWriterSpec extends ObjectBehavior
         FlatItemBufferFlusher $flusher,
         GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes,
         FlatItemBuffer $flatRowBuffer,
-        VersionProviderInterface $versionProvider,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
@@ -210,7 +203,6 @@ class ProductWriterSpec extends ObjectBehavior
                 $this->directory . 'XLSX_Product_export_product2.xlsx',
             ]
         );
-        $versionProvider->isSaaSVersion()->shouldBeCalled()->willReturn(false);
 
         $this->initialize();
         $this->write(

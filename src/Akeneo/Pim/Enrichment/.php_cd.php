@@ -136,7 +136,6 @@ $rules = [
         'Webmozart\Assert\Assert',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Psr\Log\LoggerInterface',
-        'Akeneo\Platform\VersionProviderInterface',
 
         // Event API
         'Akeneo\Platform\Component\EventQueue',

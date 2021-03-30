@@ -61,8 +61,6 @@ services:
             - '@pim_enrich.connector.flat_translators.product_translator'
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
-            - '@pim_catalog.version_provider'
             - ['pim_catalog_file', 'pim_catalog_image']
 
     pim_connector.writer.file.csv_product_model:
@@ -76,8 +74,6 @@ services:
             - '@pim_enrich.connector.flat_translators.product_model_translator'
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
-            - '@pim_catalog.version_provider'
             - ['pim_catalog_file', 'pim_catalog_image']
 
     pim_connector.writer.file.csv_product_quick_export:
@@ -93,8 +89,6 @@ services:
             - '@pim_enrich.connector.flat_translators.product_translator'
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
-            - '@pim_catalog.version_provider'
             - ['pim_catalog_file', 'pim_catalog_image']
             - 'filePathProduct'
 
@@ -109,8 +103,6 @@ services:
             - '@pim_enrich.connector.flat_translators.product_model_translator'
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
-            - '@pim_catalog.version_provider'
             - ['pim_catalog_file', 'pim_catalog_image']
             - 'filePathProductModel'
 
@@ -127,8 +119,6 @@ services:
             - '@pim_enrich.connector.flat_translators.product_translator'
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
-            - '@pim_catalog.version_provider'
             - ['pim_catalog_file', 'pim_catalog_image']
 
     pim_connector.writer.file.xlsx_product_model:
@@ -142,8 +132,6 @@ services:
             - '@pim_enrich.connector.flat_translators.product_model_translator'
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
-            - '@pim_catalog.version_provider'
             - ['pim_catalog_file', 'pim_catalog_image']
 
     pim_connector.writer.file.xlsx_product_quick_export:
@@ -159,8 +147,6 @@ services:
             - '@pim_enrich.connector.flat_translators.product_translator'
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
-            - '@pim_catalog.version_provider'
             - ['pim_catalog_file', 'pim_catalog_image']
             - 'filePathProduct'
 
@@ -175,8 +161,6 @@ services:
             - '@pim_enrich.connector.flat_translators.product_model_translator'
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
-            - '@pim_catalog.version_provider'
             - ['pim_catalog_file', 'pim_catalog_image']
             - 'filePathProductModel'
 
