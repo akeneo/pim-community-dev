@@ -1,6 +1,7 @@
 parameters:
     akeneo.pim.database_inspector.class: 'Akeneo\Tool\Component\DatabaseMetadata\DatabaseInspector'
     akeneo.pim.database_introspect.command.class: 'Akeneo\Tool\Bundle\DatabaseMetadataBundle\Command\IntrospectDatabaseCommand'
+    akeneo.pim.database_diff.command: 'Akeneo\Tool\Bundle\DatabaseMetadataBundle\Command\DatabaseSchemaDiffCommand'
 
 services:
     _defaults: 
@@ -13,6 +14,10 @@ services:
         class: '%akeneo.pim.database_introspect.command.class%'
         arguments:
             - '@akeneo.pim.database_inspector.service'
+        tags: 
+            - { name: console.command }
+    akeneo.pim.database_diff.command:
+        class: '%akeneo.pim.database_diff.command%'
         tags: 
             - { name: console.command }
 

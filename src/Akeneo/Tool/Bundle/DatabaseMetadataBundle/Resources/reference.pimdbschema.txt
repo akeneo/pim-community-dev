@@ -1,0 +1,737 @@
+acl_classes | BASE TABLE | 0
+acl_entries | BASE TABLE | 1
+acl_object_identities | BASE TABLE | 1
+acl_object_identity_ancestors | BASE TABLE | 0
+acl_security_identities | BASE TABLE | 0
+akeneo_asset_manager_asset | BASE TABLE | 0
+akeneo_asset_manager_asset_family | BASE TABLE | 0
+akeneo_asset_manager_asset_family_permissions | BASE TABLE | 0
+akeneo_asset_manager_attribute | BASE TABLE | 0
+akeneo_batch_job_execution | BASE TABLE | 1
+akeneo_batch_job_execution_queue | BASE TABLE | 0
+akeneo_batch_job_instance | BASE TABLE | 0
+akeneo_batch_step_execution | BASE TABLE | 1
+akeneo_batch_warning | BASE TABLE | 1
+akeneo_connectivity_connection | BASE TABLE | 0
+akeneo_connectivity_connection_audit_product | BASE TABLE | 0
+akeneo_file_storage_file_info | BASE TABLE | 0
+akeneo_reference_entity_attribute | BASE TABLE | 0
+akeneo_reference_entity_record | BASE TABLE | 0
+akeneo_reference_entity_reference_entity | BASE TABLE | 0
+akeneo_reference_entity_reference_entity_permissions | BASE TABLE | 0
+akeneo_rule_engine_rule_definition | BASE TABLE | 0
+akeneo_rule_engine_rule_relation | BASE TABLE | 1
+akeneo_structure_version_last_update | BASE TABLE | 0
+oro_access_group | BASE TABLE | 0
+oro_access_role | BASE TABLE | 0
+oro_config | BASE TABLE | 0
+oro_config_value | BASE TABLE | 1
+oro_user | BASE TABLE | 1
+oro_user_access_group | BASE TABLE | 0
+oro_user_access_group_role | BASE TABLE | 0
+oro_user_access_role | BASE TABLE | 0
+pim_aggregated_volume | BASE TABLE | 0
+pim_api_access_token | BASE TABLE | 1
+pim_api_auth_code | BASE TABLE | 0
+pim_api_client | BASE TABLE | 0
+pim_api_refresh_token | BASE TABLE | 1
+pim_catalog_association | BASE TABLE | 1
+pim_catalog_association_group | BASE TABLE | 0
+pim_catalog_association_product | BASE TABLE | 0
+pim_catalog_association_product_model | BASE TABLE | 0
+pim_catalog_association_product_model_to_group | BASE TABLE | 0
+pim_catalog_association_product_model_to_product | BASE TABLE | 0
+pim_catalog_association_product_model_to_product_model | BASE TABLE | 0
+pim_catalog_association_type | BASE TABLE | 0
+pim_catalog_association_type_translation | BASE TABLE | 1
+pim_catalog_attribute | BASE TABLE | 1
+pim_catalog_attribute_group | BASE TABLE | 0
+pim_catalog_attribute_group_translation | BASE TABLE | 1
+pim_catalog_attribute_locale | BASE TABLE | 0
+pim_catalog_attribute_option | BASE TABLE | 1
+pim_catalog_attribute_option_value | BASE TABLE | 1
+pim_catalog_attribute_requirement | BASE TABLE | 1
+pim_catalog_attribute_translation | BASE TABLE | 1
+pim_catalog_category | BASE TABLE | 1
+pim_catalog_category_product | BASE TABLE | 0
+pim_catalog_category_product_model | BASE TABLE | 0
+pim_catalog_category_translation | BASE TABLE | 1
+pim_catalog_channel | BASE TABLE | 1
+pim_catalog_channel_currency | BASE TABLE | 0
+pim_catalog_channel_locale | BASE TABLE | 0
+pim_catalog_channel_translation | BASE TABLE | 1
+pim_catalog_completeness | BASE TABLE | 0
+pim_catalog_currency | BASE TABLE | 0
+pim_catalog_family | BASE TABLE | 1
+pim_catalog_family_attribute | BASE TABLE | 0
+pim_catalog_family_translation | BASE TABLE | 1
+pim_catalog_family_variant | BASE TABLE | 1
+pim_catalog_family_variant_attribute_set | BASE TABLE | 0
+pim_catalog_family_variant_has_variant_attribute_sets | BASE TABLE | 0
+pim_catalog_family_variant_translation | BASE TABLE | 1
+pim_catalog_group | BASE TABLE | 1
+pim_catalog_group_product | BASE TABLE | 0
+pim_catalog_group_translation | BASE TABLE | 1
+pim_catalog_group_type | BASE TABLE | 0
+pim_catalog_group_type_translation | BASE TABLE | 1
+pim_catalog_locale | BASE TABLE | 0
+pim_catalog_product | BASE TABLE | 1
+pim_catalog_product_model | BASE TABLE | 1
+pim_catalog_product_model_association | BASE TABLE | 1
+pim_catalog_product_unique_data | BASE TABLE | 1
+pim_catalog_variant_attribute_set_has_attributes | BASE TABLE | 0
+pim_catalog_variant_attribute_set_has_axes | BASE TABLE | 0
+pim_comment_comment | BASE TABLE | 1
+pim_configuration | BASE TABLE | 0
+pim_datagrid_view | BASE TABLE | 1
+pim_notification_notification | BASE TABLE | 0
+pim_notification_user_notification | BASE TABLE | 1
+pim_session | BASE TABLE | 0
+pim_user_default_datagrid_view | BASE TABLE | 0
+pim_versioning_version | BASE TABLE | 0
+pimee_data_quality_insights_criteria_evaluation | BASE TABLE | 0
+pimee_data_quality_insights_dashboard_rates_projection | BASE TABLE | 0
+pimee_data_quality_insights_product_axis_rates | BASE TABLE | 0
+pimee_data_quality_insights_text_checker_dictionary | BASE TABLE | 0
+pimee_data_quality_insights_title_formatting_ignore | BASE TABLE | 0
+pimee_franklin_insights_attribute_added_to_family | BASE TABLE | 0
+pimee_franklin_insights_attribute_created | BASE TABLE | 0
+pimee_franklin_insights_identifier_mapping | BASE TABLE | 0
+pimee_franklin_insights_quality_highlights_pending_items | BASE TABLE | 0
+pimee_franklin_insights_subscription | BASE TABLE | 0
+pimee_security_attribute_group_access | BASE TABLE | 1
+pimee_security_job_profile_access | BASE TABLE | 1
+pimee_security_locale_access | BASE TABLE | 1
+pimee_security_product_category_access | BASE TABLE | 1
+pimee_sso_log | BASE TABLE | 0
+pimee_teamwork_assistant_completeness_per_attribute_group | BASE TABLE | 0
+pimee_teamwork_assistant_project | BASE TABLE | 1
+pimee_teamwork_assistant_project_product | BASE TABLE | 0
+pimee_teamwork_assistant_project_status | BASE TABLE | 1
+pimee_teamwork_assistant_project_user_group | BASE TABLE | 0
+pimee_workflow_category_published_product | BASE TABLE | 0
+pimee_workflow_group_published_product | BASE TABLE | 0
+pimee_workflow_product_draft | BASE TABLE | 1
+pimee_workflow_product_model_draft | BASE TABLE | 1
+pimee_workflow_product_unique_data | BASE TABLE | 1
+pimee_workflow_proposal_tracking | BASE TABLE | 0
+pimee_workflow_published_product | BASE TABLE | 1
+pimee_workflow_published_product_association | BASE TABLE | 1
+pimee_workflow_published_product_association_published_group | BASE TABLE | 0
+pimee_workflow_published_product_association_published_product | BASE TABLE | 0
+pimee_workflow_published_product_completeness | BASE TABLE | 0
+pimee_workflow_published_product_completeness_missing_attribute | BASE TABLE | 0
+acl_classes | id | NO | int(10) unsigned | PRI
+acl_classes | class_type | NO | varchar(200) | UNI
+acl_entries | id | NO | int(10) unsigned | PRI
+acl_entries | class_id | NO | int(10) unsigned | MUL
+acl_entries | object_identity_id | YES | int(10) unsigned | MUL
+acl_entries | security_identity_id | NO | int(10) unsigned | MUL
+acl_entries | field_name | YES | varchar(50) | 
+acl_entries | ace_order | NO | smallint(5) unsigned | 
+acl_entries | mask | NO | int(11) | 
+acl_entries | granting | NO | tinyint(1) | 
+acl_entries | granting_strategy | NO | varchar(30) | 
+acl_entries | audit_success | NO | tinyint(1) | 
+acl_entries | audit_failure | NO | tinyint(1) | 
+acl_object_identities | id | NO | int(10) unsigned | PRI
+acl_object_identities | parent_object_identity_id | YES | int(10) unsigned | MUL
+acl_object_identities | class_id | NO | int(10) unsigned | 
+acl_object_identities | object_identifier | NO | varchar(100) | MUL
+acl_object_identities | entries_inheriting | NO | tinyint(1) | 
+acl_object_identity_ancestors | object_identity_id | NO | int(10) unsigned | PRI
+acl_object_identity_ancestors | ancestor_id | NO | int(10) unsigned | PRI
+acl_security_identities | id | NO | int(10) unsigned | PRI
+acl_security_identities | identifier | NO | varchar(200) | MUL
+acl_security_identities | username | NO | tinyint(1) | 
+akeneo_asset_manager_asset | identifier | NO | varchar(255) | PRI
+akeneo_asset_manager_asset | code | NO | varchar(255) | 
+akeneo_asset_manager_asset | asset_family_identifier | NO | varchar(255) | MUL
+akeneo_asset_manager_asset | value_collection | NO | json | 
+akeneo_asset_manager_asset_family | identifier | NO | varchar(255) | PRI
+akeneo_asset_manager_asset_family | labels | NO | json | 
+akeneo_asset_manager_asset_family | image | YES | varchar(255) | 
+akeneo_asset_manager_asset_family | attribute_as_label | YES | varchar(255) | MUL
+akeneo_asset_manager_asset_family | attribute_as_main_media | YES | varchar(255) | MUL
+akeneo_asset_manager_asset_family | rule_templates | NO | json | 
+akeneo_asset_manager_asset_family | transformations | NO | json | 
+akeneo_asset_manager_asset_family | naming_convention | YES | json | 
+akeneo_asset_manager_asset_family_permissions | asset_family_identifier | NO | varchar(255) | PRI
+akeneo_asset_manager_asset_family_permissions | user_group_identifier | NO | smallint(6) | PRI
+akeneo_asset_manager_asset_family_permissions | right_level | NO | varchar(255) | 
+akeneo_asset_manager_attribute | identifier | NO | varchar(255) | PRI
+akeneo_asset_manager_attribute | code | NO | varchar(255) | MUL
+akeneo_asset_manager_attribute | asset_family_identifier | NO | varchar(255) | MUL
+akeneo_asset_manager_attribute | labels | NO | json | 
+akeneo_asset_manager_attribute | attribute_type | NO | varchar(255) | 
+akeneo_asset_manager_attribute | attribute_order | NO | int(11) | 
+akeneo_asset_manager_attribute | is_required | NO | tinyint(1) | 
+akeneo_asset_manager_attribute | value_per_channel | NO | tinyint(1) | 
+akeneo_asset_manager_attribute | value_per_locale | NO | tinyint(1) | 
+akeneo_asset_manager_attribute | additional_properties | NO | json | 
+akeneo_asset_manager_attribute | is_read_only | NO | tinyint(1) | 
+akeneo_batch_job_execution | id | NO | int(11) | PRI
+akeneo_batch_job_execution | job_instance_id | NO | int(11) | MUL
+akeneo_batch_job_execution | pid | YES | int(11) | 
+akeneo_batch_job_execution | user | YES | varchar(255) | 
+akeneo_batch_job_execution | status | NO | int(11) | 
+akeneo_batch_job_execution | start_time | YES | datetime | 
+akeneo_batch_job_execution | end_time | YES | datetime | 
+akeneo_batch_job_execution | create_time | YES | datetime | 
+akeneo_batch_job_execution | updated_time | YES | datetime | 
+akeneo_batch_job_execution | health_check_time | YES | datetime | 
+akeneo_batch_job_execution | exit_code | YES | varchar(255) | 
+akeneo_batch_job_execution | exit_description | YES | longtext | 
+akeneo_batch_job_execution | failure_exceptions | YES | longtext | 
+akeneo_batch_job_execution | log_file | YES | varchar(255) | 
+akeneo_batch_job_execution | raw_parameters | NO | json | 
+akeneo_batch_job_execution_queue | id | NO | int(11) | PRI
+akeneo_batch_job_execution_queue | job_execution_id | YES | int(11) | 
+akeneo_batch_job_execution_queue | options | YES | json | 
+akeneo_batch_job_execution_queue | consumer | YES | varchar(255) | 
+akeneo_batch_job_execution_queue | create_time | YES | datetime | 
+akeneo_batch_job_execution_queue | updated_time | YES | datetime | 
+akeneo_batch_job_instance | id | NO | int(11) | PRI
+akeneo_batch_job_instance | code | NO | varchar(100) | UNI
+akeneo_batch_job_instance | label | YES | varchar(255) | 
+akeneo_batch_job_instance | job_name | NO | varchar(50) | 
+akeneo_batch_job_instance | status | NO | int(11) | 
+akeneo_batch_job_instance | connector | NO | varchar(255) | 
+akeneo_batch_job_instance | raw_parameters | NO | longtext | 
+akeneo_batch_job_instance | type | NO | varchar(255) | 
+akeneo_batch_step_execution | id | NO | int(11) | PRI
+akeneo_batch_step_execution | job_execution_id | YES | int(11) | MUL
+akeneo_batch_step_execution | step_name | YES | varchar(100) | 
+akeneo_batch_step_execution | status | NO | int(11) | 
+akeneo_batch_step_execution | read_count | NO | int(11) | 
+akeneo_batch_step_execution | write_count | NO | int(11) | 
+akeneo_batch_step_execution | filter_count | NO | int(11) | 
+akeneo_batch_step_execution | start_time | YES | datetime | 
+akeneo_batch_step_execution | end_time | YES | datetime | 
+akeneo_batch_step_execution | exit_code | YES | varchar(255) | 
+akeneo_batch_step_execution | exit_description | YES | longtext | 
+akeneo_batch_step_execution | terminate_only | YES | tinyint(1) | 
+akeneo_batch_step_execution | failure_exceptions | YES | longtext | 
+akeneo_batch_step_execution | errors | NO | longtext | 
+akeneo_batch_step_execution | summary | NO | longtext | 
+akeneo_batch_warning | id | NO | int(11) | PRI
+akeneo_batch_warning | step_execution_id | YES | int(11) | MUL
+akeneo_batch_warning | reason | YES | longtext | 
+akeneo_batch_warning | item | NO | longtext | 
+akeneo_connectivity_connection | client_id | NO | int(11) | PRI
+akeneo_connectivity_connection | user_id | NO | int(11) | MUL
+akeneo_connectivity_connection | code | NO | varchar(100) | UNI
+akeneo_connectivity_connection | label | NO | varchar(100) | 
+akeneo_connectivity_connection | flow_type | NO | varchar(50) | 
+akeneo_connectivity_connection | image | YES | varchar(255) | 
+akeneo_connectivity_connection | created | NO | datetime | 
+akeneo_connectivity_connection_audit_product | connection_code | NO | varchar(100) | PRI
+akeneo_connectivity_connection_audit_product | event_datetime | NO | datetime | PRI
+akeneo_connectivity_connection_audit_product | event_count | NO | int(11) | 
+akeneo_connectivity_connection_audit_product | event_type | NO | varchar(100) | PRI
+akeneo_connectivity_connection_audit_product | updated | NO | datetime | 
+akeneo_file_storage_file_info | id | NO | int(11) | PRI
+akeneo_file_storage_file_info | file_key | NO | varchar(255) | UNI
+akeneo_file_storage_file_info | original_filename | NO | varchar(255) | 
+akeneo_file_storage_file_info | mime_type | NO | varchar(255) | 
+akeneo_file_storage_file_info | size | YES | int(11) | 
+akeneo_file_storage_file_info | extension | NO | varchar(10) | 
+akeneo_file_storage_file_info | hash | YES | varchar(100) | 
+akeneo_file_storage_file_info | storage | YES | varchar(255) | 
+akeneo_reference_entity_attribute | identifier | NO | varchar(255) | PRI
+akeneo_reference_entity_attribute | code | NO | varchar(255) | MUL
+akeneo_reference_entity_attribute | reference_entity_identifier | NO | varchar(255) | MUL
+akeneo_reference_entity_attribute | labels | NO | json | 
+akeneo_reference_entity_attribute | attribute_type | NO | varchar(255) | 
+akeneo_reference_entity_attribute | attribute_order | NO | int(11) | 
+akeneo_reference_entity_attribute | is_required | NO | tinyint(1) | 
+akeneo_reference_entity_attribute | value_per_channel | NO | tinyint(1) | 
+akeneo_reference_entity_attribute | value_per_locale | NO | tinyint(1) | 
+akeneo_reference_entity_attribute | additional_properties | NO | json | 
+akeneo_reference_entity_record | identifier | NO | varchar(255) | PRI
+akeneo_reference_entity_record | code | NO | varchar(255) | 
+akeneo_reference_entity_record | reference_entity_identifier | NO | varchar(255) | MUL
+akeneo_reference_entity_record | value_collection | NO | json | 
+akeneo_reference_entity_reference_entity | identifier | NO | varchar(255) | PRI
+akeneo_reference_entity_reference_entity | labels | NO | json | 
+akeneo_reference_entity_reference_entity | image | YES | varchar(255) | 
+akeneo_reference_entity_reference_entity | attribute_as_label | YES | varchar(255) | MUL
+akeneo_reference_entity_reference_entity | attribute_as_image | YES | varchar(255) | MUL
+akeneo_reference_entity_reference_entity_permissions | reference_entity_identifier | NO | varchar(255) | PRI
+akeneo_reference_entity_reference_entity_permissions | user_group_identifier | NO | smallint(6) | PRI
+akeneo_reference_entity_reference_entity_permissions | right_level | NO | varchar(255) | 
+akeneo_rule_engine_rule_definition | id | NO | int(11) | PRI
+akeneo_rule_engine_rule_definition | code | NO | varchar(100) | 
+akeneo_rule_engine_rule_definition | type | NO | varchar(100) | 
+akeneo_rule_engine_rule_definition | content | YES | json | 
+akeneo_rule_engine_rule_definition | priority | NO | int(11) | 
+akeneo_rule_engine_rule_definition | impacted_subject_count | YES | int(11) | 
+akeneo_rule_engine_rule_relation | id | NO | int(11) | PRI
+akeneo_rule_engine_rule_relation | rule_id | YES | int(11) | MUL
+akeneo_rule_engine_rule_relation | resource_name | NO | varchar(255) | MUL
+akeneo_rule_engine_rule_relation | resource_id | NO | varchar(24) | 
+akeneo_structure_version_last_update | resource_name | NO | varchar(255) | PRI
+akeneo_structure_version_last_update | last_update | NO | datetime | 
+oro_access_group | id | NO | smallint(6) | PRI
+oro_access_group | name | NO | varchar(255) | UNI
+oro_access_role | id | NO | smallint(6) | PRI
+oro_access_role | role | NO | varchar(255) | UNI
+oro_access_role | label | NO | varchar(255) | 
+oro_config | id | NO | int(11) | PRI
+oro_config | entity | YES | varchar(255) | MUL
+oro_config | record_id | YES | int(11) | 
+oro_config_value | id | NO | int(11) | PRI
+oro_config_value | config_id | YES | int(11) | MUL
+oro_config_value | name | NO | varchar(255) | MUL
+oro_config_value | section | YES | varchar(50) | 
+oro_config_value | value | YES | longtext | 
+oro_user | id | NO | int(11) | PRI
+oro_user | file_info_id | YES | int(11) | UNI
+oro_user | ui_locale_id | NO | int(11) | MUL
+oro_user | username | NO | varchar(255) | UNI
+oro_user | email | NO | varchar(255) | UNI
+oro_user | name_prefix | YES | varchar(255) | 
+oro_user | first_name | YES | varchar(255) | 
+oro_user | middle_name | YES | varchar(255) | 
+oro_user | last_name | YES | varchar(255) | 
+oro_user | name_suffix | YES | varchar(255) | 
+oro_user | image | YES | varchar(255) | 
+oro_user | enabled | NO | tinyint(1) | 
+oro_user | salt | NO | varchar(255) | 
+oro_user | password | NO | varchar(255) | 
+oro_user | confirmation_token | YES | varchar(255) | 
+oro_user | password_requested | YES | datetime | 
+oro_user | last_login | YES | datetime | 
+oro_user | login_count | NO | int(10) unsigned | 
+oro_user | createdAt | NO | datetime | 
+oro_user | updatedAt | NO | datetime | 
+oro_user | product_grid_filters | YES | json | 
+oro_user | emailNotifications | NO | tinyint(1) | 
+oro_user | phone | YES | varchar(20) | 
+oro_user | timezone | NO | varchar(30) | 
+oro_user | user_type | NO | varchar(20) | 
+oro_user | properties | NO | json | 
+oro_user | catalogLocale_id | YES | int(11) | MUL
+oro_user | catalogScope_id | YES | int(11) | MUL
+oro_user | defaultTree_id | YES | int(11) | MUL
+oro_user_access_group | user_id | NO | int(11) | PRI
+oro_user_access_group | group_id | NO | smallint(6) | PRI
+oro_user_access_group_role | group_id | NO | smallint(6) | PRI
+oro_user_access_group_role | role_id | NO | smallint(6) | PRI
+oro_user_access_role | user_id | NO | int(11) | PRI
+oro_user_access_role | role_id | NO | smallint(6) | PRI
+pim_aggregated_volume | volume_name | NO | varchar(255) | PRI
+pim_aggregated_volume | volume | NO | json | 
+pim_aggregated_volume | aggregated_at | NO | datetime | 
+pim_api_access_token | id | NO | int(11) | PRI
+pim_api_access_token | client | YES | int(11) | MUL
+pim_api_access_token | user | YES | int(11) | MUL
+pim_api_access_token | token | NO | varchar(255) | UNI
+pim_api_access_token | expires_at | YES | int(11) | 
+pim_api_access_token | scope | YES | varchar(255) | 
+pim_api_auth_code | id | NO | int(11) | PRI
+pim_api_auth_code | token | NO | varchar(255) | UNI
+pim_api_auth_code | redirect_uri | NO | longtext | 
+pim_api_auth_code | expires_at | YES | int(11) | 
+pim_api_auth_code | scope | YES | varchar(255) | 
+pim_api_client | id | NO | int(11) | PRI
+pim_api_client | random_id | NO | varchar(255) | 
+pim_api_client | redirect_uris | NO | longtext | 
+pim_api_client | secret | NO | varchar(255) | 
+pim_api_client | allowed_grant_types | NO | longtext | 
+pim_api_client | label | YES | varchar(255) | 
+pim_api_refresh_token | id | NO | int(11) | PRI
+pim_api_refresh_token | client | YES | int(11) | MUL
+pim_api_refresh_token | user | YES | int(11) | MUL
+pim_api_refresh_token | token | NO | varchar(255) | UNI
+pim_api_refresh_token | expires_at | YES | int(11) | 
+pim_api_refresh_token | scope | YES | varchar(255) | 
+pim_catalog_association | id | NO | int(11) | PRI
+pim_catalog_association | association_type_id | NO | int(11) | MUL
+pim_catalog_association | owner_id | NO | int(11) | MUL
+pim_catalog_association_group | association_id | NO | int(11) | PRI
+pim_catalog_association_group | group_id | NO | int(11) | PRI
+pim_catalog_association_product | association_id | NO | int(11) | PRI
+pim_catalog_association_product | product_id | NO | int(11) | PRI
+pim_catalog_association_product_model | association_id | NO | int(11) | PRI
+pim_catalog_association_product_model | product_model_id | NO | int(11) | PRI
+pim_catalog_association_product_model_to_group | association_id | NO | int(11) | PRI
+pim_catalog_association_product_model_to_group | group_id | NO | int(11) | PRI
+pim_catalog_association_product_model_to_product | association_id | NO | int(11) | PRI
+pim_catalog_association_product_model_to_product | product_id | NO | int(11) | PRI
+pim_catalog_association_product_model_to_product_model | association_id | NO | int(11) | PRI
+pim_catalog_association_product_model_to_product_model | product_model_id | NO | int(11) | PRI
+pim_catalog_association_type | id | NO | int(11) | PRI
+pim_catalog_association_type | code | NO | varchar(100) | UNI
+pim_catalog_association_type | created | NO | datetime | 
+pim_catalog_association_type | updated | NO | datetime | 
+pim_catalog_association_type_translation | id | NO | int(11) | PRI
+pim_catalog_association_type_translation | foreign_key | YES | int(11) | MUL
+pim_catalog_association_type_translation | label | YES | varchar(100) | 
+pim_catalog_association_type_translation | locale | NO | varchar(20) | MUL
+pim_catalog_attribute | id | NO | int(11) | PRI
+pim_catalog_attribute | group_id | YES | int(11) | MUL
+pim_catalog_attribute | sort_order | NO | int(11) | 
+pim_catalog_attribute | useable_as_grid_filter | NO | tinyint(1) | 
+pim_catalog_attribute | max_characters | YES | smallint(6) | 
+pim_catalog_attribute | validation_rule | YES | varchar(10) | 
+pim_catalog_attribute | validation_regexp | YES | varchar(500) | 
+pim_catalog_attribute | wysiwyg_enabled | YES | tinyint(1) | 
+pim_catalog_attribute | number_min | YES | decimal(14,4) | 
+pim_catalog_attribute | number_max | YES | decimal(14,4) | 
+pim_catalog_attribute | decimals_allowed | YES | tinyint(1) | 
+pim_catalog_attribute | negative_allowed | YES | tinyint(1) | 
+pim_catalog_attribute | date_min | YES | datetime | 
+pim_catalog_attribute | date_max | YES | datetime | 
+pim_catalog_attribute | metric_family | YES | varchar(30) | 
+pim_catalog_attribute | default_metric_unit | YES | varchar(30) | 
+pim_catalog_attribute | max_file_size | YES | decimal(6,2) | 
+pim_catalog_attribute | allowed_extensions | YES | varchar(255) | 
+pim_catalog_attribute | minimumInputLength | YES | smallint(6) | 
+pim_catalog_attribute | is_required | NO | tinyint(1) | 
+pim_catalog_attribute | is_unique | NO | tinyint(1) | 
+pim_catalog_attribute | is_localizable | NO | tinyint(1) | 
+pim_catalog_attribute | is_scopable | NO | tinyint(1) | 
+pim_catalog_attribute | code | NO | varchar(100) | MUL
+pim_catalog_attribute | entity_type | NO | varchar(255) | 
+pim_catalog_attribute | attribute_type | NO | varchar(255) | 
+pim_catalog_attribute | backend_type | NO | varchar(255) | 
+pim_catalog_attribute | properties | YES | longtext | 
+pim_catalog_attribute | created | NO | datetime | 
+pim_catalog_attribute | updated | NO | datetime | 
+pim_catalog_attribute_group | id | NO | int(11) | PRI
+pim_catalog_attribute_group | code | NO | varchar(100) | UNI
+pim_catalog_attribute_group | sort_order | NO | int(11) | 
+pim_catalog_attribute_group | created | NO | datetime | 
+pim_catalog_attribute_group | updated | NO | datetime | 
+pim_catalog_attribute_group_translation | id | NO | int(11) | PRI
+pim_catalog_attribute_group_translation | foreign_key | YES | int(11) | MUL
+pim_catalog_attribute_group_translation | label | YES | varchar(100) | 
+pim_catalog_attribute_group_translation | locale | NO | varchar(20) | MUL
+pim_catalog_attribute_locale | attribute_id | NO | int(11) | PRI
+pim_catalog_attribute_locale | locale_id | NO | int(11) | PRI
+pim_catalog_attribute_option | id | NO | int(11) | PRI
+pim_catalog_attribute_option | attribute_id | NO | int(11) | MUL
+pim_catalog_attribute_option | code | NO | varchar(100) | MUL
+pim_catalog_attribute_option | sort_order | NO | int(11) | 
+pim_catalog_attribute_option_value | id | NO | int(11) | PRI
+pim_catalog_attribute_option_value | option_id | NO | int(11) | MUL
+pim_catalog_attribute_option_value | locale_code | YES | varchar(20) | MUL
+pim_catalog_attribute_option_value | value | YES | varchar(255) | 
+pim_catalog_attribute_requirement | id | NO | int(11) | PRI
+pim_catalog_attribute_requirement | family_id | NO | int(11) | MUL
+pim_catalog_attribute_requirement | attribute_id | NO | int(11) | MUL
+pim_catalog_attribute_requirement | channel_id | NO | int(11) | MUL
+pim_catalog_attribute_requirement | required | NO | tinyint(1) | 
+pim_catalog_attribute_translation | id | NO | int(11) | PRI
+pim_catalog_attribute_translation | foreign_key | YES | int(11) | MUL
+pim_catalog_attribute_translation | label | YES | varchar(100) | 
+pim_catalog_attribute_translation | locale | NO | varchar(20) | MUL
+pim_catalog_category | id | NO | int(11) | PRI
+pim_catalog_category | parent_id | YES | int(11) | MUL
+pim_catalog_category | code | NO | varchar(100) | UNI
+pim_catalog_category | created | NO | datetime | 
+pim_catalog_category | root | NO | int(11) | 
+pim_catalog_category | lvl | NO | int(11) | 
+pim_catalog_category | lft | NO | int(11) | MUL
+pim_catalog_category | rgt | NO | int(11) | 
+pim_catalog_category_product | product_id | NO | int(11) | PRI
+pim_catalog_category_product | category_id | NO | int(11) | PRI
+pim_catalog_category_product_model | product_model_id | NO | int(11) | PRI
+pim_catalog_category_product_model | category_id | NO | int(11) | PRI
+pim_catalog_category_translation | id | NO | int(11) | PRI
+pim_catalog_category_translation | foreign_key | YES | int(11) | MUL
+pim_catalog_category_translation | label | YES | varchar(100) | 
+pim_catalog_category_translation | locale | NO | varchar(20) | MUL
+pim_catalog_channel | id | NO | int(11) | PRI
+pim_catalog_channel | category_id | YES | int(11) | MUL
+pim_catalog_channel | code | NO | varchar(100) | UNI
+pim_catalog_channel | conversionUnits | NO | longtext | 
+pim_catalog_channel_currency | channel_id | NO | int(11) | PRI
+pim_catalog_channel_currency | currency_id | NO | int(11) | PRI
+pim_catalog_channel_locale | channel_id | NO | int(11) | PRI
+pim_catalog_channel_locale | locale_id | NO | int(11) | PRI
+pim_catalog_channel_translation | id | NO | int(11) | PRI
+pim_catalog_channel_translation | foreign_key | YES | int(11) | MUL
+pim_catalog_channel_translation | label | YES | varchar(100) | 
+pim_catalog_channel_translation | locale | NO | varchar(20) | MUL
+pim_catalog_completeness | id | NO | bigint(20) | PRI
+pim_catalog_completeness | locale_id | NO | int(11) | MUL
+pim_catalog_completeness | channel_id | NO | int(11) | MUL
+pim_catalog_completeness | product_id | NO | int(11) | MUL
+pim_catalog_completeness | missing_count | NO | int(11) | 
+pim_catalog_completeness | required_count | NO | int(11) | 
+pim_catalog_currency | id | NO | int(11) | PRI
+pim_catalog_currency | code | NO | varchar(3) | UNI
+pim_catalog_currency | is_activated | NO | tinyint(1) | 
+pim_catalog_family | id | NO | int(11) | PRI
+pim_catalog_family | label_attribute_id | YES | int(11) | MUL
+pim_catalog_family | image_attribute_id | YES | int(11) | MUL
+pim_catalog_family | code | NO | varchar(100) | UNI
+pim_catalog_family | created | NO | datetime | 
+pim_catalog_family | updated | NO | datetime | 
+pim_catalog_family_attribute | family_id | NO | int(11) | PRI
+pim_catalog_family_attribute | attribute_id | NO | int(11) | PRI
+pim_catalog_family_translation | id | NO | int(11) | PRI
+pim_catalog_family_translation | foreign_key | YES | int(11) | MUL
+pim_catalog_family_translation | label | YES | varchar(100) | 
+pim_catalog_family_translation | locale | NO | varchar(20) | MUL
+pim_catalog_family_variant | id | NO | int(11) | PRI
+pim_catalog_family_variant | family_id | YES | int(11) | MUL
+pim_catalog_family_variant | code | NO | varchar(100) | UNI
+pim_catalog_family_variant_attribute_set | id | NO | int(11) | PRI
+pim_catalog_family_variant_attribute_set | level | NO | int(11) | 
+pim_catalog_family_variant_has_variant_attribute_sets | family_variant_id | NO | int(11) | PRI
+pim_catalog_family_variant_has_variant_attribute_sets | variant_attribute_sets_id | NO | int(11) | PRI
+pim_catalog_family_variant_translation | id | NO | int(11) | PRI
+pim_catalog_family_variant_translation | foreign_key | YES | int(11) | MUL
+pim_catalog_family_variant_translation | label | YES | varchar(100) | 
+pim_catalog_family_variant_translation | locale | NO | varchar(20) | MUL
+pim_catalog_group | id | NO | int(11) | PRI
+pim_catalog_group | type_id | NO | int(11) | MUL
+pim_catalog_group | code | NO | varchar(100) | UNI
+pim_catalog_group_product | product_id | NO | int(11) | PRI
+pim_catalog_group_product | group_id | NO | int(11) | PRI
+pim_catalog_group_translation | id | NO | int(11) | PRI
+pim_catalog_group_translation | foreign_key | YES | int(11) | MUL
+pim_catalog_group_translation | label | YES | varchar(100) | 
+pim_catalog_group_translation | locale | NO | varchar(20) | MUL
+pim_catalog_group_type | id | NO | int(11) | PRI
+pim_catalog_group_type | code | NO | varchar(100) | UNI
+pim_catalog_group_type_translation | id | NO | int(11) | PRI
+pim_catalog_group_type_translation | foreign_key | YES | int(11) | MUL
+pim_catalog_group_type_translation | label | YES | varchar(100) | 
+pim_catalog_group_type_translation | locale | NO | varchar(20) | MUL
+pim_catalog_locale | id | NO | int(11) | PRI
+pim_catalog_locale | code | NO | varchar(20) | UNI
+pim_catalog_locale | is_activated | NO | tinyint(1) | 
+pim_catalog_product | id | NO | int(11) | PRI
+pim_catalog_product | family_id | YES | int(11) | MUL
+pim_catalog_product | product_model_id | YES | int(11) | MUL
+pim_catalog_product | family_variant_id | YES | int(11) | MUL
+pim_catalog_product | is_enabled | NO | tinyint(1) | 
+pim_catalog_product | identifier | NO | varchar(255) | UNI
+pim_catalog_product | raw_values | NO | json | 
+pim_catalog_product | created | NO | datetime | 
+pim_catalog_product | updated | NO | datetime | 
+pim_catalog_product_model | id | NO | int(11) | PRI
+pim_catalog_product_model | parent_id | YES | int(11) | MUL
+pim_catalog_product_model | family_variant_id | YES | int(11) | MUL
+pim_catalog_product_model | code | NO | varchar(255) | UNI
+pim_catalog_product_model | raw_values | NO | json | 
+pim_catalog_product_model | created | NO | datetime | 
+pim_catalog_product_model | updated | NO | datetime | 
+pim_catalog_product_model | root | NO | int(11) | 
+pim_catalog_product_model | lvl | NO | int(11) | 
+pim_catalog_product_model | lft | NO | int(11) | 
+pim_catalog_product_model | rgt | NO | int(11) | 
+pim_catalog_product_model_association | id | NO | int(11) | PRI
+pim_catalog_product_model_association | association_type_id | NO | int(11) | MUL
+pim_catalog_product_model_association | owner_id | NO | int(11) | MUL
+pim_catalog_product_unique_data | id | NO | int(11) | PRI
+pim_catalog_product_unique_data | product_id | NO | int(11) | MUL
+pim_catalog_product_unique_data | attribute_id | NO | int(11) | MUL
+pim_catalog_product_unique_data | raw_data | NO | varchar(255) | 
+pim_catalog_variant_attribute_set_has_attributes | variant_attribute_set_id | NO | int(11) | PRI
+pim_catalog_variant_attribute_set_has_attributes | attributes_id | NO | int(11) | PRI
+pim_catalog_variant_attribute_set_has_axes | variant_attribute_set_id | NO | int(11) | PRI
+pim_catalog_variant_attribute_set_has_axes | axes_id | NO | int(11) | PRI
+pim_comment_comment | id | NO | int(11) | PRI
+pim_comment_comment | parent_id | YES | int(11) | MUL
+pim_comment_comment | author_id | YES | int(11) | MUL
+pim_comment_comment | resource_name | NO | varchar(255) | MUL
+pim_comment_comment | resource_id | NO | varchar(24) | 
+pim_comment_comment | body | NO | longtext | 
+pim_comment_comment | created_at | NO | datetime | 
+pim_comment_comment | replied_at | NO | datetime | 
+pim_configuration | code | NO | varchar(128) | PRI
+pim_configuration | values | NO | json | 
+pim_datagrid_view | id | NO | int(11) | PRI
+pim_datagrid_view | owner_id | YES | int(11) | MUL
+pim_datagrid_view | label | NO | varchar(100) | UNI
+pim_datagrid_view | type | YES | varchar(10) | 
+pim_datagrid_view | datagrid_alias | NO | varchar(255) | 
+pim_datagrid_view | columns | NO | longtext | 
+pim_datagrid_view | filters | YES | longtext | 
+pim_notification_notification | id | NO | int(11) | PRI
+pim_notification_notification | route | YES | varchar(255) | 
+pim_notification_notification | routeParams | NO | longtext | 
+pim_notification_notification | message | NO | varchar(255) | 
+pim_notification_notification | messageParams | NO | longtext | 
+pim_notification_notification | comment | YES | varchar(255) | 
+pim_notification_notification | created | NO | datetime | 
+pim_notification_notification | type | NO | varchar(20) | 
+pim_notification_notification | context | NO | longtext | 
+pim_notification_user_notification | id | NO | int(11) | PRI
+pim_notification_user_notification | notification | YES | int(11) | MUL
+pim_notification_user_notification | user | YES | int(11) | MUL
+pim_notification_user_notification | viewed | NO | tinyint(1) | 
+pim_session | sess_id | NO | varbinary(128) | PRI
+pim_session | sess_data | NO | blob | 
+pim_session | sess_time | NO | int(10) unsigned | 
+pim_session | sess_lifetime | NO | int(10) unsigned | 
+pim_user_default_datagrid_view | user_id | NO | int(11) | PRI
+pim_user_default_datagrid_view | view_id | NO | int(11) | PRI
+pim_versioning_version | id | NO | int(11) | PRI
+pim_versioning_version | author | NO | varchar(255) | 
+pim_versioning_version | resource_name | NO | varchar(255) | MUL
+pim_versioning_version | resource_id | NO | varchar(24) | 
+pim_versioning_version | snapshot | YES | longtext | 
+pim_versioning_version | changeset | NO | longtext | 
+pim_versioning_version | context | YES | varchar(255) | 
+pim_versioning_version | version | YES | int(11) | MUL
+pim_versioning_version | logged_at | NO | datetime | MUL
+pim_versioning_version | pending | NO | tinyint(1) | MUL
+pimee_data_quality_insights_criteria_evaluation | id | NO | varchar(40) | PRI
+pimee_data_quality_insights_criteria_evaluation | criterion_code | NO | varchar(40) | 
+pimee_data_quality_insights_criteria_evaluation | product_id | NO | int(11) | MUL
+pimee_data_quality_insights_criteria_evaluation | created_at | NO | datetime(3) | MUL
+pimee_data_quality_insights_criteria_evaluation | started_at | YES | datetime(3) | 
+pimee_data_quality_insights_criteria_evaluation | ended_at | YES | datetime(3) | 
+pimee_data_quality_insights_criteria_evaluation | status | NO | varchar(15) | MUL
+pimee_data_quality_insights_criteria_evaluation | pending | YES | tinyint(4) | 
+pimee_data_quality_insights_criteria_evaluation | result | YES | json | 
+pimee_data_quality_insights_dashboard_rates_projection | type | NO | varchar(15) | PRI
+pimee_data_quality_insights_dashboard_rates_projection | code | NO | varchar(100) | PRI
+pimee_data_quality_insights_dashboard_rates_projection | rates | NO | json | 
+pimee_data_quality_insights_product_axis_rates | product_id | NO | int(11) | PRI
+pimee_data_quality_insights_product_axis_rates | axis_code | NO | varchar(40) | PRI
+pimee_data_quality_insights_product_axis_rates | evaluated_at | NO | date | PRI
+pimee_data_quality_insights_product_axis_rates | rates | NO | json | 
+pimee_data_quality_insights_text_checker_dictionary | locale_code | NO | varchar(20) | 
+pimee_data_quality_insights_text_checker_dictionary | word | NO | varchar(250) | MUL
+pimee_data_quality_insights_title_formatting_ignore | product_id | NO | int(11) | PRI
+pimee_data_quality_insights_title_formatting_ignore | ignored_suggestions | NO | json | 
+pimee_franklin_insights_attribute_added_to_family | attribute_code | NO | varchar(100) | MUL
+pimee_franklin_insights_attribute_added_to_family | family_code | NO | varchar(100) | MUL
+pimee_franklin_insights_attribute_added_to_family | created | NO | datetime | 
+pimee_franklin_insights_attribute_created | attribute_code | NO | varchar(100) | MUL
+pimee_franklin_insights_attribute_created | attribute_type | NO | varchar(255) | 
+pimee_franklin_insights_attribute_created | created | NO | datetime | 
+pimee_franklin_insights_identifier_mapping | id | NO | int(11) | PRI
+pimee_franklin_insights_identifier_mapping | franklin_code | NO | varchar(255) | MUL
+pimee_franklin_insights_identifier_mapping | attribute_code | YES | varchar(255) | UNI
+pimee_franklin_insights_quality_highlights_pending_items | entity_type | NO | varchar(20) | PRI
+pimee_franklin_insights_quality_highlights_pending_items | entity_id | NO | varchar(100) | PRI
+pimee_franklin_insights_quality_highlights_pending_items | action | YES | varchar(20) | 
+pimee_franklin_insights_quality_highlights_pending_items | lock_id | NO | varchar(60) | PRI
+pimee_franklin_insights_subscription | id | NO | int(11) | PRI
+pimee_franklin_insights_subscription | raw_suggested_data | YES | json | 
+pimee_franklin_insights_subscription | misses_mapping | NO | tinyint(1) | 
+pimee_franklin_insights_subscription | requested_asin | YES | varchar(255) | 
+pimee_franklin_insights_subscription | requested_upc | YES | varchar(255) | 
+pimee_franklin_insights_subscription | requested_brand | YES | varchar(255) | 
+pimee_franklin_insights_subscription | requested_mpn | YES | varchar(255) | 
+pimee_franklin_insights_subscription | subscription_id | NO | varchar(255) | MUL
+pimee_franklin_insights_subscription | product_id | NO | int(11) | MUL
+pimee_security_attribute_group_access | id | NO | int(11) | PRI
+pimee_security_attribute_group_access | user_group_id | NO | smallint(6) | MUL
+pimee_security_attribute_group_access | attribute_group_id | NO | int(11) | MUL
+pimee_security_attribute_group_access | view_attributes | NO | tinyint(1) | 
+pimee_security_attribute_group_access | edit_attributes | NO | tinyint(1) | MUL
+pimee_security_job_profile_access | id | NO | int(11) | PRI
+pimee_security_job_profile_access | job_profile_id | NO | int(11) | MUL
+pimee_security_job_profile_access | user_group_id | NO | smallint(6) | MUL
+pimee_security_job_profile_access | execute_job_profile | NO | tinyint(1) | 
+pimee_security_job_profile_access | edit_job_profile | NO | tinyint(1) | 
+pimee_security_locale_access | id | NO | int(11) | PRI
+pimee_security_locale_access | user_group_id | NO | smallint(6) | MUL
+pimee_security_locale_access | locale_id | NO | int(11) | MUL
+pimee_security_locale_access | view_products | NO | tinyint(1) | 
+pimee_security_locale_access | edit_products | NO | tinyint(1) | 
+pimee_security_product_category_access | id | NO | int(11) | PRI
+pimee_security_product_category_access | user_group_id | NO | smallint(6) | MUL
+pimee_security_product_category_access | category_id | NO | int(11) | MUL
+pimee_security_product_category_access | view_items | NO | tinyint(1) | MUL
+pimee_security_product_category_access | edit_items | NO | tinyint(1) | 
+pimee_security_product_category_access | own_items | NO | tinyint(1) | 
+pimee_sso_log | time | YES | datetime | MUL
+pimee_sso_log | channel | YES | varchar(255) | 
+pimee_sso_log | level | YES | smallint(6) | 
+pimee_sso_log | message | YES | text | 
+pimee_teamwork_assistant_completeness_per_attribute_group | locale_id | NO | int(11) | PRI
+pimee_teamwork_assistant_completeness_per_attribute_group | channel_id | NO | int(11) | PRI
+pimee_teamwork_assistant_completeness_per_attribute_group | product_id | NO | int(11) | PRI
+pimee_teamwork_assistant_completeness_per_attribute_group | attribute_group_id | NO | int(11) | PRI
+pimee_teamwork_assistant_completeness_per_attribute_group | has_at_least_one_required_attribute_filled | NO | tinyint(1) | 
+pimee_teamwork_assistant_completeness_per_attribute_group | is_complete | NO | tinyint(1) | 
+pimee_teamwork_assistant_completeness_per_attribute_group | calculated_at | NO | datetime | 
+pimee_teamwork_assistant_project | id | NO | int(11) | PRI
+pimee_teamwork_assistant_project | datagrid_view_id | NO | int(11) | UNI
+pimee_teamwork_assistant_project | owner_id | NO | int(11) | MUL
+pimee_teamwork_assistant_project | channel_id | NO | int(11) | MUL
+pimee_teamwork_assistant_project | locale_id | NO | int(11) | MUL
+pimee_teamwork_assistant_project | code | NO | varchar(150) | 
+pimee_teamwork_assistant_project | label | NO | varchar(100) | 
+pimee_teamwork_assistant_project | description | YES | longtext | 
+pimee_teamwork_assistant_project | due_date | NO | date | 
+pimee_teamwork_assistant_project | productFilters | YES | longtext | 
+pimee_teamwork_assistant_project | is_completeness_computed | NO | tinyint(1) | 
+pimee_teamwork_assistant_project_product | project_id | NO | int(11) | PRI
+pimee_teamwork_assistant_project_product | product_id | NO | int(11) | PRI
+pimee_teamwork_assistant_project_status | id | NO | int(11) | PRI
+pimee_teamwork_assistant_project_status | user_id | NO | int(11) | MUL
+pimee_teamwork_assistant_project_status | project_id | NO | int(11) | MUL
+pimee_teamwork_assistant_project_status | isComplete | YES | tinyint(1) | 
+pimee_teamwork_assistant_project_status | hasBeenNotified | YES | tinyint(1) | 
+pimee_teamwork_assistant_project_user_group | project_id | NO | int(11) | PRI
+pimee_teamwork_assistant_project_user_group | user_group_id | NO | smallint(6) | PRI
+pimee_workflow_category_published_product | product_id | NO | int(11) | PRI
+pimee_workflow_category_published_product | category_id | NO | int(11) | PRI
+pimee_workflow_group_published_product | product_id | NO | int(11) | PRI
+pimee_workflow_group_published_product | group_id | NO | int(11) | PRI
+pimee_workflow_product_draft | id | NO | int(11) | PRI
+pimee_workflow_product_draft | product_id | NO | int(11) | MUL
+pimee_workflow_product_draft | created_at | NO | datetime | 
+pimee_workflow_product_draft | changes | NO | json | 
+pimee_workflow_product_draft | raw_values | NO | json | 
+pimee_workflow_product_draft | status | NO | int(11) | 
+pimee_workflow_product_draft | source | NO | varchar(255) | 
+pimee_workflow_product_draft | source_label | NO | varchar(255) | 
+pimee_workflow_product_draft | author | NO | varchar(255) | MUL
+pimee_workflow_product_draft | author_label | NO | varchar(255) | 
+pimee_workflow_product_model_draft | id | NO | int(11) | PRI
+pimee_workflow_product_model_draft | product_model_id | NO | int(11) | MUL
+pimee_workflow_product_model_draft | created_at | NO | datetime | 
+pimee_workflow_product_model_draft | changes | NO | json | 
+pimee_workflow_product_model_draft | raw_values | NO | json | 
+pimee_workflow_product_model_draft | status | NO | int(11) | 
+pimee_workflow_product_model_draft | source | NO | varchar(255) | 
+pimee_workflow_product_model_draft | source_label | NO | varchar(255) | 
+pimee_workflow_product_model_draft | author | NO | varchar(255) | MUL
+pimee_workflow_product_model_draft | author_label | NO | varchar(255) | 
+pimee_workflow_product_unique_data | id | NO | int(11) | PRI
+pimee_workflow_product_unique_data | product_id | NO | int(11) | MUL
+pimee_workflow_product_unique_data | attribute_id | NO | int(11) | MUL
+pimee_workflow_product_unique_data | raw_data | NO | varchar(255) | 
+pimee_workflow_proposal_tracking | entity_type | NO | varchar(64) | 
+pimee_workflow_proposal_tracking | entity_id | NO | int(11) | 
+pimee_workflow_proposal_tracking | event_date | NO | datetime | 
+pimee_workflow_proposal_tracking | payload | NO | json | 
+pimee_workflow_published_product | id | NO | int(11) | PRI
+pimee_workflow_published_product | version_id | YES | int(11) | UNI
+pimee_workflow_published_product | original_product_id | YES | int(11) | UNI
+pimee_workflow_published_product | family_id | YES | int(11) | MUL
+pimee_workflow_published_product | product_model_id | YES | int(11) | MUL
+pimee_workflow_published_product | family_variant_id | YES | int(11) | MUL
+pimee_workflow_published_product | is_enabled | NO | tinyint(1) | 
+pimee_workflow_published_product | identifier | NO | varchar(255) | UNI
+pimee_workflow_published_product | raw_values | NO | json | 
+pimee_workflow_published_product | created | NO | datetime | 
+pimee_workflow_published_product | updated | NO | datetime | 
+pimee_workflow_published_product_association | id | NO | int(11) | PRI
+pimee_workflow_published_product_association | association_type_id | NO | int(11) | MUL
+pimee_workflow_published_product_association | owner_id | NO | int(11) | MUL
+pimee_workflow_published_product_association_published_group | association_id | NO | int(11) | PRI
+pimee_workflow_published_product_association_published_group | group_id | NO | int(11) | PRI
+pimee_workflow_published_product_association_published_product | association_id | NO | int(11) | PRI
+pimee_workflow_published_product_association_published_product | product_id | NO | int(11) | PRI
+pimee_workflow_published_product_completeness | id | NO | int(11) | PRI
+pimee_workflow_published_product_completeness | locale_id | NO | int(11) | MUL
+pimee_workflow_published_product_completeness | channel_id | NO | int(11) | MUL
+pimee_workflow_published_product_completeness | product_id | NO | int(11) | MUL
+pimee_workflow_published_product_completeness | ratio | NO | int(11) | MUL
+pimee_workflow_published_product_completeness | missing_count | NO | int(11) | 
+pimee_workflow_published_product_completeness | required_count | NO | int(11) | 
+pimee_workflow_published_product_completeness_missing_attribute | completeness_id | NO | int(11) | PRI
+pimee_workflow_published_product_completeness_missing_attribute | missing_attribute_id | NO | int(11) | PRI

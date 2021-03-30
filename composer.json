@@ -58,7 +58,8 @@
         "superbalist/flysystem-google-storage": "7.2.1",
         "grpc/grpc": "1.19.0",
         "mekras/php-speller": "^2.0.3",
-        "symfony/serializer": "4.4.18"
+        "symfony/serializer": "4.4.18",
+        "jfcherng/php-diff": "^6.10"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",
