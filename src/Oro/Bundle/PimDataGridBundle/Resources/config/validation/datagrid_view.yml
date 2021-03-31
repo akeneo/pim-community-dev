@@ -1,7 +1,6 @@
 Oro\Bundle\PimDataGridBundle\Entity\DatagridView:
     constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
-            fields: [label]
+        - Oro\Bundle\PimDataGridBundle\Validator\Constraints\UniqueDatagridViewEntity:
             message: pim_datagrid.column_configurator.label.unique_message
     properties:
         label:

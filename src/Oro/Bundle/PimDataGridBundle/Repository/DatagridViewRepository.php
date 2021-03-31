@@ -16,6 +16,8 @@ use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
  */
 class DatagridViewRepository extends EntityRepository implements DatagridViewRepositoryInterface
 {
+    
+
     /**
      * {@inheritdoc}
      */
