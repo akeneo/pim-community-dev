@@ -249,6 +249,8 @@ akeneo_connectivity.connection:
           level: Level
           all: Alle
           none: Keine
+        date_range_filter:
+          all: Alle
         info:
           title: Hier sind die Protokolle zu allen Ereignisanfragen, die an diese Verbindung gesendet wurden.
           content: Diese Seite zeigt Fehler- und Warnprotokolle für die vergangenen 72 Stunden und die letzten 100 Info- und Notizprotokolle an.
