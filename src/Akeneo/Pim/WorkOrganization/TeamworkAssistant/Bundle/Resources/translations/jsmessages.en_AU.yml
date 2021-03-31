@@ -26,6 +26,7 @@ teamwork_assistant:
   create_project_modal:
     saved: The project has been saved, you will be notified when the calculation is done.
     title: Project
+    label_already_used: This value is already used for a project.
   widget:
     no_project: You have no current project
     no_project_create: create a new project
@@ -67,3 +68,6 @@ pim_notification:
     project_finished: Project finished
     project_calculation: Project calculation
     project_due_date: Project due date
+pim_analytics:
+  info_type:
+    nb_projects: Number of projects
