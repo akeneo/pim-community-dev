@@ -46,6 +46,7 @@
 - PIM-9783: Optimize batch query when compute completeness
 - PIM-9715: Prevent the deletion of an attribute used as a label by a family
 - PIM-9781: Fix Category tree not refreshing when switching locale
+- PIM-9779: Fix ACE order when loading ACLs
 - PIM-9739: Fix connection users, users, channels having a link to a sub-category
 
 ## New features
