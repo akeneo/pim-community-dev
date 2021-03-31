@@ -100,6 +100,13 @@ services:
         tags:
             - { name: 'kernel.event_subscriber' }
 
+    pim_catalog.event_subscriber.init_lock_db_schema:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitLockDbSchemaSubscriber'
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
     pim_catalog.event_subscriber.attribute_option_set_sort_order:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AttributeOption\SetAttributeOptionSortOrderSubscriber'
         arguments:

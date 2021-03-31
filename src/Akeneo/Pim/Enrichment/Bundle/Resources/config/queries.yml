@@ -272,6 +272,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.enrichment.query.ensure_lock_table_exists:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\EnsureLockTableExistsQuery
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.enrichment.product.query.get_product_and_product_model_identifiers_with_values_ignoring_locale_and_scope:
         class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope
         arguments:

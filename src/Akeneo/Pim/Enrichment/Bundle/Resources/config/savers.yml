@@ -53,11 +53,12 @@ services:
             - '%pim_catalog.model.association_type.interface%'
 
     pim_catalog.saver.category:
-        class: '%pim_catalog.saver.base.class%'
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\CategorySaver
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '%pim_catalog.model.category.interface%'
+            - '@akeneo.enrichment.lock.factory'
+            - '@akeneo.pim.enrichment.query.ensure_lock_table_exists'
 
     pim_catalog.saver.group_options_resolver:
         class: '%pim_catalog.saver.group_options_resolver.class%'
