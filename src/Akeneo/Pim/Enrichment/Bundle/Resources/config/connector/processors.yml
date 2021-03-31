@@ -80,7 +80,6 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_user.provider.user'
             - '@security.token_storage'
-            - '@pim_connector.processor.bulk_media_fetcher'
 
     pim_enrich.connector.processor.quick_export.product_model:
         class: '%pim_enrich.connector.processor.quick_export.product_and_product_model.class%'
