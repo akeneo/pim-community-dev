@@ -147,14 +147,6 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_image_attribute_codes'
             - '@akeneo_file_storage.file_storage.file.file_storer'
 
-    akeneo_referenceentity.job.processor.bulk_media_fetcher:
-        class: 'Akeneo\ReferenceEntity\Infrastructure\Connector\Processor\BulkMediaFetcher'
-        arguments:
-            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
-            - '@pim_connector.writer.file.media_exporter_path_generator'
-            - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-
     # Writers
     akeneo_referenceentity.job.writer.csv_file.reference_entity_record:
         class: 'Akeneo\ReferenceEntity\Infrastructure\Connector\Writer\File\Csv\RecordWriter'
