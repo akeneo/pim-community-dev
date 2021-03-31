@@ -18,6 +18,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
@@ -28,7 +29,10 @@ use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
-use Symfony\Component\Finder\Finder;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 
 abstract class AbstractRecordWriter extends AbstractFileWriter implements InitializableInterface, FlushableInterface, ArchivableWriterInterface
 {
@@ -38,12 +42,13 @@ abstract class AbstractRecordWriter extends AbstractFileWriter implements Initia
     private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
     private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels;
     private FileExporterPathGeneratorInterface $fileExporterPath;
+    private FileInfoRepositoryInterface $fileInfoRepository;
+    private FilesystemProvider $filesystemProvider;
 
-    /** @var FlatItemBuffer */
-    private $flatRowBuffer;
+    private ?FlatItemBuffer $flatRowBuffer = null;
     /** @var AbstractAttribute[] */
     private array $attributesIndexedByIdentifier;
-    /** @var string[] */
+    /** @var WrittenFileInfo[] */
     private array $writtenFiles = [];
 
     public function __construct(
@@ -52,7 +57,9 @@ abstract class AbstractRecordWriter extends AbstractFileWriter implements Initia
         FlatItemBufferFlusher $flusher,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
         FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
-        FileExporterPathGeneratorInterface $fileExporterPath
+        FileExporterPathGeneratorInterface $fileExporterPath,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FilesystemProvider $filesystemProvider
     ) {
         $this->arrayConverter = $arrayConverter;
         $this->bufferFactory = $bufferFactory;
@@ -60,6 +67,8 @@ abstract class AbstractRecordWriter extends AbstractFileWriter implements Initia
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
         $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
         $this->fileExporterPath = $fileExporterPath;
+        $this->fileInfoRepository = $fileInfoRepository;
+        $this->filesystemProvider = $filesystemProvider;
 
         parent::__construct();
     }
@@ -125,18 +134,19 @@ abstract class AbstractRecordWriter extends AbstractFileWriter implements Initia
         }
         $this->flusher->setStepExecution($this->stepExecution);
         $parameters = $this->stepExecution->getJobParameters();
-        $writtenFiles = $this->flusher->flush(
+        $writtenFlatFiles = $this->flusher->flush(
             $this->flatRowBuffer,
             $this->getWriterConfiguration(),
             $this->getPath(),
             ($parameters->has('linesPerFile') ? $parameters->get('linesPerFile') : -1)
         );
 
-        foreach ($writtenFiles as $writtenFile) {
-            $this->writtenFiles[$writtenFile] = basename($writtenFile);
+        foreach ($writtenFlatFiles as $writtenFlatFile) {
+            $this->writtenFiles[] = WrittenFileInfo::fromLocalFile(
+                $writtenFlatFile,
+                \basename($writtenFlatFile)
+            );
         }
-
-        $this->exportMedias();
     }
 
     abstract protected function getWriterConfiguration(): array;
@@ -166,13 +176,35 @@ abstract class AbstractRecordWriter extends AbstractFileWriter implements Initia
                 ]
             );
 
-            $finder = new Finder();
-            if (is_dir($tmpDirectory . $exportDirectory)) {
-                $files = iterator_to_array($finder->files()->in($tmpDirectory . $exportDirectory));
-                if (!empty($files)) {
-                    $path = $exportDirectory . current($files)->getFilename();
-                    $this->writtenFiles[$tmpDirectory . $path] = $path;
-                    $item['values'][$index]['data']['filePath'] = $path;
+            $fileKey = $normalizedValue['data']['filePath'] ?? null;
+            if (\is_string($fileKey)) {
+                $fileInfo = $this->fileInfoRepository->findOneByIdentifier($fileKey);
+                if ($fileInfo instanceof FileInfoInterface) {
+                    $outputFilePath = \sprintf('%s%s', $exportDirectory, $fileInfo->getOriginalFilename());
+                    $filesystem = $this->filesystemProvider->getFilesystem($fileInfo->getStorage());
+                    if (!$filesystem->has($fileInfo->getKey())) {
+                        $this->stepExecution->addWarning(
+                            'The media has not been found or is not currently available',
+                            [],
+                            new DataInvalidItem(
+                                [
+                                    'from' => $fileInfo->getKey(),
+                                    'to' => [
+                                        'filePath' => \dirname($outputFilePath),
+                                        'filename' => \basename($outputFilePath),
+                                    ],
+                                    'storage' => $fileInfo->getStorage(),
+                                ]
+                            )
+                        );
+                    } else {
+                        $item['values'][$index]['data']['filePath'] = $exportDirectory . $fileInfo->getOriginalFilename();
+                        $this->writtenFiles[] = WrittenFileInfo::fromFileStorage(
+                            $fileInfo->getKey(),
+                            $fileInfo->getStorage(),
+                            $exportDirectory . $fileInfo->getOriginalFilename()
+                        );
+                    }
                 }
             }
         }
@@ -216,27 +248,5 @@ abstract class AbstractRecordWriter extends AbstractFileWriter implements Initia
         }
 
         return $headers;
-    }
-
-    /**
-     * Export medias from the working directory to the expected output directory.
-     */
-    private function exportMedias(): void
-    {
-        $outputDirectory = dirname($this->getPath());
-        $workingDirectory = $this->stepExecution->getJobExecution()->getExecutionContext()->get(
-            JobInterface::WORKING_DIRECTORY_PARAMETER
-        );
-
-        $outputFilesDirectory = $outputDirectory . DIRECTORY_SEPARATOR . 'files';
-        $workingFilesDirectory = $workingDirectory . 'files';
-
-        if ($this->localFs->exists($outputFilesDirectory)) {
-            $this->localFs->remove($outputFilesDirectory);
-        }
-
-        if ($this->localFs->exists($workingFilesDirectory)) {
-            $this->localFs->mirror($workingFilesDirectory, $outputFilesDirectory);
-        }
     }
 }

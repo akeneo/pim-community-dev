@@ -15,6 +15,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsI
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Writer\File\AbstractRecordWriter;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -27,16 +28,17 @@ use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Filesystem\Filesystem;
+use Prophecy\Argument;
 
 class RecordWriterSpec extends ObjectBehavior
 {
-    /** @var Filesystem */
-    private $filesystem;
-
-    /** @var string */
-    private $directory;
+    private string $directory;
 
     function let(
         ArrayConverterInterface $arrayConverter,
@@ -46,6 +48,8 @@ class RecordWriterSpec extends ObjectBehavior
         FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
         FileExporterPathGeneratorInterface $fileExporterPath,
         FlatItemBuffer $flatRowBuffer,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FilesystemProvider $filesystemProvider,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
@@ -55,9 +59,7 @@ class RecordWriterSpec extends ObjectBehavior
         TextAttribute $localizableAttribute,
         TextAttribute $nonScopableNonLocalizableAttribute
     ) {
-        $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spec' . DIRECTORY_SEPARATOR;
-        $this->filesystem = new Filesystem();
-        $this->filesystem->mkdir($this->directory);
+        $this->directory = '/tmp/spec/csv_record_export/';
 
         $this->beConstructedWith(
             $arrayConverter,
@@ -65,7 +67,9 @@ class RecordWriterSpec extends ObjectBehavior
             $flusher,
             $findAttributesIndexedByIdentifier,
             $findActivatedLocalesPerChannels,
-            $fileExporterPath
+            $fileExporterPath,
+            $fileInfoRepository,
+            $filesystemProvider
         );
 
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory . 'akeneo_batch1234/');
@@ -87,11 +91,6 @@ class RecordWriterSpec extends ObjectBehavior
             'youtube_brand_cdefab' => $nonScopableNonLocalizableAttribute,
         ]);
         $this->initialize();
-    }
-
-    function letGo()
-    {
-        $this->filesystem->remove($this->directory);
     }
 
     function it_is_a_file_writer()
@@ -214,9 +213,9 @@ class RecordWriterSpec extends ObjectBehavior
 
         $this->flush();
 
-        $this->getWrittenFiles()->shouldReturn([
-            $this->directory . 'export_records_1.csv' => 'export_records_1.csv',
-            $this->directory . 'export_records_2.csv' => 'export_records_2.csv'
+        $this->getWrittenFiles()->shouldBeLike([
+            WrittenFileInfo::fromLocalFile($this->directory . 'export_records_1.csv', 'export_records_1.csv'),
+            WrittenFileInfo::fromLocalFile($this->directory . 'export_records_2.csv', 'export_records_2.csv'),
         ]);
     }
 
@@ -224,10 +223,13 @@ class RecordWriterSpec extends ObjectBehavior
         ArrayConverterInterface $arrayConverter,
         FileExporterPathGeneratorInterface $fileExporterPath,
         FlatItemBuffer $flatRowBuffer,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FilesystemProvider $filesystemProvider,
         JobParameters $jobParameters,
-        ImageAttribute $scopableLocalizableAttribute
-    )
-    {
+        ImageAttribute $scopableLocalizableAttribute,
+        FileInfoInterface $fileInfo,
+        FilesystemInterface $catalogFilesystem
+    ) {
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(true);
         $jobParameters->get('withHeader')->willReturn(false);
@@ -235,10 +237,6 @@ class RecordWriterSpec extends ObjectBehavior
         $scopableLocalizableAttribute->getCode()->willReturn(AttributeCode::fromString('mainmedia'));
 
         $recordMediaPath = 'files/record_code_1/mainmedia/en_US/ecommerce/';
-        $exportFilePath = $this->directory . 'akeneo_batch1234/' . $recordMediaPath . 'jambon.jpg';
-        $this->filesystem->mkdir(dirname($exportFilePath));
-        $this->filesystem->touch($exportFilePath);
-
         $normalizedRecords = [
             [
                 'identifier' => 'test_identifier_1',
@@ -268,6 +266,15 @@ class RecordWriterSpec extends ObjectBehavior
             ]
         )->willReturn($recordMediaPath);
 
+
+        $fileInfo->getKey()->willReturn('1/2/3/jambon987654.jpg');
+        $fileInfo->getStorage()->willReturn('catalogStorage');
+        $fileInfo->getOriginalFilename()->willReturn('jambon.jpg');
+        $fileInfoRepository->findOneByIdentifier('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn($fileInfo);
+
+        $filesystemProvider->getFilesystem('catalogStorage')->willReturn($catalogFilesystem);
+        $catalogFilesystem->has('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn(true);
+
         $arrayConverter->convert(
             [
                 'identifier' => 'test_identifier_1',
@@ -288,8 +295,109 @@ class RecordWriterSpec extends ObjectBehavior
         $flatRowBuffer->write([['converted_item']], ['withHeader' => false])->shouldBeCalled();
 
         $this->write($normalizedRecords);
-        $this->getWrittenFiles()->shouldReturn([
-            $exportFilePath => 'files/record_code_1/mainmedia/en_US/ecommerce/jambon.jpg',
+        $this->getWrittenFiles()->shouldBeLike([
+            WrittenFileInfo::fromFileStorage(
+                '1/2/3/jambon987654.jpg',
+                'catalogStorage',
+                'files/record_code_1/mainmedia/en_US/ecommerce/jambon.jpg'
+            ),
         ]);
+    }
+
+    function it_adds_a_warning_if_the_media_file_does_not_exist(
+        ArrayConverterInterface $arrayConverter,
+        FileExporterPathGeneratorInterface $fileExporterPath,
+        FlatItemBuffer $flatRowBuffer,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FilesystemProvider $filesystemProvider,
+        JobParameters $jobParameters,
+        ImageAttribute $scopableLocalizableAttribute,
+        FileInfoInterface $fileInfo,
+        FilesystemInterface $catalogFilesystem,
+        StepExecution $stepExecution
+    ) {
+        $jobParameters->has('with_media')->willReturn(true);
+        $jobParameters->get('with_media')->willReturn(true);
+        $jobParameters->get('withHeader')->willReturn(false);
+
+        $scopableLocalizableAttribute->getCode()->willReturn(AttributeCode::fromString('mainmedia'));
+
+        $recordMediaPath = 'files/record_code_1/mainmedia/en_US/ecommerce/';
+        $normalizedRecords = [
+            [
+                'identifier' => 'test_identifier_1',
+                'code' => 'record_code_1',
+                'referenceEntityIdentifier' => 'brand',
+                'values' => [
+                    'mainmedia_brand_en_US_ecommerce_123abc' => [
+                        'attribute' => 'mainmedia_brand_123abc',
+                        'locale' => 'en_US',
+                        'channel' => 'ecommerce',
+                        'data' => [
+                            'filePath' => '1/2/3/jambon987654.jpg'
+                        ]
+                    ],
+                ],
+            ],
+        ];
+
+        $fileExporterPath->generate(
+            [
+                'scope' => 'ecommerce',
+                'locale' => 'en_US',
+            ],
+            [
+                'identifier' => 'record_code_1',
+                'code' => 'mainmedia',
+            ]
+        )->willReturn($recordMediaPath);
+
+        $fileInfo->getKey()->willReturn('1/2/3/jambon987654.jpg');
+        $fileInfo->getStorage()->willReturn('catalogStorage');
+        $fileInfo->getOriginalFilename()->willReturn('jambon.jpg');
+        $fileInfoRepository->findOneByIdentifier('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn($fileInfo);
+
+        $filesystemProvider->getFilesystem('catalogStorage')->willReturn($catalogFilesystem);
+        $catalogFilesystem->has('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn(false);
+
+        $stepExecution->addWarning(
+            'The media has not been found or is not currently available',
+            [],
+            Argument::that(
+                function ($invalidItem): bool {
+                    return $invalidItem instanceof InvalidItemInterface &&
+                        $invalidItem->getInvalidData() === [
+                            'from' => '1/2/3/jambon987654.jpg',
+                            'to' => [
+                                'filePath' => 'files/record_code_1/mainmedia/en_US/ecommerce',
+                                'filename' => 'jambon.jpg',
+                            ],
+                            'storage' => 'catalogStorage'
+                        ];
+                }
+            )
+        )->shouldBeCalled();
+
+        $arrayConverter->convert(
+            [
+                'identifier' => 'test_identifier_1',
+                'code' => 'record_code_1',
+                'referenceEntityIdentifier' => 'brand',
+                'values' => [
+                    'mainmedia_brand_en_US_ecommerce_123abc' => [
+                        'attribute' => 'mainmedia_brand_123abc',
+                        'locale' => 'en_US',
+                        'channel' => 'ecommerce',
+                        'data' => [
+                            'filePath' => '1/2/3/jambon987654.jpg',
+                        ],
+                    ],
+                ],
+            ]
+        )->shouldBeCalled()->willReturn(['converted_item']);
+        $flatRowBuffer->write([['converted_item']], ['withHeader' => false])->shouldBeCalled();
+
+        $this->write($normalizedRecords);
+        $this->getWrittenFiles()->shouldReturn([]);
     }
 }
