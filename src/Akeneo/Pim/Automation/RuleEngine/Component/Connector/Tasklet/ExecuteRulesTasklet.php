@@ -23,6 +23,7 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInterface
@@ -34,6 +35,7 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
     private EventDispatcherInterface $eventDispatcher;
     private JobStopper $jobStopper;
     private JobRepositoryInterface $jobRepository;
+    private EntityManagerClearerInterface $cacheClearer;
 
     public function __construct(
         RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
@@ -41,7 +43,8 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
         DryRunnerInterface $dryRuleRunner,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
-        JobStopper $jobStopper
+        JobStopper $jobStopper,
+        EntityManagerClearerInterface $cacheClearer
     ) {
         $this->ruleDefinitionRepository = $ruleDefinitionRepository;
         $this->ruleRunner = $ruleRunner;
@@ -49,6 +52,7 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
         $this->eventDispatcher = $eventDispatcher;
         $this->jobRepository = $jobRepository;
         $this->jobStopper = $jobStopper;
+        $this->cacheClearer = $cacheClearer;
     }
 
     public function setStepExecution(StepExecution $stepExecution)
@@ -138,6 +142,7 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
         $totalProductsImpacted = 0;
         foreach ($this->getRuleDefinitions() as $ruleDefinition) {
             $totalProductsImpacted += $this->countProducts($ruleDefinition);
+            $this->cacheClearer->clear();
         }
 
         return $totalProductsImpacted;

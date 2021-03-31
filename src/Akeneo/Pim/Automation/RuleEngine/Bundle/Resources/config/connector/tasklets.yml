@@ -21,3 +21,4 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch.job.job_stopper'
+            - '@pim_connector.doctrine.cache_clearer'

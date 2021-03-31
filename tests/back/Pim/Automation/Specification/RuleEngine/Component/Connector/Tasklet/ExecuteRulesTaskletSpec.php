@@ -16,6 +16,7 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -31,9 +32,18 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         JobParameters $jobParameters,
         StepExecution $stepExecution,
         JobRepositoryInterface $jobRepository,
-        JobStopper $jobStopper
+        JobStopper $jobStopper,
+        EntityManagerClearerInterface $cacheClearer
     ) {
-        $this->beConstructedWith($ruleDefinitionRepository, $ruleRunner, $dryRuleRunner, $eventDispatcher, $jobRepository, $jobStopper);
+        $this->beConstructedWith(
+            $ruleDefinitionRepository,
+            $ruleRunner,
+            $dryRuleRunner,
+            $eventDispatcher,
+            $jobRepository,
+            $jobStopper,
+            $cacheClearer
+        );
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $this->setStepExecution($stepExecution);
