@@ -88,6 +88,10 @@ class FileWriterArchiverSpec extends ObjectBehavior
             public function getWrittenFiles(): array {
                 return [];
             }
+            public function getPath(): string
+            {
+                return '/tmp/my_job_name.csv';
+            }
             public function write($items): void {}
         };
         $itemStep->getWriter()->willReturn($writer);
@@ -130,6 +134,10 @@ class FileWriterArchiverSpec extends ObjectBehavior
                         'export.csv',
                     )
                 ];
+            }
+            public function getPath(): string
+            {
+                return '/tmp/spec/export.csv';
             }
             public function write($items): void {}
         };

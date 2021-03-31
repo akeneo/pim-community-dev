@@ -6,11 +6,11 @@ namespace Akeneo\UserManagement\Component\Connector\Writer\File;
 
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
-use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
@@ -21,16 +21,14 @@ use Symfony\Component\Filesystem\Filesystem;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 abstract class AbstractUserWriter extends AbstractFileWriter implements
+    ItemWriterInterface,
     InitializableInterface,
-    FlushableInterface,
-    ArchivableWriterInterface
+    FlushableInterface
 {
     private ArrayConverterInterface $arrayConverter;
     private BufferFactory $bufferFactory;
     private FlatItemBufferFlusher $flusher;
     private ?FlatItemBuffer $flatRowBuffer = null;
-
-    private array $writtenFiles = [];
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,
@@ -52,14 +50,6 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
         if (null === $this->flatRowBuffer) {
             $this->flatRowBuffer = $this->bufferFactory->create();
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    final public function getWrittenFiles(): array
-    {
-        return $this->writtenFiles;
     }
 
     /**

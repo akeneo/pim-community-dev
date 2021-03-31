@@ -15,4 +15,9 @@ interface ArchivableWriterInterface
      * @return WrittenFileInfo[]
      */
     public function getWrittenFiles(): array;
+
+    /**
+     * @return string
+     */
+    public function getPath(): string;
 }

@@ -15,7 +15,7 @@ use Symfony\Component\Filesystem\Filesystem;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionAwareInterface
+abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionAwareInterface, ArchivableWriterInterface
 {
     /** @var StepExecution */
     protected $stepExecution;
@@ -25,6 +25,8 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
 
     /** @var string DateTime format for the file path placeholder */
     protected $datetimeFormat = 'Y-m-d_H-i-s';
+
+    protected array $writtenFiles = [];
 
     public function __construct()
     {
@@ -38,7 +40,7 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
      *
      * @return string
      */
-    public function getPath(array $placeholders = [])
+    public function getPath(array $placeholders = []): string
     {
         $parameters = $this->stepExecution->getJobParameters();
         $filePath = $parameters->get('filePath');
@@ -66,6 +68,14 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWrittenFiles(): array
+    {
+        return $this->writtenFiles;
     }
 
     /**

@@ -21,12 +21,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Writer extends AbstractFileWriter implements
-    ItemWriterInterface,
-    InitializableInterface,
-    FlushableInterface,
-    ArchivableWriterInterface,
-    StepExecutionAwareInterface
+class Writer extends AbstractFileWriter implements ItemWriterInterface, InitializableInterface, FlushableInterface
 {
     /** @var ArrayConverterInterface */
     protected $arrayConverter;
@@ -36,9 +31,6 @@ class Writer extends AbstractFileWriter implements
 
     /** @var FlatItemBufferFlusher */
     protected $flusher;
-
-    /** @var array */
-    protected $writtenFiles = [];
 
     /** @var BufferFactory */
     protected $bufferFactory;
@@ -110,13 +102,5 @@ class Writer extends AbstractFileWriter implements
         foreach ($writtenFiles as $writtenFile) {
             $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($writtenFile, \basename($writtenFile));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getWrittenFiles(): array
-    {
-        return $this->writtenFiles;
     }
 }
