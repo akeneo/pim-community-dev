@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Connection as DbalConnection;
+use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -32,7 +33,7 @@ SELECT DISTINCT CONSTRAINT_NAME
 FROM information_schema.TABLE_CONSTRAINTS
 WHERE table_name = 'pim_datagrid_view' AND constraint_type = 'UNIQUE' AND TABLE_SCHEMA = 'akeneo_pim';
 SQL;
-        $uniqueConstraintKeyName = $this->dbalConnection()->executeQuery($selectUniqueConstraint)->fetch();
+        $uniqueConstraintKeyName = $this->dbalConnection()->executeQuery($selectUniqueConstraint)->fetch(FetchMode::COLUMN);
 
         $this->addSql(<<<SQL
 ALTER TABLE pim_datagrid_view
