@@ -1,11 +1,4 @@
 services:
-    Akeneo\Pim\Enrichment\AssetManager\Component\Processor\BulkAssetMediaFetcher:
-        class: Akeneo\Pim\Enrichment\AssetManager\Component\Processor\BulkAssetMediaFetcher
-        arguments:
-            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
-            - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - '@pim_connector.writer.file.media_exporter_path_generator'
-
     pim_connector.processor.normalization.product_with_asset_media:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Processor\Normalization\EntityWithAssetMediaProcessor
         decorates: pim_connector.processor.normalization.product
@@ -14,7 +7,6 @@ services:
             - '@pim_connector.processor.normalization.base.product'
             - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.get_asset_main_media_values_public_api'
             - '@akeneo.pim.structure.query.sql_get_attributes'
-            - '@Akeneo\Pim\Enrichment\AssetManager\Component\Processor\BulkAssetMediaFetcher'
 
     pim_connector.processor.normalization.product_model_with_asset_media:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Processor\Normalization\EntityWithAssetMediaProcessor
@@ -24,7 +16,6 @@ services:
             - '@pim_connector.processor.normalization.base.product_model'
             - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.get_asset_main_media_values_public_api'
             - '@akeneo.pim.structure.query.sql_get_attributes'
-            - '@Akeneo\Pim\Enrichment\AssetManager\Component\Processor\BulkAssetMediaFetcher'
 
     pim_enrich.connector.processor.quick_export.product_with_asset_media:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Processor\Normalization\EntityWithAssetMediaProcessor
@@ -34,7 +25,6 @@ services:
             - '@pim_enrich.connector.processor.quick_export.base.product'
             - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.get_asset_main_media_values_public_api'
             - '@akeneo.pim.structure.query.sql_get_attributes'
-            - '@Akeneo\Pim\Enrichment\AssetManager\Component\Processor\BulkAssetMediaFetcher'
 
     pim_enrich.connector.processor.quick_export.product_model_with_asset_media:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Processor\Normalization\EntityWithAssetMediaProcessor
@@ -44,4 +34,3 @@ services:
             - '@pim_enrich.connector.processor.quick_export.base.product_model'
             - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.get_asset_main_media_values_public_api'
             - '@akeneo.pim.structure.query.sql_get_attributes'
-            - '@Akeneo\Pim\Enrichment\AssetManager\Component\Processor\BulkAssetMediaFetcher'

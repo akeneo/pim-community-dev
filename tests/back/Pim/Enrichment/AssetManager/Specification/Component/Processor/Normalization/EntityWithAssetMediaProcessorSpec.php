@@ -15,7 +15,6 @@ namespace Specification\Akeneo\Pim\Enrichment\AssetManager\Component\Processor\N
 
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetAssetMainMediaValuesInterface;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
-use Akeneo\Pim\Enrichment\AssetManager\Component\Processor\BulkAssetMediaFetcher;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Processor\Normalization\EntityWithAssetMediaProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
@@ -39,8 +38,7 @@ class EntityWithAssetMediaProcessorSpec extends ObjectBehavior
      function let(
          ItemProcessorInterface $decoratedItemProcessor,
          GetAssetMainMediaValuesInterface $getAssetMainMediaValues,
-         GetAttributes $getAttributes,
-         BulkAssetMediaFetcher $bulkAssetMediaFetcher
+         GetAttributes $getAttributes
      ) {
          $getAttributes->forCode('text')->willReturn($this->buildAttribute('text', AttributeTypes::TEXT));
          $getAttributes->forCode('asset_attr1')
@@ -53,8 +51,7 @@ class EntityWithAssetMediaProcessorSpec extends ObjectBehavior
          $this->beConstructedWith(
              $decoratedItemProcessor,
              $getAssetMainMediaValues,
-             $getAttributes,
-             $bulkAssetMediaFetcher,
+             $getAttributes
          );
      }
 
@@ -86,8 +83,7 @@ class EntityWithAssetMediaProcessorSpec extends ObjectBehavior
 
      function it_processes_a_product_with_media_and_export_filters(
          ItemProcessorInterface $decoratedItemProcessor,
-         GetAssetMainMediaValuesInterface $getAssetMainMediaValues,
-         BulkAssetMediaFetcher $bulkAssetMediaFetcher
+         GetAssetMainMediaValuesInterface $getAssetMainMediaValues
      ) {
          $this->givenAJobExecutionWihMediaAndExportFilters();
          $product = new Product();
@@ -96,51 +92,13 @@ class EntityWithAssetMediaProcessorSpec extends ObjectBehavior
          $this->givenAStandardFormatReturnedByDecoratedProcessor($decoratedItemProcessor, $product);
          $this->givenAssetMainValuesReturnsSomeValues($getAssetMainMediaValues);
 
-         $bulkAssetMediaFetcher->fetchAllForAssetRawValuesAndReturnPaths(
-             ['locale' => null, 'scope' => null, 'data' => ['assetCode01', 'assetCode02']],
-             [
-                 ['locale' => 'en_US', 'channel' => null, 'data' => ['filePath' => 'filePath1', 'originalFilename' => 'file_01.jpg']],
-                 ['locale' => null, 'channel' => 'mobile', 'data' => ['filePath' => 'filePath2', 'originalFilename' => 'file_02.jpg']],
-             ],
-             '/tmp/',
-             'product1',
-             'asset_attr1'
-         )->willReturn([
-             'files/product1/asset_attr1/file_01.jpg',
-             'files/product1/asset_attr1/file_02.jpg',
-         ]);
-         $bulkAssetMediaFetcher->fetchAllForAssetRawValuesAndReturnPaths(
-             ['locale' => 'en_US', 'scope' => null, 'data' => ['assetCode11', 'assetCode12']],
-             [
-                 ['locale' => null, 'channel' => null, 'data' => ['filePath' => 'filePath3', 'originalFilename' => 'file_11.jpg']],
-             ],
-             '/tmp/',
-             'product1',
-             'asset_attr2'
-         )->willReturn([
-             'files/product1/asset_attr2/en_US/file_11.jpg',
-         ]);
-         $bulkAssetMediaFetcher->fetchAllForAssetRawValuesAndReturnPaths(
-             ['locale' => 'fr_FR', 'scope' => null, 'data' => ['assetCode13']],
-             [
-                 ['locale' => null, 'channel' => null, 'data' => ['filePath' => 'filePath4', 'originalFilename' => 'file_12.jpg']],
-             ],
-             '/tmp/',
-             'product1',
-             'asset_attr2'
-         )->willReturn([
-             'files/product1/asset_attr2/fr_FR/file_12.jpg',
-         ]);
-         $bulkAssetMediaFetcher->getErrors()->willReturn([]);
-
          $result = $this->process($product);
-         $result->shouldBe($this->getExpectedStandardFormatWithExportFilters('product1'));
+         $result->shouldBe($this->getExpectedStandardFormatWithExportFilters());
      }
 
     function it_processes_a_product_with_media_and_quick_export_filters(
         ItemProcessorInterface $decoratedItemProcessor,
-        GetAssetMainMediaValuesInterface $getAssetMainMediaValues,
-        BulkAssetMediaFetcher $bulkAssetMediaFetcher
+        GetAssetMainMediaValuesInterface $getAssetMainMediaValues
     ) {
         $this->givenAJobExecutionWihMediaAndQuickExportFilters();
         $product = new Product();
@@ -149,64 +107,13 @@ class EntityWithAssetMediaProcessorSpec extends ObjectBehavior
         $this->givenAStandardFormatReturnedByDecoratedProcessor($decoratedItemProcessor, $product);
         $this->givenAssetMainValuesReturnsSomeValues($getAssetMainMediaValues);
 
-        $bulkAssetMediaFetcher->fetchAllForAssetRawValuesAndReturnPaths(
-            ['locale' => null, 'scope' => null, 'data' => ['assetCode01', 'assetCode02']],
-            [
-                ['locale' => 'en_US', 'channel' => null, 'data' => ['filePath' => 'filePath1', 'originalFilename' => 'file_01.jpg']],
-                ['locale' => 'de_DE', 'channel' => null, 'data' => ['filePath' => 'filePath1', 'originalFilename' => 'bad_locale.jpg']],
-                ['locale' => null, 'channel' => 'mobile', 'data' => ['filePath' => 'filePath2', 'originalFilename' => 'file_02.jpg']],
-            ],
-            '/tmp/',
-            'product1',
-            'asset_attr1'
-        )->willReturn([
-            'files/product1/asset_attr1/file_01.jpg',
-            'files/product1/asset_attr1/bad_locale.jpg',
-            'files/product1/asset_attr1/file_02.jpg',
-        ]);
-        $bulkAssetMediaFetcher->fetchAllForAssetRawValuesAndReturnPaths(
-            ['locale' => 'en_US', 'scope' => null, 'data' => ['assetCode11', 'assetCode12']],
-            [
-                ['locale' => null, 'channel' => null, 'data' => ['filePath' => 'filePath3', 'originalFilename' => 'file_11.jpg']],
-            ],
-            '/tmp/',
-            'product1',
-            'asset_attr2'
-        )->willReturn([
-            'files/product1/asset_attr2/en_US/file_11.jpg',
-        ]);
-        $bulkAssetMediaFetcher->fetchAllForAssetRawValuesAndReturnPaths(
-            ['locale' => 'fr_FR', 'scope' => null, 'data' => ['assetCode13']],
-            [
-                ['locale' => null, 'channel' => null, 'data' => ['filePath' => 'filePath4', 'originalFilename' => 'file_12.jpg']],
-            ],
-            '/tmp/',
-            'product1',
-            'asset_attr2'
-        )->willReturn([
-            'files/product1/asset_attr2/fr_FR/file_12.jpg',
-        ]);
-        $bulkAssetMediaFetcher->fetchAllForAssetRawValuesAndReturnPaths(
-            ['locale' => 'de_DE', 'scope' => null, 'data' => ['assetCode14']],
-            [
-                ['locale' => null, 'channel' => null, 'data' => ['filePath' => 'filePath4', 'originalFilename' => 'file_13.jpg']],
-            ],
-            '/tmp/',
-            'product1',
-            'asset_attr2'
-        )->willReturn([
-            'files/product1/asset_attr2/de_DE/file_13.jpg',
-        ]);
-        $bulkAssetMediaFetcher->getErrors()->willReturn([]);
-
         $result = $this->process($product);
-        $result->shouldBe($this->getExpectedStandardFormatWithQuickExportFilters('product1'));
+        $result->shouldBe($this->getExpectedStandardFormatWithQuickExportFilters());
     }
 
      function it_processes_a_product_with_media_without_filters(
          ItemProcessorInterface $decoratedItemProcessor,
-         GetAssetMainMediaValuesInterface $getAssetMainMediaValues,
-         BulkAssetMediaFetcher $bulkAssetMediaFetcher
+         GetAssetMainMediaValuesInterface $getAssetMainMediaValues
      ) {
          $this->givenAJobExecutionWihMediaAndWithoutFilters();
          $product = new Product();
@@ -215,77 +122,13 @@ class EntityWithAssetMediaProcessorSpec extends ObjectBehavior
          $this->givenAStandardFormatReturnedByDecoratedProcessor($decoratedItemProcessor, $product);
          $this->givenAssetMainValuesReturnsSomeValues($getAssetMainMediaValues);
 
-         $bulkAssetMediaFetcher->fetchAllForAssetRawValuesAndReturnPaths(
-             ['locale' => null, 'scope' => null, 'data' => ['assetCode01', 'assetCode02']],
-             [
-                 ['locale' => 'en_US', 'channel' => null, 'data' => ['filePath' => 'filePath1', 'originalFilename' => 'file_01.jpg']],
-                 ['locale' => 'de_DE', 'channel' => null, 'data' => ['filePath' => 'filePath1', 'originalFilename' => 'bad_locale.jpg']],
-                 ['locale' => null, 'channel' => 'mobile', 'data' => ['filePath' => 'filePath2', 'originalFilename' => 'file_02.jpg']],
-                 ['locale' => null, 'channel' => 'ecommerce', 'data' => ['filePath' => 'filePath2', 'originalFilename' => 'bad_scope.jpg']],
-             ],
-             '/tmp/',
-             'product1',
-             'asset_attr1'
-         )->willReturn([
-             'files/product1/asset_attr1/file_01.jpg',
-             'files/product1/asset_attr1/bad_locale.jpg',
-             'files/product1/asset_attr1/file_02.jpg',
-             'files/product1/asset_attr1/bad_scope.jpg',
-         ]);
-         $bulkAssetMediaFetcher->fetchAllForAssetRawValuesAndReturnPaths(
-             ['locale' => 'en_US', 'scope' => null, 'data' => ['assetCode11', 'assetCode12']],
-             [
-                 ['locale' => null, 'channel' => null, 'data' => ['filePath' => 'filePath3', 'originalFilename' => 'file_11.jpg']],
-             ],
-             '/tmp/',
-             'product1',
-             'asset_attr2'
-         )->willReturn([
-             'files/product1/asset_attr2/en_US/file_11.jpg',
-         ]);
-         $bulkAssetMediaFetcher->fetchAllForAssetRawValuesAndReturnPaths(
-             ['locale' => 'fr_FR', 'scope' => null, 'data' => ['assetCode13']],
-             [
-                 ['locale' => null, 'channel' => null, 'data' => ['filePath' => 'filePath4', 'originalFilename' => 'file_12.jpg']],
-             ],
-             '/tmp/',
-             'product1',
-             'asset_attr2'
-         )->willReturn([
-             'files/product1/asset_attr2/fr_FR/file_12.jpg',
-         ]);
-         $bulkAssetMediaFetcher->fetchAllForAssetRawValuesAndReturnPaths(
-             ['locale' => 'de_DE', 'scope' => null, 'data' => ['assetCode14']],
-             [
-                 ['locale' => null, 'channel' => null, 'data' => ['filePath' => 'filePath4', 'originalFilename' => 'file_13.jpg']],
-             ],
-             '/tmp/',
-             'product1',
-             'asset_attr2'
-         )->willReturn([
-             'files/product1/asset_attr2/de_DE/file_13.jpg',
-         ]);
-         $bulkAssetMediaFetcher->fetchAllForAssetRawValuesAndReturnPaths(
-             ['locale' => null, 'scope' => 'ecommerce', 'data' => ['assetCode22']],
-             [
-                 ['locale' => null, 'channel' => null, 'data' => ['filePath' => 'filePath4', 'originalFilename' => 'file_14.jpg']],
-             ],
-             '/tmp/',
-             'product1',
-             'asset_attr3'
-         )->willReturn([
-             'files/product1/asset_attr3/ecommerce/file_14.jpg',
-         ]);
-         $bulkAssetMediaFetcher->getErrors()->willReturn([]);
-
          $result = $this->process($product);
-         $result->shouldBe($this->getExpectedStandardFormatWithoutFilter('product1'));
+         $result->shouldBe($this->getExpectedStandardFormatWithoutFilter());
      }
 
     function it_processes_a_product_model_with_media(
         ItemProcessorInterface $decoratedItemProcessor,
-        GetAssetMainMediaValuesInterface $getAssetMainMediaValues,
-        BulkAssetMediaFetcher $bulkAssetMediaFetcher
+        GetAssetMainMediaValuesInterface $getAssetMainMediaValues
     ) {
         $this->givenAJobExecutionWihMediaAndExportFilters();
         $productModel = new ProductModel();
@@ -294,45 +137,8 @@ class EntityWithAssetMediaProcessorSpec extends ObjectBehavior
         $this->givenAStandardFormatReturnedByDecoratedProcessor($decoratedItemProcessor, $productModel);
         $this->givenAssetMainValuesReturnsSomeValues($getAssetMainMediaValues);
 
-        $bulkAssetMediaFetcher->fetchAllForAssetRawValuesAndReturnPaths(
-            ['locale' => null, 'scope' => null, 'data' => ['assetCode01', 'assetCode02']],
-            [
-                ['locale' => 'en_US', 'channel' => null, 'data' => ['filePath' => 'filePath1', 'originalFilename' => 'file_01.jpg']],
-                ['locale' => null, 'channel' => 'mobile', 'data' => ['filePath' => 'filePath2', 'originalFilename' => 'file_02.jpg']],
-            ],
-            '/tmp/',
-            'product_model1',
-            'asset_attr1'
-        )->willReturn([
-            'files/product_model1/asset_attr1/file_01.jpg',
-            'files/product_model1/asset_attr1/file_02.jpg',
-        ]);
-        $bulkAssetMediaFetcher->fetchAllForAssetRawValuesAndReturnPaths(
-            ['locale' => 'en_US', 'scope' => null, 'data' => ['assetCode11', 'assetCode12']],
-            [
-                ['locale' => null, 'channel' => null, 'data' => ['filePath' => 'filePath3', 'originalFilename' => 'file_11.jpg']],
-            ],
-            '/tmp/',
-            'product_model1',
-            'asset_attr2'
-        )->willReturn([
-            'files/product_model1/asset_attr2/en_US/file_11.jpg',
-        ]);
-        $bulkAssetMediaFetcher->fetchAllForAssetRawValuesAndReturnPaths(
-            ['locale' => 'fr_FR', 'scope' => null, 'data' => ['assetCode13']],
-            [
-                ['locale' => null, 'channel' => null, 'data' => ['filePath' => 'filePath4', 'originalFilename' => 'file_12.jpg']],
-            ],
-            '/tmp/',
-            'product_model1',
-            'asset_attr2'
-        )->willReturn([
-            'files/product_model1/asset_attr2/fr_FR/file_12.jpg',
-        ]);
-        $bulkAssetMediaFetcher->getErrors()->willReturn([]);
-
         $result = $this->process($productModel);
-        $result->shouldBe($this->getExpectedStandardFormatWithExportFilters('product_model1'));
+        $result->shouldBe($this->getExpectedStandardFormatWithExportFilters());
     }
 
      private function givenAJobExecutionWihMediaAndExportFilters(): void
@@ -434,24 +240,24 @@ class EntityWithAssetMediaProcessorSpec extends ObjectBehavior
                     [
                         'locale' => 'en_US',
                         'channel' => null,
-                        'data' => ['filePath' => 'filePath1', 'originalFilename' => 'file_01.jpg'],
+                        'data' => ['filePath' => 'a/b/ab_file_01.jpg', 'originalFilename' => 'file_01.jpg'],
                     ],
                     [
                         'locale' => 'de_DE',
                         'channel' => null,
-                        'data' => ['filePath' => 'filePath1', 'originalFilename' => 'bad_locale.jpg'],
+                        'data' => ['filePath' => 'c/d/cd_bad_locale.jpg', 'originalFilename' => 'bad_locale.jpg'],
                     ],
                 ],
                 'assetCode02' => [
                     [
                         'locale' => null,
                         'channel' => 'mobile',
-                        'data' => ['filePath' => 'filePath2', 'originalFilename' => 'file_02.jpg'],
+                        'data' => ['filePath' => 'e/f/ef_file_02.jpg', 'originalFilename' => 'file_02.jpg'],
                     ],
                     [
                         'locale' => null,
                         'channel' => 'ecommerce',
-                        'data' => ['filePath' => 'filePath2', 'originalFilename' => 'bad_scope.jpg'],
+                        'data' => ['filePath' => '1/2/12_bad_scope.jpg', 'originalFilename' => 'bad_scope.jpg'],
                     ],
                 ],
             ]);
@@ -461,7 +267,7 @@ class EntityWithAssetMediaProcessorSpec extends ObjectBehavior
                     [
                         'locale' => null,
                         'channel' => null,
-                        'data' => ['filePath' => 'filePath3', 'originalFilename' => 'file_11.jpg'],
+                        'data' => ['filePath' => '3/4/34_file_11.jpg', 'originalFilename' => 'file_11.jpg'],
                     ],
                 ],
                 'assetCode12' => [],
@@ -472,12 +278,10 @@ class EntityWithAssetMediaProcessorSpec extends ObjectBehavior
                     [
                         'locale' => null,
                         'channel' => null,
-                        'data' => ['filePath' => 'filePath4', 'originalFilename' => 'file_12.jpg'],
+                        'data' => ['filePath' => '5/6/56_file_12.jpg', 'originalFilename' => 'file_12.jpg'],
                     ],
                 ],
             ]);
-        $getAssetMainMediaValues->forAssetFamilyAndAssetCodes('asset_family3', ['assetCode21'])
-            ->willReturn([]);
 
         $getAssetMainMediaValues->forAssetFamilyAndAssetCodes('asset_family2', ['assetCode14'])
             ->willReturn([
@@ -485,23 +289,24 @@ class EntityWithAssetMediaProcessorSpec extends ObjectBehavior
                     [
                         'locale' => null,
                         'channel' => null,
-                        'data' => ['filePath' => 'filePath4', 'originalFilename' => 'file_13.jpg'],
+                        'data' => ['filePath' => '7/8/78_file_14.jpg', 'originalFilename' => 'file_14.jpg'],
                     ],
                 ],
             ]);
+        $getAssetMainMediaValues->forAssetFamilyAndAssetCodes('asset_family3', ['assetCode21'])->willReturn([]);
         $getAssetMainMediaValues->forAssetFamilyAndAssetCodes('asset_family3', ['assetCode22'])
             ->willReturn([
                 'assetCode22' => [
                     [
                         'locale' => null,
                         'channel' => null,
-                        'data' => ['filePath' => 'filePath4', 'originalFilename' => 'file_14.jpg'],
+                        'data' => 'https://my-server/my-image.jpg',
                     ],
                 ],
             ]);
     }
 
-    private function getExpectedStandardFormatWithExportFilters(string $itemIdentifier): array
+    private function getExpectedStandardFormatWithExportFilters(): array
     {
         return [
             'identifier' => 'foo',
@@ -512,16 +317,16 @@ class EntityWithAssetMediaProcessorSpec extends ObjectBehavior
                 ],
                 'asset_attr1' => [
                     ['locale' => null, 'scope' => null, 'data' => ['assetCode01', 'assetCode02'], 'paths' => [
-                        'files/' . $itemIdentifier . '/asset_attr1/file_01.jpg',
-                        'files/' . $itemIdentifier . '/asset_attr1/file_02.jpg',
+                        'a/b/ab_file_01.jpg',
+                        'e/f/ef_file_02.jpg',
                     ]],
                 ],
                 'asset_attr2' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => ['assetCode11', 'assetCode12'], 'paths' => [
-                        'files/' . $itemIdentifier . '/asset_attr2/en_US/file_11.jpg',
+                        '3/4/34_file_11.jpg',
                     ]],
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => ['assetCode13'], 'paths' => [
-                        'files/' . $itemIdentifier . '/asset_attr2/fr_FR/file_12.jpg',
+                        '5/6/56_file_12.jpg',
                     ]],
                     ['locale' => 'de_DE', 'scope' => null, 'data' => ['assetCode14']],
                 ],
@@ -533,7 +338,7 @@ class EntityWithAssetMediaProcessorSpec extends ObjectBehavior
         ];
     }
 
-    private function getExpectedStandardFormatWithQuickExportFilters(string $itemIdentifier): array
+    private function getExpectedStandardFormatWithQuickExportFilters(): array
     {
         return [
             'identifier' => 'foo',
@@ -544,20 +349,20 @@ class EntityWithAssetMediaProcessorSpec extends ObjectBehavior
                 ],
                 'asset_attr1' => [
                     ['locale' => null, 'scope' => null, 'data' => ['assetCode01', 'assetCode02'], 'paths' => [
-                        'files/' . $itemIdentifier . '/asset_attr1/file_01.jpg',
-                        'files/' . $itemIdentifier . '/asset_attr1/bad_locale.jpg',
-                        'files/' . $itemIdentifier . '/asset_attr1/file_02.jpg',
+                        'a/b/ab_file_01.jpg',
+                        'c/d/cd_bad_locale.jpg',
+                        'e/f/ef_file_02.jpg',
                     ]],
                 ],
                 'asset_attr2' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => ['assetCode11', 'assetCode12'], 'paths' => [
-                        'files/' . $itemIdentifier . '/asset_attr2/en_US/file_11.jpg',
+                        '3/4/34_file_11.jpg',
                     ]],
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => ['assetCode13'], 'paths' => [
-                        'files/' . $itemIdentifier . '/asset_attr2/fr_FR/file_12.jpg',
+                        '5/6/56_file_12.jpg',
                     ]],
                     ['locale' => 'de_DE', 'scope' => null, 'data' => ['assetCode14'], 'paths' => [
-                        'files/' . $itemIdentifier . '/asset_attr2/de_DE/file_13.jpg',
+                        '7/8/78_file_14.jpg',
                     ]],
                 ],
                 'asset_attr3' => [
@@ -568,7 +373,7 @@ class EntityWithAssetMediaProcessorSpec extends ObjectBehavior
         ];
     }
 
-    private function getExpectedStandardFormatWithoutFilter(string $itemIdentifier): array
+    private function getExpectedStandardFormatWithoutFilter(): array
     {
         return [
             'identifier' => 'foo',
@@ -579,27 +384,27 @@ class EntityWithAssetMediaProcessorSpec extends ObjectBehavior
                 ],
                 'asset_attr1' => [
                     ['locale' => null, 'scope' => null, 'data' => ['assetCode01', 'assetCode02'], 'paths' => [
-                        'files/' . $itemIdentifier . '/asset_attr1/file_01.jpg',
-                        'files/' . $itemIdentifier . '/asset_attr1/bad_locale.jpg',
-                        'files/' . $itemIdentifier . '/asset_attr1/file_02.jpg',
-                        'files/' . $itemIdentifier . '/asset_attr1/bad_scope.jpg',
+                        'a/b/ab_file_01.jpg',
+                        'c/d/cd_bad_locale.jpg',
+                        'e/f/ef_file_02.jpg',
+                        '1/2/12_bad_scope.jpg',
                     ]],
                 ],
                 'asset_attr2' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => ['assetCode11', 'assetCode12'], 'paths' => [
-                        'files/' . $itemIdentifier . '/asset_attr2/en_US/file_11.jpg',
+                        '3/4/34_file_11.jpg',
                     ]],
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => ['assetCode13'], 'paths' => [
-                        'files/' . $itemIdentifier . '/asset_attr2/fr_FR/file_12.jpg',
+                        '5/6/56_file_12.jpg',
                     ]],
                     ['locale' => 'de_DE', 'scope' => null, 'data' => ['assetCode14'], 'paths' => [
-                        'files/' . $itemIdentifier . '/asset_attr2/de_DE/file_13.jpg',
+                        '7/8/78_file_14.jpg',
                     ]],
                 ],
                 'asset_attr3' => [
                     ['locale' => null, 'scope' => 'mobile', 'data' => ['assetCode21']],
                     ['locale' => null, 'scope' => 'ecommerce', 'data' => ['assetCode22'], 'paths' => [
-                        'files/product1/asset_attr3/ecommerce/file_14.jpg',
+                        'https://my-server/my-image.jpg',
                     ]],
                 ],
             ],

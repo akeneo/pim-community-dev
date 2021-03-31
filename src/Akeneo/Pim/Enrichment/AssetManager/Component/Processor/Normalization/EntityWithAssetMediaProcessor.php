@@ -15,11 +15,9 @@ namespace Akeneo\Pim\Enrichment\AssetManager\Component\Processor\Normalization;
 
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetAssetMainMediaValuesInterface;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
-use Akeneo\Pim\Enrichment\AssetManager\Component\Processor\BulkAssetMediaFetcher;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
-use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Webmozart\Assert\Assert;
@@ -35,19 +33,16 @@ final class EntityWithAssetMediaProcessor implements ItemProcessorInterface, Ste
     private ItemProcessorInterface $decoratedItemProcessor;
     private GetAssetMainMediaValuesInterface $getAssetMainMediaValues;
     private GetAttributes $getAttributes;
-    private BulkAssetMediaFetcher $bulkAssetMediaFetcher;
     private StepExecution $stepExecution;
 
     public function __construct(
         ItemProcessorInterface $itemProcessor,
         GetAssetMainMediaValuesInterface $getAssetMainMediaValues,
-        GetAttributes $getAttributes,
-        BulkAssetMediaFetcher $bulkAssetMediaFetcher
+        GetAttributes $getAttributes
     ) {
         $this->decoratedItemProcessor = $itemProcessor;
         $this->getAssetMainMediaValues = $getAssetMainMediaValues;
         $this->getAttributes = $getAttributes;
-        $this->bulkAssetMediaFetcher = $bulkAssetMediaFetcher;
     }
 
     /**
@@ -61,13 +56,8 @@ final class EntityWithAssetMediaProcessor implements ItemProcessorInterface, Ste
 
         $parameters = $this->stepExecution->getJobParameters();
         if ($parameters->has('with_media') && $parameters->get('with_media')) {
-            $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
-                ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
-
-            $entityStandard = $this->fetchAllAssetMainImageFilesAndComputePaths(
+            $entityStandard = $this->resolveAssetMainMedia(
                 $entityStandard,
-                $entity,
-                $directory,
                 $this->extractScopeCodesContext(),
                 $this->extractLocaleCodesContext()
             );
@@ -119,13 +109,8 @@ final class EntityWithAssetMediaProcessor implements ItemProcessorInterface, Ste
         return $parameters->get('filters')['structure']['locales'] ?? null;
     }
 
-    private function fetchAllAssetMainImageFilesAndComputePaths(
-        array $entityStandard,
-        EntityWithValuesInterface $entityWithValues,
-        string $basePath,
-        ?array $scopeCodes,
-        ?array $localeCodes
-    ): array {
+    private function resolveAssetMainMedia(array $entityStandard, ?array $scopeCodes, ?array $localeCodes): array
+    {
         foreach ($entityStandard['values'] as $attributeCode => $values) {
             foreach ($values as $valueKey => $value) {
                 if (!$this->productValueSatisfiesLocaleAndScopeFilters($value, $scopeCodes, $localeCodes)) {
@@ -159,29 +144,11 @@ final class EntityWithAssetMediaProcessor implements ItemProcessorInterface, Ste
                     }
                 }
 
-                if (0 === count($filteredMainMedia)) {
-                    continue;
-                }
-
-                $pathsForValue = $this->bulkAssetMediaFetcher->fetchAllForAssetRawValuesAndReturnPaths(
-                    $value,
-                    $filteredMainMedia,
-                    $basePath,
-                    $entityWithValues->getIdentifier(),
-                    $attributeCode
-                );
-
-                foreach ($this->bulkAssetMediaFetcher->getErrors() as $error) {
-                    $this->stepExecution->addWarning(
-                        $error['reason'],
-                        $error['reasonParameters'] ?? [],
-                        $error['item']
+                if (0 < count($filteredMainMedia)) {
+                    $entityStandard['values'][$attributeCode][$valueKey]['paths'] = \array_map(
+                        fn (array $mediaValue): string => $mediaValue['data']['filePath'] ?? $mediaValue['data'],
+                        $filteredMainMedia
                     );
-                }
-
-                // Add the paths into the values of the standard format.
-                if (0 < count($pathsForValue)) {
-                    $entityStandard['values'][$attributeCode][$valueKey]['paths'] = $pathsForValue;
                 }
             }
         }
