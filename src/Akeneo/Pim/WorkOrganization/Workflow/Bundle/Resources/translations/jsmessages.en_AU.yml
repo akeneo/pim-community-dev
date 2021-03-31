@@ -85,6 +85,9 @@ batch_jobs:
     perform.label: Xlsx published products grid context quick export
   publish_product:
     perform.label: Publish products
+  default_steps:
+    clean_attribute:
+      clean_draft: Cleaning proposals
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: New proposal
@@ -111,7 +114,8 @@ pimee_enrich.entity.product:
       published: Published
       revert: Restore
     attribute:
-      can_be_updated_by_a_rule: "]-Inf, 1]This attribute can be updated by a rule:|]1, +Inf[This attribute can be updated by the rules:"
+      can_be_updated_by_rules: "]-Inf, 1]This attribute can be updated by <span>a rule</span>|]1, +Inf[This attribute can be updated by <span>{{ count }} rules</span>"
+      can_be_updated_by_rules_readonly: "]-Inf, 1]This attribute can be updated by a rule|]1, +Inf[This attribute can be updated by {{ count }} rules"
       value_updated: This value is updated by the current draft
     meta:
       published_version: Published version
@@ -212,3 +216,7 @@ pim_title:
   pimee_workflow_proposal_index: Proposals
   pimee_workflow_published_product_index: Published products
   pimee_workflow_published_product_view: Published product {{ product.label }} | View
+pim_analytics:
+  info_type:
+    nb_published_products: Number of published product
+    nb_product_drafts: Number of product drafts
