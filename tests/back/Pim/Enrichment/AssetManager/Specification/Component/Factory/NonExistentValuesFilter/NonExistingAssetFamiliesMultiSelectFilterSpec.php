@@ -37,7 +37,7 @@ final class NonExistingAssetFamiliesMultiSelectFilterSpec extends ObjectBehavior
     {
         $ongoingFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType(
             [
-                AssetCollectionType::ASSET_COLLECTION=> [
+                AssetCollectionType::ASSET_COLLECTION => [
                     'assetcollection' => [
                         [
                             'identifier' => 'product_A',
@@ -85,7 +85,7 @@ final class NonExistingAssetFamiliesMultiSelectFilterSpec extends ObjectBehavior
         $filteredCollection = $this->filter($ongoingFilteredRawValues);
         $filteredCollection->filteredRawValuesCollectionIndexedByType()->shouldBeLike(
             [
-                AssetCollectionType::ASSET_COLLECTION=> [
+                AssetCollectionType::ASSET_COLLECTION => [
                     'assetcollection' => [
                         [
                             'identifier' => 'product_A',

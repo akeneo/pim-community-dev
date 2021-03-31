@@ -149,6 +149,12 @@ services:
             - '@akeneo_assetmanager.application.asset.edit_asset_handler'
             - '@validator'
 
+    Akeneo\AssetManager\Infrastructure\EventSubscriber\CleanAssetFamilyIdentifierOnAttributeCreationSubscriber:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+        tags:
+            - { name: kernel.event_subscriber }
+
     akeneo_assetmanager.factory.mass_operation_notification:
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Factory\MassEditNotificationFactory'
         arguments:

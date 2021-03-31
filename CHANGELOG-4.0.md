@@ -1,5 +1,18 @@
 # 4.0.x
 
+# 4.0.100 (2021-03-26)
+
+## Bug fixes
+
+- PIM-9735: Prevent asset family identifiers to be stored with a different case in attributes properties
+- PIM-9775: Fix Asset codes filtering being case sensitive
+
+# 4.0.99 (2021-03-24)
+
+## Bug fixes
+
+- PIM-9757: Fix product grid context being lost when clicking on view all linked products in Asset Manager
+
 # 4.0.98 (2021-03-16)
 
 ## Bug fixes
