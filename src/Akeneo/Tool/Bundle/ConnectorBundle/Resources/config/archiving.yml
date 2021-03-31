@@ -37,14 +37,6 @@ services:
         tags:
             - { name: pim_connector.archiver }
 
-    pim_connector.archiver.archivable_file_writer_archiver:
-        class: '%pim_connector.archiver.archivable_file_writer_archiver.class%'
-        arguments:
-            - '@pim_connector.factory.zip_filesystem'
-            - '@oneup_flysystem.archivist_filesystem'
-            - '@akeneo_batch.job.job_registry'
-            - '@akeneo_file_storage.file_storage.filesystem_provider'
-
     pim_connector.log_archiver:
         class: 'Akeneo\Tool\Component\Connector\LogArchiver'
         arguments:
