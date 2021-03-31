@@ -21,11 +21,11 @@ use Akeneo\AssetManager\Domain\Query\Channel\FindActivatedLocalesPerChannelsInte
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
-use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
@@ -34,7 +34,10 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 
-abstract class AbstractAssetWriter extends AbstractFileWriter implements InitializableInterface, FlushableInterface, ArchivableWriterInterface
+abstract class AbstractAssetWriter extends AbstractFileWriter implements
+    ItemWriterInterface,
+    InitializableInterface,
+    FlushableInterface
 {
     private ArrayConverterInterface $arrayConverter;
     private BufferFactory $bufferFactory;
@@ -48,8 +51,6 @@ abstract class AbstractAssetWriter extends AbstractFileWriter implements Initial
     private ?FlatItemBuffer $flatRowBuffer = null;
     /** @var AbstractAttribute[] */
     private array $attributesIndexedByIdentifier = [];
-    /** @var WrittenFileInfo[] */
-    private array $writtenFiles = [];
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,
@@ -86,14 +87,6 @@ abstract class AbstractAssetWriter extends AbstractFileWriter implements Initial
         $this->attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find(
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier)
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getWrittenFiles(): array
-    {
-        return $this->writtenFiles;
     }
 
     /**

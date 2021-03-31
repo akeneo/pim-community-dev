@@ -21,11 +21,11 @@ use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsI
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
-use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
@@ -34,7 +34,10 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 
-abstract class AbstractRecordWriter extends AbstractFileWriter implements InitializableInterface, FlushableInterface, ArchivableWriterInterface
+abstract class AbstractRecordWriter extends AbstractFileWriter implements
+    ItemWriterInterface,
+    InitializableInterface,
+    FlushableInterface
 {
     private ArrayConverterInterface $arrayConverter;
     private BufferFactory $bufferFactory;
@@ -48,8 +51,6 @@ abstract class AbstractRecordWriter extends AbstractFileWriter implements Initia
     private ?FlatItemBuffer $flatRowBuffer = null;
     /** @var AbstractAttribute[] */
     private array $attributesIndexedByIdentifier;
-    /** @var WrittenFileInfo[] */
-    private array $writtenFiles = [];
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,
@@ -76,7 +77,7 @@ abstract class AbstractRecordWriter extends AbstractFileWriter implements Initia
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
         if (null === $this->flatRowBuffer) {
             $this->flatRowBuffer = $this->bufferFactory->create();
@@ -91,15 +92,7 @@ abstract class AbstractRecordWriter extends AbstractFileWriter implements Initia
     /**
      * {@inheritdoc}
      */
-    public function getWrittenFiles(): array
-    {
-        return $this->writtenFiles;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function write(array $items)
+    public function write(array $items): void
     {
         $exportDirectory = dirname($this->getPath());
         if (!is_dir($exportDirectory)) {
@@ -127,7 +120,7 @@ abstract class AbstractRecordWriter extends AbstractFileWriter implements Initia
     /**
      * {@inheritdoc}
      */
-    public function flush()
+    public function flush(): void
     {
         if (true === $this->stepExecution->getJobParameters()->get('withHeader')) {
             $this->flatRowBuffer->addToHeaders($this->getAdditionalHeaders());
