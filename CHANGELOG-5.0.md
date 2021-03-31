@@ -1,5 +1,17 @@
 # 5.0.x
 
+# 5.0.13 (2021-03-29)
+
+- PLG-137 - Fix filter "Image quality" label to avoid confusion
+- PLG-138 - Fix bad "activated" english naming in locales screen
+- PLG-139 - Fix bad "activated" english naming in attribute group screen
+
+# 5.0.12 (2021-03-26)
+
+# 5.0.11 (2021-03-24)
+
+# 5.0.10 (2021-03-23)
+
 # 5.0.9 (2021-03-19)
 
 # 5.0.8 (2021-03-17)

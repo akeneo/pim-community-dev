@@ -57,13 +57,29 @@ class RegisterKeyIndicatorFilter
             'data_name' => $this->filterName,
             'options' => [
                 'field_options' => [
-                    'choices' => [
-                        'akeneo_data_quality_insights.product_grid.filter_value.good' => true,
-                        'akeneo_data_quality_insights.product_grid.filter_value.to_improve' => false,
-                    ],
+                    'choices' => $this->getFilterChoices(),
                 ],
             ],
         ];
+    }
+
+    private function getFilterChoices(): array
+    {
+        $defaultChoices = [
+            'akeneo_data_quality_insights.product_grid.filter_value.good' => true,
+            'akeneo_data_quality_insights.product_grid.filter_value.to_improve' => false,
+        ];
+
+        $choices = $defaultChoices;
+
+        if ('data_quality_insights_images_quality' === $this->filterName) {
+            $choices = [
+                'akeneo_data_quality_insights.product_grid.filter_value.yes' => true,
+                'akeneo_data_quality_insights.product_grid.filter_value.no' => false,
+            ];
+        }
+
+        return $choices;
     }
 
     private function isProductDatagrid(DatagridConfiguration $datagridConfiguration): bool

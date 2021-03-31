@@ -1,5 +1,15 @@
 # 4.0.x
 
+# 4.0.101 (2021-03-29)
+
+# 4.0.100 (2021-03-26)
+
+## Bug fixes
+
+- PIM-9770: Fix proposal filters not loading when no permissions on attribute groups
+
+# 4.0.99 (2021-03-24)
+
 ## Bug fixes
 
 - PIM-9750: Auto_increment reaches max value for pim_catalog_completeness table
