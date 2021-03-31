@@ -51,6 +51,10 @@ final class SqlGetCompletenessProductMasks implements GetCompletenessProductMask
     {
         // TODO - TIP-1212: Replace the first LEFT JOIN (to pim_catalog_family) by an INNER JOIN
         $sql = <<<SQL
+WITH
+filtered_product AS (
+    SELECT id FROM pim_catalog_product WHERE identifier IN (:productIdentifiers)
+)
 SELECT
     product.id AS id,
     product.identifier AS identifier,
@@ -60,11 +64,11 @@ SELECT
            COALESCE(pm2.raw_values, '{}'),
            product.raw_values
     ) AS rawValues
-FROM pim_catalog_product product
+FROM filtered_product
+    INNER JOIN pim_catalog_product product ON filtered_product.id = product.id
     LEFT JOIN pim_catalog_family family ON product.family_id = family.id
     LEFT JOIN pim_catalog_product_model pm1 ON product.product_model_id = pm1.id
     LEFT JOIN pim_catalog_product_model pm2 ON pm1.parent_id = pm2.id
-WHERE product.identifier IN (:productIdentifiers)
 GROUP BY product.identifier
 SQL;
 
