@@ -249,6 +249,8 @@ akeneo_connectivity.connection:
           level: Level
           all: All
           none: None
+        date_range_filter:
+          all: All
         info:
           title: Here are the logs related to all the event requests sent to this connection.
           content: This page displays error and warning logs for the past 72h, and the last 100 info and notice logs.
