@@ -65,7 +65,7 @@ class JobExecutionArchivistSpec extends ObjectBehavior
         $this->registerArchiver($archiver);
 
         $this
-            ->shouldThrow('\InvalidArgumentException')
+            ->shouldThrow(\InvalidArgumentException::class)
             ->during('getArchive', [$jobExecution, 'archiver_name', 'key']);
     }
 
@@ -99,5 +99,33 @@ class JobExecutionArchivistSpec extends ObjectBehavior
         $archiver2->archive($jobExecution)->shouldNotBeCalled();
 
         $this->beforeStatusUpgrade($event);
+    }
+
+    function it_can_count_the_total_number_of_archives_for_a_given_job_execution(
+        JobExecution $jobExecution,
+        ArchiverInterface $archiver1,
+        ArchiverInterface $archiver2,
+        ArchiverInterface $archiver3
+    ) {
+        $archiver1->getName()->willReturn('output');
+        $this->registerArchiver($archiver1);
+        $archiver2->getName()->willReturn('jobs');
+        $this->registerArchiver($archiver2);
+        $archiver3->getName()->willReturn('media');
+        $this->registerArchiver($archiver3);
+
+        $jobExecution->isRunning()->willReturn(false);
+        $archiver1->getArchives($jobExecution, true)->shouldBeCalled()->willReturn([
+            'file1.csv',
+            'file2.xlsx',
+        ]);
+        $archiver2->getArchives($jobExecution, true)->shouldBeCalled()->willReturn([]);
+        $archiver3->getArchives($jobExecution, true)->shouldBeCalled()->willReturn([
+            'files/sku/test.jpg',
+            'files/sku/image.png',
+            'file/sku/notice.pdf',
+        ]);
+
+        $this->totalArchivesCount($jobExecution)->shouldReturn(5);
     }
 }
