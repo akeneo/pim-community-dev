@@ -6,6 +6,7 @@
 
 - PIM-9766: Prevent letter usage in grid Number filters
 - PIM-9774: Fix variant axis 'metric' validation on import.
+- PIM-9789: Synchronously update product form image on change
 
 # 4.0.101 (2021-03-29)
 
