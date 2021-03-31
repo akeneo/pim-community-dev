@@ -298,10 +298,12 @@ abstract class AbstractItemMediaWriter implements
                             if (null !== $writtenFile) {
                                 $paths[] = $writtenFile->outputFilepath();
                                 $this->writtenFiles[] = $writtenFile;
+                            } else {
+                                $paths[] = $fileKey;
                             }
                         }
                         $item['values'][$attributeCode][$index]['paths'] = $paths;
-                    } else {
+                    } elseif (\is_string($value['data'])) {
                         $writtenFile = $this->checkMediaFile($value['data'], $exportDirectory);
                         if (null !== $writtenFile) {
                             $item['values'][$attributeCode][$index]['data'] = $writtenFile->outputFilepath();
