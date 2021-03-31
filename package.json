@@ -148,6 +148,7 @@
     "src/Akeneo/Pim/Automation/DataQualityInsights/front",
     "src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui",
     "src/Akeneo/UserManagement/Bundle/Resources/workspaces/user-ui",
-    "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity"
+    "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity",
+    "src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment"
   ]
 }
