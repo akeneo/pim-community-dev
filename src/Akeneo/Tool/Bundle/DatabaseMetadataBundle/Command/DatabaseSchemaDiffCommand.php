@@ -31,7 +31,7 @@ class DatabaseSchemaDiffCommand extends Command
     {
         $this
             ->setDescription("This command outputs the differences between the given database schema file and a the reference for this branch.")
-            ->addArgument('filename', InputArgument::REQUIRED, "The filename of the database structure export.")
+            ->addArgument('filename', InputArgument::OPTIONAL, "The filename of the database structure export.", IntrospectDatabaseCommand::DEFAULT_FILENAME)
             ->addOption('color', 'c', InputOption::VALUE_NONE, "Use color in output.", null)
             ;
     }
@@ -42,7 +42,7 @@ class DatabaseSchemaDiffCommand extends Command
         $this->checkFile($filename);
         $differOptions = [
             // show how many neighbor lines
-            'context' => 3,
+            'context' => 0,
             // ignore whitespace difference
             'ignoreWhitespace' => true,
         ];
