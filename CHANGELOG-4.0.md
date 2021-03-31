@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9766: Prevent letter usage in grid Number filters
+- PIM-9774: Fix variant axis 'metric' validation on import.
 
 # 4.0.101 (2021-03-29)
 

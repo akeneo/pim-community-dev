@@ -27,9 +27,11 @@ abstract class AbstractMetric implements MetricInterface
     protected $family;
 
     /**
+     * TODO master: add string type hiting for more strict data type and to handle big numbers and/or decimals
+     *
      * @param string $family
      * @param string $unit
-     * @param float  $data
+     * @param float  $data (TODO: should not be float because of precision issues)
      * @param string $baseUnit
      * @param float  $baseData
      */
@@ -87,7 +89,15 @@ abstract class AbstractMetric implements MetricInterface
      */
     public function isEqual(MetricInterface $metric)
     {
-        return $metric->getData() === $this->data && $metric->getUnit() === $this->unit;
+        if ($metric->getUnit() !== $this->unit) {
+            return false;
+        }
+
+        if (!is_string($metric->getData()) || !is_string($this->data)) {
+            return $metric->getData() === $this->data;
+        }
+
+        return 0 === bccomp($metric->getData(), $this->data, 50);
     }
 
     /**
@@ -97,7 +107,7 @@ abstract class AbstractMetric implements MetricInterface
     {
         return join(' ', array_filter([
             $this->data !== null ? sprintf('%.4F', $this->data) : null,
-            $this->unit
+            $this->unit,
         ]));
     }
 }
