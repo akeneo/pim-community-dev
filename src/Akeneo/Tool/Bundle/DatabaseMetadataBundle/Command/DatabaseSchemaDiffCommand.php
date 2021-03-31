@@ -32,6 +32,7 @@ class DatabaseSchemaDiffCommand extends Command
         $this
             ->setDescription("This command outputs the differences between the given database schema file and a the reference for this branch.")
             ->addArgument('filename', InputArgument::REQUIRED, "The filename of the database structure export.")
+            ->addOption('color', 'c', InputOption::VALUE_NONE, "Use color in output.", null)
             ;
     }
 
@@ -46,7 +47,7 @@ class DatabaseSchemaDiffCommand extends Command
             'ignoreWhitespace' => true,
         ];
         $rendererOptions = [
-            'cliColorization' => RendererConstant::CLI_COLOR_DISABLE,
+            'cliColorization' => $input->getOption('color') ? RendererConstant::CLI_COLOR_ENABLE : RendererConstant::CLI_COLOR_DISABLE,
         ];
 
         $output->writeln(DiffHelper::calculateFiles(self::DB_REFERENCE_FILE, $filename, self::DIFF_MODE, $differOptions, $rendererOptions));
@@ -54,7 +55,7 @@ class DatabaseSchemaDiffCommand extends Command
         return 0;
     }
 
-    private function checkFile(string $filename)
+    private function checkFile(string $filename): void
     {
         if (file_exists($filename) && is_readable($filename)) {
             return;
