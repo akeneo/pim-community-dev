@@ -16,7 +16,6 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
@@ -58,11 +57,29 @@ class EntityWithValuesDraftRepository extends EntityRepository implements Entity
      */
     public function findApprovableByUser(UserInterface $user, ?int $limit = null): ?array
     {
-        $qb = $this->createApprovableByUserQueryBuilder($user);
+        $idsQb = $this->createApprovableByUserQueryBuilder($user);
 
         if (null !== $limit) {
-            $qb->setMaxResults($limit);
+            $idsQb->setMaxResults($limit);
         }
+
+        /**
+         * Sorting this query with raw_values leads issues on sort buffer size when having raw values with a big size.
+         * So, we separated the initial query in 2 queries, one getting the ids of the drafts, the other one getting
+         * the proposals themselves.
+         *
+         * @see https://dev.mysql.com/doc/relnotes/mysql/8.0/en/news-8-0-20.html
+         */
+        $idsQb->select('entity_with_values_draft.id', 'entity_with_values_draft.createdAt');
+        $res = $idsQb->getQuery()->getScalarResult();
+        $entityWithValuesDraftIds = [];
+        foreach ($res as $row) {
+            $entityWithValuesDraftIds[] = $row['id'];
+        }
+
+        $qb = $this->createQueryBuilder('entity_with_values_draft');
+        $qb->where($idsQb->expr()->in('entity_with_values_draft.id', ':entity_with_values_draft_ids'));
+        $qb->setParameter('entity_with_values_draft_ids', $entityWithValuesDraftIds);
 
         return $qb->getQuery()->getResult();
     }
