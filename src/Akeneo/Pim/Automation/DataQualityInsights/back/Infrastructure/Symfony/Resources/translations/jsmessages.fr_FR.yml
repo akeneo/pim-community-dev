@@ -134,21 +134,18 @@ akeneo_data_quality_insights:
       all_missing_attributes: Tous les attributs manquants
     back_to_products: Retour au produit
   attribute_group:
-    helper_dqi_info: Le calcul du score de qualité ne prendra en compte que les attributs appartenant aux groupes d'attributs activés pour le contrôle sur la qualité des données.
     helper_dqi_link: Plus d'informations sur notre centre d'aide.
-    activation: Activation
     dqi_status: État de la qualité des données
-    activated: Activé
     disabled: Désactivé
     used_groups_helper: "Les groupes d'attributs suivants sont pris en compte dans le calcul de la qualité des données :"
-    all_groups_evaluated: Tous les groupes d'attributs de ce produit sont pris en compte pour le calcul du score de qualité. Pour obtenir un score de qualité le plus pertinent possible, <a href="{{ link }}" target="_blank">apprenez comment désactiver les groupes d'attributs dans notre centre d'aide.</a>
   product_grid:
     filter_label:
       quality_score: Score de qualité
       enrichment_quality: Qualité sur l'enrichissement
-      images_quality: Qualité sur les images
     filter_value:
       good: Bon
       to_improve: A améliorer
+      yes: true
+      no: false
 pim_title:
   akeneo_data_quality_insights_dashboard: Qualité des données
