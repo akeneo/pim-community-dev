@@ -22,7 +22,7 @@ const DeleteModal = ({children, title, onConfirm, onCancel}: DeleteModalProps) =
           {translate('pim_common.cancel')}
         </Button>
         <Button level="danger" onClick={onConfirm}>
-          {translate('pim_common.confirm')}
+          {translate('pim_common.delete')}
         </Button>
       </Modal.BottomButtons>
     </Modal>
