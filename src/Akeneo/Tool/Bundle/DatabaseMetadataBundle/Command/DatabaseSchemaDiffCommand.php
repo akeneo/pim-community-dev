@@ -50,9 +50,10 @@ class DatabaseSchemaDiffCommand extends Command
             'cliColorization' => $input->getOption('color') ? RendererConstant::CLI_COLOR_ENABLE : RendererConstant::CLI_COLOR_DISABLE,
         ];
 
-        $output->writeln(DiffHelper::calculateFiles(self::DB_REFERENCE_FILE, $filename, self::DIFF_MODE, $differOptions, $rendererOptions));
+        $lines = DiffHelper::calculateFiles(self::DB_REFERENCE_FILE, $filename, self::DIFF_MODE, $differOptions, $rendererOptions);
+        $output->writeln($lines);
 
-        return 0;
+        return strlen($lines) === 0 ? 0 : -1;
     }
 
     private function checkFile(string $filename): void
@@ -61,6 +62,6 @@ class DatabaseSchemaDiffCommand extends Command
             return;
         }
 
-        throw new \InvalidArgumentException(sprintf("Cannot read from file '%s'. The file may be missing or read permission problem.", $filename));
+        throw new \InvalidArgumentException(sprintf("Cannot read from file '%s'. The file may be missing or there may be a permission problem.", $filename));
     }
 }

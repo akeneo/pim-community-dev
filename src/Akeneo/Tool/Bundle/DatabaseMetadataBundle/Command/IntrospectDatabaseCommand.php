@@ -62,7 +62,7 @@ class IntrospectDatabaseCommand extends Command
         }
 
         foreach($this->inspector->getTableList($db_name) as $row) {
-            $line = sprintf("%s | %s | %s\n", $row['table_name'], $row['table_type'], $row['auto_increment']);
+            $line = sprintf("%s | %s\n", $row['table_name'], $row['table_type']);
 
             if (isset($filesystem)) {
                 $filesystem->appendToFile($filename, $line);

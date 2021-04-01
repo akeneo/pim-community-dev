@@ -23,13 +23,15 @@ class DatabaseInspector
         $this->db = $db;
     }
 
+    /**
+     * Fetch the list of the tables created in the given schema.
+     */
     public function getTableList(string $db_name): array
     {
         $sql = <<<"SQL"
 select
     TABLE_NAME      as  table_name,
-    TABLE_TYPE      as table_type,
-    AUTO_INCREMENT IS NOT NULL AND AUTO_INCREMENT > 0  as auto_increment
+    TABLE_TYPE      as table_type
 from information_schema.tables
 where table_schema=?
 order by table_name ASC
@@ -39,6 +41,9 @@ SQL;
         return $result->fetchAll(FetchMode::ASSOCIATIVE);
     }
 
+    /**
+     * Fetch the list of the columns of all the tables in the given schema.
+     */
     public function getColumnInfo(string $db_name): array
     {
         $sql = <<<"SQL"
@@ -58,7 +63,10 @@ SQL;
         return $result->fetchAll(FetchMode::ASSOCIATIVE);
     }
 
-    public function getTableValues(string $table, string $column): array
+    /**
+     * fetch the values stored in the given column ofn the given table. 
+     */
+    public function getTableColumnValues(string $table, string $column): array
     {
         $sql = sprintf("select %s as value from %s order by 1 asc", $column, $table);
         $result = $this->db->executeQuery($sql, []);

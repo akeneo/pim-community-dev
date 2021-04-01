@@ -97,3 +97,8 @@ ifeq ($(CI),true)
 else
 	$(PHP_RUN) vendor/bin/behat --strict -p legacy -s all ${O}
 endif
+
+.PHONY: test-database-structure
+test-database-structure: database
+	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console pimee:database:inspect -f
+	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console pimee:database:diff

@@ -105,6 +105,10 @@ jobs:
                 command: make acceptance-back
                 when: always
           - run:
+                name: Database test
+                command: make test-database-structure
+                when: always
+          - run:
                 name: Acceptance back (Connectivity Connection)
                 command: docker-compose run -u www-data --rm php vendor/bin/behat --config vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --no-interaction --format=progress --strict
                 when: always
