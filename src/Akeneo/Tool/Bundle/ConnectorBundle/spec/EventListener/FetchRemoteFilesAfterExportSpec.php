@@ -20,6 +20,7 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class FetchRemoteFilesAfterExportSpec extends ObjectBehavior
@@ -28,9 +29,10 @@ class FetchRemoteFilesAfterExportSpec extends ObjectBehavior
         JobRegistry $jobRegistry,
         VersionProviderInterface $versionProvider,
         FilesystemProvider $filesystemProvider,
-        FileFetcherInterface $fileFetcher
+        FileFetcherInterface $fileFetcher,
+        LoggerInterface $logger
     ) {
-        $this->beConstructedWith($jobRegistry, $versionProvider, $filesystemProvider, $fileFetcher);
+        $this->beConstructedWith($jobRegistry, $versionProvider, $filesystemProvider, $fileFetcher, $logger);
     }
 
     function it_is_an_event_subscriber()
@@ -160,6 +162,7 @@ class FetchRemoteFilesAfterExportSpec extends ObjectBehavior
         VersionProviderInterface $versionProvider,
         FilesystemProvider $filesystemProvider,
         FileFetcherInterface $fileFetcher,
+        LoggerInterface $logger,
         Job $job,
         JobInstance $jobInstance,
         JobExecution $jobExecution,
@@ -191,11 +194,24 @@ class FetchRemoteFilesAfterExportSpec extends ObjectBehavior
         $jobRegistry->get('job_name')->shouldBeCalled()->willReturn($job);
 
         $filesystemProvider->getFilesystem('catalogStorage')->shouldBeCalled()->willReturn($catalogFilesystem);
+
         $fileFetcher->fetch(
             $catalogFilesystem,
             'a/b/image.jpg',
             ['filePath' => '/my/export/path/files/sku1/picture', 'filename' => 'image.jpg']
         )->shouldBeCalled()->willThrow(new FileTransferException('The file could not be fetched'));
+        $logger->warning(
+            'The remote file could not be fetched into the local filesystem',
+            [
+                'key' => 'a/b/image.jpg',
+                'storage' => 'catalogStorage',
+                'destination' => '/my/export/path/files/sku1/picture/image.jpg',
+                'exception' => [
+                    'type' => FileTransferException::class,
+                    'message' => 'The file could not be fetched',
+                ],
+            ]
+        )->shouldBeCalled();
 
         $this->shouldNotThrow(\Exception::class)->during(
             'fetchRemoteFiles',

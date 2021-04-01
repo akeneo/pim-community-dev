@@ -29,5 +29,6 @@ services:
             - '@pim_catalog.version_provider'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
+            - '@logger'
         tags:
             - { name: kernel.event_subscriber }

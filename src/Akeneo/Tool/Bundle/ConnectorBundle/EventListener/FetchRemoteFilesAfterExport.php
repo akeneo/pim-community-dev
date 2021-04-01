@@ -13,6 +13,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -27,17 +28,20 @@ class FetchRemoteFilesAfterExport implements EventSubscriberInterface
     private VersionProviderInterface $versionProvider;
     private FilesystemProvider $filesystemProvider;
     private FileFetcherInterface $fileFetcher;
+    private LoggerInterface $logger;
 
     public function __construct(
         JobRegistry $jobRegistry,
         VersionProviderInterface $versionProvider,
         FilesystemProvider $filesystemProvider,
-        FileFetcherInterface $fileFetcher
+        FileFetcherInterface $fileFetcher,
+        LoggerInterface $logger
     ) {
         $this->jobRegistry = $jobRegistry;
         $this->versionProvider = $versionProvider;
         $this->filesystemProvider = $filesystemProvider;
         $this->fileFetcher = $fileFetcher;
+        $this->logger = $logger;
     }
 
     public static function getSubscribedEvents(): array
@@ -88,7 +92,19 @@ class FetchRemoteFilesAfterExport implements EventSubscriberInterface
                         ]
                     );
                 } catch (FileTransferException | \LogicException $e) {
-                    // TODO: Log error?
+                    $this->logger->warning(
+                        'The remote file could not be fetched into the local filesystem',
+                        [
+                            'key' => $writtenFile->sourceKey(),
+                            'storage' => $writtenFile->sourceStorage(),
+                            'destination' => $outputFilePath,
+                            'exception' => [
+                                'type' => \get_class($e),
+                                'message' => $e->getMessage(),
+                            ],
+                        ]
+                    );
+
                     continue;
                 }
             }
