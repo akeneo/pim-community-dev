@@ -76,40 +76,32 @@ SQL;
         return $qb->getQuery()->execute();
     }
 
-    public function searchPublicViewLabel(string $label, UserInterface $user): string
+    public function findPublicDatagridViewByLabel(string $label): ?DatagridView
     {
-        $sql = <<<SQL
-SELECT * FROM pim_datagrid_view 
-WHERE type = 'public' AND label = $label
-SQL;
+        $qb = $this->createQueryBuilder('v')
+            ->where('v.type = :type')
+            ->setParameter('type', DatagridView::TYPE_PUBLIC)
+            ->andWhere('v.label = :label')
+            ->setParameter('label', $label);
 
-        $statement = $this->getConnection()->executeQuery(
-            $sql,
-            [
-                'public_type' => DatagridView::TYPE_PUBLIC,
-                'owner_id' => $user->getId(),
-            ]
-        );
-
-        return $statement->fetch();
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
-    public function searchPrivateViewLabel(string $label, UserInterface $user): string
+    public function findPrivateDatagridViewByLabel(string $label, UserInterface $user): ?DatagridView
     {
-        $sql = <<<SQL
-SELECT * FROM pim_datagrid_view 
-WHERE type = 'private' AND label = $label
-SQL;
+        if (null === $user->getId()) {
+            return null;
+        }
 
-        $statement = $this->getConnection()->executeQuery(
-            $sql,
-            [
-                'public_type' => DatagridView::TYPE_PRIVATE,
-                'owner_id' => $user->getId(),
-            ]
-        );
+        $qb = $this->createQueryBuilder('v')
+            ->where('v.type = :type')
+            ->setParameter('type', DatagridView::TYPE_PUBLIC)
+            ->andWhere('v.owner = :alias')
+            ->setParameter('owner', $user)
+            ->andWhere('v.label = :label')
+            ->setParameter('label', $label);
 
-        return $statement->fetch();
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     private function getConnection(): Connection

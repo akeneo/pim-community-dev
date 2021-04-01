@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Oro\Bundle\PimDataGridBundle\Validator\Constraints;
 
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -20,14 +18,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class UniqueDatagridViewEntityValidator extends ConstraintValidator
 {
     private DatagridViewRepositoryInterface $datagridViewRepository;
-    private Security $security;
 
     public function __construct(
-        DatagridViewRepositoryInterface $datagridViewRepository,
-        Security $security
+        DatagridViewRepositoryInterface $datagridViewRepository
     ) {
         $this->datagridViewRepository = $datagridViewRepository;
-        $this->security = $security;
     }
 
     public function validate($entity, Constraint $constraint): void
@@ -40,13 +35,19 @@ class UniqueDatagridViewEntityValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, DatagridView::class);
         }
 
-        $isLabelUnique = false;
+        $isLabelUnique = true;
+        $datagridViewFromDb = null;
 
         if (DatagridView::TYPE_PUBLIC === $entity->getType()) {
-            $isLabelUnique = $this->isPublicViewLabelUnique();
+            $datagridViewFromDb = $this->datagridViewRepository->findPublicDatagridViewByLabel($entity->getLabel());
         } elseif(DatagridView::TYPE_PRIVATE === $entity->getType()) {
-            $user = $this->security->getUser();
-            $isLabelUnique = $this->isPrivateViewLabelUnique($user);
+            $datagridViewFromDb = $this->datagridViewRepository->findPrivateDatagridViewByLabel($entity->getLabel(), $entity->getOwner());
+        }
+
+        if (null !== $datagridViewFromDb
+            && $datagridViewFromDb->getId() !== $entity->getId()
+        ) {
+            $isLabelUnique = false;
         }
 
         if (!$isLabelUnique) {
@@ -54,19 +55,5 @@ class UniqueDatagridViewEntityValidator extends ConstraintValidator
                 ->atPath('label')
                 ->addViolation();
         }
-    }
-
-    private function isPublicViewLabelUnique(DatagridView $datagridView): bool
-    {
-        $label = $this->datagridViewRepository->searchPublicViewLabel($datagridView->getLabel());
-
-        return $label === $datagridView->getLabel();
-    }
-
-    private function isPrivateViewLabelUnique(DatagridView $datagridView): bool
-    {
-        $this->datagridViewRepository->searchPrivateViewLabel($datagridView->getLabel());
-
-        return false;
     }
 }
