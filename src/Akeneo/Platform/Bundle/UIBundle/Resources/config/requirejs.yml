@@ -84,6 +84,7 @@ config:
         pim/product-edit-form/associated-product-row-view:            pimenterpriseui/js/product/form/associated-product-row-view
         pimee/product-edit-form/meta/status-switcher:                 pimenterpriseui/js/product/form/meta/status-switcher
         pimee/product-edit-form/variant-navigation:                   pimenterpriseui/js/product/form/variant-navigation
+        pimee/product-edit-form/main-image:                           pimenterpriseui/js/product/form/main-image.ts
 
         pimee/mass-edit-form/product/publish:                         pimenterpriseui/js/mass-edit/form/product/publish
 

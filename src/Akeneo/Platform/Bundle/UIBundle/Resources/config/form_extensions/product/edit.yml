@@ -8,6 +8,11 @@ extensions:
     pim-product-edit-form-copy:
         module: pimee/product-edit-form/attributes/copy
 
+    pim-product-edit-form-main-image:
+        module: pimee/product-edit-form/main-image
+        parent: pim-product-edit-form
+        targetZone: main-image
+
     pim-product-edit-form-send-for-approval:
         module: pimee/product-edit-form/send-for-approval
         parent: pim-product-edit-form
