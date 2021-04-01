@@ -666,6 +666,7 @@ config:
     pim/product-edit-form/product-label:                     pimui/js/product/form/product-label
     pim/product-edit-form/product-completeness:              pimui/js/product/form/product-completeness
     pim/product-edit-form/total-missing-required-attributes: pimui/js/product/form/total-missing-required-attributes
+    pim/product-edit-form/main-image:                        pimui/js/product/form/main-image.ts
     pim/product-edit-form/attribute-filter:                  pimui/js/product/form/attribute-filter
     pim/product-edit-form/attribute-filter-all:              pimui/js/product/form/attribute-filter-all
     pim/product-edit-form/attribute-filter-missing-required: pimui/js/product/form/attribute-filter-missing-required
