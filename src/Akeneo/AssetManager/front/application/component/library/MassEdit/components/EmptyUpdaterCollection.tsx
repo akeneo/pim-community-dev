@@ -34,7 +34,7 @@ const EmptyUpdaterCollection = () => {
       <Body>
         {translate('pim_asset_manager.asset.mass_edit.empty_selection.body')}{' '}
         <Link
-          href="https://help.akeneo.com/pim/serenity/articles/work-on-your-assets.html/work-on-your-assets.html#bulk-edit-multiple-assets"
+          href="https://help.akeneo.com/pim/serenity/articles/work-on-your-assets.html#bulk-edit-multiple-assets"
           target="_blank"
         >
           {translate('pim_asset_manager.asset.mass_edit.empty_selection.link')}
