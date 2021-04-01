@@ -50,6 +50,9 @@ final class SqlGetCompletenessProductMasks implements GetCompletenessProductMask
     public function fromProductIdentifiers(array $productIdentifiers): array
     {
         // TODO - TIP-1212: Replace the first LEFT JOIN (to pim_catalog_family) by an INNER JOIN
+        // PIM-9783: the initial query didn't use the CTE, we filtered directly the product in the main SELECT. There
+        // was some performance issues with a big number of productIdentifier. The CTE allows to fix it (please check
+        // the issue for further information).
         $sql = <<<SQL
 WITH
 filtered_product AS (
