@@ -16,8 +16,6 @@ use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
  */
 class DatagridViewRepository extends EntityRepository implements DatagridViewRepositoryInterface
 {
-    
-
     /**
      * {@inheritdoc}
      */
@@ -76,6 +74,42 @@ SQL;
         }
 
         return $qb->getQuery()->execute();
+    }
+
+    public function searchPublicViewLabel(string $label, UserInterface $user): string
+    {
+        $sql = <<<SQL
+SELECT * FROM pim_datagrid_view 
+WHERE type = 'public' AND label = $label
+SQL;
+
+        $statement = $this->getConnection()->executeQuery(
+            $sql,
+            [
+                'public_type' => DatagridView::TYPE_PUBLIC,
+                'owner_id' => $user->getId(),
+            ]
+        );
+
+        return $statement->fetch();
+    }
+
+    public function searchPrivateViewLabel(string $label, UserInterface $user): string
+    {
+        $sql = <<<SQL
+SELECT * FROM pim_datagrid_view 
+WHERE type = 'private' AND label = $label
+SQL;
+
+        $statement = $this->getConnection()->executeQuery(
+            $sql,
+            [
+                'public_type' => DatagridView::TYPE_PRIVATE,
+                'owner_id' => $user->getId(),
+            ]
+        );
+
+        return $statement->fetch();
     }
 
     private function getConnection(): Connection

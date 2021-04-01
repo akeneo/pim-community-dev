@@ -58,14 +58,15 @@ class UniqueDatagridViewEntityValidator extends ConstraintValidator
 
     private function isPublicViewLabelUnique(DatagridView $datagridView): bool
     {
-        $this->datagridViewRepository->searchPublicViewLabel($datagridView->getLabel());
-//        SELECT * FROM datagridView WHERE type = 'public' AND label = $datagridView->getLabel();
-        return false;
+        $label = $this->datagridViewRepository->searchPublicViewLabel($datagridView->getLabel());
+
+        return $label === $datagridView->getLabel();
     }
 
-    private function isPrivateViewLabelUnique(DatagridView $datagridView, UserInterface $user): bool
+    private function isPrivateViewLabelUnique(DatagridView $datagridView): bool
     {
-//        SELECT * FROM datagridView WHERE type = 'private' AND label = $datagridView->getLabel() AND owner = $user;
+        $this->datagridViewRepository->searchPrivateViewLabel($datagridView->getLabel());
+
         return false;
     }
 }
