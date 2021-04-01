@@ -38,7 +38,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
     public function test_it_returns_the_correct_amount_of_logs_by_page()
     {
-        $timestamp = $this->clock->now()->getTimestamp() - 10;
+        $timestamp = $this->clock->now()->getTimestamp();
 
         $this->generateLogs(
             function () use ($timestamp) {
@@ -61,7 +61,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
     public function test_it_returns_the_total_amount_of_notice_and_info_logs()
     {
-        $timestamp = $this->clock->now()->getTimestamp() - 10;
+        $timestamp = $this->clock->now()->getTimestamp();
 
         $this->generateLogs(
             function ($index) use ($timestamp) {
@@ -91,10 +91,10 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
     public function test_it_returns_the_total_amount_of_logs_filtered_by_level()
     {
-        $timestamp = $this->clock->now()->getTimestamp() - 10;
+        $timestamp = $this->clock->now()->getTimestamp();
 
         $this->generateLogs(
-            function ($index) use ($timestamp) {
+            function () use ($timestamp) {
                 return [
                     'timestamp' => $timestamp,
                     'level' => EventsApiDebugLogLevels::NOTICE,
@@ -173,38 +173,31 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $this->insertLogs(
             [
                 [
-                    'timestamp' => $timestampNow - 5,
+                    'timestamp' => $timestampNow - 1,
                     'level' => EventsApiDebugLogLevels::NOTICE,
                     'message' => 'Foo bar',
-                    'connection_code' => 'a_connection_code',
-                    'context' => [],
-                ],
-                [
-                    'timestamp' => $timestampNow - 1,
-                    'level' => EventsApiDebugLogLevels::WARNING,
-                    'message' => 'Foo bar',
-                    'connection_code' => 'a_connection_code',
+                    'connection_code' => null,
                     'context' => [],
                 ],
                 [
                     'timestamp' => $timestampNow - 3,
-                    'level' => EventsApiDebugLogLevels::WARNING,
+                    'level' => EventsApiDebugLogLevels::NOTICE,
                     'message' => 'Foo bar',
-                    'connection_code' => 'a_connection_code',
-                    'context' => [],
-                ],
-                [
-                    'timestamp' => $timestampNow - 4,
-                    'level' => EventsApiDebugLogLevels::ERROR,
-                    'message' => 'Foo bar',
-                    'connection_code' => 'a_connection_code',
+                    'connection_code' => null,
                     'context' => [],
                 ],
                 [
                     'timestamp' => $timestampNow - 2,
-                    'level' => EventsApiDebugLogLevels::NOTICE,
+                    'level' => EventsApiDebugLogLevels::WARNING,
                     'message' => 'Foo bar',
-                    'connection_code' => 'a_connection_code',
+                    'connection_code' => null,
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestampNow - 4,
+                    'level' => EventsApiDebugLogLevels::WARNING,
+                    'message' => 'Foo bar',
+                    'connection_code' => null,
                     'context' => [],
                 ],
             ]
@@ -216,12 +209,11 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         Assert::assertEquals($timestampNow - 2, $logs[1]['timestamp']);
         Assert::assertEquals($timestampNow - 3, $logs[2]['timestamp']);
         Assert::assertEquals($timestampNow - 4, $logs[3]['timestamp']);
-        Assert::assertEquals($timestampNow - 5, $logs[4]['timestamp']);
     }
 
     public function test_it_returns_logs_only_for_the_specified_connection()
     {
-        $timestamp = $this->clock->now()->getTimestamp() - 10;
+        $timestamp = $this->clock->now()->getTimestamp();
 
         $this->insertLogs(
             [
@@ -305,31 +297,10 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
     public function test_it_filters_on_log_level()
     {
-        $timestamp = $this->clock->now()->getTimestamp() - 10;
+        $timestamp = $this->clock->now()->getTimestamp();
 
         $this->insertLogs(
             [
-                [
-                    'timestamp' => $timestamp,
-                    'level' => EventsApiDebugLogLevels::INFO,
-                    'message' => 'Foo bar',
-                    'connection_code' => 'a_connection_code',
-                    'context' => [],
-                ],
-                [
-                    'timestamp' => $timestamp,
-                    'level' => EventsApiDebugLogLevels::INFO,
-                    'message' => 'Foo bar',
-                    'connection_code' => 'whatever',
-                    'context' => [],
-                ],
-                [
-                    'timestamp' => $timestamp,
-                    'level' => EventsApiDebugLogLevels::ERROR,
-                    'message' => 'Foo bar',
-                    'connection_code' => null,
-                    'context' => [],
-                ],
                 [
                     'timestamp' => $timestamp,
                     'level' => EventsApiDebugLogLevels::NOTICE,
@@ -339,124 +310,70 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
                 ],
                 [
                     'timestamp' => $timestamp,
-                    'level' => EventsApiDebugLogLevels::WARNING,
+                    'level' => EventsApiDebugLogLevels::INFO,
                     'message' => 'Foo bar',
-                    'connection_code' => 'a_connection_code',
+                    'connection_code' => null,
                     'context' => [],
                 ],
-            ]
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::WARNING,
+                    'message' => 'Foo bar',
+                    'connection_code' => null,
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestamp,
+                    'level' => EventsApiDebugLogLevels::ERROR,
+                    'message' => 'Foo bar',
+                    'connection_code' => null,
+                    'context' => [],
+                ],
+            ],
         );
 
         $filters = [
-            'levels' => [EventsApiDebugLogLevels::NOTICE, EventsApiDebugLogLevels::INFO]
+            'levels' => [EventsApiDebugLogLevels::NOTICE, EventsApiDebugLogLevels::WARNING],
         ];
 
         $result = $this->query->execute('a_connection_code', null, $filters);
-
-        usort(
-            $result['results'],
-            function ($a, $b) {
-                return strcmp($a['level'], $b['level']);
-            }
-        );
 
         Assert::assertEquals(2, $result['total']);
         Assert::assertCount(2, $result['results']);
-        Assert::assertEquals(EventsApiDebugLogLevels::INFO, $result['results'][0]['level']);
-        Assert::assertEquals(EventsApiDebugLogLevels::NOTICE, $result['results'][1]['level']);
-    }
 
-    public function test_it_does_not_filter()
-    {
-        $timestamp = $this->clock->now()->getTimestamp() - 10;
-
-        $this->insertLogs(
-            [
-                [
-                    'timestamp' => $timestamp,
-                    'level' => EventsApiDebugLogLevels::WARNING,
-                    'message' => 'Foo bar',
-                    'connection_code' => 'a_connection_code',
-                    'context' => [],
-                ],
-                [
-                    'timestamp' => $timestamp,
-                    'level' => EventsApiDebugLogLevels::INFO,
-                    'message' => 'Foo bar',
-                    'connection_code' => null,
-                    'context' => [],
-                ],
-                [
-                    'timestamp' => $timestamp,
-                    'level' => EventsApiDebugLogLevels::ERROR,
-                    'message' => 'Foo bar',
-                    'connection_code' => null,
-                    'context' => [],
-                ],
-                [
-                    'timestamp' => $timestamp,
-                    'level' => EventsApiDebugLogLevels::NOTICE,
-                    'message' => 'Foo bar',
-                    'connection_code' => 'a_connection_code',
-                    'context' => [],
-                ],
-                [
-                    'timestamp' => $timestamp,
-                    'level' => EventsApiDebugLogLevels::NOTICE,
-                    'message' => 'Foo bar',
-                    'connection_code' => 'a_connection_code',
-                    'context' => [],
-                ],
-            ]
-        );
-
-        $filters = [
-            'levels' => [EventsApiDebugLogLevels::NOTICE, EventsApiDebugLogLevels::INFO, EventsApiDebugLogLevels::WARNING, EventsApiDebugLogLevels::ERROR]
+        $expectedLevels = [
+            EventsApiDebugLogLevels::NOTICE,
+            EventsApiDebugLogLevels::WARNING,
         ];
-
-        $result = $this->query->execute('a_connection_code', null, $filters);
-
-        usort(
-            $result['results'],
-            function ($a, $b) {
-                return strcmp($a['level'], $b['level']);
-            }
-        );
-
-        Assert::assertEquals(5, $result['total']);
-        Assert::assertCount(5, $result['results']);
+        foreach ($result['results'] as $log) {
+            Assert::assertContains($log['level'], $expectedLevels);
+        }
     }
 
     public function test_it_filters_on_log_timestamp_from()
     {
-        $timestampFrom = $this->clock->now()->getTimestamp();
+        $timestamp = $this->clock->now()->getTimestamp();
+        $timestampFrom = $timestamp - 50;
 
         $this->insertLogs(
             [
                 [
-                    'timestamp' => $timestampFrom + 20,
-                    'level' => EventsApiDebugLogLevels::WARNING,
-                    'message' => 'Foo bar',
-                    'connection_code' => 'a_connection_code',
-                    'context' => [],
-                ],
-                [
-                    'timestamp' => $timestampFrom,
-                    'level' => EventsApiDebugLogLevels::NOTICE,
-                    'message' => 'Foo bar',
-                    'connection_code' => 'whatever',
-                    'context' => [],
-                ],
-                [
-                    'timestamp' => $timestampFrom,
+                    'timestamp' => $timestamp - 10,
                     'level' => EventsApiDebugLogLevels::INFO,
                     'message' => 'Foo bar',
-                    'connection_code' => 'a_connection_code',
+                    'connection_code' => null,
                     'context' => [],
                 ],
                 [
-                    'timestamp' => $timestampFrom - 20,
-                    'level' => EventsApiDebugLogLevels::ERROR,
+                    'timestamp' => $timestamp - 50,
+                    'level' => EventsApiDebugLogLevels::INFO,
+                    'message' => 'Foo bar',
+                    'connection_code' => null,
+                    'context' => [],
+                ],
+                [
+                    'timestamp' => $timestamp - 100,
+                    'level' => EventsApiDebugLogLevels::INFO,
                     'message' => 'Foo bar',
                     'connection_code' => null,
                     'context' => [],
@@ -470,54 +387,38 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         $result = $this->query->execute('a_connection_code', null, $filters);
 
-        usort(
-            $result['results'],
-            function ($a, $b) {
-                if ($a['timestamp'] === $b['timestamp']) {
-                    return 0;
-                }
-
-                return ($a['timestamp'] < $b['timestamp']) ? -1 : 1;
-            }
-        );
-
         Assert::assertEquals(2, $result['total']);
         Assert::assertCount(2, $result['results']);
-        Assert::assertEquals($timestampFrom, $result['results'][0]['timestamp']);
-        Assert::assertEquals(EventsApiDebugLogLevels::INFO, $result['results'][0]['level']);
-        Assert::assertEquals($timestampFrom + 20, $result['results'][1]['timestamp']);
+
+        foreach ($result['results'] as $log) {
+            Assert::assertGreaterThanOrEqual($timestampFrom, $log['timestamp']);
+        }
     }
 
     public function test_it_filters_on_log_timestamp_to()
     {
-        $timestampTo = $this->clock->now()->getTimestamp();
+        $timestamp = $this->clock->now()->getTimestamp();
+        $timestampTo = $timestamp - 50;
 
         $this->insertLogs(
             [
                 [
-                    'timestamp' => $timestampTo + 20,
-                    'level' => EventsApiDebugLogLevels::WARNING,
-                    'message' => 'Foo bar',
-                    'connection_code' => 'a_connection_code',
-                    'context' => [],
-                ],
-                [
-                    'timestamp' => $timestampTo,
+                    'timestamp' => $timestamp - 10,
                     'level' => EventsApiDebugLogLevels::INFO,
                     'message' => 'Foo bar',
                     'connection_code' => null,
                     'context' => [],
                 ],
                 [
-                    'timestamp' => $timestampTo,
-                    'level' => EventsApiDebugLogLevels::NOTICE,
+                    'timestamp' => $timestamp - 50,
+                    'level' => EventsApiDebugLogLevels::INFO,
                     'message' => 'Foo bar',
-                    'connection_code' => 'whatever',
+                    'connection_code' => null,
                     'context' => [],
                 ],
                 [
-                    'timestamp' => $timestampTo - 20,
-                    'level' => EventsApiDebugLogLevels::ERROR,
+                    'timestamp' => $timestamp - 100,
+                    'level' => EventsApiDebugLogLevels::INFO,
                     'message' => 'Foo bar',
                     'connection_code' => null,
                     'context' => [],
@@ -531,22 +432,12 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         $result = $this->query->execute('a_connection_code', null, $filters);
 
-        usort(
-            $result['results'],
-            function ($a, $b) {
-                if ($a['timestamp'] === $b['timestamp']) {
-                    return 0;
-                }
-
-                return ($a['timestamp'] < $b['timestamp']) ? -1 : 1;
-            }
-        );
-
         Assert::assertEquals(2, $result['total']);
         Assert::assertCount(2, $result['results']);
-        Assert::assertEquals($timestampTo - 20, $result['results'][0]['timestamp']);
-        Assert::assertEquals($timestampTo, $result['results'][1]['timestamp']);
-        Assert::assertEquals(EventsApiDebugLogLevels::INFO, $result['results'][1]['level']);
+
+        foreach ($result['results'] as $log) {
+            Assert::assertLessThanOrEqual($timestampTo, $log['timestamp']);
+        }
     }
 
     public function test_it_searches_a_pattern_on_message()
