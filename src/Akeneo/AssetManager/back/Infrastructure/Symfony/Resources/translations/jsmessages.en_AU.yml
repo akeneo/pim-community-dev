@@ -393,7 +393,6 @@ pim_asset_manager:
         fail: An error occurred during the deletion of all this asset family's assets
       mass_delete:
         success: The bulk action "Mass delete" has been launched. You will be notified when it is completed.
-        fail: "Error occured during mass delete job launching: {{ error }}"
       execute_naming_convention:
         success: Naming convention successfully executed
         fail: An error occurred during the execution of the naming convention
