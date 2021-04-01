@@ -78,6 +78,52 @@ class SqlFindSearchableAssetsTest extends SqlIntegrationTestCase
         ], $searchableAsset->values);
     }
 
+
+    /**
+     * @test
+     */
+    public function it_returns_empty_array_if_it_does_not_find_by_asset_identifiers()
+    {
+        $searchableAssets = $this->findSearchableAssets->byAssetIdentifiers([AssetIdentifier::fromString('wrong_identifier')]);
+        Assert::assertEquals(0, iterator_count($searchableAssets));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_searchable_asset_items_by_asset_identifiers()
+    {
+        $searchableAssets = $this->findSearchableAssets->byAssetIdentifiers([
+            AssetIdentifier::fromString('stark_designer_fingerprint')
+        ]);
+
+        $labelIdentifier = $this->getAttributeAsLabelIdentifier('designer');
+        $searchableAssets = iterator_to_array($searchableAssets);
+        Assert::assertCount(1, $searchableAssets);
+        $searchableAsset = current($searchableAssets);
+        Assert::assertEquals('stark_designer_fingerprint', $searchableAsset->identifier);
+        Assert::assertEquals('stark', $searchableAsset->code);
+        Assert::assertEquals('designer', $searchableAsset->assetFamilyIdentifier);
+        Assert::assertSame(['fr_FR' => 'Philippe Starck'], $searchableAsset->labels);
+        Assert::assertSame(
+            [
+                'name'                      => [
+                    'data'      => 'Philippe stark',
+                    'locale'    => null,
+                    'channel'   => null,
+                    'attribute' => 'name',
+                ],
+                $labelIdentifier . '_fr_FR' => [
+                    'data'      => 'Philippe Starck',
+                    'locale'    => 'fr_FR',
+                    'channel'   => null,
+                    'attribute' => $labelIdentifier,
+                ],
+            ],
+            $searchableAsset->values
+        );
+    }
+
     /**
      * @test
      */

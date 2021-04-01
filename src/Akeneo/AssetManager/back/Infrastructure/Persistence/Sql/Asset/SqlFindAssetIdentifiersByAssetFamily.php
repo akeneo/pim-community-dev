@@ -22,6 +22,8 @@ use Doctrine\DBAL\Types\Types;
 
 class SqlFindAssetIdentifiersByAssetFamily implements FindAssetIdentifiersByAssetFamilyInterface
 {
+    private const BATCH_SIZE = 1000;
+
     /** @var Connection */
     private $connection;
 
@@ -32,16 +34,45 @@ class SqlFindAssetIdentifiersByAssetFamily implements FindAssetIdentifiersByAsse
 
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier): \Iterator
     {
-        $statement = $this->connection->executeQuery(
-            'SELECT identifier FROM akeneo_asset_manager_asset WHERE asset_family_identifier = :assetFamilyIdentifier',
-            ['assetFamilyIdentifier' => (string)$assetFamilyIdentifier]
-        );
+        $searchAfterIdentifier = null;
 
-        $platform = $this->connection->getDatabasePlatform();
-        while (false !== $identifier = $statement->fetchColumn()) {
-            $stringIdentifier = Type::getType(Types::STRING)->convertToPHPValue($identifier, $platform);
+        $query = <<<SQL
+           SELECT identifier
+           FROM akeneo_asset_manager_asset
+           WHERE asset_family_identifier = :asset_family_identifier
+           %s
+           ORDER BY identifier
+           LIMIT :search_after_limit;
+SQL;
 
-            yield AssetIdentifier::fromString($stringIdentifier);
+        while (true) {
+            $sql = $searchAfterIdentifier === null ?
+                sprintf($query, '') :
+                sprintf($query, 'AND identifier > :search_after_identifier');
+
+            $statement = $this->connection->executeQuery(
+                $sql,
+                [
+                    'asset_family_identifier' => (string) $assetFamilyIdentifier,
+                    'search_after_identifier' => $searchAfterIdentifier,
+                    'search_after_limit' => self::BATCH_SIZE
+                ],
+                [
+                    'search_after_limit' => \PDO::PARAM_INT
+                ]
+            );
+
+            if ($statement->rowCount() === 0) {
+                return;
+            }
+
+            $platform = $this->connection->getDatabasePlatform();
+            while (false !== $identifier = $statement->fetchColumn()) {
+                $stringIdentifier = Type::getType(Types::STRING)->convertToPHPValue($identifier, $platform);
+
+                yield AssetIdentifier::fromString($stringIdentifier);
+                $searchAfterIdentifier = $identifier;
+            }
         }
     }
 }

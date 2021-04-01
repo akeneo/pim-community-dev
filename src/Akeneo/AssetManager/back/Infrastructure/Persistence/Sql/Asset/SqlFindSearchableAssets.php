@@ -46,6 +46,34 @@ SQL;
         );
     }
 
+    public function byAssetIdentifiers(array $assetIdentifiers): \Iterator
+    {
+        $sqlQuery = <<<SQL
+        SELECT asset.identifier, asset.asset_family_identifier, asset.code, asset.value_collection, asset_family.attribute_as_label
+        FROM akeneo_asset_manager_asset asset
+        INNER JOIN akeneo_asset_manager_asset_family asset_family
+            ON asset_family.identifier = asset.asset_family_identifier
+        WHERE asset.identifier IN (:asset_identifiers)
+SQL;
+
+        $statement = $this->connection->executeQuery(
+            $sqlQuery,
+            ['asset_identifiers' => $assetIdentifiers],
+            ['asset_identifiers' => Connection::PARAM_STR_ARRAY]
+        );
+
+        while (false !== $result = $statement->fetch(\PDO::FETCH_ASSOC)) {
+            yield $this->hydrateAssetToIndex(
+                $result['identifier'],
+                $result['asset_family_identifier'],
+                $result['code'],
+                ValuesDecoder::decode($result['value_collection']),
+                $result['attribute_as_label']
+            );
+        }
+    }
+
+    /** @TODO pull up remove this function in master */
     public function byAssetFamilyIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): \Iterator
     {
         $sqlQuery = <<<SQL

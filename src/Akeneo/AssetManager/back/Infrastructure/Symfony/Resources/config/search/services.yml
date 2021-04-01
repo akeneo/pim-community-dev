@@ -25,6 +25,7 @@ services:
             - '@akeneo_assetmanager.client.asset'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_normalizer'
             - '%akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer.batch_size%'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family'
 
     # Normalizers
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset_normalizer:

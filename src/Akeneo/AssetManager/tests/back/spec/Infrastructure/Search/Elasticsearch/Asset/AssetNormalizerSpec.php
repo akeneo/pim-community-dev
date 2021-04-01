@@ -27,7 +27,6 @@ class AssetNormalizerSpec extends ObjectBehavior
         FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
         FindActivatedLocalesInterface $findActivatedLocales
     ) {
-        $findActivatedLocales->findAll()->willReturn(['en_US', 'fr_FR', 'de_DE']);
         $this->beConstructedWith(
             $findValueKeysToIndexForAllChannelsAndLocales,
             $findSearchableAssets,
@@ -44,7 +43,8 @@ class AssetNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_searchable_asset_by_asset_identifier(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableAssets $findSearchableAssets,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        FindActivatedLocalesInterface $findActivatedLocales
     ) {
         $assetIdentifier = AssetIdentifier::fromString('stark');
         $stark = new SearchableAssetItem();
@@ -59,11 +59,15 @@ class AssetNormalizerSpec extends ObjectBehavior
             'description_mobile_en_US' => [
                 'data' => 'Bio',
             ],
+            'tags' => [
+                'data' => ['industrial', 'street furniture']
+            ]
         ];
         $findSearchableAssets
             ->byAssetIdentifier($assetIdentifier)
             ->willReturn($stark);
 
+        $findActivatedLocales->findAll()->shouldBeCalledOnce()->willReturn(['en_US', 'fr_FR', 'de_DE']);
         $findValueKeysToIndexForAllChannelsAndLocales->find(Argument::type(AssetFamilyIdentifier::class))
             ->willReturn(
                 [
@@ -80,12 +84,16 @@ class AssetNormalizerSpec extends ObjectBehavior
                 AssetFamilyIdentifier::fromString($stark->assetFamilyIdentifier),
                 ['option', 'option_collection']
             )
-            ->willReturn([$stark->assetFamilyIdentifier]);
+            ->willReturn(['tags']);
 
         $normalizedAsset = $this->normalizeAsset($assetIdentifier);
         $normalizedAsset['identifier']->shouldBeEqualTo('designer_stark_fingerprint');
         $normalizedAsset['code']->shouldBeEqualTo('stark');
         $normalizedAsset['asset_family_code']->shouldBeEqualTo('designer');
+        $normalizedAsset['asset_family_code']->shouldBeEqualTo('designer');
+        $normalizedAsset['values']->shouldBeEqualTo([
+            'tags' => ['industrial', 'street furniture'],
+        ]);
         $normalizedAsset['asset_full_text_search']->shouldBeEqualTo([
                 'ecommerce' => [
                     'fr_FR' => "stark Bio",
@@ -104,17 +112,25 @@ class AssetNormalizerSpec extends ObjectBehavior
         $normalizedAsset['complete_value_keys']->shouldBeEqualTo([
                 'name'                     => true,
                 'description_mobile_en_US' => true,
+                'tags' => true,
             ]
         );
         $normalizedAsset['updated_at']->shouldBeInt();
     }
 
-    function it_normalizes_a_searchable_assets_by_asset_family(
+    function it_normalizes_a_searchable_assets_by_asset_identifiers(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableAssets $findSearchableAssets,
+        FindActivatedLocalesInterface $findActivatedLocales,
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
         \Iterator $searchableAssetItemIterator
     ) {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetIdentifiers = [
+            AssetIdentifier::fromString('stark'),
+            AssetIdentifier::fromString('coco')
+        ];
+
         $stark = new SearchableAssetItem();
         $stark->identifier = 'designer_stark_fingerprint';
         $stark->assetFamilyIdentifier = 'designer';
@@ -126,6 +142,9 @@ class AssetNormalizerSpec extends ObjectBehavior
             ],
             'description_mobile_en_US' => [
                 'data' => 'Bio',
+            ],
+            'tags' => [
+                'data' => ['industrial', 'street furniture']
             ],
         ];
 
@@ -141,14 +160,21 @@ class AssetNormalizerSpec extends ObjectBehavior
             'description_mobile_en_US' => [
                 'data' => 'bio',
             ],
+            'tags' => [
+                'data' => ['fashion', 'fragrance']
+            ],
         ];
+
+        $findActivatedLocales->findAll()->shouldBeCalledOnce()->willReturn(['en_US', 'fr_FR', 'de_DE']);
         $findSearchableAssets
-            ->byAssetFamilyIdentifier($assetFamilyIdentifier)
+            ->byAssetIdentifiers($assetIdentifiers)
             ->willReturn($searchableAssetItemIterator);
         $searchableAssetItemIterator->valid()->willReturn(true, true, false);
+        $searchableAssetItemIterator->rewind()->shouldBeCalled();
+        $searchableAssetItemIterator->next()->shouldBeCalled();
         $searchableAssetItemIterator->current()->willReturn($stark, $coco);
 
-        $findValueKeysToIndexForAllChannelsAndLocales->find(Argument::type(AssetFamilyIdentifier::class))
+        $findValueKeysToIndexForAllChannelsAndLocales->find($assetFamilyIdentifier)
             ->willReturn(
                 [
                     'ecommerce' => [
@@ -160,6 +186,19 @@ class AssetNormalizerSpec extends ObjectBehavior
                 ]
             );
 
-        $this->normalizeAssetsByAssetFamily($assetFamilyIdentifier);
+        $findValueKeysByAttributeType
+            ->find(
+                $assetFamilyIdentifier,
+                ['option', 'option_collection']
+            )
+            ->willReturn(['tags']);
+
+        $normalizedAssets = $this->normalizeAssets($assetFamilyIdentifier, $assetIdentifiers);
+        $normalizedAssets[0]['identifier']->shouldBeEqualTo('designer_stark_fingerprint');
+        $normalizedAssets[0]['code']->shouldBeEqualTo('stark');
+        $normalizedAssets[0]['asset_family_code']->shouldBeEqualTo('designer');
+        $normalizedAssets[1]['identifier']->shouldBeEqualTo('designer_coco_fingerprint');
+        $normalizedAssets[1]['code']->shouldBeEqualTo('coco');
+        $normalizedAssets[1]['asset_family_code']->shouldBeEqualTo('designer');
     }
 }
