@@ -1,6 +1,6 @@
-import {formatProductCompleteness} from '../../../../../Resources/public/js/product/completeness/formatProductCompleteness';
+import {formatProductCompleteness} from "../../../../src";
 
-test('it formats product completeness', () => {
+test('it formats a list of product completeness', () => {
   const rawCompleteness = [
     {
       channel: 'ecommerce',
@@ -71,19 +71,19 @@ test('it formats product completeness', () => {
       },
     },
   ];
-  const formattedCompleteness = formatProductCompleteness(rawCompleteness, 'en_US');
+  const formattedCompletenessList = formatProductCompleteness(rawCompleteness, 'en_US');
 
-  expect(formattedCompleteness).toEqual({
+  expect(formattedCompletenessList).toEqual({
     Ecommerce: {
       channelRatio: 50,
-      locales: {
+      localesRatios: {
         'English (United States)': 70,
         'French (France)': 40,
       },
     },
     Print: {
       channelRatio: 58,
-      locales: {
+      localesRatios: {
         'English (United States)': 75,
         'French (France)': 50,
       },
