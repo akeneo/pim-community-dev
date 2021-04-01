@@ -96,7 +96,7 @@ SQL;
         $qb = $this->createQueryBuilder('v')
             ->where('v.type = :type')
             ->setParameter('type', DatagridView::TYPE_PUBLIC)
-            ->andWhere('v.owner = :alias')
+            ->andWhere('v.owner = :owner')
             ->setParameter('owner', $user)
             ->andWhere('v.label = :label')
             ->setParameter('label', $label);
