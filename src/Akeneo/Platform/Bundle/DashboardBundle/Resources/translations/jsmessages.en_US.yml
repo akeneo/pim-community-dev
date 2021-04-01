@@ -1,5 +1,5 @@
 pim_dashboard:
-    title: Activity Dashboard
+    title: Activity dashboard
     greetings: Hello {{ name }}!
     welcome_sentence:
         message1: Keep up the great work.
