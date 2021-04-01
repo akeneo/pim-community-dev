@@ -4,7 +4,6 @@ parameters:
     pim_connector.factory.zip_filesystem.class:                   Akeneo\Tool\Component\Connector\Archiver\ZipFilesystemFactory
     pim_connector.archiver.file_reader_archiver.class:            Akeneo\Tool\Component\Connector\Archiver\FileReaderArchiver
     pim_connector.archiver.file_writer_archiver.class:            Akeneo\Tool\Component\Connector\Archiver\FileWriterArchiver
-    pim_connector.archiver.archivable_file_writer_archiver.class: Akeneo\Tool\Component\Connector\Archiver\ArchivableFileWriterArchiver
 
 services:
     pim_connector.event_listener.archivist:

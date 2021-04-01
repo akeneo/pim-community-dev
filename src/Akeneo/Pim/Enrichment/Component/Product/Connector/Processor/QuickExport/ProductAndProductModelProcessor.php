@@ -6,7 +6,6 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\FilterValues;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AbstractProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -211,22 +210,5 @@ class ProductAndProductModelProcessor extends AbstractProcessor
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);
-    }
-
-    /**
-     * Filter values to keep only those that are defined by the context.
-     *
-     * @param WriteValueCollection $values
-     * @param array                    $selectedAttributes
-     *
-     * @return WriteValueCollection
-     */
-    protected function filterValues(WriteValueCollection $values, array $selectedAttributes)
-    {
-        return $values->filter(function ($productValue) use ($selectedAttributes) {
-            $attributeCode = $productValue->getAttributeCode();
-
-            return in_array($attributeCode, $selectedAttributes);
-        });
     }
 }

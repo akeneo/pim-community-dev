@@ -1,7 +1,6 @@
 #TODO: move this file in the Platform
 parameters:
     pim_catalog.version.class: Akeneo\Platform\CommunityVersion
-    env(PIM_EDITION): ~
 
 services:
     pim_catalog.version_provider:
@@ -9,4 +8,3 @@ services:
         public: true
         arguments:
             - '%pim_catalog.version.class%'
-            - '%env(PIM_EDITION)%'

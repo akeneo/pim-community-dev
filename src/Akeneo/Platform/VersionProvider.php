@@ -17,9 +17,9 @@ class VersionProvider implements VersionProviderInterface
     private string $version;
     private string $codeName;
 
-    public function __construct(string $versionClass, ?string $edition = null)
+    public function __construct(string $versionClass)
     {
-        $this->edition = PimEdition::fromString($edition ?? constant(sprintf('%s::EDITION', $versionClass)));
+        $this->edition = PimEdition::fromString(constant(sprintf('%s::EDITION', $versionClass)));
         $this->version = constant(sprintf('%s::VERSION', $versionClass));
         $this->codeName = constant(sprintf('%s::VERSION_CODENAME', $versionClass));
     }

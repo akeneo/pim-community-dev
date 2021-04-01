@@ -14,6 +14,7 @@ use Akeneo\Tool\Component\Batch\Query\SqlUpdateJobExecutionStatus;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractItemMediaWriter;
+use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use League\Flysystem\FilesystemInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -105,12 +106,14 @@ class JobTrackerController extends Controller
             throw new AccessDeniedException();
         }
 
+        $zipArchiveName = $this->getZipArchiveName($jobExecution);
+
         $options = new Archive();
         $options->setContentType('application/octet-stream');
         // this is needed to prevent issues with truncated zip files
         $options->setZeroHeader(true);
         $options->setComment('Generated zip archive');
-        $zip = new ZipStream($this->getZipArchiveName($jobExecution), $options);
+        $zip = new ZipStream($zipArchiveName, $options);
 
         return new StreamedResponse(
             function () use ($zip, $jobExecution) {
@@ -127,7 +130,7 @@ class JobTrackerController extends Controller
             200,
             [
                 'Content-Type' => 'application/octet-stream',
-                'Content-Disposition' => \sprintf('attachment; filename="%s"', $this->getZipArchiveName($jobExecution)),
+                'Content-Disposition' => \sprintf('attachment; filename="%s"', $zipArchiveName),
             ]
         );
     }
@@ -169,19 +172,16 @@ class JobTrackerController extends Controller
     private function getZipArchiveName(JobExecution $jobExecution): string
     {
         $jobInstance = $jobExecution->getJobInstance();
-        /** @var Job $job */
         $job = $this->jobRegistry->get($jobInstance->getJobName());
         foreach ($job->getSteps() as $step) {
             if ($step instanceof ItemStep) {
                 $writer = $step->getWriter();
-                if ($writer instanceof AbstractFileWriter || $writer instanceof AbstractItemMediaWriter) {
+                if ($writer instanceof ArchivableWriterInterface) {
                     foreach ($jobExecution->getStepExecutions() as $stepExecution) {
                         if ($stepExecution->getStepName() === $step->getName()) {
                             $step->getWriter()->setStepExecution($stepExecution);
 
-                            return \sprintf(
-                                \sprintf('%s.zip', pathinfo($step->getWriter()->getPath(), PATHINFO_FILENAME))
-                            );
+                            return \sprintf('%s.zip', pathinfo($step->getWriter()->getPath(), PATHINFO_FILENAME));
                         }
                     }
                 }
