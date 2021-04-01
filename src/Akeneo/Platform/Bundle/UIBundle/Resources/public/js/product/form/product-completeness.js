@@ -15,7 +15,8 @@ define([
   'pim/i18n',
   'pim/user-context',
   'pim/template/product/form/product-completeness',
-], function (_, __, router, BaseForm, i18n, UserContext, template) {
+  '@akeneo-pim-community/enrichment'
+], function (_, __, router, BaseForm, i18n, UserContext, template, {ProductCurrentCompleteness, formatCurrentCompleteness}) {
   return BaseForm.extend({
     className: 'AknDropdown AknButtonList-item',
     template: _.template(template),
@@ -81,21 +82,26 @@ define([
 
       const ratio = this.getCurrentRatio(options);
       if (null !== ratio) {
-        const currentCompleteness = this.getCurrentCompletenesses(options.scope);
-        this.$el
-          .append(
-            this.template({
-              __: __,
-              label: __('pim_enrich.entity.product.module.completeness.complete'),
-              ratio: ratio,
-              completenesses: currentCompleteness,
-              badgeClass: this.getBadgeClass(options),
-              currentLocale: options.locale,
-              missingValues: 'pim_enrich.entity.product.module.completeness.missing_values',
-              i18n: i18n,
-            })
-          )
-          .show();
+        const currentLocale = options.locale;
+        const rawCurrentCompleteness = this.getCurrentCompletenesses(options.scope);
+        const currentCompleteness = formatCurrentCompleteness(rawCurrentCompleteness, currentLocale);
+
+        this.renderReact(ProductCurrentCompleteness, {currentCompleteness}, this.el);
+
+        // this.$el
+        //   .append(
+        //     this.template({
+        //       __: __,
+        //       label: __('pim_enrich.entity.product.module.completeness.complete'),
+        //       ratio: ratio,
+        //       completenesses: currentCompleteness,
+        //       badgeClass: this.getBadgeClass(options),
+        //       currentLocale: options.locale,
+        //       missingValues: 'pim_enrich.entity.product.module.completeness.missing_values',
+        //       i18n: i18n,
+        //     })
+        //   )
+        //   .show();
       } else {
         // We hide the element for design issues, to avoid blank spaces.
         this.$el.hide();
