@@ -1,34 +1,32 @@
-import React from 'react';
-import {DeleteIllustration, Button, Modal} from 'akeneo-design-system';
+import React, {ReactNode} from 'react';
+import {Button, DeleteIllustration, Modal} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
-type ConfirmModalProps = {
-  isOpen: boolean;
-  description: string;
+type DeleteModalProps = {
+  title: string;
+  children: ReactNode;
   onConfirm: () => void;
   onCancel: () => void;
 };
 
-const ConfirmDeleteModal = ({isOpen, description, onConfirm, onCancel}: ConfirmModalProps) => {
+const DeleteModal = ({children, title, onConfirm, onCancel}: DeleteModalProps) => {
   const translate = useTranslate();
-
-  if (!isOpen) return null;
 
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={onCancel} illustration={<DeleteIllustration />}>
-      <Modal.SectionTitle color="brand">{translate('measurements.title.measurement')}</Modal.SectionTitle>
+      <Modal.SectionTitle color="brand">{title}</Modal.SectionTitle>
       <Modal.Title>{translate('pim_common.confirm_deletion')}</Modal.Title>
-      {description}
+      {children}
       <Modal.BottomButtons>
         <Button level="tertiary" onClick={onCancel}>
           {translate('pim_common.cancel')}
         </Button>
         <Button level="danger" onClick={onConfirm}>
-          {translate('pim_common.delete')}
+          {translate('pim_common.confirm')}
         </Button>
       </Modal.BottomButtons>
     </Modal>
   );
 };
 
-export {ConfirmDeleteModal};
+export {DeleteModal};
