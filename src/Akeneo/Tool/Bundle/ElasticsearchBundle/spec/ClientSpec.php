@@ -10,6 +10,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
+use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Namespaces\IndicesNamespace;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -276,7 +277,7 @@ class ClientSpec extends ObjectBehavior
                 ],
                 'refresh' => 'wait_for',
             ]
-        )->shouldBeCalled()->willReturn($expectedResponse);;
+        )->shouldBeCalledOnce()->willReturn($expectedResponse);;
 
         $documents = [
             ['identifier' => 'foo', 'name' => 'a name'],
@@ -284,6 +285,175 @@ class ClientSpec extends ObjectBehavior
         ];
 
         $this->bulkIndexes($documents, 'identifier', Refresh::waitFor())->shouldReturn($expectedResponse);
+    }
+
+    function it_split_bulk_index_when_size_is_more_than_max_batch_size(
+        NativeClient $client,
+        ClientBuilder $clientBuilder,
+        Loader $indexConfigurationLoader
+    ) {
+        $this->beConstructedWith($clientBuilder, $indexConfigurationLoader, ['localhost:9200'], 'an_index_name', '', 79);
+
+        $client->bulk([
+            'body' => [
+                ['index' => ['_index' => 'an_index_name', '_id' => 'value1']],
+                ['identifier' => 'value1', 'name' => 'name1'],
+                ['index' => ['_index' => 'an_index_name', '_id' => 'value2']],
+                ['identifier' => 'value2', 'name' => 'name2'],
+            ],
+            'refresh' => 'wait_for',
+        ])->shouldBeCalledTimes(1)->willReturn([
+            'took' => 1,
+            'errors' => false,
+            'items' => [
+                ['item_value1'],
+                ['item_value2'],
+            ],
+        ]);
+
+        $client->bulk([
+            'body' => [
+                ['index' => ['_index' => 'an_index_name', '_id' => 'value3']],
+                ['identifier' => 'value3', 'name' => 'name3'],
+                ['index' => ['_index' => 'an_index_name', '_id' => 'value4']],
+                ['identifier' => 'value4', 'name' => 'name4'],
+            ],
+            'refresh' => 'wait_for',
+        ])->shouldBeCalledTimes(1)->willReturn([
+            'took' => 1,
+            'errors' => false,
+            'items' => [
+                ['item_value3'],
+                ['item_value4'],
+            ],
+        ]);
+
+        $client->bulk([
+            'body' => [
+                ['index' => ['_index' => 'an_index_name', '_id' => 'value5']],
+                ['identifier' => 'value5', 'name' => 'name5'],
+            ],
+            'refresh' => 'wait_for',
+        ])->shouldBeCalledTimes(1)->willReturn([
+            'took' => 1,
+            'errors' => false,
+            'items' => [
+                ['item_value5'],
+            ],
+        ]);
+
+        $documents = [
+            ['identifier' => 'value1', 'name' => 'name1'],
+            ['identifier' => 'value2', 'name' => 'name2'],
+            ['identifier' => 'value3', 'name' => 'name3'],
+            ['identifier' => 'value4', 'name' => 'name4'],
+            ['identifier' => 'value5', 'name' => 'name5'],
+        ];
+
+        $this->bulkIndexes($documents, 'identifier', Refresh::waitFor())->shouldReturn([
+            'took' => 3,
+            'errors' => false,
+            'items' => [
+                ['item_value1'],
+                ['item_value2'],
+                ['item_value3'],
+                ['item_value4'],
+                ['item_value5'],
+            ],
+        ]);
+    }
+
+    function it_retry_bulk_index_request_when_an_error_occurred(NativeClient $client)
+    {
+        $isFirstCall = true;
+        $client->bulk([
+            'body' => [
+                ['index' => ['_index' => 'an_index_name', '_id' => 'value1']],
+                ['identifier' => 'value1', 'name' => 'name1'],
+            ],
+            'refresh' => 'wait_for',
+        ])
+        ->shouldBeCalledTimes(2)
+        ->will(function () use (&$isFirstCall) {
+            if ($isFirstCall) {
+                $isFirstCall = false;
+                throw new BadRequest400Exception();
+            }
+
+            return ['took' => 1, 'errors' => false, 'items' => [['item_value1']]];
+        });
+
+        $documents = [['identifier' => 'value1', 'name' => 'name1']];
+
+        $this->bulkIndexes($documents, 'identifier', Refresh::waitFor())->shouldReturn([
+            'took' => 1,
+            'errors' => false,
+            'items' => [
+                ['item_value1'],
+            ],
+        ]);
+    }
+
+    function it_retry_bulk_index_request_by_splitting_body_when_an_error_occurred(NativeClient $client)
+    {
+        $client->bulk([
+            'body' => [
+                ['index' => ['_index' => 'an_index_name', '_id' => 'value1']],
+                ['identifier' => 'value1', 'name' => 'name1'],
+                ['index' => ['_index' => 'an_index_name', '_id' => 'value2']],
+                ['identifier' => 'value2', 'name' => 'name2'],
+                ['index' => ['_index' => 'an_index_name', '_id' => 'value3']],
+                ['identifier' => 'value3', 'name' => 'name3'],
+            ],
+            'refresh' => 'wait_for',
+        ])->willThrow(BadRequest400Exception::class);
+
+        $client->bulk([
+            'body' => [
+                ['index' => ['_index' => 'an_index_name', '_id' => 'value1']],
+                ['identifier' => 'value1', 'name' => 'name1'],
+                ['index' => ['_index' => 'an_index_name', '_id' => 'value2']],
+                ['identifier' => 'value2', 'name' => 'name2'],
+            ],
+            'refresh' => 'wait_for',
+        ])->shouldBeCalledTimes(1)->willReturn([
+            'took' => 1,
+            'errors' => false,
+            'items' => [
+                ['item_value1'],
+                ['item_value2'],
+            ],
+        ]);
+
+        $client->bulk([
+            'body' => [
+                ['index' => ['_index' => 'an_index_name', '_id' => 'value3']],
+                ['identifier' => 'value3', 'name' => 'name3'],
+            ],
+            'refresh' => 'wait_for',
+        ])->shouldBeCalledTimes(1)->willReturn([
+            'took' => 1,
+            'errors' => false,
+            'items' => [
+                ['item_value3'],
+            ],
+        ]);
+
+        $documents = [
+            ['identifier' => 'value1', 'name' => 'name1'],
+            ['identifier' => 'value2', 'name' => 'name2'],
+            ['identifier' => 'value3', 'name' => 'name3'],
+        ];
+
+        $this->bulkIndexes($documents, 'identifier', Refresh::waitFor())->shouldReturn([
+            'took' => 2,
+            'errors' => false,
+            'items' => [
+                ['item_value1'],
+                ['item_value2'],
+                ['item_value3'],
+            ],
+        ]);
     }
 
     public function it_throws_an_exception_during_the_indexation_of_several_documents($client)
