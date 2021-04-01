@@ -7,9 +7,9 @@ const LargeCell = styled.td.attrs(({colSpan}) => ({colSpan: colSpan}))`
 `;
 const ShowContextContainer = styled.div`
     display: block;
-    margin: 0 auto 20px auto;
+    margin: 0 auto 20px;
     padding-left: 10px;
-    width: 70%;
+    width: 756px;
     overflow-x: scroll;
     border: 1px solid ${getColor('grey', 80)};
     background-color: ${getColor('white')};
