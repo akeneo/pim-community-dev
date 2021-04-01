@@ -12,9 +12,15 @@ import {
 import {Operation} from 'akeneomeasure/model/operation';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
-import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
 import {useTranslate, useUserContext, useSecurity} from '@akeneo-pim-community/legacy-bridge';
-import {filterErrors, ValidationError, useToggleState, TextField, Section} from '@akeneo-pim-community/shared';
+import {
+  filterErrors,
+  ValidationError,
+  useToggleState,
+  TextField,
+  Section,
+  DeleteModal,
+} from '@akeneo-pim-community/shared';
 import {Button, getColor, SectionTitle} from 'akeneo-design-system';
 
 const Container = styled.div`
@@ -66,12 +72,15 @@ const UnitDetails = ({
 
   return (
     <>
-      <ConfirmDeleteModal
-        isOpen={isConfirmDeleteUnitModalOpen}
-        description={translate('measurements.unit.delete.confirm')}
-        onConfirm={handleRemoveUnit}
-        onCancel={closeConfirmDeleteUnitModal}
-      />
+      {isConfirmDeleteUnitModalOpen && (
+        <DeleteModal
+          title={translate('measurements.title.measurement')}
+          onConfirm={handleRemoveUnit}
+          onCancel={closeConfirmDeleteUnitModal}
+        >
+          {translate('measurements.unit.delete.confirm')}
+        </DeleteModal>
+      )}
       <Container>
         <Section>
           <SectionTitle sticky={0}>
