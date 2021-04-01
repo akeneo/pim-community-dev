@@ -393,7 +393,6 @@ pim_asset_manager:
         fail: Beim Löschen aller Assets dieser Anlagefamilie ist ein Fehler aufgetreten
       mass_delete:
         success: Die Massenlöschaktion "Massenlöschen" wurde gestartet. Sie werden benachrichtigt, sobald sie abgeschlossen ist.
-        fail: "Während des Massenlöschens ist ein Fehler aufgetreten: {{ error }}"
       execute_naming_convention:
         success: Namenskonvention erfolgreich ausgeführt
         fail: Bei der Ausführung der Namenskonvention ist ein Fehler aufgetreten
