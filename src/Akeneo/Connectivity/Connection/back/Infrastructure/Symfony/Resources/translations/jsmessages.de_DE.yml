@@ -9,6 +9,7 @@ pim_menu:
     connection_settings_edit: Verbindungseinstellungen
     connection_monitoring: Überwachung
     connection_webhook_edit: Event-Abonnement
+    connection_webhook_event_logs: Ereignis-Logs
 pim_title:
   akeneo_connectivity_connection_settings_index: Verbindungen
   akeneo_connectivity_connection_settings_edit: Verbindungseinstellungen
@@ -19,6 +20,7 @@ pim_title:
   akeneo_connectivity_connection_error_management_connection_monitoring: Verbindungsüberwachung
   akeneo_connectivity_connection_webhook_edit: Event-Abonnement
   akeneo_connectivity_connection_webhook_regenerate_secret: Event-Abonnement
+  akeneo_connectivity_connection_webhook_event_logs: Ereignis-Logs
 akeneo_connectivity.connection:
   connections: Verbindungen
   secondary_actions:
@@ -225,6 +227,38 @@ akeneo_connectivity.connection:
     active_event_subscriptions_limit_reached:
       message: Sie können bis zu {{ limit }} Verbindungen mit der Event-Abonnement-Funktion verbinden. Sie haben dieses Limit erreicht.
       link: Erfahren Sie mehr über die Eventabonnement-Konfiguration.
+    event_logs:
+      title: Ereignis-Logs
+      event_subscription_disabled:
+        title: Das Ereignisabonnement ist für diese Verbindung nicht aktiviert.
+        link: Ereignis-Abonnement aktivieren
+      no_event_logs:
+        title: Im Moment gibt es kein Protokoll.
+      no_event_logs_with_those_filters:
+        title: Es ist leider kein Log für Ihre Suche vorhanden.
+        caption: Versuchen Sie es erneut mit neuen Suchkriterien.
+      level:
+        info: Info
+        notice: Hinweis
+        warning: Warnung
+        error: Fehler
+      list:
+        search:
+          placeholder: In Nachrichten suchen
+          total: '{0} 0 Ergebnisse|{1} 1 Ergebnis|[2,Inf] {{ total }} Ergebnisse'
+          level: Level
+          all: Alle
+          none: Keine
+        date_range_filter:
+          all: Alle
+        info:
+          title: Hier sind die Protokolle zu allen Ereignisanfragen, die an diese Verbindung gesendet wurden.
+          content: Diese Seite zeigt Fehler- und Warnprotokolle für die vergangenen 72 Stunden und die letzten 100 Info- und Notizprotokolle an.
+          link: Mehr Informationen über Ereignisprotokolle.
+        headers:
+          datetime: Datumszeit
+          level: Level
+          message: Nachricht
   error_management:
     connection_monitoring:
       title: Überwachung

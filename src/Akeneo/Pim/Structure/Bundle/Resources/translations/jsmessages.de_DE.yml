@@ -157,6 +157,7 @@ pim_enrich.entity.attribute:
     default_metric_unit:
       label: Standardmesseinheit
       choose: Wählen Sie eine Einheit
+    guidelines: Attribut-Richtlinien
     group:
       label: Attributgruppe
       choose: Wählen Sie die Attributgruppe
@@ -212,6 +213,7 @@ pim_enrich.entity.attribute:
       common: Allgemeine Parameter
       type_specific: Spezifische Parameter
       validation: Validierungsparameter
+      select_locale: Gebietsschema auswählen
     delete:
       confirm: Möchten Sie dieses Attribut wirklich löschen?
       product_count: '{0}0 Produkte|{1}1 Produkt|]1, Inf[{{ count }} Produkte'

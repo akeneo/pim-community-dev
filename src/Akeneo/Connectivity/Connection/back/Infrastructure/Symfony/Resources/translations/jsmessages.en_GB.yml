@@ -8,6 +8,8 @@ pim_menu:
     connection_settings: Connections
     connection_settings_edit: Connection settings
     connection_monitoring: Monitoring
+    connection_webhook_edit: Event subscription
+    connection_webhook_event_logs: Event logs
 pim_title:
   akeneo_connectivity_connection_settings_index: Connections
   akeneo_connectivity_connection_settings_edit: Connection settings
@@ -16,6 +18,9 @@ pim_title:
   akeneo_connectivity_connection_audit_any: Connection dashboard
   akeneo_connectivity_connection_error_management_dashboard: Connection dashboard
   akeneo_connectivity_connection_error_management_connection_monitoring: Connection monitoring
+  akeneo_connectivity_connection_webhook_edit: Event subscription
+  akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
+  akeneo_connectivity_connection_webhook_event_logs: Event logs
 akeneo_connectivity.connection:
   connections: Connections
   secondary_actions:
@@ -190,7 +195,11 @@ akeneo_connectivity.connection:
         message: Ask your administrator to create one.
         link: Learn more about connections here...
   webhook:
+    title: Event subscription
+    event_subscription: Event subscription
+    download_logs: Download logs
     helper:
+      message: You can be notified of events happening in the PIM for products synchronized with this connected app. You just need to define a URL.
       link: Learn more about event subscription configuration...
       url.test_disabled: Please, click on the Save button to be able to test the URL.
     form:
@@ -217,6 +226,39 @@ akeneo_connectivity.connection:
         error: Sorry, an error occurred while regenerating the webhook secret.
     active_event_subscriptions_limit_reached:
       message: You can connect up to {{ limit }} connections to the Event subscription feature. You have reached this limit.
+      link: Learn more about event subscription configuration.
+    event_logs:
+      title: Event logs
+      event_subscription_disabled:
+        title: The event subscription isn’t enabled for this connection.
+        link: Enable the event subscription
+      no_event_logs:
+        title: There is no log for the moment.
+      no_event_logs_with_those_filters:
+        title: Sorry, there is no log for your search.
+        caption: Try again with new search criteria.
+      level:
+        info: Info
+        notice: Notice
+        warning: Warning
+        error: Error
+      list:
+        search:
+          placeholder: Search in messages
+          total: '{0} 0 results|{1} 1 result|[2,Inf] {{ total }} results'
+          level: Level
+          all: All
+          none: None
+        date_range_filter:
+          all: All
+        info:
+          title: Here are the logs related to all the event requests sent to this connection.
+          content: This page displays error and warning logs for the past 72h, and the last 100 info and notice logs.
+          link: More information about event logs.
+        headers:
+          datetime: Datetime
+          level: Level
+          message: Message
   error_management:
     connection_monitoring:
       title: Monitoring

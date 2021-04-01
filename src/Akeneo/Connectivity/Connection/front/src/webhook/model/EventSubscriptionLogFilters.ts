@@ -1,12 +1,17 @@
-import {EventSubscriptionLogLevel} from './EventSubscriptionLogLevel';
 import {isEqual} from 'lodash';
+import {DateTime} from 'luxon';
+import {EventSubscriptionLogLevel} from './EventSubscriptionLogLevel';
 
 export type EventSubscriptionLogFilters = {
     levels: EventSubscriptionLogLevel[];
     text: string;
+    dateTime: {
+        start?: number;
+        end?: number;
+    };
 };
 
-export const DEFAULT_EVENT_SUBSCRIPTION_LOG_FILTERS = {
+export const getDefaultFilters: () => EventSubscriptionLogFilters = () => ({
     levels: [
         EventSubscriptionLogLevel.INFO,
         EventSubscriptionLogLevel.NOTICE,
@@ -14,8 +19,23 @@ export const DEFAULT_EVENT_SUBSCRIPTION_LOG_FILTERS = {
         EventSubscriptionLogLevel.ERROR,
     ],
     text: '',
-};
+    dateTime: {},
+});
 
 export const isSameAsDefaultFiltersValues = (filters: EventSubscriptionLogFilters): boolean => {
-    return isEqual(filters, DEFAULT_EVENT_SUBSCRIPTION_LOG_FILTERS);
+    return isEqual(filters, getDefaultFilters());
 };
+
+export type FiltersConfig = {
+    dateTime: {
+        min: number;
+        max: number;
+    };
+};
+
+export const getFiltersConfig: () => FiltersConfig = () => ({
+    dateTime: {
+        min: DateTime.utc().minus({hours: 72}).toSeconds(),
+        max: DateTime.utc().toSeconds(),
+    },
+});

@@ -92,6 +92,8 @@ extensions:
         targetZone: self
         config:
             template: pim/template/form/tab/sections
+            templateParams:
+                twoColumns: true
 
     pim-attribute-edit-form-properties-common:
         module: pim/common/simple-view
@@ -166,10 +168,16 @@ extensions:
             label: pim_enrich.entity.attribute.property.localizable
             readOnly: true
 
+    pim-attribute-edit-form-properties-guidelines:
+        module: pim/attribute-edit-form/properties/guidelines
+        parent: pim-attribute-edit-form-properties
+        targetZone: secondColumn
+        position: 100
+
     pim-attribute-edit-form-properties-type-specific:
         module: pim/attribute-edit-form/type-specific-form
         parent: pim-attribute-edit-form-properties
-        targetZone: accordion
+        targetZone: secondColumn
         position: 110
         config:
             mode: edit

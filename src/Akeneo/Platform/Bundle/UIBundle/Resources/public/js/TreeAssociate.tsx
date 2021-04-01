@@ -26,6 +26,9 @@ class TreeAssociate {
     lockedCategoryIds: number[] = []
   ) {
     this.container = document.getElementById('trees') as HTMLDivElement;
+    if (!this.container) {
+      return;
+    }
     this.selectedCategoryCodesByTreeIdInput = document.getElementById('hidden-tree-input') as HTMLInputElement;
     this.productId = Number(this.container.dataset.id);
     this.listCategoriesRoute = routes.list_categories;
@@ -93,7 +96,6 @@ class TreeAssociate {
         const response = await fetch(url);
         const json: CategoryResponse = await response.json();
 
-        console.log(json);
         return parseResponse(json, {
           readOnly: this.readOnly,
           lockedCategoryIds: this.lockedCategoryIds,

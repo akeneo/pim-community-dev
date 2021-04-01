@@ -14,9 +14,6 @@ cp $DEV_DISTRIB_DIR/config/packages/security.yml $STANDARD_DISTRIB_DIR/config/pa
 # Partners are most likely to develop and deploy using local filesystem, not MinIO
 cp -r $DEV_DISTRIB_DIR/config/packages/dev $STANDARD_DISTRIB_DIR/config/packages/
 
-# Both production server mode must be available in std
-cp -r $DEV_DISTRIB_DIR/config/packages/prod_* $STANDARD_DISTRIB_DIR/config/packages/
-
 # We need a console and FPM entrypoint
 cp $DEV_DISTRIB_DIR/bin/console $STANDARD_DISTRIB_DIR/bin/
 chmod +x $STANDARD_DISTRIB_DIR/bin/console
@@ -46,8 +43,8 @@ cp $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
 
 # Prepare database upgrades to run
 mkdir -p $STANDARD_DISTRIB_DIR/upgrades/
-cp -R $DEV_DISTRIB_DIR/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
+cp -r $DEV_DISTRIB_DIR/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
 
-cp $DEV_DISTRIB_DIR/std-build/upgrade/40_to_50/* $STANDARD_DISTRIB_DIR/
+cp -r $DEV_DISTRIB_DIR/std-build/migration/40_to_50/* $STANDARD_DISTRIB_DIR/
 
 printf "Done. \n"

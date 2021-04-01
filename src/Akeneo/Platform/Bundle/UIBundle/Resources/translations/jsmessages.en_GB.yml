@@ -170,6 +170,7 @@ pim_common:
   created: Created
   delete: Delete
   done: Done
+  duplicate: Duplicate
   edit: Edit
   entity_updated: There are unsaved changes.
   export: Export
@@ -184,6 +185,7 @@ pim_common:
   less_than: Less than
   loading: Loading...
   media_upload: Drag and drop to upload or click here
+  more_actions: More actions
   more_than: More than
   next: Next
   "no": "No"
@@ -225,6 +227,8 @@ pim_common:
     STARTS WITH: Starts with
     ENDS WITH: Ends with
   read_more: Read more
+  channel: Channel
+  locale: Locale
 error:
   exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
