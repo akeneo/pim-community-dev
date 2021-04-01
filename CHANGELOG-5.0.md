@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.14 (2021-04-01)
+
 # 5.0.13 (2021-03-29)
 
 - PLG-137 - Fix filter "Image quality" label to avoid confusion
