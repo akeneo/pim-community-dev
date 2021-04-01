@@ -5,11 +5,12 @@ import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 type DeleteModalProps = {
   title: string;
   children: ReactNode;
+  canConfirmDelete?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 };
 
-const DeleteModal = ({children, title, onConfirm, onCancel}: DeleteModalProps) => {
+const DeleteModal = ({children, title, canConfirmDelete = true, onConfirm, onCancel}: DeleteModalProps) => {
   const translate = useTranslate();
 
   return (
@@ -21,7 +22,7 @@ const DeleteModal = ({children, title, onConfirm, onCancel}: DeleteModalProps) =
         <Button level="tertiary" onClick={onCancel}>
           {translate('pim_common.cancel')}
         </Button>
-        <Button level="danger" onClick={onConfirm}>
+        <Button level="danger" disabled={!canConfirmDelete} onClick={onConfirm}>
           {translate('pim_common.delete')}
         </Button>
       </Modal.BottomButtons>
