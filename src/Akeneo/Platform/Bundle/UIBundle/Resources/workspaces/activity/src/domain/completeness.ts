@@ -13,13 +13,4 @@ type BackendChannelData = {
   };
 };
 
-type ChannelsLocalesCompletenesses = {
-  [channel: string]: {
-    channelRatio: number;
-    locales: {
-      [locale: string]: number;
-    };
-  };
-};
-
-export {BackendChannelData, BackendCompletenessData, ChannelsLocalesCompletenesses};
+export {BackendChannelData, BackendCompletenessData};

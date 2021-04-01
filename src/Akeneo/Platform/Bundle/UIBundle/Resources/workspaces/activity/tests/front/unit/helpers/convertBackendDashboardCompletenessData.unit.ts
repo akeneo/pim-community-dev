@@ -1,6 +1,6 @@
 import {convertBackendDashboardCompletenessData} from '../../../../src/helpers';
 import {BackendCompletenessData} from '../../../../src/domain';
-import {ChannelsLocalesCompletenesses} from '../../../../src/hooks';
+import {ChannelsLocalesCompletenessRatios} from "@akeneo-pim-community/enrichment/src/models";
 
 const data: BackendCompletenessData = {
   print: {
@@ -34,11 +34,11 @@ const data: BackendCompletenessData = {
 };
 
 test('', () => {
-  const result: CompletenessLocalesData = convertBackendDashboardCompletenessData(data, 'en_US');
+  const result: ChannelsLocalesCompletenessRatios = convertBackendDashboardCompletenessData(data, 'en_US');
   expect(result).toEqual({
     Print: {
       channelRatio: 15,
-      locales: {
+      localesRatios: {
         'English (United States)': 28,
         'German (Germany)': 9,
         'French (France)': 12,
@@ -46,7 +46,7 @@ test('', () => {
     },
     Mobile: {
       channelRatio: 11,
-      locales: {
+      localesRatios: {
         'English (United States)': 21,
         'German (Germany)': 6,
         'French (France)': 7,

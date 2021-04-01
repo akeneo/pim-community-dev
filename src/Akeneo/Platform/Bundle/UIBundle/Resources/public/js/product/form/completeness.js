@@ -16,8 +16,7 @@ define([
   'pim/fetcher-registry',
   'pim/i18n',
   'pim/user-context',
-  '@akeneo-pim-community/activity/src/components/ChannelLocalesCompletenesses',
-  'pim/product/completeness/format-product-completeness',
+  '@akeneo-pim-community/enrichment',
 ], function (
   $,
   _,
@@ -27,8 +26,7 @@ define([
   FetcherRegistry,
   i18n,
   UserContext,
-  {ChannelLocalesCompletenesses},
-  {formatProductCompleteness}
+  {ChannelsLocalesCompleteness, formatProductCompleteness},
 ) {
   return BaseForm.extend({
     template: _.template(template),
@@ -70,9 +68,9 @@ define([
       if (this.getFormData().meta) {
         const catalogLocale = UserContext.get('catalogLocale');
         const sortedCompleteness = this.sortCompleteness(this.getFormData().meta.completenesses);
-        const completenessList = formatProductCompleteness(sortedCompleteness, catalogLocale);
+        const channelsLocalesRatios = formatProductCompleteness(sortedCompleteness, catalogLocale);
 
-        this.renderReact(ChannelLocalesCompletenesses, {data: completenessList}, this.el);
+        this.renderReact(ChannelsLocalesCompleteness, {channelsLocalesRatios}, this.el);
       }
 
       return this;

@@ -1,22 +1,22 @@
 import React, {FC} from 'react';
 import {ProgressBar} from 'akeneo-design-system';
 import styled from 'styled-components';
-import {ChannelsLocalesCompletenesses} from '../domain';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {ChannelsLocalesCompletenessRatios} from "../../models";
 
-type ChannelLocalesCompletenessesProps = {
-  data: ChannelsLocalesCompletenesses;
+type Props = {
+  channelsLocalesRatios: ChannelsLocalesCompletenessRatios | null;
 };
 
-const ChannelLocalesCompletenesses: FC<ChannelLocalesCompletenessesProps> = ({data}) => {
+const ChannelsLocalesCompleteness: FC<Props> = ({channelsLocalesRatios}) => {
   const translate = useTranslate();
 
   return (
     <CompletenessContainer>
-      {data !== null &&
-        Object.entries(data).map(([channelLabel, {channelRatio, locales}]) => {
+      {channelsLocalesRatios !== null &&
+        Object.entries(channelsLocalesRatios).map(([channelLabel, {channelRatio, localesRatios}]) => {
           return (
-            <ChannelCompleteness key={channelLabel}>
+            <ChannelCompletenessContainer key={channelLabel}>
               <div>
                 <ProgressBar
                   title={channelLabel}
@@ -27,8 +27,8 @@ const ChannelLocalesCompletenesses: FC<ChannelLocalesCompletenessesProps> = ({da
                 />
                 <ProgressMessage>{translate(getProgressMessageByChannelRatio(channelRatio))}</ProgressMessage>
               </div>
-              <LocaleCompleteness>
-                {Object.entries(locales).map(([localeLabel, localeRatio]: [string, number]) => {
+              <LocalesCompletenessContainer>
+                {Object.entries(localesRatios).map(([localeLabel, localeRatio]: [string, number]) => {
                   return (
                     <ProgressBar
                       title={localeLabel}
@@ -40,8 +40,8 @@ const ChannelLocalesCompletenesses: FC<ChannelLocalesCompletenessesProps> = ({da
                     />
                   );
                 })}
-              </LocaleCompleteness>
-            </ChannelCompleteness>
+              </LocalesCompletenessContainer>
+            </ChannelCompletenessContainer>
           );
         })}
     </CompletenessContainer>
@@ -69,7 +69,7 @@ const CompletenessContainer = styled.div`
   row-gap: 40px;
 `;
 
-const ChannelCompleteness = styled.div`
+const ChannelCompletenessContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -79,10 +79,10 @@ const ProgressMessage = styled.div`
   margin-top: 10px;
 `;
 
-const LocaleCompleteness = styled.div`
+const LocalesCompletenessContainer = styled.div`
   gap: 30px;
   display: flex;
   flex-direction: column;
 `;
 
-export {ChannelLocalesCompletenesses, ChannelsLocalesCompletenesses};
+export {ChannelsLocalesCompleteness};

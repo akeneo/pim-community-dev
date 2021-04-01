@@ -1,11 +1,11 @@
 import {useEffect, useState} from 'react';
 import {convertBackendDashboardCompletenessData} from '../helpers';
-import {ChannelsLocalesCompletenesses} from '../domain';
+import {ChannelsLocalesCompletenessRatios} from "@akeneo-pim-community/enrichment";
 
 const Routing = require('routing');
 
-const useDashboardCompleteness = (catalogLocale: string): ChannelsLocalesCompletenesses | null => {
-  const [data, setData] = useState<ChannelsLocalesCompletenesses | null>(null);
+const useDashboardCompleteness = (catalogLocale: string): ChannelsLocalesCompletenessRatios | null => {
+  const [data, setData] = useState<ChannelsLocalesCompletenessRatios | null>(null);
 
   useEffect(() => {
     (async () => {

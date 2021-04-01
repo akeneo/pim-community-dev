@@ -81,13 +81,14 @@ define([
 
       const ratio = this.getCurrentRatio(options);
       if (null !== ratio) {
+        const currentCompleteness = this.getCurrentCompletenesses(options.scope);
         this.$el
           .append(
             this.template({
               __: __,
               label: __('pim_enrich.entity.product.module.completeness.complete'),
               ratio: ratio,
-              completenesses: this.getCurrentCompletenesses(options.scope),
+              completenesses: currentCompleteness,
               badgeClass: this.getBadgeClass(options),
               currentLocale: options.locale,
               missingValues: 'pim_enrich.entity.product.module.completeness.missing_values',
