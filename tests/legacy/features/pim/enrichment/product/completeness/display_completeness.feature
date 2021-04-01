@@ -26,13 +26,12 @@ Feature: Display the completeness of a product
   Scenario: Successfully display the completeness of the products
     Given I am on the "sneakers" product page
     When I visit the "Completeness" column tab
-    Then I should see the "tablet" completeness in position 1
     And I should see the completeness:
-      | channel | locale | state   | missing_values | ratio |
-      | tablet  | en_US  | warning | 1              | 88%   |
-      | tablet  | fr_FR  | warning | 2              | 77%   |
-      | mobile  | en_US  | success | 0              | 100%  |
-      | mobile  | fr_FR  | success | 0              | 100%  |
+      | channel | locale                  | ratio |
+      | Tablet  | English (United States) | 88 %  |
+      | Tablet  | French (France)         | 77 %  |
+      | Mobile  | English (United States) | 100 % |
+      | Mobile  | French (France)         | 100 % |
     When I am on the products grid
     Then I am on the "sandals" product page
     And I visit the "Attributes" column tab
@@ -45,11 +44,11 @@ Feature: Display the completeness of a product
     When I switch the locale to "fr_FR"
     And I visit the "Completeness" column tab
     And I should see the completeness:
-      | channel | locale | state   | missing_values | ratio |
-      | tablet  | en_US  | warning | 6              | 25%   |
-      | tablet  | fr_FR  | warning | 4              | 50%   |
-      | mobile  | en_US  | warning | 3              | 40%   |
-      | mobile  | fr_FR  | warning | 2              | 60%   |
+      | channel  | locale                  | ratio |
+      | Tablette | English (United States) | 25 %  |
+      | Tablette | French (France)         | 50 %  |
+      | Mobile   | English (United States) | 40 %  |
+      | Mobile   | French (France)         | 60 %  |
 
   @critical
   Scenario: Successfully display the completeness of the products in the grid
