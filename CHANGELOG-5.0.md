@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9751: Fix Standard Kernel for dev environment
+
 # 5.0.13 (2021-03-29)
 
 # 5.0.12 (2021-03-26)

@@ -56,7 +56,7 @@ class Kernel extends BaseKernel
                 )
             );
         }
-        
+
         $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
         $container->setParameter('container.dumper.inline_class_loader', true);
 
@@ -70,7 +70,13 @@ class Kernel extends BaseKernel
         $this->loadPackagesConfigurationFromDependencyExceptSecurity($loader, $ceConfDir);
 
         # The 2nd packages configuration for EE dependency and flexibility or on prem are loaded from EE config dirs
-        $this->loadPackagesConfigurationExceptSecurity($loader, $eeConfDir, $baseEnv);
+        # If prod, we load either prod-onprem or prod-flex configs
+        # For other envs, we load only the root configs from EE
+        if ('prod' === $this->environment) {
+            $this->loadPackagesConfigurationExceptSecurity($loader, $eeConfDir, $baseEnv);
+        } else {
+            $this->loadPackagesConfigurationFromDependencyExceptSecurity($loader, $eeConfDir);
+        }
 
         # Finally, the packages configuration for local environnement is loaded from the project
         $this->loadPackagesConfiguration($loader, $projectConfDir, $this->environment);
@@ -78,7 +84,9 @@ class Kernel extends BaseKernel
         $this->loadServicesConfiguration($loader, $ceConfDir, $baseEnv);
         $this->loadServicesConfiguration($loader, $eeConfDir, $baseEnv);
         $this->loadServicesConfiguration($loader, $projectConfDir, $baseEnv);
-        $this->loadServicesConfiguration($loader, $projectConfDir, $this->environment);
+        if ($this->environment !== $baseEnv) {
+            $this->loadServicesConfiguration($loader, $projectConfDir, $this->environment);
+        }
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
@@ -149,7 +157,6 @@ class Kernel extends BaseKernel
     {
         $files = array_merge(
             glob($confDir . '/packages/*.yml'),
-            glob($confDir . '/packages/' . $environment . '/*.yml'),
             glob($confDir . '/packages/' . $environment . '/**/*.yml')
         );
 
