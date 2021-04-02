@@ -101,6 +101,8 @@ pim_user_management:
   form:
     error:
       required: Ce champ est obligatoire.
+      should_not_contain_space: Le nom d'utilisateur ne doit pas contenir d'espace.
+      too_short_value: "Cette valeur est trop courte. Elle doit avoir au minimum {{ count }} caractères."
     duplication:
       title: 'Dupliquer l''utilisateur "{{ username }}"'
       notification:

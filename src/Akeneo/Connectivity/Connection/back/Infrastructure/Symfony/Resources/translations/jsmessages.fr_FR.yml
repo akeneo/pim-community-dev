@@ -245,7 +245,7 @@ akeneo_connectivity.connection:
       list:
         search:
           placeholder: Chercher parmi les messages
-          total: '{0} 0 résultat|{1} 1 résultat|[2,Inf] {{ total }} résultats'
+          total: '{0} Aucun résultat|{1} 1 résultat|[2,Inf] {{ total }} résultats'
           level: Niveau
           all: Toutes
           none: Aucun

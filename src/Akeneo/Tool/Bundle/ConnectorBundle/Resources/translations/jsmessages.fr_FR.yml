@@ -2,6 +2,7 @@
 batch_jobs:
   default_steps:
     export: Export
+    import: Import
     validation: Validation du fichier
     import_associations: Import des associations de produits
     import_model_associations: Import des associations de produits
@@ -45,6 +46,15 @@ batch_jobs:
   csv_family_variant_export:
     label: Export des variantes de famille en CSV
     export.label: Export des variantes de famille
+  csv_user_group_export:
+    label: Export des groupes d'utilisateurs en CSV
+    export.label: Export des groupes d'utilisateurs
+  csv_user_role_export:
+    label: Export des rôles en CSV
+    export.label: Export des rôles
+  csv_user_export:
+    label: Export des utilisateurs en CSV
+    export.label: Export des utilisateurs
   csv_product_import:
     label: Import des produits en CSV
     import.label: Import des produits
@@ -85,6 +95,15 @@ batch_jobs:
   csv_group_type_import:
     label: Import des types de groupe en CSV
     import.label: Import des types de groupe
+  csv_user_group_import:
+    label: Import des groupes d'utilisateurs en CSV
+    import.label: Import des groupes d'utilisateurs
+  csv_user_import:
+    label: Import des utilisateurs en CSV
+    import.label: Import des utilisateurs
+  csv_user_role_import:
+    label: Import des rôles en CSV
+    import.label: Import des rôles
   xlsx_category_import:
     label: Import des catégories en XLSX
     import.label: Import des catégories
@@ -145,9 +164,27 @@ batch_jobs:
   xlsx_group_type_export:
     label: Export des types de groupe en XLSX
     export.label: Export des types de groupe
+  xlsx_user_group_export:
+    label: Export des groupes d'utilisateurs en XLSX
+    export.label: Export des groupes d'utilisateurs
+  xlsx_user_role_export:
+    label: Export des rôles en XLSX
+    export.label: Export des rôles
+  xlsx_user_export:
+    label: Export des utilisateurs en XLSX
+    export.label: Export des utilisateurs
   xlsx_attribute_group_import:
     label: Import des groupes d'attributs en XLSX
     import.label: Import des groupes d'attributs
   xlsx_group_type_import:
     label: Import des types de groupe en XLSX
     import.label: Import des types de groupe
+  xlsx_user_group_import:
+    label: Import des groupes d'utilisateurs en XLSX
+    import.label: Import des groupes d'utilisateurs
+  xlsx_user_import:
+    label: Import des utilisateurs en XLSX
+    import.label: Import des utilisateurs
+  xlsx_user_role_import:
+    label: Import des rôles en XLSX
+    import.label: Import des rôles
