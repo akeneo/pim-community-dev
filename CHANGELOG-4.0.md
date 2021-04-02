@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9726: Mitigate deadlock issues on category API (backport PIM-9548)
+
 # 4.0.102 (2021-03-31)
 
 ## Bug fixes
