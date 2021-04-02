@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.103 (2021-04-02)
+
 ## Bug fixes
 
 - PIM-9787: Prevent memory load on asset indexation when indexing all assets or by asset family
