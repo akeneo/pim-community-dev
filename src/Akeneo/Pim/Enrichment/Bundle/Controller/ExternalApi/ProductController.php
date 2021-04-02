@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 use Akeneo\Pim\Enrichment\Bundle\Event\ProductValidationErrorEvent;
 use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ApiAggregatorForProductPostSaveEventSubscriber;
+use Akeneo\Pim\Enrichment\Component\ContextOrigin;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
@@ -350,7 +351,7 @@ class ProductController
             throw new NotFoundHttpException($exception->getMessage(), $exception);
         }
 
-        $this->remover->remove($product, ['origin' => 'API']);
+        $this->remover->remove($product, ['origin' => ContextOrigin::API]);
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }
@@ -389,7 +390,7 @@ class ProductController
 
         $this->updateProduct($product, $data, 'post_products');
         $this->validateProduct($product);
-        $this->saver->save($product, ['origin' => 'API']);
+        $this->saver->save($product, ['origin' => ContextOrigin::API]);
 
         $response = $this->getResponse($product, Response::HTTP_CREATED);
 
@@ -452,7 +453,7 @@ class ProductController
 
         $this->updateProduct($product, $data, 'patch_products__code_');
         $this->validateProduct($product);
-        $this->saver->save($product, ['origin' => 'API']);
+        $this->saver->save($product, ['origin' => ContextOrigin::API]);
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
         $response = $this->getResponse($product, $status);

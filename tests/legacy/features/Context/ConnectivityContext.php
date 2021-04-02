@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Context;
 
+use Akeneo\Pim\Enrichment\Component\ContextOrigin;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Behat\Behat\Context\Context;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
@@ -47,9 +48,9 @@ class ConnectivityContext implements Context, KernelAwareContext
     }
 
     /**
-     * @Given /^(\d+) event(?:s|) of type "([^"]*)" should have been raised$/
+     * @Given /^(\d+) event(?:s|) of type "([^"]*)" should have been raised(?: from the "([^"]*)")?$/
      */
-    public function eventsOfTypeShouldHaveBeenRaised(int $expectedCount, string $type): void
+    public function eventsOfTypeShouldHaveBeenRaised(int $expectedCount, string $type, ?string $eventOrigin): void
     {
         while (!empty($envelopes = $this->transport->get())) {
             foreach ($envelopes as $envelope) {
@@ -67,6 +68,9 @@ class ConnectivityContext implements Context, KernelAwareContext
             foreach ($payload->getEvents() as $event) {
                 if ($event->getName() === $type) {
                     $count++;
+                    if (null !== $eventOrigin) {
+                        Assert::assertEquals($eventOrigin, $event->getOrigin());
+                    }
                 }
             }
         }

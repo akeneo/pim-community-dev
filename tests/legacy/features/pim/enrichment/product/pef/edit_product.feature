@@ -37,7 +37,7 @@ Feature: Edit a product
     When I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And the product Name should be "My Sandal"
-    And 1 event of type "product.updated" should have been raised
+    And 1 event of type "product.updated" should have been raised from the "UI"
 
   @critical
   Scenario: Successfully updates the updated date of the product

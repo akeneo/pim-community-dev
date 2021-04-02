@@ -16,5 +16,5 @@ Feature: Remove a product model
     When I confirm the removal
     Then I should not see product 1111111111
     And  I should not see product 1111111112
-    And 1 event of type "product_model.removed" should have been raised
-    And 0 event of type "product.removed" should have been raised
+    And 1 event of type "product_model.removed" should have been raised from the "UI"
+    And 0 event of type "product.removed" should have been raised from the "UI"

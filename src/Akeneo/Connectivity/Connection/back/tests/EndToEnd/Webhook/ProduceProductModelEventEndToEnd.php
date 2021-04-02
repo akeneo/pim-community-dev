@@ -9,11 +9,13 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductModelL
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\AttributeLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyVariantLoader;
+use Akeneo\Pim\Enrichment\Component\ContextOrigin;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventOriginTrait;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 
@@ -24,6 +26,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 class ProduceProductModelEventEndToEnd extends ApiTestCase
 {
     use AssertEventCountTrait;
+    use AssertEventOriginTrait;
 
     private ProductModelLoader $productModelLoader;
     private FamilyVariantLoader $familyVariantLoader;
@@ -103,6 +106,7 @@ JSON;
         $apiClient->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
 
         $this->assertEventCount(1, ProductModelCreated::class);
+        $this->assertEventOrigin(ContextOrigin::API);
     }
 
     public function test_update_product_model_add_business_event_to_queue()
@@ -172,6 +176,7 @@ JSON;
         $apiClient->request('PATCH', 'api/rest/v1/product-models/product_model', [], [], [], $data);
 
         $this->assertEventCount(1, ProductModelUpdated::class);
+        $this->assertEventOrigin(ContextOrigin::API);
     }
 
     public function test_remove_product_model_add_business_event_to_queue()
@@ -209,6 +214,7 @@ JSON;
         $this->productModelRemover->remove($productModel);
 
         $this->assertEventCount(1, ProductModelRemoved::class);
+        $this->assertEventOrigin(ContextOrigin::API);
     }
 
     protected function getConfiguration(): Configuration

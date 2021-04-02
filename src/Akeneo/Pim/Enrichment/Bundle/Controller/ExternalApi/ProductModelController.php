@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ApiAggregatorForProductModelPostSaveEventSubscriber;
+use Akeneo\Pim\Enrichment\Component\ContextOrigin;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQueryHandler;
@@ -210,7 +211,7 @@ class ProductModelController
 
         $this->updateProductModel($productModel, $data, 'post_product_model');
         $this->validateProductModel($productModel);
-        $this->saver->save($productModel, ['origin' => 'API']);
+        $this->saver->save($productModel, ['origin' => ContextOrigin::API]);
 
         $response = $this->getResponse($productModel, Response::HTTP_CREATED);
 
@@ -240,7 +241,7 @@ class ProductModelController
 
         $this->updateProductModel($productModel, $data, 'patch_product_models__code_');
         $this->validateProductModel($productModel);
-        $this->saver->save($productModel, ['origin' => 'API']);
+        $this->saver->save($productModel, ['origin' => ContextOrigin::API]);
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
         $response = $this->getResponse($productModel, $status);

@@ -21,7 +21,7 @@ Feature: Create a product model
     And I press the "Save" button
     And I should be on the product model "shoes_variant" edit page
     And I should see the text "shoes_variant"
-    And 1 event of type "product_model.created" should have been raised
+    And 1 event of type "product_model.created" should have been raised from the "UI"
 
   @critical
   Scenario: Create a product model with multiple level variant

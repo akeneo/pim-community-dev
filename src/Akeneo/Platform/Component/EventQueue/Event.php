@@ -54,8 +54,8 @@ abstract class Event implements EventInterface
         return $this->uuid;
     }
 
-    public function getOrigin(): string
+    public function getOrigin(): ?string
     {
-        return $this->data['origin'];
+        return $this->data['origin'] ?? null;
     }
 }

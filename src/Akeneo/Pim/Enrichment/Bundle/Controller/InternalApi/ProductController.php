@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
+use Akeneo\Pim\Enrichment\Component\ContextOrigin;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
@@ -227,7 +228,7 @@ class ProductController
         $violations = $this->validator->validate($product);
 
         if (0 === $violations->count()) {
-            $this->productSaver->save($product, ['origin' => 'UI']);
+            $this->productSaver->save($product, ['origin' => ContextOrigin::UI]);
             $this->productAndProductModelClient->refreshIndex();
 
             return new JsonResponse($this->normalizer->normalize(
@@ -273,7 +274,7 @@ class ProductController
         $violations->addAll($this->localizedConverter->getViolations());
 
         if (0 === $violations->count()) {
-            $this->productSaver->save($product, ['origin' => 'UI']);
+            $this->productSaver->save($product, ['origin' => ContextOrigin::UI]);
 
             $normalizedProduct = $this->normalizer->normalize(
                 $product,
@@ -306,7 +307,7 @@ class ProductController
         }
 
         $product = $this->findProductOr404($id);
-        $this->productRemover->remove($product, ['origin' => 'UI']);
+        $this->productRemover->remove($product, ['origin' => ContextOrigin::UI]);
 
         $this->productAndProductModelClient->refreshIndex();
 

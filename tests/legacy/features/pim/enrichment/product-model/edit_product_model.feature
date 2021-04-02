@@ -22,8 +22,8 @@ Feature: Edit a product model
     When I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And the product Model name should be "Heritage jacket navy chilly tiki"
-    And 0 event of type "product.updated" should have been raised
-    And 1 event of type "product_model.updated" should have been raised
+    And 0 event of type "product.updated" should have been raised from the "UI"
+    And 1 event of type "product_model.updated" should have been raised from the "UI"
 
   @critical @purge-messenger
   Scenario: Successfully edit and save a sub product model

@@ -5,11 +5,13 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
+use Akeneo\Pim\Enrichment\Component\ContextOrigin;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventOriginTrait;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 
 /**
@@ -19,6 +21,7 @@ use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 class ProduceProductEventEndToEnd extends ApiTestCase
 {
     use AssertEventCountTrait;
+    use AssertEventOriginTrait;
 
     private ProductLoader $productLoader;
 
@@ -49,6 +52,7 @@ JSON;
         $apiClient->request('POST', 'api/rest/v1/products', [], [], [], $data);
 
         $this->assertEventCount(1, ProductCreated::class);
+        $this->assertEventOrigin(ContextOrigin::API);
     }
 
     public function test_update_product_add_business_event_to_queue()
@@ -73,6 +77,7 @@ JSON;
         $apiClient->request('PATCH', 'api/rest/v1/products/product_update_test', [], [], [], $data);
 
         $this->assertEventCount(1, ProductUpdated::class);
+        $this->assertEventOrigin(ContextOrigin::API);
     }
 
     public function test_remove_product_add_business_event_to_queue()
@@ -92,6 +97,7 @@ JSON;
         $apiClient->request('DELETE', 'api/rest/v1/products/product_to_remove_test');
 
         $this->assertEventCount(1, ProductRemoved::class);
+        $this->assertEventOrigin(ContextOrigin::API);
     }
 
     protected function getConfiguration(): Configuration

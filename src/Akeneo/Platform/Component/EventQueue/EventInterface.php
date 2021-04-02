@@ -20,5 +20,5 @@ interface EventInterface
 
     public function getUuid(): string;
 
-    public function getOrigin(): string;
+    public function getOrigin(): ?string;
 }

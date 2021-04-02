@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
+use Akeneo\Pim\Enrichment\Component\ContextOrigin;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\EntityWithValuesFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
@@ -222,7 +223,7 @@ class ProductModelController
             return new JsonResponse($normalizedViolations, 400);
         }
 
-        $this->productModelSaver->save($productModel, ['origin' => 'API']);
+        $this->productModelSaver->save($productModel, ['origin' => ContextOrigin::API]);
         $normalizedProductModel = $this->normalizeProductModel($productModel);
 
         return new JsonResponse($normalizedProductModel);
@@ -252,7 +253,7 @@ class ProductModelController
         $violations->addAll($this->localizedConverter->getViolations());
 
         if (0 === $violations->count()) {
-            $this->productModelSaver->save($productModel, ['origin' => 'API']);
+            $this->productModelSaver->save($productModel, ['origin' => ContextOrigin::API]);
             $normalizedProductModel = $this->normalizeProductModel($productModel);
 
             return new JsonResponse($normalizedProductModel);
