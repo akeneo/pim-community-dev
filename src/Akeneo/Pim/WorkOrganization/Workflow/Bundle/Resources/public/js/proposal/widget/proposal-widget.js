@@ -37,7 +37,7 @@ define([
         sessionStorage.setItem('redirectTab', $(event.currentTarget).data('redirecttab'));
       }
 
-      router.redirectToRoute('pim_enrich_product_edit', {id: $(event.currentTarget).data('id')});
+      router.redirect($(event.currentTarget).data('product-view-url'));
     },
 
     /**
