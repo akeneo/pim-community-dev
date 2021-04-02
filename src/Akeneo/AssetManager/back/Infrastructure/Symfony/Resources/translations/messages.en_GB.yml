@@ -30,6 +30,8 @@ akeneo_assetmanager:
       error: 'The naming convention failed on asset "{{ asset }}"'
     asset_manager_mass_delete:
       error: 'The mass delete failed on asset(s) "{{ assets }}" with error: "{{ error }}"'
+    asset_manager_mass_edit:
+      error: 'The bulk edit failed on asset(s) "{{ assets }}" with the following error: "{{ error }}"'
 pim_import_export:
   widget:
     last_operations:
@@ -66,6 +68,7 @@ pim_datagrid:
       asset_manager_link_assets_to_products: Link assets to products
       asset_manager_compute_transformations: Compute asset transformations
       asset_manager_mass_delete_assets: Mass delete assets
+      asset_manager_mass_edit_assets: Bulk edit assets
 batch_jobs:
   default_steps:
     execute_naming_convention: Execute Asset Family naming convention
@@ -78,3 +81,7 @@ pim_mass_edit.notification.asset_manager_mass_delete_assets:
   warning: Assets successfully deleted with warnings
   success: Assets successfully deleted
   error: Asset deletion failed
+pim_mass_edit.notification.asset_manager_mass_edit_assets:
+  warning: Assets successfully edited with warnings
+  success: Assets successfully edited
+  error: Asset edition failed
