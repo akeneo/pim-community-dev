@@ -41,6 +41,7 @@ type Props = {
   operationLineNumber: number;
   attributeCode: AttributeCode;
   locales: Locale[];
+  uiLocales: Locale[];
   scopes: IndexedScopes;
   isCurrencyRequired: boolean;
   context?: string;
@@ -52,6 +53,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
   attributeCode,
   scopes,
   locales,
+  uiLocales,
   isCurrencyRequired,
   context,
 }) => {
@@ -262,7 +264,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
           <LocaleSelector
             data-testid={`edit-rules-action-operation-list-${operationLineNumber}-unit-locale`}
             allowClear={true}
-            availableLocales={locales}
+            availableLocales={uiLocales}
             value={watch(unitLabelLocaleFormName)}
             hiddenLabel
             placeholder={translate(

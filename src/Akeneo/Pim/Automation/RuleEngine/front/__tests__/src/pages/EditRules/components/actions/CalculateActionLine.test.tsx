@@ -13,6 +13,7 @@ import {
   scopes,
   measurementFamiliesResponse,
   currencies,
+  uiLocales,
 } from '../../../../factories';
 import userEvent from '@testing-library/user-event';
 import {clearMeasurementFamilyRepositoryCache} from '../../../../../../src/repositories/MeasurementFamilyRepository';
@@ -153,6 +154,7 @@ describe('CalculateActionLine', () => {
       <CalculateActionLine
         lineNumber={0}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
         handleDelete={jest.fn()}
@@ -200,6 +202,7 @@ describe('CalculateActionLine', () => {
       <CalculateActionLine
         lineNumber={0}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
         handleDelete={jest.fn()}
@@ -245,6 +248,7 @@ describe('CalculateActionLine', () => {
       <CalculateActionLine
         lineNumber={0}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
         handleDelete={jest.fn()}
@@ -278,6 +282,7 @@ describe('CalculateActionLine', () => {
       <CalculateActionLine
         lineNumber={0}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
         currentCatalogLocale={'en_US'}
         handleDelete={jest.fn()}

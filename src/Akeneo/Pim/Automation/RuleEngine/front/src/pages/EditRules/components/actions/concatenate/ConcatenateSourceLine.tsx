@@ -19,6 +19,7 @@ type OperationLineProps = {
   baseFormName: string;
   source: ConcatenateSource;
   locales: Locale[];
+  uiLocales: Locale[];
   scopes: IndexedScopes;
   lineNumber: number;
   operationLineNumber: number;
@@ -30,6 +31,7 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
   baseFormName,
   source,
   locales,
+  uiLocales,
   scopes,
   lineNumber,
   operationLineNumber,
@@ -64,6 +66,7 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
               operationLineNumber={operationLineNumber}
               attributeCode={source.field}
               locales={locales}
+              uiLocales={uiLocales}
               scopes={scopes}
               isCurrencyRequired={false}
               context={'concatenate'}

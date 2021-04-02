@@ -15,12 +15,14 @@ type Props = {
   lineNumber: number;
   onChange?: (value: Operation[]) => void;
   locales: Locale[];
+  uiLocales: Locale[];
   scopes: IndexedScopes;
 };
 
 const CalculateOperationList: React.FC<Props> = ({
   lineNumber,
   locales,
+  uiLocales,
   scopes,
 }) => {
   const translate = useTranslate();
@@ -115,6 +117,7 @@ const CalculateOperationList: React.FC<Props> = ({
                 baseFormName={`full_operation_list[${operationLineNumber}]`}
                 sourceOrOperation={sourceOrOperation}
                 locales={locales}
+                uiLocales={uiLocales}
                 scopes={scopes}
                 lineNumber={lineNumber}
                 operationLineNumber={operationLineNumber}

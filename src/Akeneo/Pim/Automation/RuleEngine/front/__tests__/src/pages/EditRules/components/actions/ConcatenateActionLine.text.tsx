@@ -14,6 +14,7 @@ import {
   currencies,
   locales,
   scopes,
+  uiLocales,
 } from '../../../../factories';
 import {ConcatenateActionLine} from '../../../../../../src/pages/EditRules/components/actions/ConcatenateActionLine';
 import {AttributeType} from '../../../../../../src/models';
@@ -147,6 +148,7 @@ describe('ConcatenateActionLine', () => {
         lineNumber={0}
         scopes={scopes}
         locales={locales}
+        uiLocales={uiLocales}
         currentCatalogLocale={'en_US'}
         handleDelete={() => {}}
       />,
@@ -185,6 +187,7 @@ describe('ConcatenateActionLine', () => {
         lineNumber={0}
         scopes={scopes}
         locales={locales}
+        uiLocales={uiLocales}
         currentCatalogLocale={'en_US'}
         handleDelete={() => {}}
       />,
@@ -227,6 +230,7 @@ describe('ConcatenateActionLine', () => {
         lineNumber={0}
         scopes={scopes}
         locales={locales}
+        uiLocales={uiLocales}
         currentCatalogLocale={'en_US'}
         handleDelete={() => {}}
       />,
@@ -263,6 +267,7 @@ describe('ConcatenateActionLine', () => {
         lineNumber={0}
         scopes={scopes}
         locales={locales}
+        uiLocales={uiLocales}
         currentCatalogLocale={'en_US'}
         handleDelete={() => {}}
       />,
@@ -303,6 +308,7 @@ describe('ConcatenateActionLine', () => {
         lineNumber={1}
         scopes={scopes}
         locales={locales}
+        uiLocales={uiLocales}
         currentCatalogLocale={'en_US'}
         handleDelete={() => {}}
       />,

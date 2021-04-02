@@ -6,7 +6,10 @@ import {
   getAllScopes,
   IndexedScopes,
 } from '../../../repositories/ScopeRepository';
-import {getActivatedLocales} from '../../../repositories/LocaleRepository';
+import {
+  getActivatedLocales,
+  getUiLocales,
+} from '../../../repositories/LocaleRepository';
 import {ServerException} from '../../../exceptions';
 
 type Error = {
@@ -28,6 +31,7 @@ const useInitEditRules = (
     statusCode: 500,
   });
   const [locales, setLocales] = useState<Locale[]>();
+  const [uiLocales, setUiLocales] = useState<Locale[]>();
   const [scopes, setScopes] = useState<IndexedScopes>();
 
   useEffect(() => {
@@ -46,12 +50,14 @@ const useInitEditRules = (
     Promise.all([
       getRuleDefinitionByCode(ruleDefinitionCode, router),
       getActivatedLocales(router),
+      getUiLocales(router),
       getAllScopes(router),
     ])
       .then(response => {
         setRuleDefinition(response[0]);
         setLocales(response[1]);
-        setScopes(response[2]);
+        setUiLocales(response[2]);
+        setScopes(response[3]);
       })
       .catch(exception => {
         if (exception instanceof ServerException) {
@@ -70,6 +76,7 @@ const useInitEditRules = (
   return {
     error,
     locales,
+    uiLocales,
     scopes,
   };
 };

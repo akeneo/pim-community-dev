@@ -193,7 +193,7 @@ const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnA
                       </div>
                     </div>
                     <div className="AknTitleContainer-line">
-                      <Label isCode={label === `[${asset.code}]`}>{label}</Label>
+                      <div className="AknTitleContainer-title">{label}</div>
                       {editState}
                     </div>
                   </div>

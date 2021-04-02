@@ -32,6 +32,7 @@ type Props = {
   ruleDefinitionCode: string;
   ruleDefinition: RuleDefinition;
   locales: Locale[];
+  uiLocales: Locale[];
   scopes: IndexedScopes;
   setIsDirty: (isDirty: boolean) => void;
   security: Security;
@@ -41,6 +42,7 @@ const EditRulesContent: React.FC<Props> = ({
   ruleDefinitionCode,
   ruleDefinition,
   locales,
+  uiLocales,
   scopes,
   setIsDirty,
   security,
@@ -260,6 +262,7 @@ const EditRulesContent: React.FC<Props> = ({
           <EditRulesForm
             currentCatalogLocale={currentCatalogLocale}
             locales={locales}
+            uiLocales={uiLocales}
             onSubmit={onSubmit}
             scopes={scopes}
             actions={actionsState}

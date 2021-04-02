@@ -1,8 +1,9 @@
 import {Router} from '../dependenciesTools';
 import {Locale} from '../models';
-import {fetchActivatedLocales} from '../fetch/LocaleFetcher';
+import {fetchActivatedLocales, fetchUiLocales} from '../fetch/LocaleFetcher';
 
 let cacheActivatedLocales: Locale[];
+let cacheUiLocales: Locale[];
 
 const getActivatedLocales = async (router: Router): Promise<Locale[]> => {
   if (!cacheActivatedLocales) {
@@ -10,6 +11,14 @@ const getActivatedLocales = async (router: Router): Promise<Locale[]> => {
   }
 
   return cacheActivatedLocales;
+};
+
+const getUiLocales = async (router: Router): Promise<Locale[]> => {
+  if (!cacheUiLocales) {
+    cacheUiLocales = await fetchUiLocales(router);
+  }
+
+  return cacheUiLocales;
 };
 
 const getActivatedLocaleByCode = async (
@@ -36,4 +45,9 @@ const checkLocaleExists = async (
   return null !== (await getActivatedLocaleByCode(localeCode, router));
 };
 
-export {getActivatedLocales, getActivatedLocaleByCode, checkLocaleExists};
+export {
+  getActivatedLocales,
+  getUiLocales,
+  getActivatedLocaleByCode,
+  checkLocaleExists,
+};

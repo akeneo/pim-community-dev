@@ -22,7 +22,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductSource:
             - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
         unitLabelLocale:
             - Type: string
-            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
+            - Akeneo\Channel\Component\Validator\Constraint\Locale: ~
         format:
             - Type: string
         currency:

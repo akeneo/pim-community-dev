@@ -69,6 +69,7 @@ type FormData = {
 
 type Props = {
   locales: Locale[];
+  uiLocales: Locale[];
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
@@ -81,6 +82,7 @@ type Props = {
 
 const EditRulesForm: React.FC<Props> = ({
   locales,
+  uiLocales,
   onSubmit,
   scopes,
   currentCatalogLocale,
@@ -126,6 +128,7 @@ const EditRulesForm: React.FC<Props> = ({
           <RulesBuilder
             currentCatalogLocale={currentCatalogLocale}
             locales={locales}
+            uiLocales={uiLocales}
             scopes={scopes}
             actions={actions}
             handleDeleteAction={handleDeleteAction}

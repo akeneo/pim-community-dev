@@ -125,7 +125,7 @@ const LocaleSelector: React.FC<Props> = ({
       localeCode.split('_').length - 1
     ];
 
-    return `<i class="flag flag-${shortRegion}"}/>&nbsp;${
+    return `<i class="flag flag-${shortRegion}"></i>&nbsp;${
       displayAsCode ? locale.code : locale.language
     }`;
   };

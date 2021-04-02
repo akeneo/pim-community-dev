@@ -6,7 +6,7 @@ import {
   renderWithProviders,
   waitForElementToBeRemoved,
 } from '../../../../../../test-utils';
-import {locales, scopes} from '../../../../factories';
+import {locales, scopes, uiLocales} from '../../../../factories';
 import {RemoveCategoriesActionLine} from '../../../../../../src/pages/EditRules/components/actions/RemoveCategoriesActionLine';
 import {createCategory} from '../../../../factories/CategoryFactory';
 import userEvent from '@testing-library/user-event';
@@ -59,6 +59,7 @@ describe('RemoveCategoriesActionLine', () => {
       <RemoveCategoriesActionLine
         lineNumber={0}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
         handleDelete={jest.fn()}
@@ -153,6 +154,7 @@ describe('RemoveCategoriesActionLine', () => {
       <RemoveCategoriesActionLine
         lineNumber={0}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
         handleDelete={jest.fn()}

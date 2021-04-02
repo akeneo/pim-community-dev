@@ -32,6 +32,21 @@ export const locales: Locale[] = [
   },
 ];
 
+export const uiLocales: Locale[] = [
+  {
+    code: 'en_US',
+    label: 'English (United States)',
+    region: 'United States',
+    language: 'English',
+  },
+  {
+    code: 'es_ES',
+    label: 'Spanish (Spain)',
+    region: 'Spain',
+    language: 'Spanish',
+  },
+];
+
 export const createScope = (data: {[key: string]: any}): Scope => {
   return {
     code: 'ecommerce',

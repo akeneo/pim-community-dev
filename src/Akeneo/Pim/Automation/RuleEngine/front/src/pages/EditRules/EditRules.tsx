@@ -19,7 +19,7 @@ const EditRules: React.FC<Props> = ({ruleDefinitionCode, setIsDirty}) => {
   const security = useSecurity();
   const translate = useTranslate();
   const [ruleDefinition, setRuleDefinition] = useState<RuleDefinition>();
-  const {error, locales, scopes} = useInitEditRules(
+  const {error, locales, uiLocales, scopes} = useInitEditRules(
     ruleDefinitionCode,
     router,
     security,
@@ -34,13 +34,14 @@ const EditRules: React.FC<Props> = ({ruleDefinitionCode, setIsDirty}) => {
           statusCode={error.statusCode}
           message={error.exception.message}
         />
-      ) : !ruleDefinition || !locales || !scopes ? (
+      ) : !ruleDefinition || !locales || !scopes || !uiLocales ? (
         <AkeneoSpinner />
       ) : (
         <EditRulesContent
           ruleDefinitionCode={ruleDefinitionCode}
           ruleDefinition={ruleDefinition}
           locales={locales}
+          uiLocales={uiLocales}
           scopes={scopes}
           setIsDirty={setIsDirty}
           security={security}

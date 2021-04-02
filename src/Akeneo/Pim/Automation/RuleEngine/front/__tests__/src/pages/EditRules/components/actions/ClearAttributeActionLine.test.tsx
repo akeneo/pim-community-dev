@@ -14,6 +14,7 @@ import {
   createAttribute,
   locales,
   scopes,
+  uiLocales,
 } from '../../../../factories';
 
 describe('ClearAttributeActionLine', () => {
@@ -57,6 +58,7 @@ describe('ClearAttributeActionLine', () => {
         lineNumber={1}
         handleDelete={jest.fn()}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
       />,
       {all: true},
@@ -117,6 +119,7 @@ describe('ClearAttributeActionLine', () => {
         lineNumber={1}
         handleDelete={jest.fn()}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
       />,
       {all: true},
@@ -205,6 +208,7 @@ describe('ClearAttributeActionLine', () => {
         lineNumber={1}
         handleDelete={jest.fn()}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
       />,
       {all: true},

@@ -25,7 +25,6 @@ Feature: Import concatenate action rules
     And an exception with message "actions[0].from[5]: A single key among \"field\", \"text\" or \"new_line\" is required, please select only one" has been thrown
     And an exception with message "actions[0].from[6]: A single key among \"field\", \"text\" or \"new_line\" is required, please select one" has been thrown
     And an exception with message "actions[0].from[7]: The \"processor\" attribute requires an existing and activated locale, please make sure your locale exists and is activated: unknown1" has been thrown
-    And an exception with message "actions[0].from[7].unitLabelLocale: The \"unknown2\" locale does not exist or is not activated" has been thrown
 
   @acceptance-back
   Scenario: Import a concatenate rule with missing fields
