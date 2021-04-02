@@ -117,9 +117,9 @@ SQL;
     {
         $attributeCodes = [];
         foreach ($rows as $row) {
-            $attributeCodes = array_merge($attributeCodes, array_keys($row['cleanedRawValues']));
+            $attributeCodes = array_unique(array_merge($attributeCodes, array_keys($row['cleanedRawValues'])));
         }
-        $attributes = $this->getAttributes->forCodes(array_unique($attributeCodes));
+        $attributes = $this->getAttributes->forCodes($attributeCodes);
 
         $result = [];
         foreach ($rows as $row) {
