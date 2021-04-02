@@ -78,10 +78,6 @@ abstract class AbstractExportWithAssetTestCase extends AbstractExportTestCase
     {
         parent::setUp();
 
-        // we ensure that the version provider is non saas, so that the job exports media files into the output directory
-        $nonSaasVersionProvider = new VersionProvider(EnterpriseVersion::class, 'EE');
-        static::$container->set('pim_catalog.version_provider', $nonSaasVersionProvider);
-
         $this->fileStorer = $this->get('akeneo_file_storage.file_storage.file.file_storer');
         $this->assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
         $this->attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
@@ -443,14 +439,17 @@ abstract class AbstractExportWithAssetTestCase extends AbstractExportTestCase
 
     protected function assertFileExistsInWorkingPath(string $file): void
     {
-        self::assertFileExists(
-            $this->getWorkingPath() . '/' . $file,
-            sprintf(
-                "The '%s' file is not found. Got: \n%s",
+        // in saas editions the files are not locally copied
+        if (!$this->get('pim_catalog.version_provider')->isSaasVersion()) {
+            self::assertFileExists(
                 $this->getWorkingPath() . '/' . $file,
-                $this->scanDirectoryRecursively($this->getWorkingPath())
-            )
-        );
+                sprintf(
+                    "The '%s' file is not found. Got: \n%s",
+                    $this->getWorkingPath() . '/' . $file,
+                    $this->scanDirectoryRecursively($this->getWorkingPath())
+                )
+            );
+        }
 
         $writtenFiles = $this->getWriter()->getWrittenFiles();
         self::assertThat(
