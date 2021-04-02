@@ -33,6 +33,7 @@
 - PIM-9790: Fix memory leak on rules execution
 - PIM-9788: Fix locales list on rule concatenate action
 - PIM-9791: Fix memory issue on proposals widget
+- PIM-9682: Link to proposal product model is completely wrong
 
 ## Improvements
 
