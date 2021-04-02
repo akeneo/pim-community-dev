@@ -117,6 +117,9 @@ SQL;
     {
         $attributeCodes = [];
         foreach ($rows as $row) {
+            // array_unique is important for big catalog (see PIM-9783), because for a very high number of rows the array_merge takes too much time.
+            // For instance for 1.000 rows it can take 1 second, for 10.000 rows more than 1 minute.
+            // With array_unique it's less than 1 second in both cases.
             $attributeCodes = array_unique(array_merge($attributeCodes, array_keys($row['cleanedRawValues'])));
         }
         $attributes = $this->getAttributes->forCodes($attributeCodes);
