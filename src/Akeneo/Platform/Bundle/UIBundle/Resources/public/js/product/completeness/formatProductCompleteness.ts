@@ -1,23 +1,26 @@
-import {ChannelsLocalesCompletenesses} from "@akeneo-pim-community/activity/src/domain";
+import {ChannelsLocalesCompletenesses} from '@akeneo-pim-community/activity/src/domain';
 
 type BackendProductCompleteness = {
   labels: {
-    [locale: string]: string
-  },
+    [locale: string]: string;
+  };
   stats: {
-    average: number
-  },
+    average: number;
+  };
   locales: {
     [locale: string]: {
-      label: string,
+      label: string;
       completeness: {
-        ratio: number
-      }
-    }
-  }
-}
+        ratio: number;
+      };
+    };
+  };
+};
 
-const formatProductCompleteness = (rawProductCompleteness: BackendProductCompleteness[], catalogLocale: string): ChannelsLocalesCompletenesses => {
+const formatProductCompleteness = (
+  rawProductCompleteness: BackendProductCompleteness[],
+  catalogLocale: string
+): ChannelsLocalesCompletenesses => {
   return rawProductCompleteness.reduce((formattedCompleteness, channelCompleteness) => {
     formattedCompleteness[channelCompleteness.labels[catalogLocale]] = {
       channelRatio: channelCompleteness.stats.average,
