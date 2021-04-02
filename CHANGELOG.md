@@ -32,6 +32,7 @@
 - PIM-9768: Handle error when trying to delete a product model with at least 1 variant already published
 - PIM-9790: Fix memory leak on rules execution
 - PIM-9788: Fix locales list on rule concatenate action
+- PIM-9791: Fix memory issue on proposals widget
 
 ## Improvements
 
