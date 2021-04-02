@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 /**
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -13,12 +14,12 @@ namespace Akeneo\Tool\Component\DatabaseMetadata;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 
-class DatabaseInspector 
+class DatabaseInspector
 {
     /** @var Connection */
     private $db;
 
-    public function __construct(Connection $db) 
+    public function __construct(Connection $db)
     {
         $this->db = $db;
     }
@@ -64,7 +65,7 @@ SQL;
     }
 
     /**
-     * fetch the values stored in the given column ofn the given table. 
+     * fetch the values stored in the given column ofn the given table.
      */
     public function getTableColumnValues(string $table, string $column): array
     {

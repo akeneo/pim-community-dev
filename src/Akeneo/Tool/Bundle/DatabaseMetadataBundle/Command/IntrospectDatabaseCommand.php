@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 /**
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -12,10 +13,10 @@ namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\Command;
 
 use Akeneo\Tool\Component\DatabaseMetadata\DatabaseInspector;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class IntrospectDatabaseCommand extends Command
 {
@@ -34,9 +35,9 @@ class IntrospectDatabaseCommand extends Command
 
     protected function configure()
     {
-       $this
+        $this
          ->setDescription("Output the database structural informations.")
-         ->addUsage('Dump database structure informations.') 
+         ->addUsage('Dump database structure informations.')
          ->setHelp('This command is used to either compare the PIM database structure with a reference or to troubleshoot problems.')
          ->addOption('db-name', 'd', InputOption::VALUE_REQUIRED, 'The database name when different from "akeneo_pim".', 'akeneo_pim')
          ->addOption('file', 'f', InputOption::VALUE_OPTIONAL, sprintf('When present, this option makes the tool to save the output in a file. If the name of the file is not provided, it will default to "%s".', self::DEFAULT_FILENAME), false)
@@ -61,7 +62,7 @@ class IntrospectDatabaseCommand extends Command
             }
         }
 
-        foreach($this->inspector->getTableList($db_name) as $row) {
+        foreach ($this->inspector->getTableList($db_name) as $row) {
             $line = sprintf("%s | %s\n", $row['table_name'], $row['table_type']);
 
             if (isset($filesystem)) {
@@ -70,7 +71,7 @@ class IntrospectDatabaseCommand extends Command
                 $output->write($line);
             }
         }
-        foreach($this->inspector->getColumnInfo($db_name) as $row) {
+        foreach ($this->inspector->getColumnInfo($db_name) as $row) {
             $line = sprintf(
                 "%s | %s | %s | %s | %s\n",
                 $row['table_name'],
