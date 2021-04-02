@@ -393,7 +393,6 @@ pim_asset_manager:
         fail: Une erreur s'est produite pendant la suppression des ressources de la famille.
       mass_delete:
         success: La suppression en masse des ressources a été lancée. Vous serez notifié lorsque la tâche sera terminée.
-        fail: "L'erreur suivante s'est produite lors du lancement de la suppression en masse des ressources : {{ error }}"
       execute_naming_convention:
         success: Convention de nommage exécutée avec succès
         fail: Une erreur s'est produite lors de l'exécution de la convention de nommage
