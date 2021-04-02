@@ -114,6 +114,8 @@ pim_enrich.entity.product:
       header_reply: '{{ user }} respondeu ao comentário'
       delete_confirm: Tem certeza que deseja deletar este comentário?
       removed_author: Usuário removido
+    asset:
+      title: Mídias
 pim_enrich.entity.product_model:
   label: modelo do produto
   uppercase_label: Modelo do produto
@@ -169,6 +171,10 @@ pim_enrich.entity.group:
       button: Criar Grupo
     delete:
       confirm: Tem certeza de que deseja excluir este produto?
+pim_enrich.entity.role:
+  flash:
+    delete:
+      success: Função removida com sucesso
 pim_enrich.entity.category:
   label: categoria
   uppercase_label: Categoria
@@ -317,6 +323,7 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Alterar o modelo de produto pai de <span class=\"AknFullPage-title--highlight\">produto</span>|]1, Inf[Alterar o modelo de produto pai de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span>"
       description: O pai dos produtos variantes ou modelos de subprodutos selecionados na grade será alterado para o modelo de produto escolhido.
 pim_datagrid:
+  search: "Buscar em {{ label }}"
   mass_action_group:
     bulk_actions:
       label: Ações em Massa

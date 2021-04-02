@@ -1,5 +1,15 @@
 # 3.2.x
 
+# 3.2.83 (2021-04-02)
+
+# 3.2.83 (2021-03-31)
+
+## Bug fixes
+
+- PIM-9709: Fix missing translation on move to categories mass edit action
+
+# 3.2.82 (2021-02-16)
+
 # 3.2.81 (2021-02-15)
 
 # Technical Improvements

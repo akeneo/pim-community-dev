@@ -3,3 +3,7 @@ pim_enrich:
   locale:
     tab:
       property.title: Propriedade
+  channel:
+    flash:
+      delete:
+        error: Você não pode remover o canal "%channelCode%" porque seu PIM deve conter pelo menos um canal.
