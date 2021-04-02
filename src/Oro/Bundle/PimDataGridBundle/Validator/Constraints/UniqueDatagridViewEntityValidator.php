@@ -40,7 +40,7 @@ class UniqueDatagridViewEntityValidator extends ConstraintValidator
 
         if (DatagridView::TYPE_PUBLIC === $entity->getType()) {
             $datagridViewFromDb = $this->datagridViewRepository->findPublicDatagridViewByLabel($entity->getLabel());
-        } elseif(DatagridView::TYPE_PRIVATE === $entity->getType()) {
+        } elseif (DatagridView::TYPE_PRIVATE === $entity->getType()) {
             $datagridViewFromDb = $this->datagridViewRepository->findPrivateDatagridViewByLabel($entity->getLabel(), $entity->getOwner());
         }
 
