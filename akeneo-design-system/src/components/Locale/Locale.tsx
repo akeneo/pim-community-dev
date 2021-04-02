@@ -5,12 +5,12 @@ import {getFontSize} from '../../theme';
 
 const LocaleContainer = styled.span`
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
 `;
 
 const Emoji = styled.span`
   font-size: ${getFontSize('bigger')};
-  margin-right: 5px;
+  margin-right: 3px;
 `;
 
 type LocaleProps = {
