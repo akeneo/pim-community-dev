@@ -4,6 +4,7 @@ import {useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {NoDataSection, NoDataText} from '@akeneo-pim-community/shared';
 import {useDashboardLastOperations} from '../../hooks';
 import {Operation} from '../../domain';
+import styled from 'styled-components';
 
 const JOB_STARTING = '2';
 const JOB_STARTED = '3';
@@ -87,7 +88,7 @@ const LastOperationsWidget = () => {
                     </Badge>
                   </Table.Cell>
                   <Table.Cell>{counter > 0 ? counter : '-'}</Table.Cell>
-                  <Table.Cell>
+                  <TableActionCell>
                     {operation.canSeeReport && (
                       <Button
                         type="button"
@@ -99,7 +100,7 @@ const LastOperationsWidget = () => {
                         {translate('pim_import_export.widget.last_operations.details')}
                       </Button>
                     )}
-                  </Table.Cell>
+                  </TableActionCell>
                 </Table.Row>
               );
             })}
@@ -109,5 +110,9 @@ const LastOperationsWidget = () => {
     </>
   );
 };
+
+const TableActionCell = styled(Table.Cell)`
+  width: 50px;
+`;
 
 export {LastOperationsWidget};
