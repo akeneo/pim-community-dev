@@ -22,6 +22,9 @@ use Ramsey\Uuid\Uuid;
  */
 class Client
 {
+    /** Number of split requests when retrying bulk index */
+    private const NUMBER_OF_BATCHES_ON_RETRY = 2;
+
     private ClientBuilder $builder;
     private Loader $configurationLoader;
     private array $hosts;
@@ -146,8 +149,7 @@ class Client
         try {
             $mergedResponse = $this->doChunkedBulkIndex($params, $mergedResponse, $length);
         } catch (BadRequest400Exception $e) {
-            /** Retry to bulk index by splitting the request in two requests if possible, else retry */
-            $chunkLength = intdiv($length, 2);
+            $chunkLength = intdiv($length, self::NUMBER_OF_BATCHES_ON_RETRY);
             $chunkLength = $chunkLength % 2 == 0 ? $chunkLength : $chunkLength + 1;
 
             $mergedResponse = $this->doChunkedBulkIndex($params, $mergedResponse, $chunkLength);
