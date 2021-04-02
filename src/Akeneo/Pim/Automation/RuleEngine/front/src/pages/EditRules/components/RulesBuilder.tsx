@@ -9,6 +9,7 @@ import {useTranslate} from '../../../dependenciesTools/hooks';
 
 type Props = {
   locales: Locale[];
+  uiLocales: Locale[];
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
   handleDeleteAction: (lineNumber: number) => void;
@@ -20,6 +21,7 @@ type Props = {
 
 const RulesBuilder: React.FC<Props> = ({
   locales,
+  uiLocales,
   scopes,
   currentCatalogLocale,
   actions,
@@ -52,6 +54,7 @@ const RulesBuilder: React.FC<Props> = ({
                 }}
                 currentCatalogLocale={currentCatalogLocale}
                 locales={locales}
+                uiLocales={uiLocales}
                 scopes={scopes}
                 key={i}
               />

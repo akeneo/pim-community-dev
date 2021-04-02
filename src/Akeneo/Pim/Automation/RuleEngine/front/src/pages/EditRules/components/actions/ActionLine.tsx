@@ -38,6 +38,7 @@ const ActionLine: React.FC<{action: Action} & ActionLineProps> = ({
   handleDelete,
   currentCatalogLocale,
   locales,
+  uiLocales,
   scopes,
 }) => {
   const router = useBackboneRouter();
@@ -64,6 +65,7 @@ const ActionLine: React.FC<{action: Action} & ActionLineProps> = ({
       handleDelete={handleDelete}
       currentCatalogLocale={currentCatalogLocale}
       locales={locales}
+      uiLocales={uiLocales}
       scopes={scopes}
     />
   );

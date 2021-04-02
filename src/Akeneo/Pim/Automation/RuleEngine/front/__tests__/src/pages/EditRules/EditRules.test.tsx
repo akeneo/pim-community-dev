@@ -13,6 +13,7 @@ import {Scope} from '../../../../src/models';
 import {clearCategoryRepositoryCache} from '../../../../src/repositories/CategoryRepository';
 import {clearAttributeRepositoryCache} from '../../../../src/repositories/AttributeRepository';
 import {dependencies} from '../../../../src/dependenciesTools/provider/dependencies';
+import {locales, uiLocales} from '../../factories';
 
 const ruleDefinitionCode = 'my_code';
 
@@ -28,32 +29,11 @@ const ruleDefinitionPayload = {
   },
 };
 
-const localesPayload = [
-  {
-    code: 'de_DE',
-    label: 'German (Germany)',
-    region: 'Germany',
-    language: 'German',
-  },
-  {
-    code: 'en_US',
-    label: 'English (United States)',
-    region: 'United States',
-    language: 'English',
-  },
-  {
-    code: 'fr_FR',
-    label: 'French (France)',
-    region: 'France',
-    language: 'French',
-  },
-];
-
 const scopesPayload: Scope[] = [
   {
     code: 'ecommerce',
     currencies: ['EUR', 'USD'],
-    locales: localesPayload,
+    locales,
     category_tree: 'master',
     conversion_units: [],
     labels: {
@@ -99,7 +79,8 @@ describe('EditRules', () => {
     // Given
     fetchMock.mockResponses(
       [JSON.stringify(ruleDefinitionPayload), {status: 200}],
-      [JSON.stringify(localesPayload), {status: 200}],
+      [JSON.stringify(locales), {status: 200}],
+      [JSON.stringify(uiLocales), {status: 200}],
       [JSON.stringify(scopesPayload), {status: 200}]
     );
     fetchMock.mockResponse(() => {
@@ -159,7 +140,7 @@ describe('EditRules', () => {
           'pim_enrich_locale_rest_index?%7B%22activated%22:true%7D'
         )
       ) {
-        return Promise.resolve(JSON.stringify(localesPayload));
+        return Promise.resolve(JSON.stringify(locales));
       } else if (request.url.includes('pim_enrich_channel_rest_index')) {
         return Promise.resolve(JSON.stringify(scopesPayload));
       }
@@ -212,7 +193,7 @@ describe('EditRules', () => {
           'pim_enrich_locale_rest_index?%7B%22activated%22:true%7D'
         )
       ) {
-        return Promise.resolve(JSON.stringify(localesPayload));
+        return Promise.resolve(JSON.stringify(locales));
       }
 
       throw new Error(`The "${request.url}" url is not mocked.`);
@@ -262,7 +243,7 @@ describe('EditRules', () => {
           'pim_enrich_locale_rest_index?%7B%22activated%22:true%7D'
         )
       ) {
-        return Promise.resolve(JSON.stringify(localesPayload));
+        return Promise.resolve(JSON.stringify(locales));
       } else if (request.url.includes('pim_enrich_channel_rest_index')) {
         return Promise.resolve(JSON.stringify(scopesPayload));
       }
@@ -311,7 +292,7 @@ describe('EditRules', () => {
           'pim_enrich_locale_rest_index?%7B%22activated%22:true%7D'
         )
       ) {
-        return Promise.resolve(JSON.stringify(localesPayload));
+        return Promise.resolve(JSON.stringify(locales));
       } else if (request.url.includes('pim_enrich_channel_rest_index')) {
         return Promise.resolve(JSON.stringify(scopesPayload));
       }
@@ -366,7 +347,7 @@ describe('EditRules', () => {
           'pim_enrich_locale_rest_index?%7B%22activated%22:true%7D'
         )
       ) {
-        return Promise.resolve(JSON.stringify(localesPayload));
+        return Promise.resolve(JSON.stringify(locales));
       } else if (request.url.includes('pim_enrich_channel_rest_index')) {
         return Promise.resolve(JSON.stringify(scopesPayload));
       }
@@ -401,7 +382,7 @@ describe('EditRules', () => {
           'pim_enrich_locale_rest_index?%7B%22activated%22:true%7D'
         )
       ) {
-        return Promise.resolve(JSON.stringify(localesPayload));
+        return Promise.resolve(JSON.stringify(locales));
       } else if (request.url.includes('pim_enrich_channel_rest_index')) {
         return Promise.resolve(JSON.stringify(scopesPayload));
       }

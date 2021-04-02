@@ -52,6 +52,7 @@ type OperationLineProps = {
   baseFormName: string;
   sourceOrOperation: SourceOrOperation;
   locales: Locale[];
+  uiLocales: Locale[];
   scopes: IndexedScopes;
   lineNumber: number;
   operationLineNumber: number;
@@ -63,6 +64,7 @@ const CalculateOperationLine: React.FC<OperationLineProps> = ({
   baseFormName,
   sourceOrOperation,
   locales,
+  uiLocales,
   scopes,
   lineNumber,
   operationLineNumber,
@@ -170,6 +172,7 @@ const CalculateOperationLine: React.FC<OperationLineProps> = ({
                 locales={locales}
                 scopes={scopes}
                 isCurrencyRequired={true}
+                uiLocales={uiLocales}
               />
             </>
           )}

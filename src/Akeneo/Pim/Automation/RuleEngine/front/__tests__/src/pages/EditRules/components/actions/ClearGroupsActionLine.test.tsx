@@ -1,7 +1,7 @@
 import React from 'react';
 import {renderWithProviders} from '../../../../../../test-utils';
 import {ClearGroupsActionLine} from '../../../../../../src/pages/EditRules/components/actions/ClearGroupsActionLine';
-import {locales, scopes} from '../../../../factories';
+import {locales, scopes, uiLocales} from '../../../../factories';
 
 describe('ClearGroupsActionLine', () => {
   it('should display the clear groups action line', async () => {
@@ -14,6 +14,7 @@ describe('ClearGroupsActionLine', () => {
         lineNumber={1}
         handleDelete={jest.fn()}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
       />,
       {all: true}

@@ -1,7 +1,7 @@
 import React from 'react';
 import 'jest-fetch-mock';
 import {renderWithProviders, screen} from '../../../../../../test-utils';
-import {locales, scopes} from '../../../../factories';
+import {locales, scopes, uiLocales} from '../../../../factories';
 import {SetStatusActionLine} from '../../../../../../src/pages/EditRules/components/actions/SetStatusActionLine';
 
 describe('SetStatusActionLine', () => {
@@ -10,6 +10,7 @@ describe('SetStatusActionLine', () => {
       <SetStatusActionLine
         lineNumber={0}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
         currentCatalogLocale={'en_US'}
         handleDelete={jest.fn()}
@@ -52,6 +53,7 @@ describe('SetStatusActionLine', () => {
       <SetStatusActionLine
         lineNumber={0}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
         currentCatalogLocale={'en_US'}
         handleDelete={jest.fn()}

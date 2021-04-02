@@ -1,7 +1,12 @@
 import React from 'react';
 import 'jest-fetch-mock';
 import {act, renderWithProviders, screen} from '../../../../../../test-utils';
-import {createAttribute, locales, scopes} from '../../../../factories';
+import {
+  createAttribute,
+  locales,
+  scopes,
+  uiLocales,
+} from '../../../../factories';
 import {clearAttributeRepositoryCache} from '../../../../../../src/repositories/AttributeRepository';
 import {AttributeType} from '../../../../../../src/models';
 import {RemoveAttributeValueActionLine} from '../../../../../../src/pages/EditRules/components/actions/RemoveAttributeValueActionLine';
@@ -68,6 +73,7 @@ describe('RemoveAttributeValueActionLine', () => {
       <RemoveAttributeValueActionLine
         lineNumber={0}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
         handleDelete={jest.fn()}

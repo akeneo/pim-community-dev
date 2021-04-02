@@ -7,6 +7,7 @@ import {
   currencies,
   locales,
   scopes,
+  uiLocales,
 } from '../../../../../factories';
 import {AttributeType} from '../../../../../../../src/models';
 import {AttributePropertiesSelector} from '../../../../../../../src/pages/EditRules/components/actions/attribute/AttributePropertiesSelector';
@@ -85,6 +86,7 @@ describe('AttributePropertiesSelector', () => {
         attributeCode={defaultValues.attribute.field}
         scopes={scopes}
         locales={locales}
+        uiLocales={uiLocales}
         isCurrencyRequired={true}
       />,
       {all: true},
@@ -132,6 +134,7 @@ describe('AttributePropertiesSelector', () => {
         attributeCode={defaultValues.attribute.field}
         scopes={scopes}
         locales={locales}
+        uiLocales={uiLocales}
         isCurrencyRequired={true}
       />,
       {all: true},
@@ -175,6 +178,7 @@ describe('AttributePropertiesSelector', () => {
         attributeCode={defaultValues.attribute.field}
         scopes={scopes}
         locales={locales}
+        uiLocales={uiLocales}
         isCurrencyRequired={true}
         context={'concatenate'}
       />,
@@ -215,6 +219,7 @@ describe('AttributePropertiesSelector', () => {
         attributeCode={defaultValues.attribute.field}
         scopes={scopes}
         locales={locales}
+        uiLocales={uiLocales}
         isCurrencyRequired={true}
       />,
       {all: true},

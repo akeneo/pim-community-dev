@@ -6,6 +6,7 @@ type ActionLineProps = {
   handleDelete: () => void;
   currentCatalogLocale: LocaleCode;
   locales: Locale[];
+  uiLocales: Locale[];
   scopes: IndexedScopes;
 };
 

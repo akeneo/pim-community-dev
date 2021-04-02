@@ -5,6 +5,7 @@ import {wait} from '@testing-library/dom';
 import {render, act, screen} from '../../../../test-utils';
 import {IndexedScopes} from '../../../../src/repositories/ScopeRepository';
 import {Security} from '../../../../src/dependenciesTools';
+import {uiLocales} from '../../factories';
 
 const setIsDirty = (_isDirty: boolean) => {};
 
@@ -48,6 +49,7 @@ describe('EditRulesContent', () => {
         ruleDefinitionCode={ruleDefinitionCode}
         ruleDefinition={ruleDefinition}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
         setIsDirty={setIsDirty}
         security={security}
@@ -113,6 +115,7 @@ describe('EditRulesContent', () => {
         ruleDefinitionCode={ruleDefinitionCode}
         ruleDefinition={ruleDefinition}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
         setIsDirty={setIsDirty}
         security={security}
@@ -184,6 +187,7 @@ describe('EditRulesContent', () => {
         ruleDefinitionCode={ruleDefinitionCode}
         ruleDefinition={ruleDefinition}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
         setIsDirty={setIsDirty}
         security={security}
@@ -243,6 +247,7 @@ describe('EditRulesContent', () => {
         ruleDefinitionCode={ruleDefinitionCode}
         ruleDefinition={ruleDefinition}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
         setIsDirty={setIsDirty}
         security={security}

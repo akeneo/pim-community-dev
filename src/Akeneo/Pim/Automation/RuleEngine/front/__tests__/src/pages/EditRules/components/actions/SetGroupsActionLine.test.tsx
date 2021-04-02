@@ -1,7 +1,7 @@
 import React from 'react';
 import 'jest-fetch-mock';
 import {renderWithProviders, screen} from '../../../../../../test-utils';
-import {locales, scopes} from '../../../../factories';
+import {locales, scopes, uiLocales} from '../../../../factories';
 import {SetGroupsActionLine} from '../../../../../../src/pages/EditRules/components/actions/SetGroupsActionLine';
 
 describe('SetGroupsActionLine', () => {
@@ -14,6 +14,7 @@ describe('SetGroupsActionLine', () => {
       <SetGroupsActionLine
         lineNumber={0}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
         currentCatalogLocale={'en_US'}
         handleDelete={jest.fn()}
@@ -71,6 +72,7 @@ describe('SetGroupsActionLine', () => {
       <SetGroupsActionLine
         lineNumber={0}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
         currentCatalogLocale={'en_US'}
         handleDelete={jest.fn()}

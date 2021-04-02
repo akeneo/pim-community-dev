@@ -11,4 +11,11 @@ const fetchActivatedLocales = async (router: Router): Promise<Locale[]> => {
   return await response.json();
 };
 
-export {fetchActivatedLocales};
+const fetchUiLocales = async (router: Router): Promise<Locale[]> => {
+  const url = router.generate('pim_localization_locale_index');
+  const response = await httpGet(url);
+
+  return await response.json();
+};
+
+export {fetchActivatedLocales, fetchUiLocales};

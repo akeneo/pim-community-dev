@@ -12,6 +12,7 @@ import {
   createAttribute,
   locales,
   scopes,
+  uiLocales,
 } from '../../../../factories';
 import {clearAttributeRepositoryCache} from '../../../../../../src/repositories/AttributeRepository';
 import userEvent from '@testing-library/user-event';
@@ -63,6 +64,7 @@ describe('SetActionLine', () => {
       <SetActionLine
         lineNumber={0}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
         handleDelete={jest.fn()}
@@ -170,6 +172,7 @@ describe('SetActionLine', () => {
       <SetActionLine
         lineNumber={0}
         locales={locales}
+        uiLocales={uiLocales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
         handleDelete={jest.fn()}

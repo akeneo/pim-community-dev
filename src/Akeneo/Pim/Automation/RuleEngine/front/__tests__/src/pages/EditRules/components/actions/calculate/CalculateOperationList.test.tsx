@@ -14,6 +14,7 @@ import {
   currencies,
   locales,
   scopes,
+  uiLocales,
 } from '../../../../../factories';
 import {CalculateOperationList} from '../../../../../../../src/pages/EditRules/components/actions/calculate/CalculateOperationList';
 import {AttributeType} from '../../../../../../../src/models';
@@ -138,6 +139,7 @@ describe('CalculateOperationList', () => {
         lineNumber={0}
         scopes={scopes}
         locales={locales}
+        uiLocales={uiLocales}
       />,
       {all: true},
       {defaultValues}
@@ -167,6 +169,7 @@ describe('CalculateOperationList', () => {
         lineNumber={0}
         scopes={scopes}
         locales={locales}
+        uiLocales={uiLocales}
       />,
       {all: true},
       {defaultValues}
@@ -225,6 +228,7 @@ describe('CalculateOperationList', () => {
         lineNumber={0}
         scopes={scopes}
         locales={locales}
+        uiLocales={uiLocales}
       />,
       {all: true},
       {defaultValues}
@@ -249,6 +253,7 @@ describe('CalculateOperationList', () => {
         lineNumber={0}
         scopes={scopes}
         locales={locales}
+        uiLocales={uiLocales}
       />,
       {all: true},
       {defaultValues}

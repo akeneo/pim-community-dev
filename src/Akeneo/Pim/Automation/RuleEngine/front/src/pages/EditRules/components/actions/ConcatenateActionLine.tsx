@@ -51,6 +51,7 @@ const ConcatenateActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   handleDelete,
   locales,
+  uiLocales,
   scopes,
 }) => {
   const translate = useTranslate();
@@ -190,6 +191,7 @@ const ConcatenateActionLine: React.FC<ActionLineProps> = ({
           <ConcatenateSourceList
             lineNumber={lineNumber}
             locales={locales}
+            uiLocales={uiLocales}
             scopes={scopes}
             attributeTarget={attributeTarget ?? null}
           />

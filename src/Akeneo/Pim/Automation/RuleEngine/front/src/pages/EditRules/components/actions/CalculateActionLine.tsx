@@ -61,6 +61,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   handleDelete,
   locales,
+  uiLocales,
   scopes,
 }) => {
   const translate = useTranslate();
@@ -188,6 +189,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
           <CalculateOperationList
             lineNumber={lineNumber}
             locales={locales}
+            uiLocales={uiLocales}
             scopes={scopes}
           />
         </ActionLeftSide>
