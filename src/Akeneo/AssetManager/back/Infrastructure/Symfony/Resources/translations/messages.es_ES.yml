@@ -1,0 +1,34 @@
+#akeneo_assetmanager:
+#acl_group:
+#asset_family: Reference entities
+#acl:
+#asset_family:
+#create: Create an entity
+#edit: Edit the entity properties
+#delete: Delete an entity
+#manage_permission: Manage asset family permissions
+#asset:
+#create: Create a asset
+#edit: Edit the assets
+#delete: Delete a asset
+#delete_all: Delete all entity assets
+#list_product: List linked products to asset
+#attribute:
+#create: Add an attribute to an asset family
+#edit: Edit an attribute of an asset family
+#delete: Delete an attribute of an asset family
+#option:
+#edit: Edit options
+#delete: Remove an option
+#pim_analytics:
+#info_type:
+#nb_asset_families: Number of asset families
+#max_number_of_assets_per_asset_family: Max number of assets per asset family
+#average_number_of_values_per_assets: Average number of values per asset on all asset families
+#average_number_of_assets_per_asset_family: Average number of assets per asset family
+#max_number_of_attributes_per_asset_family: Max number of attributes per asset family
+#average_number_of_attributes_per_asset_family: Average number of attributes per asset family
+#average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
+#average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
+#average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
+pim_catalog_asset_collection: Operativo de Multiples Enlaces
