@@ -80,10 +80,13 @@ pim_reference_entity:
     notification:
       save:
         success: Reference entity successfully updated.
+        fail: An error occurred during the save of the reference entity
       create:
         success: Reference entity successfully created.
+        fail: An error occurred during the creation of the reference entity
       delete:
         success: Reference entity successfully deleted.
+        fail: An error occurred during the deletion of the reference entity
   permission:
     notification:
       save:
@@ -99,6 +102,10 @@ pim_reference_entity:
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
         should_be_unique: 'This code already exists for this entity.'
+      text:
+        incompatible_with_regular_expression: 'Please enter a text that satisfies the regular expression: "{{ %regular_expression% }}"'
+        invalid_email: 'Please enter an email address: xxxxx@xx.xx'
+        invalid_url: 'Please enter a URL: http(s)://xxxx.XXX'
     no_data:
       title: There are no record for {{ entityLabel }}
       subtitle: Click on the button "Add new" to create the first record
@@ -187,13 +194,17 @@ pim_reference_entity:
     notification:
       save:
         success: Record successfully updated.
+        fail: An error occurred during the save of the record
         validation_error: The record could not be updated
       create:
         success: Record successfully created.
+        fail: An error occurred during the save of the record
       delete:
         success: Record "{{ code }}" successfully deleted.
+        fail: An error occurred during the deletion of the record
       delete_all:
         success: All "{{ entityIdentifier }}" records successfully deleted.
+        fail: An error occurred during the deletion of all this reference entity's records
     completeness:
       label: Complete
   attribute:
