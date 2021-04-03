@@ -313,6 +313,7 @@ pim_enrich.mass_edit.product:
       label: Zwischen Kategorien verschieben
       label_count: "{1}Verschiebe <span class=\"AknFullPage-title--highlight\">1 Produkt</span> zwischen Kategorien|] 1, Inf [Verschiebe <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zwischen Kategorien"
       description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen gehen verloren.
+      no_update: Bitte wählen Sie eine Kategorie.
     remove_from_category:
       label: Aus Kategorien entfernen
       label_count: "{1}Entferne <span class=\"AknFullPage-title--highlight\">1 Produkt</span> aus Kategorien|] 1, Inf [Entferne <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> aus Kategorien"
