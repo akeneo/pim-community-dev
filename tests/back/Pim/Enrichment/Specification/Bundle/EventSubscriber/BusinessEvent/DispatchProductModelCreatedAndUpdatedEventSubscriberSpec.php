@@ -58,7 +58,7 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $productModel = new ProductModel();
         $productModel->setCode('polo_col_mao');
 
-        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel, ['is_new' => true, 'unitary' => true]));
+        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel, ['is_new' => true, 'unitary' => true, 'origin' => 'UI']));
 
         Assert::assertCount(1, $messageBus->messages);
         Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
@@ -70,7 +70,7 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $event = $events[0];
         Assert::assertInstanceOf(ProductModelCreated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['code' => 'polo_col_mao'], $event->getData());
+        Assert::assertEquals(['code' => 'polo_col_mao', 'origin' => 'UI'], $event->getData());
     }
 
     function it_dispatches_a_single_product_model_updated_event($security)
@@ -86,7 +86,7 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $productModel = new ProductModel();
         $productModel->setCode('polo_col_mao');
 
-        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel, ['is_new' => false, 'unitary' => true]));
+        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel, ['is_new' => false, 'unitary' => true, 'origin' => 'UI']));
 
         Assert::assertCount(1, $messageBus->messages);
         Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
@@ -98,7 +98,7 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $event = $events[0];
         Assert::assertInstanceOf(ProductModelUpdated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['code' => 'polo_col_mao'], $event->getData());
+        Assert::assertEquals(['code' => 'polo_col_mao', 'origin' => 'UI'], $event->getData());
     }
 
     function it_dispatches_multiple_product_model_events_in_bulk($security)
@@ -116,7 +116,7 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $productModel2 = new ProductModel();
         $productModel2->setCode('product_model_code_2');
 
-        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel1, ['is_new' => true, 'unitary' => false]));
+        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel1, ['is_new' => true, 'unitary' => false, 'origin' => 'UI']));
         $this->createAndDispatchProductModelEvents(new GenericEvent($productModel2, ['is_new' => false, 'unitary' => false]));
         $this->dispatchBufferedProductModelEvents(new GenericEvent());
 
@@ -130,12 +130,12 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $event = $events[0];
         Assert::assertInstanceOf(ProductModelCreated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['code' => 'product_model_code_1'], $event->getData());
+        Assert::assertEquals(['code' => 'product_model_code_1', 'origin' => 'UI'], $event->getData());
 
         $event = $events[1];
         Assert::assertInstanceOf(ProductModelUpdated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['code' => 'product_model_code_2'], $event->getData());
+        Assert::assertEquals(['code' => 'product_model_code_2', 'origin' => null], $event->getData());
     }
 
     function it_dispatches_a_batch_of_product_model_events_once_the_max_bulk_size_is_reached($security)
@@ -155,8 +155,8 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $productModel3 = new ProductModel();
         $productModel3->setCode('product_model_code_3');
 
-        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel1, ['is_new' => true, 'unitary' => false]));
-        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel2, ['is_new' => false, 'unitary' => false]));
+        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel1, ['is_new' => true, 'unitary' => false, 'origin' => 'UI']));
+        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel2, ['is_new' => false, 'unitary' => false, 'origin' => 'UI']));
         $this->createAndDispatchProductModelEvents(new GenericEvent($productModel3, ['is_new' => true, 'unitary' => false]));
         $this->dispatchBufferedProductModelEvents(new GenericEvent());
 
@@ -170,12 +170,12 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $event = $events[0];
         Assert::assertInstanceOf(ProductModelCreated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['code' => 'product_model_code_1'], $event->getData());
+        Assert::assertEquals(['code' => 'product_model_code_1', 'origin' => 'UI'], $event->getData());
 
         $event = $events[1];
         Assert::assertInstanceOf(ProductModelUpdated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['code' => 'product_model_code_2'], $event->getData());
+        Assert::assertEquals(['code' => 'product_model_code_2', 'origin' => 'UI'], $event->getData());
 
         /** @var EventInterface[] */
         $events = $messageBus->messages[1]->getEvents();
@@ -184,7 +184,7 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $event = $events[0];
         Assert::assertInstanceOf(ProductModelCreated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['code' => 'product_model_code_3'], $event->getData());
+        Assert::assertEquals(['code' => 'product_model_code_3', 'origin' => null], $event->getData());
     }
 
     function it_only_supports_product_model_event($security)

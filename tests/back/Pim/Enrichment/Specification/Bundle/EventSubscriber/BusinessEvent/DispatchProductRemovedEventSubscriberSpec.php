@@ -59,7 +59,7 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         $product = new Product();
         $product->setIdentifier('blue_jean');
 
-        $this->createAndDispatchProductEvents(new GenericEvent($product, ['unitary' => true]));
+        $this->createAndDispatchProductEvents(new GenericEvent($product, ['unitary' => true, 'origin' => 'UI']));
 
         Assert::assertCount(1, $messageBus->messages);
         Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
@@ -74,7 +74,8 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         Assert::assertEquals(
             [
                 'identifier' => 'blue_jean',
-                'category_codes' => []
+                'category_codes' => [],
+                'origin' => 'UI',
             ],
             $event->getData()
         );
@@ -95,7 +96,7 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         $product2 = new Product();
         $product2->setIdentifier('product_identifier_2');
 
-        $this->createAndDispatchProductEvents(new GenericEvent($product1, ['unitary' => false]));
+        $this->createAndDispatchProductEvents(new GenericEvent($product1, ['unitary' => false, 'origin' => 'UI']));
         $this->createAndDispatchProductEvents(new GenericEvent($product2, ['unitary' => false]));
         $this->dispatchBufferedProductEvents(new GenericEvent());
 
@@ -112,7 +113,8 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         Assert::assertEquals(
             [
                 'identifier' => 'product_identifier_1',
-                'category_codes' => []
+                'category_codes' => [],
+                'origin' => 'UI',
             ],
             $event->getData()
         );
@@ -123,7 +125,8 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         Assert::assertEquals(
             [
                 'identifier' => 'product_identifier_2',
-                'category_codes' => []
+                'category_codes' => [],
+                'origin' => null,
             ],
             $event->getData()
         );

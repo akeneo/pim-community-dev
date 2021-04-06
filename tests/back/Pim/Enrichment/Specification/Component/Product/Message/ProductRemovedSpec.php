@@ -19,7 +19,11 @@ class ProductRemovedSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             Author::fromNameAndType('julia', Author::TYPE_UI),
-            ['identifier' => 'product_identifier', 'category_codes' => ['category_code_1', 'category_code_2']],
+            [
+                'identifier' => 'product_identifier',
+                'origin' => 'API',
+                'category_codes' => ['category_code_1', 'category_code_2'],
+            ],
             1598968800,
             '523e4557-e89b-12d3-a456-426614174000',
         );
@@ -53,7 +57,7 @@ class ProductRemovedSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             Author::fromNameAndType('julia', Author::TYPE_UI),
-            ['identifier' => 'product_identifier'],
+            ['identifier' => 'product_identifier', 'origin' => 'API'],
             1598968800,
             '523e4557-e89b-12d3-a456-426614174000',
         );
@@ -77,6 +81,7 @@ class ProductRemovedSpec extends ObjectBehavior
     {
         $this->getData()->shouldReturn([
             'identifier' => 'product_identifier',
+            'origin' => 'API',
             'category_codes' => ['category_code_1', 'category_code_2'],
         ]);
     }
@@ -99,5 +104,10 @@ class ProductRemovedSpec extends ObjectBehavior
     public function it_returns_the_category_codes(): void
     {
         $this->getCategoryCodes()->shouldReturn(['category_code_1', 'category_code_2']);
+    }
+
+    public function it_returns_origin(): void
+    {
+        $this->getOrigin()->shouldReturn('API');
     }
 }

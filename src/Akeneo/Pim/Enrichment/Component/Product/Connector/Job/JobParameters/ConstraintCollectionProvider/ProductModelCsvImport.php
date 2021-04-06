@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
@@ -16,16 +18,9 @@ use Symfony\Component\Validator\Constraints\Type;
  */
 class ProductModelCsvImport implements ConstraintCollectionProviderInterface
 {
-    /** @var ConstraintCollectionProviderInterface */
-    private $simpleProvider;
+    private ConstraintCollectionProviderInterface $simpleProvider;
+    private array $supportedJobNames;
 
-    /** @var array */
-    private $supportedJobNames;
-
-    /**
-     * @param ConstraintCollectionProviderInterface $simpleProvider
-     * @param array                                 $supportedJobNames
-     */
     public function __construct(ConstraintCollectionProviderInterface $simpleProvider, array $supportedJobNames)
     {
         $this->simpleProvider = $simpleProvider;

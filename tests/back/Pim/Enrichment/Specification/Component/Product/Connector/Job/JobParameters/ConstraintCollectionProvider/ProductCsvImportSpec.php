@@ -25,9 +25,9 @@ class ProductCsvImportSpec extends ObjectBehavior
     ) {
         $decoratedProvider->getConstraintCollection()->willReturn($decoratedCollection);
         $collection = $this->getConstraintCollection();
-        $collection->shouldReturnAnInstanceOf('Symfony\Component\Validator\Constraints\Collection');
+        $collection->shouldReturnAnInstanceOf(Collection::class);
         $fields = $collection->fields;
-        $fields->shouldHaveCount(10);
+        $fields->shouldHaveCount(11);
         $fields->shouldHaveKey('decimalSeparator');
         $fields->shouldHaveKey('dateFormat');
         $fields->shouldHaveKey('enabled');
@@ -38,6 +38,7 @@ class ProductCsvImportSpec extends ObjectBehavior
         $fields->shouldHaveKey('realTimeVersioning');
         $fields->shouldHaveKey('convertVariantToSimple');
         $fields->shouldHaveKey('invalid_items_file_format');
+        $fields->shouldHaveKey('origin');
     }
 
     function it_supports_a_job(JobInterface $job)

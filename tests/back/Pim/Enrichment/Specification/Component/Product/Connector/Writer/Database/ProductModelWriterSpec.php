@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database;
 
+use Akeneo\Pim\Enrichment\Component\ContextOrigin;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -49,20 +50,24 @@ class ProductModelWriterSpec extends ObjectBehavior
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('realTimeVersioning')->willReturn(true);
+        $jobParameters->has('origin')->willReturn(true);
+        $jobParameters->get('origin')->willReturn('MASS_EDIT');
 
         $items = [$product1, $product2];
 
         $product1->getId()->willReturn('45');
         $product2->getId()->willReturn(null);
 
-        $productSaver->saveAll($items)->shouldBeCalled();
+        $productSaver->saveAll($items, ['origin' => 'MASS_EDIT'])->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
+
         $this->write($items);
     }
 
-    function it_increments_summary_info(
+    function it_saves_items_without_origin(
+        $productSaver,
         $stepExecution,
         ProductModelInterface $product1,
         ProductModelInterface $product2,
@@ -70,13 +75,18 @@ class ProductModelWriterSpec extends ObjectBehavior
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('realTimeVersioning')->willReturn(true);
+        $jobParameters->has('origin')->willReturn(false);
+
+        $items = [$product1, $product2];
 
         $product1->getId()->willReturn('45');
         $product2->getId()->willReturn(null);
 
-        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
+        $productSaver->saveAll($items, ['origin' => false])->shouldBeCalled();
 
-        $this->write([$product1, $product2]);
+        $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
+
+        $this->write($items);
     }
 }

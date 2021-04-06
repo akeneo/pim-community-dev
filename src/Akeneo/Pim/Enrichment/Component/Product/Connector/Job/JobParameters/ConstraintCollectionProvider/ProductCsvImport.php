@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
@@ -17,16 +19,9 @@ use Symfony\Component\Validator\Constraints\Type;
  */
 class ProductCsvImport implements ConstraintCollectionProviderInterface
 {
-    /** @var ConstraintCollectionProviderInterface */
-    protected $simpleProvider;
+    protected ConstraintCollectionProviderInterface $simpleProvider;
+    protected array $supportedJobNames;
 
-    /** @var array */
-    protected $supportedJobNames;
-
-    /**
-     * @param ConstraintCollectionProviderInterface $simpleProvider
-     * @param array                                 $supportedJobNames
-     */
     public function __construct(ConstraintCollectionProviderInterface $simpleProvider, array $supportedJobNames)
     {
         $this->simpleProvider = $simpleProvider;
@@ -36,7 +31,7 @@ class ProductCsvImport implements ConstraintCollectionProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getConstraintCollection()
+    public function getConstraintCollection(): Collection
     {
         $baseConstraint = $this->simpleProvider->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
@@ -58,7 +53,7 @@ class ProductCsvImport implements ConstraintCollectionProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(JobInterface $job)
+    public function supports(JobInterface $job): bool
     {
         return in_array($job->getName(), $this->supportedJobNames);
     }

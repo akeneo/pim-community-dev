@@ -19,7 +19,7 @@ class ProductCreatedSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             Author::fromNameAndType('julia', Author::TYPE_UI),
-            ['identifier' => 'product_identifier'],
+            ['identifier' => 'product_identifier', 'origin' => 'API'],
             1598968800,
             '523e4557-e89b-12d3-a456-426614174000',
         );
@@ -61,7 +61,7 @@ class ProductCreatedSpec extends ObjectBehavior
 
     public function it_returns_the_data(): void
     {
-        $this->getData()->shouldReturn(['identifier' => 'product_identifier']);
+        $this->getData()->shouldReturn(['identifier' => 'product_identifier', 'origin' => 'API']);
     }
 
     public function it_returns_the_timestamp(): void
@@ -77,5 +77,10 @@ class ProductCreatedSpec extends ObjectBehavior
     public function it_returns_the_product_identifier(): void
     {
         $this->getIdentifier()->shouldReturn('product_identifier');
+    }
+
+    public function it_returns_origin(): void
+    {
+        $this->getOrigin()->shouldReturn('API');
     }
 }

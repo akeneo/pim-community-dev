@@ -8,4 +8,6 @@ final class ContextOrigin
 {
     const API = 'API';
     const UI = 'UI';
+    const IMPORT = 'IMPORT';
+    const MASS_EDIT = 'MASS_EDIT';
 }

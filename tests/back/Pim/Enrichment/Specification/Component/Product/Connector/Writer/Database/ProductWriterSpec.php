@@ -2,8 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductWriter;
+use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
@@ -22,17 +25,17 @@ class ProductWriterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductWriter');
+        $this->shouldHaveType(ProductWriter::class);
     }
 
     function it_is_an_item_writer()
     {
-        $this->shouldHaveType('\Akeneo\Tool\Component\Batch\Item\ItemWriterInterface');
+        $this->shouldHaveType(ItemWriterInterface::class);
     }
 
     function it_is_step_execution_aware()
     {
-        $this->shouldHaveType('\Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface');
+        $this->shouldHaveType(StepExecutionAwareInterface::class);
     }
 
     function it_saves_items(
@@ -44,20 +47,23 @@ class ProductWriterSpec extends ObjectBehavior
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('realTimeVersioning')->willReturn(true);
+        $jobParameters->has('origin')->willReturn(true);
+        $jobParameters->get('origin')->willReturn('IMPORT');
 
         $items = [$product1, $product2];
 
         $product1->getId()->willReturn('45');
         $product2->getId()->willReturn(null);
 
-        $productSaver->saveAll($items)->shouldBeCalled();
+        $productSaver->saveAll($items, ['origin' => 'IMPORT'])->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
         $this->write($items);
     }
 
-    function it_increments_summary_info(
+    function it_saves_items_without_origin(
+        $productSaver,
         $stepExecution,
         ProductInterface $product1,
         ProductInterface $product2,
@@ -65,13 +71,17 @@ class ProductWriterSpec extends ObjectBehavior
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('realTimeVersioning')->willReturn(true);
+        $jobParameters->has('origin')->willReturn(false);
+
+        $items = [$product1, $product2];
 
         $product1->getId()->willReturn('45');
         $product2->getId()->willReturn(null);
 
-        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
+        $productSaver->saveAll($items, ['origin' => null])->shouldBeCalled();
 
-        $this->write([$product1, $product2]);
+        $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
+        $this->write($items);
     }
 }

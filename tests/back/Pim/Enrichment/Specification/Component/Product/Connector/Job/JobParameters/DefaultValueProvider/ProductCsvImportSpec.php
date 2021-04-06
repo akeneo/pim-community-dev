@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider;
 
+use Akeneo\Pim\Enrichment\Component\ContextOrigin;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use PhpSpec\ObjectBehavior;
@@ -33,6 +34,7 @@ class ProductCsvImportSpec extends ObjectBehavior
                 'enabledComparison'  => true,
                 'realTimeVersioning' => true,
                 'convertVariantToSimple' => false,
+                'origin' => ContextOrigin::IMPORT,
             ]
         );
     }

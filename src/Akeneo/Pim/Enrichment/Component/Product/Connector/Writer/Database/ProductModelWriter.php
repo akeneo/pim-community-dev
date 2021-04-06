@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database;
@@ -18,19 +19,10 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
  */
 class ProductModelWriter implements ItemWriterInterface, StepExecutionAwareInterface
 {
-    /** @var VersionManager */
-    protected $versionManager;
+    protected VersionManager $versionManager;
+    protected StepExecution $stepExecution;
+    protected BulkSaverInterface $productModelSaver;
 
-    /** @var StepExecution */
-    protected $stepExecution;
-
-    /** @var BulkSaverInterface */
-    protected $productModelSaver;
-
-    /**
-     * @param VersionManager                $versionManager
-     * @param BulkSaverInterface            $productModelSaver
-     */
     public function __construct(
         VersionManager $versionManager,
         BulkSaverInterface $productModelSaver
@@ -42,7 +34,7 @@ class ProductModelWriter implements ItemWriterInterface, StepExecutionAwareInter
     /**
      * {@inheritdoc}
      */
-    public function write(array $items)
+    public function write(array $items): void
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $realTimeVersioning = $jobParameters->get('realTimeVersioning');
@@ -61,7 +53,7 @@ class ProductModelWriter implements ItemWriterInterface, StepExecutionAwareInter
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }

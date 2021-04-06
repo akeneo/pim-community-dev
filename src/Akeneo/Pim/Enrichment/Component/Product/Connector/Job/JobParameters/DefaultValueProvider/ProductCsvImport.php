@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider;
 
+use Akeneo\Pim\Enrichment\Component\ContextOrigin;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
@@ -15,16 +18,9 @@ use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
  */
 class ProductCsvImport implements DefaultValuesProviderInterface
 {
-    /** @var DefaultValuesProviderInterface */
-    protected $simpleProvider;
+    protected DefaultValuesProviderInterface $simpleProvider;
+    protected array $supportedJobNames;
 
-    /** @var array */
-    protected $supportedJobNames;
-
-    /**
-     * @param DefaultValuesProviderInterface $simpleProvider
-     * @param array                          $supportedJobNames
-     */
     public function __construct(DefaultValuesProviderInterface $simpleProvider, array $supportedJobNames)
     {
         $this->simpleProvider = $simpleProvider;
@@ -34,7 +30,7 @@ class ProductCsvImport implements DefaultValuesProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getDefaultValues()
+    public function getDefaultValues(): array
     {
         $parameters = $this->simpleProvider->getDefaultValues();
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
@@ -46,7 +42,7 @@ class ProductCsvImport implements DefaultValuesProviderInterface
         $parameters['enabledComparison'] = true;
         $parameters['realTimeVersioning'] = true;
         $parameters['convertVariantToSimple'] = false;
-        $parameters['origin'] = 'IMPORT';
+        $parameters['origin'] = ContextOrigin::IMPORT;
 
         return $parameters;
     }
@@ -54,7 +50,7 @@ class ProductCsvImport implements DefaultValuesProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(JobInterface $job)
+    public function supports(JobInterface $job): bool
     {
         return in_array($job->getName(), $this->supportedJobNames);
     }

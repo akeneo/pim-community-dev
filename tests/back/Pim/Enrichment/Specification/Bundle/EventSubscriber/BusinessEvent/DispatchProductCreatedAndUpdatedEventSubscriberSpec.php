@@ -59,7 +59,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $product = new Product();
         $product->setIdentifier('product_identifier');
 
-        $this->createAndDispatchProductEvents(new GenericEvent($product, ['is_new' => true, 'unitary' => true]));
+        $this->createAndDispatchProductEvents(new GenericEvent($product, ['is_new' => true, 'unitary' => true, 'origin' => 'UI']));
 
         Assert::assertCount(1, $messageBus->messages);
         Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
@@ -71,7 +71,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $event = $events[0];
         Assert::assertInstanceOf(ProductCreated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_identifier'], $event->getData());
+        Assert::assertEquals(['identifier' => 'product_identifier', 'origin' => 'UI'], $event->getData());
     }
 
     function it_dispatches_a_single_product_updated_event($security)
@@ -87,7 +87,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $product = new Product();
         $product->setIdentifier('product_identifier');
 
-        $this->createAndDispatchProductEvents(new GenericEvent($product, ['is_new' => false, 'unitary' => true]));
+        $this->createAndDispatchProductEvents(new GenericEvent($product, ['is_new' => false, 'unitary' => true, 'origin' => 'UI']));
 
         Assert::assertCount(1, $messageBus->messages);
         Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
@@ -99,7 +99,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $event = $events[0];
         Assert::assertInstanceOf(ProductUpdated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_identifier'], $event->getData());
+        Assert::assertEquals(['identifier' => 'product_identifier', 'origin' => 'UI'], $event->getData());
     }
 
     function it_dispatches_multiple_product_events_in_bulk($security)
@@ -118,7 +118,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $product2->setIdentifier('product_identifier_2');
 
         $this->createAndDispatchProductEvents(new GenericEvent($product1, ['is_new' => true, 'unitary' => false]));
-        $this->createAndDispatchProductEvents(new GenericEvent($product2, ['is_new' => false, 'unitary' => false]));
+        $this->createAndDispatchProductEvents(new GenericEvent($product2, ['is_new' => false, 'unitary' => false, 'origin' => 'UI']));
         $this->dispatchBufferedProductEvents(new GenericEvent());
 
         Assert::assertCount(1, $messageBus->messages);
@@ -131,12 +131,12 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $event = $events[0];
         Assert::assertInstanceOf(ProductCreated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_identifier_1'], $event->getData());
+        Assert::assertEquals(['identifier' => 'product_identifier_1', 'origin' => null], $event->getData());
 
         $event = $events[1];
         Assert::assertInstanceOf(ProductUpdated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_identifier_2'], $event->getData());
+        Assert::assertEquals(['identifier' => 'product_identifier_2', 'origin' => 'UI'], $event->getData());
     }
 
     function it_dispatches_a_batch_of_product_events_once_the_max_bulk_size_is_reached($security)
@@ -156,7 +156,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $product3 = new Product();
         $product3->setIdentifier('product_identifier_3');
 
-        $this->createAndDispatchProductEvents(new GenericEvent($product1, ['is_new' => true, 'unitary' => false]));
+        $this->createAndDispatchProductEvents(new GenericEvent($product1, ['is_new' => true, 'unitary' => false, 'origin' => 'UI']));
         $this->createAndDispatchProductEvents(new GenericEvent($product2, ['is_new' => false, 'unitary' => false]));
         $this->createAndDispatchProductEvents(new GenericEvent($product3, ['is_new' => true, 'unitary' => false]));
         $this->dispatchBufferedProductEvents(new GenericEvent());
@@ -171,12 +171,12 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $event = $events[0];
         Assert::assertInstanceOf(ProductCreated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_identifier_1'], $event->getData());
+        Assert::assertEquals(['identifier' => 'product_identifier_1', 'origin' => 'UI'], $event->getData());
 
         $event = $events[1];
         Assert::assertInstanceOf(ProductUpdated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_identifier_2'], $event->getData());
+        Assert::assertEquals(['identifier' => 'product_identifier_2', 'origin' => null], $event->getData());
 
         /** @var EventInterface[] */
         $events = $messageBus->messages[1]->getEvents();
@@ -185,7 +185,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $event = $events[0];
         Assert::assertInstanceOf(ProductCreated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_identifier_3'], $event->getData());
+        Assert::assertEquals(['identifier' => 'product_identifier_3', 'origin' => null], $event->getData());
     }
 
     function it_only_supports_product_event($security)

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider;
 
+use Akeneo\Pim\Enrichment\Component\ContextOrigin;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 
@@ -14,12 +17,8 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface
  */
 class SimpleMassEdit implements DefaultValuesProviderInterface
 {
-    /** @var string[] */
-    protected $supportedJobNames;
+    protected array $supportedJobNames;
 
-    /**
-     * @param string[] $supportedJobNames
-     */
     public function __construct(array $supportedJobNames)
     {
         $this->supportedJobNames = $supportedJobNames;
@@ -28,21 +27,21 @@ class SimpleMassEdit implements DefaultValuesProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getDefaultValues()
+    public function getDefaultValues(): array
     {
         return [
             'filters' => [],
             'actions' => [],
             'user_to_notify' => null,
             'is_user_authenticated' => false,
-            'origin' => 'MASS_EDIT',
+            'origin' => ContextOrigin::MASS_EDIT,
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supports(JobInterface $job)
+    public function supports(JobInterface $job): bool
     {
         return in_array($job->getName(), $this->supportedJobNames);
     }

@@ -1,29 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider;
 
+use Akeneo\Pim\Enrichment\Component\ContextOrigin;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 
 /**
- *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ProductModelCsvImport implements DefaultValuesProviderInterface
 {
-    /** @var DefaultValuesProviderInterface */
-    private $simpleProvider;
+    private DefaultValuesProviderInterface $simpleProvider;
+    private array $supportedJobNames;
 
-    /** @var array */
-    private $supportedJobNames;
-
-    /**
-     * @param DefaultValuesProviderInterface $simpleProvider
-     * @param array                          $supportedJobNames
-     */
     public function __construct(DefaultValuesProviderInterface $simpleProvider, array $supportedJobNames)
     {
         $this->simpleProvider = $simpleProvider;
@@ -43,7 +38,7 @@ class ProductModelCsvImport implements DefaultValuesProviderInterface
         $parameters['familyVariantColumn'] = 'family_variant';
         $parameters['enabledComparison'] = true;
         $parameters['realTimeVersioning'] = true;
-        $parameters['origin'] = 'IMPORT';
+        $parameters['origin'] = ContextOrigin::IMPORT;
 
         return $parameters;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
@@ -17,12 +19,8 @@ use Symfony\Component\Validator\Constraints\Type;
  */
 class ProductMassEdit implements ConstraintCollectionProviderInterface
 {
-    /** @var array */
-    protected $supportedJobNames;
+    protected array $supportedJobNames;
 
-    /**
-     * @param string[] $supportedJobNames
-     */
     public function __construct(array $supportedJobNames)
     {
         $this->supportedJobNames = $supportedJobNames;
@@ -31,7 +29,7 @@ class ProductMassEdit implements ConstraintCollectionProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getConstraintCollection()
+    public function getConstraintCollection(): Collection
     {
         return new Collection(
             [
@@ -40,7 +38,8 @@ class ProductMassEdit implements ConstraintCollectionProviderInterface
                     'actions'            => new NotNull(),
                     'realTimeVersioning' => new Type('bool'),
                     'user_to_notify'     => new Type('string'),
-                    'is_user_authenticated' => new Type('bool')
+                    'is_user_authenticated' => new Type('bool'),
+                    'origin' => new Type('string'),
                 ]
             ]
         );
@@ -49,7 +48,7 @@ class ProductMassEdit implements ConstraintCollectionProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(JobInterface $job)
+    public function supports(JobInterface $job): bool
     {
         return in_array($job->getName(), $this->supportedJobNames);
     }
