@@ -36,35 +36,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, InitializableInterface, TrackableTaskletInterface
 {
-    /** @var StepExecution */
-    private $stepExecution;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $familyRepository;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $productQueryBuilderFactory;
-
-    /** @var ItemReaderInterface */
-    private $familyReader;
-
-    /** @var KeepOnlyValuesForVariation */
-    private $keepOnlyValuesForVariation;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var BulkSaverInterface */
-    private $productSaver;
-
-    /** @var JobRepositoryInterface */
-    private $jobRepository;
-
-    /** @var EntityManagerClearerInterface */
-    private $cacheClearer;
-
-    /** @var int */
-    private $batchSize;
+    private ?StepExecution $stepExecution;
+    private IdentifiableObjectRepositoryInterface $familyRepository;
+    private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory;
+    private ItemReaderInterface $familyReader;
+    private KeepOnlyValuesForVariation $keepOnlyValuesForVariation;
+    private ValidatorInterface $validator;
+    private BulkSaverInterface $productSaver;
+    private JobRepositoryInterface $jobRepository;
+    private EntityManagerClearerInterface $cacheClearer;
+    private int $batchSize;
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
@@ -154,11 +135,6 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         $this->cacheClearer->clear();
     }
 
-    /**
-     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
-     *
-     * @return bool
-     */
     private function isValid(EntityWithFamilyVariantInterface $entityWithFamilyVariant): bool
     {
         $violations = $this->validator->validate($entityWithFamilyVariant);
@@ -166,16 +142,15 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         return $violations->count() === 0;
     }
 
-    /**
-     * @param array $products
-     */
     private function saveProducts(array $products): void
     {
         if (empty($products)) {
             return;
         }
 
-        $this->productSaver->saveAll($products);
+        // PIM-9798: Force save the products. For example if the required attributes are updated on the family,
+        // the product has not changed but completeness does => Need to update it.
+        $this->productSaver->saveAll($products, ['force_save' => true]);
         $this->stepExecution->incrementSummaryInfo('process', count($products));
         $this->stepExecution->incrementProcessedItems(count($products));
         $this->jobRepository->updateStepExecution($this->stepExecution);
