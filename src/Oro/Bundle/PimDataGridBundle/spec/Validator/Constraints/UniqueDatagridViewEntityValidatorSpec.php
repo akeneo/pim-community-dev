@@ -45,7 +45,7 @@ class UniqueDatagridViewEntityValidatorSpec extends ObjectBehavior
         $datagridViewRepository->findPublicDatagridViewByLabel('The best public view')
             ->willReturn($datagridViewInDatabase);
 
-        $context->buildViolation('The same label is already set on another view')
+        $context->buildViolation('pim_datagrid.column_configurator.label.unique_message')
             ->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->atPath('label')->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
@@ -74,7 +74,7 @@ class UniqueDatagridViewEntityValidatorSpec extends ObjectBehavior
         $datagridViewRepository->findPrivateDatagridViewByLabel('The best private view', $user)
             ->willReturn($datagridViewInDatabase);
 
-        $context->buildViolation('The same label is already set on another view')
+        $context->buildViolation('pim_datagrid.column_configurator.label.unique_message')
             ->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->atPath('label')->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();

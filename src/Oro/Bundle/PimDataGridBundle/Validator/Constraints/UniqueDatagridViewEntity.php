@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueDatagridViewEntity extends Constraint
 {
-    public $message = 'The same label is already set on another view';
+    public $message = 'pim_datagrid.column_configurator.label.unique_message';
 
     /**
      * {@inheritdoc}

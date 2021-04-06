@@ -1,7 +1,6 @@
 Oro\Bundle\PimDataGridBundle\Entity\DatagridView:
     constraints:
-        - Oro\Bundle\PimDataGridBundle\Validator\Constraints\UniqueDatagridViewEntity:
-            message: pim_datagrid.column_configurator.label.unique_message
+        - Oro\Bundle\PimDataGridBundle\Validator\Constraints\UniqueDatagridViewEntity: ~
     properties:
         label:
             - NotBlank:
