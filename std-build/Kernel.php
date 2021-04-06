@@ -47,7 +47,7 @@ class Kernel extends BaseKernel
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
-        if (!in_array($this->environment,self::$supportedEnvs)) {
+        if (!in_array($this->environment, self::$supportedEnvs)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Unsupported environment:%s. The supported environments are:%s',
@@ -69,32 +69,32 @@ class Kernel extends BaseKernel
         # The first packages configuration, for CE dependency are loaded from the CE package configuration root dir
         $this->loadPackagesConfigurationFromDependencyExceptSecurity($loader, $ceConfDir);
 
-        # The 2nd packages configuration for EE dependency and flexibility or on prem are loaded from EE config dirs
-        # If prod, we load either prod-onprem or prod-flex configs
-        # For other envs, we load only the root configs from EE
-        if ('prod' === $this->environment) {
-            $this->loadPackagesConfigurationExceptSecurity($loader, $eeConfDir, $baseEnv);
-        } else {
-            $this->loadPackagesConfigurationFromDependencyExceptSecurity($loader, $eeConfDir);
-        }
+        # The 2nd packages configuration for EE dependency and flexibility or on prem are loaded
+        # from EE config dirs and root dir
+        $this->loadPackagesConfigurationExceptSecurity($loader, $eeConfDir, $baseEnv);
 
         # Finally, the packages configuration for local environnement is loaded from the project
         $this->loadPackagesConfiguration($loader, $projectConfDir, $this->environment);
 
         $this->loadServicesConfiguration($loader, $ceConfDir, $baseEnv);
         $this->loadServicesConfiguration($loader, $eeConfDir, $baseEnv);
-        $this->loadServicesConfiguration($loader, $projectConfDir, $baseEnv);
-        if ($this->environment !== $baseEnv) {
-            $this->loadServicesConfiguration($loader, $projectConfDir, $this->environment);
-        }
+        $this->loadServicesConfiguration($loader, $projectConfDir, $this->environment);
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
         $baseEnv = $this->getBaseEnv($this->environment);
 
-        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config', $baseEnv);
-        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/vendor/akeneo/pim-enterprise-dev/config', $baseEnv);
+        $this->loadRoutesConfiguration(
+            $routes,
+            $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config',
+            $baseEnv
+        );
+        $this->loadRoutesConfiguration(
+            $routes,
+            $this->getProjectDir() . '/vendor/akeneo/pim-enterprise-dev/config',
+            $baseEnv
+        );
         $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/config', $this->environment);
     }
 
@@ -124,21 +124,18 @@ class Kernel extends BaseKernel
     {
         $loader->load($confDir . '/{packages}/*.yml', 'glob');
         $loader->load($confDir . '/{packages}/' . $environment . '/*.yml', 'glob');
-        $loader->load($confDir . '/{packages}/' . $environment . '/**/*.yml', 'glob');
     }
 
     /**
      * "security.yml" is the only configuration file that can not be override
      * And load default package configuration from EE and CE
      */
-    private function loadPackagesConfigurationFromDependencyExceptSecurity(LoaderInterface $loader, string $confDir): void
-    {
-        $files = array_merge(
-            glob($confDir . '/packages/*.yml'),
-        );
-
+    private function loadPackagesConfigurationFromDependencyExceptSecurity(
+        LoaderInterface $loader,
+        string $confDir
+    ): void {
         $files = array_filter(
-            $files,
+            glob($confDir . '/packages/*.yml'),
             function ($file) {
                 return 'security.yml' !== basename($file);
             }
@@ -153,11 +150,14 @@ class Kernel extends BaseKernel
      * Load Packages Configuration from this project except security.yml
      * security configuration doesn't support multiple loads
      */
-    private function loadPackagesConfigurationExceptSecurity(LoaderInterface $loader, string $confDir, string $environment): void
-    {
+    private function loadPackagesConfigurationExceptSecurity(
+        LoaderInterface $loader,
+        string $confDir,
+        string $environment
+    ): void {
         $files = array_merge(
             glob($confDir . '/packages/*.yml'),
-            glob($confDir . '/packages/' . $environment . '/**/*.yml')
+            glob($confDir . '/packages/' . $environment . '/*.yml')
         );
 
         $files = array_filter(
@@ -171,10 +171,11 @@ class Kernel extends BaseKernel
             $loader->load($file, 'yaml');
         }
     }
+
     private function loadServicesConfiguration(LoaderInterface $loader, string $confDir, string $environment): void
     {
         $loader->load($confDir . '/{services}/*.yml', 'glob');
-        $loader->load($confDir . '/{services}/' . $environment . '/**/*.yml', 'glob');
+        $loader->load($confDir . '/{services}/' . $environment . '/*.yml', 'glob');
     }
 
     protected function isFlexibility(): bool
@@ -199,6 +200,7 @@ class Kernel extends BaseKernel
                 return 'prod_onprem';
             }
         }
+
         return $projectEnv;
     }
 }
