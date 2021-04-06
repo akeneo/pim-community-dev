@@ -48,17 +48,10 @@ class DatagridView
         return $this->type === self::TYPE_PUBLIC;
     }
 
-    public function setId(int $id): self
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
     /**
      * Get id
      *
-     * @return int
+     * @return int|null
      */
     public function getId()
     {

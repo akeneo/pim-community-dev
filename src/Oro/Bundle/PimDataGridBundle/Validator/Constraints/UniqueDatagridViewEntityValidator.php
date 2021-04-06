@@ -19,9 +19,8 @@ class UniqueDatagridViewEntityValidator extends ConstraintValidator
 {
     private DatagridViewRepositoryInterface $datagridViewRepository;
 
-    public function __construct(
-        DatagridViewRepositoryInterface $datagridViewRepository
-    ) {
+    public function __construct(DatagridViewRepositoryInterface $datagridViewRepository)
+    {
         $this->datagridViewRepository = $datagridViewRepository;
     }
 
@@ -35,7 +34,6 @@ class UniqueDatagridViewEntityValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, DatagridView::class);
         }
 
-        $isLabelUnique = true;
         $datagridViewFromDb = null;
 
         if (DatagridView::TYPE_PUBLIC === $entity->getType()) {
@@ -47,10 +45,6 @@ class UniqueDatagridViewEntityValidator extends ConstraintValidator
         if (null !== $datagridViewFromDb
             && $datagridViewFromDb->getId() !== $entity->getId()
         ) {
-            $isLabelUnique = false;
-        }
-
-        if (!$isLabelUnique) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('label')
                 ->addViolation();
