@@ -21,7 +21,6 @@ import {
   useMeasurementFamilyRemover,
   MeasurementFamilyRemoverResult,
 } from 'akeneomeasure/hooks/use-measurement-family-remover';
-import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
 import {ConfigContext} from 'akeneomeasure/context/config-context';
 import {
   useTranslate,
@@ -39,6 +38,7 @@ import {
   useToggleState,
   FullScreenError,
   PageContent,
+  DeleteModal,
 } from '@akeneo-pim-community/shared';
 import {Helper, Button, Breadcrumb} from 'akeneo-design-system';
 
@@ -96,7 +96,7 @@ const Errors = ({errors}: {errors: ValidationError[]}) => {
 };
 
 const Edit = () => {
-  const __ = useTranslate();
+  const translate = useTranslate();
   const notify = useNotify();
   const history = useHistory();
   const locale = useUserContext().get('uiLocale');
@@ -118,7 +118,7 @@ const Edit = () => {
   const {setHasUnsavedChanges} = useContext(UnsavedChangesContext);
   const [isModified, resetState] = useUnsavedChanges<MeasurementFamily | null>(
     measurementFamily,
-    __('pim_ui.flash.unsaved_changes')
+    translate('pim_ui.flash.unsaved_changes')
   );
   useEffect(() => setHasUnsavedChanges(isModified), [isModified]);
 
@@ -145,7 +145,7 @@ const Edit = () => {
       switch (response.success) {
         case true:
           resetState();
-          notify(NotificationLevel.SUCCESS, __('measurements.family.save.flash.success'));
+          notify(NotificationLevel.SUCCESS, translate('measurements.family.save.flash.success'));
           break;
 
         case false:
@@ -154,9 +154,9 @@ const Edit = () => {
       }
     } catch (error) {
       console.error(error);
-      notify(NotificationLevel.ERROR, __('measurements.family.save.flash.error'));
+      notify(NotificationLevel.ERROR, translate('measurements.family.save.flash.error'));
     }
-  }, [measurementFamily, locale, saveMeasurementFamily, notify, __, setErrors, resetState]);
+  }, [measurementFamily, locale, saveMeasurementFamily, notify, translate, setErrors, resetState]);
 
   const removeMeasurementFamily = useMeasurementFamilyRemover();
   const handleRemoveMeasurementFamily = useCallback(async () => {
@@ -165,7 +165,7 @@ const Edit = () => {
 
       switch (response) {
         case MeasurementFamilyRemoverResult.Success:
-          notify(NotificationLevel.SUCCESS, __('measurements.family.delete.flash.success'));
+          notify(NotificationLevel.SUCCESS, translate('measurements.family.delete.flash.success'));
           history.push('/');
           break;
         case MeasurementFamilyRemoverResult.NotFound:
@@ -174,9 +174,9 @@ const Edit = () => {
       }
     } catch (error) {
       console.error(error);
-      notify(NotificationLevel.ERROR, __('measurements.family.delete.flash.error'));
+      notify(NotificationLevel.ERROR, translate('measurements.family.delete.flash.error'));
     }
-  }, [measurementFamilyCode, removeMeasurementFamily, history, notify, __]);
+  }, [measurementFamilyCode, removeMeasurementFamily, history, notify, translate]);
 
   const handleNewUnit = useCallback(
     (unit: Unit) => {
@@ -197,8 +197,8 @@ const Edit = () => {
   if (undefined === measurementFamily) {
     return (
       <FullScreenError
-        title={__('error.exception', {status_code: '404'})}
-        message={__('measurements.family.not_found')}
+        title={translate('error.exception', {status_code: '404'})}
+        message={translate('measurements.family.not_found')}
         code={404}
       />
     );
@@ -207,9 +207,9 @@ const Edit = () => {
   const buttons = [];
   if (isGranted('akeneo_measurements_measurement_family_delete') && !measurementFamily.is_locked) {
     buttons.push(
-      <SecondaryActionsDropdownButton title={__('pim_common.other_actions')} key={0}>
+      <SecondaryActionsDropdownButton title={translate('pim_common.other_actions')} key={0}>
         <DropdownLink onClick={openConfirmDeleteMeasurementFamilyModal}>
-          {__('measurements.family.delete.button')}
+          {translate('measurements.family.delete.button')}
         </DropdownLink>
       </SecondaryActionsDropdownButton>
     );
@@ -223,7 +223,7 @@ const Edit = () => {
         onClick={openAddUnitModal}
         disabled={config.units_max <= measurementFamily.units.length}
       >
-        {__('measurements.unit.add')}
+        {translate('measurements.unit.add')}
       </Button>
     );
   }
@@ -232,7 +232,7 @@ const Edit = () => {
     isGranted('akeneo_measurements_measurement_unit_edit') ||
     isGranted('akeneo_measurements_measurement_family_edit_properties')
   ) {
-    buttons.push(<Button onClick={handleSaveMeasurementFamily}>{__('pim_common.save')}</Button>);
+    buttons.push(<Button onClick={handleSaveMeasurementFamily}>{translate('pim_common.save')}</Button>);
   }
 
   const [unitsErrors, propertiesErrors, otherErrors] = partitionErrors(errors, [
@@ -244,16 +244,19 @@ const Edit = () => {
 
   return (
     <>
-      <Prompt when={isModified} message={() => __('pim_ui.flash.unsaved_changes')} />
+      <Prompt when={isModified} message={() => translate('pim_ui.flash.unsaved_changes')} />
       {isAddUnitModalOpen && (
         <CreateUnit measurementFamily={measurementFamily} onClose={closeAddUnitModal} onNewUnit={handleNewUnit} />
       )}
-      <ConfirmDeleteModal
-        isOpen={isConfirmDeleteMeasurementFamilyModalOpen}
-        description={__('measurements.family.delete.confirm')}
-        onConfirm={handleRemoveMeasurementFamily}
-        onCancel={closeConfirmDeleteMeasurementFamilyModal}
-      />
+      {isConfirmDeleteMeasurementFamilyModalOpen && (
+        <DeleteModal
+          title={translate('measurements.title.measurement')}
+          onConfirm={handleRemoveMeasurementFamily}
+          onCancel={closeConfirmDeleteMeasurementFamilyModal}
+        >
+          {translate('measurements.family.delete.confirm')}
+        </DeleteModal>
+      )}
       <PageHeader
         userButtons={
           <PimView
@@ -264,9 +267,9 @@ const Edit = () => {
         buttons={buttons}
         breadcrumb={
           <Breadcrumb>
-            <Breadcrumb.Step href={settingsHref}>{__('pim_menu.tab.settings')}</Breadcrumb.Step>
+            <Breadcrumb.Step href={settingsHref}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
             <Breadcrumb.Step href={history.createHref({pathname: '/'})}>
-              {__('pim_menu.item.measurements')}
+              {translate('pim_menu.item.measurements')}
             </Breadcrumb.Step>
             <Breadcrumb.Step>{measurementFamilyLabel}</Breadcrumb.Step>
           </Breadcrumb>
@@ -281,20 +284,19 @@ const Edit = () => {
           <div>{measurementFamilyLabel}</div>
         )}
       </PageHeader>
-
       <PageContent>
         <TabsContainer>
           <Tabs>
             {Object.values(Tab).map((tab: Tab) => (
               <TabSelector key={tab} onClick={() => setCurrentTab(tab)} isActive={currentTab === tab}>
-                {__(`measurements.family.tab.${tab}`)}
+                {translate(`measurements.family.tab.${tab}`)}
                 {tab === Tab.Units && 0 < unitsErrors.length && <ErrorBadge />}
                 {tab === Tab.Properties && 0 < propertiesErrors.length && <ErrorBadge />}
               </TabSelector>
             ))}
           </Tabs>
           <Errors errors={[...unitsErrors.filter(error => error.propertyPath === 'units'), ...otherErrors]} />
-          {measurementFamily.is_locked && <Helper level="warning">{__('measurements.family.is_locked')}</Helper>}
+          {measurementFamily.is_locked && <Helper level="warning">{translate('measurements.family.is_locked')}</Helper>}
         </TabsContainer>
         <Container>
           {currentTab === Tab.Units && null !== selectedUnitCode && (

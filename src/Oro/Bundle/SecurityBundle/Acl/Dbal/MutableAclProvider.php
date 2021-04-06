@@ -185,4 +185,78 @@ class MutableAclProvider extends BaseMutableAclProvider
 
         return $delete;
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * The goal of this overrided method is to fix the PIM-9779 issue. The same error was reported in the following issues:
+     * https://github.com/symfony/security-acl/issues/5 (still open since 2015)
+     * https://github.com/symfony/security-acl/issues/23 (still open since 2016)
+     * https://github.com/symfony/security-acl/issues/24
+     * https://github.com/symfony/security-acl/issues/28
+     *
+     * This method is an adaptation of the fix coming from https://github.com/symfony/security-acl/pull/29 (The PR was never merged for no reason, despite one approve)
+     * We cannot override the hydrateObjectIdentities method to do exactly the same fix as the PR, so we fix the results
+     */
+    public function findAcls(array $oids, array $sids = array())
+    {
+        /** @var \SplObjectStorage $acls */
+        $acls = parent::findAcls($oids, $sids);
+        if (0 === $acls->count()) {
+            return $acls;
+        }
+
+        $aclReflection = new \ReflectionClass(Acl::class);
+        $aclClassAcesProperty = $aclReflection->getProperty('classAces');
+        $aclClassAcesProperty->setAccessible(true);
+        $aclClassFieldAcesProperty = $aclReflection->getProperty('classFieldAces');
+        $aclClassFieldAcesProperty->setAccessible(true);
+        $aclObjectAcesProperty = $aclReflection->getProperty('objectAces');
+        $aclObjectAcesProperty->setAccessible(true);
+        $aclObjectFieldAcesProperty = $aclReflection->getProperty('objectFieldAces');
+        $aclObjectFieldAcesProperty->setAccessible(true);
+
+        foreach ($oids as $oid) {
+            /** @var Acl|null $acl */
+            $acl = $acls->offsetGet($oid);
+            if (null === $acl) {
+                continue;
+            }
+
+            $aclClassAcesProperty->setValue($acl, $this->orderAces($acl->getClassAces()));
+            $aclClassFieldAcesProperty->setValue(
+                $acl,
+                $this->orderFieldAces($aclClassFieldAcesProperty->getValue($acl))
+            );
+            $aclObjectAcesProperty->setValue($acl, $this->orderAces($acl->getObjectAces()));
+            $aclObjectFieldAcesProperty->setValue(
+                $acl,
+                $this->orderFieldAces($aclObjectFieldAcesProperty->getValue($acl))
+            );
+        }
+
+        $aclClassAcesProperty->setAccessible(false);
+        $aclClassFieldAcesProperty->setAccessible(false);
+        $aclObjectAcesProperty->setAccessible(false);
+        $aclObjectFieldAcesProperty->setAccessible(false);
+
+        return $acls;
+    }
+
+    private function orderAces(array $aces): array
+    {
+        ksort($aces);
+
+        return array_values($aces);
+    }
+
+    private function orderFieldAces(array $fieldAces): array
+    {
+        foreach (array_keys($fieldAces) as $fieldName) {
+            ksort($fieldAces[$fieldName]);
+            $fieldAces[$fieldName] = array_values($fieldAces[$fieldName]);
+        }
+
+        return $fieldAces;
+    }
 }
