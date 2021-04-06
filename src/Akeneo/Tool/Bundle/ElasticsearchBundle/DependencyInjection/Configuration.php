@@ -37,7 +37,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->integerNode('max_chunk_size')
                     ->isRequired()
-                    ->info('Determines the maximum size of an individual bulk request in byte')
+                    ->info('Determines the maximum size of an individual bulk request in characters')
                 ->end()
                 ->arrayNode('indexes')
                     ->prototype('array')

@@ -363,7 +363,7 @@ class ClientSpec extends ObjectBehavior
         ]);
     }
 
-    function it_retry_bulk_index_request_when_an_error_occurred(NativeClient $client)
+    function it_retries_bulk_index_request_when_an_error_occurred(NativeClient $client)
     {
         $isFirstCall = true;
         $client->bulk([
@@ -394,7 +394,7 @@ class ClientSpec extends ObjectBehavior
         ]);
     }
 
-    function it_retry_bulk_index_request_by_splitting_body_when_an_error_occurred(NativeClient $client)
+    function it_retries_bulk_index_request_by_splitting_body_when_an_error_occurred(NativeClient $client)
     {
         $client->bulk([
             'body' => [
