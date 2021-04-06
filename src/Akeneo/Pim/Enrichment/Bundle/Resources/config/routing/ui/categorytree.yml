@@ -30,7 +30,7 @@ pim_enrich_categorytree_children:
 
 pim_enrich_categorytree_index:
     path: /
-    defaults: { _controller: pim_enrich.controller.category_tree.product:indexAction }
+    #defaults: { _controller: pim_enrich.controller.category_tree.product:indexAction }
 
 pim_enrich_categorytree_create:
     path: /create/{parent}

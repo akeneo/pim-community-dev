@@ -214,6 +214,8 @@ pim_enrich.entity.category:
     label: category
     uppercase_label: Category
     plural_label: Categories
+    page_title:
+        index: "]-Inf, 1]{{ count }} tree|]1, Inf[{{ count }} trees"
 
 
 pim_enrich.export.product:
