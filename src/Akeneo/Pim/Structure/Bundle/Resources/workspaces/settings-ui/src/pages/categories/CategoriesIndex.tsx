@@ -1,12 +1,17 @@
-import React, {FC, useCallback} from 'react';
+import React, {FC, useCallback, useState} from 'react';
 import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
 import {Breadcrumb} from 'akeneo-design-system';
 import {PimView, useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {EmptyCategoryTreeList} from '../../components';
+import {CategoryTreesDataGrid} from '../../components/datagrids/categories/CategoryTreeDataGrid';
+import {CategoryTree} from '../../models';
 
 const CategoriesIndex: FC = () => {
   const router = useRouter();
   const translate = useTranslate();
+  const [trees, setTrees] = useState<CategoryTree[]>([
+    {id: 1, code: 'test', label: 'Test'}
+  ]);
 
   const followSettingsIndex = () => router.redirect(router.generate('pim_enrich_attribute_index'));
 
@@ -25,10 +30,10 @@ const CategoriesIndex: FC = () => {
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
         </PageHeader.UserActions>
-        <PageHeader.Title>{translate('pim_enrich.entity.category.page_title.index', {count: 0}, 0)}</PageHeader.Title>
+        <PageHeader.Title>{translate('pim_enrich.entity.category.page_title.index', {count: trees.length}, trees.length)}</PageHeader.Title>
       </PageHeader>
       <PageContent>
-        <EmptyCategoryTreeList />
+        {trees.length === 0 ? <EmptyCategoryTreeList /> : <CategoryTreesDataGrid trees={trees} />}
       </PageContent>
     </>
   );
