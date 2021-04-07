@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9799: Improve PEF performance by avoid a useless render
+
 # 5.0.15 (2021-04-06)
 
 # 5.0.14 (2021-04-01)
