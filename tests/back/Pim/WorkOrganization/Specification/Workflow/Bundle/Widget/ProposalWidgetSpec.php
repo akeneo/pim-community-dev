@@ -71,6 +71,7 @@ class ProposalWidgetSpec extends ObjectBehavior
         $productDraftRepository,
         $productModelDraftRepository,
         $presenter,
+        RouterInterface $router,
         ProductDraft $first,
         ProductModelDraft $second,
         ProductInterface $firstProduct,
@@ -79,6 +80,9 @@ class ProposalWidgetSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(true);
         $productDraftRepository->findApprovableByUser($user, 10)->willReturn([$first]);
         $productModelDraftRepository->findApprovableByUser($user, 10)->willReturn([$second]);
+
+        $router->generate('pim_enrich_product_edit', ['id' => 1])->willReturn('/enrich/product/1');
+        $router->generate('pim_enrich_product_model_edit', ['id' => 2])->willReturn('/enrich/product-model/2');
 
         $first->getEntityWithValue()->willReturn($firstProduct);
         $second->getEntityWithValue()->willReturn($secondProductModel);
@@ -108,6 +112,7 @@ class ProposalWidgetSpec extends ObjectBehavior
                     'productId'        => 1,
                     'productLabel'     => 'First product',
                     'authorFullName'   => 'Julia Stark',
+                    'productViewUrl' => '/enrich/product/1',
                     'productReviewUrl' =>
                         '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=julia&f%5Bidentifier%5D%5Bvalue%5D=sku1&f%5Bidentifier%5D%5Btype%5D=1',
                     'createdAt'        => $firstCreatedAt->format('m/d/Y')
@@ -116,6 +121,7 @@ class ProposalWidgetSpec extends ObjectBehavior
                     'productId'        => 2,
                     'productLabel'     => 'Second product',
                     'authorFullName'   => 'Julia Stark',
+                    'productViewUrl' => '/enrich/product-model/2',
                     'productReviewUrl' =>
                         '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=julia&f%5Bidentifier%5D%5Bvalue%5D=sku2&f%5Bidentifier%5D%5Btype%5D=1',
                     'createdAt'        => $secondCreatedAt->format('m/d/Y')

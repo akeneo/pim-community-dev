@@ -109,10 +109,16 @@ class ProposalWidget implements WidgetInterface
         $route = $this->router->generate('pimee_workflow_proposal_index');
 
         foreach ($proposals as $proposal) {
+            $viewUrl = $this->router->generate(
+                $proposal instanceof ProductDraft ? 'pim_enrich_product_edit': 'pim_enrich_product_model_edit',
+                ['id' => $proposal->getEntityWithValue()->getId()]
+            );
+
             $result[] = [
                 'productId'        => $proposal->getEntityWithValue()->getId(),
                 'productLabel'     => $proposal->getEntityWithValue()->getLabel(),
                 'authorFullName'   => $proposal->getAuthorLabel(),
+                'productViewUrl' => $viewUrl,
                 'productReviewUrl' => $route . $this->getProposalGridParametersAsUrl(
                         $proposal->getAuthor(),
                         $proposal instanceof ProductDraft ? $proposal->getEntityWithValue()->getIdentifier() : $proposal->getEntityWithValue()->getCode()

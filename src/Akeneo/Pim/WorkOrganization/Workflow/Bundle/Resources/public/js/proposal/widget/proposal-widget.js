@@ -21,23 +21,7 @@ define([
     },
 
     events: {
-      'click .product-label': 'followLink',
       'click .product-review': 'productReview',
-    },
-
-    /**
-     * Redirect to the product the draft corresponds too.
-     *
-     * @param {Object} event
-     */
-    followLink: function(event) {
-      event.preventDefault();
-
-      if ($(event.currentTarget).data('redirecttab')) {
-        sessionStorage.setItem('redirectTab', $(event.currentTarget).data('redirecttab'));
-      }
-
-      router.redirectToRoute('pim_enrich_product_edit', {id: $(event.currentTarget).data('id')});
     },
 
     /**
