@@ -223,6 +223,8 @@ pim_enrich.entity.category:
         tree_list:
             columns:
                 label: Tree label
+        tree:
+            not_found: Category tree not found
 
 pim_enrich.export.product:
     data:

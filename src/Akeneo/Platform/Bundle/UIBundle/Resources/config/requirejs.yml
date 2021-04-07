@@ -248,6 +248,9 @@ config:
         pim_enrich_categorytree_index:
           module: pim/controller/categories/index
           aclResourceId: pim_enrich_product_category_list
+        pim_enrich_categorytree_tree:
+          module: pim/controller/categories/index
+          aclResourceId: pim_enrich_product_category_list
         pim_enrich_channel_edit:
           module: pim/controller/channel/edit
           aclResourceId: pim_enrich_channel_edit
