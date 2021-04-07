@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {Table} from 'akeneo-design-system';
 import {CategoryTree} from '../../../models';
-import {useTranslate} from "@akeneo-pim-community/legacy-bridge";
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 type Props = {
   trees: CategoryTree[];
