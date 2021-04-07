@@ -36,7 +36,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, InitializableInterface, TrackableTaskletInterface
 {
-    private ?StepExecution $stepExecution;
+    private ?StepExecution $stepExecution = null;
     private IdentifiableObjectRepositoryInterface $familyRepository;
     private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory;
     private ItemReaderInterface $familyReader;
