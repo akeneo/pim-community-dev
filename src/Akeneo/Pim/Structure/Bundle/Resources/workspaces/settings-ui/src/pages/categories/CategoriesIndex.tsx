@@ -2,6 +2,7 @@ import React, {FC, useCallback} from 'react';
 import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
 import {Breadcrumb} from 'akeneo-design-system';
 import {PimView, useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {EmptyCategoryTreeList} from '../../components';
 
 const CategoriesIndex: FC = () => {
   const router = useRouter();
@@ -26,7 +27,9 @@ const CategoriesIndex: FC = () => {
         </PageHeader.UserActions>
         <PageHeader.Title>{translate('pim_enrich.entity.category.page_title.index', {count: 0}, 0)}</PageHeader.Title>
       </PageHeader>
-      <PageContent>In progress</PageContent>
+      <PageContent>
+        <EmptyCategoryTreeList />
+      </PageContent>
     </>
   );
 };

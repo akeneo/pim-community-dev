@@ -216,6 +216,10 @@ pim_enrich.entity.category:
     plural_label: Categories
     page_title:
         index: "]-Inf, 1]{{ count }} tree|]1, Inf[{{ count }} trees"
+    content:
+        empty_tree_list:
+            title: You don’t have any tree
+            hint: Create your first one.
 
 
 pim_enrich.export.product:
