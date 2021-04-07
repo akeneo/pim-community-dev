@@ -91,6 +91,28 @@ class DatagridViewRepositoryIntegration extends TestCase
         Assert::assertSame(['product-grid', 'another-grid'], $aliases);
     }
 
+    public function test_it_finds_public_view_by_label(): void
+    {
+        $julia = $this->userRepository->findOneBy(['username' => 'julia']);
+
+        $publicDatagridView = $this->createDatagridView('view 1', 'product-grid-public', DatagridView::TYPE_PUBLIC, $julia);
+        $privateDatagridView = $this->createDatagridView('view 1', 'product-grid-private', DatagridView::TYPE_PRIVATE, $julia);
+        $foundDatagridView = $this->datagridViewRepository->findPublicDatagridViewByLabel('view 1');
+
+        Assert::assertSame($publicDatagridView, $foundDatagridView);
+    }
+
+    public function test_it_finds_private_view_by_label(): void
+    {
+        $adminUser = $this->userRepository->findOneBy(['username' => 'admin']);
+
+        $datagridView1 = $this->createDatagridView('view 1', 'product-grid', DatagridView::TYPE_PRIVATE, $adminUser);
+        $datagridView2 = $this->createDatagridView('view 2', 'other-grid', DatagridView::TYPE_PRIVATE, $adminUser);
+        $foundDatagridView = $this->datagridViewRepository->findPrivateDatagridViewByLabel('view 2', $adminUser);
+
+        Assert::assertSame($datagridView2, $foundDatagridView);
+    }
+
     private function createDatagridView(
         string $label,
         string $alias,
