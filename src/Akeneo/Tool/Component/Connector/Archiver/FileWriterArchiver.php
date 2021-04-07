@@ -11,6 +11,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
+use Psr\Log\LoggerInterface;
 
 /**
  * Archive files written by job execution to provide them through a download button
@@ -23,12 +24,18 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
 {
     protected JobRegistry $jobRegistry;
     private FilesystemProvider $filesystemProvider;
+    private LoggerInterface $logger;
 
-    public function __construct(Filesystem $filesystem, JobRegistry $jobRegistry, FilesystemProvider $fsProvider)
-    {
+    public function __construct(
+        Filesystem $filesystem,
+        JobRegistry $jobRegistry,
+        FilesystemProvider $fsProvider,
+        LoggerInterface $logger
+    ) {
         $this->filesystem = $filesystem;
         $this->jobRegistry = $jobRegistry;
         $this->filesystemProvider = $fsProvider;
+        $this->logger = $logger;
     }
 
     /**
@@ -116,8 +123,17 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
                     \fclose($stream);
                 }
             } catch (FileNotFoundException $e) {
-                // TODO: log?
-                continue;
+                $this->logger->warning(
+                    'The remote file could not be read from the remote filesystem',
+                    [
+                        'key' => $filesToArchive->sourceKey(),
+                        'storage' => $filesToArchive->sourceStorage(),
+                        'exception' => [
+                            'type' => \get_class($e),
+                            'message' => $e->getMessage(),
+                        ],
+                    ]
+                );
             }
         }
     }

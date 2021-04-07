@@ -33,6 +33,7 @@ services:
             - '@oneup_flysystem.archivist_filesystem'
             - '@akeneo_batch.job.job_registry'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@logger'
         tags:
             - { name: pim_connector.archiver }
 

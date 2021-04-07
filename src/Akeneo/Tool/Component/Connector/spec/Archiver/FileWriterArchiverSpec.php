@@ -18,15 +18,17 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 
 class FileWriterArchiverSpec extends ObjectBehavior
 {
     function let(
         Filesystem $filesystem,
         JobRegistry $jobRegistry,
-        FilesystemProvider $filesystemProvider
+        FilesystemProvider $filesystemProvider,
+        LoggerInterface $logger
     ) {
-        $this->beConstructedWith($filesystem, $jobRegistry, $filesystemProvider);
+        $this->beConstructedWith($filesystem, $jobRegistry, $filesystemProvider, $logger);
     }
 
     function it_is_an_archiver()

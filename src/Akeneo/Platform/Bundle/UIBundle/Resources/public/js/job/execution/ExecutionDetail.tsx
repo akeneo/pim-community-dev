@@ -205,7 +205,7 @@ const ExecutionDetail = () => {
                         </Dropdown.Item>
                       ))}
                       {downloadZipArchive && (
-                        <Dropdown.Item key="zip_archive">
+                        <Dropdown.Item>
                           <Link
                             href={router.generate('pim_enrich_job_tracker_download_zip_archive', {
                               jobExecutionId: jobExecutionId,

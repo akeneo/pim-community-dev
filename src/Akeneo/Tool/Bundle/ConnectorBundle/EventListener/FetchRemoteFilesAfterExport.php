@@ -104,8 +104,6 @@ class FetchRemoteFilesAfterExport implements EventSubscriberInterface
                             ],
                         ]
                     );
-
-                    continue;
                 }
             }
         }
