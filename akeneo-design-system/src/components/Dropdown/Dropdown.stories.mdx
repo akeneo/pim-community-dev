@@ -96,8 +96,10 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                 </Dropdown.Header>
                 <Dropdown.ItemCollection>
                   <Dropdown.Item>First item</Dropdown.Item>
-                  <Dropdown.Item>A very long item</Dropdown.Item>
-                  <Dropdown.Item disabled={true}>This one is disabled</Dropdown.Item>
+                  <Dropdown.Item onClick={action('Clicked')}>A very long item</Dropdown.Item>
+                  <Dropdown.Item onClick={action('Clicked')} disabled={true}>
+                    This one is disabled
+                  </Dropdown.Item>
                   <Dropdown.Item>
                     <Link target="_blank" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
                       Item with a link

@@ -74,14 +74,16 @@ type ItemProps = Override<
 
 const Item = React.forwardRef<HTMLDivElement, ItemProps>(
   (
-    {children, onKeyDown, disabled = false, onClick, ...rest}: ItemProps,
+    {children, onKeyDown, disabled = false, onClick, title, ...rest}: ItemProps,
     forwardedRef: Ref<HTMLDivElement>
   ): React.ReactElement => {
     let tall = false;
     const actionableRef = useRef<HTMLAnchorElement>(null);
     const handleClick = useCallback(
       (event: SyntheticEvent) => {
-        if (null !== actionableRef.current && actionableRef.current !== event.target && !disabled) {
+        if (disabled) return;
+
+        if (null !== actionableRef.current && actionableRef.current !== event.target) {
           actionableRef.current.click();
         } else if (undefined !== onClick) {
           onClick(event as React.MouseEvent<HTMLDivElement, MouseEvent>);
@@ -106,7 +108,7 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
       if (typeof child === 'string') {
         return (
           <>
-            <ItemLabel title={child}>{child}</ItemLabel>
+            <ItemLabel title={title ?? child}>{child}</ItemLabel>
             {disabled && <LockIcon size={18} />}
           </>
         );
