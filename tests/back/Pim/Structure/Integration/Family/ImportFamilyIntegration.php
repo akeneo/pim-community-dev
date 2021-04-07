@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Structure\Integration\Family;
 
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductSaver;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\ProductUpdater;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Box\Spout\Writer\WriterFactory;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -30,9 +30,9 @@ final class ImportFamilyIntegration extends TestCase
     private FamilyRepositoryInterface $familyRepository;
     private ProductRepositoryInterface $productRepository;
     private ProductBuilderInterface $productBuilder;
-    private ProductUpdater $productUpdater;
+    private ObjectUpdaterInterface $productUpdater;
     private ValidatorInterface $productValidator;
-    private ProductSaver $productSaver;
+    private SaverInterface $productSaver;
     private GetProductCompletenesses $getProductCompletenesses;
 
     /**
