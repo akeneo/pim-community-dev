@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.16 (2021-04-08)
+
 ## Bug fixes
 
 - PIM-9793: Fix custom rule import
