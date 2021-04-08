@@ -51,6 +51,7 @@
 - PIM-9739: Fix connection users, users, channels having a link to a sub-category
 - PIM-9763: Make sure that 2 users can each create a private view with the same name
 - PIM-9798: Refresh completeness on product grid after family import
+- PIM-9800: Refresh ES index after creating a product model from the UI in order to well send product model created event to event subscriptions
 
 ## New features
 
