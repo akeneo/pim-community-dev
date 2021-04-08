@@ -54,7 +54,7 @@
     },
     "require": {
         "ext-json": "*",
-        "akeneo/pim-community-dev": "5.0.16",
+        "akeneo/pim-community-dev": "5.0.x-dev@dev",
         "hslavich/oneloginsaml-bundle": "1.5.1",
         "justinrainbow/json-schema": "^5.2",
         "phpspec/php-diff": "1.1.3",
