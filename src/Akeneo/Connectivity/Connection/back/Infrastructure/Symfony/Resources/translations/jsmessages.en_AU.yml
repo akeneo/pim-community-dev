@@ -250,6 +250,10 @@ akeneo_connectivity.connection:
           all: All
           none: None
         date_range_filter:
+          label: Date time
+          reset: Reset
+          from: From
+          to: To
           all: All
         info:
           title: Here are the logs related to all the event requests sent to this connection.
