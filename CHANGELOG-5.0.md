@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9793: Fix custom rule import
+- PIM-9795: [Standard Kernel] Do not load Messenger configuration from EE if it exists in project 
 
 # 5.0.15 (2021-04-06)
 

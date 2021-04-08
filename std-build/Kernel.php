@@ -66,14 +66,9 @@ class Kernel extends BaseKernel
         $eeConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-enterprise-dev/config';
         $projectConfDir = $this->getProjectDir() . '/config';
 
-        # The first packages configuration, for CE dependency are loaded from the CE package configuration root dir
-        $this->loadPackagesConfigurationFromDependencyExceptSecurity($loader, $ceConfDir);
+        $this->loadAkeneoCommunityPackagesConfiguration($loader, $ceConfDir);
+        $this->loadAkeneoEnterprisePackagesConfiguration($loader, $eeConfDir, $projectConfDir, $baseEnv);
 
-        # The 2nd packages configuration for EE dependency and flexibility or on prem are loaded
-        # from EE config dirs and root dir
-        $this->loadPackagesConfigurationExceptSecurity($loader, $eeConfDir, $baseEnv);
-
-        # Finally, the packages configuration for local environnement is loaded from the project
         $this->loadPackagesConfiguration($loader, $projectConfDir, $this->environment);
 
         $this->loadServicesConfiguration($loader, $ceConfDir, $baseEnv);
@@ -127,10 +122,10 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * "security.yml" is the only configuration file that can not be override
-     * And load default package configuration from EE and CE
+     * Load default package configuration from CE root packages config
+     * - security configuration doesn't support multiple loads
      */
-    private function loadPackagesConfigurationFromDependencyExceptSecurity(
+    private function loadAkeneoCommunityPackagesConfiguration(
         LoaderInterface $loader,
         string $confDir
     ): void {
@@ -147,12 +142,17 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * Load Packages Configuration from this project except security.yml
-     * security configuration doesn't support multiple loads
+     * Load default package configuration from EE root packages config and environment specific config
+     * - security configuration doesn't support multiple loads and MUST exist in project
+     * - Messenger configuration doesn't support multiple loads and CAN exists in project
+     *
+     * @see https://akeneo.atlassian.net/browse/PIM-9751
+     * @see https://akeneo.atlassian.net/browse/PIM-9795
      */
-    private function loadPackagesConfigurationExceptSecurity(
+    private function loadAkeneoEnterprisePackagesConfiguration(
         LoaderInterface $loader,
         string $confDir,
+        string $projectConfDir,
         string $environment
     ): void {
         $files = array_merge(
@@ -160,12 +160,17 @@ class Kernel extends BaseKernel
             glob($confDir . '/packages/' . $environment . '/*.yml')
         );
 
-        $files = array_filter(
-            $files,
-            function ($file) {
-                return 'security.yml' !== basename($file);
+        $files = array_filter($files, function ($file) use ($projectConfDir) {
+            if ('security.yml' === basename($file)) {
+                return false;
             }
-        );
+            if ('messenger.yml' === basename($file)
+                && file_exists($projectConfDir . '/packages/' . $this->environment . '/messenger.yml')) {
+                return false;
+            }
+
+            return true;
+        });
 
         foreach ($files as $file) {
             $loader->load($file, 'yaml');
@@ -187,9 +192,8 @@ class Kernel extends BaseKernel
      * Return the base env matching the project env.
      * The base env is configured at the level of pim-enterprise-dev
      *
-     * The base env is the same as thr project env,
-     * except for prod environment, where it depends
-     * if it's on premise or on Flexibility
+     * The base env is the same as the project env, except for prod environment,
+     * where it depends if it's on premise or Flexibility
      */
     protected function getBaseEnv(string $projectEnv): string
     {
