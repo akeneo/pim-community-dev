@@ -1,13 +1,13 @@
-import {CategoryTree} from '@akeneo-pim-community/settings-ui';
+import {Category} from '@akeneo-pim-community/settings-ui';
 
-const aCategoryTree = (code: string = 'a_root_category', label?: string, id: number = 1234): CategoryTree => ({
+const aCategory = (code: string = 'a_category', label?: string, id: number = 1234): Category => ({
   id,
   code,
-  label: label || `Category tree ${code}`,
+  label: label || `Category ${code}`,
 });
 
-const aListOfCategoryTrees = (codes: string[]): CategoryTree[] => {
-  return codes.map((code, index) => aCategoryTree(code, undefined, index));
+const aListOfCategories = (codes: string[]): Category[] => {
+  return codes.map((code, index) => aCategory(code, undefined, index));
 };
 
-export {aCategoryTree, aListOfCategoryTrees};
+export {aCategory, aListOfCategories};

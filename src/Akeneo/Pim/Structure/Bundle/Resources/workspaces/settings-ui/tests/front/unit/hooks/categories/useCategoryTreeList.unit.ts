@@ -1,7 +1,7 @@
 import {renderHookWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
-import {CategoryTree, useCategoryTreeList} from '@akeneo-pim-community/settings-ui';
+import {Category, useCategoryTreeList} from '@akeneo-pim-community/settings-ui';
 import {act} from 'react-test-renderer';
-import {aListOfCategoryTrees} from '../../../utils/provideCategoryHelper';
+import {aListOfCategories} from '../../../utils/provideCategoryHelper';
 
 jest.mock('@akeneo-pim-community/shared/src/fetcher/baseFetcher');
 
@@ -27,7 +27,7 @@ describe('useCategoryTreeList', () => {
   });
 
   test('it loads the list of category trees', async () => {
-    const categoryTreeList: CategoryTree[] = aListOfCategoryTrees(['tree_1', 'tree_2', 'tree_3']);
+    const categoryTreeList: Category[] = aListOfCategories(['tree_1', 'tree_2', 'tree_3']);
 
     // @ts-ignore;
     jest.spyOn(global, 'fetch').mockResolvedValue({

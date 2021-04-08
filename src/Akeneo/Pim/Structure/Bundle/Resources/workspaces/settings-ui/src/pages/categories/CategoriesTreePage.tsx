@@ -1,9 +1,9 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect} from 'react';
 import {FullScreenError, PageContent, PageHeader} from '@akeneo-pim-community/shared';
 import {PimView, useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {Breadcrumb} from 'akeneo-design-system';
 import {useParams} from 'react-router';
-import {CategoryTree} from '../../models';
+import {useCategoryTree} from '../../hooks';
 
 const PageTitle = require('pim/page-title');
 
@@ -15,15 +15,20 @@ const CategoriesTreePage: FC = () => {
   let {treeId} = useParams<Params>();
   const router = useRouter();
   const translate = useTranslate();
-  const [tree, setTree] = useState<CategoryTree | null>({id: 1, label: 'A tree', code: 'tree'});
+  const {tree, isPending, load} = useCategoryTree(treeId, true);
 
   const followSettingsIndex = () => router.redirect(router.generate('pim_enrich_attribute_index'));
   const followCategoriesIndex = () => router.redirect(router.generate('pim_enrich_categorytree_index'));
 
   useEffect(() => {
+    load();
+  }, [treeId]);
+
+  useEffect(() => {
     PageTitle.render('pim_enrich_categorytree_tree', {'category.label': tree ? tree.label : `[${treeId}]`});
   }, [tree]);
 
+  // @fixme tree is null before loading it, it displays the 404 error on the first render
   if (tree === null) {
     return (
       <FullScreenError
@@ -36,7 +41,7 @@ const CategoriesTreePage: FC = () => {
 
   return (
     <>
-      <PageHeader>
+      <PageHeader showPlaceholder={isPending}>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
             <Breadcrumb.Step onClick={followSettingsIndex}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
