@@ -393,6 +393,9 @@ pim_asset_manager:
         fail: Une erreur s'est produite pendant la suppression des ressources de la famille.
       mass_delete:
         success: La suppression en masse des ressources a été lancée. Vous serez notifié lorsque la tâche sera terminée.
+      mass_edit:
+        validation:
+          fail: Une erreur s'est produite lors de la validation de l'édition de masse
       execute_naming_convention:
         success: Convention de nommage exécutée avec succès
         fail: Une erreur s'est produite lors de l'exécution de la convention de nommage
@@ -572,3 +575,4 @@ job_execution:
   summary:
     assets: Ressources
 pim_notification.types.asset_manager_mass_delete_assets: Supprimer en masse des ressources
+pim_notification.types.asset_manager_mass_edit_assets: Edition de masse des ressources

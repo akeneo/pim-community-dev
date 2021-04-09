@@ -51,6 +51,9 @@ pim_asset_manager:
         not_main_media_attribute_code: 'Die Eigenschaft muss mit dem Code des Attributs übereinstimmen, das als Haupt-Medien definiert ist'
   asset:
     validation:
+      mass_edit:
+        updater_cannot_be_empty: 'Attribute, die in Transformationen oder im schreibgeschützten Modus verwendet werden, können nicht ausgewählt werden.'
+        updater_must_be_unique: 'Bitte stellen Sie sicher, dass dieses Attribut und dessen Kanal und Gebietsschema nicht bereits ausgewählt sind.'
       code:
         pattern: 'Dieses Feld darf nur Buchstaben, Zahlen und Unterstriche enthalten.'
         should_be_unique: 'Ein Asset existiert bereits mit Code "%code%"'

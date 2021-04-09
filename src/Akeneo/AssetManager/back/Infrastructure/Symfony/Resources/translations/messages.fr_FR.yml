@@ -66,6 +66,7 @@ pim_datagrid:
       asset_manager_link_assets_to_products: Lier les ressources aux produits
       asset_manager_compute_transformations: Calculer les transformations de ressource
       asset_manager_mass_delete_assets: Supprimer en masse des ressources
+      asset_manager_mass_edit_assets: Edition de masse des ressources
 batch_jobs:
   default_steps:
     execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
