@@ -32,7 +32,7 @@ class ProductCreationEndToEnd extends InternalApiTestCase
         $admin = $this->getAdminUser();
 
         $createdProduct = $this->getConnectorProductsQuery
-            ->fromProductQueryBuilder([$identifier], $admin->getId(), null, null, null)
+            ->fromProductIdentifiers([$identifier], $admin->getId(), null, null, null)
             ->connectorProducts();
 
         $this->assertCount(1, $createdProduct);
