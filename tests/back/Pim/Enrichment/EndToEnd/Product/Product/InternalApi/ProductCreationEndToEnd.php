@@ -14,14 +14,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class ProductCreationEndToEnd extends InternalApiTestCase
 {
-    private ProductQueryBuilderFactoryInterface $pqbFactory;
     private GetConnectorProducts $getConnectorProductsQuery;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->pqbFactory = $this->get('pim_catalog.query.product_query_builder_from_size_factory_external_api');
         $this->getConnectorProductsQuery = $this->get('akeneo.pim.enrichment.product.connector.get_product_from_identifiers');
         $this->authenticate($this->getAdminUser());
     }
@@ -32,12 +30,9 @@ class ProductCreationEndToEnd extends InternalApiTestCase
         $this->createProductWithInternalApi($identifier);
 
         $admin = $this->getAdminUser();
-        $pqb = $this->pqbFactory
-            ->create(['limit' => 1])
-            ->addFilter('identifier', Operators::EQUALS, $identifier);
 
         $createdProduct = $this->getConnectorProductsQuery
-            ->fromProductQueryBuilder($pqb, $admin->getId(), null, null, null)
+            ->fromProductQueryBuilder([$identifier], $admin->getId(), null, null, null)
             ->connectorProducts();
 
         $this->assertCount(1, $createdProduct);
