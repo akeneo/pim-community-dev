@@ -347,6 +347,25 @@ pim_asset_manager:
       extra_information: If they are linked to products, the links to the products will be removed.
       confirm_label: Please type "{{ assetFamilyIdentifier }}"
       title: Assets
+    mass_edit:
+      subtitle: Asset bulk action
+      title: "[0, 1]Edit attribute values of {{ count }} asset|]1,Inf] Edit attribute values of {{ count }} assets"
+      attribute_selected: "{0}No attribute selected|{1}One attribute selected|]1,Inf]{{ count }} attributes selected"
+      empty_selection:
+        title: Your attribute selection is empty, please add attributes to edit.
+        body: You don't know what a bulk action is?
+        link: Take a look at this article.
+      action:
+        append: Add
+        replace: Replace
+      select:
+        channel: Select a channel
+        locale: Select a locale
+        action: Select an action
+      helper:
+        content: Please note that it is possible to add the same attribute multiple times so make sure you select your attributes carefully.
+        link: You can check our documentation to avoid any issues.
+      unsupported_attribute: This attribute type "{{ attributeType }}" is not supported
     grid:
       search: Search on label, code and text attributes
       filter:
@@ -393,6 +412,13 @@ pim_asset_manager:
         fail: An error occurred during the deletion of all this asset family's assets
       mass_delete:
         success: The bulk action "Mass delete" has been launched. You will be notified when it is completed.
+        fail: Error occured during mass delete job launching
+      mass_edit:
+        launch:
+          success: The bulk action "Mass edit" has been launched. You will be notified when it is completed.
+          fail: Error occured during mass edit job launching
+        validation:
+          fail: Error occured during mass edit validation
       execute_naming_convention:
         success: Naming convention successfully executed
         fail: An error occurred during the execution of the naming convention
@@ -563,12 +589,15 @@ pim_datagrid:
     type:
       asset_manager_execute_naming_convention: Execute Asset Family naming convention
       asset_manager_mass_delete_assets: Execute Asset mass delete
+      asset_manager_mass_edit_assets: Execute Asset mass edit
 batch_jobs:
   default_steps:
     execute_naming_convention: Execute Asset Family naming convention
     mass_delete_assets: Execute Asset mass delete
+    mass_edit_assets: Execute Asset mass edit
     link_assets_to_products: Link assets to products
 job_execution:
   summary:
     assets: Assets
 pim_notification.types.asset_manager_mass_delete_assets: Mass delete assets
+pim_notification.types.asset_manager_mass_edit_assets: Mass edit assets
