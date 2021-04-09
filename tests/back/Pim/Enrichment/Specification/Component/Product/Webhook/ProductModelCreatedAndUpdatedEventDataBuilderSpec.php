@@ -41,8 +41,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         GetConnectorProductModels $getConnectorProductModelsQuery,
         ProductValueNormalizer $productValuesNormalizer,
         RouterInterface $router
-    )
-    {
+    ) {
         $connectorProductModelNormalizer = new ConnectorProductModelNormalizer(
             new ValuesNormalizer($productValuesNormalizer->getWrappedObject(), $router->getWrappedObject()),
             new DateTimeNormalizer(),
