@@ -10,12 +10,7 @@ const aListOfCategories = (codes: string[]): Category[] => {
   return codes.map((code, index) => aCategory(code, undefined, index));
 };
 
-const aCategoryTree = (
-  code: string,
-  children: string[],
-  isRoot: boolean = true,
-  id: number = 1234
-): CategoryTree => {
+const aCategoryTree = (code: string, children: string[], isRoot: boolean = true, id: number = 1234): CategoryTree => {
   const root = aCategory(code, `[${code}]`, id);
   return {
     ...root,

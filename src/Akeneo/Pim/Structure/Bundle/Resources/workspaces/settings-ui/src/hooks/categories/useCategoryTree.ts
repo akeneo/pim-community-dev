@@ -7,7 +7,7 @@ export type FetchStatus = 'idle' | 'error' | 'fetching' | 'fetched';
 const useCategoryTree = (treeId: number) => {
   const [tree, setTree] = useState<CategoryTree | null>(null);
   const [status, setStatus] = useState<FetchStatus>('idle');
-  const [error, setError] = useState<string|null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const url = useRoute('pim_enrich_categorytree_children', {
     _format: 'json',
