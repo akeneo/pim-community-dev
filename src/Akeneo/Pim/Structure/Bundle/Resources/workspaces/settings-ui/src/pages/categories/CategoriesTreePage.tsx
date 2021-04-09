@@ -3,9 +3,7 @@ import {FullScreenError, PageContent, PageHeader} from '@akeneo-pim-community/sh
 import {PimView, useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {Breadcrumb} from 'akeneo-design-system';
 import {useParams} from 'react-router';
-import {useCategoryTree} from '../../hooks';
-
-const PageTitle = require('pim/page-title');
+import {useCategoryTree, useSetPageTitle} from '../../hooks';
 
 type Params = {
   treeId: string;
@@ -18,6 +16,8 @@ const CategoriesTreePage: FC = () => {
   const {tree, status, load} = useCategoryTree(treeId);
   const [treeLabel, setTreeLabel] = useState(`[${treeId}]`);
 
+  useSetPageTitle(translate('pim_title.pim_enrich_categorytree_tree', {'category.label': treeLabel}));
+
   const followSettingsIndex = () => router.redirect(router.generate('pim_enrich_attribute_index'));
   const followCategoriesIndex = () => router.redirect(router.generate('pim_enrich_categorytree_index'));
 
@@ -28,10 +28,6 @@ const CategoriesTreePage: FC = () => {
   useEffect(() => {
     setTreeLabel(tree ? tree.label : `[${treeId}]`);
   }, [tree]);
-
-  useEffect(() => {
-    PageTitle.render('pim_enrich_categorytree_tree', {'category.label': treeLabel});
-  }, [treeLabel]);
 
   if (status === 'error') {
     return (
@@ -63,7 +59,7 @@ const CategoriesTreePage: FC = () => {
         </PageHeader.UserActions>
         <PageHeader.Title>{treeLabel}</PageHeader.Title>
       </PageHeader>
-      <PageContent>Classify category tree: {treeLabel}</PageContent>
+      <PageContent>{treeLabel}</PageContent>
     </>
   );
 };

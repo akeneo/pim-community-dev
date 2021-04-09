@@ -3,8 +3,6 @@ import {Category, useCategoryTreeList} from '@akeneo-pim-community/settings-ui';
 import {act} from 'react-test-renderer';
 import {aListOfCategories} from '../../../utils/provideCategoryHelper';
 
-jest.mock('@akeneo-pim-community/shared/src/fetcher/baseFetcher');
-
 describe('useCategoryTreeList', () => {
   const renderUseCategoryTreeList = () => {
     return renderHookWithProviders(useCategoryTreeList);

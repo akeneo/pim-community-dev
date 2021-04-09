@@ -24,7 +24,7 @@ export type CategoryTree = {
 
 const convertToCategoryTree = (tree: BackendCategoryTree): CategoryTree => {
   return {
-    id: parseInt(tree.attr.id.substr(0, 5)), // remove the "node_" prefix and returns the number
+    id: parseInt(tree.attr.id.substring(5)), // remove the "node_" prefix and returns the number
     code: tree.attr['data-code'],
     label: tree.data,
     isRoot: tree.state.match(/root/) !== null,

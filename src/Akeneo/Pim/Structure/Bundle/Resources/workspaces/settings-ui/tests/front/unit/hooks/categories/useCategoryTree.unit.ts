@@ -1,13 +1,11 @@
 import {renderHookWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
-import {Category, useCategoryTree} from '@akeneo-pim-community/settings-ui';
+import {CategoryTree, useCategoryTree} from '@akeneo-pim-community/settings-ui';
+import {aBackendCategoryTree, aCategoryTree} from '../../../utils/provideCategoryHelper';
 import {act} from 'react-test-renderer';
-import {aListOfCategories} from '../../../utils/provideCategoryHelper';
-
-//jest.mock('@akeneo-pim-community/shared/src/fetcher/baseFetcher');
 
 describe('useCategoryTree', () => {
-  const renderUseCategoryTree = (treeId: string, isRoot: boolean) => {
-    return renderHookWithProviders(() => useCategoryTree(treeId, isRoot));
+  const renderUseCategoryTree = (treeId: number) => {
+    return renderHookWithProviders(() => useCategoryTree(treeId));
   };
 
   beforeEach(() => {
@@ -18,47 +16,52 @@ describe('useCategoryTree', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });
-/*
+
   test('it returns default values', () => {
-    const {result} = renderUseCategoryTree();
-    expect(result.current.trees.length).toBe(0);
-    expect(result.current.isPending).toBeFalsy();
+    const {result} = renderUseCategoryTree(1234);
+    expect(result.current.tree).toBeNull();
+    expect(result.current.status).toBe('idle');
     expect(result.current.load).toBeDefined();
+    expect(result.current.error).toBeNull();
   });
 
   test('it loads the category tree', async () => {
-    const categoryTreeList: Category[] = aListOfCategories(['tree_1', 'tree_2', 'tree_3']);
+    const treeId = 1234;
+    const categoryTree: CategoryTree = aCategoryTree(
+      'a_root_category',
+      ['a_category', 'a_second_category'],
+      true,
+      treeId
+    );
+    const response = aBackendCategoryTree('a_root_category', ['a_category', 'a_second_category'], true, treeId);
 
     // @ts-ignore;
     jest.spyOn(global, 'fetch').mockResolvedValue({
-      json: () => Promise.resolve(categoryTreeList),
+      json: () => Promise.resolve(response),
     });
 
-    const {result} = renderUseCategoryTree();
+    const {result} = renderUseCategoryTree(treeId);
 
     await act(async () => {
       result.current.load();
     });
 
-    expect(result.current.trees.length).toBe(3);
-    expect(result.current.isPending).toEqual(false);
+    expect(result.current.tree).toEqual(categoryTree);
+    expect(result.current.status).toBe('fetched');
   });
 
-  test('it returns an empty list of category trees when the loading failed', async () => {
-    const logError = jest.fn();
-    jest.spyOn(global.console, 'error').mockImplementation(logError);
+  test('it returns errors when the loading failed', async () => {
     // @ts-ignore
     jest.spyOn(global, 'fetch').mockReject(new Error('An unexpected server error'));
 
-    const {result} = renderUseCategoryTree();
+    const {result} = renderUseCategoryTree(1234);
 
     await act(async () => {
       result.current.load();
     });
 
-    expect(result.current.trees.length).toBe(0);
-    expect(result.current.isPending).toEqual(false);
-    expect(logError).toHaveBeenCalled();
+    expect(result.current.tree).toBeNull();
+    expect(result.current.status).toEqual('error');
+    expect(result.current.error).toMatch(/unexpected server error/);
   });
-  */
 });
