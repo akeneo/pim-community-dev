@@ -91,27 +91,26 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
             return $identifier->getIdentifier();
         }, iterator_to_array($result));
 
-        $products = $this->fromProductIdentifiers($identifiers, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
-
-        return new ConnectorProductList($result->count(), $products);
+        return $this->fromProductIdentifiers($identifiers, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
     }
 
     public function fromProductIdentifier(string $productIdentifier, int $userId): ConnectorProduct
     {
-        $products = $this->fromProductIdentifiers([$productIdentifier], null, null, null);
-        if (empty($products)) {
+        $products = $this->fromProductIdentifiers([$productIdentifier], $userId, null, null, null);
+        if ($products->totalNumberOfProducts() === 0) {
             throw new ObjectNotFoundException(sprintf('Product "%s" was not found.', $productIdentifier));
         }
 
-        return $products[0];
+        return $products->connectorProducts()[0];
     }
 
-    private function fromProductIdentifiers(
+    public function fromProductIdentifiers(
         array $productIdentifiers,
+        int $userId,
         ?array $attributesToFilterOn,
         ?string $channelToFilterOn,
         ?array $localesToFilterOn
-    ): array {
+    ): ConnectorProductList {
         $identifierAttributeCode = $this->attributeRepository->getIdentifierCode();
 
         $rows = array_replace_recursive(
@@ -169,7 +168,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
             );
         }
 
-        return $products;
+        return new ConnectorProductList(count($products), $products);
     }
 
     private function removeIdentifierValue(array $rawValues, string $identifierAttributeCode): array

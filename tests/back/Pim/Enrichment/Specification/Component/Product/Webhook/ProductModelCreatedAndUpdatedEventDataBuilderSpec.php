@@ -38,18 +38,18 @@ use Symfony\Component\Routing\RouterInterface;
 class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
 {
     function let(
-        ProductQueryBuilderFactoryInterface $pqbFactory,
         GetConnectorProductModels $getConnectorProductModelsQuery,
         ProductValueNormalizer $productValuesNormalizer,
         RouterInterface $router
-    ) {
+    )
+    {
         $connectorProductModelNormalizer = new ConnectorProductModelNormalizer(
             new ValuesNormalizer($productValuesNormalizer->getWrappedObject(), $router->getWrappedObject()),
             new DateTimeNormalizer(),
         );
         $productValuesNormalizer->normalize(Argument::type(ReadValueCollection::class), 'standard')->willReturn([]);
 
-        $this->beConstructedWith($pqbFactory, $getConnectorProductModelsQuery, $connectorProductModelNormalizer);
+        $this->beConstructedWith($getConnectorProductModelsQuery, $connectorProductModelNormalizer);
     }
 
 
@@ -83,9 +83,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     }
 
     public function it_builds_a_bulk_event_of_product_created_and_updated_event(
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        GetConnectorProductModels $getConnectorProductModelsQuery,
-        ProductQueryBuilderInterface $pqb
+        GetConnectorProductModels $getConnectorProductModelsQuery
     ): void {
         $user = new User();
         $user->setId(10);
@@ -103,9 +101,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
             $this->buildConnectorProductModel(2, 'shoes'),
         ]);
 
-        $pqbFactory->create(['limit' => 2])->willReturn($pqb);
-        $pqb->addFilter('identifier', Operators::IN_LIST, ['jean', 'shoes'])->willReturn($pqb);
-        $getConnectorProductModelsQuery->fromProductQueryBuilder($pqb, 10, null, null, null)
+        $getConnectorProductModelsQuery->fromProductModelCodes(['jean', 'shoes'], 10, null, null, null)
             ->willReturn($productModelList);
 
         $expectedCollection = new EventDataCollection();
@@ -152,18 +148,14 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     }
 
     public function it_builds_a_bulk_event_of_product_created_and_updated_event_if_a_product_as_been_removed(
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        GetConnectorProductModels $getConnectorProductModelsQuery,
-        ProductQueryBuilderInterface $pqb
+        GetConnectorProductModels $getConnectorProductModelsQuery
     ): void {
         $user = new User();
         $user->setId(10);
 
         $productList = new ConnectorProductModelList(1, [$this->buildConnectorProductModel(1, 'jean')]);
 
-        $pqbFactory->create(['limit' => 2])->willReturn($pqb);
-        $pqb->addFilter('identifier', Operators::IN_LIST, ['jean', 'shoes'])->willReturn($pqb);
-        $getConnectorProductModelsQuery->fromProductQueryBuilder($pqb, 10, null, null, null)
+        $getConnectorProductModelsQuery->fromProductModelCodes(['jean', 'shoes'], 10, null, null, null)
             ->willReturn($productList);
 
         $jeanEvent = new ProductModelCreated(Author::fromNameAndType('julia', Author::TYPE_UI), [
