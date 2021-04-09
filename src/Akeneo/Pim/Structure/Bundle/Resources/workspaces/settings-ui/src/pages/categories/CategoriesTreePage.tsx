@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {FullScreenError, PageContent, PageHeader} from '@akeneo-pim-community/shared';
 import {PimView, useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {Breadcrumb} from 'akeneo-design-system';
@@ -15,7 +15,8 @@ const CategoriesTreePage: FC = () => {
   let {treeId} = useParams<Params>();
   const router = useRouter();
   const translate = useTranslate();
-  const {tree, isPending, load} = useCategoryTree(treeId, true);
+  const {tree, status, load} = useCategoryTree(treeId);
+  const [treeLabel, setTreeLabel] = useState(`[${treeId}]`);
 
   const followSettingsIndex = () => router.redirect(router.generate('pim_enrich_attribute_index'));
   const followCategoriesIndex = () => router.redirect(router.generate('pim_enrich_categorytree_index'));
@@ -25,11 +26,14 @@ const CategoriesTreePage: FC = () => {
   }, [treeId]);
 
   useEffect(() => {
-    PageTitle.render('pim_enrich_categorytree_tree', {'category.label': tree ? tree.label : `[${treeId}]`});
+    setTreeLabel(tree ? tree.label : `[${treeId}]`);
   }, [tree]);
 
-  // @fixme tree is null before loading it, it displays the 404 error on the first render
-  if (tree === null) {
+  useEffect(() => {
+    PageTitle.render('pim_enrich_categorytree_tree', {'category.label': treeLabel});
+  }, [treeLabel]);
+
+  if (status === 'error') {
     return (
       <FullScreenError
         title={translate('error.exception', {status_code: '404'})}
@@ -41,7 +45,7 @@ const CategoriesTreePage: FC = () => {
 
   return (
     <>
-      <PageHeader showPlaceholder={isPending}>
+      <PageHeader showPlaceholder={status === 'idle' || status === 'fetching'}>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
             <Breadcrumb.Step onClick={followSettingsIndex}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
@@ -57,9 +61,9 @@ const CategoriesTreePage: FC = () => {
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
         </PageHeader.UserActions>
-        <PageHeader.Title>{tree.label}</PageHeader.Title>
+        <PageHeader.Title>{treeLabel}</PageHeader.Title>
       </PageHeader>
-      <PageContent>Classify category tree: {tree.label}</PageContent>
+      <PageContent>Classify category tree: {treeLabel}</PageContent>
     </>
   );
 };

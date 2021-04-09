@@ -2,9 +2,13 @@ import {useCallback, useState} from 'react';
 import {BackendCategoryTree, CategoryTree, convertToCategoryTree} from '../../models';
 import {useRoute} from '@akeneo-pim-community/legacy-bridge';
 
-const useCategoryTree = (treeId: string, root: boolean = false) => {
+export type FetchStatus = 'idle' | 'error' | 'fetching' | 'fetched';
+
+const useCategoryTree = (treeId: string) => {
   const [tree, setTree] = useState<CategoryTree | null>(null);
-  const [isPending, setIsPending] = useState(false);
+  const [status, setStatus] = useState<FetchStatus>('idle');
+  const [error, setError] = useState<string|null>(null);
+
   const url = useRoute('pim_enrich_categorytree_children', {
     _format: 'json',
     id: treeId,
@@ -15,7 +19,7 @@ const useCategoryTree = (treeId: string, root: boolean = false) => {
   });
 
   const load = useCallback(async () => {
-    setIsPending(true);
+    setStatus('fetching');
 
     try {
       const response = await fetch(url);
@@ -23,24 +27,26 @@ const useCategoryTree = (treeId: string, root: boolean = false) => {
 
       const tree = convertToCategoryTree(data);
 
-      if (root && !tree.isRoot) {
+      if (!tree.isRoot) {
         setTree(null);
-        setIsPending(false);
+        setStatus('error');
+        setError(`Category tree [${treeId}] not found`);
         return;
       }
 
       setTree(tree);
-      setIsPending(false);
+      setStatus('fetched');
     } catch (e) {
-      console.error(e.message);
       setTree(null);
-      setIsPending(false);
+      setStatus('error');
+      setError(e.message);
     }
   }, [url]);
 
   return {
     tree,
-    isPending,
+    status,
+    error,
     load,
   };
 };
