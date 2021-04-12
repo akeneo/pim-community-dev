@@ -19,8 +19,7 @@ use Akeneo\Tool\Component\Batch\Job\BatchStatus;
  */
 class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenessTestCase
 {
-    /** @var JobLauncher */
-    protected $jobLauncher;
+    protected JobLauncher $jobLauncher;
 
     public function testComputeCompletenessesForProductWhenUpdatingAttributeRequirements()
     {
@@ -77,6 +76,7 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
 
         $this->purgeJobExecutions('compute_completeness_of_products_family');
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
+        $this->jobLauncher->flushMessengerJobQueue();
     }
 
     /**
@@ -182,11 +182,6 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
         );
     }
 
-    /**
-     * @param string $jobName
-     * @param int    $batchStatus
-     * @param array  $jobParameters
-     */
     private function assertJobWasExecutedWithStatusAndJobParameters(string $jobName, int $batchStatus, array $jobParameters = [])
     {
         $this->get('doctrine.orm.default_entity_manager')->clear();
@@ -213,9 +208,6 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
 
     /**
      * Launches the  Wait for all the job executions of the given jobName to finnish within a given timeout.
-     *
-     * @param int    $times
-     * @param string $jobName
      */
     private function launchTimesAndWaitForJobExecutionsToEnd(int $times, string $jobName)
     {

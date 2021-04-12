@@ -34,8 +34,6 @@ class ConsumeJobMessageIntegration extends TestCase
         $jobInstanceSaver->save($jobInstance);
 
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
-        // Some messages created in another test could be in the queue. To prevent that we flush the queue.
-        $this->jobLauncher->flushMessengerJobQueue();
     }
 
     public function testLaunchAJobExecution(): void
