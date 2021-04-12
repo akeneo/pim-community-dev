@@ -88,13 +88,16 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
             iterator_to_array($result)
         );
 
-        return $this->fromProductModelCodes(
+        $productModels = $this->fromProductModelCodes(
             $productModelCodes,
             $userId,
             $attributesToFilterOn,
             $channelToFilterOn,
             $localesToFilterOn
         );
+
+        // We use the pqb result count in order to keep paginated research working
+        return new ConnectorProductModelList($result->count(), $productModels->connectorProductModels());
     }
 
     /**

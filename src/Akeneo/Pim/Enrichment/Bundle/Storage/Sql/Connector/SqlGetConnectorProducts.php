@@ -91,7 +91,10 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
             return $identifier->getIdentifier();
         }, iterator_to_array($result));
 
-        return $this->fromProductIdentifiers($identifiers, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
+        $products = $this->fromProductIdentifiers($identifiers, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
+
+        // We use the pqb result count in order to keep paginated research working
+        return new ConnectorProductList($result->count(), $products->connectorProducts());
     }
 
     public function fromProductIdentifier(string $productIdentifier, int $userId): ConnectorProduct
