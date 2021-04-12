@@ -48,7 +48,16 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
     }>({filters: getDefaultFilters()});
     const isSearchActive = !isSameAsDefaultFiltersValues(filters);
 
-    const {logs, total, isLoading} = useInfiniteEventSubscriptionLogs(connectionCode, filters, scrollContainer);
+    const {
+        logs,
+        total,
+        isLoading,
+        isInitialized
+    } = useInfiniteEventSubscriptionLogs(connectionCode, filters, scrollContainer);
+
+    if (!isInitialized) {
+        return null;
+    }
 
     if (!isSearchActive && !isLoading && total === 0) {
         return <NoEventLogs />;

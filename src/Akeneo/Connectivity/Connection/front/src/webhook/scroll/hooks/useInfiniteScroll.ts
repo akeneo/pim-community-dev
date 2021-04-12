@@ -4,6 +4,7 @@ import useIsMounted from './useIsMounted';
 
 type InfiniteScrollStatus = {
     isLoading: boolean;
+    isInitialized: boolean;
     reset: () => void;
 };
 
@@ -26,15 +27,17 @@ const useInfiniteScroll = <T>(
         lastPage: T | null;
         isStopped: boolean;
         isLoading: boolean;
+        isInitialized: boolean;
         shouldFetch: boolean;
     }>({
         lastPage: null,
         isStopped: false,
         isLoading: false,
+        isInitialized: false,
         shouldFetch: true,
     });
 
-    const {lastPage, isStopped, isLoading, shouldFetch} = state;
+    const {lastPage, isStopped, isLoading, isInitialized, shouldFetch} = state;
 
     const isMounted = useIsMounted();
 
@@ -63,6 +66,7 @@ const useInfiniteScroll = <T>(
                 lastPage: page,
                 isStopped: null === page,
                 isLoading: false,
+                isInitialized: true,
                 shouldFetch: false,
             }));
         })();
@@ -103,12 +107,13 @@ const useInfiniteScroll = <T>(
     useScrollPosition(containerRef, handleScrollPosition, [lastPage], 100);
 
     const reset = useCallback(() => {
-        setState({
+        setState(state => ({
+            ...state,
             lastPage: null,
             isStopped: false,
             isLoading: false,
             shouldFetch: false,
-        });
+        }));
         setState(state => ({
             ...state,
             shouldFetch: true,
@@ -117,6 +122,7 @@ const useInfiniteScroll = <T>(
 
     return {
         isLoading: isLoading,
+        isInitialized: isInitialized,
         reset: reset,
     };
 };

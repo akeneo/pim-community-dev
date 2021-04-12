@@ -31,6 +31,7 @@ const useInfiniteEventSubscriptionLogs = (
     container: RefObject<HTMLElement>
 ): EventSubscriptionLogs & {
     isLoading: boolean;
+    isInitialized: boolean;
 } => {
     const [state, setState] = useState<EventSubscriptionLogs>({
         logs: [],
@@ -89,7 +90,11 @@ const useInfiniteEventSubscriptionLogs = (
         return payload;
     };
 
-    const {reset, isLoading} = useInfiniteScroll<SearchEventSubscriptionLogsResponse>(fetchNextResponse, container);
+    const {
+        reset,
+        isLoading,
+        isInitialized
+    } = useInfiniteScroll<SearchEventSubscriptionLogsResponse>(fetchNextResponse, container);
 
     const resetState = useCallback(() => {
         setState({
@@ -117,6 +122,7 @@ const useInfiniteEventSubscriptionLogs = (
     return {
         ...state,
         isLoading: isLoading,
+        isInitialized: isInitialized,
     };
 };
 
