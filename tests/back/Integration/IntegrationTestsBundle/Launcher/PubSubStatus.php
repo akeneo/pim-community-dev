@@ -15,6 +15,7 @@ namespace AkeneoTest\Integration\IntegrationTestsBundle\Launcher;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory;
 use Google\Cloud\Core\Exception\ServiceException;
+use Google\Cloud\PubSub\Message;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -66,6 +67,45 @@ final class PubSubStatus
             }
 
             return count($messages) > 0;
+        } catch (ServiceException $exception) {
+            throw new \RuntimeException(sprintf('Unable to access Pub/Sub: %s', $exception->getMessage()));
+        }
+    }
+
+    /**
+     * Returns the message in queue, without removing them.
+     * For testing purposes only.
+     *
+     * @return Message[]
+     */
+    public function getMessagesInQueue(): array
+    {
+        $pubSubClient = $this->pubSubClientFactory->createPubSubClient(['projectId' => $this->projectId]);
+        $topic = $pubSubClient->topic($this->topicName);
+        $subscription = $topic->subscription($this->subscriptionName);
+
+
+        try {
+            if (!$topic->exists()) {
+                return [];
+            }
+
+            if (!$subscription->exists()) {
+                // We can have multiple subscription for one topic,
+                // so we can have have message in the topic without having an existing subscription.
+                $subscription->create();
+            }
+
+            $messages = $subscription->pull([
+                'maxMessages' => 100,
+                'returnImmediately' => true,
+            ]);
+
+            foreach ($messages as $message) {
+                $subscription->modifyAckDeadline($message, 0);
+            }
+
+            return $messages;
         } catch (ServiceException $exception) {
             throw new \RuntimeException(sprintf('Unable to access Pub/Sub: %s', $exception->getMessage()));
         }

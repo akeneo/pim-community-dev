@@ -10,11 +10,11 @@ use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Doctrine\DBAL\Driver\Connection;
+use Google\Cloud\PubSub\Message;
 
 class QueueJobLauncherIntegration extends TestCase
 {
-    /** @var JobLauncher */
-    protected $jobLauncher;
+    protected JobLauncher $jobLauncher;
 
     /**
      * {@inheritdoc}
@@ -24,6 +24,7 @@ class QueueJobLauncherIntegration extends TestCase
         parent::setUp();
 
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
+        $this->jobLauncher->flushMessengerJobQueue();
     }
 
     public function testPublishAndRunAJobExecutionMessageIntoTheQueue()
@@ -38,16 +39,17 @@ class QueueJobLauncherIntegration extends TestCase
 
         $this->getJobLauncher()->launch($jobInstance, $user, ['send_email' => true]);
 
+        $messages = $this->getJobMessagesInQueue();
+        self::assertCount(1, $messages);
+        /** @var Message $message */
+        $message = $messages[0];
+        $data = \json_decode($message->data(), true);
+        self::assertSame(['env' => 'test', 'email' => 'mary@example.com'], $data['options']);
+        self::assertNotNull($data['created_time']);
+        self::assertNull($data['updated_time']);
+        self::assertNull($data['consumer']);
+
         $connection = $this->getConnection();
-        $stmt = $connection->prepare('SELECT * from akeneo_batch_job_execution_queue');
-        $stmt->execute();
-        $row = $stmt->fetch();
-
-        $this->assertJsonStringEqualsJsonString('{"env": "test", "email": "mary@example.com"}', $row['options']);
-        $this->assertNotNull($row['create_time']);
-        $this->assertNull($row['updated_time']);
-        $this->assertNull($row['consumer']);
-
         $stmt = $connection->prepare('SELECT user, status, exit_code, health_check_time from akeneo_batch_job_execution');
         $stmt->execute();
         $row = $stmt->fetch();
@@ -69,20 +71,23 @@ class QueueJobLauncherIntegration extends TestCase
         $this->assertNotNull($row['health_check_time']);
     }
 
-    /**
-     * @return JobLauncherInterface
-     */
     protected function getJobLauncher(): JobLauncherInterface
     {
         return $this->get('akeneo_batch_queue.launcher.queue_job_launcher');
     }
 
-    /**
-     * @return Connection
-     */
     protected function getConnection(): Connection
     {
         return $this->get('doctrine.orm.entity_manager')->getConnection();
+    }
+
+    protected function getJobMessagesInQueue(): array
+    {
+        return array_merge(
+            $this->get('akeneo_integration_tests.pub_sub_status.ui_job')->getMessagesInQueue(),
+            $this->get('akeneo_integration_tests.pub_sub_status.import_export_job')->getMessagesInQueue(),
+            $this->get('akeneo_integration_tests.pub_sub_status.data_maintenance_job')->getMessagesInQueue(),
+        );
     }
 
     /**
