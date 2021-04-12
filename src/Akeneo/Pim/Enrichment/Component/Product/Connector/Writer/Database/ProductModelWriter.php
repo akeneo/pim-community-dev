@@ -47,7 +47,7 @@ class ProductModelWriter implements ItemWriterInterface, StepExecutionAwareInter
         $parameters = $this->stepExecution->getJobParameters();
         $origin = $parameters->has('origin') ? $parameters->get('origin') : null;
 
-        $this->productModelSaver->saveAll($items,  ['origin' => $origin]);
+        $this->productModelSaver->saveAll($items, ['origin' => $origin]);
     }
 
     /**

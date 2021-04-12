@@ -370,7 +370,7 @@ class ProductModelController
         }
 
         $productModel = $this->findProductModelOr404($id);
-        $this->productModelRemover->remove($productModel, ['origin' => 'UI']);
+        $this->productModelRemover->remove($productModel, ['origin' => ContextOrigin::UI]);
 
         $this->productAndProductModelClient->refreshIndex();
 

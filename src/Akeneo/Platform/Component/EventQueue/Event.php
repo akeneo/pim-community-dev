@@ -24,8 +24,6 @@ abstract class Event implements EventInterface
         int $timestamp = null,
         string $uuid = null
     ) {
-        Assert::keyExists($data, 'origin');
-
         $this->author = $author;
         $this->data = $data;
         $this->timestamp = $timestamp ?? time();

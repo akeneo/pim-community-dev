@@ -352,7 +352,7 @@ class ProductController
                 $product->removeValue($value);
             }
         }
-        $this->productSaver->save($product, ['origin' => 'UI']);
+        $this->productSaver->save($product, ['origin' => ContextOrigin::UI]);
 
         return new JsonResponse();
     }
@@ -385,7 +385,7 @@ class ProductController
 
         $violations = $this->validator->validate($product);
         if (0 === $violations->count()) {
-            $this->productSaver->save($product, ['origin' => 'UI']);
+            $this->productSaver->save($product, ['origin' => ContextOrigin::UI]);
 
             $normalizedProduct = $this->normalizer->normalize(
                 $product,

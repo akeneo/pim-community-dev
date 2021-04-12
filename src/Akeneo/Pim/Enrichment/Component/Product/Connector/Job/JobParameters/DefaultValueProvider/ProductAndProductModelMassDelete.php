@@ -17,6 +17,7 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface
  */
 class ProductAndProductModelMassDelete implements DefaultValuesProviderInterface
 {
+    /** @var string[] */
     protected array $supportedJobNames;
 
     public function __construct(array $supportedJobNames)
