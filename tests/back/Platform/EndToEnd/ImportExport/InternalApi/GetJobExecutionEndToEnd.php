@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Platform\EndToEnd\ImportExport\InternalApi;
 
+use Akeneo\Pim\Enrichment\Component\ContextOrigin;
 use AkeneoTest\Platform\EndToEnd\InternalApiTestCase;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Response;
@@ -144,6 +145,7 @@ SQL;
                         'enabledComparison' => true,
                         'realTimeVersioning' => true,
                         'convertVariantToSimple' => false,
+                        'origin' => ContextOrigin::IMPORT,
                     ],
             ],
             'tracking' => [
