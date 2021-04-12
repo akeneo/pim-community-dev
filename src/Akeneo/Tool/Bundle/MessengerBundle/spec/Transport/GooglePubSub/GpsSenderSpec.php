@@ -47,6 +47,25 @@ class GpsSenderSpec extends ObjectBehavior
         $this->send($envelope);
     }
 
+    public function it_sends_a_message_with_ordering_key($topic, $serializer): void
+    {
+        $envelope = new Envelope((object)['message' => 'My message!']);
+
+        $serializer->encode($envelope)->willReturn([
+            'body' => 'My message!',
+            'headers' => ['my_attribute' => 'My attribute!'],
+            'orderingKey' => 'a_key',
+        ]);
+
+        $topic->publish([
+            'data' => 'My message!',
+            'attributes' => ['my_attribute' => 'My attribute!'],
+            'orderingKey' => 'a_key',
+        ])->shouldBeCalled();
+
+        $this->send($envelope);
+    }
+
     public function it_throws_a_transport_exception_if_an_error_is_raised_while_sending_a_message(
         $topic,
         $serializer
