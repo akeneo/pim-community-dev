@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\IntegrationTestsBundle\Launcher;
 
+use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\PubSub\PubSubStatusCheckerInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Command\BatchCommand;
-use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubStatus;
 use Doctrine\DBAL\Driver\Connection;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -38,19 +39,21 @@ class JobLauncher
 
     private KernelInterface $kernel;
     private Connection $dbConnection;
-    private JobExecutionMessageRepository $jobExecutionMessageRepository;
     private ContainerInterface $receiverLocator;
+    /** @var PubSubStatus[] */
+    private iterable $pubSubStatuses;
 
     public function __construct(
         KernelInterface $kernel,
         Connection $dbConnection,
-        JobExecutionMessageRepository $jobExecutionMessageRepository,
-        ContainerInterface $receiverLocator
+        ContainerInterface $receiverLocator,
+        iterable $pubSubStatuses
     ) {
+        Assert::allIsInstanceOf($pubSubStatuses, PubSubStatus::class);
         $this->kernel = $kernel;
         $this->dbConnection = $dbConnection;
-        $this->jobExecutionMessageRepository = $jobExecutionMessageRepository;
         $this->receiverLocator = $receiverLocator;
+        $this->pubSubStatuses = $pubSubStatuses;
     }
 
     /**
@@ -286,14 +289,17 @@ class JobLauncher
 
     /**
      * Indicates whether the queue has a job still not consumed in the queue.
-     *
-     * @return bool
      */
     public function hasJobInQueue(): bool
     {
-        $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessage();
+        /** @var PubSubStatus $pubSubStatusChecker */
+        foreach ($this->pubSubStatuses as $pubSubStatus) {
+            if ($pubSubStatus->hasMessageInQueue()) {
+                return true;
+            }
+        }
 
-        return null !== $jobExecutionMessage;
+        return false;
     }
 
     /**
@@ -318,6 +324,18 @@ class JobLauncher
         $application->run($input, $output);
 
         return $output;
+    }
+
+    public function launchConsumerUntilQueueIsEmpty(array $options = [], int $limit = 50): int
+    {
+        $numberOfJobs = 0;
+        while ($this->hasJobInQueue()) {
+            $this->launchConsumerOnce($options);
+            $numberOfJobs++;
+            Assert::notSame($numberOfJobs, $limit, sprintf('Error: the test reaches the limit number of jobs (%d).', $limit));
+        }
+
+        return $numberOfJobs;
     }
 
     /**
