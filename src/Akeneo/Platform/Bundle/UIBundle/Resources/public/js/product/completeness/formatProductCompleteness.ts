@@ -21,10 +21,10 @@ const formatProductCompleteness = (
   rawProductCompleteness: BackendProductCompleteness[],
   catalogLocale: string
 ): ChannelsLocalesCompletenesses => {
-  return rawProductCompleteness.reduce((formattedCompleteness, channelCompleteness) => {
+  return rawProductCompleteness.reduce((formattedCompleteness: ChannelsLocalesCompletenesses, channelCompleteness) => {
     formattedCompleteness[channelCompleteness.labels[catalogLocale]] = {
       channelRatio: channelCompleteness.stats.average,
-      locales: Object.values(channelCompleteness.locales).reduce((localesRatios, locale) => {
+      locales: Object.values(channelCompleteness.locales).reduce((localesRatios: any, locale) => {
         localesRatios[locale.label] = locale.completeness.ratio;
         return localesRatios;
       }, {}),
