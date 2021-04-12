@@ -28,15 +28,6 @@ const Container = styled.div`
   height: 100vh;
 `;
 
-const SecondaryActionsButton = styled(IconButton)`
-  opacity: 0.5;
-  color: ${getColor('grey', 120)};
-
-  :hover {
-    opacity: 1;
-  }
-`;
-
 const Refreshing = styled.span`
   display: flex;
   gap: 10px;
@@ -137,7 +128,8 @@ const ExecutionDetail = () => {
         <PageHeader.Actions>
           {(showProfileIsVisible || downloadLogIsVisible) && (
             <Dropdown>
-              <SecondaryActionsButton
+              <IconButton
+                level="tertiary"
                 title={translate('pim_common.other_actions')}
                 icon={<MoreIcon />}
                 ghost="borderless"
