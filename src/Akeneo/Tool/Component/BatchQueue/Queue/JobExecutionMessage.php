@@ -130,6 +130,6 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface, Orde
 
     public function getOrderingKey(): string
     {
-        return static::ORDERING_KEY;
+        return self::ORDERING_KEY;
     }
 }
