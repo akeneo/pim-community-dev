@@ -214,7 +214,6 @@ JSON;
         $this->productModelRemover->remove($productModel);
 
         $this->assertEventCount(1, ProductModelRemoved::class);
-        $this->assertEventOrigin(ContextOrigin::API);
     }
 
     protected function getConfiguration(): Configuration
