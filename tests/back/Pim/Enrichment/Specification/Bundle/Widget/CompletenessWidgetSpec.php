@@ -27,11 +27,6 @@ class CompletenessWidgetSpec extends ObjectBehavior
         $this->getAlias()->shouldReturn('completeness');
     }
 
-    function it_exposes_the_completeness_widget_template()
-    {
-        $this->getTemplate()->shouldReturn('AkeneoPimEnrichmentBundle:Widget:completeness.html.twig');
-    }
-
     function it_has_no_template_parameters()
     {
         $this->getParameters()->shouldReturn([]);

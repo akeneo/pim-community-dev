@@ -23,11 +23,6 @@ class LastOperationsWidgetSpec extends ObjectBehavior
         $this->getAlias()->shouldReturn('last_operations');
     }
 
-    function it_exposes_the_last_operations_widget_template()
-    {
-        $this->getTemplate()->shouldReturn('PimImportExportBundle:Widget:last_operations.html.twig');
-    }
-
     function it_has_no_template_parameters()
     {
         $this->getParameters()->shouldReturn([]);

@@ -1,4 +1,0 @@
-config:
-    paths:
-        pim/dashboard/abstract-widget: pimdashboard/js/abstract-widget
-        pim/dashboard/widget-container: pimdashboard/js/widget-container

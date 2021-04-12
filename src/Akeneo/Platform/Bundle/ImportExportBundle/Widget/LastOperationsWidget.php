@@ -35,7 +35,7 @@ class LastOperationsWidget implements WidgetInterface
      */
     public function getTemplate()
     {
-        return 'PimImportExportBundle:Widget:last_operations.html.twig';
+        return '';
     }
 
     /**
