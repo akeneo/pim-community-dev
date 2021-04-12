@@ -357,7 +357,6 @@ services:
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.value:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydrator
         arguments:
-            - '@database_connection'
             - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.data_hydrator_registry'
 
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.text_data:

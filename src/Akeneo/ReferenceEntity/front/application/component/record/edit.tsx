@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
+import {DeleteModal} from '@akeneo-pim-community/shared';
+import {PimView} from '@akeneo-pim-community/legacy-bridge';
 import {EditState as State} from 'akeneoreferenceentity/application/reducer/record/edit';
 import Sidebar from 'akeneoreferenceentity/application/component/app/sidebar';
 import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
@@ -8,7 +10,6 @@ import sidebarProvider from 'akeneoreferenceentity/application/configuration/sid
 import {RefEntityBreadcrumb} from 'akeneoreferenceentity/application/component/app/breadcrumb';
 import Image from 'akeneoreferenceentity/application/component/app/image';
 import __ from 'akeneoreferenceentity/tools/translator';
-import PimView from 'akeneoreferenceentity/infrastructure/component/pim-view';
 import Record, {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import {
   saveRecord,
@@ -24,7 +25,6 @@ import LocaleSwitcher from 'akeneoreferenceentity/application/component/app/loca
 import ChannelSwitcher from 'akeneoreferenceentity/application/component/app/channel-switcher';
 import denormalizeRecord from 'akeneoreferenceentity/application/denormalizer/record';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
-import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 import Key from 'akeneoreferenceentity/tools/key';
 import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
@@ -253,11 +253,12 @@ class RecordEditView extends React.Component<EditProps> {
         </div>
         {this.props.confirmDelete.isActive && (
           <DeleteModal
-            message={__('pim_reference_entity.record.delete.message', {recordLabel: label})}
             title={__('pim_reference_entity.record.delete.title')}
             onConfirm={this.onConfirmedDelete}
             onCancel={this.props.events.onCancelDeleteModal}
-          />
+          >
+            {__('pim_reference_entity.record.delete.message', {recordLabel: label})}
+          </DeleteModal>
         )}
       </React.Fragment>
     );

@@ -77,13 +77,19 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchRecords(
-            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['red']]
+            'ecommerce',
+            'en_US',
+            ['main_color_designers_fingerprint' => ['red']]
         );
         $searchResultMobileFrFR = $this->searchRecords(
-            'mobile', 'fr_FR', ['main_color_designers_fingerprint' => ['red']]
+            'mobile',
+            'fr_FR',
+            ['main_color_designers_fingerprint' => ['red']]
         );
         $emptySearchResult = $this->searchRecords(
-            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['blue']]
+            'ecommerce',
+            'en_US',
+            ['main_color_designers_fingerprint' => ['blue']]
         );
 
         $this->assertContains('stark', $searchResultEcommerceEnUS->normalize()['identifiers']);
@@ -102,14 +108,18 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchRecords(
-            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['red']]
+            'ecommerce',
+            'en_US',
+            ['main_color_designers_fingerprint' => ['red']]
         );
         $identifiers = $searchResultEcommerceEnUS->normalize()['identifiers'];
         $this->assertContains('stark', $identifiers);
 
         $this->expectException('\LogicException');
         $this->searchRecords(
-            'mobile', 'fr_FR', ['main_color_designers_fingerprint' => ['red']]
+            'mobile',
+            'fr_FR',
+            ['main_color_designers_fingerprint' => ['red']]
         );
     }
 
@@ -124,13 +134,19 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchRecords(
-            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['red', 'blue']]
+            'ecommerce',
+            'en_US',
+            ['main_color_designers_fingerprint' => ['red', 'blue']]
         );
         $searchResultMobileFrFR = $this->searchRecords(
-            'mobile', 'fr_FR', ['main_color_designers_fingerprint' => ['blue', 'green']]
+            'mobile',
+            'fr_FR',
+            ['main_color_designers_fingerprint' => ['blue', 'green']]
         );
         $emptySearchResult = $this->searchRecords(
-            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['green']]
+            'ecommerce',
+            'en_US',
+            ['main_color_designers_fingerprint' => ['green']]
         );
 
         $this->assertContains('stark', $searchResultEcommerceEnUS->normalize()['identifiers']);
@@ -149,14 +165,18 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchRecords(
-            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['red', 'blue']]
+            'ecommerce',
+            'en_US',
+            ['main_color_designers_fingerprint' => ['red', 'blue']]
         );
         $identifiers = $searchResultEcommerceEnUS->normalize()['identifiers'];
         $this->assertContains('stark', $identifiers);
 
         $this->expectException('\LogicException');
         $this->searchRecords(
-            'mobile', 'fr_FR', ['main_color_designers_fingerprint' => ['red']]
+            'mobile',
+            'fr_FR',
+            ['main_color_designers_fingerprint' => ['red']]
         );
     }
 
@@ -172,13 +192,19 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchRecords(
-            'ecommerce', 'en_US', ['main_city_designers_fingerprint' => ['paris']]
+            'ecommerce',
+            'en_US',
+            ['main_city_designers_fingerprint' => ['paris']]
         );
         $searchResultMobileFrFR = $this->searchRecords(
-            'mobile', 'fr_FR', ['main_city_designers_fingerprint' => ['paris']]
+            'mobile',
+            'fr_FR',
+            ['main_city_designers_fingerprint' => ['paris']]
         );
         $emptySearchResult = $this->searchRecords(
-            'ecommerce', 'en_US', ['main_city_designers_fingerprint' => ['london']]
+            'ecommerce',
+            'en_US',
+            ['main_city_designers_fingerprint' => ['london']]
         );
 
         $this->assertContains('stark', $searchResultEcommerceEnUS->normalize()['identifiers']);
@@ -198,14 +224,18 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchRecords(
-            'ecommerce', 'en_US', ['main_city_designers_fingerprint' => ['paris']]
+            'ecommerce',
+            'en_US',
+            ['main_city_designers_fingerprint' => ['paris']]
         );
         $identifiers = $searchResultEcommerceEnUS->normalize()['identifiers'];
         $this->assertContains('stark', $identifiers);
 
         $this->expectException('\LogicException');
         $this->searchRecords(
-            'mobile', 'fr_FR', ['main_city_designers_fingerprint' => ['paris']]
+            'mobile',
+            'fr_FR',
+            ['main_city_designers_fingerprint' => ['paris']]
         );
     }
 
@@ -226,13 +256,19 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchRecords(
-            'ecommerce', 'en_US', ['main_cities_designers_fingerprint' => ['paris', 'barcelona']]
+            'ecommerce',
+            'en_US',
+            ['main_cities_designers_fingerprint' => ['paris', 'barcelona']]
         );
         $searchResultMobileFrFR = $this->searchRecords(
-            'mobile', 'fr_FR', ['main_cities_designers_fingerprint' => ['barcelona', 'london']]
+            'mobile',
+            'fr_FR',
+            ['main_cities_designers_fingerprint' => ['barcelona', 'london']]
         );
         $emptySearchResult = $this->searchRecords(
-            'ecommerce', 'en_US', ['main_cities_designers_fingerprint' => ['london']]
+            'ecommerce',
+            'en_US',
+            ['main_cities_designers_fingerprint' => ['london']]
         );
 
         $this->assertContains('stark', $searchResultEcommerceEnUS->normalize()['identifiers']);
@@ -426,7 +462,7 @@ class FilterRecordsTest extends SearchIntegrationTestCase
                 ValueCollection::fromValues([
                     Value::create(
                         $this->attributeIdentifier,
-                        (null !== $channel) ? ChannelReference::createfromNormalized($channel) : ChannelReference::noReference(),
+                        (null !== $channel) ? ChannelReference::createFromNormalized($channel) : ChannelReference::noReference(),
                         (null !== $locale) ? LocaleReference::createFromNormalized($locale) : LocaleReference::noReference(),
                         OptionData::createFromNormalize($optionCode)
                     ),
@@ -447,7 +483,7 @@ class FilterRecordsTest extends SearchIntegrationTestCase
                 ValueCollection::fromValues([
                     Value::create(
                         $this->attributeIdentifier,
-                        (null !== $channel) ? ChannelReference::createfromNormalized($channel) : ChannelReference::noReference(),
+                        (null !== $channel) ? ChannelReference::createFromNormalized($channel) : ChannelReference::noReference(),
                         (null !== $locale) ? LocaleReference::createFromNormalized($locale) : LocaleReference::noReference(),
                         OptionCollectionData::createFromNormalize($optionCodes)
                     ),
@@ -468,7 +504,7 @@ class FilterRecordsTest extends SearchIntegrationTestCase
                 ValueCollection::fromValues([
                     Value::create(
                         $this->attributeIdentifier,
-                        (null !== $channel) ? ChannelReference::createfromNormalized($channel) : ChannelReference::noReference(),
+                        (null !== $channel) ? ChannelReference::createFromNormalized($channel) : ChannelReference::noReference(),
                         (null !== $locale) ? LocaleReference::createFromNormalized($locale) : LocaleReference::noReference(),
                         RecordData::createFromNormalize($linkedRecord)
                     ),
@@ -483,7 +519,7 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         foreach ($linkedRecordsByIdentifier as $attributeIdentifier => $linkedRecords) {
             $values[] = Value::create(
                 AttributeIdentifier::fromString($attributeIdentifier),
-                (null !== $channel) ? ChannelReference::createfromNormalized($channel) : ChannelReference::noReference(),
+                (null !== $channel) ? ChannelReference::createFromNormalized($channel) : ChannelReference::noReference(),
                 (null !== $locale) ? LocaleReference::createFromNormalized($locale) : LocaleReference::noReference(),
                 RecordCollectionData::createFromNormalize($linkedRecords)
             );

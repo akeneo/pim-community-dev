@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
+import {DeleteModal} from '@akeneo-pim-community/shared';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import Form from 'akeneoreferenceentity/application/component/reference-entity/edit/form';
 import {
@@ -16,10 +17,9 @@ import ReferenceEntity, {
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {RefEntityBreadcrumb} from 'akeneoreferenceentity/application/component/app/breadcrumb';
 import File from 'akeneoreferenceentity/domain/model/file';
-const securityContext = require('pim/security-context');
-import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 import {canEditLocale, canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
+const securityContext = require('pim/security-context');
 
 interface StateProps {
   form: EditionFormState;
@@ -82,7 +82,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
     const label = referenceEntity.getLabel(this.props.context.locale);
 
     return (
-      <React.Fragment>
+      <>
         <Header
           label={referenceEntity.getLabel(this.props.context.locale)}
           image={referenceEntity.getImage()}
@@ -124,15 +124,14 @@ class Properties extends React.Component<StateProps & DispatchProps> {
         </div>
         {this.props.confirmDelete.isActive && (
           <DeleteModal
-            message={__('pim_reference_entity.reference_entity.delete.message', {referenceEntityLabel: label})}
             title={__('pim_reference_entity.reference_entity.delete.title')}
-            onConfirm={() => {
-              this.props.events.onDelete(referenceEntity);
-            }}
+            onConfirm={() => this.props.events.onDelete(referenceEntity)}
             onCancel={this.props.events.onCancelDeleteModal}
-          />
+          >
+            {__('pim_reference_entity.reference_entity.delete.message', {referenceEntityLabel: label})}
+          </DeleteModal>
         )}
-      </React.Fragment>
+      </>
     );
   }
 }

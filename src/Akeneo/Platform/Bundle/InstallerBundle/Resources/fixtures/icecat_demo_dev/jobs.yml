@@ -997,6 +997,11 @@ jobs:
         configuration:
             filePath: /tmp/asset.xlsx
             uploadAllowed: true
+    reference_entity_mass_delete_records:
+        connector: internal
+        alias: reference_entity_mass_delete_records
+        label: Mass delete records
+        type: reference_entity_mass_delete_records
     csv_reference_entity_record_export:
         connector: Akeneo CSV Connector
         alias: csv_reference_entity_record_export

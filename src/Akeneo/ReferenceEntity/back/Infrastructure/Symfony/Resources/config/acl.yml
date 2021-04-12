@@ -38,11 +38,6 @@ akeneo_referenceentity_record_delete:
     label: akeneo_referenceentity.acl.record.delete
     group_name: akeneo_referenceentity.acl_group.reference_entity
 
-akeneo_referenceentity_records_delete_all:
-    type: action
-    label: akeneo_referenceentity.acl.record.delete_all
-    group_name: akeneo_referenceentity.acl_group.reference_entity
-
 akeneo_referenceentity_attribute_create:
     type: action
     label: akeneo_referenceentity.acl.attribute.create

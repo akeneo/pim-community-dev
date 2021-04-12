@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2018 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,6 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
 use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
-use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
@@ -37,30 +36,17 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class SqlRecordRepository implements RecordRepositoryInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var RecordHydratorInterface */
-    private $recordHydrator;
-
-    /** @var FindValueKeyCollectionInterface */
-    private $findValueKeyCollection;
-
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $findAttributesIndexedByIdentifier;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
-    /** @var FindIdentifiersByReferenceEntityAndCodesInterface */
-    private $findIdentifiersByReferenceEntityAndCodes;
-
-    /** @var FindValueKeysByAttributeTypeInterface */
-    private $findValueKeysByAttributeType;
+    private Connection $sqlConnection;
+    private RecordHydratorInterface $recordHydrator;
+    private FindValueKeyCollectionInterface $findValueKeyCollection;
+    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
+    private EventDispatcherInterface $eventDispatcher;
+    private FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes;
+    private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
 
     public function __construct(
         Connection $sqlConnection,
@@ -231,24 +217,41 @@ SQL;
         return $this->hydrateRecord($result);
     }
 
-    public function deleteByReferenceEntity(
-        ReferenceEntityIdentifier $referenceEntityIdentifier
+    public function deleteByReferenceEntityAndCodes(
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        array $recordCodes
     ): void {
+        $identifiers = $this->findIdentifiersByReferenceEntityAndCodes->find($referenceEntityIdentifier, $recordCodes);
+
         $sql = <<<SQL
         DELETE FROM akeneo_reference_entity_record
-        WHERE reference_entity_identifier = :reference_entity_identifier;
+        WHERE code IN (:codes) AND reference_entity_identifier = :reference_entity_identifier;
 SQL;
         $this->sqlConnection->executeUpdate(
             $sql,
             [
+                'codes' => $recordCodes,
                 'reference_entity_identifier' => (string) $referenceEntityIdentifier,
+            ],
+            [
+                'codes' => Connection::PARAM_STR_ARRAY
             ]
         );
 
-        $this->eventDispatcher->dispatch(
-            new ReferenceEntityRecordsDeletedEvent($referenceEntityIdentifier),
-            ReferenceEntityRecordsDeletedEvent::class
-        );
+        foreach ($recordCodes as $recordCode) {
+            if (!array_key_exists($recordCode->normalize(), $identifiers)) {
+                continue;
+            }
+
+            $this->eventDispatcher->dispatch(
+                new RecordDeletedEvent(
+                    $identifiers[$recordCode->normalize()],
+                    $recordCode,
+                    $referenceEntityIdentifier
+                ),
+                RecordDeletedEvent::class
+            );
+        }
     }
 
     public function deleteByReferenceEntityAndCode(
@@ -261,7 +264,7 @@ SQL;
         DELETE FROM akeneo_reference_entity_record
         WHERE code = :code AND reference_entity_identifier = :reference_entity_identifier;
 SQL;
-        $affectedRows = $this->sqlConnection->executeUpdate(
+        $affectedRowsCount = $this->sqlConnection->executeUpdate(
             $sql,
             [
                 'code' => (string) $code,
@@ -269,7 +272,7 @@ SQL;
             ]
         );
 
-        if (0 === $affectedRows) {
+        if (0 === $affectedRowsCount) {
             throw new RecordNotFoundException();
         }
 

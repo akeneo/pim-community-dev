@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Button, useBooleanState} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {DeleteModal} from '@akeneo-pim-community/shared';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {EditForm} from 'akeneoassetmanager/application/component/asset-family/edit/form';
 import {
@@ -13,11 +15,9 @@ import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-fam
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
-import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const securityContext = require('pim/security-context');
 
@@ -111,11 +111,12 @@ const Properties = ({events, attributes, context, form, rights}: StateProps & Di
       </div>
       {isDeleteModalOpen && (
         <DeleteModal
-          message={translate('pim_asset_manager.asset_family.delete.message', {assetFamilyLabel})}
           title={translate('pim_asset_manager.asset_family.delete.title')}
           onConfirm={() => events.onDelete(assetFamily)}
           onCancel={closeDeleteModal}
-        />
+        >
+          {translate('pim_asset_manager.asset_family.delete.message', {assetFamilyLabel})}
+        </DeleteModal>
       )}
     </>
   );

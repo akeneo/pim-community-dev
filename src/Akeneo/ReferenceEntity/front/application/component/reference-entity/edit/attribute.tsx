@@ -219,7 +219,6 @@ class AttributesView extends React.Component<CreateProps> {
               </button>
             ) : null;
           }}
-          secondaryActions={() => null}
           withLocaleSwitcher={true}
           withChannelSwitcher={false}
           isDirty={false}

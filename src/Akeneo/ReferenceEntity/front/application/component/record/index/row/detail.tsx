@@ -1,36 +1,43 @@
-import * as React from 'react';
+import React, {useCallback, memo} from 'react';
 import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import {Column} from 'akeneoreferenceentity/application/reducer/grid';
 import {CellViews} from 'akeneoreferenceentity/application/component/reference-entity/edit/record';
 
-const memo = (React as any).memo;
+type DetailRowProps = {
+  record: NormalizedRecord;
+  placeholder?: boolean;
+  columns: Column[];
+  cellViews: CellViews;
+  onRedirectToRecord?: (record: NormalizedRecord) => void;
+  onSelectionChange?: (recordCode: string, newValue: boolean) => void;
+  isItemSelected: (recordCode: string) => boolean;
+};
 
 const DetailRow = memo(
   ({
     record,
     placeholder = false,
     onRedirectToRecord,
+    onSelectionChange,
+    isItemSelected,
     columns,
     cellViews,
-  }: {
-    record: NormalizedRecord;
-    placeholder?: boolean;
-    position: number;
-    columns: Column[];
-    cellViews: CellViews;
-  } & {
-    onRedirectToRecord: (record: NormalizedRecord) => void;
-  }) => {
+  }: DetailRowProps) => {
+    const handleSelect = useCallback(
+      (newValue: boolean) => {
+        onSelectionChange?.(record.code, newValue);
+      },
+      [onSelectionChange, record]
+    );
+
     if (true === placeholder) {
       return (
         <tr className="AknGrid-bodyRow">
-          {columns.map((colum: Column) => {
-            return (
-              <td key={colum.key} className="AknGrid-bodyCell">
-                <div className="AknGrid-bodyCellContainer AknLoadingPlaceHolder" />
-              </td>
-            );
-          })}
+          {columns.map(column => (
+            <td key={column.key} className="AknGrid-bodyCell">
+              <div className="AknGrid-bodyCellContainer AknLoadingPlaceHolder" />
+            </td>
+          ))}
         </tr>
       );
     }
@@ -40,20 +47,23 @@ const DetailRow = memo(
         className="AknGrid-bodyRow"
         data-identifier={record.identifier}
         onClick={event => {
-          event.preventDefault();
-
-          onRedirectToRecord(record);
+          if (undefined !== onRedirectToRecord) {
+            event.preventDefault();
+            onRedirectToRecord(record);
+          } else {
+            handleSelect(!isItemSelected(record.code));
+          }
 
           return false;
         }}
       >
         {0 === columns.length ? <td className="AknGrid-bodyCell" /> : null}
 
-        {columns.map((column: Column) => {
+        {columns.map(column => {
           const CellView = cellViews[column.key];
           const value = record.values[column.key as any];
 
-          if (undefined === value) {
+          if (undefined === value || undefined === CellView) {
             return <td key={column.key} className="AknGrid-bodyCell" />;
           }
 
@@ -68,24 +78,29 @@ const DetailRow = memo(
   }
 );
 
+type DetailRowsProps = {
+  records: NormalizedRecord[];
+  locale: string;
+  placeholder: boolean;
+  onRedirectToRecord?: (record: NormalizedRecord) => void;
+  onSelectionChange?: (recordCode: string, newValue: boolean) => void;
+  isItemSelected: (recordCode: string) => boolean;
+  recordCount: number;
+  columns: Column[];
+  cellViews: CellViews;
+};
+
 const DetailRows = memo(
   ({
     records,
-    locale,
     placeholder,
     onRedirectToRecord,
+    onSelectionChange,
+    isItemSelected,
     recordCount,
     columns,
     cellViews,
-  }: {
-    records: NormalizedRecord[];
-    locale: string;
-    placeholder: boolean;
-    onRedirectToRecord: (record: NormalizedRecord) => void;
-    recordCount: number;
-    columns: Column[];
-    cellViews: CellViews;
-  }) => {
+  }: DetailRowsProps) => {
     if (placeholder) {
       const record = {
         identifier: '',
@@ -98,33 +113,40 @@ const DetailRows = memo(
 
       const placeholderCount = recordCount < 30 ? recordCount : 30;
 
-      return Array.from(Array(placeholderCount).keys()).map(key => (
-        <DetailRow
-          placeholder={placeholder}
-          key={key}
-          record={record}
-          locale={locale}
-          onRedirectToRecord={() => {}}
-          columns={columns}
-          cellViews={cellViews}
-        />
-      ));
+      return (
+        <>
+          {[...Array(placeholderCount)].map((_, key) => (
+            <DetailRow
+              placeholder={placeholder}
+              key={key}
+              record={record}
+              onSelectionChange={onSelectionChange}
+              isItemSelected={isItemSelected}
+              columns={columns}
+              cellViews={cellViews}
+            />
+          ))}
+        </>
+      );
     }
 
-    return records.map((record: NormalizedRecord) => {
-      return (
-        <DetailRow
-          placeholder={false}
-          key={record.identifier}
-          record={record}
-          locale={locale}
-          onRedirectToRecord={onRedirectToRecord}
-          columns={columns}
-          cellViews={cellViews}
-        />
-      );
-    });
+    return (
+      <>
+        {records.map(record => (
+          <DetailRow
+            placeholder={false}
+            key={record.identifier}
+            record={record}
+            onRedirectToRecord={onRedirectToRecord}
+            onSelectionChange={onSelectionChange}
+            isItemSelected={isItemSelected}
+            columns={columns}
+            cellViews={cellViews}
+          />
+        ))}
+      </>
+    );
   }
 );
 
-export default DetailRows;
+export {DetailRows};

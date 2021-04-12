@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2018 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -24,11 +24,9 @@ use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersByAssetFamilyAndCodesInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeyCollectionInterface;
-use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetHydratorInterface;
-use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\CountAssets;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
@@ -37,7 +35,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class SqlAssetRepository implements AssetRepositoryInterface
 {
@@ -47,7 +45,6 @@ class SqlAssetRepository implements AssetRepositoryInterface
     private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
     private EventDispatcherInterface $eventDispatcher;
     private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes;
-    private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
     private CountAssetsInterface $countAssets;
 
     public function __construct(
@@ -57,7 +54,6 @@ class SqlAssetRepository implements AssetRepositoryInterface
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
         EventDispatcherInterface $eventDispatcher,
         FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
         CountAssetsInterface $countAssets
     ) {
         $this->sqlConnection = $sqlConnection;
@@ -66,7 +62,6 @@ class SqlAssetRepository implements AssetRepositoryInterface
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
         $this->eventDispatcher = $eventDispatcher;
         $this->findIdentifiersByAssetFamilyAndCodes = $findIdentifiersByAssetFamilyAndCodes;
-        $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
         $this->countAssets = $countAssets;
     }
 

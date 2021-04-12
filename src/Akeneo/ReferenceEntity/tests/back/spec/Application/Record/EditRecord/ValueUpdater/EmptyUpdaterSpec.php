@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
@@ -55,8 +56,8 @@ class EmptyUpdaterSpec extends ObjectBehavior
 
         $value = Value::create(
             $editEmptyValueCommand->attribute->getIdentifier(),
-            ChannelReference::createfromNormalized($editEmptyValueCommand->channel),
-            LocaleReference::createfromNormalized($editEmptyValueCommand->locale),
+            ChannelReference::createFromNormalized($editEmptyValueCommand->channel),
+            LocaleReference::createFromNormalized($editEmptyValueCommand->locale),
             EmptyData::create()
         );
         $this->__invoke($record, $editEmptyValueCommand);

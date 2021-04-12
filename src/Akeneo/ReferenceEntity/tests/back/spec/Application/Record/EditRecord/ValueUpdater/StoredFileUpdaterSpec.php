@@ -103,8 +103,8 @@ class StoredFileUpdaterSpec extends ObjectBehavior
 
         $value = Value::create(
             $command->attribute->getIdentifier(),
-            ChannelReference::createfromNormalized('ecommerce'),
-            LocaleReference::createfromNormalized('de_DE'),
+            ChannelReference::createFromNormalized('ecommerce'),
+            LocaleReference::createFromNormalized('de_DE'),
             $existingFileData->getWrappedObject()
         );
 

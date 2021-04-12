@@ -536,45 +536,27 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_deletes_records_by_reference_entity_identifier()
+    public function it_mass_deletes_records_by_reference_entity_identifier_and_codes()
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordCode = RecordCode::fromString('starck');
+        $recordCodesToDelete = [RecordCode::fromString('starck'), RecordCode::fromString('dyson')];
+        $recordCodeToKeep = RecordCode::fromString('michel');
 
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
-            $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
-            ValueCollection::fromValues([])
-        );
-        $this->repository->create($record);
-
-        $recordCode = RecordCode::fromString('dyson');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
-            $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
-            ValueCollection::fromValues([])
-        );
-        $this->repository->create($record);
-
-        $referenceEntityIdentifierBrand = ReferenceEntityIdentifier::fromString('brand');
-        $recordCode = RecordCode::fromString('bar');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifierBrand, $recordCode);
-        $record = Record::create(
-            $identifier,
-            $referenceEntityIdentifierBrand,
-            $recordCode,
-            ValueCollection::fromValues([])
-        );
-        $this->repository->create($record);
+        foreach ([...$recordCodesToDelete, $recordCodeToKeep] as $recordCode) {
+            $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+            $record = Record::create(
+                $identifier,
+                $referenceEntityIdentifier,
+                $recordCode,
+                ValueCollection::fromValues([])
+            );
+            $this->repository->create($record);
+        }
 
         Assert::assertEquals(3, $this->repository->count());
 
-        $this->repository->deleteByReferenceEntity($referenceEntityIdentifier);
-        $this->eventDispatcherMock->assertEventDispatched(ReferenceEntityRecordsDeletedEvent::class);
+        $this->repository->deleteByReferenceEntityAndCodes($referenceEntityIdentifier, $recordCodesToDelete);
+        $this->eventDispatcherMock->assertEventDispatched(RecordDeletedEvent::class);
         Assert::assertEquals(1, $this->repository->count());
     }
 

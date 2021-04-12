@@ -1,16 +1,19 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import Table from 'akeneoreferenceentity/application/component/record/index/table';
-import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
+import styled from 'styled-components';
+import {Checkbox, Toolbar, useSelection} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {DeleteModal} from '@akeneo-pim-community/shared';
+import {Table} from 'akeneoreferenceentity/application/component/record/index/table';
+import {NormalizedItemRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {redirectToRecord} from 'akeneoreferenceentity/application/action/record/router';
-import __ from 'akeneoreferenceentity/tools/translator';
 import ReferenceEntity, {
   denormalizeReferenceEntity,
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {recordCreationStart} from 'akeneoreferenceentity/domain/event/record/create';
-import {deleteAllReferenceEntityRecords, deleteRecord} from 'akeneoreferenceentity/application/action/record/delete';
+import {deleteRecord} from 'akeneoreferenceentity/application/action/record/delete';
 import {RefEntityBreadcrumb} from 'akeneoreferenceentity/application/component/app/breadcrumb';
 import {
   completenessFilterUpdated,
@@ -24,7 +27,6 @@ import ReferenceEntityIdentifier, {
   createIdentifier as createReferenceIdentifier,
 } from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import RecordCode, {createCode as createRecordCode} from 'akeneoreferenceentity/domain/model/record/code';
-import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {cancelDeleteModal, openDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 import {
   CellView,
@@ -40,17 +42,23 @@ import {CompletenessValue} from 'akeneoreferenceentity/application/component/rec
 import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
 import {Attribute, NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
-
+import {MassDelete} from 'akeneoreferenceentity/application/component/reference-entity/edit/mass-delete/MassDelete';
+import {getFilter} from 'akeneoreferenceentity/tools/filter';
+import {createRecordSelectionQuery} from 'akeneoreferenceentity/domain/fetcher/fetcher';
 const securityContext = require('pim/security-context');
 
-interface StateProps {
+const FullsizeToolbar = styled(Toolbar)`
+  margin: 0 -40px;
+`;
+
+type StateProps = {
   context: {
     locale: string;
     channel: string;
   };
   referenceEntity: ReferenceEntity;
   grid: {
-    records: NormalizedRecord[];
+    records: NormalizedItemRecord[];
     columns: Column[];
     matchesCount: number;
     totalCount: number;
@@ -63,7 +71,6 @@ interface StateProps {
     record: {
       create: boolean;
       edit: boolean;
-      deleteAll: boolean;
       delete: boolean;
     };
   };
@@ -72,11 +79,11 @@ interface StateProps {
     identifier?: string;
     label?: string;
   };
-}
+};
 
-interface DispatchProps {
+type DispatchProps = {
   events: {
-    onRedirectToRecord: (record: NormalizedRecord) => void;
+    onRedirectToRecord: (record: NormalizedItemRecord) => void;
     onDeleteRecord: (referenceEntityIdentifier: ReferenceEntityIdentifier, recordCode: RecordCode) => void;
     onNeedMoreResults: () => void;
     onSearchUpdated: (userSearch: string) => void;
@@ -84,14 +91,12 @@ interface DispatchProps {
     onLocaleChanged: (locale: Locale) => void;
     onChannelChanged: (locale: Channel) => void;
     onCompletenessFilterUpdated: (completenessValue: CompletenessValue) => void;
-    onDeleteAllRecords: (referenceEntity: ReferenceEntity) => void;
     onRecordCreationStart: () => void;
     onFirstLoad: () => void;
-    onOpenDeleteAllRecordsModal: () => void;
     onOpenDeleteRecordModal: (recordCode: RecordCode, label: string) => void;
     onCancelDeleteModal: () => void;
   };
-}
+};
 
 export type CellViews = {
   [key: string]: CellView;
@@ -104,39 +109,45 @@ export type FilterViews = {
   };
 };
 
-const SecondaryAction = ({onOpenDeleteAllRecordsModal}: {onOpenDeleteAllRecordsModal: () => void}) => {
-  return (
-    <div className="AknSecondaryActions AknDropdown AknButtonList-item">
-      <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
-      <div className="AknDropdown-menu AknDropdown-menu--right">
-        <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
-        <div>
-          <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onOpenDeleteAllRecordsModal()}>
-            {__('pim_reference_entity.record.button.delete_all')}
-          </button>
-        </div>
-      </div>
-    </div>
+const Records = ({
+  context,
+  grid,
+  events,
+  referenceEntity,
+  rights,
+  confirmDelete,
+  attributes,
+}: StateProps & DispatchProps) => {
+  const [cellViews, setCellViews] = useState<CellViews>({});
+  const [filterViews, setFilterViews] = useState<FilterViews>({});
+  const translate = useTranslate();
+
+  const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] = useSelection<
+    string
+  >(grid.matchesCount);
+
+  const searchValue = getFilter(grid.filters, 'full_text')?.value ?? '';
+
+  const selectionQuery = createRecordSelectionQuery(
+    referenceEntity.getIdentifier().stringValue(),
+    selection,
+    grid.filters,
+    searchValue,
+    context.channel,
+    context.locale
   );
-};
 
-class Records extends React.Component<StateProps & DispatchProps, {cellViews: CellViews; filterViews: FilterViews}> {
-  state = {cellViews: {}, filterViews: {}};
+  useEffect(() => {
+    events.onFirstLoad();
+  }, []);
 
-  componentDidMount() {
-    this.props.events.onFirstLoad();
-  }
-
-  static getDerivedStateFromProps(
-    props: StateProps & DispatchProps,
-    {cellViews, filterViews}: {cellViews: CellViews; filterViews: FilterViews}
-  ) {
+  useEffect(() => {
     let needToUpdateState = false;
     let newCellViews = cellViews;
     let newFilterViews = filterViews;
 
-    if (0 === Object.keys(cellViews).length && 0 !== props.grid.columns.length) {
-      newCellViews = props.grid.columns.reduce((cellViews: CellViews, column: Column): CellViews => {
+    if (0 === Object.keys(cellViews).length && 0 !== grid.columns.length) {
+      newCellViews = grid.columns.reduce((cellViews: CellViews, column: Column): CellViews => {
         cellViews[column.key] = getDataCellView(column.type);
 
         return cellViews;
@@ -145,8 +156,8 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
       needToUpdateState = true;
     }
 
-    if (0 === Object.keys(filterViews).length && null !== props.attributes) {
-      newFilterViews = props.attributes.reduce((filters: FilterViews, normalizedAttribute: NormalizedAttribute) => {
+    if (0 === Object.keys(filterViews).length && null !== attributes) {
+      newFilterViews = attributes.reduce((filters: FilterViews, normalizedAttribute: NormalizedAttribute) => {
         const attribute = denormalizeAttribute(normalizedAttribute);
 
         if (hasDataFilterView(attribute.type)) {
@@ -162,108 +173,109 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
       needToUpdateState = true;
     }
 
-    if (!needToUpdateState) {
-      return null;
+    if (needToUpdateState) {
+      setCellViews(newCellViews);
+      setFilterViews(newFilterViews);
     }
+  }, [grid, attributes]);
 
-    return {
-      cellViews: newCellViews,
-      filterViews: newFilterViews,
-    };
-  }
+  useEffect(() => {
+    onSelectAllChange(false);
+  }, [grid.filters]);
 
-  render() {
-    const {context, grid, events, referenceEntity, rights, confirmDelete} = this.props;
+  const isToolbarVisible = 0 < grid.matchesCount && !!selectionState && rights.record.delete;
 
-    return (
-      <React.Fragment>
-        <Header
-          label={referenceEntity.getLabel(context.locale)}
-          image={referenceEntity.getImage()}
-          primaryAction={() => {
-            return rights.record.create ? (
-              <button className="AknButton AknButton--action" onClick={events.onRecordCreationStart}>
-                {__('pim_reference_entity.record.button.create')}
-              </button>
-            ) : null;
-          }}
-          secondaryActions={() => {
-            return rights.record.deleteAll ? (
-              <SecondaryAction
-                onOpenDeleteAllRecordsModal={() => {
-                  events.onOpenDeleteAllRecordsModal();
-                }}
-              />
-            ) : null;
-          }}
-          withLocaleSwitcher={true}
-          withChannelSwitcher={true}
-          isDirty={false}
-          isLoading={grid.isLoading}
-          breadcrumb={<RefEntityBreadcrumb referenceEntityIdentifier={referenceEntity.getIdentifier().stringValue()} />}
-          onLocaleChanged={events.onLocaleChanged}
-          onChannelChanged={events.onChannelChanged}
-          displayActions={this.props.rights.record.create || this.props.rights.record.deleteAll}
+  return (
+    <>
+      <Header
+        label={referenceEntity.getLabel(context.locale)}
+        image={referenceEntity.getImage()}
+        primaryAction={() =>
+          rights.record.create ? (
+            <button className="AknButton AknButton--action" onClick={events.onRecordCreationStart}>
+              {translate('pim_reference_entity.record.button.create')}
+            </button>
+          ) : null
+        }
+        withLocaleSwitcher={true}
+        withChannelSwitcher={true}
+        isDirty={false}
+        isLoading={grid.isLoading}
+        breadcrumb={<RefEntityBreadcrumb referenceEntityIdentifier={referenceEntity.getIdentifier().stringValue()} />}
+        onLocaleChanged={events.onLocaleChanged}
+        onChannelChanged={events.onChannelChanged}
+        displayActions={rights.record.create}
+      />
+      {0 !== grid.totalCount ? (
+        <Table
+          onRedirectToRecord={!selectionState ? events.onRedirectToRecord : undefined}
+          onDeleteRecord={events.onOpenDeleteRecordModal}
+          onNeedMoreResults={events.onNeedMoreResults}
+          onSearchUpdated={events.onSearchUpdated}
+          onFilterUpdated={events.onFilterUpdated}
+          onCompletenessFilterUpdated={events.onCompletenessFilterUpdated}
+          recordCount={grid.matchesCount}
+          locale={context.locale}
+          channel={context.channel}
+          grid={grid}
+          cellViews={cellViews}
+          filterViews={filterViews}
+          referenceEntity={referenceEntity}
+          rights={rights}
+          isItemSelected={isItemSelected}
+          onSelectionChange={onSelectionChange}
         />
-        {0 !== grid.totalCount ? (
-          <Table
-            onRedirectToRecord={events.onRedirectToRecord}
-            onDeleteRecord={events.onOpenDeleteRecordModal}
-            onNeedMoreResults={events.onNeedMoreResults}
-            onSearchUpdated={events.onSearchUpdated}
-            onFilterUpdated={events.onFilterUpdated}
-            onCompletenessFilterUpdated={events.onCompletenessFilterUpdated}
-            recordCount={grid.matchesCount}
-            locale={context.locale}
-            channel={context.channel}
-            grid={grid}
-            cellViews={this.state.cellViews}
-            filterViews={this.state.filterViews}
-            referenceEntity={referenceEntity}
-            rights={rights}
-          />
-        ) : (
-          <div className="AknGridContainer-noData">
-            <div className="AknGridContainer-noDataImage AknGridContainer-noDataImage--reference-entity" />
-            <div className="AknGridContainer-noDataTitle">
-              {__('pim_reference_entity.record.no_data.title', {
-                entityLabel: referenceEntity.getLabel(context.locale),
-              })}
-            </div>
-            <div className="AknGridContainer-noDataSubtitle">{__('pim_reference_entity.record.no_data.subtitle')}</div>
+      ) : (
+        <div className="AknGridContainer-noData">
+          <div className="AknGridContainer-noDataImage AknGridContainer-noDataImage--reference-entity" />
+          <div className="AknGridContainer-noDataTitle">
+            {translate('pim_reference_entity.record.no_data.title', {
+              entityLabel: referenceEntity.getLabel(context.locale),
+            })}
           </div>
-        )}
-        {confirmDelete.isActive && undefined === confirmDelete.identifier && (
-          <DeleteModal
-            message={__('pim_reference_entity.record.delete_all.confirm', {
-              entityIdentifier: referenceEntity.getIdentifier().stringValue(),
-            })}
-            title={__('pim_reference_entity.record.delete.title')}
-            onConfirm={() => {
-              events.onDeleteAllRecords(referenceEntity);
-            }}
-            onCancel={events.onCancelDeleteModal}
-          />
-        )}
-        {confirmDelete.isActive && undefined !== confirmDelete.identifier && (
-          <DeleteModal
-            message={__('pim_reference_entity.record.delete.message', {
-              recordLabel: confirmDelete.label,
-            })}
-            title={__('pim_reference_entity.record.delete.title')}
-            onConfirm={() => {
-              events.onDeleteRecord(
-                referenceEntity.getIdentifier(),
-                createRecordCode(confirmDelete.identifier as string)
-              );
-            }}
-            onCancel={events.onCancelDeleteModal}
-          />
-        )}
-      </React.Fragment>
-    );
-  }
-}
+          <div className="AknGridContainer-noDataSubtitle">
+            {translate('pim_reference_entity.record.no_data.subtitle')}
+          </div>
+        </div>
+      )}
+      {confirmDelete.isActive && undefined !== confirmDelete.identifier && (
+        <DeleteModal
+          title={translate('pim_reference_entity.record.delete.title')}
+          onConfirm={() => {
+            events.onDeleteRecord(
+              referenceEntity.getIdentifier(),
+              createRecordCode(confirmDelete.identifier as string)
+            );
+            onSelectAllChange(false);
+          }}
+          onCancel={events.onCancelDeleteModal}
+        >
+          {translate('pim_reference_entity.record.delete.message', {
+            recordLabel: confirmDelete.label ?? '',
+          })}
+        </DeleteModal>
+      )}
+      <FullsizeToolbar isVisible={isToolbarVisible}>
+        <Toolbar.SelectionContainer>
+          <Checkbox checked={selectionState} onChange={onSelectAllChange} />
+        </Toolbar.SelectionContainer>
+        <Toolbar.LabelContainer>
+          {translate('pim_reference_entity.record.record_selected', {count: selectedCount}, selectedCount)}
+        </Toolbar.LabelContainer>
+        <Toolbar.ActionsContainer>
+          {rights.record.delete && (
+            <MassDelete
+              selectedCount={selectedCount}
+              referenceEntity={referenceEntity}
+              selectionQuery={selectionQuery}
+              onConfirm={() => onSelectAllChange(false)}
+            />
+          )}
+        </Toolbar.ActionsContainer>
+      </FullsizeToolbar>
+    </>
+  );
+};
 
 export default connect(
   (state: EditState): StateProps => {
@@ -302,11 +314,6 @@ export default connect(
           edit:
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
-          deleteAll:
-            securityContext.isGranted('akeneo_referenceentity_record_create') &&
-            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
-            securityContext.isGranted('akeneo_referenceentity_records_delete_all') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
           delete:
             securityContext.isGranted('akeneo_referenceentity_record_create') &&
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
@@ -320,7 +327,7 @@ export default connect(
   (dispatch: any): DispatchProps => {
     return {
       events: {
-        onRedirectToRecord: (record: NormalizedRecord) => {
+        onRedirectToRecord: (record: NormalizedItemRecord) => {
           dispatch(
             redirectToRecord(
               createReferenceIdentifier(record.reference_entity_identifier),
@@ -346,14 +353,8 @@ export default connect(
         onRecordCreationStart: () => {
           dispatch(recordCreationStart());
         },
-        onDeleteAllRecords: (referenceEntity: ReferenceEntity) => {
-          dispatch(deleteAllReferenceEntityRecords(referenceEntity));
-        },
         onCancelDeleteModal: () => {
           dispatch(cancelDeleteModal());
-        },
-        onOpenDeleteAllRecordsModal: () => {
-          dispatch(openDeleteModal());
         },
         onOpenDeleteRecordModal: (recordCode: RecordCode, label: string) => {
           dispatch(openDeleteModal(recordCode.stringValue(), label));
@@ -374,24 +375,22 @@ export default connect(
   }
 )(Records);
 
-interface RecordLabelProps {
+type RecordLabelProps = {
   grid: {
     totalCount: number;
   };
-}
+};
 
-class RecordLabel extends React.Component<RecordLabelProps> {
-  render() {
-    const {grid} = this.props;
+const RecordLabel = ({grid}: RecordLabelProps) => {
+  const translate = useTranslate();
 
-    return (
-      <React.Fragment>
-        {__('pim_reference_entity.reference_entity.tab.records')}
-        <span className="AknColumn-span">({grid.totalCount})</span>
-      </React.Fragment>
-    );
-  }
-}
+  return (
+    <>
+      {translate('pim_reference_entity.reference_entity.tab.records')}
+      <span className="AknColumn-span">({grid.totalCount})</span>
+    </>
+  );
+};
 
 export const label = connect(
   (state: EditState): RecordLabelProps => {

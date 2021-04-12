@@ -110,12 +110,12 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         throw RecordNotFoundException::withReferenceEntityAndCode($referenceEntityIdentifier, $code);
     }
 
-    public function deleteByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): void
-    {
-        foreach ($this->records as $index => $record) {
-            if ($record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
-                unset($this->records[$index]);
-            }
+    public function deleteByReferenceEntityAndCodes(
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        array $recordCodes
+    ): void {
+        foreach ($recordCodes as $recordCode) {
+            $this->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
         }
     }
 
@@ -164,7 +164,7 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         $count = 0;
         foreach ($this->records as $record) {
             if ($record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
-                $count ++;
+                $count++;
             }
         }
 

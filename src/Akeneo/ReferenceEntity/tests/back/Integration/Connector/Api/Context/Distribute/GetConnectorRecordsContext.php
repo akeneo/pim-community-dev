@@ -327,7 +327,9 @@ class GetConnectorRecordsContext implements Context
                             'channel' => $firstChannel,
                             'data' => sprintf(
                                 'Description for %s number %d and channel %s',
-                                ucfirst($referenceEntityIdentifier), $i, $firstChannel
+                                ucfirst($referenceEntityIdentifier),
+                                $i,
+                                $firstChannel
                             )
                         ],
                         [
@@ -335,7 +337,9 @@ class GetConnectorRecordsContext implements Context
                             'channel' => $secondChannel,
                             'data' => sprintf(
                                 'Description for %s number %d and channel %s',
-                                ucfirst($referenceEntityIdentifier), $i, $secondChannel
+                                ucfirst($referenceEntityIdentifier),
+                                $i,
+                                $secondChannel
                             )
                         ]
                     ],
@@ -578,19 +582,19 @@ class GetConnectorRecordsContext implements Context
                     ),
                     Value::create(
                         AttributeIdentifier::create('brand', 'required_attribute', 'fingerprint'),
-                        ChannelReference::createfromNormalized('ecommerce'),
+                        ChannelReference::createFromNormalized('ecommerce'),
                         LocaleReference::createFromNormalized('en_US'),
                         TextData::fromString('Required attribute ecommerce en_US')
                     ),
                     Value::create(
                         AttributeIdentifier::create('brand', 'not_required_attribute', 'fingerprint'),
-                        ChannelReference::createfromNormalized('ecommerce'),
+                        ChannelReference::createFromNormalized('ecommerce'),
                         LocaleReference::createFromNormalized('en_US'),
                         TextData::fromString('Not Required attribute ecommerce en_US')
                     ),
                     Value::create(
                         AttributeIdentifier::create('brand', 'not_required_attribute', 'fingerprint'),
-                        ChannelReference::createfromNormalized('ecommerce'),
+                        ChannelReference::createFromNormalized('ecommerce'),
                         LocaleReference::createFromNormalized('fr_FR'),
                         TextData::fromString('Not Required attribute ecommerce fr_FR')
                     )
@@ -659,19 +663,19 @@ class GetConnectorRecordsContext implements Context
                     ),
                     Value::create(
                         AttributeIdentifier::create('brand', 'required_attribute', 'fingerprint'),
-                        ChannelReference::createfromNormalized('ecommerce'),
+                        ChannelReference::createFromNormalized('ecommerce'),
                         LocaleReference::createFromNormalized('fr_FR'),
                         TextData::fromString('Required attribute ecommerce fr_FR')
                     ),
                     Value::create(
                         AttributeIdentifier::create('brand', 'not_required_attribute', 'fingerprint'),
-                        ChannelReference::createfromNormalized('ecommerce'),
+                        ChannelReference::createFromNormalized('ecommerce'),
                         LocaleReference::createFromNormalized('en_US'),
                         TextData::fromString('Not Required attribute ecommerce en_US')
                     ),
                     Value::create(
                         AttributeIdentifier::create('brand', 'not_required_attribute', 'fingerprint'),
-                        ChannelReference::createfromNormalized('ecommerce'),
+                        ChannelReference::createFromNormalized('ecommerce'),
                         LocaleReference::createFromNormalized('fr_FR'),
                         TextData::fromString('Not Required attribute ecommerce fr_FR')
                     )
@@ -743,25 +747,25 @@ class GetConnectorRecordsContext implements Context
                     ),
                     Value::create(
                         AttributeIdentifier::create('brand', 'required_attribute', 'fingerprint'),
-                        ChannelReference::createfromNormalized('ecommerce'),
+                        ChannelReference::createFromNormalized('ecommerce'),
                         LocaleReference::createFromNormalized('en_US'),
                         TextData::fromString('Required attribute ecommerce en_US')
                     ),
                     Value::create(
                         AttributeIdentifier::create('brand', 'required_attribute', 'fingerprint'),
-                        ChannelReference::createfromNormalized('ecommerce'),
+                        ChannelReference::createFromNormalized('ecommerce'),
                         LocaleReference::createFromNormalized('fr_FR'),
                         TextData::fromString('Required attribute ecommerce fr_FR')
                     ),
                     Value::create(
                         AttributeIdentifier::create('brand', 'not_required_attribute', 'fingerprint'),
-                        ChannelReference::createfromNormalized('ecommerce'),
+                        ChannelReference::createFromNormalized('ecommerce'),
                         LocaleReference::createFromNormalized('en_US'),
                         TextData::fromString('Not Required attribute ecommerce en_US')
                     ),
                     Value::create(
                         AttributeIdentifier::create('brand', 'not_required_attribute', 'fingerprint'),
-                        ChannelReference::createfromNormalized('ecommerce'),
+                        ChannelReference::createFromNormalized('ecommerce'),
                         LocaleReference::createFromNormalized('fr_FR'),
                         TextData::fromString('Not Required attribute ecommerce fr_FR')
                     )

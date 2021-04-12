@@ -18,6 +18,15 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    # Query builder
+    akeneo_referenceentity.infrastructure.search.elasticsearch.query_builder:
+      class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordQueryBuilder
+      arguments:
+        - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
+        - '@akeneo_referenceentity.infrastructure.persistence.query.get_value_key_for_attribute_channel_and_locale'
+        - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+        - '@akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_reference_entity_and_codes'
+
     # Indexers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:
         class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexer
@@ -44,10 +53,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\FindIdentifiersForQuery
         arguments:
             - '@akeneo_referenceentity.client.record'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.get_value_key_for_attribute_channel_and_locale'
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_reference_entity_and_codes'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.query_builder'
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.count_records:
         class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\CountRecords
