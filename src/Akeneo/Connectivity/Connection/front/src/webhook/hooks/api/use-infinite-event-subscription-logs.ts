@@ -90,11 +90,10 @@ const useInfiniteEventSubscriptionLogs = (
         return payload;
     };
 
-    const {
-        reset,
-        isLoading,
-        isInitialized
-    } = useInfiniteScroll<SearchEventSubscriptionLogsResponse>(fetchNextResponse, container);
+    const {reset, isLoading, isInitialized} = useInfiniteScroll<SearchEventSubscriptionLogsResponse>(
+        fetchNextResponse,
+        container
+    );
 
     const resetState = useCallback(() => {
         setState({
