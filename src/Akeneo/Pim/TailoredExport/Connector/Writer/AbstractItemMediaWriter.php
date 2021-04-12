@@ -28,8 +28,8 @@ abstract class AbstractItemMediaWriter implements
     private Filesystem $localFs;
     private string $jobParamFilePath;
 
-    protected ?StepExecution $stepExecution;
-    private ?FlatItemBuffer $flatRowBuffer;
+    protected ?StepExecution $stepExecution = null;
+    private ?FlatItemBuffer $flatRowBuffer = null;
     private array $writtenFiles = [];
 
     public function __construct(

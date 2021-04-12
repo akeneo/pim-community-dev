@@ -92,7 +92,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
         $isNewWriter = ($writer instanceof AbstractItemMediaWriter);
         $isNewItemMediaWriter = ($writer instanceof AbstractFileWriter);
 
-        if (!($isNewItemMediaWriter || $isNewWriter)) {
+        if (!($isNewItemMediaWriter || $isNewWriter || $writer instanceof \Akeneo\Pim\TailoredExport\Connector\Writer\AbstractItemMediaWriter)) {
             return false;
         }
 

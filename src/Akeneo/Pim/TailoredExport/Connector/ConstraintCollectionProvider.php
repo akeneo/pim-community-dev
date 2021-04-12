@@ -35,6 +35,9 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
                 'allowExtraFields' => true
             ])
         ];
+        $constraintFields['columns'] = [
+            new NotBlank(),
+        ];
 
         return new Collection(['fields' => $constraintFields]);
     }
