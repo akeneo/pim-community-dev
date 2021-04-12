@@ -25,6 +25,11 @@ final class LRUCachedGetRequiredAttributesMasks implements GetRequiredAttributes
         $this->cache = new LRUCache(500);
     }
 
+    public function clearCache(): void
+    {
+        $this->cache = new LRUCache(500);
+    }
+
     /**
      * {@inheritdoc}
      */

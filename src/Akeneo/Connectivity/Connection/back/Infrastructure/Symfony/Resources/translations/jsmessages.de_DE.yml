@@ -250,6 +250,10 @@ akeneo_connectivity.connection:
           all: Alle
           none: Keine
         date_range_filter:
+          label: Datum
+          reset: Zurücksetzten
+          from: Von
+          to: Bis
           all: Alle
         info:
           title: Hier sind die Protokolle zu allen Ereignisanfragen, die an diese Verbindung gesendet wurden.

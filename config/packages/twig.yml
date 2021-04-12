@@ -1,7 +1,7 @@
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
-    exception_controller: FOS\RestBundle\Controller\ExceptionController::showAction
+    exception_controller: null
     form_theme: ['PimUIBundle:Form:pim-fields.html.twig']
     globals:
         ws:
