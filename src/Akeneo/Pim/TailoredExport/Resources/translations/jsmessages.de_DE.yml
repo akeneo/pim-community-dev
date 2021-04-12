@@ -1,0 +1,23 @@
+batch_jobs.akeneo_tailored_export.label: An gemeinsame Kataloge senden
+pim_common:
+  recipients: Empfänger
+  branding: Branding
+  result_count: "{0}0 Ergebnisse|{1}1 Ergebnis|]1, Inf[{{ itemsCount }} Ergebnisse"
+  items_selected: "{0}0 Elemente ausgewählt|{1}1 Element ausgewählt|]1, Inf [{{ itemsCount }} Elemente ausgewählt"
+tailored_export:
+  recipients:
+    add: Füge hier Benutzer E-Mail hinzu
+    placeholder: betty@akeneo.com
+    email: E‐Mail‐Adresse
+    invalid_email: Dies ist eine ungültige E-Mail-Adresse.
+    duplicates: Du hast bereits mit diesem Empfänger geteilt
+    helper: "Fügen Sie Empfänger hinzu, um ihnen Zugriff auf Ihren neuen freigegebenen Katalog zu gewähren. Sie können eine Adressliste mit Trennzeichen ausfüllen: Leerzeichen, Komma, Semikolon & Zeilenumbrüche."
+    no_result: Es tut uns leid, keine E-Mail entspricht Ihrer Suche
+    no_data: Noch keine E-Mail-Adresse angegeben
+    max_limit_reached: Sie haben das Limit von 500 Empfängern erreicht.
+  branding:
+    upload: "Logo hochladen (Max. Größe: 2 MB; Dateiformat: PNG oder JPG)"
+    invalid_extension: "Ungültige Dateierweiterung, erlaubte Dateiendungen sind: {{ allowed_extensions }}"
+    filesize_too_large: Die von Ihnen angegebene Datei ist zu groß, die maximale Größe beträgt 2 MB
+  button:
+    save: Speichern und teilen

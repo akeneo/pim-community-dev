@@ -1,0 +1,72 @@
+parameters:
+    akeneo.tailored_export.connector.name: Akeneo Tailored Export
+    akeneo.tailored_export.connector.code: 'akeneo_tailored_export'
+    akeneo.tailored_export.default_products_page_size: 10000
+
+services:
+    _defaults:
+        public: true
+
+    akeneo.tailored_export.job.csv_product.export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%akeneo.tailored_export.connector.code%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.tailored_export.step.csv_product.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%akeneo.tailored_export.connector.name%', type: '%pim_connector.job.export_type%' }
+
+    akeneo.tailored_export.job.job_parameters.csv_default_values_provider:
+        class: 'Akeneo\Pim\TailoredExport\Connector\DefaultValueProvider'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_export'
+            -
+                - '%akeneo.tailored_export.connector.code%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo.tailored_export.job.job_parameters.csv_constraint_collection_provider:
+        class: 'Akeneo\Pim\TailoredExport\Connector\ConstraintCollectionProvider'
+        arguments:
+            - '@pim_user.job.job_parameters.constraint_collection_provider.simple_csv_export'
+            -
+                - '%akeneo.tailored_export.connector.code%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    akeneo.tailored_export.provider.form.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
+        arguments:
+            -
+                akeneo_tailored_export: pim-job-instance-tailored-export
+        tags:
+            - { name: pim_enrich.provider.form }
+
+    akeneo.tailored_export.reader.database.product:
+        class: 'Akeneo\Pim\TailoredExport\Connector\Reader\Database\ProductReader'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+
+    akeneo.tailored_export.processor.product_export:
+        class: 'Akeneo\Pim\TailoredExport\Connector\Processor\ProductExportProcessor'
+
+    akeneo.tailored_export.writer.csv.product:
+        class: 'Akeneo\Pim\TailoredExport\Connector\Writer\CSV\ProductWriter'
+        arguments:
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.product.flat_item_buffer_flusher'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+
+    akeneo.tailored_export.step.csv_product.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.tailored_export.reader.database.product'
+            - '@akeneo.tailored_export.processor.product_export'
+            - '@akeneo.tailored_export.writer.csv.product'
+            - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'

@@ -1,0 +1,22 @@
+batch_jobs.akeneo_tailored_export.label: 发送到共享目录
+pim_common:
+  recipients: 收件人
+  branding: 品牌推广
+  result_count: "{0}0 个结果|{1}1 个结果|]1, Inf[{{ itemsCount }} 个结果"
+tailored_export:
+  recipients:
+    add: 在此处添加用户电子邮件
+    placeholder: betty@akeneo.com
+    email: 电子邮件地址
+    invalid_email: 此值不是一个有效的电子邮件地址。
+    duplicates: 您已经与该收件人分享
+    helper: "添加收件人让他们有权访问您的新共享目录。您可以在地址列表中使用分隔符分割不同的地址：空格、逗号和换行。"
+    no_result: 抱歉，没有电子邮件匹配您的搜索
+    no_data: 尚未声明电子邮件地址
+    max_limit_reached: 您已达到 500 个收件人的上限。
+  branding:
+    upload: "上传您的徽标 (最大：2MB；文件格式：PNG 或 JPG)"
+    invalid_extension: "无效的文件扩展名，允许的扩展名：{{ allowed_extensions }}"
+    filesize_too_large: 您提供的文件过大，最大为 2MB
+  button:
+    save: 保存并分享

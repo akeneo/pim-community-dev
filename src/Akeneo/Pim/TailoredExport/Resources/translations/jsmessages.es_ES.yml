@@ -1,0 +1,23 @@
+batch_jobs.akeneo_tailored_export.label: Enviar a catálogos compartidos
+pim_common:
+  recipients: Destinatarios
+  branding: Marca
+  result_count: "{0}0 resultados|{1}1 resultado|]1, Inf[{{ itemsCount }} resultados"
+  items_selected: "{0}0 elementos seleccionados|{1}1 elemento seleccionado|]1, Inf[{{ itemsCount }} elementos seleccionados"
+tailored_export:
+  recipients:
+    add: Añadir email de usuarios aquí
+    placeholder: betty@akeneo.com
+    email: Dirección de correo
+    invalid_email: Esa no es una dirección de correo electrónico válida.
+    duplicates: Ya has compartido con este destinatario
+    helper: "Añade destinatarios para darles acceso a tu nuevo catálogo compartido. Puede rellenar una lista de direcciones con separadores: espacio, coma, punto y salto de línea."
+    no_result: Lo sentimos, no hay correo electrónico que coincida con tu búsqueda
+    no_data: No hay dirección de correo electrónico declarada aún
+    max_limit_reached: Ha alcanzado el límite de 500 destinatarios.
+  branding:
+    upload: "Sube tu logotipo (Tamaño máximo: 2MB; Formato de archivo: PNG o JPG)"
+    invalid_extension: "Extensión de archivo no válida, las extensiones permitidas son: {{ allowed_extensions }}"
+    filesize_too_large: El archivo proporcionado es demasiado grande, el tamaño máximo es de 2MB
+  button:
+    save: Guardar y compartir
