@@ -21,10 +21,10 @@ Feature: Create product models through CSV import and update their descendants
     Given I am on the "tshirt-divided-navy-blue-m" product page
     And I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel   | locale | state   | missing_values | ratio |
-      | ecommerce | de_DE  | warning | 4              | 63%   |
-      | ecommerce | en_US  | warning | 3              | 72%   |
-      | ecommerce | fr_FR  | warning | 4              | 63%   |
+      | channel   | locale                  | ratio |
+      | Ecommerce | German (Germany)        | 63 %  |
+      | Ecommerce | English (United States) | 72 %  |
+      | Ecommerce | French (France)         | 63 %  |
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
@@ -32,7 +32,7 @@ Feature: Create product models through CSV import and update their descendants
     When I am on the "tshirt-divided-navy-blue-m" product page
     And I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel   | locale | state   | missing_values | ratio |
-      | ecommerce | de_DE  | warning | 1              | 90%   |
-      | ecommerce | en_US  | success | 0              | 100%  |
-      | ecommerce | fr_FR  | warning | 1              | 90%   |
+      | channel   | locale                  | ratio |
+      | Ecommerce | German (Germany)        | 90 %  |
+      | Ecommerce | English (United States) | 100 % |
+      | Ecommerce | French (France)         | 90 %  |
