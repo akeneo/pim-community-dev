@@ -22,7 +22,7 @@ services:
             - '@akeneo_batch.entity_manager.persisted_connection_entity_manager'
             - '@akeneo_batch_queue.hydrator_job_execution_message_hydrator'
 
-    # TODO: remove
+    # TODO CPM-154: to remove
     akeneo_batch_queue.queue.database_job_execution_queue:
         class: '%akeneo_batch_queue.queue.database_job_execution_queue.class%'
         arguments:
@@ -86,10 +86,11 @@ services:
         arguments:
             - '@database_connection'
 
+    # TODO CPM-154: remove command
     Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand:
         arguments:
             - '@logger'
-            - '@akeneo_batch_queue.queue.job_execution_queue'
+            - '@akeneo_batch_queue.queue.database_job_execution_queue'
             - '@akeneo_batch_queue.queue.job_execution_message_repository'
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '%kernel.project_dir%'
