@@ -2,7 +2,6 @@
 
 namespace Pim\Behat\Context;
 
-use Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Tester\Result\StepResult;
@@ -11,7 +10,6 @@ use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Testwork\Tester\Result\TestResult;
 use Context\FeatureContext;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use WebDriver\Exception\UnexpectedAlertOpen;
 
@@ -20,17 +18,12 @@ use WebDriver\Exception\UnexpectedAlertOpen;
  */
 class HookContext extends PimContext
 {
-    /** @var string[] */
-    protected static $errorMessages = [];
+    private const MESSENGER_JOB_COMMAND_NAME = 'messenger:consume ui_job import_export_job data_maintenance_job';
 
-    /** @var int */
-    protected $windowWidth;
-
-    /** @var int */
-    protected $windowHeight;
-
-    /** @var Process */
-    protected $jobConsumerProcess;
+    protected static array$errorMessages = [];
+    protected int $windowWidth;
+    protected int $windowHeight;
+    protected ?Process $jobConsumerProcess;
 
     /**
      * @param string $mainContextClass
@@ -49,7 +42,7 @@ class HookContext extends PimContext
      */
     public function launchJobConsumer()
     {
-        $process = new Process(sprintf('exec bin/console %s --env=behat', JobQueueConsumerCommand::COMMAND_NAME));
+        $process = new Process(sprintf('exec bin/console %s --env=behat', static::MESSENGER_JOB_COMMAND_NAME));
         $process->setTimeout(null);
         $process->start();
 
