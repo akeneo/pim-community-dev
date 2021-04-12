@@ -1,19 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {
-  Button,
-  DeleteIllustration,
-  Field,
-  getColor,
-  Helper,
-  Key,
-  Link,
-  Modal,
-  TextInput,
-  useShortcut,
-} from 'akeneo-design-system';
+import {Field, getColor, Helper, Link, TextInput} from 'akeneo-design-system';
 import {NotificationLevel, useNotify, useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
-import {useIsMounted} from '@akeneo-pim-community/shared';
+import {useIsMounted, DeleteModal as BaseDeleteModal} from '@akeneo-pim-community/shared';
 
 const SpacedHelper = styled(Helper)`
   margin: 10px 0 20px;
@@ -80,15 +69,17 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
         onSuccess();
       } else {
         const {message} = await response.json();
-        notify(NotificationLevel.ERROR, message ?? translate('pim_enrich.entity.attribute.flash.delete.fail'));
+        //try to translate a key if there is one
+        notify(
+          NotificationLevel.ERROR,
+          message ? translate(message) : translate('pim_enrich.entity.attribute.flash.delete.fail')
+        );
       }
     } catch (error) {
       setLoading(false);
       notify(NotificationLevel.ERROR, translate('pim_enrich.entity.attribute.flash.delete.fail'));
     }
   };
-
-  useShortcut(Key.Enter, handleConfirm);
 
   const productText =
     0 < productCount
@@ -111,9 +102,12 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
   }${productModelText}`;
 
   return (
-    <Modal onClose={onCancel} closeTitle={translate('pim_common.close')} illustration={<DeleteIllustration />}>
-      <Modal.SectionTitle color="brand">{translate('pim_enrich.entity.attribute.plural_label')}</Modal.SectionTitle>
-      <Modal.Title>{translate('pim_common.confirm_deletion')}</Modal.Title>
+    <BaseDeleteModal
+      title={translate('pim_enrich.entity.attribute.plural_label')}
+      onConfirm={handleConfirm}
+      onCancel={onCancel}
+      canConfirmDelete={isValid}
+    >
       {translate('pim_enrich.entity.attribute.module.delete.confirm')}
       {(0 < productCount || 0 < productModelCount) && (
         <p>
@@ -129,17 +123,14 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
         </Link>
       </SpacedHelper>
       <Field label={translate('pim_enrich.entity.attribute.module.delete.type', {attributeCode})}>
-        <TextInput readOnly={isLoading} value={attributeCodeConfirm} onChange={setAttributeCodeConfirm} />
+        <TextInput
+          readOnly={isLoading}
+          value={attributeCodeConfirm}
+          onChange={setAttributeCodeConfirm}
+          onSubmit={handleConfirm}
+        />
       </Field>
-      <Modal.BottomButtons>
-        <Button level="tertiary" onClick={onCancel}>
-          {translate('pim_common.cancel')}
-        </Button>
-        <Button disabled={!isValid} level="danger" onClick={handleConfirm}>
-          {translate('pim_common.delete')}
-        </Button>
-      </Modal.BottomButtons>
-    </Modal>
+    </BaseDeleteModal>
   );
 };
 

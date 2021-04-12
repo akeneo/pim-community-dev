@@ -65,8 +65,8 @@ pim_enrich.entity.locale:
   uppercase_label: Gebietsschema
   plural_label: Gebietsschemata
   page_title:
-    index: "]-Inf, 1]{{ count }} aktivierte locale|]1, Inf[{{ count }} aktivierte Gebietsschemata"
-  helper: "Um ein Gebietsschema zu aktivieren oder zu deaktivieren, gehen Sie zu einem von <a href={{ href }}>Ihren Kanälen</a> und fügen oder entfernen Sie eine Gebietsschema."
+    index: "]-Inf, 1]{{ count }} aktivierte Gebietsschema|]1, Inf[{{ count }} aktivierte Gebietsschema"
+  helper: "Um eine Gebietsschema zu aktivieren oder zu deaktivieren, gehen Sie zu einem von <a href={{ href }}>Ihren Kanälen</a> und fügen oder entfernen Sie eine Gebietsschema."
   grid:
     columns:
       code: Aktivierte Gebietsschemata

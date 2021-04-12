@@ -142,6 +142,7 @@ pim_enrich.entity.attribute:
       success: Attribute successfully updated.
       fail: The attribute could not be updated.
       fields_not_ready: "The attribute cannot be saved right now. The following fields are not ready: {{ fields }}"
+      cant_remove_attributes_used_as_label: Attributes used as labels in a family cannot be removed.
     delete:
       success: Attribute successfully removed
       fail: Cannot delete this attribute
@@ -157,6 +158,7 @@ pim_enrich.entity.attribute:
     default_metric_unit:
       label: Default measurement unit
       choose: Choose a unit
+    guidelines: Attribute guidelines
     group:
       label: Attribute group
       choose: Choose the attribute group
@@ -212,6 +214,7 @@ pim_enrich.entity.attribute:
       common: General parameters
       type_specific: Type specific parameters
       validation: Validation parameters
+      select_locale: Select your locale
     delete:
       confirm: Are you sure you want to delete this attribute?
       product_count: '{0}0 products|{1}1 product|]1, Inf[{{ count }} products'

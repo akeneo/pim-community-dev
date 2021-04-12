@@ -224,7 +224,7 @@ class FiltersColumn extends BaseView {
   loadFilterList(gridCollection: any, gridElement: JQuery<HTMLElement>): void {
     const metadata = gridElement.data('metadata') || {};
 
-    this.defaultFilters = metadata.filters;
+    this.defaultFilters = 'filters' in metadata ? Object.values(metadata.filters) : [];
     this.gridCollection = gridCollection;
     this.showLoading();
 

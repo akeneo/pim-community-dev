@@ -48,6 +48,43 @@ JSON;
         self::assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
+    public function test_it_can_not_create_a_user_with_password_less_than_8_special_characters(): void
+    {
+        $params = [
+            'username' => 'test2',
+            'password' => 'ééééééé',
+            'password_repeat' => 'ééééééé',
+            'first_name' => 'first',
+            'last_name' => 'last',
+            'email' => 'new@example.com',
+        ];
+
+        $this->logIn('admin');
+        $response = $this->callRoute(
+            'pim_user_user_rest_create',
+            [],
+            Request::METHOD_POST,
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest', 'CONTENT_TYPE' => 'application/json'],
+            [],
+            \json_encode($params)
+        );
+
+        $expectedResponse = <<<JSON
+{
+    "values": [
+        {
+            "path": "password",
+            "message": "Password must contain at least 8 characters",
+            "global": false
+        }
+    ]
+}
+JSON;
+
+        $this->assertStatusCode($response, Response::HTTP_BAD_REQUEST);
+        self::assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
     public function test_it_can_not_create_a_user_with_password_more_than_4096_characters(): void
     {
         $params = [

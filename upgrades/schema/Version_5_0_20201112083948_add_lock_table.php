@@ -10,7 +10,7 @@ final class Version_5_0_20201112083948_add_lock_table extends AbstractMigration
     public function up(Schema $schema) : void
     {
         $sql = <<<SQL
-CREATE TABLE lock_keys (
+CREATE TABLE IF NOT EXISTS lock_keys (
     key_id VARCHAR(64) NOT NULL PRIMARY KEY,
     key_token VARCHAR(44) NOT NULL,
     key_expiration INTEGER UNSIGNED NOT NULL

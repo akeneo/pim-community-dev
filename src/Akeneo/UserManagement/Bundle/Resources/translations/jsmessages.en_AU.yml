@@ -98,3 +98,13 @@ pim_user_management:
       module:
         create:
           button: Create group
+  form:
+    error:
+      required: This field is required.
+      should_not_contain_space: The username should not contain space character.
+      too_short_value: "This value is too short. It should have {{ count }} characters or more."
+    duplication:
+      title: 'Duplicate "{{ username }}" user'
+      notification:
+        success: The user is duplicated successfully
+        failure: User duplication failure

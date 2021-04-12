@@ -1,3 +1,5 @@
 pim_user:
   min_role: "Vous devez sélectionner au moins {{ limit }} rôle. |Vous devez sélectionner au moins {{ limit }} rôles."
   password_match: "Les mots de passe doivent correspondre."
+  role:
+    invalid_role_format: 'Le rôle doit commencer par "ROLE_" et ne doit contenir que des tirets bas et des caractères alphanumériques en majuscules.'

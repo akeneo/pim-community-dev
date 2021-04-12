@@ -134,21 +134,23 @@ akeneo_data_quality_insights:
       all_missing_attributes: All missing attributes
     back_to_products: Back to products
   attribute_group:
-    helper_dqi_info: The quality score calculation will only take into account attributes belonging to attribute groups activated on data quality.
+    helper_dqi_info: The quality score calculation will only take into account attributes belonging to attribute groups enabled on data quality.
     helper_dqi_link: More info on our helpcenter.
-    activation: Activation
+    activation: Enabled
     dqi_status: Data Quality Insights status
-    activated: Activated
+    activated: Enabled
     disabled: Disabled
     used_groups_helper: "The following attributes groups are taken into account in the Data Quality Insights calculation:"
-    all_groups_evaluated: All the attribute groups of this product are taken into account for the calculation of the quality score. To get the most relevant quality score, <a href="{{ link }}" target="_blank">learn how to deactivate attribute groups to in our help center.</a>
+    all_groups_evaluated: All the attribute groups of this product are taken into account for the calculation of the quality score. To get the most relevant quality score, <a href="{{ link }}" target="_blank">learn how to disable attribute groups in our help center.</a>
   product_grid:
     filter_label:
       quality_score: Quality score
       enrichment_quality: Enrichment quality
-      images_quality: Images quality
+      images_quality: Product image
     filter_value:
       good: Good
       to_improve: To improve
+      yes: true
+      no: false
 pim_title:
   akeneo_data_quality_insights_dashboard: Data Quality Insights

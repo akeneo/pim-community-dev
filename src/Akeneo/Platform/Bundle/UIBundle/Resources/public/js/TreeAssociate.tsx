@@ -96,7 +96,6 @@ class TreeAssociate {
         const response = await fetch(url);
         const json: CategoryResponse = await response.json();
 
-        console.log(json);
         return parseResponse(json, {
           readOnly: this.readOnly,
           lockedCategoryIds: this.lockedCategoryIds,

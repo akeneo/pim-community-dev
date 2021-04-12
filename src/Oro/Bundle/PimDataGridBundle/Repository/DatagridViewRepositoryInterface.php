@@ -33,4 +33,8 @@ interface DatagridViewRepositoryInterface
         string $term = '',
         array $options = []
     ): array;
+
+    public function findPublicDatagridViewByLabel(string $label): ?DatagridView;
+
+    public function findPrivateDatagridViewByLabel(string $label, UserInterface $user): ?DatagridView;
 }

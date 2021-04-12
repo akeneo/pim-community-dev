@@ -95,8 +95,8 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $cursor->next()->shouldBeCalled();
         $cursor->count()->shouldBeCalled()->willReturn(3);
 
-        $productSaver->saveAll([$product1, $product2])->shouldBeCalled();
-        $productSaver->saveAll([$product3])->shouldBeCalled();
+        $productSaver->saveAll([$product1, $product2], ['force_save' => true])->shouldBeCalled();
+        $productSaver->saveAll([$product3], ['force_save' => true])->shouldBeCalled();
 
         $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo(Argument::cetera())->shouldBeCalledTimes(2);
@@ -163,8 +163,8 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $validator->validate($variantProduct3)->willReturn($violationList3);
         $violationList3->count()->willReturn(0);
 
-        $productSaver->saveAll([$variantProduct1, $variantProduct2])->shouldBeCalled();
-        $productSaver->saveAll([$variantProduct3])->shouldBeCalled();
+        $productSaver->saveAll([$variantProduct1, $variantProduct2], ['force_save' => true])->shouldBeCalled();
+        $productSaver->saveAll([$variantProduct3], ['force_save' => true])->shouldBeCalled();
 
         $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo(Argument::cetera())->shouldBeCalledTimes(2);
@@ -231,7 +231,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $validator->validate($variantProduct3)->willReturn($violationList3);
         $violationList3->count()->willReturn(0);
 
-        $productSaver->saveAll([$variantProduct3])->shouldBeCalled();
+        $productSaver->saveAll([$variantProduct3], ['force_save' => true])->shouldBeCalled();
 
         $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalled();
@@ -259,7 +259,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
 
         $productQueryBuilderFactory->create()->shouldNotBeCalled();
-        $productSaver->saveAll(Argument::any())->shouldNotBeCalled();
+        $productSaver->saveAll(Argument::any(), Argument::any())->shouldNotBeCalled();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldNotBeCalled();
 
@@ -280,7 +280,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
 
         $familyRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
         $productQueryBuilderFactory->create()->shouldNotBeCalled();
-        $productSaver->saveAll(Argument::any())->shouldNotBeCalled();
+        $productSaver->saveAll(Argument::any(), Argument::any())->shouldNotBeCalled();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldNotBeCalled();
 

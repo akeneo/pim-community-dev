@@ -72,6 +72,7 @@ pim_catalog:
     product_identifier: Ces identifiants "%s" n’existent pas.
     blacklisted_attribute_code: Code temporairement bloqué jusqu'à la fin du traitement des valeurs de l'attribut supprimé.
     blacklisted_attribute_code_with_link: "Code temporairement bloqué jusqu'à la fin du traitement des valeurs de l'attribut supprimé. Pour en savoir plus, rendez-vous sur <a href='{{ link }}' target='_blank'>la tâche en cours</a>."
+    duplicate_options: '{1} L''option suivante a été utilisée plusieurs fois : "{{ duplicate_options }}". Veuillez vérifier votre liste d''options.|]1, +Inf] Les options suivantes ont été utilisées plusieurs fois : "{{ duplicate_options }}". Veuillez vérifier votre liste d''options.'
     0: Une erreur inattendue s'est produite.
     100: Valeur non prévue
     101: Ce champ attend une valeur booléenne.

@@ -65,13 +65,13 @@ pim_enrich.entity.locale:
   uppercase_label: Locale
   plural_label: Locales
   page_title:
-    index: "]-Inf, 1]{{ count }} activated locale|]1, Inf[{{ count }} activated locales"
-  helper: "To activate or deactivate a locale, go to one of <a href={{ href }}>your channels</a> and add or remove a locale."
+    index: "]-Inf, 1]{{ count }} enabled locale|]1, Inf[{{ count }} enabled locales"
+  helper: "To enable or disable a locale, go to one of <a href={{ href }}>your channels</a> and add or remove a locale."
   grid:
     columns:
-      code: Activated locales
+      code: Enabled locales
     filters:
-      search_placeholder: Search an activated locale
+      search_placeholder: Search an enabled locale
     no_search_result: Sorry, there is no result for your search.
 pim_enrich.entity.currency:
   plural_label: Currencies

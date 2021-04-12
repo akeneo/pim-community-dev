@@ -136,19 +136,21 @@ akeneo_data_quality_insights:
   attribute_group:
     helper_dqi_info: Bei der Berechnung des Qualitätsscore werden nur Attribute berücksichtigt, die zu Attributgruppen gehören, die in der Datenqualität aktiviert sind.
     helper_dqi_link: Mehr Informationen über unser Hilfe-Center.
-    activation: Aktivierung
+    activation: Aktiviert
     dqi_status: Status der Datenqualitätseinsichten
     activated: Aktiviert
     disabled: Deaktiviert
     used_groups_helper: "Die folgenden Attributgruppen werden bei der Berechnung der Datenqualitätseinsichten berücksichtigt:"
-    all_groups_evaluated: Alle Attributgruppen dieses Produktes werden bei der Berechnung des Qualitätsscore berücksichtigt. Um die relevanteste Qualität zu erhalten, lernt <a href="{{ link }}" target="_blank">in unserem Hilfe-Center Attributgruppen zu deaktivieren.</a>
+    all_groups_evaluated: Alle Attributgruppen dieses Produktes werden bei der Berechnung des Qualitätswertes berücksichtigt. Um die relevanteste Qualität zu erhalten, lernt <a href="{{ link }}" target="_blank">, wie man Attributgruppen in unserem Hilfe-Center deaktiviert.</a>
   product_grid:
     filter_label:
       quality_score: Qualität
       enrichment_quality: Qualität der Anreicherung
-      images_quality: Bildqualität
+      images_quality: Produktbild
     filter_value:
       good: Gut
       to_improve: Zu verbessern
+      yes: true
+      no: false
 pim_title:
   akeneo_data_quality_insights_dashboard: Datenqualitätseinsichten

@@ -101,6 +101,8 @@ pim_user_management:
   form:
     error:
       required: Dieses Feld ist erforderlich.
+      should_not_contain_space: Der Benutzername darf kein Leerzeichen enthalten.
+      too_short_value: "Dieser Wert ist zu kurz. Er sollte {{ count }} oder mehr Zeichen enthalten."
     duplication:
       title: '"{{ username }}" Benutzer duplizieren'
       notification:

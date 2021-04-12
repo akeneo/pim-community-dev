@@ -8,6 +8,8 @@ pim_menu:
     connection_settings: Connexions
     connection_settings_edit: Paramètres de connexion
     connection_monitoring: Supervision
+    connection_webhook_edit: Souscription aux événements
+    connection_webhook_event_logs: Journal des événements
 pim_title:
   akeneo_connectivity_connection_settings_index: Connexions
   akeneo_connectivity_connection_settings_edit: Paramètres de connexion
@@ -16,6 +18,9 @@ pim_title:
   akeneo_connectivity_connection_audit_any: Tableau de bord des connexions
   akeneo_connectivity_connection_error_management_dashboard: Tableau de bord des connexions
   akeneo_connectivity_connection_error_management_connection_monitoring: Supervision
+  akeneo_connectivity_connection_webhook_edit: Souscription aux événements
+  akeneo_connectivity_connection_webhook_regenerate_secret: Souscription aux événements
+  akeneo_connectivity_connection_webhook_event_logs: Journal des événements
 akeneo_connectivity.connection:
   connections: Connexions
   secondary_actions:
@@ -190,7 +195,11 @@ akeneo_connectivity.connection:
         message: Demandez à votre administrateur d'en créer une.
         link: En savoir plus sur les connexions ici...
   webhook:
+    title: Souscription aux événements
+    event_subscription: Souscription aux événements
+    download_logs: Télécharger les logs
     helper:
+      message: Vous pouvez recevoir les événements qui se produisent dans le PIM pour les produits synchronisés avec cette application connectée. Vous devez juste définir une URL.
       link: En savoir plus sur la configuration de la souscription aux événements...
       url.test_disabled: Veuillez cliquer sur le bouton Enregistrer pour pouvoir tester l'URL.
     form:
@@ -217,6 +226,43 @@ akeneo_connectivity.connection:
         error: Désolé, une erreur s'est produite lors du renouvellement du secret lié à la souscription aux événements.
     active_event_subscriptions_limit_reached:
       message: Vous pouvez activer la souscription aux événements sur {{ limit }} connexions maximum et vous avez atteint cette limite. 
+      link: En savoir plus sur la configuration de la souscription aux événements.
+    event_logs:
+      title: Journal des événements
+      event_subscription_disabled:
+        title: La souscription aux événements n'est pas activée pour cette connexion.
+        link: Activer la souscription aux événements
+      no_event_logs:
+        title: Il n'y a actuellement aucun log pour cette connexion.
+      no_event_logs_with_those_filters:
+        title: Désolé, il n’y a aucun résultat pour votre recherche.
+        caption: Essayez à nouveau avec d'autres critères de recherche.
+      level:
+        info: Info
+        notice: Notice
+        warning: Avertissement
+        error: Erreur
+      list:
+        search:
+          placeholder: Chercher parmi les messages
+          total: '{0} Aucun résultat|{1} 1 résultat|[2,Inf] {{ total }} résultats'
+          level: Niveau
+          all: Toutes
+          none: Aucun
+        date_range_filter:
+          label: Date / heure
+          reset: Réinitialiser
+          from: De
+          to: À
+          all: Toutes
+        info:
+          title: Vous trouverez ici les logs liés à tous les événements envoyés vers cette connexion.
+          content: Cette page affiche les logs d'erreur et d'avertissement pour les 72 dernières heures, ainsi que les 100 derniers logs de niveau info et notice. 
+          link: En savoir plus sur les logs liés aux événements
+        headers:
+          datetime: Date / heure
+          level: Niveau
+          message: Message
   error_management:
     connection_monitoring:
       title: Supervision

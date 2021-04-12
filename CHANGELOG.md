@@ -42,6 +42,15 @@
 - PIM-9773: Fix unique variant axis validator considering 01 and 1 as equal
 - PIM-9767: Fix minimum & maximum user password validation
 - PIM-9765: Fix missing translation key in bulk actions when adding attributes values for some product
+- PIM-9780: Fix completed import/export job notification broken link
+- PIM-9783: Optimize batch query when compute completeness
+- PIM-9783: Optimize SQL query when compute completeness
+- PIM-9715: Prevent the deletion of an attribute used as a label by a family
+- PIM-9781: Fix Category tree not refreshing when switching locale
+- PIM-9779: Fix ACE order when loading ACLs
+- PIM-9739: Fix connection users, users, channels having a link to a sub-category
+- PIM-9763: Make sure that 2 users can each create a private view with the same name
+- PIM-9798: Refresh completeness on product grid after family import
 
 ## New features
 

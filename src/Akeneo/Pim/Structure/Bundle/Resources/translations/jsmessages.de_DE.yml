@@ -142,6 +142,7 @@ pim_enrich.entity.attribute:
       success: Attribut erfolgreich aktualisiert.
       fail: Das Attribut konnte nicht aktualisiert werden.
       fields_not_ready: "Dieses Attribut kann im Augenblick nicht gespeichert werden. Die folgenden Felder sind noch unvollständig {{ fields }}"
+      cant_remove_attributes_used_as_label: Attribute, die als Label in einer Familie verwendet werden, können nicht entfernt werden.
     delete:
       success: Attribut erfolgreich entfernt
       fail: Dieses Attribut kann nicht gelöscht werden
@@ -157,6 +158,7 @@ pim_enrich.entity.attribute:
     default_metric_unit:
       label: Standardmesseinheit
       choose: Wählen Sie eine Einheit
+    guidelines: Attribut-Richtlinien
     group:
       label: Attributgruppe
       choose: Wählen Sie die Attributgruppe
@@ -212,6 +214,7 @@ pim_enrich.entity.attribute:
       common: Allgemeine Parameter
       type_specific: Spezifische Parameter
       validation: Validierungsparameter
+      select_locale: Gebietsschema auswählen
     delete:
       confirm: Möchten Sie dieses Attribut wirklich löschen?
       product_count: '{0}0 Produkte|{1}1 Produkt|]1, Inf[{{ count }} Produkte'

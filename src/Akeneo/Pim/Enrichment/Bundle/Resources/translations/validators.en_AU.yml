@@ -72,6 +72,7 @@ pim_catalog:
     product_identifier: These identifiers "%s" don't exist.
     blacklisted_attribute_code: Code temporarily blocked until the ongoing cleanup job is complete.
     blacklisted_attribute_code_with_link: "Code temporarily blocked until the ongoing cleanup job is complete. To find out more, please check the <a href='{{ link }}' target='_blank'>job detail</a>."
+    duplicate_options: '{1} The following option was used multiple times: "{{ duplicate_options }}". Please check your option list again.|]1, +Inf] The following options were used multiple times: "{{ duplicate_options }}". Please check your option list again.'
     0: An unexpected error occurred.
     100: Non-expected value
     101: This field expects a boolean value.
@@ -105,3 +106,7 @@ pim_catalog:
 mass_edit:
   edit_common_attributes:
     invalid_values: There are errors in the attributes form
+pim_datagrid:
+  column_configurator:
+    label:
+      unique_message: The label must be unique
