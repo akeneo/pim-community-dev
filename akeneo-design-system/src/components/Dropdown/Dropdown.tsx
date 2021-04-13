@@ -8,7 +8,7 @@ import {Title} from './Header/Title';
 
 const DropdownContainer = styled.div`
   position: relative;
-  display: inline-block;
+  display: inline-flex;
 `;
 
 type DropdownProps = {

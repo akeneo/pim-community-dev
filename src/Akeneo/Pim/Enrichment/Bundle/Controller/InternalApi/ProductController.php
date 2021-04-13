@@ -229,7 +229,6 @@ class ProductController
 
         if (0 === $violations->count()) {
             $this->productSaver->save($product, ['origin' => ContextOrigin::UI]);
-            $this->productAndProductModelClient->refreshIndex();
 
             return new JsonResponse($this->normalizer->normalize(
                 $product,

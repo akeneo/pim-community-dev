@@ -39,8 +39,8 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
     {
         $this->getSubscribedEvents()->shouldReturn(
             [
-                StorageEvents::POST_SAVE => 'createAndDispatchProductModelEvents',
-                StorageEvents::POST_SAVE_ALL => 'dispatchBufferedProductModelEvents',
+                StorageEvents::POST_SAVE => ['createAndDispatchProductModelEvents', -10],
+                StorageEvents::POST_SAVE_ALL => ['dispatchBufferedProductModelEvents', -10],
             ]
         );
     }

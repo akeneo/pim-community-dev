@@ -49,8 +49,8 @@ final class DispatchProductCreatedAndUpdatedEventSubscriber implements EventSubs
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::POST_SAVE => 'createAndDispatchProductEvents',
-            StorageEvents::POST_SAVE_ALL => 'dispatchBufferedProductEvents',
+            StorageEvents::POST_SAVE => ['createAndDispatchProductEvents', -10],
+            StorageEvents::POST_SAVE_ALL => ['dispatchBufferedProductEvents', -10],
         ];
     }
 
