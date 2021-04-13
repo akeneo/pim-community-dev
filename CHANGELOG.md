@@ -35,6 +35,7 @@
 - PIM-9791: Fix memory issue on proposals widget
 - PIM-9682: Link to proposal product model is completely wrong
 - PIM-9800: Fix event not sent issue when creating products or product models
+- PIM-9805: Fix the import of ref entity records with empty multiselect attributes
 
 ## Improvements
 
