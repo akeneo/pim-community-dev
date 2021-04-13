@@ -49,8 +49,8 @@ final class DispatchProductModelCreatedAndUpdatedEventSubscriber implements Even
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::POST_SAVE => 'createAndDispatchProductModelEvents',
-            StorageEvents::POST_SAVE_ALL => 'dispatchBufferedProductModelEvents',
+            StorageEvents::POST_SAVE => ['createAndDispatchProductModelEvents', -10],
+            StorageEvents::POST_SAVE_ALL => ['dispatchBufferedProductModelEvents', -10],
         ];
     }
 

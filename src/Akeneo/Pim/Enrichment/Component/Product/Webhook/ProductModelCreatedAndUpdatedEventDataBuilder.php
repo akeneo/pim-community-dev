@@ -24,16 +24,13 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
  */
 class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterface
 {
-    private ProductQueryBuilderFactoryInterface $pqbFactory;
     private GetConnectorProductModels $getConnectorProductModelsQuery;
     private ConnectorProductModelNormalizer $connectorProductModelNormalizer;
 
     public function __construct(
-        ProductQueryBuilderFactoryInterface $pqbFactory,
         GetConnectorProductModels $getConnectorProductModelsQuery,
         ConnectorProductModelNormalizer $connectorProductModelNormalizer
     ) {
-        $this->pqbFactory = $pqbFactory;
         $this->getConnectorProductModelsQuery = $getConnectorProductModelsQuery;
         $this->connectorProductModelNormalizer = $connectorProductModelNormalizer;
     }
@@ -102,12 +99,8 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
      */
     private function getConnectorProductModels(array $codes, int $userId): array
     {
-        $pqb = $this->pqbFactory
-            ->create(['limit' => count($codes)])
-            ->addFilter('identifier', Operators::IN_LIST, $codes);
-
         $result = $this->getConnectorProductModelsQuery
-            ->fromProductQueryBuilder($pqb, $userId, null, null, null)
+            ->fromProductModelCodes($codes, $userId, null, null, null)
             ->connectorProductModels();
 
         $products = array_fill_keys($codes, null);
