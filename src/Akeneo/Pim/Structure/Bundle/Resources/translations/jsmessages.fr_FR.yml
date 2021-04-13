@@ -142,6 +142,7 @@ pim_enrich.entity.attribute:
       success: Attribut mis à jour avec succès.
       fail: L'attribut n'a pas pu être mis à jour.
       fields_not_ready: "L'attribut ne peut actuellement pas être sauvegardé. Les champs suivants ne sont pas prêts : {{ fields }}"
+      cant_remove_attributes_used_as_label: Les attributs utilisés comme libellés dans une famille ne peuvent pas être supprimés.
     delete:
       success: L'attribut a bien été supprimé
       fail: Impossible de supprimer cet attribut
@@ -157,6 +158,7 @@ pim_enrich.entity.attribute:
     default_metric_unit:
       label: Unité de mesure par défaut
       choose: Choisir une unité
+    guidelines: Recommandations d'enrichissement de l'attribut
     group:
       label: Groupe d'attributs
       choose: Choisir le groupe d'attributs
@@ -212,6 +214,7 @@ pim_enrich.entity.attribute:
       common: Paramètres généraux
       type_specific: Paramètres spécifiques
       validation: Paramètres de validation
+      select_locale: Sélectionnez une locale
     delete:
       confirm: Êtes-vous sûr(e) de vouloir supprimer cet attribut ?
       product_count: '{0}0 produits|{1}1 produit|]1, Inf[{{ count }} produits'
