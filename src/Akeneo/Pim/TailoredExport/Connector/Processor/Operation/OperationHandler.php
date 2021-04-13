@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TailoredExport\Connector\Processor\Operation;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 
-class OperationHandler implements OperationHandlerInterface
+class OperationHandler
 {
     private iterable $operationHandlers;
 
@@ -15,25 +16,17 @@ class OperationHandler implements OperationHandlerInterface
         $this->operationHandlers = $operationHandlers;
     }
 
-    public function handleOperation(array $operation, AttributeInterface $attribute, $value)
+    public function handleOperations(array $operations, Attribute $attribute, ?ValueInterface $value)
+    //TODO return: string
     {
         foreach ($this->operationHandlers as $operationHandler) {
-            if ($operationHandler->supports($operation, $attribute, $value)) {
-                $value = $operationHandler->handleOperation($operation, $attribute, $value);
+            foreach ($operations as $operation) {
+                if ($operationHandler->supports($operation, $attribute, $value)) {
+                    $value = $operationHandler->handleOperation($operation, $attribute, $value);
+                }
             }
         }
 
         return $value;
-    }
-
-    public function supports(array $operation, AttributeInterface $attribute, $value)
-    {
-        foreach ($this->operationHandlers as $operationHandler) {
-            if ($operationHandler->supports($operation, $attribute, $value)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

@@ -1,18 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\TailoredExport\Connector\Processor;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Pim\TailoredExport\Connector\Processor\Operation\OperationHandler;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
 class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
-    protected StepExecution $stepExecution;
+    private ?StepExecution $stepExecution = null;
+    private OperationHandler $operationHandler;
+    private GetAttributes $getAttributes;
 
-    public function __construct()
-    {
+    public function __construct(
+        OperationHandler $operationHandler,
+        GetAttributes $getAttributes
+    ) {
+        $this->operationHandler = $operationHandler;
+        $this->getAttributes = $getAttributes;
     }
 
     /**
@@ -33,7 +45,11 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
             foreach ($column['sources'] as $source) {
                 $value = $product->getValue($source['code'], $source['locale'], $source['channel']);
 
-                $operationSourceValues[$source['uuid']] = $this->applyOperation($source['operations'], $value);
+                $attribute = $this->getAttributes->forCode($source['code']);
+
+                //TODO $attribute can be null
+
+                $operationSourceValues[$source['uuid']] = $this->applyOperations($source['operations'], $attribute, $value);
                 $operationSourceValues[$source['uuid']] = $this->applySelection($source['selection'], $operationSourceValues[$source['uuid']]);
             }
 
@@ -45,37 +61,25 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
         return $productStandard;
     }
 
-    private function applyOperation($operations, $value)
+    private function applyOperations(array $operations, Attribute $attribute, ?ValueInterface $value)
     {
-        foreach ($operations as $operation) {
-            if ('default_value' === $operation['type']
-                && null === $value
-            ) {
-                $value = $operation['value'];
-            }
-
-           if ('replace' === $operation['type']
-               && isset($operation['mapping'][$value])
-           ) {
-               $value = $operation['mapping'][$value];
-           }
-        }
+        $value = $this->operationHandler->handleOperations($operations, $attribute, $value);
 
         return $value;
     }
 
     private function applySelection($selection, $value)
     {
-        $noramlizedValue = '';
+        // TODO $noramlizedValue = '';
 
-        switch ($selection['type']) {
-            case 'amount':
-                $noramlizedValue = $value->getData();
-//            default:
-//                throw new \RuntimeException();
-        }
+        // switch ($selection['type']) {
+        //     case 'amount':
+        //         $noramlizedValue = $value->getData();
+        //         //            default:
+        //         //                throw new \RuntimeException();
+        // }
 
-        return $noramlizedValue;
+        return $value;
     }
 
     private function applyFormat($format, $operationSourceValues)

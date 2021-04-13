@@ -2,10 +2,6 @@
 
 namespace Akeneo\Pim\TailoredExport\Connector\Reader\Database;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Converter\MetricConverter;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;

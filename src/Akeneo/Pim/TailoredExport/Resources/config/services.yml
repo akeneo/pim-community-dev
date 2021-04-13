@@ -51,6 +51,9 @@ services:
 
     akeneo.tailored_export.processor.product_export:
         class: 'Akeneo\Pim\TailoredExport\Connector\Processor\ProductExportProcessor'
+        arguments:
+            - '@akeneo.tailored_export.processor.operation.operation_handler'
+            - '@akeneo.pim.structure.query.get_attributes'
 
     akeneo.tailored_export.writer.csv.product:
         class: 'Akeneo\Pim\TailoredExport\Connector\Writer\CSV\ProductWriter'
@@ -80,3 +83,8 @@ services:
         class: 'Akeneo\Pim\TailoredExport\Connector\Processor\Operation\DefaultValueOperationHandler'
         tags:
             - { name: 'akeneo.tailored_export.operation_handler', priority: 100 }
+
+    akeneo.tailored_export.processor.operation.replace_scalar_value:
+        class: 'Akeneo\Pim\TailoredExport\Connector\Processor\Operation\ReplaceScalarOperationHandler'
+        tags:
+            - { name: 'akeneo.tailored_export.operation_handler', priority: 90 }

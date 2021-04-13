@@ -32,11 +32,11 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
                     'operator' => Operators::EQUALS,
                     'value' => true,
                 ],
-//                [
-//                    'field' => 'completeness',
-//                    'operator' => Operators::GREATER_OR_EQUAL_THAN,
-//                    'value' => 100,
-//                ],
+                //                [
+                //                    'field' => 'completeness',
+                //                    'operator' => Operators::GREATER_OR_EQUAL_THAN,
+                //                    'value' => 100,
+                //                ],
                 [
                     'field' => 'categories',
                     'operator' => Operators::IN_CHILDREN_LIST,
@@ -67,7 +67,7 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
                             [
                                 'type' => 'replace',
                                 'mapping' => [
-                                    'bar' => 'foo',
+                                    'Bag' => 'sac a pied',
                                 ],
                             ],
                         ],
@@ -117,10 +117,10 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
                                 'type' => 'default_value',
                                 'value' => 'toto',
                             ],
-                            [
-                                'type' => 'convert',
-                                'unit' => 'CENTIMETER',
-                            ],
+                            // [
+                            //     'type' => 'convert',
+                            //     'unit' => 'CENTIMETER',
+                            // ],
                         ],
                         'selection' => [
                             'type' => 'amount', // unit_code, unit_label, amount
