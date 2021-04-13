@@ -97,7 +97,7 @@ class ProductControllerSpec extends ObjectBehavior
         $validator->validate($product)->willReturn(new ConstraintViolationList([]));
 
         $productSaver->save($product, ['origin' => ContextOrigin::UI])->shouldBeCalled();
-        $productAndProductModelClient->refreshIndex()->shouldBeCalled();
+
         $normalizedProduct = [
             'identifier' => 'banane',
             'family' => null,
@@ -192,7 +192,6 @@ class ProductControllerSpec extends ObjectBehavior
 
         $productRepository->find('1234')->willReturn($product);
         $productRemover->remove($product, ['origin' => ContextOrigin::UI])->shouldBeCalled();
-        $productAndProductModelClient->refreshIndex()->shouldBeCalled();
 
         $this->removeAction($request, '1234')->shouldbeLike(new JsonResponse());
     }
