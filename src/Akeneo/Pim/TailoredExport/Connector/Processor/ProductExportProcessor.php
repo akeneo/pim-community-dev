@@ -54,15 +54,11 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
                 $value = $operation['value'];
             }
 
-//            if ('replace' === $operation['type']
-//                && isset($operation['mapping'][$value])
-//            ) {
-//                $value = $operation['mapping'][$value];
-//            }
-
-            if ('convert' === $operation['type']) {
-                $value = $operation['mapping'][$value];
-            }
+           if ('replace' === $operation['type']
+               && isset($operation['mapping'][$value])
+           ) {
+               $value = $operation['mapping'][$value];
+           }
         }
 
         return $value;

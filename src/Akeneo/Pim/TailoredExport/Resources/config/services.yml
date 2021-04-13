@@ -70,3 +70,13 @@ services:
             - '@akeneo.tailored_export.writer.csv.product'
             - '%pim_job_product_batch_size%'
             - '@akeneo_batch.job.job_stopper'
+
+    akeneo.tailored_export.processor.operation.operation_handler:
+        class: 'Akeneo\Pim\TailoredExport\Connector\Processor\Operation\OperationHandler'
+        arguments:
+            - !tagged_iterator akeneo.tailored_export.operation_handler
+
+    akeneo.tailored_export.processor.operation.default_value:
+        class: 'Akeneo\Pim\TailoredExport\Connector\Processor\Operation\DefaultValueOperationHandler'
+        tags:
+            - { name: 'akeneo.tailored_export.operation_handler', priority: 100 }
