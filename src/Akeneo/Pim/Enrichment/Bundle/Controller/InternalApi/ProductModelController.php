@@ -223,7 +223,7 @@ class ProductModelController
             return new JsonResponse($normalizedViolations, 400);
         }
 
-        $this->productModelSaver->save($productModel, ['origin' => ContextOrigin::API]);
+        $this->productModelSaver->save($productModel, ['origin' => ContextOrigin::UI]);
         $normalizedProductModel = $this->normalizeProductModel($productModel);
 
         return new JsonResponse($normalizedProductModel);
