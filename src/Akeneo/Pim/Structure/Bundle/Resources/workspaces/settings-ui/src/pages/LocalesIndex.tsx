@@ -23,7 +23,7 @@ const HelperContent = styled.span`
 const LocalesIndex: FC = () => {
   const translate = useTranslate();
   const {locales, load, isPending} = useLocalesIndexState();
-  const settingsHomePageRoute = useRoute('pim_enrich_attribute_index');
+  const settingsHomePageRoute = useRoute('pim_settings_index');
   const settingsChannelPageRoute = useRoute('pim_enrich_channel_index');
 
   useEffect(() => {

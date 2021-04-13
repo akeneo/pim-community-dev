@@ -113,7 +113,7 @@ const Edit = () => {
     openConfirmDeleteMeasurementFamilyModal,
     closeConfirmDeleteMeasurementFamilyModal,
   ] = useToggleState(false);
-  const settingsHref = `#${useRoute('pim_enrich_attribute_index')}`;
+  const settingsHref = `#${useRoute('pim_settings_index')}`;
 
   const {setHasUnsavedChanges} = useContext(UnsavedChangesContext);
   const [isModified, resetState] = useUnsavedChanges<MeasurementFamily | null>(
@@ -267,7 +267,7 @@ const Edit = () => {
         buttons={buttons}
         breadcrumb={
           <Breadcrumb>
-            <Breadcrumb.Step href={settingsHref}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
+            <Breadcrumb.Step href={`#${settingsHref}`}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
             <Breadcrumb.Step href={history.createHref({pathname: '/'})}>
               {translate('pim_menu.item.measurements')}
             </Breadcrumb.Step>

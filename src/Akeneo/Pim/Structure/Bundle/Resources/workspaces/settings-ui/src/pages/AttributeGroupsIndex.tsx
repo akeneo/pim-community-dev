@@ -8,7 +8,7 @@ import {Breadcrumb} from 'akeneo-design-system';
 const AttributeGroupsIndex: FC = () => {
   const {groups, load, isPending} = useAttributeGroupsIndexState();
   const translate = useTranslate();
-  const settingsHomePageRoute = useRoute('pim_enrich_attribute_index');
+  const settingsHomePageRoute = useRoute('pim_settings_index');
 
   useEffect(() => {
     (async () => {
@@ -21,7 +21,7 @@ const AttributeGroupsIndex: FC = () => {
       <PageHeader showPlaceholder={isPending}>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
-            <Breadcrumb.Step href={settingsHomePageRoute}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
+            <Breadcrumb.Step href={`#${settingsHomePageRoute}`}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
             <Breadcrumb.Step>{translate('pim_enrich.entity.attribute_group.plural_label')}</Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
