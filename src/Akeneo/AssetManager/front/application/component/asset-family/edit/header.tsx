@@ -1,8 +1,9 @@
 import React, {useRef} from 'react';
-import EditState from 'akeneoassetmanager/application/component/app/edit-state';
 import {connect} from 'react-redux';
+import {useAutoFocus} from 'akeneo-design-system';
+import {PimView} from '@akeneo-pim-community/legacy-bridge';
+import EditState from 'akeneoassetmanager/application/component/app/edit-state';
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
-import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
 import {File} from 'akeneoassetmanager/domain/model/file';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import {EditState as State} from 'akeneoassetmanager/application/reducer/asset-family/edit';
@@ -10,7 +11,6 @@ import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoassetmanager/do
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
-import {useAutoFocus} from 'akeneo-design-system';
 
 interface OwnProps {
   label: string;

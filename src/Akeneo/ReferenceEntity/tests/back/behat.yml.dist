@@ -10,7 +10,6 @@ default:
                 - akeneo_referenceentity.tests.back.acceptance.context.create_record_context
                 - akeneo_referenceentity.tests.back.acceptance.context.list_record_context
                 - akeneo_referenceentity.tests.back.acceptance.context.delete_record_context
-                - akeneo_referenceentity.tests.back.acceptance.context.delete_all_records_context
                 - akeneo_referenceentity.tests.back.acceptance.context.create_attribute_context
                 - akeneo_referenceentity.tests.back.acceptance.context.append_attribute_option_context
                 - akeneo_referenceentity.tests.back.acceptance.context.edit_attribute_option_context

@@ -101,7 +101,7 @@ class GetConnectorRecordsAction
             $searchAfter = $request->get('search_after', null);
             $searchAfterCode = null !== $searchAfter ? RecordCode::fromString($searchAfter) : null;
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
-            $channelReferenceValuesFilter = ChannelReference::createfromNormalized($request->get('channel', null));
+            $channelReferenceValuesFilter = ChannelReference::createFromNormalized($request->get('channel', null));
             $localeIdentifiersValuesFilter = $this->getLocaleIdentifiersValuesFilterFromRequest($request);
             $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
                 $referenceEntityIdentifier,

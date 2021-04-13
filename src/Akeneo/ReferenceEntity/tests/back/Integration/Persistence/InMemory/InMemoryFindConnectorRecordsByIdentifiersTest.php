@@ -188,7 +188,7 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
             $recordIdentifier->normalize(),
         ], RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('brand'),
-            ChannelReference::createfromNormalized('ecommerce'),
+            ChannelReference::createFromNormalized('ecommerce'),
             LocaleIdentifierCollection::empty(),
             10,
             null,
@@ -291,7 +291,7 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
             $recordIdentifier->normalize(),
         ], RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('brand'),
-            ChannelReference::createfromNormalized('ecommerce'),
+            ChannelReference::createFromNormalized('ecommerce'),
             LocaleIdentifierCollection::fromNormalized([
                 'en_US',
                 'de_DE',

@@ -1,10 +1,10 @@
-import * as React from 'react';
-import __ from 'akeneoreferenceentity/tools/translator';
-import EditState from 'akeneoreferenceentity/application/component/app/edit-state';
-import Image from 'akeneoreferenceentity/application/component/app/image';
+import React, {useRef} from 'react';
 import {connect} from 'react-redux';
+import styled from 'styled-components';
+import {getColor} from 'akeneo-design-system';
+import {PimView, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import EditState from 'akeneoreferenceentity/application/component/app/edit-state';
 import LocaleSwitcher from 'akeneoreferenceentity/application/component/app/locale-switcher';
-import PimView from 'akeneoreferenceentity/infrastructure/component/pim-view';
 import File from 'akeneoreferenceentity/domain/model/file';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
 import {EditState as State} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
@@ -12,12 +12,23 @@ import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import ChannelSwitcher from 'akeneoreferenceentity/application/component/app/channel-switcher';
 import {getLocales} from 'akeneoreferenceentity/application/reducer/structure';
+import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
+
+const Image = styled.img`
+  width: 142px;
+  height: 142px;
+  border: 1px solid ${getColor('grey', 80)};
+  margin-right: 20px;
+  border-radius: 4px;
+  transition: filter 0.3s;
+  object-fit: contain;
+`;
 
 interface OwnProps {
   label: string;
   image: File;
-  primaryAction: (defaultFocus: React.RefObject<any>) => JSX.Element | null;
-  secondaryActions: () => JSX.Element | null;
+  primaryAction?: (defaultFocus: React.RefObject<any>) => JSX.Element | null;
+  secondaryActions?: () => JSX.Element | null;
   withLocaleSwitcher: boolean;
   withChannelSwitcher: boolean;
   isDirty: boolean;
@@ -48,99 +59,82 @@ interface DispatchProps {
 
 interface HeaderProps extends StateProps, DispatchProps {}
 
-class Header extends React.Component<HeaderProps> {
-  private defaultFocus: React.RefObject<any>;
-  static defaultProps = {
-    displayActions: true,
-  };
+const Header = ({
+  label,
+  image,
+  primaryAction,
+  secondaryActions,
+  withChannelSwitcher,
+  withLocaleSwitcher,
+  isDirty,
+  isLoading,
+  displayActions,
+  breadcrumb,
+  context,
+  structure,
+  events,
+}: HeaderProps) => {
+  const translate = useTranslate();
+  const defaultFocus = useRef<any>(null);
 
-  constructor(props: HeaderProps) {
-    super(props);
-
-    this.defaultFocus = React.createRef();
-  }
-
-  componentDidMount() {
-    if (null !== this.defaultFocus.current) {
-      this.defaultFocus.current.focus();
-    }
-  }
-
-  render() {
-    const {
-      label,
-      image,
-      primaryAction,
-      secondaryActions,
-      withChannelSwitcher,
-      withLocaleSwitcher,
-      isDirty,
-      isLoading,
-      displayActions,
-      breadcrumb,
-      context,
-      structure,
-      events,
-    } = this.props;
-
-    return (
-      <header className="AknTitleContainer">
-        <div className="AknTitleContainer-line">
-          <Image alt={__('pim_reference_entity.reference_entity.img', {'{{ label }}': label})} image={image} />
-          <div className="AknTitleContainer-mainContainer">
-            <div>
-              <div className="AknTitleContainer-line">
-                <div className="AknTitleContainer-breadcrumbs">{breadcrumb}</div>
-                <div className="AknTitleContainer-buttonsContainer">
-                  <div className={`AknLoadingIndicator ${true === isLoading ? '' : 'AknLoadingIndicator--hidden'}`} />
-                  <div className="AknTitleContainer-userMenuContainer user-menu">
-                    <PimView
-                      className={`AknTitleContainer-userMenu ${
-                        displayActions ? '' : 'AknTitleContainer--withoutMargin'
-                      }`}
-                      viewName="pim-reference-entity-index-user-navigation"
-                    />
-                  </div>
-                  <div className="AknTitleContainer-actionsContainer AknButtonList">
-                    {secondaryActions()}
-                    <div className="AknTitleContainer-rightButton">{primaryAction(this.defaultFocus)}</div>
-                  </div>
+  return (
+    <header className="AknTitleContainer">
+      <div className="AknTitleContainer-line">
+        <Image
+          alt={translate('pim_reference_entity.reference_entity.img', {label})}
+          src={getImageShowUrl(image, 'thumbnail')}
+        />
+        <div className="AknTitleContainer-mainContainer">
+          <div>
+            <div className="AknTitleContainer-line">
+              <div className="AknTitleContainer-breadcrumbs">{breadcrumb}</div>
+              <div className="AknTitleContainer-buttonsContainer">
+                <div className={`AknLoadingIndicator ${true === isLoading ? '' : 'AknLoadingIndicator--hidden'}`} />
+                <div className="AknTitleContainer-userMenuContainer user-menu">
+                  <PimView
+                    className={`AknTitleContainer-userMenu ${displayActions ? '' : 'AknTitleContainer--withoutMargin'}`}
+                    viewName="pim-reference-entity-index-user-navigation"
+                  />
                 </div>
-              </div>
-              <div className="AknTitleContainer-line">
-                <div className="AknTitleContainer-title">{label}</div>
-                {isDirty ? <EditState /> : null}
+                <div className="AknTitleContainer-actionsContainer AknButtonList">
+                  {secondaryActions?.()}
+                  <div className="AknTitleContainer-rightButton">{primaryAction?.(defaultFocus)}</div>
+                </div>
               </div>
             </div>
-            <div>
-              <div className="AknTitleContainer-line">
-                <div className="AknTitleContainer-context AknButtonList">
-                  {withChannelSwitcher ? (
-                    <ChannelSwitcher
-                      channelCode={context.channel}
-                      channels={structure.channels}
-                      locale={context.locale}
-                      onChannelChange={events.onChannelChanged}
-                      className="AknDropdown--right"
-                    />
-                  ) : null}
-                  {withLocaleSwitcher ? (
-                    <LocaleSwitcher
-                      localeCode={context.locale}
-                      locales={structure.locales}
-                      onLocaleChange={events.onLocaleChanged}
-                      className="AknDropdown--right"
-                    />
-                  ) : null}
-                </div>
+            <div className="AknTitleContainer-line">
+              <div className="AknTitleContainer-title">{label}</div>
+              {isDirty ? <EditState /> : null}
+            </div>
+          </div>
+          <div>
+            <div className="AknTitleContainer-line">
+              <div className="AknTitleContainer-context AknButtonList">
+                {withChannelSwitcher ? (
+                  <ChannelSwitcher
+                    channelCode={context.channel}
+                    channels={structure.channels}
+                    locale={context.locale}
+                    onChannelChange={events.onChannelChanged}
+                    className="AknDropdown--right"
+                  />
+                ) : null}
+                {withLocaleSwitcher ? (
+                  <LocaleSwitcher
+                    localeCode={context.locale}
+                    locales={structure.locales}
+                    onLocaleChange={events.onLocaleChanged}
+                    className="AknDropdown--right"
+                  />
+                ) : null}
               </div>
             </div>
           </div>
         </div>
-      </header>
-    );
-  }
-}
+      </div>
+    </header>
+  );
+};
 
 export default connect(
   (state: State, ownProps: OwnProps): StateProps => {

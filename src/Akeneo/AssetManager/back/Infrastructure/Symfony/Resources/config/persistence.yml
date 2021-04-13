@@ -23,7 +23,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
             - '@event_dispatcher'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family_and_codes'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_value_keys_by_attribute_type'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
 
     akeneo_assetmanager.infrastructure.persistence.repository.asset_family_permission:

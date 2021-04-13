@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import __ from 'akeneoreferenceentity/tools/translator';
@@ -69,9 +69,6 @@ class Permission extends React.Component<StateProps & DispatchProps> {
                 {__('pim_reference_entity.reference_entity.button.save_permission')}
               </button>
             ) : null;
-          }}
-          secondaryActions={() => {
-            return null;
           }}
           withLocaleSwitcher={false}
           withChannelSwitcher={false}

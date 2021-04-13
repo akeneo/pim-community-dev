@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
@@ -45,7 +46,8 @@ class RecordCollectionUpdaterSpec extends ObjectBehavior
         $this->supports($editRecordCollectionValueCommand)->shouldReturn(true);
     }
 
-    function it_edits_the_record_collection_value_of_a_record(Record $record) {
+    function it_edits_the_record_collection_value_of_a_record(Record $record)
+    {
         $recordAttribute = $this->getAttribute();
 
         $editRecordCollectionValueCommand = new EditRecordCollectionValueCommand(
@@ -56,8 +58,8 @@ class RecordCollectionUpdaterSpec extends ObjectBehavior
         );
         $value = Value::create(
             $editRecordCollectionValueCommand->attribute->getIdentifier(),
-            ChannelReference::createfromNormalized($editRecordCollectionValueCommand->channel),
-            LocaleReference::createfromNormalized($editRecordCollectionValueCommand->locale),
+            ChannelReference::createFromNormalized($editRecordCollectionValueCommand->channel),
+            LocaleReference::createFromNormalized($editRecordCollectionValueCommand->locale),
             RecordCollectionData::createFromNormalize($editRecordCollectionValueCommand->recordCodes)
         );
 

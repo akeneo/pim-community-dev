@@ -1,18 +1,19 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Domain\Query\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use PhpSpec\ObjectBehavior;
 
 class RecordQuerySpec extends ObjectBehavior
 {
-    public function let() {
+    public function let()
+    {
         $normalizedQuery = [
             'channel' => 'ecommerce',
             'locale'  => 'en_US',
@@ -38,7 +39,7 @@ class RecordQuerySpec extends ObjectBehavior
 
         $this->beConstructedThrough('createPaginatedQueryUsingSearchAfter', [
             ReferenceEntityIdentifier::fromString('designer'),
-            ChannelReference::createfromNormalized($normalizedQuery['channel']),
+            ChannelReference::createFromNormalized($normalizedQuery['channel']),
             LocaleIdentifierCollection::fromNormalized([$normalizedQuery['locale']]),
             20,
             null,
@@ -85,5 +86,33 @@ class RecordQuerySpec extends ObjectBehavior
         $this->hasFilter('full_text')->shouldReturn(true);
         $this->hasFilter('values.*')->shouldReturn(true);
         $this->hasFilter('completeness')->shouldReturn(false);
+    }
+
+    function it_can_be_normalized()
+    {
+        $normalizedQuery = [
+            'channel' => 'ecommerce',
+            'locale'  => 'en_US',
+            'filters' => [
+                [
+                    'field'    => 'full_text',
+                    'operator' => '=',
+                    'value'    => 'test'
+                ],
+                [
+                    'field'    => 'values.main_color_designers_fingerprint',
+                    'operator' => '=',
+                    'value'    => 'blue'
+                ]
+            ],
+            'page'    => 0,
+            'size'    => 20
+        ];
+
+        $this->beConstructedThrough('createFromNormalized', [
+            $normalizedQuery
+        ]);
+
+        $this->normalize()->shouldReturn($normalizedQuery);
     }
 }

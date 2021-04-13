@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2018 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\UI\Web\Record;
 
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocales;
-use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClient;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -45,12 +44,10 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends ControllerIntegrationTestCase
 {
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
     public function setUp(): void
     {
@@ -213,9 +210,9 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
         $referenceEntityRepository->create(
             ReferenceEntity::create(
-               $referenceEntityIdentifier,
-               [],
-               Image::createEmpty()
+                $referenceEntityIdentifier,
+                [],
+                Image::createEmpty()
             )
         );
 
@@ -223,9 +220,9 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
         $referenceEntityRepository->create(
             ReferenceEntity::create(
-               $cityReferenceEntityIdentifier,
-               [],
-               Image::createEmpty()
+                $cityReferenceEntityIdentifier,
+                [],
+                Image::createEmpty()
             )
         );
         /** @var ReferenceEntity $referenceEntity */

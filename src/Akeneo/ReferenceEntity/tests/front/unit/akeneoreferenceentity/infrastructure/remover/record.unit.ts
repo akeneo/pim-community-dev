@@ -20,14 +20,4 @@ describe('Akeneoreferenceentity > infrastructure > remover > record', () => {
 
     expect(fetch.deleteJSON).toHaveBeenCalledWith('akeneo_reference_entities_record_delete_rest');
   });
-
-  it('It deletes all reference entity records', async () => {
-    // @ts-ignore
-    fetch.deleteJSON = jest.fn().mockImplementationOnce(() => Promise.resolve());
-
-    const referenceEntityIdentifier = createReferenceEntityIdentifier('designer');
-    await remover.removeAll(referenceEntityIdentifier);
-
-    expect(fetch.deleteJSON).toHaveBeenCalledWith('akeneo_reference_entities_record_delete_all_rest');
-  });
 });

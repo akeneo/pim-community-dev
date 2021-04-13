@@ -168,19 +168,6 @@ services:
         tags:
         - { name: fob.context_service }
 
-    akeneo_referenceentity.tests.back.acceptance.context.delete_all_records_context:
-        class: Akeneo\ReferenceEntity\Acceptance\Context\DeleteAllRecordsContext
-        arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
-            - '@akeneo_referenceentity.application.record.delete_all_reference_entity_records_handler'
-            - '@validator'
-            - '@akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context'
-            - '@akeneo_referenceentity.tests.back.acceptance.context.exception_context'
-            - '@akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'
-        tags:
-        - { name: fob.context_service }
-
     akeneo_referenceentity.tests.back.acceptance.context.index_records_context:
         class: Akeneo\ReferenceEntity\Acceptance\Context\IndexRecordsContext
         arguments:

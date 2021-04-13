@@ -242,6 +242,96 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
     /**
      * @test
      */
+    public function it_applies_permissions_on_attributes_and_locales_while_retrieving_connector_product_models_by_codes(): void
+    {
+        $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
+
+        $actualProductModelList = $this->getQuery()->fromProductModelCodes(
+            ['root_product_model', 'sub_product_model'],
+            $this->getRedactorUserId(),
+            null,
+            null,
+            null
+        );
+
+        $dataRootPm = $this->getIdAndDatesFromProductModelCode('root_product_model');
+        $dataSubPm = $this->getIdAndDatesFromProductModelCode('sub_product_model');
+
+        $emptyAssociations = [
+            'PACK' => [
+                'products' => [],
+                'product_models' => [],
+                'groups' => []
+            ],
+            'SUBSTITUTION' => [
+                'products' => [],
+                'product_models' => [],
+                'groups' => []
+            ],
+            'UPSELL' => [
+                'products' => [],
+                'product_models' => [],
+                'groups' => []
+            ],
+            'X_SELL' => [
+                'products' => [],
+                'product_models' => [],
+                'groups' => [],
+            ],
+        ];
+
+        $expectedProductModelList = new ConnectorProductModelList(2, [
+            new ConnectorProductModel(
+                (int)$dataRootPm['id'],
+                'root_product_model',
+                new \DateTimeImmutable($dataRootPm['created']),
+                new \DateTimeImmutable($dataRootPm['updated']),
+                null,
+                'family_permission',
+                'family_variant_permission',
+                ['workflow_status' => 'working_copy'],
+                $emptyAssociations,
+                [],
+                ['own_category'],
+                new ReadValueCollection([
+                    ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'en_US'),
+                    ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'fr_FR'),
+                    ScalarValue::localizableValue('root_product_model_view_attribute', true, 'en_US'),
+                    ScalarValue::localizableValue('root_product_model_view_attribute', true, 'fr_FR'),
+                ])
+            ),
+            new ConnectorProductModel(
+                (int)$dataSubPm['id'],
+                'sub_product_model',
+                new \DateTimeImmutable($dataSubPm['created']),
+                new \DateTimeImmutable($dataSubPm['updated']),
+                'root_product_model',
+                'family_permission',
+                'family_variant_permission',
+                ['workflow_status' => 'working_copy'],
+                $emptyAssociations,
+                [],
+                ['own_category'],
+                new ReadValueCollection([
+                    ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'en_US'),
+                    ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'fr_FR'),
+                    ScalarValue::localizableValue('root_product_model_view_attribute', true, 'en_US'),
+                    ScalarValue::localizableValue('root_product_model_view_attribute', true, 'fr_FR'),
+                    ScalarValue::value('sub_product_model_axis_attribute', true),
+                    ScalarValue::localizableValue('sub_product_model_edit_attribute', true, 'en_US'),
+                    ScalarValue::localizableValue('sub_product_model_edit_attribute', true, 'fr_FR'),
+                    ScalarValue::localizableValue('sub_product_model_view_attribute', true, 'en_US'),
+                    ScalarValue::localizableValue('sub_product_model_view_attribute', true, 'fr_FR'),
+                ])
+            ),
+        ]);
+
+        Assert::assertEquals($expectedProductModelList, $actualProductModelList);
+    }
+
+    /**
+     * @test
+     */
     public function it_get_connector_product_models_by_applying_permissions_on_quantified_associations()
     {
         $this->createQuantifiedAssociationType('PRODUCTSET');

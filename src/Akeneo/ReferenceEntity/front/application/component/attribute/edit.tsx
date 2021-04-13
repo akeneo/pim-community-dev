@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import styled, {FlattenSimpleInterpolation} from 'styled-components';
 import {DeleteIcon, Key, Checkbox, SectionTitle} from 'akeneo-design-system';
+import {DeleteModal} from '@akeneo-pim-community/shared';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import Flag from 'akeneoreferenceentity/tools/component/flag';
@@ -18,7 +19,6 @@ import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
 import {TextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
 import {deleteAttribute} from 'akeneoreferenceentity/application/action/attribute/delete';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {cancelDeleteModal, openDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
@@ -301,13 +301,14 @@ class Edit extends React.Component<EditProps> {
         </div>
         {this.props.confirmDelete.isActive && (
           <DeleteModal
-            message={__('pim_reference_entity.attribute.delete.message', {attributeLabel: label})}
             title={__('pim_reference_entity.attribute.delete.title')}
             onConfirm={() => {
               this.props.events.onAttributeDelete(this.props.attribute.getIdentifier());
             }}
             onCancel={this.props.events.onCancelDeleteModal}
-          />
+          >
+            {__('pim_reference_entity.attribute.delete.message', {attributeLabel: label})}
+          </DeleteModal>
         )}
       </>
     );

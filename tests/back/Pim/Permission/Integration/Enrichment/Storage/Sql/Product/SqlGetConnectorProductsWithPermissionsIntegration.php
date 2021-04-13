@@ -223,6 +223,83 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
         Assert::assertEquals(['own_category'], $product->categoryCodes());
     }
 
+    /**
+     * @test
+     */
+    public function it_get_connector_products_by_identifiers_and_applying_permissions_on_locale_and_attribute_in_values()
+    {
+        $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
+        $query = $this->getQuery();
+
+        $userId = $this
+            ->get('database_connection')
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
+
+        $productList = $query->fromProductIdentifiers(['variant_product'], (int) $userId, null, null, null);
+        $product = $query->fromProductIdentifier('variant_product', (int) $userId);
+
+        $productData = $this->get('database_connection')->executeQuery(
+            'SELECT id, created, updated FROM pim_catalog_product WHERE identifier = "variant_product"'
+        )->fetch();
+
+        $expectedProduct = new ConnectorProduct(
+            (int) $productData['id'],
+            'variant_product',
+            new \DateTimeImmutable($productData['created']),
+            new \DateTimeImmutable($productData['updated']),
+            true,
+            'family_permission',
+            ['own_category'],
+            [],
+            'sub_product_model',
+            [
+                'X_SELL' => [
+                    'products' => [],
+                    'product_models' => [],
+                    'groups' => [],
+                ],
+                'UPSELL' => [
+                    'products' => [],
+                    'product_models' => [],
+                    'groups' => []
+                ],
+                'PACK' => [
+                    'products' => [],
+                    'product_models' => [],
+                    'groups' => []
+                ],
+                'SUBSTITUTION' => [
+                    'products' => [],
+                    'product_models' => [],
+                    'groups' => []
+                ]
+            ],
+            [],
+            ['workflow_status' => 'working_copy'],
+            new ReadValueCollection([
+                ScalarValue::value('variant_product_axis_attribute', true),
+                ScalarValue::localizableValue('variant_product_edit_attribute', true, 'en_US'),
+                ScalarValue::localizableValue('variant_product_edit_attribute', true, 'fr_FR'),
+                ScalarValue::localizableValue('variant_product_view_attribute', true, 'en_US'),
+                ScalarValue::localizableValue('variant_product_view_attribute', true, 'fr_FR'),
+                ScalarValue::value('sub_product_model_axis_attribute', true),
+                ScalarValue::localizableValue('sub_product_model_edit_attribute', true, 'en_US'),
+                ScalarValue::localizableValue('sub_product_model_edit_attribute', true, 'fr_FR'),
+                ScalarValue::localizableValue('sub_product_model_view_attribute', true, 'en_US'),
+                ScalarValue::localizableValue('sub_product_model_view_attribute', true, 'fr_FR'),
+                ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'en_US'),
+                ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'fr_FR'),
+                ScalarValue::localizableValue('root_product_model_view_attribute', true, 'en_US'),
+                ScalarValue::localizableValue('root_product_model_view_attribute', true, 'fr_FR'),
+            ]),
+            null
+        );
+        $expectedProductList = new ConnectorProductList(1, [$expectedProduct]);
+
+        Assert::assertEquals($expectedProductList, $productList);
+        Assert::assertEquals($expectedProduct, $product);
+
+    }
 
     /**
      * @test

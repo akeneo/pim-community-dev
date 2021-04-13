@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
+import {Breadcrumb} from 'akeneo-design-system';
+import {PimView} from '@akeneo-pim-community/legacy-bridge';
 import __ from 'akeneoreferenceentity/tools/translator';
 import Table from 'akeneoreferenceentity/application/component/reference-entity/index/table';
-import {Breadcrumb} from 'akeneo-design-system';
 import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import PimView from 'akeneoreferenceentity/infrastructure/component/pim-view';
 import {redirectToReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/router';
 import {IndexState} from 'akeneoreferenceentity/application/reducer/reference-entity/index';
 import {referenceEntityCreationStart} from 'akeneoreferenceentity/domain/event/reference-entity/create';

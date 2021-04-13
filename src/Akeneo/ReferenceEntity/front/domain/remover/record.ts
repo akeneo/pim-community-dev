@@ -1,4 +1,5 @@
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import {Query} from 'akeneoreferenceentity/domain/fetcher/fetcher';
 
 export default interface Remover<ReferenceEntityIdentifier, Identifier> {
   remove: (
@@ -6,5 +7,5 @@ export default interface Remover<ReferenceEntityIdentifier, Identifier> {
     identifier: Identifier
   ) => Promise<ValidationError[] | null>;
 
-  removeAll: (referenceEntityIdentifier: ReferenceEntityIdentifier) => Promise<ValidationError[] | null>;
+  removeFromQuery: (referenceEntityIdentifier: ReferenceEntityIdentifier, query: Query) => Promise<Response>;
 }

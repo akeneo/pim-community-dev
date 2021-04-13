@@ -46,3 +46,24 @@ services:
             - '@akeneo_referenceentity.job.writer.handle.record.database'
             - '%pim_job_product_batch_size%'
             - '@akeneo_batch.job.job_stopper'
+
+    akeneo_referenceentity.step.mass_delete_records:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'mass_delete_records'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_referenceentity.tasklet.mass_delete_records_tasklet'
+        public: false
+
+    akeneo_referenceentity.tasklet.mass_delete_records_tasklet:
+        class: 'Akeneo\ReferenceEntity\Infrastructure\Job\MassDeleteRecordsTasklet'
+        arguments:
+            - '@akeneo_referenceentity.application.record.delete_records_handler'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.query_builder'
+            - '@akeneo_referenceentity.client.record'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
+            - '@akeneo_batch.job.job_stopper'
+            - 1000
+        public: false

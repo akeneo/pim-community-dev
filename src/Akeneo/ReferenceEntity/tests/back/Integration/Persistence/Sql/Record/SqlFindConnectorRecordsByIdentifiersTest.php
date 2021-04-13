@@ -130,7 +130,7 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
 
         $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('designer'),
-            ChannelReference::createfromNormalized('ecommerce'),
+            ChannelReference::createFromNormalized('ecommerce'),
             LocaleIdentifierCollection::empty(),
             100,
             null,
@@ -174,7 +174,7 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
 
         $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('designer'),
-            ChannelReference::createfromNormalized('ecommerce'),
+            ChannelReference::createFromNormalized('ecommerce'),
             LocaleIdentifierCollection::fromNormalized(['fr_FR']),
             100,
             null,

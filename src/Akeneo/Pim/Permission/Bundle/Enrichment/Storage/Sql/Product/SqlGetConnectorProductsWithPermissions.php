@@ -102,6 +102,24 @@ class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
         return $this->fromConnectorProductsWithoutPermission([$productWithoutPermissionApplied], $userId)[0];
     }
 
+    public function fromProductIdentifiers(
+        array $productIdentifiers,
+        int $userId,
+        ?array $attributesToFilterOn,
+        ?string $channelToFilterOn,
+        ?array $localesToFilterOn
+    ): ConnectorProductList {
+        $viewableProductIdentifiers = $this->filterViewableProductIdentifiers($productIdentifiers, $userId);
+
+        $connectorProductList = $this->getConnectorProducts->fromProductIdentifiers(
+            $viewableProductIdentifiers, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn
+        );
+
+        $productsWithPermissionApplied = $this->fromConnectorProductsWithoutPermission($connectorProductList->connectorProducts(), $userId);
+
+        return new ConnectorProductList($connectorProductList->totalNumberOfProducts(), $productsWithPermissionApplied);
+    }
+
     private function fromConnectorProductsWithoutPermission(array $products, int $userId): array
     {
         $filteredProducts = $this->filterNotGrantedCategoryCodes($products, $userId);

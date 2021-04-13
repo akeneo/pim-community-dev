@@ -171,7 +171,6 @@ const allAcls = [
   'akeneo_referenceentity_record_edit',
   'akeneo_referenceentity_record_list_product',
   'akeneo_referenceentity_record_delete',
-  'akeneo_referenceentity_records_delete_all',
   'akeneo_referenceentity_attribute_create',
   'akeneo_referenceentity_attribute_delete',
   'akeneo_referenceentity_attribute_edit',

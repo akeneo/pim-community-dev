@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2018 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -24,14 +24,13 @@ use Symfony\Component\Routing\RouterInterface;
  * This class is responsible for helping calling web routes.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class WebClientHelper
 {
     private const SHARED_RESPONSES_FILE_PATH_PREFIX = __DIR__ . '/../../../shared/responses/';
 
-    /** @var RouterInterface */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(RouterInterface $router)
     {
@@ -103,6 +102,16 @@ HTML;
     public function assert404NotFound(Response $response): void
     {
         Assert::assertSame(404, $response->getStatusCode());
+    }
+
+    public function assert400BadRequest(Response $response): void
+    {
+        Assert::assertSame(400, $response->getStatusCode());
+    }
+
+    public function assert202Accepted(Response $response): void
+    {
+        Assert::assertSame(202, $response->getStatusCode());
     }
 
     public function assert500ServerError(Response $response): void

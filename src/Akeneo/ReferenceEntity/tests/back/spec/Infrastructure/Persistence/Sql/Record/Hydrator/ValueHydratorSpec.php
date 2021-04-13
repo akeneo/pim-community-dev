@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
@@ -8,18 +10,15 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\DataHydratorInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\DataHydratorRegistry;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydrator;
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
 
 class ValueHydratorSpec extends ObjectBehavior
 {
     function let(
-        Connection $sqlConnection,
         DataHydratorRegistry $dataHydratorRegistry
     ) {
-        $sqlConnection->getDatabasePlatform()->willReturn(new MySqlPlatform());
-        $this->beConstructedWith($sqlConnection, $dataHydratorRegistry);
+        $this->beConstructedWith($dataHydratorRegistry);
     }
 
     function it_is_initializable()

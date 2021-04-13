@@ -15,7 +15,6 @@ akeneo_assetmanager:
            create: Create an asset
            edit: Edit the assets
            delete: Delete assets
-           delete_all: Delete all assets
            list_product: List linked products to asset
            execute_naming_conventions: Execute naming conventions
        attribute:

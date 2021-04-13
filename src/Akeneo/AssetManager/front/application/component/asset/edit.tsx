@@ -1,9 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import styled from 'styled-components';
+import {Button, Dropdown, IconButton, MoreIcon, useBooleanState} from 'akeneo-design-system';
+import {PimView, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {DeleteModal} from '@akeneo-pim-community/shared';
 import {EditState as State} from 'akeneoassetmanager/application/reducer/asset/edit';
 import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
 import {AssetBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
-import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
 import {saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
 import {deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
 import EditState from 'akeneoassetmanager/application/component/app/edit-state';
@@ -12,7 +15,6 @@ import {channelChanged, localeChanged} from 'akeneoassetmanager/application/acti
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import {CompletenessBadge} from 'akeneoassetmanager/application/component/app/completeness';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
@@ -24,10 +26,7 @@ import {MainMediaThumbnail} from 'akeneoassetmanager/application/component/asset
 import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
 import {formatDateForUILocale} from 'akeneoassetmanager/tools/format-date';
 import {Label} from 'akeneoassetmanager/application/component/app/label';
-import styled from 'styled-components';
 import {saveAndExecuteNamingConvention} from 'akeneoassetmanager/application/action/asset/save-and-execute-naming-convention';
-import {Button, Dropdown, IconButton, MoreIcon, useBooleanState} from 'akeneo-design-system';
-import {useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {ReloadPreviewProvider} from 'akeneoassetmanager/application/hooks/useReloadPreview';
 
 interface StateProps {
@@ -258,11 +257,12 @@ const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnA
       </div>
       {isDeleteModalOpen && (
         <DeleteModal
-          message={translate('pim_asset_manager.asset.delete.message', {assetLabel: label})}
           title={translate('pim_asset_manager.asset.delete.title')}
           onConfirm={onConfirmedDelete}
           onCancel={closeDeleteModal}
-        />
+        >
+          {translate('pim_asset_manager.asset.delete.message', {assetLabel: label})}
+        </DeleteModal>
       )}
     </ReloadPreviewProvider>
   );

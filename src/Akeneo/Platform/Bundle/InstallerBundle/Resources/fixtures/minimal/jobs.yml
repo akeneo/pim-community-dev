@@ -247,3 +247,8 @@ jobs:
         alias:     clean_removed_attribute_job
         label:     Cleaning removed attribute values
         type:      clean_removed_attribute_job
+    reference_entity_mass_delete_records:
+        connector: internal
+        alias: reference_entity_mass_delete_records
+        label: Mass delete records
+        type: reference_entity_mass_delete_records

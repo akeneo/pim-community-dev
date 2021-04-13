@@ -2,6 +2,8 @@ import React, {useRef} from 'react';
 import {connect} from 'react-redux';
 import styled, {FlattenSimpleInterpolation} from 'styled-components';
 import {DeleteIcon, Key, Checkbox, Button, SectionTitle, useAutoFocus, useBooleanState} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {DeleteModal} from '@akeneo-pim-community/shared';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
@@ -18,14 +20,12 @@ import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
 import {TextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import {deleteAttribute} from 'akeneoassetmanager/application/action/attribute/delete';
 import AttributeIdentifier, {attributeidentifiersAreEqual} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {getAttributeView} from 'akeneoassetmanager/application/configuration/attribute';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {ButtonContainer} from '../app/button';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 
 const DeleteButton = styled.span`
   flex: 1;
@@ -266,11 +266,12 @@ const Edit = ({isActive, isSaving, rights, assetFamily, attribute, context, even
       </div>
       {isDeleteModalOpen && (
         <DeleteModal
-          message={translate('pim_asset_manager.attribute.delete.message', {attributeLabel: label})}
           title={translate('pim_asset_manager.attribute.delete.title')}
           onConfirm={() => events.onAttributeDelete(attribute.getIdentifier())}
           onCancel={closeDeleteModal}
-        />
+        >
+          {translate('pim_asset_manager.attribute.delete.message', {attributeLabel: label})}
+        </DeleteModal>
       )}
     </>
   );

@@ -171,7 +171,10 @@ const MassEditModal = ({
         <Content>
           <Helper>
             {translate('pim_asset_manager.asset.mass_edit.helper.content')}&nbsp;
-            <Link href="https://help.akeneo.com/pim/serenity/articles/work-on-your-assets.html#bulk-edit-multiple-assets">
+            <Link
+              target="_blank"
+              href="https://help.akeneo.com/pim/serenity/articles/work-on-your-assets.html#bulk-edit-multiple-assets"
+            >
               {translate('pim_asset_manager.asset.mass_edit.helper.link')}
             </Link>
           </Helper>

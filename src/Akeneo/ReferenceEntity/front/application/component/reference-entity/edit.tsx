@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
+import styled from 'styled-components';
 import {EditState as State} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import Sidebar from 'akeneoreferenceentity/application/component/app/sidebar';
 import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
@@ -8,6 +9,13 @@ import CreateRecordModal from 'akeneoreferenceentity/application/component/recor
 import __ from 'akeneoreferenceentity/tools/translator';
 import {redirectToReferenceEntityListItem} from 'akeneoreferenceentity/application/action/reference-entity/router';
 import Key from 'akeneoreferenceentity/tools/key';
+
+const Container = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 40px;
+`;
 
 interface StateProps {
   sidebar: {
@@ -55,12 +63,9 @@ class ReferenceEntityEditView extends React.Component<EditProps> {
           <div className="AknDefault-thirdColumn" />
         </div>
         <div className="AknDefault-contentWithBottom">
-          <div
-            className="AknDefault-mainContent AknDefault-mainContent--withoutBottomPadding"
-            data-tab={this.props.sidebar.currentTab}
-          >
+          <Container data-tab={this.props.sidebar.currentTab}>
             <TabView code={this.props.sidebar.currentTab} />
-          </div>
+          </Container>
         </div>
         <Sidebar backButton={this.backToReferenceEntityList} />
         {this.props.createRecord.active ? <CreateRecordModal /> : null}

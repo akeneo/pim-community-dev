@@ -81,10 +81,15 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
 
-    akeneo_referenceentity.application.record.delete_all_reference_entity_records_handler:
-        class: Akeneo\ReferenceEntity\Application\Record\DeleteAllRecords\DeleteAllReferenceEntityRecordsHandler
+    akeneo_referenceentity.application.record.delete_records_handler:
+        class: Akeneo\ReferenceEntity\Application\Record\DeleteRecords\DeleteRecordsHandler
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    akeneo_referenceentity.application.record.mass_delete.mass_delete_records_handler:
+        class: Akeneo\ReferenceEntity\Application\Record\MassDeleteRecords\MassDeleteRecordsHandler
+        arguments:
+            - '@akeneo_referenceentity.job.mass_delete_launcher'
 
     akeneo_referenceentity.application.record.search_record:
         class: Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchRecord

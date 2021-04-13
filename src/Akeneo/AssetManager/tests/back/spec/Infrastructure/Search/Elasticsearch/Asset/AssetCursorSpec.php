@@ -9,10 +9,9 @@ use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\AssetQueryBuilderInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
- * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  */
 class AssetCursorSpec extends ObjectBehavior
 {

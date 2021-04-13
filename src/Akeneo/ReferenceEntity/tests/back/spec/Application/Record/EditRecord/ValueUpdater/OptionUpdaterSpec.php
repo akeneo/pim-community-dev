@@ -39,8 +39,7 @@ class OptionUpdaterSpec extends ObjectBehavior
     function it_supports_the_edit_option_value_command(
         EditOptionValueCommand $editOptionValueCommand,
         EditTextValueCommand $editTextValueCommand
-    )
-    {
+    ) {
         $this->supports($editOptionValueCommand)->shouldReturn(true);
         $this->supports($editTextValueCommand)->shouldReturn(false);
     }
@@ -58,8 +57,8 @@ class OptionUpdaterSpec extends ObjectBehavior
 
         $value = Value::create(
             $attribute->getIdentifier(),
-            ChannelReference::createfromNormalized('mobile'),
-            LocaleReference::createfromNormalized('en_US'),
+            ChannelReference::createFromNormalized('mobile'),
+            LocaleReference::createFromNormalized('en_US'),
             OptionData::createFromNormalize('18-25')
         );
 

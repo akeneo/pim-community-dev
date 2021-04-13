@@ -15,12 +15,11 @@ use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
  * @see ChannelIdentifier
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class ChannelReference
 {
-    /** @var ChannelIdentifier|null */
-    private $identifier;
+    private ?ChannelIdentifier $identifier;
 
     private function __construct(?ChannelIdentifier $identifier)
     {
@@ -29,7 +28,7 @@ class ChannelReference
 
     public static function fromChannelIdentifier(ChannelIdentifier $identifier): self
     {
-        return new self($identifier) ;
+        return new self($identifier);
     }
 
     public static function noReference(): self
@@ -37,7 +36,7 @@ class ChannelReference
         return new self(null);
     }
 
-    public static function createfromNormalized(?string $normalizedReference): self
+    public static function createFromNormalized(?string $normalizedReference): self
     {
         if (null === $normalizedReference) {
             return ChannelReference::noReference();

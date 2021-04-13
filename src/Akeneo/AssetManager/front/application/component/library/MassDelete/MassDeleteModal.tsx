@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
-import {Button, DeleteIllustration, Field, getColor, Key, Modal, TextInput, useShortcut} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import React, {useState, useRef} from 'react';
 import styled from 'styled-components';
+import {Field, TextInput, useAutoFocus} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {DeleteModal} from '@akeneo-pim-community/shared';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 type MassDeleteModalProps = {
   onConfirm: () => void;
@@ -10,11 +11,6 @@ type MassDeleteModalProps = {
   selectedAssetCount: number;
   assetFamilyIdentifier: AssetFamilyIdentifier;
 };
-
-const Highlight = styled.span`
-  color: ${getColor('brand', 100)};
-  font-weight: bold;
-`;
 
 const SpacedField = styled(Field)`
   margin-top: 20px;
@@ -24,6 +20,9 @@ const MassDeleteModal = ({onConfirm, onCancel, assetFamilyIdentifier, selectedAs
   const translate = useTranslate();
   const [assetFamilyConfirm, setAssetFamilyConfirm] = useState<string>('');
   const isValid = assetFamilyConfirm === assetFamilyIdentifier;
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useAutoFocus(inputRef);
 
   const handleConfirm = async () => {
     if (!isValid) return;
@@ -31,28 +30,26 @@ const MassDeleteModal = ({onConfirm, onCancel, assetFamilyIdentifier, selectedAs
     onConfirm();
   };
 
-  useShortcut(Key.Enter, handleConfirm);
-
   return (
-    <Modal closeTitle={translate('pim_common.close')} onClose={onCancel} illustration={<DeleteIllustration />}>
-      <Modal.SectionTitle color="brand">{translate('pim_asset_manager.asset.mass_delete.title')}</Modal.SectionTitle>
-      <Modal.Title>{translate('pim_common.confirm_deletion')}</Modal.Title>
-      <Highlight>
+    <DeleteModal
+      title={translate('pim_asset_manager.asset.mass_delete.title')}
+      onConfirm={handleConfirm}
+      onCancel={onCancel}
+      canConfirmDelete={isValid}
+    >
+      <p>
         {translate('pim_asset_manager.asset.mass_delete.confirm', {assetCount: selectedAssetCount}, selectedAssetCount)}
-      </Highlight>
-      {translate('pim_asset_manager.asset.mass_delete.extra_information')}
+      </p>
+      <p>{translate('pim_asset_manager.asset.mass_delete.extra_information')}</p>
       <SpacedField label={translate('pim_asset_manager.asset.mass_delete.confirm_label', {assetFamilyIdentifier})}>
-        <TextInput value={assetFamilyConfirm} onChange={setAssetFamilyConfirm} />
+        <TextInput
+          ref={inputRef}
+          value={assetFamilyConfirm}
+          onChange={setAssetFamilyConfirm}
+          onSubmit={handleConfirm}
+        />
       </SpacedField>
-      <Modal.BottomButtons>
-        <Button level="tertiary" onClick={onCancel}>
-          {translate('pim_common.cancel')}
-        </Button>
-        <Button disabled={!isValid} level="danger" onClick={handleConfirm}>
-          {translate('pim_common.delete')}
-        </Button>
-      </Modal.BottomButtons>
-    </Modal>
+    </DeleteModal>
   );
 };
 

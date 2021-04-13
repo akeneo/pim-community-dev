@@ -40,7 +40,8 @@ class NumberUpdaterSpec extends ObjectBehavior
         $this->supports($editNumberValueCommand)->shouldReturn(true);
     }
 
-    function it_edits_the_number_value_of_a_record(Record $record) {
+    function it_edits_the_number_value_of_a_record(Record $record)
+    {
         $numberAttribute = $this->getAttribute();
 
         $editNumberValueCommand = new EditNumberValueCommand(
@@ -51,8 +52,8 @@ class NumberUpdaterSpec extends ObjectBehavior
         );
         $value = Value::create(
             $editNumberValueCommand->attribute->getIdentifier(),
-            ChannelReference::createfromNormalized($editNumberValueCommand->channel),
-            LocaleReference::createfromNormalized($editNumberValueCommand->locale),
+            ChannelReference::createFromNormalized($editNumberValueCommand->channel),
+            LocaleReference::createFromNormalized($editNumberValueCommand->locale),
             NumberData::createFromNormalize($editNumberValueCommand->number)
         );
 

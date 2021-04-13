@@ -57,9 +57,9 @@ akeneo_reference_entities_record_delete_rest:
     defaults: { _controller: akeneo_referenceentity.infrastructure.action.record.delete }
     methods: [DELETE]
 
-akeneo_reference_entities_record_delete_all_rest:
+akeneo_reference_entities_record_mass_delete_rest:
     path: '/rest/reference_entity/{referenceEntityIdentifier}/records'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.action.record.delete_all }
+    defaults: { _controller: akeneo_referenceentity.infrastructure.action.record.mass_delete }
     methods: [DELETE]
 
 akeneo_reference_entities_attribute_index_rest:

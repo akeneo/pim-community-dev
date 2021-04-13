@@ -98,36 +98,6 @@ module.exports = async function(cucumber) {
     });
   });
 
-  When('the user deletes all the reference entity records', async function() {
-    await showRecordTab(this.page);
-
-    const requestContract = getRequestContract('Record/DeleteAll/ok.json');
-    await listenRequest(this.page, requestContract);
-
-    const header = await getElement(this.page, 'Header');
-    await header.clickOnDeleteButton();
-
-    const modalPage = await getElement(this.page, 'Modal');
-    await modalPage.confirmDeletion();
-  });
-
-  When('the user cannot delete all the reference entity records', async function() {
-    await showRecordTab(this.page);
-
-    const requestContract = getRequestContract('Record/DeleteAll/error.json');
-    await listenRequest(this.page, requestContract);
-
-    this.page.once('dialog', async dialog => {
-      await dialog.accept();
-    });
-
-    const header = await getElement(this.page, 'Header');
-    await header.clickOnDeleteButton();
-
-    const modalPage = await getElement(this.page, 'Modal');
-    await modalPage.confirmDeletion();
-  });
-
   Then('the user should see the successfull deletion notification', async function() {
     const recordsPage = await getElement(this.page, 'Records');
     const hasSuccessNotification = await recordsPage.hasSuccessNotification();

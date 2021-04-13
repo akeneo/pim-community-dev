@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2018 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source filters.
@@ -23,48 +23,32 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  * Object representing a record query
  *
  * @author    Julien Sanchez <julien@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class RecordQuery
 {
     private const PAGINATE_USING_OFFSET = 'offset';
     private const PAGINATE_USING_SEARCH_AFTER = 'search_after';
 
-    /** @var ChannelReference */
-    private $channel;
-
-    /** @var LocaleReference */
-    private $locale;
-
     /** @var array */
-    private $filters;
-
-    /** @var int|null */
-    private $page;
-
-    /** @var int|null */
-    private $size;
-
-    /** @var RecordCode|null */
-    private $searchAfterCode;
-
-    /** @var string */
-    private $paginationMethod;
+    private array $filters;
+    private ChannelReference $channel;
+    private LocaleReference $locale;
+    private string $paginationMethod;
+    private ?int $size;
+    private ?int $page;
+    private ?RecordCode $searchAfterCode;
 
     /**
      * If defined, the record values will be filtered by the given channel.
      * The values without channel will not be filtered.
-     *
-     * @var ChannelReference
      */
-    private $channelReferenceValuesFilter;
+    private ChannelReference $channelReferenceValuesFilter;
 
     /**
      * To filter the values by locales. The values without locale will not be filtered.
-     *
-     * @var LocaleIdentifierCollection
      */
-    private $localeIdentifiersValuesFilter;
+    private LocaleIdentifierCollection $localeIdentifiersValuesFilter;
 
     private function __construct(
         ChannelReference $channel,
@@ -78,11 +62,9 @@ class RecordQuery
         ?RecordCode $searchAfterCode
     ) {
         foreach ($filters as $filter) {
-            if (!(
-                key_exists('field', $filter) &&
+            if (!(key_exists('field', $filter) &&
                 key_exists('operator', $filter) &&
-                key_exists('value', $filter)
-            )) {
+                key_exists('value', $filter))) {
                 throw new \InvalidArgumentException('RecordQuery expect an array of filters with a field, value, operator and context');
             }
         }
@@ -106,18 +88,16 @@ class RecordQuery
 
     public static function createFromNormalized(array $normalizedQuery): RecordQuery
     {
-        if (!(
-            key_exists('channel', $normalizedQuery) &&
+        if (!(key_exists('channel', $normalizedQuery) &&
             key_exists('locale', $normalizedQuery) &&
             key_exists('filters', $normalizedQuery) &&
             key_exists('page', $normalizedQuery) &&
-            key_exists('size', $normalizedQuery)
-        )) {
+            key_exists('size', $normalizedQuery))) {
             throw new \InvalidArgumentException('RecordQuery expect a channel, a locale, filters, a page and a size');
         }
 
         return new RecordQuery(
-            ChannelReference::createfromNormalized($normalizedQuery['channel']),
+            ChannelReference::createFromNormalized($normalizedQuery['channel']),
             LocaleReference::createFromNormalized($normalizedQuery['locale']),
             $normalizedQuery['filters'],
             ChannelReference::noReference(),
@@ -154,6 +134,61 @@ class RecordQuery
             null,
             $searchAfterCode
         );
+    }
+
+    public static function createWithSearchAfter(
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        ChannelReference $channel,
+        LocaleReference $locale,
+        int $size,
+        ?RecordCode $searchAfterCode,
+        array $filters
+    ): RecordQuery {
+        $filters[] = [
+            'field'    => 'reference_entity',
+            'operator' => '=',
+            'value'    => (string) $referenceEntityIdentifier
+        ];
+
+        return new RecordQuery(
+            $channel,
+            $locale,
+            $filters,
+            ChannelReference::noReference(),
+            LocaleIdentifierCollection::empty(),
+            self::PAGINATE_USING_SEARCH_AFTER,
+            $size,
+            null,
+            $searchAfterCode
+        );
+    }
+
+    public static function createNextWithSearchAfter(
+        RecordQuery $recordQuery,
+        RecordCode $searchAfterCode
+    ): RecordQuery {
+        return new self(
+            $recordQuery->channel,
+            $recordQuery->locale,
+            $recordQuery->filters,
+            $recordQuery->channelReferenceValuesFilter,
+            $recordQuery->localeIdentifiersValuesFilter,
+            self::PAGINATE_USING_SEARCH_AFTER,
+            $recordQuery->size,
+            null,
+            $searchAfterCode
+        );
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'channel' => $this->channel->normalize(),
+            'locale' => $this->locale->normalize(),
+            'filters' => $this->filters,
+            'page' => $this->page,
+            'size' => $this->size
+        ];
     }
 
     public function getFilters(): array

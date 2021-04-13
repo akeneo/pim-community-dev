@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForAllChannelsAndLocalesInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\SearchableRecordItem;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizer;
@@ -21,7 +16,7 @@ use Prophecy\Argument;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class RecordNormalizerSpec extends ObjectBehavior
 {
@@ -92,7 +87,8 @@ class RecordNormalizerSpec extends ObjectBehavior
         $normalizedRecord['identifier']->shouldBeEqualTo('designer_stark_fingerprint');
         $normalizedRecord['code']->shouldBeEqualTo('stark');
         $normalizedRecord['reference_entity_code']->shouldBeEqualTo('designer');
-        $normalizedRecord['record_full_text_search']->shouldBeEqualTo([
+        $normalizedRecord['record_full_text_search']->shouldBeEqualTo(
+            [
                 'ecommerce' => [
                     'fr_FR' => "stark Bio",
                 ],
@@ -101,7 +97,8 @@ class RecordNormalizerSpec extends ObjectBehavior
                 ],
             ]
         );
-        $normalizedRecord['complete_value_keys']->shouldBeEqualTo([
+        $normalizedRecord['complete_value_keys']->shouldBeEqualTo(
+            [
                 'name'                     => true,
                 'description_mobile_en_US' => true,
             ]
