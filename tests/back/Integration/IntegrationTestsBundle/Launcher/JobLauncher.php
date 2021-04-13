@@ -10,6 +10,7 @@ use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubStatus;
 use Doctrine\DBAL\Driver\Connection;
+use Google\Cloud\PubSub\Message;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -300,6 +301,19 @@ class JobLauncher
         }
 
         return false;
+    }
+
+    /**
+     * Returns all the messages in the queues
+     *
+     * @return Message[]
+     */
+    public function getMessagesInQueues(): array
+    {
+        return array_merge(...array_map(
+            fn (PubSubStatus $pubSubStatus): array => $pubSubStatus->getMessagesInQueue(),
+            iterator_to_array($this->pubSubStatuses)
+        ));
     }
 
     /**
