@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\Manager;
 
-use Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
+use Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler\JobExecutionMessageHandler;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
@@ -25,12 +25,8 @@ class JobExecutionManager
 {
     private const MAX_TIME_TO_UPDATE_HEALTH_CHECK = 5;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -38,10 +34,6 @@ class JobExecutionManager
 
     /**
      * Resolve the status of the job execution in case of crash of the daemon that launched the job.
-     *
-     * @param JobExecution $jobExecution
-     *
-     * @return JobExecution
      */
     public function resolveJobExecutionStatus(JobExecution $jobExecution): JobExecution
     {
@@ -59,7 +51,7 @@ class JobExecutionManager
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $diffInSeconds = $now->getTimestamp() - $healthCheck->getTimestamp();
 
-        if ($diffInSeconds > JobQueueConsumerCommand::HEALTH_CHECK_INTERVAL + self::MAX_TIME_TO_UPDATE_HEALTH_CHECK) {
+        if ($diffInSeconds > JobExecutionMessageHandler::HEALTH_CHECK_INTERVAL + self::MAX_TIME_TO_UPDATE_HEALTH_CHECK) {
             $jobExecution->setStatus(new BatchStatus(BatchStatus::FAILED));
             $jobExecution->setExitStatus(new ExitStatus(ExitStatus::FAILED));
         }

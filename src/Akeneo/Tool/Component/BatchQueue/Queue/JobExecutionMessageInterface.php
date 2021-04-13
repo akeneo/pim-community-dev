@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\BatchQueue\Queue;
 
+use Ramsey\Uuid\UuidInterface;
+
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -10,7 +12,7 @@ namespace Akeneo\Tool\Component\BatchQueue\Queue;
  */
 interface JobExecutionMessageInterface
 {
-    public function getId(): ?int;
+    public function getId(): UuidInterface;
 
     public function getJobExecutionId(): ?int;
 
