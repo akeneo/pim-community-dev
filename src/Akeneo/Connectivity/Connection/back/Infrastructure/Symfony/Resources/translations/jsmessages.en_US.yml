@@ -278,7 +278,7 @@ akeneo_connectivity.connection:
                 link: To understand how to solve this, please visit the API help center.
             search_filter:
                 placeholder: Search in error messages
-                result_count: '{0} No results |[1,Inf] {{ count }} results'
+                result_count: '{0} No results|{1} 1 result|[2,Inf] {{ total }} results'
             error_list:
                 date_time_column:
                     title: Day and time
