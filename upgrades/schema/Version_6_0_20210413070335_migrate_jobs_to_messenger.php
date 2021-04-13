@@ -8,6 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -88,7 +89,8 @@ final class Version_6_0_20210413070335_migrate_jobs_to_messenger extends Abstrac
             }
 
             foreach ($rows as $row) {
-                $row['id'] = Type::getType(Types::INTEGER)->convertToPhpValue($row['id'], $platform);
+                $row['old_id'] = Type::getType(Types::INTEGER)->convertToPhpValue($row['id'], $platform);
+                $row['id'] = Uuid::uuid4();
                 $row['job_execution_id'] = Type::getType(Types::INTEGER)->convertToPhpValue($row['job_execution_id'], $platform);
                 $row['options'] = Type::getType(Types::JSON)->convertToPhpValue($row['options'], $platform);
                 $row['created_time'] = Type::getType(Types::STRING)->convertToPhpValue($row['created_time'], $platform);

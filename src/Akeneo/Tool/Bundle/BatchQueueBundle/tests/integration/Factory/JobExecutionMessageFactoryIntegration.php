@@ -35,7 +35,7 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
     {
         $jobExecution = $this->createJobExecution('update_product_value');
         $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized([
-            'id' => 1,
+            'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
             'job_execution_id' => $jobExecution->getId(),
             'consumer' => null,
             'created_time' => '2021-03-08T15:37:23+01:00',
@@ -43,7 +43,7 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
             'options' => ['option1' => 'value1'],
         ]);
         self::assertInstanceOf(UiJobExecutionMessage::class, $jobExecutionMessage);
-        self::assertEquals(1, $jobExecutionMessage->getId());
+        self::assertEquals('215ee791-1c40-4c60-82fb-cb017d6bcb90', $jobExecutionMessage->getId()->toString());
         self::assertEquals($jobExecution->getId(), $jobExecutionMessage->getJobExecutionId());
         self::assertNull($jobExecutionMessage->getConsumer());
         self::assertEquals(new \DateTime('2021-03-08T15:37:23+01:00'), $jobExecutionMessage->getCreateTime());
@@ -55,7 +55,7 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
     {
         $jobExecution = $this->createJobExecution('csv_product_import');
         $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized([
-            'id' => 1,
+            'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
             'job_execution_id' => $jobExecution->getId(),
             'consumer' => 'c418363c-eee7-454c-974f-ff91758abebe',
             'created_time' => '2021-03-08T15:37:23+01:00',
@@ -63,7 +63,7 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
             'options' => ['option1' => 'value1', 'option2' => 'value2'],
         ]);
         self::assertInstanceOf(ImportJobExecutionMessage::class, $jobExecutionMessage);
-        self::assertEquals(1, $jobExecutionMessage->getId());
+        self::assertEquals('215ee791-1c40-4c60-82fb-cb017d6bcb90', $jobExecutionMessage->getId()->toString());
         self::assertEquals($jobExecution->getId(), $jobExecutionMessage->getJobExecutionId());
         self::assertEquals('c418363c-eee7-454c-974f-ff91758abebe', $jobExecutionMessage->getConsumer());
         self::assertEquals(new \DateTime('2021-03-08T15:37:23+01:00'), $jobExecutionMessage->getCreateTime());
@@ -75,7 +75,7 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
     {
         $jobExecution = $this->createJobExecution('csv_product_export');
         $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized([
-            'id' => 1,
+            'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
             'job_execution_id' => $jobExecution->getId(),
             'consumer' => null,
             'created_time' => '2021-03-08T15:37:23+01:00',
@@ -89,7 +89,7 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
     {
         $jobExecution = $this->createJobExecution('compute_completeness_of_products_family');
         $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized([
-            'id' => 1,
+            'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
             'job_execution_id' => $jobExecution->getId(),
             'consumer' => null,
             'created_time' => '2021-03-08T15:37:23+01:00',

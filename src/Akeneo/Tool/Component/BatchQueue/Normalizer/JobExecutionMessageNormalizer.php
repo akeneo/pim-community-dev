@@ -33,7 +33,7 @@ final class JobExecutionMessageNormalizer implements NormalizerInterface, Denorm
         Assert::implementsInterface($jobExecutionMessage, JobExecutionMessageInterface::class);
 
         return [
-            'id' => $jobExecutionMessage->getId(),
+            'id' => $jobExecutionMessage->getId()->toString(),
             'job_execution_id' => $jobExecutionMessage->getJobExecutionId(),
             'consumer' => $jobExecutionMessage->getConsumer(),
             'created_time' => $jobExecutionMessage->getCreateTime()->format('c'),
