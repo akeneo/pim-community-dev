@@ -6,14 +6,11 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
-use Akeneo\Tool\Component\Batch\Job\Job;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Query\SqlUpdateJobExecutionStatus;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
-use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
-use Akeneo\Tool\Component\Connector\Writer\File\AbstractItemMediaWriter;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use League\Flysystem\FilesystemInterface;
@@ -73,7 +70,7 @@ class JobTrackerController extends Controller
     /**
      * Download an archived file
      *
-     * @param int    $id
+     * @param int $id
      * @param string $archiver
      * @param string $key
      */
@@ -98,6 +95,9 @@ class JobTrackerController extends Controller
 
     public function downloadZipArchiveAction(int $jobExecutionId): StreamedResponse
     {
+        // Depending on the size of the generated archive, the download can be extremely long
+        \set_time_limit(0);
+
         $jobExecution = $this->jobExecutionRepo->find($jobExecutionId);
         if (null === $jobExecution) {
             throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
@@ -125,6 +125,7 @@ class JobTrackerController extends Controller
                         );
                     }
                 }
+
                 $zip->finish();
             },
             200,
@@ -138,7 +139,7 @@ class JobTrackerController extends Controller
     /**
      * Returns if a user has read permission on an import or export
      *
-     * @param JobExecution  $jobExecution
+     * @param JobExecution $jobExecution
      * @param mixed $object The object
      */
     protected function isJobGranted($jobExecution, $object = null): bool
