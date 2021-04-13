@@ -1,8 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Button, useBooleanState} from 'akeneo-design-system';
+import {Button, Dropdown, IconButton, MoreIcon, SectionTitle, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {DeleteModal} from '@akeneo-pim-community/shared';
+import {DeleteModal, Section} from '@akeneo-pim-community/shared';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {EditForm} from 'akeneoassetmanager/application/component/asset-family/edit/form';
 import {
@@ -50,6 +50,49 @@ interface DispatchProps {
   };
 }
 
+type SecondaryActionsProps = {
+  canDeleteAssetFamily: boolean;
+  onDeleteAssetFamily: () => void;
+};
+
+const SecondaryActions = ({canDeleteAssetFamily, onDeleteAssetFamily}: SecondaryActionsProps) => {
+  const translate = useTranslate();
+  const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
+
+  const handleItemClick = (callback: () => void) => () => {
+    closeDropdown();
+    callback();
+  };
+
+  if (!canDeleteAssetFamily) {
+    return null;
+  }
+
+  return (
+    <Dropdown>
+      <IconButton
+        title={translate('pim_common.other_actions')}
+        icon={<MoreIcon />}
+        level="tertiary"
+        ghost="borderless"
+        onClick={openDropdown}
+      />
+      {isDropdownOpen && (
+        <Dropdown.Overlay onClose={closeDropdown}>
+          <Dropdown.Header>
+            <Dropdown.Title>{translate('pim_common.other_actions')}</Dropdown.Title>
+          </Dropdown.Header>
+          <Dropdown.ItemCollection>
+            <Dropdown.Item onClick={handleItemClick(onDeleteAssetFamily)}>
+              {translate('pim_asset_manager.asset_family.module.delete.button')}
+            </Dropdown.Item>
+          </Dropdown.ItemCollection>
+        </Dropdown.Overlay>
+      )}
+    </Dropdown>
+  );
+};
+
 const Properties = ({events, attributes, context, form, rights}: StateProps & DispatchProps) => {
   const translate = useTranslate();
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useBooleanState();
@@ -68,47 +111,30 @@ const Properties = ({events, attributes, context, form, rights}: StateProps & Di
             </Button>
           ) : null
         }
-        secondaryActions={() => (
-          <>
-            {/* TODO Use DSM Dropdown */}
-            {rights.assetFamily.delete && (
-              <div className="AknSecondaryActions AknDropdown AknButtonList-item">
-                <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
-                <div className="AknDropdown-menu AknDropdown-menu--right">
-                  <div className="AknDropdown-menuTitle">{translate('pim_datagrid.actions.other')}</div>
-                  <div>
-                    <button tabIndex={-1} className="AknDropdown-menuLink" onClick={openDeleteModal}>
-                      {translate('pim_asset_manager.asset_family.module.delete.button')}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </>
-        )}
+        secondaryActions={
+          <SecondaryActions canDeleteAssetFamily={rights.assetFamily.delete} onDeleteAssetFamily={openDeleteModal} />
+        }
         withLocaleSwitcher={true}
         withChannelSwitcher={false}
         isDirty={form.state.isDirty}
         breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
         displayActions={rights.assetFamily.edit}
       />
-      <div className="AknSubsection">
-        <header className="AknSubsection-title">
-          <span className="group-label">{translate('pim_asset_manager.asset_family.properties.title')}</span>
-        </header>
-        <div className="AknFormContainer AknFormContainer--withPadding">
-          <EditForm
-            attributes={attributes}
-            onLabelUpdated={events.form.onLabelUpdated}
-            onAttributeAsMainMediaUpdated={events.form.onAttributeAsMainMediaUpdated}
-            onSubmit={events.form.onSubmit}
-            locale={context.locale}
-            data={form.data}
-            errors={form.errors}
-            rights={rights}
-          />
-        </div>
-      </div>
+      <Section>
+        <SectionTitle>
+          <SectionTitle.Title>{translate('pim_asset_manager.asset_family.properties.title')}</SectionTitle.Title>
+        </SectionTitle>
+        <EditForm
+          attributes={attributes}
+          onLabelUpdated={events.form.onLabelUpdated}
+          onAttributeAsMainMediaUpdated={events.form.onAttributeAsMainMediaUpdated}
+          onSubmit={events.form.onSubmit}
+          locale={context.locale}
+          data={form.data}
+          errors={form.errors}
+          rights={rights}
+        />
+      </Section>
       {isDeleteModalOpen && (
         <DeleteModal
           title={translate('pim_asset_manager.asset_family.delete.title')}

@@ -1,7 +1,10 @@
 import React, {useRef} from 'react';
 import {connect} from 'react-redux';
+import styled from 'styled-components';
+import {AssetsIllustration, Checkbox, Button, useAutoFocus, Modal, Field, SelectInput} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {getErrorsForPath, Section, TextField} from '@akeneo-pim-community/shared';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
-import Flag from 'akeneoassetmanager/tools/component/flag';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
@@ -13,11 +16,13 @@ import {
   attributeCreationValuePerChannelUpdated,
 } from 'akeneoassetmanager/domain/event/attribute/create';
 import {createAttribute} from 'akeneoassetmanager/application/action/attribute/create';
-import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
-import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
-import {getAttributeTypes, AttributeType} from 'akeneoassetmanager/application/configuration/attribute';
-import {AssetsIllustration, Key, Checkbox, Button, useAutoFocus} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {getAttributeTypes} from 'akeneoassetmanager/application/configuration/attribute';
+
+const AttributeTypeIcon = styled.img`
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+`;
 
 interface StateProps {
   context: {
@@ -49,171 +54,70 @@ interface DispatchProps {
 
 interface CreateProps extends StateProps, DispatchProps {}
 
-const AttributeTypeItemView = ({
-  isOpen,
-  element,
-  isActive,
-  onClick,
-}: {
-  isOpen: boolean;
-  element: DropdownElement;
-  isActive: boolean;
-  onClick: (element: DropdownElement) => void;
-}) => {
-  const className = `AknDropdown-menuLink AknDropdown-menuLink--withImage ${
-    isActive ? 'AknDropdown-menuLink--active' : ''
-  }`;
-
-  return (
-    <div
-      className={className}
-      data-identifier={element.identifier}
-      onClick={() => onClick(element)}
-      onKeyPress={event => {
-        if (Key.Space === event.key) onClick(element);
-      }}
-      tabIndex={isOpen ? 0 : -1}
-    >
-      <img className="AknDropdown-menuLinkImage" src={element.original.icon} />
-      <span>{element.label}</span>
-    </div>
-  );
-};
-
-const Create = ({data, errors, events, context}: CreateProps) => {
+const Create = ({data, errors, context, events}: CreateProps) => {
   const translate = useTranslate();
   const labelInputRef = useRef<HTMLInputElement>(null);
+  const attributeTypes = getAttributeTypes();
+
+  const handleLabelChange = (value: string) => events.onLabelUpdated(value, context.locale);
+
   useAutoFocus(labelInputRef);
 
-  const onCodeUpdate = (event: React.ChangeEvent<HTMLInputElement>) => events.onCodeUpdated(event.target.value);
-  const onLabelUpdate = (event: React.ChangeEvent<HTMLInputElement>) =>
-    events.onLabelUpdated(event.target.value, context.locale);
-  const onTypeUpdate = (value: DropdownElement) => events.onTypeUpdated(value.identifier);
-  const onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => Key.Enter === event.key && events.onSubmit();
-
-  const getTypeOptions = (): DropdownElement[] =>
-    getAttributeTypes().map((type: AttributeType) => ({
-      identifier: type.identifier,
-      label: translate(type.label),
-      original: type,
-    }));
-
   return (
-    <div className="modal in" aria-hidden="false" style={{zIndex: 1041}}>
-      <div>
-        <div className="AknFullPage">
-          <div className="AknFullPage-content AknFullPage-content--withIllustration" style={{overflowX: 'visible'}}>
-            <div>
-              <AssetsIllustration />
-            </div>
-            <div>
-              <div className="AknFullPage-titleContainer">
-                <div className="AknFullPage-subTitle">{translate('pim_asset_manager.attribute.create.subtitle')}</div>
-                <div className="AknFullPage-title">{translate('pim_asset_manager.attribute.create.title')}</div>
-                <div className="AknFullPage-description">
-                  {translate('pim_asset_manager.attribute.create.description')}
-                </div>
-              </div>
-              <div className="AknFormContainer">
-                <div className="AknFieldContainer" data-code="label">
-                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                    <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.create.input.label">
-                      {translate('pim_asset_manager.attribute.create.input.label')}
-                    </label>
-                  </div>
-                  <div className="AknFieldContainer-inputContainer">
-                    <input
-                      type="text"
-                      autoComplete="off"
-                      ref={labelInputRef}
-                      className="AknTextField AknTextField--light"
-                      id="pim_asset_manager.attribute.create.input.label"
-                      name="label"
-                      value={data.labels[context.locale] || ''}
-                      onChange={onLabelUpdate}
-                      onKeyPress={onKeyPress}
-                    />
-                    <Flag
-                      locale={createLocaleFromCode(context.locale)}
-                      displayLanguage={false}
-                      className="AknFieldContainer-inputSides"
-                    />
-                  </div>
-                  {getErrorsView(errors, 'labels')}
-                </div>
-                <div className="AknFieldContainer" data-code="code">
-                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                    <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.create.input.code">
-                      {translate('pim_asset_manager.attribute.create.input.code')}
-                    </label>
-                  </div>
-                  <div className="AknFieldContainer-inputContainer">
-                    <input
-                      type="text"
-                      autoComplete="off"
-                      className="AknTextField AknTextField--light"
-                      id="pim_asset_manager.attribute.create.input.code"
-                      name="code"
-                      value={data.code}
-                      onChange={onCodeUpdate}
-                      onKeyPress={onKeyPress}
-                    />
-                  </div>
-                  {getErrorsView(errors, 'code')}
-                </div>
-                <div className="AknFieldContainer" style={{position: 'static'}} data-code="type">
-                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                    <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.create.input.type">
-                      {translate('pim_asset_manager.attribute.create.input.type')}
-                    </label>
-                  </div>
-                  <div className="AknFieldContainer-inputContainer">
-                    <Dropdown
-                      ItemView={AttributeTypeItemView}
-                      label={translate('pim_asset_manager.attribute.create.input.type')}
-                      elements={getTypeOptions()}
-                      selectedElement={data.type}
-                      onSelectionChange={onTypeUpdate}
-                    />
-                  </div>
-                  {getErrorsView(errors, 'type')}
-                </div>
-                <div className="AknFieldContainer" style={{position: 'static'}} data-code="valuePerChannel">
-                  <Checkbox
-                    id="pim_asset_manager.attribute.create.input.value_per_channel"
-                    checked={data.value_per_channel}
-                    onChange={events.onValuePerChannelUpdated}
-                  >
-                    {translate('pim_asset_manager.attribute.create.input.value_per_channel')}
-                  </Checkbox>
-                  {getErrorsView(errors, 'valuePerChannel')}
-                </div>
-                <div className="AknFieldContainer" style={{position: 'static'}} data-code="valuePerLocale">
-                  <Checkbox
-                    id="pim_asset_manager.attribute.create.input.value_per_locale"
-                    checked={data.value_per_locale}
-                    onChange={events.onValuePerLocaleUpdated}
-                  >
-                    {translate('pim_asset_manager.attribute.create.input.value_per_locale')}
-                  </Checkbox>
-                  {getErrorsView(errors, 'valuePerLocale')}
-                </div>
-                <Button onClick={events.onSubmit}>{translate('pim_asset_manager.attribute.create.confirm')}</Button>
-              </div>
-            </div>
-          </div>
+    <Modal illustration={<AssetsIllustration />} onClose={events.onCancel} closeTitle={translate('pim_common.close')}>
+      <Modal.SectionTitle color="brand">{translate('pim_asset_manager.attribute.create.subtitle')}</Modal.SectionTitle>
+      <Modal.Title>{translate('pim_asset_manager.attribute.create.title')}</Modal.Title>
+      <Section>
+        {translate('pim_asset_manager.attribute.create.description')}
+        <TextField
+          locale={context.locale}
+          ref={labelInputRef}
+          label={translate('pim_asset_manager.attribute.create.input.label')}
+          value={data.labels[context.locale] ?? ''}
+          onChange={handleLabelChange}
+          errors={getErrorsForPath(errors, 'labels')}
+          onSubmit={events.onSubmit}
+        />
+        <TextField
+          label={translate('pim_asset_manager.attribute.create.input.code')}
+          value={data.code}
+          onChange={events.onCodeUpdated}
+          errors={getErrorsForPath(errors, 'code')}
+          onSubmit={events.onSubmit}
+        />
+        <Field label={translate('pim_asset_manager.attribute.create.input.type')}>
+          <SelectInput
+            emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
+            clearable={false}
+            value={data.type ?? attributeTypes[0]}
+            onChange={events.onTypeUpdated}
+          >
+            {attributeTypes.map(({identifier, icon, label}) => (
+              <SelectInput.Option key={identifier} title={translate(label)} value={identifier}>
+                <AttributeTypeIcon src={icon} />
+                {translate(label)}
+              </SelectInput.Option>
+            ))}
+          </SelectInput>
+          {getErrorsView(errors, 'type')}
+        </Field>
+        <div>
+          <Checkbox checked={data.value_per_channel} onChange={events.onValuePerChannelUpdated}>
+            {translate('pim_asset_manager.attribute.create.input.value_per_channel')}
+          </Checkbox>
+          {getErrorsView(errors, 'valuePerChannel')}
         </div>
-      </div>
-      <div
-        title={translate('pim_asset_manager.attribute.create.cancel')}
-        className="AknFullPage-cancel cancel"
-        onClick={events.onCancel}
-        tabIndex={0}
-        onKeyPress={event => {
-          if (Key.Space === event.key) events.onCancel();
-        }}
-      />
-    </div>
+        <div>
+          <Checkbox checked={data.value_per_locale} onChange={events.onValuePerLocaleUpdated}>
+            {translate('pim_asset_manager.attribute.create.input.value_per_locale')}
+          </Checkbox>
+          {getErrorsView(errors, 'valuePerLocale')}
+        </div>
+      </Section>
+      <Modal.BottomButtons>
+        <Button onClick={events.onSubmit}>{translate('pim_common.save')}</Button>
+      </Modal.BottomButtons>
+    </Modal>
   );
 };
 

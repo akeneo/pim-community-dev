@@ -1,8 +1,9 @@
 import React from 'react';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {Field, SelectInput} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {getErrorsForPath, TextField, ValidationError} from '@akeneo-pim-community/shared';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {MediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
-import {Key} from 'akeneo-design-system';
 import {
   createPrefixFromString,
   isValidPrefix,
@@ -19,9 +20,10 @@ import {
   NormalizableAdditionalProperty,
   wrapNormalizableAdditionalProperty,
 } from 'akeneoassetmanager/domain/model/attribute/attribute';
-import Select2 from 'akeneoassetmanager/application/component/app/select2';
-import {MediaTypes, MediaType} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {
+  MediaTypes,
+  createMediaTypeFromString,
+} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 
 const MediaLinkView = ({
   attribute,
@@ -43,107 +45,58 @@ const MediaLinkView = ({
   };
 }) => {
   const translate = useTranslate();
-  const inputTextClassName = `AknTextField AknTextField--light ${
-    !rights.attribute.edit ? 'AknTextField--disabled' : ''
-  }`;
 
   return (
     <>
-      <div className="AknFieldContainer--packed" data-code="prefix">
-        <div className="AknFieldContainer-header AknFieldContainer-header--light">
-          <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.prefix">
-            {translate('pim_asset_manager.attribute.edit.input.prefix')}
-          </label>
-        </div>
-        <div className="AknFieldContainer-inputContainer">
-          <input
-            type="text"
-            autoComplete="off"
-            className={inputTextClassName}
-            id="pim_asset_manager.attribute.edit.input.prefix"
-            name="prefix"
-            readOnly={!rights.attribute.edit}
-            value={prefixStringValue(attribute.prefix)}
-            onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-              if (Key.Enter === event.key) onSubmit();
-            }}
-            onChange={(event: React.FormEvent<HTMLInputElement>) => {
-              if (!isValidPrefix(event.currentTarget.value)) {
-                event.currentTarget.value = prefixStringValue(attribute.prefix);
-                event.preventDefault();
-                return;
-              }
+      <TextField
+        label={translate('pim_asset_manager.attribute.edit.input.prefix')}
+        readOnly={!rights.attribute.edit}
+        value={prefixStringValue(attribute.prefix)}
+        onChange={value => {
+          if (!isValidPrefix(value)) return;
 
-              onAdditionalPropertyUpdated(
-                'prefix',
-                wrapNormalizableAdditionalProperty<NormalizedPrefix>(
-                  createPrefixFromString(event.currentTarget.value)
-                ).normalize()
-              );
-            }}
-          />
-        </div>
-        {getErrorsView(errors, 'prefix')}
-      </div>
-      <div className="AknFieldContainer--packed" data-code="suffix">
-        <div className="AknFieldContainer-header AknFieldContainer-header--light">
-          <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.suffix">
-            {translate('pim_asset_manager.attribute.edit.input.suffix')}
-          </label>
-        </div>
-        <div className="AknFieldContainer-inputContainer">
-          <input
-            type="text"
-            autoComplete="off"
-            className={inputTextClassName}
-            id="pim_asset_manager.attribute.edit.input.suffix"
-            name="suffix"
-            readOnly={!rights.attribute.edit}
-            value={suffixStringValue(attribute.suffix)}
-            onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-              if (Key.Enter === event.key) onSubmit();
-            }}
-            onChange={(event: React.FormEvent<HTMLInputElement>) => {
-              if (!isValidSuffix(event.currentTarget.value)) {
-                event.currentTarget.value = suffixStringValue(attribute.suffix);
-                event.preventDefault();
-                return;
-              }
+          onAdditionalPropertyUpdated(
+            'prefix',
+            wrapNormalizableAdditionalProperty<NormalizedPrefix>(createPrefixFromString(value)).normalize()
+          );
+        }}
+        onSubmit={onSubmit}
+        errors={getErrorsForPath(errors, 'prefix')}
+      />
+      <TextField
+        label={translate('pim_asset_manager.attribute.edit.input.suffix')}
+        readOnly={!rights.attribute.edit}
+        value={suffixStringValue(attribute.suffix)}
+        onChange={value => {
+          if (!isValidSuffix(value)) return;
 
-              onAdditionalPropertyUpdated(
-                'suffix',
-                wrapNormalizableAdditionalProperty<NormalizedSuffix>(
-                  createSuffixFromString(event.currentTarget.value)
-                ).normalize()
-              );
-            }}
-          />
-        </div>
-        {getErrorsView(errors, 'suffix')}
-      </div>
-      <div className="AknFieldContainer--packed" data-code="mediaType">
-        <div className="AknFieldContainer-header AknFieldContainer-header--light">
-          <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.media_type">
-            {translate('pim_asset_manager.attribute.edit.input.media_type')}
-          </label>
-        </div>
-        <div className="AknFieldContainer-inputContainer">
-          <Select2
-            id="pim_asset_manager.attribute.edit.input.media_type"
-            name="media_type"
-            data={(MediaTypes as any) as {[choiceValue: string]: string}}
-            value={attribute.mediaType}
-            readOnly={!rights.attribute.edit}
-            configuration={{
-              minimumResultsForSearch: Infinity,
-            }}
-            onChange={(mediaType: MediaType) => {
-              onAdditionalPropertyUpdated('media_type', mediaType);
-            }}
-          />
-        </div>
+          onAdditionalPropertyUpdated(
+            'suffix',
+            wrapNormalizableAdditionalProperty<NormalizedSuffix>(createSuffixFromString(value)).normalize()
+          );
+        }}
+        onSubmit={onSubmit}
+        errors={getErrorsForPath(errors, 'suffix')}
+      />
+      <Field label={translate('pim_asset_manager.attribute.edit.input.media_type')}>
+        <SelectInput
+          readOnly={!rights.attribute.edit}
+          emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
+          clearable={false}
+          verticalPosition="up"
+          value={attribute.mediaType.toString()}
+          onChange={mediaType => {
+            onAdditionalPropertyUpdated('media_type', createMediaTypeFromString(mediaType ?? MediaTypes.image));
+          }}
+        >
+          {Object.values(MediaTypes).map(mediaType => (
+            <SelectInput.Option key={mediaType} value={mediaType}>
+              {mediaType}
+            </SelectInput.Option>
+          ))}
+        </SelectInput>
         {getErrorsView(errors, 'mediaType')}
-      </div>
+      </Field>
     </>
   );
 };

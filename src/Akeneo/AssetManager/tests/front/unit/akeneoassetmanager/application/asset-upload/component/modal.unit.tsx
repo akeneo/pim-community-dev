@@ -1,7 +1,7 @@
 import React from 'react';
 import {act, fireEvent, screen, waitFor} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
-import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
+import {UploadModal} from 'akeneoassetmanager/application/asset-upload/component/modal';
 import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
 import {createFakeAssetFamily} from '../tools';
 import Channel from 'akeneoassetmanager/domain/model/channel';
@@ -64,7 +64,7 @@ describe('Test modal component', () => {
       />
     );
 
-    fireEvent.click(screen.getByTitle('pim_asset_manager.close'));
+    fireEvent.click(screen.getByTitle('pim_common.close'));
 
     expect(onCancel).toHaveBeenCalled();
   });
@@ -93,7 +93,7 @@ describe('Test modal component', () => {
       // Wait for the line to be Valid (uploaded & completed)
       await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.' + LineStatus.Valid));
 
-      const confirmButton = screen.getByTitle('pim_asset_manager.asset.upload.confirm');
+      const confirmButton = screen.getByText('pim_asset_manager.asset.upload.confirm');
       fireEvent.click(confirmButton);
 
       // Wait for the line to be Created

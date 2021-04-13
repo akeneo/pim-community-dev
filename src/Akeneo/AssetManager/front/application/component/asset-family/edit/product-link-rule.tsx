@@ -2,7 +2,16 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {JsonEditor as Editor} from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
-import {Link, Button, Helper, SectionTitle, useBooleanState} from 'akeneo-design-system';
+import {
+  Link,
+  Button,
+  Helper,
+  SectionTitle,
+  useBooleanState,
+  IconButton,
+  Dropdown,
+  MoreIcon,
+} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {Section} from '@akeneo-pim-community/shared';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
@@ -25,7 +34,6 @@ import Ajv from 'ajv';
 import {getErrorsViewStartedWith} from 'akeneoassetmanager/application/component/app/validation-error';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
-import {ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import {ConfirmModal} from 'akeneoassetmanager/application/component/app/modal';
 import namingConventionSchema from 'akeneoassetmanager/infrastructure/model/asset-family/naming-convention.schema.json';
 import productLinkRulesSchema from 'akeneoassetmanager/infrastructure/model/asset-family/product-link-rules.schema.json';
@@ -133,7 +141,6 @@ type SecondaryActionsProps = {
   onExecuteNamingConvention: () => void;
 };
 
-//TODO Use DSM Dropdown
 const SecondaryActions = ({
   canExecuteRules,
   onExecuteRules,
@@ -141,29 +148,46 @@ const SecondaryActions = ({
   onExecuteNamingConvention,
 }: SecondaryActionsProps) => {
   const translate = useTranslate();
+  const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
+
+  const handleItemClick = (callback: () => void) => () => {
+    closeDropdown();
+    callback();
+  };
+
   if (!canExecuteRules && !canExecuteNamingConvention) {
     return null;
   }
 
   return (
-    <div className="AknSecondaryActions AknDropdown AknButtonList-item">
-      <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
-      <div className="AknDropdown-menu AknDropdown-menu--right">
-        <div className="AknDropdown-menuTitle">{translate('pim_datagrid.actions.other')}</div>
-        <div>
-          {canExecuteRules && (
-            <button tabIndex={-1} className="AknDropdown-menuLink" onClick={onExecuteRules}>
-              {translate(`pim_asset_manager.asset_family.button.execute_product_link_rules`)}
-            </button>
-          )}
-          {canExecuteNamingConvention && (
-            <button tabIndex={-1} className="AknDropdown-menuLink" onClick={onExecuteNamingConvention}>
-              {translate(`pim_asset_manager.asset_family.button.execute_naming_convention`)}
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
+    <Dropdown>
+      <IconButton
+        title={translate('pim_common.other_actions')}
+        icon={<MoreIcon />}
+        level="tertiary"
+        ghost="borderless"
+        onClick={openDropdown}
+      />
+      {isDropdownOpen && (
+        <Dropdown.Overlay onClose={closeDropdown}>
+          <Dropdown.Header>
+            <Dropdown.Title>{translate('pim_common.other_actions')}</Dropdown.Title>
+          </Dropdown.Header>
+          <Dropdown.ItemCollection>
+            {canExecuteRules && (
+              <Dropdown.Item onClick={handleItemClick(onExecuteRules)}>
+                {translate('pim_asset_manager.asset_family.button.execute_product_link_rules')}
+              </Dropdown.Item>
+            )}
+            {canExecuteNamingConvention && (
+              <Dropdown.Item onClick={handleItemClick(onExecuteNamingConvention)}>
+                {translate('pim_asset_manager.asset_family.button.execute_naming_convention')}
+              </Dropdown.Item>
+            )}
+          </Dropdown.ItemCollection>
+        </Dropdown.Overlay>
+      )}
+    </Dropdown>
   );
 };
 
@@ -192,23 +216,21 @@ const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: S
       <Header
         label={translate('pim_asset_manager.asset_family.tab.product_link_rules')}
         image={null}
-        primaryAction={(defaultFocus: React.RefObject<any>) => (
-          <ButtonContainer>
-            {rights.assetFamily.edit_naming_convention ? (
-              <Button onClick={events.onSaveEditForm} ref={defaultFocus}>
-                {translate('pim_asset_manager.asset_family.button.save')}
-              </Button>
-            ) : null}
-          </ButtonContainer>
-        )}
-        secondaryActions={() => (
+        primaryAction={(defaultFocus: React.RefObject<any>) =>
+          rights.assetFamily.edit_naming_convention ? (
+            <Button onClick={events.onSaveEditForm} ref={defaultFocus}>
+              {translate('pim_asset_manager.asset_family.button.save')}
+            </Button>
+          ) : null
+        }
+        secondaryActions={
           <SecondaryActions
             canExecuteRules={rights.assetFamily.execute_product_link_rules}
             onExecuteRules={openExecuteRulesModal}
             canExecuteNamingConvention={rights.assetFamily.execute_naming_conventions}
             onExecuteNamingConvention={openExecuteNamingConventionModal}
           />
-        )}
+        }
         withLocaleSwitcher={false}
         withChannelSwitcher={false}
         isDirty={form.state.isDirty}
@@ -265,7 +287,6 @@ const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: S
         <ConfirmModal
           titleContent={translate('pim_asset_manager.asset_family.product_link_rules.execute_rules.confirm_title')}
           content={translate('pim_asset_manager.asset_family.product_link_rules.execute_rules.confirm_content')}
-          cancelButtonText={translate('pim_asset_manager.asset_family.product_link_rules.execute_rules.cancel')}
           confirmButtonText={translate('pim_asset_manager.asset_family.product_link_rules.execute_rules.execute_rules')}
           onCancel={closeExecuteRulesModal}
           onConfirm={() => {
@@ -281,9 +302,6 @@ const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: S
           )}
           content={translate(
             'pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.confirm_content'
-          )}
-          cancelButtonText={translate(
-            'pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.cancel'
           )}
           confirmButtonText={translate(
             'pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.execute_naming_convention'

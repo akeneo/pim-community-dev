@@ -46,6 +46,9 @@
 ## New features
 
 - DAPI-1443: Add possibility to export products depending on their Quality Score
+- RAC-475: Add Assets bulk delete feature
+- RAC-479: Add Assets bulk edit feature
+- RAC-501: Add Records bulk delete feature
 
 ## BC Breaks
 
@@ -57,4 +60,3 @@
 - Remove class `Akeneo/AssetManager/back/Domain/Event/AssetFamilyAssetsDeletedEvent`
 - Update `Akeneo/AssetManager/back/Domain/Repository/AssetIndexerInterface.php` to:
     - remove the `removeByAssetFamilyIdentifier` method
-

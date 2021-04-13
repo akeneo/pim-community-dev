@@ -1,6 +1,7 @@
 import React, {memo} from 'react';
 import {connect} from 'react-redux';
-import {Key, Button} from 'akeneo-design-system';
+import {Key, Button, SectionTitle} from 'akeneo-design-system';
+import {useTranslate, Translate} from '@akeneo-pim-community/legacy-bridge';
 import {attributeCreationStart} from 'akeneoassetmanager/domain/event/attribute/create';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {CreateState} from 'akeneoassetmanager/application/reducer/attribute/create';
@@ -18,8 +19,6 @@ import {getAttributeIcon} from 'akeneoassetmanager/application/configuration/att
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {EditOptionState} from 'akeneoassetmanager/application/reducer/attribute/type/option';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
-import {StickyHeader} from 'akeneoassetmanager/application/component/asset-family/edit/permission';
-import {useTranslate, Translate} from '@akeneo-pim-community/legacy-bridge';
 
 const securityContext = require('pim/security-context');
 
@@ -224,7 +223,6 @@ const AttributesView = ({
             </Button>
           ) : null
         }
-        secondaryActions={() => null}
         withLocaleSwitcher={true}
         withChannelSwitcher={false}
         isDirty={false}
@@ -232,9 +230,9 @@ const AttributesView = ({
         displayActions={rights.attribute.create}
       />
       <div className="AknSubsection">
-        <StickyHeader>
-          <span className="group-label">{translate('pim_asset_manager.asset_family.attribute.title')}</span>
-        </StickyHeader>
+        <SectionTitle sticky={160}>
+          <SectionTitle.Title>{translate('pim_asset_manager.asset_family.attribute.title')}</SectionTitle.Title>
+        </SectionTitle>
         {firstLoading || 0 < attributes.length ? (
           <div className="AknSubsection-container">
             <div className="AknFormContainer AknFormContainer--withPadding">

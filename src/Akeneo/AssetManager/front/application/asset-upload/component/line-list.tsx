@@ -5,10 +5,10 @@ import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import Row from 'akeneoassetmanager/application/asset-upload/component/row';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-import {AssetsIllustration, Button, getColor, getFontSize} from 'akeneo-design-system';
+import {AssetsIllustration, Button, getColor, SectionTitle} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
-export const ColumnWidths = {
+const ColumnWidths = {
   asset: 78,
   filename: 165,
   code: 250,
@@ -18,38 +18,23 @@ export const ColumnWidths = {
   actions: 108,
 };
 
-const Header = styled.div`
-  align-items: center;
-  background: ${getColor('white')};
-  border-bottom: 1px solid ${getColor('grey', 140)};
-  display: flex;
-  height: 40px;
-  padding-bottom: 7px;
-  position: sticky;
-  top: 93px;
-  z-index: 2;
-`;
-const LineCount = styled.div`
-  color: ${getColor('grey', 140)};
-  font-size: ${getFontSize('big')};
-  font-weight: normal;
-  text-transform: uppercase;
-`;
 const List = styled.div`
   border-collapse: collapse;
   width: 100%;
 `;
+
 const ListHeader = styled.div`
   align-items: center;
   background: ${getColor('white')};
   border-bottom: 1px solid ${getColor('grey', 120)};
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  padding-top: 10px;
   position: sticky;
-  top: 133px;
+  top: 44px;
   z-index: 1;
 `;
+
 const ListColumnHeader = styled.div<{width?: number}>`
   color: ${getColor('grey', 140)};
   flex-grow: 0;
@@ -60,18 +45,20 @@ const ListColumnHeader = styled.div<{width?: number}>`
   text-align: left;
   white-space: nowrap;
 
-  ${props =>
-    props.width !== undefined &&
+  ${({width}) =>
+    width !== undefined &&
     css`
-      width: ${props.width}px;
+      width: ${width}px;
     `}
 `;
+
 const Placeholder = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
   padding: 60px 0;
 `;
+
 const PlaceholderHelper = styled.div`
   color: ${getColor('grey', 140)};
   font-size: 30px;
@@ -108,15 +95,13 @@ const LineList = ({
 
   return (
     <>
-      <Header>
-        <LineCount>
+      <SectionTitle sticky={0}>
+        <SectionTitle.Title>
           {translate('pim_asset_manager.asset.upload.line_count', {count: lines.length}, lines.length)}
-        </LineCount>
-        <Spacer />
-        <Button ghost={true} level="tertiary" onClick={onLineRemoveAll}>
-          {translate('pim_asset_manager.asset.upload.remove_all')}
-        </Button>
-      </Header>
+        </SectionTitle.Title>
+        <SectionTitle.Spacer />
+        <Button onClick={onLineRemoveAll}>{translate('pim_asset_manager.asset.upload.remove_all')}</Button>
+      </SectionTitle>
       <List>
         <ListHeader>
           <ListColumnHeader width={ColumnWidths.asset}>
@@ -171,4 +156,4 @@ const LineList = ({
   );
 };
 
-export default LineList;
+export {LineList, ColumnWidths};

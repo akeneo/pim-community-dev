@@ -13,7 +13,7 @@ const NoAssetFamily = ({onCreateAssetFamily}: {onCreateAssetFamily: () => void})
         title={`👋 ${translate('pim_asset_manager.asset_family.helper.title')}`}
       >
         <p>{translate('pim_asset_manager.asset_family.helper.no_asset_family.text')}</p>
-        <Link href="https://help.akeneo.com/pim/v4/articles/what-about-assets.html" target="_blank">
+        <Link href="https://help.akeneo.com/pim/serenity/articles/what-about-assets.html" target="_blank">
           {translate('pim_asset_manager.asset_family.helper.no_asset_family.link')}
         </Link>
       </Information>

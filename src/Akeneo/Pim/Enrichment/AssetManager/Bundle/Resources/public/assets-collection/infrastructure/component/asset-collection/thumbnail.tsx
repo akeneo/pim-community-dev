@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import {opacity} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
@@ -25,7 +24,7 @@ const Overlay = styled.div`
   width: 100%;
   height: 100%;
   padding: 10px;
-  background-color: ${(props: AkeneoThemedProps<void>) => opacity(props.theme.color.grey140, 0.6)};
+  background-color: ${getColor('grey', 140)};
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
   display: flex;
@@ -34,15 +33,15 @@ const Overlay = styled.div`
   cursor: pointer;
 `;
 
-const Container = styled.div<{readonly: boolean}>`
+const Container = styled.div<{readonly: boolean} & AkeneoThemedProps>`
   position: relative;
   width: 140px;
   height: 140px;
-  outline: 1px solid ${(props: AkeneoThemedProps<{readonly: boolean}>) => props.theme.color.grey100};
+  outline: 1px solid ${getColor('grey', 100)};
   opacity: ${(props: AkeneoThemedProps<{readonly: boolean}>) => (props.readonly ? 0.4 : 1)};
 
   &:hover ${Overlay} {
-    opacity: 1;
+    opacity: 0.6;
   }
 `;
 

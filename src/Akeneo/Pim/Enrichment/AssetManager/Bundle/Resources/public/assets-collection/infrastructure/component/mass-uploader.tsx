@@ -4,7 +4,7 @@ import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/
 import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {useChannels, ChannelFetcher} from 'akeneoassetmanager/application/hooks/channel';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
-import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
+import {UploadModal} from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';

@@ -1,11 +1,11 @@
 import React from 'react';
-import {Context} from 'akeneoassetmanager/domain/model/context';
 import styled from 'styled-components';
+import {getColor} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {Context} from 'akeneoassetmanager/domain/model/context';
 import Locale, {localeExists, LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel, {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import SearchField from 'akeneoassetmanager/application/component/asset/list/search-bar/search-field';
-import {ResultCounter} from 'akeneoassetmanager/application/component/app/result-counter';
-import {Separator} from 'akeneoassetmanager/application/component/app/separator';
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
@@ -29,12 +29,20 @@ type SearchProps = {
 const Container = styled.div`
   display: flex;
   padding: 10px 0;
-  border-bottom: 1px solid ${props => props.theme.color.grey100};
+  border-bottom: 1px solid ${getColor('grey', 100)};
   align-items: center;
 `;
 
-const AdjustedSeparator = styled(Separator)`
+const Separator = styled.div`
+  border-left: 1px solid ${getColor('grey', 100)};
+  margin: 0 10px;
   margin-right: 5px;
+  height: 20px;
+
+  &:first-child,
+  &:last-child {
+    margin: 0;
+  }
 `;
 
 const setLocaleIfNotExists = (
@@ -49,6 +57,15 @@ const setLocaleIfNotExists = (
   }
 };
 
+const ResultCounter = styled.div`
+  white-space: nowrap;
+  color: ${getColor('brand', 100)};
+  margin-left: 10px;
+  line-height: 16px;
+  text-transform: none;
+`;
+
+//TODO Use DSM Search
 const SearchBar = ({
   searchValue,
   onSearchChange,
@@ -59,6 +76,7 @@ const SearchBar = ({
   onContextChange,
   onCompletenessChange,
 }: SearchProps) => {
+  const translate = useTranslate();
   const channels = useChannels(dataProvider.channelFetcher);
   setLocaleIfNotExists(onContextChange, channels, context.channel, context.locale);
 
@@ -70,8 +88,10 @@ const SearchBar = ({
           onSearchChange(newSearchValue);
         }}
       />
-      <ResultCounter count={resultCount} />
-      <AdjustedSeparator />
+      <ResultCounter>
+        {translate('pim_asset_manager.result_counter', {count: resultCount ?? 0}, resultCount ?? 0)}
+      </ResultCounter>
+      <Separator />
       {onCompletenessChange !== undefined && completenessValue !== undefined && (
         <CompletenessFilter value={completenessValue} onChange={onCompletenessChange} />
       )}

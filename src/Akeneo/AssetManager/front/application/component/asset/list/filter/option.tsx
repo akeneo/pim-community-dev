@@ -20,6 +20,7 @@ type OptionFilterViewProps = FilterViewProps & {
 
 const DEFAULT_OPERATOR = 'IN';
 
+//TODO Use DSM Multiselect?
 const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, context}: OptionFilterViewProps) => {
   const translate = useTranslate();
   if (!(isOptionAttribute(attribute) || isOptionCollectionAttribute(attribute))) {

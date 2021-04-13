@@ -1,16 +1,16 @@
 import React from 'react';
+import styled from 'styled-components';
+import {getColor} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import EditionAsset, {
   getEditionAssetLabel,
   getEditionAssetMainMediaThumbnail,
 } from 'akeneoassetmanager/domain/model/asset/edition-asset';
-import styled from 'styled-components';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 import {emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {useReloadPreview} from 'akeneoassetmanager/application/hooks/useReloadPreview';
 
 type MainMediaThumbnailProps = {
@@ -25,7 +25,7 @@ const Container = styled.div`
   position: relative;
   width: 142px;
   height: 142px;
-  border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
+  border: 1px solid ${getColor('grey', 80)};
   margin-right: 20px;
   border-radius: 4px;
   display: flex;

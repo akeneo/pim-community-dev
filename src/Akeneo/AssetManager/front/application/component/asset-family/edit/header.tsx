@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, ReactNode} from 'react';
 import {connect} from 'react-redux';
 import {useAutoFocus} from 'akeneo-design-system';
 import {PimView} from '@akeneo-pim-community/legacy-bridge';
@@ -11,18 +11,19 @@ import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoassetmanager/do
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
+import {ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 
 interface OwnProps {
   label: string;
   image: File | null;
   primaryAction: (defaultFocus: React.RefObject<any>) => JSX.Element | null;
-  secondaryActions?: () => JSX.Element | null;
+  secondaryActions?: ReactNode;
   withLocaleSwitcher: boolean;
   withChannelSwitcher: boolean;
   isDirty: boolean;
   isLoading?: boolean;
   displayActions?: boolean; // @todo : It will be mandatory (more convenience for the spike)
-  breadcrumb: React.ReactNode;
+  breadcrumb: ReactNode;
   onLocaleChanged?: (locale: Locale) => void;
   onChannelChanged?: (channel: Channel) => void;
 }
@@ -47,6 +48,7 @@ interface DispatchProps {
 
 interface HeaderProps extends StateProps, DispatchProps {}
 
+//TODO remove position sticky and z-index
 const HeaderView = ({
   label,
   primaryAction,
@@ -80,8 +82,10 @@ const HeaderView = ({
                   />
                 </div>
                 <div className="AknTitleContainer-actionsContainer AknButtonList">
-                  {secondaryActions && secondaryActions()}
-                  <div className="AknTitleContainer-rightButton">{primaryAction(saveButtonRef)}</div>
+                  <ButtonContainer>
+                    {secondaryActions}
+                    {primaryAction(saveButtonRef)}
+                  </ButtonContainer>
                 </div>
               </div>
             </div>

@@ -1,6 +1,9 @@
 import React, {RefObject, createRef} from 'react';
 import {connect} from 'react-redux';
-import {Button, Key, CloseIcon} from 'akeneo-design-system';
+import styled from 'styled-components';
+import {Button, Key, CloseIcon, Modal, SectionTitle, getColor} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {Section, TextField} from '@akeneo-pim-community/shared';
 import {getLabel} from 'pimui/js/i18n';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
@@ -22,9 +25,27 @@ import Locale from 'akeneoassetmanager/domain/model/locale';
 import {saveOptions} from 'akeneoassetmanager/application/action/attribute/edit';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import Flag from 'akeneoassetmanager/tools/component/flag';
 import AssetFamilyCode from 'akeneoassetmanager/domain/model/asset-family/code';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+
+const Content = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+`;
+
+const OptionContainer = styled.div`
+  flex: 2;
+  padding-right: 20px;
+`;
+
+const HeaderCell = styled.th`
+  position: sticky;
+  top: 57px;
+  z-index: 8;
+  padding-bottom: 20px;
+  background: ${getColor('white')};
+`;
 
 const securityContext = require('pim/security-context');
 
@@ -33,7 +54,7 @@ const OptionView = ({onOptionEditionStart}: {onOptionEditionStart: () => void}) 
 
   return (
     <div>
-      <Button onClick={onOptionEditionStart} level="tertiary" ghost={true} data-code="manageOption">
+      <Button onClick={onOptionEditionStart} level="tertiary" ghost={true}>
         {translate('pim_asset_manager.attribute.edit.input.manage_options.quick_edit.label')}
       </Button>
     </div>
@@ -245,31 +266,6 @@ const OptionRow = ({
   );
 };
 
-const HelperRow = ({locale, currentOption}: {locale: Locale; currentOption: Option}) => {
-  const label = currentOption.labels[locale.code] ? currentOption.labels[locale.code] : '';
-
-  return (
-    <>
-      <div className="AknFieldContainer">
-        <div className="AknFieldContainer-header AknFieldContainer-header--light">
-          <label className="AknFieldContainer-label">{locale.label}</label>
-        </div>
-        <div className="AknFieldContainer-inputContainer">
-          <input
-            type="text"
-            autoComplete="off"
-            className="AknTextField AknTextField--light AknTextField--disabled"
-            value={label}
-            readOnly
-            tabIndex={-1}
-          />
-          <Flag locale={locale} displayLanguage={false} className="AknFieldContainer-inputSides" />
-        </div>
-      </div>
-    </>
-  );
-};
-
 const ManageOptionsView = ({
   options,
   isDirty,
@@ -334,126 +330,91 @@ const ManageOptionsView = ({
   const localesWithoutDefaultCatalogLocale = structure.locales.filter(locale => locale.code !== catalogLocale);
   const sortedLocales = [...defaultCatalogLocale, ...localesWithoutDefaultCatalogLocale];
 
-  return (
-    <>
-      {isActive ? (
-        // TODO Use DSM Modal
-        <div className="modal in manageOptionModal" aria-hidden="false" style={{zIndex: 1041}}>
-          <div>
-            <div className="AknFullPage AknFullPage--full">
-              <div className="AknFullPage-content">
-                <div className="AknFullPage-titleContainer">
-                  <div className="AknFullPage-subTitle">
-                    {translate('pim_asset_manager.attribute.options.sub_title')} / {assetFamilyCode}
-                  </div>
-                  <div className="AknFullPage-title">
-                    {translate('pim_asset_manager.attribute.edit.input.manage_options.quick_edit.label')}
-                  </div>
-                </div>
-                <div className="AknOptionEditor">
-                  <div className="AknSubsection AknOptionEditor-translator">
-                    <div className="AknSubsection-title AknSubsection-title--sticky AknSubsection-title--light">
-                      <span className="AknSubsection-titleLabel">
-                        {getLabel(attribute.labels, locale, attribute.code)}
-                      </span>
-                      <LocaleSwitcher
-                        localeCode={locale}
-                        locales={structure.locales}
-                        onLocaleChange={events.onLocaleChanged}
-                      />
-                    </div>
-                    <table className="AknOptionEditor-table">
-                      <thead>
-                        <tr>
-                          <th className="AknOptionEditor-headCell">
-                            <label className="AknOptionEditor-headCellLabel">{translate('pim_common.label')}</label>
-                          </th>
-                          <th className="AknOptionEditor-headCell">
-                            <label className="AknOptionEditor-headCellLabel">
-                              {translate('pim_asset_manager.attribute.edit.input.code')}
-                            </label>
-                          </th>
-                          <th className="AknOptionEditor-headCell">
-                            <label className="AknOptionEditor-headCellLabel" />
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {options.map((option: Option, index: number) => {
-                          return (
-                            <OptionRow
-                              key={index}
-                              code={option.code}
-                              label={option.labels[locale]}
-                              index={index}
-                              isLastRow={index >= options.length - 1}
-                              numberOfLockedOptions={numberOfLockedOptions}
-                              locale={locale}
-                              errors={errors}
-                              rights={rights}
-                              labelInputReference={labelInputReferences[index]}
-                              codeInputReference={codeInputReferences[index]}
-                              onOptionEditionCodeUpdated={events.onOptionEditionCodeUpdated}
-                              onOptionEditionSelected={events.onOptionEditionSelected}
-                              onOptionEditionLabelUpdated={events.onOptionEditionLabelUpdated}
-                              onOptionEditionDelete={events.onOptionEditionDelete}
-                              onFocusNextField={onFocusNextField.bind(this)}
-                              onFocusPreviousField={onFocusPreviousField.bind(this)}
-                            />
-                          );
-                        })}
-                        <tr>
-                          <td>{getErrorsView(errors, 'options')}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="AknOptionEditor-helper">
-                    <div className="AknSubsection-title AknSubsection-title--light">
-                      <span className="AknSubsection-titleLabel">
-                        {translate('pim_asset_manager.attribute.options.helper.title')}
-                      </span>
-                    </div>
-                    <div className="AknOptionEditor-labelList">
-                      {sortedLocales.map((currentLocale: Locale) => {
-                        if (currentLocale.code === locale) {
-                          return;
-                        }
-
-                        return (
-                          <HelperRow
-                            key={currentLocale.code}
-                            locale={currentLocale}
-                            currentOption={options[currentOptionId]}
-                          />
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="AknButtonList AknButtonList--right modal-footer">
-            {rights.attribute.edit ? (
-              <Button className="AknFullPage-ok ok confirm" onClick={events.onOptionEditionSubmission}>
-                {translate('pim_asset_manager.attribute.create.confirm')}
-              </Button>
-            ) : null}
-            <div
-              title={translate('pim_asset_manager.attribute.create.cancel')}
-              className="AknFullPage-cancel cancel"
-              onClick={cancel}
-              tabIndex={0}
-              onKeyPress={event => {
-                if (Key.Space === event.key) cancel();
-              }}
-            />
-          </div>
+  return isActive ? (
+    <Modal onClose={cancel} closeTitle={translate('pim_common.close')}>
+      <Modal.SectionTitle color="brand">
+        {translate('pim_asset_manager.attribute.options.sub_title')} / {assetFamilyCode}
+      </Modal.SectionTitle>
+      <Modal.Title>{translate('pim_asset_manager.attribute.edit.input.manage_options.quick_edit.label')}</Modal.Title>
+      <Modal.TopRightButtons>
+        {rights.attribute.edit && (
+          <Button onClick={events.onOptionEditionSubmission}>{translate('pim_common.save')}</Button>
+        )}
+      </Modal.TopRightButtons>
+      <Content>
+        <OptionContainer>
+          <SectionTitle sticky={0}>
+            <SectionTitle.Title>{getLabel(attribute.labels, locale, attribute.code)}</SectionTitle.Title>
+            <SectionTitle.Spacer />
+            <LocaleSwitcher localeCode={locale} locales={structure.locales} onLocaleChange={events.onLocaleChanged} />
+          </SectionTitle>
+          <table className="AknOptionEditor-table">
+            <thead>
+              <tr>
+                <HeaderCell>
+                  <label className="AknOptionEditor-headCellLabel">{translate('pim_common.label')}</label>
+                </HeaderCell>
+                <HeaderCell>
+                  <label className="AknOptionEditor-headCellLabel">
+                    {translate('pim_asset_manager.attribute.edit.input.code')}
+                  </label>
+                </HeaderCell>
+                <HeaderCell>
+                  <label className="AknOptionEditor-headCellLabel" />
+                </HeaderCell>
+              </tr>
+            </thead>
+            <tbody>
+              {options.map((option: Option, index: number) => {
+                return (
+                  <OptionRow
+                    key={index}
+                    code={option.code}
+                    label={option.labels[locale]}
+                    index={index}
+                    isLastRow={index >= options.length - 1}
+                    numberOfLockedOptions={numberOfLockedOptions}
+                    locale={locale}
+                    errors={errors}
+                    rights={rights}
+                    labelInputReference={labelInputReferences[index]}
+                    codeInputReference={codeInputReferences[index]}
+                    onOptionEditionCodeUpdated={events.onOptionEditionCodeUpdated}
+                    onOptionEditionSelected={events.onOptionEditionSelected}
+                    onOptionEditionLabelUpdated={events.onOptionEditionLabelUpdated}
+                    onOptionEditionDelete={events.onOptionEditionDelete}
+                    onFocusNextField={onFocusNextField.bind(this)}
+                    onFocusPreviousField={onFocusPreviousField.bind(this)}
+                  />
+                );
+              })}
+              <tr>
+                <td>{getErrorsView(errors, 'options')}</td>
+              </tr>
+            </tbody>
+          </table>
+        </OptionContainer>
+        <div className="AknOptionEditor-helper">
+          <Section>
+            <SectionTitle>
+              <SectionTitle.Title>{translate('pim_asset_manager.attribute.options.helper.title')}</SectionTitle.Title>
+            </SectionTitle>
+            {sortedLocales
+              .filter(({code}) => code !== locale)
+              .map(({code, label}) => (
+                <TextField
+                  key={code}
+                  value={options[currentOptionId].labels[code] ?? ''}
+                  readOnly={true}
+                  label={label}
+                  locale={code}
+                />
+              ))}
+          </Section>
         </div>
-      ) : null}
-    </>
-  );
+      </Content>
+    </Modal>
+  ) : null;
 };
 
 export default connect(

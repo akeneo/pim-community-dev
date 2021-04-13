@@ -58,7 +58,6 @@ pim_asset_manager:
     download: Download
     copy_url: Copy URL
     error: An error occurred during the rendering of the preview
-  close: Close the modal
   breadcrumb:
     products: Products
 
@@ -148,12 +147,10 @@ pim_asset_manager:
         confirm_title: Confirm execution
         confirm_content: Are you sure you want to execute all the rules? (this could take a long time)
         execute_rules: Execute rules
-        cancel: Cancel
       execute_naming_convention:
         confirm_title: Confirm execution
         confirm_content: Are you sure you want to execute the naming convention? (this could take a long time)
         execute_naming_convention: Execute naming convention
-        cancel: Cancel
     naming_convention:
       help:
         description: Here is where you can define naming convention properties.
@@ -192,7 +189,6 @@ pim_asset_manager:
       input:
         label: Label
         code: Code (required)
-      confirm: Save
     delete:
       message: Are you sure you want to delete the asset family "{{ assetFamilyLabel }}"?
       title: Asset family
@@ -306,7 +302,6 @@ pim_asset_manager:
         label: Label
         code: Code (required)
         create_another: Create another asset
-      confirm: Save
     upload:
       line_count: '[0,1]{{ count }} file|]1,Inf] {{ count }} files'
       title: Upload assets
@@ -458,7 +453,6 @@ pim_asset_manager:
         value_per_channel: Value per channel
       placeholder:
         asset_type: Select your linked asset family
-      confirm: Save
     edit:
       delete: Delete the attribute
       title: Edit attribute {{ code }}

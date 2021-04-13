@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
-import {useShortcut, Key, Button, getColor, getFontSize, useSelection} from 'akeneo-design-system';
-import __ from 'akeneoassetmanager/tools/translator';
+import {Button, getColor, getFontSize, useSelection, Modal, useBooleanState} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import FilterCollection, {useFilterViews} from 'akeneoassetmanager/application/component/asset/list/filter-collection';
@@ -13,17 +13,9 @@ import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import attributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribute';
-import {CloseButton} from 'akeneoassetmanager/application/component/app/close-button';
 import {LabelCollection} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {getLabel} from 'pimui/js/i18n';
 import {getAttributeLabel, Attribute as ProductAttribute} from 'akeneoassetmanager/platform/model/structure/attribute';
-import {
-  ScrollableModal,
-  Header,
-  Title,
-  SubTitle,
-  ConfirmButton,
-} from 'akeneoassetmanager/application/component/app/modal';
 import ListAsset, {
   canAddAssetToCollection,
   addAssetsToCollection,
@@ -42,12 +34,19 @@ type AssetPickerProps = {
   onAssetPick: (assetCodes: AssetCode[]) => void;
 };
 
+const FullModal = styled(Modal)`
+  padding: 20px 0 0;
+`;
+
 const Container = styled.div`
   display: flex;
   flex: 1;
   overflow-x: hidden;
+  width: 100%;
 `;
+
 const Context = styled.div``;
+
 const Grid = styled.div`
   display: flex;
   flex-direction: column;
@@ -141,24 +140,29 @@ const AssetPicker = ({
   productLabels,
   productAttribute,
 }: AssetPickerProps) => {
-  const [isOpen, setOpen] = React.useState(false);
-  const [filterCollection, setFilterCollection] = React.useState<Filter[]>([]);
-
-  const [searchValue, setSearchValue] = React.useState<string>('');
-  const [searchResult, setSearchResult] = React.useState<SearchResult<ListAsset> | null>(null);
-  const [context, setContext] = React.useState<Context>(initialContext);
+  const [isOpen, openPicker, closePicker] = useBooleanState(false);
+  const [filterCollection, setFilterCollection] = useState<Filter[]>([]);
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [searchResult, setSearchResult] = useState<SearchResult<ListAsset> | null>(null);
+  const [context, setContext] = useState<Context>(initialContext);
   const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange] = useSelection<AssetCode>(
     null === searchResult ? 0 : searchResult.matchesCount
   );
+  const translate = useTranslate();
 
   const resetModal = () => {
     onSelectAllChange(false);
     setSearchValue('');
     setFilterCollection([]);
-    setOpen(false);
+    closePicker();
   };
-  const cancelModal = () => {
-    if (!isOpen) return;
+
+  const handleConfirm = () => {
+    onAssetPick(selection.collection);
+    resetModal();
+  };
+
+  const handleCancel = () => {
     onAssetPick([]);
     resetModal();
   };
@@ -176,46 +180,32 @@ const AssetPicker = ({
   const filterViews = useFilterViews(assetFamilyIdentifier, dataProvider);
   const canAddAsset = canAddAssetToCollection(addAssetsToCollection(excludedAssetCollection, selection.collection));
 
-  useShortcut(Key.Escape, cancelModal);
-
   return (
     <>
       <Button
-        title={__('pim_asset_manager.asset_collection.add_asset_title')}
+        title={translate('pim_asset_manager.asset_collection.add_asset_title')}
         size="small"
         level="tertiary"
         ghost={true}
         disabled={!canAddAsset}
-        onClick={() => setOpen(true)}
+        onClick={openPicker}
       >
-        {__('pim_asset_manager.asset_collection.add_asset')}
+        {translate('pim_asset_manager.asset_collection.add_asset')}
       </Button>
-      {isOpen && null !== filterViews && null !== searchResult ? (
-        <ScrollableModal data-container="asset-picker">
-          <Header>
-            <CloseButton title={__('pim_asset_manager.close')} onClick={cancelModal} />
-            <Title>{__('pim_asset_manager.asset_picker.title')}</Title>
-            <SubTitle>
-              {__('pim_asset_manager.asset_picker.sub_title', {
-                productLabel: getLabel(productLabels, context.locale, ''),
-                attributeLabel: getAttributeLabel(productAttribute, context.locale),
-              })}
-            </SubTitle>
-            <ConfirmButton
-              title={__('pim_common.confirm')}
-              color="green"
-              onClick={() => {
-                onAssetPick(selection.collection);
-                resetModal();
-              }}
-            >
-              {__('pim_common.confirm')}
-            </ConfirmButton>
-          </Header>
+      {isOpen && null !== filterViews && null !== searchResult && (
+        <FullModal closeTitle={translate('pim_common.close')} onClose={handleCancel} data-container="asset-picker">
+          <Modal.Title>{translate('pim_asset_manager.asset_picker.title')}</Modal.Title>
+          {translate('pim_asset_manager.asset_picker.sub_title', {
+            productLabel: getLabel(productLabels, context.locale, ''),
+            attributeLabel: getAttributeLabel(productAttribute, context.locale),
+          })}
+          <Modal.TopRightButtons>
+            <Button onClick={handleConfirm}>{translate('pim_common.confirm')}</Button>
+          </Modal.TopRightButtons>
           <Container>
             {filterViews.length !== 0 && (
               <FilterContainer data-container="filter-collection">
-                <FilterTitle>{__('pim_asset_manager.asset_picker.filter.title')}</FilterTitle>
+                <FilterTitle>{translate('pim_asset_manager.asset_picker.filter.title')}</FilterTitle>
                 <FilterCollection
                   filterCollection={filterCollection}
                   context={context}
@@ -258,8 +248,8 @@ const AssetPicker = ({
               }}
             />
           </Container>
-        </ScrollableModal>
-      ) : null}
+        </FullModal>
+      )}
     </>
   );
 };

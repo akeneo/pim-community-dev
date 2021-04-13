@@ -105,7 +105,7 @@ const TextView = ({
 }) => {
   return (
     <React.Fragment>
-      <div className="AknFieldContainer" data-code="canBeNull">
+      <div className="AknFieldContainer">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.can_be_null">
             {__('pim_asset_manager.attribute.edit.input.can_be_null')}

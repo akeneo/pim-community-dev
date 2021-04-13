@@ -156,6 +156,9 @@ export const getAllErrorsOfLineByTarget = (line: Line): LineErrorsByTarget => {
 
   for (let error of getAllErrorsOfLine(line)) {
     switch (true) {
+      case undefined === error.propertyPath:
+        errors.common.push(error);
+        break;
       case error.propertyPath === 'code':
         errors.code.push(error);
         break;

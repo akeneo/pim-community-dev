@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import $ from 'jquery';
 import styled from 'styled-components';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import {AkeneoThemedProps} from 'akeneo-design-system';
 
 const StyledSelect = styled.select<{light: boolean}>`
-  ${({light}: ThemedProps<{light: boolean}>) =>
+  ${({light}: AkeneoThemedProps<{light: boolean}>) =>
     light &&
     `
     .select2-choice {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {AssetFamilyListItem} from 'akeneoassetmanager/domain/model/asset-family/list';
 import {getLabel} from 'pimui/js/i18n';
@@ -71,6 +71,7 @@ export const AssetFamilySelector = ({
     <>
       <ColumnTitle>{translate('pim_asset_manager.asset_family.column.selector.title')}</ColumnTitle>
       {null !== assetFamilyIdentifier && !isFetching ? (
+        //TODO Use DSM Dropdown?
         <Select2
           light
           data={data}

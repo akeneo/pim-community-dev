@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import {ChannelLabel as PlatformChannelLabel} from 'akeneoassetmanager/platform/component/channel/channel';
 import {selectChannels} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {connect} from 'react-redux';
@@ -16,8 +15,3 @@ export const ChannelLabel = connect((state: AssetCollectionState) => ({
   channels: selectChannels(state),
   locale: selectCurrentLocale(state),
 }))(PlatformChannelLabel);
-
-export const ContextLabel = styled.div`
-  margin: 0 10px 0 0;
-  display: flex;
-`;

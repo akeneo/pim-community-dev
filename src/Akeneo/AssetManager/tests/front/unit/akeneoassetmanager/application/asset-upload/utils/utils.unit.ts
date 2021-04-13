@@ -574,6 +574,11 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getAllEr
     const channels: Channel[] = [];
     const locales: Locale[] = [];
 
+    const unknownError = {
+      ...createFakeError(),
+      propertyPath: undefined,
+    };
+
     const error = {
       ...createFakeError(),
       propertyPath: 'foobar',
@@ -582,13 +587,13 @@ describe('akeneoassetmanager/application/asset-upload/utils/utils.ts -> getAllEr
     const line = {
       ...createFakeLine('foo.jpg', assetFamily, channels, locales),
       errors: {
-        back: [error],
+        back: [error, unknownError],
         front: [],
       },
     };
 
     expect(getAllErrorsOfLineByTarget(line)).toEqual({
-      common: [error],
+      common: [error, unknownError],
       code: [],
       channel: [],
       locale: [],

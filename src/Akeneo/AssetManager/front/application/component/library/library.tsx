@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback, useState} from 'react';
+import React, {isValidElement, ReactNode, useEffect, useCallback, useState} from 'react';
 import styled from 'styled-components';
 import {SearchBar} from 'akeneoassetmanager/application/component/asset/list/search-bar';
 import Mosaic from 'akeneoassetmanager/application/component/asset/list/mosaic';
@@ -13,8 +13,7 @@ import FilterCollection, {useFilterViews} from 'akeneoassetmanager/application/c
 import {AssetFamilySelector} from 'akeneoassetmanager/application/component/library/AssetFamilySelector';
 import {HeaderView} from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {getLabel} from 'pimui/js/i18n';
-import {MultipleButton, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
-import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
+import {UploadModal} from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {CreateModal} from 'akeneoassetmanager/application/component/asset/create';
 import {CreateAssetFamilyModal} from 'akeneoassetmanager/application/component/asset-family/create';
@@ -34,7 +33,7 @@ import {CompletenessValue} from 'akeneoassetmanager/application/component/asset/
 import {getCompletenessFilter, updateCompletenessFilter} from 'akeneoassetmanager/tools/filters/completeness';
 import {useNotify, NotificationLevel, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
-import {Checkbox, Toolbar, Button, useSelection, useBooleanState} from 'akeneo-design-system';
+import {Checkbox, Toolbar, Button, useSelection, useBooleanState, Dropdown, ArrowDownIcon} from 'akeneo-design-system';
 import {MassDelete} from 'akeneoassetmanager/application/component/library/MassDelete/MassDelete';
 import {useSelectionQuery} from 'akeneoassetmanager/application/component/library/hooks/useSelectionQuery';
 import {useRoutes} from 'akeneoassetmanager/application/component/library/hooks/useRoutes';
@@ -82,6 +81,36 @@ export type LibraryDataProvider = {
   assetAttributeFetcher: AssetAttributeFetcher;
 };
 
+type CreateButtonProps = {
+  children: ReactNode;
+};
+
+const CreateButton = ({children}: CreateButtonProps) => {
+  const translate = useTranslate();
+  const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
+
+  const validChildren = React.Children.toArray(children).filter(Boolean);
+
+  if (0 === validChildren.length) {
+    return null;
+  } else if (1 === validChildren.length && isValidElement(validChildren[0])) {
+    return <Button onClick={validChildren[0].props.onClick}>{validChildren[0].props.children}</Button>;
+  }
+
+  return (
+    <Dropdown>
+      <Button onClick={openDropdown}>
+        {translate('pim_common.create')} <ArrowDownIcon />
+      </Button>
+      {isDropdownOpen && (
+        <Dropdown.Overlay onClose={closeDropdown}>
+          <Dropdown.ItemCollection>{validChildren}</Dropdown.ItemCollection>
+        </Dropdown.Overlay>
+      )}
+    </Dropdown>
+  );
+};
+
 type LibraryProps = {
   dataProvider: LibraryDataProvider;
   initialContext: Context;
@@ -102,7 +131,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
   const [searchResult, setSearchResult] = useState<SearchResult<ListAsset>>(emptySearchResult());
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
   const [context, setContext] = useStoredState<Context>('akeneo.asset_manager.grid.context', initialContext);
-  const [isCreateAssetModalOpen, openCreateAssetModalOpen, closeCreateAssetModalOpen] = useBooleanState(false);
+  const [isCreateAssetModalOpen, openCreateAssetModal, closeCreateAssetModal] = useBooleanState(false);
   const [isUploadModalOpen, openUploadModal, closeUploadModal] = useBooleanState(false);
   const [isCreateAssetFamilyModalOpen, openCreateAssetFamilyModal, closeCreateAssetFamilyModal] = useBooleanState(
     false
@@ -203,59 +232,42 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             }
             image={null}
             primaryAction={() => (
-              <ButtonContainer>
-                {null !== currentAssetFamilyIdentifier ? (
-                  <>
-                    <Button
-                      ghost={true}
-                      level="tertiary"
-                      onClick={() => redirectToAssetFamily(currentAssetFamilyIdentifier)}
-                    >
-                      {translate(`pim_asset_manager.asset_family.button.${rights.assetFamily.edit ? 'edit' : 'view'}`)}
-                    </Button>
-                    <MultipleButton
-                      items={[
-                        ...(rights.asset.create
-                          ? [
-                              {
-                                label: translate('pim_asset_manager.asset.button.create'),
-                                action: openCreateAssetModalOpen,
-                              },
-                            ]
-                          : []),
-                        ...(rights.asset.upload || hasMediaLinkAsMainMedia
-                          ? [
-                              {
-                                label: translate('pim_asset_manager.asset.upload.title'),
-                                title: translate(
-                                  `pim_asset_manager.asset.upload.${
-                                    hasMediaLinkAsMainMedia ? 'disabled_for_media_link' : 'title'
-                                  }`
-                                ),
-                                isDisabled: hasMediaLinkAsMainMedia,
-                                action: openUploadModal,
-                              },
-                            ]
-                          : []),
-                        ...(rights.assetFamily.create
-                          ? [
-                              {
-                                label: translate('pim_asset_manager.asset_family.button.create'),
-                                action: openCreateAssetFamilyModal,
-                              },
-                            ]
-                          : []),
-                      ]}
-                    >
-                      {translate('pim_common.create')}
-                    </MultipleButton>
-                  </>
-                ) : (
-                  <Button level="primary" onClick={openCreateAssetFamilyModal}>
-                    {translate('pim_asset_manager.asset_family.button.create')}
+              <>
+                {null !== currentAssetFamilyIdentifier && (
+                  <Button
+                    ghost={true}
+                    level="tertiary"
+                    onClick={() => redirectToAssetFamily(currentAssetFamilyIdentifier)}
+                  >
+                    {translate(`pim_asset_manager.asset_family.button.${rights.assetFamily.edit ? 'edit' : 'view'}`)}
                   </Button>
                 )}
-              </ButtonContainer>
+                <CreateButton>
+                  {null !== currentAssetFamilyIdentifier && rights.asset.create && (
+                    <Dropdown.Item onClick={openCreateAssetModal}>
+                      {translate('pim_asset_manager.asset.button.create')}
+                    </Dropdown.Item>
+                  )}
+                  {null !== currentAssetFamilyIdentifier && (rights.asset.upload || hasMediaLinkAsMainMedia) && (
+                    <Dropdown.Item
+                      title={translate(
+                        `pim_asset_manager.asset.upload.${
+                          hasMediaLinkAsMainMedia ? 'disabled_for_media_link' : 'title'
+                        }`
+                      )}
+                      disabled={hasMediaLinkAsMainMedia}
+                      onClick={openUploadModal}
+                    >
+                      {translate('pim_asset_manager.asset.upload.title')}
+                    </Dropdown.Item>
+                  )}
+                  {rights.assetFamily.create && (
+                    <Dropdown.Item onClick={openCreateAssetFamilyModal}>
+                      {translate('pim_asset_manager.asset_family.button.create')}
+                    </Dropdown.Item>
+                  )}
+                </CreateButton>
+              </>
             )}
             context={context}
             withLocaleSwitcher={true}
@@ -272,7 +284,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           ) : null === currentAssetFamilyIdentifier ? (
             <NoAssetFamily onCreateAssetFamily={openCreateAssetFamilyModal} />
           ) : 0 === searchResult.totalCount ? (
-            <NoAsset assetFamilyLabel={currentAssetFamilyLabel} onCreateAsset={openCreateAssetModalOpen} />
+            <NoAsset assetFamilyLabel={currentAssetFamilyLabel} onCreateAsset={openCreateAssetModal} />
           ) : (
             <>
               <SearchBar
@@ -337,12 +349,13 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
         <CreateModal
           locale={context.locale}
           assetFamily={currentAssetFamily}
-          onClose={closeCreateAssetModalOpen}
+          onClose={closeCreateAssetModal}
           onAssetCreated={(assetCode: AssetCode, createAnother: boolean) => {
             notify(NotificationLevel.SUCCESS, translate('pim_asset_manager.asset.notification.create.success'));
             if (createAnother) {
               updateResults();
             } else {
+              closeCreateAssetModal();
               redirectToAsset(currentAssetFamily.identifier, assetCode);
             }
           }}
@@ -370,6 +383,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           locale={context.locale}
           onClose={closeCreateAssetFamilyModal}
           onAssetFamilyCreated={(assetFamilyIdentifier: AssetFamilyIdentifier) => {
+            closeCreateAssetFamilyModal();
             notify(NotificationLevel.SUCCESS, translate('pim_asset_manager.asset_family.notification.create.success'));
             handleAssetFamilyChange(assetFamilyIdentifier);
             redirectToAssetFamily(assetFamilyIdentifier);

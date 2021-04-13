@@ -19,7 +19,6 @@ import Ajv from 'ajv';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
-import {ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import schema from 'akeneoassetmanager/infrastructure/model/asset-family/transformations.schema.json';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
@@ -98,7 +97,7 @@ const Transformation = ({assetFamily, context, events, rights, form, errors}: St
         label={translate('pim_asset_manager.asset_family.tab.transformations')}
         image={null}
         primaryAction={(defaultFocus: React.RefObject<any>) => (
-          <ButtonContainer>
+          <>
             <Button ghost={true} level="tertiary" onClick={events.onLaunchComputeTransformations}>
               {translate('pim_asset_manager.asset.button.launch_transformations')}
             </Button>
@@ -107,9 +106,8 @@ const Transformation = ({assetFamily, context, events, rights, form, errors}: St
                 {translate('pim_asset_manager.asset_family.button.save')}
               </Button>
             )}
-          </ButtonContainer>
+          </>
         )}
-        secondaryActions={() => null}
         withLocaleSwitcher={false}
         withChannelSwitcher={false}
         isDirty={form.state.isDirty}

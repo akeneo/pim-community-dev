@@ -102,4 +102,3 @@ config:
 
         # Needed by onboarder for hooking into the asset code creation
         akeneoassetmanager/application/asset-upload/utils/line-factory: akeneoassetmanager/application/asset-upload/utils/line-factory
-        akeneoassetmanager/application/component/app/theme: akeneoassetmanager/application/component/app/theme

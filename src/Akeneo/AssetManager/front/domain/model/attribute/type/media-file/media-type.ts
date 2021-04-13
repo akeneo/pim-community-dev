@@ -21,5 +21,3 @@ export const createMediaTypeFromNormalized = (mediaType: NormalizedMediaType): M
 };
 
 export const createMediaTypeFromString = (mediaType: string): MediaType => createMediaTypeFromNormalized(mediaType);
-
-export const normalizeMediaType = (mediaType: MediaType): NormalizedMediaType => mediaType;

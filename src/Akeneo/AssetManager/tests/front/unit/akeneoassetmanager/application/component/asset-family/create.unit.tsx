@@ -9,7 +9,7 @@ jest.mock('akeneoassetmanager/infrastructure/saver/asset-family', () => ({
     ({code}: {code: string}) =>
       new Promise(resolve => {
         if ('' === code) {
-          resolve([{messageTemplate: 'Code should not be empty', propertyPath: 'code'}]);
+          resolve([{messageTemplate: 'Code should not be empty', propertyPath: 'identifier', parameters: {}}]);
         }
         if ('throw' === code) {
           throw Error('Error');
@@ -33,9 +33,9 @@ describe('Test Asset Family create modal component', () => {
     });
     renderWithProviders(<CreateAssetFamilyModal locale={localeCode} onAssetFamilyCreated={onAssetFamilyCreated} />);
 
-    const codeInput = document.getElementById('pim_asset_manager.asset_family.create.input.code') as HTMLInputElement;
-    const labelInput = document.getElementById('pim_asset_manager.asset_family.create.input.label') as HTMLInputElement;
-    const submitButton = screen.getByText('pim_asset_manager.asset_family.create.confirm');
+    const codeInput = screen.getByLabelText('pim_asset_manager.asset_family.create.input.code') as HTMLInputElement;
+    const labelInput = screen.getByLabelText('pim_asset_manager.asset_family.create.input.label') as HTMLInputElement;
+    const submitButton = screen.getByText('pim_common.save');
 
     await act(async () => {
       await waitFor(() => fireEvent.change(codeInput, {target: {value: 'fakeCode'}}));
@@ -53,9 +53,9 @@ describe('Test Asset Family create modal component', () => {
     const onAssetFamilyCreated = jest.fn();
     renderWithProviders(<CreateAssetFamilyModal locale={localeCode} onAssetFamilyCreated={onAssetFamilyCreated} />);
 
-    const codeInput = document.getElementById('pim_asset_manager.asset_family.create.input.code') as HTMLInputElement;
-    const labelInput = document.getElementById('pim_asset_manager.asset_family.create.input.label') as HTMLInputElement;
-    const submitButton = screen.getByText('pim_asset_manager.asset_family.create.confirm');
+    const codeInput = screen.getByLabelText('pim_asset_manager.asset_family.create.input.code') as HTMLInputElement;
+    const labelInput = screen.getByLabelText('pim_asset_manager.asset_family.create.input.label') as HTMLInputElement;
+    const submitButton = screen.getByText('pim_common.save');
 
     await act(async () => {
       fireEvent.change(codeInput, {target: {value: null}});
@@ -71,8 +71,8 @@ describe('Test Asset Family create modal component', () => {
     const onAssetFamilyCreated = jest.fn();
     renderWithProviders(<CreateAssetFamilyModal locale={localeCode} onAssetFamilyCreated={onAssetFamilyCreated} />);
 
-    const codeInput = document.getElementById('pim_asset_manager.asset_family.create.input.code') as HTMLInputElement;
-    const submitButton = screen.getByText('pim_asset_manager.asset_family.create.confirm');
+    const codeInput = screen.getByLabelText('pim_asset_manager.asset_family.create.input.code') as HTMLInputElement;
+    const submitButton = screen.getByText('pim_common.save');
 
     await act(async () => {
       await waitFor(() => fireEvent.change(codeInput, {target: {value: 'throw'}}));

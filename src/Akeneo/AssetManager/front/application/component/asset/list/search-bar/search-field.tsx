@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
-import useDebounce from 'akeneoassetmanager/platform/hook/use-debounce';
-import {useFocus} from 'akeneoassetmanager/application/hooks/input';
-import {SearchIcon, getColor, getFontSize} from 'akeneo-design-system';
+import {SearchIcon, getColor, getFontSize, useAutoFocus} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import useDebounce from 'akeneoassetmanager/platform/hook/use-debounce';
 
 type SearchFieldProps = {
   value: string;
@@ -31,7 +30,9 @@ const SearchField = ({value, onChange}: SearchFieldProps) => {
   const translate = useTranslate();
   const [userSearch, setUserSearch] = useState(value);
   const debouncedUserSearch = useDebounce(userSearch, 250);
-  const [inputRef] = useFocus();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useAutoFocus(inputRef);
 
   useEffect(() => {
     onChange(debouncedUserSearch);

@@ -1,5 +1,7 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
+import {CloseIcon, RefreshIcon, DangerIcon, getColor, IconButton} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
 import RowStatus from 'akeneoassetmanager/application/asset-upload/component/row-status';
 import {getAllErrorsOfLineByTarget, getStatusFromLine} from 'akeneoassetmanager/application/asset-upload/utils/utils';
@@ -13,8 +15,6 @@ import {
   getOptionsFromChannels,
   getOptionsFromLocales,
 } from 'akeneoassetmanager/application/asset-upload/utils/select2';
-import {CloseIcon, RefreshIcon, DangerIcon, getColor, IconButton} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div<{status?: LineStatus; isReadOnly?: boolean}>`
   border-bottom: 1px solid ${getColor('grey', 80)};
@@ -141,6 +141,7 @@ type LocaleDropdownProps = {
   readOnly: boolean;
   onChange: (value: string) => void;
 };
+//TODO Use DSM SelectInput
 const LocaleDropdown = React.memo(({options, value, readOnly, onChange}: LocaleDropdownProps) => {
   const translate = useTranslate();
 

@@ -1,14 +1,11 @@
-import * as React from 'react';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
-import Flag from 'akeneoassetmanager/tools/component/flag';
-import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
-import {createLocaleFromCode, LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {AssetsIllustration, Button, Key, useShortcut} from 'akeneo-design-system';
+import React, {useCallback, useRef, useState} from 'react';
+import {AssetsIllustration, Button, Modal, useAutoFocus} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {getErrorsForPath, Section, TextField, ValidationError} from '@akeneo-pim-community/shared';
+import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import sanitize from 'akeneoassetmanager/tools/sanitize';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import assetFamilySaver from 'akeneoassetmanager/infrastructure/saver/asset-family';
-import {useFocus} from 'akeneoassetmanager/application/hooks/input';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const submitCreateAssetFamily = async (
   code: AssetFamilyIdentifier,
@@ -36,15 +33,16 @@ const submitCreateAssetFamily = async (
   onSuccess();
 };
 
-export const useSubmit = (
+const useSubmit = (
   code: AssetFamilyIdentifier,
   label: string,
   locale: LocaleCode,
   onSuccess: () => void,
   onFailure: (errors: ValidationError[]) => void
 ) => {
-  const [isCreating, setCreating] = React.useState(false);
-  return React.useCallback(() => {
+  const [isCreating, setCreating] = useState(false);
+
+  return useCallback(() => {
     if (isCreating) return;
     setCreating(true);
     submitCreateAssetFamily(
@@ -52,12 +50,12 @@ export const useSubmit = (
       label,
       locale,
       () => {
-        onSuccess();
         setCreating(false);
+        onSuccess();
       },
       (errors: ValidationError[]) => {
-        onFailure(errors);
         setCreating(false);
+        onFailure(errors);
       }
     );
   }, [code, label, locale, onSuccess, onFailure, isCreating]);
@@ -69,13 +67,14 @@ type CreateAssetFamilyModalProps = {
   onAssetFamilyCreated: (code: AssetFamilyIdentifier) => void;
 };
 
-export const CreateAssetFamilyModal = ({locale, onClose, onAssetFamilyCreated}: CreateAssetFamilyModalProps) => {
+const CreateAssetFamilyModal = ({locale, onClose, onAssetFamilyCreated}: CreateAssetFamilyModalProps) => {
   const translate = useTranslate();
-  const [code, setCode] = React.useState<AssetFamilyIdentifier>('');
-  const [label, setLabel] = React.useState<string>('');
-  const [errors, setErrors] = React.useState<ValidationError[]>([]);
+  const [code, setCode] = useState<AssetFamilyIdentifier>('');
+  const [label, setLabel] = useState<string>('');
+  const [errors, setErrors] = useState<ValidationError[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const onLabelUpdate = React.useCallback(
+  const handleLabelChange = useCallback(
     (newLabel: string) => {
       const expectedSanitizedCode = sanitize(label);
       const newCode = expectedSanitizedCode === code ? sanitize(newLabel) : code;
@@ -85,102 +84,43 @@ export const CreateAssetFamilyModal = ({locale, onClose, onAssetFamilyCreated}: 
     [code, label]
   );
 
-  const resetModal = React.useCallback(() => {
-    setCode('');
-    setLabel('');
-    setErrors([]);
-    setFocus();
-  }, []);
-
-  const onSuccess = React.useCallback(() => {
+  const onSuccess = useCallback(() => {
     onAssetFamilyCreated(code);
-    resetModal();
   }, [code]);
 
   const submit = useSubmit(code, label, locale, onSuccess, setErrors);
 
-  useShortcut(Key.Enter, submit);
-  useShortcut(Key.Escape, onClose);
-  const [inputRef, setFocus] = useFocus();
+  useAutoFocus(inputRef);
 
   return (
-    <div className="modal in" aria-hidden="false" style={{zIndex: 1041}}>
-      <div className="modal-body  creation">
-        <div className="AknFullPage">
-          <div className="AknFullPage-content AknFullPage-content--withIllustration">
-            <div>
-              <AssetsIllustration />
-            </div>
-            <div>
-              <div className="AknFormContainer">
-                <div className="AknFullPage-titleContainer">
-                  <div className="AknFullPage-subTitle">
-                    {translate('pim_asset_manager.asset_family.create.subtitle')}
-                  </div>
-                  <div className="AknFullPage-title">{translate('pim_asset_manager.asset_family.create.title')}</div>
-                </div>
-                <div className="AknFieldContainer" data-code="label">
-                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                    <label
-                      className="AknFieldContainer-label"
-                      htmlFor="pim_asset_manager.asset_family.create.input.label"
-                    >
-                      {translate('pim_asset_manager.asset_family.create.input.label')}
-                    </label>
-                  </div>
-                  <div className="AknFieldContainer-inputContainer">
-                    <input
-                      ref={inputRef}
-                      autoComplete="off"
-                      type="text"
-                      className="AknTextField AknTextField--light"
-                      id="pim_asset_manager.asset_family.create.input.label"
-                      name="label"
-                      value={label}
-                      onChange={event => onLabelUpdate(event.target.value)}
-                    />
-                    <Flag
-                      locale={createLocaleFromCode(locale)}
-                      displayLanguage={false}
-                      className="AknFieldContainer-inputSides"
-                    />
-                  </div>
-                  {getErrorsView(errors, 'labels')}
-                </div>
-                <div className="AknFieldContainer" data-code="code">
-                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                    <label
-                      className="AknFieldContainer-label"
-                      htmlFor="pim_asset_manager.asset_family.create.input.code"
-                    >
-                      {translate('pim_asset_manager.asset_family.create.input.code')}
-                    </label>
-                  </div>
-                  <div className="AknFieldContainer-inputContainer">
-                    <input
-                      type="text"
-                      autoComplete="off"
-                      className="AknTextField AknTextField--light"
-                      id="pim_asset_manager.asset_family.create.input.code"
-                      name="code"
-                      value={code}
-                      onChange={event => setCode(event.target.value)}
-                    />
-                  </div>
-                  {getErrorsView(errors, 'code')}
-                  {getErrorsView(errors, 'identifier')}
-                </div>
-                <Button onClick={submit}>{translate('pim_asset_manager.asset_family.create.confirm')}</Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        title={translate('pim_asset_manager.asset_family.create.cancel')}
-        className="AknFullPage-cancel cancel"
-        onClick={onClose}
-      />
-    </div>
+    <Modal illustration={<AssetsIllustration />} onClose={onClose} closeTitle={translate('pim_common.close')}>
+      <Modal.SectionTitle color="brand">
+        {translate('pim_asset_manager.asset_family.create.subtitle')}
+      </Modal.SectionTitle>
+      <Modal.Title>{translate('pim_asset_manager.asset_family.create.title')}</Modal.Title>
+      <Section>
+        <TextField
+          locale={locale}
+          ref={inputRef}
+          label={translate('pim_asset_manager.asset_family.create.input.label')}
+          value={label}
+          onChange={handleLabelChange}
+          errors={getErrorsForPath(errors, 'labels')}
+          onSubmit={submit}
+        />
+        <TextField
+          label={translate('pim_asset_manager.asset_family.create.input.code')}
+          value={code}
+          onChange={setCode}
+          errors={getErrorsForPath(errors, 'identifier')}
+          onSubmit={submit}
+        />
+      </Section>
+      <Modal.BottomButtons>
+        <Button onClick={submit}>{translate('pim_common.save')}</Button>
+      </Modal.BottomButtons>
+    </Modal>
   );
 };
+
+export {CreateAssetFamilyModal};

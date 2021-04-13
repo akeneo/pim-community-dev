@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import styled from 'styled-components';
-import {Button} from 'akeneo-design-system';
+import {Button, SectionTitle} from 'akeneo-design-system';
+import {useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
@@ -16,12 +16,6 @@ import {
 } from 'akeneoassetmanager/domain/model/asset-family/permission';
 import {savePermission} from 'akeneoassetmanager/application/action/asset-family/permission';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
-import {useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-
-export const StickyHeader = styled.header.attrs(() => ({className: 'AknSubsection-title AknSubsection-title--sticky'}))`
-  top: 136px;
-  padding: 0;
-`;
 
 interface StateProps {
   assetFamily: AssetFamily;
@@ -62,16 +56,15 @@ const Permission = ({assetFamily, context, canEditFamily, permission, events}: S
             </Button>
           ) : null
         }
-        secondaryActions={() => null}
         withLocaleSwitcher={false}
         withChannelSwitcher={false}
         isDirty={permission.state.isDirty}
         breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
       />
       <div className="AknSubsection">
-        <StickyHeader>
-          <span className="group-label">{translate('pim_asset_manager.asset_family.permission.title')}</span>
-        </StickyHeader>
+        <SectionTitle sticky={136}>
+          <SectionTitle.Title>{translate('pim_asset_manager.asset_family.permission.title')}</SectionTitle.Title>
+        </SectionTitle>
         <div className="AknFormContainer AknFormContainer--wide">
           {!permission.data.isEmpty() ? (
             <PermissionCollectionEditor

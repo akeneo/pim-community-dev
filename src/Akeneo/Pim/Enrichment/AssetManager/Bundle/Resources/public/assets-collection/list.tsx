@@ -1,7 +1,19 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import __ from 'akeneoassetmanager/tools/translator';
+import {
+  AssetsIllustration,
+  Dropdown,
+  IconButton,
+  Information,
+  Link,
+  LockIcon,
+  MoreIcon,
+  SectionTitle,
+  useBooleanState,
+} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {NoDataSection, NoDataTitle} from '@akeneo-pim-community/shared';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {
   selectAttributeGroupList,
@@ -25,25 +37,18 @@ import {Label} from 'akeneoassetmanager/application/component/app/label';
 import {Attribute, getAttributeLabel} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {
   ChannelLabel,
-  ContextLabel,
   LocaleLabel,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/context';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Pill} from 'akeneoassetmanager/application/component/app/pill';
-import {Separator} from 'akeneoassetmanager/application/component/app/separator';
-import {Spacer} from 'akeneoassetmanager/application/component/app/spacer';
 import {AssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection';
 import {hasValues, isValueComplete} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {Family} from 'akeneoassetmanager/platform/model/structure/family';
-import {NoDataSection, NoDataTitle} from 'akeneoassetmanager/platform/component/common/no-data';
 import {RuleNotification} from 'akeneoassetmanager/platform/component/rule-notification';
 import {selectErrors} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/errors';
 import {ValidationError} from 'akeneoassetmanager/platform/model/validation-error';
 import {ValidationErrorCollection} from 'akeneoassetmanager/platform/component/common/validation-error-collection';
 import {Context} from 'akeneoassetmanager/domain/model/context';
-import {MoreButton} from 'akeneoassetmanager/application/component/app/more-button';
 import {AssetPicker} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker';
-import {ResultCounter} from 'akeneoassetmanager/application/component/app/result-counter';
 import {addAssetsToCollection, emptyCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import fetchAllChannels from 'akeneoassetmanager/infrastructure/fetcher/channel';
@@ -55,8 +60,6 @@ import {
   AttributeGroupCode,
   AttributeGroupCollection,
 } from 'akeneoassetmanager/platform/model/structure/attribute-group';
-import {AssetsIllustration, Information, Link, LockIcon} from 'akeneo-design-system';
-import {ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import {RulesNumberByAttribute} from 'akeneoassetmanager/platform/model/structure/rule-relation';
 import {ReloadPreviewProvider} from 'akeneoassetmanager/application/hooks/useReloadPreview';
 
@@ -87,22 +90,6 @@ type DisplayValuesProps = {
   onChange: (value: Value) => void;
 };
 
-const SectionTitle = styled.div`
-  display: flex;
-  padding: 12px 0;
-  align-items: center; /* Should be baseline but the alignment is then very weird */
-  border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey140};
-`;
-
-const AttributeBreadCrumb = styled.div<{readonly: boolean}>`
-  font-size: 15px;
-  font-weight: normal;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: ${(props: ThemedProps<{readonly: boolean}>) =>
-    props.readonly ? props.theme.color.grey100 : props.theme.color.grey140};
-`;
-
 const IncompleteIndicator = styled.div`
   display: flex;
 `;
@@ -117,11 +104,6 @@ const AssetCollectionList = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-`;
-
-const LockIconContainer = styled.div`
-  margin-right: 5px;
-  height: 14px;
 `;
 
 const dataProvider = {
@@ -145,41 +127,39 @@ const DisplayValues = ({
   errors,
   productIdentifier,
   productLabels,
-}: DisplayValuesProps) => (
-  <>
-    {values.map((value: Value) => {
-      const assetCollectionTitle = `${getAttributeGroupLabel(attributeGroups, value.attribute.group, context.locale)} /
-      ${getAttributeLabel(value.attribute, context.locale)}`;
+}: DisplayValuesProps) => {
+  const translate = useTranslate();
 
-      return (
+  return (
+    <>
+      {values.map(value => (
         <AssetCollectionContainer key={value.attribute.code} data-attribute={value.attribute.code}>
           <SectionTitle>
-            {!value.editable && (
-              <LockIconContainer>
-                <LockIcon size={14} />
-              </LockIconContainer>
-            )}
-            <AttributeBreadCrumb readonly={!value.editable}>{assetCollectionTitle}</AttributeBreadCrumb>
+            {!value.editable && <LockIcon size={18} />}
+            <SectionTitle.Title readonly={!value.editable}>
+              {getAttributeGroupLabel(attributeGroups, value.attribute.group, context.locale)}&nbsp;/&nbsp;
+              {getAttributeLabel(value.attribute, context.locale)}
+            </SectionTitle.Title>
             {!isValueComplete(value, family, context.channel) && (
               <IncompleteIndicator>
                 <Pill />
-                <Label>{__('pim_asset_manager.attribute.is_required')}</Label>
+                <Label>{translate('pim_asset_manager.attribute.is_required')}</Label>
               </IncompleteIndicator>
             )}
-            <Spacer />
-            <ResultCounter count={value.data.length} labelKey={'pim_asset_manager.asset_counter'} />
-            <Separator />
+            <SectionTitle.Spacer />
+            <SectionTitle.Information>
+              {translate('pim_asset_manager.asset_counter', {count: value.data.length}, value.data.length)}
+            </SectionTitle.Information>
             {(value.channel !== null || value.locale !== null) && (
               <>
-                <ContextLabel>
-                  {value.channel !== null && <ChannelLabel channelCode={value.channel} />}
-                  {value.locale !== null && <LocaleLabel localeCode={value.locale} />}
-                </ContextLabel>
-                <Separator />
+                <SectionTitle.Separator />
+                {value.channel !== null && <ChannelLabel channelCode={value.channel} />}
+                {value.locale !== null && <LocaleLabel localeCode={value.locale} />}
               </>
             )}
             {value.editable && (
-              <ButtonContainer>
+              <>
+                <SectionTitle.Separator />
                 <MassUploader
                   dataProvider={dataProvider}
                   assetFamilyIdentifier={value.attribute.referenceDataName}
@@ -198,15 +178,10 @@ const DisplayValues = ({
                   }
                   productLabels={productLabels}
                 />
-                <MoreButton
-                  elements={[
-                    {
-                      label: __('pim_asset_manager.asset_collection.remove_all_assets'),
-                      action: () => onChange(updateValueData(value, emptyCollection(value.data))),
-                    },
-                  ]}
+                <SecondaryActions
+                  onRemoveAllAssets={() => onChange(updateValueData(value, emptyCollection(value.data)))}
                 />
-              </ButtonContainer>
+              </>
             )}
           </SectionTitle>
           <RuleNotification attributeCode={value.attribute.code} rulesNumberByAttribute={rulesNumberByAttribute} />
@@ -220,10 +195,48 @@ const DisplayValues = ({
             onChange={(assetCodes: AssetCode[]) => onChange(updateValueData(value, assetCodes))}
           />
         </AssetCollectionContainer>
-      );
-    })}
-  </>
-);
+      ))}
+    </>
+  );
+};
+
+type SecondaryActionsProps = {
+  onRemoveAllAssets: () => void;
+};
+
+const SecondaryActions = ({onRemoveAllAssets}: SecondaryActionsProps) => {
+  const translate = useTranslate();
+  const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
+
+  const handleItemClick = (callback: () => void) => () => {
+    closeDropdown();
+    callback();
+  };
+
+  return (
+    <Dropdown>
+      <IconButton
+        title={translate('pim_common.other_actions')}
+        icon={<MoreIcon />}
+        level="tertiary"
+        ghost="borderless"
+        onClick={openDropdown}
+      />
+      {isDropdownOpen && (
+        <Dropdown.Overlay onClose={closeDropdown}>
+          <Dropdown.Header>
+            <Dropdown.Title>{translate('pim_common.other_actions')}</Dropdown.Title>
+          </Dropdown.Header>
+          <Dropdown.ItemCollection>
+            <Dropdown.Item onClick={handleItemClick(onRemoveAllAssets)}>
+              {translate('pim_asset_manager.asset_collection.remove_all_assets')}
+            </Dropdown.Item>
+          </Dropdown.ItemCollection>
+        </Dropdown.Overlay>
+      )}
+    </Dropdown>
+  );
+};
 
 const List = ({
   values,
@@ -235,41 +248,45 @@ const List = ({
   productIdentifier,
   productLabels,
   onChange,
-}: ListStateProps & ListDispatchProps) => (
-  <ReloadPreviewProvider>
-    <AssetCollectionList>
-      {hasValues(values) ? (
-        <DisplayValues
-          values={values}
-          attributeGroups={attributeGroups}
-          family={family}
-          context={context}
-          rulesNumberByAttribute={rulesNumberByAttribute}
-          onChange={onChange}
-          errors={errors}
-          productIdentifier={productIdentifier}
-          productLabels={productLabels}
-        />
-      ) : (
-        <>
-          <Information
-            illustration={<AssetsIllustration />}
-            title={`👋  ${__('pim_asset_manager.asset_collection.helper.title')}`}
-          >
-            <p>{__('pim_asset_manager.asset_collection.helper.text')}</p>
-            <Link href="https://help.akeneo.com/pim/v4/articles/manage-your-attributes.html" target="_blank">
-              {__('pim_asset_manager.asset_collection.helper.link')}
-            </Link>
-          </Information>
-          <NoDataSection>
-            <AssetsIllustration size={256} />
-            <NoDataTitle>{__('pim_asset_manager.asset_collection.no_asset.title')}</NoDataTitle>
-          </NoDataSection>
-        </>
-      )}
-    </AssetCollectionList>
-  </ReloadPreviewProvider>
-);
+}: ListStateProps & ListDispatchProps) => {
+  const translate = useTranslate();
+
+  return (
+    <ReloadPreviewProvider>
+      <AssetCollectionList>
+        {hasValues(values) ? (
+          <DisplayValues
+            values={values}
+            attributeGroups={attributeGroups}
+            family={family}
+            context={context}
+            rulesNumberByAttribute={rulesNumberByAttribute}
+            onChange={onChange}
+            errors={errors}
+            productIdentifier={productIdentifier}
+            productLabels={productLabels}
+          />
+        ) : (
+          <>
+            <Information
+              illustration={<AssetsIllustration />}
+              title={`👋  ${translate('pim_asset_manager.asset_collection.helper.title')}`}
+            >
+              <p>{translate('pim_asset_manager.asset_collection.helper.text')}</p>
+              <Link href="https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html" target="_blank">
+                {translate('pim_asset_manager.asset_collection.helper.link')}
+              </Link>
+            </Information>
+            <NoDataSection>
+              <AssetsIllustration size={256} />
+              <NoDataTitle>{translate('pim_asset_manager.asset_collection.no_asset.title')}</NoDataTitle>
+            </NoDataSection>
+          </>
+        )}
+      </AssetCollectionList>
+    </ReloadPreviewProvider>
+  );
+};
 
 export default connect(
   (state: AssetCollectionState): ListStateProps => ({
