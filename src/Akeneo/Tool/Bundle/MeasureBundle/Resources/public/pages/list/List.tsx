@@ -49,7 +49,7 @@ const List = () => {
   const [sortColumn, getSortDirection, toggleSortDirection] = useSorting('label');
   const [measurementFamilies] = useMeasurementFamilies();
   const [isCreateModalOpen, openCreateModal, closeCreateModal] = useToggleState(false);
-  const settingsHref = `#${useRoute('pim_enrich_attribute_index')}`;
+  const settingsHref = `#${useRoute('pim_settings_index')}`;
 
   const handleModalClose = useCallback(
     (createdMeasurementFamilyCode?: MeasurementFamilyCode) => {
@@ -89,7 +89,7 @@ const List = () => {
         }
         breadcrumb={
           <Breadcrumb>
-            <Breadcrumb.Step href={settingsHref}>{__('pim_menu.tab.settings')}</Breadcrumb.Step>
+            <Breadcrumb.Step href={`#${settingsHref}`}>{__('pim_menu.tab.settings')}</Breadcrumb.Step>
             <Breadcrumb.Step>{__('pim_menu.item.measurements')}</Breadcrumb.Step>
           </Breadcrumb>
         }
