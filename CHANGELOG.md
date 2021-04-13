@@ -34,6 +34,7 @@
 - PIM-9788: Fix locales list on rule concatenate action
 - PIM-9791: Fix memory issue on proposals widget
 - PIM-9682: Link to proposal product model is completely wrong
+- PIM-9800: Fix event not sent issue when creating products or product models
 
 ## Improvements
 

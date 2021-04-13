@@ -112,6 +112,32 @@ class SqlGetConnectorProductModelsWithPermissions implements GetConnectorProduct
         return $filteredProductModels[0];
     }
 
+    public function fromProductModelCodes(
+        array $productModelCodes,
+        int $userId,
+        ?array $attributesToFilterOn,
+        ?string $channelToFilterOn,
+        ?array $localesToFilterOn
+    ): ConnectorProductModelList {
+        $viewableProductModelsCodes = $this->filterViewableProductModelCodes($productModelCodes, $userId);
+
+        $connectorProductModelList = $this->getConnectorProductModels->fromProductModelCodes(
+            $viewableProductModelsCodes,
+            $userId,
+            $attributesToFilterOn,
+            $channelToFilterOn,
+            $localesToFilterOn
+        );
+
+        $productModels = $connectorProductModelList->connectorProductModels();
+
+        $filteredProductModels = $this->filterConnectorProductModelsGivenPermissions($productModels, $userId);
+
+        return new ConnectorProductModelList(
+            $connectorProductModelList->totalNumberOfProductModels(), $filteredProductModels
+        );
+    }
+
     private function filterConnectorProductModelsGivenPermissions(array $connectorProductModels, int $userId): array
     {
         $filteredProductModels = $this->filterNotGrantedCategoryCodes($connectorProductModels, $userId);
