@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\TailoredExport\Connector\Processor\Operation\OperationHandler;
+use Akeneo\Pim\TailoredExport\Connector\Processor\ValueSelector\ValueSelectorRegistry;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -18,13 +19,16 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
     private ?StepExecution $stepExecution = null;
     private OperationHandler $operationHandler;
     private GetAttributes $getAttributes;
+    private ValueSelectorRegistry $valueSelectorRegistry;
 
     public function __construct(
         OperationHandler $operationHandler,
-        GetAttributes $getAttributes
+        GetAttributes $getAttributes,
+        ValueSelectorRegistry $valueSelectorRegistry
     ) {
         $this->operationHandler = $operationHandler;
         $this->getAttributes = $getAttributes;
+        $this->valueSelectorRegistry = $valueSelectorRegistry;
     }
 
     /**
@@ -48,9 +52,10 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
                 $attribute = $this->getAttributes->forCode($source['code']);
 
                 //TODO $attribute can be null
-
                 $operationSourceValues[$source['uuid']] = $this->applyOperations($source['operations'], $attribute, $value);
-                $operationSourceValues[$source['uuid']] = $this->applySelection($source['selection'], $operationSourceValues[$source['uuid']]);
+                if (isset($source['selection'])) {
+                    $operationSourceValues[$source['uuid']] = $this->applySelection($source['selection'], $attribute, $operationSourceValues[$source['uuid']]);
+                }
             }
 
             $value = $this->applyFormat($column['format'], $operationSourceValues);
@@ -63,30 +68,18 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
 
     private function applyOperations(array $operations, Attribute $attribute, ?ValueInterface $value)
     {
-        $value = $this->operationHandler->handleOperations($operations, $attribute, $value);
-
-        return $value;
+        return $this->operationHandler->handleOperations($operations, $attribute, $value);
     }
 
-    private function applySelection($selection, $value)
+    private function applySelection(array $selection, Attribute $attribute, $value): string
     {
-        // TODO $noramlizedValue = '';
-
-        // switch ($selection['type']) {
-        //     case 'amount':
-        //         $noramlizedValue = $value->getData();
-        //         //            default:
-        //         //                throw new \RuntimeException();
-        // }
-
-        return $value;
+        return $this->valueSelectorRegistry->applySelection($selection, $attribute, $value);
     }
 
     private function applyFormat($format, $operationSourceValues)
     {
         $value = '';
         if ('concat' === $format['type']) {
-
             foreach ($format['elements'] as $element) {
                 if ('source' === $element['type']) {
                     $value .= $operationSourceValues[$element['value']];

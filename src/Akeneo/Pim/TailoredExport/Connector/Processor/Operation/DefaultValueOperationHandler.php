@@ -14,8 +14,13 @@ class DefaultValueOperationHandler implements OperationHandlerInterface
         return $operation['value'];
     }
 
-    public function supports(array $operation, Attribute $attribute, $value)
+    public function supports(array $operation, Attribute $attribute, $value): bool
     {
-        return 'default_value' === $operation['type'] && $value instanceof ValueInterface && (is_null($value) || !$value->hasData());
+        return
+            'default_value' === $operation['type']
+            && (
+                is_null($value)
+                || ($value instanceof ValueInterface && !$value->hasData())
+            );
     }
 }

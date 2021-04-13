@@ -103,7 +103,6 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
                     ],
                 ],
             ],
-
             [
                 'target' => 'weight',
                 'sources' => [
@@ -117,13 +116,29 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
                                 'type' => 'default_value',
                                 'value' => 'toto',
                             ],
-                            // [
-                            //     'type' => 'convert',
-                            //     'unit' => 'CENTIMETER',
-                            // ],
+                            [
+                                 'type' => 'convert',
+                                 'unit' => 'MILLIGRAM',
+                            ],
                         ],
                         'selection' => [
                             'type' => 'amount', // unit_code, unit_label, amount
+                        ],
+                    ],
+                    [
+                        'uuid' => '0002',
+                        'code' => 'weight',
+                        'locale' => null,
+                        'channel' => null,
+                        'operations' => [
+                            [
+                                'type' => 'convert',
+                                'unit' => 'MILLIGRAM',
+                            ],
+                        ],
+                        'selection' => [
+                            'type' => 'unit_label',
+                            'locale' => 'fr_FR'
                         ],
                     ],
                 ],
@@ -133,6 +148,56 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
                         [
                             'type' => 'source',
                             'value' => '0001',
+                        ],
+                        [
+                            'type' => 'string',
+                            'value' => ' ',
+                        ],
+                        [
+                            'type' => 'source',
+                            'value' => '0002',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'target' => 'weight-customized',
+                'sources' => [
+                    [
+                        'uuid' => '0001',
+                        'code' => 'weight',
+                        'locale' => null,
+                        'channel' => null,
+                        'operations' => [
+                            [
+                                'type' => 'convert',
+                                'unit' => 'MILLIGRAM',
+                            ],
+                        ],
+                        'selection' => [
+                            'type' => 'amount',
+                        ],
+                    ],
+                ],
+                'format' => [
+                    'type' => 'concat',
+                    'elements' => [
+                        [
+                            'type' => 'source',
+                            'value' => '0001',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'target' => 'weight-unit-customized',
+                'sources' => [],
+                'format' => [
+                    'type' => 'concat',
+                    'elements' => [
+                        [
+                            'type' => 'string',
+                            'value' => 'MILLIGRAM',
                         ],
                     ],
                 ],

@@ -14,7 +14,7 @@ class ReplaceScalarOperationHandler implements OperationHandlerInterface
         return $operation['mapping'][$value->getData()] ?? $value;
     }
 
-    public function supports(array $operation, Attribute $attribute, $value)
+    public function supports(array $operation, Attribute $attribute, $value): bool
     {
         return 'replace' === $operation['type'] && $value instanceof ScalarValue && $value->hasData();
     }

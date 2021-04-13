@@ -17,7 +17,6 @@ class OperationHandler
     }
 
     public function handleOperations(array $operations, Attribute $attribute, ?ValueInterface $value)
-    //TODO return: string
     {
         foreach ($this->operationHandlers as $operationHandler) {
             foreach ($operations as $operation) {
