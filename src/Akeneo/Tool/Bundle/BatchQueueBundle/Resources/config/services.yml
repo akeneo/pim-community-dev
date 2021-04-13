@@ -1,7 +1,5 @@
 parameters:
     ramsey.uuid.provider.node.system_node_provider.class: Ramsey\Uuid\Provider\Node\SystemNodeProvider
-    akeneo_batch_queue.hydrator_job_execution_message_hydrator.class: Akeneo\Tool\Bundle\BatchQueueBundle\Hydrator\JobExecutionMessageHydrator
-    akeneo_batch_queue.queue.database_job_execution_queue.class: Akeneo\Tool\Bundle\BatchQueueBundle\Queue\DatabaseJobExecutionQueue
     akeneo_batch_queue.queue.job_execution_message.class: Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage
     akeneo_batch_queue.queue.job_execution_message_repository.class: Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository
     akeneo_batch_queue.manager.job_execution_manager.class: Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager
@@ -11,22 +9,10 @@ services:
     ramsey.uuid.provider.node.system_node_provider:
         class: '%ramsey.uuid.provider.node.system_node_provider.class%'
 
-    akeneo_batch_queue.hydrator_job_execution_message_hydrator:
-        class: '%akeneo_batch_queue.hydrator_job_execution_message_hydrator.class%'
-        arguments:
-            - '@akeneo_batch.entity_manager.persisted_connection_entity_manager'
-
     akeneo_batch_queue.queue.job_execution_message_repository:
         class: '%akeneo_batch_queue.queue.job_execution_message_repository.class%'
         arguments:
-            - '@akeneo_batch.entity_manager.persisted_connection_entity_manager'
-            - '@akeneo_batch_queue.hydrator_job_execution_message_hydrator'
-
-    # TODO CPM-154: to remove
-    akeneo_batch_queue.queue.database_job_execution_queue:
-        class: '%akeneo_batch_queue.queue.database_job_execution_queue.class%'
-        arguments:
-            - '@akeneo_batch_queue.queue.job_execution_message_repository'
+            - '@database_connection'
 
     akeneo_batch_queue.queue.job_execution_queue:
         class: 'Akeneo\Tool\Bundle\BatchQueueBundle\Queue\MessengerJobExecutionQueue'
@@ -79,23 +65,6 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.logger.batch_log_handler'
             - '%kernel.environment%'
-
-    akeneo_batch_queue.query.delete_job_execution_message_orphans:
-        class: Akeneo\Tool\Bundle\BatchQueueBundle\Query\SqlDeleteJobExecutionMessageOrphansQuery
-        arguments:
-            - '@database_connection'
-
-    # TODO CPM-154: remove command
-    Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand:
-        arguments:
-            - '@logger'
-            - '@akeneo_batch_queue.queue.database_job_execution_queue'
-            - '@akeneo_batch_queue.queue.job_execution_message_repository'
-            - '@akeneo_batch_queue.manager.job_execution_manager'
-            - '%kernel.project_dir%'
-        tags:
-            - { name: console.command }
-            - { name: monolog.logger, channel: job_queue }
 
     Akeneo\Tool\Bundle\BatchQueueBundle\Command\PublishJobToQueueCommand:
         arguments:

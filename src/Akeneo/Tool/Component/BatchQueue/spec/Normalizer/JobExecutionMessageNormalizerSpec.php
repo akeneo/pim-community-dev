@@ -9,6 +9,8 @@ use Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -51,7 +53,7 @@ class JobExecutionMessageNormalizerSpec extends ObjectBehavior
 
         $normalized = $this->normalize($jobMessenger);
         $normalized->shouldBeArray();
-        $normalized['id']->shouldBeNull();
+        $normalized['id']->shouldBeString();
         $normalized['job_execution_id']->shouldBe(1);
         $normalized['consumer']->shouldBeNull();
         $normalized['created_time']->shouldNotBeNull();
@@ -61,24 +63,22 @@ class JobExecutionMessageNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_full_job_messenger()
     {
-        $createdAt = new \DateTime('2020-01-01');
-        $updatedAt = new \DateTime('2020-02-01');
-        $jobMessenger = ImportJobExecutionMessage::createJobExecutionMessageFromDatabase(
-            1,
-            2,
-            'consumer',
-            $createdAt,
-            $updatedAt,
-            ['option1' => 'value1']
-        );
+        $jobMessenger = ImportJobExecutionMessage::createJobExecutionMessageFromNormalized([
+            'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
+            'job_execution_id' => 2,
+            'consumer' => 'consumer',
+            'created_time' => '2020-01-01',
+            'updated_time' => '2020-02-01',
+            'options' => ['option1' => 'value1']
+        ]);
 
         $normalized = $this->normalize($jobMessenger);
         $normalized->shouldBeArray();
-        $normalized['id']->shouldBe(1);
+        $normalized['id']->shouldBeLike(Uuid::fromString('215ee791-1c40-4c60-82fb-cb017d6bcb90'));
         $normalized['job_execution_id']->shouldBe(2);
         $normalized['consumer']->shouldBe('consumer');
-        $normalized['created_time']->shouldBe($createdAt->format('c'));
-        $normalized['updated_time']->shouldBe($updatedAt->format('c'));
+        $normalized['created_time']->shouldBe((new \DateTime('2020-01-01'))->format('c'));
+        $normalized['updated_time']->shouldBe((new \DateTime('2020-02-01'))->format('c'));
         $normalized['options']->shouldBe(['option1' => 'value1']);
     }
 

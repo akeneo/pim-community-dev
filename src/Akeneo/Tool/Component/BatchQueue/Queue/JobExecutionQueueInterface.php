@@ -19,10 +19,4 @@ interface JobExecutionQueueInterface
      * Publishes a message into the queue.
      */
     public function publish(JobExecutionMessageInterface $jobExecutionMessage): void;
-
-    /**
-     * @TODO CPM-152: to remove
-     * Gets the last job execution message from the queue, that is not consumed yet.
-     */
-    public function consume(string $consumer, JobQueueConsumerConfiguration $configuration): ?JobExecutionMessageInterface;
 }
