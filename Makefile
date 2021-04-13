@@ -171,3 +171,11 @@ upgrade-front:
 	$(MAKE) javascript-prod
 	$(MAKE) css
 	$(MAKE) javascript-extensions
+
+.PHONY: grth-clean-sso
+grth-clean-sso:
+	git checkout -- config/bundles.php
+	git checkout -- config/packages/security.yml
+	rm config/packages/hslavich_onelogin_saml.yml
+	rm -rf src/Akeneo/Platform/Bundle/AuthenticationBundle
+	rm -rf src/Akeneo/Platform/Component/Authentication
