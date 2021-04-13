@@ -40,8 +40,8 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
     {
         $this->getSubscribedEvents()->shouldReturn(
             [
-                StorageEvents::POST_SAVE => 'createAndDispatchProductEvents',
-                StorageEvents::POST_SAVE_ALL => 'dispatchBufferedProductEvents',
+                StorageEvents::POST_SAVE => ['createAndDispatchProductEvents', -10],
+                StorageEvents::POST_SAVE_ALL => ['dispatchBufferedProductEvents', -10],
             ]
         );
     }
