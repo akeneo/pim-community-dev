@@ -50,7 +50,7 @@ class ConnectivityContext implements Context, KernelAwareContext
     /**
      * @Given /^(\d+) event(?:s|) of type "([^"]*)" should have been raised(?: from the "([^"]*)")?$/
      */
-    public function eventsOfTypeShouldHaveBeenRaised(int $expectedCount, string $type, ?string $eventOrigin): void
+    public function eventsOfTypeShouldHaveBeenRaised(int $expectedCount, string $type, ?string $eventOrigin = null): void
     {
         while (!empty($envelopes = $this->transport->get())) {
             foreach ($envelopes as $envelope) {

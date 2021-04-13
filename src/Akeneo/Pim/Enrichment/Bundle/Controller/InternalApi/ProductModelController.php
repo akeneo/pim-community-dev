@@ -246,14 +246,13 @@ class ProductModelController
         $productModel = $this->findProductModelOr404($id);
         $data = json_decode($request->getContent(), true);
         $data = $this->productEditDataFilter->filterCollection($data, null, ['product' => $productModel]);
-
         $this->updateProductModel($productModel, $data);
 
         $violations = $this->validator->validate($productModel);
         $violations->addAll($this->localizedConverter->getViolations());
 
         if (0 === $violations->count()) {
-            $this->productModelSaver->save($productModel, ['origin' => ContextOrigin::API]);
+            $this->productModelSaver->save($productModel, ['origin' => ContextOrigin::UI]);
             $normalizedProductModel = $this->normalizeProductModel($productModel);
 
             return new JsonResponse($normalizedProductModel);
