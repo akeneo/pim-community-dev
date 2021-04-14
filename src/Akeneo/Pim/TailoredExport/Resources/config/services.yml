@@ -90,6 +90,13 @@ services:
         tags:
             - { name: 'akeneo.tailored_export.operation_handler', priority: 90 }
 
+    akeneo.tailored_export.processor.operation.replace_multi_select_value:
+        class: 'Akeneo\Pim\TailoredExport\Connector\Processor\Operation\ReplaceMultiSelectOperationHandler'
+        arguments:
+            - '@akeneo.pim.enrichment.factory.value.options'
+        tags:
+            - { name: 'akeneo.tailored_export.operation_handler', priority: 90 }
+
     akeneo.tailored_export.processor.operation.metric_converter:
         class: 'Akeneo\Pim\TailoredExport\Connector\Processor\Operation\MetricConverterOperationHandler'
         arguments:
@@ -107,5 +114,12 @@ services:
         class: 'Akeneo\Pim\TailoredExport\Connector\Processor\ValueSelector\MetricValueSelector'
         arguments:
             - '@akeneo_measurement.public_api.get_unit_translations'
+        tags:
+            - { name: 'akeneo.tailored_export.value_selector' }
+
+    akeneo.tailored_export.processor.value_selector.multi_select:
+        class: 'Akeneo\Pim\TailoredExport\Connector\Processor\ValueSelector\MultiSelectValueSelector'
+        arguments:
+            - '@akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values'
         tags:
             - { name: 'akeneo.tailored_export.value_selector' }
