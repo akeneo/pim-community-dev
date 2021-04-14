@@ -5,6 +5,7 @@ namespace Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler;
 
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
+use Akeneo\Tool\Component\Batch\Query\GetJobInstanceCode;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
@@ -26,19 +27,19 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
     /** Interval in microseconds before checking if the process is still running. */
     private const RUNNING_PROCESS_CHECK_INTERVAL = 200000;
 
-    private JobExecutionMessageRepository $executionMessageRepository;
+    private GetJobInstanceCode $getJobInstanceCode;
     private JobExecutionManager $executionManager;
     private LoggerInterface $logger;
     private string $projectDir;
     private ?UuidInterface $consumer = null;
 
     public function __construct(
-        JobExecutionMessageRepository $executionMessageRepository,
+        GetJobInstanceCode $getJobInstanceCode,
         JobExecutionManager $executionManager,
         LoggerInterface $logger,
         string $projectDir
     ) {
-        $this->executionMessageRepository = $executionMessageRepository;
+        $this->getJobInstanceCode = $getJobInstanceCode;
         $this->executionManager = $executionManager;
         $this->logger = $logger;
         $this->projectDir = $projectDir;
@@ -122,7 +123,7 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
      */
     private function extractArgumentsFromMessage(JobExecutionMessageInterface $jobExecutionMessage): array
     {
-        $jobInstanceCode = $this->executionMessageRepository->getJobInstanceCode($jobExecutionMessage);
+        $jobInstanceCode = $this->getJobInstanceCode->fromJobExecutionId($jobExecutionMessage->getJobExecutionId());
 
         $arguments = [
             $jobInstanceCode,
