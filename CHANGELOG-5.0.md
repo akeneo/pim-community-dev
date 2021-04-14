@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9810: Add missing status filter for published products
+
 # 5.0.16 (2021-04-08)
 
 ## Bug fixes
