@@ -19,26 +19,15 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface, Orde
 {
     private const ORDERING_KEY = 'job_key';
 
-    /** @var UuidInterface */
-    private $id;
-
-    /** @var int */
-    private $jobExecutionId;
-
-    /** @var string */
-    private $consumer;
-
-    /** @var \DateTime */
-    private $createTime;
-
-    /** @var \DateTime */
-    private $updatedTime;
-
-    /** @var array */
-    private $options = [];
+    private UuidInterface $id;
+    private int $jobExecutionId;
+    private ?string $consumer;
+    private \DateTime $createTime;
+    private ?\DateTime $updatedTime;
+    private array $options = [];
 
     private function __construct(
-        ?UuidInterface $id,
+        UuidInterface $id,
         int $jobExecutionId,
         ?string $consumer,
         \DateTime $createTime,

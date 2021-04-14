@@ -1,18 +1,12 @@
 parameters:
     ramsey.uuid.provider.node.system_node_provider.class: Ramsey\Uuid\Provider\Node\SystemNodeProvider
     akeneo_batch_queue.queue.job_execution_message.class: Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage
-    akeneo_batch_queue.queue.job_execution_message_repository.class: Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository
     akeneo_batch_queue.manager.job_execution_manager.class: Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager
     akeneo_batch_queue.launcher.queue_job_launcher.class: Akeneo\Tool\Bundle\BatchQueueBundle\Launcher\QueueJobLauncher
 
 services:
     ramsey.uuid.provider.node.system_node_provider:
         class: '%ramsey.uuid.provider.node.system_node_provider.class%'
-
-    akeneo_batch_queue.queue.job_execution_message_repository:
-        class: '%akeneo_batch_queue.queue.job_execution_message_repository.class%'
-        arguments:
-            - '@database_connection'
 
     akeneo_batch_queue.queue.job_execution_queue:
         class: 'Akeneo\Tool\Bundle\BatchQueueBundle\Queue\MessengerJobExecutionQueue'
@@ -101,7 +95,7 @@ services:
 
     Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler\JobExecutionMessageHandler:
         arguments:
-            - '@akeneo_batch_queue.queue.job_execution_message_repository'
+            - '@akeneo_batch.query.get_job_instance_code'
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@logger'
             - '%kernel.project_dir%'
