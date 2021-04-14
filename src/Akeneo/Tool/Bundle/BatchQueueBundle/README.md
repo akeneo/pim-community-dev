@@ -85,3 +85,30 @@ But it's not rare a job execution exceeds 10 minutes, and we don't want to recei
 
 The first solution is hard to implement, the only advantage is we can retry to execute a failing job. We are not sure we
 want this feature, at least for the moment, so we took the second solution.
+
+### Why do we have an healthcheck date updated regularly?
+
+#### History
+
+Initially, the queue was a homemade queue implemented with Mysql.  
+A daemon (never-ending PHP command) consumed one message at a time. A message corresponds to an Akeneo job to launch. This job is executed in a sub-process. It increase the stability of the daemon because all it pushed all the complexity of a job (ORM, ES, potential memory leaks, etc) inside a sub-process.
+
+- If the daemon fails, it's not an issue: the job updates its status by itself (error, stopped, etc).
+- If the job fails, it's not an issue: the daemon can detect that and changes the status of the job. This way, it does not stay as started, even if there was an unexpected and unrecoverable issue (such as memory leak).
+
+But there is one missing case. Imagine the daemon is failing for any reason, and after that the job too. There is no safeguard to change the job state.
+
+And here come the healthcheck datetime. Updated every X seconds by the daemon, the health check a job allows to say "the job is still running, everything is fine".
+
+If a job has a status at STARTED and the healthcheck is not updated, it means that:
+- the daemon failed and can't change the healthcheck
+- the job itself can't change its own status: it probably failed also
+
+So, in this case, despite the status "STARTED" in database, it's considered as failed in the UI for the final user.
+
+#### Why is it useless when running with docker?
+
+Without docker, if the daemon is killed or fails, the jobs (in sub-processes) is **not** killed.
+
+With docker, if the daemon is killed or fails, as it's the main process, it will stop the contained (and so the sub-process).
+In that case (pretty common case), the healthcheck is useless.
