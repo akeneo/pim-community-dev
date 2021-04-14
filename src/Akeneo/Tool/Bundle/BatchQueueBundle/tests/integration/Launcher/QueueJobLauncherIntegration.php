@@ -39,7 +39,7 @@ class QueueJobLauncherIntegration extends TestCase
 
         $this->getJobLauncher()->launch($jobInstance, $user, ['send_email' => true]);
 
-        $messages = $this->getJobMessagesInQueue();
+        $messages = $this->getJobMessagesInQueues();
         self::assertCount(1, $messages);
         /** @var Message $message */
         $message = $messages[0];
@@ -81,12 +81,12 @@ class QueueJobLauncherIntegration extends TestCase
         return $this->get('doctrine.orm.entity_manager')->getConnection();
     }
 
-    protected function getJobMessagesInQueue(): array
+    protected function getJobMessagesInQueues(): array
     {
         return array_merge(
-            $this->get('akeneo_integration_tests.pub_sub_status.ui_job')->getMessagesInQueue(),
-            $this->get('akeneo_integration_tests.pub_sub_status.import_export_job')->getMessagesInQueue(),
-            $this->get('akeneo_integration_tests.pub_sub_status.data_maintenance_job')->getMessagesInQueue(),
+            $this->get('akeneo_integration_tests.pub_sub_queue_status.ui_job')->getMessagesInQueue(),
+            $this->get('akeneo_integration_tests.pub_sub_queue_status.import_export_job')->getMessagesInQueue(),
+            $this->get('akeneo_integration_tests.pub_sub_queue_status.data_maintenance_job')->getMessagesInQueue(),
         );
     }
 

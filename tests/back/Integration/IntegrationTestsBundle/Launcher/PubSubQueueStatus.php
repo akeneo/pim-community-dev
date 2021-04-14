@@ -1,15 +1,5 @@
 <?php
-
 declare(strict_types=1);
-
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2021 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace AkeneoTest\Integration\IntegrationTestsBundle\Launcher;
 
@@ -18,10 +8,13 @@ use Google\Cloud\Core\Exception\ServiceException;
 use Google\Cloud\PubSub\Message;
 
 /**
+ * This class provides some helping method to test the message in a pub/sub queue.
+ * For testing purposes only.
+ *
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class PubSubStatus
+final class PubSubQueueStatus
 {
     private PubSubClientFactory $pubSubClientFactory;
     private string $projectId;
