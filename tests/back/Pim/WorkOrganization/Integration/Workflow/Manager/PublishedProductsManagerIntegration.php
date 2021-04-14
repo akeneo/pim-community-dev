@@ -255,4 +255,3 @@ class PublishedProductsManagerIntegration extends TestCase
         return $this->get('pimee_workflow.query.get_published_product_completenesses');
     }
 }
-
