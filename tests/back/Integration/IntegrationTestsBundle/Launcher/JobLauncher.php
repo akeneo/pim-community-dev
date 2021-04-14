@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\IntegrationTestsBundle\Launcher;
 
-use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\PubSub\PubSubStatusCheckerInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Command\BatchCommand;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubStatus;
+use AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus;
 use Doctrine\DBAL\Driver\Connection;
 use Google\Cloud\PubSub\Message;
 use Psr\Container\ContainerInterface;
@@ -41,20 +40,20 @@ class JobLauncher
     private KernelInterface $kernel;
     private Connection $dbConnection;
     private ContainerInterface $receiverLocator;
-    /** @var PubSubStatus[] */
-    private iterable $pubSubStatuses;
+    /** @var PubSubQueueStatus[] */
+    private iterable $pubSubQueueStatuses;
 
     public function __construct(
         KernelInterface $kernel,
         Connection $dbConnection,
         ContainerInterface $receiverLocator,
-        iterable $pubSubStatuses
+        iterable $pubSubQueueStatuses
     ) {
-        Assert::allIsInstanceOf($pubSubStatuses, PubSubStatus::class);
+        Assert::allIsInstanceOf($pubSubQueueStatuses, PubSubQueueStatus::class);
         $this->kernel = $kernel;
         $this->dbConnection = $dbConnection;
         $this->receiverLocator = $receiverLocator;
-        $this->pubSubStatuses = $pubSubStatuses;
+        $this->pubSubQueueStatuses = $pubSubQueueStatuses;
     }
 
     /**
@@ -293,8 +292,8 @@ class JobLauncher
      */
     public function hasJobInQueue(): bool
     {
-        /** @var PubSubStatus $pubSubStatusChecker */
-        foreach ($this->pubSubStatuses as $pubSubStatus) {
+        /** @var PubSubQueueStatus $pubSubStatusChecker */
+        foreach ($this->pubSubQueueStatuses as $pubSubStatus) {
             if ($pubSubStatus->hasMessageInQueue()) {
                 return true;
             }
@@ -311,8 +310,8 @@ class JobLauncher
     public function getMessagesInQueues(): array
     {
         return array_merge(...array_map(
-            fn (PubSubStatus $pubSubStatus): array => $pubSubStatus->getMessagesInQueue(),
-            iterator_to_array($this->pubSubStatuses)
+            fn (PubSubQueueStatus $pubSubQueueStatus): array => $pubSubQueueStatus->getMessagesInQueue(),
+            iterator_to_array($this->pubSubQueueStatuses)
         ));
     }
 
