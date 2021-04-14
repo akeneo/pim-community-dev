@@ -45,6 +45,11 @@ pim_enrich_categorytree_edit:
     requirements:
         id: \d+
 
+pim_enrich_categorytree_tree:
+    path: /{id}/tree
+    requirements:
+        id: \d+
+
 pim_enrich_categorytree_remove:
     path: /{id}/remove
     defaults: { _controller: pim_enrich.controller.category_tree.product:removeAction }
