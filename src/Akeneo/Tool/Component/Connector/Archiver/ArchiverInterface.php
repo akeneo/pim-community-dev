@@ -52,6 +52,15 @@ interface ArchiverInterface
     public function getArchive(JobExecution $jobExecution, string $key);
 
     /**
+     * Get the root objects (files + directories) of a job execution
+     *
+     * @param JobExecution $jobExecution
+     *
+     * @return array
+     */
+    public function listContents(JobExecution $jobExecution): array;
+
+    /**
      * Get the archiver name
      *
      * @return string

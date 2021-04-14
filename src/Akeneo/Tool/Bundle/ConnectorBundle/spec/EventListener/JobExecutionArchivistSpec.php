@@ -101,31 +101,36 @@ class JobExecutionArchivistSpec extends ObjectBehavior
         $this->beforeStatusUpgrade($event);
     }
 
-    function it_can_count_the_total_number_of_archives_for_a_given_job_execution(
+    function it_tells_if_there_are_at_least_two_archives_for_a_job_execution(
         JobExecution $jobExecution,
+        JobExecution $otherJobExecution,
         ArchiverInterface $archiver1,
         ArchiverInterface $archiver2,
         ArchiverInterface $archiver3
     ) {
         $archiver1->getName()->willReturn('output');
         $this->registerArchiver($archiver1);
-        $archiver2->getName()->willReturn('jobs');
+        $archiver2->getName()->willReturn('media');
         $this->registerArchiver($archiver2);
-        $archiver3->getName()->willReturn('media');
+        $archiver3->getName()->willReturn('jobs');
         $this->registerArchiver($archiver3);
 
         $jobExecution->isRunning()->willReturn(false);
-        $archiver1->getArchives($jobExecution, true)->shouldBeCalled()->willReturn([
-            'file1.csv',
-            'file2.xlsx',
+        $archiver1->listContents($jobExecution)->shouldBeCalled()->willReturn([
+            ['path' => 'file1.csv', 'type' => 'file'],
         ]);
-        $archiver2->getArchives($jobExecution, true)->shouldBeCalled()->willReturn([]);
-        $archiver3->getArchives($jobExecution, true)->shouldBeCalled()->willReturn([
-            'files/sku/test.jpg',
-            'files/sku/image.png',
-            'file/sku/notice.pdf',
-        ]);
+        $archiver2->listContents($jobExecution)->shouldBeCalled()->willReturn([]);
+        $archiver3->listContents($jobExecution)->shouldBeCalled()->willReturn([]);
+        $this->hasAtLeastTwoArchives($jobExecution)->shouldReturn(false);
 
-        $this->totalArchivesCount($jobExecution)->shouldReturn(5);
+        $otherJobExecution->isRunning()->willReturn(false);
+        $archiver1->listContents($otherJobExecution)->shouldBeCalled()->willReturn([
+            ['path' => 'export.xlsx', 'type' => 'file'],
+        ]);
+        $archiver2->listContents($otherJobExecution)->shouldBeCalled()->willReturn([
+            ['path' => 'files', 'type' => 'directory'],
+        ]);
+        $archiver3->listContents($otherJobExecution)->shouldNotBeCalled();
+        $this->hasAtLeastTwoArchives($otherJobExecution)->shouldReturn(true);
     }
 }

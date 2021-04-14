@@ -52,6 +52,16 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function listContents(JobExecution $jobExecution): array
+    {
+        $directory = dirname($this->getRelativeArchivePath($jobExecution));
+
+        return $this->filesystem->listContents($directory);
+    }
+
+    /**
      * Get the relative archive path in the file system
      *
      * @param JobExecution $jobExecution

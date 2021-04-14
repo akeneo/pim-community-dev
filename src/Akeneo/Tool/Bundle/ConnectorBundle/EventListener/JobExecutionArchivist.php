@@ -90,20 +90,19 @@ class JobExecutionArchivist implements EventSubscriberInterface
         return $result;
     }
 
-    public function totalArchivesCount(JobExecution $jobExecution): int
+    public function hasAtLeastTwoArchives(JobExecution $jobExecution): bool
     {
         $count = 0;
         if (!$jobExecution->isRunning()) {
-            return \array_reduce(
-                $this->archivers,
-                function (int $carry, ArchiverInterface $archiver) use ($jobExecution): int {
-                    return $carry + count($archiver->getArchives($jobExecution, true));
-                },
-                $count
-            );
+            foreach ($this->archivers as $archiver) {
+                $count += \count($archiver->listContents($jobExecution));
+                if ($count >= 2) {
+                    return true;
+                }
+            }
         }
 
-        return $count;
+        return false;
     }
 
     /**
