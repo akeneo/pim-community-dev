@@ -28,51 +28,51 @@ also handle messages from multiple queues, the first queue will be treated in pr
 ```text
                                                   Queue system
 User                                             (GooglePubSub
-bash command         SymfonyMessenger          / Doctrine / ...)    JobExecutionMessageHandler    Job Process
-|                         |                           |                      |                        |
-| Consume 1 message       |                           |                      |                        |
-| ----------------------> |                           |                      |                        |
-|                         |                           |                      |                        |
-|                         | Is there a new message?   |                      |                        |
-|                         | ------------------------> |                      |                        |
-|                         |                           |                      |                        |
-|                         |           Here is message |                      |                        |
-|                         | <------------------------ |                      |                        |
-|                         |                           |                      |                        |
-|                         | Acknowledge message       |                      |                        |
-|                         | (GooglePubSub only)       |                      |                        |
-|                         | ------------------------> |                      |                        |
-|                         |                           |                      |                        |
-|                         | Spread message to handler |                      |                        |
-|                         | --------------------------+--------------------> |                        |
-|                         |                           |                      |                        |
-|                         |                           |                      | Run job (new process)  |
-|                         |                           |                      | ---------------------> |
-|                         |                           |                      |                        |
-|                         |                           |                      |                        |
-|                         |                           |                      |  Update health check   |
-|                         |                           |                      | every x seconds while  |
-|                         |                           |                      |     job is running     |
-|                         |                           |                      |                        |
-|                         |                           |                      |                        |
-|                         |                           |                      |         Job terminated |
-|                         |                           |                      | <--------------------- |
-|                         |                           |                      |                        |
-|                         |                   Message handling is terminated |                        |
-|                         | <-------------------------+--------------------- |                        |
-|                         |                           |                      |                        |
-|                         | Acknowledge message       |                      |                        |
-|                         | (except GooglePubSub)     |                      |                        |
-|                         | ------------------------> |                      |                        |
-|                         |                           |                      |                        |
-|  The message is handled |                           |                      |                        |
-| <---------------------- |                           |                      |                        |
-|                         |                           |                      |                        |
-|                         |                           |                      |                        |
-| Consume 1 message       |                           |                      |                        |
-| ----------------------> |                           |                      |                        |
-|                         |                           |                      |                        |
-| ...                     |                           |                      |                        |
+bash command        Symfony Messenger          / Doctrine / ...)    JobExecutionMessageHandler     Job Process
+|                         |                           |                      |                          |
+| Consume 1 message       |                           |                      |                          |
+| ----------------------> |                           |                      |                          |
+|                         |                           |                      |                          |
+|                         | Is there a new message?   |                      |                          |
+|                         | ------------------------> |                      |                          |
+|                         |                           |                      |                          |
+|                         |           Here is message |                      |                          |
+|                         | <------------------------ |                      |                          |
+|                         |                           |                      |                          |
+|                         | Acknowledge message       |                      |                          |
+|                         | (GooglePubSub only)       |                      |                          |
+|                         | ------------------------> |                      |                          |
+|                         |                           |                      |                          |
+|                         | Spread message to handler |                      |                          |
+|                         | --------------------------+--------------------> |                          |
+|                         |                           |                      |                          |
+|                         |                           |                      | Run job (in sub-process) |
+|                         |                           |                      | -----------------------> |
+|                         |                           |                      |                          |
+|                         |                           |                      |                          |
+|                         |                           |                      |   Update health check    |
+|                         |                           |                      |  every x seconds while   |
+|                         |                           |                      |      job is running      |
+|                         |                           |                      |                          |
+|                         |                           |                      |                          |
+|                         |                           |                      |           Job terminated |
+|                         |                           |                      | <----------------------- |
+|                         |                           |                      |                          |
+|                         |                   Message handling is terminated |                          |
+|                         | <-------------------------+--------------------- |                          |
+|                         |                           |                      |                          |
+|                         | Acknowledge message       |                      |                          |
+|                         | (except GooglePubSub)     |                      |                          |
+|                         | ------------------------> |                      |                          |
+|                         |                           |                      |                          |
+|  The message is handled |                           |                      |                          |
+| <---------------------- |                           |                      |                          |
+|                         |                           |                      |                          |
+|                         |                           |                      |                          |
+| Consume 1 message       |                           |                      |                          |
+| ----------------------> |                           |                      |                          |
+|                         |                           |                      |                          |
+| ...                     |                           |                      |                          |
 ```
 ### Why do we ackowledge the message differently with Google PubSub?
 
