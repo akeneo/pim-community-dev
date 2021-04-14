@@ -10,8 +10,7 @@ akeneo_referenceentity:
     record:
       create: Einen Datensatz erstellen
       edit: Datensatz bearbeiten
-      delete: "Datensatz löschen\n"
-      delete_all: Alle Entitätsdatensätze löschen
+      delete: Datensätze löschen
       list_product: Liste der zu erfassenden verknüpften Produkte
     attribute:
       create: Hinzufügen eines Attributs zu einer Referenzentität
@@ -20,6 +19,9 @@ akeneo_referenceentity:
     option:
       edit: Bearbeitungsoptionen
       delete: Entfernen einer Option
+  jobs:
+    reference_entity_mass_delete:
+      error: 'Massenlöschung fehlgeschlagen bei Aufzeichnung(en) "{{ records }}" mit Fehler: "{{ error }}"'
 pim_analytics:
   info_type:
     nb_reference_entities: Anzahl der Referenzobjekte
@@ -31,5 +33,22 @@ pim_analytics:
     average_percentage_localizable_only_attributes: Durchschnittlicher Prozentsatz der gebietsschemaspezifischen Attribute pro Referenzentität
     average_percentage_scopable_only_attributes: Durchschnittlicher Prozentsatz der kanalspezifischen Attribute pro Referenzentität
     average_percentage_scopable_and_localizable_attributes: Durchschnittlicher Prozentsatz der gebietsschemaspezifischen und kanalspezifischen Attribute pro Referenzentität
+pim_datagrid:
+  cells:
+    type:
+      reference_entity_mass_delete_records: Massenlöschung von Datensätzen ausführen
+  reference_entity_mass_delete_records: Massenlöschung
+job_execution:
+  summary:
+    records: Datensätze
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: Massenlöschung
+pim_mass_edit:
+  notification:
+    reference_entity_mass_delete_records:
+      warning: Datensätze erfolgreich mit Warnungen gelöscht
+      success: Datensätze erfolgreich gelöscht
+      error: Löschen des Datensatzes fehlgeschlagen
 akeneo_reference_entity: Referenzentität Einzelverlinkung
 akeneo_reference_entity_collection: Referenzentität Mehrfachverlinkungen

@@ -76,7 +76,7 @@ pim_reference_entity:
       confirm: Enregistrer
     delete:
       message: Êtes-vous sûr de vouloir supprimer l’entité «{{ referenceEntityLabel }} » ?
-      title: Attribut
+      title: Entité référentielle
     notification:
       save:
         success: Entité référentielle mise à jour avec succès.
@@ -97,6 +97,10 @@ pim_reference_entity:
       subtitle: Pour gérer des permissions sur l’entité référentielle, vous devez appartenir à au moins un groupe utilisateurs.
       link: Cliquez ici pour ajouter pour votre 1er groupe utilisateurs
   record:
+    mass_delete:
+      extra_information: Si ces ressources sont liées à des produits, les liens seront également supprimés.
+      title: Enregistrements
+    record_selected: '{0} {{ count }} enregistrement sélectionné|{1} {{ count }} enregistrement sélectionné|]1,Inf] {{ count }} enregistrements sélectionnés'
     validation:
       limit_reached: 'Vous ne pouvez pas créer l''enregistrement « {{ %record_label% }} » parce que vous avez atteint la limite de {{ %limit% }} enregistrements pour cette entité référentielle'
       code:
@@ -119,9 +123,10 @@ pim_reference_entity:
     button:
       save: Enregistrer
       create: Créer
-      delete: Supprimer
-      delete_all: Supprimer tous les enregistrements
+      delete: Supprimer l'enregistrement
       back: Retour à la liste
+      edit: Editer l'enregistrement
+      view: Voir l'enregistrement
     product:
       attribute: Attribut produit
       counter: '{{ totalCount }} résultat|{{ totalCount }} résultats'
@@ -159,8 +164,6 @@ pim_reference_entity:
     delete:
       message: Êtes-vous sûr de vouloir supprimer l'enregistrement «{{ recordLabel }}» ? S'il est lié à des produits ou des enregistrements, les liens vers ces derniers seront supprimés.
       title: Enregistrement
-    delete_all:
-      confirm: Êtes-vous sûr de vouloir supprimer tous les enregistrements "{{ entityIdentifier }}" ? S'il sont liés à des produits, les liens vers les produits seront supprimés.
     grid:
       search: Rechercher sur le libellé, le code et les attributs texte
       filter:
@@ -202,9 +205,9 @@ pim_reference_entity:
       delete:
         success: L'enregistrement «{{ code }}» a bien été supprimé.
         fail: Une erreur s'est produite lors de la suppression de l'enregistrement
-      delete_all:
-        success: Tous les enregistrements de «{{ entityIdentifier }}» ont bien été supprimés.
-        fail: Une erreur s'est produite pendant la suppression de tous les enregistrements de cette entité référentielle
+      mass_delete:
+        success: La suppression en masse des ressources a été lancée. Vous serez notifié lorsque la tâche sera terminée.
+        fail: "L'erreur suivante s'est produite lors du lancement de la suppression en masse des ressources : {{ error }}"
     completeness:
       label: Complet
   attribute:
@@ -303,12 +306,6 @@ pim_reference_entity:
       sub_title: Entités référentielles
       helper:
         title: Traduction des libellés
-  modal:
-    delete:
-      subtitle: Supprimer l'élément
-      button:
-        cancel: Annuler
-        confirm: Supprimer
 pim_enrich:
   confirmation:
     discard_changes: 'Vous perdrez les modifications effectuées sur l''entité "{{ entity }}" si vous quittez la page.'
@@ -336,6 +333,8 @@ pim_catalog_volume:
     average_max_records_per_reference_entity: Enregistrements par entité de référence
     average_max_attributes_per_reference_entity: Attributs par entité de référence
 batch_jobs:
+  default_steps:
+    mass_delete_records: Exécuter la suppression de masse des enregistrements
   reference_entity_label: Entité référentielle
   csv_reference_entity_record_export:
     label: Export des enregistrements d'entité référentielle en CSV
@@ -349,6 +348,16 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: Import des enregistrements d'entité référentielle en XLSX
     import.label: Import des enregistrements
+pim_datagrid:
+  cells:
+    type:
+      reference_entity_mass_delete_records: Exécuter la suppression de masse des enregistrements
+job_execution:
+  summary:
+    records: Enregistrements
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: Suppression massive des enregistrements
 pim_analytics:
   info_type:
     nb_reference_entities: Nombre d'entités référentielles

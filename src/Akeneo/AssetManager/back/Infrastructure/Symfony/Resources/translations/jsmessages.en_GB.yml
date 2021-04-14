@@ -194,7 +194,7 @@ pim_asset_manager:
       confirm: Save
     delete:
       message: Are you sure you want to delete the asset family "{{ assetFamilyLabel }}"?
-      title: Attribute
+      title: Asset family
     edit:
       discard_changes: You will lose changes to the asset family "{{ assetFamilyLabel }}" if you leave the page.
     notification:
@@ -265,7 +265,6 @@ pim_asset_manager:
       create: Create an asset
       mass_upload: Mass upload
       delete: Delete
-      delete_all: Delete all assets
       back: Back to list
       launch_transformations: Launch transformations
       fullscreen: Fullscreen
@@ -340,8 +339,6 @@ pim_asset_manager:
     delete:
       message: Are you sure you want to delete the asset "{{ assetLabel }}"? If it's linked to products, the links will be removed.
       title: Asset
-    delete_all:
-      confirm: Are you sure you want to delete all "{{ entityIdentifier }}" assets? If they are linked to products, the links to the products will be removed.
     mass_delete:
       confirm: '[0,1]Are you sure you want to delete the {{ assetCount }} selected asset?|]1,Inf]Are you sure you want to delete the {{ assetCount }} selected assets?'
       extra_information: If they are linked to products, the links to the products will be removed.
@@ -407,9 +404,6 @@ pim_asset_manager:
       delete:
         success: Asset "{{ code }}" successfully deleted.
         fail: An error occurred during the deletion of the asset
-      delete_all:
-        success: All "{{ entityIdentifier }}" assets successfully deleted.
-        fail: An error occurred during the deletion of all this asset family's assets
       mass_delete:
         success: The bulk action "Mass delete" has been launched. You will be notified when it is completed.
         fail: An error occured during the launch of the bulk delete job
@@ -536,12 +530,6 @@ pim_asset_manager:
       read_only: This media file is read only
       uploading: Uploading...
     used_as_transformation_target: This field is read only as it is used as a target in an asset transformation.
-  modal:
-    delete:
-      subtitle: Confirm deletion
-      button:
-        cancel: Cancel
-        confirm: Delete
   jobs:
     asset_manager_execute_naming_convention:
       error: 'The naming convention failed on asset "{{ asset }}"'

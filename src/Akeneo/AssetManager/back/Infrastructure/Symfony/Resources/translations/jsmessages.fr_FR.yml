@@ -194,7 +194,7 @@ pim_asset_manager:
       confirm: Enregistrer
     delete:
       message: Êtes-vous sûr de vouloir supprimer la famille de ressources "{{ assetFamilyLabel }} " ?
-      title: Attribut
+      title: Famille de ressources
     edit:
       discard_changes: Vous perdrez les modifications apportées à la famille de ressources "{{ assetFamilyLabel }}" si vous quittez la page.
     notification:
@@ -265,7 +265,6 @@ pim_asset_manager:
       create: Créer une ressource
       mass_upload: Chargement en masse
       delete: Supprimer
-      delete_all: Supprimer toutes les ressources
       back: Retour à la liste
       launch_transformations: Lancer les transformations
       fullscreen: Plein écran
@@ -340,13 +339,30 @@ pim_asset_manager:
     delete:
       message: Êtes-vous sûr de vouloir supprimer la ressource "{{ assetLabel }}" ? Si elle est liée à des produits, les liens vers ces derniers seront supprimés.
       title: Ressource
-    delete_all:
-      confirm: Êtes-vous sûr de vouloir supprimer toutes les ressources "{{ entityIdentifier }}" ? Si elles sont liées à des produits, les liens vers les produits seront supprimés.
     mass_delete:
       confirm: '[0,1]Êtes-vous sûr(e) de vouloir supprimer la sélection de {{ assetCount }} ressources ?|]1,Inf]Êtes-vous sûr(e) de vouloir supprimer les {{ assetCount }} ressources sélectionnées ?'
       extra_information: Si ces ressources sont liées à des produits, les liens seront également supprimés.
       confirm_label: 'Merci de saisir le code de la famille de ressources suivant : "{{ assetFamilyIdentifier }}"'
       title: Ressources
+    mass_edit:
+      subtitle: Modification en masse de ressources
+      title: "[0, 1]Modifier les valeurs d'attributs de {{ count }} ressource|]1,Inf] Modifier les valeurs d'attributs de {{ count }} ressources"
+      attribute_selected: "{0}Zéro attribut sélectionné|{1}1 attribut sélectionné|]1,Inf]{{ count }} attributs sélectionnés"
+      empty_selection:
+        title: Votre sélection d'attribut est vide. Veuillez sélectionner ceux que vous souhaitez modifier.
+        body: Vous ne savez pas ce que fait une modification en masse ?
+        link: Jetez un oeil à cet article.
+      action:
+        append: Ajouter
+        replace: Remplacer
+      select:
+        channel: Sélectionner un canal
+        locale: Sélectionner une locale
+        action: Sélectionner une action
+      helper:
+        content: Veuillez noter qu'il est possible d'ajouter plusieurs fois le même attribut, donc assurez-vous de sélectionner soigneusement vos attributs.
+        link: Vous pouvez consulter notre documentation pour éviter tout problème.
+      unsupported_attribute: Ce type d'attribut "{{ attributeType }}" n'est pas pris en charge
     grid:
       search: Rechercher sur le libellé, le code et les attributs texte
       filter:
@@ -388,12 +404,13 @@ pim_asset_manager:
       delete:
         success: La ressource «{{ code }}» a été supprimée avec succès.
         fail: Une erreur s'est produite lors de la suppression de la ressource.
-      delete_all:
-        success: Toutes les ressources de «{{ entityIdentifier }}» ont été supprimées avec succès.
-        fail: Une erreur s'est produite pendant la suppression des ressources de la famille.
       mass_delete:
         success: La suppression en masse des ressources a été lancée. Vous serez notifié lorsque la tâche sera terminée.
+        fail: Une erreur s'est produite lors du lancement de la tâche de suppression de masse
       mass_edit:
+        launch:
+          success: L'édition en masse des ressources a été lancée. Vous serez notifié lorsque la tâche sera terminée.
+          fail: Une erreur s'est produite lors du lancement de la tâche d'édition en masse
         validation:
           fail: Une erreur s'est produite lors de la validation de l'édition de masse
       execute_naming_convention:
@@ -513,12 +530,6 @@ pim_asset_manager:
       read_only: Ce fichier est en lecture seule.
       uploading: Chargement...
     used_as_transformation_target: Ce champ est en lecture seule car il est utilisé comme cible dans une transformation de ressources.
-  modal:
-    delete:
-      subtitle: Confirmer la suppression
-      button:
-        cancel: Annuler
-        confirm: Supprimer
   jobs:
     asset_manager_execute_naming_convention:
       error: 'L''exécution de la convention de nommage a échoué sur la ressource "{{ asset }}"'
@@ -566,10 +577,12 @@ pim_datagrid:
     type:
       asset_manager_execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
       asset_manager_mass_delete_assets: Lancer la suppression en masse des ressources
+      asset_manager_mass_edit_assets: Lancer l'édition en masse des ressources
 batch_jobs:
   default_steps:
     execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
     mass_delete_assets: Lancer la suppression en masse des ressources
+    mass_edit_assets: Lancer l'édition en masse des ressources
     link_assets_to_products: Lier les ressources aux produits
 job_execution:
   summary:

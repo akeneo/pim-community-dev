@@ -51,6 +51,9 @@ pim_asset_manager:
         not_main_media_attribute_code: 'La propriété doit correspondre au code de l''attribut défini comme média principal.'
   asset:
     validation:
+      mass_edit:
+        updater_cannot_be_empty: 'Les attributs utilisés dans les transformations ou en mode lecture seule ne peuvent pas être sélectionnés.'
+        updater_must_be_unique: 'Veuillez vous assurer que cet attribut ainsi que son canal et sa locale, le cas échéant, ne sont pas déjà sélectionnés.'
       code:
         pattern: 'Ce champ ne peut être composé que de lettres, de chiffres et d''underscores.'
         should_be_unique: 'Une ressource numérique existe déjà avec le code "%code%".'
