@@ -115,6 +115,29 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
+  test_database:
+      machine:
+          image: ubuntu-1604:201903-01
+      parallelism: 1
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: |
+                    docker load -i php-pim-image.tar
+                    APP_ENV=test C='fpm mysql' make up
+                    vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+          - run:
+                name: Install database
+                command: APP_ENV=test make database
+          - run:
+              name: Database test
+              command: make test-database-structure
+
   test_back_phpunit:
       machine:
           image: ubuntu-1604:201903-01
@@ -175,10 +198,6 @@ jobs:
       - run:
           name: Install database
           command: APP_ENV=behat make database
-      - run:
-          name: Database test
-          command: make test-database-structure
-          when: always
       - run:
           name: Non critical Behat
           command: make end-to-end-legacy SUITE=$TESTSUITE
@@ -328,6 +347,9 @@ workflows:
           - build_dev:
                 requires:
                     - wait_for_user_approval
+          - test_database:
+                requires:
+                    - build_dev
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
