@@ -94,9 +94,7 @@ jobs:
           command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
       - restore_cache:
             name: Restore dependencies cache
-            keys:
-                - dependencies-ce-master-{{ checksum "composer.lock" }}-{{ checksum "yarn.lock" }}
-                - dependencies-ce-master-$CACHE_VERSION
+            key: dependencies-ce-master-$CACHE_VERSION
       - run:
           name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: |
@@ -113,9 +111,9 @@ jobs:
             YARN_REGISTRY: "http://registry.yarnpkg.com"
       - save_cache:
             name: Save dependencies cache
-            key: dependencies-ce-master-{{ checksum "composer.lock" }}-{{ checksum "yarn.lock" }}
+            key: dependencies-ce-master-$CACHE_VERSION
             paths:
-                - ~/.cache/composer
+                - ~/.composer/cache
                 - ~/.cache/yarn
       - run:
           name: Check PIM requirements
