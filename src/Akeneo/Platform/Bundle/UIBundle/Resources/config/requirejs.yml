@@ -246,7 +246,7 @@ config:
           module: pim/controller/form
           aclResourceId: pim_enrich_product_category_edit
         pim_enrich_categorytree_index:
-          module: pim/controller/form
+          module: pim/controller/categories/index
           aclResourceId: pim_enrich_product_category_list
         pim_enrich_channel_edit:
           module: pim/controller/channel/edit
@@ -529,6 +529,7 @@ config:
     pim/controller/mass-edit:              pimui/js/controller/mass-edit
     pim/controller/logout:                 pimui/js/controller/logout
     pim/controller/locales/index:          akeneopimstructure/js/controller/LocalesSettings
+    pim/controller/categories/index:       akeneopimstructure/js/controller/CategoriesSettings
 
     jstree/jquery.jstree.tree_selector: pimui/js/jstree/jquery.jstree.tree_selector
     jstree/nested_switch:               pimui/js/jstree/jquery.jstree.nested_switch
