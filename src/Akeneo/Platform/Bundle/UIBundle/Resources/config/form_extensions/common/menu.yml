@@ -251,6 +251,7 @@ extensions:
     pim-menu-system-catalog-volume:
         module: pim/menu/item
         parent: pim-menu-system-navigation-block
+        aclResourceId: view_catalog_volume_monitoring
         position: 90
         config:
             title: pim_menu.item.catalog_volume
