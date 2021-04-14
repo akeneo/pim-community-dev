@@ -1,0 +1,9 @@
+extensions:
+    pim-job-instance-csv-product-export-edit-column:
+        module: pim/job/product/edit/column
+        parent: pim-job-instance-csv-product-export-edit-tabs
+        targetZone: container
+        position: 135
+        config:
+            tabTitle: "Columns"
+            tabCode: pim-job-instance-columns

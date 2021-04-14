@@ -63,7 +63,7 @@
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
     "babel-eslint": "^10.0.1",
-    "babel-loader": "^8.1.0",
+    "babel-loader": "8.1.0",
     "babel-minify": "0.5.0",
     "bundle-loader": "0.5.6",
     "chokidar-cli": "^2.1.0",
@@ -136,7 +136,8 @@
     "styled-components": "^5.1.1",
     "summernote": "0.6.16",
     "underscore": "1.8.3",
-    "victory": "^33.1.6"
+    "victory": "^33.1.6",
+    "@akeneo-pim-community/tailored-export": "link:tailored-export"
   },
   "resolutions": {
     "jest/**/ip-regex": "2.1.0"

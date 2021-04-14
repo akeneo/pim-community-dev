@@ -764,6 +764,7 @@ config:
     pim/job/common/file-path:                                    pimui/js/job/common/file-path
     pim/job/common/grid:                                         pimui/js/job/common/grid
     pim/job/product/edit/content:                                pimui/js/job/product/edit/content
+    pim/job/product/edit/column:                                pimui/js/job/product/edit/column
 
     # Filters
     pim/filter/filter:                     pimui/js/filter/filter
