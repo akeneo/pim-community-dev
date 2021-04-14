@@ -25,6 +25,10 @@ type BackendCurrentCompleteness = {
   }
 };
 
+type FormattedLocalesCompleteness = {
+  [localeCode: string]: LocaleCurrentCompleteness
+};
+
 const formatLocaleCompleteness = (backendLocaleCompleteness: BackendLocaleCompleteness, catalogLocale: string): LocaleCurrentCompleteness => {
   return {
     label: backendLocaleCompleteness.label,
@@ -42,7 +46,7 @@ const formatLocaleCompleteness = (backendLocaleCompleteness: BackendLocaleComple
 };
 
 const formatCurrentCompleteness = (backendCompleteness: BackendCurrentCompleteness, catalogLocale: string): CurrentCompleteness => {
-  let localesCompleteness = {};
+  let localesCompleteness: FormattedLocalesCompleteness = {};
   Object.entries(backendCompleteness.locales).map(([localeCode, localeCompleteness]: [string, BackendLocaleCompleteness]) => {
     localesCompleteness[localeCode] = formatLocaleCompleteness(localeCompleteness, catalogLocale);
   });
