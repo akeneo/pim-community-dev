@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@akeneo-pim-community/legacy-provider@link:legacy":
+  version "0.0.0"
+  uid ""
+
 "@akeneo-pim-community/tailored-export@link:tailored-export":
   version "0.0.0"
   uid ""

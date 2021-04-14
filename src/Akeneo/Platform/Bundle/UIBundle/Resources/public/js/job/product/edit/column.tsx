@@ -4,7 +4,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import Column from '@akeneo-pim-community/tailored-export';
+import {DependenciesContext} from '@akeneo-pim-community/legacy-provider';
 import {pimTheme} from 'akeneo-design-system';
+import {dependencies} from '@akeneo-pim-community/legacy-bridge';
 
 const __ = require('oro/translator');
 // const userContext = require('pim/user-context');
@@ -33,7 +35,9 @@ class ColumnView extends BaseView {
   render(): BaseView {
     ReactDOM.render(
       <ThemeProvider theme={pimTheme}>
-        <Column jobCode="test" />
+        <DependenciesContext.Provider value={dependencies}>
+          <Column jobCode="test" />
+        </DependenciesContext.Provider>
       </ThemeProvider>,
       this.el
     );

@@ -137,7 +137,8 @@
     "summernote": "0.6.16",
     "underscore": "1.8.3",
     "victory": "^33.1.6",
-    "@akeneo-pim-community/tailored-export": "link:tailored-export"
+    "@akeneo-pim-community/tailored-export": "link:tailored-export",
+    "@akeneo-pim-community/legacy-provider": "link:legacy"
   },
   "resolutions": {
     "jest/**/ip-regex": "2.1.0"
