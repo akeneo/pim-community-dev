@@ -93,7 +93,7 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
         ]);
     }
 
-    private function executeProcess(Process $process, JobExecutionMessageInterface $jobExecutionMessage)
+    private function executeProcess(Process $process, JobExecutionMessageInterface $jobExecutionMessage): void
     {
         $this->executionManager->updateHealthCheck($jobExecutionMessage);
         $process->start();
