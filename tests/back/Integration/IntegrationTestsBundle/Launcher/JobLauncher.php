@@ -292,7 +292,7 @@ class JobLauncher
      */
     public function hasJobInQueue(): bool
     {
-        /** @var PubSubQueueStatus $pubSubStatusChecker */
+        /** @var PubSubQueueStatus $pubSubStatus */
         foreach ($this->pubSubQueueStatuses as $pubSubStatus) {
             if ($pubSubStatus->hasMessageInQueue()) {
                 return true;
