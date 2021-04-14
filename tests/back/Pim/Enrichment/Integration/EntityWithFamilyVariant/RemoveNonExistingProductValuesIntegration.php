@@ -114,7 +114,7 @@ final class RemoveNonExistingProductValuesIntegration extends TestCase
             'akeneo_integration_tests.launcher.job_execution_observer'
         );
         $this->jobExecutionObserver->purge(static::JOB_NAME);
-        $this->jobLauncher->flushMessengerJobQueue();
+        $this->jobLauncher->flushJobQueue();
     }
 
     /**

@@ -34,7 +34,7 @@ abstract class AbstractMassEditEndToEnd extends InternalApiTestCase
         $this->dbalConnection = $this->get('database_connection');
         $this->authenticate($this->getAdminUser());
         $this->clearMessengerTransport();
-        $this->jobLauncher->flushMessengerJobQueue();
+        $this->jobLauncher->flushJobQueue();
     }
 
     protected function executeMassEdit(array $data): void
