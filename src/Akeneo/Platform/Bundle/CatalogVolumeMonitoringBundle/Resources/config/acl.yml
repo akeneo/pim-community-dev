@@ -1,0 +1,4 @@
+view_catalog_volume_monitoring:
+    type: action
+    label: pim_catalog_volume.acl.view_catalog_volume_monitoring
+    group_name: oro_config_system
