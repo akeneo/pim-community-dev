@@ -35,7 +35,6 @@ final class JobExecutionMessageNormalizer implements NormalizerInterface, Denorm
         return [
             'id' => $jobExecutionMessage->getId()->toString(),
             'job_execution_id' => $jobExecutionMessage->getJobExecutionId(),
-            'consumer' => $jobExecutionMessage->getConsumer(),
             'created_time' => $jobExecutionMessage->getCreateTime()->format('c'),
             'updated_time' => null !== $jobExecutionMessage->getUpdatedTime() ?
                 $jobExecutionMessage->getUpdatedTime()->format('c')

@@ -28,7 +28,6 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
         $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized([
             'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
             'job_execution_id' => $jobExecution->getId(),
-            'consumer' => null,
             'created_time' => '2021-03-08T15:37:23+01:00',
             'updated_time' => null,
             'options' => ['option1' => 'value1'],
@@ -36,7 +35,6 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
         self::assertInstanceOf(UiJobExecutionMessage::class, $jobExecutionMessage);
         self::assertEquals('215ee791-1c40-4c60-82fb-cb017d6bcb90', $jobExecutionMessage->getId()->toString());
         self::assertEquals($jobExecution->getId(), $jobExecutionMessage->getJobExecutionId());
-        self::assertNull($jobExecutionMessage->getConsumer());
         self::assertEquals(new \DateTime('2021-03-08T15:37:23+01:00'), $jobExecutionMessage->getCreateTime());
         self::assertNull($jobExecutionMessage->getUpdatedTime());
         self::assertEquals(['option1' => 'value1'], $jobExecutionMessage->getOptions());
@@ -48,7 +46,6 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
         $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized([
             'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
             'job_execution_id' => $jobExecution->getId(),
-            'consumer' => 'c418363c-eee7-454c-974f-ff91758abebe',
             'created_time' => '2021-03-08T15:37:23+01:00',
             'updated_time' => '2021-03-10T15:37:23+01:00',
             'options' => ['option1' => 'value1', 'option2' => 'value2'],
@@ -56,7 +53,6 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
         self::assertInstanceOf(ImportJobExecutionMessage::class, $jobExecutionMessage);
         self::assertEquals('215ee791-1c40-4c60-82fb-cb017d6bcb90', $jobExecutionMessage->getId()->toString());
         self::assertEquals($jobExecution->getId(), $jobExecutionMessage->getJobExecutionId());
-        self::assertEquals('c418363c-eee7-454c-974f-ff91758abebe', $jobExecutionMessage->getConsumer());
         self::assertEquals(new \DateTime('2021-03-08T15:37:23+01:00'), $jobExecutionMessage->getCreateTime());
         self::assertEquals(new \DateTime('2021-03-10T15:37:23+01:00'), $jobExecutionMessage->getUpdatedTime());
         self::assertEquals(['option1' => 'value1', 'option2' => 'value2'], $jobExecutionMessage->getOptions());
@@ -68,7 +64,6 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
         $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized([
             'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
             'job_execution_id' => $jobExecution->getId(),
-            'consumer' => null,
             'created_time' => '2021-03-08T15:37:23+01:00',
             'updated_time' => null,
             'options' => ['option1' => 'value1'],
@@ -82,7 +77,6 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
         $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized([
             'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
             'job_execution_id' => $jobExecution->getId(),
-            'consumer' => null,
             'created_time' => '2021-03-08T15:37:23+01:00',
             'updated_time' => null,
             'options' => ['option1' => 'value1'],

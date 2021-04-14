@@ -55,7 +55,6 @@ class JobExecutionMessageNormalizerSpec extends ObjectBehavior
         $normalized->shouldBeArray();
         $normalized['id']->shouldBeString();
         $normalized['job_execution_id']->shouldBe(1);
-        $normalized['consumer']->shouldBeNull();
         $normalized['created_time']->shouldNotBeNull();
         $normalized['updated_time']->shouldBeNull();
         $normalized['options']->shouldBe(['option1' => 'value1']);
@@ -66,7 +65,6 @@ class JobExecutionMessageNormalizerSpec extends ObjectBehavior
         $jobMessenger = ImportJobExecutionMessage::createJobExecutionMessageFromNormalized([
             'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
             'job_execution_id' => 2,
-            'consumer' => 'consumer',
             'created_time' => '2020-01-01',
             'updated_time' => '2020-02-01',
             'options' => ['option1' => 'value1']
@@ -76,7 +74,6 @@ class JobExecutionMessageNormalizerSpec extends ObjectBehavior
         $normalized->shouldBeArray();
         $normalized['id']->shouldBeLike(Uuid::fromString('215ee791-1c40-4c60-82fb-cb017d6bcb90'));
         $normalized['job_execution_id']->shouldBe(2);
-        $normalized['consumer']->shouldBe('consumer');
         $normalized['created_time']->shouldBe((new \DateTime('2020-01-01'))->format('c'));
         $normalized['updated_time']->shouldBe((new \DateTime('2020-02-01'))->format('c'));
         $normalized['options']->shouldBe(['option1' => 'value1']);
