@@ -311,7 +311,9 @@ class JobLauncher
     {
         return array_merge(...array_map(
             fn (PubSubQueueStatus $pubSubQueueStatus): array => $pubSubQueueStatus->getMessagesInQueue(),
-            iterator_to_array($this->pubSubQueueStatuses)
+            is_array($this->pubSubQueueStatuses)
+                ? $this->pubSubQueueStatuses
+                : iterator_to_array($this->pubSubQueueStatuses)
         ));
     }
 
