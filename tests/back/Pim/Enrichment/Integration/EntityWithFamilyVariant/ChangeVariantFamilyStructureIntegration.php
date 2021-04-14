@@ -333,7 +333,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
         $this->purgeJobExecutions('compute_family_variant_structure_changes');
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
-        $this->jobLauncher->flushMessengerJobQueue();
+        $this->jobLauncher->flushJobQueue();
         $this->jobExecutionObserver = $this->get(
             'akeneo_integration_tests.launcher.job_execution_observer'
         );

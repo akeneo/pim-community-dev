@@ -159,6 +159,6 @@ class EntityWithVariantVersionIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->get('akeneo_integration_tests.launcher.job_launcher')->flushMessengerJobQueue();
+        $this->get('akeneo_integration_tests.launcher.job_launcher')->flushJobQueue();
     }
 }
