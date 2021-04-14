@@ -61,7 +61,6 @@ class PublishToJobQueueIntegration extends TestCase
         self::assertSame(['env' => 'test'], $jobExecutionMessage['options']);
         self::assertNotNull($jobExecutionMessage['created_time']);
         self::assertNull($jobExecutionMessage['updated_time']);
-        self::assertNull($jobExecutionMessage['consumer']);
 
         $this->jobLauncher->launchConsumerOnce();
 

@@ -16,10 +16,6 @@ interface JobExecutionMessageInterface
 
     public function getJobExecutionId(): ?int;
 
-    public function getConsumer(): ?string;
-
-    public function consumedBy(string $consumer): void;
-
     public function getCreateTime(): \DateTime;
 
     public function getUpdatedTime(): ?\DateTime;
