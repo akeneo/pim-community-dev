@@ -174,8 +174,9 @@ upgrade-front:
 
 .PHONY: grth-clean-sso
 grth-clean-sso:
-	git checkout -- config/bundles.php
-	git checkout -- config/packages/security.yml
+	git checkout -- config
+	rm -f config/packages/hslavich_onelogin_saml.yml
 	rm -f config/packages/hslavich_onelogin_saml.yml
 	rm -rf src/Akeneo/Platform/Bundle/AuthenticationBundle
 	rm -rf src/Akeneo/Platform/Component/Authentication
+	rm -rf src/Akeneo/Platform/Bundle/MonitoringBundle
