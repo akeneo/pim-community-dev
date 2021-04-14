@@ -47,7 +47,6 @@ class QueueJobLauncherIntegration extends TestCase
         self::assertSame(['env' => 'test', 'email' => 'mary@example.com'], $data['options']);
         self::assertNotNull($data['created_time']);
         self::assertNull($data['updated_time']);
-        self::assertNull($data['consumer']);
 
         $connection = $this->getConnection();
         $stmt = $connection->prepare('SELECT user, status, exit_code, health_check_time from akeneo_batch_job_execution');
