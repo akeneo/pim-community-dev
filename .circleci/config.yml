@@ -129,7 +129,7 @@ jobs:
                 name: Start containers
                 command: |
                     docker load -i php-pim-image.tar
-                    APP_ENV=test C='fpm mysql' make up
+                    APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
                     vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
           - run:
                 name: Install database
