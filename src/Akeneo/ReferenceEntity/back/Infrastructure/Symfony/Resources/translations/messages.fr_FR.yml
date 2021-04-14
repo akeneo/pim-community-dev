@@ -10,8 +10,7 @@ akeneo_referenceentity:
     record:
       create: Créer un enregistrement
       edit: Modifier les enregistrements
-      delete: Supprimer un enregistrement
-      delete_all: Supprimer tous les enregistrement de l'entité
+      delete: Supprimer les enregistrements
       list_product: Liste des produits liés à l'enregistrement
     attribute:
       create: Ajouter un attribut à une entité référentielle
@@ -20,6 +19,9 @@ akeneo_referenceentity:
     option:
       edit: Modifier les options
       delete: Supprimer une option
+  jobs:
+    reference_entity_mass_delete:
+      error: 'La suppression en masse a échoué pour la/les enregistrement(s) "{{ records }}" à cause de l''erreur suivante : "{{ error }}"'
 pim_analytics:
   info_type:
     nb_reference_entities: Nombre d'entités de référence
@@ -31,5 +33,22 @@ pim_analytics:
     average_percentage_localizable_only_attributes: Pourcentage moyen d’attributs uniquement localisables par entité de référence
     average_percentage_scopable_only_attributes: Pourcentage moyen d’attributs uniquement scopables par entité de référence
     average_percentage_scopable_and_localizable_attributes: Pourcentage moyen d’attributs scopables et localisables par entité de référence
+pim_datagrid:
+  cells:
+    type:
+      reference_entity_mass_delete_records: Exécuter la suppression de masse des enregistrements
+  reference_entity_mass_delete_records: Suppression massive des enregistrements
+job_execution:
+  summary:
+    records: Enregistrements
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: Suppression massive des enregistrements
+pim_mass_edit:
+  notification:
+    reference_entity_mass_delete_records:
+      warning: Les enregistrements ont bien été supprimés, mais avec des avertissements
+      success: Enregistrements supprimé avec succès
+      error: ' Échec de la suppression de l''enregistrement'
 akeneo_reference_entity: Lien simple vers une entité référentielle
 akeneo_reference_entity_collection: Lien multiple vers une entité référentielle

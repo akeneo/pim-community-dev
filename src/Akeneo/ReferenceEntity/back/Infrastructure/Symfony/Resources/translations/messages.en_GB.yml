@@ -10,8 +10,7 @@ akeneo_referenceentity:
     record:
       create: Create a record
       edit: Edit the records
-      delete: Delete a record
-      delete_all: Delete all entity records
+      delete: Delete records
       list_product: List linked products to record
     attribute:
       create: Add an attribute to a reference entity
@@ -20,6 +19,9 @@ akeneo_referenceentity:
     option:
       edit: Edit options
       delete: Remove an option
+  jobs:
+    reference_entity_mass_delete:
+      error: 'The mass delete failed on record(s) "{{ records }}" with error: "{{ error }}"'
 pim_analytics:
   info_type:
     nb_reference_entities: Number of reference entities
@@ -31,5 +33,22 @@ pim_analytics:
     average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per reference entity
     average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per reference entity
     average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per reference entity
+pim_datagrid:
+  cells:
+    type:
+      reference_entity_mass_delete_records: Execute records mass delete
+  reference_entity_mass_delete_records: Mass delete records
+job_execution:
+  summary:
+    records: Records
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: Mass delete records
+pim_mass_edit:
+  notification:
+    reference_entity_mass_delete_records:
+      warning: Records successfully deleted with warnings
+      success: Records successfully deleted
+      error: Record deletion failed
 akeneo_reference_entity: Reference entity single link
 akeneo_reference_entity_collection: Reference entity multiple links

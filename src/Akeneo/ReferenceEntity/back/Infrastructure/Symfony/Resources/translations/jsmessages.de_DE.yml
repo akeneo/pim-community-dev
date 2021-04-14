@@ -76,7 +76,7 @@ pim_reference_entity:
       confirm: Speichern
     delete:
       message: Sind Sie sicher, dass Sie die Entität "{{ referenceEntityLabel }}" löschen möchten?
-      title: Attribut
+      title: Referenz-Entität
     notification:
       save:
         success: Referenzentität erfolgreich aktualisiert.
@@ -97,6 +97,12 @@ pim_reference_entity:
       subtitle: Um die Berechtigung für die Referenzentität zu verwalten, müssen Sie mindestens eine Benutzergruppe haben.
       link: Klicken Sie hier, um Ihre erste Benutzergruppe hinzuzufügen.
   record:
+    mass_delete:
+      confirm: '[0,1]Sind Sie sicher, dass Sie den {{ count }} ausgewählten Datensatz löschen möchten? |]1,Inf]Sind Sie sicher, dass Sie die {{ count }} ausgewählten Datensätze löschen möchten?'
+      extra_information: Wenn sie mit Produkten verknüpft sind, werden die Links zu den Produkten entfernt.
+      confirm_label: Bitte geben Sie "{{ referenceEntityIdentifier }} " ein
+      title: Datensätze
+    record_selected: '{0} {{ count }} Datensatz ausgewählt|{1} {{ count }} Datensatz ausgewählt|]1,Inf] {{ count }} Datensätze ausgewählt'
     validation:
       limit_reached: 'Sie können den Datensatz "{{ %record_label% }}" nicht erstellen, da Sie die Grenze von {{ %limit% }} Datensätzen für diese Referenzentität erreicht haben.'
       code:
@@ -119,9 +125,10 @@ pim_reference_entity:
     button:
       save: Speichern
       create: Hinzufügen
-      delete: Löschen
-      delete_all: Alle Einträge löschen
+      delete: Lösche Datensatz
       back: Zurück zur Liste
+      edit: Datensatz bearbeiten
+      view: Dateneintrag ansehen
     product:
       attribute: Produkt-Attribut
       counter: '{{ totalCount }} Ergebnis|{{ totalCount }} Ergebnisse'
@@ -159,8 +166,6 @@ pim_reference_entity:
     delete:
       message: Sind Sie sicher, dass Sie den Datensatz "{{ recordLabel }}" löschen möchten? Wenn dieser mit Produkten oder Datensätzen verlinkt ist, werden die Links entfernt.
       title: Datensatz
-    delete_all:
-      confirm: Sind Sie sicher, dass Sie alle "{{ entityIdentifier }}" Datensätze löschen möchten? Wenn diese mit Produkten verlinkt sind, werden die Links zu den Produkten entfernt.
     grid:
       search: Suche nach Label-, Code- und Textattributen
       filter:
@@ -202,9 +207,9 @@ pim_reference_entity:
       delete:
         success: Datensatz "{{ code }}" wurde erfolgreich gelöscht.
         fail: Beim Löschen des Datensatzes ist ein Fehler aufgetreten
-      delete_all:
-        success: Alle "{{ entityIdentifier }}" Datensätze wurden erfolgreich gelöscht.
-        fail: Beim Löschen aller Datensätze dieser Referenz-Entität ist ein Fehler aufgetreten
+      mass_delete:
+        success: Die Massenlöschaktion "Massenlöschen" wurde gestartet. Sie werden benachrichtigt, sobald sie abgeschlossen ist.
+        fail: "Während des Massenlöschens ist ein Fehler aufgetreten: {{ error }}"
     completeness:
       label: Vollständig
   attribute:
@@ -303,12 +308,6 @@ pim_reference_entity:
       sub_title: Referenz Entitäten
       helper:
         title: Feldbezeichner-Übersetzungen
-  modal:
-    delete:
-      subtitle: Löschen bestätigen
-      button:
-        cancel: Abbrechen
-        confirm: Löschen
 pim_enrich:
   confirmation:
     discard_changes: 'Sie verlieren Änderungen an der Entität "{{ entity }}", wenn Sie die Seite verlassen.'
@@ -336,6 +335,8 @@ pim_catalog_volume:
     average_max_records_per_reference_entity: Datensätze pro Referenz Entität
     average_max_attributes_per_reference_entity: Attribute pro Referenz Entität
 batch_jobs:
+  default_steps:
+    mass_delete_records: Massenlöschung von Datensätzen ausführen
   reference_entity_label: Referenz-Entität
   csv_reference_entity_record_export:
     label: Referenz Datensatz-Export in CSV
@@ -349,6 +350,16 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: Referenz Datensatz-Import in XLSX
     import.label: Datensatzimport
+pim_datagrid:
+  cells:
+    type:
+      reference_entity_mass_delete_records: Massenlöschung von Datensätzen ausführen
+job_execution:
+  summary:
+    records: Datensätze
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: Massenlöschung
 pim_analytics:
   info_type:
     nb_reference_entities: Anzahl der Referenzobjekte

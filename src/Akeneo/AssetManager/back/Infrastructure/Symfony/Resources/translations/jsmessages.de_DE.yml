@@ -194,7 +194,7 @@ pim_asset_manager:
       confirm: Speichern
     delete:
       message: Sind Sie sicher, dass Sie die Assetfamilie "{{ assetFamilyLabel }} " löschen möchten?
-      title: Attribut
+      title: Asset-Familie
     edit:
       discard_changes: Änderungen an der Asset-Familie "{{ assetFamilyLabel }}" gehen verloren, wenn Sie die Seite verlassen.
     notification:
@@ -265,7 +265,6 @@ pim_asset_manager:
       create: Asset erstellen
       mass_upload: Massenupload
       delete: Löschen
-      delete_all: Alle Asset löschen
       back: Zurück zur Liste
       launch_transformations: Transformationen starten
       fullscreen: Vollbild
@@ -340,8 +339,6 @@ pim_asset_manager:
     delete:
       message: Sind Sie sicher, dass Sie das Asset löschen wollen "{{ assetLabel }}"? Wenn es mit Produkten verknüpft ist, werden die Links entfernt.
       title: Asset
-    delete_all:
-      confirm: Sind Sie sicher, dass Sie alle "{{ entityIdentifier }}" Assets löschen möchten? Wenn sie mit Produkten verlinkt sind, werden die Verknüpfungen zu den Produkten entfernt.
     mass_delete:
       confirm: '[0,1]Sind Sie sicher, dass Sie die {{ assetCount }} ausgewählten Assets löschen wollen?|]1,Inf]Sind Sie sicher, dass Sie die {{ assetCount }} ausgewählten Assets löschen möchten?'
       extra_information: Wenn sie mit Produkten verknüpft sind, werden die Links zu den Produkten entfernt.
@@ -407,9 +404,6 @@ pim_asset_manager:
       delete:
         success: Asset "{{ code }}" erfolgreich gelöscht.
         fail: Beim Löschen des Assets trat ein Fehler auf
-      delete_all:
-        success: Alle "{{ entityIdentifier }}" Assets erfolgreich gelöscht.
-        fail: Beim Löschen aller Assets dieser Anlagefamilie ist ein Fehler aufgetreten
       mass_delete:
         success: Die Massenlöschaktion "Massenlöschen" wurde gestartet. Sie werden benachrichtigt, sobald sie abgeschlossen ist.
         fail: Fehler beim Ausführen der Massenlöschung
@@ -536,12 +530,6 @@ pim_asset_manager:
       read_only: Diese Mediendatei kann nur gelesen werden
       uploading: Hochladen...
     used_as_transformation_target: Dieses Feld wird nur gelesen, da es als Ziel in einer Asset-Transformation verwendet wird.
-  modal:
-    delete:
-      subtitle: Löschen bestätigen
-      button:
-        cancel: Abbrechen
-        confirm: Löschen
   jobs:
     asset_manager_execute_naming_convention:
       error: 'Die Namenskonvention ist beim Asset "{{ asset }}" fehlgeschlagen'
