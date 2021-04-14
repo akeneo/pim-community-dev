@@ -73,7 +73,6 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
         $jobExecutionMessage = $this->buildFromNormalized([
             'id' => '30e8008d-48dc-4430-97e1-6f67a5c420e9',
             'job_execution_id' => 10,
-            'consumer' => 'consumer_name',
             'created_time' => '2021-03-08T15:37:23+01:00',
             'updated_time' => null,
             'options' => ['option1' => 'value1'],
@@ -81,7 +80,6 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
         $jobExecutionMessage->shouldBeAnInstanceOf(UiJobExecutionMessage::class);
         $jobExecutionMessage->getId()->shouldBeLike(Uuid::fromString('30e8008d-48dc-4430-97e1-6f67a5c420e9'));
         $jobExecutionMessage->getJobExecutionId()->shouldBe(10);
-        $jobExecutionMessage->getConsumer()->shouldBe('consumer_name');
         $jobExecutionMessage->getCreateTime()->shouldBeLike(new \DateTime('2021-03-08T15:37:23+01:00'));
         $jobExecutionMessage->getUpdatedTime()->shouldBeNull();
         $jobExecutionMessage->getOptions()->shouldBe(['option1' => 'value1']);
@@ -99,7 +97,6 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
         $jobExecutionMessage = $this->buildFromNormalized([
             'id' => 'a57380fc-ee3b-4bd2-94e6-c3ead13c32a7',
             'job_execution_id' => 10,
-            'consumer' => 'consumer_name',
             'created_time' => '2021-03-08T15:37:23+01:00',
             'updated_time' => '2021-03-09T15:37:23+01:00',
             'options' => ['option1' => 'value1'],
@@ -107,7 +104,6 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
         $jobExecutionMessage->shouldBeAnInstanceOf(ImportJobExecutionMessage::class);
         $jobExecutionMessage->getId()->shouldBeLike(Uuid::fromString('a57380fc-ee3b-4bd2-94e6-c3ead13c32a7'));
         $jobExecutionMessage->getJobExecutionId()->shouldBe(10);
-        $jobExecutionMessage->getConsumer()->shouldBe('consumer_name');
         $jobExecutionMessage->getCreateTime()->shouldBeLike(new \DateTime('2021-03-08T15:37:23+01:00'));
         $jobExecutionMessage->getUpdatedTime()->shouldBeLike(new \DateTime('2021-03-09T15:37:23+01:00'));
         $jobExecutionMessage->getOptions()->shouldBe(['option1' => 'value1']);
@@ -125,7 +121,6 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
         $jobExecutionMessage = $this->buildFromNormalized([
             'id' => 'a57380fc-ee3b-4bd2-94e6-c3ead13c32a7',
             'job_execution_id' => 10,
-            'consumer' => null,
             'created_time' => '2021-03-08T15:37:23+01:00',
             'updated_time' => '2021-03-09T15:37:23+01:00',
             'options' => [],
@@ -133,7 +128,6 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
         $jobExecutionMessage->shouldBeAnInstanceOf(DataMaintenanceJobExecutionMessage::class);
         $jobExecutionMessage->getId()->shouldBeLike(Uuid::fromString('a57380fc-ee3b-4bd2-94e6-c3ead13c32a7'));
         $jobExecutionMessage->getJobExecutionId()->shouldBe(10);
-        $jobExecutionMessage->getConsumer()->shouldBeNull();
         $jobExecutionMessage->getCreateTime()->shouldBeLike(new \DateTime('2021-03-08T15:37:23+01:00'));
         $jobExecutionMessage->getUpdatedTime()->shouldBeLike(new \DateTime('2021-03-09T15:37:23+01:00'));
         $jobExecutionMessage->getOptions()->shouldBe([]);

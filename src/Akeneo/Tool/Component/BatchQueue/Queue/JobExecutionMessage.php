@@ -21,7 +21,6 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface, Orde
 
     private UuidInterface $id;
     private int $jobExecutionId;
-    private ?string $consumer;
     private \DateTime $createTime;
     private ?\DateTime $updatedTime;
     private array $options = [];
@@ -29,14 +28,12 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface, Orde
     private function __construct(
         UuidInterface $id,
         int $jobExecutionId,
-        ?string $consumer,
         \DateTime $createTime,
         ?\DateTime $updatedTime,
         array $options
     ) {
         $this->id = $id;
         $this->jobExecutionId = $jobExecutionId;
-        $this->consumer = $consumer;
         $this->createTime = $createTime;
         $this->updatedTime = $updatedTime;
         $this->options = $options;
@@ -49,7 +46,7 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface, Orde
     {
         $createTime = new \DateTime('now', new \DateTimeZone('UTC'));
 
-        return new static(Uuid::uuid4(), $jobExecutionId, null, $createTime, null, $options);
+        return new static(Uuid::uuid4(), $jobExecutionId, $createTime, null, $options);
     }
 
     public static function createJobExecutionMessageFromNormalized(array $normalized): JobExecutionMessageInterface
@@ -57,7 +54,6 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface, Orde
         return new static(
             Uuid::fromString($normalized['id']),
             $normalized['job_execution_id'],
-            $normalized['consumer'],
             new \DateTime($normalized['created_time']),
             null !== $normalized['updated_time'] ? new \DateTime($normalized['updated_time']) : null,
             $normalized['options']
@@ -72,16 +68,6 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface, Orde
     public function getJobExecutionId(): ?int
     {
         return $this->jobExecutionId;
-    }
-
-    public function getConsumer(): ?string
-    {
-        return $this->consumer;
-    }
-
-    public function consumedBy(string $consumer): void
-    {
-        $this->consumer = $consumer;
     }
 
     public function getCreateTime(): \DateTime
