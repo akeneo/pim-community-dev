@@ -23,11 +23,10 @@ final class SqlGetJobInstanceCode implements GetJobInstanceCode
     public function fromJobExecutionId(int $jobExecutionId): ?string
     {
         $sql = <<<SQL
-        SELECT code
-        FROM
-            akeneo_batch_job_execution je 
-            JOIN akeneo_batch_job_instance ji ON ji.id = je.job_instance_id
-        WHERE je.id = :id
+        SELECT instance.code
+        FROM akeneo_batch_job_execution execution
+            JOIN akeneo_batch_job_instance instance ON instance.id = execution.job_instance_id
+        WHERE execution.id = :id
         LIMIT 1;
         SQL;
 
