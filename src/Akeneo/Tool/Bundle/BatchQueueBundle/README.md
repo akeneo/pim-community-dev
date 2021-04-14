@@ -110,5 +110,5 @@ So, in this case, despite the status "STARTED" in database, it's considered as f
 
 Without docker, if the daemon is killed or fails, the jobs (in sub-processes) is **not** killed.
 
-With docker, if the daemon is killed or fails, as it's the main process, it will stop the contained (and so the sub-process).
+With docker, if the daemon is killed or failed, as it's the main process, it will stop the container (and so the sub-process).
 In that case (pretty common case), the healthcheck is useless.
