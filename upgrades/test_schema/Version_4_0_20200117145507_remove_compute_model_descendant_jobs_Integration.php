@@ -24,6 +24,18 @@ class Version_4_0_20200117145507_remove_compute_model_descendant_jobs_Integratio
         return $this->catalog->useTechnicalCatalog();
     }
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->createQueueTableIfNeeded();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->getConnection()->executeQuery('DROP TABLE akeneo_batch_job_execution_queue');
+        parent::tearDown();
+    }
+
     public function test_it_computes_products_and_remove_jobs()
     {
         $this->createJobs();
@@ -146,5 +158,25 @@ SQL;
         $migration = str_replace('Version', '', $migration);
 
         return $migration;
+    }
+
+    private function createQueueTableIfNeeded(): void
+    {
+        $showTables = $this->getConnection()->executeQuery("SHOW TABLES LIKE 'akeneo_batch_job_execution_queue';");
+        if (1 <= $showTables->rowCount()) {
+            return;
+        }
+
+        $this->getConnection()->executeQuery(<<<SQL
+        create table akeneo_batch_job_execution_queue
+        (
+            id               int auto_increment primary key,
+            job_execution_id int          null,
+            options          json         null,
+            consumer         varchar(255) null,
+            create_time      datetime     null,
+            updated_time     datetime     null
+        ) collate = utf8mb4_unicode_ci;
+        SQL);
     }
 }
