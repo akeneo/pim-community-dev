@@ -91,7 +91,7 @@ want this feature, at least for the moment, so we took the second solution.
 #### History
 
 Initially, the queue was a homemade queue implemented with Mysql.  
-A daemon (never-ending PHP command) consumed one message at a time. A message corresponds to an Akeneo job to launch. This job is executed in a sub-process. It increase the stability of the daemon because all it pushed all the complexity of a job (ORM, ES, potential memory leaks, etc) inside a sub-process.
+A daemon (never-ending PHP command) consumed one message at a time. A message corresponds to an Akeneo job to launch. This job is executed in a sub-process. It increases the stability of the daemon because it pushed all the complexity of a job (ORM, ES, potential memory leaks, etc) inside a sub-process.
 
 - If the daemon fails, it's not an issue: the job updates its status by itself (error, stopped, etc).
 - If the job fails, it's not an issue: the daemon can detect that and changes the status of the job. This way, it does not stay as started, even if there was an unexpected and unrecoverable issue (such as memory leak).
