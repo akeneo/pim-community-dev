@@ -127,7 +127,7 @@ class GetLastOperationsIntegration extends TestCase
         parent::setUp();
 
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
-        $this->jobLauncher->flushMessengerJobQueue();
+        $this->jobLauncher->flushJobQueue();
     }
 
     /**

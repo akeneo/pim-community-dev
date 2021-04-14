@@ -31,7 +31,7 @@ final class Version_6_0_20210413070335_migrate_jobs_to_messenger_Integration ext
         parent::setUp();
         $this->connection = $this->get('database_connection');
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
-        $this->jobLauncher->flushMessengerJobQueue();
+        $this->jobLauncher->flushJobQueue();
     }
 
     public function test_it_migrates_the_non_consumed_jobs()

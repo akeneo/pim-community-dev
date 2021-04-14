@@ -457,7 +457,7 @@ class JobLauncher
         self::launchSubProcessImport($jobCode, $content, $username, $fixturePaths, $config);
     }
 
-    public function flushMessengerJobQueue(): void
+    public function flushJobQueue(): void
     {
         foreach (static::MESSENGER_RECEIVERS as $receiverName) {
             Assert::true($this->receiverLocator->has($receiverName), sprintf(
