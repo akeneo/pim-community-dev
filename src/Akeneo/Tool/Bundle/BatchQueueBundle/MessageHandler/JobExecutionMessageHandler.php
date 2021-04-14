@@ -4,12 +4,9 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler;
 
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
-use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
 use Akeneo\Tool\Component\Batch\Query\GetJobInstanceCode;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
@@ -31,7 +28,6 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
     private JobExecutionManager $executionManager;
     private LoggerInterface $logger;
     private string $projectDir;
-    private ?UuidInterface $consumer = null;
 
     public function __construct(
         GetJobInstanceCode $getJobInstanceCode,
@@ -45,19 +41,8 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
         $this->projectDir = $projectDir;
     }
 
-    public function setConsumer(Uuid $consumer): void
-    {
-        $this->consumer = $consumer;
-    }
-
     public function __invoke(JobExecutionMessageInterface $jobExecutionMessage)
     {
-        if (!$this->consumer) {
-            $this->consumer = Uuid::uuid4();
-        }
-
-        $this->logger->debug(sprintf('Consumer name: "%s"', $this->consumer));
-        $jobExecutionMessage->consumedBy($this->consumer->toString());
         $pathFinder = new PhpExecutableFinder();
         $console = sprintf('%s%sbin%sconsole', $this->projectDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
 
