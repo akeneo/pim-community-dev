@@ -1,4 +1,4 @@
-import {useCallback, useState} from "react";
+import {useCallback, useState} from 'react';
 
 export type FetchStatus = 'idle' | 'error' | 'fetching' | 'fetched';
 
@@ -21,16 +21,14 @@ const useFetch = <T>(url: string, init?: RequestInit) => {
       setStatus('error');
       setError(e.message);
     }
-
   }, [url]);
 
   return {
     data,
     fetch: doFetch,
     status,
-    error
-  }
-
+    error,
+  };
 };
 
 export {useFetch};

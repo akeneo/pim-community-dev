@@ -27,7 +27,10 @@ const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
         </Table.Header>
         <Table.Body>
           {trees.map(tree => (
-            <Table.Row key={tree.code} onClick={isGranted('pim_enrich_product_category_list') ? () => followCategoryTree(tree) : undefined}>
+            <Table.Row
+              key={tree.code}
+              onClick={isGranted('pim_enrich_product_category_list') ? () => followCategoryTree(tree) : undefined}
+            >
               <Table.Cell rowTitle>{tree.label}</Table.Cell>
             </Table.Row>
           ))}

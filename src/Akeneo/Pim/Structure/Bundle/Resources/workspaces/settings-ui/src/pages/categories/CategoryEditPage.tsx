@@ -32,9 +32,12 @@ const CategoryEditPage: FC = () => {
     const tree = category && category.root ? category.root : category;
 
     setCategoryLabel(category ? category.labels[userContext.get('uiLocale')] : `[${categoryId}]`);
-    setTreeLabel(tree ? tree.labels[userContext.get('uiLocale')] : translate('pim_enrich.entity.category.content.edit.default_tree_label'));
+    setTreeLabel(
+      tree
+        ? tree.labels[userContext.get('uiLocale')]
+        : translate('pim_enrich.entity.category.content.edit.default_tree_label')
+    );
   }, [category]);
-
 
   if (status === 'error') {
     return (

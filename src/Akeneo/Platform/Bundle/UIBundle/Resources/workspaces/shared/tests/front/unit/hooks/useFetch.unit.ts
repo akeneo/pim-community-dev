@@ -47,7 +47,7 @@ describe('useFetch', () => {
       method: 'POST',
       headers: new Headers({
         'X-Foo-Bar': 'FooBar',
-      })
+      }),
     };
     const response = {foo: 'bar'};
 
