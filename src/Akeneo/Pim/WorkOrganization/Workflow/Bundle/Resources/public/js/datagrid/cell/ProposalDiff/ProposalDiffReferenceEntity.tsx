@@ -9,19 +9,19 @@ import styled from "styled-components";
 import { AkeneoThemedProps, getColor } from "akeneo-design-system";
 const UserContext = require('pim/user-context');
 
-const ProposalDiffRecordView = styled(RecordView)<{$accessor: 'before_data' | 'after_data'} & AkeneoThemedProps>`
+const ProposalDiffRecordView = styled(RecordView)<{$accessor: 'before' | 'after'} & AkeneoThemedProps>`
   .record-selector-container > .record-selector > a {
-    background: ${({$accessor}) => $accessor === 'before_data' ? getColor('red', 20) : getColor('green', 20)};
+    background: ${({$accessor}) => $accessor === 'before' ? getColor('red', 20) : getColor('green', 20)};
     cursor: default;
   }
 `;
 
 type ProposalDiffReferenceEntityProps = {
-  accessor: 'before_data' | 'after_data',
+  accessor: 'before' | 'after',
   change: {
     attributeReferenceDataName: string;
-    before_data: string | null;
-    after_data: string | null;
+    before: string | null;
+    after: string | null;
   }
 }
 

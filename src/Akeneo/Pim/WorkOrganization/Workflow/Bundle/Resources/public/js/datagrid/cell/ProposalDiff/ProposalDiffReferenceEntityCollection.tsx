@@ -26,11 +26,11 @@ const ProposalDiffRecordView = styled(RecordView)<{$state?: 'removed' | 'added'}
 `;
 
 type ProposalDiffReferenceEntityCollectionProps = {
-  accessor: 'before_data' | 'after_data',
+  accessor: 'before' | 'after',
   change: {
     attributeReferenceDataName: string;
-    before_data: string[] | null;
-    after_data: string[] | null;
+    before: string[] | null;
+    after: string[] | null;
   }
 }
 
@@ -65,13 +65,13 @@ const ProposalDiffReferenceEntityCollection: React.FC<ProposalDiffReferenceEntit
         denormalizeRecordData(data),
       );
 
-      const isDiff = accessor === 'before_data' ?
-        !(change['after_data'] || []).includes((change['before_data'] || [])[i]) :
-        !(change['before_data'] || []).includes((change['after_data'] || [])[i]);
+      const isDiff = accessor === 'before' ?
+        !(change['after'] || []).includes((change['before'] || [])[i]) :
+        !(change['before'] || []).includes((change['after'] || [])[i]);
 
       return <ProposalDiffRecordView
         key={data}
-        $state={isDiff ? (accessor === 'before_data' ? 'removed' : 'added') : undefined}
+        $state={isDiff ? (accessor === 'before' ? 'removed' : 'added') : undefined}
         value={value}
         locale={LocaleReference.create(UserContext.get('catalogLocale'))}
         onChange={() => {}}

@@ -52,15 +52,15 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
     public function present($formerData, array $change)
     {
         return [
-            'before_data' => $this->customNormalizeData($formerData, $change['attribute']),
-            'after_data' => $this->normalizeChange($change),
+            'before' => $this->normalizeMetricData($formerData, $change['attribute']),
+            'after' => $this->normalizeChange($change),
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function customNormalizeData($data, string $attributeCode)
+    private function normalizeMetricData($data, string $attributeCode)
     {
         if (null === $data) {
             return '';

@@ -5,10 +5,10 @@ import { ImageCard } from "./ImageCard";
 type File = { fileKey: string, originalFileName: string };
 
 type ProposalDiffFileProps = {
-  accessor: 'before_data' | 'after_data',
+  accessor: 'before' | 'after',
   change: {
-    before_data: File | null;
-    after_data: File | null;
+    before: File | null;
+    after: File | null;
   }
 }
 
@@ -21,13 +21,13 @@ const ProposalDiffFile: React.FC<ProposalDiffFileProps> = ({
 
   if (change[accessor]) {
     return <ImageCard
-      color={accessor === 'before_data' ? 'green' : 'red'}
+      color={accessor === 'before' ? 'green' : 'red'}
       filePath={(change[accessor] as File).fileKey}
       originalFilename={(change[accessor] as File).originalFileName}
       downloadUrl={router.generate('pim_enrich_media_download', {
         'filename': (change[accessor] as File).fileKey,
       })}
-      state={accessor === 'before_data' ? 'removed' : 'added'}
+      state={accessor === 'before' ? 'removed' : 'added'}
     />
   }
 

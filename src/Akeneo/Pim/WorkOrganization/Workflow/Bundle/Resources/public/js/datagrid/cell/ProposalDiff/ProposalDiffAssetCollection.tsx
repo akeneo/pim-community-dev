@@ -8,11 +8,11 @@ const UserContext = require('pim/user-context');
 type AssetFamilyIdentifier = string;
 
 type ProposalDiffAssetCollectionProps = {
-  accessor: 'before_data' | 'after_data',
+  accessor: 'before' | 'after',
   change: {
     attributeReferenceDataName: AssetFamilyIdentifier;
-    before_data: string[];
-    after_data: string[];
+    before: string[];
+    after: string[];
   }
 }
 
@@ -43,9 +43,9 @@ const ProposalDiffAssetCollection: React.FC<ProposalDiffAssetCollectionProps> = 
         ))
       }
 
-      const isDiff = accessor === 'before_data' ?
-        !(change['after_data'] || []).includes((change['before_data'] || [])[i]) :
-        !(change['before_data'] || []).includes((change['after_data'] || [])[i]);
+      const isDiff = accessor === 'before' ?
+        !(change['after'] || []).includes((change['before'] || [])[i]) :
+        !(change['before'] || []).includes((change['after'] || [])[i]);
 
       return <ImageCard
         thumbnailUrl={thumbnailUrl}
@@ -53,7 +53,7 @@ const ProposalDiffAssetCollection: React.FC<ProposalDiffAssetCollectionProps> = 
         originalFilename={asset?.code || ''}
         downloadUrl={thumbnailUrl} // TODO Fix this
         key={`${asset?.code}-${i}`}
-        state={isDiff ? (accessor === 'before_data' ? 'removed' : 'added') : undefined}
+        state={isDiff ? (accessor === 'before' ? 'removed' : 'added') : undefined}
       />
     })}
   </>

@@ -5,7 +5,6 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 
 class NumberPresenterSpec extends ObjectBehavior
 {
@@ -23,8 +22,7 @@ class NumberPresenterSpec extends ObjectBehavior
 
     function it_presents_french_format_numbers(
         $numberPresenter,
-        $localeResolver,
-        RendererInterface $renderer
+        $localeResolver
     ) {
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
         $numberPresenter->present(150.1234, ['locale' => 'fr_FR'])
@@ -32,9 +30,9 @@ class NumberPresenterSpec extends ObjectBehavior
         $numberPresenter->present(null, ['locale' => 'fr_FR'])
             ->willReturn(null);
 
-        $this->setRenderer($renderer);
-        $renderer->renderDiff(null, '150,1234')->willReturn('150,1234');
-
-        $this->present(null, ['data' => 150.1234])->shouldReturn("150,1234");
+        $this->present(null, ['data' => 150.1234])->shouldReturn([
+            'before' => null,
+            'after' => "150,1234"
+        ]);
     }
 }

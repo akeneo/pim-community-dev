@@ -2,10 +2,10 @@ import React from "react";
 import { diffChars } from "diff";
 
 type ProposalDiffStringProps = {
-  accessor: 'before_data' | 'after_data',
+  accessor: 'before' | 'after',
   change: {
-    before_data: string | null;
-    after_data: string | null;
+    before: string | null;
+    after: string | null;
   }
 }
 
@@ -15,14 +15,14 @@ const ProposalDiffString: React.FC<ProposalDiffStringProps> = ({
     ...rest
   }) => {
   return <span {...rest}>
-    {diffChars(change.before_data || '', change.after_data || '').map((change, i) => {
-      if (accessor === 'before_data' && change.removed) {
+    {diffChars(change.before || '', change.after || '').map((change, i) => {
+      if (accessor === 'before' && change.removed) {
         return <del key={i}>{change.value}</del>
       }
-      if (accessor === 'after_data' && change.added) {
+      if (accessor === 'after' && change.added) {
         return <ins key={i}>{change.value}</ins>
       }
-      if ((accessor === 'before_data' && !change.added) || (accessor === 'after_data' && !change.removed)) {
+      if ((accessor === 'before' && !change.added) || (accessor === 'after' && !change.removed)) {
         return change.value
       }
     })}

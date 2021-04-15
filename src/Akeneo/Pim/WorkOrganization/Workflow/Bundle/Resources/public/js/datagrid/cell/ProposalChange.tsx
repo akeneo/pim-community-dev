@@ -14,7 +14,7 @@ import {
 type ProposalChangeProps = {
   attributeType: string;
   change: ProposalChangeFindNewName;
-  accessor: 'before_data' | 'after_data';
+  accessor: 'before' | 'after';
 }
 
 const ProposalChange: React.FC<ProposalChangeProps> = ({

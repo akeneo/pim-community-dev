@@ -2,10 +2,10 @@ import React from "react";
 import { diffArrays } from "diff";
 
 type ProposalDiffStringArrayProps = {
-  accessor: 'before_data' | 'after_data',
+  accessor: 'before' | 'after',
   change: {
-    before_data: string[] | null,
-    after_data: string[] | null;
+    before: string[] | null,
+    after: string[] | null;
   }
 }
 
@@ -15,18 +15,18 @@ const ProposalDiffStringArray: React.FC<ProposalDiffStringArrayProps> = ({
   ...rest
 }) => {
   const elements = [];
-  diffArrays(change.before_data || [], change.after_data || []).forEach((change) => {
-    if (accessor === 'before_data' && change.removed) {
+  diffArrays(change.before || [], change.after || []).forEach((change) => {
+    if (accessor === 'before' && change.removed) {
       change.value.forEach((value) => {
         elements.push(<del key={`ProposalDiffStringArray-${elements.length}`}>{value}</del>);
       });
     }
-    else if (accessor === 'after_data' && change.added) {
+    else if (accessor === 'after' && change.added) {
       change.value.forEach((value) => {
         elements.push(<ins key={`ProposalDiffStringArray-${elements.length}`}>{value}</ins>);
       });
     }
-    else if ((accessor === 'before_data' && !change.added) || (accessor === 'after_data' && !change.removed)) {
+    else if ((accessor === 'before' && !change.added) || (accessor === 'after' && !change.removed)) {
       change.value.forEach((value) => {
         elements.push(<span key={`ProposalDiffStringArray-${elements.length}`}>{value}</span>);
       });

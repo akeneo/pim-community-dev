@@ -2,10 +2,10 @@ import React from "react";
 import { diffChars } from "diff";
 
 type ProposalDiffMeasurementProps = {
-  accessor: 'before_data' | 'after_data',
+  accessor: 'before' | 'after',
   change: {
-    before_data: string | null;
-    after_data: string | null;
+    before: string | null;
+    after: string | null;
   }
 }
 
@@ -30,33 +30,33 @@ const ProposalDiffMeasurement: React.FC<ProposalDiffMeasurementProps> = ({
     }
   }
 
-  const beforeData = splitAmountAndUnit(change.before_data || '');
-  const afterData = splitAmountAndUnit(change.after_data || '');
+  const beforeData = splitAmountAndUnit(change.before || '');
+  const afterData = splitAmountAndUnit(change.after || '');
   const isUnitDiff = beforeData.unit !== afterData.unit;
 
   return <span {...rest}>
     {diffChars(beforeData.amount, afterData.amount || '').map((change, i) => {
-      if (accessor === 'before_data' && change.removed) {
+      if (accessor === 'before' && change.removed) {
         return <del key={i}>{change.value}</del>
       }
-      if (accessor === 'after_data' && change.added) {
+      if (accessor === 'after' && change.added) {
         return <ins key={i}>{change.value}</ins>
       }
-      if ((accessor === 'before_data' && !change.added) || (accessor === 'after_data' && !change.removed)) {
+      if ((accessor === 'before' && !change.added) || (accessor === 'after' && !change.removed)) {
         return change.value
       }
     })}
     &nbsp;
-    {isUnitDiff && accessor === 'before_data' &&
+    {isUnitDiff && accessor === 'before' &&
     <del>{beforeData.unit}</del>
     }
-    {isUnitDiff && accessor === 'after_data' &&
+    {isUnitDiff && accessor === 'after' &&
     <ins>{afterData.unit}</ins>
     }
-    {!isUnitDiff && accessor === 'before_data' &&
+    {!isUnitDiff && accessor === 'before' &&
     beforeData.unit
     }
-    {!isUnitDiff && accessor === 'after_data' &&
+    {!isUnitDiff && accessor === 'after' &&
     afterData.unit
     }
   </span>

@@ -1,10 +1,10 @@
 import React from "react";
 
 type ProposalDiffFallbackProps = {
-  accessor: 'before_data' | 'after_data',
+  accessor: 'before' | 'after',
   change: {
-    before_data: any;
-    after_data: any;
+    before: any;
+    after: any;
   }
 }
 

@@ -121,8 +121,8 @@ type ProposalChangeFindNewName = {
   locale: LocaleCode | null;
   scope: ScopeCode | null;
   attributeType: string;
-  before_data: any;
-  after_data: any;
+  before: any;
+  after: any;
 };
 
 type ReadyProposal = {
@@ -164,7 +164,7 @@ const Proposal: React.FC<ProposalProps> = ({
   const translate = useTranslate();
 
   const isSame: (change: ProposalChangeFindNewName) => boolean = change => {
-    return change.before_data === change.after_data;
+    return change.before === change.after;
   }
 
   const documentUrl = `#${router.generate(
@@ -241,13 +241,13 @@ const Proposal: React.FC<ProposalProps> = ({
               {!isSame(change) && (
                 <div>
                   <OldValue>{translate('pim_datagrid.workflow.old_value')}</OldValue>
-                  <ProposalChange attributeType={change.attributeType} change={change} accessor='before_data' className="original-value"/>
+                  <ProposalChange attributeType={change.attributeType} change={change} accessor='before' className="original-value"/>
                 </div>
               )}
               {!isSame(change) && (
                 <div>
                   <NewValue>{translate('pim_datagrid.workflow.new_value')}</NewValue>
-                  <ProposalChange attributeType={change.attributeType} change={change} accessor='after_data' className="new-value"/>
+                  <ProposalChange attributeType={change.attributeType} change={change} accessor='after' className="new-value"/>
                 </div>
               )}
               {isSame(change) && (

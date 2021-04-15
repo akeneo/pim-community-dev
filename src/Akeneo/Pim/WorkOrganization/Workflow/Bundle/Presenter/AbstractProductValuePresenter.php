@@ -16,24 +16,17 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-abstract class AbstractProductValuePresenter implements PresenterInterface, RendererAwareInterface
+abstract class AbstractProductValuePresenter implements PresenterInterface
 {
-    use RendererAware;
-
     /**
      * {@inheritdoc}
      */
     public function present($formerData, array $change)
     {
         return [
-            'before_data' => $this->normalizeData($formerData),
-            'after_data' => $this->normalizeChange($change),
+            'before' => $this->normalizeData($formerData),
+            'after' => $this->normalizeChange($change),
         ];
-
-        return $this->renderer->renderDiff(
-            $this->normalizeData($formerData),
-            $this->normalizeChange($change)
-        );
     }
 
     /**

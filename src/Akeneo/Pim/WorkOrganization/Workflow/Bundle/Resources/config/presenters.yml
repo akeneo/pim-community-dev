@@ -1,10 +1,6 @@
 parameters:
     pimee_workflow.presenter.registry.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterRegistry
-    pimee_workflow.rendering.diff_factory.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\DiffFactory
     pimee_workflow.renderer.html.simple_list.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Diff\Renderer\Html\SimpleList
-    pimee_workflow.product_draft_renderer.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\PhpDiffRenderer
-    pimee_workflow.presenter.text.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TextPresenter
-    pimee_workflow.presenter.textarea.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TextareaPresenter
     pimee_workflow.presenter.metric.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\MetricPresenter
     pimee_workflow.presenter.date.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DatePresenter
     pimee_workflow.presenter.prices.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PricesPresenter
@@ -24,19 +20,9 @@ services:
     ##
     # Twig Extension
     ##
-    pimee_workflow.product_draft_renderer:
-        class: '%pimee_workflow.product_draft_renderer.class%'
-        arguments:
-            - '@pimee_workflow.renderer.html.simple_list'
-            - '@pimee_workflow.rendering.diff_factory'
-
     pimee_workflow.renderer.html.simple_list:
         public: false
         class: '%pimee_workflow.renderer.html.simple_list.class%'
-
-    pimee_workflow.rendering.diff_factory:
-        public: false
-        class: '%pimee_workflow.rendering.diff_factory.class%'
 
     ##
     # Presenters
@@ -45,7 +31,6 @@ services:
         class: '%pimee_workflow.presenter.registry.class%'
         arguments:
             - '@pim_catalog.repository.cached_attribute'
-            - '@pimee_workflow.product_draft_renderer'
             - '@translator'
             - '@akeneo.pim.enrichment.factory.value'
             -
@@ -53,16 +38,6 @@ services:
         class: '%pimee_workflow.presenter.default.class%'
         tags:
             - { name: pimee_workflow.presenter, priority: -128 }
-
-    pimee_workflow.presenter.text:
-        class: '%pimee_workflow.presenter.text.class%'
-        tags:
-            - { name: pimee_workflow.presenter }
-
-    pimee_workflow.presenter.textarea:
-        class: '%pimee_workflow.presenter.textarea.class%'
-        tags:
-            - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.metric:
         class: '%pimee_workflow.presenter.metric.class%'
@@ -118,7 +93,6 @@ services:
     pimee_workflow.presenter.file:
         class: '%pimee_workflow.presenter.file.class%'
         arguments:
-            - '@router'
             - '@akeneo_file_storage.repository.file_info'
         tags:
             - { name: pimee_workflow.presenter, priority: -64 }
@@ -126,7 +100,6 @@ services:
     pimee_workflow.presenter.image:
         class: '%pimee_workflow.presenter.image.class%'
         arguments:
-            - '@router'
             - '@akeneo_file_storage.repository.file_info'
         tags:
             - { name: pimee_workflow.presenter }

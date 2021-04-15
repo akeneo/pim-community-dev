@@ -23,17 +23,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class FilePresenter implements PresenterInterface
 {
-    /** @var UrlGeneratorInterface */
-    protected $generator;
-
     /** @var FileInfoRepositoryInterface */
     protected $fileInfoRepository;
 
     public function __construct(
-        UrlGeneratorInterface $generator,
         FileInfoRepositoryInterface $fileInfoRepository)
     {
-        $this->generator = $generator;
         $this->fileInfoRepository = $fileInfoRepository;
     }
 
@@ -50,7 +45,7 @@ class FilePresenter implements PresenterInterface
      */
     public function present($formerData, array $change)
     {
-        $result = ['before_data' => null, 'after_data' => null];
+        $result = ['before' => null, 'after' => null];
 
         $originalMedia = $formerData;
         $changedMedia  = isset($change['data']) ? $this->fileInfoRepository->findOneByIdentifier($change['data']) : null;
@@ -60,21 +55,12 @@ class FilePresenter implements PresenterInterface
         }
 
         if (null !== $originalMedia && null !== $originalMedia->getKey() && null !== $originalMedia->getOriginalFilename()) {
-            $result['before_data'] = $this->createFileElement($originalMedia->getKey(), $originalMedia->getOriginalFilename());
-        }
-
-        if (null !== $changedMedia && null !== $changedMedia->getKey() && null !== $changedMedia->getOriginalFilename()) {
-            $result['after_data'] = $this->createFileElement($changedMedia->getKey(), $changedMedia->getOriginalFilename());
-        }
-
-        /*
-        if (null !== $originalMedia && null !== $originalMedia->getKey() && null !== $originalMedia->getOriginalFilename()) {
             $result['before'] = $this->createFileElement($originalMedia->getKey(), $originalMedia->getOriginalFilename());
         }
 
         if (null !== $changedMedia && null !== $changedMedia->getKey() && null !== $changedMedia->getOriginalFilename()) {
             $result['after'] = $this->createFileElement($changedMedia->getKey(), $changedMedia->getOriginalFilename());
-        } */
+        }
 
         return $result;
     }
@@ -85,7 +71,7 @@ class FilePresenter implements PresenterInterface
      * @param string $fileKey
      * @param string $originalFilename
      *
-     * @return string
+     * @return array
      */
     protected function createFileElement($fileKey, $originalFilename)
     {
@@ -93,12 +79,6 @@ class FilePresenter implements PresenterInterface
             'fileKey' => $fileKey,
             'originalFileName' => $originalFilename,
         ];
-
-        return sprintf(
-            '<i class="icon-file"></i><a target="_blank" class="no-hash" href="%s">%s</a>',
-            $this->generator->generate('pim_enrich_media_show', ['filename' => urlencode($fileKey)]),
-            $originalFilename
-        );
     }
 
     /**

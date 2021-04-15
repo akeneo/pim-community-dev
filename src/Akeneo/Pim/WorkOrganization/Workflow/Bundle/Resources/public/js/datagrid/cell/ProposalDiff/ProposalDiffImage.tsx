@@ -5,10 +5,10 @@ import { ImageCard } from "./ImageCard";
 type Image = { fileKey: string, originalFileName: string };
 
 type ProposalDiffImageProps = {
-  accessor: 'before_data' | 'after_data',
+  accessor: 'before' | 'after',
   change: {
-    before_data: Image | null;
-    after_data: Image | null;
+    before: Image | null;
+    after: Image | null;
   }
 }
 
@@ -35,7 +35,7 @@ const ProposalDiffImage: React.FC<ProposalDiffImageProps> = ({
       filePath={data.fileKey}
       originalFilename={data.originalFileName}
       downloadUrl={downloadUrl}
-      state={accessor === 'before_data' ? 'removed' : 'added'}
+      state={accessor === 'before' ? 'removed' : 'added'}
     />
   }
   return <></>;

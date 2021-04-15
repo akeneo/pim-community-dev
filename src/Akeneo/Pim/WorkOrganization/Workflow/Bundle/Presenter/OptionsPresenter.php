@@ -45,14 +45,9 @@ class OptionsPresenter extends AbstractProductValuePresenter
         }
 
         return [
-            'before_data' => $this->normalizeData($options),
-            'after_data' => $this->normalizeChange($change),
+            'before' => $this->normalizeData($options),
+            'after' => $this->normalizeChange($change),
         ];
-
-        return $this->renderer->renderDiff(
-            $this->normalizeData($options),
-            $this->normalizeChange($change)
-        );
     }
 
     /**
