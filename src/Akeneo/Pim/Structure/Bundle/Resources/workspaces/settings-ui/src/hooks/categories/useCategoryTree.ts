@@ -1,8 +1,7 @@
-import {useCallback, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {FetchStatus, useFetch} from '@akeneo-pim-community/shared';
 import {BackendCategoryTree, CategoryTree, convertToCategoryTree} from '../../models';
-
-export type FetchStatus = 'idle' | 'error' | 'fetching' | 'fetched';
 
 const useCategoryTree = (treeId: number) => {
   const [tree, setTree] = useState<CategoryTree | null>(null);
@@ -18,36 +17,45 @@ const useCategoryTree = (treeId: number) => {
     include_sub: '0',
   });
 
-  const load = useCallback(async () => {
-    setStatus('fetching');
+  const {data, fetch, error: fetchError, status: fetchStatus} = useFetch<BackendCategoryTree>(url);
 
-    try {
-      const response = await fetch(url);
-      const data: BackendCategoryTree = await response.json();
+  useEffect(() => {
+    if (fetchStatus === 'error') {
+      setStatus(fetchStatus);
+      setError(fetchError);
+      setTree(null);
+      return;
+    }
 
-      const tree = convertToCategoryTree(data);
-
-      if (!tree.isRoot) {
-        setTree(null);
-        setStatus('error');
-        setError(`Category tree [${treeId}] not found`);
-        return;
-      }
-
-      setTree(tree);
-      setStatus('fetched');
-    } catch (e) {
+    if (data === null && fetchStatus === 'fetched') {
       setTree(null);
       setStatus('error');
-      setError(e.message);
+      setError(`Category tree [${treeId}] not found`);
     }
-  }, [url]);
+
+    if (data === null) {
+      // Tree is not loaded yet
+      return;
+    }
+
+    const tree = convertToCategoryTree(data);
+    if (!tree.isRoot) {
+      setTree(null);
+      setStatus('error');
+      setError(`Category tree [${treeId}] not found`);
+      return;
+    }
+
+    setTree(tree);
+    setStatus(fetchStatus);
+    setError(fetchError);
+  }, [data, fetchError, fetchStatus]);
 
   return {
     tree,
     status,
     error,
-    load,
+    load: fetch,
   };
 };
 
