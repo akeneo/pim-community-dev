@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
-import {Breadcrumb} from 'akeneo-design-system';
-import {PimView, useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {Breadcrumb, Link} from 'akeneo-design-system';
+import {PimView, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {FullScreenError, PageContent, PageHeader, useSetPageTitle} from '@akeneo-pim-community/shared';
 import {useCategoryTree} from '../../hooks';
 
@@ -13,6 +13,7 @@ const CategoriesTreePage: FC = () => {
   let {treeId} = useParams<Params>();
   const router = useRouter();
   const translate = useTranslate();
+  const {isGranted} = useSecurity();
   const {tree, status, load} = useCategoryTree(parseInt(treeId));
   const [treeLabel, setTreeLabel] = useState(`[${treeId}]`);
 
@@ -20,6 +21,12 @@ const CategoriesTreePage: FC = () => {
 
   const followSettingsIndex = () => router.redirect(router.generate('pim_enrich_attribute_index'));
   const followCategoriesIndex = () => router.redirect(router.generate('pim_enrich_categorytree_index'));
+  const followEditCategory = (id: number) => {
+    if (!isGranted('pim_enrich_product_category_edit')) {
+      return;
+    }
+    router.redirect(router.generate('pim_enrich_categorytree_edit', {id: id.toString()}));
+  };
 
   useEffect(() => {
     load();
@@ -59,9 +66,41 @@ const CategoriesTreePage: FC = () => {
         </PageHeader.UserActions>
         <PageHeader.Title>{treeLabel}</PageHeader.Title>
       </PageHeader>
-      <PageContent>Tree {treeLabel}</PageContent>
+      <PageContent>
+        {/* @todo[PLG-94] replace content by the real tree category */}
+        {tree === null ? (
+          <>Tree {treeLabel}</>
+        ) : (
+          <>
+            <div>
+              <Link
+                onClick={isGranted('pim_enrich_product_category_edit') ? () => followEditCategory(tree.id) : undefined}
+                disabled={!isGranted('pim_enrich_product_category_edit')}
+              >
+                {treeLabel}
+              </Link>
+            </div>
+            <div>
+              {tree.children &&
+                tree.children.length > 0 &&
+                tree.children.map(cat => (
+                  <div>
+                    <Link
+                      key={cat.code}
+                      onClick={
+                        isGranted('pim_enrich_product_category_edit') ? () => followEditCategory(cat.id) : undefined
+                      }
+                      disabled={!isGranted('pim_enrich_product_category_edit')}
+                    >
+                      {cat.label}
+                    </Link>
+                  </div>
+                ))}
+            </div>
+          </>
+        )}
+      </PageContent>
     </>
   );
 };
-
 export {CategoriesTreePage};
