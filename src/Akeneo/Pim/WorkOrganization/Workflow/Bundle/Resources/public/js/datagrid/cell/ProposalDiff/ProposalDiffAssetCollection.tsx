@@ -3,12 +3,13 @@ import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import EditionAsset, {getEditionAssetMainMediaThumbnail} from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {ImageCard} from './ImageCard';
+import { ProposalChangeAccessor } from "../ProposalChange";
 const UserContext = require('pim/user-context');
 
 type AssetFamilyIdentifier = string;
 
 type ProposalDiffAssetCollectionProps = {
-  accessor: 'before' | 'after';
+  accessor: ProposalChangeAccessor;
   change: {
     attributeReferenceDataName: AssetFamilyIdentifier;
     before: string[];
@@ -61,7 +62,7 @@ const ProposalDiffAssetCollection: React.FC<ProposalDiffAssetCollectionProps> = 
 class ProposalDiffAssetCollectionMatcher {
   static supports(attributeType: string) {
     return [
-      'pim_catalog_asset_collection', // OK
+      'pim_catalog_asset_collection',
     ].includes(attributeType);
   }
 

@@ -53,7 +53,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
   }
 
   return (
-    <>
+    <div {...rest}>
       <ImageCardWrapper>
         <MediaFileInput
           onChange={() => {}}
@@ -68,7 +68,6 @@ const ImageCard: React.FC<ImageCardProps> = ({
           value={{filePath, originalFilename}}
           clearable={false}
           className={className}
-          {...rest}
         >
           <IconButton
             download={downloadUrl}
@@ -93,7 +92,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
           </Button>
         </FullscreenPreview>
       )}
-    </>
+    </div>
   );
 };
 

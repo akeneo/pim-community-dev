@@ -1,11 +1,12 @@
 import React from 'react';
 import {useRouter} from '@akeneo-pim-community/legacy-bridge';
 import {ImageCard} from './ImageCard';
+import { ProposalChangeAccessor } from "../ProposalChange";
 
 type File = {fileKey: string; originalFileName: string};
 
 type ProposalDiffFileProps = {
-  accessor: 'before' | 'after';
+  accessor: ProposalChangeAccessor;
   change: {
     before: File | null;
     after: File | null;
@@ -29,13 +30,13 @@ const ProposalDiffFile: React.FC<ProposalDiffFileProps> = ({accessor, change, ..
     );
   }
 
-  return <></>;
+  return <span {...rest}/>;
 };
 
 class ProposalDiffFileMatcher {
   static supports(attributeType: string) {
     return [
-      'pim_catalog_file', // OK
+      'pim_catalog_file',
     ].includes(attributeType);
   }
 

@@ -1,7 +1,8 @@
 import React from 'react';
+import { ProposalChangeAccessor } from "../ProposalChange";
 
 type ProposalDiffFallbackProps = {
-  accessor: 'before' | 'after';
+  accessor: ProposalChangeAccessor;
   change: {
     before: any;
     after: any;

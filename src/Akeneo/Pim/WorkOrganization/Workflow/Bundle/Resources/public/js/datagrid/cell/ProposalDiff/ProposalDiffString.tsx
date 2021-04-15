@@ -1,8 +1,9 @@
 import React from 'react';
 import {diffChars} from 'diff';
+import { ProposalChangeAccessor } from "../ProposalChange";
 
 type ProposalDiffStringProps = {
-  accessor: 'before' | 'after';
+  accessor: ProposalChangeAccessor;
   change: {
     before: string | null;
     after: string | null;
@@ -31,14 +32,14 @@ const ProposalDiffString: React.FC<ProposalDiffStringProps> = ({accessor, change
 class ProposalDiffStringMatcher {
   static supports(attributeType: string) {
     return [
-      'pim_catalog_text', // OK
-      'pim_catalog_identifier', // OK
-      'pim_catalog_textarea', // OK
-      'pim_catalog_simpleselect', // OK
+      'pim_catalog_text',
+      'pim_catalog_identifier',
+      'pim_catalog_textarea',
+      'pim_catalog_simpleselect',
       'pim_reference_data_simpleselect',
-      'pim_catalog_date', // OK
-      'pim_catalog_number', // OK
-      'pim_catalog_boolean', // OK
+      'pim_catalog_date',
+      'pim_catalog_number',
+      'pim_catalog_boolean',
     ].includes(attributeType);
   }
 

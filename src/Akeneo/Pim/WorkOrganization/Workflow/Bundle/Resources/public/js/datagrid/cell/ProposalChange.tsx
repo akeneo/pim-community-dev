@@ -12,17 +12,19 @@ import {
   ProposalDiffMeasurementMatcher,
 } from './ProposalDiff';
 
+export type ProposalChangeAccessor = 'before' | 'after';
+
 type ProposalChangeProps = {
   attributeType: string;
   change: ProposalChangeData;
-  accessor: 'before' | 'after';
+  accessor: ProposalChangeAccessor;
   className: string;
 };
 
 const ProposalChange: React.FC<ProposalChangeProps> = ({change, accessor, className, ...rest}) => {
   const matcher: {
     render: () => React.FC<{
-      accessor: 'before' | 'after';
+      accessor: ProposalChangeAccessor;
       change: {before: any; after: any};
       className: string;
     }>;

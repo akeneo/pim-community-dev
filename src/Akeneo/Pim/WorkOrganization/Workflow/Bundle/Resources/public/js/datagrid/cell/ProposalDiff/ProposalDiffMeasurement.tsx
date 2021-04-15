@@ -1,8 +1,9 @@
 import React from 'react';
 import {diffChars} from 'diff';
+import { ProposalChangeAccessor } from "../ProposalChange";
 
 type ProposalDiffMeasurementProps = {
-  accessor: 'before' | 'after';
+  accessor: ProposalChangeAccessor;
   change: {
     before: string | null;
     after: string | null;
@@ -55,7 +56,7 @@ const ProposalDiffMeasurement: React.FC<ProposalDiffMeasurementProps> = ({access
 class ProposalDiffMeasurementMatcher {
   static supports(attributeType: string) {
     return [
-      'pim_catalog_metric', // OK
+      'pim_catalog_metric',
     ].includes(attributeType);
   }
 

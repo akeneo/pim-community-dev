@@ -7,17 +7,21 @@ import {denormalize as denormalizeRecordAttribute} from 'akeneoreferenceentity/d
 import {denormalize as denormalizeRecordData} from 'akeneoreferenceentity/domain/model/record/data/record';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from 'akeneo-design-system';
+import { ProposalChangeAccessor } from "../ProposalChange";
 const UserContext = require('pim/user-context');
 
-const ProposalDiffRecordView = styled(RecordView)<{$accessor: 'before' | 'after'} & AkeneoThemedProps>`
-  .record-selector-container > .record-selector > a {
-    background: ${({$accessor}) => ($accessor === 'before' ? getColor('red', 20) : getColor('green', 20))};
-    cursor: default;
+const ProposalDiffRecordView = styled(RecordView)<{$accessor: ProposalChangeAccessor} & AkeneoThemedProps>`
+  .record-selector-container > .record-selector {
+    width: calc(100% - 28px);
+    & > a {
+      background: ${({$accessor}) => ($accessor === 'before' ? getColor('red', 20) : getColor('green', 20))};
+      cursor: default;
+    }
   }
 `;
 
 type ProposalDiffReferenceEntityProps = {
-  accessor: 'before' | 'after';
+  accessor: ProposalChangeAccessor;
   change: {
     attributeReferenceDataName: string;
     before: string | null;
@@ -27,7 +31,7 @@ type ProposalDiffReferenceEntityProps = {
 
 const ProposalDiffReferenceEntity: React.FC<ProposalDiffReferenceEntityProps> = ({accessor, change, ...rest}) => {
   if (!change[accessor]) {
-    return null;
+    return <span {...rest}/>;
   }
 
   const attribute = denormalizeRecordAttribute({
@@ -66,7 +70,7 @@ const ProposalDiffReferenceEntity: React.FC<ProposalDiffReferenceEntityProps> = 
 class ProposalDiffReferenceEntityMatcher {
   static supports(attributeType: string) {
     return [
-      'akeneo_reference_entity', // OK
+      'akeneo_reference_entity',
     ].includes(attributeType);
   }
 
