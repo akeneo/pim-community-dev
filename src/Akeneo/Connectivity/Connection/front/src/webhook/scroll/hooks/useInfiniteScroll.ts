@@ -32,7 +32,7 @@ const useInfiniteScroll = <T>(
     }>({
         lastPage: null,
         isStopped: false,
-        isLoading: false,
+        isLoading: true,
         isInitialized: false,
         shouldFetch: true,
     });
@@ -43,14 +43,16 @@ const useInfiniteScroll = <T>(
 
     useEffect(() => {
         (async () => {
-            if (!shouldFetch || isLoading || isStopped) {
+            if (!shouldFetch || (isLoading && isInitialized) || isStopped) {
                 return;
             }
 
-            setState(state => ({
-                ...state,
-                isLoading: true,
-            }));
+            if (!isLoading) {
+                setState(state => ({
+                    ...state,
+                    isLoading: true,
+                }));
+            }
 
             const page = await loadNextPage(lastPage);
 
