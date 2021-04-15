@@ -45,10 +45,10 @@ class ScriptNonceGenerator
 
         if (null === $request) {
             if ('cli' !== \PHP_SAPI) {
-                return '';
+                throw new \LogicException("Nonce generator failed, no session was found while not in CLI mode.");
             }
 
-            throw new \LogicException("Nonce generator failed, no session was found while not in CLI mode.");
+            return '';
         } elseif (isset($request->cookies)) {
             $bapId = $request->cookies->get('BAPID');
 
