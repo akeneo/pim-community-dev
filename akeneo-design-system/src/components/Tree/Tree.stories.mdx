@@ -5,6 +5,10 @@ import { Button } from '../Button/Button'
 <Meta
   title="Components/Tree"
   component={Tree}
+  subcomponents={{
+    'Tree.Actions': Tree.Actions,
+    'Button': Button
+  }}
   argTypes={{
     value: {
       description: 'Value of the element that is used during callback events'
@@ -28,7 +32,9 @@ import { Button } from '../Button/Button'
       description: 'Does not allow checking/unchecking the box (Can only be used with `selectable`)'
     },
     style: {
-      description: 'Applies the style list or simple on the Tree and its children'
+      description: 'Applies the style list or simple on the Tree and its children',
+      control: {type: 'select', options: ['simple', 'list']},
+      defaultValue: 'simple'
     },
     onOpen:{
       description: 'Triggered when the user opens a node'
@@ -47,8 +53,14 @@ import { Button } from '../Button/Button'
           disable: true
         }
     },
+    displayActions:{
+      control: {type: 'boolean'},
+      description: 'Show or hide actions associated to the nodes'
+    },
   }}
-  args={{}}
+  args={{
+    displayActions: false,
+  }}
 />
 
 # Tree
@@ -72,9 +84,44 @@ The Tree component uses its value to trigger onOpen, onClose and other events. B
     {args => {
       return (
         <Tree value={'master'} label={'Master'} {...args}>
-          <Tree value={'tvs'} label={'TVs and projectors'} {...args}/>
-          <Tree value={'cameras'} label={'Cameras'} {...args}/>
-          <Tree value={'audio'} label={'Audio and Video'} {...args}/>
+          <Tree.Actions>
+            {args.displayActions && (
+              <>
+                <Button ghost size="small" level="primary">Create</Button>
+                <Button ghost size="small" level="danger">Delete</Button>
+              </>
+            )}
+          </Tree.Actions>
+          <Tree value={'tvs'} label={'TVs and projectors'} {...args}>
+            <Tree.Actions>
+              {args.displayActions && (
+                <>
+                  <Button ghost size="small" level="primary">Create</Button>
+                  <Button ghost size="small" level="danger">Delete</Button>
+                </>
+               )}
+            </Tree.Actions>
+          </Tree>
+          <Tree value={'cameras'} label={'Cameras'} {...args}>
+            <Tree.Actions>
+              {args.displayActions && (
+                <>
+                  <Button ghost size="small" level="primary">Create</Button>
+                  <Button ghost size="small" level="danger">Delete</Button>
+                </>
+              )}
+            </Tree.Actions>
+          </Tree>
+          <Tree value={'audio'} label={'Audio and Video'} {...args}>
+            <Tree.Actions>
+              {args.displayActions && (
+                <>
+                  <Button ghost size="small" level="primary">Create</Button>
+                  <Button ghost size="small" level="danger">Delete</Button>
+                </>
+              )}
+            </Tree.Actions>
+          </Tree>
         </Tree>
       );
     }}
