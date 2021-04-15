@@ -52,8 +52,7 @@ class WriteConnectionWebhookValidationIntegration extends TestCase
 
     private function createValidUrlOfLength(int $length): string
     {
-        $baseUrl = 'http://foo.com/';
-        $url = sprintf('%s%s', $baseUrl, str_repeat('a', $length - strlen($baseUrl)));
+        $url = str_pad('http://foo.com/', $length, 'a');
 
         if (strlen($url) !== $length) {
             throw new \LogicException(sprintf('The url should have %d characters but has %d instead.', $length, strlen($url)));
