@@ -13,34 +13,122 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only(
         [
-            'Akeneo\Connectivity\Connection\Domain',
+            'Akeneo\Connectivity\Connection\Domain\Audit',
 
-            // Dependency on Symfony Validator to ease validation
-            'Symfony\Component\Validator',
-            'Symfony\Component\Security',
-            'Symfony\Component\OptionsResolver\OptionsResolver',
+            // Could be in \Audit
+            'Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval',
+            'Akeneo\Connectivity\Connection\Domain\ValueObject\DateTimePeriod',
 
-            'Doctrine\Common\Persistence\ObjectRepository',
+            // Not ok
+            'Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Application\Audit'),
 
-            'Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+    $builder->only(
+        [
+            // Ok
+            'Akeneo\Connectivity\Connection\Domain\ErrorManagement',
+            'Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval',
 
-            'Akeneo\UserManagement\Component\Model\UserInterface',
-
-            // TODO: Fix serializer usage to not depends on FOSRestBundle inside Application.
+            // Ambigue
             'FOS\RestBundle\Context\Context',
             'FOS\RestBundle\Serializer\Serializer',
+            'Symfony\Component\Validator\ConstraintViolationInterface',
+            'Symfony\Component\Validator\ConstraintViolationListInterface',
 
+            // ???
+            'Akeneo\Connectivity\Connection\Application\ConnectionContextInterface',
+            'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType',
+
+            // Not ok
+            'Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Application\ErrorManagement'),
+
+    $builder->only(
+        [
+            // Ok
+            'Akeneo\Connectivity\Connection\Domain\Settings',
+
+            // Ambigue
+            'Symfony\Component\Validator\Constraint',
+            'Symfony\Component\Validator\ConstraintValidator',
+            'Symfony\Component\Validator\Validator\ValidatorInterface',
+            'Symfony\Component\Validator\Exception\UnexpectedTypeException',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Application\Settings'),
+
+    $builder->only(
+        [
+            // Ok
+            'Symfony\Component\OptionsResolver\OptionsResolver',
+
+            // Ambigue
+            'Symfony\Component\Validator\Constraint',
+            'Symfony\Component\Validator\ConstraintValidator',
+            'Symfony\Component\Validator\Exception\UnexpectedTypeException',
+            'Symfony\Component\Validator\Exception\UnexpectedValueException',
+            'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Psr\Http\Message\ResponseInterface',
             'Psr\Log\LoggerInterface',
 
+            // Ok
+            'Akeneo\Connectivity\Connection\Domain\Clock',
+            'Akeneo\Connectivity\Connection\Domain\Webhook',
             'Akeneo\Platform\Component\EventQueue',
             'Akeneo\Platform\Component\Webhook',
 
-            //CXP-462
+            // Not ok
             'Akeneo\UserManagement\Component\Model\UserInterface',
+            'Doctrine\Common\Persistence\ObjectRepository',
+            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
+            'Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken',
+            'Symfony\Component\Security\Core\User\UserInterface',
+
+            // ???
+            'Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException',
+            'Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository',
         ]
-    )->in('Akeneo\Connectivity\Connection\Application'),
+    )->in('Akeneo\Connectivity\Connection\Application\Webhook'),
+
+
+    $builder->only([
+        'Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval',
+        'Akeneo\Connectivity\Connection\Domain\ValueObject\DateTimePeriod',
+
+        // Not ok
+        'Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType',
+    ])->in('Akeneo\Connectivity\Connection\Domain\Audit'),
+
+    $builder->only([
+        'Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval',
+
+        // Not ok
+        'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode',
+    ])->in('Akeneo\Connectivity\Connection\Domain\ErrorManagement'),
+
+    $builder->only([
+        'Symfony\Component\Validator\Context\ExecutionContextInterface',
+        'Symfony\Component\Validator\ConstraintViolationInterface',
+        'Symfony\Component\Validator\ConstraintViolationListInterface',
+    ])->in('Akeneo\Connectivity\Connection\Domain\Settings'),
+
+    $builder->only([
+        'Akeneo\Platform\Component\EventQueue\EventInterface',
+        'Akeneo\Platform\Component\EventQueue\Author',
+        'Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface',
+
+        'Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval',
+        'Akeneo\Connectivity\Connection\Domain\ValueObject\Url',
+
+        'Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated',
+        'Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved',
+        'Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated',
+        'Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated',
+        'Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved',
+        'Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated',
+    ])->in('Akeneo\Connectivity\Connection\Domain\Webhook'),
 
     $builder->only(
         [
@@ -153,6 +241,7 @@ $rules = [
             'Symfony\Component',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Symfony'),
+
 ];
 
 $config = new Configuration($rules, $finder);
