@@ -44,6 +44,18 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\DispatchProductCreatedAndUpdatedEventSubscriber:
+        decorates: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductCreatedAndUpdatedEventSubscriber
+        decoration_inner_name: base_dispatch_product_created_and_updated_event_subscriber
+        arguments:
+            - '@base_dispatch_product_created_and_updated_event_subscriber'
+
+    Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\DispatchProductRemovedEventSubscriber:
+        decorates: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductRemovedEventSubscriber
+        decoration_inner_name: base_dispatch_product_removed_event_subscriber
+        arguments:
+            - '@base_dispatch_product_removed_event_subscriber'
+
     ##
     # Import event subscribers
     ##
