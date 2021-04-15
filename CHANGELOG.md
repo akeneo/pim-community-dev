@@ -94,6 +94,12 @@
 - PIM-9648: Mitigate DDoS risk on API auth endpoint by rejecting too large content
 - PIM-9697: Exported files streamer
 - PIM-9719: Add the real "updated" values in ES for product and product models
+- CPM-152: Use Symfony Messenger to handle job queue messages. Therefore the `akeneo_batch_job_execution_queue` table is removed.
+  Depending on your environment, please check the associated `messenger.yml` to figure out how the messages are sent/received.
+  The former command to launch job consuming is removed and replaced by this one:
+```bash
+bin/console messenger:consume ui_job import_export_job data_maintenance_job
+```
 
 ## Classes
 
