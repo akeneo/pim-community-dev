@@ -45,7 +45,9 @@ test('The first logs are fetched on mount', async () => {
         dateTime: {},
     };
 
-    const {waitForNextUpdate, result, unmount} = renderHook(() => useInfiniteEventSubscriptionLogs('alkemics', filters, ref));
+    const {waitForNextUpdate, result, unmount} = renderHook(() =>
+        useInfiniteEventSubscriptionLogs('alkemics', filters, ref)
+    );
 
     expect(result.current).toEqual({
         logs: [],
@@ -54,7 +56,7 @@ test('The first logs are fetched on mount', async () => {
         maxScrollReached: false,
         endScrollReached: false,
         isLoading: true,
-        isInitialized: false
+        isInitialized: false,
     });
 
     await waitForNextUpdate();
@@ -76,7 +78,7 @@ test('The first logs are fetched on mount', async () => {
         maxScrollReached: false,
         endScrollReached: false,
         isLoading: false,
-        isInitialized: true
+        isInitialized: true,
     });
 
     unmount();
