@@ -18,7 +18,6 @@ services:
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 130 }
 
-
     pimee_workflow.normalizer.value_collection_without_empty_values_provider:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer\ValueCollectionWithoutEmptyValuesProvider'
         arguments:
@@ -38,16 +37,6 @@ services:
 
     pimee_workflow.normalizer.entity_with_values_proposal:
         class: '%pimee_workflow.normalizer.entity_with_values_proposal.class%'
-        arguments:
-            - '@pim_datagrid_serializer'
-            - '@pimee_workflow.normalizer.proposal_changes'
-            - '@pim_user.context.user'
-        tags:
-            - { name: pim_datagrid_serializer.normalizer }
-        lazy: true
-
-    pimee_workflow.normalizer.proposal_product_model:
-        class: '%pimee_workflow.normalizer.proposal_product_model.class%'
         arguments:
             - '@pim_datagrid_serializer'
             - '@pimee_workflow.normalizer.proposal_changes'
