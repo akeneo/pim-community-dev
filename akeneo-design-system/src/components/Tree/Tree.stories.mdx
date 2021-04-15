@@ -6,8 +6,8 @@ import { Button } from '../Button/Button'
   title="Components/Tree"
   component={Tree}
   subcomponents={{
+    Tree,
     'Tree.Actions': Tree.Actions,
-    'Button': Button
   }}
   argTypes={{
     value: {
@@ -33,8 +33,7 @@ import { Button } from '../Button/Button'
     },
     style: {
       description: 'Applies the style list or simple on the Tree and its children',
-      control: {type: 'select', options: ['simple', 'list']},
-      defaultValue: 'simple'
+      control: {type: 'select', options: ['standard', 'list']}
     },
     onOpen:{
       description: 'Triggered when the user opens a node'

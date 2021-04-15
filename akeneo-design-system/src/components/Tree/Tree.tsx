@@ -3,7 +3,7 @@ import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor} from '../../theme';
 import {Checkbox, CheckboxChecked} from '../Checkbox/Checkbox';
 import {ArrowRightIcon, FolderIcon, FolderPlainIcon, FoldersIcon, FoldersPlainIcon, LoaderIcon} from '../../icons';
-import {TreeActions} from "./TreeActions/TreeActions";
+import {TreeActions} from './TreeActions/TreeActions';
 
 const folderIconCss = css`
   vertical-align: middle;
@@ -11,13 +11,16 @@ const folderIconCss = css`
   margin-right: 5px;
 `;
 
-const TreeContainer = styled.li<{isRoot: boolean, $style: TreeStyle} & AkeneoThemedProps>`
+const TreeContainer = styled.li<{isRoot: boolean; $style: TreeStyle} & AkeneoThemedProps>`
   display: block;
   color: ${getColor('grey140')};
-  
-  ${({$style, isRoot}) => $style === 'list' && isRoot && css`
-    position: relative;
-  `}
+
+  ${({$style, isRoot}) =>
+    $style === 'list' &&
+    isRoot &&
+    css`
+      position: relative;
+    `}
 `;
 
 const TreeListSeparator = styled.hr`
@@ -69,14 +72,14 @@ const TreeLoaderIcon = styled(LoaderIcon)`
   color: ${getColor('grey100')};
 `;
 
-type TreeStyle = 'simple' | 'list';
+type TreeStyle = 'standard' | 'list';
 
-const TreeLine = styled.div<{$selected: boolean, $style: TreeStyle} & AkeneoThemedProps>`
+const TreeLine = styled.div<{$selected: boolean; $style: TreeStyle} & AkeneoThemedProps>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: nowrap;
-  
+
   height: 40px;
   line-height: 40px;
   overflow: hidden;
@@ -86,19 +89,20 @@ const TreeLine = styled.div<{$selected: boolean, $style: TreeStyle} & AkeneoThem
     css`
       color: ${getColor('blue100')};
     `}
-  
-  ${({$style}) => $style === 'list' && css`
-    height: 54px;
-    line-height: 54px;
-  `}
+
+  ${({$style}) =>
+    $style === 'list' &&
+    css`
+      height: 54px;
+      line-height: 54px;
+    `}
 `;
 
 const LineInnerContainer = styled.div`
   flex-grow: 1;
 `;
 
-const LineActionsContainer = styled.div`
-`;
+const LineActionsContainer = styled.div``;
 
 const NodeCheckbox = styled(Checkbox)`
   display: inline-block;
@@ -197,7 +201,7 @@ const Tree = <T,>({
   ...rest
 }: PropsWithChildren<TreeProps<T>>) => {
   const subTrees: ReactElement<TreeProps<T>>[] = [];
-  let actions: ReactNode|null = null;
+  let actions: ReactNode | null = null;
 
   React.Children.forEach(children, child => {
     if (isValidElement(child) && child.type === TreeActions) {
@@ -209,9 +213,11 @@ const Tree = <T,>({
       throw new Error('Tree component only accepts Tree or Tree.Actions as children');
     }
 
-    subTrees.push(React.cloneElement(child, {
-      style: style
-    }));
+    subTrees.push(
+      React.cloneElement(child, {
+        style: style,
+      })
+    );
   });
 
   const [isOpen, setOpen] = React.useState<boolean>(subTrees.length > 0);
@@ -273,7 +279,7 @@ const Tree = <T,>({
         </LineInnerContainer>
         {actions && <LineActionsContainer>{actions}</LineActionsContainer>}
       </TreeLine>
-      {style === 'list' && <TreeListSeparator/>}
+      {style === 'list' && <TreeListSeparator />}
       {isOpen && !isLeaf && subTrees.length > 0 && (
         <SubTreesContainer role="group">
           {subTrees.map(subTree =>
