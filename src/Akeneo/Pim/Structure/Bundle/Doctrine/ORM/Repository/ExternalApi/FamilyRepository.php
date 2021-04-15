@@ -146,7 +146,7 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                         'value' => '>',
                         'message' => 'Searching on the "updated" property require the ">" (greater than) operator, {{ value }} given.',
                     ]),
-                    'value' => new Assert\DateTime(['format' => \DateTime::ATOM]),
+                    'value' => new Assert\DateTime(['format' => \DateTimeInterface::ATOM]),
                 ])
             ]),
         ];
@@ -162,10 +162,8 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                 ));
             }
             $violations = $validator->validate($searchFilter, $constraints[$property]);
-            if (0 !== $violations->count()) {
-                foreach ($violations as $violation) {
-                    $exceptionMessages[] = $violation->getMessage();
-                }
+            foreach ($violations as $violation) {
+                $exceptionMessages[] = $violation->getMessage();
             }
         }
         if (!empty($exceptionMessages)) {

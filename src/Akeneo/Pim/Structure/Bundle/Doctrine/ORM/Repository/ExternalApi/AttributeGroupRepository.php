@@ -131,13 +131,13 @@ class AttributeGroupRepository extends EntityRepository implements ApiResourceRe
                         'value' => '>',
                         'message' => 'Searching on the "updated" property require the ">" (greater than) operator, {{ compared_value }} given.',
                     ]),
-                    'value' => new Assert\DateTime(['format' => \DateTime::ATOM]),
+                    'value' => new Assert\DateTime(['format' => \DateTimeInterface::ATOM]),
                 ])
             ]),
         ];
         $availableSearchFilters = array_keys($constraints);
 
-        $exceptionMessage = '';
+        $exceptionMessages = [];
         foreach ($searchFilters as $property => $searchFilter) {
             if (!in_array($property, $availableSearchFilters)) {
                 throw new \InvalidArgumentException(sprintf(
@@ -147,14 +147,12 @@ class AttributeGroupRepository extends EntityRepository implements ApiResourceRe
                 ));
             }
             $violations = $validator->validate($searchFilter, $constraints[$property]);
-            if (0 !== $violations->count()) {
-                foreach ($violations as $violation) {
-                    $exceptionMessage .= $violation->getMessage();
-                }
+            foreach ($violations as $violation) {
+                $exceptionMessages[] = $violation->getMessage();
             }
         }
-        if ('' !== $exceptionMessage) {
-            throw new \InvalidArgumentException($exceptionMessage);
+        if (!empty($exceptionMessages)) {
+            throw new \InvalidArgumentException(implode(' ', $exceptionMessages));
         }
     }
 }
