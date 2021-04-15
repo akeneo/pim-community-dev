@@ -14,12 +14,16 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebho
 use Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\ConnectionWebhookNotFoundException;
+use Akeneo\Queries\GetProductQuery;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Messenger\Envelope;
 
 class WebhookController
 {
@@ -33,22 +37,33 @@ class WebhookController
 
     private GenerateWebhookSecretHandler $generateWebhookSecretHandler;
 
+
+    private MessageBusInterface $queryBus;
+
     public function __construct(
         SecurityFacade $securityFacade,
         GetAConnectionWebhookHandler $getAConnectionWebhookHandler,
         CheckWebhookReachabilityHandler $checkWebhookReachabilityHandler,
         UpdateWebhookHandler $updateConnectionWebhookHandler,
-        GenerateWebhookSecretHandler $generateWebhookSecretHandler
+        GenerateWebhookSecretHandler $generateWebhookSecretHandler,
+        MessageBusInterface $queryBus
     ) {
         $this->securityFacade = $securityFacade;
         $this->getAConnectionWebhookHandler = $getAConnectionWebhookHandler;
         $this->checkWebhookReachabilityHandler = $checkWebhookReachabilityHandler;
         $this->updateConnectionWebhookHandler = $updateConnectionWebhookHandler;
         $this->generateWebhookSecretHandler = $generateWebhookSecretHandler;
+        $this->queryBus = $queryBus;
     }
 
     public function get(Request $request): JsonResponse
     {
+
+        /** @var Envelope $response */
+        $response = $this->queryBus->dispatch(new GetProductQuery());
+        dd($response->last(HandledStamp::class));
+
+
         $eventSubscriptionFormData = $this->getAConnectionWebhookHandler->handle(
             new GetAConnectionWebhookQuery($request->get('code', '')),
         );
