@@ -8,7 +8,7 @@ import {useCategoryTreeList} from '../../hooks';
 const CategoriesIndex: FC = () => {
   const router = useRouter();
   const translate = useTranslate();
-  const {trees, isPending, load} = useCategoryTreeList();
+  const {trees, status, load} = useCategoryTreeList();
 
   const followSettingsIndex = () => router.redirect(router.generate('pim_enrich_attribute_index'));
 
@@ -18,7 +18,7 @@ const CategoriesIndex: FC = () => {
 
   return (
     <>
-      <PageHeader showPlaceholder={isPending}>
+      <PageHeader showPlaceholder={status === 'idle' || status === 'fetching'}>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
             <Breadcrumb.Step onClick={followSettingsIndex}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
