@@ -162,7 +162,7 @@ The Tree component uses its value to trigger onOpen, onClose and other events. B
   </Story>
 </Canvas>
 
-## Elements with Actions
+## Variation on actions
 
 <Canvas>
   <Story name="WithActions">
@@ -196,3 +196,25 @@ The Tree component uses its value to trigger onOpen, onClose and other events. B
   </Story>
 </Canvas>
 
+
+## Variation on style
+
+<Canvas>
+  <Story name="WithListStyle">
+    {args => {
+      return (
+        <Tree value={'master'} label={'Master'} style="list" {...args}>
+          <Tree.Actions>
+            <Button level="primary" size="small" ghost>Create</Button>
+          </Tree.Actions>
+          <Tree value={'tvs'} label={'TVs and projectors'} {...args}>
+            <Tree value={'pc_monitors'} label={'PC Monitors'} {...args}/>
+            <Tree value={'led_tvs'} label={'LED TVs'} isLeaf={true} {...args}/>
+          </Tree>
+          <Tree value={'cameras'} label={'Cameras'} {...args}/>
+          <Tree value={'audio'} label={'Audio and Video'} {...args}/>
+        </Tree>
+      );
+    }}
+  </Story>
+</Canvas>

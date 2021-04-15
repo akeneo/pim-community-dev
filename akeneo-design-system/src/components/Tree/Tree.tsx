@@ -11,9 +11,26 @@ const folderIconCss = css`
   margin-right: 5px;
 `;
 
-const TreeContainer = styled.li`
+const TreeContainer = styled.li<{isRoot: boolean, $style: TreeStyle} & AkeneoThemedProps>`
   display: block;
   color: ${getColor('grey140')};
+  
+  ${({$style, isRoot}) => $style === 'list' && isRoot && css`
+    position: relative;
+  `}
+`;
+
+const TreeListSeparator = styled.hr`
+  border-width: 1px;
+  border-style: solid;
+  border-color: ${getColor('grey60')};
+  border-top: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 `;
 
 const SubTreesContainer = styled.ul`
@@ -52,7 +69,9 @@ const TreeLoaderIcon = styled(LoaderIcon)`
   color: ${getColor('grey100')};
 `;
 
-const TreeLine = styled.div<{$selected: boolean} & AkeneoThemedProps>`
+type TreeStyle = 'simple' | 'list';
+
+const TreeLine = styled.div<{$selected: boolean, $style: TreeStyle} & AkeneoThemedProps>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -67,6 +86,11 @@ const TreeLine = styled.div<{$selected: boolean} & AkeneoThemedProps>`
     css`
       color: ${getColor('blue100')};
     `}
+  
+  ${({$style}) => $style === 'list' && css`
+    height: 54px;
+    line-height: 54px;
+  `}
 `;
 
 const LineInnerContainer = styled.div`
@@ -146,6 +170,7 @@ type TreeProps<T = string> = {
   isLoading?: boolean;
   selectable?: boolean;
   readOnly?: boolean;
+  style?: TreeStyle;
   onOpen?: (value: T) => void;
   onClose?: (value: T) => void;
   onChange?: (value: T, checked: boolean, event: SyntheticEvent) => void;
@@ -163,6 +188,7 @@ const Tree = <T,>({
   isLoading = false,
   selectable = false,
   readOnly = false,
+  style,
   onChange,
   onOpen,
   onClose,
@@ -180,9 +206,12 @@ const Tree = <T,>({
     }
 
     if (!isValidElement<TreeProps<T>>(child)) {
-      throw new Error('Tree component only accepts Tree as children');
+      throw new Error('Tree component only accepts Tree or Tree.Actions as children');
     }
-    subTrees.push(child);
+
+    subTrees.push(React.cloneElement(child, {
+      style: style
+    }));
   });
 
   const [isOpen, setOpen] = React.useState<boolean>(subTrees.length > 0);
@@ -228,8 +257,8 @@ const Tree = <T,>({
 
   // https://www.w3.org/WAI/GL/wiki/Using_ARIA_trees
   const result = (
-    <TreeContainer role="treeitem" aria-expanded={isOpen} {...rest}>
-      <TreeLine $selected={selected}>
+    <TreeContainer role="treeitem" aria-expanded={isOpen} $style={style} isRoot={_isRoot} {...rest}>
+      <TreeLine $selected={selected} $style={style}>
         <LineInnerContainer>
           <ArrowButton disabled={isLeaf} role="button" onClick={handleArrowClick}>
             {!isLeaf && <TreeArrowIcon $isFolderOpen={isOpen} size={14} />}
@@ -244,6 +273,7 @@ const Tree = <T,>({
         </LineInnerContainer>
         {actions && <LineActionsContainer>{actions}</LineActionsContainer>}
       </TreeLine>
+      {style === 'list' && <TreeListSeparator/>}
       {isOpen && !isLeaf && subTrees.length > 0 && (
         <SubTreesContainer role="group">
           {subTrees.map(subTree =>
