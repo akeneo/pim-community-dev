@@ -4,3 +4,5 @@ export * from './useUploader';
 export * from './useIsMounted';
 export * from './useStorageState';
 export * from './useToggleState';
+export * from './useFetch';
+export * from './useSetPageTitle';

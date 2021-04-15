@@ -1,9 +1,8 @@
 import React, {FC, useEffect} from 'react';
-import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
 import {Breadcrumb} from 'akeneo-design-system';
 import {PimView, useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {EmptyCategoryTreeList} from '../../components';
-import {CategoryTreesDataGrid} from '../../components/datagrids/categories/CategoryTreeDataGrid';
+import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
+import {CategoryTreesDataGrid, EmptyCategoryTreeList} from '../../components';
 import {useCategoryTreeList} from '../../hooks';
 
 const CategoriesIndex: FC = () => {

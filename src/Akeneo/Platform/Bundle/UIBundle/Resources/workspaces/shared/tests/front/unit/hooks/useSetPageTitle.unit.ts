@@ -1,5 +1,5 @@
 import {renderHookWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
-import {useSetPageTitle} from '@akeneo-pim-community/settings-ui';
+import {useSetPageTitle} from '@akeneo-pim-community/shared';
 
 describe('useSetPageTitle', () => {
   test('it updates the document title', () => {

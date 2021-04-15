@@ -1,7 +1,11 @@
+import {LabelCollection} from "@akeneo-pim-community/shared";
+
 export type Category = {
   id: number;
   code: string;
-  label: string;
+  labels: LabelCollection;
+  parent: string;
+  root: Category | null;
 };
 
 export type BackendCategoryTree = {
@@ -19,7 +23,7 @@ export type CategoryTree = {
   code: string;
   label: string;
   isRoot: boolean;
-  children: CategoryTree[];
+  children?: CategoryTree[];
 };
 
 const convertToCategoryTree = (tree: BackendCategoryTree): CategoryTree => {

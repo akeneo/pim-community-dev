@@ -41,6 +41,7 @@ pim_enrich_categorytree_create_tree:
 
 pim_enrich_categorytree_edit:
     path: /{id}/edit
+    defaults: { _controller: pim_enrich.controller.category_tree.product:editAction }
     requirements:
         id: \d+
 

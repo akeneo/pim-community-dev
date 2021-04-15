@@ -1,10 +1,10 @@
 import React, {FC, useCallback} from 'react';
 import {Table} from 'akeneo-design-system';
-import {Category} from '../../../models';
 import {useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {CategoryTree} from '../../../models';
 
 type Props = {
-  trees: Category[];
+  trees: CategoryTree[];
 };
 
 const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
@@ -12,7 +12,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
   const router = useRouter();
   const {isGranted} = useSecurity();
 
-  const followCategoryTree = useCallback((tree: Category): void => {
+  const followCategoryTree = useCallback((tree: CategoryTree): void => {
     const url = router.generate('pim_enrich_categorytree_tree', {id: tree.id});
     router.redirect(url);
 

@@ -225,6 +225,9 @@ pim_enrich.entity.category:
                 label: Tree label
         tree:
             not_found: Category tree not found
+        edit:
+            not_found: Category not found
+            default_tree_label: Tree
 
 pim_enrich.export.product:
     data:

@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -57,6 +58,8 @@ class CategoryTreeController extends Controller
     /** @var TranslatorInterface */
     protected $translator;
 
+    private NormalizerInterface $normalizer;
+
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         UserContext $userContext,
@@ -66,6 +69,7 @@ class CategoryTreeController extends Controller
         CategoryRepositoryInterface $categoryRepository,
         SecurityFacade $securityFacade,
         TranslatorInterface $translator,
+        NormalizerInterface $normalizer,
         array $rawConfiguration
     ) {
         $this->eventDispatcher = $eventDispatcher;
@@ -81,6 +85,7 @@ class CategoryTreeController extends Controller
 
         $this->rawConfiguration = $resolver->resolve($rawConfiguration);
         $this->translator = $translator;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -327,6 +332,18 @@ class CategoryTreeController extends Controller
             }
         }
 
+        $rootCategory = null;
+        if ($category->isRoot() === false) {
+            $rootCategory = $this->findCategory($category->getRoot());
+        }
+
+        $normalizedCategory = $this->normalizer->normalize($category, 'internal_api');
+        $normalizedCategory = array_merge($normalizedCategory, [
+            'root' => $rootCategory === null ? null : $this->normalizer->normalize($rootCategory, 'internal_api')
+        ]);
+
+        return new JsonResponse($normalizedCategory,Response::HTTP_OK);
+/*
         return $this->render(
             sprintf('AkeneoPimEnrichmentBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
             [
@@ -336,6 +353,7 @@ class CategoryTreeController extends Controller
                 'route'          => $this->rawConfiguration['route'],
             ]
         );
+*/
     }
 
     /**

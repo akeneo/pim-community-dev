@@ -1,9 +1,9 @@
 import {useCallback, useState} from 'react';
-import {Category} from '../../models';
 import {useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {CategoryTree} from '../../models';
 
 const useCategoryTreeList = () => {
-  const [trees, setTrees] = useState<Category[]>([]);
+  const [trees, setTrees] = useState<CategoryTree[]>([]);
   const [isPending, setIsPending] = useState(false);
   const url = useRoute('pim_enrich_categorytree_listtree', {
     _format: 'json',
@@ -16,7 +16,7 @@ const useCategoryTreeList = () => {
 
     try {
       const response = await fetch(url);
-      const data: Category[] = await response.json();
+      const data: CategoryTree[] = await response.json();
       setTrees(data);
       setIsPending(false);
     } catch (e) {

@@ -1,25 +1,50 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
-import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
 import {Breadcrumb} from 'akeneo-design-system';
-import {PimView, useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {useSetPageTitle} from '../../hooks';
+import {PimView, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {FullScreenError, PageContent, PageHeader, useSetPageTitle} from '@akeneo-pim-community/shared';
+import {useCategory} from '../../hooks';
 
 type Params = {
   categoryId: string;
 };
+
 const CategoryEditPage: FC = () => {
   const {categoryId} = useParams<Params>();
   const translate = useTranslate();
   const router = useRouter();
-  const categoryLabel = `[${categoryId}]`;
-  const treeLabel = `Tree`;
+  const userContext = useUserContext();
+  const {category, status, load} = useCategory(parseInt(categoryId));
+  const [categoryLabel, setCategoryLabel] = useState(`[${categoryId}]`);
+  const [treeLabel, setTreeLabel] = useState(translate('pim_enrich.entity.category.content.edit.default_tree_label'));
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
 
   const followSettingsIndex = () => router.redirect(router.generate('pim_enrich_attribute_index'));
   const followCategoriesIndex = () => router.redirect(router.generate('pim_enrich_categorytree_index'));
   const followCategoryTree = () => router.redirect(router.generate('pim_enrich_categorytree_tree', {id: 1}));
+
+  useEffect(() => {
+    load();
+  }, [categoryId]);
+
+  useEffect(() => {
+    const tree = category && category.root ? category.root : category;
+
+    setCategoryLabel(category ? category.labels[userContext.get('uiLocale')] : `[${categoryId}]`);
+    setTreeLabel(tree ? tree.labels[userContext.get('uiLocale')] : translate('pim_enrich.entity.category.content.edit.default_tree_label'));
+  }, [category]);
+
+
+  if (status === 'error') {
+    return (
+      <FullScreenError
+        title={translate('error.exception', {status_code: '404'})}
+        message={translate('pim_enrich.entity.category.content.edit.not_found')}
+        code={404}
+      />
+    );
+  }
 
   return (
     <>
@@ -42,7 +67,7 @@ const CategoryEditPage: FC = () => {
         </PageHeader.UserActions>
         <PageHeader.Title>{categoryLabel}</PageHeader.Title>
       </PageHeader>
-      <PageContent>{categoryLabel}</PageContent>
+      <PageContent>Edit {categoryLabel}</PageContent>
     </>
   );
 };

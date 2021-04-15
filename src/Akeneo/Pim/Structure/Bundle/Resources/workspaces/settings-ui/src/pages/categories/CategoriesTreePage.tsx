@@ -1,9 +1,9 @@
 import React, {FC, useEffect, useState} from 'react';
-import {FullScreenError, PageContent, PageHeader} from '@akeneo-pim-community/shared';
-import {PimView, useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {Breadcrumb} from 'akeneo-design-system';
 import {useParams} from 'react-router';
-import {useCategoryTree, useSetPageTitle} from '../../hooks';
+import {Breadcrumb} from 'akeneo-design-system';
+import {PimView, useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {FullScreenError, PageContent, PageHeader, useSetPageTitle} from '@akeneo-pim-community/shared';
+import {useCategoryTree} from '../../hooks';
 
 type Params = {
   treeId: string;
@@ -59,7 +59,7 @@ const CategoriesTreePage: FC = () => {
         </PageHeader.UserActions>
         <PageHeader.Title>{treeLabel}</PageHeader.Title>
       </PageHeader>
-      <PageContent>{treeLabel}</PageContent>
+      <PageContent>Tree {treeLabel}</PageContent>
     </>
   );
 };

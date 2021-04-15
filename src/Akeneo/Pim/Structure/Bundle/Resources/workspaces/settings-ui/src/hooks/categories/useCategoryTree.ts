@@ -1,6 +1,6 @@
 import {useCallback, useState} from 'react';
-import {BackendCategoryTree, CategoryTree, convertToCategoryTree} from '../../models';
 import {useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {BackendCategoryTree, CategoryTree, convertToCategoryTree} from '../../models';
 
 export type FetchStatus = 'idle' | 'error' | 'fetching' | 'fetched';
 
