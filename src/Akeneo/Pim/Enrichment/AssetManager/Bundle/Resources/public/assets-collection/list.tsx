@@ -36,7 +36,6 @@ import {AssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection
 import {hasValues, isValueComplete} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {Family} from 'akeneoassetmanager/platform/model/structure/family';
 import {NoDataSection, NoDataTitle} from 'akeneoassetmanager/platform/component/common/no-data';
-import {RuleRelation} from 'akeneoassetmanager/platform/model/structure/rule-relation';
 import {RuleNotification} from 'akeneoassetmanager/platform/component/rule-notification';
 import {selectErrors} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/errors';
 import {ValidationError} from 'akeneoassetmanager/platform/model/validation-error';
@@ -57,6 +56,7 @@ import {
   AttributeGroupCollection,
 } from 'akeneoassetmanager/platform/model/structure/attribute-group';
 import {AssetsIllustration, Information, Link, LockIcon} from 'akeneo-design-system';
+import {RulesNumberByAttribute} from 'akeneoassetmanager/platform/model/structure/rule-relation';
 
 type ListStateProps = {
   attributes: Attribute[];
@@ -66,7 +66,7 @@ type ListStateProps = {
   productLabels: LabelCollection;
   family: Family | null;
   context: Context;
-  ruleRelations: RuleRelation[];
+  rulesNumberByAttribute: RulesNumberByAttribute;
   errors: ValidationError[];
 };
 type ListDispatchProps = {
@@ -80,7 +80,7 @@ type DisplayValuesProps = {
   productLabels: LabelCollection;
   family: Family | null;
   context: Context;
-  ruleRelations: RuleRelation[];
+  rulesNumberByAttribute: RulesNumberByAttribute;
   errors: ValidationError[];
   onChange: (value: Value) => void;
 };
@@ -138,7 +138,7 @@ const DisplayValues = ({
   attributeGroups,
   family,
   context,
-  ruleRelations,
+  rulesNumberByAttribute,
   onChange,
   errors,
   productIdentifier,
@@ -207,7 +207,7 @@ const DisplayValues = ({
               </>
             )}
           </SectionTitle>
-          <RuleNotification attributeCode={value.attribute.code} ruleRelations={ruleRelations} />
+          <RuleNotification attributeCode={value.attribute.code} rulesNumberByAttribute={rulesNumberByAttribute} />
           <ValidationErrorCollection attributeCode={value.attribute.code} context={context} errors={errors} />
           <AssetCollection
             productIdentifier={productIdentifier}
@@ -228,7 +228,7 @@ const List = ({
   attributeGroups,
   family,
   context,
-  ruleRelations,
+  rulesNumberByAttribute,
   errors,
   productIdentifier,
   productLabels,
@@ -241,7 +241,7 @@ const List = ({
         attributeGroups={attributeGroups}
         family={family}
         context={context}
-        ruleRelations={ruleRelations}
+        rulesNumberByAttribute={rulesNumberByAttribute}
         onChange={onChange}
         errors={errors}
         productIdentifier={productIdentifier}
@@ -276,7 +276,7 @@ export default connect(
     productIdentifier: selectProductIdentifer(state),
     productLabels: selectProductLabels(state),
     family: selectFamily(state),
-    ruleRelations: selectRuleRelations(state),
+    rulesNumberByAttribute: selectRuleRelations(state),
     errors: selectErrors(state),
   }),
   (dispatch: any): ListDispatchProps => ({

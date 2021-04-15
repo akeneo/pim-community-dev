@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9811: [Backport] PIM-9705: Replace rules codes list by a simple link to the attribute edit form on the PEF and the assets
+
 # 5.0.17 (2021-04-15)
 
 ## Bug fixes

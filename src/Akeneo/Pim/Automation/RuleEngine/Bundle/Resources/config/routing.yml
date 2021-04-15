@@ -25,6 +25,11 @@ pimee_enrich_rule_relation_get:
         relationType: '[a-z]+'
     methods: [GET]
 
+pimee_enrich_family_attributes_rules_number:
+    path: /rest/family_attributes_rules
+    defaults: { _controller: Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\GetAttributesRulesNumberController }
+    methods: [GET]
+
 pimee_catalog_rule_edit:
     path: /configuration/rules/edit/{code}
     requirements:

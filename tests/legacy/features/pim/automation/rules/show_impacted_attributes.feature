@@ -26,7 +26,7 @@ Feature: On a product edit/show display impacted attributes
       """
     When I am logged in as "Julia"
     And I am on the "my-loafer" product page
-    Then I should see that Name is a smart attribute with [set_rule]
+    Then I should see that Name is a smart attribute
 
   Scenario: Successfully display smart attribute on a product model and a product
     Given a "default" catalog configuration
@@ -96,11 +96,11 @@ Feature: On a product edit/show display impacted attributes
       """
     When I am logged in as "Julia"
     And I am on the "bag_model" product model page
-    Then I should see that Style is a smart attribute with [set_style]
+    Then I should see that Style is a smart attribute
     When I am on the "bag_black" product model page
-    Then I should see that Variant name is a smart attribute with [copy_name]
+    Then I should see that Variant name is a smart attribute
     But I should not see that Style is a smart attribute
     When I am on the "bag_black_small" product page
-    Then I should see that Description is a smart attribute with Set Description
+    Then I should see that Description is a smart attribute
     But I should not see that Style is a smart attribute
     And I should not see that Variant name is a smart attribute

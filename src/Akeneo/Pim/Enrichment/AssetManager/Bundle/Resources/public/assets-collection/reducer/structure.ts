@@ -8,7 +8,7 @@ import {
   fetchFamily,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/family';
 import {fetchRuleRelations} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/rule-relation';
-import {RuleRelation} from 'akeneoassetmanager/platform/model/structure/rule-relation';
+import {RulesNumberByAttribute} from 'akeneoassetmanager/platform/model/structure/rule-relation';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import {AttributeGroupCollection} from 'akeneoassetmanager/platform/model/structure/attribute-group';
@@ -22,12 +22,12 @@ export type StructureState = {
   attributeGroups: AttributeGroupCollection;
   channels: Channel[];
   family: Family | null;
-  ruleRelations: RuleRelation[];
+  rulesNumberByAttribute: {};
 };
 
 // Reducer
 export const structureReducer = (
-  state: StructureState = {attributes: [], attributeGroups: {}, channels: [], family: null, ruleRelations: []},
+  state: StructureState = {attributes: [], attributeGroups: {}, channels: [], family: null, rulesNumberByAttribute: {}},
   action:
     | AttributeListUpdatedAction
     | AttributeGroupListUpdatedAction
@@ -49,7 +49,7 @@ export const structureReducer = (
       state = {...state, family: action.family};
       break;
     case 'RULE_RELATION_LIST_UPDATED':
-      state = {...state, ruleRelations: action.ruleRelations};
+      state = {...state, rulesNumberByAttribute: action.rulesNumberByAttribute};
       break;
     default:
       break;
@@ -83,9 +83,13 @@ export const familyUpdated = (family: Family): FamilyUpdatedAction => {
   return {type: 'FAMILY_UPDATED', family};
 };
 
-type RuleRelationListUpdatedAction = Action<'RULE_RELATION_LIST_UPDATED'> & {ruleRelations: RuleRelation[]};
-export const ruleRelationListUpdated = (ruleRelations: RuleRelation[]): RuleRelationListUpdatedAction => {
-  return {type: 'RULE_RELATION_LIST_UPDATED', ruleRelations};
+type RuleRelationListUpdatedAction = Action<'RULE_RELATION_LIST_UPDATED'> & {
+  rulesNumberByAttribute: RulesNumberByAttribute;
+};
+export const ruleRelationListUpdated = (
+  rulesNumberByAttribute: RulesNumberByAttribute
+): RuleRelationListUpdatedAction => {
+  return {type: 'RULE_RELATION_LIST_UPDATED', rulesNumberByAttribute};
 };
 
 // Selectors
@@ -120,8 +124,8 @@ export const selectFamily = (state: AssetCollectionState): Family | null => {
   return state.structure.family;
 };
 
-export const selectRuleRelations = (state: AssetCollectionState): RuleRelation[] => {
-  return state.structure.ruleRelations;
+export const selectRuleRelations = (state: AssetCollectionState): RulesNumberByAttribute => {
+  return state.structure.rulesNumberByAttribute;
 };
 
 export const updateAttributeGroups = () => async (dispatch: any) => {
@@ -139,7 +143,7 @@ export const updateFamily = (familyCode: FamilyCode) => async (dispatch: any) =>
   dispatch(familyUpdated(family));
 };
 
-export const updateRuleRelations = () => async (dispatch: any) => {
-  const ruleRelations = await fetchRuleRelations();
-  dispatch(ruleRelationListUpdated(ruleRelations));
+export const updateRuleRelations = (attributeCodes: string[]) => async (dispatch: any) => {
+  const rulesNumberByAttribute = await fetchRuleRelations(attributeCodes);
+  dispatch(ruleRelationListUpdated(rulesNumberByAttribute));
 };

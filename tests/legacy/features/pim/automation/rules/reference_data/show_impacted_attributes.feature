@@ -42,6 +42,6 @@ Feature: On a product edit/show display impacted attributes
               - neoprene
       """
     When I am on the "red-heels" product page
-    Then I should see that New sole color is a smart attribute with [set_rule]
-    And I should see that New sole fabric is a smart attribute with [set_rule]
+    Then I should see that New sole color is a smart attribute
+    And I should see that New sole fabric is a smart attribute
 

@@ -104,9 +104,9 @@ class EnterpriseFeatureContext extends FeatureContext
      *
      * @return bool
      *
-     * @Then /^I should see that (.*) is a smart attribute with (.*)$/
+     * @Then /^I should see that (.*) is a smart attribute$/
      */
-    public function iShouldSeeThatAttributeIsASmartAttribute(string $attribute, string $ruleLabel): void
+    public function iShouldSeeThatAttributeIsASmartAttribute(string $attribute): void
     {
         $element = $this->getSubcontext('navigation')->getCurrentPage()->findField($attribute);
         if (!$element) {
@@ -120,7 +120,7 @@ class EnterpriseFeatureContext extends FeatureContext
             throw new ElementNotFoundException(sprintf('No smart attribute found for %s', $attribute));
         }
 
-        $expected = sprintf('This attribute can be updated by a rule: %s', $ruleLabel);
+        $expected = sprintf('This attribute can be updated by a rule');
         if ($truc->getText() !== $expected) {
             throw new ElementNotFoundException(sprintf(
                 'Smart attribute text does not match: found "%s", expected "%s"',
