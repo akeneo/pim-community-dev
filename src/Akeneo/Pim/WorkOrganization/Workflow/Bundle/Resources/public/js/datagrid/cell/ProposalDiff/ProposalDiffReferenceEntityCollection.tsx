@@ -1,23 +1,23 @@
-import React from "react";
+import React from 'react';
 import {view as RecordView} from 'akeneoreferenceentity/application/component/record/edit/enrich/data/record';
-import ChannelReference from "akeneoreferenceentity/domain/model/channel-reference";
-import LocaleReference from "akeneoreferenceentity/domain/model/locale-reference";
-import { createValue } from "akeneoreferenceentity/domain/model/record/value";
-import { denormalize as denormalizeRecordAttribute } from "akeneoreferenceentity/domain/model/attribute/type/record";
-import { denormalize as denormalizeRecordData } from "akeneoreferenceentity/domain/model/record/data/record";
-import styled from "styled-components";
-import { AkeneoThemedProps, getColor } from "akeneo-design-system";
+import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
+import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
+import {createValue} from 'akeneoreferenceentity/domain/model/record/value';
+import {denormalize as denormalizeRecordAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/record';
+import {denormalize as denormalizeRecordData} from 'akeneoreferenceentity/domain/model/record/data/record';
+import styled from 'styled-components';
+import {AkeneoThemedProps, getColor} from 'akeneo-design-system';
 const UserContext = require('pim/user-context');
 
 const ProposalDiffRecordView = styled(RecordView)<{$state?: 'removed' | 'added'} & AkeneoThemedProps>`
   margin-top: 5px;
-  
+
   .record-selector-container > .record-selector > a {
     background: ${({$state}) => {
       if ($state === 'removed') {
         return getColor('red', 20);
       } else if ($state === 'added') {
-        return getColor('green', 20)
+        return getColor('green', 20);
       }
       return 'none';
     }};
@@ -26,13 +26,13 @@ const ProposalDiffRecordView = styled(RecordView)<{$state?: 'removed' | 'added'}
 `;
 
 type ProposalDiffReferenceEntityCollectionProps = {
-  accessor: 'before' | 'after',
+  accessor: 'before' | 'after';
   change: {
     attributeReferenceDataName: string;
     before: string[] | null;
     after: string[] | null;
-  }
-}
+  };
+};
 
 const ProposalDiffReferenceEntityCollection: React.FC<ProposalDiffReferenceEntityCollectionProps> = ({
   accessor,
@@ -44,7 +44,7 @@ const ProposalDiffReferenceEntityCollection: React.FC<ProposalDiffReferenceEntit
   }
 
   const attribute = denormalizeRecordAttribute({
-    type: "record",
+    type: 'record',
     record_type: change.attributeReferenceDataName,
     reference_entity_identifier: 'fake_reference_entity_identifier',
     code: 'fake_code',
@@ -56,32 +56,36 @@ const ProposalDiffReferenceEntityCollection: React.FC<ProposalDiffReferenceEntit
     value_per_locale: false,
   });
 
-  return <div {...rest}>
-    {(change[accessor] as string[]).map((data, i) => {
-      const value = createValue(
-        attribute,
-        ChannelReference.create(null),
-        LocaleReference.create(null),
-        denormalizeRecordData(data),
-      );
+  return (
+    <div {...rest}>
+      {(change[accessor] as string[]).map((data, i) => {
+        const value = createValue(
+          attribute,
+          ChannelReference.create(null),
+          LocaleReference.create(null),
+          denormalizeRecordData(data)
+        );
 
-      const isDiff = accessor === 'before' ?
-        !(change['after'] || []).includes((change['before'] || [])[i]) :
-        !(change['before'] || []).includes((change['after'] || [])[i]);
+        const isDiff =
+          accessor === 'before'
+            ? !(change['after'] || []).includes((change['before'] || [])[i])
+            : !(change['before'] || []).includes((change['after'] || [])[i]);
 
-      return <ProposalDiffRecordView
-        key={data}
-        $state={isDiff ? (accessor === 'before' ? 'removed' : 'added') : undefined}
-        value={value}
-        locale={LocaleReference.create(UserContext.get('catalogLocale'))}
-        onChange={() => {}}
-        canEditData={false}
-        channel={ChannelReference.create(UserContext.get('catalogScope'))}
-      />
-    })
-    }
-  </div>
-}
+        return (
+          <ProposalDiffRecordView
+            key={data}
+            $state={isDiff ? (accessor === 'before' ? 'removed' : 'added') : undefined}
+            value={value}
+            locale={LocaleReference.create(UserContext.get('catalogLocale'))}
+            onChange={() => {}}
+            canEditData={false}
+            channel={ChannelReference.create(UserContext.get('catalogScope'))}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
 class ProposalDiffReferenceEntityCollectionMatcher {
   static supports(attributeType: string) {
@@ -91,9 +95,8 @@ class ProposalDiffReferenceEntityCollectionMatcher {
   }
 
   static render() {
-    return ProposalDiffReferenceEntityCollection
+    return ProposalDiffReferenceEntityCollection;
   }
 }
-
 
 export {ProposalDiffReferenceEntityCollectionMatcher};

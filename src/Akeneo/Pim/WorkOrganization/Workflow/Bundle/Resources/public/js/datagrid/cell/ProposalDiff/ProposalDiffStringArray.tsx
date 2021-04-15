@@ -1,33 +1,27 @@
-import React from "react";
-import { diffArrays } from "diff";
+import React from 'react';
+import {diffArrays} from 'diff';
 
 type ProposalDiffStringArrayProps = {
-  accessor: 'before' | 'after',
+  accessor: 'before' | 'after';
   change: {
-    before: string[] | null,
+    before: string[] | null;
     after: string[] | null;
-  }
-}
+  };
+};
 
-const ProposalDiffStringArray: React.FC<ProposalDiffStringArrayProps> = ({
-  accessor,
-  change,
-  ...rest
-}) => {
+const ProposalDiffStringArray: React.FC<ProposalDiffStringArrayProps> = ({accessor, change, ...rest}) => {
   const elements: JSX.Element[] = [];
-  diffArrays(change.before || [], change.after || []).forEach((change) => {
+  diffArrays(change.before || [], change.after || []).forEach(change => {
     if (accessor === 'before' && change.removed) {
-      change.value.forEach((value) => {
+      change.value.forEach(value => {
         elements.push(<del key={`ProposalDiffStringArray-${elements.length}`}>{value}</del>);
       });
-    }
-    else if (accessor === 'after' && change.added) {
-      change.value.forEach((value) => {
+    } else if (accessor === 'after' && change.added) {
+      change.value.forEach(value => {
         elements.push(<ins key={`ProposalDiffStringArray-${elements.length}`}>{value}</ins>);
       });
-    }
-    else if ((accessor === 'before' && !change.added) || (accessor === 'after' && !change.removed)) {
-      change.value.forEach((value) => {
+    } else if ((accessor === 'before' && !change.added) || (accessor === 'after' && !change.removed)) {
+      change.value.forEach(value => {
         elements.push(<span key={`ProposalDiffStringArray-${elements.length}`}>{value}</span>);
       });
     }
@@ -35,14 +29,16 @@ const ProposalDiffStringArray: React.FC<ProposalDiffStringArrayProps> = ({
 
   if (elements.length) {
     const [firstElement, ...otherElements] = elements;
-    return <span {...rest}>
-      {firstElement}
-      {otherElements.reduce((current, previous) => [current, ', ', previous], null)}
-    </span>
+    return (
+      <span {...rest}>
+        {firstElement}
+        {otherElements.reduce((current, previous) => [current, ', ', previous], null)}
+      </span>
+    );
   }
 
   return null;
-}
+};
 
 class ProposalDiffStringArrayMatcher {
   static supports(attributeType: string) {
@@ -54,7 +50,7 @@ class ProposalDiffStringArrayMatcher {
   }
 
   static render() {
-    return ProposalDiffStringArray
+    return ProposalDiffStringArray;
   }
 }
 

@@ -1,5 +1,5 @@
-import React from "react";
-import { ProposalChangeData } from "./Proposal";
+import React from 'react';
+import {ProposalChangeData} from './Proposal';
 import {
   ProposalDiffStringMatcher,
   ProposalDiffStringArrayMatcher,
@@ -10,41 +10,37 @@ import {
   ProposalDiffReferenceEntityMatcher,
   ProposalDiffReferenceEntityCollectionMatcher,
   ProposalDiffMeasurementMatcher,
-} from "./ProposalDiff";
+} from './ProposalDiff';
 
 type ProposalChangeProps = {
   attributeType: string;
   change: ProposalChangeData;
   accessor: 'before' | 'after';
   className: string;
-}
+};
 
-const ProposalChange: React.FC<ProposalChangeProps> = ({
-  change,
-  accessor,
-  className,
-  ...rest
-}) => {
+const ProposalChange: React.FC<ProposalChangeProps> = ({change, accessor, className, ...rest}) => {
   const matcher: {
     render: () => React.FC<{
-      accessor: 'before' | 'after',
-      change: { before: any, after: any };
+      accessor: 'before' | 'after';
+      change: {before: any; after: any};
       className: string;
-    }>
-  } = [
-    ProposalDiffStringMatcher,
-    ProposalDiffStringArrayMatcher,
-    ProposalDiffAssetCollectionMatcher,
-    ProposalDiffImageMatcher,
-    ProposalDiffFileMatcher,
-    ProposalDiffReferenceEntityMatcher,
-    ProposalDiffReferenceEntityCollectionMatcher,
-    ProposalDiffMeasurementMatcher,
-  ].find((proposalDiff) => proposalDiff.supports(change.attributeType)) || ProposalDiffFallbackMatcher;
+    }>;
+  } =
+    [
+      ProposalDiffStringMatcher,
+      ProposalDiffStringArrayMatcher,
+      ProposalDiffAssetCollectionMatcher,
+      ProposalDiffImageMatcher,
+      ProposalDiffFileMatcher,
+      ProposalDiffReferenceEntityMatcher,
+      ProposalDiffReferenceEntityCollectionMatcher,
+      ProposalDiffMeasurementMatcher,
+    ].find(proposalDiff => proposalDiff.supports(change.attributeType)) || ProposalDiffFallbackMatcher;
 
   const ProposalDiff = matcher.render();
 
-  return <ProposalDiff accessor={accessor} change={change} className={className} {...rest}/>
-}
+  return <ProposalDiff accessor={accessor} change={change} className={className} {...rest} />;
+};
 
-export { ProposalChange }
+export {ProposalChange};

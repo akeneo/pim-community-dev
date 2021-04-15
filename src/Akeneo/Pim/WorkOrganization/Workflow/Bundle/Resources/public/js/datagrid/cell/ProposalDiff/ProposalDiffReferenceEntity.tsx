@@ -1,41 +1,37 @@
-import React from "react";
+import React from 'react';
 import {view as RecordView} from 'akeneoreferenceentity/application/component/record/edit/enrich/data/record';
-import ChannelReference from "akeneoreferenceentity/domain/model/channel-reference";
-import LocaleReference from "akeneoreferenceentity/domain/model/locale-reference";
-import { createValue } from "akeneoreferenceentity/domain/model/record/value";
-import { denormalize as denormalizeRecordAttribute } from "akeneoreferenceentity/domain/model/attribute/type/record";
-import { denormalize as denormalizeRecordData } from "akeneoreferenceentity/domain/model/record/data/record";
-import styled from "styled-components";
-import { AkeneoThemedProps, getColor } from "akeneo-design-system";
+import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
+import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
+import {createValue} from 'akeneoreferenceentity/domain/model/record/value';
+import {denormalize as denormalizeRecordAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/record';
+import {denormalize as denormalizeRecordData} from 'akeneoreferenceentity/domain/model/record/data/record';
+import styled from 'styled-components';
+import {AkeneoThemedProps, getColor} from 'akeneo-design-system';
 const UserContext = require('pim/user-context');
 
 const ProposalDiffRecordView = styled(RecordView)<{$accessor: 'before' | 'after'} & AkeneoThemedProps>`
   .record-selector-container > .record-selector > a {
-    background: ${({$accessor}) => $accessor === 'before' ? getColor('red', 20) : getColor('green', 20)};
+    background: ${({$accessor}) => ($accessor === 'before' ? getColor('red', 20) : getColor('green', 20))};
     cursor: default;
   }
 `;
 
 type ProposalDiffReferenceEntityProps = {
-  accessor: 'before' | 'after',
+  accessor: 'before' | 'after';
   change: {
     attributeReferenceDataName: string;
     before: string | null;
     after: string | null;
-  }
-}
+  };
+};
 
-const ProposalDiffReferenceEntity: React.FC<ProposalDiffReferenceEntityProps> = ({
-    accessor,
-    change,
-    ...rest
-  }) => {
+const ProposalDiffReferenceEntity: React.FC<ProposalDiffReferenceEntityProps> = ({accessor, change, ...rest}) => {
   if (!change[accessor]) {
     return null;
   }
 
   const attribute = denormalizeRecordAttribute({
-    type: "record",
+    type: 'record',
     record_type: change.attributeReferenceDataName,
     reference_entity_identifier: 'fake_reference_entity_identifier',
     code: 'fake_code',
@@ -51,19 +47,21 @@ const ProposalDiffReferenceEntity: React.FC<ProposalDiffReferenceEntityProps> = 
     attribute,
     ChannelReference.create(null),
     LocaleReference.create(null),
-    denormalizeRecordData(change[accessor]),
-  )
+    denormalizeRecordData(change[accessor])
+  );
 
-  return <ProposalDiffRecordView
-    $accessor={accessor}
-    value={value}
-    locale={LocaleReference.create(UserContext.get('catalogLocale'))}
-    onChange={() => {}}
-    canEditData={false}
-    channel={ChannelReference.create(UserContext.get('catalogScope'))}
-    {...rest}
-  />;
-}
+  return (
+    <ProposalDiffRecordView
+      $accessor={accessor}
+      value={value}
+      locale={LocaleReference.create(UserContext.get('catalogLocale'))}
+      onChange={() => {}}
+      canEditData={false}
+      channel={ChannelReference.create(UserContext.get('catalogScope'))}
+      {...rest}
+    />
+  );
+};
 
 class ProposalDiffReferenceEntityMatcher {
   static supports(attributeType: string) {
@@ -73,9 +71,8 @@ class ProposalDiffReferenceEntityMatcher {
   }
 
   static render() {
-    return ProposalDiffReferenceEntity
+    return ProposalDiffReferenceEntity;
   }
 }
-
 
 export {ProposalDiffReferenceEntityMatcher};

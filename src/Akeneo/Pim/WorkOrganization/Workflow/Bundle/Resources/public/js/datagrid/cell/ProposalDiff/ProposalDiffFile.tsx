@@ -1,38 +1,36 @@
-import React from "react";
-import { useRouter } from "@akeneo-pim-community/legacy-bridge";
-import { ImageCard } from "./ImageCard";
+import React from 'react';
+import {useRouter} from '@akeneo-pim-community/legacy-bridge';
+import {ImageCard} from './ImageCard';
 
-type File = { fileKey: string, originalFileName: string };
+type File = {fileKey: string; originalFileName: string};
 
 type ProposalDiffFileProps = {
-  accessor: 'before' | 'after',
+  accessor: 'before' | 'after';
   change: {
     before: File | null;
     after: File | null;
-  }
-}
+  };
+};
 
-const ProposalDiffFile: React.FC<ProposalDiffFileProps> = ({
-  accessor,
-  change,
-  ...rest
-}) => {
+const ProposalDiffFile: React.FC<ProposalDiffFileProps> = ({accessor, change, ...rest}) => {
   const router = useRouter();
 
   if (change[accessor]) {
-    return <ImageCard
-      filePath={(change[accessor] as File).fileKey}
-      originalFilename={(change[accessor] as File).originalFileName}
-      downloadUrl={router.generate('pim_enrich_media_download', {
-        'filename': (change[accessor] as File).fileKey,
-      })}
-      state={accessor === 'before' ? 'removed' : 'added'}
-      {...rest}
-    />
+    return (
+      <ImageCard
+        filePath={(change[accessor] as File).fileKey}
+        originalFilename={(change[accessor] as File).originalFileName}
+        downloadUrl={router.generate('pim_enrich_media_download', {
+          filename: (change[accessor] as File).fileKey,
+        })}
+        state={accessor === 'before' ? 'removed' : 'added'}
+        {...rest}
+      />
+    );
   }
 
   return <></>;
-}
+};
 
 class ProposalDiffFileMatcher {
   static supports(attributeType: string) {
@@ -42,7 +40,7 @@ class ProposalDiffFileMatcher {
   }
 
   static render() {
-    return ProposalDiffFile
+    return ProposalDiffFile;
   }
 }
 
