@@ -58,7 +58,6 @@ pim_asset_manager:
     download: Télécharger
     copy_url: Copier l'URL
     error: Une erreur s'est produite lors du chargement de l'aperçu.
-  close: Fermez la fenêtre
   breadcrumb:
     products: Produits
   app:
@@ -147,12 +146,10 @@ pim_asset_manager:
         confirm_title: Confirmer l’exécution
         confirm_content: Êtes-vous certain de vouloir exécuter toutes les règles ? (cela peut prendre un certain temps)
         execute_rules: Exécuter les règles
-        cancel: Annuler
       execute_naming_convention:
         confirm_title: Confirmer l’exécution
         confirm_content: Êtes-vous certain de vouloir exécuter la convention de nommage ? (cela peut prendre un certain temps)
         execute_naming_convention: Exécuter la convention de nommage
-        cancel: Annuler
     naming_convention:
       help:
         description: Vous pouvez définir ici les propriétés de la convention de nommage.
@@ -191,7 +188,6 @@ pim_asset_manager:
       input:
         label: Libellé
         code: Code (obligatoire)
-      confirm: Enregistrer
     delete:
       message: Êtes-vous sûr de vouloir supprimer la famille de ressources "{{ assetFamilyLabel }} " ?
       title: Famille de ressources
@@ -305,7 +301,6 @@ pim_asset_manager:
         label: Libellé
         code: Code (requis)
         create_another: Créer une autre ressource
-      confirm: Enregistrer
     upload:
       line_count: '[0,1]{{ count }} fichier|]1,Inf] {{ count }} fichiers'
       title: Charger des ressources
@@ -457,7 +452,6 @@ pim_asset_manager:
         value_per_channel: Valeur par canal
       placeholder:
         asset_type: Sélectionnez votre famille de ressources liée
-      confirm: Enregistrer
     edit:
       delete: Supprimer l'attribut
       title: Modifier l’attribut {{ code }}

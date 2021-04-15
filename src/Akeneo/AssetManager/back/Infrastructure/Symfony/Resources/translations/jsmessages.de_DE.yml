@@ -58,7 +58,6 @@ pim_asset_manager:
     download: Herunterladen
     copy_url: URL kopieren
     error: Beim Rendern der Vorschau ist ein Fehler aufgetreten
-  close: Modal schließen
   breadcrumb:
     products: Produkte
   app:
@@ -147,12 +146,10 @@ pim_asset_manager:
         confirm_title: Ausführung bestätigen
         confirm_content: Sind Sie sicher, dass Sie alle Regeln anwenden möchten? (Dies kann sehr lange dauern)
         execute_rules: Regeln anwenden
-        cancel: Abbrechen
       execute_naming_convention:
         confirm_title: Ausführung bestätigen
         confirm_content: Sind Sie sicher, dass Sie die Namenskonvention ausführen möchten? (dies kann lange dauern)
         execute_naming_convention: Namenskonvention ausführen
-        cancel: Abbrechen
     naming_convention:
       help:
         description: Hier können Sie die Namenskonventionseigenschaften definieren.
@@ -191,7 +188,6 @@ pim_asset_manager:
       input:
         label: Label
         code: Code (erforderlich)
-      confirm: Speichern
     delete:
       message: Sind Sie sicher, dass Sie die Assetfamilie "{{ assetFamilyLabel }} " löschen möchten?
       title: Asset-Familie
@@ -305,7 +301,6 @@ pim_asset_manager:
         label: Label
         code: Code (erforderlich)
         create_another: Asset erstellen
-      confirm: Speichern
     upload:
       line_count: '[0,1]{{ count }} Datei|]1,Inf] {{ count }} Dateien'
       title: Assets hochladen
@@ -457,7 +452,6 @@ pim_asset_manager:
         value_per_channel: Wert je Ausgabekanal
       placeholder:
         asset_type: Wählen Sie Ihre verknüpfte Asset-Familie
-      confirm: Speichern
     edit:
       delete: Attribut löschen
       title: Attribut bearbeiten {{ code }}
