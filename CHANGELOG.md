@@ -36,6 +36,7 @@
 - PIM-9682: Link to proposal product model is completely wrong
 - PIM-9800: Fix event not sent issue when creating products or product models
 - PIM-9805: Fix the import of ref entity records with empty multiselect attributes
+- PIM-9813: Add missing translation key for unpublish bulk action
 
 ## Improvements
 
