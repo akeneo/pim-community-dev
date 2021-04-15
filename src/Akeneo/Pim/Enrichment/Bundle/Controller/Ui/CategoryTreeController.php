@@ -342,18 +342,8 @@ class CategoryTreeController extends Controller
             'root' => $rootCategory === null ? null : $this->normalizer->normalize($rootCategory, 'internal_api')
         ]);
 
+        // @todo[PLG-94] remove unused Twig templates AkeneoPimEnrichmentBundle:CategoryTree:%s.html.twig
         return new JsonResponse($normalizedCategory,Response::HTTP_OK);
-/*
-        return $this->render(
-            sprintf('AkeneoPimEnrichmentBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
-            [
-                'form'           => $form->createView(),
-                'related_entity' => $this->rawConfiguration['related_entity'],
-                'acl'            => $this->rawConfiguration['acl'],
-                'route'          => $this->rawConfiguration['route'],
-            ]
-        );
-*/
     }
 
     /**
