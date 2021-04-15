@@ -3,6 +3,7 @@ import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor} from '../../theme';
 import {Checkbox, CheckboxChecked} from '../Checkbox/Checkbox';
 import {ArrowRightIcon, FolderIcon, FolderPlainIcon, FoldersIcon, FoldersPlainIcon, LoaderIcon} from '../../icons';
+import {TreeActions} from "./TreeActions/TreeActions";
 
 const folderIconCss = css`
   vertical-align: middle;
@@ -52,6 +53,11 @@ const TreeLoaderIcon = styled(LoaderIcon)`
 `;
 
 const TreeLine = styled.div<{$selected: boolean} & AkeneoThemedProps>`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  
   height: 40px;
   line-height: 40px;
   overflow: hidden;
@@ -61,6 +67,13 @@ const TreeLine = styled.div<{$selected: boolean} & AkeneoThemedProps>`
     css`
       color: ${getColor('blue100')};
     `}
+`;
+
+const LineInnerContainer = styled.div`
+  flex-grow: 1;
+`;
+
+const LineActionsContainer = styled.div`
 `;
 
 const NodeCheckbox = styled(Checkbox)`
@@ -90,7 +103,6 @@ const LabelWithFolder = styled.button<{$selected: boolean} & AkeneoThemedProps>`
   border: none;
   cursor: pointer;
   padding: 0 5px 0 0;
-  cursor: pointer;
   text-overflow: ellipsis;
   overflow: hidden;
   max-width: calc(100% - 35px);
@@ -159,7 +171,14 @@ const Tree = <T,>({
   ...rest
 }: PropsWithChildren<TreeProps<T>>) => {
   const subTrees: ReactElement<TreeProps<T>>[] = [];
+  let actions: ReactNode|null = null;
+
   React.Children.forEach(children, child => {
+    if (isValidElement(child) && child.type === TreeActions) {
+      actions = child;
+      return;
+    }
+
     if (!isValidElement<TreeProps<T>>(child)) {
       throw new Error('Tree component only accepts Tree as children');
     }
@@ -211,16 +230,19 @@ const Tree = <T,>({
   const result = (
     <TreeContainer role="treeitem" aria-expanded={isOpen} {...rest}>
       <TreeLine $selected={selected}>
-        <ArrowButton disabled={isLeaf} role="button" onClick={handleArrowClick}>
-          {!isLeaf && <TreeArrowIcon $isFolderOpen={isOpen} size={14} />}
-        </ArrowButton>
+        <LineInnerContainer>
+          <ArrowButton disabled={isLeaf} role="button" onClick={handleArrowClick}>
+            {!isLeaf && <TreeArrowIcon $isFolderOpen={isOpen} size={14} />}
+          </ArrowButton>
 
-        {selectable && <NodeCheckbox checked={selected} onChange={handleSelect} readOnly={readOnly} />}
+          {selectable && <NodeCheckbox checked={selected} onChange={handleSelect} readOnly={readOnly} />}
 
-        <LabelWithFolder onClick={handleClick} $selected={selected} title={label} aria-selected={selected}>
-          <TreeIcon isLoading={isLoading} isLeaf={isLeaf} selected={selected} />
-          {label}
-        </LabelWithFolder>
+          <LabelWithFolder onClick={handleClick} $selected={selected} title={label} aria-selected={selected}>
+            <TreeIcon isLoading={isLoading} isLeaf={isLeaf} selected={selected} />
+            {label}
+          </LabelWithFolder>
+        </LineInnerContainer>
+        {actions && <LineActionsContainer>{actions}</LineActionsContainer>}
       </TreeLine>
       {isOpen && !isLeaf && subTrees.length > 0 && (
         <SubTreesContainer role="group">
@@ -239,5 +261,8 @@ const Tree = <T,>({
 };
 
 Tree.displayName = 'Tree';
+
+TreeActions.displayName = 'Tree.Actions';
+Tree.Actions = TreeActions;
 
 export {Tree};

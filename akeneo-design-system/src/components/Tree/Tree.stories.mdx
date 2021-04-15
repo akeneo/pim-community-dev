@@ -1,5 +1,6 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Tree} from './Tree.tsx';
+import { Button } from '../Button/Button'
 
 <Meta
   title="Components/Tree"
@@ -161,4 +162,37 @@ The Tree component uses its value to trigger onOpen, onClose and other events. B
   </Story>
 </Canvas>
 
+## Elements with Actions
+
+<Canvas>
+  <Story name="WithActions">
+    {args => {
+      return (
+        <Tree value={'master'} label={'Master'} {...args}>
+          <Tree.Actions>
+            <Button level="primary" size="small" ghost>Create</Button>
+          </Tree.Actions>
+          <Tree value={'tvs'} label={'TVs and projectors'} {...args}>
+            <Tree.Actions>
+              <Button level="primary" size="small" ghost>Create</Button>
+              <Button level="danger" size="small" ghost>Delete</Button>
+            </Tree.Actions>
+          </Tree>
+          <Tree value={'cameras'} label={'Cameras'} {...args}>
+            <Tree.Actions>
+              <Button level="primary" size="small" ghost>Create</Button>
+              <Button level="danger" size="small" ghost>Delete</Button>
+            </Tree.Actions>
+          </Tree>
+          <Tree value={'audio'} label={'Audio and Video'} {...args}>
+            <Tree.Actions>
+              <Button level="primary" size="small" ghost>Create</Button>
+              <Button level="danger" size="small" ghost>Delete</Button>
+            </Tree.Actions>
+          </Tree>
+        </Tree>
+      );
+    }}
+  </Story>
+</Canvas>
 
