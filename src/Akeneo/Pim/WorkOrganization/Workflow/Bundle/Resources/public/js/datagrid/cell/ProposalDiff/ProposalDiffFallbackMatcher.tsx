@@ -13,15 +13,10 @@ const ProposalDiffFallback: React.FC<ProposalDiffFallbackProps> = ({
   change,
   ...rest
 }) => {
-  return <span {...rest} style={{fontFamily: 'monospace'}}>{JSON.stringify(change[accessor])}</span>
-  // TODO
+  return <span {...rest}>{JSON.stringify(change[accessor])}</span>
 }
 
 class ProposalDiffFallbackMatcher {
-  static supports(attributeType: string) {
-    return true;
-  }
-
   static render() {
     return ProposalDiffFallback
   }

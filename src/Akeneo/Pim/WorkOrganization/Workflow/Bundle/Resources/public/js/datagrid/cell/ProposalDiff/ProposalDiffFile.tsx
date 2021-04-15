@@ -21,13 +21,13 @@ const ProposalDiffFile: React.FC<ProposalDiffFileProps> = ({
 
   if (change[accessor]) {
     return <ImageCard
-      color={accessor === 'before' ? 'green' : 'red'}
       filePath={(change[accessor] as File).fileKey}
       originalFilename={(change[accessor] as File).originalFileName}
       downloadUrl={router.generate('pim_enrich_media_download', {
         'filename': (change[accessor] as File).fileKey,
       })}
       state={accessor === 'before' ? 'removed' : 'added'}
+      {...rest}
     />
   }
 

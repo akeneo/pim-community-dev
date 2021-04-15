@@ -28,7 +28,7 @@ type ImageCardProps = {
   thumbnailUrl?: string;
   filePath: string;
   originalFilename: string;
-  downloadUrl: string;
+  downloadUrl?: string;
   state?: 'removed' | 'added'
 }
 
@@ -43,16 +43,20 @@ const ImageCard: React.FC<ImageCardProps> = ({
   const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
   const translate = useTranslate();
 
-  const className = {
-    removed: RemovedClassName,
-    added: AddedClassName,
-  }[state];
+  let className = undefined;
+  if (state) {
+    className = {
+      removed: RemovedClassName,
+      added: AddedClassName,
+    }[state];
+  }
 
   return <>
     <ImageCardWrapper>
       <MediaFileInput
+        onChange={() => {}}
         clearTitle={''}
-        uploader={''}
+        uploader={() => { return Promise.resolve({filePath: '', originalFilename: ''})}}
         uploadErrorLabel={''}
         uploadingLabel={''}
         size="small"

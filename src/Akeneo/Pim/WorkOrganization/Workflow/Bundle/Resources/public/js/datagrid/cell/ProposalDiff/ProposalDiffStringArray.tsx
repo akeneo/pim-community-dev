@@ -14,7 +14,7 @@ const ProposalDiffStringArray: React.FC<ProposalDiffStringArrayProps> = ({
   change,
   ...rest
 }) => {
-  const elements = [];
+  const elements: JSX.Element[] = [];
   diffArrays(change.before || [], change.after || []).forEach((change) => {
     if (accessor === 'before' && change.removed) {
       change.value.forEach((value) => {

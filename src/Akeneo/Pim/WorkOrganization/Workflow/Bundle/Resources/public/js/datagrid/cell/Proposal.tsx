@@ -114,7 +114,7 @@ type InProgressProposal = {
   remove: boolean;
 };
 
-type ProposalChangeFindNewName = {
+type ProposalChangeData = {
   attributeLabel: string;
   data: any;
   canReview: boolean;
@@ -135,7 +135,7 @@ type ReadyProposal = {
   approve: boolean;
   refuse: boolean;
   changes: {
-    [attributeCode: string]: ProposalChangeFindNewName[];
+    [attributeCode: string]: ProposalChangeData[];
   };
 };
 
@@ -163,7 +163,7 @@ const Proposal: React.FC<ProposalProps> = ({
   const router = useRouter();
   const translate = useTranslate();
 
-  const isSame: (change: ProposalChangeFindNewName) => boolean = change => {
+  const isSame: (change: ProposalChangeData) => boolean = change => {
     return change.before === change.after;
   }
 
@@ -172,7 +172,7 @@ const Proposal: React.FC<ProposalProps> = ({
     {id: documentId}
   )}`;
 
-  const flatChanges: (ProposalChangeFindNewName & {attributeCode: AttributeCode})[] = [];
+  const flatChanges: (ProposalChangeData & {attributeCode: AttributeCode})[] = [];
   if (formattedChanges.status === 'ready') {
     Object.keys(formattedChanges.changes).forEach(attributeCode => {
       formattedChanges.changes[attributeCode].forEach(change => {
@@ -285,4 +285,4 @@ const Proposal: React.FC<ProposalProps> = ({
   );
 };
 
-export {Proposal, ProposalChangeFindNewName};
+export {Proposal, ProposalChangeData};

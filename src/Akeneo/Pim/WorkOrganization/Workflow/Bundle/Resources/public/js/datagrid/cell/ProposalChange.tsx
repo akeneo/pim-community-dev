@@ -1,5 +1,5 @@
 import React from "react";
-import { ProposalChangeFindNewName } from "./Proposal";
+import { ProposalChangeData } from "./Proposal";
 import {
   ProposalDiffStringMatcher,
   ProposalDiffStringArrayMatcher,
@@ -8,21 +8,30 @@ import {
   ProposalDiffFallbackMatcher,
   ProposalDiffFileMatcher,
   ProposalDiffReferenceEntityMatcher,
-  ProposalDiffReferenceEntityCollectionMatcher, ProposalDiffMeasurementMatcher,
+  ProposalDiffReferenceEntityCollectionMatcher,
+  ProposalDiffMeasurementMatcher,
 } from "./ProposalDiff";
 
 type ProposalChangeProps = {
   attributeType: string;
-  change: ProposalChangeFindNewName;
+  change: ProposalChangeData;
   accessor: 'before' | 'after';
+  className: string;
 }
 
 const ProposalChange: React.FC<ProposalChangeProps> = ({
   change,
   accessor,
+  className,
   ...rest
 }) => {
-  const matcher = [
+  const matcher: {
+    render: () => React.FC<{
+      accessor: 'before' | 'after',
+      change: { before: any, after: any };
+      className: string;
+    }>
+  } = [
     ProposalDiffStringMatcher,
     ProposalDiffStringArrayMatcher,
     ProposalDiffAssetCollectionMatcher,
@@ -31,12 +40,11 @@ const ProposalChange: React.FC<ProposalChangeProps> = ({
     ProposalDiffReferenceEntityMatcher,
     ProposalDiffReferenceEntityCollectionMatcher,
     ProposalDiffMeasurementMatcher,
-    ProposalDiffFallbackMatcher,
-  ].find((proposalDiff) => proposalDiff.supports(change.attributeType));
+  ].find((proposalDiff) => proposalDiff.supports(change.attributeType)) || ProposalDiffFallbackMatcher;
 
   const ProposalDiff = matcher.render();
 
-  return <ProposalDiff accessor={accessor} change={change} {...rest}/>
+  return <ProposalDiff accessor={accessor} change={change} className={className} {...rest}/>
 }
 
 export { ProposalChange }

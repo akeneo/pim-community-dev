@@ -15,10 +15,9 @@ const ProposalDiffMeasurement: React.FC<ProposalDiffMeasurementProps> = ({
   ...rest
 }) => {
   const splitAmountAndUnit = (data: string) => {
-    // \u00A0 = NBSP
-    const regex = /(?<amount>[^\u00A0]+)\u00A0(?<unit>.+)/
+    const regex = /(?<amount>[^\u00A0]+)\u00A0(?<unit>.+)/; // \u00A0 = NBSP
     const found = data.match(regex);
-    if (found === null) {
+    if (!found || !found.groups) {
       return {
         amount: '',
         unit: '',
@@ -26,7 +25,7 @@ const ProposalDiffMeasurement: React.FC<ProposalDiffMeasurementProps> = ({
     }
     return {
       amount: found.groups.amount,
-      unit: found.groups.unit
+      unit: found.groups.unit,
     }
   }
 
@@ -45,6 +44,7 @@ const ProposalDiffMeasurement: React.FC<ProposalDiffMeasurementProps> = ({
       if ((accessor === 'before' && !change.added) || (accessor === 'after' && !change.removed)) {
         return change.value
       }
+      return null;
     })}
     &nbsp;
     {isUnitDiff && accessor === 'before' &&

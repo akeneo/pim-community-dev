@@ -36,6 +36,7 @@ const ProposalDiffImage: React.FC<ProposalDiffImageProps> = ({
       originalFilename={data.originalFileName}
       downloadUrl={downloadUrl}
       state={accessor === 'before' ? 'removed' : 'added'}
+      {...rest}
     />
   }
   return <></>;

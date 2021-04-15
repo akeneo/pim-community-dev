@@ -56,8 +56,8 @@ const ProposalDiffReferenceEntityCollection: React.FC<ProposalDiffReferenceEntit
     value_per_locale: false,
   });
 
-  return <>
-    {change[accessor].map((data, i) => {
+  return <div {...rest}>
+    {(change[accessor] as string[]).map((data, i) => {
       const value = createValue(
         attribute,
         ChannelReference.create(null),
@@ -80,7 +80,7 @@ const ProposalDiffReferenceEntityCollection: React.FC<ProposalDiffReferenceEntit
       />
     })
     }
-  </>
+  </div>
 }
 
 class ProposalDiffReferenceEntityCollectionMatcher {

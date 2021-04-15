@@ -32,7 +32,7 @@ const ProposalDiffAssetCollection: React.FC<ProposalDiffAssetCollectionProps> = 
     });
   }, []);
 
-  return <>
+  return <div {...rest}>
     {assets.map((asset, i) => {
       let thumbnailUrl;
       if (asset) {
@@ -51,12 +51,12 @@ const ProposalDiffAssetCollection: React.FC<ProposalDiffAssetCollectionProps> = 
         thumbnailUrl={thumbnailUrl}
         filePath={(change[accessor] || [])[i]}
         originalFilename={asset?.code || ''}
-        downloadUrl={thumbnailUrl} // TODO Fix this
+        downloadUrl={thumbnailUrl}
         key={`${asset?.code}-${i}`}
         state={isDiff ? (accessor === 'before' ? 'removed' : 'added') : undefined}
       />
     })}
-  </>
+  </div>
 }
 
 class ProposalDiffAssetCollectionMatcher {

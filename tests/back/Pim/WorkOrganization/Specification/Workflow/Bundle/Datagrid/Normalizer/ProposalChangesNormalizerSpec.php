@@ -7,7 +7,6 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Nor
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer\ValueCollectionWithoutEmptyValuesProvider;
@@ -98,6 +97,8 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
                     'after' => 'proposal data',
                     'data' => 'proposal data',
                     'attributeLabel' => 'Name',
+                    'attributeType' => "pim_catalog_text",
+                    'attributeReferenceDataName' => "refdataname",
                     'scope' => null,
                     'locale' => null,
                     'canReview' => true
@@ -358,6 +359,8 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
         $attribute->getLabel()->willReturn('Name');
         $attribute->isLocalizable()->willReturn(isset($options['localizable']) ? $options['localizable'] : false);
+        $attribute->getType()->willReturn('pim_catalog_text');
+        $attribute->getReferenceDataName()->willReturn('refdataname');
 
         $valueCollectionWithoutEmptyValuesProvider->getChanges($entityWithValuesDraft, $context)->willReturn([
             'name' => [[

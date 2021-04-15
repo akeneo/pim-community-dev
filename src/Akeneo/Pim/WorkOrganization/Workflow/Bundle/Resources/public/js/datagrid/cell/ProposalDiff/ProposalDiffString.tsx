@@ -25,6 +25,7 @@ const ProposalDiffString: React.FC<ProposalDiffStringProps> = ({
       if ((accessor === 'before' && !change.added) || (accessor === 'after' && !change.removed)) {
         return change.value
       }
+      return null;
     })}
   </span>
 }

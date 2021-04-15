@@ -61,6 +61,7 @@ const ProposalDiffReferenceEntity: React.FC<ProposalDiffReferenceEntityProps> = 
     onChange={() => {}}
     canEditData={false}
     channel={ChannelReference.create(UserContext.get('catalogScope'))}
+    {...rest}
   />;
 }
 
