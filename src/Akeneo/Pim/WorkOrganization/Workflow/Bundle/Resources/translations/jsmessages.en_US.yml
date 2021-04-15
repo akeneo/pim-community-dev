@@ -90,6 +90,8 @@ batch_jobs:
         perform.label: Xlsx published products grid context quick export
     publish_product:
         perform.label: Publish products
+    unpublish_product:
+        perform.label: Unpublish products
     default_steps:
         clean_attribute:
             clean_draft: Cleaning proposals

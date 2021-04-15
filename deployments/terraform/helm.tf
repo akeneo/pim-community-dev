@@ -75,7 +75,7 @@ helm dependencies update ${path.module}/pim/
 yq w -i ${path.module}/pim/Chart.yaml version ${var.pim_version}
 yq w -i ${path.module}/pim/Chart.yaml appVersion ${var.pim_version}
 export KUBECONFIG="${local_file.kubeconfig.filename}"
-helm upgrade --atomic --cleanup-on-fail --wait --install --force --timeout 1202 ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
+helm upgrade --atomic --cleanup-on-fail --wait --install --force --timeout 1200 ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
 EOF
   }
 }
