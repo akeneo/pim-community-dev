@@ -42,7 +42,7 @@ const Arrow: FC = () => {
 export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => {
     const translate = useTranslate();
     const scrollContainer = useRef(null);
-    const sessionFilters = sessionStorage.getItem('filters');
+    const sessionFilters = sessionStorage.getItem('connectivity_connection_event_subscription_logs_filters');
 
     const [{filters}, setFilters] = useState<{
         filters: EventSubscriptionLogFilters;
@@ -65,7 +65,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
 
     const handleFiltersChange = (filters: EventSubscriptionLogFilters) => {
         setFilters(state => ({...state, filters, isDefaultFilters: false}));
-        sessionStorage.setItem('filters', JSON.stringify(filters));
+        sessionStorage.setItem('connectivity_connection_event_subscription_logs_filters', JSON.stringify(filters));
     };
 
     return (
