@@ -145,6 +145,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface',
         'Akeneo\Pim\Structure\Bundle\Event\AttributeEvents',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
+        'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface',
 
         // TIP-1004: WidgetInterface located in Platform is used in multiple contexts
         'Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface',
