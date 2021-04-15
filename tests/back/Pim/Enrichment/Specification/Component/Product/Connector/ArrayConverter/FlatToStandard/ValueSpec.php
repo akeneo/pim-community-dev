@@ -2,6 +2,9 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
+use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface;
@@ -226,5 +229,24 @@ class ValueSpec extends ObjectBehavior
             'convert',
             [$item]
         );
+    }
+
+    function it_throws_an_exception_if_value_cant_be_converted(ValueConverterRegistryInterface $converterRegistry, AttributeColumnInfoExtractor $fieldExtractor, ValueConverterInterface $converter, ColumnsMerger $columnsMerger) {
+        $column="test_column";
+        $attributeType="pim_catalog_text";
+        $e = new \Error("");
+        $dateTime  = new \DateTime('2000-01-01');
+        $attribute = new Attribute();
+        $attribute->setType($attributeType);
+        $values = [$column => $dateTime];
+        $attributeFieldInfo = ['attribute' => $attribute];
+
+        $converterRegistry->getConverter($attributeType)->willReturn($converter);
+        $columnsMerger->merge($values)->willReturn($values);
+        $fieldExtractor->extractColumnInfo($column)->willReturn($attributeFieldInfo);
+        $converter->convert($attributeFieldInfo,$dateTime)->willThrow($e);
+
+        $this->shouldThrow(new DataArrayConversionException("Exception while converting column \"{$column}\": bad input format.", 0, $e))
+            ->during('convert',[$values]);
     }
 }
