@@ -26,13 +26,9 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         $this->shouldImplement(DispatchBufferedPimEventSubscriberInterface::class);
     }
 
-    public function it_subscribe_the_same_events_its_dependency(
+    public function it_subscribes_events(
         DispatchBufferedPimEventSubscriberInterface $baseDispatcher
     ): void {
-        $baseDispatcher->getSubscribedEvents()->willReturn([
-            'post_save' => 'createAndDispatchPimEvents',
-            'post_save_all' => 'dispatchBufferedPimEvents',
-        ]);
         $this->getSubscribedEvents()->shouldReturn([
             StorageEvents::POST_REMOVE => 'createAndDispatchPimEvents',
             StorageEvents::POST_REMOVE_ALL => 'dispatchBufferedPimEvents',
