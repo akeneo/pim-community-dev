@@ -91,11 +91,16 @@ test('It does not render invalid children', () => {
   render(
     <Tree value={'master'} label={'Master'}>
       WrongNode
-      <div>WrongNode</div>
+      <div>ValidNode</div>
+      <Tree value={'child'} label={'Child'}/>
+      <Tree.Actions>Actions</Tree.Actions>
     </Tree>
   );
 
-  expect(screen.queryByText('WrongNode')).not.toBeInTheDocument();
+  expect(screen.queryByText(/WrongNode/)).not.toBeInTheDocument();
+  expect(screen.queryByText(/ValidNode/)).toBeInTheDocument();
+  expect(screen.queryByText(/Child/)).toBeInTheDocument();
+  expect(screen.queryByText(/Actions/)).toBeInTheDocument();
 });
 
 test('it triggers actions', () => {
