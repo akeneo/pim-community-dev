@@ -102,3 +102,7 @@ services:
         class: 'Akeneo\Tool\Component\Batch\Query\SqlUpdateJobExecutionStatus'
         arguments:
             - '@database_connection'
+
+    Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlMarkJobExecutionAsFailedWhenInterrupted:
+        arguments:
+            - '@database_connection'
