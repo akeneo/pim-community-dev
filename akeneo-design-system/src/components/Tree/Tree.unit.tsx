@@ -92,7 +92,7 @@ test('It does not render invalid children', () => {
     <Tree value={'master'} label={'Master'}>
       WrongNode
       <div>ValidNode</div>
-      <Tree value={'child'} label={'Child'}/>
+      <Tree value={'child'} label={'Child'} />
       <Tree.Actions>Actions</Tree.Actions>
     </Tree>
   );
