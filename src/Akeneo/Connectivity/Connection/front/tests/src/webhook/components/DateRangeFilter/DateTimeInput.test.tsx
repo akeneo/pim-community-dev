@@ -74,7 +74,7 @@ test('it doesnt return the timestamp when only the time is selected', () => {
 });
 
 test('it raises an error if the datetime is invalid (1970-99-99 at 99:99)', () => {
-    // Can't be tested as selenium/chrome support the date & time inputs and doesn't allow to set invalid values.
+    // Can't be tested as chrome support the date & time inputs and doesn't allow to set invalid values.
 });
 
 test('for a user in the timezone "UTC", it displays the zoned datetime', () => {
@@ -103,33 +103,33 @@ test('for a user in the timezone "Europe/Paris", it displays the zoned datetime'
     expect(timeInput.value).toBe('13:00'); // 12:00 UTC+1 (Daily Saving Time is off in January)
 });
 
-test('for a user in the timezone "Antarctica/McMurdo", it displays the zoned datetime', () => {
+test('for a user in the timezone "Asia/Tokyo", it displays the zoned datetime', () => {
     const onChange = jest.fn();
 
-    const timestamp = 12 * 60 * 60; // 1970-01-01 at 12:00
-    renderDateTimeInput({value: timestamp, onChange, onError: jest.fn()}, {timeZone: 'Antarctica/McMurdo'});
+    const timestamp = 20 * 60 * 60; // 1970-01-01 at 20:00
+    renderDateTimeInput({value: timestamp, onChange, onError: jest.fn()}, {timeZone: 'Asia/Tokyo'});
 
     const dateInput = screen.getByLabelText('Date') as HTMLInputElement;
     const timeInput = screen.getByLabelText('Time') as HTMLInputElement;
 
-    // UTC+12 make the datetime shift to January 2 at 00:00
+    // UTC+9 make the datetime shift to January 2 at 05:00
     expect(dateInput.value).toBe('1970-01-02');
-    expect(timeInput.value).toBe('00:00');
+    expect(timeInput.value).toBe('05:00');
 });
 
-test('for a user in the timezone "Antarctica/McMurdo", it selects the zoned datetime and returns the timestamp', () => {
+test('for a user in the timezone "Asia/Tokyo", it selects the zoned datetime and returns the timestamp', () => {
     const onChange = jest.fn();
 
-    renderDateTimeInput({onChange, onError: jest.fn()}, {timeZone: 'Antarctica/McMurdo'});
+    renderDateTimeInput({onChange, onError: jest.fn()}, {timeZone: 'Asia/Tokyo'});
 
     const dateInput = screen.getByLabelText('Date') as HTMLInputElement;
     fireEvent.change(dateInput, {target: {value: '1970-01-02'}});
     expect(dateInput.value).toBe('1970-01-02');
 
     const timeInput = screen.getByLabelText('Time') as HTMLInputElement;
-    fireEvent.change(timeInput, {target: {value: '00:00'}});
-    expect(timeInput.value).toBe('00:00');
+    fireEvent.change(timeInput, {target: {value: '05:00'}});
+    expect(timeInput.value).toBe('05:00');
 
-    const timestamp = 12 * 60 * 60; // 1970-01-01 at 12:00
+    const timestamp = 20 * 60 * 60; // 1970-01-01 at 20:00
     expect(onChange).toHaveBeenCalledWith(timestamp);
 });
