@@ -26,7 +26,7 @@ define([
   FetcherRegistry,
   i18n,
   UserContext,
-  {ChannelsLocalesCompleteness, formatProductCompleteness},
+  {ChannelsLocalesCompleteness, formatProductCompleteness}
 ) {
   return BaseForm.extend({
     template: _.template(template),
