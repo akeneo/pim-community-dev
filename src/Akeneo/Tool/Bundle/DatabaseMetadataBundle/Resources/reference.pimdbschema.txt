@@ -24,6 +24,7 @@ akeneo_reference_entity_reference_entity_permissions | BASE TABLE
 akeneo_rule_engine_rule_definition | BASE TABLE
 akeneo_rule_engine_rule_relation | BASE TABLE
 akeneo_structure_version_last_update | BASE TABLE
+lock_keys | BASE TABLE
 migration_versions | BASE TABLE
 oro_access_group | BASE TABLE
 oro_access_role | BASE TABLE
@@ -294,6 +295,9 @@ akeneo_rule_engine_rule_relation | resource_name | NO | varchar(255) | MUL
 akeneo_rule_engine_rule_relation | resource_id | NO | varchar(24) | 
 akeneo_structure_version_last_update | resource_name | NO | varchar(255) | PRI
 akeneo_structure_version_last_update | last_update | NO | datetime | 
+lock_keys | key_id | NO | varchar(64) | PRI
+lock_keys | key_token | NO | varchar(44) | 
+lock_keys | key_expiration | NO | int(10) unsigned |
 migration_versions | version | NO | varchar(255) | PRI
 oro_access_group | id | NO | smallint(6) | PRI
 oro_access_group | name | NO | varchar(255) | UNI
