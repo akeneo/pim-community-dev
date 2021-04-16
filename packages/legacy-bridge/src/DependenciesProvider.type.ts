@@ -1,5 +1,3 @@
-import {View} from 'backbone';
-
 enum NotificationLevel {
   INFO = 'info',
   SUCCESS = 'success',
@@ -26,7 +24,7 @@ type UserContext = {
 };
 
 type ViewBuilder = {
-  build(viewName: string): Promise<View>;
+  build(viewName: string): Promise<any>;
 };
 
 type Mediator = {
@@ -35,4 +33,4 @@ type Mediator = {
 };
 
 export {NotificationLevel};
-export type {Notify, RouteParams, Router, Security, Translate, UserContext, ViewBuilder, Mediator}
+export type {Notify, RouteParams, Router, Security, Translate, UserContext, ViewBuilder, Mediator};

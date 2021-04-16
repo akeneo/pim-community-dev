@@ -1,5 +1,5 @@
 import React from 'react';
-import {ReactView} from '@akeneo-pim-community/shared';
+import {ReactView} from '@akeneo-pim-community/shared/src/bridge/react';
 import {DuplicateMenuLink} from './DuplicateMenuLink';
 
 class DuplicateSecondaryAction extends ReactView {

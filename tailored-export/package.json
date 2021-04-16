@@ -33,10 +33,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lib:build": "tsc -p ./lib.tsconfig.json",
-    "translation:build": "cp ../public/js/translation/en_US.js ./src/translations.json",
-    "route:build": "cp ../public/js/routes.js ./src/routes.json && sed -i 's/fos.Router.setData(//g' ./src/routes.json && sed -i 's/);//g' ./src/routes.json",
-    "dependencies:build": "yarn --cwd=../legacy run lib:build && yarn --cwd=../shared run lib:build && yarn --cwd=../akeneo-design-system run lib:build"
+    "lib:build": "tsc -p ./lib.tsconfig.json"
   },
   "eslintConfig": {
     "extends": [
@@ -56,10 +53,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "workspaces": [
-    "../legacy",
-    "../shared",
-    "../akeneo-design-system"
-  ]
+  }
 }

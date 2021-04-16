@@ -1,6 +1,6 @@
 import React from 'react';
 import {DependenciesProvider} from '@akeneo-pim-community/shared';
-import {ReactController} from '@akeneo-pim-community/shared';
+import {ReactController} from '@akeneo-pim-community/shared/src/bridge/react';
 import {Index} from '../job/execution';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';

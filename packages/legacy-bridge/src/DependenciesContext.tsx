@@ -14,4 +14,4 @@ type DependenciesContextProps = {
 const DependenciesContext = createContext<DependenciesContextProps>({});
 
 export type {DependenciesContextProps};
-export {DependenciesContext}
+export {DependenciesContext};
