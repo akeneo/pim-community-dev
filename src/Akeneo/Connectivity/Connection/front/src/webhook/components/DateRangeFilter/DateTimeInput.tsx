@@ -72,7 +72,7 @@ export const DateTimeInput: FC<Props> = ({value, min, max, onChange, onError}) =
     return (
         <FlexContainer>
             <TextInput
-                type='text'
+                type='date'
                 value={values.dateString}
                 min={timestampToZonedInputDateString(timeZone, min)}
                 max={timestampToZonedInputDateString(timeZone, max)}
@@ -85,7 +85,7 @@ export const DateTimeInput: FC<Props> = ({value, min, max, onChange, onError}) =
                 aria-label='Date'
             />
             <TextInput
-                type='text'
+                type='time'
                 value={values.timeString}
                 placeholder={timestampToZonedInputTimeString(timeZone, DateTime.utc().toSeconds())}
                 onChange={timeString => {

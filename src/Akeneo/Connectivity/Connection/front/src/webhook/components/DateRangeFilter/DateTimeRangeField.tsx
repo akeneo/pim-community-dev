@@ -19,7 +19,6 @@ export const DateTimeRangeField: FC<Props> = ({min, max, start, end, onChange}) 
     const [errors, setErrors] = useState<{start?: string; end?: string}>({});
 
     const handleChange = (start?: Timestamp, end?: Timestamp) => {
-        console.log(start, end);
         setErrors({});
         onChange(start, end);
     };
