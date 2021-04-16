@@ -5,3 +5,4 @@ __diff_output__
 /stories.json
 /public/*.png
 tsconfig.build.tsbuildinfo
+lib/

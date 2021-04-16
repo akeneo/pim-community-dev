@@ -1,1 +1,0 @@
-{"version":3,"file":"useSelection.js","sourceRoot":"","sources":["../../../src/storybook/hooks/useSelection.ts"],"names":[],"mappings":";;;AAAA,+BAA+B;AAE/B,IAAM,YAAY,GAAG;IACb,IAAA,KAAwB,gBAAQ,CAAU,KAAK,CAAC,EAA/C,OAAO,QAAA,EAAE,UAAU,QAA4B,CAAC;IAEvD,OAAO,EAAC,OAAO,SAAA,EAAE,QAAQ,EAAE,cAAM,OAAA,UAAU,CAAC,CAAC,OAAO,CAAC,EAApB,CAAoB,EAAC,CAAC;AACzD,CAAC,CAAC;AAEM,oCAAY"}

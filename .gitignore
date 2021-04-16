@@ -33,7 +33,6 @@ package-lock.json
 yarn-error.log
 coverage/*
 .phpunit.result.cache
-akeneo-design-system/lib
 
 ###> symfony/framework-bundle ###
 /.env.local
