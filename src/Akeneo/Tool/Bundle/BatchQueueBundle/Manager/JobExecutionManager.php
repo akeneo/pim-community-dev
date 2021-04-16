@@ -9,8 +9,8 @@ use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Repository to manage the status of a job.
@@ -25,11 +25,11 @@ class JobExecutionManager
 {
     private const MAX_TIME_TO_UPDATE_HEALTH_CHECK = 5;
 
-    private EntityManagerInterface $entityManager;
+    private Connection $connection;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(Connection $connection)
     {
-        $this->entityManager = $entityManager;
+        $this->connection = $connection;
     }
 
     /**
@@ -66,7 +66,7 @@ class JobExecutionManager
     {
         $sql = 'SELECT je.exit_code FROM akeneo_batch_job_execution je WHERE je.id = :id';
 
-        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('id', $jobExecutionMessage->getJobExecutionId());
         $stmt->execute();
         $row = $stmt->fetch();
@@ -90,7 +90,7 @@ WHERE
     je.id = :id;
 SQL;
 
-        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('id', $jobExecutionId);
         $stmt->bindValue('status', BatchStatus::FAILED);
         $stmt->bindValue('exit_code', ExitStatus::FAILED);
@@ -113,7 +113,7 @@ WHERE
     je.id = :id;
 SQL;
 
-        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('id', $jobExecutionMessage->getJobExecutionId());
         $stmt->bindValue('health_check_time', new \DateTime('now', new \DateTimeZone('UTC')), Type::DATETIME);
         $stmt->bindValue('updated_time', new \DateTime('now', new \DateTimeZone('UTC')), Type::DATETIME);
