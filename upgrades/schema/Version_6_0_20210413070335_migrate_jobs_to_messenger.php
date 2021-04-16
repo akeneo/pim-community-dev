@@ -48,7 +48,6 @@ final class Version_6_0_20210413070335_migrate_jobs_to_messenger extends Abstrac
             $this->jobExecutionQueue->publish($jobExecutionMessage);
         }
 
-        // TODO: decide if we drop the table now or in a next PR (if no set a consumer on the migrated jobs)
         $this->addSql('DROP TABLE akeneo_batch_job_execution_queue');
     }
 
@@ -59,29 +58,22 @@ final class Version_6_0_20210413070335_migrate_jobs_to_messenger extends Abstrac
 
     private function getNotConsumedJobExecutionMessages(): \Iterator
     {
-        $sql = <<<SQL
+        $query = <<<SQL
         SELECT id, job_execution_id, create_time AS created_time, updated_time, options, consumer
         FROM akeneo_batch_job_execution_queue
-        WHERE consumer IS NULL
-        ORDER BY create_time, id
-        LIMIT :batch {sqlOffset}
+        WHERE consumer IS NULL AND id > :id
+        ORDER BY id
+        LIMIT :batch
         SQL;
 
         $platform = $this->connection->getDatabasePlatform();
 
-        $offset = 0;
+        $lastId = 0;
         while (true) {
-            $query = str_replace(
-                '{sqlOffset}',
-                (0 === $offset) ? '' : sprintf('OFFSET %d', $offset),
-                $sql
-            );
-            $offset += self::BATCH;
-
             $rows = $this->connection->executeQuery(
                 $query,
-                ['batch' => self::BATCH],
-                ['batch' => Types::INTEGER]
+                ['batch' => self::BATCH, 'id' => $lastId],
+                ['batch' => Types::INTEGER, 'id' => Types::INTEGER]
             )->fetchAll();
 
             if (0 === count($rows)) {
@@ -89,7 +81,8 @@ final class Version_6_0_20210413070335_migrate_jobs_to_messenger extends Abstrac
             }
 
             foreach ($rows as $row) {
-                $row['old_id'] = Type::getType(Types::INTEGER)->convertToPhpValue($row['id'], $platform);
+                $lastId = Type::getType(Types::INTEGER)->convertToPhpValue($row['id'], $platform);
+                $row['old_id'] = $lastId;
                 $row['id'] = Uuid::uuid4();
                 $row['job_execution_id'] = Type::getType(Types::INTEGER)->convertToPhpValue($row['job_execution_id'], $platform);
                 $row['options'] = Type::getType(Types::JSON)->convertToPhpValue($row['options'], $platform);
