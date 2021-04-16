@@ -93,16 +93,41 @@ const TreeLine = styled.div<{$selected: boolean; $style: TreeStyle} & AkeneoThem
   ${({$style}) =>
     $style === 'list' &&
     css`
+      box-sizing: border-box;
       height: 54px;
       line-height: 54px;
+      padding: 0 20px;
     `}
 `;
 
 const LineInnerContainer = styled.div`
   flex-grow: 1;
+  z-index: 1;
+  max-width: 65%;
 `;
 
-const LineActionsContainer = styled.div``;
+const LineActionsContainer = styled.div`
+  opacity: 0;
+  z-index: 1;
+
+  ${TreeLine}:hover & {
+    opacity: 1;
+  }
+`;
+
+const TreeListRowBackground = styled.div`
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  right: 0;
+  padding: 0;
+  width: 100%;
+  height: 54px;
+
+  ${TreeLine}:hover & {
+    background-color: ${getColor('grey20')};
+  }
+`;
 
 const NodeCheckbox = styled(Checkbox)`
   display: inline-block;
@@ -279,6 +304,7 @@ const Tree = <T,>({
           </LabelWithFolder>
         </LineInnerContainer>
         {actions && <LineActionsContainer>{actions}</LineActionsContainer>}
+        {style === 'list' && <TreeListRowBackground />}
       </TreeLine>
       {style === 'list' && <TreeListSeparator />}
       {isOpen && !isLeaf && subTrees.length > 0 && (
