@@ -55,8 +55,6 @@ const MediaFileLabel = styled.div`
   font-weight: normal;
   color: ${getColor('grey', 140)};
   flex-grow: 1;
-  display: flex;
-  align-items: flex-end;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -136,6 +134,11 @@ type MediaFileInputProps = Override<
     clearTitle: string;
 
     /**
+     * Defines if the input can be cleared.
+     */
+    clearable?: boolean;
+
+    /**
      * Label displayed when the upload failed.
      */
     uploadErrorLabel: string;
@@ -170,6 +173,8 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
       uploadErrorLabel,
       invalid = false,
       readOnly = false,
+      clearable = true,
+      className,
       ...rest
     }: MediaFileInputProps,
     forwardedRef: Ref<HTMLInputElement>
@@ -231,81 +236,80 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
     });
 
     return (
-      <>
-        <MediaFileInputContainer
-          ref={containerRef}
-          tabIndex={readOnly ? -1 : 0}
-          invalid={invalid || hasUploadFailed}
-          readOnly={readOnly}
-          isCompact={isCompact}
-        >
-          {!value && !isUploading && (
-            <Input
-              ref={forwardedRef}
-              type="file"
-              onChange={handleChange}
-              readOnly={readOnly}
-              disabled={readOnly}
-              placeholder={placeholder}
-              {...rest}
+      <MediaFileInputContainer
+        ref={containerRef}
+        tabIndex={readOnly ? -1 : 0}
+        invalid={invalid || hasUploadFailed}
+        readOnly={readOnly}
+        isCompact={isCompact}
+        className={className}
+      >
+        {!value && !isUploading && (
+          <Input
+            ref={forwardedRef}
+            type="file"
+            onChange={handleChange}
+            readOnly={readOnly}
+            disabled={readOnly}
+            placeholder={placeholder}
+            {...rest}
+          />
+        )}
+        {isUploading ? (
+          <>
+            <MediaFileImage
+              height={isCompact ? 47 : 120}
+              width={isCompact ? 47 : 120}
+              src={null}
+              alt={uploadingLabel}
             />
-          )}
-          {isUploading ? (
-            <>
-              <MediaFileImage
-                height={isCompact ? 47 : 120}
-                width={isCompact ? 47 : 120}
-                src={null}
-                alt={uploadingLabel}
-              />
-              <UploadProgress
-                title={uploadingLabel}
-                progressLabel={`${Math.round(progress * 100)}%`}
-                level="primary"
-                percent={progress * 100}
-              />
-            </>
-          ) : null !== value ? (
-            <>
-              <MediaFileImage
-                height={isCompact ? 47 : 120}
-                width={isCompact ? 47 : 120}
-                src={displayedThumbnailUrl}
-                alt={value.originalFilename}
-                onError={() => setDisplayedThumbnailUrl(DefaultPictureIllustration)}
-              />
-              {readOnly ? (
-                <MediaFilePlaceholder>{value.originalFilename}</MediaFilePlaceholder>
-              ) : (
-                <MediaFileLabel>{value.originalFilename}</MediaFileLabel>
-              )}
-            </>
-          ) : (
-            <>
-              <ImportIllustration size={isCompact ? 47 : 180} />
-              <MediaFilePlaceholder>{hasUploadFailed ? uploadErrorLabel : placeholder}</MediaFilePlaceholder>
-            </>
-          )}
-          <ActionContainer isCompact={isCompact}>
-            {value && (
-              <>
-                {!readOnly && (
-                  <IconButton
-                    size="small"
-                    level="tertiary"
-                    ghost="borderless"
-                    icon={<CloseIcon />}
-                    title={clearTitle}
-                    onClick={handleClear}
-                  />
-                )}
-                {actions}
-              </>
+            <UploadProgress
+              title={uploadingLabel}
+              progressLabel={`${Math.round(progress * 100)}%`}
+              level="primary"
+              percent={progress * 100}
+            />
+          </>
+        ) : null !== value ? (
+          <>
+            <MediaFileImage
+              height={isCompact ? 47 : 120}
+              width={isCompact ? 47 : 120}
+              src={displayedThumbnailUrl}
+              alt={value.originalFilename}
+              onError={() => setDisplayedThumbnailUrl(DefaultPictureIllustration)}
+            />
+            {readOnly ? (
+              <MediaFilePlaceholder>{value.originalFilename}</MediaFilePlaceholder>
+            ) : (
+              <MediaFileLabel title={value.originalFilename}>{value.originalFilename}</MediaFileLabel>
             )}
-            {readOnly && <ReadOnlyIcon size={16} />}
-          </ActionContainer>
-        </MediaFileInputContainer>
-      </>
+          </>
+        ) : (
+          <>
+            <ImportIllustration size={isCompact ? 47 : 180} />
+            <MediaFilePlaceholder>{hasUploadFailed ? uploadErrorLabel : placeholder}</MediaFilePlaceholder>
+          </>
+        )}
+        <ActionContainer isCompact={isCompact}>
+          {value && (
+            <>
+              {!readOnly && clearable && (
+                <IconButton
+                  size="small"
+                  level="tertiary"
+                  ghost="borderless"
+                  icon={<CloseIcon />}
+                  title={clearTitle}
+                  onClick={handleClear}
+                />
+              )}
+              {actions}
+            </>
+          )}
+          {readOnly && <ReadOnlyIcon size={16} />}
+        </ActionContainer>
+      </MediaFileInputContainer>
     );
   }
 );
