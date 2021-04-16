@@ -42,8 +42,19 @@ class ScriptNonceGenerator
     public function getGeneratedNonce(): string
     {
         $request = $this->request->getCurrentRequest();
-        $bapId = $request->cookies->get('BAPID');
 
-        return hash_hmac('ripemd160', $bapId, $this->kernelSecret);
+        if (null === $request) {
+            if ('cli' !== \PHP_SAPI) {
+                throw new \LogicException("Nonce generator failed, no session was found while not in CLI mode.");
+            }
+
+            return '';
+        } elseif (isset($request->cookies)) {
+            $bapId = $request->cookies->get('BAPID');
+
+            return hash_hmac('ripemd160', $bapId, $this->kernelSecret);
+        } else {
+            throw new \LogicException("Nonce generator failed: no cookies found.");
+        }
     }
 }
