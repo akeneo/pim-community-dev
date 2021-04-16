@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {CategoryValue, RecursiveCategoryTree} from './RecursiveCategoryTree';
 import {Tree} from 'akeneo-design-system/lib/components/Tree/Tree';
 
@@ -20,6 +20,7 @@ type CategoryTreeProps = {
   onClick?: any;
   initCallback?: (treeLabel: string, categoryLabel?: string) => void;
   isCategorySelected?: (category: CategoryValue) => boolean;
+  actions?: (category: CategoryValue, isRoot: boolean) => ReactNode[];
 };
 
 const CategoryTree: React.FC<CategoryTreeProps> = ({
@@ -71,6 +72,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
       onChange={onChange}
       onClick={onClick}
       isCategorySelected={isCategorySelected}
+      isRoot={true}
       {...rest}
     />
   );

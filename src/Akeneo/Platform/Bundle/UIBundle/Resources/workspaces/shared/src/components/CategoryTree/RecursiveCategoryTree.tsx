@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {CategoryTreeModel} from './CategoryTree';
 import {Tree} from 'akeneo-design-system/lib/components/Tree/Tree';
 
@@ -14,6 +14,9 @@ type RecursiveCategoryTreeProps = {
   onChange?: (value: string, checked: boolean) => void;
   onClick?: any;
   isCategorySelected?: (category: CategoryValue) => boolean;
+  style?: 'standard' | 'list';
+  isRoot?: boolean;
+  actions?: (category: CategoryValue, isRoot: boolean) => ReactNode[];
 };
 
 const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
@@ -22,6 +25,9 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
   onChange,
   onClick,
   isCategorySelected,
+  style = 'standard',
+  isRoot = true,
+  actions
 }) => {
   const [categoryState, setCategoryState] = React.useState<CategoryTreeModel>(tree);
 
@@ -57,7 +63,12 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
       onChange={handleChange}
       onOpen={handleOpen}
       onClick={onClick}
+      style={style}
+      _isRoot={isRoot}
     >
+      {actions && (
+        <Tree.Actions>{actions(categoryState, isRoot)}</Tree.Actions>
+      )}
       {categoryState.children &&
         categoryState.children.map(childNode => {
           return (
@@ -68,6 +79,9 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
               childrenCallback={childrenCallback}
               onClick={onClick}
               isCategorySelected={isCategorySelected}
+              style={style}
+              isRoot={false}
+              actions={actions}
             />
           );
         })}

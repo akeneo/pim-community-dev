@@ -1,8 +1,8 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
-import {Breadcrumb, Link} from 'akeneo-design-system';
+import {Breadcrumb, Button, Link} from 'akeneo-design-system';
 import {PimView, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {FullScreenError, PageContent, PageHeader, useSetPageTitle} from '@akeneo-pim-community/shared';
+import {CategoryTree, FullScreenError, PageContent, PageHeader, useSetPageTitle} from '@akeneo-pim-community/shared';
 import {useCategoryTree} from '../../hooks';
 
 type Params = {
@@ -96,6 +96,30 @@ const CategoriesTreePage: FC = () => {
                     </Link>
                   </div>
                 ))}
+            </div>
+
+            <div>
+              <CategoryTree
+                onChange={() => console.log('change')}
+                childrenCallback={() => Promise.resolve([])}
+                init={() => Promise.resolve(tree)} style="list"
+                onClick={isGranted('pim_enrich_product_category_edit') ? (category) => followEditCategory(category.id) : undefined}
+                actions={(category, isRoot) => {
+                  const actions = [];
+
+                  actions.push(
+                    <Button ghost level={"primary"} size="small" onClick={() => alert(`create child for ${category.code}`)}>New Category</Button>
+                  );
+
+                  if (!isRoot) {
+                    actions.push(
+                      <Button ghost level={"danger"} size="small" onClick={() => alert(`delete ${category.code}`)}>Delete</Button>
+                    );
+                  }
+
+                  return actions;
+                }}
+              />
             </div>
           </>
         )}
