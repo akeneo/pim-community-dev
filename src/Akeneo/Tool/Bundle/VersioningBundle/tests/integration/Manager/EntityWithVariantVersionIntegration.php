@@ -155,10 +155,4 @@ class EntityWithVariantVersionIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product')->save($variantProduct);
     }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->get('akeneo_integration_tests.launcher.job_launcher')->flushJobQueue();
-    }
 }
