@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Provider} from 'react-redux';
 
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 import attributeOptionsStore from './store/store';
 import {AttributeContextProvider, LocalesContextProvider} from './contexts';
 import AttributeOptions from './components/AttributeOptions';

@@ -1,5 +1,5 @@
 import {useDependenciesContext} from './useDependenciesContext';
-import {Router} from '../provider';
+import {Router} from '../DependenciesProvider.type';
 
 const useRouter = (): Router => {
   const {router} = useDependenciesContext();

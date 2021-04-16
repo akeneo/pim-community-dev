@@ -17,7 +17,7 @@ import {
   ToImproveEnrichmentImageMessage,
 } from './component/ProductEditForm/TabContent/DataQualityInsights/Recommendation';
 import {followNotApplicableEnrichmentImageRecommendation} from './user-actions';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 import QualityScorePortal from './component/ProductEditForm/QualityScorePortal';
 
 interface ProductEditFormAppProps {

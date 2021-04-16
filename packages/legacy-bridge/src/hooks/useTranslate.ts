@@ -1,5 +1,5 @@
 import {useDependenciesContext} from './useDependenciesContext';
-import {Translate} from '../provider';
+import {Translate} from '../DependenciesProvider.type';
 
 const useTranslate = (): Translate => {
   const {translate} = useDependenciesContext();

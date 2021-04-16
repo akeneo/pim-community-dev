@@ -5,7 +5,7 @@ import {AxesContextProvider} from '../../context/AxesContext';
 import {KeyIndicators} from './KeyIndicators/KeyIndicators';
 import {AssetCollectionIcon, EditIcon, pimTheme} from 'akeneo-design-system';
 import styled, {ThemeProvider} from 'styled-components';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 import {KeyIndicator} from './index';
 import {KeyIndicatorsProvider} from '../../context/KeyIndicatorsContext';
 import {keyIndicatorsTips} from '../../helper/Dashboard/KeyIndicatorsTips';

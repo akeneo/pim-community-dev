@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {DependenciesContextProps, DependenciesContext} from '../provider';
+import {DependenciesContextProps, DependenciesContext} from '../DependenciesContext';
 
 const useDependenciesContext = (): DependenciesContextProps => {
   const context = useContext<DependenciesContextProps>(DependenciesContext);

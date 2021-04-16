@@ -34,4 +34,5 @@ type Mediator = {
   on(event: string, callback: () => void): void;
 };
 
-export {NotificationLevel, Notify, RouteParams, Router, Security, Translate, UserContext, ViewBuilder, Mediator};
+export {NotificationLevel};
+export type {Notify, RouteParams, Router, Security, Translate, UserContext, ViewBuilder, Mediator}

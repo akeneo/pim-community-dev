@@ -1,5 +1,5 @@
 import {useDependenciesContext} from './useDependenciesContext';
-import {UserContext} from '../provider';
+import {UserContext} from '../DependenciesProvider.type';
 
 const useUserContext = (): UserContext => {
   const {user} = useDependenciesContext();

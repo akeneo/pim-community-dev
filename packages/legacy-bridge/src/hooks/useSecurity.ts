@@ -1,5 +1,5 @@
 import {useDependenciesContext} from './useDependenciesContext';
-import {Security} from '../provider';
+import {Security} from '../DependenciesProvider.type';
 
 const useSecurity = (): Security => {
   const {security} = useDependenciesContext();

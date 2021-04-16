@@ -4,7 +4,7 @@ import {ThemeProvider} from 'styled-components';
 import '@testing-library/jest-dom/extend-expect';
 import {render} from '@testing-library/react';
 import {renderHook} from '@testing-library/react-hooks';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 import {pimTheme} from 'akeneo-design-system';
 
 const DefaultProviders: FC = ({children}) => (

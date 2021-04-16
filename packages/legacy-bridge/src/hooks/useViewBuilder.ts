@@ -1,5 +1,5 @@
 import {useDependenciesContext} from './useDependenciesContext';
-import {ViewBuilder} from '../provider';
+import {ViewBuilder} from '../DependenciesProvider.type';
 
 const useViewBuilder = (): ViewBuilder => {
   const {viewBuilder} = useDependenciesContext();

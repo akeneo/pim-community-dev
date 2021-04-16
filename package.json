@@ -138,7 +138,7 @@
     "underscore": "1.8.3",
     "victory": "^33.1.6",
     "@akeneo-pim-community/tailored-export": "link:tailored-export",
-    "@akeneo-pim-community/legacy-provider": "link:legacy"
+    "@akeneo-pim-community/legacy-bridge": "link:packages/legacy-bridge"
   },
   "resolutions": {
     "jest/**/ip-regex": "2.1.0"
@@ -146,7 +146,6 @@
   "private": true,
   "workspaces": [
     "src/Akeneo/Connectivity/Connection/front",
-    "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge",
     "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared",
     "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front",
     "src/Akeneo/Pim/Automation/DataQualityInsights/front",

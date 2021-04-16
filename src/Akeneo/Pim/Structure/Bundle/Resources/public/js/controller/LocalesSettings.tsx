@@ -1,5 +1,5 @@
 import React from 'react';
-import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
+import {ReactController} from '@akeneo-pim-community/shared';
 import {LocalesApp} from '@akeneo-pim-community/settings-ui';
 
 const mediator = require('oro/mediator');

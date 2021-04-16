@@ -1,5 +1,5 @@
 import {useDependenciesContext} from './useDependenciesContext';
-import {Mediator} from '../provider';
+import {Mediator} from '../DependenciesProvider.type';
 
 const useMediator = (): Mediator => {
   const {mediator} = useDependenciesContext();

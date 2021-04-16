@@ -1,8 +1,8 @@
 import React, {useRef, useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {View} from 'backbone';
-import {useViewBuilder} from '../hooks';
-import {useIsMounted} from '@akeneo-pim-community/shared/src';
+import {useViewBuilder} from '@akeneo-pim-community/legacy-bridge';
+import {useIsMounted} from '@akeneo-pim-community/shared';
 
 type Props = {
   viewName: string;

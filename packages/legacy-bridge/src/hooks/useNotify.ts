@@ -1,5 +1,5 @@
 import {useDependenciesContext} from './useDependenciesContext';
-import {Notify} from '../provider';
+import {Notify} from '../DependenciesProvider.type';
 
 const useNotify = (): Notify => {
   const {notify} = useDependenciesContext();
