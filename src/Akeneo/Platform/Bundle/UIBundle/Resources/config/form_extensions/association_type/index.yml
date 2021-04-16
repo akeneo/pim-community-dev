@@ -66,5 +66,5 @@ extensions:
         aclResourceId: pim_enrich_associationtype_create
         config:
            iconName:  plus
-           title:     pim_enrich.entity.association_type.module.create.button
+           title:     pim_common.create
            modalForm: pim-association-type-create-modal

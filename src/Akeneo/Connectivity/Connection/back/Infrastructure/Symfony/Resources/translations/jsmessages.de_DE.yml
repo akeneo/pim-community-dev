@@ -245,7 +245,6 @@ akeneo_connectivity.connection:
       list:
         search:
           placeholder: In Nachrichten suchen
-          total: '{0} 0 Ergebnisse|{1} 1 Ergebnis|[2,Inf] {{ total }} Ergebnisse'
           level: Level
           all: Alle
           none: Keine
@@ -272,7 +271,6 @@ akeneo_connectivity.connection:
         link: Um zu verstehen, wie man dieses Problem löst, besuchen Sie bitte das API-Hilfe-Center.
       search_filter:
         placeholder: Suche in Fehlermeldungen
-        result_count: '{0} Kein Ergebnis |[1,Inf] {{ count }} Ergebnisse'
       error_list:
         date_time_column:
           title: Tag und Zeit
