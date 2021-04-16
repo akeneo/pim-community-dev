@@ -4,7 +4,7 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {renderHook} from '@testing-library/react-hooks';
 import {useCreateUnitValidator} from 'akeneomeasure/pages/create-unit/hooks/use-create-unit-validator';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 
 declare global {
   namespace NodeJS {

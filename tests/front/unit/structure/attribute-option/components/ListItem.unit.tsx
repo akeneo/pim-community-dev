@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {act, fireEvent, getByRole, queryByRole, queryAllByRole, createEvent} from '@testing-library/react';
 import ListItem from 'akeneopimstructure/js/attribute-option/components/ListItem';
 import {AttributeOption} from 'akeneopimstructure/js/attribute-option/model';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 import {AttributeContextProvider} from 'akeneopimstructure/js/attribute-option/contexts';
 
 let container: HTMLElement;

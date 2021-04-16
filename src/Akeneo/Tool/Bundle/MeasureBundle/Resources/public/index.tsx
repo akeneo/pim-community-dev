@@ -5,7 +5,8 @@ import {List} from 'akeneomeasure/pages/list';
 import {Edit} from 'akeneomeasure/pages/edit';
 import {ConfigContext, ConfigContextValue} from 'akeneomeasure/context/config-context';
 import {UnsavedChangesContext, UnsavedChangesContextValue} from 'akeneomeasure/context/unsaved-changes-context';
-import {DependenciesProvider, DependenciesContextProps} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesContextProps} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 import {pimTheme} from 'akeneo-design-system';
 
 type IndexProps = DependenciesContextProps & {

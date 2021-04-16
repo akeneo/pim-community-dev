@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {DeleteModal} from 'pimui/js/attribute/form/delete/DeleteModal';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 
 const DeleteAction = require('oro/datagrid/delete-action');
 const mediator = require('oro/mediator');

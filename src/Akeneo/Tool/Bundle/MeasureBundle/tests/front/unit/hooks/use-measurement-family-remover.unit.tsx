@@ -7,7 +7,7 @@ import {
   useMeasurementFamilyRemover,
   MeasurementFamilyRemoverResult,
 } from 'akeneomeasure/hooks/use-measurement-family-remover';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 
 const wrapper = ({children}) => <DependenciesProvider>{children}</DependenciesProvider>;
 

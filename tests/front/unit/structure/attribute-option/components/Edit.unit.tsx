@@ -2,7 +2,7 @@ import React from 'react';
 import * as ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
 import {act, fireEvent, getByRole, queryAllByRole} from '@testing-library/react';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 import Edit from 'akeneopimstructure/js/attribute-option/components/Edit';
 import {AttributeContextProvider, LocalesContextProvider} from 'akeneopimstructure/js/attribute-option/contexts';
 import {AttributeOption} from "akeneopimstructure/js/attribute-option/model";

@@ -1,7 +1,7 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {renderHook, act} from '@testing-library/react-hooks';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 import {useProducts} from '../../../../Resources/public/js/product/form/quantified-associations/hooks/useProducts';
 
 declare global {

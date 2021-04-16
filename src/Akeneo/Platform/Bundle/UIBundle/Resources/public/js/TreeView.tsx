@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 import {ThemeProvider} from 'styled-components';
 import {CategoryTrees} from '@akeneo-pim-community/shared';
 import React from 'react';

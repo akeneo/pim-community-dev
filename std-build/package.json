@@ -13,7 +13,8 @@
     "webpack-dev": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
     "less": "node $npm_package_config_styles",
     "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
-    "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models"
+    "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
+    "build:packages": "yarn --cwd=vendor/akeneo/pim-community-dev build:packages"
   },
   "workspaces": [
     "vendor/akeneo/pim-community-dev",

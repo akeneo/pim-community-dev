@@ -27,7 +27,6 @@ import {
   useNotify,
   NotificationLevel,
   useUserContext,
-  PimView,
   useSecurity,
   useRoute,
 } from '@akeneo-pim-community/legacy-bridge';
@@ -39,6 +38,7 @@ import {
   FullScreenError,
   PageContent,
   DeleteModal,
+  PimView,
 } from '@akeneo-pim-community/shared';
 import {Helper, Button, Breadcrumb} from 'akeneo-design-system';
 
