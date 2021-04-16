@@ -146,7 +146,7 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                         'value' => '>',
                         'message' => 'Searching on the "updated" property require the ">" (greater than) operator, {{ value }} given.',
                     ]),
-                    'value' => new Assert\DateTime(['format' => \DateTimeInterface::ATOM]),
+                    'value' => new Assert\DateTime(['format' => \DateTime::ATOM]),
                 ])
             ]),
         ];
