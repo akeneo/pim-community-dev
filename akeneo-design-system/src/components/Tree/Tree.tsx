@@ -203,14 +203,15 @@ const Tree = <T,>({
   const subTrees: ReactElement<TreeProps<T>>[] = [];
   let actions: ReactNode | null = null;
 
+  // Tree component only accepts Tree or Tree.Actions as children
   React.Children.forEach(children, child => {
     if (isValidElement(child) && child.type === TreeActions) {
       actions = child;
       return;
     }
 
-    if (!isValidElement<TreeProps<T>>(child)) {
-      throw new Error('Tree component only accepts Tree or Tree.Actions as children');
+    if (!isValidElement<TreeProps<T>>(child) || child.type !== Tree) {
+      return;
     }
 
     subTrees.push(

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Tree} from './Tree';
 import {render, screen, fireEvent} from '../../storybook/test-util';
-import {Button} from "../Button/Button";
+import {Button} from '../Button/Button';
 
 test('it renders tree with children properly and is loading', () => {
   render(
@@ -87,18 +87,15 @@ test('it does not trigger any callback when its a leaf', () => {
   expect(handleOpen).toBeCalledTimes(0);
 });
 
-test('It throws with an unknown status', () => {
-  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
+test('It does not render invalid children', () => {
+  render(
+    <Tree value={'master'} label={'Master'}>
+      WrongNode
+      <div>WrongNode</div>
+    </Tree>
+  );
 
-  expect(() => {
-    render(
-      <Tree value={'master'} label={'Master'}>
-        WrongNode
-      </Tree>
-    );
-  }).toThrow();
-
-  mockConsole.mockRestore();
+  expect(screen.queryByText('WrongNode')).not.toBeInTheDocument();
 });
 
 test('it triggers actions', () => {
@@ -117,7 +114,9 @@ test('it triggers actions', () => {
       onClick={handleClick}
     >
       <Tree.Actions>
-        <Button onClick={handleAction} data-testid="action">Action</Button>
+        <Button onClick={handleAction} data-testid="action">
+          Action
+        </Button>
       </Tree.Actions>
     </Tree>
   );

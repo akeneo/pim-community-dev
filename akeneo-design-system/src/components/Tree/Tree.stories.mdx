@@ -83,43 +83,43 @@ The Tree component uses its value to trigger onOpen, onClose and other events. B
     {args => {
       return (
         <Tree value={'master'} label={'Master'} {...args}>
-          <Tree.Actions>
-            {args.displayActions && (
+          {args.displayActions && (
+            <Tree.Actions>
               <>
                 <Button ghost size="small" level="primary">Create</Button>
                 <Button ghost size="small" level="danger">Delete</Button>
               </>
-            )}
-          </Tree.Actions>
+            </Tree.Actions>
+          )}
           <Tree value={'tvs'} label={'TVs and projectors'} {...args}>
-            <Tree.Actions>
-              {args.displayActions && (
+            {args.displayActions && (
+              <Tree.Actions>
                 <>
                   <Button ghost size="small" level="primary">Create</Button>
                   <Button ghost size="small" level="danger">Delete</Button>
                 </>
-               )}
-            </Tree.Actions>
+              </Tree.Actions>
+            )}
           </Tree>
           <Tree value={'cameras'} label={'Cameras'} {...args}>
-            <Tree.Actions>
-              {args.displayActions && (
+            {args.displayActions && (
+              <Tree.Actions>
                 <>
                   <Button ghost size="small" level="primary">Create</Button>
                   <Button ghost size="small" level="danger">Delete</Button>
                 </>
-              )}
-            </Tree.Actions>
+              </Tree.Actions>
+            )}
           </Tree>
           <Tree value={'audio'} label={'Audio and Video'} {...args}>
-            <Tree.Actions>
-              {args.displayActions && (
+            {args.displayActions && (
+              <Tree.Actions>
                 <>
                   <Button ghost size="small" level="primary">Create</Button>
                   <Button ghost size="small" level="danger">Delete</Button>
                 </>
-              )}
-            </Tree.Actions>
+              </Tree.Actions>
+            )}
           </Tree>
         </Tree>
       );
