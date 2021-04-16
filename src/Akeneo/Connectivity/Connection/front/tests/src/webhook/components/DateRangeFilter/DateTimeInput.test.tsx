@@ -43,7 +43,7 @@ test('it selects the datetime and returns the timestamp', () => {
     expect(onChange).toHaveBeenCalledWith(timestamp);
 });
 
-test('it doesnt return the timestamp when only the date is selected', () => {
+test('it returns the timestamp when only the date is selected (as the time will be set automatically)', () => {
     const onChange = jest.fn();
 
     renderDateTimeInput({onChange, onError: jest.fn()}, {timeZone: 'UTC'});
@@ -55,7 +55,7 @@ test('it doesnt return the timestamp when only the date is selected', () => {
     const timeInput = screen.getByLabelText('Time') as HTMLInputElement;
     expect(timeInput.value).toBe('');
 
-    expect(onChange).toHaveBeenCalledTimes(0);
+    expect(onChange).toHaveBeenCalledTimes(1);
 });
 
 test('it doesnt return the timestamp when only the time is selected', () => {

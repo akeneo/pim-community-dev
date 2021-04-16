@@ -53,7 +53,12 @@ export const DateTimeInput: FC<Props> = ({value, min, max, onChange, onError}) =
             setErrors(errors => ({...errors, date: true}));
             return;
         }
-        if (timeString === '' || false === TIME_INPUT_PATTERN.test(timeString)) {
+
+        // Use the current time if it's not defined.
+        if (timeString === '') {
+            timeString = timestampToZonedInputTimeString(timeZone, DateTime.utc().toSeconds());
+        }
+        if (false === TIME_INPUT_PATTERN.test(timeString)) {
             setErrors(errors => ({...errors, time: true}));
             return;
         }
