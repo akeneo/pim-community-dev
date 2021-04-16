@@ -36,11 +36,12 @@ class IntrospectDatabaseCommand extends Command
     protected function configure()
     {
         $this
-         ->setDescription("Output the database structural informations.")
-         ->addUsage('Dump database structure informations.')
+         ->setDescription("Output the PIM database informations.")
+         ->addUsage('Dump database structure and data informations.')
          ->setHelp('This command is used to either compare the PIM database structure with a reference or to troubleshoot problems.')
          ->addOption('db-name', 'd', InputOption::VALUE_REQUIRED, 'The database name when different from "akeneo_pim".', 'akeneo_pim')
          ->addOption('file', 'f', InputOption::VALUE_OPTIONAL, sprintf('When present, this option makes the tool to save the output in a file. If the name of the file is not provided, it will default to "%s".', self::DEFAULT_FILENAME), false)
+         ->addOption('jobs', 'j', InputOption::VALUE_NONE, 'Dump jobs from database.')
         ;
     }
 
@@ -60,17 +61,27 @@ class IntrospectDatabaseCommand extends Command
             if (file_exists($filename)) {
                 $filesystem->remove($filename);
             }
+        } else {
+            $filesystem = null;
         }
+        
+        $jobs = $input->getOption('jobs') === true ?
+            true :
+            false;
 
-        foreach ($this->inspector->getTableList($db_name) as $row) {
-            $line = sprintf("%s | %s\n", $row['table_name'], $row['table_type']);
-
-            if (isset($filesystem)) {
+        $outputContent = function (string $line) use ($output, $filesystem, $filename) {
+            if (isset($filesystem) && $filesystem !== null) {
                 $filesystem->appendToFile($filename, $line);
             } else {
                 $output->write($line);
             }
+        };
+
+        foreach ($this->inspector->getTableList($db_name) as $row) {
+            $line = sprintf("%s | %s\n", $row['table_name'], $row['table_type']);
+            $outputContent($line);
         }
+
         foreach ($this->inspector->getColumnInfo($db_name) as $row) {
             $line = sprintf(
                 "%s | %s | %s | %s | %s\n",
@@ -80,11 +91,12 @@ class IntrospectDatabaseCommand extends Command
                 $row['column_type'],
                 $row['column_key']
             );
+            $outputContent($line);
+        }
 
-            if (isset($filesystem)) {
-                $filesystem->appendToFile($filename, $line);
-            } else {
-                $output->write($line);
+        if ($jobs) {
+            foreach ($this->inspector->getTableColumnValues('akeneo_batch_job_instance', 'label') as $row) {
+                $outputContent(sprintf("VALUE:JOB:%s\n", $row['value']));
             }
         }
 
