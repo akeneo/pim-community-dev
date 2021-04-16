@@ -105,6 +105,8 @@ contexts: &context
             - 'Context\FeatureContext'
     -   Context\ConnectivityContext:
             - '@messenger.transport.business_event'
+    -   Pim\Behat\Context\Domain\Structure\AssociationTypeContext:
+            - 'Context\FeatureContext'
 
 legacy:
     suites:

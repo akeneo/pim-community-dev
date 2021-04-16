@@ -11,6 +11,6 @@ Feature: Browse association types
     And the grid should contain 4 elements
 
   Scenario: Successfully search on label
-    When I search "sell"
+    When I search association types with the word "sell"
     Then the grid should contain 2 elements
     And I should see entity Cross sell and Upsell
