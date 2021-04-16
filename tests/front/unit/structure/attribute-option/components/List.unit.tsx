@@ -11,7 +11,7 @@ import {
     queryAllByRole,
     createEvent
 } from '@testing-library/react';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 import {createStoreWithInitialState} from 'akeneopimstructure/js/attribute-option/store/store';
 import List from 'akeneopimstructure/js/attribute-option/components/List';
 import {AttributeContextProvider} from 'akeneopimstructure/js/attribute-option/contexts';

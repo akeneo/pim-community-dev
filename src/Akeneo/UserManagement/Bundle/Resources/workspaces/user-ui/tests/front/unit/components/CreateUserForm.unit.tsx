@@ -5,7 +5,7 @@ import {render, screen, act, fireEvent} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 import {CreateUserForm} from '../../../../src/components';
 import {UserId} from '../../../../src/models';
 

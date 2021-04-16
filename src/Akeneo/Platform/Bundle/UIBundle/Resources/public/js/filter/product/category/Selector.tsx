@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 import {Channel, Category, CategoryTree, CategoryTreeModel, CategoryValue} from '@akeneo-pim-community/shared';
 import styled, {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';

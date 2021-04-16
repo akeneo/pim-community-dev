@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {Badge, Card, pimTheme} from 'akeneo-design-system';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 import {ViewOptions} from 'backbone';
 
 const BaseRow = require('oro/datagrid/row');

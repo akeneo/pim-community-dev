@@ -1,7 +1,7 @@
 import React from 'react';
 import {render} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 import {Illustration, IllustrationProps} from '@akeneo-pim-community/shared/src/components/page/header/Illustration';
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';

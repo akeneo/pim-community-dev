@@ -1,7 +1,8 @@
 import React, {ReactElement, ReactNode, useCallback} from 'react';
 import ReactDOM from 'react-dom';
 import styled, {ThemeProvider} from 'styled-components';
-import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/shared';
 import {
   AnimateMessageBar,
   FlashMessage,
