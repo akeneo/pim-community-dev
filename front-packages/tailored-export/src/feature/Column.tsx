@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
-const Index = ({jobCode}: {jobCode: string}) => {
+const Column = ({jobCode}: {jobCode: string}) => {
   const [test, open, close] = useBooleanState();
   const translate = useTranslate();
 
@@ -13,4 +13,4 @@ const Index = ({jobCode}: {jobCode: string}) => {
   );
 };
 
-export default Index;
+export {Column};

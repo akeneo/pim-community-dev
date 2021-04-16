@@ -8,7 +8,7 @@
     "isolatedModules": true,
     "jsx": "react",
     "lib": ["es6", "dom"],
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -16,7 +16,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "lib",
-    "rootDir": "src",
+    "rootDir": "src/feature",
     "skipLibCheck": true,
     "sourceMap": true,
     "strictBindCallApply": true,
@@ -28,9 +28,9 @@
     "target": "es5",
     "baseUrl": "./src",
     "types": [
+      "node",
     ],
     "incremental": true
   },
-  "include": ["src"],
-  "exclude": ["src/**/*.unit.ts", "src/**/*.unit.tsx"]
+  "include": ["src/feature"]
 }
