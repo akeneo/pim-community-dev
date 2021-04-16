@@ -6,6 +6,7 @@ import {AkeneoThemedProps, Badge, getColor, getFontSize} from 'akeneo-design-sys
 import {ApproveAllButton, ApproveButton, RejectAllButton, RejectButton, RemoveAllButton} from './proposalActions';
 import {ScopeLabel} from './ScopeLabel';
 import {LocaleLabel} from './LocaleLabel';
+import {ProposalChange} from './ProposalChange';
 
 const ProposalContainer = styled.div`
   .proposalActionButton {
@@ -44,13 +45,15 @@ const Highlight = styled.span`
 
 const Change = styled.div<{isSame: boolean} & AkeneoThemedProps>`
   display: grid;
-  grid-template-columns: ${({isSame}) => (isSame ? 'minmax(0, 0.7fr) 2fr 60px' : 'minmax(0, 0.7fr) 1fr 1fr 60px')};
+  grid-template-columns: minmax(0, 0.7fr) ${({isSame}) => (isSame ? 'minmax(0, 2fr)' : 'minmax(0, 1fr) minmax(0, 1fr)')} 60px;
   grid-template-rows: 1fr;
   gap: 10px 18px;
   min-height: 54px;
 
   & > * {
     padding: 19px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   del {
@@ -61,11 +64,6 @@ const Change = styled.div<{isSame: boolean} & AkeneoThemedProps>`
   ins {
     text-decoration: none;
     background: ${getColor('green', 20)};
-  }
-
-  img {
-    display: block;
-    margin-top: 5px;
   }
 `;
 
@@ -116,14 +114,15 @@ type InProgressProposal = {
   remove: boolean;
 };
 
-type ProposalChange = {
+type ProposalChangeData = {
   attributeLabel: string;
-  before: string;
-  after: string;
   data: any;
   canReview: boolean;
   locale: LocaleCode | null;
   scope: ScopeCode | null;
+  attributeType: string;
+  before: any;
+  after: any;
 };
 
 type ReadyProposal = {
@@ -136,7 +135,7 @@ type ReadyProposal = {
   approve: boolean;
   refuse: boolean;
   changes: {
-    [attributeCode: string]: ProposalChange[];
+    [attributeCode: string]: ProposalChangeData[];
   };
 };
 
@@ -164,13 +163,16 @@ const Proposal: React.FC<ProposalProps> = ({
   const router = useRouter();
   const translate = useTranslate();
 
-  const isSame: (change: ProposalChange) => boolean = change => change.before === change.after;
+  const isSame: (change: ProposalChangeData) => boolean = change => {
+    return change.before === change.after;
+  };
+
   const documentUrl = `#${router.generate(
     documentType === 'product_draft' ? 'pim_enrich_product_edit' : 'pim_enrich_product_model_edit',
     {id: documentId}
   )}`;
 
-  const flatChanges: (ProposalChange & {attributeCode: AttributeCode})[] = [];
+  const flatChanges: (ProposalChangeData & {attributeCode: AttributeCode})[] = [];
   if (formattedChanges.status === 'ready') {
     Object.keys(formattedChanges.changes).forEach(attributeCode => {
       formattedChanges.changes[attributeCode].forEach(change => {
@@ -239,13 +241,23 @@ const Proposal: React.FC<ProposalProps> = ({
               {!isSame(change) && (
                 <div>
                   <OldValue>{translate('pim_datagrid.workflow.old_value')}</OldValue>
-                  <span dangerouslySetInnerHTML={{__html: change.before}} className="original-value" />
+                  <ProposalChange
+                    attributeType={change.attributeType}
+                    change={change}
+                    accessor="before"
+                    className="original-value"
+                  />
                 </div>
               )}
               {!isSame(change) && (
                 <div>
                   <NewValue>{translate('pim_datagrid.workflow.new_value')}</NewValue>
-                  <span dangerouslySetInnerHTML={{__html: change.after}} className="new-value" />
+                  <ProposalChange
+                    attributeType={change.attributeType}
+                    change={change}
+                    accessor="after"
+                    className="new-value"
+                  />
                 </div>
               )}
               {isSame(change) && (
@@ -283,4 +295,4 @@ const Proposal: React.FC<ProposalProps> = ({
   );
 };
 
-export {Proposal};
+export {Proposal, ProposalChangeData};

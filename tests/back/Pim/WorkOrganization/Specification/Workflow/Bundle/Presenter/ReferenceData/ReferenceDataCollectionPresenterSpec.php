@@ -9,7 +9,6 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ReferenceDataRepositoryResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 
 class ReferenceDataCollectionPresenterSpec extends ObjectBehavior
 {
@@ -38,7 +37,6 @@ class ReferenceDataCollectionPresenterSpec extends ObjectBehavior
         $repositoryResolver,
         ObjectRepository $repository,
         ReferenceDataConfigurationInterface $configuration,
-        RendererInterface $renderer,
         CustomValuePresenterCollection $leather,
         CustomValuePresenterCollection $neoprene,
         CustomValuePresenterCollection $kevlar
@@ -54,10 +52,10 @@ class ReferenceDataCollectionPresenterSpec extends ObjectBehavior
         $repository->findBy(['code' => ['Leather', 'Neoprene']])->willReturn([$leather, $kevlar]);
         $repositoryResolver->resolve('fabrics')->willReturn($repository);
 
-        $renderer->renderDiff(['Leather', '[Neoprene]'], ['Leather', 'Kevlar'])->willReturn('diff between two reference data');
-        $this->setRenderer($renderer);
-
-        $this->present([$leather, $neoprene], ['data' => ['Leather', 'Neoprene'], 'reference_data_name' => 'fabrics'])->shouldReturn('diff between two reference data');
+        $this->present([$leather, $neoprene], ['data' => ['Leather', 'Neoprene'], 'reference_data_name' => 'fabrics'])->shouldReturn([
+            'before' => [$leather, $neoprene],
+            'after' => ['Leather', 'Kevlar']
+        ]);
     }
 }
 

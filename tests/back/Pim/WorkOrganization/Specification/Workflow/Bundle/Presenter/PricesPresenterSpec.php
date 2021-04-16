@@ -8,7 +8,6 @@ use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as Localizat
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 
 class PricesPresenterSpec extends ObjectBehavior
 {
@@ -32,7 +31,6 @@ class PricesPresenterSpec extends ObjectBehavior
     function it_presents_prices_change_using_the_injected_renderer(
         $pricesPresenter,
         $localeResolver,
-        RendererInterface $renderer,
         Collection $collection,
         ProductPriceInterface $eur,
         ProductPriceInterface $usd,
@@ -73,45 +71,42 @@ class PricesPresenterSpec extends ObjectBehavior
             ]
         ];
 
-        $renderer
-            ->renderDiff(['€15.67', '$22.34', '¥150'], ['£12.34', '€25.67', '$20.12'])
-            ->willReturn('diff between two price collections');
-
-        $this->setRenderer($renderer);
-        $this->present($collection, $change)->shouldReturn('diff between two price collections');
+        $this->present($collection, $change)->shouldReturn([
+            'before' => ["€15.67", "$22.34", "¥150"],
+            'after' => ["£12.34", "€25.67", "$20.12"]
+        ]);
     }
 
     function it_presents_french_prices(
         $pricesPresenter,
-        $localeResolver,
-        RendererInterface $renderer
+        $localeResolver
     ) {
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
 
         $pricesPresenter->present(['amount' => 15.12, 'currency' => 'EUR'], ['locale' => 'fr_FR'])->willReturn('15.12 €');
         $pricesPresenter->present(['amount' => 15.48, 'currency' => 'USD'], ['locale' => 'fr_FR'])->willReturn('15.48 $');
 
-        $renderer->renderDiff([], ["15.12 €", "15.48 $"])->willReturn('15.12 €<br/>15.48 $');
-        $this->setRenderer($renderer);
-
         $this->present([], ['data' => [
             ['amount' => 15.12, 'currency' => 'EUR'],
             ['amount' => 15.48, 'currency' => 'USD'],
-        ]])->shouldReturn('15.12 €<br/>15.48 $');
+        ]])->shouldReturn([
+            'before' => [],
+            'after' => ['15.12 €', '15.48 $']
+        ]);
     }
 
     function it_presents_without_error_old_null_data(
         $pricesPresenter,
-        $localeResolver,
-        RendererInterface $renderer
+        $localeResolver
     ) {
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
         $pricesPresenter->present(['amount' => 15.12, 'currency' => 'EUR'], ['locale' => 'fr_FR'])->willReturn('15.12 €');
-        $renderer->renderDiff([], ["15.12 €"])->willReturn('15.12 €');
-        $this->setRenderer($renderer);
 
         $this->present(null, ['data' => [
             ['amount' => 15.12, 'currency' => 'EUR'],
-        ]])->shouldReturn('15.12 €');
+        ]])->shouldReturn([
+            'before' => [],
+            'after' => ['15.12 €'],
+        ]);
     }
 }

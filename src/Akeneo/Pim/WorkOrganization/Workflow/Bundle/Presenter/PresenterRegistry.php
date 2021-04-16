@@ -12,7 +12,6 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -27,9 +26,6 @@ class PresenterRegistry
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var \Diff_Renderer_Html_Array */
-    protected $renderer;
-
     protected TranslatorInterface $translator;
 
     /** @var PresenterInterface[] */
@@ -40,12 +36,10 @@ class PresenterRegistry
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        RendererInterface $renderer,
         TranslatorInterface $translator,
         ValueFactory $valueFactory
     ) {
         $this->attributeRepository = $attributeRepository;
-        $this->renderer = $renderer;
         $this->translator = $translator;
         $this->valueFactory = $valueFactory;
     }
@@ -106,10 +100,6 @@ class PresenterRegistry
             if ($presenter->supports($attribute->getType(), $attribute->getReferenceDataName())) {
                 if ($presenter instanceof TranslatorAwareInterface) {
                     $presenter->setTranslator($this->translator);
-                }
-
-                if ($presenter instanceof RendererAwareInterface) {
-                    $presenter->setRenderer($this->renderer);
                 }
 
                 return $presenter->present($data, array_merge($change, [

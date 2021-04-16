@@ -7,7 +7,6 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TranslatorAwareInterface;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 class ReferenceEntityValuePresenterSpec extends ObjectBehavior
@@ -32,11 +31,12 @@ class ReferenceEntityValuePresenterSpec extends ObjectBehavior
         $this->supports('other')->shouldBe(false);
     }
 
-    function it_presents_reference_entity_collection_change_using_the_injected_renderer(RendererInterface $renderer) {
+    function it_presents_reference_entity_collection_change_using_the_injected_renderer() {
         $foo = RecordCode::fromString('foo');
-        $renderer->renderDiff('foo', 'bar')->willReturn('diff between two record codes');
-        $this->setRenderer($renderer);
 
-        $this->present($foo, ['data' => 'bar', 'attribute' => 'description'])->shouldReturn('diff between two record codes');
+        $this->present($foo, ['data' => 'bar', 'attribute' => 'description'])->shouldReturn([
+            'before' => 'foo',
+            'after' => 'bar',
+        ]);
     }
 }

@@ -34,20 +34,13 @@ class ImagePresenter extends FilePresenter
      * @param string $fileKey
      * @param string $originalFilename
      *
-     * @return string
+     * @return array
      */
     protected function createFileElement($fileKey, $originalFilename)
     {
-        return sprintf(
-            '<img src="%s" title="%s" />',
-            $this->generator->generate(
-                'pim_enrich_media_show',
-                [
-                    'filename' => urlencode($fileKey),
-                    'filter'   => 'thumbnail',
-                ]
-            ),
-            $originalFilename
-        );
+        return [
+            'fileKey' => urlencode($fileKey),
+            'originalFileName' => $originalFilename,
+        ];
     }
 }
