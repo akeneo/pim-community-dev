@@ -16,7 +16,7 @@ services:
     akeneo_batch_queue.manager.job_execution_manager:
         class: '%akeneo_batch_queue.manager.job_execution_manager.class%'
         arguments:
-            - '@akeneo_batch.entity_manager.persisted_connection_entity_manager'
+            - '@database_connection'
 
     akeneo_batch_queue.launcher.queue_job_launcher:
         class: '%akeneo_batch_queue.launcher.queue_job_launcher.class%'
