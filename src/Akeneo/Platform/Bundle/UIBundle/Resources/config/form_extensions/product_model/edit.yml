@@ -314,3 +314,9 @@ extensions:
         parent: pim-product-model-edit-form-attribute-filter
         targetZone: self
         position: 120
+
+    pim-product-model-edit-form-completeness-follow-missing-attribute:
+        module: pim/product-model-edit-form/completeness-follow-missing-attribute
+        parent: pim-product-model-edit-form
+        position: 10
+        targetZone: content

@@ -1,2 +1,2 @@
-export * from './ChannelsLocalesCompleteness'
+export * from './ChannelsLocalesCompleteness';
 export * from './ProductCurrentCompleteness';
