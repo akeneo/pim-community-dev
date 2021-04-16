@@ -24,8 +24,8 @@
     "typescript": "^4.0.3",
     "web-vitals": "^0.2.4",
     "@types/styled-components": "^5.1.2",
-    "akeneo-design-system": "link:../front-packages/akeneo-design-system",
-    "@akeneo-pim-community/legacy-bridge": "link:../front-packages/legacy-bridge"
+    "akeneo-design-system": "link:../akeneo-design-system",
+    "@akeneo-pim-community/legacy-bridge": "link:../legacy-bridge"
   },
   "proxy": "http://localhost:8080",
   "scripts": {
@@ -33,7 +33,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lib:build": "tsc -p ./lib.tsconfig.json"
+    "lib:build": "tsc -p ./tsconfig.build.json"
   },
   "eslintConfig": {
     "extends": [

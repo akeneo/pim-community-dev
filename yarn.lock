@@ -2,11 +2,11 @@
 # yarn lockfile v1
 
 
-"@akeneo-pim-community/legacy-bridge@link:packages/legacy-bridge":
+"@akeneo-pim-community/legacy-bridge@link:front-packages/legacy-bridge":
   version "0.0.0"
   uid ""
 
-"@akeneo-pim-community/tailored-export@link:tailored-export":
+"@akeneo-pim-community/tailored-export@link:front-packages/tailored-export":
   version "0.0.0"
   uid ""
 
@@ -2543,7 +2543,7 @@ ajv@^8.0.1:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-"akeneo-design-system@link:akeneo-design-system":
+"akeneo-design-system@link:front-packages/akeneo-design-system":
   version "0.0.0"
   uid ""
 

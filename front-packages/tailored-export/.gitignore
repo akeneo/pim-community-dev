@@ -25,5 +25,4 @@ yarn-error.log*
 
 .eslintcache
 
-src/translations.json
-src/routes.json
+tsconfig.tsbuildinfo
