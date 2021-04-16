@@ -28,10 +28,9 @@ node_modules:
 javascript-extensions:
 	$(YARN_RUN) run update-extensions
 
-.PHONY: dsm
-dsm:
-	$(YARN_RUN) --cwd=akeneo-design-system install --frozen-lockfile
-	$(YARN_RUN) --cwd=akeneo-design-system run lib:build
+.PHONY: front-packages
+front-packages:
+	$(YARN_RUN) build:packages
 
 .PHONY: assets
 assets:
@@ -64,7 +63,7 @@ javascript-test: javascript-extensions
 	$(YARN_RUN) run webpack-test
 
 .PHONY: front
-front: assets css dsm javascript-dev
+front: assets css front-packages javascript-dev
 
 ##
 ## Back
@@ -119,7 +118,7 @@ pim-behat:
 	APP_ENV=behat $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
-	$(MAKE) dsm
+	$(MAKE) front-packages
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
 	APP_ENV=behat $(MAKE) database
@@ -138,7 +137,7 @@ pim-dev:
 	APP_ENV=dev $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
-	$(MAKE) dsm
+	$(MAKE) front-packages
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
 	APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" $(MAKE) database
@@ -149,7 +148,7 @@ pim-prod:
 	APP_ENV=prod $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
-	$(MAKE) dsm
+	$(MAKE) front-packages
 	$(MAKE) javascript-prod
 	docker/wait_docker_up.sh
 	APP_ENV=prod $(MAKE) database
@@ -167,7 +166,7 @@ upgrade-front:
 	$(MAKE) node_modules
 	$(MAKE) cache
 	$(MAKE) assets
-	$(MAKE) dsm
+	$(MAKE) front-packages
 	$(MAKE) javascript-prod
 	$(MAKE) css
 	$(MAKE) javascript-extensions

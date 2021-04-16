@@ -27,7 +27,11 @@
     "less-watch": "SHELL=/bin/bash chokidar --verbose \"{$npm_package_config_source/src,src,public/bundles}/**/*.{less,css}\" -c \"yarn run less --dev\"",
     "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
     "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
-    "dsm-watch": "concurrently \"yarn webpack-watch\" \"yarn --cwd=akeneo-design-system lib:watch\""
+    "dsm-watch": "concurrently \"yarn webpack-watch\" \"yarn --cwd=akeneo-design-system lib:watch\"",
+    "build:dsm": "yarn --cwd=front-packages/akeneo-design-system install --frozen-lockfile; yarn --cwd=front-packages/akeneo-design-system run lib:build",
+    "build:legacy-bridge": "yarn --cwd=front-packages/legacy-bridge install --frozen-lockfile; yarn --cwd=front-packages/legacy-bridge run lib:build",
+    "build:tailored-export": "yarn --cwd=front-packages/tailored-export install --frozen-lockfile; yarn --cwd=front-packages/tailored-export run lib:build",
+    "build:packages": "yarn build:dsm; yarn build:legacy-bridge; yarn build:tailored-export"
   },
   "repository": {
     "type": "git",
@@ -111,7 +115,7 @@
   "dependencies": {
     "@types/luxon": "^1.26.2",
     "ajv": "^6.10.2",
-    "akeneo-design-system": "link:akeneo-design-system",
+    "akeneo-design-system": "link:front-packages/akeneo-design-system",
     "babel-polyfill": "6.26.0",
     "backbone": "0.9.10",
     "css-loader": "^3.3.0",
@@ -137,8 +141,8 @@
     "summernote": "0.6.16",
     "underscore": "1.8.3",
     "victory": "^33.1.6",
-    "@akeneo-pim-community/tailored-export": "link:tailored-export",
-    "@akeneo-pim-community/legacy-bridge": "link:packages/legacy-bridge"
+    "@akeneo-pim-community/tailored-export": "link:front-packages/tailored-export",
+    "@akeneo-pim-community/legacy-bridge": "link:front-packages/legacy-bridge"
   },
   "resolutions": {
     "jest/**/ip-regex": "2.1.0"

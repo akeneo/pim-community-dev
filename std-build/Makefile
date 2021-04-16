@@ -24,10 +24,9 @@ node_modules: yarn.lock
 javascript-extensions:
 	$(YARN_RUN) run update-extensions
 
-.PHONY: dsm
-dsm:
-	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 $(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system install --frozen-lockfile
-	$(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system run lib:build
+.PHONY: front-packages
+front-packages:
+	$(YARN_RUN) build:packages
 
 .PHONY: assets
 assets:
@@ -50,7 +49,7 @@ javascript-dev:
 	$(YARN_RUN) run webpack-dev
 
 .PHONY: front
-front: assets css dsm javascript-dev
+front: assets css front-packages javascript-dev
 
 .PHONY: database
 database:
@@ -87,7 +86,7 @@ ifndef NO_DOCKER
 endif
 	$(MAKE) cache
 	$(MAKE) assets
-	$(MAKE) dsm
+	$(MAKE) front-packages
 	$(MAKE) javascript-prod
 	$(MAKE) css
 	$(MAKE) javascript-extensions
@@ -101,7 +100,7 @@ ifndef NO_DOCKER
 endif
 	$(MAKE) cache
 	$(MAKE) assets
-	$(MAKE) dsm
+	$(MAKE) front-packages
 	$(MAKE) javascript-dev
 	$(MAKE) css
 	$(MAKE) javascript-extensions
@@ -120,7 +119,7 @@ upgrade-front:
 	$(MAKE) node_modules
 	$(MAKE) cache
 	$(MAKE) assets
-	$(MAKE) dsm
+	$(MAKE) front-packages
 	$(MAKE) javascript-prod
 	$(MAKE) css
 	$(MAKE) javascript-extensions
