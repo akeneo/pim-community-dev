@@ -1,5 +1,5 @@
 {
-  "name": "akeneo-tailored-export",
+  "name": "@akeneo-pim-community/tailored-export",
   "version": "0.1.0",
   "private": true,
   "peerDependencies": {
