@@ -1,6 +1,6 @@
 import React from 'react';
 import {diffArrays} from 'diff';
-import { ProposalChangeAccessor } from "../ProposalChange";
+import {ProposalChangeAccessor} from '../ProposalChange';
 
 type ProposalDiffStringArrayProps = {
   accessor: ProposalChangeAccessor;
@@ -38,16 +38,14 @@ const ProposalDiffStringArray: React.FC<ProposalDiffStringArrayProps> = ({access
     );
   }
 
-  return <span {...rest}/>;
+  return <span {...rest} />;
 };
 
 class ProposalDiffStringArrayMatcher {
   static supports(attributeType: string) {
-    return [
-      'pim_catalog_multiselect',
-      'pim_reference_data_multiselect',
-      'pim_catalog_price_collection',
-    ].includes(attributeType);
+    return ['pim_catalog_multiselect', 'pim_reference_data_multiselect', 'pim_catalog_price_collection'].includes(
+      attributeType
+    );
   }
 
   static render() {

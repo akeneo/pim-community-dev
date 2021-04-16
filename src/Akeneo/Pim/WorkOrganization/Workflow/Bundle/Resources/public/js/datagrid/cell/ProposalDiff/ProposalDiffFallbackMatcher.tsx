@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProposalChangeAccessor } from "../ProposalChange";
+import {ProposalChangeAccessor} from '../ProposalChange';
 
 type ProposalDiffFallbackProps = {
   accessor: ProposalChangeAccessor;

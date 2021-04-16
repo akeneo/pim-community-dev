@@ -34,6 +34,7 @@
     "generate-models": "yarn generate-asset-manager-models && yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models"
   },
   "devDependencies": {
+    "@types/diff": "^5.0.0",
     "@types/draft-js": "^0.10.25",
     "@types/draftjs-to-html": "^0.8.0",
     "@types/html-to-draftjs": "^1.4.0",
@@ -47,7 +48,6 @@
     "tslint-react": "^4.0.0"
   },
   "dependencies": {
-    "@types/diff": "^5.0.0",
     "diff": "^5.0.0",
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",

@@ -1,6 +1,6 @@
 import React from 'react';
 import {diffChars} from 'diff';
-import { ProposalChangeAccessor } from "../ProposalChange";
+import {ProposalChangeAccessor} from '../ProposalChange';
 
 type ProposalDiffStringProps = {
   accessor: ProposalChangeAccessor;

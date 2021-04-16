@@ -7,7 +7,7 @@ import {denormalize as denormalizeRecordAttribute} from 'akeneoreferenceentity/d
 import {denormalize as denormalizeRecordData} from 'akeneoreferenceentity/domain/model/record/data/record';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from 'akeneo-design-system';
-import { ProposalChangeAccessor } from "../ProposalChange";
+import {ProposalChangeAccessor} from '../ProposalChange';
 const UserContext = require('pim/user-context');
 
 const ProposalDiffRecordView = styled(RecordView)<{$state?: 'removed' | 'added'} & AkeneoThemedProps>`
@@ -44,7 +44,7 @@ const ProposalDiffReferenceEntityCollection: React.FC<ProposalDiffReferenceEntit
   ...rest
 }) => {
   if (!change[accessor]) {
-    return <span {...rest}/>;
+    return <span {...rest} />;
   }
 
   const attribute = denormalizeRecordAttribute({
@@ -93,9 +93,7 @@ const ProposalDiffReferenceEntityCollection: React.FC<ProposalDiffReferenceEntit
 
 class ProposalDiffReferenceEntityCollectionMatcher {
   static supports(attributeType: string) {
-    return [
-      'akeneo_reference_entity_collection',
-    ].includes(attributeType);
+    return ['akeneo_reference_entity_collection'].includes(attributeType);
   }
 
   static render() {

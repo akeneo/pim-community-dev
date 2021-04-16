@@ -1,7 +1,7 @@
 import React from 'react';
 import {useRouter} from '@akeneo-pim-community/legacy-bridge';
 import {ImageCard} from './ImageCard';
-import { ProposalChangeAccessor } from "../ProposalChange";
+import {ProposalChangeAccessor} from '../ProposalChange';
 
 type Image = {fileKey: string; originalFileName: string};
 
@@ -39,14 +39,12 @@ const ProposalDiffImage: React.FC<ProposalDiffImageProps> = ({accessor, change, 
     );
   }
 
-  return <span {...rest}/>;
+  return <span {...rest} />;
 };
 
 class ProposalDiffImageMatcher {
   static supports(attributeType: string) {
-    return [
-      'pim_catalog_image',
-    ].includes(attributeType);
+    return ['pim_catalog_image'].includes(attributeType);
   }
 
   static render() {
