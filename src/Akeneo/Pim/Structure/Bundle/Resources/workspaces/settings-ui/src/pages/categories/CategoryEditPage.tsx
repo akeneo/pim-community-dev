@@ -4,6 +4,7 @@ import {Breadcrumb} from 'akeneo-design-system';
 import {PimView, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
 import {FullScreenError, PageContent, PageHeader, useSetPageTitle} from '@akeneo-pim-community/shared';
 import {useCategory} from '../../hooks';
+import {Category} from "../../models";
 
 type Params = {
   categoryId: string;
@@ -17,26 +18,33 @@ const CategoryEditPage: FC = () => {
   const {category, status, load} = useCategory(parseInt(categoryId));
   const [categoryLabel, setCategoryLabel] = useState(`[${categoryId}]`);
   const [treeLabel, setTreeLabel] = useState(translate('pim_enrich.entity.category.content.edit.default_tree_label'));
+  const [tree, setTree] = useState<Category|null>(null);
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
 
   const followSettingsIndex = () => router.redirect(router.generate('pim_enrich_attribute_index'));
   const followCategoriesIndex = () => router.redirect(router.generate('pim_enrich_categorytree_index'));
-  const followCategoryTree = () => router.redirect(router.generate('pim_enrich_categorytree_tree', {id: 1}));
+  const followCategoryTree = () => {
+    if (!tree) {
+      return;
+    }
+    router.redirect(router.generate('pim_enrich_categorytree_tree', {id: tree.id}));
+  }
 
   useEffect(() => {
     load();
   }, [categoryId]);
 
   useEffect(() => {
-    const tree = category && category.root ? category.root : category;
+    const rootCategory = category && category.root ? category.root : category;
 
     setCategoryLabel(category ? category.labels[userContext.get('uiLocale')] : `[${categoryId}]`);
     setTreeLabel(
-      tree
-        ? tree.labels[userContext.get('uiLocale')]
+      rootCategory
+        ? rootCategory.labels[userContext.get('uiLocale')]
         : translate('pim_enrich.entity.category.content.edit.default_tree_label')
     );
+    setTree(rootCategory);
   }, [category]);
 
   if (status === 'error') {
