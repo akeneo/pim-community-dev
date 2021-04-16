@@ -40,7 +40,7 @@ dsm: #Doc: install & build the PIM DSM
 .PHONY: assets
 assets: #Doc: clean & reinstall assets
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/bundles public/js
-	$(PHP_RUN) bin/console --env=prod pim:installer:assets --symlink --clean
+	$(PHP_RUN) bin/console pim:installer:assets --symlink --clean
 
 .PHONY: css
 css: #Doc: build PIM CSS
@@ -126,7 +126,7 @@ dependencies: vendor node_modules #Doc: install PHP & JS dependencies
 pim-behat: #Doc: run docker-compose up, clean symfony cache, reinstall assets, build PIM CSS, run YARN webpack-test, run webpack dev & install shared_catalog_fixtures database in behat environement
 	APP_ENV=behat $(MAKE) up
 	APP_ENV=behat $(MAKE) cache
-	$(MAKE) assets
+	APP_ENV=behat $(MAKE) assets
 	$(MAKE) css
 	$(MAKE) dsm
 	$(MAKE) javascript-dev
@@ -145,7 +145,7 @@ pim-test: #Doc: run docker-compose up, clean symfony cache & install a new iceca
 pim-dev: #Doc: run docker-compose up, clean symfony cache, run webpack dev & install icecat_demo_dev database in dev environement
 	APP_ENV=dev $(MAKE) up
 	APP_ENV=dev $(MAKE) cache
-	$(MAKE) assets
+	APP_ENV=dev $(MAKE) assets
 	$(MAKE) css
 	$(MAKE) dsm
 	$(MAKE) javascript-dev
@@ -156,7 +156,7 @@ pim-dev: #Doc: run docker-compose up, clean symfony cache, run webpack dev & ins
 pim-prod: #Doc: run docker-compose up, clean symfony cache, reinstall assets, build PIM CSS, ???run make javascript-cloud??? & install a new icecat catalog database in prod environement
 	APP_ENV=prod $(MAKE) up
 	APP_ENV=prod $(MAKE) cache
-	$(MAKE) assets
+	APP_ENV=prod $(MAKE) assets
 	$(MAKE) css
 	$(MAKE) dsm
 	$(MAKE) javascript-prod
