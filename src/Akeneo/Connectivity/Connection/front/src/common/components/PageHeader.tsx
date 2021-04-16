@@ -15,6 +15,10 @@ const ButtonCollection = styled.div.attrs(() => ({className: 'AknTitleContainer-
     }
 `;
 
+const AknTitleContainerBreadcrumbs = styled.div.attrs(() => ({className: 'AknTitleContainer-breadcrumbs'}))`
+    min-height: 32px;
+`;
+
 export const PageHeader = ({children: title, breadcrumb, buttons, userButtons, state, imageSrc}: Props) => (
     <Header>
         <div className='AknTitleContainer-line'>
@@ -27,7 +31,7 @@ export const PageHeader = ({children: title, breadcrumb, buttons, userButtons, s
             <div className='AknTitleContainer-mainContainer'>
                 <div>
                     <div className='AknTitleContainer-line'>
-                        <div className='AknTitleContainer-breadcrumbs'>{breadcrumb}</div>
+                        <AknTitleContainerBreadcrumbs>{breadcrumb}</AknTitleContainerBreadcrumbs>
                         <div className='AknTitleContainer-buttonsContainer'>
                             {userButtons}
                             {buttons && (

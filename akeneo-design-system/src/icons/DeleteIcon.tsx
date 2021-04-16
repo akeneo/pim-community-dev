@@ -19,7 +19,7 @@ const Container = styled.svg<{animateOnHover: boolean}>`
   }
 `;
 
-const DeleteIcon = ({title, size = 24, color = 'currentColor', animateOnHover = true, ...props}: IconProps) => (
+const DeleteIcon = ({title, size = 24, color = 'currentColor', animateOnHover = false, ...props}: IconProps) => (
   <Container viewBox="0 0 24 24" width={size} height={size} animateOnHover={animateOnHover} {...props}>
     {title && <title>{title}</title>}
     <g stroke={color} fill="none" fillRule="evenodd" strokeLinecap="round" strokeLinejoin="round">

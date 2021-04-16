@@ -217,13 +217,11 @@ config:
         pim_dashboard_index:
           module: pim/controller/dashboard
         pim_enrich_associationtype_edit:
-          module: pim/controller/association-type
+          module: pim/controller/association-type/edit
           aclResourceId: pim_enrich_associationtype_edit
         pim_enrich_associationtype_index:
-          module: pim/controller/common/index
+          module: pim/controller/association-type/index
           aclResourceId: pim_enrich_associationtype_index
-          config:
-            entity: association-type
         pim_enrich_attribute_create:
           module: pim/controller/attribute/create
           aclResourceId: pim_enrich_attribute_create
@@ -514,7 +512,8 @@ config:
     pim/controller/catalog-volume:         pimui/js/controller/catalog-volume
     pim/controller/channel/edit:           pimui/js/controller/channel/edit
     pim/controller/common/index:           pimui/js/controller/common/index
-    pim/controller/association-type:       pimui/js/controller/association-type
+    pim/controller/association-type/edit:  pimui/js/controller/association-type
+    pim/controller/association-type/index: akeneopimstructure/js/controller/AssociationTypesSettings
     pim/controller/redirect:               pimui/js/controller/redirect
     pim/controller/job-instance:           pimui/js/controller/job-instance
     pim/controller/group:                  pimui/js/controller/group

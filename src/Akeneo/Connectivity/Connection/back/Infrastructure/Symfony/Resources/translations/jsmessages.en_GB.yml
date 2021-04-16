@@ -245,11 +245,14 @@ akeneo_connectivity.connection:
       list:
         search:
           placeholder: Search in messages
-          total: '{0} 0 results|{1} 1 result|[2,Inf] {{ total }} results'
           level: Level
           all: All
           none: None
         date_range_filter:
+          label: Date time
+          reset: Reset
+          from: From
+          to: To
           all: All
         info:
           title: Here are the logs related to all the event requests sent to this connection.
@@ -268,7 +271,6 @@ akeneo_connectivity.connection:
         link: To understand how to solve this, please visit the API help center.
       search_filter:
         placeholder: Search in error messages
-        result_count: '{0} No result |[1,Inf] {{ count }} results'
       error_list:
         date_time_column:
           title: Day and time

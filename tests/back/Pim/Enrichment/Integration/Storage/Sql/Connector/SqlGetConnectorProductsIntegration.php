@@ -445,6 +445,133 @@ class SqlGetConnectorProductsIntegration extends TestCase
         $this->assertEquals($expectedProduct, $product);
     }
 
+
+    /**
+     * @group ce
+     */
+    public function test_get_product_from_identifiers()
+    {
+        $query = $this->getQuery();
+
+        $userId = $this
+            ->get('database_connection')
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
+
+        $product = $query->fromProductIdentifiers(['apollon_A_false', 'apollon_B_false'], (int) $userId, null, null, null);
+
+        $productDataAppolonA = $this->get('database_connection')->executeQuery(
+            'SELECT id, created, updated FROM pim_catalog_product WHERE identifier = "apollon_A_false"'
+        )->fetch();
+        $productDataAppolonB = $this->get('database_connection')->executeQuery(
+            'SELECT id, created, updated FROM pim_catalog_product WHERE identifier = "apollon_B_false"'
+        )->fetch();
+
+        $expectedProducts = new ConnectorProductList(2, [
+            new ConnectorProduct(
+                (int) $productDataAppolonA['id'],
+                'apollon_A_false',
+                new \DateTimeImmutable($productDataAppolonA['created']),
+                new \DateTimeImmutable($productDataAppolonA['updated']),
+                true,
+                'familyA',
+                ['categoryA2', 'categoryB', 'categoryC'],
+                [],
+                'amor',
+                [
+                    'X_SELL' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => ['groupA'],
+                    ],
+                    'UPSELL' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => []
+                    ],
+                    'PACK' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => []
+                    ],
+                    'SUBSTITUTION' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => []
+                    ]
+                ],
+                [
+                    'PRODUCT_SET' => [
+                        'products' => [],
+                        'product_models' => [['identifier' => 'amor', 'quantity' => 4]],
+                    ],
+                ],
+                [],
+                new ReadValueCollection([
+                    OptionValue::value('a_simple_select', 'optionA'),
+                    PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
+                    ScalarValue::value('a_yes_no', false),
+                    ScalarValue::value('a_number_float', '12.5000'),
+                    ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
+                ]),
+                null
+            ),
+            new ConnectorProduct(
+                (int) $productDataAppolonB['id'],
+                'apollon_B_false',
+                new \DateTimeImmutable($productDataAppolonB['created']),
+                new \DateTimeImmutable($productDataAppolonB['updated']),
+                true,
+                'familyA',
+                ['categoryA1', 'categoryA2'],
+                ['groupA', 'groupB'],
+                'amor',
+                [
+                    'X_SELL' => [
+                        'products' => ['apollon_A_false'],
+                        'product_models' => ['amor'],
+                        'groups' => ['groupA', 'groupB'],
+                    ],
+                    'UPSELL' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => []
+                    ],
+                    'PACK' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => []
+                    ],
+                    'SUBSTITUTION' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => []
+                    ]
+                ],
+                [
+                    'PRODUCT_SET' => [
+                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6]],
+                        'product_models' => [],
+                    ],
+                    'ANOTHER_PRODUCT_SET' => [
+                        'products' => [],
+                        'product_models' => [['identifier' => 'amor', 'quantity' => 2]],
+                    ],
+                ],
+                [],
+                new ReadValueCollection([
+                    OptionValue::value('a_simple_select', 'optionB'),
+                    PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
+                    ScalarValue::value('a_yes_no', false),
+                    ScalarValue::value('a_number_float', '12.5000'),
+                    ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
+                ]),
+                null
+            ),
+        ]);
+
+        Assert::assertEquals($expectedProducts, $product);
+    }
+
     public function test_it_throws_an_exception_when_product_is_not_found()
     {
         $this->expectException(ObjectNotFoundException::class);

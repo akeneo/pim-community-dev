@@ -118,6 +118,9 @@ pim_enrich.entity.association_type:
         delete:
             confirm: Are you sure you want to delete this association type?
     hint: <a href="{{link}}" target="_blank">In this article</a>, you'll find everything you need to create your own association type.
+    no_association_types:
+        title: You don't have any association types
+        hint: Create your first one
 
 pim_enrich.entity.group_type:
     label: group type
