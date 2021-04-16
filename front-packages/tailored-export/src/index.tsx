@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
-import Index from './feature';
+import {Column} from './feature';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesContext} from '@akeneo-pim-community/legacy-bridge';
 
@@ -16,7 +16,7 @@ ReactDOM.render(
           },
         }}
       >
-        <Index jobCode="test" />
+        <Column jobCode="test" />
       </DependenciesContext.Provider>
     </ThemeProvider>
   </React.StrictMode>,
