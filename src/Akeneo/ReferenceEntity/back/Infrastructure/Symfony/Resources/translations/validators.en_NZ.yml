@@ -3,14 +3,75 @@ pim_reference_entity:
     validation:
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
+        should_be_unique: 'An reference entity already exists with code "%reference_entity_identifier%"'
+        limit_reached: 'You cannot create the reference entity "%reference_entity_label%" because you have reached the limit of %limit% reference entities'
+      records:
+        should_have_no_record: 'You cannot delete this entity because records exist for this entity'
+      reference_entity_attributes:
+        should_not_be_linked: 'To delete this reference entity, first check the attributes in all your reference entities and then delete the ones linked to this'
+      reference_entity_permissions:
+        at_least_one_user_group_should_have_edit_permission: 'At least one user group should have edit permission on this entity'
+      product_attributes:
+        should_not_be_linked: 'You can not delete this entity because product attributes are related to this entity'
+      should_exist: 'The reference entity "%reference_entity_code%" was not found.'
   record:
     validation:
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
+        should_be_unique: 'The record code already exists for reference entity "%reference_entity_identifier%" and record code "%code%"'
+        should_exist: 'The record was not found'
+      text:
+        incompatible_with_regular_expression: 'Please enter a text that satisfies the regular expression: "%regular_expression%"'
+        invalid_email: 'Please enter an email address: xxxxx@xx.xx'
+        invalid_url: 'Please enter a URL: http(s)://xxxx.XXX'
+      file:
+        extension_not_allowed: '"%file_extension%" files are not allowed for this attribute. Allowed extensions are: %allowed_file_extensions%'
+        file_size_exceeded: 'The file exceeds the max file size set for the attribute.'
+        should_exist: 'The file "%file_path%" was not found.'
+      option:
+        code_does_not_exist: 'The option with code "%option_code%" does not exist for this attribute'
+      option_collection:
+        codes_dont_exist: "The following option codes don't exist for this attribute : \"%option_codes%\""
+      record:
+        should_exist: 'The record "%record_code%" was not found.'
+      record_collection:
+        should_exist: 'The records "%record_codes%" were not found.'
+      limit_reached: 'You cannot create the record "%record_label%" because you have reached the limit of %limit% records for this reference entity'
+      channel:
+        is_expected: 'A channel is expected for attribute "%attribute_code%" because it has a value per channel.'
+        is_not_expected: 'A channel is not expected for attribute "%attribute_code%" because it has not a value per channel.'
+        should_exist: 'The channel "%channel_identifier%" does not exist.'
+      locale:
+        is_expected: 'A locale is expected for attribute "%attribute_code%" because it has a value per locale.'
+        is_not_expected: 'A locale is not expected for attribute "%attribute_code%" because it has not a value per locale.'
+        is_not_activated: 'The locale "%locale_identifier%" is not activated.'
+        is_not_activated_for_channel: 'The locale "%locale_identifier%" is not activated for the channel "%channel_identifier%".'
   attribute:
     validation:
       options:
+        should_exist: 'The option was not found.'
+        duplicated: 'The option "%option_code%" already exists'
+        too_many: 'You have reached the limit of {{ limit }} attribute options per attribute.'
         code:
           pattern: 'This field may only contain letters, numbers and underscores.'
+          should_not_be_blank: 'The code of the option should not be blank'
+      max_length:
+        should_be_an_integer: 'This value should be an integer.'
+      max_file_size:
+        should_be_a_number: 'This value should be a number.'
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
+        reserved_codes: 'The code cannot be any of those values: "{{ comma_separated_reserved_keywords }}"'
+        should_not_exist: 'The attribute already exists for the reference entity "{{ reference_entity_identifier }}" and the attribute code "{{ code }}"'
+        should_exist: 'The attribute was not found'
+      regular_expression:
+        invalid_regular_expression: 'This regular expression is not valid. Here is an example of a valid regular expression: "/[a-z]+[0-9]*/"'
+        should_not_be_empty: 'The regular expression cannot be empty.'
+      should_be_a_textarea_to_update_is_rich_text_editor: 'A simple text attribute cannot have a rich text editor'
+      should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'A text area attribute cannot have a validation rule'
+      cannot_set_a_non_empty_regular_expression: 'The attribute should not have a regular expression'
+      cannot_update_the_regular_expression: 'Cannot set a regular expression on the text attribute'
+      limit_reached: 'You cannot create the attribute "%attribute_label%" because you have reached the limit of %limit% attributes for this reference entity'
+      record_type:
+        is_required: 'You need to specify the reference entity type to create a Reference Entity link attribute'
+        reference_entity_should_exist: 'The reference entity "%reference_entity_code%" was not found.'

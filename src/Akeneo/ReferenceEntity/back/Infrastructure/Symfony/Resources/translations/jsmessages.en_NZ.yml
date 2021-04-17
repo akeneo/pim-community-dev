@@ -285,14 +285,19 @@ pim_reference_entity:
       message: Are you sure you want to delete the attribute "{{ attributeLabel }}"?
       title: Attribute
     notification:
+      list:
+        fail: An error occurred during the update of the attribute list
       save:
         success: Attribute successfully updated.
+        fail: An error occurred during the save of the attribute
         validation_error: The attribute could not be updated
       create:
         success: Attribute successfully created.
+        fail: An error occurred during the creation of the attribute
         validation_error: The attribute could not be created
       delete:
         success: Attribute successfully deleted.
+        fail: An error occurred during the deletion of the attribute
     options:
       no_value: Click here to select an option.
       sub_title: Reference Entities

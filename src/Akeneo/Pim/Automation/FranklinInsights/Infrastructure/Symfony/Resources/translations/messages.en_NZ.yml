@@ -23,6 +23,7 @@ akeneo_franklin_insights:
         already_subscribed_product: 'The product is already subscribed.'
         variant_product: 'Variant products cannot be subscribed to Franklin Insights.'
         inactive_connection: 'Failed to subscribe product to Franklin Insights. Please configure your connection to Franklin Insights.'
+        product_subscription_with_same_identifier_already_exist: 'Another product with at least one identical identifier has already been subscribed.'
     attributes_mapping:
       notification:
         new_attributes_to_map: 'You have new attributes to map for family "%familyLabel%"'
