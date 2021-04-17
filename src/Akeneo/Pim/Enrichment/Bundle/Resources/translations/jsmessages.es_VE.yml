@@ -313,6 +313,7 @@ pim_enrich.mass_edit.product:
       label: Moverse entre categorias
       label_count: "{1}Mover <span class=\"AknFullPage-title--highlight\">1 producto</span> entre categorías|]1, Inf[Mover <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> entre categorías"
       description: Los productos serán clasificados entre las siguientes categorías, la clasificación actual se perderá.
+      no_update: Por favor, seleccione una categoría.
     remove_from_category:
       label: Eliminar de las categorías
       label_count: "{1}Eliminar <span class=\"AknFullPage-title--highlight\">1 producto</span> de categorías|]1, Inf[Eliminar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> de categorías"
@@ -333,6 +334,7 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Cambiar el modelo de producto padre de <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Cambiar el modelo de producto padre de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: El padre de los productos variantes o modelos de sub-productos seleccionados en la cuadrícula serán modificados al modelo de producto seleccionado.
 pim_datagrid:
+  search: "Buscar en {{ label }}"
   no_entities: "No se encontró {{ entityHint }}"
   mass_action_group:
     bulk_actions:
