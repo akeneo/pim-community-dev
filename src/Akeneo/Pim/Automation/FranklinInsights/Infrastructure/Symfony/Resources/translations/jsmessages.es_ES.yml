@@ -91,6 +91,8 @@ akeneo_franklin_insights:
       constraint:
         attribute_not_in_family_not_allowed: 'El atributo PIM debe estar en la familia seleccionada.'
         only_unknown_mapped_attributes: 'No se puede encontrar ningún atributo en el mapeo de atributos'
+      search:
+        no_result_subtitle: Pruebe con nuevos criterios de búsqueda.
     product_subscription:
       flash:
         create:
@@ -146,6 +148,7 @@ akeneo_franklin_insights:
         activate: 'Activar'
   settings:
     page_title: 'Configuración de Franklin Insights'
+    attributes_mapping_title: 'Mapeo de los atributos'
     module:
       title:
         sub_title: '¡Conoce a Franklin, su <span class="AknDescriptionHeader-title--highlight">Asistente IA de Información de Producto</span>!'

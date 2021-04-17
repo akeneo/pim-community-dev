@@ -137,6 +137,7 @@ akeneo_franklin_insights:
         already_subscribed_product: 'The product is already subscribed.'
         variant_product: 'Sorry, variant products cannot be subscribed to Franklin Insights.'
         inactive_connection: 'Sorry, failed to subscribe product to Franklin Insights. Please configure your connection to Franklin Insights.'
+        product_subscription_with_same_identifier_already_exist: 'Another product with at least one identical identifier has already been subscribed.'
       module:
         product_edit_form:
           family_required: 'Product family required.'
@@ -164,6 +165,7 @@ akeneo_franklin_insights:
     flash:
       success: Franklin Insights activation code saved successfully.
       invalid: Sorry, invalid activation code. Please try again with a valid one.
+      error: Sorry, an error occurred.
     module:
       title:
         sub_title: 'Welcome to the <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'

@@ -28,6 +28,9 @@ teamwork_assistant:
     owner_todo: Todo (project overview)
     owner_in_progress: In progress (project overview)
     owner_done: Done (project overview)
+  user:
+    deletion:
+      user_linked_to_project: This user is still linked to one or more project(s). Please remove the groups he is linked to in his user account.
 job_execution:
   summary:
     processed_products: Processed products

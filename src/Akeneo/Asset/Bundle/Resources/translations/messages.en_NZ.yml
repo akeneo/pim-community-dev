@@ -51,14 +51,17 @@ pimee_product_asset:
     flash:
       update:
         success: Asset has been updated.
+        error: Asset has not been updated. An error occurred.
       create:
         success: Asset has been created.
+        error: Asset has not been created. An error occurred.
       remove:
         success: Asset has been removed.
   enrich_reference:
     flash:
       delete:
         success: Reference file has been deleted.
+        error: Reference file has not been deleted. An error occurred.
   enrich_variation:
     flash:
       transformation:
@@ -72,8 +75,10 @@ pimee_product_asset:
         success: Variation files have been generated successfully.
       update:
         success: Variation file has been updated.
+        error: Variation file has not been updated. An error occurred.
       delete:
         success: Variation file has been deleted.
+        error: Variation file has not been deleted. An error occurred.
   popin.create:
     title: Create a new asset
     confirm: Confirm
@@ -123,6 +128,7 @@ pimee_product_asset:
     import: Import
     executed: Mass upload executed
     error:
+      upload: An error occurred while uploading
       code: Invalid code format for asset
       localizable: An asset exists but is not localizable
       invalid_locale: The locale is disabled or invalid
@@ -180,6 +186,7 @@ pim_datagrid:
   cells:
     type:
       mass_upload: Mass Upload Assets
+      compute_completeness_of_products_linked_to_assets: Compute completeness of products linked to assets
 pim_analytics:
   info_type:
     nb_assets: Number of assets
@@ -231,3 +238,6 @@ pimee_enrich:
       options:
         width: '%value%px width'
         height: '%value%px height'
+asset_tree:
+  remove:
+    error_linked: This category tree cannot be deleted, it is set as the default asset category tree of a user.
