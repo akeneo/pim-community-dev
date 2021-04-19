@@ -2,7 +2,16 @@ pim_dashboard:
     title: Activity dashboard
     greetings: Hello {{ name }}!
     welcome_sentence:
-        message1: Keep up the great work.
+        message0: This is going to be a great day.
+        message1: It's great to see you.
+        message2: Glad to see you here.
+        message3: Happy to see you here.
+        message4: It's great to have you on board.
+        message5: Let's get started.
+        message6: Let's get to work.
+        message7: Let's do great things today.
+        message8: Ready to get started?
+        message9: Your products are eager to be enriched.
     widget:
         completeness:
             load_more: 'Load more...'
