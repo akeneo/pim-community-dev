@@ -42,11 +42,11 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         ca-certificates \
         imagemagick \
         libmagickcore-6.q16-2-extra \
-        php-memcached \
         php7.4-fpm \
         php7.4-cli \
         php7.4-intl \
         php7.4-opcache \
+        php7.4-memcached \
         php7.4-mysql \
         php7.4-zip \
         php7.4-xml \
