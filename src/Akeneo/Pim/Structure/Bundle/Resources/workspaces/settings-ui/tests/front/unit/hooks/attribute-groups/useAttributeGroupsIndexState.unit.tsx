@@ -9,7 +9,7 @@ import {fetchAllAttributeGroupsDqiStatus} from '@akeneo-pim-community/settings-u
 import {saveAttributeGroupsOrder} from '@akeneo-pim-community/settings-ui/src/infrastructure/savers';
 import {anAttributeGroup} from '../../../utils/provideAttributeGroupHelper';
 import {act} from 'react-test-renderer';
-import {dependencies} from '@akeneo-pim-community/legacy-bridge';
+import {dependencies} from '@akeneo-pim-community/shared';
 
 const FeatureFlags = require('pim/feature-flags');
 FeatureFlags.isEnabled.mockImplementation((feature: string) => false);

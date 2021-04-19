@@ -35,7 +35,7 @@ abstract class BaseViewMock {
   }
 }
 
-jest.mock('@akeneo-pim-community/legacy-bridge/src/bridge/react', () => ({ReactView: BaseViewMock}));
+jest.mock('@akeneo-pim-community/shared/src/bridge/react', () => ({ReactView: BaseViewMock}));
 
 const Delete = require('pimui/js/attribute/form/delete');
 

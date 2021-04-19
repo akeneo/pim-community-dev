@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import {useHasNewAnnouncements} from '@akeneo-pim-community/communication-channel/src/hooks/useHasNewAnnouncements';
 import {renderHookWithProviders, fetchMockResponseOnce} from '@akeneo-pim-community/shared/tests/front/unit/utils';
-import {dependencies} from '@akeneo-pim-community/legacy-bridge';
+import {dependencies} from '@akeneo-pim-community/shared';
 
 afterEach(() => {
   fetchMock.resetMocks();

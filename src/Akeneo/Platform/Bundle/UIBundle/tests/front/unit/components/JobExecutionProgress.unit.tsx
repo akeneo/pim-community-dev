@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import {screen} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {JobExecutionProgress} from '../../../../Resources/public/js/job/execution/Progress';
-import {StepExecutionTracking} from '../../../../Resources/public/js/job/execution/model/job-execution';
+import {StepExecutionTracking} from '../../../../Resources/public/js/job/execution/models/job-execution';
 
 jest.mock('@akeneo-pim-community/legacy-bridge/src/hooks/useTranslate', () => ({
   useTranslate: () => {
