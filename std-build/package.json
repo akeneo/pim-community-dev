@@ -14,12 +14,11 @@
     "less": "node $npm_package_config_styles",
     "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
     "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
-    "build:packages": "yarn --cwd=vendor/akeneo/pim-community-dev build:packages"
+    "build:packages": "yarn --cwd=$npm_package_config_source build:packages"
   },
   "workspaces": [
     "vendor/akeneo/pim-community-dev",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/front",
-    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/front",

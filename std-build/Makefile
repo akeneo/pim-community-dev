@@ -26,7 +26,7 @@ javascript-extensions:
 
 .PHONY: front-packages
 front-packages:
-	$(YARN_RUN) build:packages
+	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 $(YARN_RUN) build:packages
 
 .PHONY: assets
 assets:
