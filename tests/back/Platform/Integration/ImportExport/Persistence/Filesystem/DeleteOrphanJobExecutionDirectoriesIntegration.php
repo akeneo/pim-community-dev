@@ -41,16 +41,16 @@ class DeleteOrphanJobExecutionDirectoriesIntegration extends TestCase
     /**
      * @test
      */
-    public function it_delete_orphans_job_execution_files()
+    public function it_deletes_orphan_job_execution_files()
     {
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('edit_common_attributes');
         $jobExecution = $this->jobExecutionRepository->createJobExecution($jobInstance, new JobParameters([]));
 
         $jobExecutionFilePath = $this->filepathFromJobExecution($jobExecution);
-        $orphanFile1 = 'type/job_name_1/1/logs/logs.log';
-        $orphanFile2 = 'type/job_name_1/1/output/output.log';
-        $orphanFile3 = 'type/job_name_1/2/logs/logs.log';
-        $orphanFile4 = 'type/job_name_2/1/logs/logs.log';
+        $orphanFile1 = \sprintf('type/job_name_1/%d/logs/logs.log', $jobExecution->getId() + 1);
+        $orphanFile2 = \sprintf('type/job_name_1/%d/output/output.csv', $jobExecution->getId() + 1);
+        $orphanFile3 = \sprintf('type/job_name_1/%d/output/output2.csv', $jobExecution->getId() + 1);
+        $orphanFile4 = \sprintf('type/job_name_2/%d/logs/logs.log', $jobExecution->getId() + 1);
 
         $this->archivistFilesystem->write($jobExecutionFilePath, 'content');
         $this->archivistFilesystem->write($orphanFile1, 'content');
@@ -58,23 +58,23 @@ class DeleteOrphanJobExecutionDirectoriesIntegration extends TestCase
         $this->archivistFilesystem->write($orphanFile3, 'content');
         $this->archivistFilesystem->write($orphanFile4, 'content');
 
-        Assert::assertTrue($this->archivistFilesystem->has($jobExecutionFilePath));
-        Assert::assertTrue($this->archivistFilesystem->has($orphanFile1));
-        Assert::assertTrue($this->archivistFilesystem->has($orphanFile2));
-        Assert::assertTrue($this->archivistFilesystem->has($orphanFile3));
-        Assert::assertTrue($this->archivistFilesystem->has($orphanFile4));
+        Assert::assertTrue($this->archivistFilesystem->fileExists($jobExecutionFilePath));
+        Assert::assertTrue($this->archivistFilesystem->fileExists($orphanFile1));
+        Assert::assertTrue($this->archivistFilesystem->fileExists($orphanFile2));
+        Assert::assertTrue($this->archivistFilesystem->fileExists($orphanFile3));
+        Assert::assertTrue($this->archivistFilesystem->fileExists($orphanFile4));
 
         $this->deleteOrphansJobExecutionFiles->execute();
 
-        Assert::assertTrue($this->archivistFilesystem->has($jobExecutionFilePath));
-        Assert::assertFalse($this->archivistFilesystem->has($orphanFile1));
-        Assert::assertFalse($this->archivistFilesystem->has($orphanFile2));
-        Assert::assertFalse($this->archivistFilesystem->has($orphanFile3));
-        Assert::assertFalse($this->archivistFilesystem->has($orphanFile4));
-
-        Assert::assertFalse($this->archivistFilesystem->has('type/job_name_1/1'));
-        Assert::assertFalse($this->archivistFilesystem->has('type/job_name_1/2'));
-        Assert::assertFalse($this->archivistFilesystem->has('type/job_name_2/1'));
+        Assert::assertTrue($this->archivistFilesystem->fileExists($jobExecutionFilePath));
+        Assert::assertFalse($this->archivistFilesystem->fileExists($orphanFile1));
+        Assert::assertFalse($this->archivistFilesystem->fileExists(\dirname($orphanFile1)));
+        Assert::assertFalse($this->archivistFilesystem->fileExists($orphanFile2));
+        Assert::assertFalse($this->archivistFilesystem->fileExists(\dirname($orphanFile2)));
+        Assert::assertFalse($this->archivistFilesystem->fileExists($orphanFile3));
+        Assert::assertFalse($this->archivistFilesystem->fileExists(\dirname($orphanFile3)));
+        Assert::assertFalse($this->archivistFilesystem->fileExists($orphanFile4));
+        Assert::assertFalse($this->archivistFilesystem->fileExists(\dirname($orphanFile4)));
     }
 
     protected function getConfiguration(): Configuration

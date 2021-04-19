@@ -2,28 +2,29 @@
 
 namespace spec\Akeneo\Tool\Component\FileStorage;
 
-use League\Flysystem\FilesystemInterface;
-use League\Flysystem\MountManager;
+use League\Flysystem\FilesystemOperator;
 use PhpSpec\ObjectBehavior;
 
 class FilesystemProviderSpec extends ObjectBehavior
 {
-    function let(MountManager $mountManager)
+    function let(FilesystemOperator $filesystem1, FilesystemOperator $filesystem2)
     {
-        $this->beConstructedWith($mountManager);
+        $this->beConstructedWith(
+            [
+                'foo' => $filesystem1,
+                'bar' => $filesystem2,
+            ]
+        );
     }
 
-    function it_gets_the_filesystem($mountManager, FilesystemInterface $filesystem)
+    function it_gets_the_filesystem(FilesystemOperator $filesystem1, FilesystemOperator $filesystem2)
     {
-        $mountManager->getFilesystem('foo')->willReturn($filesystem);
-
-        $this->getFilesystem('foo')->shouldReturn($filesystem);
+        $this->getFilesystem('foo')->shouldReturn($filesystem1);
+        $this->getFilesystem('bar')->shouldReturn($filesystem2);
     }
 
-    function it_throws_an_exception_when_the_filesystem_does_not_exist($mountManager)
+    function it_throws_an_exception_when_the_filesystem_does_not_exist()
     {
-        $mountManager->getFilesystem('foo')->willThrow(new \LogicException());
-
-        $this->shouldThrow('\LogicException')->during('getFilesystem', ['foo']);
+        $this->shouldThrow(\LogicException::class)->during('getFilesystem', ['baz']);
     }
 }

@@ -17,7 +17,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
@@ -112,8 +112,8 @@ class FetchRemoteFilesAfterExportSpec extends ObjectBehavior
         JobInstance $jobInstance,
         JobExecution $jobExecution,
         ItemStep $step,
-        FilesystemInterface $catalogFilesystem,
-        FilesystemInterface $assetFilesystem
+        FilesystemOperator $catalogFilesystem,
+        FilesystemOperator $assetFilesystem
     ) {
         $writer = new class implements ItemWriterInterface, ArchivableWriterInterface {
             public function getWrittenFiles(): array
@@ -167,7 +167,7 @@ class FetchRemoteFilesAfterExportSpec extends ObjectBehavior
         JobInstance $jobInstance,
         JobExecution $jobExecution,
         ItemStep $step,
-        FilesystemInterface $catalogFilesystem
+        FilesystemOperator $catalogFilesystem
     ) {
         $writer = new class implements ItemWriterInterface, ArchivableWriterInterface {
             public function getWrittenFiles(): array

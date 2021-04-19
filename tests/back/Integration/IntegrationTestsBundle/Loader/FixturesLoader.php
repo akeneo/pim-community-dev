@@ -18,8 +18,10 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
 use Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementInstaller;
 use Doctrine\DBAL\Connection;
 use Elasticsearch\ClientBuilder;
+use League\Flysystem\DirectoryAttributes;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Plugin\ListPaths;
+use League\Flysystem\StorageAttributes;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -472,11 +474,14 @@ class FixturesLoader implements FixturesLoaderInterface
 
     private function resetFilesystem(): void
     {
-        $this->archivistFilesystem->addPlugin(new ListPaths());
-        $paths = $this->archivistFilesystem->listPaths();
+        $paths = $this->archivistFilesystem->listContents('/')->filter(
+            fn (StorageAttributes $attributes): bool => $attributes instanceof DirectoryAttributes
+        )->map(
+            fn (DirectoryAttributes $attributes): string => $attributes->path()
+        );
 
         foreach ($paths as $path) {
-            $this->archivistFilesystem->deleteDir($path);
+            $this->archivistFilesystem->deleteDirectory($path);
         }
     }
 

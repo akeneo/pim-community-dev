@@ -3,7 +3,8 @@
 namespace Akeneo\Tool\Component\Connector\Archiver;
 
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
+use League\Flysystem\StorageAttributes;
 
 /**
  * Base archiver
@@ -14,25 +15,25 @@ use League\Flysystem\FilesystemInterface;
  */
 abstract class AbstractFilesystemArchiver implements ArchiverInterface
 {
-    protected FilesystemInterface $filesystem;
+    protected FilesystemOperator $filesystem;
 
     /**
      * {@inheritdoc}
      */
-    public function getArchives(JobExecution $jobExecution, bool $recursive = false): array
+    public function getArchives(JobExecution $jobExecution, bool $deep = false): iterable
     {
-        $directory = dirname($this->getRelativeArchivePath($jobExecution));
-        $archives = [];
-
-        foreach ($this->filesystem->listFiles($directory, $recursive) as $key) {
-            $relativePath = \dirname($this->getRelativeArchivePath($jobExecution));
-            $relativeFilePath = \substr($key['path'], \strlen($relativePath));
-            $relativeFilePath = \ltrim($relativeFilePath, '\\/');
-
-            $archives[$relativeFilePath] = $key['path'];
+        if (!$this->supports($jobExecution)) {
+            return [];
         }
 
-        return $archives;
+        $directory = dirname($this->getRelativeArchivePath($jobExecution));
+        $listing = $this->filesystem->listContents($directory, $deep)
+            ->filter(fn (StorageAttributes $attributes): bool => $attributes->isFile())
+            ->map(fn (StorageAttributes $attributes): string => $attributes->path());
+
+        foreach ($listing as $path) {
+            yield \basename($path) => $path;
+        }
     }
 
     /**
@@ -41,24 +42,15 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
     public function getArchive(JobExecution $jobExecution, string $key)
     {
         $archives = $this->getArchives($jobExecution, true);
-
-        if (!isset($archives[$key])) {
-            throw new \InvalidArgumentException(
-                sprintf('Key "%s" does not exist', $key)
-            );
+        foreach ($archives as $filename => $filepath) {
+            if ($filename === $key) {
+                return $this->filesystem->readStream($filepath);
+            }
         }
 
-        return $this->filesystem->readStream($archives[$key]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function listContents(JobExecution $jobExecution): array
-    {
-        $directory = dirname($this->getRelativeArchivePath($jobExecution));
-
-        return $this->filesystem->listContents($directory);
+        throw new \InvalidArgumentException(
+            sprintf('Key "%s" does not exist', $key)
+        );
     }
 
     /**

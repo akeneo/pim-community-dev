@@ -8,6 +8,7 @@ use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Connector\Archiver\ArchiverInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class JobExecutionArchivistSpec extends ObjectBehavior
 {
@@ -30,7 +31,7 @@ class JobExecutionArchivistSpec extends ObjectBehavior
         );
     }
 
-    function it_throws_an_exception_if_there_is_already_a_registered_archier(ArchiverInterface $archiver)
+    function it_throws_an_exception_if_there_is_already_a_registered_archiver(ArchiverInterface $archiver)
     {
         $archiver->getName()->willReturn('output');
 
@@ -41,19 +42,43 @@ class JobExecutionArchivistSpec extends ObjectBehavior
     function it_returns_generated_archives(
         JobExecution $jobExecution,
         ArchiverInterface $archiver,
-        ArchiverInterface $archiver2
+        ArchiverInterface $archiver2,
+        ArchiverInterface $archiver3
     ) {
         $jobExecution->isRunning()->willReturn(false);
 
         $archiver->getName()->willReturn('output');
-        $archiver->getArchives($jobExecution, false)->willReturn(['a', 'b']);
+        $archiver->getArchives($jobExecution, false)->willYield(
+            ['log.log' => 'a/b/log.log', 'test.png' => 'a/b/test.png']
+        );
         $this->registerArchiver($archiver);
 
         $archiver2->getName()->willReturn('input');
-        $archiver2->getArchives($jobExecution, false)->willReturn(['a', 'b']);
+        $archiver2->getArchives($jobExecution, false)->willYield(
+            ['image.jpg' => 'a/c/d/image.jpg', 'notice.pdf' => 'b/c/d/notice.pdf']
+        );
         $this->registerArchiver($archiver2);
 
-        $this->getArchives($jobExecution)->shouldReturn(['output' => ['a', 'b'], 'input' => ['a', 'b']]);
+        $archiver3->getName()->willReturn('invalid_items');
+        $archiver3->getArchives($jobExecution, false)->willYield([]);
+        $this->registerArchiver($archiver3);
+
+        $this->getArchives($jobExecution)->shouldReturn([
+            'output' => ['log.log' => 'a/b/log.log', 'test.png' => 'a/b/test.png'],
+            'input' => ['image.jpg' => 'a/c/d/image.jpg', 'notice.pdf' => 'b/c/d/notice.pdf']
+        ]);
+    }
+
+    function it_does_not_return_archives_if_the_job_is_still_running(
+        JobExecution $jobExecution,
+        ArchiverInterface $archiver
+    ) {
+        $archiver->getName()->willReturn('output');
+        $this->registerArchiver($archiver);
+
+        $jobExecution->isRunning()->willReturn(true);
+        $archiver->getArchives($jobExecution, Argument::cetera())->shouldNotBeCalled();
+        $this->getArchives($jobExecution)->shouldReturn([]);
     }
 
     function it_throws_an_exception_if_no_archiver_is_defined(
@@ -116,21 +141,15 @@ class JobExecutionArchivistSpec extends ObjectBehavior
         $this->registerArchiver($archiver3);
 
         $jobExecution->isRunning()->willReturn(false);
-        $archiver1->listContents($jobExecution)->shouldBeCalled()->willReturn([
-            ['path' => 'file1.csv', 'type' => 'file'],
-        ]);
-        $archiver2->listContents($jobExecution)->shouldBeCalled()->willReturn([]);
-        $archiver3->listContents($jobExecution)->shouldBeCalled()->willReturn([]);
+        $archiver1->getArchives($jobExecution, true)->shouldBeCalled()->willYield(['file1.csv']);
+        $archiver2->getArchives($jobExecution, true)->shouldBeCalled()->willYield([]);
+        $archiver3->getArchives($jobExecution, true)->shouldBeCalled()->willYield([]);
         $this->hasAtLeastTwoArchives($jobExecution)->shouldReturn(false);
 
         $otherJobExecution->isRunning()->willReturn(false);
-        $archiver1->listContents($otherJobExecution)->shouldBeCalled()->willReturn([
-            ['path' => 'export.xlsx', 'type' => 'file'],
-        ]);
-        $archiver2->listContents($otherJobExecution)->shouldBeCalled()->willReturn([
-            ['path' => 'files', 'type' => 'directory'],
-        ]);
-        $archiver3->listContents($otherJobExecution)->shouldNotBeCalled();
+        $archiver1->getArchives($otherJobExecution, true)->shouldBeCalled()->willYield([]);
+        $archiver2->getArchives($otherJobExecution, true)->shouldBeCalled()->willYield(['file1.csv', 'file2.csv']);
+        $archiver3->getArchives($otherJobExecution, true)->shouldNotBeCalled();
         $this->hasAtLeastTwoArchives($otherJobExecution)->shouldReturn(true);
     }
 }
