@@ -3,7 +3,7 @@ import React from 'react';
 import {fireEvent, screen, getByText, act} from '@testing-library/react';
 import {DeleteAction} from 'pimui/js/attribute/form/delete/DeleteAction';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
-import {dependencies} from '@akeneo-pim-community/legacy-bridge/src/provider/dependencies';
+import {dependencies} from '@akeneo-pim-community/shared';
 
 declare global {
   namespace NodeJS {

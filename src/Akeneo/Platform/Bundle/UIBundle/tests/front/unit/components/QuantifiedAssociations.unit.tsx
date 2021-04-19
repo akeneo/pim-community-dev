@@ -1,6 +1,6 @@
 import React from 'react';
 import {act, getByText, fireEvent, queryByText, getAllByTitle} from '@testing-library/react';
-import {dependencies} from '@akeneo-pim-community/legacy-bridge';
+import {dependencies} from '@akeneo-pim-community/shared';
 import {QuantifiedAssociations} from '../../../../Resources/public/js/product/form/quantified-associations/components/QuantifiedAssociations';
 import {ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models';
 import {queryByDisplayValue} from '@testing-library/dom';

@@ -1,7 +1,7 @@
 import React from 'react';
 import {fireEvent, act, getByText, getByTitle} from '@testing-library/react';
 import {Panel} from '@akeneo-pim-community/communication-channel/src/components/panel';
-import {dependencies} from '@akeneo-pim-community/legacy-bridge';
+import {dependencies} from '@akeneo-pim-community/shared';
 import {renderDOMWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {usePimVersion} from '@akeneo-pim-community/communication-channel/src/hooks/usePimVersion';
 import {useHasNewAnnouncements} from '@akeneo-pim-community/communication-channel/src/hooks/useHasNewAnnouncements';
