@@ -107,7 +107,7 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
     setIncludeSubCategories(value as boolean);
   };
 
-  const handleInitCallback = (treeLabel: string, categoryLabel: string) => {
+  const handleInitCallback = (treeLabel: string, categoryLabel?: string) => {
     if (!initCallback) {
       return undefined;
     }

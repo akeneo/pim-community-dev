@@ -5,7 +5,7 @@ export const debounceCallback = (callback: (...args: any[]) => any, delay: numbe
     const context = this;
 
     clearTimeout(timer);
-    timer = setTimeout(() => {
+    timer = window.setTimeout(() => {
       callback.apply(context, args);
     }, delay);
   };
