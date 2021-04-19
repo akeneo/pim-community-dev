@@ -7,6 +7,7 @@
           "pager_duty_service_key": "d55f85282a8e4e16b2c822249ad440bd",
           "product_reference_code": "${module.pim.product_reference_code}",
           "product_reference_type": "${module.pim.product_reference_type}",
+	  "helm_exec_id": "${module.pim.helm_exec_id}",
           "source": "${PIM_SRC_DIR}/deployments/terraform/monitoring"
       }
     }
