@@ -32,6 +32,8 @@ class SearchConnectorAsset
     /** @var FindConnectorAssetsByIdentifiersInterface */
     private $findConnectorAssetsByIdentifiers;
 
+    private ?array $lastSortValue;
+
     public function __construct(
         FindIdentifiersForQueryInterface $findIdentifiersForQuery,
         FindConnectorAssetsByIdentifiersInterface $findConnectorAssetsByIdentifiers
@@ -40,11 +42,24 @@ class SearchConnectorAsset
         $this->findConnectorAssetsByIdentifiers = $findConnectorAssetsByIdentifiers;
     }
 
-    public function __invoke(AssetQuery $query): ConnectorAssetResult
+    public function __invoke(AssetQuery $query): array
     {
         $result = $this->findIdentifiersForQuery->find($query);
         $assets = empty($result) ? [] : $this->findConnectorAssetsByIdentifiers->find($result->identifiers, $query);
 
-        return ConnectorAssetResult::createFromSearchAfterQuery($assets, $result->lastSortValue);
+        $connectorAssetResult = ConnectorAssetResult::createFromSearchAfterQuery($assets, $result->lastSortValue);
+        $this->lastSortValue = $connectorAssetResult->lastSortValue();
+
+        return $connectorAssetResult->assets();
+    }
+
+    /**
+     * @deprecated
+     *
+     * @todo pull-up master: remove deprecated function and make the _invoke method return a ConnectorAssetResult.
+     */
+    public function getLastSortValue(): ?array
+    {
+        return $this->lastSortValue;
     }
 }

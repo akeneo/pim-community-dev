@@ -124,13 +124,18 @@ class GetConnectorAssetsAction
             throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $assetFamilyIdentifier));
         }
 
-        $result = ($this->searchConnectorAsset)($assetQuery);
+        $assets = ($this->searchConnectorAsset)($assetQuery);
         $assets = array_map(function (ConnectorAsset $asset) {
             return $asset->normalize();
-        }, $result->assets());
+        }, $assets);
 
         $assets = ($this->addHalLinksToImageValues)($assetFamilyIdentifier, $assets);
-        $paginatedAssets = $this->paginateAssets($assets, $request, $assetFamilyIdentifier, $result->lastSortValue());
+        $paginatedAssets = $this->paginateAssets(
+            $assets,
+            $request,
+            $assetFamilyIdentifier,
+            method_exists($this->searchConnectorAsset, 'getLastSortValue') ? $this->searchConnectorAsset->getLastSortValue() : null
+        );
 
         return new JsonResponse($paginatedAssets);
     }
