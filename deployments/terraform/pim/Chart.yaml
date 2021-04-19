@@ -14,3 +14,6 @@ dependencies:
   - name: memcached
     version: "3.2.3"
     repository: https://charts.helm.sh/stable
+  - name: traefik
+    repository: https://helm.traefik.io/traefik
+    version: "9.18.2"
