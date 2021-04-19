@@ -72,7 +72,7 @@ final class ActivateCommand extends Command
             $input->getArgument('loginUrl'),
             $input->getArgument('logoutUrl'),
             $input->getArgument('certificate'),
-            $input->getArgument('spEntityId') ?? $serviceProvider['spEntityId'],
+            $input->getArgument('spEntityId') ?? $serviceProvider['entityId'],
             $input->getArgument('spCertificate') ?? $serviceProvider['certificate'],
             $input->getArgument('spPrivateKey') ?? $serviceProvider['privateKey']
         );
