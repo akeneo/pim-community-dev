@@ -9,6 +9,7 @@ pim_menu:
     navigation_block:
         connection: Connection navigation
     item:
+        connection_audit: Connection dashboard
         connection_settings: Connections
         connection_settings_edit: Connection settings
         connection_monitoring: Monitoring
@@ -27,6 +28,7 @@ pim_title:
     akeneo_connectivity_connection_webhook_edit: Event subscription
     akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
     akeneo_connectivity_connection_webhook_event_logs: Event logs
+    akeneo_connectivity_connection_redirect_audit: Connection dashboard
 
 akeneo_connectivity.connection:
     connections: Connections

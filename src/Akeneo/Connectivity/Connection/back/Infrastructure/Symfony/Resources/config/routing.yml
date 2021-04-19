@@ -47,6 +47,9 @@ akeneo_connectivity_connection_audit_any:
     requirements:
         any: .*
 
+akeneo_connectivity_connection_redirect_audit:
+  path: '/connection/dashboard'
+
 ## Webhook
 akeneo_connectivity_connection_webhook_regenerate_secret:
     path: '/connections/{code}/event-subscription/regenerate-secret'

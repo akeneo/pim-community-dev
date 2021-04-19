@@ -29,11 +29,14 @@ config:
                     module: pim/controller/connectivity/connection/audit
                 akeneo_connectivity_connection_audit_any:
                     module: pim/controller/connectivity/connection/audit
+                akeneo_connectivity_connection_redirect_audit:
+                    module: pim/controller/connectivity/connection/audit-redirect
 
     paths:
         pim/controller/connectivity/connection/settings: akeneoconnectivityconnection/js/controller/settings.tsx
         pim/controller/connectivity/connection/error-management: akeneoconnectivityconnection/js/controller/error-management.tsx
         pim/controller/connectivity/connection/webhook: akeneoconnectivityconnection/js/controller/webhook.tsx
         pim/controller/connectivity/connection/audit: akeneoconnectivityconnection/js/controller/audit.tsx
+        pim/controller/connectivity/connection/audit-redirect: akeneoconnectivityconnection/js/controller/audit-redirect.tsx
 
         pim/menu/connectivity/connection/connection-params-provider: akeneoconnectivityconnection/js/menu/connection-params-provider.ts
