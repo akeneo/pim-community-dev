@@ -1,6 +1,6 @@
 import React from 'react';
 import {Badge, Level} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge/src';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 type JobStatus = 'COMPLETED' | 'STARTING' | 'STARTED' | 'STOPPING' | 'STOPPED' | 'FAILED' | 'ABANDONED' | 'UNKNOWN';
 
