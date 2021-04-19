@@ -27,7 +27,7 @@ if (($K8S_CLUSTER_VERSION_ENABLED == 1)); then
     kubeval="kubeval --kubernetes-version ${K8S_MASTER_VERSION}  \
         --schema-location file://. \
         --skip-kinds TraefikService,IngressRoute \
-        --ignored-filename-patterns .*traefik/templates/service.yaml"
+        --ignored-filename-patterns '.*traefik/templates/service.yaml'"
 fi
 
 if (($WITH_ONBOARDER == 0)); then
