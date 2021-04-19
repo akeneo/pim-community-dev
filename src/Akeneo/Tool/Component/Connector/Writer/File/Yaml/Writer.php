@@ -5,9 +5,9 @@ namespace Akeneo\Tool\Component\Connector\Writer\File\Yaml;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\RuntimeErrorException;
-use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -17,10 +17,7 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Writer extends AbstractFileWriter implements
-    ItemWriterInterface,
-    StepExecutionAwareInterface,
-    FlushableInterface
+class Writer extends AbstractFileWriter implements ItemWriterInterface, FlushableInterface
 {
     const INLINE_ARRAY_LEVEL = 8;
     const INDENT_SPACES = 4;
@@ -50,7 +47,7 @@ class Writer extends AbstractFileWriter implements
     /**
      * {@inheritdoc}
      */
-    public function write(array $items)
+    public function write(array $items): void
     {
         $flatItems = [];
         foreach ($items as $item) {
@@ -79,8 +76,11 @@ class Writer extends AbstractFileWriter implements
     /**
      * {@inheritdoc}
      */
-    public function flush()
+    public function flush(): void
     {
+        if (false === $this->isFirstWriting) {
+            $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($this->getPath(), \basename($this->getPath()));
+        }
         $this->isFirstWriting = true;
     }
 

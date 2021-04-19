@@ -64,6 +64,7 @@
 # Technical Improvements
 
 - PIM-9648: Mitigate DDoS risk on API auth endpoint by rejecting too large content
+- PIM-9697: Exported files streamer
 
 ## Classes
 

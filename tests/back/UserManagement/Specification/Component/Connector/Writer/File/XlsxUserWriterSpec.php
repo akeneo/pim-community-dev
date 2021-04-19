@@ -11,11 +11,16 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\UserManagement\Component\Connector\Writer\File\XlsxUserWriter;
+use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Filesystem\Filesystem;
 
 class XlsxUserWriterSpec extends ObjectBehavior
 {
@@ -23,14 +28,23 @@ class XlsxUserWriterSpec extends ObjectBehavior
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher,
-        Filesystem $localFs,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FilesystemProvider $filesystemProvider,
+        FileExporterPathGeneratorInterface $fileExporterPathGenerator,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         ExecutionContext $executionContext,
         JobExecution $jobExecution,
         JobParameters $jobParameters
     ) {
-        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher, $localFs);
+        $this->beConstructedWith(
+            $arrayConverter,
+            $bufferFactory,
+            $flusher,
+            $fileInfoRepository,
+            $filesystemProvider,
+            $fileExporterPathGenerator
+        );
 
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn('/tmp/akeneo_batch1234/');
         $jobExecution->getExecutionContext()->willReturn($executionContext);
@@ -60,27 +74,51 @@ class XlsxUserWriterSpec extends ObjectBehavior
     function it_writes_an_xlsx_file_and_exports_avatar_files(
         ArrayConverterInterface $arrayConverter,
         FlatItemBufferFlusher $flusher,
-        Filesystem $localFs,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FilesystemProvider $filesystemProvider,
+        FileExporterPathGeneratorInterface $fileExporterPathGenerator,
         FlatItemBuffer $flatRowBuffer,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        FileInfoInterface $fileInfo,
+        FilesystemInterface $filesystem
     ) {
         $item = [
             'username' => 'julia',
             'enabled' => true,
             'avatar' => [
-                'filePath' => 'files/julia/avatar/julia.png',
+                'filePath' => 'a/b/c/abc_julia.png',
                 'originalFilename' => 'julia.png',
             ],
         ];
+
+        $fileInfo->getKey()->willReturn('a/b/c/abc_julia.png');
+        $fileInfo->getStorage()->willReturn('catalogStorage');
+        $fileInfo->getOriginalFilename()->willReturn('julia.png');
+        $fileInfoRepository->findOneByIdentifier('a/b/c/abc_julia.png')->shouldBeCalled()->willReturn($fileInfo);
+
+        $fileExporterPathGenerator->generate(
+            ['locale' => null, 'scope' => null],
+            ['code' => 'avatar', 'identifier' => 'julia']
+        )->shouldBeCalled()->willReturn('files/julia/avatar/');
+        $filesystemProvider->getFilesystem('catalogStorage')->willReturn($filesystem);
+        $filesystem->has('a/b/c/abc_julia.png')->shouldBeCalled()->willReturn(true);
+
         $flatItem = [
             'username' => 'julia',
             'enabled' => '1',
             'avatar' => 'files/julia/avatar/julia.png',
         ];
-
-        $localFs->mkdir('/tmp/output_dir')->shouldBeCalled();
-        $arrayConverter->convert($item, [])->shouldBeCalled()->willReturn($flatItem);
-        $localFs->exists('/tmp/akeneo_batch1234/files/julia/avatar/julia.png')->shouldBeCalled()->willReturn(true);
+        $arrayConverter->convert(
+            [
+                'username' => 'julia',
+                'enabled' => true,
+                'avatar' => [
+                    'filePath' => 'files/julia/avatar/julia.png',
+                    'originalFilename' => 'julia.png',
+                ],
+            ],
+            []
+        )->shouldBeCalled()->willReturn($flatItem);
         $flatRowBuffer->write([$flatItem], ['withHeader' => true])->shouldBeCalled();
 
         $this->write([$item]);
@@ -95,9 +133,15 @@ class XlsxUserWriterSpec extends ObjectBehavior
 
         $this->flush();
 
-        $this->getWrittenFiles()->shouldReturn([
-            '/tmp/akeneo_batch1234/files/julia/avatar/julia.png' => 'files/julia/avatar/julia.png',
-            '/tmp/output_dir/users.xlsx' => 'users.xlsx',
-        ]);
+        $this->getWrittenFiles()->shouldBeLike(
+            [
+                WrittenFileInfo::fromFileStorage(
+                    'a/b/c/abc_julia.png',
+                    'catalogStorage',
+                    'files/julia/avatar/julia.png'
+                ),
+                WrittenFileInfo::fromLocalFile('/tmp/output_dir/users.xlsx', 'users.xlsx'),
+            ]
+        );
     }
 }
