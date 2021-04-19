@@ -2,17 +2,19 @@
 pim_menu:
     tab:
         connect: Connect
+    navigation:
+        connect: Connect
     navigation_back:
         connection: Back to connections
     navigation_block:
         connection: Connection navigation
     item:
-        connection_audit: Connection dashboard
         connection_settings: Connections
         connection_settings_edit: Connection settings
         connection_monitoring: Monitoring
         connection_webhook_edit: Event subscription
         connection_webhook_event_logs: Event logs
+        data_flows: Data flows
 
 pim_title:
     akeneo_connectivity_connection_settings_index: Connections

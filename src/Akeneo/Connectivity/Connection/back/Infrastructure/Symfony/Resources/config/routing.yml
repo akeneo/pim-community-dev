@@ -31,7 +31,7 @@ akeneo_connectivity_connection_events_api_debug_rest:
 
 ## Error Management
 akeneo_connectivity_connection_error_management_dashboard:
-   path: '/connection/dashboard/business-errors'
+   path: '/connect/data-flows/business-errors'
 
 akeneo_connectivity_connection_error_management_connection_monitoring:
    path: '/connections/{code}/monitoring'
@@ -40,10 +40,10 @@ akeneo_connectivity_connection_error_management_connection_monitoring:
 
 ## Audit
 akeneo_connectivity_connection_audit_index:
-    path: '/connection/dashboard'
+    path: '/connect/data-flows'
 
 akeneo_connectivity_connection_audit_any:
-    path: '/connection/dashboard/{any}'
+    path: '/connect/data-flows/{any}'
     requirements:
         any: .*
 

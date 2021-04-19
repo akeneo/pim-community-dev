@@ -21,8 +21,8 @@ class AuditController extends ReactController {
   }
 
   renderRoute(route: any) {
-    mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-activity'});
-    mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-activity-connection-audit'});
+    mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-connect'});
+    mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-connect-connection-audit'});
 
     return super.renderRoute(route);
   }

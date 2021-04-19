@@ -32,10 +32,10 @@ export const Dashboard = memo(() => {
     const breadcrumb = (
         <Breadcrumb>
             <Breadcrumb.Step href={dashboardHref}>
-                <Translate id='pim_menu.tab.activity' />
+                <Translate id='pim_menu.tab.connect' />
             </Breadcrumb.Step>
             <Breadcrumb.Step>
-                <Translate id='pim_menu.item.connection_audit' />
+                <Translate id='pim_menu.item.data_flows' />
             </Breadcrumb.Step>
         </Breadcrumb>
     );
@@ -43,7 +43,7 @@ export const Dashboard = memo(() => {
     return (
         <>
             <PageHeader breadcrumb={breadcrumb} userButtons={<UserButtons />}>
-                <Translate id='pim_menu.item.connection_audit' />
+                <Translate id='pim_menu.item.data_flows' />
             </PageHeader>
 
             <PageContent>

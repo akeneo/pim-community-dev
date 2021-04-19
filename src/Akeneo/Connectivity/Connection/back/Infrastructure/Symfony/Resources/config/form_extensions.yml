@@ -9,6 +9,24 @@ extensions:
             iconModifier: iconConnect
             to: akeneo_connectivity_connection_audit_index
 
+    pim-menu-connect-column:
+        module: pim/menu/column
+        parent: pim-menu
+        position: 500
+        targetZone: column
+        config:
+            stateCode: pim-menu-connect
+            tab: pim-menu-connect
+            navigationTitle: pim_menu.navigation.connect
+            collapsedModifier: AknColumn--firstColumn
+
+    pim-menu-connect-navigation-block:
+        module: pim/menu/navigation-block
+        parent: pim-menu-connect-column
+        targetZone: navigation
+        config:
+            title: pim_menu.navigation.connect
+
     pim-connectivity-connection-user-navigation:
         module: pim/menu/user-navigation
         config:
@@ -97,12 +115,10 @@ extensions:
             routeParams:
                 code: '_'
 
-    # Activity
-
-    pim-menu-activity-connection-audit:
+    pim-menu-connect-connection-audit:
         module: pim/menu/item
-        parent: pim-menu-activity-navigation-block
-        position: 105
+        parent: pim-menu-connect-navigation-block
+        position: 10
         config:
-            title: pim_menu.item.connection_audit
+            title: pim_menu.item.data_flows
             to: akeneo_connectivity_connection_audit_index
