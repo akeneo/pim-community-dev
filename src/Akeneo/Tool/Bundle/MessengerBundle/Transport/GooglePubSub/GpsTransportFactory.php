@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub;
 
+use Akeneo\Tool\Bundle\MessengerBundle\Ordering\OrderingKeySolver;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use Symfony\Component\Messenger\Transport\TransportFactoryInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
@@ -15,17 +16,19 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 final class GpsTransportFactory implements TransportFactoryInterface
 {
     private PubSubClientFactory $pubSubClientFactory;
+    private OrderingKeySolver $orderingKeySolver;
 
-    public function __construct(PubSubClientFactory $pubSubClientFactory)
+    public function __construct(PubSubClientFactory $pubSubClientFactory, OrderingKeySolver $orderingKeySolver)
     {
         $this->pubSubClientFactory = $pubSubClientFactory;
+        $this->orderingKeySolver = $orderingKeySolver;
     }
 
     public function createTransport(string $dsn, array $options, SerializerInterface $serializer): TransportInterface
     {
         $client = Client::fromDsn($this->pubSubClientFactory, $dsn, $options);
 
-        $sender = new GpsSender($client->getTopic(), $serializer);
+        $sender = new GpsSender($client->getTopic(), $serializer, $this->orderingKeySolver);
 
         $receiver = null;
         if (null !== $subscription = $client->getSubscription()) {
