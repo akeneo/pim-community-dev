@@ -1,6 +1,6 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
-import {Breadcrumb, Button, Link} from 'akeneo-design-system';
+import {Breadcrumb, Button, Tree} from 'akeneo-design-system';
 import {PimView, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {CategoryTree, FullScreenError, PageContent, PageHeader, useSetPageTitle} from '@akeneo-pim-community/shared';
 import {useCategoryTree} from '../../hooks';
@@ -27,6 +27,28 @@ const CategoriesTreePage: FC = () => {
     }
     router.redirect(router.generate('pim_enrich_categorytree_edit', {id: id.toString()}));
   };
+
+  const buildActions = useCallback((category: any, isRoot: boolean) => {
+    const actions = [];
+
+    if (isGranted('pim_enrich_product_category_create')) {
+      actions.push(
+        <Button ghost level={'primary'} size="small" onClick={() => alert(`create child for ${category.code}`)}>
+          New Category
+        </Button>
+      );
+    }
+
+    if (!isRoot && isGranted('pim_enrich_product_category_remove')) {
+      actions.push(
+        <Button ghost level={'danger'} size="small" onClick={() => alert(`delete ${category.code}`)}>
+          Delete
+        </Button>
+      );
+    }
+
+    return actions;
+  }, [isGranted]);
 
   useEffect(() => {
     load();
@@ -67,60 +89,22 @@ const CategoriesTreePage: FC = () => {
         <PageHeader.Title>{treeLabel}</PageHeader.Title>
       </PageHeader>
       <PageContent>
-        {/* @todo[PLG-94] replace content by the real tree category */}
+
         {tree === null ? (
-          <>Tree {treeLabel}</>
+          <Tree value="" label={treeLabel} isLoading={true}/>
         ) : (
           <>
-            <div>
-              <Link
-                onClick={isGranted('pim_enrich_product_category_edit') ? () => followEditCategory(tree.id) : undefined}
-                disabled={!isGranted('pim_enrich_product_category_edit')}
-              >
-                {treeLabel}
-              </Link>
-            </div>
-            <div>
-              {tree.children &&
-                tree.children.length > 0 &&
-                tree.children.map(cat => (
-                  <div>
-                    <Link
-                      key={cat.code}
-                      onClick={
-                        isGranted('pim_enrich_product_category_edit') ? () => followEditCategory(cat.id) : undefined
-                      }
-                      disabled={!isGranted('pim_enrich_product_category_edit')}
-                    >
-                      {cat.label}
-                    </Link>
-                  </div>
-                ))}
-            </div>
-
-            <div>
-              <CategoryTree
-                onChange={() => console.log('change')}
-                childrenCallback={() => Promise.resolve([])}
-                init={() => Promise.resolve(tree)} style="list"
-                onClick={isGranted('pim_enrich_product_category_edit') ? (category) => followEditCategory(category.id) : undefined}
-                actions={(category, isRoot) => {
-                  const actions = [];
-
-                  actions.push(
-                    <Button ghost level={"primary"} size="small" onClick={() => alert(`create child for ${category.code}`)}>New Category</Button>
-                  );
-
-                  if (!isRoot) {
-                    actions.push(
-                      <Button ghost level={"danger"} size="small" onClick={() => alert(`delete ${category.code}`)}>Delete</Button>
-                    );
-                  }
-
-                  return actions;
-                }}
-              />
-            </div>
+            {/* @todo Adapt loading of the structure and model */}
+            <CategoryTree
+              onChange={() => console.log('change')}
+              childrenCallback={() => Promise.resolve([])}
+              init={() => Promise.resolve(tree)}
+              style="list"
+              onClick={
+                isGranted('pim_enrich_product_category_edit') ? category => followEditCategory(category.id) : undefined
+              }
+              actions={buildActions}
+            />
           </>
         )}
       </PageContent>
