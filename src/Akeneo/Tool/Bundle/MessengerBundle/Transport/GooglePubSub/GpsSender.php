@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub;
 
+use Akeneo\Tool\Bundle\MessengerBundle\Ordering\OrderingKeySolver;
 use Google\Cloud\Core\Exception\GoogleException;
 use Google\Cloud\PubSub\Topic;
 use Symfony\Component\Messenger\Envelope;
@@ -17,16 +18,15 @@ use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
  */
 final class GpsSender implements SenderInterface
 {
-    /** @var SerializerInterface */
-    private $serializer;
+    private SerializerInterface $serializer;
+    private Topic $topic;
+    private OrderingKeySolver $orderingKeySolver;
 
-    /** @var Topic */
-    private $topic;
-
-    public function __construct(Topic $topic, SerializerInterface $serializer)
+    public function __construct(Topic $topic, SerializerInterface $serializer, OrderingKeySolver $orderingKeySolver)
     {
         $this->topic = $topic;
         $this->serializer = $serializer;
+        $this->orderingKeySolver = $orderingKeySolver;
     }
 
     public function send(Envelope $envelope): Envelope
@@ -37,8 +37,8 @@ final class GpsSender implements SenderInterface
             'data' => $encodedMessage['body'],
             'attributes' => $encodedMessage['headers'],
         ];
-        if (isset($encodedMessage['orderingKey'])) {
-            $message['orderingKey'] = $encodedMessage['orderingKey'];
+        if (null !== $orderingKey = $this->orderingKeySolver->solve($envelope)) {
+            $message['orderingKey'] = $orderingKey;
         }
 
         try {
