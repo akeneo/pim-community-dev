@@ -1,4 +1,14 @@
 extensions:
+    pim-menu-connect:
+        module: pim/menu/tab
+        parent: pim-menu
+        position: 38
+        targetZone: mainMenu
+        config:
+            title: pim_menu.tab.connect
+            iconModifier: iconConnect
+            to: akeneo_connectivity_connection_audit_index
+
     pim-connectivity-connection-user-navigation:
         module: pim/menu/user-navigation
         config:
