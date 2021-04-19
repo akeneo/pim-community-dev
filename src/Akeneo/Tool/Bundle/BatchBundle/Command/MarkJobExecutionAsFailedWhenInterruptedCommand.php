@@ -31,7 +31,7 @@ class MarkJobExecutionAsFailedWhenInterruptedCommand extends Command
                 'Job instance codes that need to have job executions to be cleaned. For example: "job_1,job_2".'
             )
             ->setDescription(
-            'When jobs are launched with the if an error happen the job execution crashes and need to be cleaned.'
+            'Mark as failed the job executions that are stuck in status STARTED or STOPPING.'
         );
     }
 
