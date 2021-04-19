@@ -44,7 +44,7 @@ const unitConfig = {
   globals: {
     __moduleConfig: {},
     'ts-jest': {
-      tsConfig: `${__dirname}/../../../../tsconfig.json`,
+      tsconfig: `${__dirname}/../../../../tsconfig.json`,
       isolatedModules: true,
     },
     fos: {Router: {setData: () => {}}},
