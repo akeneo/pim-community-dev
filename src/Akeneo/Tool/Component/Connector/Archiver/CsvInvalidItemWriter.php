@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Component\Connector\Archiver;
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorInterface;
 
 /**
  * Writer for invalid items coming from a CSV import.
@@ -17,7 +18,7 @@ class CsvInvalidItemWriter extends AbstractInvalidItemWriter
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'invalid_csv';
     }
@@ -34,7 +35,7 @@ class CsvInvalidItemWriter extends AbstractInvalidItemWriter
     /**
      * {@inheritdoc}
      */
-    protected function getInputFileIterator(JobParameters $jobParameters)
+    protected function getInputFileIterator(JobParameters $jobParameters): FileIteratorInterface
     {
         $filePath = $jobParameters->get('filePath');
         $delimiter = $jobParameters->get('delimiter');

@@ -6,17 +6,15 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTransla
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromAttributeCodesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Tool\Component\Batch\Job\JobParameters;
-use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractItemMediaWriter;
-use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 
 /**
  * Write product data into a XLSX file on the local filesystem
@@ -25,23 +23,12 @@ use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductWriter extends AbstractItemMediaWriter implements
-    ItemWriterInterface,
-    InitializableInterface,
-    FlushableInterface,
-    StepExecutionAwareInterface,
-    ArchivableWriterInterface
+class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterface, InitializableInterface
 {
-    /** @var array */
-    protected $familyCodes;
-
-    /** @var GenerateFlatHeadersFromFamilyCodesInterface */
-    protected $generateHeadersFromFamilyCodes;
-
-    /** @var GenerateFlatHeadersFromAttributeCodesInterface */
-    protected $generateHeadersFromAttributeCodes;
-
-    private $hasItems;
+    protected GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes;
+    protected GenerateFlatHeadersFromAttributeCodesInterface $generateHeadersFromAttributeCodes;
+    protected array $familyCodes = [];
+    private bool $hasItems = false;
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,
@@ -52,6 +39,8 @@ class ProductWriter extends AbstractItemMediaWriter implements
         GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes,
         GenerateFlatHeadersFromAttributeCodesInterface $generateHeadersFromAttributeCodes,
         FlatTranslatorInterface $flatTranslator,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FilesystemProvider $filesystemProvider,
         array $mediaAttributeTypes,
         string $jobParamFilePath = self::DEFAULT_FILE_PATH
     ) {
@@ -62,6 +51,8 @@ class ProductWriter extends AbstractItemMediaWriter implements
             $attributeRepository,
             $fileExporterPath,
             $flatTranslator,
+            $fileInfoRepository,
+            $filesystemProvider,
             $mediaAttributeTypes,
             $jobParamFilePath
         );
@@ -73,7 +64,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
         $this->familyCodes = [];
         $this->hasItems = false;
@@ -84,7 +75,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
     /**
      * {@inheritdoc}
      */
-    public function write(array $items)
+    public function write(array $items): void
     {
         $this->hasItems = true;
         foreach ($items as $item) {
@@ -143,7 +134,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
     /**
      * {@inheritdoc}
      */
-    protected function getWriterConfiguration()
+    protected function getWriterConfiguration(): array
     {
         return ['type' => 'xlsx'];
     }
@@ -151,7 +142,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
     /**
      * {@inheritdoc}
      */
-    protected function getItemIdentifier(array $product)
+    protected function getItemIdentifier(array $product): string
     {
         return $product['identifier'];
     }

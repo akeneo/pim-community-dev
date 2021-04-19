@@ -6,10 +6,12 @@ use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
-use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
-use Akeneo\Tool\Component\Connector\Writer\File\AbstractItemMediaWriter;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
+use Psr\Log\LoggerInterface;
 
 /**
  * Archive files written by job execution to provide them through a download button
@@ -20,17 +22,20 @@ use League\Flysystem\Filesystem;
  */
 class FileWriterArchiver extends AbstractFilesystemArchiver
 {
-    /** @var JobRegistry */
-    protected $jobRegistry;
+    protected JobRegistry $jobRegistry;
+    private FilesystemProvider $filesystemProvider;
+    private LoggerInterface $logger;
 
-    /**
-     * @param Filesystem  $filesystem
-     * @param JobRegistry $jobRegistry
-     */
-    public function __construct(Filesystem $filesystem, JobRegistry $jobRegistry)
-    {
+    public function __construct(
+        Filesystem $filesystem,
+        JobRegistry $jobRegistry,
+        FilesystemProvider $fsProvider,
+        LoggerInterface $logger
+    ) {
         $this->filesystem = $filesystem;
         $this->jobRegistry = $jobRegistry;
+        $this->filesystemProvider = $fsProvider;
+        $this->logger = $logger;
     }
 
     /**
@@ -38,7 +43,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      *
      * @param JobExecution $jobExecution
      */
-    public function archive(JobExecution $jobExecution)
+    public function archive(JobExecution $jobExecution): void
     {
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
@@ -48,11 +53,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
             $writer = $step->getWriter();
 
             if ($this->isUsableWriter($writer)) {
-                if ($writer instanceof ArchivableWriterInterface) {
-                    $this->doArchive($jobExecution, $writer->getWrittenFiles());
-                } else {
-                    $this->doArchive($jobExecution, [$writer->getPath() => basename($writer->getPath())]);
-                }
+                $this->doArchive($jobExecution, $writer->getWrittenFiles());
             }
         }
     }
@@ -60,7 +61,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'output';
     }
@@ -68,7 +69,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
     /**
      * {@inheritdoc}
      */
-    public function supports(JobExecution $jobExecution)
+    public function supports(JobExecution $jobExecution): bool
     {
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
@@ -87,41 +88,53 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      *
      * @return bool
      */
-    protected function isUsableWriter(ItemWriterInterface $writer)
+    protected function isUsableWriter(ItemWriterInterface $writer): bool
     {
-        $isNewWriter = ($writer instanceof AbstractItemMediaWriter);
-        $isNewItemMediaWriter = ($writer instanceof AbstractFileWriter);
-
-        if (!($isNewItemMediaWriter || $isNewWriter)) {
-            return false;
-        }
-
-        if ($writer instanceof ArchivableWriterInterface) {
-            foreach ($writer->getWrittenFiles() as $filePath => $fileName) {
-                if (!is_file($filePath)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        return is_file($writer->getPath());
+        return $writer instanceof ArchivableWriterInterface && 0 < count($writer->getWrittenFiles());
     }
 
     /**
      * @param JobExecution $jobExecution
-     * @param array        $filesToArchive ['filePath' => 'fileName']
+     * @param WrittenFileInfo[] $filesToArchive
      */
-    protected function doArchive(JobExecution $jobExecution, array $filesToArchive)
+    protected function doArchive(JobExecution $jobExecution, array $filesToArchive): void
     {
-        foreach ($filesToArchive as $filePath => $fileName) {
+        foreach ($filesToArchive as $fileToArchive) {
             $archivedFilePath = strtr(
                 $this->getRelativeArchivePath($jobExecution),
                 [
-                    '%filename%' => $fileName,
+                    '%filename%' => $fileToArchive->outputFilepath(),
                 ]
             );
-            $this->filesystem->putStream($archivedFilePath, fopen($filePath, 'r'));
+
+            try {
+                $stream = null;
+                if ($fileToArchive->isLocalFile()) {
+                    $stream = \fopen($fileToArchive->sourceKey(), 'r');
+                } else {
+                    $stream = $this->filesystemProvider->getFilesystem($fileToArchive->sourceStorage())->readStream(
+                        $fileToArchive->sourceKey()
+                    );
+                }
+                if ($stream) {
+                    $this->filesystem->putStream($archivedFilePath, $stream);
+                }
+                if (\is_resource($stream)) {
+                    \fclose($stream);
+                }
+            } catch (FileNotFoundException $e) {
+                $this->logger->warning(
+                    'The remote file could not be read from the remote filesystem',
+                    [
+                        'key' => $filesToArchive->sourceKey(),
+                        'storage' => $filesToArchive->sourceStorage(),
+                        'exception' => [
+                            'type' => \get_class($e),
+                            'message' => $e->getMessage(),
+                        ],
+                    ]
+                );
+            }
         }
     }
 }
