@@ -43,20 +43,7 @@ Cypress.Commands.add('login', () => {
   cy.wait('@analytics', 20000); //4000ms
 });
 
-Cypress.Commands.add('goToProductsGridWait', () => {
-  cy.findAllByText(/dashboard/i);
-  cy.wait(2000);
-
-  cy.intercept('/datagrid/product-grid*').as('productDatagrid')
-  cy.intercept('/datagrid_view/rest/product-grid/default*').as('productDatagridViews')
-
-  cy.findByText('Products').click();
-
-  cy.wait('@productDatagridViews')
-  cy.wait('@productDatagrid')
-});
-
-Cypress.Commands.add('goToProductsGridFindActivityItem', () => {
+Cypress.Commands.add('goToProductsGrid', () => {
   //We should rework the HTML to have proper role/aria selectors
   cy.findByText('Activity').should('have.class', 'AknHeader-menuItem--active');
 
@@ -64,16 +51,6 @@ Cypress.Commands.add('goToProductsGridFindActivityItem', () => {
 
   cy.intercept('/datagrid/product-grid*').as('productDatagrid')
   cy.intercept('/datagrid_view/rest/product-grid/default*').as('productDatagridViews')
-  cy.wait('@productDatagridViews')
-  cy.wait('@productDatagrid')
-});
-
-Cypress.Commands.add('goToProductsGridUsingUrl', () => {
-  cy.intercept('/datagrid/product-grid*').as('productDatagrid')
-  cy.intercept('/datagrid_view/rest/product-grid/default*').as('productDatagridViews')
-
-  cy.visit('/#/enrich/product/');
-
   cy.wait('@productDatagridViews')
   cy.wait('@productDatagrid')
 });
