@@ -1,6 +1,5 @@
 import {Locale, LocaleCode, isLocales, denormalizeLocale} from '../models';
-import {isLabelCollection, LabelCollection} from '../models';
-import {getLabel} from 'pimui/js/i18n';
+import {isLabelCollection, LabelCollection, getLabel} from '../models';
 
 type ChannelCode = string;
 

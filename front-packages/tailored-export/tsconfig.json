@@ -7,8 +7,11 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "jsx": "react",
-    "lib": ["es6", "dom"],
-    "module": "commonjs",
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "module": "esnext",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -28,9 +31,15 @@
     "target": "es5",
     "baseUrl": "./src",
     "types": [
-      "node",
+      "node"
     ],
-    "incremental": true
+    "incremental": true,
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "noEmit": true
   },
-  "include": ["src/feature"]
+  "include": [
+    "src/feature"
+  ]
 }
