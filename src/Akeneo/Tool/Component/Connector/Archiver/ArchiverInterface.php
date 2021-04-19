@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @see       \Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist
+ * @see       \Akeneo\Tool\Bundle\ConnectorBundle\EventListener
  */
 interface ArchiverInterface
 {
@@ -20,7 +20,7 @@ interface ArchiverInterface
      *
      * @param JobExecution $jobExecution
      */
-    public function archive(JobExecution $jobExecution);
+    public function archive(JobExecution $jobExecution): void;
 
     /**
      * Check if the job execution is supported
@@ -29,16 +29,17 @@ interface ArchiverInterface
      *
      * @return bool
      */
-    public function supports(JobExecution $jobExecution);
+    public function supports(JobExecution $jobExecution): bool;
 
     /**
      * Get the archives of a job execution
      *
      * @param JobExecution $jobExecution
+     * @param bool $recursive
      *
      * @return array
      */
-    public function getArchives(JobExecution $jobExecution);
+    public function getArchives(JobExecution $jobExecution, bool $recursive = false): array;
 
     /**
      * Get a specific archive of a job execution
@@ -48,12 +49,21 @@ interface ArchiverInterface
      *
      * @return resource
      */
-    public function getArchive(JobExecution $jobExecution, $key);
+    public function getArchive(JobExecution $jobExecution, string $key);
+
+    /**
+     * Get the root objects (files + directories) of a job execution
+     *
+     * @param JobExecution $jobExecution
+     *
+     * @return array
+     */
+    public function listContents(JobExecution $jobExecution): array;
 
     /**
      * Get the archiver name
      *
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 }
