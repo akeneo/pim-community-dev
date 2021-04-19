@@ -26,6 +26,9 @@ spec:
         {{- include "pim.standardLabels" . | indent 8 }}
         {{- include "pim.extraLabels" . | indent 8 }}
       annotations:
+        ad.datadoghq.com/fpm.check_names: '["php_fpm"]'
+        ad.datadoghq.com/fpm.init_configs: '[{}]'
+        ad.datadoghq.com/fpm.instances: '[[{"status_url":"http://%%host%%:9000/status", "use_fastcgi": true}, {"status_url":"http://%%host%%:9001/status", "use_fastcgi": true}]]'
         checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
         checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
         checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
@@ -98,11 +101,13 @@ spec:
 {{ toYaml .Values.common.phpConfFPM  | indent 12 }}
 {{- end }}
           readinessProbe:
-            tcpSocket:
-              port: fpm
+            failureThreshold: 3
             initialDelaySeconds: 5
             periodSeconds: 1
             successThreshold: 3
+            tcpSocket:
+              port: fpm
+            timeoutSeconds: 1
           livenessProbe:
             failureThreshold: 3
             initialDelaySeconds: 5
@@ -114,6 +119,13 @@ spec:
         - name: httpd
           image: "{{ .Values.image.httpd.repository }}:{{ .Values.image.httpd.tag }}"
           imagePullPolicy: {{ .Values.image.httpd.pullPolicy | quote }}
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+            requests:
+              cpu: 200m
+              memory: 128Mi
           ports:
             - containerPort: 80
               name: httpd
@@ -131,20 +143,20 @@ spec:
               readOnly: true
           readinessProbe:
             failureThreshold: 3
+            initialDelaySeconds: 2
+            periodSeconds: 5
+            successThreshold: 3
             tcpSocket:
               port: httpd
-            initialDelaySeconds: 2
-            periodSeconds: 1
-            successThreshold: 3
             timeoutSeconds: 5
           livenessProbe:
-            failureThreshold: 3
+            failureThreshold: 6
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            successThreshold: 1
             tcpSocket:
               port: httpd
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 1
+            timeoutSeconds: 5
       volumes:
         - name: web-src
           emptyDir: {}
