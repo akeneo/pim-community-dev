@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Tool\Bundle\MessengerBundle\Serialization;
 
-use Akeneo\Tool\Bundle\MessengerBundle\Message\OrderedMessageInterface;
 use Akeneo\Tool\Bundle\MessengerBundle\Serialization\JsonSerializer;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Messenger\Envelope;
@@ -64,32 +63,6 @@ class JsonSerializerSpec extends ObjectBehavior
             ->shouldReturn([
                 'body' => '{"some_property":"Some value!"}',
                 'headers' => ['class' => \stdClass::class],
-                'orderingKey' => null,
-            ]);
-    }
-
-    public function it_encodes_an_envelope_with_ordering_key($normalizer): void
-    {
-        $message = new class implements OrderedMessageInterface {
-            public function getOrderingKey(): string
-            {
-                return 'the_key';
-            }
-
-        };
-        $envelope = new Envelope($message);
-
-        $normalizer->supportsNormalization($message, 'json', [])
-            ->willReturn(true);
-
-        $normalizer->normalize($message, 'json', [])
-            ->willReturn(['some_property' => 'Some value!']);
-
-        $this->encode($envelope)
-            ->shouldReturn([
-                'body' => '{"some_property":"Some value!"}',
-                'headers' => ['class' => get_class($message)],
-                'orderingKey' => 'the_key',
             ]);
     }
 }

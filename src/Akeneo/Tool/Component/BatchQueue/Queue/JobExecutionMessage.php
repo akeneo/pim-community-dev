@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\BatchQueue\Queue;
 
-use Akeneo\Tool\Bundle\MessengerBundle\Message\OrderedMessageInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -15,10 +14,8 @@ use Ramsey\Uuid\UuidInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class JobExecutionMessage implements JobExecutionMessageInterface, OrderedMessageInterface
+abstract class JobExecutionMessage implements JobExecutionMessageInterface
 {
-    private const ORDERING_KEY = 'job_key';
-
     private UuidInterface $id;
     private int $jobExecutionId;
     private \DateTime $createTime;
@@ -83,10 +80,5 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface, Orde
     public function getOptions(): array
     {
         return $this->options;
-    }
-
-    public function getOrderingKey(): string
-    {
-        return self::ORDERING_KEY;
     }
 }
