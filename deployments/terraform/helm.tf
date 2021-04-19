@@ -43,6 +43,7 @@ resource "local_file" "helm_pim_config" {
   content  = data.template_file.helm_pim_config.rendered
   filename = "./tf-helm-pim-values.yaml"
 }
+
 data "helm_repository" "traefik" {
   name = "traefik-v2"
   url  = "https://helm.traefik.io/traefik"
@@ -71,7 +72,6 @@ resource "null_resource" "helm_release_pim" {
     command = <<EOF
 yq w -i ${path.module}/pim/Chart.yaml version 0.0.0-${var.pim_version}
 yq w -i ${path.module}/pim/Chart.yaml appVersion ${var.pim_version}
-helm3 repo add akeneo-charts gs://akeneo-charts/
 helm3 dependencies update ${path.module}/pim/
 export KUBECONFIG="${local_file.kubeconfig.filename}"
 helm3 upgrade --atomic --cleanup-on-fail --history-max 5 --create-namespace --wait --install --timeout 20m ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
