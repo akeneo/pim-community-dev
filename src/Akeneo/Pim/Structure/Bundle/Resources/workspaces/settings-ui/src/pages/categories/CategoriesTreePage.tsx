@@ -2,8 +2,15 @@ import React, {FC, useCallback, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {Breadcrumb, Button, Tree} from 'akeneo-design-system';
 import {PimView, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {CategoryTree, FullScreenError, PageContent, PageHeader, useSetPageTitle} from '@akeneo-pim-community/shared';
-import {useCategoryTree} from '../../hooks';
+import {
+  CategoryTree,
+  CategoryTreeModel,
+  FullScreenError,
+  PageContent,
+  PageHeader,
+  useSetPageTitle
+} from '@akeneo-pim-community/shared';
+import {useCategoryTree, useCategoryTreeLoader} from '../../hooks';
 
 type Params = {
   treeId: string;
@@ -15,6 +22,7 @@ const CategoriesTreePage: FC = () => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const {tree, status, load} = useCategoryTree(parseInt(treeId));
+  const {loadChildren, loadRoot} = useCategoryTreeLoader(parseInt(treeId));
   const [treeLabel, setTreeLabel] = useState(`[${treeId}]`);
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_tree', {'category.label': treeLabel}));
@@ -97,11 +105,11 @@ const CategoriesTreePage: FC = () => {
             {/* @todo Adapt loading of the structure and model */}
             <CategoryTree
               onChange={() => console.log('change')}
-              childrenCallback={() => Promise.resolve([])}
-              init={() => Promise.resolve(tree)}
+              childrenCallback={loadChildren}
+              init={loadRoot}
               style="list"
               onClick={
-                isGranted('pim_enrich_product_category_edit') ? category => followEditCategory(category.id) : undefined
+                isGranted('pim_enrich_product_category_edit') ? (category: CategoryTreeModel) => followEditCategory(category.id) : undefined
               }
               actions={buildActions}
             />

@@ -72,7 +72,7 @@ const TreeLoaderIcon = styled(LoaderIcon)`
   color: ${getColor('grey100')};
 `;
 
-type TreeStyle = 'standard' | 'list';
+export type TreeStyle = 'standard' | 'list';
 
 const TreeLine = styled.div<{$selected: boolean; $style: TreeStyle} & AkeneoThemedProps>`
   display: flex;

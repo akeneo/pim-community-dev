@@ -67,7 +67,7 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
       _isRoot={isRoot}
     >
       {actions && (
-        <Tree.Actions>{actions(categoryState, isRoot)}</Tree.Actions>
+        <Tree.Actions key={`actions-${categoryState.id}`}>{actions(categoryState, isRoot)}</Tree.Actions>
       )}
       {categoryState.children &&
         categoryState.children.map(childNode => {
