@@ -7,10 +7,9 @@ const unitConfig = {
     '^.+\\.tsx?$': 'ts-jest',
   },
   coveragePathIgnorePatterns: [
-    'akeneo-design-system',
-    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge',
-    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/Modal.tsx',
+    'front-packages',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/NoData.tsx',
+    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/PimView.tsx',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/tools',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/components/',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/tests/front/unit/utils.tsx',
@@ -37,7 +36,7 @@ const unitConfig = {
   testRegex: '(.*)\\.unit\\.(jsx?|tsx?)$',
   testPathIgnorePatterns: [
     '/node_modules/',
-    '/akeneo-design-system/',
+    '/front-packages/',
     '<rootDir>/src/Akeneo/Connectivity/',
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
