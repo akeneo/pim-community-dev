@@ -43,6 +43,15 @@ resource "local_file" "helm_pim_config" {
   content  = data.template_file.helm_pim_config.rendered
   filename = "./tf-helm-pim-values.yaml"
 }
+data "helm_repository" "traefik" {
+  name = "traefik-v2"
+  url  = "https://helm.traefik.io/traefik"
+}
+
+data "helm_repository" "akeneo-charts" {
+  name = "akeneo-charts"
+  url  = "gs://akeneo-charts"
+}
 
 resource "null_resource" "helm_release_pim" {
   triggers = {
