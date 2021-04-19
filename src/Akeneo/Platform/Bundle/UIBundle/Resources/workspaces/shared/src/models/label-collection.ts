@@ -1,6 +1,7 @@
 type LabelCollection = {
   [localeCode: string]: string;
 };
+
 const isLabelCollection = (labelCollection: any): labelCollection is LabelCollection => {
   if (undefined === labelCollection || typeof labelCollection !== 'object') {
     return false;
@@ -11,4 +12,9 @@ const isLabelCollection = (labelCollection: any): labelCollection is LabelCollec
   );
 };
 
-export {isLabelCollection, LabelCollection};
+const getLabel = (labels: LabelCollection, locale: string, fallback: string): string => {
+  return labels && labels[locale] ? labels[locale] : `[${fallback}]`;
+};
+
+export {getLabel, isLabelCollection};
+export type {LabelCollection};

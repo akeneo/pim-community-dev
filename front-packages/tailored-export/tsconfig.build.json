@@ -1,4 +1,5 @@
 {
   "extends": "./tsconfig.json",
+  "module": "commonjs",
   "exclude": ["src/**/*.unit.ts", "src/**/*.unit.tsx", "src/**/*.visual.tsx"]
 }
