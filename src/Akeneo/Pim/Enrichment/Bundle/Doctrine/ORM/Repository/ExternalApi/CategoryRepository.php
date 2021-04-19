@@ -178,7 +178,7 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
         ];
         $availableSearchFilters = array_keys($constraints);
 
-        $exceptionMessage = '';
+        $exceptionMessages = [];
         foreach ($searchFilters as $property => $searchFilter) {
             if (!in_array($property, $availableSearchFilters)) {
                 throw new \InvalidArgumentException(sprintf(
@@ -188,14 +188,13 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                 ));
             }
             $violations = $validator->validate($searchFilter, $constraints[$property]);
-            if (0 !== $violations->count()) {
-                foreach ($violations as $violation) {
-                    $exceptionMessage .= $violation->getMessage();
-                }
+            foreach ($violations as $violation) {
+                $exceptionMessages[] = $violation->getMessage();
             }
         }
-        if ('' !== $exceptionMessage) {
-            throw new \InvalidArgumentException($exceptionMessage);
+
+        if (!empty($exceptionMessages)) {
+            throw new \InvalidArgumentException(implode(' ', $exceptionMessages));
         }
     }
 }
