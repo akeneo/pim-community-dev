@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {cloneElement} from 'react';
 import {
   Button,
   DownloadIcon,
@@ -39,6 +39,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
   originalFilename,
   downloadUrl,
   state,
+  children,
   ...rest
 }) => {
   const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
@@ -50,6 +51,24 @@ const ImageCard: React.FC<ImageCardProps> = ({
       removed: RemovedClassName,
       added: AddedClassName,
     }[state];
+  }
+
+  let fullscreen = (
+    <FullscreenPreview title={originalFilename} src={thumbnailUrl} onClose={closeFullscreenModal}>
+      <Button href={thumbnailUrl} ghost={true} level="tertiary" target="_blank" download={thumbnailUrl}>
+        <DownloadIcon /> {translate('pim_asset_manager.asset_preview.download')}
+      </Button>
+    </FullscreenPreview>
+  );
+
+  if (React.Children.count(children)) {
+    fullscreen = (
+      <>
+        {React.Children.map(children, child => {
+          return cloneElement(child, {onClose: closeFullscreenModal});
+        })}
+      </>
+    );
   }
 
   return (
@@ -69,13 +88,15 @@ const ImageCard: React.FC<ImageCardProps> = ({
           clearable={false}
           className={className}
         >
-          <IconButton
-            download={downloadUrl}
-            href={downloadUrl}
-            icon={<DownloadIcon />}
-            target="_blank"
-            title={translate('pim_asset_manager.asset_preview.download')}
-          />
+          {downloadUrl && (
+            <IconButton
+              download={downloadUrl}
+              href={downloadUrl}
+              icon={<DownloadIcon />}
+              target="_blank"
+              title={translate('pim_asset_manager.asset_preview.download')}
+            />
+          )}
           {thumbnailUrl !== '/bundles/pimui/img/image_default.png' && (
             <IconButton
               icon={<FullscreenIcon />}
@@ -85,13 +106,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
           )}
         </MediaFileInput>
       </ImageCardWrapper>
-      {thumbnailUrl !== '/bundles/pimui/img/image_default.png' && isFullscreenModalOpen && (
-        <FullscreenPreview title={originalFilename} src={thumbnailUrl} onClose={closeFullscreenModal}>
-          <Button href={thumbnailUrl} ghost={true} level="tertiary" target="_blank" download={thumbnailUrl}>
-            <DownloadIcon /> {translate('pim_asset_manager.asset_preview.download')}
-          </Button>
-        </FullscreenPreview>
-      )}
+      {thumbnailUrl !== '/bundles/pimui/img/image_default.png' && isFullscreenModalOpen && fullscreen}
     </div>
   );
 };
