@@ -38,7 +38,7 @@ SQL;
                 'runningStatuses' => [BatchStatus::STARTED, BatchStatus::STOPPING],
             ],
             [
-                'jobCodes' => Connection::PARAM_INT_ARRAY,
+                'jobCodes' => Connection::PARAM_STR_ARRAY,
                 'runningStatuses' => Connection::PARAM_INT_ARRAY,
             ]
         );
