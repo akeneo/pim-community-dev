@@ -9,7 +9,8 @@ K8S_CLUSTER_VERSION_ENABLED=${K8S_CLUSTER_VERSION_ENABLED:-0}
 WITH_ONBOARDER=${WITH_ONBOARDER:-0}
 
 if [[ ! -f /usr/local/bin/kubeval ]]; then
-    wget https://github.com/instrumenta/kubeval/releases/download/0.16.1/kubeval-linux-386.tar.gz
+    wget https://github.com/instrumenta/kubeval/releases/download/v0.16.1/kubeval-linux-386.tar.gz
+
     tar -xzf kubeval-linux-386.tar.gz
     mv kubeval /usr/local/bin/kubeval
     chmod +x /usr/local/bin/kubeval
