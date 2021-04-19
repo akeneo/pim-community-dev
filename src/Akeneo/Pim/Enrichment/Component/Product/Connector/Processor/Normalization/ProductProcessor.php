@@ -4,18 +4,14 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalizat
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\FilterValues;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
-use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Tool\Component\Connector\Processor\BulkMediaFetcher;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -28,38 +24,24 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var StepExecution */
-    protected $stepExecution;
-
-    /** @var BulkMediaFetcher */
-    protected $mediaFetcher;
-
-    /** @var FillMissingValuesInterface */
-    protected $fillMissingProductModelValues;
-
+    protected NormalizerInterface $normalizer;
+    protected IdentifiableObjectRepositoryInterface $channelRepository;
+    protected AttributeRepositoryInterface $attributeRepository;
+    protected FillMissingValuesInterface $fillMissingProductModelValues;
     private ?GetProductsWithQualityScoresInterface $getProductsWithQualityScores;
+
+    protected ?StepExecution $stepExecution = null;
 
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        BulkMediaFetcher $mediaFetcher,
         FillMissingValuesInterface $fillMissingProductModelValues,
         ?GetProductsWithQualityScoresInterface $getProductsWithQualityScores = null
     ) {
         $this->normalizer          = $normalizer;
         $this->channelRepository   = $channelRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->mediaFetcher        = $mediaFetcher;
         $this->fillMissingProductModelValues = $fillMissingProductModelValues;
         $this->getProductsWithQualityScores = $getProductsWithQualityScores;
     }
@@ -67,7 +49,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /**
      * {@inheritdoc}
      */
-    public function process($product)
+    public function process($product): array
     {
         $parameters = $this->stepExecution->getJobParameters();
         $structure = $parameters->get('filters')['structure'];
@@ -91,12 +73,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
 
         $productStandard['values'] = $this->filterLocaleSpecificAttributes($productStandard['values']);
 
-        if ($parameters->has('with_media') && $parameters->get('with_media')) {
-            $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
-                ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
-
-            $this->fetchMedia($product, $directory);
-        } else {
+        if (!$parameters->has('with_media') || true !== $parameters->get('with_media')) {
             $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
             $productStandard['values'] = array_filter(
                 $productStandard['values'],
@@ -122,24 +99,9 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
-    }
-
-    /**
-     * Fetch medias on the local filesystem
-     *
-     * @param EntityWithFamilyInterface $product
-     * @param string           $directory
-     */
-    protected function fetchMedia(EntityWithFamilyInterface $product, $directory)
-    {
-        $this->mediaFetcher->fetchAll($product->getValues(), $directory, $product->getIdentifier());
-
-        foreach ($this->mediaFetcher->getErrors() as $error) {
-            $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
-        }
     }
 
     protected function filterLocaleSpecificAttributes(array $values): array
@@ -163,7 +125,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      *
      * @return array
      */
-    protected function getAttributesCodesToFilter(JobParameters $parameters)
+    protected function getAttributesCodesToFilter(JobParameters $parameters): array
     {
         $attributes = $parameters->get('filters')['structure']['attributes'];
         $identifierCode = $this->attributeRepository->getIdentifierCode();
@@ -181,7 +143,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      *
      * @return bool
      */
-    protected function areAttributesToFilter(JobParameters $parameters)
+    protected function areAttributesToFilter(JobParameters $parameters): bool
     {
         return isset($parameters->get('filters')['structure']['attributes'])
             && !empty($parameters->get('filters')['structure']['attributes']);

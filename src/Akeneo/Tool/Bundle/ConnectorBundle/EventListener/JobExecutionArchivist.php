@@ -18,12 +18,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class JobExecutionArchivist implements EventSubscriberInterface
 {
     /** @var ArchiverInterface[] */
-    protected $archivers = [];
+    protected array $archivers = [];
 
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'beforeStatusUpgrade',
@@ -37,7 +37,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function registerArchiver(ArchiverInterface $archiver)
+    public function registerArchiver(ArchiverInterface $archiver): void
     {
         if (array_key_exists($archiver->getName(), $this->archivers)) {
             throw new \InvalidArgumentException(
@@ -57,7 +57,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
      *
      * @param JobExecutionEvent $event
      */
-    public function beforeStatusUpgrade(JobExecutionEvent $event)
+    public function beforeStatusUpgrade(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
 
@@ -75,13 +75,13 @@ class JobExecutionArchivist implements EventSubscriberInterface
      *
      * @return array
      */
-    public function getArchives(JobExecution $jobExecution)
+    public function getArchives(JobExecution $jobExecution, bool $recursive = false)
     {
         $result = [];
 
         if (!$jobExecution->isRunning()) {
             foreach ($this->archivers as $archiver) {
-                if (count($archives = $archiver->getArchives($jobExecution)) > 0) {
+                if (count($archives = $archiver->getArchives($jobExecution, $recursive)) > 0) {
                     $result[$archiver->getName()] = $archives;
                 }
             }
@@ -90,16 +90,31 @@ class JobExecutionArchivist implements EventSubscriberInterface
         return $result;
     }
 
+    public function hasAtLeastTwoArchives(JobExecution $jobExecution): bool
+    {
+        $count = 0;
+        if (!$jobExecution->isRunning()) {
+            foreach ($this->archivers as $archiver) {
+                $count += \count($archiver->listContents($jobExecution));
+                if ($count >= 2) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Get an archive of an archiver
      *
      * @param JobExecution $jobExecution
-     * @param string       $archiver
-     * @param string       $key
-     *
-     * @throws \InvalidArgumentException
+     * @param string $archiver
+     * @param string $key
      *
      * @return resource
+     * @throws \InvalidArgumentException
+     *
      */
     public function getArchive(JobExecution $jobExecution, $archiver, $key)
     {

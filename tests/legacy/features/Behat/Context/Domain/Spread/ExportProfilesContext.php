@@ -269,6 +269,10 @@ class ExportProfilesContext extends ImportExportContext
      */
     public function exportDirectoryOfShouldContainTheFollowingMedia($code, TableNode $table)
     {
+        // In Saas versions we do not fetch media files to the export directory anymore
+        if ($this->getService('pim_catalog.version_provider')->isSaasVersion()) {
+            return;
+        }
         $jobInstance = $this->getFixturesContext()->getJobInstance($code);
         $path = dirname($jobInstance->getRawParameters()['filePath']);
 
