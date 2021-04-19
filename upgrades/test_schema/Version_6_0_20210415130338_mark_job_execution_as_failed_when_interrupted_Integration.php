@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Pim\Upgrade\test_schema;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\AttributeGrid\TestCase;
+use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Doctrine\DBAL\Connection;
@@ -84,11 +84,25 @@ class Version_6_0_20210415130338_mark_job_execution_as_failed_when_interrupted_I
     {
         parent::setUp();
         $this->connection = $this->get('database_connection');
+
+        $this->createJobInstance(self::PROJECT_CALCULATION_JOB_NAME);
+        $this->createJobInstance(self::RULE_EXECUTION_JOB_NAME);
     }
 
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function createJobInstance(string $jobCode): void
+    {
+        $this->connection->executeQuery(
+            <<<SQL
+INSERT IGNORE INTO akeneo_batch_job_instance (code, label, job_name, status, connector, raw_parameters, type) 
+VALUES (:code, :code, :code, 0, 'internal', 'a:0:{}', :code)
+SQL,
+            ['code' => $jobCode]
+        );
     }
 
     private function createJobExecutions(string $jobCode, int $status, string $exitCode, bool $withHealthCheckTime = false): int
@@ -97,11 +111,13 @@ class Version_6_0_20210415130338_mark_job_execution_as_failed_when_interrupted_I
 
         $this->connection->executeUpdate(
             <<<SQL
-INSERT INTO akeneo_batch_job_execution(job_instance_id, status, start_time, exit_code, health_check_time, raw_parameters)
-VALUES (:jobInstanceId, :status, :now, :exitCode, :healthCheckTime, '{}');
+INSERT INTO akeneo_batch_job_execution (job_instance_id, status, start_time, exit_code, health_check_time, raw_parameters)
+    SELECT job.id, :status, :now, :exitCode, :healthCheckTime, '{}' 
+    FROM akeneo_batch_job_instance job
+    WHERE job.code = :jobCode;
 SQL,
             [
-                'jobInstanceId' => $this->getJobInstanceId($jobCode),
+                'jobCode' => $jobCode,
                 'status' => $status,
                 'exitCode' => $exitCode,
                 'healthCheckTime' => $withHealthCheckTime ? $now->format('Y-m-d H:i:s') : null,
@@ -109,23 +125,7 @@ SQL,
             ]
         );
 
-        return (int)$this->connection->lastInsertId();
-    }
-
-    private function getJobInstanceId(string $jobCode): int
-    {
-        if (null === $this->jobInstanceId) {
-            $res = $this->connection->executeQuery(
-                'SELECT id FROM akeneo_batch_job_instance WHERE code = :code',
-                [
-                    'code' => $jobCode,
-                ]
-            )->fetch();
-            Assert::assertNotFalse($res);
-            $this->jobInstanceId = (int) $res['id'];
-        }
-
-        return $this->jobInstanceId;
+        return (int) $this->connection->lastInsertId();
     }
 
     private function executionFailed(array $jobExecutionIds): bool
