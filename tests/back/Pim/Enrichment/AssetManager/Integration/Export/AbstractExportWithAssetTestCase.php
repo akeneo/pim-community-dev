@@ -46,11 +46,15 @@ use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
+use Akeneo\Platform\EnterpriseVersion;
+use Akeneo\Platform\VersionProvider;
+use Akeneo\Platform\VersionProviderInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Command\BatchCommand;
 use Akeneo\Tool\Component\Connector\Reader\File\Xlsx\Reader;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractItemMediaWriter;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
+use PHPUnit\Framework\Constraint\Callback;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -435,15 +439,34 @@ abstract class AbstractExportWithAssetTestCase extends AbstractExportTestCase
 
     protected function assertFileExistsInWorkingPath(string $file): void
     {
-        self::assertFileExists(
-            $this->getWorkingPath() . '/' . $file,
-            sprintf(
-                "The '%s' file is not found. Got: \n%s",
+        // in saas editions the files are not locally copied
+        if (!$this->get('pim_catalog.version_provider')->isSaasVersion()) {
+            self::assertFileExists(
                 $this->getWorkingPath() . '/' . $file,
-                $this->scanDirectoryRecursively($this->getWorkingPath())
-            )
+                sprintf(
+                    "The '%s' file is not found. Got: \n%s",
+                    $this->getWorkingPath() . '/' . $file,
+                    $this->scanDirectoryRecursively($this->getWorkingPath())
+                )
+            );
+        }
+
+        $writtenFiles = $this->getWriter()->getWrittenFiles();
+        self::assertThat(
+            $file,
+            new Callback(
+                function ($filepath) use ($writtenFiles): bool {
+                    foreach ($writtenFiles as $writtenFile) {
+                        if ($filepath === $writtenFile->outputFilepath()) {
+                            return true;
+                        }
+                }
+
+                    return false;
+                }
+            ),
+            \sprintf('The "%s" file will not be stored in the archivist filesystem', $file)
         );
-        self::assertContains($file, $this->getWriter()->getWrittenFiles(), 'The file will not be present in archive');
     }
 
     protected function scanDirectoryRecursively(string $dir): string

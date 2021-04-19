@@ -128,6 +128,8 @@ services:
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
             - '@pim_enrich.connector.flat_translators.published_product_translator'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['pim_catalog_file', 'pim_catalog_image', 'pim_catalog_asset_collection']
             - 'filePath'
 
@@ -167,6 +169,8 @@ services:
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
             - '@pim_enrich.connector.flat_translators.published_product_translator'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['pim_catalog_file', 'pim_catalog_image', 'pim_catalog_asset_collection']
             - 'filePath'
 

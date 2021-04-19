@@ -14,37 +14,13 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
-use Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Processor\BulkMediaFetcher;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Processor\Normalization\AssetProcessor;
-use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
-use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
-use Akeneo\Tool\Component\Batch\Job\JobInterface;
-use Akeneo\Tool\Component\Batch\Job\JobParameters;
-use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 
 class AssetProcessorSpec extends ObjectBehavior
 {
-    function let(
-        BulkMediaFetcher $mediaFetcher,
-        StepExecution $stepExecution,
-        JobParameters $jobParameters,
-        JobExecution $jobExecution,
-        ExecutionContext $executionContext
-    ) {
-        $this->beConstructedWith($mediaFetcher);
-
-        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn('/tmp/akeneo_batch_1234');
-        $jobExecution->getExecutionContext()->willReturn($executionContext);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $this->setStepExecution($stepExecution);
-    }
-
     function it_is_a_processor()
     {
         $this->shouldImplement(ItemProcessorInterface::class);
@@ -60,7 +36,7 @@ class AssetProcessorSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('process', [new \stdClass()]);
     }
 
-    function it_returns_a_normalized_asset(BulkMediaFetcher $mediaFetcher, JobParameters $jobParameters)
+    function it_returns_a_normalized_asset()
     {
         $asset = Asset::create(
             AssetIdentifier::fromString('asset_packshot_1'),
@@ -86,11 +62,24 @@ class AssetProcessorSpec extends ObjectBehavior
                         LocaleReference::noReference(),
                         NumberData::fromString('42')
                     ),
+                    Value::create(
+                        AttributeIdentifier::fromString('media_def789'),
+                        ChannelReference::noReference(),
+                        LocaleReference::noReference(),
+                        FileData::createFromNormalize(
+                            [
+                                'filePath' => '1/2/3/jambonabcdef.jpg',
+                                'originalFilename' => 'jambon.jpg',
+                                'size' => 4096,
+                                'mimeType' => 'image/jpg',
+                                'extension' => 'jpg',
+                                'updatedAt' => '2020-01-01T00:00:00+00:00',
+                            ]
+                        )
+                    ),
                 ]
             )
         );
-
-        $jobParameters->get('with_media')->willReturn(false);
 
         $this->process($asset)->shouldReturn(
             [
@@ -116,103 +105,21 @@ class AssetProcessorSpec extends ObjectBehavior
                         'locale' => null,
                         'data' => '42',
                     ],
-                ],
-            ]
-        );
-    }
-
-    function it_fetches_the_media_files(BulkMediaFetcher $mediaFetcher, JobParameters $jobParameters)
-    {
-        $asset = Asset::create(
-            AssetIdentifier::fromString('asset_packshot_1'),
-            AssetFamilyIdentifier::fromString('packshot'),
-            AssetCode::fromString('asset_1'),
-            ValueCollection::fromValues(
-                [
-                    Value::create(
-                        AttributeIdentifier::fromString('media_123456'),
-                        ChannelReference::noReference(),
-                        LocaleReference::noReference(),
-                        FileData::createFromNormalize([
+                    'media_def789' => [
+                        'attribute' => 'media_def789',
+                        'channel' => null,
+                        'locale' => null,
+                        'data' => [
                             'filePath' => '1/2/3/jambonabcdef.jpg',
                             'originalFilename' => 'jambon.jpg',
                             'size' => 4096,
                             'mimeType' => 'image/jpg',
                             'extension' => 'jpg',
-                            'updatedAt' => '2020-01-01T00:00:00+00:00',
-                        ])
-                    ),
-                    Value::create(
-                        AttributeIdentifier::fromString('notice_123456'),
-                        ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
-                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-                        FileData::createFromNormalize([
-                            'filePath' => 'a/b/c/tartiflette654321.png',
-                            'originalFilename' => 'tartiflette.png',
-                            'size' => 8192,
-                            'mimeType' => 'image/png',
-                            'extension' => 'png',
-                            'updatedAt' => '2020-01-10T00:00:00+00:00',
-                        ])
-                    ),
-                ]
-            )
-        );
-
-        $jobParameters->get('with_media')->willReturn(true);
-        $mediaFetcher->fetchAll($asset->getValues(), '/tmp/akeneo_batch_1234', 'asset_1')->shouldBeCalled();
-        $mediaFetcher->getErrors()->willReturn([]);
-
-        $this->process($asset)->shouldReturn($asset->normalize());
-    }
-
-    function it_add_warnings_when_media_fetching_is_in_error(
-        BulkMediaFetcher $mediaFetcher,
-        StepExecution $stepExecution,
-        JobParameters $jobParameters
-    ) {
-        $asset = Asset::create(
-            AssetIdentifier::fromString('asset_packshot_1'),
-            AssetFamilyIdentifier::fromString('packshot'),
-            AssetCode::fromString('asset_1'),
-            ValueCollection::fromValues(
-                [
-                    Value::create(
-                        AttributeIdentifier::fromString('media_123456'),
-                        ChannelReference::noReference(),
-                        LocaleReference::noReference(),
-                        FileData::createFromNormalize(
-                            [
-                                'filePath' => '1/2/3/jambonabcdef.jpg',
-                                'originalFilename' => 'jambon.jpg',
-                                'size' => 4096,
-                                'mimeType' => 'image/jpg',
-                                'extension' => 'jpg',
-                                'updatedAt' => '2020-01-01T00:00:00+00:00',
-                            ]
-                        )
-                    ),
-                ]
-            )
-        );
-
-        $jobParameters->get('with_media')->willReturn(true);
-        $mediaFetcher->fetchAll($asset->getValues(), '/tmp/akeneo_batch_1234', 'asset_1')->shouldBeCalled();
-
-        $error = [
-            'message' => 'The media has not been found or is not currently available',
-            'media' => [
-                'from' => '1/2/3/jambonabcdef.jpg',
-                'to' => [
-                    'filePath' => '/tmp/akeneo_batch_1234/files/asset_1/media/',
-                    'filename' => 'jambon.jpg',
+                            'updatedAt' => '2020-01-01T00:00:00+0000',
+                        ],
+                    ],
                 ],
-                'storage' => 'assetStorage',
-            ],
-        ];
-        $mediaFetcher->getErrors()->willReturn([$error]);
-        $stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']))->shouldBeCalled();
-
-        $this->process($asset)->shouldReturn($asset->normalize());
+            ]
+        );
     }
 }

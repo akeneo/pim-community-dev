@@ -14,52 +14,18 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Processor\Normalization;
 
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
-use Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Processor\BulkMediaFetcher;
-use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
-use Akeneo\Tool\Component\Batch\Job\JobInterface;
-use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Webmozart\Assert\Assert;
 
-class AssetProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
+class AssetProcessor implements ItemProcessorInterface
 {
-    /** @var StepExecution */
-    private $stepExecution;
-
-    /** @var BulkMediaFetcher */
-    private $mediaFetcher;
-
-    public function __construct(BulkMediaFetcher $mediaFetcher)
-    {
-        $this->mediaFetcher = $mediaFetcher;
-    }
-
     /**
      * {@inheritdoc}
      */
-    public function process($asset)
+    public function process($asset): array
     {
         Assert::isInstanceOf($asset, Asset::class);
 
-        if (true === $this->stepExecution->getJobParameters()->get('with_media')) {
-            $directory = $this->stepExecution->getJobExecution()->getExecutionContext()->get(
-                JobInterface::WORKING_DIRECTORY_PARAMETER
-            );
-            $this->mediaFetcher->fetchAll($asset->getValues(), $directory, $asset->getCode()->__toString());
-            foreach ($this->mediaFetcher->getErrors() as $error) {
-                $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
-            }
-        }
-
         return $asset->normalize();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
     }
 }

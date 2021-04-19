@@ -166,16 +166,6 @@ services:
     # Processors:
     akeneo_assetmanager.job.processor.normalization.asset:
         class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Processor\Normalization\AssetProcessor'
-        arguments:
-            - '@akeneo_assetmanager.job.processor.bulk_media_fetcher'
-
-    akeneo_assetmanager.job.processor.bulk_media_fetcher:
-        class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Processor\BulkMediaFetcher'
-        arguments:
-            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
-            - '@pim_connector.writer.file.media_exporter_path_generator'
-            - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
     akeneo_assetmanager.job.processor.denormalization.create_and_edit_asset_command:
         class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Processor\Denormalization\AssetProcessor'
@@ -196,6 +186,8 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
             - '@akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_per_channels'
             - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
 
     akeneo_assetmanager.job.writer.xlsx_file.asset:
         class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Writer\File\Xlsx\AssetWriter'
@@ -206,6 +198,8 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
             - '@akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_per_channels'
             - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
 
     akeneo_assetmanager.job.array_converter.standard_to_flat.asset:
         class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Connector\ArrayConverter\StandardToFlat\Asset'

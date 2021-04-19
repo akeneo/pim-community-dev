@@ -14,6 +14,7 @@ use Akeneo\AssetManager\Domain\Query\Channel\FindActivatedLocalesPerChannelsInte
 use Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Writer\File\AbstractAssetWriter;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -26,16 +27,17 @@ use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Filesystem\Filesystem;
+use Prophecy\Argument;
 
 class AssetWriterSpec extends ObjectBehavior
 {
-    /** @var Filesystem */
-    private $filesystem;
-
-    /** @var string */
-    private $directory;
+    private string $directory;
 
     function let(
         ArrayConverterInterface $arrayConverter,
@@ -45,6 +47,8 @@ class AssetWriterSpec extends ObjectBehavior
         FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
         FileExporterPathGeneratorInterface $fileExporterPath,
         FlatItemBuffer $flatRowBuffer,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FilesystemProvider $filesystemProvider,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
@@ -54,9 +58,7 @@ class AssetWriterSpec extends ObjectBehavior
         TextAttribute $localizableAttribute,
         MediaLinkAttribute $nonScopableNonLocalizableAttribute
     ) {
-        $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spec' . DIRECTORY_SEPARATOR;
-        $this->filesystem = new Filesystem();
-        $this->filesystem->mkdir($this->directory);
+        $this->directory = '/tmp/spec/csv_asset_export/';
 
         $this->beConstructedWith(
             $arrayConverter,
@@ -64,10 +66,14 @@ class AssetWriterSpec extends ObjectBehavior
             $flusher,
             $findAttributesIndexedByIdentifier,
             $findActivatedLocalesPerChannels,
-            $fileExporterPath
+            $fileExporterPath,
+            $fileInfoRepository,
+            $filesystemProvider
         );
 
-        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory . 'akeneo_batch1234/');
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn(
+            $this->directory . 'akeneo_batch1234/'
+        );
         $jobExecution->getExecutionContext()->willReturn($executionContext);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobParameters->get('asset_family_identifier')->willReturn('packshot');
@@ -80,18 +86,15 @@ class AssetWriterSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
-        $findAttributesIndexedByIdentifier->find(AssetFamilyIdentifier::fromString('packshot'))->willReturn([
-            'mainmedia_packshot_123abc' => $scopableLocalizableAttribute,
-            'number_packshot_654321' => $scopableAttribute,
-            'label_packshot_456321' => $localizableAttribute,
-            'youtube_packshot_cdefab' => $nonScopableNonLocalizableAttribute,
-        ]);
+        $findAttributesIndexedByIdentifier->find(AssetFamilyIdentifier::fromString('packshot'))->willReturn(
+            [
+                'mainmedia_packshot_123abc' => $scopableLocalizableAttribute,
+                'number_packshot_654321' => $scopableAttribute,
+                'label_packshot_456321' => $localizableAttribute,
+                'youtube_packshot_cdefab' => $nonScopableNonLocalizableAttribute,
+            ]
+        );
         $this->initialize();
-    }
-
-    function letGo()
-    {
-        $this->filesystem->remove($this->directory);
     }
 
     function it_is_a_file_writer()
@@ -127,10 +130,14 @@ class AssetWriterSpec extends ObjectBehavior
                 'code' => 'asset_code_2',
                 'assetFamilyIdentifier' => 'packshot',
                 'values' => ['normalized_values_2'],
-            ]
+            ],
         ];
-        $arrayConverter->convert($normalizedAssets[0], ['with_prefix_suffix' => false])->willReturn(['converted_asset_1']);
-        $arrayConverter->convert($normalizedAssets[1], ['with_prefix_suffix' => false])->willReturn(['converted_asset_2']);
+        $arrayConverter->convert($normalizedAssets[0], ['with_prefix_suffix' => false])->willReturn(
+            ['converted_asset_1']
+        );
+        $arrayConverter->convert($normalizedAssets[1], ['with_prefix_suffix' => false])->willReturn(
+            ['converted_asset_2']
+        );
 
         $flatRowBuffer->write([['converted_asset_1'], ['converted_asset_2']], ['withHeader' => true])->shouldBeCalled();
 
@@ -175,24 +182,28 @@ class AssetWriterSpec extends ObjectBehavior
         $nonScopableNonLocalizableAttribute->hasValuePerChannel()->willReturn(false);
         $nonScopableNonLocalizableAttribute->hasValuePerLocale()->willReturn(false);
 
-        $findAttributesIndexedByIdentifier->find(AssetFamilyIdentifier::fromString('packshot'))->willReturn([
-            $scopableLocalizableAttribute,
-            $scopableAttribute,
-            $localizableAttribute,
-            $nonScopableNonLocalizableAttribute
-        ]);
+        $findAttributesIndexedByIdentifier->find(AssetFamilyIdentifier::fromString('packshot'))->willReturn(
+            [
+                $scopableLocalizableAttribute,
+                $scopableAttribute,
+                $localizableAttribute,
+                $nonScopableNonLocalizableAttribute,
+            ]
+        );
 
-        $flatRowBuffer->addToHeaders([
-           'scopable_and_localizable-en_US-ecommerce',
-           'scopable_and_localizable-fr_FR-ecommerce',
-           'scopable_and_localizable-de_DE-mobile',
-           'scopable-ecommerce',
-           'scopable-mobile',
-           'localizable-en_US',
-           'localizable-fr_FR',
-           'localizable-de_DE',
-           'simple',
-        ])->shouldBeCalled();
+        $flatRowBuffer->addToHeaders(
+            [
+                'scopable_and_localizable-en_US-ecommerce',
+                'scopable_and_localizable-fr_FR-ecommerce',
+                'scopable_and_localizable-de_DE-mobile',
+                'scopable-ecommerce',
+                'scopable-mobile',
+                'localizable-en_US',
+                'localizable-fr_FR',
+                'localizable-de_DE',
+                'simple',
+            ]
+        )->shouldBeCalled();
 
         $flusher->setStepExecution($stepExecution)->shouldBeCalled();
         $flusher->flush(
@@ -205,25 +216,33 @@ class AssetWriterSpec extends ObjectBehavior
             ],
             $this->directory . 'export_assets.csv',
             -1
-        )->shouldBeCalled()->willReturn([
-            $this->directory . 'export_assets_1.csv',
-            $this->directory . 'export_assets_2.csv',
-        ]);
+        )->shouldBeCalled()->willReturn(
+            [
+                $this->directory . 'export_assets_1.csv',
+                $this->directory . 'export_assets_2.csv',
+            ]
+        );
 
         $this->flush();
 
-        $this->getWrittenFiles()->shouldReturn([
-            $this->directory . 'export_assets_1.csv' => 'export_assets_1.csv',
-            $this->directory . 'export_assets_2.csv' =>'export_assets_2.csv'
-        ]);
+        $this->getWrittenFiles()->shouldBeLike(
+            [
+                WrittenFileInfo::fromLocalFile($this->directory . 'export_assets_1.csv', 'export_assets_1.csv'),
+                WrittenFileInfo::fromLocalFile($this->directory . 'export_assets_2.csv', 'export_assets_2.csv'),
+            ]
+        );
     }
 
     function it_resolves_the_media_file_paths(
         ArrayConverterInterface $arrayConverter,
         FileExporterPathGeneratorInterface $fileExporterPath,
         FlatItemBuffer $flatRowBuffer,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FilesystemProvider $filesystemProvider,
         JobParameters $jobParameters,
-        MediaFileAttribute $scopableLocalizableAttribute
+        MediaFileAttribute $scopableLocalizableAttribute,
+        FileInfoInterface $fileInfo,
+        FilesystemInterface $assetFilesystem
     ) {
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(true);
@@ -232,10 +251,6 @@ class AssetWriterSpec extends ObjectBehavior
         $scopableLocalizableAttribute->getCode()->willReturn(AttributeCode::fromString('mainmedia'));
 
         $assetMediaPath = 'files/asset_code_1/mainmedia/en_US/ecommerce/';
-        $exportFilePath = $this->directory . 'akeneo_batch1234/' . $assetMediaPath . 'jambon.jpg';
-        $this->filesystem->mkdir(dirname($exportFilePath));
-        $this->filesystem->touch($exportFilePath);
-
         $normalizedAssets = [
             [
                 'identifier' => 'test_identifier_1',
@@ -247,8 +262,8 @@ class AssetWriterSpec extends ObjectBehavior
                         'locale' => 'en_US',
                         'channel' => 'ecommerce',
                         'data' => [
-                            'filePath' => '1/2/3/jambon987654.jpg'
-                        ]
+                            'filePath' => '1/2/3/jambon987654.jpg',
+                        ],
                     ],
                 ],
             ],
@@ -264,6 +279,14 @@ class AssetWriterSpec extends ObjectBehavior
                 'code' => 'mainmedia',
             ]
         )->willReturn($assetMediaPath);
+
+        $fileInfo->getKey()->willReturn('1/2/3/jambon987654.jpg');
+        $fileInfo->getStorage()->willReturn('assetsStorage');
+        $fileInfo->getOriginalFilename()->willReturn('jambon.jpg');
+        $fileInfoRepository->findOneByIdentifier('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn($fileInfo);
+
+        $filesystemProvider->getFilesystem('assetsStorage')->willReturn($assetFilesystem);
+        $assetFilesystem->has('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn(true);
 
         $arrayConverter->convert(
             [
@@ -286,8 +309,113 @@ class AssetWriterSpec extends ObjectBehavior
         $flatRowBuffer->write([['converted_item']], ['withHeader' => false])->shouldBeCalled();
 
         $this->write($normalizedAssets);
-        $this->getWrittenFiles()->shouldReturn([
-            $exportFilePath => 'files/asset_code_1/mainmedia/en_US/ecommerce/jambon.jpg',
-        ]);
+        $this->getWrittenFiles()->shouldBeLike(
+            [
+                WrittenFileInfo::fromFileStorage(
+                    '1/2/3/jambon987654.jpg',
+                    'assetsStorage',
+                    'files/asset_code_1/mainmedia/en_US/ecommerce/jambon.jpg'
+                ),
+            ]
+        );
+    }
+
+    function it_adds_a_warning_if_the_remote_file_does_not_exist(
+        ArrayConverterInterface $arrayConverter,
+        FileExporterPathGeneratorInterface $fileExporterPath,
+        FlatItemBuffer $flatRowBuffer,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FilesystemProvider $filesystemProvider,
+        JobParameters $jobParameters,
+        MediaFileAttribute $scopableLocalizableAttribute,
+        FileInfoInterface $fileInfo,
+        FilesystemInterface $assetFilesystem,
+        StepExecution $stepExecution
+    )
+    {
+        $jobParameters->has('with_media')->willReturn(true);
+        $jobParameters->get('with_media')->willReturn(true);
+        $jobParameters->get('withHeader')->willReturn(false);
+
+        $scopableLocalizableAttribute->getCode()->willReturn(AttributeCode::fromString('mainmedia'));
+
+        $assetMediaPath = 'files/asset_code_1/mainmedia/en_US/ecommerce/';
+        $normalizedAssets = [
+            [
+                'identifier' => 'test_identifier_1',
+                'code' => 'asset_code_1',
+                'assetFamilyIdentifier' => 'packshot',
+                'values' => [
+                    'mainmedia_packshot_en_US_ecommerce_123abc' => [
+                        'attribute' => 'mainmedia_packshot_123abc',
+                        'locale' => 'en_US',
+                        'channel' => 'ecommerce',
+                        'data' => [
+                            'filePath' => '1/2/3/jambon987654.jpg',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $fileExporterPath->generate(
+            [
+                'scope' => 'ecommerce',
+                'locale' => 'en_US',
+            ],
+            [
+                'identifier' => 'asset_code_1',
+                'code' => 'mainmedia',
+            ]
+        )->willReturn($assetMediaPath);
+
+        $fileInfo->getKey()->willReturn('1/2/3/jambon987654.jpg');
+        $fileInfo->getStorage()->willReturn('assetsStorage');
+        $fileInfo->getOriginalFilename()->willReturn('jambon.jpg');
+        $fileInfoRepository->findOneByIdentifier('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn($fileInfo);
+
+        $filesystemProvider->getFilesystem('assetsStorage')->willReturn($assetFilesystem);
+        $assetFilesystem->has('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn(false);
+
+        $stepExecution->addWarning(
+            'The media has not been found or is not currently available',
+            [],
+            Argument::that(
+                function ($invalidItem): bool {
+                    return $invalidItem instanceof InvalidItemInterface &&
+                        $invalidItem->getInvalidData() === [
+                            'from' => '1/2/3/jambon987654.jpg',
+                            'to' => [
+                                'filePath' => 'files/asset_code_1/mainmedia/en_US/ecommerce',
+                                'filename' => 'jambon.jpg',
+                            ],
+                            'storage' => 'assetsStorage'
+                        ];
+                }
+            )
+        )->shouldBeCalled();
+
+        $arrayConverter->convert(
+            [
+                'identifier' => 'test_identifier_1',
+                'code' => 'asset_code_1',
+                'assetFamilyIdentifier' => 'packshot',
+                'values' => [
+                    'mainmedia_packshot_en_US_ecommerce_123abc' => [
+                        'attribute' => 'mainmedia_packshot_123abc',
+                        'locale' => 'en_US',
+                        'channel' => 'ecommerce',
+                        'data' => [
+                            'filePath' => '1/2/3/jambon987654.jpg',
+                        ],
+                    ],
+                ],
+            ],
+            ['with_prefix_suffix' => false]
+        )->shouldBeCalled()->willReturn(['converted_item']);
+        $flatRowBuffer->write([['converted_item']], ['withHeader' => false])->shouldBeCalled();
+
+        $this->write($normalizedAssets);
+        $this->getWrittenFiles()->shouldReturn([]);
     }
 }
