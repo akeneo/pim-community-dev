@@ -1134,7 +1134,6 @@ config:
     pim/template/product/create-button:                  pimui/templates/product/create-button.html
     pim/template/product/create-modal-content:           pimui/templates/product/create-modal-content.html
     pim/template/product/add-select/attribute/line:      pimui/templates/product/form/add-select/attribute/line.html
-    pim/template/product/form/product-completeness:      pimui/templates/product/form/product-completeness.html
     pim/template/product/form/total-missing-required-attributes: pimui/templates/product/form/total-missing-required-attributes.html
     pim/template/product/form/variant-navigation/navigation: pimui/templates/product/form/variant-navigation/navigation.html
     pim/template/product/form/variant-navigation/product-item: pimui/templates/product/form/variant-navigation/product-item.html
