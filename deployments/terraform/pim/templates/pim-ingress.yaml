@@ -1,5 +1,5 @@
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
 metadata:
   name: pim-external-{{ .Values.global.extraLabels.instanceName }}
   labels:
@@ -8,17 +8,17 @@ metadata:
     role: "pim-web-ingress" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     {{- include "pim.standardLabels" . | indent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
-  annotations:
-    kubernetes.io/ingress.class: traefik
+
 spec:
   tls:
-  - hosts:
-    - {{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
-  rules:
-  - host: {{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: pim-http
-          servicePort: pim-http
+    store:
+      name: default
+    options:
+      name: default
+      namespace: default
+  routes:
+    - match: Host({{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: pim-http
+          port: pim-http
