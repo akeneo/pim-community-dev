@@ -102,3 +102,11 @@ services:
         tags:
             - { name: messenger.message_handler }
             - { name: monolog.logger, channel: job_queue }
+
+    akeneo_batch_queue.ordering_key.resolver.job_message:
+        class: Akeneo\Tool\Bundle\MessengerBundle\Ordering\ClassOrderingKeyResolver
+        arguments:
+            - 'Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage'
+            - 'job_key'
+        tags:
+            - { name: 'akeneo_messenger.ordering_key_candidate' }
