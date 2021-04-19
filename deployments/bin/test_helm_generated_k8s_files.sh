@@ -19,20 +19,22 @@ fi
 helm3 repo add akeneo-charts gs://akeneo-charts/
 helm3 dependency update ${PED_DIR}/terraform/pim
 
+# Traefik resources are skipped since no OpenAPI JSON are provided
+kubeval="kubeval \
+    --skip-kinds TraefikService,IngressRoute \
+    --ignored-filename-patterns .*traefik/templates/service.yaml"
+
 if (($K8S_CLUSTER_VERSION_ENABLED == 1)); then
     K8S_MASTER_VERSION=$(kubectl version -o json | jq -r '.serverVersion.gitVersion' | sed -nre 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p')
     if [[ ! -d v${K8S_MASTER_VERSION}-standalone ]]; then
         pip install openapi2jsonschema
-        openapi2jsonschema -o "v${K8S_MASTER_VERSION}-standalone" --kubernetes --stand-alone --expanded https://raw.githubusercontent.com/kubernetes/kubernetes/v${K8S_MASTER_VERSION}/api/openapi-spec/swagger.json
+        openapi2jsonschema -o "v${K8S_MASTER_VERSION}-standalone" \
+        --kubernetes --stand-alone \
+        --expanded https://raw.githubusercontent.com/kubernetes/kubernetes/v${K8S_MASTER_VERSION}/api/openapi-spec/swagger.json
     fi
-else
-    K8S_MASTER_VERSION=master
-fi
 
-kubeval="kubeval --kubernetes-version ${K8S_MASTER_VERSION}  \
-        --schema-location file://. \
-        --skip-kinds TraefikService,IngressRoute \
-        --ignored-filename-patterns .*traefik/templates/service.yaml"
+    kubeval="${kubeval} --kubernetes-version ${K8S_MASTER_VERSION} --schema-location file://."
+fi
 
 if (($WITH_ONBOARDER == 0)); then
     yq d ${PED_DIR}/config/fake-tf-helm-pim-values.yaml onboarder > ${PED_DIR}/config/fake-tf-helm-pim-values-without-onboarder.yaml
