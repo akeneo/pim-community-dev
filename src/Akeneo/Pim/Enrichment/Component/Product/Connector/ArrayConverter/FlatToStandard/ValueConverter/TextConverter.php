@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter;
+use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
 
 /**
  * Converts text value into structured one.
@@ -29,13 +30,18 @@ class TextConverter extends AbstractValueConverter
      */
     public function convert(array $attributeFieldInfo, $value)
     {
+        $code = $attributeFieldInfo['attribute']->getCode();
+
+        if ($value instanceof \DateTime) {
+            throw new BusinessArrayConversionException("Can not convert cell  {$code} with date format to attribute of type text", "pim_import_export.notification.export.warnings.xlsx_cell_date_to_text_conversion_error", [$code]);
+        }
         if ('' !== $value) {
             $data = (string) $value;
         } else {
             $data = null;
         }
 
-        return [$attributeFieldInfo['attribute']->getCode() => [[
+        return [$code => [[
             'locale' => $attributeFieldInfo['locale_code'],
             'scope'  => $attributeFieldInfo['scope_code'],
             'data'   => $data,

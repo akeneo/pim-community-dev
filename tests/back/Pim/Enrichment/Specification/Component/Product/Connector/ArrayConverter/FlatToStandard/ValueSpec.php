@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayC
 
 use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -246,7 +247,7 @@ class ValueSpec extends ObjectBehavior
         $fieldExtractor->extractColumnInfo($column)->willReturn($attributeFieldInfo);
         $converter->convert($attributeFieldInfo,$dateTime)->willThrow($e);
 
-        $this->shouldThrow(new DataArrayConversionException("Exception while converting column \"{$column}\": bad input format.", 0, $e))
+        $this->shouldThrow(new BusinessArrayConversionException("Exception while converting column \"{$column}\": bad input format.", "pim_import_export.notification.export.warnings.xlsx_cell_conversion_error", []))
             ->during('convert',[$values]);
     }
 }

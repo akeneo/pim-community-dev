@@ -3,7 +3,10 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterRegistryInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -18,7 +21,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 class Value implements ArrayConverterInterface
 {
     /** @var ValueConverterRegistryInterface */
-    protected $convserterRegistry;
+    protected $converterRegistry;
 
     /** @var AttributeColumnInfoExtractor */
     protected $attrFieldExtractor;
@@ -130,7 +133,7 @@ class Value implements ArrayConverterInterface
     /**
      * @param string $column
      * @param string $value
-     *
+     *q
      * @return array
      * @throws \LogicException
      *
@@ -154,7 +157,7 @@ class Value implements ArrayConverterInterface
             try {
                 return $converter->convert($attributeFieldInfo, $value);
             } catch (\Error $e) {
-                throw new DataArrayConversionException("Exception while converting column \"{$column}\": bad input format.", 0, $e);
+                throw new BusinessArrayConversionException("Exception while converting column \"{$column}\": bad input format.", "pim_import_export.notification.export.warnings.xls_cellconversion_error", [$column], $e);
             }
         }
 
