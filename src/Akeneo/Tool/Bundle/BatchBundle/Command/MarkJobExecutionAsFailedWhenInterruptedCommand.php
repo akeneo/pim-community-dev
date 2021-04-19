@@ -14,15 +14,12 @@ class MarkJobExecutionAsFailedWhenInterruptedCommand extends Command
 {
     protected static $defaultName = 'akeneo:batch:clean-job-executions';
     private MarkJobExecutionAsFailedWhenInterrupted $markJobExecutionAsFailedWhenInterrupted;
-    private array $defaultJobCodes;
 
     public function __construct(
-        MarkJobExecutionAsFailedWhenInterrupted $markJobExecutionAsFailedWhenInterrupted,
-        array $defaultJobCodes
+        MarkJobExecutionAsFailedWhenInterrupted $markJobExecutionAsFailedWhenInterrupted
     ) {
         parent::__construct();
         $this->markJobExecutionAsFailedWhenInterrupted = $markJobExecutionAsFailedWhenInterrupted;
-        $this->defaultJobCodes = $defaultJobCodes;
     }
 
     protected function configure()
@@ -30,8 +27,8 @@ class MarkJobExecutionAsFailedWhenInterruptedCommand extends Command
         $this
             ->addArgument(
                 'jobCodes',
-                InputArgument::OPTIONAL,
-                'Job instance codes that need to have job executions to be clean. For example: "job_1,job_2".'
+                InputArgument::REQUIRED,
+                'Job instance codes that need to have job executions to be cleaned. For example: "job_1,job_2".'
             )
             ->setDescription(
             'When jobs are launched with the if an error happen the job execution crashes and need to be cleaned.'
@@ -41,12 +38,10 @@ class MarkJobExecutionAsFailedWhenInterruptedCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $jobCodes = $input->getArgument('jobCodes');
-        $jobCodes = null !== $jobCodes ?
-            array_map('trim', explode(',', trim($jobCodes))) :
-            $this->defaultJobCodes;
+        $jobCodes =  array_map('trim', explode(',', trim($jobCodes)));
 
         $impactedRows = $this->markJobExecutionAsFailedWhenInterrupted->execute($jobCodes);
-        $output->writeln(sprintf('<info>%s rows cleaned</info>', $impactedRows));
+        $output->writeln(sprintf('<info>%s job executions cleaned</info>', $impactedRows));
 
         return 0;
     }

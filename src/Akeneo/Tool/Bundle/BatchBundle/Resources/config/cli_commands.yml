@@ -35,8 +35,5 @@ services:
     Akeneo\Tool\Bundle\BatchBundle\Command\MarkJobExecutionAsFailedWhenInterruptedCommand:
         arguments:
             - '@Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlMarkJobExecutionAsFailedWhenInterrupted'
-            -
-                - '%pimee_teamwork_assistant.project_calculation.job_name%'
-                - 'rule_engine_execute_rules'
         tags:
             - { name: console.command }
