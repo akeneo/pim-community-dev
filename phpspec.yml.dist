@@ -93,11 +93,6 @@ suites:
         psr4_prefix: Akeneo\Tool\Component\FileMetadata
         spec_path: src/Akeneo/Tool/Component/FileMetadata
         src_path: src/Akeneo/Tool/Component/FileMetadata
-    FileTransformer:
-        namespace: Akeneo\Tool\Component\FileTransformer
-        psr4_prefix: Akeneo\Tool\Component\FileTransformer
-        spec_path: src/Akeneo/Tool/Component/FileTransformer
-        src_path: src/Akeneo/Tool/Component/FileTransformer
     RuleEngine:
         namespace: Akeneo\Tool\Component\RuleEngine
         psr4_prefix: Akeneo\Tool\Component\RuleEngine
@@ -108,16 +103,16 @@ suites:
         psr4_prefix: Akeneo\Tool\Bundle\FileMetadataBundle
         spec_path: src/Akeneo/Tool/Bundle/FileMetadataBundle
         src_path: src/Akeneo/Tool/Bundle/FileMetadataBundle
-    FileTransformerBundle:
-        namespace: Akeneo\Tool\Bundle\FileTransformerBundle
-        psr4_prefix: Akeneo\Tool\Bundle\FileTransformerBundle
-        spec_path: src/Akeneo/Tool/Bundle/FileTransformerBundle
-        src_path: src/Akeneo/Tool/Bundle/FileTransformerBundle
     RuleEngineBundle:
         namespace: Akeneo\Tool\Bundle\RuleEngineBundle
         psr4_prefix: Akeneo\Tool\Bundle\RuleEngineBundle
         spec_path: src/Akeneo/Tool/Bundle/RuleEngineBundle
         src_path: src/Akeneo/Tool/Bundle/RuleEngineBundle
+    FileStorage:
+        namespace: Akeneo\Tool\Component\FileStorage
+        psr4_prefix: Akeneo\Tool\Component\FileStorage
+        spec_path: src/Akeneo/Tool/Component/FileStorage
+        src_path: src/Akeneo/Tool/Component/FileStorage
 
     ## Shared Catalog
     SharedCatalog:
