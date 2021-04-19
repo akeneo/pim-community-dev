@@ -2,7 +2,6 @@
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Serialization;
 
-use Akeneo\Tool\Bundle\MessengerBundle\Message\OrderedMessageInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\MessageDecodingFailedException;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
@@ -72,14 +71,11 @@ class JsonSerializer implements SerializerInterface
 
     public function encode(Envelope $envelope): array
     {
-        $message = $envelope->getMessage();
-
         return [
-            'body' => $this->serializer->serialize($message, 'json'),
+            'body' => $this->serializer->serialize($envelope->getMessage(), 'json'),
             'headers' => [
                 'class' => \get_class($envelope->getMessage())
             ],
-            'orderingKey' => $message instanceof OrderedMessageInterface ? $message->getOrderingKey() : null,
         ];
     }
 }
