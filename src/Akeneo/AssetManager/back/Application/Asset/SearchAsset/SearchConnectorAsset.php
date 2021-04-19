@@ -56,7 +56,7 @@ class SearchConnectorAsset
     /**
      * @deprecated
      *
-     * @todo pull-up master: remove deprecated function and make the _invoke method return a ConnectorAssetResult.
+     * @todo pull-up master: this is a backport of PIM-9702, ignore those changes.
      */
     public function getLastSortValue(): ?array
     {

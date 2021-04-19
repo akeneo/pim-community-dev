@@ -124,6 +124,7 @@ class GetConnectorAssetsAction
             throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $assetFamilyIdentifier));
         }
 
+        /** @todo pull-up master: this is a backport of PIM-9702, ignore those changes. */
         $assets = ($this->searchConnectorAsset)($assetQuery);
         $assets = array_map(function (ConnectorAsset $asset) {
             return $asset->normalize();
@@ -134,7 +135,9 @@ class GetConnectorAssetsAction
             $assets,
             $request,
             $assetFamilyIdentifier,
-            method_exists($this->searchConnectorAsset, 'getLastSortValue') ? $this->searchConnectorAsset->getLastSortValue() : null
+            method_exists($this->searchConnectorAsset, 'getLastSortValue')
+                ? $this->searchConnectorAsset->getLastSortValue()
+                : [$assets[array_key_last($assets)]['code']] ?? null
         );
 
         return new JsonResponse($paginatedAssets);
