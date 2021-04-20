@@ -98,7 +98,9 @@ pim_reference_entity:
       link: Cliquez ici pour ajouter pour votre 1er groupe utilisateurs
   record:
     mass_delete:
+      confirm: '[0,1]Êtes-vous sûr(e) de vouloir supprimer la sélection de {{ count }} enregistrement ?|]1,Inf]Êtes-vous sûr(e) de vouloir supprimer la sélection de {{ count }} enregistrements ?'
       extra_information: Si ces ressources sont liées à des produits, les liens seront également supprimés.
+      confirm_label: 'Merci de saisir le code de l''entité référentielle suivante : "{{ referenceEntityIdentifier }}"'
       title: Enregistrements
     record_selected: '{0} {{ count }} enregistrement sélectionné|{1} {{ count }} enregistrement sélectionné|]1,Inf] {{ count }} enregistrements sélectionnés'
     validation:
