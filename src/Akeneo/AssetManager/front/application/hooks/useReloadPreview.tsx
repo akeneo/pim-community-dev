@@ -10,7 +10,7 @@ type ReloadPreviewProviderProps = {
   children: ReactNode;
 };
 
-const ReloadPreviewProvider = ({initialValue = false, children}: ReloadPreviewProviderProps) => {
+const ReloadPreviewProvider = ({initialValue = false, children, ...rest}: ReloadPreviewProviderProps) => {
   const [reloadPreview, startReloading, stopReloading] = useBooleanState(initialValue);
 
   const toggleReloading = () => {
@@ -22,7 +22,9 @@ const ReloadPreviewProvider = ({initialValue = false, children}: ReloadPreviewPr
   };
 
   return (
-    <ReloadPreviewContext.Provider value={[reloadPreview, toggleReloading]}>{children}</ReloadPreviewContext.Provider>
+    <ReloadPreviewContext.Provider value={[reloadPreview, toggleReloading]} {...rest}>
+      {children}
+    </ReloadPreviewContext.Provider>
   );
 };
 
