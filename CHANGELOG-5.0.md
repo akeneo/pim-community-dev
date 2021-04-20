@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.19 (2021-04-20)
+
 ## Bug fixes
 
 - OB-752: Fix 5.0 memcached package issue
