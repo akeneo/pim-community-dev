@@ -302,6 +302,7 @@ services:
             - '@pim_catalog.repository.category'
             - '@oro_security.security_facade'
             - '@translator'
+            - '@pim_internal_api_serializer'
             - { related_entity: product, form_type: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
         calls:
             - [ setContainer, [ '@service_container' ] ]

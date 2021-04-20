@@ -20,7 +20,8 @@ describe('useCategoryTreeList', () => {
   test('it returns default values', () => {
     const {result} = renderUseCategoryTreeList();
     expect(result.current.trees.length).toBe(0);
-    expect(result.current.isPending).toBeFalsy();
+    expect(result.current.status).toBe('idle');
+    expect(result.current.error).toBeNull();
     expect(result.current.load).toBeDefined();
   });
 
@@ -39,12 +40,10 @@ describe('useCategoryTreeList', () => {
     });
 
     expect(result.current.trees.length).toBe(3);
-    expect(result.current.isPending).toEqual(false);
+    expect(result.current.status).toBe('fetched');
   });
 
   test('it returns an empty list of category trees when the loading failed', async () => {
-    const logError = jest.fn();
-    jest.spyOn(global.console, 'error').mockImplementation(logError);
     // @ts-ignore
     jest.spyOn(global, 'fetch').mockReject(new Error('An unexpected server error'));
 
@@ -55,7 +54,7 @@ describe('useCategoryTreeList', () => {
     });
 
     expect(result.current.trees.length).toBe(0);
-    expect(result.current.isPending).toEqual(false);
-    expect(logError).toHaveBeenCalled();
+    expect(result.current.status).toBe('error');
+    expect(result.current.error).toMatch(/unexpected server error/);
   });
 });

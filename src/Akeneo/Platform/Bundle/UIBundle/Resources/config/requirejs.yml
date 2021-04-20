@@ -243,7 +243,7 @@ config:
           module: pim/controller/form
           aclResourceId: pim_enrich_product_category_create
         pim_enrich_categorytree_edit:
-          module: pim/controller/form
+          module: pim/controller/categories/index
           aclResourceId: pim_enrich_product_category_edit
         pim_enrich_categorytree_index:
           module: pim/controller/categories/index

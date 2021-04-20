@@ -293,7 +293,7 @@ pim_title:
     pim_enrich_catalog_volume_index:       Catalog volume monitoring
     pim_enrich_categorytree_index:         Category trees
     pim_enrich_categorytree_create:        Category trees | Create
-    pim_enrich_categorytree_edit:          Category tree {{ category.label }} | Edit
+    pim_enrich_categorytree_edit:          Category {{ category.label }} | Edit
     pim_enrich_categorytree_create_tree:   Category trees | Create
     pim_enrich_categorytree_tree:          Category tree {{ category.label }} | Edit
     pim_enrich_attribute_index:            Attributes

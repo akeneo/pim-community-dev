@@ -3,7 +3,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {CategoriesIndex, CategoriesTreePage} from '../pages';
+import {CategoriesIndex, CategoriesTreePage, CategoryEditPage} from '../pages';
 
 const CategoriesApp: FC = () => {
   return (
@@ -13,6 +13,9 @@ const CategoriesApp: FC = () => {
           <Switch>
             <Route path="/:treeId/tree">
               <CategoriesTreePage />
+            </Route>
+            <Route path="/:categoryId/edit">
+              <CategoryEditPage />
             </Route>
             <Route path="/">
               <CategoriesIndex />
