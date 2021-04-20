@@ -120,6 +120,69 @@ Media File input allows the user to enter content when the expected user input i
   </Story>
 </Canvas>
 
+## Variation on clearable
+
+<Canvas>
+  <Story name="Clearable">
+    {args => {
+      const file = {
+        filePath: '/file/path.jpg',
+        originalFilename: 'nice-name.jpg',
+      };
+      const [thumbnailUrl, uploader] = useFakeMediaStorage('https://picsum.photos/seed/akeneo/200');
+      const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
+      const [value, setValue] = useState(file);
+      return (
+        <>
+          <MediaFileInput
+            {...args}
+            size="small"
+            value={value}
+            thumbnailUrl={thumbnailUrl}
+            onChange={setValue}
+            uploader={uploader}
+            clearable={true}
+          >
+            <IconButton
+              href={thumbnailUrl}
+              target="_blank"
+              download={thumbnailUrl}
+              icon={<DownloadIcon />}
+              title="Download"
+            />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
+          </MediaFileInput>
+          <MediaFileInput
+            {...args}
+            size="small"
+            value={value}
+            thumbnailUrl={thumbnailUrl}
+            onChange={setValue}
+            uploader={uploader}
+            clearable={false}
+          >
+            <IconButton
+              href={thumbnailUrl}
+              target="_blank"
+              download={thumbnailUrl}
+              icon={<DownloadIcon />}
+              title="Download"
+            />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
+          </MediaFileInput>
+          {isFullscreenModalOpen && value && (
+            <FullscreenPreview title={value.originalFilename} src={thumbnailUrl} onClose={closeFullscreenModal}>
+              <Button href={thumbnailUrl} ghost={true} level="tertiary" target="_blank" download={thumbnailUrl}>
+                <DownloadIcon /> Download
+              </Button>
+            </FullscreenPreview>
+          )}
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
 ## Variation on readonly
 
 <Canvas>
