@@ -32,7 +32,7 @@ class TextConverter extends AbstractValueConverter
     {
         $code = $attributeFieldInfo['attribute']->getCode();
 
-        if ($value instanceof \DateTime) {
+        if ($value instanceof \DateTimeInterface) {
             throw new BusinessArrayConversionException("Can not convert cell  {$code} with date format to attribute of type text", "pim_import_export.notification.export.warnings.xlsx_cell_date_to_text_conversion_error", [$code]);
         }
         if ('' !== $value) {
