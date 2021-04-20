@@ -15,7 +15,8 @@ if [[ ! -f /usr/local/bin/kubeval ]]; then
     chmod +x /usr/local/bin/kubeval
 fi
 
-helm dependency update ${PED_DIR}/terraform/pim
+helm3 repo add akeneo-charts gs://akeneo-charts/
+helm3 dependency update ${PED_DIR}/terraform/pim
 
 if (($K8S_CLUSTER_VERSION_ENABLED == 1)); then
     K8S_MASTER_VERSION=$(kubectl version -o json | jq -r '.serverVersion.gitVersion' | sed -nre 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p')
@@ -28,7 +29,7 @@ fi
 
 if (($WITH_ONBOARDER == 0)); then
     yq d ${PED_DIR}/config/fake-tf-helm-pim-values.yaml onboarder >${PED_DIR}/config/fake-tf-helm-pim-values-without-onboarder.yaml
-    helm template ${PED_DIR}/terraform/pim -f ${PED_DIR}/config/ci-values.yaml -f ${PED_DIR}/config/fake-tf-helm-pim-values-without-onboarder.yaml | ${kubeval}
+    helm3 template ${PED_DIR}/terraform/pim -f ${PED_DIR}/config/ci-values.yaml -f ${PED_DIR}/config/fake-tf-helm-pim-values-without-onboarder.yaml | ${kubeval}
 else
-    helm template ${PED_DIR}/terraform/pim -f ${PED_DIR}/config/ci-values.yaml -f ${PED_DIR}/config/fake-tf-helm-pim-values.yaml | ${kubeval}
+    helm3 template ${PED_DIR}/terraform/pim -f ${PED_DIR}/config/ci-values.yaml -f ${PED_DIR}/config/fake-tf-helm-pim-values.yaml | ${kubeval}
 fi

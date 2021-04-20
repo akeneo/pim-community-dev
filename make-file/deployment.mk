@@ -114,11 +114,11 @@ prepare-infrastructure-artifacts: render-helm-templates
 render-helm-templates:
 	cd $(INSTANCE_DIR) ;\
 	mkdir -p helm-render ;\
-	helm template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render || true
+	helm3 template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render || true
 ifeq ($(INSTANCE_NAME_PREFIX),pimup32)
 	cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ;\
 	mkdir -p helm-render ;\
-	helm template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render || true
+	helm3 template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render || true
 endif
 
 .PHONY: delete
@@ -253,7 +253,7 @@ test-prod:
 			if [ $${TIME_TO_SLEEP} -gt $(MAX_DNS_TEST_TIMEOUT) ]; then echo 'DNS resolution issue on "$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)"';exit 1; fi; \
 		echo 'Waiting for DNS "$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)" to be ready'; sleep $${TIME_TO_SLEEP} ; \
 	done
-	helm test --debug --logs ${PFID}
+	helm3 test ${PFID} -n ${PFID} --debug --logs
 
 .PHONY: release
 release:

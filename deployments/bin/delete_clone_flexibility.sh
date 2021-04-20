@@ -36,7 +36,7 @@ terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=module.pim.google_s
 
 echo "2 - removing deployment and terraform resources"
 export KUBECONFIG=.kubeconfig
-(helm list "${PFID}" | grep "${PFID}") && helm delete --purge ${PFID} || true
+helm3 list -n "${PFID}" && helm3 uninstall -n ${PFID} || true
 (kubectl get ns ${PFID} | grep "$PFID") && kubectl delete ns ${PFID} || true
 terraform destroy ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE}
 

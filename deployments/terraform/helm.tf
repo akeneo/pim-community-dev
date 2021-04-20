@@ -44,16 +44,6 @@ resource "local_file" "helm_pim_config" {
   filename = "./tf-helm-pim-values.yaml"
 }
 
-data "helm_repository" "stable" {
-  name = "stable"
-  url  = "https://charts.helm.sh/stable"
-}
-
-data "helm_repository" "akeneo-charts" {
-  name = "akeneo-charts"
-  url  = "gs://akeneo-charts"
-}
-
 resource "null_resource" "helm_release_pim" {
   triggers = {
     values             = file("./values.yaml")
@@ -70,12 +60,12 @@ resource "null_resource" "helm_release_pim" {
     interpreter = ["/usr/bin/env", "bash", "-c"]
 
     command = <<EOF
-set -eo pipefail
-helm dependencies update ${path.module}/pim/
-yq w -i ${path.module}/pim/Chart.yaml version ${var.pim_version}
+yq w -i ${path.module}/pim/Chart.yaml version 0.0.0-${var.pim_version}
 yq w -i ${path.module}/pim/Chart.yaml appVersion ${var.pim_version}
+helm3 repo add akeneo-charts gs://akeneo-charts/
+helm3 dependencies update ${path.module}/pim/
 export KUBECONFIG="${local_file.kubeconfig.filename}"
-helm upgrade --atomic --cleanup-on-fail --wait --install --force --timeout 1200 ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
+helm3 upgrade --atomic --cleanup-on-fail --history-max 5 --create-namespace --wait --install --timeout 20m ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
 EOF
   }
 }

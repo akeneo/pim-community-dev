@@ -284,7 +284,6 @@ elasticsearch:
       RECOVER_AFTER_MASTER_NODES: null
       EXPECTED_DATA_NODES: null
       RECOVER_AFTER_DATA_NODES: null
-      #INITIAL_MASTER_NODES: "elasticsearch-master-0,elasticsearch-master-1"
       cluster.initial_master_nodes: "elasticsearch-master-0"
       discovery.seed_hosts: "elasticsearch-discovery"
   client:

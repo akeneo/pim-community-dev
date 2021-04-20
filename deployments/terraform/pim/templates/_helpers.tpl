@@ -48,6 +48,7 @@ Define standard labels for PIM objects
 {{- define "pim.standardLabels" }}
 app: pim # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
 app.kubernetes.io/name: pim
+app.kubernetes.io/managed-by: "{{ .Release.Service }}"
 chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 release: "{{ .Release.Name }}" # Ex: srnt-invivo
@@ -62,6 +63,7 @@ Define standard labels for Onboarder objects
 {{- define "onboarder.standardLabels" }}
 app: onboarder # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
 app.kubernetes.io/name: onboarder
+app.kubernetes.io/managed-by: "{{ .Release.Service }}"
 chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 release: "{{ .Release.Name }}" # Ex: akob-jdgroup

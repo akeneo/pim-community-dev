@@ -8,7 +8,7 @@ data "google_container_cluster" "main" {
 
 resource "local_file" "kubeconfig" {
   filename = ".kubeconfig"
-
+  file_permission = "0600"
   content = <<EOF
 apiVersion: v1
 kind: Config
