@@ -115,6 +115,9 @@ pim_enrich.entity.association_type:
     delete:
       confirm: Êtes-vous sûr(e) de que vouloir supprimer ce type d'association ?
   hint: <a href="{{link}}" target="_blank">Dans cet article</a>, vous trouverez tout ce dont vous avez besoin pour créer votre propre type d'association.
+  no_association_types:
+    title: Vous n'avez aucun type d'association
+    hint: Créez votre premier type d'association
 pim_enrich.entity.group_type:
   label: type de groupe
   flash:
