@@ -33,9 +33,6 @@
     "react-draft-wysiwyg": "^1.12.13"
   },
   "devDependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "styled-components": "^5.1.1",
     "@storybook/addon-a11y": "^6.2.3",
     "@storybook/addon-actions": "^6.2.3",
     "@storybook/addon-essentials": "^6.2.3",
