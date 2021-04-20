@@ -1,4 +1,4 @@
-import {dependencies} from '@akeneo-pim-community/shared';
+import {dependencies} from '@akeneo-pim-community/legacy-bridge';
 
 const measurementsDependencies = {
   router: dependencies.router,

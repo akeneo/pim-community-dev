@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
 import {Unit, UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
-import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {Badge, Table} from 'akeneo-design-system';
 
 const UnitCodeContainer = styled.span`

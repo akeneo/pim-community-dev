@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@akeneo-pim-community/legacy-bridge@link:../legacy-bridge":
+"@akeneo-pim-community/shared@link:../shared":
   version "0.0.0"
   uid ""
 

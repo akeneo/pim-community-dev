@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {Field, getColor, Helper, Link, TextInput} from 'akeneo-design-system';
-import {NotificationLevel, useNotify, useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {NotificationLevel, useNotify, useTranslate, useRoute} from '@akeneo-pim-community/shared';
 import {useIsMounted, DeleteModal as BaseDeleteModal} from '@akeneo-pim-community/shared';
 
 const SpacedHelper = styled(Helper)`

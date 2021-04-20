@@ -1,5 +1,5 @@
 import React from 'react';
-import {renderHookWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderHookWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {
   useAttributeGroupsIndexState,
   useInitialAttributeGroupsIndexState,
@@ -9,7 +9,7 @@ import {fetchAllAttributeGroupsDqiStatus} from '@akeneo-pim-community/settings-u
 import {saveAttributeGroupsOrder} from '@akeneo-pim-community/settings-ui/src/infrastructure/savers';
 import {anAttributeGroup} from '../../../utils/provideAttributeGroupHelper';
 import {act} from 'react-test-renderer';
-import {dependencies} from '@akeneo-pim-community/shared';
+import {dependencies} from '@akeneo-pim-community/legacy-bridge';
 
 const FeatureFlags = require('pim/feature-flags');
 FeatureFlags.isEnabled.mockImplementation((feature: string) => false);

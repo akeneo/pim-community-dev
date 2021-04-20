@@ -8,7 +8,7 @@ import {
 } from 'akeneomeasure/pages/create-measurement-family/form/create-measurement-family-form';
 import {useForm} from 'akeneomeasure/hooks/use-form';
 import {MeasurementFamilyCode} from 'akeneomeasure/model/measurement-family';
-import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/shared';
 import {ValidationError, getErrorsForPath, TextField, Section} from '@akeneo-pim-community/shared';
 
 type CreateMeasurementFamilyProps = {

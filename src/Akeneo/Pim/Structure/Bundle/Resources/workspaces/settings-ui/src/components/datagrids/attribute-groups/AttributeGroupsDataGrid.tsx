@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {
   useAttributeGroupPermissions,
   useAttributeGroupsIndexState,

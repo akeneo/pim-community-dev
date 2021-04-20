@@ -19,9 +19,12 @@ import {
   NoDataText,
   useToggleState,
   PageContent,
-  PimView,
+  useTranslate,
+  useUserContext,
+  useSecurity,
+  useRoute,
 } from '@akeneo-pim-community/shared';
-import {useTranslate, useUserContext, useSecurity, useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {PimView} from '@akeneo-pim-community/legacy-bridge';
 
 const useSorting = (
   defaultColumn: string

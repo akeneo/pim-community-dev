@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {useFilteredLocales} from '../../../hooks';
 import {Locale} from '../../../models';
 import {SearchBar, useDebounceCallback} from '@akeneo-pim-community/shared';
