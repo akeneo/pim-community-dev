@@ -82,7 +82,7 @@ const ProposalDiffAssetCollection: React.FC<ProposalDiffAssetCollectionProps> = 
             state={isDiff ? (accessor === 'before' ? 'removed' : 'added') : undefined}
             key={`${asset.code}-${i}`}
           >
-            <FullscreenPreview attribute={attribute} data={data} label={label} />
+            <FullscreenPreview attribute={attribute} data={data} label={label} onClose={() => {}}/>
           </ImageCard>
         );
       })}

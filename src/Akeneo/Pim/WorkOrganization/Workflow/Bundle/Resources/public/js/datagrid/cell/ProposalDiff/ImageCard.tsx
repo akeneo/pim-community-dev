@@ -1,4 +1,4 @@
-import React, {cloneElement} from 'react';
+import React, {cloneElement, isValidElement} from 'react';
 import {
   Button,
   DownloadIcon,
@@ -65,7 +65,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
     fullscreen = (
       <>
         {React.Children.map(children, child => {
-          return cloneElement(child, {onClose: closeFullscreenModal});
+          return isValidElement(child) && cloneElement(child, {onClose: closeFullscreenModal});
         })}
       </>
     );
