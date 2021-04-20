@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
 import {PageContent, PageHeader, RuntimeError} from '../../common/components';
-import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {Breadcrumb} from 'akeneo-design-system';
 import {UserButtons} from '../../shared/user';
+import {useRouter} from "../../shared/router/use-router";
 
 const SettingsBreadcrumb = () => {
-    const systemHref = `#${useRoute('oro_config_configuration_system')}`;
+
+    const generateUrl = useRouter();
 
     return (
         <Breadcrumb>
-            <Breadcrumb.Step href={systemHref}>
+            <Breadcrumb.Step href={`#${generateUrl('akeneo_connectivity_connection_audit_index')}`}>
                 <Translate id='pim_menu.tab.connect' />
             </Breadcrumb.Step>
             <Breadcrumb.Step>

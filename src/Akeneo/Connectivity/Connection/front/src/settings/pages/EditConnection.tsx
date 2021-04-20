@@ -26,6 +26,7 @@ import {
 } from '../wrong-credentials-combinations-context';
 import {Breadcrumb} from 'akeneo-design-system';
 import {UserButtons} from '../../shared/user';
+import {useRouter} from "../../shared/router/use-router";
 
 export type FormValues = {
     label: string;
@@ -163,13 +164,13 @@ const HeaderContent = ({connection}: {connection: Connection}) => {
     const history = useHistory();
     const formik = useFormikContext<FormValues>();
     const generateMediaUrl = useMediaUrlGenerator();
-    const systemHref = `#${useRoute('oro_config_configuration_system')}`;
+    const generateUrl = useRouter();
 
     return (
         <PageHeader
             breadcrumb={
                 <Breadcrumb>
-                    <Breadcrumb.Step href={systemHref}>
+                    <Breadcrumb.Step href={`#${generateUrl('akeneo_connectivity_connection_audit_index')}`}>
                         <Translate id='pim_menu.tab.connect' />
                     </Breadcrumb.Step>
                     <Breadcrumb.Step href={history.createHref({pathname: '/connect/connection-settings'})}>

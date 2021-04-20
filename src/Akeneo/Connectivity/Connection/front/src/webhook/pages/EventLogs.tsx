@@ -10,6 +10,7 @@ import {EventLogList} from '../components/EventLogList';
 import {useFetchConnection} from '../hooks/api/use-fetch-connection';
 import {useFetchEventSubscription} from '../hooks/api/use-fetch-event-subscription';
 import {DownloadLogsButton} from '../components/DownloadLogsButton';
+import {useRouter} from "../../shared/router/use-router";
 
 export const EventLogs: FC = () => {
     const {connectionCode} = useParams<{connectionCode: string}>();
@@ -57,10 +58,11 @@ export const EventLogs: FC = () => {
 
 const EventLogsBreadcrumb: FC = () => {
     const history = useHistory();
+    const generateUrl = useRouter();
 
     return (
         <Breadcrumb>
-            <Breadcrumb.Step href={'#' + useRoute('oro_config_configuration_system')}>
+            <Breadcrumb.Step href={`#${generateUrl('akeneo_connectivity_connection_audit_index')}`}>
                 <Translate id='pim_menu.tab.connect' />
             </Breadcrumb.Step>
             <Breadcrumb.Step href={history.createHref({pathname: '/connect/connection-settings'})}>

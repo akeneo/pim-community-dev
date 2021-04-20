@@ -17,6 +17,7 @@ import {Webhook} from '../model/Webhook';
 import {Breadcrumb, SectionTitle} from 'akeneo-design-system';
 import {useFetchConnection} from '../hooks/api/use-fetch-connection';
 import {UserButtons} from '../../shared/user';
+import {useRouter} from "../../shared/router/use-router";
 
 export type FormInput = {
     connectionCode: string;
@@ -29,7 +30,7 @@ export const EditConnectionWebhook: FC = () => {
     const history = useHistory();
     const generateMediaUrl = useMediaUrlGenerator();
     const formMethods = useForm<FormInput>();
-    const systemHref = `#${useRoute('oro_config_configuration_system')}`;
+    const generateUrl = useRouter();
 
     const {connectionCode} = useParams<{connectionCode: string}>();
     const {connection} = useFetchConnection(connectionCode);
@@ -53,7 +54,7 @@ export const EditConnectionWebhook: FC = () => {
 
     const breadcrumb = (
         <Breadcrumb>
-            <Breadcrumb.Step href={systemHref}>
+            <Breadcrumb.Step href={`#${generateUrl('akeneo_connectivity_connection_audit_index')}`}>
                 <Translate id='pim_menu.tab.connect' />
             </Breadcrumb.Step>
             <Breadcrumb.Step href={history.createHref({pathname: '/connect/connection-settings'})}>

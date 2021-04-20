@@ -19,7 +19,7 @@ pim_menu:
         connect_connection_settings: Connection settings
 
 pim_title:
-    akeneo_connectivity_connection_settings_index: Connections
+    akeneo_connectivity_connection_settings_index: Connections settings
     akeneo_connectivity_connection_settings_edit: Connection settings
     akeneo_connectivity_connection_settings_any: Connection settings
     akeneo_connectivity_connection_audit_index: Connection dashboard
