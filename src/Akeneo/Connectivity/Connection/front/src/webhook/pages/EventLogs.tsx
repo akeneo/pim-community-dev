@@ -63,7 +63,7 @@ const EventLogsBreadcrumb: FC = () => {
             <Breadcrumb.Step href={'#' + useRoute('oro_config_configuration_system')}>
                 <Translate id='pim_menu.tab.connect' />
             </Breadcrumb.Step>
-            <Breadcrumb.Step href={history.createHref({pathname: '/connections'})}>
+            <Breadcrumb.Step href={history.createHref({pathname: '/connect/connection-settings'})}>
                 <Translate id='pim_menu.item.connect_connection_settings' />
             </Breadcrumb.Step>
             <Breadcrumb.Step>

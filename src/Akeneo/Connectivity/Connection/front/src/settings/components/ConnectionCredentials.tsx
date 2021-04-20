@@ -57,7 +57,8 @@ export const ConnectionCredentials: FC<Props> = ({code, label, credentials: cred
                 <CopiableCredential
                     label={translate('akeneo_connectivity.connection.connection.secret')}
                     actions={
-                        <RegenerateButton onClick={() => history.push(`/connections/${code}/regenerate-secret`)} />
+                        <RegenerateButton
+                            onClick={() => history.push(`/connect/connection-settings/${code}/regenerate-secret`)}/>
                     }
                 >
                     {credentials.secret}
@@ -99,7 +100,7 @@ export const ConnectionCredentials: FC<Props> = ({code, label, credentials: cred
                         }
                         actions={
                             <RegenerateButton
-                                onClick={() => history.push(`/connections/${code}/regenerate-password`)}
+                                onClick={() => history.push(`/connect/connection-settings/${code}/regenerate-password`)}
                             />
                         }
                     >

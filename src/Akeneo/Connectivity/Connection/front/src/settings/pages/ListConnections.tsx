@@ -55,7 +55,7 @@ export const ListConnections = () => {
         });
     }, [listWrongCombinationRoute, dispatchCombinations]);
 
-    const handleCreate = () => history.push('/connections/create');
+    const handleCreate = () => history.push('/connect/connection-settings/create');
 
     const systemHref = `#${useRoute('oro_config_configuration_system')}`;
 

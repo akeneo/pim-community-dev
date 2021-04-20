@@ -131,7 +131,7 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
                         <RegenerateButton
                             onClick={() =>
                                 history.push(
-                                    `/connections/${webhook.connectionCode}/event-subscription/regenerate-secret`
+                                    `/connect/connection-settings/${webhook.connectionCode}/event-subscription/regenerate-secret`
                                 )
                             }
                         />

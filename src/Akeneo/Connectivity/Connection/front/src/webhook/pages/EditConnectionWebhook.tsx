@@ -56,7 +56,7 @@ export const EditConnectionWebhook: FC = () => {
             <Breadcrumb.Step href={systemHref}>
                 <Translate id='pim_menu.tab.connect' />
             </Breadcrumb.Step>
-            <Breadcrumb.Step href={history.createHref({pathname: '/connections'})}>
+            <Breadcrumb.Step href={history.createHref({pathname: '/connect/connection-settings'})}>
                 <Translate id='pim_menu.item.connect_connection_settings' />
             </Breadcrumb.Step>
             <Breadcrumb.Step>

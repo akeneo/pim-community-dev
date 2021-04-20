@@ -120,7 +120,7 @@ export const ConnectionCreateForm = () => {
 
         connectionsDispatch(connectionFetched(result.value));
 
-        history.push(`/connections/${state.controls.code.value}/edit`);
+        history.push(`/connect/connection-settings/${state.controls.code.value}/edit`);
     };
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
