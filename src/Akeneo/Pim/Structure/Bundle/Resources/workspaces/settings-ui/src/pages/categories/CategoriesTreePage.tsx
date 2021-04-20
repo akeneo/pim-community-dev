@@ -97,24 +97,15 @@ const CategoriesTreePage: FC = () => {
         <PageHeader.Title>{treeLabel}</PageHeader.Title>
       </PageHeader>
       <PageContent>
-
-        {tree === null ? (
-          <Tree value="" label={treeLabel} isLoading={true}/>
-        ) : (
-          <>
-            {/* @todo Adapt loading of the structure and model */}
-            <CategoryTree
-              onChange={() => console.log('change')}
-              childrenCallback={loadChildren}
-              init={loadRoot}
-              style="list"
-              onClick={
-                isGranted('pim_enrich_product_category_edit') ? (category: CategoryTreeModel) => followEditCategory(category.id) : undefined
-              }
-              actions={buildActions}
-            />
-          </>
-        )}
+        <CategoryTree
+          childrenCallback={loadChildren}
+          init={loadRoot} // @todo use the already loaded tree?
+          onClick={
+            isGranted('pim_enrich_product_category_edit') ? (category: CategoryTreeModel) => followEditCategory(category.id) : undefined
+          }
+          style="list"
+          actions={buildActions}
+        />
       </PageContent>
     </>
   );
