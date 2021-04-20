@@ -1,4 +1,3 @@
-import React from 'react';
 import {Button, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
