@@ -8,11 +8,8 @@ const unitConfig = {
   },
   coveragePathIgnorePatterns: [
     'front-packages',
-    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/NoData.tsx',
-    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/PimView.tsx',
-    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/tools',
+    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/components/',
-    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/tests/front/unit/utils.tsx',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/pages/create-measurement-family/CreateMeasurementFamily.tsx',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/pages/create-unit/CreateUnit.tsx',
     'src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front/src/components/panel/announcement/Image.tsx',

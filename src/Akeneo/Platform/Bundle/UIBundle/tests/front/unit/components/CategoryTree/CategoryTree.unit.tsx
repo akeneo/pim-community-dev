@@ -1,7 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import {act, screen} from '@testing-library/react';
-import '@testing-library/jest-dom';
-import {CategoryTreeModel} from '@akeneo-pim-community/shared';
+import {CategoryTree, CategoryTreeModel} from '@akeneo-pim-community/shared';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 
 const tree: CategoryTreeModel = {

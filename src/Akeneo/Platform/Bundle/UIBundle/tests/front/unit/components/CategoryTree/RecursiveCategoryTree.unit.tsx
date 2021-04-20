@@ -1,8 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 import {act, fireEvent, screen} from '@testing-library/react';
-import '@testing-library/jest-dom';
-import {CategoryTreeModel, RecursiveCategoryTree} from '../../../../../Resources/workspaces/shared';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
+import {CategoryTreeModel, RecursiveCategoryTree} from '@akeneo-pim-community/shared';
 
 const simpleTree: CategoryTreeModel = {
   id: 42,
