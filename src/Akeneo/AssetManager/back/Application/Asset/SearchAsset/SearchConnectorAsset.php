@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\Asset\SearchAsset;
 
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAssetResult;
 use Akeneo\AssetManager\Domain\Query\Asset\Connector\FindConnectorAssetsByIdentifiersInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersForQueryInterface;
 
@@ -31,6 +32,8 @@ class SearchConnectorAsset
     /** @var FindConnectorAssetsByIdentifiersInterface */
     private $findConnectorAssetsByIdentifiers;
 
+    private ?array $lastSortValue;
+
     public function __construct(
         FindIdentifiersForQueryInterface $findIdentifiersForQuery,
         FindConnectorAssetsByIdentifiersInterface $findConnectorAssetsByIdentifiers
@@ -44,6 +47,19 @@ class SearchConnectorAsset
         $result = $this->findIdentifiersForQuery->find($query);
         $assets = empty($result) ? [] : $this->findConnectorAssetsByIdentifiers->find($result->identifiers, $query);
 
-        return $assets;
+        $connectorAssetResult = ConnectorAssetResult::createFromSearchAfterQuery($assets, $result->lastSortValue);
+        $this->lastSortValue = $connectorAssetResult->lastSortValue();
+
+        return $connectorAssetResult->assets();
+    }
+
+    /**
+     * @deprecated
+     *
+     * @todo pull-up master: this is a backport of PIM-9702, ignore those changes.
+     */
+    public function getLastSortValue(): ?array
+    {
+        return $this->lastSortValue;
     }
 }

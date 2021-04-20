@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9814: Fix infinite loop when using get all assets API endpoint (Backport PIM-9702)
 - OB-752: Fix 5.0 memcached package issue
 
 # 5.0.18 (2021-04-15)
