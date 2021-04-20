@@ -16,6 +16,7 @@ pim_menu:
         connection_webhook_edit: Event subscription
         connection_webhook_event_logs: Event logs
         data_flows: Data flows
+        connect_connection_settings: Connection settings
 
 pim_title:
     akeneo_connectivity_connection_settings_index: Connections

@@ -62,10 +62,10 @@ export const ListConnections = () => {
     const breadcrumb = (
         <Breadcrumb>
             <Breadcrumb.Step href={systemHref}>
-                <Translate id='pim_menu.tab.system' />
+                <Translate id='pim_menu.tab.connect' />
             </Breadcrumb.Step>
             <Breadcrumb.Step>
-                <Translate id='pim_menu.item.connection_settings' />
+                <Translate id='pim_menu.item.connect_connection_settings' />
             </Breadcrumb.Step>
         </Breadcrumb>
     );
@@ -91,7 +91,7 @@ export const ListConnections = () => {
     return (
         <>
             <PageHeader breadcrumb={breadcrumb} buttons={[createButton]} userButtons={<UserButtons />}>
-                <Translate id='pim_menu.item.connection_settings' />
+                <Translate id='pim_menu.item.connect_connection_settings' />
             </PageHeader>
 
             <PageContent>

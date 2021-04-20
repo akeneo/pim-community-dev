@@ -11,10 +11,10 @@ const SettingsBreadcrumb = () => {
     return (
         <Breadcrumb>
             <Breadcrumb.Step href={systemHref}>
-                <Translate id='pim_menu.tab.system' />
+                <Translate id='pim_menu.tab.connect' />
             </Breadcrumb.Step>
             <Breadcrumb.Step>
-                <Translate id='pim_menu.item.connection_settings' />
+                <Translate id='pim_menu.item.connect_connection_settings' />
             </Breadcrumb.Step>
         </Breadcrumb>
     );

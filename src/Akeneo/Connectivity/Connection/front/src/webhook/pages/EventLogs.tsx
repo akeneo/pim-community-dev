@@ -61,10 +61,10 @@ const EventLogsBreadcrumb: FC = () => {
     return (
         <Breadcrumb>
             <Breadcrumb.Step href={'#' + useRoute('oro_config_configuration_system')}>
-                <Translate id='pim_menu.tab.system' />
+                <Translate id='pim_menu.tab.connect' />
             </Breadcrumb.Step>
             <Breadcrumb.Step href={history.createHref({pathname: '/connections'})}>
-                <Translate id='pim_menu.item.connection_settings' />
+                <Translate id='pim_menu.item.connect_connection_settings' />
             </Breadcrumb.Step>
             <Breadcrumb.Step>
                 <Translate id='akeneo_connectivity.connection.webhook.event_logs.title' />
