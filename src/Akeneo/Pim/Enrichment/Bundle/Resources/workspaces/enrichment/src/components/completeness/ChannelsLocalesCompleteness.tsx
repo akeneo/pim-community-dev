@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {ProgressBar} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {ChannelsLocalesCompletenessRatios} from "../../models";
+import {ChannelsLocalesCompletenessRatios} from '../../models';
 
 type Props = {
   channelsLocalesRatios: ChannelsLocalesCompletenessRatios | null;

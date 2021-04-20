@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {convertBackendDashboardCompletenessData} from '../helpers';
-import {ChannelsLocalesCompletenessRatios} from "@akeneo-pim-community/enrichment";
+import {ChannelsLocalesCompletenessRatios} from '@akeneo-pim-community/enrichment';
 
 const Routing = require('routing');
 

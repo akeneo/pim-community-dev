@@ -13,8 +13,8 @@ type LocaleCurrentCompleteness = {
 type CurrentCompleteness = {
   channelRatio: number;
   localesCompleteness: {
-    [localeCode: string]: LocaleCurrentCompleteness
-  }
+    [localeCode: string]: LocaleCurrentCompleteness;
+  };
 };
 
 export {CurrentCompleteness, LocaleCurrentCompleteness, MissingAttribute};

@@ -1,4 +1,4 @@
-import {formatProductCompleteness} from "@akeneo-pim-community/enrichment";
+import {formatProductCompleteness} from '@akeneo-pim-community/enrichment';
 
 test('it formats a list of product completeness', () => {
   const rawCompleteness = [

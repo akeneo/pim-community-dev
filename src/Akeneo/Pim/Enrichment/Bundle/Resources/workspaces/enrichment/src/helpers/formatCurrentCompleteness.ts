@@ -1,10 +1,10 @@
-import {CurrentCompleteness, LocaleCurrentCompleteness, MissingAttribute} from "../models";
+import {CurrentCompleteness, LocaleCurrentCompleteness, MissingAttribute} from '../models';
 
 type BackendMissingAttribute = {
   code: string;
   labels: {
     [localeCode: string]: string;
-  }
+  };
 };
 
 type BackendLocaleCompleteness = {
@@ -21,15 +21,18 @@ type BackendCurrentCompleteness = {
     average: number;
   };
   locales: {
-    [localeCode: string]: BackendLocaleCompleteness
-  }
+    [localeCode: string]: BackendLocaleCompleteness;
+  };
 };
 
 type FormattedLocalesCompleteness = {
-  [localeCode: string]: LocaleCurrentCompleteness
+  [localeCode: string]: LocaleCurrentCompleteness;
 };
 
-const formatLocaleCompleteness = (backendLocaleCompleteness: BackendLocaleCompleteness, catalogLocale: string): LocaleCurrentCompleteness => {
+const formatLocaleCompleteness = (
+  backendLocaleCompleteness: BackendLocaleCompleteness,
+  catalogLocale: string
+): LocaleCurrentCompleteness => {
   return {
     label: backendLocaleCompleteness.label,
     ratio: backendLocaleCompleteness.completeness.ratio,
@@ -38,22 +41,29 @@ const formatLocaleCompleteness = (backendLocaleCompleteness: BackendLocaleComple
       (missingAttributes: MissingAttribute[], backendAttribute: BackendMissingAttribute): MissingAttribute[] => {
         missingAttributes.push({
           code: backendAttribute.code,
-          label: backendAttribute.labels[catalogLocale]
+          label: backendAttribute.labels[catalogLocale],
         });
         return missingAttributes;
-      }, [])
+      },
+      []
+    ),
   };
 };
 
-const formatCurrentCompleteness = (backendCompleteness: BackendCurrentCompleteness, catalogLocale: string): CurrentCompleteness => {
+const formatCurrentCompleteness = (
+  backendCompleteness: BackendCurrentCompleteness,
+  catalogLocale: string
+): CurrentCompleteness => {
   let localesCompleteness: FormattedLocalesCompleteness = {};
-  Object.entries(backendCompleteness.locales).map(([localeCode, localeCompleteness]: [string, BackendLocaleCompleteness]) => {
-    localesCompleteness[localeCode] = formatLocaleCompleteness(localeCompleteness, catalogLocale);
-  });
+  Object.entries(backendCompleteness.locales).map(
+    ([localeCode, localeCompleteness]: [string, BackendLocaleCompleteness]) => {
+      localesCompleteness[localeCode] = formatLocaleCompleteness(localeCompleteness, catalogLocale);
+    }
+  );
 
   return {
     channelRatio: backendCompleteness.stats.average,
-    localesCompleteness
+    localesCompleteness,
   };
 };
 

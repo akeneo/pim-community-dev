@@ -3,7 +3,7 @@ import {SectionTitle} from 'akeneo-design-system';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
 import {useDashboardCompleteness} from '../../hooks';
-import {ChannelsLocalesCompleteness, ChannelsLocalesCompletenessRatios} from "@akeneo-pim-community/enrichment";
+import {ChannelsLocalesCompleteness, ChannelsLocalesCompletenessRatios} from '@akeneo-pim-community/enrichment';
 
 const CompletenessWidget = () => {
   const translate = useTranslate();
