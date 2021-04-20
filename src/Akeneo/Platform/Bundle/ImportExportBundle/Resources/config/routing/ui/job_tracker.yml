@@ -17,3 +17,9 @@ pim_enrich_job_tracker_download_file:
     defaults: { _controller: pim_enrich.controller.job_tracker:downloadFilesAction }
     requirements:
         id: \d+
+
+pim_enrich_job_tracker_download_zip_archive:
+    path: /{jobExecutionId}/download/zip
+    defaults: { _controller: pim_enrich.controller.job_tracker:downloadZipArchiveAction }
+    requirements:
+        jobExecutionId: \d+
