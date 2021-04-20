@@ -1,7 +1,7 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
 import {Button, Field, Helper, Modal, TextInput} from 'akeneo-design-system';
-import {useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {duplicateUser} from '../infrastructure/UserDuplicater';
 import {UserId} from '../models';

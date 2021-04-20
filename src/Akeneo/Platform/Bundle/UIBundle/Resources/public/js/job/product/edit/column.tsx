@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {Column} from '@akeneo-pim-community/tailored-export';
-import {DependenciesProvider} from '@akeneo-pim-community/shared';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {pimTheme} from 'akeneo-design-system';
 
 const __ = require('oro/translator');

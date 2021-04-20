@@ -25,7 +25,7 @@
     "web-vitals": "^0.2.4",
     "@types/styled-components": "^5.1.2",
     "akeneo-design-system": "link:../akeneo-design-system",
-    "@akeneo-pim-community/legacy-bridge": "link:../legacy-bridge"
+    "@akeneo-pim-community/shared": "link:../shared"
   },
   "proxy": "http://localhost:8080",
   "scripts": {

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {NotificationLevel, useNotify, useRoute, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {PageContent, PageHeader, SearchBar, useDebounceCallback, PimView} from '@akeneo-pim-community/shared';
+import {NotificationLevel, useNotify, useRoute, useTranslate} from '@akeneo-pim-community/shared';
+import {PageContent, PageHeader, SearchBar, useDebounceCallback} from '@akeneo-pim-community/shared';
+import {PimView} from '@akeneo-pim-community/legacy-bridge';
 import {Breadcrumb, getFontSize, Pagination} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {removeAssociationType} from '@akeneo-pim-community/settings-ui/src/infrastructure/removers/associationTypeRemover';

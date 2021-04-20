@@ -1,5 +1,5 @@
 import React, {SyntheticEvent} from 'react';
-import {useRoute, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useRoute, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {Button, ButtonProps, ExportIllustration, Helper, Link, Modal} from 'akeneo-design-system';
 import {useToggleState} from '@akeneo-pim-community/shared';
 

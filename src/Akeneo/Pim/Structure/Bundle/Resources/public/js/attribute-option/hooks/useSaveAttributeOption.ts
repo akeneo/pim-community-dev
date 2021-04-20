@@ -1,5 +1,5 @@
 import {AttributeOption} from '../model';
-import {useRouter} from '@akeneo-pim-community/legacy-bridge';
+import {useRouter} from '@akeneo-pim-community/shared';
 import {useAttributeContext} from '../contexts';
 
 const useSaveAttributeOption = () => {

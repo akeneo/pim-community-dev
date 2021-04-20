@@ -1,7 +1,7 @@
 import {useState, useCallback, useEffect} from 'react';
 import {baseFetcher, useIsMounted} from '@akeneo-pim-community/shared';
 import {validateHasNewAnnouncements} from '../validator/hasNewAnnouncements';
-import {useMediator} from '@akeneo-pim-community/legacy-bridge';
+import {useMediator} from '@akeneo-pim-community/shared';
 
 const useHasNewAnnouncements = (): (() => void) => {
   const mediator = useMediator();

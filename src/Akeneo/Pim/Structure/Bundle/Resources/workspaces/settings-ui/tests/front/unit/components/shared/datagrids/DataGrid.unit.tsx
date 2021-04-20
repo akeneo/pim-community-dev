@@ -4,7 +4,7 @@ import {render} from '@testing-library/react';
 import {DataGrid} from '@akeneo-pim-community/settings-ui/src/components/shared/datagrids';
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
-import {DependenciesProvider} from '@akeneo-pim-community/shared';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 const renderDataGridWithProviders = (dataSource: any[], content: JSX.Element) => {
   return render(

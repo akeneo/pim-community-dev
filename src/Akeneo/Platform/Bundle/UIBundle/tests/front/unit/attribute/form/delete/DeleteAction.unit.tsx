@@ -2,8 +2,8 @@ import '@testing-library/jest-dom';
 import React from 'react';
 import {fireEvent, screen, getByText, act} from '@testing-library/react';
 import {DeleteAction} from 'pimui/js/attribute/form/delete/DeleteAction';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
-import {dependencies} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
+import {dependencies} from '@akeneo-pim-community/legacy-bridge';
 
 declare global {
   namespace NodeJS {

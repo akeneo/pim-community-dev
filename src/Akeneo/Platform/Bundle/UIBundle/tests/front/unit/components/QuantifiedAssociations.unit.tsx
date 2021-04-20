@@ -1,10 +1,10 @@
 import React from 'react';
 import {act, getByText, fireEvent, queryByText, getAllByTitle} from '@testing-library/react';
-import {dependencies} from '@akeneo-pim-community/shared';
+import {dependencies} from '@akeneo-pim-community/legacy-bridge';
 import {QuantifiedAssociations} from '../../../../Resources/public/js/product/form/quantified-associations/components/QuantifiedAssociations';
 import {ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models';
 import {queryByDisplayValue} from '@testing-library/dom';
-import {renderDOMWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderDOMWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 
 jest.mock('pimui/js/product/form/quantified-associations/hooks/useProducts.ts', () => ({
   useProducts: (identifiers: {products: string[]; product_models: string[]}) => {

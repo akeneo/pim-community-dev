@@ -1,8 +1,9 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
-import {useRouter, useSecurity, useTranslate, useRoute, Security} from '@akeneo-pim-community/legacy-bridge';
-import {PageContent, PageHeader, PimView, FullScreenError} from '@akeneo-pim-community/shared';
+import {useRouter, useSecurity, useTranslate, useRoute, Security} from '@akeneo-pim-community/shared';
+import {PageContent, PageHeader, FullScreenError} from '@akeneo-pim-community/shared';
+import {PimView} from '@akeneo-pim-community/legacy-bridge';
 import {
   Breadcrumb,
   Button,

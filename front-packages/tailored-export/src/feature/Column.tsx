@@ -1,5 +1,5 @@
 import {Button, useBooleanState} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 const Column = ({jobCode}: {jobCode: string}) => {
   const [test, open, close] = useBooleanState();

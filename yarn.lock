@@ -6,6 +6,10 @@
   version "0.0.0"
   uid ""
 
+"@akeneo-pim-community/shared@link:front-packages/shared":
+  version "0.0.0"
+  uid ""
+
 "@akeneo-pim-community/tailored-export@link:front-packages/tailored-export":
   version "0.0.0"
   uid ""

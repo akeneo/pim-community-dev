@@ -12,7 +12,7 @@ import {
 import {Operation} from 'akeneomeasure/model/operation';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
-import {useTranslate, useUserContext, useSecurity} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useUserContext, useSecurity} from '@akeneo-pim-community/shared';
 import {
   filterErrors,
   ValidationError,

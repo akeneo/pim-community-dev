@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useRoute} from '@akeneo-pim-community/shared';
 import {filterErrors, formatParameters} from '@akeneo-pim-community/shared';
 import {BrokenLinkIcon, EditIcon, CloseIcon, useTheme, Helper, Badge} from 'akeneo-design-system';
 import {ProductType, Row, QuantifiedLink, MAX_QUANTITY} from '../models';
