@@ -65,7 +65,7 @@ SQL;
     }
 
     /**
-     * fetch the values stored in the given column ofn the given table.
+     * fetch the values stored in the given column of the given table.
      */
     public function getTableColumnValues(string $table, string $column): array
     {

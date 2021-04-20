@@ -5,7 +5,7 @@ parameters:
 
 services:
     _defaults: 
-        public: true
+        public: false
     akeneo.pim.database_inspector.service:
         class: '%akeneo.pim.database_inspector.class%'
         arguments:
