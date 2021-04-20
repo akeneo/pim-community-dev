@@ -1,6 +1,5 @@
 import React from 'react';
-import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
-import {useToggleState} from '@akeneo-pim-community/shared';
+import {useToggleState, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {DeleteModal} from './DeleteModal';
 
 type DeleteActionProps = {

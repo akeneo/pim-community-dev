@@ -1,7 +1,6 @@
 import React, {FC, useEffect} from 'react';
-import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
 import {PimView} from '@akeneo-pim-community/legacy-bridge';
-import {useRoute, useTranslate} from '@akeneo-pim-community/shared';
+import {PageContent, PageHeader, useRoute, useTranslate} from '@akeneo-pim-community/shared';
 import {LocalesDataGrid} from '../components';
 import {useLocalesIndexState} from '../hooks';
 import styled from 'styled-components';

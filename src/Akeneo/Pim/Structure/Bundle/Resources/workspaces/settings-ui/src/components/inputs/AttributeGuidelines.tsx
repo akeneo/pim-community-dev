@@ -1,7 +1,6 @@
 import React from 'react';
 import {Field, TextAreaInput, LoaderIcon} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
-import {LocaleCode, LocaleSelector, Locale} from '@akeneo-pim-community/shared';
+import {LocaleCode, LocaleSelector, Locale, useTranslate} from '@akeneo-pim-community/shared';
 import {Guidelines} from '../../models';
 import styled from 'styled-components';
 const FetcherRegistry = require('pim/fetcher-registry');

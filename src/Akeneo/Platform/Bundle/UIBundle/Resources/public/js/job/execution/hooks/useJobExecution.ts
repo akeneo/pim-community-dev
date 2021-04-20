@@ -1,6 +1,5 @@
 import {useCallback, useEffect, useState} from 'react';
-import {useIsMounted, useDocumentVisibility} from '@akeneo-pim-community/shared';
-import {useRoute} from '@akeneo-pim-community/shared';
+import {useRoute, useIsMounted, useDocumentVisibility} from '@akeneo-pim-community/shared';
 import {isJobFinished, JobExecution} from '../models';
 
 type Error = {

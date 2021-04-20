@@ -2,8 +2,7 @@ import {Operation, Operator} from 'akeneomeasure/model/operation';
 import {Unit} from 'akeneomeasure/model/unit';
 import {LocaleCode} from 'akeneomeasure/model/locale';
 import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
-import {Translate} from '@akeneo-pim-community/shared';
-import {ValidationError} from '@akeneo-pim-community/shared';
+import {ValidationError, Translate} from '@akeneo-pim-community/shared';
 
 type CreateUnitForm = {
   code: string;

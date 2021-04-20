@@ -1,6 +1,5 @@
 import React, {ReactElement} from 'react';
-import {useRoute, useTranslate} from '@akeneo-pim-community/shared';
-import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
+import {PageContent, PageHeader, useRoute, useTranslate} from '@akeneo-pim-community/shared';
 import {PimView} from '@akeneo-pim-community/legacy-bridge';
 import {Breadcrumb, Table, Button} from 'akeneo-design-system';
 import {useSystemInfo} from './SystemInfoHook';

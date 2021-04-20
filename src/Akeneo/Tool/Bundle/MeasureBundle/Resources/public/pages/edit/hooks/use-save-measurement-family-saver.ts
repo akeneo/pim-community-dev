@@ -1,6 +1,5 @@
 import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
-import {useRouter} from '@akeneo-pim-community/shared';
-import {ValidationError} from '@akeneo-pim-community/shared';
+import {useRouter, ValidationError} from '@akeneo-pim-community/shared';
 
 type SaverResult = {
   success: boolean;

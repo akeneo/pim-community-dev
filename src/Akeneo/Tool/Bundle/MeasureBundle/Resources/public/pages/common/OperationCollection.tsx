@@ -17,8 +17,13 @@ import {
 } from 'akeneo-design-system';
 import {Operation, Operator, emptyOperation} from 'akeneomeasure/model/operation';
 import {useLocalizedNumber} from 'akeneomeasure/shared/hooks/use-localized-number';
-import {useTranslate} from '@akeneo-pim-community/shared';
-import {ValidationError, filterErrors, getErrorsForPath, formatParameters} from '@akeneo-pim-community/shared';
+import {
+  ValidationError,
+  filterErrors,
+  getErrorsForPath,
+  formatParameters,
+  useTranslate,
+} from '@akeneo-pim-community/shared';
 
 const Container = styled.div<{level: number}>`
   position: relative;

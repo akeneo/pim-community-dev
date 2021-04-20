@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {SearchBar, useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
 import {
   useAttributeGroupPermissions,
   useAttributeGroupsIndexState,
@@ -8,7 +8,6 @@ import {
 } from '../../../hooks';
 import {AttributeGroup} from '../../../models';
 import {DataGrid, NoResults} from '../../shared';
-import {SearchBar, useDebounceCallback} from '@akeneo-pim-community/shared';
 import {StatusBadge} from './StatusBadge';
 
 const FeatureFlags = require('pim/feature-flags');

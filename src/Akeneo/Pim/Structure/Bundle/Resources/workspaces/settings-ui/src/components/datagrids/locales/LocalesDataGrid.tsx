@@ -1,8 +1,7 @@
 import React, {FC, useState} from 'react';
-import {useTranslate} from '@akeneo-pim-community/shared';
 import {useFilteredLocales} from '../../../hooks';
 import {Locale} from '../../../models';
-import {SearchBar, useDebounceCallback} from '@akeneo-pim-community/shared';
+import {SearchBar, useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
 import {Table} from 'akeneo-design-system';
 import {NoResults} from '../../shared';
 import styled from 'styled-components';

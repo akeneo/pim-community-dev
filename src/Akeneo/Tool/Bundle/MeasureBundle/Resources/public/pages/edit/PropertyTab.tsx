@@ -3,8 +3,14 @@ import styled from 'styled-components';
 import {SectionTitle} from 'akeneo-design-system';
 import {MeasurementFamily, setMeasurementFamilyLabel} from 'akeneomeasure/model/measurement-family';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
-import {ValidationError, filterErrors, TextField, Section} from '@akeneo-pim-community/shared';
-import {useTranslate, useSecurity} from '@akeneo-pim-community/shared';
+import {
+  ValidationError,
+  filterErrors,
+  TextField,
+  Section,
+  useTranslate,
+  useSecurity,
+} from '@akeneo-pim-community/shared';
 
 const Container = styled.div`
   display: flex;

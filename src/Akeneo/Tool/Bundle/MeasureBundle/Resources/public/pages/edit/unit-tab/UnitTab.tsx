@@ -5,8 +5,15 @@ import {MeasurementIllustration, Table} from 'akeneo-design-system';
 import {UnitCode} from 'akeneomeasure/model/unit';
 import {UnitDetails} from 'akeneomeasure/pages/edit/unit-tab/UnitDetails';
 import {UnitRow} from 'akeneomeasure/pages/edit/unit-tab/UnitRow';
-import {SearchBar, NoDataSection, NoDataTitle, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
-import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {
+  SearchBar,
+  NoDataSection,
+  NoDataTitle,
+  ValidationError,
+  filterErrors,
+  useTranslate,
+  useUserContext,
+} from '@akeneo-pim-community/shared';
 
 const SpacedTable = styled(Table)`
   th {
