@@ -2,6 +2,8 @@ config:
     config:
         pim/controller-registry:
             controllers:
+                akeneo_connectivity_connection_connect_marketplace:
+                    module: pim/controller/connectivity/connection/connect
                 akeneo_connectivity_connection_error_management_dashboard:
                     module: pim/controller/connectivity/connection/error-management
                 akeneo_connectivity_connection_error_management_connection_monitoring:
@@ -33,6 +35,7 @@ config:
                     module: pim/controller/connectivity/connection/audit-redirect
 
     paths:
+        pim/controller/connectivity/connection/connect: akeneoconnectivityconnection/js/controller/connect.tsx
         pim/controller/connectivity/connection/settings: akeneoconnectivityconnection/js/controller/settings.tsx
         pim/controller/connectivity/connection/error-management: akeneoconnectivityconnection/js/controller/error-management.tsx
         pim/controller/connectivity/connection/webhook: akeneoconnectivityconnection/js/controller/webhook.tsx

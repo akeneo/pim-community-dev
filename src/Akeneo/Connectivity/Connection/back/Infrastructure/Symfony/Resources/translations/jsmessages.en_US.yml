@@ -18,6 +18,7 @@ pim_menu:
         data_flows: Data flows
 
 pim_title:
+    akeneo_connectivity_connection_connect_marketplace: Marketplace
     akeneo_connectivity_connection_settings_index: Connections
     akeneo_connectivity_connection_settings_edit: Connection settings
     akeneo_connectivity_connection_settings_any: Connection settings
@@ -35,6 +36,10 @@ akeneo_connectivity.connection:
         redirect:
             title: This page has been moved in the new Connect space 🔌
             link: To go there, click here
+        marketplace:
+            title: Want to connect your PIM with another application? 🤟
+            sub_title: Check our marketplace to see which application can be connected with Akeneo PIM.
+            link: Here you go!
     connections: Connections
     secondary_actions:
         title: Other actions
