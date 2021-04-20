@@ -66,23 +66,11 @@ import * as Icons from '../../icons';
     <Story name="Long title and content">
         {args => {
             return (
-                <div style={{display: 'flex', gap: '20px'}}>
-                    <IconCard
-                        icon={React.createElement(Icons[args.icon])}
-                        label={'Label'}
-                        content={'This is a simple content'}
-                    />
-                    <IconCard
-                        icon={React.createElement(Icons[args.icon])}
-                        label={'This a 2 lines non truncated long label'}
-                        content={'This is a long not truncated content displayed in 2 lines'}
-                    />
-                    <IconCard
-                        icon={React.createElement(Icons[args.icon])}
-                        label={'This a very very very very very very very very very very long truncated label displayed in 2 lines'}
-                        content={'This is a very very very very very very very very very very very very very very very long content that will be displayed in 2 lines'}
-                    />
-                </div>
+                <IconCard
+                    icon={React.createElement(Icons[args.icon])}
+                    label={'This a very very very very very very very very very very long truncated label displayed in 2 lines'}
+                    content={'This is a very very very very very very very very very very very very very very very long content that will be displayed in 2 lines'}
+                />
             );
         }}
     </Story>
