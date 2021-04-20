@@ -1,16 +1,16 @@
-import {Connect} from '@akeneo-pim-community/connectivity-connection';
+import {MarketplaceSettings} from '@akeneo-pim-community/connectivity-connection';
 import React from 'react';
 import {dependencies} from '../dependencies';
 import highlightMenu from '../menu/highlight-menu';
 import ReactController from '../react/react-controller';
 
-class ConnectController extends ReactController {
+class MarketplaceController extends ReactController {
   reactElementToMount() {
-    return <Connect dependencies={dependencies} />;
+    return <MarketplaceSettings dependencies={dependencies} />;
   }
 
   routeGuardToUnmount() {
-    return /^akeneo_connectivity_connection_connect/;
+    return /^akeneo_connectivity_connection_connect_marketplace/;
   }
 
   initialize() {
@@ -26,4 +26,4 @@ class ConnectController extends ReactController {
   }
 }
 
-export = ConnectController;
+export = MarketplaceController;

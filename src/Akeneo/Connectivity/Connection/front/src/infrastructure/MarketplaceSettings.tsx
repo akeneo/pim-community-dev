@@ -4,7 +4,7 @@ import {AkeneoThemeProvider} from './akeneo-theme-provider';
 import {withDependencies} from './dependencies-provider';
 import {Marketplace} from '../connect/pages/Marketplace';
 
-export const Connect = withDependencies(() => (
+export const MarketplaceSettings = withDependencies(() => (
     <StrictMode>
         <AkeneoThemeProvider>
             <Router>
