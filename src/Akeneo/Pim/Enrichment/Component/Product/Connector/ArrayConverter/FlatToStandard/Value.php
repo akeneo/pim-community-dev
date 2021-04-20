@@ -29,11 +29,6 @@ class Value implements ArrayConverterInterface
     /** @var ColumnsMerger */
     protected $columnsMerger;
 
-    /**
-     * @param AttributeColumnInfoExtractor $attrFieldExtractor
-     * @param ValueConverterRegistryInterface $converterRegistry
-     * @param ColumnsMerger $columnsMerger
-     */
     public function __construct(
         AttributeColumnInfoExtractor $attrFieldExtractor,
         ValueConverterRegistryInterface $converterRegistry,
@@ -133,7 +128,7 @@ class Value implements ArrayConverterInterface
     /**
      * @param string $column
      * @param string $value
-     *q
+     *
      * @return array
      * @throws \LogicException
      *
