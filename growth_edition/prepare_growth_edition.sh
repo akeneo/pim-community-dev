@@ -13,10 +13,6 @@ cp $EE_DIR/Dockerfile $TARGET_DIR/
 cp -r $EE_DIR/docker/*.conf $EE_DIR/docker/*.ini $TARGET_DIR/docker/
 cp -r $EE_DIR/deployments $TARGET_DIR/
 
-# Configure file storage to be on Google Cloud Storage
-jq '.require += {"superbalist/flysystem-google-storage": "7.2.1"}' $TARGET_DIR/composer.json > $TARGET_DIR/composer.json.updated
-mv  $TARGET_DIR/composer.json.updated  $TARGET_DIR/composer.json
-
 cp $EE_DIR/growth_edition/oneup_flysystem.yml $TARGET_DIR/config/packages/prod/
 cp $EE_DIR/config/services/prod/storage.yml $TARGET_DIR/config/services/prod/
 

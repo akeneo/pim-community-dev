@@ -108,11 +108,6 @@ suites:
         psr4_prefix: Akeneo\Tool\Bundle\RuleEngineBundle
         spec_path: src/Akeneo/Tool/Bundle/RuleEngineBundle
         src_path: src/Akeneo/Tool/Bundle/RuleEngineBundle
-    FileStorage:
-        namespace: Akeneo\Tool\Component\FileStorage
-        psr4_prefix: Akeneo\Tool\Component\FileStorage
-        spec_path: src/Akeneo/Tool/Component/FileStorage
-        src_path: src/Akeneo/Tool/Component/FileStorage
 
     ## Shared Catalog
     SharedCatalog:
