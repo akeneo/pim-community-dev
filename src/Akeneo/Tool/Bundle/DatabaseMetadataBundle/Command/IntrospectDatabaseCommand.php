@@ -47,7 +47,7 @@ class IntrospectDatabaseCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $db_name = $input->getOption('db-name');
+        $dbName = $input->getOption('db-name');
 
         if ($input->getOption('file') !== false) {
             $filesystem = new Filesystem();
@@ -65,9 +65,7 @@ class IntrospectDatabaseCommand extends Command
             $filesystem = null;
         }
         
-        $jobs = $input->getOption('jobs') === true ?
-            true :
-            false;
+        $jobs = $input->getOption('jobs') === true ?: false;
 
         $outputContent = function (string $line) use ($output, $filesystem, $filename) {
             if (isset($filesystem) && $filesystem !== null) {
@@ -77,12 +75,12 @@ class IntrospectDatabaseCommand extends Command
             }
         };
 
-        foreach ($this->inspector->getTableList($db_name) as $row) {
+        foreach ($this->inspector->getTableList($dbName) as $row) {
             $line = sprintf("%s | %s\n", $row['table_name'], $row['table_type']);
             $outputContent($line);
         }
 
-        foreach ($this->inspector->getColumnInfo($db_name) as $row) {
+        foreach ($this->inspector->getColumnInfo($dbName) as $row) {
             $line = sprintf(
                 "%s | %s | %s | %s | %s\n",
                 $row['table_name'],

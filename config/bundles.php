@@ -60,7 +60,6 @@ return [
     Akeneo\Tool\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle::class => ['all' => true],
     Akeneo\Pim\Automation\RuleEngine\Bundle\AkeneoPimRuleEngineBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle::class => ['all' => true],
-    Akeneo\Tool\Bundle\DatabaseMetadataBundle\AkeneoDatabaseMetadataBundle::class => ['all' => true],
     Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle::class => ['all' => true],
     Akeneo\Pim\Permission\Bundle\AkeneoPimPermissionBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\InstallerBundle\PimEnterpriseInstallerBundle::class => ['all' => true],
@@ -78,6 +77,7 @@ return [
     Akeneo\SharedCatalog\AkeneoSharedCatalogBundle::class =>  ['all' => true],
 
     // Dev related bundles
+    Akeneo\Tool\Bundle\DatabaseMetadataBundle\AkeneoDatabaseMetadataBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
     Symfony\Bundle\WebServerBundle\WebServerBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
