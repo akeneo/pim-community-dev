@@ -86,7 +86,7 @@ class EnterpriseDataGridContext extends BaseDataGridContext
 
         foreach ($table->getHash() as $hash) {
             $this->spin(function () use ($datagrid, $hash) {
-                $selector = 'table.proposal-changes[data-product="%s"][data-attribute="%s"][data-author="%s"]';
+                $selector = '*[data-product="%s"][data-attribute="%s"][data-author="%s"]';
                 $params   = [
                     $hash['product'],
                     $hash['attribute'],
@@ -208,5 +208,21 @@ class EnterpriseDataGridContext extends BaseDataGridContext
                 $thumbnailPath
             ));
         }
+    }
+
+    public function iClickOnTheActionOfTheRowWhichContains($actionName, $element)
+    {
+        if (in_array($actionName, ['Approve all', 'Remove', 'Reject all'])) {
+            $this->spin(function () use ($element, $actionName) {
+                $datagrid = $this->getDatagrid();
+                $row = $datagrid->getRow($element);
+
+                return $row->find('css', sprintf('.proposalActionButton:contains("%s")', $actionName));
+            }, sprintf('Can not find proposal action %s for the row %s', $actionName, $element))->click();
+
+            return;
+        }
+
+        parent::iClickOnTheActionOfTheRowWhichContains($actionName, $element);
     }
 }

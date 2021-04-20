@@ -30,20 +30,6 @@ Feature: List proposals
       | Name  | Autumn jacket | General |
       | Price | 10 USD        | Sales   |
 
-  Scenario: Successfully sort proposals in the grid
-    Given I am logged in as "Peter"
-    When I am on the proposals page
-    Then the grid should contain 1 elements
-    Given the following product category accesses:
-      | product category | user group | access |
-      | 2014_collection  | IT support | own    |
-    When I am on the proposals page
-    And I reload the page
-    Then the grid should contain 3 elements
-    And the rows should be sorted descending by proposed at
-    And I collapse the column
-    And I should be able to sort the rows by author and proposed at
-
   Scenario: Successfully approve or reject a proposal
     Given I am logged in as "Peter"
     And the following product category accesses:
@@ -106,7 +92,7 @@ Feature: List proposals
     Then I should see the following proposals:
       | product | author | attribute   | original | new    |
       | tshirt  | Mary   | price       |          | $10.00 |
-    And I click on the "Reject All" action of the row which contains "tshirt"
+    And I click on the "Reject all" action of the row which contains "tshirt"
     And I press the "Send" button in the popin
     And I refresh current page
     And I should see the text "There is no proposal to review"

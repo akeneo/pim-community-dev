@@ -29,7 +29,7 @@ Feature: Remove notifications
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
     And I visit the "Proposals" column tab
-    And I click on the "remove" action of the row which contains "Mary"
+    And I click on the "Remove" action of the row which contains "Mary"
 
   Scenario: A notification is sent when I remove a proposal with comment from the product draft page
     Given I fill in this comment in the popin: "You're fired."

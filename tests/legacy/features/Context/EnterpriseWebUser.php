@@ -187,8 +187,23 @@ class EnterpriseWebUser extends BaseWebUser
             $comment = $comment->getRaw();
         }
 
-        $this->getCurrentPage()->simpleFillField('modal-comment', $comment);
-        $this->getSession()->executeScript("$('#modal-comment').trigger('change');");
+        $this->spin(function () use ($comment) {
+            $formerField = $this->getCurrentPage()->find('css', '#modal-comment'); // Field from send for approval
+            $field = $this->getCurrentPage()->find('css', sprintf('textarea')); // Field from proposals grid
+            if (null !== $formerField) {
+                $formerField->setValue($comment);
+                $this->getSession()->executeScript("$('#modal-comment').trigger('change');");
+
+                return true;
+            } elseif (null !== $field) {
+                $field->setValue($comment);
+                $this->getSession()->executeScript("$('textarea').trigger('change');");
+
+                return true;
+            }
+
+            return false;
+        }, 'Can not fill the comment in the popin');
     }
 
     /**
@@ -202,12 +217,11 @@ class EnterpriseWebUser extends BaseWebUser
      */
     public function iPartiallyApproveReject($partialAction, TableNode $table)
     {
-        $hash          = $table->getHash();
-        $partialButton = sprintf('.partial-%s-link', $partialAction);
-
-        foreach ($hash as $row) {
-            $button = $this->spin(function () use ($row, $partialButton) {
-                return $this->getElementByDataAttribute($row, $partialButton);
+        foreach ($table->getHash() as $row) {
+            $button = $this->spin(function () use ($row, $partialAction) {
+                $row = $this->getElementByDataAttribute($row, '');
+                $buttons = $row->findAll('css', 'button');
+                return $partialAction === 'approve' ? $buttons[0] : $buttons[1];
             }, sprintf('Unable to the button to approve/reject'));
 
             $button->click();
@@ -243,13 +257,16 @@ class EnterpriseWebUser extends BaseWebUser
         $hash = $table->getHash();
 
         foreach ($hash as $row) {
+            $approveButton = null;
             try {
-                $approveButton = $this->getElementByDataAttribute($row, '.partial-approve-link');
+                $change = $this->getElementByDataAttribute($row, '');
+                if ($change) {
+                    $approveButton = $change->findAll('css', 'button')[1];
+                }
             } catch (\Exception $e) {
-                $approveButton = null;
             }
 
-            if ($not && $approveButton !== null && $approveButton->isVisible()) {
+            if ($not && $approveButton !== null) {
                 throw new \Exception(
                     sprintf(
                         'Partial approve button is visible, but it should not (%s)',
@@ -258,7 +275,7 @@ class EnterpriseWebUser extends BaseWebUser
                 );
             }
 
-            if (!$not && ($approveButton === null || !$approveButton->isVisible())) {
+            if (!$not && $approveButton === null) {
                 throw new \Exception(
                     sprintf(
                         'Partial approve button is not visible, but it should (%s)',
@@ -293,7 +310,7 @@ class EnterpriseWebUser extends BaseWebUser
 
         foreach ($hash as $data) {
             try {
-                $row = $this->getElementByDataAttribute($data, '.proposal-changes');
+                $row = $this->getElementByDataAttribute($data, '');
             } catch (\Exception $e) {
                 $row = null;
             }

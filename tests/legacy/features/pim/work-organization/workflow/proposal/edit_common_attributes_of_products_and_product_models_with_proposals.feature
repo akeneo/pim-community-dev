@@ -61,7 +61,7 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     Then the grid should contain 0 elements
     When I edit the "product_editable" product
     And I visit the "Proposals" column tab
-    Then I should see the text "A draft is in progress by Mary for this product"
+    Then I should see the text "A draft is in progress by Mary Smith for this product."
     And the grid should contain 1 elements
     When I edit the "product_owned" product
     And I visit the "Proposals" column tab

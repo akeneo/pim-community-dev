@@ -4,9 +4,6 @@ config:
         pim/form/common/edit-form:
             forwarded-events:
                 'pim_enrich:form:proposal:post_approve:success': 'pim_enrich:form:proposal:post_approve:success'
-                'pim_enrich:form:proposal:post_approve:error':   'pim_enrich:form:proposal:post_approve:error'
-                'pim_enrich:form:proposal:post_reject:success':  'pim_enrich:form:proposal:post_reject:success'
-                'pim_enrich:form:proposal:post_remove:success':  'pim_enrich:form:proposal:post_remove:success'
         pimee/product-view-form:
             forwarded-events:
                 'pim_enrich:form:field:extension:add':           'pim_enrich:form:field:extension:add'

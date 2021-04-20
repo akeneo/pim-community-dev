@@ -29,8 +29,8 @@ Feature: Partial approve
       | product | author | attribute | locale | scope |
       | tshirt  | Mary   | name      | en_US  |       |
     Then I should not see the following partial approve button:
-      | product | author | attribute | locale |
-      | tshirt  | Mary   | name      | en_US  |
+      | product         | author | attribute | locale |
+      | Summer t-shirt  | Mary   | name      | en_US  |
     But I should see the following partial approve button:
-      | product | author | attribute   | locale | scope  |
-      | tshirt  | Mary   | description | en_US  | mobile |
+      | product         | author | attribute   | locale | scope  |
+      | Summer t-shirt  | Mary   | description | en_US  | mobile |

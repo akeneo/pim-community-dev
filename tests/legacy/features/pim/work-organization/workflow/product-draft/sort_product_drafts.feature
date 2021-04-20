@@ -18,10 +18,8 @@ Feature: Sort product drafts
     And I am logged in as "Julia"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
-
   Scenario: Successfully sort product drafts in the grid
     Given I edit the "black-boots" product
     When I visit the "Proposals" column tab
     Then the grid should contain 2 elements
     And the rows should be sorted descending by proposed at
-    And I should be able to sort the rows by author, proposed at and status

@@ -6,15 +6,13 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ImagePresenterSpec extends ObjectBehavior
 {
     function let(
-        UrlGeneratorInterface $generator,
         FileInfoRepositoryInterface $repository
     ) {
-        $this->beConstructedWith($generator, $repository);
+        $this->beConstructedWith($repository);
     }
 
     function it_is_a_presenter()
@@ -30,18 +28,17 @@ class ImagePresenterSpec extends ObjectBehavior
     {
         $this
             ->present(null, ['data' => 'key/of/the/change.jpg'])
-            ->shouldReturn(['before' => '', 'after' => '']);
+            ->shouldReturn(['before' => null, 'after' => null]);
     }
 
     function it_does_not_presents_new_if_new_is_empty(FileInfoInterface $media)
     {
         $this
             ->present($media, ['data' => null])
-            ->shouldReturn(['before' => '', 'after' => '']);
+            ->shouldReturn(['before' => null, 'after' => null]);
     }
 
     function it_presents_image(
-        $generator,
         FileInfoInterface $media,
         FileInfoInterface $changedMedia,
         FileInfoRepositoryInterface $repository
@@ -55,29 +52,17 @@ class ImagePresenterSpec extends ObjectBehavior
         $media->getHash()->willReturn('url/of/the/original/media.jpg');
         $media->getOriginalFilename()->willReturn('media.jpg');
 
-        $generator
-            ->generate(
-                'pim_enrich_media_show',
-                ['filename' => urlencode('key/of/the/original/media.jpg'), 'filter' => 'thumbnail']
-            )
-            ->willReturn('url/of/the/original/media.jpg');
-        $generator
-            ->generate(
-                'pim_enrich_media_show',
-                ['filename' => urlencode('key/of/the/changed/media.jpg'), 'filter' => 'thumbnail']
-            )
-            ->willReturn('url/of/the/changed/media.jpg');
-
         $this
             ->present($media, ['data' => 'key/of/the/changed/media.jpg'])
             ->shouldReturn([
-                'before' => sprintf(
-                    '<img src="%s" title="%s" />',
-                    'url/of/the/original/media.jpg',
-                    'media.jpg'),
-                'after' => sprintf('<img src="%s" title="%s" />',
-                    'url/of/the/changed/media.jpg',
-                    'changed_media.jpg')
+                'before' => [
+                  'fileKey' => "key%2Fof%2Fthe%2Foriginal%2Fmedia.jpg",
+                  'originalFileName' => "media.jpg",
+                ],
+                'after' => [
+                  'fileKey' => "key%2Fof%2Fthe%2Fchanged%2Fmedia.jpg",
+                  'originalFileName' => "changed_media.jpg",
+                ],
             ]);
     }
 }

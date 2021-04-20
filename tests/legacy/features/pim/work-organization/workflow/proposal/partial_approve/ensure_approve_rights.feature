@@ -37,13 +37,13 @@ Feature: Partial approve
     And I am logged in as "Julia"
     When I edit the "tshirt" product
     And I visit the "Proposals" column tab
-    Then the row "Mary" should contain:
-      | column | value                     |
-      | Status | Can be partially reviewed |
+    Then the row "Mary" should contain the texts:
+      | column      | value                     |
+      | Proposed at | can be partially reviewed |
     When I am on the proposals page
-    Then the row "tshirt" should contain:
-      | column | value                     |
-      | Status | Can be partially reviewed |
+    Then the row "Mary" should contain the texts:
+      | column      | value                     |
+      | Proposed at | can be partially reviewed |
 
   Scenario: I can partially approve only attribute that I can edit
     Given Mary proposed the following change to "tshirt":

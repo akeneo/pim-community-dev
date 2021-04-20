@@ -9,13 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\RendererAwareInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TranslatorAwareInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -25,49 +21,27 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftChangesExtension extends \Twig_Extension
+class PresenterRegistry
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
-
-    /** @var \Diff_Renderer_Html_Array */
-    protected $renderer;
 
     protected TranslatorInterface $translator;
 
     /** @var PresenterInterface[] */
     protected $presenters = [];
 
-    /** @var \Twig_Environment */
-    protected $twig;
-
     /** @var ValueFactory */
     protected $valueFactory;
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        RendererInterface $renderer,
         TranslatorInterface $translator,
         ValueFactory $valueFactory
     ) {
         $this->attributeRepository = $attributeRepository;
-        $this->renderer = $renderer;
         $this->translator = $translator;
         $this->valueFactory = $valueFactory;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
-    {
-        return [
-            new \Twig_SimpleFunction(
-                'present_product_draft_change',
-                [$this, 'presentChange'],
-                ['is_safe' => ['html']]
-            ),
-        ];
     }
 
     /**
@@ -126,10 +100,6 @@ class ProductDraftChangesExtension extends \Twig_Extension
             if ($presenter->supports($attribute->getType(), $attribute->getReferenceDataName())) {
                 if ($presenter instanceof TranslatorAwareInterface) {
                     $presenter->setTranslator($this->translator);
-                }
-
-                if ($presenter instanceof RendererAwareInterface) {
-                    $presenter->setRenderer($this->renderer);
                 }
 
                 return $presenter->present($data, array_merge($change, [

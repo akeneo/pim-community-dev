@@ -28,8 +28,8 @@ Feature: Be notified on draft submission
     Then I should be on the proposals index page
     And the grid should contain 1 element
     And I should see the following proposal:
-      | product      | author | attribute | original     | new       |
-      | my-jacket-hm | Mary   | sku       | my-jacket-hm | jacket-hm |
+      | product   | author | attribute | original     | new       |
+      | Jacket HM | Mary   | sku       | my-jacket-hm | jacket-hm |
 
   Scenario: Successfully be notified when someone sends a proposal for approval with a comment
     Given Mary proposed the following change to "my-jacket":
@@ -48,5 +48,5 @@ Feature: Be notified on draft submission
     Then I should be on the proposals index page
     And the grid should contain 1 element
     And I should see the following proposal:
-      | product      | author | attribute | original     | new       |
-      | my-jacket-hm | Mary   | sku       | my-jacket-hm | jacket-hm |
+      | product   | author | attribute | original     | new       |
+      | Jacket HM | Mary   | sku       | my-jacket-hm | jacket-hm |

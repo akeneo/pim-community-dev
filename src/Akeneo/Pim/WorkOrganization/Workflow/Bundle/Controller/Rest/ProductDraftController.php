@@ -274,7 +274,7 @@ class ProductDraftController
         }
 
         try {
-            $this->manager->$action($productDraft, ['comment' => $request->request->get('comment')]);
+            $this->manager->$action($productDraft, ['comment' => $request->get('comment')]);
             $this->elasticSearchClient->refreshIndex();
         } catch (ValidatorException $e) {
             return new JsonResponse(['message' => $e->getMessage()], 400);
@@ -318,7 +318,7 @@ class ProductDraftController
         }
 
         $this->manager->remove($productDraft, [
-            'comment' => $request->request->get('comment')
+            'comment' => $request->get('comment')
         ]);
 
         $normalizationContext = $this->userContext->toArray() + [

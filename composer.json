@@ -61,7 +61,6 @@
         "akeneo/pim-onboarder": "^4.3.3",
         "hslavich/oneloginsaml-bundle": "1.5.1",
         "justinrainbow/json-schema": "^5.2",
-        "phpspec/php-diff": "1.1.3",
         "phpseclib/phpseclib": "2.0.29",
         "superbalist/flysystem-google-storage": "7.2.2",
         "grpc/grpc": "1.30.0",

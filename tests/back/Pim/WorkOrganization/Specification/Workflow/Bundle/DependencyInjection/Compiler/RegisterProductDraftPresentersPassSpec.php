@@ -22,8 +22,8 @@ class RegisterProductDraftPresentersPassSpec extends ObjectBehavior
         Definition $fooDefinition,
         Definition $bazDefinition
     ) {
-        $container->hasDefinition('pimee_workflow.twig.extension.product_draft_changes')->willReturn(true);
-        $container->getDefinition('pimee_workflow.twig.extension.product_draft_changes')->willReturn($twigExt);
+        $container->hasDefinition('pimee_workflow.presenter.registry')->willReturn(true);
+        $container->getDefinition('pimee_workflow.presenter.registry')->willReturn($twigExt);
         $container->findTaggedServiceIds('pimee_workflow.presenter')->willReturn([
             'presenter.bar' => [['priority' => -10]],
             'presenter.foo' => [['priority' => 10]],

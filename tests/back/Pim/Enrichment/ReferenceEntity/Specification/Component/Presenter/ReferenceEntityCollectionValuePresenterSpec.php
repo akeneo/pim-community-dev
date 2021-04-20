@@ -5,7 +5,6 @@ namespace Specification\Akeneo\Pim\Enrichment\ReferenceEntity\Component\Presente
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TranslatorAwareInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -32,13 +31,14 @@ class ReferenceEntityCollectionValuePresenterSpec extends ObjectBehavior
         $this->supports('other')->shouldBe(false);
     }
 
-    function it_presents_reference_entity_collection_change_using_the_injected_renderer(RendererInterface $renderer)
+    function it_presents_reference_entity_collection_change_using_the_injected_renderer()
     {
         $foo = RecordCode::fromString('foo');
         $bar = RecordCode::fromString('bar');
-        $renderer->renderDiff(['foo', 'bar'], ['foo', 'bar', 'baz'])->willReturn('diff between two collections');
-        $this->setRenderer($renderer);
 
-        $this->present([$foo, $bar], ['data' => ['foo', 'bar', 'baz']])->shouldReturn('diff between two collections');
+        $this->present([$foo, $bar], ['data' => ['foo', 'bar', 'baz']])->shouldReturn([
+            'before' => ['foo', 'bar'],
+            'after' => ['foo', 'bar', 'baz'],
+        ]);
     }
 }

@@ -14,6 +14,7 @@ const View = ({
   channel,
   locale,
   canEditData,
+  ...rest
 }: {
   value: Value;
   channel: ChannelReference;
@@ -30,7 +31,7 @@ const View = ({
   return (
     //The first children of a FieldContainer will stretch to the full width if not contained in a div.
     //I didn't found a better way to fix it. So we need this class
-    <div className="record-selector-container">
+    <div className="record-selector-container" {...rest}>
       <RecordSelector
         id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
         value={value.data.recordCollectionData}

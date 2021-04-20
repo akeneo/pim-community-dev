@@ -36,9 +36,6 @@ define([
     configure: function() {
       var root = this.getRoot();
       this.listenTo(root, 'pim_enrich:form:proposal:post_approve:success', this.onPostApproveSuccess);
-      this.listenTo(root, 'pim_enrich:form:proposal:post_approve:error', this.onPostApproveError);
-      this.listenTo(root, 'pim_enrich:form:proposal:post_reject:success', this.onPostRejectSuccess);
-      this.listenTo(root, 'pim_enrich:form:proposal:post_remove:success', this.onPostRemoveSuccess);
 
       this.trigger('tab:register', {
         code: this.config.tabCode ? this.config.tabCode : this.code,
@@ -64,31 +61,6 @@ define([
     onPostApproveSuccess: function(product) {
       this.setData(product);
       this.getRoot().trigger('pim_enrich:form:entity:post_fetch', product);
-
-      messenger.notify('success', __('pimee_enrich.entity.product_draft.flash.approve.success'));
-    },
-
-    /**
-     * Callback triggered when an error happens on proposal approval from the grid
-     *
-     * @param {string} message
-     */
-    onPostApproveError: function(message) {
-      messenger.notify('error', __('pimee_enrich.entity.product_draft.flash.approve.fail', {error: message}));
-    },
-
-    /**
-     * Callback triggered when a proposal is rejected from the grid
-     */
-    onPostRejectSuccess: function() {
-      messenger.notify('success', __('pimee_enrich.entity.product_draft.flash.reject.success'));
-    },
-
-    /**
-     * Callback triggered when a proposal is removed from the grid
-     */
-    onPostRemoveSuccess: function() {
-      messenger.notify('success', __('pimee_enrich.entity.product_draft.flash.remove.success'));
     },
 
     /**

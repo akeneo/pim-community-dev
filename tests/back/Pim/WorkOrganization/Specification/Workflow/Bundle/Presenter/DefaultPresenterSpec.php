@@ -4,7 +4,6 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DefaultPresenter;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 
 class DefaultPresenterSpec extends ObjectBehavior
 {
@@ -18,11 +17,11 @@ class DefaultPresenterSpec extends ObjectBehavior
         $this->supports('foo')->shouldBe(true);
     }
 
-    function it_presents_change_using_the_injected_renderer(RendererInterface $renderer)
+    function it_presents_change_using_the_injected_renderer()
     {
-        $renderer->renderDiff('bar', 'foo')->willReturn('diff between two simple values');
-        $this->setRenderer($renderer);
-
-        $this->present('bar', ['id' => 123, 'data' => 'foo'])->shouldReturn('diff between two simple values');
+        $this->present('bar', ['id' => 123, 'data' => 'foo'])->shouldReturn([
+            'before' => 'bar',
+            'after' => 'foo']
+        );
     }
 }

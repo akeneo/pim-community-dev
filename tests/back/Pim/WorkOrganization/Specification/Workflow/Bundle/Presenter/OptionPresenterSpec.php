@@ -6,7 +6,6 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 
 class OptionPresenterSpec extends ObjectBehavior
 {
@@ -28,7 +27,6 @@ class OptionPresenterSpec extends ObjectBehavior
 
     function it_presents_option_change_using_the_injected_renderer(
         $optionRepository,
-        RendererInterface $renderer,
         AttributeOptionInterface $blue,
         AttributeOptionInterface $red
     ) {
@@ -37,9 +35,9 @@ class OptionPresenterSpec extends ObjectBehavior
         $red->__toString()->willReturn('Red');
         $blue->__toString()->willReturn('Blue');
 
-        $renderer->renderDiff('Red', 'Blue')->willReturn('diff between two options');
-
-        $this->setRenderer($renderer);
-        $this->present('red', ['data' => 'blue', 'attribute' => 'color'])->shouldReturn('diff between two options');
+        $this->present('red', ['data' => 'blue', 'attribute' => 'color'])->shouldReturn([
+            'before' => 'Red',
+            'after' => 'Blue'
+        ]);
     }
 }

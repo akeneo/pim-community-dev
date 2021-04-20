@@ -23,17 +23,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class FilePresenter implements PresenterInterface
 {
-    /** @var UrlGeneratorInterface */
-    protected $generator;
-
     /** @var FileInfoRepositoryInterface */
     protected $fileInfoRepository;
 
     public function __construct(
-        UrlGeneratorInterface $generator,
         FileInfoRepositoryInterface $fileInfoRepository)
     {
-        $this->generator = $generator;
         $this->fileInfoRepository = $fileInfoRepository;
     }
 
@@ -50,7 +45,7 @@ class FilePresenter implements PresenterInterface
      */
     public function present($formerData, array $change)
     {
-        $result = ['before' => '', 'after' => ''];
+        $result = ['before' => null, 'after' => null];
 
         $originalMedia = $formerData;
         $changedMedia  = isset($change['data']) ? $this->fileInfoRepository->findOneByIdentifier($change['data']) : null;
@@ -76,15 +71,14 @@ class FilePresenter implements PresenterInterface
      * @param string $fileKey
      * @param string $originalFilename
      *
-     * @return string
+     * @return array
      */
     protected function createFileElement($fileKey, $originalFilename)
     {
-        return sprintf(
-            '<i class="icon-file"></i><a target="_blank" class="no-hash" href="%s">%s</a>',
-            $this->generator->generate('pim_enrich_media_show', ['filename' => urlencode($fileKey)]),
-            $originalFilename
-        );
+        return [
+            'fileKey' => $fileKey,
+            'originalFileName' => $originalFilename,
+        ];
     }
 
     /**

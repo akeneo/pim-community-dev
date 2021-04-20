@@ -6,7 +6,6 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TranslatorAwareInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 use PhpSpec\ObjectBehavior;
 
 class AssetCollectionValuePresenterSpec extends ObjectBehavior
@@ -27,20 +26,22 @@ class AssetCollectionValuePresenterSpec extends ObjectBehavior
         $this->supports('other')->shouldBe(false);
     }
 
-    function it_presents_asset_collection_change_using_the_injected_renderer(RendererInterface $renderer)
+    function it_presents_asset_collection_change_using_the_injected_renderer()
     {
         $foo = AssetCode::fromString('foo');
         $bar = AssetCode::fromString('bar');
-        $renderer->renderDiff(['foo', 'bar'], ['foo', 'bar', 'baz'])->willReturn('diff between two collections');
-        $this->setRenderer($renderer);
 
-        $this->present([$foo, $bar], ['data' => ['foo', 'bar', 'baz']])->shouldReturn('diff between two collections');
+        $this->present([$foo, $bar], ['data' => ['foo', 'bar', 'baz']])->shouldReturn([
+            'before' => ['foo', 'bar'],
+            'after' => ['foo', 'bar', 'baz'],
+        ]);
     }
 
-    function it_presents_without_error_old_null_data(RendererInterface $renderer)
+    function it_presents_without_error_old_null_data()
     {
-        $this->setRenderer($renderer);
-        $renderer->renderDiff([], ['foo', 'bar', 'baz'])->willReturn([]);
-        $this->present(null, ['data' => ['foo', 'bar', 'baz']])->shouldReturn([]);
+        $this->present(null, ['data' => ['foo', 'bar', 'baz']])->shouldReturn([
+            'before' => [],
+            'after' => ['foo', 'bar', 'baz'],
+        ]);
     }
 }
