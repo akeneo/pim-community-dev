@@ -723,6 +723,7 @@ config:
     pim/product-model-edit-form/add-child-form: pimui/js/product-model/form/add-child
     pim/product-model-edit-form/add-child-form-header: pimui/js/product-model/form/add-child/header
     pim/product-model-edit-form/add-child-form-fields-container: pimui/js/product-model/form/add-child/fields-container
+    pim/product-model-edit-form/completeness-follow-missing-attribute: pimui/js/product-model/form/completeness-follow-missing-attribute.tsx
 
     oro/datagrid/navigate-product-and-product-model-action: pimui/js/datagrid/action/navigate-product-and-product-model-action
     oro/datagrid/edit-in-modal-action:                      pimui/js/datagrid/action/edit-in-modal-action
@@ -1133,7 +1134,6 @@ config:
     pim/template/product/create-button:                  pimui/templates/product/create-button.html
     pim/template/product/create-modal-content:           pimui/templates/product/create-modal-content.html
     pim/template/product/add-select/attribute/line:      pimui/templates/product/form/add-select/attribute/line.html
-    pim/template/product/form/product-completeness:      pimui/templates/product/form/product-completeness.html
     pim/template/product/form/total-missing-required-attributes: pimui/templates/product/form/total-missing-required-attributes.html
     pim/template/product/form/variant-navigation/navigation: pimui/templates/product/form/variant-navigation/navigation.html
     pim/template/product/form/variant-navigation/product-item: pimui/templates/product/form/variant-navigation/product-item.html
