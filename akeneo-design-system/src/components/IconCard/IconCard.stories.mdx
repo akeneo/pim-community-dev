@@ -1,0 +1,125 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {IconCardGrid, IconCard} from './IconCard';
+import * as Icons from '../../icons';
+
+<Meta
+    title="Components/IconCard"
+    component={IconCard}
+    argTypes={{
+        icon: {
+            control: {type: 'select', options: Object.keys(Icons)},
+            table: {type: {summary: 'ReactElement<IconProps>'}},
+        },
+    }}
+    args={{
+        icon: 'ComponentIcon',
+        label: 'Label',
+        content: 'This is the content',
+        disabled: false,
+    }}
+/>
+
+# Icon card
+
+## Usage
+
+
+
+## Playground
+
+<Canvas>
+    <Story name="Standard">
+        {args => {
+            return (
+                <IconCard
+                    {...args}
+                    icon={React.createElement(Icons[args.icon])}
+                />
+            );
+        }}
+    </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on readonly
+
+<Canvas>
+    <Story name="Readonly">
+        {args => {
+            return (
+                <IconCard
+                    {...args}
+                    icon={React.createElement(Icons[args.icon])}
+                    disabled={true}
+                />
+            );
+        }}
+    </Story>
+</Canvas>
+
+## With a long title and content
+
+<Canvas>
+    <Story name="Long title and content">
+        {args => {
+            return (
+                <div style={{display: 'flex', gap: '20px'}}>
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label'}
+                        content={'This is a simple content'}
+                    />
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'This a 2 lines non truncated long label'}
+                        content={'This is a long not truncated content displayed in 2 lines'}
+                    />
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'This a very very very very very very very very very very long truncated label displayed in 2 lines'}
+                        content={'This is a very very very very very very very very very very very very very very very long content that will be displayed in 2 lines'}
+                    />
+                </div>
+            );
+        }}
+    </Story>
+</Canvas>
+
+## IconCard grid
+
+<Canvas>
+    <Story name="IconCard grid">
+        {args => {
+            return (
+                <IconCardGrid>
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label'}
+                        content={'Content'}
+                    />
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label'}
+                        content={'Content'}
+                    />
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label'}
+                        content={'Content'}
+                    />
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label'}
+                        content={'Content'}
+                    />
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label'}
+                        content={'Content'}
+                    />
+                </IconCardGrid>
+            );
+        }}
+    </Story>
+</Canvas>
