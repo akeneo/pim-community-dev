@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.19 (2021-04-20)
+
 ## Bug fixes
 
 - PIM-9814: Fix infinite loop when using get all assets API endpoint (Backport PIM-9702)
