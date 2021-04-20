@@ -1,1 +1,1 @@
-jest.mock('@akeneo-pim-community/shared/src/dependencies.ts');
+jest.mock('@akeneo-pim-community/legacy-bridge/src/dependencies.ts');
