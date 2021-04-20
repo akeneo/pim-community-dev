@@ -21,28 +21,21 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version_6_0_20210415130338_mark_job_execution_as_failed_when_interrupted extends AbstractMigration
 {
-    private const RULE_EXECUTION_JOB_NAME = 'rule_engine_execute_rules';
-    private const PROJECT_CALCULATION_JOB_NAME = 'project_calculation';
-
     public function up(Schema $schema): void
     {
         $this->addSql(
             <<<SQL
 UPDATE akeneo_batch_job_execution job_execution
-INNER JOIN akeneo_batch_job_instance job_instance ON job_execution.job_instance_id = job_instance.id
 SET job_execution.status = :failedStatus, job_execution.exit_code = :failedExitCode
-WHERE job_instance.code IN (:jobCodes)
-AND job_execution.health_check_time IS NULL
-AND job_execution.status IN (:runningStatuses);
+WHERE job_execution.status IN (:runningStatuses)
+AND job_execution.health_check_time IS NULL;
 SQL,
             [
-                'jobCodes' => [self::RULE_EXECUTION_JOB_NAME, self::PROJECT_CALCULATION_JOB_NAME],
                 'failedStatus' => BatchStatus::FAILED,
                 'failedExitCode' => ExitStatus::FAILED,
                 'runningStatuses' => [BatchStatus::STARTED, BatchStatus::STOPPING],
             ],
             [
-                'jobCodes' => Connection::PARAM_STR_ARRAY,
                 'runningStatuses' => Connection::PARAM_INT_ARRAY,
             ]
         );
