@@ -280,13 +280,13 @@ class User implements UserInterface
      */
     public function getFullName()
     {
-        return implode(' ', [
+        return join(' ', array_filter([
             $this->namePrefix,
             $this->firstName,
             $this->middleName,
             $this->lastName,
             $this->nameSuffix
-        ]);
+        ]));
     }
 
     /**
