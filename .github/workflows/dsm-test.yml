@@ -26,6 +26,9 @@ jobs:
           path: '**/front-packages/akeneo-design-system/node_modules'
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/front-packages/akeneo-design-system/yarn.lock') }}
 
+      - name: Install peer dependencies plugin
+        run: cd front-packages/akeneo-design-system && yarn add --dev --ignore-scripts install-peers
+
       - name: Install node modules
         run: cd front-packages/akeneo-design-system && yarn install
 
