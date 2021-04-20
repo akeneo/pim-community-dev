@@ -1,8 +1,7 @@
 import React from "react";
 import {render, fireEvent} from '@testing-library/react';
-
 import NewOptionPlaceholder from "akeneopimstructure/js/attribute-option/components/NewOptionPlaceholder";
-import {DependenciesProvider} from "@akeneo-pim-community/shared";
+import {DependenciesProvider} from "@akeneo-pim-community/legacy-bridge";
 
 describe('NewOptionPlaceholder', () => {
     beforeAll(() => {

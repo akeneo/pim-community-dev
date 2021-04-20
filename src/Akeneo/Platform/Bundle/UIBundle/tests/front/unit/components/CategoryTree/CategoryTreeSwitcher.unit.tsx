@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {act, fireEvent, screen} from '@testing-library/react';
 import '@testing-library/jest-dom';
-import {CategoryTreeModel, CategoryTreeSwitcher} from '../../../../../Resources/workspaces/shared';
+import {CategoryTreeSwitcher} from '@akeneo-pim-community/shared';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 
 const trees = [
