@@ -247,7 +247,8 @@ class ValueSpec extends ObjectBehavior
         $fieldExtractor->extractColumnInfo($column)->willReturn($attributeFieldInfo);
         $converter->convert($attributeFieldInfo,$dateTime)->willThrow($e);
 
-        $this->shouldThrow(new BusinessArrayConversionException("Exception while converting column \"{$column}\": bad input format.", "pim_import_export.notification.export.warnings.xlsx_cell_conversion_error", []))
+        $this->shouldThrow(new BusinessArrayConversionException("Exception while converting column \"{$column}\": bad input format.",
+            "pim_import_export.notification.export.warnings.xlsx_cell_conversion_error", [$column]))
             ->during('convert',[$values]);
     }
 }
