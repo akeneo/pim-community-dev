@@ -33,7 +33,7 @@ pim_import_export:
             warning: Export <strong>%label%</strong> finished with some warnings
             success: Export <strong>%label%</strong> finished
             warnings:
-                xlsx_cell_conversion_error: Exception while converting column {0} to target PIM product attribute type (check Excel cell format)
+                xlsx_cell_conversion_error: Exception while converting the "{0}" column to target PIM product attribute type (please check Excel cell format)
                 xlsx_cell_date_to_text_conversion_error: Can not convert cell  {0} with date format to attribute of type text
 
         import:
