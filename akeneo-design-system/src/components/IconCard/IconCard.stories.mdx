@@ -10,12 +10,14 @@ import * as Icons from '../../icons';
             control: {type: 'select', options: Object.keys(Icons)},
             table: {type: {summary: 'ReactElement<IconProps>'}},
         },
+        onClick: {action: 'Click on the Card'},
     }}
     args={{
         icon: 'ComponentIcon',
         label: 'Label',
         content: 'This is the content',
         disabled: false,
+        onClick: () => console.log('click'),
     }}
 />
 
@@ -100,8 +102,8 @@ import * as Icons from '../../icons';
                     />
                     <IconCard
                         icon={React.createElement(Icons[args.icon])}
-                        label={'Label'}
-                        content={'Content'}
+                        label={'Label Label Label Label Label Label Label Label Label'}
+                        content={'Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content '}
                     />
                     <IconCard
                         icon={React.createElement(Icons[args.icon])}

@@ -3,7 +3,7 @@ import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {IconProps} from '../../icons';
 
-const Container = styled.div<{disabled: boolean} & AkeneoThemedProps>`
+const Container = styled.div<{disabled: boolean; onClick: () => void} & AkeneoThemedProps>`
   min-width: 240px;
   max-width: 410px;
   min-height: 80px;
@@ -12,7 +12,7 @@ const Container = styled.div<{disabled: boolean} & AkeneoThemedProps>`
   display: -ms-flexbox;
   display: inline-flex;
   opacity: ${({disabled}) => disabled && 0.5};
-  cursor: ${({disabled}) => disabled && 'not-allowed'};
+  cursor: ${({disabled, onClick}) => (disabled ? 'not-allowed' : onClick !== undefined ? 'pointer' : 'inherit')};
 
   :hover {
     border-color: ${({disabled}) => !disabled && getColor('grey', 60)};
