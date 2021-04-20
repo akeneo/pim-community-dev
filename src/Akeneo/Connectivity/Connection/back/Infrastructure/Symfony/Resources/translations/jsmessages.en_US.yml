@@ -1,5 +1,7 @@
 
 pim_menu:
+    tab:
+        connect: Connect
     navigation_back:
         connection: Back to connections
     navigation_block:
