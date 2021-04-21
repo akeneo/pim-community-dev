@@ -36,7 +36,7 @@ services:
             - '@akeneo_connectivity.connection.application.webhook.handler.check_url_reachability'
             - '@akeneo_connectivity.connection.application.webhook.handler.update_connection_webhook'
             - '@akeneo_connectivity.connection.application.webhook.handler.generate_webhook_secret'
-            - '@debug.traced.query.bus'
+            - '@query.bus'
 
     akeneo_connectivity.connection.internal_api.controller.events_api_debug:
         public: true

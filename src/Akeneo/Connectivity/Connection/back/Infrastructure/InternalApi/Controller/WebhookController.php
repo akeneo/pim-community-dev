@@ -15,6 +15,7 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebho
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\ConnectionWebhookNotFoundException;
 use Akeneo\Queries\GetProductQuery;
+use Akeneo\Queries\GetUserByIdQuery;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,11 +59,9 @@ class WebhookController
 
     public function get(Request $request): JsonResponse
     {
-
         /** @var Envelope $response */
-        $response = $this->queryBus->dispatch(new GetProductQuery());
-        dd($response->last(HandledStamp::class));
-
+        $response = $this->queryBus->dispatch(new GetUserByIdQuery(2));
+        dd($response->last(HandledStamp::class)->getResult());
 
         $eventSubscriptionFormData = $this->getAConnectionWebhookHandler->handle(
             new GetAConnectionWebhookQuery($request->get('code', '')),

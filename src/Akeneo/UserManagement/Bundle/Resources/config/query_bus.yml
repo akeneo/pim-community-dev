@@ -1,0 +1,7 @@
+services:
+  Akeneo\UserManagement\Bundle\Queries\GetUserByIdHandler:
+    arguments:
+      - '@pim_user.repository.user'
+      - '@pim_user.normalizer.user'
+    tags:
+      - { name: messenger.message_handler, bus: query.bus }
