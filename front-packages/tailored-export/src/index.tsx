@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {Column} from './feature';
 import {pimTheme} from 'akeneo-design-system';
-import {DependenciesContext} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesContext} from '@akeneo-pim-community/shared';
 
 ReactDOM.render(
   <React.StrictMode>
