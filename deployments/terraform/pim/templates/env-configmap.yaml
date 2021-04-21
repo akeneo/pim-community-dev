@@ -24,6 +24,7 @@ data:
   APP_DATABASE_USER: {{ .Values.mysql.mysql.defaultUser | quote }}
   APP_INDEX_HOSTS: {{ .Values.elasticsearch.fullnameOverride }}-client:9200
   APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT: {{ .Values.pim.elasticsearch.settings.totalFieldsLimit | quote }}
+  APP_ELASTICSEARCH_MAX_CHUNK_SIZE_CHARACTERS: {{ .Values.pim.elasticsearch.settings.maxChunkSizeCharacters | quote }}
   {{- if .Values.pim.dqi.settings.enabled }}
   FLAG_DATA_QUALITY_INSIGHTS_ENABLED: "1"
   {{- else }}

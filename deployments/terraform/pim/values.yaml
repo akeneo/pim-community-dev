@@ -117,6 +117,7 @@ pim:
   elasticsearch:
     settings:
       totalFieldsLimit: 10000
+      maxChunkSizeCharacters: 100000000
   dqi:
     settings:
       enabled: true
