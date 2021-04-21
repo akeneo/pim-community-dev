@@ -1,6 +1,6 @@
 import React from 'react';
-import {renderWithProviders} from '../utils';
-import {FullScreenError} from '../../../../src/components';
+import {renderWithProviders} from '../../tests/utils';
+import {FullScreenError} from './FullScreenError';
 
 test('It display a client error', () => {
   const {getByText} = renderWithProviders(

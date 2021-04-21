@@ -1,6 +1,6 @@
-import {NotificationLevel} from '../../../src/DependenciesProvider.type';
+import {NotificationLevel} from '../src/DependenciesProvider.type';
 
-const dependencies = {
+const mockedDependencies = {
   router: {
     generate: jest.fn((route: string) => route),
     redirect: jest.fn((url: string) => url),
@@ -43,4 +43,4 @@ const dependencies = {
   },
 };
 
-export {dependencies};
+export {mockedDependencies};

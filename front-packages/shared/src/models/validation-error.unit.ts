@@ -1,9 +1,4 @@
-import {
-  ValidationError,
-  filterErrors,
-  partitionErrors,
-  formatParameters,
-} from '../../../../src/models/validation-error';
+import {ValidationError, filterErrors, partitionErrors, formatParameters} from './validation-error';
 
 const createValidationError = (propertyPath: string, message: string = 'error'): ValidationError => {
   return {

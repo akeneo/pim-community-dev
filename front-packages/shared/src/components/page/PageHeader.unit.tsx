@@ -1,12 +1,10 @@
 import React, {ReactElement} from 'react';
 import {PageHeader} from '@akeneo-pim-community/shared';
-import {renderWithProviders} from '../../utils';
+import {renderWithProviders} from '../../../tests/utils';
 
 describe('PageHeader', () => {
   const renderWithContext = (children: ReactElement | ReactElement[] | string, showPlaceholder: boolean = false) => {
-    return renderWithProviders(
-      <PageHeader showPlaceholder={showPlaceholder}>{children}</PageHeader>
-    );
+    return renderWithProviders(<PageHeader showPlaceholder={showPlaceholder}>{children}</PageHeader>);
   };
 
   test('it does not display invalid child node', () => {

@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useRef} from 'react';
 import {AkeneoThemedProps, SearchIcon, useAutoFocus} from 'akeneo-design-system';
 import styled from 'styled-components';
-import {useTranslate} from '../hooks';
+import {useDependenciesContext} from '../hooks';
 
 const Container = styled.div`
   display: flex;
@@ -51,7 +51,9 @@ type SearchBarProps = {
 };
 
 const SearchBar = ({className, placeholder, count, searchValue, onSearchChange}: SearchBarProps) => {
-  const translate = useTranslate();
+  const dep = useDependenciesContext();
+  console.log('salut', dep);
+  const translate = (ke: string, ..._args: any) => ke;
   const searchFieldRef = useRef<HTMLInputElement | null>(null);
   useAutoFocus(searchFieldRef);
 

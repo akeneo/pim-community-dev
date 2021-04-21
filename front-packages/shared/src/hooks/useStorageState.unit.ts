@@ -1,7 +1,7 @@
 'use strict';
 
 import '@testing-library/jest-dom/extend-expect';
-import {useStorageState} from '../../../../src/hooks/useStorageState';
+import {useStorageState} from './useStorageState';
 import {renderHook} from '@testing-library/react-hooks';
 
 test('It can store the state in local storage', async () => {

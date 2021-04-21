@@ -1,15 +1,14 @@
 import React, {FC} from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
-import '@testing-library/jest-dom/extend-expect';
 import {render} from '@testing-library/react';
 import {renderHook} from '@testing-library/react-hooks';
 import {pimTheme} from 'akeneo-design-system';
-import {DependenciesContext} from '../../../src/DependenciesContext';
-import {dependencies} from './dependencies';
+import {DependenciesContext} from '../src/DependenciesContext';
+import {mockedDependencies} from './mockedDependencies';
 
 const DefaultProviders: FC = ({children}) => (
-  <DependenciesContext.Provider value={dependencies}>
+  <DependenciesContext.Provider value={mockedDependencies}>
     <ThemeProvider theme={pimTheme}>{children}</ThemeProvider>
   </DependenciesContext.Provider>
 );
@@ -21,9 +20,4 @@ const renderDOMWithProviders = (ui: React.ReactElement, container: HTMLElement) 
 
 const renderHookWithProviders = (hook: () => any) => renderHook(hook, {wrapper: DefaultProviders});
 
-const fetchMockResponseOnce = (requestUrl: string, responseBody: string) =>
-  fetchMock.mockResponseOnce(request =>
-    request.url === requestUrl ? Promise.resolve(responseBody) : Promise.reject()
-  );
-
-export {renderWithProviders, renderDOMWithProviders, renderHookWithProviders, fetchMockResponseOnce};
+export {renderWithProviders, renderDOMWithProviders, renderHookWithProviders};

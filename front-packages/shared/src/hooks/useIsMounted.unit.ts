@@ -1,5 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks';
-import {useIsMounted} from '../../../../src/hooks/useIsMounted';
+import {useIsMounted} from './useIsMounted';
 
 test('It can tell if a component is mounted or not', () => {
   const {result, unmount} = renderHook(() => useIsMounted());

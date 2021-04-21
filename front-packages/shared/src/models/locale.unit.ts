@@ -1,4 +1,4 @@
-import {denormalizeLocale, createLocaleFromCode, localeExists} from '../../../../src/models/locale';
+import {denormalizeLocale, createLocaleFromCode, localeExists} from './locale';
 
 describe('akeneo > shared > model --- locale', () => {
   test('I can create a new locale from a normalized one', () => {

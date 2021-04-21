@@ -39,7 +39,7 @@ const dependencies = {
   },
   mediator: {
     trigger: jest.fn((event: string) => event),
-    on: jest.fn((event: string, callback: () => void) => event),
+    on: jest.fn((event: string, _callback: () => void) => event),
   },
 };
 

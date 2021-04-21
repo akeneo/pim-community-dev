@@ -1,5 +1,5 @@
-import {denormalizeChannel, getChannelLabel} from '../../../../src/models';
-import {denormalizeLocale} from '../../../../src/models/locale';
+import {denormalizeChannel, getChannelLabel} from './channel';
+import {denormalizeLocale} from './locale';
 
 describe('akeneo > shared > model --- channel', () => {
   test('I can create a new channel from a normalized one', () => {
