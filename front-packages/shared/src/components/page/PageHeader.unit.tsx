@@ -1,5 +1,5 @@
 import React, {ReactElement} from 'react';
-import {PageHeader} from '@akeneo-pim-community/shared';
+import {PageHeader} from './PageHeader';
 import {renderWithProviders} from '../../../tests/utils';
 
 describe('PageHeader', () => {

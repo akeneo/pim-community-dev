@@ -1,22 +1,12 @@
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
-import {SearchBar} from '@akeneo-pim-community/shared';
-import {DependenciesContext} from '../DependenciesContext';
-import {mockedDependencies} from '../../tests/mockedDependencies';
-import {ThemeProvider} from 'styled-components';
-import {pimTheme} from 'akeneo-design-system';
+import {fireEvent} from '@testing-library/react';
+import {renderWithProviders} from '../../tests/utils';
+import {SearchBar} from './SearchBar';
 
 test('It calls the onSearchChange callback when the value is changed', () => {
   const onSearchChange = jest.fn();
 
-  console.log('ffff');
-  const {getByTitle} = render(
-    <DependenciesContext.Provider value={mockedDependencies}>
-      <ThemeProvider theme={pimTheme}>
-        <SearchBar onSearchChange={onSearchChange} searchValue="hey" count={12} />
-      </ThemeProvider>
-    </DependenciesContext.Provider>
-  );
+  const {getByTitle} = renderWithProviders(<SearchBar onSearchChange={onSearchChange} searchValue="hey" count={12} />);
 
   fireEvent.change(getByTitle('pim_common.search'), {target: {value: 'hey!'}});
 
