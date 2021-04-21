@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {render} from '@testing-library/react';
 import {renderHook} from '@testing-library/react-hooks';
 import {pimTheme} from 'akeneo-design-system';
-import {DependenciesContext} from '../../../src';
+import {DependenciesContext} from '../../../src/DependenciesContext';
 import {dependencies} from './dependencies';
 
 const DefaultProviders: FC = ({children}) => (
