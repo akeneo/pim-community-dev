@@ -33,10 +33,12 @@ import * as Icons from '../../icons';
     <Story name="Standard">
         {args => {
             return (
-                <IconCard
-                    {...args}
-                    icon={React.createElement(Icons[args.icon])}
-                />
+                <IconCardGrid>
+                    <IconCard
+                        {...args}
+                        icon={React.createElement(Icons[args.icon])}
+                    />
+                </IconCardGrid>
             );
         }}
     </Story>
@@ -50,27 +52,13 @@ import * as Icons from '../../icons';
     <Story name="Readonly">
         {args => {
             return (
-                <IconCard
-                    {...args}
-                    icon={React.createElement(Icons[args.icon])}
-                    disabled={true}
-                />
-            );
-        }}
-    </Story>
-</Canvas>
-
-## With a long title and content
-
-<Canvas>
-    <Story name="Long title and content">
-        {args => {
-            return (
-                <IconCard
-                    icon={React.createElement(Icons[args.icon])}
-                    label={'This a very very very very very very very very very very long truncated label displayed in 2 lines'}
-                    content={'This is a very very very very very very very very very very very very very very very long content that will be displayed in 2 lines'}
-                />
+                <IconCardGrid>
+                    <IconCard
+                        {...args}
+                        icon={React.createElement(Icons[args.icon])}
+                        disabled={true}
+                    />
+                </IconCardGrid>
             );
         }}
     </Story>
@@ -83,6 +71,44 @@ import * as Icons from '../../icons';
         {args => {
             return (
                 <IconCardGrid>
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label'}
+                        content={'Content'}
+                    />
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label Label Label Label Label Label Label Label Label'}
+                        content={'Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content '}
+                    />
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label'}
+                        content={'Content'}
+                    />
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label'}
+                        content={'Content'}
+                    />
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label'}
+                        content={'Content'}
+                    />
+                </IconCardGrid>
+            );
+        }}
+    </Story>
+</Canvas>
+
+## Big IconCard grid
+
+<Canvas>
+    <Story name="Big IconCard grid">
+        {args => {
+            return (
+                <IconCardGrid size={'big'} style={{marginRight: 0}}>
                     <IconCard
                         icon={React.createElement(Icons[args.icon])}
                         label={'Label'}

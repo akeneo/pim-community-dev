@@ -4,8 +4,6 @@ import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {IconProps} from '../../icons';
 
 const Container = styled.div<{disabled: boolean; onClick: () => void} & AkeneoThemedProps>`
-  min-width: 240px;
-  max-width: 410px;
   min-height: 80px;
   border: 1px ${getColor('grey', 40)} solid;
   box-sizing: border-box;
@@ -73,15 +71,14 @@ const Content = styled.div`
   ${TruncableMixin};
 `;
 
-const IconCardGrid = styled.div`
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+type IconCardGridProps = {
+  size?: 'normal' | 'big';
+};
 
-  > * {
-    flex: 1;
-    max-width: none;
-  }
+const IconCardGrid = styled.div<IconCardGridProps & AkeneoThemedProps>`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, ${({size}) => ('big' === size ? 301 : 240)}px);
+  gap: 25px;
 `;
 
 type IconCardProps = {
