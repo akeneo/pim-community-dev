@@ -57,12 +57,12 @@
     "@types/jquery": "^3.3.31",
     "@types/lodash": "^4.14.145",
     "@types/node": "11.9.5",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
+    "@types/react": "^16.14.0",
+    "@types/react-dom": "^16.9.12",
     "@types/react-redux": "^7.1.0",
     "@types/react-router-dom": "^5.1.0",
     "@types/react-test-renderer": "^16.9.3",
-    "@types/styled-components": "^5.1.2",
+    "@types/styled-components": "^5.1.1",
     "@types/underscore": "^1.9.3",
     "@types/victory": "^33.0.1",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
@@ -131,7 +131,7 @@
     "lodash": "^4.17.0",
     "luxon": "^1.26.0",
     "react": "^16.14.0",
-    "react-dom": "^16.14.0",
+    "react-dom": "^16.9.12",
     "react-hook-form": "^5.2.0",
     "react-markdown": "^4.3.1",
     "react-redux": "^7.1.0",
@@ -143,8 +143,8 @@
     "summernote": "0.6.16",
     "underscore": "1.8.3",
     "victory": "^33.1.6",
-    "@akeneo-pim-community/tailored-export": "link:front-packages/tailored-export",
-    "@akeneo-pim-community/shared": "link:front-packages/shared"
+    "@akeneo-pim-community/shared": "link:front-packages/shared",
+    "@akeneo-pim-community/tailored-export": "link:front-packages/tailored-export"
   },
   "resolutions": {
     "jest/**/ip-regex": "2.1.0"

@@ -1,5 +1,4 @@
 import BaseView = require('pimui/js/view/base');
-import * as _ from 'underscore';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
