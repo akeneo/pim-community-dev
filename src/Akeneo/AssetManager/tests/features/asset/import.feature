@@ -48,6 +48,9 @@ Feature: Import assets via files
     And there is a asset with:
       | code  | entity_identifier | labels                                           |
       | ikea  | designer          | {"en_US": "Ikea shop", "fr_FR": "Magasin Ikea"}  |
+    And there is a asset with:
+      | code  | entity_identifier | labels                               |
+      | 12345 | designer          | {"en_US": "12345", "fr_FR": "12345"} |
     And the value of the unlocalized unscoped name of the 'stark' asset in 'designer' asset family is '"Stark"'
     And the value of the unlocalized ecommerce scopable_number of the 'stark' asset in 'designer' asset family is '"10"'
     And the value of the en_US unscoped localizable_color of the 'stark' asset in 'designer' asset family is '"red"'
@@ -58,6 +61,7 @@ Feature: Import assets via files
     And the value of the en_US unscoped localizable_color of the 'ikea' asset in 'designer' asset family is '"blue"'
     And there is no value for the fr_FR ecommerce scopable_and_localizable_text of the 'ikea' asset in 'designer' asset family
     And the value of the unlocalized unscoped multiple_colors of the 'ikea' asset in 'designer' asset family is '["blue","green"]'
+    And the value of the fr_FR ecommerce scopable_and_localizable_text of the '12345' asset in 'designer' asset family is '"12345"'
 
   @acceptance-back
   Scenario: Add warnings when import some records using a CSV file with wrong data
@@ -81,6 +85,9 @@ Feature: Import assets via files
     And there is a asset with:
       | code  | entity_identifier | labels                                           |
       | ikea  | designer          | {"en_US": "Ikea shop", "fr_FR": "Magasin Ikea"}  |
+    And there is a asset with:
+      | code  | entity_identifier | labels                               |
+      | 12345 | designer          | {"en_US": "12345", "fr_FR": "12345"} |
     And the value of the unlocalized unscoped name of the 'stark' asset in 'designer' asset family is '"Stark"'
     And the value of the unlocalized ecommerce scopable_number of the 'stark' asset in 'designer' asset family is '"10"'
     And the value of the en_US unscoped localizable_color of the 'stark' asset in 'designer' asset family is '"red"'
@@ -91,6 +98,7 @@ Feature: Import assets via files
     And the value of the en_US unscoped localizable_color of the 'ikea' asset in 'designer' asset family is '"blue"'
     And there is no value for the fr_FR ecommerce scopable_and_localizable_text of the 'ikea' asset in 'designer' asset family
     And the value of the unlocalized unscoped multiple_colors of the 'ikea' asset in 'designer' asset family is '["blue","green"]'
+    And the value of the fr_FR ecommerce scopable_and_localizable_text of the '12345' asset in 'designer' asset family is '"12345"'
 
   @acceptance-back
   Scenario: Import some records using a valid archive file with csv and media

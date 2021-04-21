@@ -1,3 +1,4 @@
 referenceEntityIdentifier;code;label-en_US;label-fr_FR;name;scopable_number-ecommerce;localizable_color-en_US;scopable_and_localizable_text-fr_FR-ecommerce;multiple_colors;record_link;record_links
 designer;stark;New label;Nouveau label;Stark;10;red;Value scopable_and_localizable_text-fr_FR-ecommerce;red,green;;
 designer;ikea;Ikea shop;Magasin Ikea;Ikea;;blue;;blue,green;nantes;paris,nantes
+designer;12345;12345;12345;Test with numeric values;;blue;12345;blue,green;nantes;paris,nantes

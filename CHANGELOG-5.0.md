@@ -6,6 +6,7 @@
 
 - PIM-9814: Fix infinite loop when using get all assets API endpoint (Backport PIM-9702)
 - OB-752: Fix 5.0 memcached package issue
+- PIM-9815: Fix asset and record imports in XLSX when sone cells contain only numeric characters
 
 # 5.0.18 (2021-04-15)
 

@@ -123,7 +123,7 @@ final class Record implements ArrayConverterInterface
                 $options[self::DIRECTORY_PATH_OPTION_KEY],
                 $referenceEntityIdentifier,
                 $field,
-                $data
+                (string) $data
             );
         }
 
@@ -135,7 +135,7 @@ final class Record implements ArrayConverterInterface
         string $directoryPath,
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         string $field,
-        $data
+        string $data
     ): array {
         if ('' === trim($field)) {
             return $convertedItem;
