@@ -284,6 +284,7 @@ pim_enrich.export.product:
         NOT BETWEEN: Pas entre
     quality-score:
       title: Score de qualité
+      operator_choice_title: Exporter le(s) score(s) de qualité pour
       empty_selection: Aucune condition sur le score de qualité
       operators:
         IN AT LEAST ONE LOCALE: Au moins une locale
