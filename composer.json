@@ -85,7 +85,8 @@
         "liuggio/fastest": "1.6.*",
         "phpstan/phpstan": "^0.11.1",
         "phpstan/phpstan-symfony": "^0.11.1",
-        "mcustiel/phiremock": "1.12.1"
+        "mcustiel/phiremock": "1.12.1",
+        "jfcherng/php-diff": "^6.10"
     },
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"
