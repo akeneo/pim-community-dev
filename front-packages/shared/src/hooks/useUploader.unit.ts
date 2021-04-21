@@ -21,13 +21,15 @@ const xhrMock: Partial<XMLHttpRequest> = {
 
 const timeoutXhrMock: Partial<XMLHttpRequest> = {
   open: jest.fn(),
-  send: jest.fn(() => setTimeout(() => this.onreadystatechange(), 10000)),
+  send: jest.fn(),
   setRequestHeader: jest.fn(),
   readyState: 4,
   status: 200,
   response: JSON.stringify(fileInfo),
   upload: {addEventListener: jest.fn((_eventName, callback) => callback({loaded: 50, total: 100}))} as any,
-  addEventListener: jest.fn((_eventName, callback: EventListener) => (this.onreadystatechange = callback)),
+  addEventListener: jest.fn((_eventName, callback: EventListener) =>
+    setTimeout(() => callback(new Event('load')), 10000)
+  ),
 };
 
 jest.spyOn(window, 'XMLHttpRequest').mockImplementation(() => xhrMock as XMLHttpRequest);
