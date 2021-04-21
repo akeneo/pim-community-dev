@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes:
+
+- PIM-9895: [Backport] PIM-9707: ES Max query size and add test for the ElasticSearch client chunked bulk index
+
 # 5.0.29 (2021-05-31)
 
 ## Bug fixes:
