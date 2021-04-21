@@ -1,5 +1,6 @@
 {
-  "baseUrl": "http://httpd",
+  "baseUrl": "http://localhost:8080",
   "integrationFolder": "tests/front/e2e",
+  "fixturesFolder": false,
   "videoUploadOnPasses": false
 }
