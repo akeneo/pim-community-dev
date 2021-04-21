@@ -9,42 +9,28 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\UnableToRetrieveD
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Dictionary;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LanguageCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use League\Flysystem\FilesystemInterface;
-use League\Flysystem\MountManager;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use League\Flysystem\FilesystemOperator;
 use Mekras\Speller;
 
 final class AspellDictionary implements AspellDictionaryInterface
 {
     private const ONE_DAY = 1;
 
-    /** @var MountManager */
-    private $mountManager;
-
-    /** @var Clock */
-    private $clock;
-
-    /** @var FilesystemInterface */
-    private $localFilesystem;
-
-    /** @var FilesystemInterface */
-    private $sharedFilesystem;
-
-    /** @var AspellDictionaryLocalFilesystemInterface */
-    private $localFilesystemProvider;
-
-    /** @var SupportedLocaleValidator */
-    private $supportedLocaleValidator;
+    private Clock $clock;
+    private FilesystemOperator $localFilesystem;
+    private FilesystemOperator $sharedFilesystem;
+    private AspellDictionaryLocalFilesystemInterface $localFilesystemProvider;
+    private SupportedLocaleValidator $supportedLocaleValidator;
 
     public function __construct(
-        MountManager $mountManager,
+        FilesystemProvider $filesystemProvider,
         Clock $clock,
         AspellDictionaryLocalFilesystemInterface $localFilesystemProvider,
         SupportedLocaleValidator $supportedLocaleValidator
     ) {
-        $this->mountManager = $mountManager;
         $this->clock = $clock;
-
-        $this->sharedFilesystem = $mountManager->getFilesystem('dataQualityInsightsSharedAdapter');
+        $this->sharedFilesystem = $filesystemProvider->getFilesystem('dataQualityInsightsSharedAdapter');
         $this->localFilesystem = $localFilesystemProvider->getFilesystem();
         $this->localFilesystemProvider = $localFilesystemProvider;
         $this->supportedLocaleValidator = $supportedLocaleValidator;
@@ -66,7 +52,7 @@ final class AspellDictionary implements AspellDictionaryInterface
 
         rewind($putStream);
 
-        $this->sharedFilesystem->putStream($this->getRelativeFilePath($languageCode), $putStream);
+        $this->sharedFilesystem->writeStream($this->getRelativeFilePath($languageCode), $putStream);
 
         if (is_resource($putStream)) {
             fclose($putStream);
@@ -94,8 +80,8 @@ final class AspellDictionary implements AspellDictionaryInterface
 
     public function getSharedDictionaryTimestamp(LanguageCode $languageCode): ?int
     {
-        if ($this->sharedFilesystem->has($this->getRelativeFilePath($languageCode))) {
-            return intval($this->sharedFilesystem->getTimestamp($this->getRelativeFilePath($languageCode)));
+        if ($this->sharedFilesystem->fileExists($this->getRelativeFilePath($languageCode))) {
+            return intval($this->sharedFilesystem->lastModified($this->getRelativeFilePath($languageCode)));
         }
 
         return null;
@@ -103,8 +89,8 @@ final class AspellDictionary implements AspellDictionaryInterface
 
     private function isDictionaryExists(LanguageCode $languageCode): bool
     {
-        return true === $this->localFilesystem->has($this->getRelativeFilePath($languageCode))
-            || true === $this->sharedFilesystem->has($this->getRelativeFilePath($languageCode));
+        return true === $this->localFilesystem->fileExists($this->getRelativeFilePath($languageCode))
+            || true === $this->sharedFilesystem->fileExists($this->getRelativeFilePath($languageCode));
     }
 
     /**
@@ -112,8 +98,8 @@ final class AspellDictionary implements AspellDictionaryInterface
      */
     private function ensureDictionaryExistsLocally(LanguageCode $languageCode): void
     {
-        if (false === $this->localFilesystem->has($this->getRelativeFilePath($languageCode))
-            && true === $this->sharedFilesystem->has($this->getRelativeFilePath($languageCode))) {
+        if (false === $this->localFilesystem->fileExists($this->getRelativeFilePath($languageCode))
+            && true === $this->sharedFilesystem->fileExists($this->getRelativeFilePath($languageCode))) {
             $this->downloadDictionaryFromSharedFilesystem($languageCode);
         }
     }
@@ -130,11 +116,11 @@ final class AspellDictionary implements AspellDictionaryInterface
 
     private function isDictionaryUpToDate(LanguageCode $languageCode): bool
     {
-        if (false === $this->localFilesystem->has($this->getRelativeFilePath($languageCode))) {
+        if (false === $this->localFilesystem->fileExists($this->getRelativeFilePath($languageCode))) {
             return false;
         }
 
-        $localDictionaryTimestamp = $this->localFilesystem->getTimestamp($this->getRelativeFilePath($languageCode));
+        $localDictionaryTimestamp = $this->localFilesystem->lastModified($this->getRelativeFilePath($languageCode));
 
         $fileDate = $this->clock->fromTimestamp(intval($localDictionaryTimestamp));
         $now = $this->clock->getCurrentTime();
@@ -144,18 +130,18 @@ final class AspellDictionary implements AspellDictionaryInterface
             return true;
         }
 
-        if (false === $this->sharedFilesystem->has($this->getRelativeFilePath($languageCode))) {
+        if (false === $this->sharedFilesystem->fileExists($this->getRelativeFilePath($languageCode))) {
             return false;
         }
 
-        return ! ($this->sharedFilesystem->getTimestamp($this->getRelativeFilePath($languageCode)) > $localDictionaryTimestamp);
+        return ! ($this->sharedFilesystem->lastModified($this->getRelativeFilePath($languageCode)) > $localDictionaryTimestamp);
     }
 
     private function downloadDictionaryFromSharedFilesystem(LanguageCode $languageCode): void
     {
         $dictionaryRelativePath = $this->getRelativeFilePath($languageCode);
 
-        if (false === $this->sharedFilesystem->has($dictionaryRelativePath)) {
+        if (false === $this->sharedFilesystem->fileExists($dictionaryRelativePath)) {
             throw new UnableToRetrieveDictionaryException($languageCode, sprintf('No shared file found for "%s"', $dictionaryRelativePath));
         }
 
@@ -165,9 +151,9 @@ final class AspellDictionary implements AspellDictionaryInterface
             throw new UnableToRetrieveDictionaryException($languageCode, sprintf('Read stream "%s" failed', $dictionaryRelativePath));
         }
 
-        $this->localFilesystem->putStream($dictionaryRelativePath, $readStream);
+        $this->localFilesystem->writeStream($dictionaryRelativePath, $readStream);
 
-        if (false === $this->localFilesystem->has($dictionaryRelativePath)) {
+        if (false === $this->localFilesystem->fileExists($dictionaryRelativePath)) {
             throw new UnableToRetrieveDictionaryException($languageCode, sprintf('Write local file "%s" failed', $dictionaryRelativePath));
         }
     }

@@ -11,8 +11,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LanguageCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionary;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryLocalFilesystemInterface;
-use League\Flysystem\FilesystemInterface;
-use League\Flysystem\MountManager;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use League\Flysystem\FilesystemOperator;
 use Mekras\Speller;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -20,36 +20,36 @@ use Prophecy\Argument;
 final class AspellDictionarySpec extends ObjectBehavior
 {
     public function let(
-        MountManager $mountManager,
+        FilesystemProvider $filesystemProvider,
         Clock $clock,
         AspellDictionaryLocalFilesystemInterface $localFilesystemProvider,
-        FilesystemInterface $localFilesystem,
-        FilesystemInterface $sharedFilesystem,
+        FilesystemOperator $localFilesystem,
+        FilesystemOperator $sharedFilesystem,
         SupportedLocaleValidator $supportedLocaleValidator
     ) {
-        $this->beConstructedWith($mountManager, $clock, $localFilesystemProvider, $supportedLocaleValidator);
+        $this->beConstructedWith($filesystemProvider, $clock, $localFilesystemProvider, $supportedLocaleValidator);
 
         $localFilesystemProvider->getFilesystem()->willReturn($localFilesystem);
         $localFilesystemProvider->getAbsoluteRootPath()->willReturn('/tmp');
-        $mountManager->getFilesystem('dataQualityInsightsSharedAdapter')->willReturn($sharedFilesystem);
+        $filesystemProvider->getFilesystem('dataQualityInsightsSharedAdapter')->willReturn($sharedFilesystem);
     }
 
     public function it_is_initializable(
         $localFilesystemProvider,
-        FilesystemInterface $localFilesystem
+        FilesystemOperator $localFilesystem
     ) {
         $localFilesystemProvider->getFilesystem()->willReturn($localFilesystem);
         $this->shouldBeAnInstanceOf(AspellDictionary::class);
     }
 
     public function it_persist_dictionary_to_shared_filesystem(
-        FilesystemInterface $localFilesystem,
-        FilesystemInterface $sharedFilesystem
+        FilesystemOperator $localFilesystem,
+        FilesystemOperator $sharedFilesystem
     ) {
         $dictionary = new Dictionary(['word']);
         $languageCode = new LanguageCode('en');
 
-        $sharedFilesystem->putStream(
+        $sharedFilesystem->writeStream(
             'consistency/text_checker/aspell/custom-dictionary-en.pws',
             Argument::type('resource')
         )->shouldBeCalled();
@@ -59,8 +59,8 @@ final class AspellDictionarySpec extends ObjectBehavior
 
     public function it_gets_up_to_date_local_dictionary_relative_file_path(
         Clock $clock,
-        FilesystemInterface $localFilesystem,
-        FilesystemInterface $sharedFilesystem,
+        FilesystemOperator $localFilesystem,
+        FilesystemOperator $sharedFilesystem,
         SupportedLocaleValidator $supportedLocaleValidator
     ) {
         $localeCode = new LocaleCode('en_US');
@@ -68,10 +68,10 @@ final class AspellDictionarySpec extends ObjectBehavior
 
         $supportedLocaleValidator->extractLanguageCode($localeCode)->willReturn($languageCode);
 
-        $sharedFilesystem->has('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(true);
+        $sharedFilesystem->fileExists('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(true);
 
-        $localFilesystem->has('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(true);
-        $localFilesystem->getTimestamp('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(1577462283);
+        $localFilesystem->fileExists('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(true);
+        $localFilesystem->lastModified('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(1577462283);
 
         $fileDate = (new \DateTimeImmutable())->setTimestamp(1577462283);
         $now = (new \DateTimeImmutable())->setTimestamp(1577462283);
@@ -85,8 +85,8 @@ final class AspellDictionarySpec extends ObjectBehavior
 
     public function it_gets_up_to_date_speller_dictionary_by_downloading_it_if_does_not_exists_locally(
         Clock $clock,
-        FilesystemInterface $localFilesystem,
-        FilesystemInterface $sharedFilesystem,
+        FilesystemOperator $localFilesystem,
+        FilesystemOperator $sharedFilesystem,
         SupportedLocaleValidator $supportedLocaleValidator
     ) {
         $localeCode = new LocaleCode('en_US');
@@ -94,17 +94,17 @@ final class AspellDictionarySpec extends ObjectBehavior
 
         $supportedLocaleValidator->extractLanguageCode($localeCode)->willReturn($languageCode);
 
-        $localFilesystem->has('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(false, false, true);
-        $sharedFilesystem->has('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(true);
+        $localFilesystem->fileExists('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(false, false, true);
+        $sharedFilesystem->fileExists('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(true);
 
         $resource = fopen(__FILE__, 'r');
         $sharedFilesystem->readStream('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn($resource);
-        $localFilesystem->putStream(
+        $localFilesystem->writeStream(
             'consistency/text_checker/aspell/custom-dictionary-en.pws',
             $resource
         )->shouldBeCalled();
 
-        $localFilesystem->getTimestamp('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(1577462283);
+        $localFilesystem->lastModified('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(1577462283);
 
         $fileDate = (new \DateTimeImmutable())->setTimestamp(1577462283);
         $now = (new \DateTimeImmutable())->setTimestamp(1577462283);
@@ -117,16 +117,16 @@ final class AspellDictionarySpec extends ObjectBehavior
     }
 
     public function it_return_null_if_there_is_no_dictionary_for_the_given_locale(
-        FilesystemInterface $localFilesystem,
-        FilesystemInterface $sharedFilesystem,
+        FilesystemOperator $localFilesystem,
+        FilesystemOperator $sharedFilesystem,
         SupportedLocaleValidator $supportedLocaleValidator
     ) {
         $localeCode = new LocaleCode('en_US');
         $languageCode = new LanguageCode('en');
 
         $supportedLocaleValidator->extractLanguageCode($localeCode)->willReturn($languageCode);
-        $localFilesystem->has('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(false);
-        $sharedFilesystem->has('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(false);
+        $localFilesystem->fileExists('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(false);
+        $sharedFilesystem->fileExists('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(false);
 
         $this->getUpToDateSpellerDictionary(new LocaleCode('en_US'))->shouldReturn(null);
     }
@@ -142,8 +142,8 @@ final class AspellDictionarySpec extends ObjectBehavior
     }
 
     public function it_throws_exception_if_unable_to_download_dictionary(
-        FilesystemInterface $localFilesystem,
-        FilesystemInterface $sharedFilesystem,
+        FilesystemOperator $localFilesystem,
+        FilesystemOperator $sharedFilesystem,
         SupportedLocaleValidator $supportedLocaleValidator
     ) {
         $localeCode = new LocaleCode('en_US');
@@ -151,11 +151,11 @@ final class AspellDictionarySpec extends ObjectBehavior
 
         $supportedLocaleValidator->extractLanguageCode($localeCode)->willReturn($languageCode);
 
-        $localFilesystem->has('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(false);
-        $sharedFilesystem->has('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(true);
+        $localFilesystem->fileExists('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(false);
+        $sharedFilesystem->fileExists('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(true);
 
         $sharedFilesystem->readStream('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn('crapy_thing');
-        $localFilesystem->putStream(
+        $localFilesystem->writeStream(
             'consistency/text_checker/aspell/custom-dictionary-en.pws',
             Argument::any()
         )->shouldNotBeCalled();
@@ -165,7 +165,8 @@ final class AspellDictionarySpec extends ObjectBehavior
 
     public function it_gets_up_to_date_local_dictionary_relative_file_path_by_downloading_it_if_is_older_than_a_day(
         Clock $clock,
-        FilesystemInterface $localFilesystem,
+        FilesystemOperator $localFilesystem,
+        FilesystemOperator $sharedFilesystem,
         SupportedLocaleValidator $supportedLocaleValidator
     ) {
         $localeCode = new LocaleCode('en_US');
@@ -173,9 +174,11 @@ final class AspellDictionarySpec extends ObjectBehavior
 
         $supportedLocaleValidator->extractLanguageCode($localeCode)->willReturn($languageCode);
 
-        $localFilesystem->has('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(true);
+        $localFilesystem->fileExists('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(true);
+        $sharedFilesystem->fileExists('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(true);
 
-        $localFilesystem->getTimestamp('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(1577462283);
+        $localFilesystem->lastModified('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(1577462283);
+        $sharedFilesystem->lastModified('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(1577462283);
 
         $fileDate = (new \DateTimeImmutable())->setTimestamp(1577462283);
         $now = (new \DateTimeImmutable())->setTimestamp(1677462283);
@@ -183,7 +186,8 @@ final class AspellDictionarySpec extends ObjectBehavior
         $clock->fromTimestamp(1577462283)->willReturn($fileDate);
         $clock->getCurrentTime()->willReturn($now);
 
-        $localFilesystem->putStream(Argument::any())->shouldNotBeCalled();
+        $sharedFilesystem->readStream(Argument::any())->shouldNotBeCalled();
+        $localFilesystem->writeStream(Argument::cetera())->shouldNotBeCalled();
 
         $this->getUpToDateSpellerDictionary($localeCode)
             ->shouldBeLike(new Speller\Dictionary('/tmp/consistency/text_checker/aspell/custom-dictionary-en.pws'));
@@ -191,8 +195,8 @@ final class AspellDictionarySpec extends ObjectBehavior
 
     public function it_gets_up_to_date_local_dictionary_relative_file_path_by_downloading_if_it_is_older_than_a_day_and_if_shared_one_is_newer(
         Clock $clock,
-        FilesystemInterface $localFilesystem,
-        FilesystemInterface $sharedFilesystem,
+        FilesystemOperator $localFilesystem,
+        FilesystemOperator $sharedFilesystem,
         SupportedLocaleValidator $supportedLocaleValidator
     ) {
         $localeCode = new LocaleCode('en_US');
@@ -200,11 +204,11 @@ final class AspellDictionarySpec extends ObjectBehavior
 
         $supportedLocaleValidator->extractLanguageCode($localeCode)->willReturn($languageCode);
 
-        $localFilesystem->has('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(true);
-        $sharedFilesystem->has('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(true);
+        $localFilesystem->fileExists('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(true);
+        $sharedFilesystem->fileExists('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(true);
 
-        $localFilesystem->getTimestamp('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(1577462283);
-        $sharedFilesystem->getTimestamp('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(1777462283);
+        $localFilesystem->lastModified('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(1577462283);
+        $sharedFilesystem->lastModified('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(1777462283);
 
         $fileDate = (new \DateTimeImmutable())->setTimestamp(1577462283);
         $now = (new \DateTimeImmutable())->setTimestamp(1677462283);
@@ -214,7 +218,7 @@ final class AspellDictionarySpec extends ObjectBehavior
 
         $resource = fopen(__FILE__, 'r');
         $sharedFilesystem->readStream('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn($resource);
-        $localFilesystem->putStream(
+        $localFilesystem->writeStream(
             'consistency/text_checker/aspell/custom-dictionary-en.pws',
             $resource
         )->shouldBeCalled();
@@ -223,17 +227,17 @@ final class AspellDictionarySpec extends ObjectBehavior
             ->shouldBeLike(new Speller\Dictionary('/tmp/consistency/text_checker/aspell/custom-dictionary-en.pws'));
     }
 
-    public function it_gets_shared_dictionary_timestamp_if_exists(FilesystemInterface $sharedFilesystem)
+    public function it_gets_shared_dictionary_timestamp_if_exists(FilesystemOperator $sharedFilesystem)
     {
-        $sharedFilesystem->has('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(true);
-        $sharedFilesystem->getTimestamp('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(1234);
+        $sharedFilesystem->fileExists('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(true);
+        $sharedFilesystem->lastModified('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(1234);
 
         $this->getSharedDictionaryTimestamp(new LanguageCode('en'))->shouldReturn(1234);
     }
 
-    public function it_returns_null_if_shared_dictionary_timestamp_do_no_exists(FilesystemInterface $sharedFilesystem)
+    public function it_returns_null_if_shared_dictionary_timestamp_do_no_exists(FilesystemOperator $sharedFilesystem)
     {
-        $sharedFilesystem->has('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(false);
+        $sharedFilesystem->fileExists('consistency/text_checker/aspell/custom-dictionary-en.pws')->willReturn(false);
 
         $this->getSharedDictionaryTimestamp(new LanguageCode('en'))->shouldReturn(null);
     }

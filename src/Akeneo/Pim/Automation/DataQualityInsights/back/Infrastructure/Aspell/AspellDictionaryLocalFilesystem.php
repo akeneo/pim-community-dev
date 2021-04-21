@@ -3,21 +3,20 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell;
 
-use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 
 final class AspellDictionaryLocalFilesystem implements AspellDictionaryLocalFilesystemInterface
 {
-    /** @var Filesystem */
-    private $fs;
+    private FilesystemOperator $fs;
 
     public function __construct()
     {
-        $this->fs = new Filesystem(new Local($this->getAbsoluteRootPath()));
+        $this->fs = new Filesystem(new LocalFilesystemAdapter($this->getAbsoluteRootPath()));
     }
 
-    public function getFilesystem(): FilesystemInterface
+    public function getFilesystem(): FilesystemOperator
     {
         return $this->fs;
     }

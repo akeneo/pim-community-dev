@@ -131,12 +131,14 @@ JSON;
         $this->assertSame('catalogStorage', $fileInfo->getStorage());
 
         // check if file has been created on file system
-        $mountManager = $this->get('oneup_flysystem.mount_manager');
-        $fileSystem = $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
-        $this->assertTrue($fileSystem->has(($fileInfo->getKey())));
+
+        $fileSystem = $this->get('akeneo_file_storage.file_storage.filesystem_provider')->getFilesystem(
+            FileStorage::CATALOG_STORAGE_ALIAS
+        );
+        $this->assertTrue($fileSystem->fileExists(($fileInfo->getKey())));
 
         // remove file from the file system
-        if ($fileSystem->has($fileInfo->getKey())) {
+        if ($fileSystem->fileExists($fileInfo->getKey())) {
             $fileSystem->delete($fileInfo->getKey());
         }
 

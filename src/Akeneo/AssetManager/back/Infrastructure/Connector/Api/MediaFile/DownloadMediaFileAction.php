@@ -51,7 +51,7 @@ class DownloadMediaFileAction
         }
 
         $filesystem = $this->filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
-        if (!$filesystem->has($fileCode)) {
+        if (!$filesystem->fileExists($fileCode)) {
             throw new NotFoundHttpException(sprintf('Media file "%s" is not present on the filesystem.', $fileCode));
         }
 

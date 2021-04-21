@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 
-use League\Flysystem\FileExistsException;
-use League\Flysystem\FileNotFoundException;
-use League\Flysystem\MountManager;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use League\Flysystem\FilesystemException;
 use Ramsey\Uuid\Uuid;
 
 final class FileStorageChecker
@@ -24,14 +23,14 @@ final class FileStorageChecker
         'catalogStorage',
         'archivist',
         'jobsStorage',
-        'assetStorage'
+        'assetStorage',
     ];
 
-    private MountManager $mountManager;
+    private FileSystemProvider $filesystemProvider;
 
-    public function __construct(MountManager $mountManager)
+    public function __construct(FilesystemProvider $filesystemProvider)
     {
-        $this->mountManager = $mountManager;
+        $this->filesystemProvider = $filesystemProvider;
     }
 
     public function status(): ServiceStatus
@@ -55,13 +54,15 @@ final class FileStorageChecker
     private function isFileStorageAvailable(string $prefix): bool
     {
         try {
-            $filesystem = $this->mountManager->getFilesystem($prefix);
-            $filename = Uuid::uuid4();
-            $isCreationOk = $filesystem->write($filename, 'monitoring');
-            $isDeletionOk = $filesystem->readAndDelete($filename);
+            $filesystem = $this->filesystemProvider->getFilesystem($prefix);
+            $filename = Uuid::uuid4()->toString();
 
-            return $isCreationOk && $isDeletionOk === 'monitoring';
-        } catch (FileNotFoundException|FileExistsException $e) {
+            $filesystem->write($filename, 'monitoring');
+            $content = $filesystem->read($filename);
+            $filesystem->delete($filename);
+
+            return 'monitoring' === $content;
+        } catch (FilesystemException $e) {
             return false;
         }
     }

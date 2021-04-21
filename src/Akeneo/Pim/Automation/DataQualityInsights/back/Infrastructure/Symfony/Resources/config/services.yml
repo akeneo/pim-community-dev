@@ -96,7 +96,7 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionary:
         arguments:
-            $mountManager: '@oneup_flysystem.mount_manager'
+            $filesystemProvider: '@akeneo_file_storage.file_storage.filesystem_provider'
             $clock: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
             $localFilesystemProvider : '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryLocalFilesystem'
             $supportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'

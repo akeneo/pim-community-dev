@@ -31,7 +31,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -242,7 +242,7 @@ class AssetWriterSpec extends ObjectBehavior
         JobParameters $jobParameters,
         MediaFileAttribute $scopableLocalizableAttribute,
         FileInfoInterface $fileInfo,
-        FilesystemInterface $assetFilesystem
+        FilesystemOperator $assetFilesystem
     ) {
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(true);
@@ -286,7 +286,7 @@ class AssetWriterSpec extends ObjectBehavior
         $fileInfoRepository->findOneByIdentifier('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn($fileInfo);
 
         $filesystemProvider->getFilesystem('assetsStorage')->willReturn($assetFilesystem);
-        $assetFilesystem->has('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn(true);
+        $assetFilesystem->fileExists('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn(true);
 
         $arrayConverter->convert(
             [
@@ -329,7 +329,7 @@ class AssetWriterSpec extends ObjectBehavior
         JobParameters $jobParameters,
         MediaFileAttribute $scopableLocalizableAttribute,
         FileInfoInterface $fileInfo,
-        FilesystemInterface $assetFilesystem,
+        FilesystemOperator $assetFilesystem,
         StepExecution $stepExecution
     )
     {
@@ -375,7 +375,7 @@ class AssetWriterSpec extends ObjectBehavior
         $fileInfoRepository->findOneByIdentifier('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn($fileInfo);
 
         $filesystemProvider->getFilesystem('assetsStorage')->willReturn($assetFilesystem);
-        $assetFilesystem->has('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn(false);
+        $assetFilesystem->fileExists('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn(false);
 
         $stepExecution->addWarning(
             'The media has not been found or is not currently available',
