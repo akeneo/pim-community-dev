@@ -49,7 +49,7 @@ const List = () => {
   const [sortColumn, getSortDirection, toggleSortDirection] = useSorting('label');
   const [measurementFamilies] = useMeasurementFamilies();
   const [isCreateModalOpen, openCreateModal, closeCreateModal] = useToggleState(false);
-  const settingsHref = `#${useRoute('pim_settings_index')}`;
+  const settingsHref = useRoute('pim_settings_index');
 
   const handleModalClose = useCallback(
     (createdMeasurementFamilyCode?: MeasurementFamilyCode) => {
