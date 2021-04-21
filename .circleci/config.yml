@@ -195,6 +195,29 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
+  test_database:
+      machine:
+          image: ubuntu-1604:201903-01
+      parallelism: 1
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: |
+                    docker load -i php-pim-image.tar
+                    APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
+                    vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+          - run:
+                name: Install database
+                command: APP_ENV=test make database
+          - run:
+              name: Database test
+              command: make test-database-structure
+              
   test_back_phpunit:
       machine:
           image: ubuntu-1604:201903-01
@@ -424,13 +447,15 @@ workflows:
           - test_front_code_style:
                 requires:
                     - build_dev
+          - test_database:
+                requires:
+                    - build_dev
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
           - test_front_static_acceptance_and_integration:
                 requires:
                     - build_dev
-
           - test_back_phpunit:
                 requires:
                     - build_dev
