@@ -376,3 +376,8 @@ pim_notification:
         export: Export
         quick_export: Quick Export
         mass_edit: Mass Edit
+
+pim_settings:
+  settings_menu: Settings menu
+  catalog_settings: Catalog settings
+  product_settings: Product settings

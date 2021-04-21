@@ -2,21 +2,17 @@ import React from 'react';
 import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
-import {pimTheme} from 'akeneo-design-system';
+import {pimTheme,} from 'akeneo-design-system';
+import {SettingsIndex} from '@akeneo-pim-community/settings-ui';
 
 const mediator = require('oro/mediator');
-const routing = require('routing');
 
 class DashboardController extends ReactController {
   reactElementToMount() {
     return (
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <div>
-            <p><a href={`#${routing.generateHash('pim_enrich_categorytree_index')}`}>Categories</a></p>
-            <p><a href={`#${routing.generateHash('pim_enrich_channel_index')}`}>Channels</a></p>
-            <p><a href={`#${routing.generateHash('pim_enrich_locale_index')}`}>Locales</a></p>
-          </div>
+          <SettingsIndex />
         </ThemeProvider>
       </DependenciesProvider>
     );
