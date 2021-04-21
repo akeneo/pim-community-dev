@@ -56,6 +56,7 @@
     "@types/jest": "^26.0.14",
     "@types/jquery": "^3.3.31",
     "@types/lodash": "^4.14.145",
+    "@types/luxon": "^1.26.2",
     "@types/node": "11.9.5",
     "@types/react": "^16.14.0",
     "@types/react-dom": "^16.9.12",
@@ -78,7 +79,6 @@
     "cucumber-html-reporter": "5.0.0",
     "cucumber-junit": "^1.7.1",
     "deepmerge": "^4.2.2",
-    "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.10.0",
     "eslint": "^6.5.1",
     "eslint-plugin-react": "^7.16.0",
@@ -114,7 +114,8 @@
     "yamljs": "0.3.0"
   },
   "dependencies": {
-    "@types/luxon": "^1.26.2",
+    "@akeneo-pim-community/shared": "link:front-packages/shared",
+    "@akeneo-pim-community/tailored-export": "link:front-packages/tailored-export",
     "ajv": "^6.10.2",
     "akeneo-design-system": "link:front-packages/akeneo-design-system",
     "babel-polyfill": "6.26.0",
@@ -142,9 +143,7 @@
     "styled-components": "^5.1.1",
     "summernote": "0.6.16",
     "underscore": "1.8.3",
-    "victory": "^33.1.6",
-    "@akeneo-pim-community/shared": "link:front-packages/shared",
-    "@akeneo-pim-community/tailored-export": "link:front-packages/tailored-export"
+    "victory": "^33.1.6"
   },
   "resolutions": {
     "jest/**/ip-regex": "2.1.0"
