@@ -33,7 +33,7 @@ pim_title:
 akeneo_connectivity.connection:
     connect:
         redirect:
-            title: This page have moved in the new Connect space 🔌
+            title: This page has been moved in the new Connect space 🔌
             link: To go there, click here
     connections: Connections
     secondary_actions:
