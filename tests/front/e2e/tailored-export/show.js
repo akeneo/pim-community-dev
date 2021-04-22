@@ -6,11 +6,9 @@ describe('go to the tailored export tab', () => {
 
     cy.findByText(/create export profile/i).click();
 
-    cy.findByTitle('Code').click().type('tailoredexportprofile' + new Date().getUTCMilliseconds());
-    cy.findByTitle('Label').click().type('Tailored Export Profile');
-
-    cy.get('#s2id_job a').click()
-    cy.get('.select2-input').type('product export in csv{enter}');
+    cy.findByLabelText('Code (required)').type('tailoredexportprofile' + new Date().getUTCMilliseconds());
+    cy.findByLabelText('Label (required)').type('Tailored Export Profile');
+    cy.findByTitle('Job').click().type('product export in csv{enter}');
 
     cy.findByText('Save').click();
     cy.findByText('Columns').click();
