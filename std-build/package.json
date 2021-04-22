@@ -14,7 +14,7 @@
     "less": "node $npm_package_config_styles",
     "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
     "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
-    "build:packages": "yarn --cwd=$npm_package_config_source build:packages"
+    "packages:build": "yarn --cwd=$npm_package_config_source packages:build"
   },
   "workspaces": [
     "vendor/akeneo/pim-community-dev",

@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, ReactElement} from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {render} from '@testing-library/react';
@@ -13,9 +13,9 @@ const DefaultProviders: FC = ({children}) => (
   </DependenciesContext.Provider>
 );
 
-const renderWithProviders = (ui: React.ReactElement) => render(ui, {wrapper: DefaultProviders});
+const renderWithProviders = (ui: ReactElement) => render(ui, {wrapper: DefaultProviders});
 
-const renderDOMWithProviders = (ui: React.ReactElement, container: HTMLElement) =>
+const renderDOMWithProviders = (ui: ReactElement, container: HTMLElement) =>
   ReactDOM.render(<DefaultProviders>{ui}</DefaultProviders>, container);
 
 const renderHookWithProviders = (hook: () => any) => renderHook(hook, {wrapper: DefaultProviders});

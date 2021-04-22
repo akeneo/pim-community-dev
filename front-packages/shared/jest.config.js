@@ -5,5 +5,8 @@ module.exports = {
   },
   setupFilesAfterEnv: ['<rootDir>/tests/setupTests.ts'],
   testMatch: ['<rootDir>/src/**/?(*.)+(unit).ts?(x)'],
+  collectCoverage: true,
   collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}'],
+  coverageReporters: ['text-summary', 'html'],
+  coverageDirectory: 'coverage'
 };

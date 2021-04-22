@@ -30,7 +30,7 @@ javascript-extensions:
 
 .PHONY: front-packages
 front-packages:
-	$(YARN_RUN) build:packages
+	$(YARN_RUN) packages:build
 
 .PHONY: assets
 assets:

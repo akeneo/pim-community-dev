@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "lib:build": "tsc -p ./tsconfig.json",
-    "test:unit:run": "jest --config ./jest.config.js"
+    "test:unit:run": "jest --no-cache --config ./jest.config.js"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
