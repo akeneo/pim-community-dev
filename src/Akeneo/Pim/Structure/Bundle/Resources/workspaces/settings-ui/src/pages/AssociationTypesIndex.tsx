@@ -142,7 +142,9 @@ const AssociationTypesIndex = () => {
                 onSearchChange={onSearch}
                 className={'association-type-grid-search'}
               />
-              <Pagination currentPage={currentPage} totalItems={associationTypes.total} followPage={followPage} />
+              {associationTypes.total > 0 && (
+                <Pagination currentPage={currentPage} totalItems={associationTypes.total} followPage={followPage} />
+              )}
               <AssociationTypesDataGrid
                 associationTypes={associationTypes.list}
                 sortDirection={sortDirection}
