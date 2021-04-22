@@ -96,7 +96,10 @@ const OptionCollection = styled.div`
   overflow-y: auto;
 `;
 
-const Option = styled.span<{value: string}>``;
+const Option = styled.span<{value: string}>`
+  display: flex;
+  align-items: center;
+`;
 
 type SelectInputProps = Override<
   Override<React.InputHTMLAttributes<HTMLDivElement>, InputProps<string | null>>,

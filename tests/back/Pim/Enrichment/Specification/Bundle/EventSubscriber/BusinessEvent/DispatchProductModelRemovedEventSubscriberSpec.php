@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent;
 
+use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelRemovedEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
@@ -35,14 +36,15 @@ class DispatchProductModelRemovedEventSubscriberSpec extends ObjectBehavior
     function it_is_initializable(): void
     {
         $this->shouldHaveType(DispatchProductModelRemovedEventSubscriber::class);
+        $this->shouldImplement(DispatchBufferedPimEventSubscriberInterface::class);
     }
 
     function it_returns_subscribed_events(): void
     {
         $this->getSubscribedEvents()->shouldReturn(
             [
-                StorageEvents::POST_REMOVE => 'createAndDispatchProductModelEvents',
-                StorageEvents::POST_REMOVE_ALL => 'dispatchBufferedProductModelEvents',
+                StorageEvents::POST_REMOVE => 'createAndDispatchPimEvents',
+                StorageEvents::POST_REMOVE_ALL => 'dispatchBufferedPimEvents',
             ]
         );
     }
@@ -62,7 +64,7 @@ class DispatchProductModelRemovedEventSubscriberSpec extends ObjectBehavior
         $productModel = new ProductModel();
         $productModel->setCode('jean');
 
-        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel, ['unitary' => true]));
+        $this->createAndDispatchPimEvents(new GenericEvent($productModel, ['unitary' => true]));
 
         Assert::assertCount(1, $messageBus->messages);
         Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
@@ -98,9 +100,9 @@ class DispatchProductModelRemovedEventSubscriberSpec extends ObjectBehavior
         $product2 = new ProductModel();
         $product2->setCode('jean');
 
-        $this->createAndDispatchProductModelEvents(new GenericEvent($product1, ['unitary' => false]));
-        $this->createAndDispatchProductModelEvents(new GenericEvent($product2, ['unitary' => false]));
-        $this->dispatchBufferedProductModelEvents(new GenericEvent());
+        $this->createAndDispatchPimEvents(new GenericEvent($product1, ['unitary' => false]));
+        $this->createAndDispatchPimEvents(new GenericEvent($product2, ['unitary' => false]));
+        $this->dispatchBufferedPimEvents(new GenericEvent());
 
         Assert::assertCount(1, $messageBus->messages);
         Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
@@ -138,7 +140,7 @@ class DispatchProductModelRemovedEventSubscriberSpec extends ObjectBehavior
         $messageBus = $this->getMessageBus();
         $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
-        $this->createAndDispatchProductModelEvents(new GenericEvent(
+        $this->createAndDispatchPimEvents(new GenericEvent(
             new \stdClass(),
             ['unitary' => true]
         ));
@@ -157,7 +159,7 @@ class DispatchProductModelRemovedEventSubscriberSpec extends ObjectBehavior
 
         $security->getUser()->willReturn(null);
 
-        $this->createAndDispatchProductModelEvents(new GenericEvent(
+        $this->createAndDispatchPimEvents(new GenericEvent(
             $productModel,
             ['unitary' => true]
         ));
@@ -182,7 +184,7 @@ class DispatchProductModelRemovedEventSubscriberSpec extends ObjectBehavior
         $productModel = new ProductModel();
         $productModel->setCode('product_model_code');
 
-        $this->createAndDispatchProductModelEvents(new GenericEvent(
+        $this->createAndDispatchPimEvents(new GenericEvent(
             $productModel,
             ['unitary' => true]
         ));

@@ -106,3 +106,7 @@ pim_catalog:
 mass_edit:
   edit_common_attributes:
     invalid_values: Es gibt Fehler in der Attribut-Maske
+pim_datagrid:
+  column_configurator:
+    label:
+      unique_message: Die Bezeichnung muss eindeutig sein.

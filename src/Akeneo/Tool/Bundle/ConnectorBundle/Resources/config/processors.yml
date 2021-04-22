@@ -3,7 +3,6 @@ parameters:
     pim_connector.processor.denormalization.class: Akeneo\Tool\Component\Connector\Processor\Denormalization\Processor
     pim_connector.processor.denormalization.job_instance.class: Akeneo\Tool\Component\Connector\Processor\Denormalization\JobInstanceProcessor
     pim_connector.processor.normalization.class: Akeneo\Tool\Component\Connector\Processor\Normalization\Processor
-    pim_connector.processor.bulk_media_fetcher.class: Akeneo\Tool\Component\Connector\Processor\BulkMediaFetcher
 
 services:
     # Dummy processor
@@ -176,11 +175,3 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.group_type'
             - '@akeneo_storage_utils.doctrine.object_detacher'
-
-    # Medias fetcher
-    pim_connector.processor.bulk_media_fetcher:
-        class: '%pim_connector.processor.bulk_media_fetcher.class%'
-        arguments:
-            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
-            - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - '@pim_connector.writer.file.media_exporter_path_generator'

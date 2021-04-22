@@ -28,15 +28,6 @@ const Container = styled.div`
   height: 100vh;
 `;
 
-const SecondaryActionsButton = styled(IconButton)`
-  opacity: 0.5;
-  color: ${getColor('grey', 120)};
-
-  :hover {
-    opacity: 1;
-  }
-`;
-
 const Refreshing = styled.span`
   display: flex;
   gap: 10px;
@@ -92,6 +83,7 @@ const ExecutionDetail = () => {
   const downloadLogIsVisible = canDownloadLog(security, jobExecution);
   const downloadArchiveLinks = getDownloadLinks(jobExecution?.meta.archives ?? null);
   const downloadArchiveLinkIsVisible = canDownloadArchive(security, jobExecution) && 0 < downloadArchiveLinks.length;
+  const downloadZipArchive = jobExecution?.meta?.generateZipArchive ?? false;
 
   const downloadArchiveTitle = translate('pim_enrich.entity.job_execution.module.download.output');
   const showProfileIsVisible = jobTypeWithProfile.includes(jobExecution?.jobInstance.type || '');
@@ -137,7 +129,8 @@ const ExecutionDetail = () => {
         <PageHeader.Actions>
           {(showProfileIsVisible || downloadLogIsVisible) && (
             <Dropdown>
-              <SecondaryActionsButton
+              <IconButton
+                level="tertiary"
                 title={translate('pim_common.other_actions')}
                 icon={<MoreIcon />}
                 ghost="borderless"
@@ -176,7 +169,7 @@ const ExecutionDetail = () => {
           )}
           {jobExecution &&
             downloadArchiveLinkIsVisible &&
-            (downloadArchiveLinks.length === 1 ? (
+            (downloadArchiveLinks.length === 1 && !downloadZipArchive ? (
               <Button
                 level="secondary"
                 href={router.generate('pim_enrich_job_tracker_download_file', {
@@ -211,6 +204,17 @@ const ExecutionDetail = () => {
                           </Link>
                         </Dropdown.Item>
                       ))}
+                      {downloadZipArchive && (
+                        <Dropdown.Item>
+                          <Link
+                            href={router.generate('pim_enrich_job_tracker_download_zip_archive', {
+                              jobExecutionId: jobExecutionId,
+                            })}
+                          >
+                            {translate('pim_import_export.form.job_execution.button.download_archive.title')}
+                          </Link>
+                        </Dropdown.Item>
+                      )}
                     </Dropdown.ItemCollection>
                   </Dropdown.Overlay>
                 )}

@@ -14,7 +14,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UserProcessor extends Processor
 {
-    private ObjectRepository $gridViewRepository;
+    private DatagridViewRepositoryInterface $gridViewRepository;
     private FileStorerInterface $fileStorer;
 
     public function __construct(
@@ -32,7 +32,7 @@ class UserProcessor extends Processor
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
-        ObjectRepository $gridViewRepository,
+        DatagridViewRepositoryInterface $gridViewRepository,
         FileStorerInterface $fileStorer
     ) {
         parent::__construct($repository, $factory, $updater, $validator, $objectDetacher);
@@ -49,14 +49,6 @@ class UserProcessor extends Processor
             $this->skipItemWithMessage($item, 'Passwords cannot be imported via flat files');
         }
 
-        $itemDefaultProductGridView = $item['default_product_grid_view'] ?? null;
-        if (null !== $itemDefaultProductGridView) {
-            $defaultProductGridView = $this->gridViewRepository->findOneBy(['label' => $itemDefaultProductGridView]);
-            if (null !== $defaultProductGridView) {
-                $item['default_product_grid_view'] = $defaultProductGridView->getId();
-            }
-        }
-
         if (isset($item['avatar']['filePath'])) {
             try {
                 $file = $this->fileStorer->store(
@@ -71,6 +63,15 @@ class UserProcessor extends Processor
 
         $itemIdentifier = $this->getItemIdentifier($this->repository, $item);
         $user = $this->findOrCreateObject($itemIdentifier);
+
+        $itemDefaultProductGridView = $item['default_product_grid_view'] ?? null;
+        if (null !== $itemDefaultProductGridView) {
+            $defaultProductGridView = $this->gridViewRepository->findPrivateDatagridViewByLabel($itemDefaultProductGridView, $user) ??
+                $this->gridViewRepository->findPublicDatagridViewByLabel($itemDefaultProductGridView);
+            if (null !== $defaultProductGridView) {
+                $item['default_product_grid_view'] = $defaultProductGridView->getId();
+            }
+        }
 
         try {
             $this->updater->update($user, $item);

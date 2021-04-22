@@ -84,12 +84,18 @@ it('It does not allow click or selection if the Item is disabled', () => {
       <Item disabled={true}>
         <Link onClick={handler}>Nice Link</Link>
       </Item>
+      <Item disabled={true} onClick={handler}>
+        Nice item
+      </Item>
       <Item disabled={true}>
         <Checkbox checked={false} onChange={handler} />
         Nice Checkbox
       </Item>
     </>
   );
+
+  fireEvent.click(screen.getByText('Nice item'));
+  expect(handler).not.toHaveBeenCalled();
 
   const link = screen.getByText('Nice Link');
   fireEvent.click(link);

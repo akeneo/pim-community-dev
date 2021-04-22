@@ -39,4 +39,20 @@ interface GetConnectorProducts
      * @throws ObjectNotFoundException when the product does not exist
      */
     public function fromProductIdentifier(string $productIdentifier, int $userId): ConnectorProduct;
+
+    /**
+    * @param string[] $productIdentifiers
+    * @param int $userId
+    * @param array|null $attributesToFilterOn
+    * @param string|null $channelToFilterOn
+    * @param array|null $localesToFilterOn
+    * @return ConnectorProductList
+    */
+    public function fromProductIdentifiers(
+        array $productIdentifiers,
+        int $userId,
+        ?array $attributesToFilterOn,
+        ?string $channelToFilterOn,
+        ?array $localesToFilterOn
+    ): ConnectorProductList;
 }

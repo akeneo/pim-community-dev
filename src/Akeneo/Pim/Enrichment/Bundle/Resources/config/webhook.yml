@@ -2,7 +2,6 @@ services:
     pim_catalog.webhook.event_data_builder.product_created_and_updated:
         class: Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductCreatedAndUpdatedEventDataBuilder
         arguments:
-            - '@pim_catalog.query.product_query_builder_from_size_factory_external_api'
             - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
             - '@pim_api.normalizer.connector_products'
         tags:
@@ -16,7 +15,6 @@ services:
     pim_catalog.webhook.event_data_builder.product_model_created_and_updated:
         class: Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelCreatedAndUpdatedEventDataBuilder
         arguments:
-            - '@pim_catalog.query.product_model_query_builder_from_size_factory_external_api'
             - '@akeneo.pim.enrichment.product.connector.get_product_models_from_codes'
             - '@pim_api.normalizer.connector_product_models'
         tags:

@@ -5,13 +5,12 @@ namespace Akeneo\Tool\Component\Connector\Writer\File\Csv;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
-use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 
 /**
  * Write data into a csv file on the filesystem
@@ -20,12 +19,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Writer extends AbstractFileWriter implements
-    ItemWriterInterface,
-    InitializableInterface,
-    FlushableInterface,
-    ArchivableWriterInterface,
-    StepExecutionAwareInterface
+class Writer extends AbstractFileWriter implements ItemWriterInterface, InitializableInterface, FlushableInterface
 {
     /** @var ArrayConverterInterface */
     protected $arrayConverter;
@@ -41,9 +35,6 @@ class Writer extends AbstractFileWriter implements
 
     /** @var array */
     protected $headers = [];
-
-    /** @var array */
-    protected $writtenFiles = [];
 
     /**
      * @param ArrayConverterInterface $arrayConverter
@@ -65,7 +56,7 @@ class Writer extends AbstractFileWriter implements
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
         if (null === $this->flatRowBuffer) {
             $this->flatRowBuffer = $this->bufferFactory->create();
@@ -75,15 +66,7 @@ class Writer extends AbstractFileWriter implements
     /**
      * {@inheritdoc}
      */
-    public function getWrittenFiles()
-    {
-        return $this->writtenFiles;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function write(array $items)
+    public function write(array $items): void
     {
         $exportDirectory = dirname($this->getPath());
         if (!is_dir($exportDirectory)) {
@@ -104,7 +87,7 @@ class Writer extends AbstractFileWriter implements
     /**
      * {@inheritdoc}
      */
-    public function flush()
+    public function flush(): void
     {
         $this->flusher->setStepExecution($this->stepExecution);
 
@@ -124,7 +107,7 @@ class Writer extends AbstractFileWriter implements
         );
 
         foreach ($writtenFiles as $writtenFile) {
-            $this->writtenFiles[$writtenFile] = basename($writtenFile);
+            $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($writtenFile, \basename($writtenFile));
         }
     }
 }

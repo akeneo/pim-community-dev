@@ -33,7 +33,9 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.user'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_user.writer.file.flat_item_buffer_flusher'
-            - '@filesystem'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
 
     pim_connector.writer.file.xlsx_user:
         class: 'Akeneo\UserManagement\Component\Connector\Writer\File\XlsxUserWriter'
@@ -41,7 +43,9 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.user'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_user.writer.file.flat_item_buffer_flusher'
-            - '@filesystem'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
 
     pim_user.writer.file.flat_item_buffer_flusher:
         class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'

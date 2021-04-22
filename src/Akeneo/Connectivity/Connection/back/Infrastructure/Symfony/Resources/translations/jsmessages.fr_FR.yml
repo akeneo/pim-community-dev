@@ -272,7 +272,7 @@ akeneo_connectivity.connection:
         link: Pour savoir comment résoudre ces erreurs, rendez vous sur la documentation de l'API.
       search_filter:
         placeholder: Rechercher dans les messages d'erreur
-        result_count: '{0} Aucun résultat |[1,Inf] {{ count }} résultats'
+        result_count: '{0} Aucun résultat|{1} 1 résultat|[2,Inf] {{ total }} résultats'
       error_list:
         date_time_column:
           title: Jour et heure

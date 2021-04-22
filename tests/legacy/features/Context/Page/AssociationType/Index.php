@@ -17,4 +17,18 @@ class Index extends Grid
      * @var string
      */
     protected $path = '#/configuration/association-type/';
+
+    public function __construct($session, $pageFactory, $parameters = [])
+    {
+        parent::__construct($session, $pageFactory, $parameters);
+
+        $this->elements = array_merge(
+            $this->elements,
+            [
+                'Creation link' => [
+                    'css' => '#create-button-extension'
+                ],
+            ]
+        );
+    }
 }

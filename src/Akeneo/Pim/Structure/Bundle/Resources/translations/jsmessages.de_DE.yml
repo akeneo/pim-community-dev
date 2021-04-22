@@ -115,6 +115,9 @@ pim_enrich.entity.association_type:
     delete:
       confirm: Möchten Sie diesen Verbindungstyp wirklich löschen?
   hint: <a href="{{link}}" target="_blank">In diesem Artikel</a>findest du alles, was du brauchst, um deinen eigenen Verbindungstyp zu erstellen.
+  no_association_types:
+    title: Du hast keine Verbindungstypen
+    hint: Erstelle deinen ersten
 pim_enrich.entity.group_type:
   label: Gruppentyp
   flash:
@@ -142,6 +145,7 @@ pim_enrich.entity.attribute:
       success: Attribut erfolgreich aktualisiert.
       fail: Das Attribut konnte nicht aktualisiert werden.
       fields_not_ready: "Dieses Attribut kann im Augenblick nicht gespeichert werden. Die folgenden Felder sind noch unvollständig {{ fields }}"
+      cant_remove_attributes_used_as_label: Attribute, die als Label in einer Familie verwendet werden, können nicht entfernt werden.
     delete:
       success: Attribut erfolgreich entfernt
       fail: Dieses Attribut kann nicht gelöscht werden

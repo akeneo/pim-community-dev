@@ -15,8 +15,8 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Connector\Processor\Denormalization\UserProcessor;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
+use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -30,7 +30,7 @@ class UserProcessorSpec extends ObjectBehavior
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
-        ObjectRepository $gridViewRepository,
+        DatagridViewRepositoryInterface $gridViewRepository,
         FileStorerInterface $fileStorer,
         StepExecution $stepExecution
     ) {
@@ -100,7 +100,7 @@ class UserProcessorSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
-        ObjectRepository $gridViewRepository,
+        DatagridViewRepositoryInterface $gridViewRepository,
         UserInterface $julia,
         DatagridView $productGridView
     ) {
@@ -108,7 +108,9 @@ class UserProcessorSpec extends ObjectBehavior
         $julia->getId()->willReturn(44);
         $repository->findOneByIdentifier('julia')->willReturn($julia);
         $productGridView->getId()->willReturn(42);
-        $gridViewRepository->findOneBy(['label' => 'My product grid view'])->willReturn($productGridView);
+
+        $gridViewRepository->findPrivateDatagridViewByLabel('My product grid view', $julia)->willReturn(null);
+        $gridViewRepository->findPublicDatagridViewByLabel('My product grid view')->willReturn($productGridView);
 
         $updater->update(
             $julia,

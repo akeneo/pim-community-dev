@@ -58,6 +58,7 @@ type JobExecution = {
   meta: {
     logExists: boolean;
     archives: JobExecutionArchives;
+    generateZipArchive?: boolean;
   };
 };
 

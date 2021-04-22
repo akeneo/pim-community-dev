@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent;
 
+use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductCreatedAndUpdatedEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
@@ -15,7 +16,6 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
-use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -34,14 +34,15 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
     function it_is_initializable(): void
     {
         $this->shouldHaveType(DispatchProductCreatedAndUpdatedEventSubscriber::class);
+        $this->shouldImplement(DispatchBufferedPimEventSubscriberInterface::class);
     }
 
     function it_returns_subscribed_tech_events(): void
     {
         $this->getSubscribedEvents()->shouldReturn(
             [
-                StorageEvents::POST_SAVE => 'createAndDispatchProductEvents',
-                StorageEvents::POST_SAVE_ALL => 'dispatchBufferedProductEvents',
+                StorageEvents::POST_SAVE => ['createAndDispatchPimEvents', -10],
+                StorageEvents::POST_SAVE_ALL => ['dispatchBufferedPimEvents', -10],
             ]
         );
     }
@@ -59,7 +60,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $product = new Product();
         $product->setIdentifier('product_identifier');
 
-        $this->createAndDispatchProductEvents(new GenericEvent($product, ['is_new' => true, 'unitary' => true]));
+        $this->createAndDispatchPimEvents(new GenericEvent($product, ['is_new' => true, 'unitary' => true]));
 
         Assert::assertCount(1, $messageBus->messages);
         Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
@@ -87,7 +88,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $product = new Product();
         $product->setIdentifier('product_identifier');
 
-        $this->createAndDispatchProductEvents(new GenericEvent($product, ['is_new' => false, 'unitary' => true]));
+        $this->createAndDispatchPimEvents(new GenericEvent($product, ['is_new' => false, 'unitary' => true]));
 
         Assert::assertCount(1, $messageBus->messages);
         Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
@@ -117,9 +118,9 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $product2 = new Product();
         $product2->setIdentifier('product_identifier_2');
 
-        $this->createAndDispatchProductEvents(new GenericEvent($product1, ['is_new' => true, 'unitary' => false]));
-        $this->createAndDispatchProductEvents(new GenericEvent($product2, ['is_new' => false, 'unitary' => false]));
-        $this->dispatchBufferedProductEvents(new GenericEvent());
+        $this->createAndDispatchPimEvents(new GenericEvent($product1, ['is_new' => true, 'unitary' => false]));
+        $this->createAndDispatchPimEvents(new GenericEvent($product2, ['is_new' => false, 'unitary' => false]));
+        $this->dispatchBufferedPimEvents(new GenericEvent());
 
         Assert::assertCount(1, $messageBus->messages);
         Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
@@ -156,10 +157,10 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $product3 = new Product();
         $product3->setIdentifier('product_identifier_3');
 
-        $this->createAndDispatchProductEvents(new GenericEvent($product1, ['is_new' => true, 'unitary' => false]));
-        $this->createAndDispatchProductEvents(new GenericEvent($product2, ['is_new' => false, 'unitary' => false]));
-        $this->createAndDispatchProductEvents(new GenericEvent($product3, ['is_new' => true, 'unitary' => false]));
-        $this->dispatchBufferedProductEvents(new GenericEvent());
+        $this->createAndDispatchPimEvents(new GenericEvent($product1, ['is_new' => true, 'unitary' => false]));
+        $this->createAndDispatchPimEvents(new GenericEvent($product2, ['is_new' => false, 'unitary' => false]));
+        $this->createAndDispatchPimEvents(new GenericEvent($product3, ['is_new' => true, 'unitary' => false]));
+        $this->dispatchBufferedPimEvents(new GenericEvent());
 
         Assert::assertCount(2, $messageBus->messages);
         Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
@@ -193,7 +194,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $messageBus = $this->getMessageBus();
         $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
-        $this->createAndDispatchProductEvents(new GenericEvent(
+        $this->createAndDispatchPimEvents(new GenericEvent(
             new \stdClass(),
             ['is_new' => false, 'unitary' => true]
         ));
@@ -211,7 +212,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
 
         $security->getUser()->willReturn(null);
 
-        $this->createAndDispatchProductEvents(new GenericEvent(
+        $this->createAndDispatchPimEvents(new GenericEvent(
             $product,
             ['is_new' => false, 'unitary' => true]
         ));
@@ -227,7 +228,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $product = new Product();
         $product->setIdentifier('product_identifier');
 
-        $this->createAndDispatchProductEvents(new GenericEvent(
+        $this->createAndDispatchPimEvents(new GenericEvent(
             $product,
             ['is_new' => false, 'force_save' => true]
         ));
@@ -252,7 +253,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $product = new Product();
         $product->setIdentifier('product_identifier');
 
-        $this->createAndDispatchProductEvents(new GenericEvent(
+        $this->createAndDispatchPimEvents(new GenericEvent(
             $product,
             ['is_new' => false, 'unitary' => true]
         ));

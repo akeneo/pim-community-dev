@@ -18,13 +18,8 @@ use League\Flysystem\Filesystem;
  */
 class FileReaderArchiver extends AbstractFilesystemArchiver
 {
-    /** @var JobRegistry */
-    protected $jobRegistry;
+    protected JobRegistry $jobRegistry;
 
-    /**
-     * @param Filesystem  $filesystem
-     * @param JobRegistry $jobRegistry
-     */
     public function __construct(Filesystem $filesystem, JobRegistry $jobRegistry)
     {
         $this->filesystem = $filesystem;
@@ -32,11 +27,9 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
     }
 
     /**
-     * Archive files used by job execution (input / output)
-     *
-     * @param JobExecution $jobExecution
+     * {@inheritdoc}
      */
-    public function archive(JobExecution $jobExecution)
+    public function archive(JobExecution $jobExecution): void
     {
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
@@ -68,33 +61,17 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
     }
 
     /**
-     * Verify if the reader is usable or not
-     *
-     * @param ItemReaderInterface $reader
-     *
-     * @return bool
-     */
-    protected function isReaderUsable(ItemReaderInterface $reader)
-    {
-        return $reader instanceof Reader;
-    }
-
-    /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'input';
     }
 
     /**
-     * Check if the job execution is supported
-     *
-     * @param JobExecution $jobExecution
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function supports(JobExecution $jobExecution)
+    public function supports(JobExecution $jobExecution): bool
     {
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
@@ -104,5 +81,17 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
         }
 
         return false;
+    }
+
+    /**
+     * Verify if the reader is usable or not
+     *
+     * @param ItemReaderInterface $reader
+     *
+     * @return bool
+     */
+    protected function isReaderUsable(ItemReaderInterface $reader): bool
+    {
+        return $reader instanceof Reader;
     }
 }

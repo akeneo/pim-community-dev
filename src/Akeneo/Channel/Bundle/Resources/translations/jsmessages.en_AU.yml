@@ -64,7 +64,14 @@ pim_enrich.entity.locale:
   label: locale
   uppercase_label: Locale
   plural_label: Locales
+  page_title:
+    index: "]-Inf, 1]{{ count }} enabled locale|]1, Inf[{{ count }} enabled locales"
+  helper: "To enable or disable a locale, go to one of <a href={{ href }}>your channels</a> and add or remove a locale."
   grid:
+    columns:
+      code: Enabled locales
+    filters:
+      search_placeholder: Search an enabled locale
     no_search_result: Sorry, there is no result for your search.
 pim_enrich.entity.currency:
   plural_label: Currencies

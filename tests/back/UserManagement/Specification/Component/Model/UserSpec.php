@@ -119,4 +119,11 @@ class UserSpec extends ObjectBehavior
         $duplicated->getLoginCount()->shouldBe(0);
         $duplicated->getProductGridFilters()->shouldBe(['name', 'label']);
     }
+
+    function it_trims_fullname()
+    {
+        $this->setFirstName('Mary');
+        $this->setLastName('Smith');
+        $this->getFullName()->shouldEqual('Mary Smith');
+    }
 }

@@ -59,6 +59,7 @@ const successResponse = {
             'export/csv_product_export/24/archive/export_Demo_CSV_product_export_2021-01-05_10-33-34.zip',
         },
       },
+      generateZipArchive: false,
     },
   },
 };
@@ -115,6 +116,7 @@ test('It returns callback to reload job execution information', async () => {
   const [jobExecution, error, reloadJobExecution] = result.current;
   expect(jobExecution).toEqual(successResponse);
   expect(error).toBeNull();
+  expect(global.fetch).toHaveBeenCalled();
 
   const reloadedResponse = {
     ...successResponse,
@@ -150,9 +152,41 @@ test('It returns callback to reload job execution information', async () => {
   await act(async () => {
     await reloadJobExecution();
   });
+  expect(global.fetch).toHaveBeenCalled();
 
   const [newJobExecution, newError] = result.current;
 
   expect(newError).toBeNull();
   expect(newJobExecution).toEqual(reloadedResponse);
+});
+
+test('It does not fetch a job execution while the previous fetch is not finished', async () => {
+  global.fetch = jest.fn().mockImplementation(
+    async () =>
+      new Promise(resolve =>
+        setTimeout(
+          () =>
+            resolve({
+              ok: true,
+              json: async () => successResponse,
+            }),
+          1500
+        )
+      )
+  );
+
+  const {result, waitForNextUpdate} = renderHookWithProviders(() => useJobExecution('1'));
+  await act(async () => {
+    await waitForNextUpdate();
+  });
+
+  const [jobExecution, error, reloadJobExecution] = result.current;
+  expect(jobExecution).toBeNull();
+  expect(reloadJobExecution).not.toBeNull();
+  expect(error).toBeNull();
+
+  await act(async () => {
+    await reloadJobExecution();
+  });
+  expect(global.fetch).toHaveBeenCalledTimes(1);
 });

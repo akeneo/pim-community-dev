@@ -76,6 +76,34 @@ SQL;
         return $qb->getQuery()->execute();
     }
 
+    public function findPublicDatagridViewByLabel(string $label): ?DatagridView
+    {
+        $qb = $this->createQueryBuilder('v')
+            ->where('v.type = :type')
+            ->setParameter('type', DatagridView::TYPE_PUBLIC)
+            ->andWhere('v.label = :label')
+            ->setParameter('label', $label);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function findPrivateDatagridViewByLabel(string $label, UserInterface $user): ?DatagridView
+    {
+        if (null === $user->getId()) {
+            return null;
+        }
+
+        $qb = $this->createQueryBuilder('v')
+            ->where('v.type = :type')
+            ->setParameter('type', DatagridView::TYPE_PRIVATE)
+            ->andWhere('v.owner = :owner')
+            ->setParameter('owner', $user)
+            ->andWhere('v.label = :label')
+            ->setParameter('label', $label);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
     private function getConnection(): Connection
     {
         return $this->getEntityManager()->getConnection();

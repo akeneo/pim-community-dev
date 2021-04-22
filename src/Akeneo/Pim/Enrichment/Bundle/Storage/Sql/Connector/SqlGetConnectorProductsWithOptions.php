@@ -55,6 +55,22 @@ class SqlGetConnectorProductsWithOptions implements Query\GetConnectorProducts
         return $this->getConnectorProductsWithLabels([$connectorProduct])[0];
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fromProductIdentifiers(
+        array $productIdentifiers,
+        int $userId,
+        ?array $attributesToFilterOn,
+        ?string $channelToFilterOn,
+        ?array $localesToFilterOn
+    ): ConnectorProductList {
+        $connectorProductList = $this->getConnectorProducts->fromProductIdentifiers($productIdentifiers, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
+        $productsWithOptions = $this->getConnectorProductsWithLabels($connectorProductList->connectorProducts());
+
+        return new ConnectorProductList($connectorProductList->totalNumberOfProducts(), $productsWithOptions);
+    }
+
     private function getConnectorProductsWithLabels(array $connectorProducts): array
     {
         $optionCodes = $this->getOptionCodes($connectorProducts);

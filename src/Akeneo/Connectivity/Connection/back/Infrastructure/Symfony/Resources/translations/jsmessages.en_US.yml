@@ -249,7 +249,7 @@ akeneo_connectivity.connection:
             list:
                 search:
                     placeholder: Search in messages
-                    total: '{0} 0 results|{1} 1 result|[2,Inf] {{ total }} results'
+                    total: '{0} No results|{1} 1 result|[2,Inf] {{ total }} results'
                     level: Level
                     all: All
                     none: None
@@ -278,7 +278,7 @@ akeneo_connectivity.connection:
                 link: To understand how to solve this, please visit the API help center.
             search_filter:
                 placeholder: Search in error messages
-                result_count: '{0} No result |[1,Inf] {{ count }} results'
+                result_count: '{0} No results|{1} 1 result|[2,Inf] {{ total }} results'
             error_list:
                 date_time_column:
                     title: Day and time

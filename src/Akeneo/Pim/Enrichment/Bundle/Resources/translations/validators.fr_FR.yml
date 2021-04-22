@@ -106,3 +106,7 @@ pim_catalog:
 mass_edit:
   edit_common_attributes:
     invalid_values: Il y a des erreurs dans le formulaire d'attributs
+pim_datagrid:
+  column_configurator:
+    label:
+      unique_message: Le libellé doit être unique

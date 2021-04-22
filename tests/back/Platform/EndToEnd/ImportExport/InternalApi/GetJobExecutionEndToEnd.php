@@ -191,6 +191,7 @@ SQL;
             'meta' => [
                 'logExists' => false,
                 'archives' => [],
+                'generateZipArchive' => false,
                 'id' => (string)$jobExecutionId,
             ],
         ];
