@@ -5,7 +5,7 @@ import {HelperLink, PageHeader} from '../../common';
 import {UserButtons} from '../../shared/user';
 import styled from 'styled-components';
 import {Heading} from '../../common/components/EmptyState';
-import {useRoute} from '../../shared/router';
+import {useRouter} from '../../shared/router/use-router';
 
 const PageContent = styled.div`
     text-align: center;
@@ -17,7 +17,7 @@ const PageContent = styled.div`
 
 export const RedirectConnectionDashboardToConnectMenu = () => {
     const translate = useTranslate();
-    const url = `#${useRoute('akeneo_connectivity_connection_audit_index')}`;
+    const generateUrl = useRouter();
 
     const breadcrumb = (
         <Breadcrumb>
@@ -37,7 +37,7 @@ export const RedirectConnectionDashboardToConnectMenu = () => {
 
                 <Heading>{translate('akeneo_connectivity.connection.connect.redirect.title')}</Heading>
 
-                <HelperLink href={url}>
+                <HelperLink href={`#${generateUrl('akeneo_connectivity_connection_audit_index')}`}>
                     <Translate id='akeneo_connectivity.connection.connect.redirect.link' />
                 </HelperLink>
             </PageContent>
