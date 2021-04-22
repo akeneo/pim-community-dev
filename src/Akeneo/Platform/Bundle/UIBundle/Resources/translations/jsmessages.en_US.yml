@@ -321,6 +321,7 @@ pim_title:
     pim_enrich_job_tracker_show:           Process tracker | Show job
     pim_enrich_mass_edit_action:           Mass Edit
     pim_analytics_system_info_index:       System information
+    pim_settings_index:                    Settings
 
 pim_menu:
     tab:
@@ -375,3 +376,8 @@ pim_notification:
         export: Export
         quick_export: Quick Export
         mass_edit: Mass Edit
+
+pim_settings:
+  settings_menu: Settings menu
+  catalog_settings: Catalog settings
+  product_settings: Product settings

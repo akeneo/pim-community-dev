@@ -101,6 +101,7 @@ extensions:
         config:
             title: pim_menu.tab.settings
             iconModifier: iconSettings
+            to: pim_settings_index
 
     pim-menu-settings-column:
         module: pim/menu/column

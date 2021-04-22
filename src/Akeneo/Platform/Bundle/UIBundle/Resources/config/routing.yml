@@ -10,3 +10,6 @@ pim_localization_locale_index:
 measures:
     resource: '@PimUIBundle/Resources/config/routing/internal_api/measures.yml'
     prefix: /configuration/measures
+
+pim_settings_index:
+    path: /settings
