@@ -1,4 +1,4 @@
-import {MarketplaceSettings} from '@akeneo-pim-community/connectivity-connection';
+import {Marketplace} from '@akeneo-pim-community/connectivity-connection';
 import React from 'react';
 import {dependencies} from '../dependencies';
 import highlightMenu from '../menu/highlight-menu';
@@ -6,7 +6,7 @@ import ReactController from '../react/react-controller';
 
 class MarketplaceController extends ReactController {
   reactElementToMount() {
-    return <MarketplaceSettings dependencies={dependencies} />;
+    return <Marketplace dependencies={dependencies} />;
   }
 
   routeGuardToUnmount() {
