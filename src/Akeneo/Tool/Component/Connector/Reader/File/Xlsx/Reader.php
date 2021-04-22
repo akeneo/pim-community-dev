@@ -7,6 +7,7 @@ use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 use Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException;
 use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorFactory;
@@ -102,6 +103,13 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
 
         try {
             $item = $this->converter->convert($item, $this->getArrayConverterOptions());
+        } catch (BusinessArrayConversionException $exception) {
+            throw new InvalidItemException(
+                $exception->getMessageKey(),
+                new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('item_position'))),
+                $exception->getMessageParameters(),
+                $exception->getCode(),
+                $exception);
         } catch (DataArrayConversionException $e) {
             $this->skipItemFromConversionException($item, $e);
         }

@@ -1864,9 +1864,17 @@ class WebUser extends PimContext
     public function iPressTheButtonInThePopin($buttonLabel)
     {
         $buttonElement = $this->spin(function () use ($buttonLabel) {
+            $selectors = [
+                '.ui-dialog button:contains("%1$s")',
+                '.modal a:contains("%1$s")',
+                '.modal button:contains("%1$s")',
+                '.modal .AknButton:contains("%1$s")',
+                '#modal-root button:contains("%1$s")',
+            ];
+
             return $this
                 ->getCurrentPage()
-                ->find('css', sprintf('.ui-dialog button:contains("%1$s"), .modal a:contains("%1$s"), .modal button:contains("%1$s"), .modal .AknButton:contains("%1$s")', $buttonLabel));
+                ->find('css', sprintf(join(',', $selectors), $buttonLabel));
         }, sprintf('Cannot find "%s" button label in modal', $buttonLabel));
 
         $buttonElement->press();
