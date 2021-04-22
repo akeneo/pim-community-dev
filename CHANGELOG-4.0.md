@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.104 (2021-04-22)
+
 ## Bug fixes
 
 - PIM-9817: Ignore datagrid filter on reference entity record when the record does not exist
