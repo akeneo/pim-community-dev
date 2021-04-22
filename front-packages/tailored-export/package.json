@@ -31,11 +31,13 @@
   },
   "proxy": "http://localhost:8080",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lib:build": "tsc -p ./tsconfig.build.json"
+    "lib:build": "tsc -p ./lib.tsconfig.json",
+    "translation:build": "cp ../../public/js/translation/en_US.js ./public/js/translations.json",
+    "route:build": "cp ../../public/js/routes.js ./public/js/routes.json && sed -i 's/fos.Router.setData(//g' ./src/routes.json && sed -i 's/);//g' ./public/js/routes.json",
+    "packages:build": "yarn --cwd=../akeneo-design-system run lib:build && yarn --cwd=../shared run lib:build"
   },
   "eslintConfig": {
     "extends": [
