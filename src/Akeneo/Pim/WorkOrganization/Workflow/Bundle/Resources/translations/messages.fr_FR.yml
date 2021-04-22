@@ -12,22 +12,6 @@ pimee_workflow:
     status:
       label: État
       working_copy: Version de travail
-      in_progress: En cours
-      ready: En attente d’approbation
-      can_be_partially_reviewed: Peut être partiellement examinée
-      can_not_be_approved: Ne peut pas être validé
-      can_not_be_deleted: Ne peut pas être supprimé
-    status_message:
-      can_be_partially_reviewed: Vous ne pouvez examiner cette proposition que partiellement car certains changements s'appliquent sur des valeurs que vous ne pouvez pas modifier. Merci de contacter votre administrateur pour modifier vos droits.
-      can_not_be_approved: Vous ne pouvez pas examiner cette proposition car tous les changements s'appliquent sur des valeurs que vous ne pouvez pas modifier. Merci de contacter votre administrateur pour modifier vos droits.
-      can_not_be_deleted: Vous ne pouvez pas supprimer cette proposition car tous les changements s'appliquent sur des valeurs que vous ne pouvez pas modifier. Merci de contacter votre administrateur pour modifier vos droits.
-      in_progress: Cette proposition est actuellement en cours et n'a pas encore été soumise.
-    action:
-      approve: Tout approuver
-      refuse: Tout rejeter
-      remove: Supprimer
-      partial_approve: Approuver les modifications sur l'attribut %attribute% du produit %product%
-      partial_reject: Rejeter les modifications sur l'attribut %attribute% du produit %product%
     notification:
       partial_approve: '%owner% a accepté la(les) valeur(s) sur %attributes%, pour le produit %product%'
       partial_approve_number: '%owner% a accepté les valeurs de %attributes_count% attributs, pour le produit %product%'
@@ -52,9 +36,6 @@ pimee_workflow:
     individual_import: '%author.firstname% %author.lastname% a envoyé des propositions de relectures venant d''un import'
     generic_import: Vous avez des propositions de relectures venant d'un import
     original_value: Original
-    new_value: Nouveau
-    no_diff: La valeur "%value%" est identique entre la proposition et la copie de travail.
-    draft_in_progress: Un brouillon est en cours par %author% sur ce produit.
   published_product:
     index: Produits publiés
     title: Produit publié
