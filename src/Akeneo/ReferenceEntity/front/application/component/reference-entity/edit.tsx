@@ -15,6 +15,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 40px;
+  overflow-x: auto;
 `;
 
 interface StateProps {

@@ -38,6 +38,7 @@
 - PIM-9805: Fix the import of ref entity records with empty multiselect attributes
 - PIM-9804: Published products does not produce Pim events anymore
 - PIM-9813: Add missing translation key for unpublish bulk action
+- PIM-9819: Fix overflow on ref entities tabs
 
 ## Improvements
 
