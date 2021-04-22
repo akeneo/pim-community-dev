@@ -360,8 +360,8 @@ pim_menu:
         system: System navigation
         user: Users management navigation
         settings:
-            structure: Structure settings
-            catalog: Catalog settings
+          product: Product settings
+          catalog: Catalog settings
         product: Product navigation
         product_infos: Product infos
 
