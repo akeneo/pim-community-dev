@@ -29,7 +29,8 @@ import {
   useUserContext,
   PimView,
   useSecurity,
-  useRoute, useRouter,
+  useRoute,
+  useRouter,
 } from '@akeneo-pim-community/legacy-bridge';
 import {
   filterErrors,
@@ -268,8 +269,8 @@ const Edit = () => {
         buttons={buttons}
         breadcrumb={
           <Breadcrumb>
-            <Breadcrumb.Step
-              onClick={() => router.redirect(settingsHref)}>{translate('pim_menu.tab.settings')}
+            <Breadcrumb.Step onClick={() => router.redirect(settingsHref)}>
+              {translate('pim_menu.tab.settings')}
             </Breadcrumb.Step>
             <Breadcrumb.Step href={history.createHref({pathname: '/'})}>
               {translate('pim_menu.item.measurements')}

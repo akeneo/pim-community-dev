@@ -41,12 +41,19 @@ const SettingsIndex = () => {
   const canAccessGroups = isGranted('pim_enrich_group_index');
   const canAccessRules = isGranted('pimee_catalog_rule_rule_view_permissions');
 
-  const canAccessProductSettings = canAccessAttributeGroups || canAccessAttributes || canAccessFamilies ||
-    canAccessMeasurements || canAccessAssociationTypes || canAccessGroupTypes || canAccessGroups || canAccessRules;
+  const canAccessProductSettings =
+    canAccessAttributeGroups ||
+    canAccessAttributes ||
+    canAccessFamilies ||
+    canAccessMeasurements ||
+    canAccessAssociationTypes ||
+    canAccessGroupTypes ||
+    canAccessGroups ||
+    canAccessRules;
 
   const redirectToRoute = (route: string) => {
     router.redirect(router.generate(route));
-  }
+  };
 
   return (
     <>
@@ -65,39 +72,111 @@ const SettingsIndex = () => {
         <PageHeader.Title>{translate('pim_settings.settings_menu')}</PageHeader.Title>
       </PageHeader>
       <PageContent>
-        {canAccessCatalogSettings &&
+        {canAccessCatalogSettings && (
           <>
             <SectionTitle style={{marginBottom: '20px'}}>
               <SectionTitle.Title>{translate('pim_settings.catalog_settings')}</SectionTitle.Title>
             </SectionTitle>
             <IconCardGrid size={'big'}>
-              {canAccessCategories && <IconCard icon={<CategoryIcon/>} label={translate('pim_enrich.entity.category.plural_label')} onClick={() => redirectToRoute('pim_enrich_categorytree_index')}/>}
-              {canAccessChannels && <IconCard icon={<ShopIcon/>} label={translate('pim_menu.item.channel')} onClick={() => redirectToRoute('pim_enrich_channel_index')}/>}
-              {canAccessLocales && <IconCard icon={<LocaleIcon/>} label={translate('pim_enrich.entity.locale.plural_label')} onClick={() => redirectToRoute('pim_enrich_locale_index')}/>}
-              {canAccessCurrencies && <IconCard icon={<CreditsIcon/>} label={translate('pim_menu.item.currency')} onClick={() => redirectToRoute('pim_enrich_currency_index')}/>}
+              {canAccessCategories && (
+                <IconCard
+                  icon={<CategoryIcon />}
+                  label={translate('pim_enrich.entity.category.plural_label')}
+                  onClick={() => redirectToRoute('pim_enrich_categorytree_index')}
+                />
+              )}
+              {canAccessChannels && (
+                <IconCard
+                  icon={<ShopIcon />}
+                  label={translate('pim_menu.item.channel')}
+                  onClick={() => redirectToRoute('pim_enrich_channel_index')}
+                />
+              )}
+              {canAccessLocales && (
+                <IconCard
+                  icon={<LocaleIcon />}
+                  label={translate('pim_enrich.entity.locale.plural_label')}
+                  onClick={() => redirectToRoute('pim_enrich_locale_index')}
+                />
+              )}
+              {canAccessCurrencies && (
+                <IconCard
+                  icon={<CreditsIcon />}
+                  label={translate('pim_menu.item.currency')}
+                  onClick={() => redirectToRoute('pim_enrich_currency_index')}
+                />
+              )}
             </IconCardGrid>
           </>
-        }
-        {canAccessProductSettings &&
+        )}
+        {canAccessProductSettings && (
           <>
-              <SectionTitle style={{margin: '30px 0 20px 0'}}>
-                <SectionTitle.Title>{translate('pim_settings.product_settings')}</SectionTitle.Title>
-              </SectionTitle>
-              <IconCardGrid size={'big'}>
-                {canAccessAttributeGroups && <IconCard icon={<TagIcon/>} label={translate('pim_enrich.entity.attribute_group.plural_label')} onClick={() => redirectToRoute('pim_enrich_attributegroup_index')}/>}
-                {canAccessAttributes && <IconCard icon={<ValueIcon/>} label={translate('pim_enrich.entity.attribute.plural_label')} onClick={() => redirectToRoute('pim_enrich_attribute_index')}/>}
-                {canAccessFamilies && <IconCard icon={<AttributeFileIcon/>} label={translate('pim_menu.item.family')} onClick={() => redirectToRoute('pim_enrich_family_index')}/>}
-                {canAccessMeasurements && <IconCard icon={<MetricIcon/>} label={translate('pim_menu.item.measurements')} onClick={() => redirectToRoute('akeneo_measurements_settings_index')}/>}
-                {canAccessAssociationTypes && <IconCard icon={<AssociateIcon/>} label={translate('pim_menu.item.association_type')} onClick={() => redirectToRoute('pim_enrich_associationtype_index')}/>}
-                {canAccessGroupTypes && <IconCard icon={<ComponentIcon/>} label={translate('pim_menu.item.group_type')} onClick={() => redirectToRoute('pim_enrich_grouptype_index')}/>}
-                {canAccessGroups && <IconCard icon={<GroupsIcon/>} label={translate('pim_menu.item.group')} onClick={() => redirectToRoute('pim_enrich_group_index')}/>}
-                {canAccessRules && <IconCard icon={<AttributeLinkIcon/>} label={translate('pim_menu.item.rule')} onClick={() => redirectToRoute('pimee_catalog_rule_rule_index')}/>}
-              </IconCardGrid>
+            <SectionTitle style={{margin: '30px 0 20px 0'}}>
+              <SectionTitle.Title>{translate('pim_settings.product_settings')}</SectionTitle.Title>
+            </SectionTitle>
+            <IconCardGrid size={'big'}>
+              {canAccessAttributeGroups && (
+                <IconCard
+                  icon={<TagIcon />}
+                  label={translate('pim_enrich.entity.attribute_group.plural_label')}
+                  onClick={() => redirectToRoute('pim_enrich_attributegroup_index')}
+                />
+              )}
+              {canAccessAttributes && (
+                <IconCard
+                  icon={<ValueIcon />}
+                  label={translate('pim_enrich.entity.attribute.plural_label')}
+                  onClick={() => redirectToRoute('pim_enrich_attribute_index')}
+                />
+              )}
+              {canAccessFamilies && (
+                <IconCard
+                  icon={<AttributeFileIcon />}
+                  label={translate('pim_menu.item.family')}
+                  onClick={() => redirectToRoute('pim_enrich_family_index')}
+                />
+              )}
+              {canAccessMeasurements && (
+                <IconCard
+                  icon={<MetricIcon />}
+                  label={translate('pim_menu.item.measurements')}
+                  onClick={() => redirectToRoute('akeneo_measurements_settings_index')}
+                />
+              )}
+              {canAccessAssociationTypes && (
+                <IconCard
+                  icon={<AssociateIcon />}
+                  label={translate('pim_menu.item.association_type')}
+                  onClick={() => redirectToRoute('pim_enrich_associationtype_index')}
+                />
+              )}
+              {canAccessGroupTypes && (
+                <IconCard
+                  icon={<ComponentIcon />}
+                  label={translate('pim_menu.item.group_type')}
+                  onClick={() => redirectToRoute('pim_enrich_grouptype_index')}
+                />
+              )}
+              {canAccessGroups && (
+                <IconCard
+                  icon={<GroupsIcon />}
+                  label={translate('pim_menu.item.group')}
+                  onClick={() => redirectToRoute('pim_enrich_group_index')}
+                />
+              )}
+              {canAccessRules && (
+                <IconCard
+                  icon={<AttributeLinkIcon />}
+                  label={translate('pim_menu.item.rule')}
+                  onClick={() => redirectToRoute('pimee_catalog_rule_rule_index')}
+                />
+              )}
+            </IconCardGrid>
           </>
-        }
+        )}
       </PageContent>
     </>
   );
-}
+};
 
 export {SettingsIndex};
