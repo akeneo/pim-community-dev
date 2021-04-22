@@ -24,12 +24,16 @@ class DompdfBuilder implements PdfBuilderInterface
      */
     protected $dompdf;
 
+    private $publicDir;
+
     /**
      * @param string $rootDir
      */
-    public function __construct($rootDir)
+    public function __construct(string $rootDir, string $publicDir)
     {
         $this->rootDir = $rootDir;
+        $this->publicDir = $publicDir;
+
     }
 
     /**
@@ -54,6 +58,7 @@ class DompdfBuilder implements PdfBuilderInterface
         $options = new Options([
             'fontDir' => $this->rootDir . '/Akeneo/Pim/Enrichment/Bundle/Resources/fonts',
             'isRemoteEnabled' => true,
+            'chroot' => $this->publicDir
         ]);
         $this->dompdf = new Dompdf($options);
         $this->dompdf->loadHtml($html);
