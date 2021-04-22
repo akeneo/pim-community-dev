@@ -31,6 +31,10 @@ pim_title:
     akeneo_connectivity_connection_redirect_audit: Connection dashboard
 
 akeneo_connectivity.connection:
+    connect:
+        redirect:
+            title: This page have moved in the new Connect space 🔌
+            link: click here
     connections: Connections
     secondary_actions:
         title: Other actions

@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactController from '../react/react-controller';
-import {RedirectToConnectMenu} from "@akeneo-pim-community/connectivity-connection/src/shared/components/RedirectToConnectMenu";
 import {dependencies} from '../dependencies';
+import {RedirectToConnectMenu} from '@akeneo-pim-community/connectivity-connection';
 
 const mediator = require('oro/mediator');
+const router = require('pim/router');
 
 class AuditRedirectController extends ReactController {
   reactElementToMount() {
-    return <RedirectToConnectMenu dependencies={dependencies} />;
+    return <RedirectToConnectMenu dependencies={dependencies} url={`#${router.generate('akeneo_connectivity_connection_audit_index')}`}/>;
   }
 
   routeGuardToUnmount() {
