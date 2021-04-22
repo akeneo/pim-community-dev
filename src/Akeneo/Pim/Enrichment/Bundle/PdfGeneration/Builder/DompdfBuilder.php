@@ -24,16 +24,12 @@ class DompdfBuilder implements PdfBuilderInterface
      */
     protected $dompdf;
 
-    private $publicDir;
+    private string $publicDir;
 
-    /**
-     * @param string $rootDir
-     */
-    public function __construct(string $rootDir, string $publicDir)
+    public function __construct(string $rootDir, $publicDir)
     {
         $this->rootDir = $rootDir;
         $this->publicDir = $publicDir;
-
     }
 
     /**
