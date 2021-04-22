@@ -12,7 +12,6 @@ import {
 import {Operation} from 'akeneomeasure/model/operation';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
-import {useTranslate, useUserContext, useSecurity} from '@akeneo-pim-community/legacy-bridge';
 import {
   filterErrors,
   ValidationError,
@@ -20,6 +19,9 @@ import {
   TextField,
   Section,
   DeleteModal,
+  useTranslate,
+  useUserContext,
+  useSecurity,
 } from '@akeneo-pim-community/shared';
 import {Button, getColor, SectionTitle} from 'akeneo-design-system';
 

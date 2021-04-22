@@ -1,5 +1,5 @@
 import React from 'react';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {Form} from '../../../Resources/public/js/datagrid/quickexport/component/Form';
 import {Select} from '../../../Resources/public/js/datagrid/quickexport/component/Select';
 import {Option} from '../../../Resources/public/js/datagrid/quickexport/component/Option';

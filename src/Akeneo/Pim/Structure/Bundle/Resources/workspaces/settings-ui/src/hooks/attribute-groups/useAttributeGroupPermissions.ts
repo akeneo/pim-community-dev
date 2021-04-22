@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {useSecurity} from '@akeneo-pim-community/legacy-bridge';
+import {useSecurity} from '@akeneo-pim-community/shared';
 
 enum AttributeGroupPermissions {
   Index = 'pim_enrich_attributegroup_index',

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Modal, UsersIllustration} from 'akeneo-design-system';
-import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import {CreateUserForm} from '../components';
 import {UserCode, UserId} from '../models';
 

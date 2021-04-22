@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Button} from 'akeneo-design-system';
-import {useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {StopJobAction} from 'pimui/js/job/execution/StopJobAction';
 
 const ActionsContainer = styled.div`

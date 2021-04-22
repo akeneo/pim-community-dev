@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {default as JobExecutionStatusBadge} from 'pimimportexport/js/JobExecutionStatus';
 import {JobExecutionTracking} from './models';
 
