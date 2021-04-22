@@ -267,6 +267,9 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
+orbs:
+  pull-up: akeneo-orbs/pull-up@1.0
+
 workflows:
   version: 2
   pull_request:
