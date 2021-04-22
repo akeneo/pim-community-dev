@@ -95,7 +95,7 @@ type IconCardProps = {
   /**
    * The content to display
    */
-  content: string;
+  content?: string;
 
   /**
    * Define if the component will be displayed as disabled
@@ -117,7 +117,7 @@ const IconCard = React.forwardRef<HTMLDivElement, IconCardProps>(
         <IconContainer>{validIcon}</IconContainer>
         <ContentContainer>
           <Label>{label}</Label>
-          <Content>{content}</Content>
+          {content && <Content>{content}</Content>}
         </ContentContainer>
       </Container>
     );

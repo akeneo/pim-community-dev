@@ -64,6 +64,23 @@ import * as Icons from '../../icons';
     </Story>
 </Canvas>
 
+## With no content
+
+<Canvas>
+    <Story name="With no content">
+        {args => {
+            return (
+                <IconCardGrid>
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label'}
+                    />
+                </IconCardGrid>
+            );
+        }}
+    </Story>
+</Canvas>
+
 ## IconCard grid
 
 <Canvas>
