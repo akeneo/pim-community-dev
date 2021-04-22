@@ -53,9 +53,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
     const translate = useTranslate();
     const scrollContainer = useRef(null);
 
-    const [{filters}, setFilters] = useState<{
-        filters: EventSubscriptionLogFilters;
-    }>({filters: loadFiltersFromTheSession() || getDefaultFilters()});
+    const [filters, setFilters] = useState<EventSubscriptionLogFilters>(loadFiltersFromTheSession() || getDefaultFilters());
     const isSearchActive = !isSameAsDefaultFiltersValues(filters);
 
     const {logs, total, isLoading, isInitialized} = useInfiniteEventSubscriptionLogs(
@@ -73,7 +71,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
     }
 
     const handleFiltersChange = (filters: EventSubscriptionLogFilters) => {
-        setFilters(state => ({...state, filters, isDefaultFilters: false}));
+        setFilters(state => ({...state, ...filters}));
         saveFiltersIntoTheSession(filters);
     };
 
