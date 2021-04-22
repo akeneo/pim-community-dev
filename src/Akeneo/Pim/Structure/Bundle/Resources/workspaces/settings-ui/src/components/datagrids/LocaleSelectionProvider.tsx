@@ -11,6 +11,7 @@ const LocaleSelectionContext = createContext<LocaleSelectionState>({
   onSelectAllChange: () => {},
   selectedCount: 0,
   updateTotalLocalesCount: () => {},
+  totalLocalesCount: 0,
 });
 
 type LocaleSelectionProviderProps = {
@@ -37,6 +38,7 @@ const LocaleSelectionProvider: FC<LocaleSelectionProviderProps> = ({locales, chi
     onSelectAllChange,
     selectedCount,
     updateTotalLocalesCount,
+    totalLocalesCount,
   };
 
   return <LocaleSelectionContext.Provider value={state}>{children}</LocaleSelectionContext.Provider>;
