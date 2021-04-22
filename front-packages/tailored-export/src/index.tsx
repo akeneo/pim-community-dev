@@ -3,22 +3,15 @@ import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {Column} from './feature';
 import {pimTheme} from 'akeneo-design-system';
-import {DependenciesContext} from '@akeneo-pim-community/shared';
+import {MicroFrontendDependenciesProvider} from './MicroFrontendDependenciesProvider';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={pimTheme}>
-      <DependenciesContext.Provider
-        value={{
-          translate: (id: string): string => {
-            // @ts-ignore
-            return id;
-          },
-        }}
-      >
+    <MicroFrontendDependenciesProvider>
+      <ThemeProvider theme={pimTheme}>
         <Column jobCode="test" />
-      </DependenciesContext.Provider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </MicroFrontendDependenciesProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

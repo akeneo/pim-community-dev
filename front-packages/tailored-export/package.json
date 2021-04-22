@@ -34,9 +34,9 @@
     "start": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lib:build": "tsc -p ./lib.tsconfig.json",
-    "translation:build": "cp ../../public/js/translation/en_US.js ./public/js/translations.json",
-    "route:build": "cp ../../public/js/routes.js ./public/js/routes.json && sed -i 's/fos.Router.setData(//g' ./src/routes.json && sed -i 's/);//g' ./public/js/routes.json",
+    "lib:build": "tsc -p ./tsconfig.build.json",
+    "translation:build": "cp ../../public/js/translation/en_US.js ./src/translations.json",
+    "route:build": "cp ../../public/js/fos_js_routes.json ./src/routes.json",
     "packages:build": "yarn --cwd=../akeneo-design-system run lib:build && yarn --cwd=../shared run lib:build"
   },
   "eslintConfig": {
@@ -45,5 +45,17 @@
       "react-app/jest"
     ]
   },
-  "main": "lib/index.js"
+  "main": "lib/index.js",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
