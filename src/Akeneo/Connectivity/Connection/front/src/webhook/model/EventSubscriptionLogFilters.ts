@@ -5,10 +5,8 @@ import {EventSubscriptionLogLevel} from './EventSubscriptionLogLevel';
 export type EventSubscriptionLogFilters = {
     levels: EventSubscriptionLogLevel[];
     text: string;
-    dateTime: {
-        start?: number;
-        end?: number;
-    };
+    dateTimeStart?: number;
+    dateTimeEnd?: number;
 };
 
 export const getDefaultFilters: () => EventSubscriptionLogFilters = () => ({
@@ -19,23 +17,10 @@ export const getDefaultFilters: () => EventSubscriptionLogFilters = () => ({
         EventSubscriptionLogLevel.ERROR,
     ],
     text: '',
-    dateTime: {},
+    dateTimeStart: undefined,
+    dateTimeEnd: undefined,
 });
 
 export const isSameAsDefaultFiltersValues = (filters: EventSubscriptionLogFilters): boolean => {
     return isEqual(filters, getDefaultFilters());
 };
-
-export type FiltersConfig = {
-    dateTime: {
-        min: number;
-        max: number;
-    };
-};
-
-export const getFiltersConfig: () => FiltersConfig = () => ({
-    dateTime: {
-        min: 0,
-        max: DateTime.utc().toSeconds(),
-    },
-});

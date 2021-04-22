@@ -10,95 +10,105 @@ const TIME_INPUT_FORMAT = 'HH:mm';
 const DATE_INPUT_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const TIME_INPUT_PATTERN = /^\d{2}:\d{2}$/;
 
-const timestampToZonedInputDateString = (timeZone: string, timestamp?: Timestamp) =>
-    (timestamp && DateTime.fromSeconds(timestamp, {zone: timeZone}).toFormat(DATE_INPUT_FORMAT)) || '';
-
-const timestampToZonedInputTimeString = (timeZone: string, timestamp?: Timestamp) =>
-    (timestamp && DateTime.fromSeconds(timestamp, {zone: timeZone}).toFormat(TIME_INPUT_FORMAT)) || '';
-
 type Timestamp = number;
 type Props = {
     value?: Timestamp;
-    min?: Timestamp;
-    max?: Timestamp;
-    onChange: (value?: Timestamp) => void;
-    onError: (error: string) => void;
+    onChange: (value: Timestamp | null) => void;
+    defaultTime?: string;
 };
 
-export const DateTimeInput: FC<Props> = ({value, min, max, onChange, onError}) => {
+const dateTimeToDateInputString = (datetime: DateTime | null): string => {
+    return datetime?.toFormat(DATE_INPUT_FORMAT) || '';
+};
+
+const dateTimeToTimeInputString = (datetime: DateTime | null): string => {
+    return datetime?.toFormat(TIME_INPUT_FORMAT) || '';
+};
+
+const DATE_PLACEHOLDER = dateTimeToDateInputString(DateTime.now());
+const TIME_PLACEHOLDER = dateTimeToTimeInputString(DateTime.now());
+
+export const DateTimeInput: FC<Props> = ({value, defaultTime, onChange}) => {
     const {timeZone} = useUser();
 
-    const [values, setValues] = useState({
-        dateString: timestampToZonedInputDateString(timeZone, value),
-        timeString: timestampToZonedInputTimeString(timeZone, value),
+    const datetime = undefined === value ? null : DateTime.fromSeconds(value, {zone: timeZone});
+
+    const [values, setValues] = useState<{ date: string; time: string }>({
+        date: null !== datetime ? datetime.toFormat(DATE_INPUT_FORMAT) : '',
+        time: null !== datetime ? datetime.toFormat(TIME_INPUT_FORMAT) : '',
     });
+
     useEffect(() => {
-        setValues({
-            dateString: timestampToZonedInputDateString(timeZone, value),
-            timeString: timestampToZonedInputTimeString(timeZone, value),
-        });
-    }, [timeZone, value]);
-
-    const [errors, setErrors] = useState<{date?: boolean; time?: boolean}>({});
-
-    const handleChange = (dateString: string, timeString: string) => {
-        setErrors({});
-
-        if (dateString === '' && timeString === '') {
-            onChange(undefined);
+        if ('' === values.date || '' === values.time) {
+            if (undefined !== value) {
+                onChange(null);
+            }
             return;
         }
 
-        if (dateString === '' || false === DATE_INPUT_PATTERN.test(dateString)) {
-            setErrors(errors => ({...errors, date: true}));
+        const newZonedDateTime = DateTime.fromISO(`${values.date}T${values.time}`, {zone: timeZone});
+        const newTimestamp = newZonedDateTime.toSeconds();
+        if (value !== newTimestamp) {
+            onChange(newTimestamp);
+        }
+    }, [values]);
+
+    useEffect(() => {
+        if (value === undefined) {
+            setValues({
+                date: '',
+                time: '',
+            });
+        }
+    }, [value]);
+
+    const handleDateChange = (date: string) => {
+        if (!DATE_INPUT_PATTERN.test(date)) {
+            setValues(values => ({
+                ...values,
+                date: '',
+            }));
             return;
         }
 
-        // Use the current time if it's not defined.
-        if (timeString === '') {
-            timeString = timestampToZonedInputTimeString(timeZone, DateTime.utc().toSeconds());
-        }
-        if (false === TIME_INPUT_PATTERN.test(timeString)) {
-            setErrors(errors => ({...errors, time: true}));
+        setValues(values => ({
+            date,
+            time: ('' === values.time && undefined !== defaultTime) ? defaultTime : values.time,
+        }));
+    };
+
+    const handleTimeChange = (time: string) => {
+        if (!TIME_INPUT_PATTERN.test(time)) {
+            setValues(values => ({
+                ...values,
+                time: undefined !== defaultTime ? defaultTime : '',
+            }));
             return;
         }
 
-        const newZonedDateTime = DateTime.fromISO(`${dateString}T${timeString}`, {zone: timeZone});
-        if (!newZonedDateTime.isValid) {
-            const error = newZonedDateTime.invalidExplanation as string;
-            setErrors({date: true, time: true});
-            onError(error);
-            return;
-        }
-
-        onChange(newZonedDateTime.toSeconds());
+        setValues(values => ({
+            ...values,
+            time,
+        }));
     };
 
     return (
         <FlexContainer>
             <TextInput
                 type='date'
-                value={values.dateString}
-                min={timestampToZonedInputDateString(timeZone, min)}
-                max={timestampToZonedInputDateString(timeZone, max)}
-                placeholder={timestampToZonedInputDateString(timeZone, DateTime.utc().toSeconds())}
-                onChange={dateString => {
-                    setValues(values => ({...values, dateString}));
-                    handleChange(dateString, values.timeString);
-                }}
-                invalid={errors.date}
+                value={values.date}
+                placeholder={DATE_PLACEHOLDER}
+                onChange={handleDateChange}
                 aria-label='Date'
+                required
             />
             <TextInput
                 type='time'
-                value={values.timeString}
-                placeholder={timestampToZonedInputTimeString(timeZone, DateTime.utc().toSeconds())}
-                onChange={timeString => {
-                    setValues(values => ({...values, timeString}));
-                    handleChange(values.dateString, timeString);
-                }}
-                invalid={errors.time}
+                value={values.time}
+                placeholder={TIME_PLACEHOLDER}
+                onChange={handleTimeChange}
                 aria-label='Time'
+                required
             />
         </FlexContainer>
     );
