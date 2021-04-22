@@ -61,6 +61,7 @@ class IntrospectDatabaseCommand extends Command
             if (file_exists($filename)) {
                 $filesystem->remove($filename);
             }
+            $filesystem->touch($filename);
         } else {
             $filesystem = null;
             $filename = null;
