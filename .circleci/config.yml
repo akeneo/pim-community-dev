@@ -216,7 +216,7 @@ jobs:
                 command: APP_ENV=test make database
           - run:
               name: Database test
-              command: make test-database-structure
+              command: PIM_CONTEXT=test make test-database-structure
               
   test_back_phpunit:
       machine:
