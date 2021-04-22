@@ -54,6 +54,7 @@
 - PIM-9800: Fix event not sent issue when creating products or product models
 - PIM-9809: Fix missing filters in the product grid for few UI locales with Firefox
 - PIM-9807: Trigger warning when importing date as text attribute via XLSX files
+- PIM-9801: Fix jobs that are still stuck in STARTED and STOPPING and create a command to avoid this again
 
 ## New features
 

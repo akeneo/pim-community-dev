@@ -31,3 +31,9 @@ services:
             - '@akeneo_batch.job_repository'
         tags:
             - { name: console.command }
+
+    Akeneo\Tool\Bundle\BatchBundle\Command\MarkJobExecutionAsFailedWhenInterruptedCommand:
+        arguments:
+            - '@Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlMarkJobExecutionAsFailedWhenInterrupted'
+        tags:
+            - { name: console.command }
