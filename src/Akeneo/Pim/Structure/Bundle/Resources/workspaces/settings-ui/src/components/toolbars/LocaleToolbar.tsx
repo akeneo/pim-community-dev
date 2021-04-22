@@ -13,14 +13,14 @@ const LocaleToolbar: FC<LocaleToolbarProps> = ({getDictionaryTotalWords}) => {
   const translate = useTranslate();
   const [isToolbarOpen, openToolbar, closeToolbar] = useBooleanState();
   const [isModalOpen, openModal, closeModal] = useBooleanState();
-  const {selectionState, selectedCount, onSelectAllChange, selectedLocales} = useLocaleSelection();
+  const {selectionState, selectedCount, onSelectAllChange, selectedLocales, totalLocalesCount} = useLocaleSelection();
 
   const selectedSupportedLocales = selectedLocales.filter(
     (localeCode: string) => getDictionaryTotalWords(localeCode) !== undefined
   );
 
   return (
-    <Container isVisible={!!selectionState}>
+    <Container isVisible={totalLocalesCount > 0 && !!selectionState}>
       <Toolbar.SelectionContainer>
         <Checkbox checked={selectionState} onChange={value => onSelectAllChange(value as boolean)} />
         <Dropdown>

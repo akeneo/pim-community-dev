@@ -9,6 +9,7 @@ type LocaleSelectionState = {
   onSelectAllChange: (value: boolean) => void;
   selectedCount: number;
   updateTotalLocalesCount: (totalCount: number) => void;
+  totalLocalesCount: number;
 };
 
 const useLocaleSelection = (): LocaleSelectionState => {
