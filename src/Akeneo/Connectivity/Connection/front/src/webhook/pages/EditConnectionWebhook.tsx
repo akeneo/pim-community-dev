@@ -7,7 +7,6 @@ import {ApplyButton, PageContent, PageHeader} from '../../common/components';
 import {Loading} from '../../common/components/Loading';
 import {useMediaUrlGenerator} from '../../settings/use-media-url-generator';
 import {isErr} from '../../shared/fetch-result/result';
-import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {EditForm} from '../components/EditForm';
 import {EventSubscriptionHelper} from '../components/EventSubscriptionHelper';
@@ -17,7 +16,7 @@ import {Webhook} from '../model/Webhook';
 import {Breadcrumb, SectionTitle} from 'akeneo-design-system';
 import {useFetchConnection} from '../hooks/api/use-fetch-connection';
 import {UserButtons} from '../../shared/user';
-import {useRouter} from "../../shared/router/use-router";
+import {useRouter} from '../../shared/router/use-router';
 
 export type FormInput = {
     connectionCode: string;

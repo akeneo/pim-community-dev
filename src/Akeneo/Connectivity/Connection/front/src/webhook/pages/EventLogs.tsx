@@ -2,7 +2,6 @@ import {Breadcrumb} from 'akeneo-design-system';
 import React, {FC, useEffect} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import {Loading, PageContent, PageHeader} from '../../common';
-import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {UserButtons} from '../../shared/user';
 import {EventSubscriptionDisabled} from '../components/EventSubscriptionDisabled';
@@ -10,7 +9,7 @@ import {EventLogList} from '../components/EventLogList';
 import {useFetchConnection} from '../hooks/api/use-fetch-connection';
 import {useFetchEventSubscription} from '../hooks/api/use-fetch-event-subscription';
 import {DownloadLogsButton} from '../components/DownloadLogsButton';
-import {useRouter} from "../../shared/router/use-router";
+import {useRouter} from '../../shared/router/use-router';
 
 export const EventLogs: FC = () => {
     const {connectionCode} = useParams<{connectionCode: string}>();

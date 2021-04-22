@@ -52,7 +52,7 @@ akeneo_connectivity_connection_redirect_audit:
 
 ## Webhook
 akeneo_connectivity_connection_webhook_regenerate_secret:
-    path: '/connections/{code}/event-subscription/regenerate-secret'
+    path: '/connect/connection-settings/{code}/event-subscription/regenerate-secret'
     requirements:
         code: '[a-zA-Z0-9_]+'
 
@@ -67,6 +67,9 @@ akeneo_connectivity_connection_webhook_event_logs:
         code: '[a-zA-Z0-9_]+'
 
 ## Settings
+akeneo_connectivity_connection_settings_redirect:
+  path: '/connections'
+
 akeneo_connectivity_connection_settings_index:
     path: '/connect/connection-settings'
 

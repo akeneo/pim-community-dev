@@ -58,7 +58,8 @@ export const ConnectionCredentials: FC<Props> = ({code, label, credentials: cred
                     label={translate('akeneo_connectivity.connection.connection.secret')}
                     actions={
                         <RegenerateButton
-                            onClick={() => history.push(`/connect/connection-settings/${code}/regenerate-secret`)}/>
+                            onClick={() => history.push(`/connect/connection-settings/${code}/regenerate-secret`)}
+                        />
                     }
                 >
                     {credentials.secret}

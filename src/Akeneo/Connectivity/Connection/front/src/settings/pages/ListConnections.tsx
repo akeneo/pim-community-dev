@@ -19,7 +19,7 @@ import {
 } from '../wrong-credentials-combinations-context';
 import {Breadcrumb} from 'akeneo-design-system';
 import {UserButtons} from '../../shared/user';
-import {useRouter} from "../../shared/router/use-router";
+import {useRouter} from '../../shared/router/use-router';
 
 const MAXIMUM_NUMBER_OF_ALLOWED_CONNECTIONS = 50;
 

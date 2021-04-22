@@ -30,6 +30,7 @@ pim_title:
     akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
     akeneo_connectivity_connection_webhook_event_logs: Event logs
     akeneo_connectivity_connection_redirect_audit: Connection dashboard
+    akeneo_connectivity_connection_settings_redirect: Connections
 
 akeneo_connectivity.connection:
     connect:

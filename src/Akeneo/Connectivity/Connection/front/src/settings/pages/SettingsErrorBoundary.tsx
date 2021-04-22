@@ -3,10 +3,9 @@ import {PageContent, PageHeader, RuntimeError} from '../../common/components';
 import {Translate} from '../../shared/translate';
 import {Breadcrumb} from 'akeneo-design-system';
 import {UserButtons} from '../../shared/user';
-import {useRouter} from "../../shared/router/use-router";
+import {useRouter} from '../../shared/router/use-router';
 
 const SettingsBreadcrumb = () => {
-
     const generateUrl = useRouter();
 
     return (

@@ -9,7 +9,7 @@ import {NotDataSourceConnection} from '../components/NotDataSourceConnection';
 import {useConnection} from '../hooks/api/use-connection';
 import {Breadcrumb} from 'akeneo-design-system';
 import {UserButtons} from '../../shared/user';
-import {useRouter} from "../../shared/router/use-router";
+import {useRouter} from '../../shared/router/use-router';
 
 const ConnectionMonitoring: FC = memo(() => {
     const history = useHistory();

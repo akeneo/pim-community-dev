@@ -26,7 +26,7 @@ import {
 } from '../wrong-credentials-combinations-context';
 import {Breadcrumb} from 'akeneo-design-system';
 import {UserButtons} from '../../shared/user';
-import {useRouter} from "../../shared/router/use-router";
+import {useRouter} from '../../shared/router/use-router';
 
 export type FormValues = {
     label: string;
@@ -182,11 +182,12 @@ const HeaderContent = ({connection}: {connection: Connection}) => {
             buttons={[
                 <SecondaryActionsDropdownButton key={0}>
                     <DropdownLink
-                        onClick={() => history.push(`/connect/connection-settings/${connection.code}/delete`)}>
-                        <Translate id='pim_common.delete'/>
+                        onClick={() => history.push(`/connect/connection-settings/${connection.code}/delete`)}
+                    >
+                        <Translate id='pim_common.delete' />
                     </DropdownLink>
                 </SecondaryActionsDropdownButton>,
-                <SaveButton key={1}/>,
+                <SaveButton key={1} />,
             ]}
             userButtons={<UserButtons />}
             state={<FormState />}
