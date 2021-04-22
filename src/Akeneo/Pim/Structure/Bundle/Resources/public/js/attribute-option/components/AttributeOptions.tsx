@@ -18,7 +18,7 @@ import {
   updateAttributeOptionAction,
 } from '../reducers';
 import {useAttributeContext} from '../contexts';
-import {NotificationLevel, useNotify} from '@akeneo-pim-community/legacy-bridge';
+import {NotificationLevel, useNotify} from '@akeneo-pim-community/shared';
 import EmptyAttributeOptionsList from './EmptyAttributeOptionsList';
 import useAttributeOptions from '../hooks/useAttributeOptions';
 

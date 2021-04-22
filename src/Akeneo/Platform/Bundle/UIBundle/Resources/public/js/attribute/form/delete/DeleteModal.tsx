@@ -1,8 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {Field, getColor, Helper, Link, TextInput} from 'akeneo-design-system';
-import {NotificationLevel, useNotify, useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
-import {useIsMounted, DeleteModal as BaseDeleteModal} from '@akeneo-pim-community/shared';
+import {
+  useIsMounted,
+  DeleteModal as BaseDeleteModal,
+  NotificationLevel,
+  useNotify,
+  useTranslate,
+  useRoute,
+} from '@akeneo-pim-community/shared';
 
 const SpacedHelper = styled(Helper)`
   margin: 10px 0 20px;

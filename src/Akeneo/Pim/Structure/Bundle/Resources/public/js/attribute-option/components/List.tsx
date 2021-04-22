@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {AttributeOption} from '../model';
 import {useAttributeContext} from '../contexts';
 import {useAttributeOptionsListState} from '../hooks/useAttributeOptionsListState';

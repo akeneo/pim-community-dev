@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 interface NewProps {
   createAttributeOption: (optionCode: string) => void;

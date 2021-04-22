@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import baseFetcher from '../fetchers/baseFetcher';
-import {useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {useRoute} from '@akeneo-pim-community/shared';
 import {Locale} from '../model';
 
 const useLocales = () => {
