@@ -1,14 +1,11 @@
-import {ClientErrorIllustration, Link, Breadcrumb} from 'akeneo-design-system';
-import React, {FC} from 'react';
-import {useTranslate} from '../../shared/translate';
-import {PageHeader} from '../../common';
+import {ClientErrorIllustration, Breadcrumb} from 'akeneo-design-system';
+import React from 'react';
+import {Translate, useTranslate} from '../../shared/translate';
+import {HelperLink, PageHeader} from '../../common';
 import {UserButtons} from '../../shared/user';
 import styled from 'styled-components';
 import {Heading} from '../../common/components/EmptyState';
-
-type Props = {
-    url: string;
-};
+import {useRoute} from '../../shared/router';
 
 const PageContent = styled.div`
     text-align: center;
@@ -18,8 +15,10 @@ const PageContent = styled.div`
     }
 `;
 
-export const RedirectToConnectMenu: FC<Props> = ({url}) => {
+export const RedirectConnectionDashboardToConnectMenu = () => {
     const translate = useTranslate();
+    const url = `#${useRoute('akeneo_connectivity_connection_audit_index')}`;
+
     const breadcrumb = (
         <Breadcrumb>
             <Breadcrumb.Step>{translate('pim_menu.tab.activity')}</Breadcrumb.Step>
@@ -38,7 +37,9 @@ export const RedirectToConnectMenu: FC<Props> = ({url}) => {
 
                 <Heading>{translate('akeneo_connectivity.connection.connect.redirect.title')}</Heading>
 
-                <Link href={url}>{translate('akeneo_connectivity.connection.connect.redirect.click_here')}</Link>
+                <HelperLink href={url}>
+                    <Translate id='akeneo_connectivity.connection.connect.redirect.link' />
+                </HelperLink>
             </PageContent>
         </>
     );

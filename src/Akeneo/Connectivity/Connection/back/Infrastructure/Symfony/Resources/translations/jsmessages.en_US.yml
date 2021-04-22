@@ -34,7 +34,7 @@ akeneo_connectivity.connection:
     connect:
         redirect:
             title: This page have moved in the new Connect space 🔌
-            link: click here
+            link: To go there, click here
     connections: Connections
     secondary_actions:
         title: Other actions
