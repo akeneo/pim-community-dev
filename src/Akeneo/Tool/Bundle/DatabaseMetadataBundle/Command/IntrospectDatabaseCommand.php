@@ -63,6 +63,7 @@ class IntrospectDatabaseCommand extends Command
             }
         } else {
             $filesystem = null;
+            $filename = null;
         }
         
         $jobs = $input->getOption('jobs') === true ?: false;
