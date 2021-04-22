@@ -497,7 +497,7 @@ jobs:
                     PIM_CONTEXT=deployment make deploy
           - run:
                 name: Upgrade
-                command: PIM_CONTEXT=deployment IMAGE_TAG=$CIRCLE_SHA1 make deploy-serenity
+                command: UPGRADE_STEP_2=true PIM_CONTEXT=deployment IMAGE_TAG=$CIRCLE_SHA1 make deploy-serenity
           - run:
                 name: Production tests on upgraded env
                 command: PIM_CONTEXT=deployment make test-prod

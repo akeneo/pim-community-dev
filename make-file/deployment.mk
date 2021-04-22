@@ -33,6 +33,7 @@ MAX_DNS_TEST_TIMEOUT ?= 300
 ONBOARDER_PIM_GEN_FILE ?=
 WITH_SUPPLIERS ?= false
 USE_ONBOARDER_CATALOG ?= false
+UPGRADE_STEP_2 ?= false
 
 
 ifeq ($(CI),true)
@@ -79,11 +80,9 @@ $(INSTANCE_DIR):
 
 .PHONY: terraform-init
 terraform-init: $(INSTANCE_DIR)
-ifeq ($(INSTANCE_NAME_PREFIX),pimup)
-    ifeq ($(INSTANCE_NAME),pimup-$(IMAGE_TAG_SHORTED))
+ifeq ($(UPGRADE_STEP_2),true)
 		@echo "We are in the second step of update"
 		cd $(INSTANCE_DIR) && STEP='PRE_INIT' INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/automation/upgrade.sh
-    endif
 endif
 	cd $(INSTANCE_DIR) && cat main.tf.json
 	cd $(INSTANCE_DIR) && terraform init $(TF_INPUT_FALSE) -upgrade
@@ -94,11 +93,9 @@ terraform-plan: terraform-init
 
 .PHONY: terraform-apply
 terraform-apply:
-ifeq ($(INSTANCE_NAME_PREFIX),pimup)
-    ifeq ($(INSTANCE_NAME),pimup-$(IMAGE_TAG_SHORTED))
+ifeq ($(UPGRADE_STEP_2),true)
 		@echo "We are in the second step of update"
 		cd $(INSTANCE_DIR) && STEP='PRE_APPLY' INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/automation/upgrade.sh
-    endif
 endif
 	cd $(INSTANCE_DIR) && terraform plan '-out=upgrades.tfplan' $(TF_INPUT_FALSE) -compact-warnings
 	cd $(INSTANCE_DIR) && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) upgrades.tfplan

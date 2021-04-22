@@ -33,7 +33,7 @@ terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=module.pim.google_s
 
 echo "2 - removing deployment and terraform resources"
 export KUBECONFIG=.kubeconfig
-helm3 list -n "${PFID}" && helm3 uninstall -n ${PFID} || true
+helm3 list -n "${PFID}" && helm3 uninstall ${PFID} -n ${PFID} || true
 (kubectl get ns ${PFID} | grep "$PFID") && kubectl delete ns ${PFID} || true
 
 LIST_PV_NAME=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .metadata.name] | unique | .[]')
@@ -48,7 +48,7 @@ if [ -n "${LIST_PV_NAME}" ]; then
   done
 fi
 
-helm3 list -n "${PFID}" && helm3 uninstall -n ${PFID} || true
+helm3 list -n "${PFID}" && helm3 uninstall ${PFID} -n ${PFID} || true
 (kubectl get ns ${PFID} | grep "$PFID") && kubectl delete ns ${PFID} || true
 
 IS_SOME_DISK_STILL_ATTACH="false"
