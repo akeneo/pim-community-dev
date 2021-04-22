@@ -29,7 +29,7 @@ akeneo_connectivity_connection_events_api_debug_rest:
 
 # Frontend
 
-## Connect
+## Marketplace
 akeneo_connectivity_connection_connect_marketplace:
   path: '/connect/marketplace'
 

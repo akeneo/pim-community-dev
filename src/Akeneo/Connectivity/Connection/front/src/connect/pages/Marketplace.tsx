@@ -55,15 +55,15 @@ export const Marketplace: FC = () => {
     const translate = useTranslate();
     const breadcrumb = (
         <Breadcrumb>
-            <Breadcrumb.Step>{translate('pim_menu.connect.title')}</Breadcrumb.Step>
-            <Breadcrumb.Step>{translate('pim_menu.connect.marketplace')}</Breadcrumb.Step>
+            <Breadcrumb.Step>{translate('pim_menu.tab.connect')}</Breadcrumb.Step>
+            <Breadcrumb.Step>{translate('pim_menu.item.marketplace')}</Breadcrumb.Step>
         </Breadcrumb>
     );
 
     return (
         <>
             <PageHeader breadcrumb={breadcrumb} userButtons={<UserButtons />}>
-                {translate('pim_menu.connect.marketplace')}
+                {translate('pim_menu.item.marketplace')}
             </PageHeader>
 
             <PageContent>
