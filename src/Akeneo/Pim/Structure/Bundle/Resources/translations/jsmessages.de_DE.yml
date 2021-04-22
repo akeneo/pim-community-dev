@@ -115,6 +115,9 @@ pim_enrich.entity.association_type:
     delete:
       confirm: Möchten Sie diesen Verbindungstyp wirklich löschen?
   hint: <a href="{{link}}" target="_blank">In diesem Artikel</a>findest du alles, was du brauchst, um deinen eigenen Verbindungstyp zu erstellen.
+  no_association_types:
+    title: Du hast keine Verbindungstypen
+    hint: Erstelle deinen ersten
 pim_enrich.entity.group_type:
   label: Gruppentyp
   flash:
