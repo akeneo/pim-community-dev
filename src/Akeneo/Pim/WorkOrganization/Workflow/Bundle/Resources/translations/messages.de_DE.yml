@@ -12,22 +12,6 @@ pimee_workflow:
     status:
       label: Status
       working_copy: Arbeitskopie
-      in_progress: In Bearbeitung
-      ready: Auf Genehmigung wartend
-      can_be_partially_reviewed: Kann teilweise überprüft werden
-      can_not_be_approved: Kann nicht überprüft werden
-      can_not_be_deleted: Kann nicht gelöscht werden
-    status_message:
-      can_be_partially_reviewed: Sie können diesen Vorschlag nur teilweise überprüfen, da einige Änderungen Werte betreffen, die Sie nicht bearbeiten können. Bitte wenden Sie sich an Ihren Administrator um Ihre Rechte anzupassen.
-      can_not_be_approved: Sie können nicht diesen Vorschlag überprüfen, weil alle Änderungen Werte betreffen, die Sie nicht bearbeiten können. Bitte kontaktieren Sie Ihren Administrator, um Ihre Rechte zu ändern.
-      can_not_be_deleted: Dieser Vorschlag kann nicht gelöscht werden, da alle Änderungen Werte betreffen, die Sie nicht bearbeiten können. Bitte kontaktieren Sie Ihren Administrator, um Ihre Rechte zu ändern.
-      in_progress: Dieser Vorschlag ist in Bearbeitung und ist noch nicht übermittelt worden.
-    action:
-      approve: Alle genehmigen
-      refuse: Alle ablehnen
-      remove: Entfernen
-      partial_approve: Änderungen des Attributs %attribute% von Produkt %product% genehmigen
-      partial_reject: Ablehnen der Änderung vom Attribut %attribute% am Produkt-%product%
     notification:
       partial_approve: '%owner% hat Wert(e) für %attributes% für das Produkt %product% akzeptiert'
       partial_approve_number: '%owner% hat Werte für %attributes_count% Attribute, für das Produkt %product% akzeptiert'
@@ -52,9 +36,6 @@ pimee_workflow:
     individual_import: '%author.firstname% %author.lastname% hat Vorschläge aus Job-Import zur Überprüfung geschickt'
     generic_import: Sie haben Vorschläge aus Job-Import zum Prüfen
     original_value: Original
-    new_value: Neu
-    no_diff: Der Wert "%value%" ist im Vorschlag und der Arbeitskopie identisch.
-    draft_in_progress: Für dieses Produkt existiert ein Entwurf von %author%.
   published_product:
     index: Veröffentlichte Produkte
     title: Veröffentlichtes Produkt

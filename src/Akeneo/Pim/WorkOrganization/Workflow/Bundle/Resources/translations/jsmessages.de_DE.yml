@@ -11,6 +11,31 @@ pim_datagrid:
   no_results:
     proposal: Es gibt keinen Vorschlag zu prüfen. Versuchen Sie, Ihre Suchkriterien zu ändern.
     product_draft: Es gibt keinen Produktentwurf zum überprüfen. Versuchen Sie, Ihre Suchkriterien zu ändern.
+  workflow:
+    partial_approve: Änderungen am Attribut {{ attribute }} des Produkts {{ product }} genehmigen
+    partial_reject: Änderungen am Attribut {{ attribute }} des Produkts {{ product }} ablehnen
+    by: von
+    at: um
+    status:
+      in_progress: In Bearbeitung
+      ready: Auf Genehmigung wartend
+      can_be_partially_reviewed: Kann teilweise überprüft werden
+      can_not_be_approved: Kann nicht überprüft werden
+      can_not_be_deleted: Kann nicht gelöscht werden
+    status_message:
+      ready: Auf Genehmigung wartend
+      in_progress: Dieser Vorschlag ist in Bearbeitung und ist noch nicht übermittelt worden.
+      can_be_partially_reviewed: Sie können diesen Vorschlag nur teilweise überprüfen, da einige Änderungen Werte betreffen, die Sie nicht bearbeiten können. Bitte wenden Sie sich an Ihren Administrator um Ihre Rechte anzupassen.
+      can_not_be_approved: Sie können nicht diesen Vorschlag überprüfen, weil alle Änderungen Werte betreffen, die Sie nicht bearbeiten können. Bitte kontaktieren Sie Ihren Administrator, um Ihre Rechte zu ändern.
+      can_not_be_deleted: Dieser Vorschlag kann nicht gelöscht werden, da alle Änderungen Werte betreffen, die Sie nicht bearbeiten können. Bitte kontaktieren Sie Ihren Administrator, um Ihre Rechte zu ändern.
+    draft_in_progress: Ein Entwurf wird von {{ author }} für dieses Produkt erstellt.
+    no_diff: Der Wert "{{ value }}" ist derselbe zwischen dem Vorschlag und der Arbeitskopie.
+    new_value: 'Neuer Wert:'
+    old_value: 'Alter Wert:'
+    actions:
+      approve_all: Alle genehmigen
+      refuse_all: Alle ablehnen
+    characters_left: ']-Inf, 1]{{ count }} Zeichen übrig|]1, Inf[{{ count }} Zeichen übrig'
 pimee_datagrid:
   cells:
     expand:
@@ -29,23 +54,26 @@ pimee_workflow:
     mass_action_group:
       review:
         label: Massenbearbeitung
-    partial_accept:
-      modal.title: Teilinformationen genehmigen
-      modal.label: Kommentar hinterlassen (optional)
-      modal.error: Es ist ein Fehler aufgetreten, der Vorschlag wurde nicht teilweise genehmigt
-      modal.success: Der Vorschlag wurde erfolgreich teilweise überprüft
+    approve:
+      title: Vorschlag freigeben
+      success: Der Vorschlag wurde erfolgreich freigegeben.
+      error: "Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden: {{ error }}"
+    reject:
+      title: Vorschlag ablehnen
+      success: Der Vorschlag wurde abgelehnt
+      error: "Der Vorschlag kann aufgrund des folgenden Fehlers nicht abgelehnt werden: {{ error }}"
+    remove:
+      title: Vorschlag entfernen
+      success: Der Vorschlag wurde entfernt
+      error: "Der Vorschlag kann aufgrund des folgenden Fehlers nicht entfernt werden: {{ error }}"
     partial_approve:
-      modal:
-        title: Änderungen teilweise genehmigen
-        label: Kommentar hinterlassen (optional)
-        error: Es ist ein Fehler aufgetreten, der Vorschlag wurde nicht teilweise genehmigt
-        success: Die Änderungen wurden erfolgreich genehmigt
+      title: Teilinformationen genehmigen
+      success: Der Vorschlag wurde erfolgreich teilweise überprüft
+      error: "Der Vorschlag kann aufgrund des folgenden Fehlers nicht teilweise angenommen werden: {{ error }}"
     partial_reject:
-      modal:
-        title: Änderungen teilweise ablehnen
-        label: Kommentar hinterlassen (optional)
-        error: Es ist ein Fehler aufgetreten, der Vorschlag wurde nicht teilweise abgelehnt
-        success: Die Änderungen wurden erfolgreich abgelehnt
+      title: Änderungen teilweise ablehnen
+      success: Die Änderungen wurden erfolgreich abgelehnt
+      error: "Der Vorschlag kann aufgrund des folgenden Fehlers nicht teilweise abgelehnt werden: {{ error }}"
 batch_jobs:
   csv_published_product_export:
     label: Export veröffentlichter Produkte als CSV
@@ -85,6 +113,8 @@ batch_jobs:
     perform.label: Kontextbezogener Schnellexport veröffentlichter Produkte als XLSX
   publish_product:
     perform.label: Produkte veröffentlichen
+  unpublish_product:
+    perform.label: Produktveröffentlichungen entziehen
   default_steps:
     clean_attribute:
       clean_draft: Bereinigungsvorschläge
@@ -163,13 +193,6 @@ pimee_enrich.entity.published_product:
       label: Veröffentlichung entziehen
 pimee_enrich.entity.product_draft:
   flash:
-    approve:
-      success: Der Vorschlag wurde erfolgreich freigegeben.
-      fail: "Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden: {{ error }}"
-    reject:
-      success: Der Vorschlag wurde abgelehnt.
-    remove:
-      success: Der Vorschlag wurde entfernt.
     update:
       success: Produktentwurf wurde erfolgreich gespeichert
       fail: Produktentwurf konnte nicht aktualisiert werden
@@ -179,14 +202,10 @@ pimee_enrich.entity.product_draft:
       skip: Produktentwurf wurde nicht zur Genehmigung gesendet, da kein Wert bearbeitet wurde
   module:
     proposal:
-      accept: Vorschlag akzeptieren
-      accept_selected: Ausgewählte Vorschläge akzeptieren
-      reject: Vorschlag ablehnen
-      reject_selected: Ausgewählte Vorschläge ablehnen
-      remove: Vorschlag entfernen
-      comment_title: Kommentar zu Ihrem Vorschlag (optional - max. 255 Zeichen)
       comment_chars: Zeichen.
       confirm: Senden
+      accept_selected: Ausgewählte Vorschläge akzeptieren
+      reject_selected: Ausgewählte Vorschläge ablehnen
     edit:
       discard_changes: Ungespeicherte Änderungen gehen verloren. Sind Sie sicher, dass Sie den Produktentwurf mit den ungespeicherten Anpassungen zur Freigabe senden möchten?
       discard_changes_title: Sind Sie sicher, dass Sie diesen Produktentwurf absenden möchten?

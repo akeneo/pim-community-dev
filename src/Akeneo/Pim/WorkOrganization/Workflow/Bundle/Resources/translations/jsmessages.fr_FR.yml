@@ -11,6 +11,31 @@ pim_datagrid:
   no_results:
     proposal: Il n'y a aucune proposition à réviser. Tentez de modifier vos critères de recherche.
     product_draft: Il n'y a aucun brouillon à réviser. Tentez de modifier vos critères de recherche.
+  workflow:
+    partial_approve: Approuver les modifications sur l'attribut {{ attribute }} du produit {{ product }}
+    partial_reject: Rejeter les modifications sur l'attribut {{ attribute }} du produit {{ product }}
+    by: par
+    at: le
+    status:
+      in_progress: En cours
+      ready: En attente d’approbation
+      can_be_partially_reviewed: Peut être partiellement validée
+      can_not_be_approved: Ne peut pas être validé
+      can_not_be_deleted: Ne peut pas être supprimé
+    status_message:
+      ready: En attente d’approbation
+      in_progress: Cette proposition est actuellement en cours et n'a pas encore été soumise.
+      can_be_partially_reviewed: Vous ne pouvez examiner cette proposition que partiellement car certains changements s'appliquent sur des valeurs que vous ne pouvez pas modifier. Merci de contacter votre administrateur pour modifier vos droits.
+      can_not_be_approved: Vous ne pouvez pas examiner cette proposition car tous les changements s'appliquent sur des valeurs que vous ne pouvez pas modifier. Merci de contacter votre administrateur pour modifier vos droits.
+      can_not_be_deleted: Vous ne pouvez pas supprimer cette proposition car tous les changements s'appliquent sur des valeurs que vous ne pouvez pas modifier. Merci de contacter votre administrateur pour modifier vos droits.
+    draft_in_progress: Un brouillon est en cours par {{ author }} sur ce produit.
+    no_diff: La valeur "{{ value }}" est identique entre la proposition et la copie de travail.
+    new_value: 'Nouvelle valeur :'
+    old_value: 'Ancienne valeur :'
+    actions:
+      approve_all: Tout approuver
+      refuse_all: Tout rejeter
+    characters_left: ']-Inf, 1]{{ count }} caractère restant|]1, +Inf[{{ count }} caractères restants'
 pimee_datagrid:
   cells:
     expand:
@@ -29,23 +54,26 @@ pimee_workflow:
     mass_action_group:
       review:
         label: Action de masse
-    partial_accept:
-      modal.title: Approuver des informations partielles
-      modal.label: Laisser un commentaire (facultatif)
-      modal.error: Une erreur s'est produite, la proposition n'a pas été partiellement approuvée
-      modal.success: La proposition partielle a été validée avec succès
+    approve:
+      title: Approuver la proposition
+      success: La proposition a été soumise avec succès.
+      error: "La proposition ne peut être soumise en raison de l'erreur suivante: {{ error }}"
+    reject:
+      title: Rejeter la proposition
+      success: La proposition a été rejetée
+      error: "La proposition ne peut être rejetée en raison de l'erreur suivante: {{ error }}"
+    remove:
+      title: Supprimer la proposition
+      success: La proposition a été supprimée
+      error: "La proposition ne peut être supprimée en raison de l'erreur suivante: {{ error }}"
     partial_approve:
-      modal:
-        title: Accepter partiellement les modifications
-        label: Laisser un commentaire (facultatif)
-        error: Une erreur s'est produite, la proposition n'a pas été partiellement approuvée
-        success: Les modifications ont été approuvées avec succès
+      title: Approuver des informations partielles
+      success: La proposition partielle a été validée avec succès
+      error: "La proposition ne peut être partiellement approuvée en raison de l'erreur suivante: {{ error }}"
     partial_reject:
-      modal:
-        title: Rejeter partiellement les modifications
-        label: Laisser un commentaire (facultatif)
-        error: Une erreur s'est produite, la proposition n'a pas été partiellement rejetée
-        success: Les changements ont été rejetés avec succès
+      title: Rejeter partiellement les modifications
+      success: Les changements ont été rejetés avec succès
+      error: "La proposition ne peut être partiellement rejetée en raison de l'erreur suivante: {{ error }}"
 batch_jobs:
   csv_published_product_export:
     label: Export CSV des produits publiés
@@ -85,6 +113,8 @@ batch_jobs:
     perform.label: Export rapide CSV des produits publiés dans le contexte de grille
   publish_product:
     perform.label: Publier les produits
+  unpublish_product:
+    perform.label: Dépublier des produits
   default_steps:
     clean_attribute:
       clean_draft: Traitement des propositions
@@ -163,13 +193,6 @@ pimee_enrich.entity.published_product:
       label: Dépublier
 pimee_enrich.entity.product_draft:
   flash:
-    approve:
-      success: La proposition a été soumise avec succès.
-      fail: "La proposition ne peut être soumise en raison de l'erreur suivante: {{ error }}"
-    reject:
-      success: La proposition a été rejetée.
-    remove:
-      success: La proposition a été supprimée.
     update:
       success: Le brouillon a bien été enregistré
       fail: Le brouillon du produit n'a pas pu être mis à jour
@@ -179,14 +202,10 @@ pimee_enrich.entity.product_draft:
       skip: Le brouillon n'a pas été envoyé pour approbation car aucune valeur n'a été modifiée
   module:
     proposal:
-      accept: Accepter la proposition
-      accept_selected: Accepter le(s) proposition(s) sélectionnée(s)
-      reject: Rejeter la proposition
-      reject_selected: Rejeter le(s) proposition(s) sélectionnée(s)
-      remove: Supprimer la proposition
-      comment_title: Commenter votre proposition (facultatif - 255 caractères max.)
       comment_chars: caractères.
       confirm: Envoyer
+      accept_selected: Accepter le(s) proposition(s) sélectionnée(s)
+      reject_selected: Rejeter le(s) proposition(s) sélectionnée(s)
     edit:
       discard_changes: Les modifications non enregistrées seront perdues. Êtes-vous sûr de que vouloir envoyer votre brouillon pour approbation sans ces modifications ?
       discard_changes_title: Êtes-vous sûr de vouloir envoyer ce brouillon ?
