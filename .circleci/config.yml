@@ -554,6 +554,7 @@ jobs:
                     echo export ENV_NAME=preprod >> $BASH_ENV
                     echo export INSTANCE_NAME=pimci-helpdesk >> $BASH_ENV
                     echo export PIM_CONTEXT=deployment >> $BASH_ENV
+                    echo export ACTIVATE_MONITORING=true >> $BASH_ENV
             - run:
                 name: Generate config files and deploy
                 command: |
@@ -581,7 +582,7 @@ jobs:
           - run:
                 name: Latest master version for PMs
                 command: |
-                    INSTANCE_NAME=pimci-pm PIM_CONTEXT=deployment make deploy-serenity
+                    ACTIVATE_MONITORING=true INSTANCE_NAME=pimci-pm PIM_CONTEXT=deployment make deploy-serenity
 
   deploy_pr_environment:
       environment:
