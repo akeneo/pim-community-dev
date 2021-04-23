@@ -213,10 +213,10 @@ jobs:
                     vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
           - run:
                 name: Install database
-                command: APP_ENV=test make database
+                command: APP_ENV=dev make database
           - run:
               name: Database test
-              command: APP_ENV=test PIM_CONTEXT=test make test-database-structure
+              command: APP_ENV=dev PIM_CONTEXT=test make test-database-structure
 
   test_back_phpunit:
       machine:
