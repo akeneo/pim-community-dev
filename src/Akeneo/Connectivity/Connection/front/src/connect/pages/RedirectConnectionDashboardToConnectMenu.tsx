@@ -14,8 +14,9 @@ const PageContent = styled.div`
     }
 `;
 
-const RedirectLink = styled(HelperLink)`
-  font-size: 23px;
+const Caption = styled.p`
+    font-size: 23px;
+    line-height: 1.2em;
 `;
 
 const Heading = styled.h1`
@@ -50,10 +51,11 @@ export const RedirectConnectionDashboardToConnectMenu = () => {
                 <Heading>
                     {translate('akeneo_connectivity.connection.connect.redirect.title')}
                 </Heading>
-
-                <RedirectLink href={`#${generateUrl('akeneo_connectivity_connection_audit_index')}`}>
-                    <Translate id='akeneo_connectivity.connection.connect.redirect.link' />
-                </RedirectLink>
+                <Caption>
+                    <HelperLink href={`#${generateUrl('akeneo_connectivity_connection_audit_index')}`}>
+                        <Translate id='akeneo_connectivity.connection.connect.redirect.link' />
+                    </HelperLink>
+                </Caption>
             </PageContent>
         </>
     );
