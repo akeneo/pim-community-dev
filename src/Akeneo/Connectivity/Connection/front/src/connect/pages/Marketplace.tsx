@@ -4,7 +4,6 @@ import {useTranslate} from '../../shared/translate';
 import {PageHeader} from '../../common';
 import {UserButtons} from '../../shared/user';
 import styled from 'styled-components';
-import {Caption, Heading} from '../../common/components/EmptyState';
 
 const LinkButton = styled.a<AkeneoThemedProps>`
     display: inline-flex;
@@ -49,6 +48,20 @@ const PageContent = styled.div`
     & > * {
         margin-bottom: 20px;
     }
+`;
+
+const Heading = styled.h1`
+    color: ${({theme}) => theme.color.grey140};
+    font-size: 28px;
+    font-weight: normal;
+    margin: 0;
+    margin-bottom: 21px;
+    line-height: 1.2em;
+`;
+
+const Caption = styled.p`
+    font-size: 23px;
+    line-height: 1.2em;
 `;
 
 export const Marketplace: FC = () => {
