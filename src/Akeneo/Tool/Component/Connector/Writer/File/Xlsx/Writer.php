@@ -12,6 +12,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 
 /**
  * Write simple data into a XLSX file on the local filesystem
@@ -20,12 +21,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Writer extends AbstractFileWriter implements
-    ItemWriterInterface,
-    InitializableInterface,
-    FlushableInterface,
-    ArchivableWriterInterface,
-    StepExecutionAwareInterface
+class Writer extends AbstractFileWriter implements ItemWriterInterface, InitializableInterface, FlushableInterface
 {
     /** @var ArrayConverterInterface */
     protected $arrayConverter;
@@ -35,9 +31,6 @@ class Writer extends AbstractFileWriter implements
 
     /** @var FlatItemBufferFlusher */
     protected $flusher;
-
-    /** @var array */
-    protected $writtenFiles = [];
 
     /** @var BufferFactory */
     protected $bufferFactory;
@@ -62,7 +55,7 @@ class Writer extends AbstractFileWriter implements
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
         if (null === $this->flatRowBuffer) {
             $this->flatRowBuffer = $this->bufferFactory->create();
@@ -72,7 +65,7 @@ class Writer extends AbstractFileWriter implements
     /**
      * {@inheritdoc}
      */
-    public function write(array $items)
+    public function write(array $items): void
     {
         $exportFolder = dirname($this->getPath());
         if (!is_dir($exportFolder)) {
@@ -93,7 +86,7 @@ class Writer extends AbstractFileWriter implements
     /**
      * {@inheritdoc}
      */
-    public function flush()
+    public function flush(): void
     {
         $this->flusher->setStepExecution($this->stepExecution);
 
@@ -107,15 +100,7 @@ class Writer extends AbstractFileWriter implements
         );
 
         foreach ($writtenFiles as $writtenFile) {
-            $this->writtenFiles[$writtenFile] = basename($writtenFile);
+            $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($writtenFile, \basename($writtenFile));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getWrittenFiles()
-    {
-        return $this->writtenFiles;
     }
 }

@@ -10,7 +10,6 @@ use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -20,7 +19,7 @@ use Symfony\Component\Security\Core\Security;
  * @copyright 202O Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class DispatchProductModelRemovedEventSubscriber implements EventSubscriberInterface
+final class DispatchProductModelRemovedEventSubscriber implements DispatchBufferedPimEventSubscriberInterface
 {
     private Security $security;
     private MessageBusInterface $messageBus;
@@ -49,12 +48,12 @@ final class DispatchProductModelRemovedEventSubscriber implements EventSubscribe
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::POST_REMOVE => 'createAndDispatchProductModelEvents',
-            StorageEvents::POST_REMOVE_ALL => 'dispatchBufferedProductModelEvents',
+            StorageEvents::POST_REMOVE => 'createAndDispatchPimEvents',
+            StorageEvents::POST_REMOVE_ALL => 'dispatchBufferedPimEvents',
         ];
     }
 
-    public function createAndDispatchProductModelEvents(GenericEvent $postSaveEvent): void
+    public function createAndDispatchPimEvents(GenericEvent $postSaveEvent): void
     {
         /** @var ProductModelInterface */
         $productModel = $postSaveEvent->getSubject();
@@ -75,13 +74,13 @@ final class DispatchProductModelRemovedEventSubscriber implements EventSubscribe
         $this->events[] = new ProductModelRemoved($author, $data);
 
         if ($postSaveEvent->hasArgument('unitary') && true === $postSaveEvent->getArgument('unitary')) {
-            $this->dispatchBufferedProductModelEvents();
+            $this->dispatchBufferedPimEvents();
         } elseif (count($this->events) >= $this->maxBulkSize) {
-            $this->dispatchBufferedProductModelEvents();
+            $this->dispatchBufferedPimEvents();
         }
     }
 
-    public function dispatchBufferedProductModelEvents(): void
+    public function dispatchBufferedPimEvents(): void
     {
         if (count($this->events) === 0) {
             return;

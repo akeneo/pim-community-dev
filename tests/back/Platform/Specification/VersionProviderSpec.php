@@ -13,12 +13,6 @@ class VersionProviderSpec extends ObjectBehavior
         $this->getEdition()->shouldReturn('CE');
     }
 
-    function it_provides_ce_version()
-    {
-        $this->beConstructedWith(StaticCommunityVersion::class);
-        $this->getEdition()->shouldReturn('12.42.20-BETA2');
-    }
-
     function it_provides_ce_patch()
     {
         $this->beConstructedWith(StaticCommunityVersion::class);
@@ -37,28 +31,40 @@ class VersionProviderSpec extends ObjectBehavior
         $this->getFullVersion()->shouldReturn('CE 12.42.20-BETA2 STATIC TEST VERSION');
     }
 
-    function it_provides_serenity_edition()
+    function it_tells_if_its_not_a_saas_version()
     {
-        $this->beConstructedWith(StaticSerenityVersion::class);
+        $this->beConstructedWith(StaticCommunityVersion::class);
+        $this->isSaaSVersion()->shouldReturn(false);
+    }
+
+    function it_provides_saas_edition()
+    {
+        $this->beConstructedWith(StaticSaaSVersion::class);
         $this->getEdition()->shouldReturn('Serenity');
     }
 
-    function it_provides_serenity_patch()
+    function it_provides_saas_patch()
     {
-        $this->beConstructedWith(StaticSerenityVersion::class);
+        $this->beConstructedWith(StaticSaaSVersion::class);
         $this->getPatch()->shouldReturn('20200130151605');
     }
 
-    function it_provides_serenity_minor_version()
+    function it_provides_saas_minor_version()
     {
-        $this->beConstructedWith(StaticSerenityVersion::class);
+        $this->beConstructedWith(StaticSaaSVersion::class);
         $this->getMinorVersion()->shouldReturn('20200130151605');
     }
 
-    function it_provides_full_serenity_version()
+    function it_provides_full_saas_version()
     {
-        $this->beConstructedWith(StaticSerenityVersion::class);
+        $this->beConstructedWith(StaticSaaSVersion::class);
         $this->getFullVersion()->shouldReturn('Serenity 20200130151605 STATIC TEST VERSION');
+    }
+
+    function it_tells_if_its_a_saas_version()
+    {
+        $this->beConstructedWith(StaticSaaSVersion::class);
+        $this->isSaaSVersion()->shouldReturn(true);
     }
 }
 
@@ -74,7 +80,7 @@ class StaticCommunityVersion
     const EDITION = 'CE';
 }
 
-class StaticSerenityVersion
+class StaticSaaSVersion
 {
     /** @staticvar string */
     const VERSION = '20200130151605';

@@ -88,3 +88,26 @@ test('Reset the scroll should fetch the first page', async () => {
 
     unmount();
 });
+
+test('The hook does not render more times than necessary', async () => {
+    const ref = {
+        current: document.getElementById('content'),
+    };
+
+    const loadNextPage = jest.fn().mockImplementation(() => {
+        return Promise.resolve(null);
+    });
+
+    let renderCount = 0;
+
+    const {waitForNextUpdate, unmount} = renderHook(() => {
+        renderCount++;
+        useInfiniteScroll(loadNextPage, ref);
+    });
+
+    expect(renderCount).toBe(1);
+    await waitForNextUpdate();
+    expect(renderCount).toBe(2);
+
+    unmount();
+});

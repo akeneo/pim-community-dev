@@ -24,35 +24,14 @@ use League\Flysystem\FilesystemInterface;
  */
 abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
 {
-    /** @var ItemWriterInterface */
-    protected $writer;
+    protected InvalidItemsCollector $collector;
+    protected ItemWriterInterface $writer;
+    protected FileIteratorFactory $fileIteratorFactory;
+    protected DefaultValuesProviderInterface $defaultValuesProvider;
+    protected string $invalidItemFileFormat;
 
-    /** @var InvalidItemsCollector */
-    protected $collector;
+    protected int $batchSize = 100;
 
-    /** @var string */
-    protected $invalidItemFileFormat;
-
-    /** @var JobExecution */
-    protected $jobExecution;
-
-    /** @var FileIteratorFactory */
-    protected $fileIteratorFactory;
-
-    /** @var DefaultValuesProviderInterface */
-    protected $defaultValuesProvider;
-
-    /** @var int */
-    protected $batchSize = 100;
-
-    /**
-     * @param InvalidItemsCollector          $collector
-     * @param ItemWriterInterface            $writer
-     * @param FileIteratorFactory            $fileIteratorFactory
-     * @param FilesystemInterface            $filesystem
-     * @param DefaultValuesProviderInterface $defaultValuesProvider
-     * @param string                         $invalidItemFileFormat
-     */
     public function __construct(
         InvalidItemsCollector $collector,
         ItemWriterInterface $writer,
@@ -74,7 +53,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
      *
      * Re-parse the imported file and write into a new one the invalid lines.
      */
-    public function archive(JobExecution $jobExecution)
+    public function archive(JobExecution $jobExecution): void
     {
         if (empty($this->collector->getInvalidItems())) {
             return;
@@ -141,7 +120,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
     /**
      * {@inheritdoc}
      */
-    public function supports(JobExecution $jobExecution)
+    public function supports(JobExecution $jobExecution): bool
     {
         if ($jobExecution->getJobParameters()->has('invalid_items_file_format')) {
             return $this->invalidItemFileFormat === $jobExecution->getJobParameters()->get('invalid_items_file_format');
@@ -178,7 +157,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
      * Setup the writer with a new JobExecution to write the invalid_items file.
      * We need to setup the writer manually because it's usually set up by the ItemStep.
      */
-    protected function setupWriter(JobExecution $jobExecution)
+    protected function setupWriter(JobExecution $jobExecution): void
     {
         $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
         $localFilePath = $workingDirectory.$this->getFilename();
@@ -204,7 +183,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
      *
      * @return FileIteratorInterface
      */
-    abstract protected function getInputFileIterator(JobParameters $jobParameters);
+    abstract protected function getInputFileIterator(JobParameters $jobParameters): FileIteratorInterface;
 
     /**
      * Get the final invalid data filename

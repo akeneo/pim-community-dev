@@ -12,12 +12,10 @@ services:
       - '@akeneo_storage_utils.doctrine.object_detacher'
 
   pim_connector.processor.normalization.user:
-    class: 'Akeneo\UserManagement\Component\Connector\Processor\Normalization\UserProcessor'
+    class: '%pim_connector.processor.normalization.class%'
     arguments:
       - '@pim_user.normalizer.user.standard'
       - '@akeneo_storage_utils.doctrine.object_detacher'
-      - '@akeneo_file_storage.file_storage.filesystem_provider'
-      - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
 
   pim_connector.processor.denormalization.user:
     class: 'Akeneo\UserManagement\Component\Connector\Processor\Denormalization\UserProcessor'

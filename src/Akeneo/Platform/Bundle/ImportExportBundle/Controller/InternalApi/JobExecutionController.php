@@ -48,6 +48,16 @@ class JobExecutionController
 
     public function getAction($identifier): JsonResponse
     {
+        // TODO: remove this line when upgrading flysystem library
+        /* at the moment the listing of the archives can be very slow if
+            - there are a lot of files for a given job execution (>100000)
+            - the storage is Google Cloud Storage
+          because the GS adapter we currently use ignores the $recursive option and returns every file in the bucket
+          for the given path.
+          The league/flysystem-google-cloud-storage seems to handle this case, but it's only compatible with flysystem v2
+        */
+        \set_time_limit(0);
+
         /** @var JobExecution $jobExecution */
         $jobExecution = $this->jobExecutionRepo->find($identifier);
         if (null === $jobExecution) {
@@ -67,6 +77,7 @@ class JobExecutionController
         $jobResponse['meta'] = [
             'logExists' => file_exists($jobExecution->getLogFile()),
             'archives' => $this->archives($jobExecution),
+            'generateZipArchive' => $this->archivist->hasAtLeastTwoArchives($jobExecution),
             'id' => $identifier,
         ];
 

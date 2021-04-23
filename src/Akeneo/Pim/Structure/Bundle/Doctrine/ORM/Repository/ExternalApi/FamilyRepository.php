@@ -162,10 +162,8 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                 ));
             }
             $violations = $validator->validate($searchFilter, $constraints[$property]);
-            if (0 !== $violations->count()) {
-                foreach ($violations as $violation) {
-                    $exceptionMessages[] = $violation->getMessage();
-                }
+            foreach ($violations as $violation) {
+                $exceptionMessages[] = $violation->getMessage();
             }
         }
         if (!empty($exceptionMessages)) {

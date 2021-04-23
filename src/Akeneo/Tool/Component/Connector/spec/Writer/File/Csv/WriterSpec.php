@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
@@ -165,9 +166,12 @@ class WriterSpec extends ObjectBehavior
 
         $this->flush();
 
-        $this->getWrittenFiles()->shouldReturn(
+        $this->getWrittenFiles()->shouldBeLike(
             [
-                sys_get_temp_dir() . '/my/file/path/job_label_1967-08-05_15-15-00.csv' => 'job_label_1967-08-05_15-15-00.csv',
+                WrittenFileInfo::fromLocalFile(
+                    sys_get_temp_dir() . '/my/file/path/job_label_1967-08-05_15-15-00.csv',
+                    'job_label_1967-08-05_15-15-00.csv'
+                ),
             ]
         );
     }

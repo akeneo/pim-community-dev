@@ -246,8 +246,8 @@ pim_enrich.export.product:
       operators:
         ALL: Pas de condition de date
         "SINCE LAST N DAYS": Produits mis à jour durant les n derniers jours (par ex. 6)
-        ">": Produits mis à jours depuis cette date
-        "SINCE LAST JOB": Produits mis à jour depuis le dernière export
+        ">": Produits mis à jour depuis cette date
+        "SINCE LAST JOB": Produits mis à jour depuis le dernier export
     enabled:
       title: État
       help: "Choisir les produits à exporter selon leur statut. Par ex. : exporter les produits quel que soit leur statut."
@@ -284,6 +284,7 @@ pim_enrich.export.product:
         NOT BETWEEN: Pas entre
     quality-score:
       title: Score de qualité
+      operator_choice_title: Exporter le(s) score(s) de qualité pour
       empty_selection: Aucune condition sur le score de qualité
       operators:
         IN AT LEAST ONE LOCALE: Au moins une locale
