@@ -7,6 +7,7 @@ if [ ${STEP} == "PRE_INIT" ]; then
         echo "[INFO] ${PFID} is already HELM3 compatible"
     else
         echo "[INFO] ${PFID} is a HELM2 released, time to convert"
-        helm3 2to3 convert ${PFID} --delete-v2-releases
+        helm version
+        helm3 2to3 convert ${PFID} --delete-v2-releases --release-versions-max 1
     fi
 fi
