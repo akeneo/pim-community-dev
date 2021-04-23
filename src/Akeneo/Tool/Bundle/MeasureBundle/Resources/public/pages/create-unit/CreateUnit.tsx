@@ -22,8 +22,17 @@ import {useCreateUnitValidator} from 'akeneomeasure/pages/create-unit/hooks/use-
 import {Operation} from 'akeneomeasure/model/operation';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
 import {ConfigContext} from 'akeneomeasure/context/config-context';
-import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
-import {filterErrors, ValidationError, getErrorsForPath, TextField, Section} from '@akeneo-pim-community/shared';
+import {
+  filterErrors,
+  ValidationError,
+  getErrorsForPath,
+  TextField,
+  Section,
+  useTranslate,
+  useNotify,
+  NotificationLevel,
+  useUserContext,
+} from '@akeneo-pim-community/shared';
 
 type CreateUnitProps = {
   measurementFamily: MeasurementFamily;

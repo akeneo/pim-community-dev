@@ -9,7 +9,7 @@ aliases:
 
   - &dockerCloudDeployer
       docker:
-        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:2.4
+        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:2.10
           auth:
             username: _json_key  # default username when using a JSON key file to authenticate
             password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
@@ -62,9 +62,9 @@ jobs:
         is_ee_built:
             type: boolean
             default: true
-        path_to_dsm:
+        path_to_front_packages:
             type: string
-            default: akeneo-design-system
+            default: front-packages
     machine:
       image: ubuntu-2004:202101-01
     steps:
@@ -119,27 +119,28 @@ jobs:
           name: Build css
           command: make css
       - run:
-          name: Create hash for DSM version
+          name: Create hash for front packages
           command: |
-            find << parameters.path_to_dsm >> -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
-            date +%F >> ~/akeneo-design-system.hash
+            find << parameters.path_to_front_packages >> -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/front-packages.hash
+            date +%F >> ~/front-packages.hash
       - run:
-          name: Set DSM directory owner to circleci
-          command: sudo chown -R 1001:1001 << parameters.path_to_dsm >>
+          name: Set front-packages directory owner to circleci
+          command: sudo chown -R 1001:1001 << parameters.path_to_front_packages >>
       - restore_cache:
-          name: Restore DSM cache
-          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+          name: Restore front-packages cache
+          key: front-packages-libs-{{ checksum "~/front-packages.hash" }}
       - run:
-          name: Set DSM directory owner to docker
-          command: sudo chown -R 1000:1000 << parameters.path_to_dsm >>
+          name: Set front-packages directory owner to docker
+          command: sudo chown -R 1000:1000 << parameters.path_to_front_packages >>
       - run:
-          name: Build DSM
-          command: test -d << parameters.path_to_dsm >>/lib || make dsm
+          name: Build front-packages
+          command: ls << parameters.path_to_front_packages >>/*/lib 1> /dev/null 2>&1 || make front-packages
       - save_cache:
-          name: Save DSM cache
-          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+          name: Save front-packages cache
+          key: front-packages-libs-{{ checksum "~/front-packages.hash" }}
           paths:
-            - << parameters.path_to_dsm >>/lib
+            - << parameters.path_to_front_packages >>/akeneo-design-system/lib
+            - << parameters.path_to_front_packages >>/shared/lib
       - run:
           name: Build Javascript
           command: make javascript-dev
@@ -591,7 +592,7 @@ workflows:
                 requires:
                     - ready_to_build?
           - build_dev:
-                path_to_dsm: vendor/akeneo/pim-community-dev/akeneo-design-system
+                path_to_front_packages: vendor/akeneo/pim-community-dev/front-packages
                 requires:
                     - checkout_ee
           - build_prod:

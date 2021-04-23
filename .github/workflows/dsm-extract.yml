@@ -4,7 +4,7 @@ on:
     branches:
       - master
     paths:
-      - 'akeneo-design-system/**'
+      - 'front-packages/akeneo-design-system/**'
 jobs:
   build:
     name: Create a lib build
@@ -19,16 +19,16 @@ jobs:
           node-version: 13.13
 
       - name: Install node modules
-        run: cd akeneo-design-system && yarn install
+        run: cd front-packages/akeneo-design-system && yarn install
 
       - name: Build library
-        run: cd akeneo-design-system && yarn lib:build
+        run: cd front-packages/akeneo-design-system && yarn lib:build
 
       - name: Upload the generated lib as an artifact
         uses: actions/upload-artifact@v1
         with:
           name: Lib
-          path: akeneo-design-system/lib
+          path: front-packages/akeneo-design-system/lib
 
   bump:
     name: Bump package version of the lib
@@ -49,12 +49,12 @@ jobs:
       # In this step we take the package.json file of the external repository to generate the new
       # version number. To do so, we take every commit messages and spot #patch #minor and #major tags
       - name: Bump package version
-        run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ../external/package.json ../commit-messages.txt
+        run: cd front-packages/akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ../external/package.json ../commit-messages.txt
 
       - uses: actions/upload-artifact@v1
         with:
           name: package
-          path: akeneo-design-system/package.json
+          path: front-packages/akeneo-design-system/package.json
 
       - uses: actions/upload-artifact@v1
         with:
@@ -76,16 +76,16 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: Lib
-          path: akeneo-design-system/lib
+          path: front-packages/akeneo-design-system/lib
 
       - name: Remove current package.json
-        run: rm akeneo-design-system/package.json
+        run: rm front-packages/akeneo-design-system/package.json
 
       - name: Download the package.json artifact
         uses: actions/download-artifact@v1
         with:
           name: package
-          path: akeneo-design-system
+          path: front-packages/akeneo-design-system
 
       - name: Download the commit messages
         uses: actions/download-artifact@v1
@@ -98,7 +98,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          source-directory: akeneo-design-system
+          source-directory: front-packages/akeneo-design-system
           destination-github-username: 'akeneo'
           destination-repository-name: 'akeneo-design-system'
           user-email: contact@akeneo.com

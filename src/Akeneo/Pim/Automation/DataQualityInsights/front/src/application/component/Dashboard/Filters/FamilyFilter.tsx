@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import useFetchFamilies from '../../../../infrastructure/hooks/Dashboard/useFetchFamilies';
 import {debounce} from 'lodash';
 import {useDashboardContext} from '../../../context/DashboardContext';
-import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {ArrowDownIcon} from 'akeneo-design-system';
 
 type Labels = {

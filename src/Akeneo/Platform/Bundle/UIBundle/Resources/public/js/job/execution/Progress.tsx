@@ -3,7 +3,7 @@ import {formatSecondsIntl} from 'pimui/js/intl-duration';
 import styled from 'styled-components';
 import {Level, ProgressBar} from 'akeneo-design-system';
 import {StepExecutionTracking} from './models/job-execution';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 const Container = styled.div`
   display: grid;

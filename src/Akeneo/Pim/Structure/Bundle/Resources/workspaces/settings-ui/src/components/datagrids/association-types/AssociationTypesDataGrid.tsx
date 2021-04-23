@@ -1,6 +1,6 @@
 import React from 'react';
 import {Badge, IconButton, DeleteIcon, Table} from 'akeneo-design-system';
-import {useTranslate, useRouter} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useRouter} from '@akeneo-pim-community/shared';
 import {AssociationType, NoResults} from '@akeneo-pim-community/settings-ui';
 import styled from 'styled-components';
 

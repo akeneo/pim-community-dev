@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from 'react';
 import {AttributeGroup} from '../../models';
-import {useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {useUserContext} from '@akeneo-pim-community/shared';
 
 const useFilteredAttributeGroups = (groups: AttributeGroup[]) => {
   const [filteredGroups, setFilteredGroups] = useState<AttributeGroup[]>([]);
