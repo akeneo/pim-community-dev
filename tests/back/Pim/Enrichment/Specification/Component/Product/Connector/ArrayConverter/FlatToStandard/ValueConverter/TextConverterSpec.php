@@ -3,12 +3,15 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface;
+use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter;
 
 class TextConverterSpec extends ObjectBehavior
 {
+    const TEST_ATTRIBUTE_CODE = 'attribute_code';
+
     function let(FieldSplitter $fieldSplitter)
     {
         $this->beConstructedWith(
@@ -36,49 +39,55 @@ class TextConverterSpec extends ObjectBehavior
 
     function it_converts_a_string(AttributeInterface $attribute)
     {
-        $attribute->getCode()->willReturn('attribute_code');
-        $fieldNameInfo = ['attribute' => $attribute, 'locale_code' => 'en_US', 'scope_code' => 'mobile'];
-
-        $value = 'my awesome text';
-
-        $expectedResult = ['attribute_code' => [[
-            'locale' => 'en_US',
-            'scope'  => 'mobile',
-            'data'   => 'my awesome text',
-        ]]];
-
-        $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
+        $fieldNameInfo = $this->initFieldNameInfo($attribute);
+        $this->convert($fieldNameInfo, 'my awesome text')
+            ->shouldReturn($this->initResult('my awesome text'));
     }
-
     function it_casts_a_number_to_string_during_conversion(AttributeInterface $attribute)
     {
-        $attribute->getCode()->willReturn('attribute_code');
-        $fieldNameInfo = ['attribute' => $attribute, 'locale_code' => 'en_US', 'scope_code' => 'mobile'];
-
-        $value = 1234;
-
-        $expectedResult = ['attribute_code' => [[
-            'locale' => 'en_US',
-            'scope'  => 'mobile',
-            'data'   => '1234',
-        ]]];
-
-        $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
+        $fieldNameInfo = $this->initFieldNameInfo($attribute);
+        $this->convert($fieldNameInfo, 1234)
+            ->shouldReturn($this->initResult('1234'));
     }
 
     function it_returns_null_data_if_empty_value_provided(AttributeInterface $attribute)
     {
-        $attribute->getCode()->willReturn('attribute_code');
+        $fieldNameInfo = $this->initFieldNameInfo($attribute);
+        $this->convert($fieldNameInfo, '')
+            ->shouldReturn($this->initResult(null));
+    }
+
+    function it_throws_a_businessdataarray_exception_with_date_value_input(AttributeInterface $attribute)
+    {
+        $fieldNameInfo = $this->initFieldNameInfo($attribute);
+        $this->shouldThrow(new BusinessArrayConversionException("Can not convert cell  attribute_code with date format to attribute of type text",
+            "pim_import_export.notification.export.warnings.xlsx_cell_date_to_text_conversion_error", [self::TEST_ATTRIBUTE_CODE]))
+            ->during('convert', [$fieldNameInfo, new \DateTime('2000-01-01')]);
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @return array
+     */
+    private function initFieldNameInfo(AttributeInterface $attribute): array
+    {
+        $attribute->getCode()->willReturn(self::TEST_ATTRIBUTE_CODE);
+        $attribute->getType()->willReturn('attribute_type');
+
         $fieldNameInfo = ['attribute' => $attribute, 'locale_code' => 'en_US', 'scope_code' => 'mobile'];
+        return $fieldNameInfo;
+    }
 
-        $value = '';
-
-        $expectedResult = ['attribute_code' => [[
+    /**
+     * @param string $str
+     * @return \string[][][]
+     */
+    private function initResult(string $str): array
+    {
+        return [self::TEST_ATTRIBUTE_CODE => [[
             'locale' => 'en_US',
-            'scope'  => 'mobile',
-            'data'   => null,
+            'scope' => 'mobile',
+            'data' => $str,
         ]]];
-
-        $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
     }
 }

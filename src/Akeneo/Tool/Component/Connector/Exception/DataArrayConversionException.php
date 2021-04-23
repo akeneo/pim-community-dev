@@ -20,13 +20,13 @@ class DataArrayConversionException extends ArrayConversionException
     /**
      * @param string                                $message
      * @param int                                   $code
-     * @param \Exception|null                       $previous
+     * @param \Throwable|null                       $previous
      * @param ConstraintViolationListInterface|null $violations
      */
     public function __construct(
         $message,
         $code = 0,
-        \Exception $previous = null,
+        \Throwable $previous = null,
         ConstraintViolationListInterface $violations = null
     ) {
         $this->violations = $violations;
