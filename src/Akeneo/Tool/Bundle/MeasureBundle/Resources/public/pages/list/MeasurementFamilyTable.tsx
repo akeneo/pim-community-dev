@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {MeasurementFamilyRow} from 'akeneomeasure/pages/list/MeasurementFamilyRow';
 import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {Direction} from 'akeneomeasure/model/direction';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {Table} from 'akeneo-design-system';
 
 const SpacedTable = styled(Table)`

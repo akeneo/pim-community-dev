@@ -1,6 +1,9 @@
 import '@testing-library/jest-dom/extend-expect';
 import {usePimVersion} from '@akeneo-pim-community/communication-channel/src/hooks/usePimVersion';
-import {renderHookWithProviders, fetchMockResponseOnce} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {
+  renderHookWithProviders,
+  fetchMockResponseOnce,
+} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 
 afterEach(() => {
   fetchMock.resetMocks();

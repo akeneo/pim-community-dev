@@ -7,7 +7,7 @@ import {Ranks} from '../../../../domain/Rate.interface';
 import FamilyModal from './FamilyModal';
 import {uniq as _uniq} from 'lodash';
 import {redirectToProductGridFilteredByFamily} from '../../../../infrastructure/ProductGridRouter';
-import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {SeeInGrid} from './SeeInGrid';
 import {RemoveItem} from './RemoveItem';
 import {AddItem} from './AddItem';

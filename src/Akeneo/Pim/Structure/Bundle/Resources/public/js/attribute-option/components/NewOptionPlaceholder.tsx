@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {useScrollIntoView} from '../hooks/useScrollIntoView';
 
 interface newOptionPlaceholderProps {

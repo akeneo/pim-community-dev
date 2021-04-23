@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type Props = {
   isActivated: boolean;
