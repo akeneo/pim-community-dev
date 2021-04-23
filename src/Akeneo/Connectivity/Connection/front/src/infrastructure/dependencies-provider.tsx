@@ -35,8 +35,8 @@ const DependenciesProvider = ({children, ...dependencies}: PropsWithChildren<Pro
     </RouterContext.Provider>
 );
 
-export const withDependencies = <AdditionalProps, >(Component: ElementType) => {
-    return ({dependencies, ...props}: {dependencies: Props} & AdditionalProps) => (
+export const withDependencies = (Component: ElementType) => {
+    return ({dependencies, ...props}: {dependencies: Props}) => (
         <DependenciesProvider {...dependencies}>
             <Component {...props} />
         </DependenciesProvider>
