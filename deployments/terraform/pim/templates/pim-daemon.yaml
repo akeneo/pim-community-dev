@@ -78,7 +78,7 @@ spec:
             - name: google-cloud-onboarder-key
               mountPath: /var/secrets/google/key.json
               subPath: key.json
-              readonly: true
+              readOnly: true
             {{- end }}
           envFrom: [ configMapRef: { name: {{ template "pim.fullName"  $tplCtx }}-env } ]
           env:
