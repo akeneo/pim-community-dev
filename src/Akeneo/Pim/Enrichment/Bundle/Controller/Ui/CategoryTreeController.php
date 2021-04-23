@@ -7,6 +7,7 @@ use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -20,6 +21,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -58,7 +60,13 @@ class CategoryTreeController extends Controller
     /** @var TranslatorInterface */
     protected $translator;
 
+    private ObjectUpdaterInterface $categoryUpdater;
+
     private NormalizerInterface $normalizer;
+
+    private ValidatorInterface $validator;
+
+    private NormalizerInterface $constraintViolationNormalizer;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -70,6 +78,9 @@ class CategoryTreeController extends Controller
         SecurityFacade $securityFacade,
         TranslatorInterface $translator,
         NormalizerInterface $normalizer,
+        ObjectUpdaterInterface $categoryUpdater,
+        ValidatorInterface $validator,
+        NormalizerInterface $constraintViolationNormalizer,
         array $rawConfiguration
     ) {
         $this->eventDispatcher = $eventDispatcher;
@@ -86,6 +97,9 @@ class CategoryTreeController extends Controller
         $this->rawConfiguration = $resolver->resolve($rawConfiguration);
         $this->translator = $translator;
         $this->normalizer = $normalizer;
+        $this->categoryUpdater = $categoryUpdater;
+        $this->validator = $validator;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
     /**
@@ -267,40 +281,27 @@ class CategoryTreeController extends Controller
         }
 
         $category = $this->categoryFactory->create();
-        if ($parent) {
-            $parent = $this->findCategory($parent);
-            $category->setParent($parent);
+        $data = json_decode($request->getContent(), true);
+        $this->categoryUpdater->update($category, $data);
+        $violations = $this->validator->validate($category);
+
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolation = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['category' => $category]
+            );
+            $normalizedViolations[$normalizedViolation['path']] = $normalizedViolation['message'];
         }
 
-        $category->setCode($request->get('label'));
-        $form = $this->createForm($this->rawConfiguration['form_type'], $category, $this->getFormOptions($category));
-
-        if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $this->categorySaver->save($category);
-                $message = sprintf('flash.%s.created', $category->getParent() ? 'category' : 'tree');
-                $this->addFlash('success', $this->translator->trans($message));
-
-                return new JsonResponse(
-                    [
-                        'route'  => $this->buildRouteName('categorytree_edit'),
-                        'params' => ['id' => $category->getId()]
-                    ]
-                );
-            }
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
         }
 
-        return $this->render(
-            sprintf('AkeneoPimEnrichmentBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
-            [
-                'form'           => $form->createView(),
-                'related_entity' => $this->rawConfiguration['related_entity'],
-                'acl'            => $this->rawConfiguration['acl'],
-                'route'          => $this->rawConfiguration['route'],
-            ]
-        );
+        $this->categorySaver->save($category);
+
+        return new JsonResponse(null, JsonResponse::HTTP_CREATED);
     }
 
     /**
