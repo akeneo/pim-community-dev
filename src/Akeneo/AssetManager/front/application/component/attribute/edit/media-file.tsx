@@ -1,7 +1,6 @@
 import React from 'react';
 import {Field, SelectInput, TagInput} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {getErrorsForPath, TextField} from '@akeneo-pim-community/shared';
+import {getErrorsForPath, TextField, useTranslate} from '@akeneo-pim-community/shared';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {

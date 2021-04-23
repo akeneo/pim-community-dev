@@ -12,8 +12,7 @@ import {
   SectionTitle,
   useBooleanState,
 } from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {NoDataSection, NoDataTitle} from '@akeneo-pim-community/shared';
+import {NoDataSection, NoDataTitle, useTranslate} from '@akeneo-pim-community/shared';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {
   selectAttributeGroupList,

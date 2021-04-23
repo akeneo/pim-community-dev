@@ -6,7 +6,7 @@ import {act} from 'react-dom/test-utils';
 import {renderHook} from '@testing-library/react-hooks';
 import userEvent from '@testing-library/user-event';
 import {useChannels} from 'akeneoassetmanager/application/hooks/channel';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 
 const emptyDataProvider = {channelFetcher: {fetchAll: () => new Promise(() => {})}};
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 const EditState = () => {
   const translate = useTranslate();

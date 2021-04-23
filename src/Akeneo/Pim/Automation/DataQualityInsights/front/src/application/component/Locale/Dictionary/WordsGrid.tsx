@@ -1,9 +1,8 @@
 import React, {FC, useCallback, useState} from 'react';
 import {Table, IconButton, CloseIcon, Pagination} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
 import {Word} from '../../../../domain';
-import {SearchBar, useDebounceCallback} from '@akeneo-pim-community/shared';
+import {SearchBar, useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
 import {NoSearchResults} from './NoSearchResults';
 import {NoData} from './NoData';
 import {useDictionaryState} from '../../../../infrastructure';

@@ -1,6 +1,6 @@
 import React from 'react';
 import {screen, fireEvent} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {LineList} from 'akeneoassetmanager/application/asset-upload/component/line-list';
 import {createFakeAssetFamily, createFakeLine} from '../tools';
 import Channel from 'akeneoassetmanager/domain/model/channel';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Key} from 'akeneo-design-system';
 import {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 interface Props {
   selectedElement: DropdownElement;

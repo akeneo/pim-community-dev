@@ -1,6 +1,6 @@
 import React from 'react';
 import {AssetCategoriesIllustration, Button, Modal} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type ConfirmModalProps = {
   titleContent: string;

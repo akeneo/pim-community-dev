@@ -14,7 +14,7 @@ import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {getValuesForChannelAndLocale, isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
 import {hasFieldAsTarget} from 'akeneoassetmanager/domain/model/asset-family/transformation';
 import {Field, Helper} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {isTextAreaAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 

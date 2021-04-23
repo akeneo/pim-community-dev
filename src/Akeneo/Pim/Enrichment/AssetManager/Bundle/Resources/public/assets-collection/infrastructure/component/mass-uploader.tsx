@@ -8,7 +8,7 @@ import {UploadModal} from 'akeneoassetmanager/application/asset-upload/component
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type DataProvider = {
   assetFamilyFetcher: AssetFamilyFetcher;

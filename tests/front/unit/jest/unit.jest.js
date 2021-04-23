@@ -18,7 +18,6 @@ const eeConfig = {
     'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher',
     'akeneoassetmanager/infrastructure/fetcher',
     'akeneoassetmanager/application/component/app/select2',
-    'akeneoassetmanager/platform/component/common/checkbox',
     'akeneodataqualityinsights/react',
     'akeneoassetmanager/application/component/asset/list/completeness-filter',
     'akeneoassetmanager/application/component/asset/list/search-bar/search-field', // cannot trigger re-render
@@ -34,10 +33,13 @@ const eeConfig = {
     'akeneoassetmanager/application/component/asset-family/edit/header',
     'akeneoreferenceentity/tools',
 
+    //TODO RAC-591 add jest tests for the Permission tab in Asset manager & Ref entities
+    'src/Akeneo/AssetManager/front/domain/model/asset-family/permission.ts',
+    'src/Akeneo/ReferenceEntity/front/domain/model/reference-entity/permission.ts',
+
     'src/Akeneo/AssetManager/front/tools',
     'vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/public/lib',
     'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/assets-collection/infrastructure/fetcher',
-    'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/platform/component/common/checkbox',
     'src/Akeneo/AssetManager/front/infrastructure/fetcher',
     'src/Akeneo/Pim/Automation/DataQualityInsights/front',
     'src/Akeneo/AssetManager/front/application/component/asset/index/completeness-filter',

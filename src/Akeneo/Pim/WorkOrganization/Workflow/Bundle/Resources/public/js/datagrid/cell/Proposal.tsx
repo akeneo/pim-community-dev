@@ -1,6 +1,5 @@
 import React from 'react';
-import {LocaleCode} from '@akeneo-pim-community/shared';
-import {useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {LocaleCode, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {AkeneoThemedProps, Badge, getColor, getFontSize} from 'akeneo-design-system';
 import {ApproveAllButton, ApproveButton, RejectAllButton, RejectButton, RemoveAllButton} from './proposalActions';

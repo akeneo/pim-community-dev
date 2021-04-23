@@ -1,6 +1,6 @@
 import React from 'react';
 import {act, fireEvent, screen, waitFor} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {UploadModal} from 'akeneoassetmanager/application/asset-upload/component/modal';
 import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
 import {createFakeAssetFamily} from '../tools';

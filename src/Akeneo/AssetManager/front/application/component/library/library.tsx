@@ -31,7 +31,7 @@ import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/ty
 import {useScroll} from 'akeneoassetmanager/application/hooks/scroll';
 import {CompletenessValue} from 'akeneoassetmanager/application/component/asset/list/completeness-filter';
 import {getCompletenessFilter, updateCompletenessFilter} from 'akeneoassetmanager/tools/filters/completeness';
-import {useNotify, NotificationLevel, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useNotify, NotificationLevel, useTranslate} from '@akeneo-pim-community/shared';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import {Checkbox, Toolbar, Button, useSelection, useBooleanState, Dropdown, ArrowDownIcon} from 'akeneo-design-system';
 import {MassDelete} from 'akeneoassetmanager/application/component/library/MassDelete/MassDelete';

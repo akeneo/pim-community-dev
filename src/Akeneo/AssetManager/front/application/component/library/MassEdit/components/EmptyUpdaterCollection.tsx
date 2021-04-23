@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {getColor, getFontSize, Link, RulesIllustration} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 const EmptyUpdaterCollectionContainer = styled.div`
   display: flex;

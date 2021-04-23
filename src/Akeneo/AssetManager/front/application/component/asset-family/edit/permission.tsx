@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Button, SectionTitle} from 'akeneo-design-system';
-import {useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';

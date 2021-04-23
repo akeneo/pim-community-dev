@@ -1,7 +1,7 @@
 import React from 'react';
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
 import {Badge} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 const getLevel = (completeness: Completeness) => {
   if (!completeness.hasCompleteAttribute()) {

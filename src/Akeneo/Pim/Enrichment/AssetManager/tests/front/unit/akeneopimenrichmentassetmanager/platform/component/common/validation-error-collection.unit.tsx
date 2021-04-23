@@ -1,6 +1,6 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {ValidationErrorCollection} from 'akeneoassetmanager/platform/component/common/validation-error-collection';
 
 test('It should render the attribute error validation messages for the current context', () => {

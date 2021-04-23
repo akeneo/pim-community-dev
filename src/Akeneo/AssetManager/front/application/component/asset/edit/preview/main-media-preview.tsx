@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {SectionTitle, useBooleanState} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {Section} from '@akeneo-pim-community/shared';
+import {Section, useTranslate} from '@akeneo-pim-community/shared';
 import EditionAsset, {getEditionAssetMediaData} from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';

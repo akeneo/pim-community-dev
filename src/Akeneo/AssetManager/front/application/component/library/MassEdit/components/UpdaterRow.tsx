@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {CloseIcon, getColor, getFontSize, IconButton, SelectInput, List, useId} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {getErrorsForPath} from '@akeneo-pim-community/shared';
+import {getErrorsForPath, useTranslate} from '@akeneo-pim-community/shared';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
 import {getFieldView} from 'akeneoassetmanager/application/configuration/value';

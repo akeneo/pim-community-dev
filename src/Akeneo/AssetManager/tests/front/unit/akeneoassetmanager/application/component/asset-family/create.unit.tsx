@@ -1,7 +1,7 @@
 import React from 'react';
 import {act, screen, fireEvent, waitFor} from '@testing-library/react';
 import {CreateAssetFamilyModal} from 'akeneoassetmanager/application/component/asset-family/create';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 
 // This mock throws an error if the code is 'throw'
 jest.mock('akeneoassetmanager/infrastructure/saver/asset-family', () => ({

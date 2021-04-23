@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Button, Field, Modal, ProposalsIllustration, TextAreaInput} from 'akeneo-design-system';
-import {NotificationLevel, useMediator, useNotify, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {NotificationLevel, useMediator, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 
 const ProposalModal = ({
   action,

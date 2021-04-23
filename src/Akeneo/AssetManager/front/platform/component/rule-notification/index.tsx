@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {AttributeCode} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {getRulesForAttribute} from 'akeneoassetmanager/platform/model/structure/rule-relation';
 import {getColor, Helper} from 'akeneo-design-system';
-import {useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {RulesNumberByAttribute} from 'akeneoassetmanager/platform/model/structure/rule-relation';
 
 const securityContext = require('pim/security-context');

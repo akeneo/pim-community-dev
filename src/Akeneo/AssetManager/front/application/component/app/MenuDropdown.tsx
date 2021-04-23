@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Dropdown, IconButton, MoreVerticalIcon, useBooleanState} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {Tab} from 'akeneoassetmanager/application/configuration/sidebar';
 
 type MenuDropdownProps = {

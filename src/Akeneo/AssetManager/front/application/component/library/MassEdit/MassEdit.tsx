@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {useTranslate, useNotify, NotificationLevel} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useNotify, NotificationLevel} from '@akeneo-pim-community/shared';
 import {Button, useBooleanState} from 'akeneo-design-system';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';

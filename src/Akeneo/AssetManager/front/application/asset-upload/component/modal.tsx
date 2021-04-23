@@ -2,8 +2,7 @@ import React, {useReducer, useCallback, useMemo, useEffect, ChangeEvent} from 'r
 import {Reducer} from 'redux';
 import styled from 'styled-components';
 import {Button, Modal} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {useUploader} from '@akeneo-pim-community/shared';
+import {useTranslate, useUploader} from '@akeneo-pim-community/shared';
 import {LineList} from 'akeneoassetmanager/application/asset-upload/component/line-list';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import {

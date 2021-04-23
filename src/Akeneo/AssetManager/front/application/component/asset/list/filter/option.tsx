@@ -7,7 +7,7 @@ import {isOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attri
 import {getAttributeFilterKey} from 'akeneoassetmanager/tools/filter';
 import OptionCode from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
 import {getLabel} from 'pimui/js/i18n';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 const memo = (React as any).memo;
 const useState = (React as any).useState;

@@ -6,7 +6,7 @@ import Row from 'akeneoassetmanager/application/asset-upload/component/row';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import {AssetsIllustration, Button, getColor, SectionTitle} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 const ColumnWidths = {
   asset: 78,

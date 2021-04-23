@@ -1,5 +1,5 @@
 import React from 'react';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {isOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import OptionData from 'akeneoassetmanager/domain/model/asset/data/option';
 import {ViewGeneratorProps} from 'akeneoassetmanager/application/configuration/value';

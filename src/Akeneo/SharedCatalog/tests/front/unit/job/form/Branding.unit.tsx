@@ -1,6 +1,6 @@
 import React from 'react';
 import {waitFor, fireEvent, screen} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {Branding} from 'akeneosharedcatalog/job/form/Branding';
 
 test('It renders an empty file input when the provided branding is empty', () => {

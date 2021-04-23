@@ -1,7 +1,7 @@
-import React, {useState, KeyboardEvent} from 'react';
+import React, {useState} from 'react';
 import {Button, Field, TagInput} from 'akeneo-design-system';
 import styled from 'styled-components';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {useDictionaryState} from '../../../../infrastructure';
 
 const AddWordsForm = () => {
@@ -25,7 +25,7 @@ const AddWordsForm = () => {
             <TagInput
               value={words}
               onChange={setWords}
-              onKeyDownCapture={async (event: KeyboardEvent) => {
+              onKeyDownCapture={event => {
                 if (event.key === 'Enter') {
                   event.preventDefault();
                   event.stopPropagation();

@@ -9,7 +9,7 @@ import {
   useBooleanState,
   useInModal,
 } from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {canCopyToClipboard, copyToClipboard, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {
   canDownloadMediaLink,

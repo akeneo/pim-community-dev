@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import styled from 'styled-components';
 import {DeleteIcon, EditIcon, IconButton, ViewIcon} from 'akeneo-design-system';
-import {useRoute, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useRoute, useTranslate} from '@akeneo-pim-community/shared';
 import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import {getLabel} from 'pimui/js/i18n';

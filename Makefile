@@ -32,10 +32,9 @@ node_modules: yarn.lock #Doc: run YARN install --check-files
 javascript-extensions:
 	$(YARN_RUN) run update-extensions
 
-.PHONY: dsm
-dsm: #Doc: install & build the PIM DSM
-	$(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system install --frozen-lockfile
-	$(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system run lib:build
+.PHONY: front-packages
+front-packages: #Doc: install & build the PIM front packages
+	$(YARN_RUN) packages:build
 
 .PHONY: assets
 assets: #Doc: clean & reinstall assets
@@ -73,7 +72,7 @@ javascript-test: javascript-extensions #Doc: clean & run webpack test
 	$(YARN_RUN) run webpack-test
 
 .PHONY: front
-front: assets css dsm javascript-dev #Doc: build the front-end
+front: assets css front-packages javascript-dev #Doc: build the front-end
 
 ##
 ## Back
@@ -128,7 +127,7 @@ pim-behat: #Doc: run docker-compose up, clean symfony cache, reinstall assets, b
 	APP_ENV=behat $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
-	$(MAKE) dsm
+	$(MAKE) front-packages
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
 	APP_ENV=behat $(MAKE) database
@@ -147,7 +146,7 @@ pim-dev: #Doc: run docker-compose up, clean symfony cache, run webpack dev & ins
 	APP_ENV=dev $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
-	$(MAKE) dsm
+	$(MAKE) front-packages
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
 	APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" $(MAKE) database
@@ -158,7 +157,7 @@ pim-prod: #Doc: run docker-compose up, clean symfony cache, reinstall assets, bu
 	APP_ENV=prod $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
-	$(MAKE) dsm
+	$(MAKE) front-packages
 	$(MAKE) javascript-prod
 	docker/wait_docker_up.sh
 	APP_ENV=prod $(MAKE) database

@@ -1,5 +1,5 @@
 import React from 'react';
-import {useRouter} from '@akeneo-pim-community/legacy-bridge';
+import {useRouter} from '@akeneo-pim-community/shared';
 import {ImageCard} from './ImageCard';
 import {ProposalChangeAccessor} from '../ProposalChange';
 

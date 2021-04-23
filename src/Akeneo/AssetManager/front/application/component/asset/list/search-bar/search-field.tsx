@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {SearchIcon, getColor, getFontSize, useAutoFocus} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import useDebounce from 'akeneoassetmanager/platform/hook/use-debounce';
 
 type SearchFieldProps = {

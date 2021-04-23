@@ -2,8 +2,7 @@ import React, {RefObject, createRef} from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 import {Button, Key, CloseIcon, Modal, SectionTitle, getColor} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {Section, TextField} from '@akeneo-pim-community/shared';
+import {Section, TextField, useTranslate} from '@akeneo-pim-community/shared';
 import {getLabel} from 'pimui/js/i18n';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
@@ -252,7 +251,7 @@ const OptionRow = ({
             {displayDeleteRowButton ? (
               <CloseIcon
                 onClick={() => onOptionEditionDelete(index)}
-                onKeyPress={(event: React.KeyboardEvent<SVGElement>) => {
+                onKeyPress={event => {
                   if (Key.Space === event.key) onOptionEditionDelete(index);
                 }}
                 className="AknOptionEditor-remove"

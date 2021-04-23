@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, AssetsIllustration, getColor, Helper, useBooleanState} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {Pill} from 'akeneoassetmanager/application/component/app/pill';
 import {Label} from 'akeneoassetmanager/application/component/app/label';

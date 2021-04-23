@@ -3,7 +3,7 @@ import Locale from 'akeneoassetmanager/domain/model/locale';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
 import {Key} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 const LocaleItemView = ({
   isOpen,

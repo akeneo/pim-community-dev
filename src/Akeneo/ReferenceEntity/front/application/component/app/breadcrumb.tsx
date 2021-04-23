@@ -1,6 +1,6 @@
 import React from 'react';
 import {Breadcrumb} from 'akeneo-design-system';
-import {useRoute, useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useRoute, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 
 type RefEntityBreadcrumbProps = {
   referenceEntityIdentifier: string;

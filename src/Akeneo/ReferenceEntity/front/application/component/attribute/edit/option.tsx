@@ -226,7 +226,7 @@ const optionRow = ({
             {displayDeleteRowButton ? (
               <CloseIcon
                 onClick={() => onOptionEditionDelete(index)}
-                onKeyPress={(event: React.KeyboardEvent<SVGElement>) => {
+                onKeyPress={event => {
                   if (Key.Space === event.key) onOptionEditionDelete(index);
                 }}
                 color={pimTheme.color.grey100}

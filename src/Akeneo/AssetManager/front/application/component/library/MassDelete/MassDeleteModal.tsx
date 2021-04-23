@@ -1,8 +1,7 @@
 import React, {useState, useRef} from 'react';
 import styled from 'styled-components';
 import {Field, TextInput, useAutoFocus} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {DeleteModal} from '@akeneo-pim-community/shared';
+import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 type MassDeleteModalProps = {

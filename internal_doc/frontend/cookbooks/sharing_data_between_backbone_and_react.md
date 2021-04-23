@@ -280,7 +280,7 @@ export = MyBridgeView;
 ```tsx
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { Button, DangerIcon } from "akeneo-design-system";
-import { useMediator } from "@akeneo-pim-community/legacy-bridge";
+import { useMediator } from "@akeneo-pim-community/shared";
 
 type Product = {
   identifier: string;

@@ -2,7 +2,7 @@ import React, {ReactNode} from 'react';
 import {screen, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {UpdaterRow} from './UpdaterRow';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
 import {view as TextInput} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/text';
 import Channel from 'akeneoassetmanager/domain/model/channel';

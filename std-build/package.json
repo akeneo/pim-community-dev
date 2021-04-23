@@ -12,16 +12,16 @@
     "webpack": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
     "webpack-dev": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
     "less": "node $npm_package_config_styles",
-    "update-extensions": "node vendor/akeneo/pim-community-dev/frontend/build/update-extensions.js",
-    "generate-asset-manager-models": "node vendor/akeneo/pim-community-dev/frontend/build/json-schema-to-typescript.js vendor/akeneo/pim-enterprise-dev/src/Akeneo/AssetManager/definitions/ public/bundles/akeneoassetmanager/infrastructure/model/",
-    "generate-models": "yarn generate-asset-manager-models && yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models"
+    "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
+    "generate-asset-manager-models": "node $npm_package_config_source/frontend/build/json-schema-to-typescript.js vendor/akeneo/pim-enterprise-dev/src/Akeneo/AssetManager/definitions/ public/bundles/akeneoassetmanager/infrastructure/model/",
+    "generate-models": "yarn generate-asset-manager-models && yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
+    "packages:build": "yarn --cwd=vendor/akeneo/pim-enterprise-dev packages:build"
   },
   "workspaces": [
     "vendor/akeneo/pim-enterprise-dev",
     "vendor/akeneo/pim-community-dev",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/front",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge",
-    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front",
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Automation/DataQualityInsights/front",
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Automation/RuleEngine/front",

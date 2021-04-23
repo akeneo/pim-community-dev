@@ -24,10 +24,10 @@ node_modules: yarn.lock
 javascript-extensions:
 	$(YARN_RUN) run update-extensions
 
-.PHONY: dsm
-dsm:
-	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 $(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system install --frozen-lockfile
-	$(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system run lib:build
+
+.PHONY: front-packages
+front-packages:
+	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 $(YARN_RUN) packages:build
 
 .PHONY: assets
 assets:
@@ -40,12 +40,12 @@ css:
 	$(YARN_RUN) run less
 
 .PHONY: javascript-prod
-javascript-prod: dsm
+javascript-prod: front-packages
 	$(CMD_ON_PROJECT) rm -rf public/dist
 	$(YARN_RUN) run webpack
 
 .PHONY: javascript-dev
-javascript-dev: dsm
+javascript-dev: front-packages
 	$(CMD_ON_PROJECT) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev
 

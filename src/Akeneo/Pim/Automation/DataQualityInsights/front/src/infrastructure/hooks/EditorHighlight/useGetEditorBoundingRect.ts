@@ -42,7 +42,7 @@ const useGetEditorBoundingClientRect = (editor: EditorElement) => {
     };
     window.addEventListener('resize', handleResize);
 
-    const editorResizeObserver = new ResizeObserver(entries => {
+    const editorResizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
       for (let entry of entries) {
         if (entry.target === editor) {
           handleResize();

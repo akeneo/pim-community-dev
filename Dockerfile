@@ -135,7 +135,7 @@ COPY public public
 COPY frontend frontend
 COPY src src
 COPY upgrades upgrades
-COPY akeneo-design-system akeneo-design-system
+COPY front-packages front-packages
 COPY composer.json package.json yarn.lock .env tsconfig.json *.js .
 
 ENV APP_ENV=prod
@@ -157,9 +157,7 @@ RUN mkdir var && \
     yarnpkg install --frozen-lockfile && \
     yarnpkg run update-extensions && \
     yarnpkg run less && \
-    (test -d vendor/akeneo/pim-community-dev/akeneo-design-system && \
-        { yarnpkg --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system install --frozen-lockfile;yarnpkg --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system run lib:build; } || \
-        { yarnpkg --cwd=akeneo-design-system install --frozen-lockfile; yarnpkg --cwd=akeneo-design-system run lib:build; } ) && \
+    yarnpkg run packages:build && \
     EDITION=cloud yarnpkg run webpack && \
     find . -type d -name node_modules | xargs rm -rf && \
     rm -rf public/test_dist && \

@@ -1,6 +1,6 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import EmptyResult from 'akeneoassetmanager/application/component/asset/list/mosaic/empty-result';
 
 test('It displays a notification', () => {

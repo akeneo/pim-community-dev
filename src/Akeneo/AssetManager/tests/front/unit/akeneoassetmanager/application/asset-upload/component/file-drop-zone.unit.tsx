@@ -1,6 +1,6 @@
 import React from 'react';
 import {fireEvent, screen} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import FileDropZone from 'akeneoassetmanager/application/asset-upload/component/file-drop-zone';
 
 describe('Test file-drop-zone component', () => {

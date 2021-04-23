@@ -1,7 +1,7 @@
 import React from 'react';
 import {Locale as LocaleFlag, SelectInput} from 'akeneo-design-system';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type LocaleDropdownProps = {
   title?: string;

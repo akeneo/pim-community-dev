@@ -86,27 +86,28 @@ jobs:
           name: Build css
           command: make css
       - run:
-          name: Create hash for DSM version
+          name: Create hash for front packages
           command: |
-            find vendor/akeneo/pim-community-dev/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
-            date +%F >> ~/akeneo-design-system.hash
+            find vendor/akeneo/pim-community-dev/front-packages -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/front-packages.hash
+            date +%F >> ~/front-packages.hash
       - run:
-          name: Set DSM directory owner to circleci
-          command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/akeneo-design-system
+          name: Set front-packages directory owner to circleci
+          command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/front-packages
       - restore_cache:
-          name: Restore DSM cache
-          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+          name: Restore front-packages cache
+          key: front-packages-libs-{{ checksum "~/front-packages.hash" }}
       - run:
-          name: Set DSM directory owner to docker
-          command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/akeneo-design-system
+          name: Set front-packages directory owner to docker
+          command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/front-packages
       - run:
-          name: Build DSM
-          command: test -d vendor/akeneo/pim-community-dev/akeneo-design-system/lib || make dsm
+          name: Build front-packages
+          command: ls vendor/akeneo/pim-community-dev/front-packages/*/lib 1> /dev/null 2>&1 || make front-packages
       - save_cache:
-          name: Save DSM cache
-          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+          name: Save front-packages cache
+          key: front-packages-libs-{{ checksum "~/front-packages.hash" }}
           paths:
-            - vendor/akeneo/pim-community-dev/akeneo-design-system/lib
+            - vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/lib
+            - vendor/akeneo/pim-community-dev/front-packages/shared/lib
       - run:
           name: Build Javascript
           command: make javascript-dev

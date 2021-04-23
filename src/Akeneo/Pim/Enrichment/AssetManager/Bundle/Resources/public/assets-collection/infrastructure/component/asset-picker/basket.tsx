@@ -6,7 +6,7 @@ import AssetItem from 'akeneopimenrichmentassetmanager/assets-collection/infrast
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import ListAsset, {createEmptyAsset, getAssetByCode} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type BasketProps = {
   dataProvider: any;

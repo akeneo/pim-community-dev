@@ -1,7 +1,7 @@
 import React, {KeyboardEvent} from 'react';
 import {MenuDropdown} from 'akeneoassetmanager/application/component/app/MenuDropdown';
 import {getColor, getFontSize, Key, Link, useBooleanState} from 'akeneo-design-system';
-import {useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {Tab} from 'akeneoassetmanager/application/configuration/sidebar';
 

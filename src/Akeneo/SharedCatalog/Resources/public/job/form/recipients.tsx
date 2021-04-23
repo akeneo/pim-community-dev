@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef, useCallback, ChangeEvent, SyntheticEvent} from 'react';
 import styled, {ThemeProvider} from 'styled-components';
-import {SearchBar} from '@akeneo-pim-community/shared';
-import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {SearchBar, useTranslate} from '@akeneo-pim-community/shared';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {HeaderCell, LabelCell, Row, Table} from 'akeneosharedcatalog/common/Table';
 import {
   AkeneoThemedProps,

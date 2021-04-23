@@ -10,7 +10,7 @@ import {
   SectionTitle,
   useProgress,
 } from 'akeneo-design-system';
-import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {getErrorsForPath, NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
@@ -22,7 +22,6 @@ import Channel from 'akeneoassetmanager/domain/model/channel';
 import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
 import {useMassEdit} from 'akeneoassetmanager/application/component/library/MassEdit/hooks/useMassEdit';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
-import {getErrorsForPath} from '@akeneo-pim-community/shared';
 
 const Container = styled.div`
   width: 100%;

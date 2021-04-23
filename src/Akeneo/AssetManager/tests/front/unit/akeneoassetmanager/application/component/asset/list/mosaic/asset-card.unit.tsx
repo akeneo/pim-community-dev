@@ -1,6 +1,6 @@
 import React from 'react';
 import {screen, fireEvent, act} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import AssetCard from 'akeneoassetmanager/application/component/asset/list/mosaic/asset-card';
 import loadImage from 'akeneoassetmanager/tools/image-loader';
 

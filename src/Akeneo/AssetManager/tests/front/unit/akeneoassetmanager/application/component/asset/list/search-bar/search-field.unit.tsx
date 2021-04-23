@@ -2,7 +2,7 @@ import React from 'react';
 import SearchField from 'akeneoassetmanager/application/component/asset/list/search-bar/search-field';
 import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 
 // We need to use fake timers because SearchField uses a debounce function
 jest.useFakeTimers();

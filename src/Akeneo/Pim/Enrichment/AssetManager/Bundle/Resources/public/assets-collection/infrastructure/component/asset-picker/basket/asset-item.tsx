@@ -8,7 +8,7 @@ import ListAsset, {
   getAssetLabel,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 const Container = styled.li`
   padding: 10px 0;

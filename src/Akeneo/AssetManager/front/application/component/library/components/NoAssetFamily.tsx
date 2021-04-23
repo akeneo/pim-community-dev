@@ -1,5 +1,4 @@
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {NoDataSection, NoDataText, NoDataTitle} from '@akeneo-pim-community/shared';
+import {NoDataSection, NoDataText, NoDataTitle, useTranslate} from '@akeneo-pim-community/shared';
 import {AssetsIllustration, Information, Link} from 'akeneo-design-system';
 import React from 'react';
 

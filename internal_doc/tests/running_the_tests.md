@@ -220,14 +220,12 @@ If you want to fix code issues:
 $ yarn run lint-fix
 ```
 
-### Jest + Enzyme
+### Jest
 
 Official websites:
 - Jest: https://jestjs.io/
-- Enzyme: https://github.com/airbnb/enzyme
 
 `Jest` is a JavaScript testing platform. In Akeneo PIM, it is used for both unit and integration front-end tests.
-`Enzyme` is used to help test some specific part of the front-end code written with React.
 
 If you want to run all the unit tests:
 ```bash

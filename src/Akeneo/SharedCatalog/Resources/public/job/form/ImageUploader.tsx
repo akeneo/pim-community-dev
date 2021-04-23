@@ -1,6 +1,6 @@
 import React, {useState, useEffect, ChangeEvent} from 'react';
 import styled from 'styled-components';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {CloseIcon, Helper} from 'akeneo-design-system';
 
 const PLACEHOLDER_PATH = '/bundles/pimui/images/illustrations/Import.svg';

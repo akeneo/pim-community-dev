@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
 import {Helper, Link} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {AddWordsForm} from './Dictionary/AddWordsForm';
 import {useDictionaryState} from '../../../infrastructure';
 import {WordsGrid} from './Dictionary/WordsGrid';

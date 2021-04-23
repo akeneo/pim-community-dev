@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import {connect} from 'react-redux';
 import {Key, Button, SectionTitle} from 'akeneo-design-system';
-import {useTranslate, Translate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, Translate} from '@akeneo-pim-community/shared';
 import {attributeCreationStart} from 'akeneoassetmanager/domain/event/attribute/create';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {CreateState} from 'akeneoassetmanager/application/reducer/attribute/create';

@@ -2,7 +2,7 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import RowStatus from 'akeneoassetmanager/application/asset-upload/component/row-status';
 import {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 
 describe('Test row-status component', () => {
   test('It renders without errors', () => {

@@ -1,5 +1,5 @@
 import {useCallback} from 'react';
-import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 
 const Routing = require('routing');
 

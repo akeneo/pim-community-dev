@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {CardGrid, Helper} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import AssetCard from 'akeneoassetmanager/application/component/asset/list/mosaic/asset-card';
 import EmptyResult from 'akeneoassetmanager/application/component/asset/list/mosaic/empty-result';

@@ -8,7 +8,7 @@ import {
   MediaFileInput,
   useBooleanState,
 } from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {FullscreenPreview} from 'akeneo-design-system/lib/storybook';
 import styled from 'styled-components';
 

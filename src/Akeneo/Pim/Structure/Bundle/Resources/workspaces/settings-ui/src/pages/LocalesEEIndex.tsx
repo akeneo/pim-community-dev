@@ -1,6 +1,6 @@
 import React, {FC, useEffect} from 'react';
-import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
-import {PimView, useRoute, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {PageContent, PageHeader, useRoute, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
+import {PimView} from '@akeneo-pim-community/legacy-bridge';
 import {useLocalesIndexState} from '@akeneo-pim-community/settings-ui';
 import styled from 'styled-components';
 import {Breadcrumb, getColor, Helper as BaseHelper} from 'akeneo-design-system';

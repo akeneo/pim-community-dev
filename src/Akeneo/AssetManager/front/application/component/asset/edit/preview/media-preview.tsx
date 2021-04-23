@@ -22,7 +22,7 @@ import {MediaPreviewType, emptyMediaPreview} from 'akeneoassetmanager/domain/mod
 import {getMediaData, MediaData, isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {useReloadPreview} from 'akeneoassetmanager/application/hooks/useReloadPreview';
 
 const Image = styled.img`

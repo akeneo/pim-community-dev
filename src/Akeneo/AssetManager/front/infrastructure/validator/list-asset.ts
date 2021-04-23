@@ -1,4 +1,4 @@
-import {validateAgainstSchema} from '@akeneo-pim-community/shared';
+import {validateAgainstSchema} from '@akeneo-pim-community/legacy-bridge';
 import {BackendListAsset} from 'akeneoassetmanager/infrastructure/model/list-asset';
 import listAssetSchema from 'akeneoassetmanager/infrastructure/model/list-asset.schema.json';
 

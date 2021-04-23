@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {getColor} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import Locale, {localeExists, LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel, {ChannelCode} from 'akeneoassetmanager/domain/model/channel';

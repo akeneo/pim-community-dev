@@ -1,6 +1,6 @@
 import React from 'react';
 import {Card, Link} from 'akeneo-design-system';
-import {useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {useRoute} from '@akeneo-pim-community/shared';
 import Product, {isProductModel} from 'akeneoreferenceentity/domain/model/product/product';
 import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import Completeness from 'akeneoreferenceentity/domain/model/product/completeness';

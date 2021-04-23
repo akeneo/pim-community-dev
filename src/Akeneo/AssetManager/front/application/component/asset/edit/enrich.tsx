@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 import {getColor, SectionTitle} from 'akeneo-design-system';
-import {Section} from '@akeneo-pim-community/shared';
+import {Section, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {assetValueUpdated, saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset/edit/form';
@@ -13,7 +13,6 @@ import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/
 import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import LinkedProducts from 'akeneoassetmanager/application/component/asset/edit/linked-products';
 import {MainMediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/main-media-preview';
-import {useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
   display: flex;

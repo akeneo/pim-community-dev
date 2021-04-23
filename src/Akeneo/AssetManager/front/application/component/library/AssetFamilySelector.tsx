@@ -6,7 +6,7 @@ import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {ColumnTitle} from 'akeneoassetmanager/application/component/app/column';
 import {AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type AssetFamilySelectorProps = {
   assetFamilyIdentifier: AssetFamilyIdentifier | null;

@@ -1,7 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {FollowLocaleHandler, Locale, NoResults, useFilteredLocales} from '@akeneo-pim-community/settings-ui';
-import {SearchBar, useDebounceCallback} from '@akeneo-pim-community/shared';
+import {SearchBar, useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
 import {Badge, Table, getColor} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {useLocaleSelection} from '../../hooks/locales/useLocaleSelection';

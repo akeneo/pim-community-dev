@@ -1,6 +1,6 @@
 import React, {FC, useState} from 'react';
 import {Button, Field, LocaleIllustration, Modal, TagInput, getColor} from 'akeneo-design-system';
-import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useLocalesGridDictionariesState} from '../../hooks';
 import {useLocaleSelection} from '../../hooks/locales/useLocaleSelection';

@@ -1,7 +1,7 @@
 import React from 'react';
 import {AkeneoThemedProps, ArrowDownIcon, Button, Dropdown, getColor, useBooleanState} from 'akeneo-design-system';
 import {getLabel} from 'pimui/js/i18n';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import styled, {css} from 'styled-components';

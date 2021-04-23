@@ -4,7 +4,7 @@ import AssetFamilyIdentifier, {
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import {normalizeUpdaterCollection} from '../model/updater';
-import {useRouter} from '@akeneo-pim-community/legacy-bridge/src';
+import {useRouter} from '@akeneo-pim-community/shared';
 
 const useMassEdit = () => {
   const router = useRouter();

@@ -1,6 +1,6 @@
 import React from 'react';
 import {screen, fireEvent} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {RuleNotification} from 'akeneoassetmanager/platform/component/rule-notification';
 
 jest.mock('pim/security-context', () => ({
@@ -11,7 +11,7 @@ jest.mock('pim/security-context', () => ({
 
 const redirect = jest.fn();
 
-jest.mock('@akeneo-pim-community/legacy-bridge/src/hooks/useRouter', () => ({
+jest.mock('@akeneo-pim-community/shared/lib/hooks/useRouter', () => ({
   useRouter: () => {
     return {
       redirect,
@@ -20,7 +20,7 @@ jest.mock('@akeneo-pim-community/legacy-bridge/src/hooks/useRouter', () => ({
   },
 }));
 
-jest.mock('@akeneo-pim-community/legacy-bridge/src/hooks/useTranslate', () => ({
+jest.mock('@akeneo-pim-community/shared/lib/hooks/useTranslate', () => ({
   useTranslate: () => {
     return jest.fn((key: string, params: any, count: number) => {
       switch (key) {

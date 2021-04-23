@@ -1,8 +1,7 @@
-import {useMediator, useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {ProposalModal} from './ProposalModal';
 import React from 'react';
 import {Button, IconButton, useBooleanState, CheckIcon, CloseIcon} from 'akeneo-design-system';
-import {LocaleCode} from '@akeneo-pim-community/shared';
+import {LocaleCode, useMediator, useRouter, useTranslate} from '@akeneo-pim-community/shared';
+import {ProposalModal} from './ProposalModal';
 
 type ProposalId = number;
 type AttributeCode = string;

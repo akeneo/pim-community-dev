@@ -1,6 +1,6 @@
 import React from 'react';
 import {screen, fireEvent} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import Mosaic from 'akeneoassetmanager/application/component/asset/list/mosaic';
 
 const context = {locale: 'en_US', channel: 'ecommerce'};

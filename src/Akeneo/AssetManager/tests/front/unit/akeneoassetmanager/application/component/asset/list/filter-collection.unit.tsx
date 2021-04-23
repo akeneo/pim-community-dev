@@ -6,7 +6,7 @@ import FilterCollection, {
 } from 'akeneoassetmanager/application/component/asset/list/filter-collection';
 import {denormalize} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {renderHook} from '@testing-library/react-hooks';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 
 const attributes = [
   {
