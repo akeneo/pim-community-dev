@@ -1,7 +1,7 @@
 import React, {FC, useRef} from 'react';
 import {VictoryAxis, VictoryChart, VictoryLine} from 'victory';
 import {useTheme} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {useGetDashboardChartScalingSizeRatio} from '../../../../infrastructure/hooks';
 
 const UserContext = require('pim/user-context');

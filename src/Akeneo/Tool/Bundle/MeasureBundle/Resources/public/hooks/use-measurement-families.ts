@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useState} from 'react';
 import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {baseFetcher} from 'akeneomeasure/shared/fetcher/base-fetcher';
-import {useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {useRoute} from '@akeneo-pim-community/shared';
 
 const useMeasurementFamilies = (): [MeasurementFamily[] | null, () => Promise<void>] => {
   const [measurementFamilies, setMeasurementFamilies] = useState<MeasurementFamily[] | null>(null);

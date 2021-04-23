@@ -1,6 +1,5 @@
 import React from 'react';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {useToggleState, useStorageState} from '@akeneo-pim-community/shared';
+import {useToggleState, useTranslate, useStorageState} from '@akeneo-pim-community/shared';
 import {Form, FormValue} from './Form';
 import {Select} from './Select';
 import {Option} from './Option';

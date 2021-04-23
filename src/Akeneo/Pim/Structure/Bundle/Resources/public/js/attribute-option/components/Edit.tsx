@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {AttributeOption, Locale} from '../model';
 import {EditingOptionContextProvider, useLocalesContext} from '../contexts';
 import AttributeOptionForm from './AttributeOptionForm';

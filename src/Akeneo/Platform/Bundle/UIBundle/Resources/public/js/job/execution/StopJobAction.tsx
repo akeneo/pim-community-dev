@@ -1,7 +1,6 @@
 import React, {SyntheticEvent} from 'react';
-import {useRoute, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {Button, ButtonProps, ExportIllustration, Helper, Link, Modal} from 'akeneo-design-system';
-import {useToggleState} from '@akeneo-pim-community/shared';
+import {useRoute, useSecurity, useTranslate, useToggleState} from '@akeneo-pim-community/shared';
 
 type StopJobActionProps = {
   id: string;
