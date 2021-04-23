@@ -80,8 +80,12 @@ const ProductCurrentCompleteness: FC<Props> = ({
   return (
     <StyledDropdown>
       <SwitcherButton inline onClick={open} label={translate('pim_enrich.entity.product.module.completeness.complete')}>
-        <Badge level={getCompletenessVariationLevel(currentCompleteness.channelRatio)}>
-          {`${currentCompleteness.channelRatio}%`}
+        <Badge
+          level={getCompletenessVariationLevel(
+            currentCompleteness.localesCompleteness[userContext.get('catalogLocale')].ratio
+          )}
+        >
+          {`${currentCompleteness.localesCompleteness[userContext.get('catalogLocale')].ratio}%`}
         </Badge>
       </SwitcherButton>
       {isOpen && (
