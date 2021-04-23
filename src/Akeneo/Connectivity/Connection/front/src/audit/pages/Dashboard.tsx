@@ -27,7 +27,7 @@ export const Dashboard = memo(() => {
     useFetchConnectionsAuditData(AuditEventType.PRODUCT_UPDATED);
     useFetchConnectionsAuditData(AuditEventType.PRODUCT_READ);
 
-    const dashboardHref = `#${useRoute('pim_dashboard_index')}`;
+    const dashboardHref = `#${useRoute('akeneo_connectivity_connection_audit_index')}`;
 
     const breadcrumb = (
         <Breadcrumb>
