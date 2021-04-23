@@ -1,19 +1,24 @@
-import {Button, useBooleanState} from 'akeneo-design-system';
-import {useRoute, useTranslate} from '@akeneo-pim-community/shared';
-import {useEffect} from 'react';
+import {Button, TagIcon} from 'akeneo-design-system';
+import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 
 const Column = ({jobCode}: {jobCode: string}) => {
-  const [test, open, close] = useBooleanState();
   const translate = useTranslate();
-  const route = useRoute('pim_enrich_measures_rest_index');
+  const notify = useNotify();
 
-  useEffect(() => {
-    fetch(route);
-  }, []);
+  const handleClick = () => {
+    notify(
+      NotificationLevel.SUCCESS,
+      'Coucou',
+      <span>
+        dddsd <em>fewfewf</em>
+      </span>,
+      <TagIcon />
+    );
+  };
 
   return (
-    <Button level="secondary" onClick={test ? close : open}>
-      {translate('pim_common.edit')}: {jobCode}! {test ? 'nice' : 'cool'}
+    <Button level="secondary" onClick={handleClick}>
+      {translate('pim_common.edit')}: {jobCode}!
     </Button>
   );
 };

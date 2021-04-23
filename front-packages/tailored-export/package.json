@@ -35,8 +35,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lib:build": "tsc -p ./tsconfig.build.json",
-    "translation:build": "cp ../../public/js/translation/en_US.js ./src/translations.json",
-    "route:build": "cp ../../public/js/fos_js_routes.json ./src/routes.json",
+    "translation:build": "cp ../../../../../public/js/translation/en_US.js ./src/translations.json",
+    "route:build": "cp ../../../../../public/js/fos_js_routes.json ./src/routes.json",
     "packages:build": "yarn --cwd=../akeneo-design-system run lib:build && yarn --cwd=../shared run lib:build"
   },
   "eslintConfig": {

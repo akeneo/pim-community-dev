@@ -3,15 +3,17 @@ import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {Column} from './feature';
 import {pimTheme} from 'akeneo-design-system';
-import {MicroFrontendDependenciesProvider} from './MicroFrontendDependenciesProvider';
+import {MicroFrontendDependenciesProvider, Routes, Translations} from '@akeneo-pim-community/shared';
+import {routes} from './routes.json';
+import translations from './translations.json';
 
 ReactDOM.render(
   <React.StrictMode>
-    <MicroFrontendDependenciesProvider>
-      <ThemeProvider theme={pimTheme}>
+    <ThemeProvider theme={pimTheme}>
+      <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations as Translations}>
         <Column jobCode="test" />
-      </ThemeProvider>
-    </MicroFrontendDependenciesProvider>
+      </MicroFrontendDependenciesProvider>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
