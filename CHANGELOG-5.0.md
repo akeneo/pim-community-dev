@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.21 (2021-04-23)
+
 PIM-9823: [Backport] PIM-9734: Fix URI too long for rules on smart attributes
 
 # 5.0.20 (2021-04-22)
