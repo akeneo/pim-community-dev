@@ -2,7 +2,7 @@ import React from 'react';
 import {fireEvent, screen} from '@testing-library/react';
 import {QuantifiedAssociationRow} from '../../../../Resources/public/js/product/form/quantified-associations/components/QuantifiedAssociationRow';
 import {Product, ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 
 const product: Product = {
   id: 1,

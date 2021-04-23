@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {QualityScore} from '../../../QualityScore';
 import styled, {css} from 'styled-components';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type ReversibleProps = {
   flip?: boolean;

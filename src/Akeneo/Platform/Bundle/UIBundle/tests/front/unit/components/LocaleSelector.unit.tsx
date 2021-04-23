@@ -1,8 +1,8 @@
 import React from 'react';
 import {act, screen} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {fireEvent} from '@testing-library/dom';
-import {LocaleSelector} from '../../../../Resources/workspaces/shared';
+import {LocaleSelector} from '@akeneo-pim-community/shared';
 
 const locales = [
   {

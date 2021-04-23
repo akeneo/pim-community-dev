@@ -4,7 +4,7 @@ import {AttributeOptionsState} from '../store/store';
 import {initializeAttributeOptionsAction} from '../reducers';
 import baseFetcher from '../fetchers/baseFetcher';
 import {useAttributeContext} from '../contexts';
-import {useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {useRoute} from '@akeneo-pim-community/shared';
 
 const useAttributeOptions = () => {
   const dispatchAction = useDispatch();

@@ -1,7 +1,7 @@
 import React from 'react';
 import {fireEvent, screen} from '@testing-library/react';
 import {UnitRow} from 'akeneomeasure/pages/edit/unit-tab/UnitRow';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 
 const unit = {
   code: 'SQUARE_METER',
