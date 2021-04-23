@@ -82,9 +82,9 @@ type SearchProps = {
   onSearchChange: (searchValue: string) => void;
 };
 
-const Search = ({children, placeholder, title, searchValue, onSearchChange}: SearchProps) => {
+const Search = ({children, placeholder, title, searchValue, onSearchChange, ...rest}: SearchProps) => {
   return (
-    <Container>
+    <Container {...rest}>
       <SearchContainer>
         <SearchIcon size={20} />
         <SearchInput
