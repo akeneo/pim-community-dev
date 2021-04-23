@@ -28,7 +28,7 @@ final class GetAttributesRulesNumberController
 
     public function __invoke(Request $request): JsonResponse
     {
-        $attributeCodes = $request->query->get('attributes');
+        $attributeCodes = $request->get('attributes');
 
         $attributesRulesNumber = [];
         if (is_array($attributeCodes) && !empty($attributeCodes)) {

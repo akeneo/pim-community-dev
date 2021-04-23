@@ -28,7 +28,7 @@ pimee_enrich_rule_relation_get:
 pimee_enrich_family_attributes_rules_number:
     path: /rest/family_attributes_rules
     defaults: { _controller: Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\GetAttributesRulesNumberController }
-    methods: [GET]
+    methods: [POST]
 
 pimee_catalog_rule_edit:
     path: /configuration/rules/edit/{code}
