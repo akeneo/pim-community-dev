@@ -49,7 +49,7 @@ jobs:
       # In this step we take the package.json file of the external repository to generate the new
       # version number. To do so, we take every commit messages and spot #patch #minor and #major tags
       - name: Bump package version
-        run: cd front-packages/akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ../external/package.json ../commit-messages.txt
+        run: cd front-packages/akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ../../external/package.json ../../commit-messages.txt
 
       - uses: actions/upload-artifact@v1
         with:
