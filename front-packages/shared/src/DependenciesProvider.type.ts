@@ -1,3 +1,6 @@
+import {ReactElement, ReactNode} from 'react';
+import {IconProps} from 'akeneo-design-system';
+
 enum NotificationLevel {
   INFO = 'info',
   SUCCESS = 'success',
@@ -5,7 +8,7 @@ enum NotificationLevel {
   ERROR = 'error',
 }
 
-type Notify = (level: NotificationLevel, message: string) => void;
+type Notify = (level: NotificationLevel, message: string, children?: ReactNode, icon?: ReactElement<IconProps>) => void;
 
 type RouteParams = {[param: string]: any};
 

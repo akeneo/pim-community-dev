@@ -28,7 +28,8 @@
     "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
     "dsm:build": "yarn --cwd=front-packages/akeneo-design-system install --frozen-lockfile; yarn --cwd=front-packages/akeneo-design-system lib:build",
     "shared:build": "yarn --cwd=front-packages/shared install --frozen-lockfile; yarn --cwd=front-packages/shared lib:build",
-    "packages:build": "yarn dsm:build; yarn shared:build",
+    "tailored-export:build": "yarn --cwd=front-packages/tailored-export install --frozen-lockfile; yarn --cwd=front-packages/tailored-export lib:build",
+    "packages:build": "yarn dsm:build; yarn shared:build; yarn tailored-export:build",
     "packages:unit": "yarn --cwd=front-packages/shared test:unit:run"
   },
   "repository": {
@@ -109,6 +110,7 @@
   },
   "dependencies": {
     "@akeneo-pim-community/shared": "link:front-packages/shared",
+    "@akeneo-pim-community/tailored-export": "link:front-packages/tailored-export",
     "ajv": "^6.10.2",
     "akeneo-design-system": "link:front-packages/akeneo-design-system",
     "babel-polyfill": "6.26.0",
