@@ -55,6 +55,8 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
     const isActiveEventSubscriptionsLimitReached = () =>
         activeEventSubscriptionsLimit.current >= activeEventSubscriptionsLimit.limit;
 
+    const connectCode = webhook.connectionCode;
+
     return (
         <>
             <FormGroup
@@ -127,9 +129,15 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
             <CredentialList>
                 <CopiableCredential
                     label={translate('akeneo_connectivity.connection.connection.secret')}
-                    actions={<RegenerateButton onClick={() => history.push(
-                        `/connect/connection-settings/${webhook.connectionCode}/event-subscription/regenerate-secret`
-                    )}/>}
+                    actions={
+                        <RegenerateButton
+                            onClick={() =>
+                                history.push(
+                                    `/connect/connection-settings/${connectCode}/event-subscription/regenerate-secret`
+                                )
+                            }
+                        />
+                    }
                 >
                     {webhook.secret || ''}
                 </CopiableCredential>
