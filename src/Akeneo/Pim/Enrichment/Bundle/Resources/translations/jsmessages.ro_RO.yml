@@ -262,6 +262,7 @@ pim_enrich.mass_edit.product:
       label: Adăugați la un model de produs existent
       description: Modelul produsului selectat va strânge produsele și permite îmbogățirea proprietăților lor comune.
 pim_datagrid:
+  search: "Caută în {{ label }}"
   mass_action_group:
     bulk_actions:
       label: Acțiuni în masă
