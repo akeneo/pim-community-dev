@@ -50,9 +50,7 @@ export const RedirectConnectionDashboardToConnectMenu = () => {
             <PageContent>
                 <ClientErrorIllustration width={500} height={250} />
 
-                <Heading>
-                    {translate('akeneo_connectivity.connection.connect.redirect.title')}
-                </Heading>
+                <Heading>{translate('akeneo_connectivity.connection.connect.redirect.title')}</Heading>
                 <Caption>
                     <HelperLink href={`#${generateUrl('akeneo_connectivity_connection_audit_index')}`}>
                         <Translate id='akeneo_connectivity.connection.connect.redirect.link' />
