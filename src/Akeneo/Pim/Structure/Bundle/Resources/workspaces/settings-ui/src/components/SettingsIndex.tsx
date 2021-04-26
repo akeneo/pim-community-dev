@@ -1,5 +1,12 @@
 import React from 'react';
-import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
+import {
+  FullScreenError,
+  PageContent,
+  PageHeader,
+  useRouter,
+  useSecurity,
+  useTranslate,
+} from '@akeneo-pim-community/shared';
 import {
   AssociateIcon,
   AttributeFileIcon,
@@ -19,7 +26,6 @@ import {
   ValueIcon,
 } from 'akeneo-design-system';
 import {PimView} from '@akeneo-pim-community/legacy-bridge';
-import {useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 
 const SectionContent = styled.div`
@@ -61,6 +67,16 @@ const SettingsIndex = () => {
   const redirectToRoute = (route: string) => {
     router.redirect(router.generate(route));
   };
+
+  if (!canAccessCatalogSettings && !canAccessProductSettings) {
+    return (
+      <FullScreenError
+        title={translate('error.exception', {status_code: 403})}
+        message={translate('error.forbidden')}
+        code={403}
+      />
+    );
+  }
 
   return (
     <>
