@@ -256,12 +256,12 @@ class DateRangeFilterSpec extends ObjectBehavior
 
     function it_does_not_parse_array_with_more_than_filter_and_no_start_date()
     {
-        $this->parseData(['value' => ['start' => null], 'type' => 3])->shouldReturn(false);
+        $this->parseData(['value' => ['start' => null], 'type' => DateRangeFilterType::TYPE_MORE_THAN])->shouldReturn(false);
     }
 
     function it_does_not_parse_array_with_less_than_filter_and_no_end_date()
     {
-        $this->parseData(['value' => ['end' => null], 'type' => 4])->shouldReturn(false);
+        $this->parseData(['value' => ['end' => null], 'type' => DateRangeFilterType::TYPE_LESS_THAN])->shouldReturn(false);
     }
 
     function it_applies_between_date_range_filter(
