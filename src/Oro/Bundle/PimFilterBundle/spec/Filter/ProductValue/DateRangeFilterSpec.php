@@ -254,6 +254,16 @@ class DateRangeFilterSpec extends ObjectBehavior
         $this->parseData(['value' => ['end' => 'tomorrow'], 'type' => 1])->shouldReturn(false);
     }
 
+    function it_does_not_parse_array_with_more_than_filter_and_no_start_date()
+    {
+        $this->parseData(['value' => ['start' => null], 'type' => 3])->shouldReturn(false);
+    }
+
+    function it_does_not_parse_array_with_less_than_filter_and_no_end_date()
+    {
+        $this->parseData(['value' => ['end' => null], 'type' => 4])->shouldReturn(false);
+    }
+
     function it_applies_between_date_range_filter(
         FilterDatasourceAdapterInterface $datasource,
         \DateTime $start,
