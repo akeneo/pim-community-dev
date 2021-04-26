@@ -1,7 +1,7 @@
 import React from 'react';
-import {PageHeader} from '@akeneo-pim-community/shared';
+import {PageHeader, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {Breadcrumb} from 'akeneo-design-system';
-import {PimView, useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {PimView} from '@akeneo-pim-community/legacy-bridge';
 import {generateRandomNumber} from '../helpers';
 
 const MediaUrlGenerator = require('pim/media-url-generator');

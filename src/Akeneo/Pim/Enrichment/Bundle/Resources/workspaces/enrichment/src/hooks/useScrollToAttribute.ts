@@ -1,7 +1,7 @@
 import {useEffect, useLayoutEffect, useState} from 'react';
 import {scrollToAttribute} from '../helpers';
 import {Product} from '../models';
-import {useMediator} from '@akeneo-pim-community/legacy-bridge';
+import {useMediator} from '@akeneo-pim-community/shared';
 
 const useScrollToAttribute = (product: Product) => {
   const [attributesLoaded, setAttributesLoaded] = useState(true);

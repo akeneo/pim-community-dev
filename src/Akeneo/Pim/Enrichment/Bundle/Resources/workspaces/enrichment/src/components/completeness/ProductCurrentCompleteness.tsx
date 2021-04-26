@@ -10,7 +10,7 @@ import {
   SwitcherButton,
   useBooleanState,
 } from 'akeneo-design-system';
-import {useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useScrollToAttribute} from '../../hooks';
 

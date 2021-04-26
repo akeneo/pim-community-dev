@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {getColor} from 'akeneo-design-system';
 import {usePimVersion} from '../hooks';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 const PimVersion = () => {
   const translate = useTranslate();

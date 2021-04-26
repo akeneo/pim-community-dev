@@ -1,7 +1,6 @@
 import React from 'react';
 import {Badge, Button, SectionTitle, SettingsIllustration, Table} from 'akeneo-design-system';
-import {useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {NoDataSection, NoDataText} from '@akeneo-pim-community/shared';
+import {NoDataSection, NoDataText, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {useDashboardLastOperations} from '../../hooks';
 import {Operation} from '../../domain';
 import styled from 'styled-components';

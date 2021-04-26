@@ -18,7 +18,8 @@ import {
   TagIcon,
   ValueIcon,
 } from 'akeneo-design-system';
-import {PimView, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {PimView} from '@akeneo-pim-community/legacy-bridge';
+import {useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 
 const SectionContent = styled.div`

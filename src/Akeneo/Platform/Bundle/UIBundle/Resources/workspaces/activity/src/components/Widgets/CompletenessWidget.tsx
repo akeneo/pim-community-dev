@@ -1,6 +1,6 @@
 import React from 'react';
 import {SectionTitle} from 'akeneo-design-system';
-import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useDashboardCompleteness} from '../../hooks';
 import {ChannelsLocalesCompleteness, ChannelsLocalesCompletenessRatios} from '@akeneo-pim-community/enrichment';
