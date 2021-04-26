@@ -40,6 +40,7 @@ const mockedDependencies = {
   mediator: {
     trigger: jest.fn((event: string) => event),
     on: jest.fn((event: string, _callback: () => void) => event),
+    off: jest.fn((event: string, _callback: () => void) => event),
   },
 };
 
