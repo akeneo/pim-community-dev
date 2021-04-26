@@ -94,7 +94,7 @@ const ProductCurrentCompleteness: FC<Props> = ({
         </Badge>
       </SwitcherButton>
       {isOpen && (
-        <Dropdown.Overlay verticalPosition="down" onClose={close}>
+        <Dropdown.Overlay className="completeness-block" verticalPosition="down" onClose={close}>
           <Dropdown.Header>
             <HeaderContainer>
               <Dropdown.Title>{translate('pim_enrich.entity.product.module.completeness.complete')}</Dropdown.Title>
@@ -107,7 +107,16 @@ const ProductCurrentCompleteness: FC<Props> = ({
             {Object.entries(currentCompleteness.localesCompleteness).map(
               ([localeCode, localeCurrentCompleteness]: [string, LocaleCurrentCompleteness]) => {
                 return (
-                  <LocaleCompletenessContainer key={localeCode}>
+                  <LocaleCompletenessContainer
+                    key={localeCode}
+                    // The props below are used with end to end tests
+                    // @see tests/legacy/features/pim/enrichment/product/completeness/completeness_dropdown.feature
+                    className="locale-completeness-block"
+                    data-locale={localeCode}
+                    data-progress={`${localeCurrentCompleteness.ratio}%`}
+                    data-label={localeCurrentCompleteness.label}
+                    data-missing-count={localeCurrentCompleteness.missingCount}
+                  >
                     <ProgressBar
                       title={localeCurrentCompleteness.label}
                       size="small"
@@ -129,6 +138,7 @@ const ProductCurrentCompleteness: FC<Props> = ({
                               <Fragment key={missingAttribute.code}>
                                 {index > 0 && <MissingAttributeSeparator>|</MissingAttributeSeparator>}
                                 <MissingAttributeLink
+                                  className="missing-attribute"
                                   decorated={false}
                                   onClick={() => followAttribute(localeCode, missingAttribute.code)}
                                 >
