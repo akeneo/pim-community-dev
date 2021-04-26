@@ -42,4 +42,7 @@ config:
         pim/controller/connectivity/connection/audit: akeneoconnectivityconnection/js/controller/audit.tsx
         pim/controller/connectivity/connection/audit-redirect: akeneoconnectivityconnection/js/controller/audit-redirect.tsx
 
+        pim/menu/connectivity/connection/marketplace-item: akeneoconnectivityconnection/js/menu/marketplace-item.js
         pim/menu/connectivity/connection/connection-params-provider: akeneoconnectivityconnection/js/menu/connection-params-provider.ts
+
+        pim/menu/connectivity/connection/templates/marketplace-item: akeneoconnectivityconnection/templates/marketplace-item.html
