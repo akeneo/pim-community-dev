@@ -40,7 +40,7 @@ class VersionProviderSpec extends ObjectBehavior
     function it_provides_saas_edition()
     {
         $this->beConstructedWith(StaticSaaSVersion::class);
-        $this->getEdition()->shouldReturn('EE SaaS');
+        $this->getEdition()->shouldReturn('Serenity');
     }
 
     function it_provides_saas_patch()
@@ -58,7 +58,7 @@ class VersionProviderSpec extends ObjectBehavior
     function it_provides_full_saas_version()
     {
         $this->beConstructedWith(StaticSaaSVersion::class);
-        $this->getFullVersion()->shouldReturn('EE SaaS 20200130151605 STATIC TEST VERSION');
+        $this->getFullVersion()->shouldReturn('Serenity 20200130151605 STATIC TEST VERSION');
     }
 
     function it_tells_if_its_a_saas_version()
@@ -89,5 +89,5 @@ class StaticSaaSVersion
     const VERSION_CODENAME = 'STATIC TEST VERSION';
 
     /** @staticvar string */
-    const EDITION = 'EE SaaS';
+    const EDITION = 'Serenity';
 }

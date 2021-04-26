@@ -1,6 +1,5 @@
 import {useCallback, useEffect, useState} from 'react';
-import {useIsMounted, useDocumentVisibility} from '@akeneo-pim-community/shared';
-import {useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {useRoute, useIsMounted, useDocumentVisibility} from '@akeneo-pim-community/shared';
 import {isJobFinished, JobExecution} from '../models';
 
 type Error = {
@@ -15,10 +14,19 @@ const useJobExecution = (jobExecutionId: string) => {
   const route = useRoute('pim_enrich_job_execution_rest_get', {identifier: jobExecutionId});
   const isDocumentVisible = useDocumentVisibility();
   const willRefresh = isDocumentVisible && !isJobFinished(jobExecution);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
 
   const fetchJobExecution = useCallback(async () => {
+    if (isFetching) {
+      return;
+    }
+    if (isMounted()) {
+      setIsFetching(true);
+    }
     const response = await fetch(route);
-
+    if (isMounted()) {
+      setIsFetching(false);
+    }
     if (!response.ok) {
       setError({
         statusMessage: response.statusText,
@@ -33,7 +41,7 @@ const useJobExecution = (jobExecutionId: string) => {
     if (isMounted()) {
       setJobExecution(jobExecution);
     }
-  }, [route]);
+  }, [route, isFetching]);
 
   useEffect(() => {
     if (!willRefresh) return;
@@ -43,7 +51,7 @@ const useJobExecution = (jobExecutionId: string) => {
     return () => {
       clearInterval(interval);
     };
-  }, [willRefresh]);
+  }, [willRefresh, isFetching]);
 
   return [jobExecution, error, fetchJobExecution, willRefresh] as const;
 };

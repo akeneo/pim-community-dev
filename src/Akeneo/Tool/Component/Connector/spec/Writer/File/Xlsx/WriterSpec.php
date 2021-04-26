@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Writer\File\Xlsx;
 
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Akeneo\Tool\Component\Connector\Writer\File\Xlsx\Writer;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
@@ -156,10 +157,16 @@ class WriterSpec extends ObjectBehavior
 
         $this->flush();
 
-        $this->getWrittenFiles()->shouldReturn(
+        $this->getWrittenFiles()->shouldBeLike(
             [
-                sys_get_temp_dir() . '/my/file/path/XLSX_Group_export_1967-08-05_15-15-00_1.xlsx' => 'XLSX_Group_export_1967-08-05_15-15-00_1.xlsx',
-                sys_get_temp_dir() . '/my/file/path/XLSX_Group_export_1967-08-05_15-15-00_2.xlsx' => 'XLSX_Group_export_1967-08-05_15-15-00_2.xlsx',
+                WrittenFileInfo::fromLocalFile(
+                    sys_get_temp_dir() . '/my/file/path/XLSX_Group_export_1967-08-05_15-15-00_1.xlsx',
+                    'XLSX_Group_export_1967-08-05_15-15-00_1.xlsx'
+                ),
+                WrittenFileInfo::fromLocalFile(
+                    sys_get_temp_dir() . '/my/file/path/XLSX_Group_export_1967-08-05_15-15-00_2.xlsx',
+                    'XLSX_Group_export_1967-08-05_15-15-00_2.xlsx'
+                ),
             ]
         );
     }

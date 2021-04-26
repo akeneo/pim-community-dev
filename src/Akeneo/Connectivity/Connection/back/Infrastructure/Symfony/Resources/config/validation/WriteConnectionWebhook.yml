@@ -12,3 +12,5 @@ Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook:
         url:
             - Url:
                 message: 'akeneo_connectivity.connection.webhook.error.wrong_url'
+            - Length:
+                max: 255

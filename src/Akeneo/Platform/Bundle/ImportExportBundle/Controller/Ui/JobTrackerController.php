@@ -10,15 +10,21 @@ use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Query\SqlUpdateJobExecutionStatus;
+use Akeneo\Tool\Component\Batch\Step\ItemStep;
+use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
+use League\Flysystem\FilesystemInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use ZipStream\Option\Archive;
+use ZipStream\ZipStream;
 
 /**
  * Job execution tracker controller
@@ -37,6 +43,7 @@ class JobTrackerController extends Controller
     private SqlUpdateJobExecutionStatus $updateJobExecutionStatus;
     private JobRegistry $jobRegistry;
     private LoggerInterface $logger;
+    private FilesystemInterface $archivistFilesystem;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -46,7 +53,8 @@ class JobTrackerController extends Controller
         array $jobSecurityMapping,
         SqlUpdateJobExecutionStatus $updateJobExecutionStatus,
         JobRegistry $jobRegistry,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        FilesystemInterface $archivistFilesystem
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->jobExecutionRepo = $jobExecutionRepo;
@@ -56,12 +64,13 @@ class JobTrackerController extends Controller
         $this->updateJobExecutionStatus = $updateJobExecutionStatus;
         $this->jobRegistry = $jobRegistry;
         $this->logger = $logger;
+        $this->archivistFilesystem = $archivistFilesystem;
     }
 
     /**
      * Download an archived file
      *
-     * @param int    $id
+     * @param int $id
      * @param string $archiver
      * @param string $key
      */
@@ -84,10 +93,53 @@ class JobTrackerController extends Controller
         return new StreamedFileResponse($stream);
     }
 
+    public function downloadZipArchiveAction(int $jobExecutionId): StreamedResponse
+    {
+        // Depending on the size of the generated archive, the download can be extremely long
+        \set_time_limit(0);
+
+        $jobExecution = $this->jobExecutionRepo->find($jobExecutionId);
+        if (null === $jobExecution) {
+            throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
+        }
+        if (!$this->isJobGranted($jobExecution)) {
+            throw new AccessDeniedException();
+        }
+
+        $zipArchiveName = $this->getZipArchiveName($jobExecution);
+
+        $options = new Archive();
+        $options->setContentType('application/octet-stream');
+        // this is needed to prevent issues with truncated zip files
+        $options->setZeroHeader(true);
+        $options->setComment('Generated zip archive');
+        $zip = new ZipStream($zipArchiveName, $options);
+
+        return new StreamedResponse(
+            function () use ($zip, $jobExecution) {
+                foreach ($this->archivist->getArchives($jobExecution, true) as $archiver => $archiveNames) {
+                    foreach ($archiveNames as $filePath => $archiveKey) {
+                        $zip->addFileFromStream(
+                            $filePath,
+                            $this->archivistFilesystem->readStream($archiveKey)
+                        );
+                    }
+                }
+
+                $zip->finish();
+            },
+            200,
+            [
+                'Content-Type' => 'application/octet-stream',
+                'Content-Disposition' => \sprintf('attachment; filename="%s"', $zipArchiveName),
+            ]
+        );
+    }
+
     /**
      * Returns if a user has read permission on an import or export
      *
-     * @param JobExecution  $jobExecution
+     * @param JobExecution $jobExecution
      * @param mixed $object The object
      */
     protected function isJobGranted($jobExecution, $object = null): bool
@@ -116,5 +168,27 @@ class JobTrackerController extends Controller
         }
 
         return new JsonResponse(['successful' => true]);
+    }
+
+    private function getZipArchiveName(JobExecution $jobExecution): string
+    {
+        $jobInstance = $jobExecution->getJobInstance();
+        $job = $this->jobRegistry->get($jobInstance->getJobName());
+        foreach ($job->getSteps() as $step) {
+            if ($step instanceof ItemStep) {
+                $writer = $step->getWriter();
+                if ($writer instanceof ArchivableWriterInterface) {
+                    foreach ($jobExecution->getStepExecutions() as $stepExecution) {
+                        if ($stepExecution->getStepName() === $step->getName()) {
+                            $step->getWriter()->setStepExecution($stepExecution);
+
+                            return \sprintf('%s.zip', pathinfo($step->getWriter()->getPath(), PATHINFO_FILENAME));
+                        }
+                    }
+                }
+            }
+        }
+
+        return 'archive.zip';
     }
 }

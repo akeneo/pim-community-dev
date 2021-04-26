@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {screen} from '@testing-library/react';
 import '@testing-library/jest-dom';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {Status} from '../../../../Resources/public/js/job/execution/Status';
-import {JobExecutionTracking} from '../../../../Resources/public/js/job/execution/model/job-execution';
+import {JobExecutionTracking} from '../../../../Resources/public/js/job/execution/models/job-execution';
 
 test('it render a job execution status with the correct label', () => {
   const tracking: JobExecutionTracking = {

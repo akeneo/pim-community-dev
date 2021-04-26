@@ -2,162 +2,166 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Archiver;
 
-use Akeneo\Tool\Component\Connector\Archiver\FileWriterArchiver;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\Job;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Component\Batch\Step\AbstractStep;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
+use Akeneo\Tool\Component\Batch\Step\StepInterface;
+use Akeneo\Tool\Component\Connector\Archiver\ArchiverInterface;
+use Akeneo\Tool\Component\Connector\Archiver\FileWriterArchiver;
+use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Component\Connector\Writer\File\Csv\Writer;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 
 class FileWriterArchiverSpec extends ObjectBehavior
 {
     function let(
         Filesystem $filesystem,
-        JobRegistry $jobRegistry
+        JobRegistry $jobRegistry,
+        FilesystemProvider $filesystemProvider,
+        LoggerInterface $logger
     ) {
-        $this->beConstructedWith($filesystem, $jobRegistry);
+        $this->beConstructedWith($filesystem, $jobRegistry, $filesystemProvider, $logger);
     }
 
-    function it_is_initializable()
+    function it_is_an_archiver()
+    {
+        $this->shouldImplement(ArchiverInterface::class);
+    }
+
+    function it_is_a_file_writer_archiver()
     {
         $this->shouldHaveType(FileWriterArchiver::class);
+        $this->getName()->shouldBe('output');
     }
 
-    function it_creates_a_file_when_writer_is_valid(
-        Filesystem $filesystem,
-        $jobRegistry,
-        Writer $writer,
+    function it_does_not_support_jobs_without_item_step(
+        JobRegistry $jobRegistry,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
-        ItemStep $step
+        StepInterface $step
     ) {
         $jobInstance->getJobName()->willReturn('my_job_name');
-        $jobRegistry->get('my_job_name')->willReturn($job);
-
-        $pathname = tempnam(sys_get_temp_dir(), 'spec');
-        $filename = basename($pathname);
-
         $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobExecution->getId()->willReturn(12);
-        $jobInstance->getType()->willReturn('type');
-
-        $job->getSteps()->willReturn([$step]);
-
-        $step->getWriter()->willReturn($writer);
-
-        $writer->getWrittenFiles()->willReturn([$pathname => $filename]);
-        $writer->getPath()->willReturn($pathname);
-
-        $filesystem->putStream(
-            'type' . DIRECTORY_SEPARATOR .
-            'my_job_name' . DIRECTORY_SEPARATOR .
-            '12' . DIRECTORY_SEPARATOR .
-            'output' . DIRECTORY_SEPARATOR .
-            $filename,
-            Argument::type('resource')
-        )->shouldBeCalled();
-
-        $this->archive($jobExecution);
-
-        unlink($pathname);
-    }
-
-    function it_doesnt_create_a_file_when_writer_is_invalid(
-        $filesystem,
-        $jobRegistry,
-        ItemWriterInterface $writer,
-        JobExecution $jobExecution,
-        JobInstance $jobInstance,
-        Job $job,
-        ItemStep $step
-    ) {
-        $jobInstance->getJobName()->willReturn('my_job_name');
         $jobRegistry->get('my_job_name')->willReturn($job);
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobExecution->getId()->willReturn(12);
-        $jobInstance->getType()->willReturn('type');
         $job->getSteps()->willReturn([$step]);
-        $step->getWriter()->willReturn($writer);
-
-        $filesystem->put(Argument::cetera())->shouldNotBeCalled();
-
-        $this->archive($jobExecution);
-    }
-
-    function it_returns_the_name_of_the_archiver()
-    {
-        $this->getName()->shouldReturn('output');
-    }
-
-    function it_doesnt_create_a_file_if_step_is_not_an_item_step(
-        $jobRegistry,
-        $filesystem,
-        JobExecution $jobExecution,
-        JobInstance $jobInstance,
-        Job $job,
-        AbstractStep $step
-    ) {
-        $jobInstance->getJobName()->willReturn('my_job_name');
-        $jobRegistry->get('my_job_name')->willReturn($job);
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobExecution->getId()->willReturn(12);
-        $jobInstance->getType()->willReturn('type');
-        $job->getSteps()->willReturn([$step]);
-
-        $filesystem->put(Argument::cetera())->shouldNotBeCalled();
-
-        $this->archive($jobExecution);
-    }
-
-    function it_supports_a_compatible_job(
-        $jobRegistry,
-        Writer $writer,
-        JobExecution $jobExecution,
-        JobInstance $jobInstance,
-        Job $job,
-        ItemStep $step
-    ) {
-        $jobInstance->getJobName()->willReturn('my_job_name');
-        $jobRegistry->get('my_job_name')->willReturn($job);
-        $pathname = tempnam(sys_get_temp_dir(), 'spec');
-        $filename = basename($pathname);
-
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobExecution->getId()->willReturn(12);
-        $jobInstance->getType()->willReturn('type');
-        $job->getSteps()->willReturn([$step]);
-        $step->getWriter()->willReturn($writer);
-        $writer->getWrittenFiles()->willReturn([$pathname => $filename]);
-        $writer->getPath()->willReturn($pathname);
-
-        $this->supports($jobExecution)->shouldReturn(true);
-
-        unlink($pathname);
-    }
-
-    function it_does_not_support_a_incompatible_job(
-        $jobRegistry,
-        ItemWriterInterface $writer,
-        JobExecution $jobExecution,
-        JobInstance $jobInstance,
-        Job $job,
-        ItemStep $step
-    ) {
-        $jobInstance->getJobName()->willReturn('my_job_name');
-        $jobRegistry->get('my_job_name')->willReturn($job);
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobExecution->getId()->willReturn(12);
-        $jobInstance->getType()->willReturn('type');
-        $job->getSteps()->willReturn([$step]);
-        $step->getWriter()->willReturn($writer);
 
         $this->supports($jobExecution)->shouldReturn(false);
+    }
+
+    function it_does_not_support_jobs_without_archivable_file_writer(
+        JobRegistry $jobRegistry,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        Job $job,
+        ItemStep $itemStep,
+        ItemWriterInterface $itemWriter
+    ) {
+        $jobInstance->getJobName()->willReturn('my_job_name');
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobRegistry->get('my_job_name')->willReturn($job);
+
+        $itemStep->getWriter()->willReturn($itemWriter);
+        $job->getSteps()->willReturn([$itemStep]);
+
+        $this->supports($jobExecution)->shouldReturn(false);
+    }
+
+    function it_does_not_support_jobs_without_written_file(
+        JobRegistry $jobRegistry,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        Job $job,
+        ItemStep $itemStep
+    ) {
+        $jobInstance->getJobName()->willReturn('my_job_name');
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobRegistry->get('my_job_name')->willReturn($job);
+
+        $writer = new class implements ItemWriterInterface, ArchivableWriterInterface {
+            public function getWrittenFiles(): array {
+                return [];
+            }
+            public function getPath(): string
+            {
+                return '/tmp/my_job_name.csv';
+            }
+            public function write($items): void {}
+        };
+        $itemStep->getWriter()->willReturn($writer);
+        $job->getSteps()->willReturn([$itemStep]);
+
+        $this->supports($jobExecution)->shouldReturn(false);
+    }
+
+    function it_stores_written_files(
+        FilesystemInterface $filesystem,
+        JobRegistry $jobRegistry,
+        FilesystemProvider $filesystemProvider,
+        FilesystemInterface $catalogFilesystem,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        Job $job,
+        ItemStep $itemStep
+    ) {
+        if (!is_dir('/tmp/spec')) {
+            mkdir('/tmp/spec');
+        }
+        \touch('/tmp/spec/export.csv');
+
+        $jobInstance->getJobName()->willReturn('my_job_name');
+        $jobInstance->getType()->willReturn('export');
+        $jobExecution->getId()->willReturn(42);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobRegistry->get('my_job_name')->willReturn($job);
+
+        $writer = new class implements ItemWriterInterface, ArchivableWriterInterface {
+            public function getWrittenFiles(): array {
+                return [
+                    WrittenFileInfo::fromFileStorage(
+                        'a/b/c/file.png',
+                        'catalogStorage',
+                        'files/my_media.png'
+                    ),
+                    WrittenFileInfo::fromLocalFile(
+                        '/tmp/spec/export.csv',
+                        'export.csv',
+                    )
+                ];
+            }
+            public function getPath(): string
+            {
+                return '/tmp/spec/export.csv';
+            }
+            public function write($items): void {}
+        };
+
+        $itemStep->getWriter()->willReturn($writer);
+        $job->getSteps()->willReturn([$itemStep]);
+        $this->supports($jobExecution)->shouldReturn(true);
+
+        $filesystemProvider->getFilesystem('catalogStorage')->shouldBeCalled()->willReturn($catalogFilesystem);
+        $remoteStream = \tmpfile();
+        $catalogFilesystem->readStream('a/b/c/file.png')->willReturn($remoteStream);
+
+        $filesystem->putStream(
+            'export/my_job_name/42/output/files/my_media.png',
+            $remoteStream
+        )->shouldBeCalled();
+        $filesystem->putStream('export/my_job_name/42/output/export.csv', Argument::type('resource'))->shouldBeCalled();
+
+        $this->archive($jobExecution);
+        if (\is_resource($remoteStream)) {
+            \fclose($remoteStream);
+        }
+        \unlink('/tmp/spec/export.csv');
     }
 }
