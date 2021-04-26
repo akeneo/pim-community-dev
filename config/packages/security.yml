@@ -49,7 +49,7 @@ security:
             access_denied_handler:          pim_api.security.access_denied_handler
             provider:                       pim_user_api
 
-        main:
+        custom:
             pattern:                        ^/
             provider:                       chain_provider
             form_login:

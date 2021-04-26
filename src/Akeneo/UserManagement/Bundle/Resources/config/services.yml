@@ -21,3 +21,14 @@ services:
             - '%kernel.root_dir%'
         tags:
             - { name: doctrine.event_subscriber }
+
+    security.authentication.provider.dao:
+        class: Akeneo\UserManagement\Bundle\Provider\CustomDaoAuthenticationProvider
+        abstract: true
+        arguments:
+            - ''
+            - ''
+            - ''
+            - '@security.encoder_factory'
+            - '@pim_user.manager'
+            - '%security.authentication.hide_user_not_found%'
