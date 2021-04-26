@@ -81,6 +81,7 @@ return [
     Akeneo\SharedCatalog\AkeneoSharedCatalogBundle::class =>  ['all' => true],
     AkeneoEnterprise\Connectivity\Connection\Infrastructure\Symfony\AkeneoEnterpriseConnectivityConnectionBundle::class =>  ['all' => true],
     Akeneo\Pim\TrialEdition\Infrastructure\Symfony\AkeneoPimEnterpriseTrialEditionBundle::class =>  ['all' => true],
+    Akeneo\Pim\TailoredExport\Infrastructure\Symfony\AkeneoTailoredExportBundle::class => ['all' => true],
 
     // Dev related bundles
     Akeneo\Tool\Bundle\DatabaseMetadataBundle\AkeneoDatabaseMetadataBundle::class => ['dev' => true, 'test' => true],

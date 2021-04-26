@@ -1,0 +1,15 @@
+parameters:
+    akeneo.tailored_export.connector.name: Akeneo Tailored Export
+    akeneo.tailored_export.connector.xlsx.code: 'xlsx_tailored_product_export'
+
+services:
+    _defaults:
+        public: true
+
+    akeneo.tailored_export.provider.form.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
+        arguments:
+            -
+                xlsx_tailored_product_export: pim-job-instance-xlsx-tailored-product-export
+        tags:
+            - { name: pim_enrich.provider.form }
