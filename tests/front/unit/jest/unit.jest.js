@@ -7,13 +7,9 @@ const unitConfig = {
     '^.+\\.tsx?$': 'ts-jest',
   },
   coveragePathIgnorePatterns: [
-    'akeneo-design-system',
+    'front-packages',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge',
-    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/Modal.tsx',
-    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/NoData.tsx',
-    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/tools',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/components/',
-    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/tests/front/unit/utils.tsx',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/pages/create-measurement-family/CreateMeasurementFamily.tsx',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/pages/create-unit/CreateUnit.tsx',
     'src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front/src/components/panel/announcement/Image.tsx',
@@ -38,7 +34,7 @@ const unitConfig = {
   testRegex: '(.*)\\.unit\\.(jsx?|tsx?)$',
   testPathIgnorePatterns: [
     '/node_modules/',
-    '/akeneo-design-system/',
+    '/front-packages/',
     '<rootDir>/src/Akeneo/Connectivity/',
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
@@ -46,7 +42,7 @@ const unitConfig = {
   globals: {
     __moduleConfig: {},
     'ts-jest': {
-      tsConfig: `${__dirname}/../../../../tsconfig.json`,
+      tsconfig: `${__dirname}/../../../../tsconfig.json`,
       isolatedModules: true,
     },
     fos: {Router: {setData: () => {}}},
@@ -66,7 +62,7 @@ const unitConfig = {
     },
   },
   setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
-  setupFiles: [`${__dirname}/enzyme.js`, `${__dirname}/mocks.js`, `${__dirname}/fetchMock.ts`],
+  setupFiles: [`${__dirname}/mocks.js`, `${__dirname}/fetchMock.ts`],
 };
 
 module.exports = Object.assign({}, baseConfig, unitConfig);

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {useTranslate, useMediator} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useMediator} from '@akeneo-pim-community/shared';
 import {usePimVersion} from '../../hooks/usePimVersion';
 import {HeaderPanel} from './Header';
 import {AnnouncementList} from './AnnouncementList';

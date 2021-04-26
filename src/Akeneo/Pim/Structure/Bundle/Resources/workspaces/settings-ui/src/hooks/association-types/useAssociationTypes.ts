@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {useRouter} from '@akeneo-pim-community/legacy-bridge';
+import {useRouter} from '@akeneo-pim-community/shared';
 import {AssociationType} from '../../models';
 
 const UserContext = require('pim/user-context');

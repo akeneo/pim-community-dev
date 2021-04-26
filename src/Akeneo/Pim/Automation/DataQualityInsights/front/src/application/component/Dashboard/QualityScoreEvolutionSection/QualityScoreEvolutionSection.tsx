@@ -1,5 +1,5 @@
 import React, {FC, ReactElement, useEffect, useState} from 'react';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {QualityScore} from '../../QualityScore';
 import {QualityScoreEvolutionChart} from './QualityScoreEvolutionChart';
 import {RawScoreEvolutionData, useFetchQualityScoreEvolution} from '../../../../infrastructure/hooks';

@@ -1,5 +1,5 @@
 import React, {FC, useCallback} from 'react';
-import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {
   computeProductsNumberToWorkOn,

@@ -27,12 +27,9 @@ import {
   useNotify,
   NotificationLevel,
   useUserContext,
-  PimView,
   useSecurity,
   useRoute,
   useRouter,
-} from '@akeneo-pim-community/legacy-bridge';
-import {
   filterErrors,
   ValidationError,
   partitionErrors,
@@ -41,6 +38,7 @@ import {
   PageContent,
   DeleteModal,
 } from '@akeneo-pim-community/shared';
+import {PimView} from '@akeneo-pim-community/legacy-bridge';
 import {Helper, Button, Breadcrumb} from 'akeneo-design-system';
 
 enum Tab {

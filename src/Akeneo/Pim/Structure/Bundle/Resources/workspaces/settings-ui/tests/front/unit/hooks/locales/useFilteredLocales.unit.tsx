@@ -1,5 +1,5 @@
 import React from 'react';
-import {renderHookWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderHookWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {useFilteredLocales} from '@akeneo-pim-community/settings-ui/src/hooks/locales';
 import {aListOfLocales, aLocale} from '../../../utils/provideLocaleHelper';
 import {Locale} from '../../../../../src/models';
