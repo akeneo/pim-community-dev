@@ -564,7 +564,7 @@ jobs:
             - run:
                 name: Deploy
                 command: |
-                    PIM_CONTEXT=deployment make deploy
+                    PIM_CONTEXT=deployment UPGRADE_STEP_2=true make deploy
             - run:
                 name: Communicate
                 command: |
@@ -583,7 +583,7 @@ jobs:
           - run:
                 name: Latest master version for PMs
                 command: |
-                    ACTIVATE_MONITORING=true INSTANCE_NAME=pimci-pm PIM_CONTEXT=deployment make deploy-serenity
+                    ACTIVATE_MONITORING=true INSTANCE_NAME=pimci-pm PIM_CONTEXT=deployment UPGRADE_STEP_2=true make deploy-serenity
 
   deploy_pr_environment:
       environment:
