@@ -21,4 +21,4 @@ spec:
       kind: Rule
       services:
         - name: pim-http
-          port: pim-http
+          port: 80
