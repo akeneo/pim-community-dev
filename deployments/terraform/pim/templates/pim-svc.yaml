@@ -1,14 +1,15 @@
 ---
-apiVersion: traefik.containo.us/v1alpha1
-kind: TraefikService
+apiVersion: v1
+kind: Service
 metadata:
   name: pim-http
-  namespace: default
   labels:
     {{- include "pim.extraLabels" . | indent 4 }}
-
 spec:
-  weighted:
-    services:
+  type: ClusterIP
+  selector:
+    component: pim-web
+    role: pim-web
+  ports:
     - name: pim-http
       port: 80
