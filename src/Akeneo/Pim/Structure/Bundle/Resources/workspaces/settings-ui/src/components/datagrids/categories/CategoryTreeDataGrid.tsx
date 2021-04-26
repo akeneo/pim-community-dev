@@ -1,10 +1,10 @@
-import React, {FC, useCallback, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import {Search, Table} from 'akeneo-design-system';
 import {useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {CategoryTree} from '../../../models';
 import {useDebounceCallback} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
-import {NoResults} from "../../shared";
+import {NoResults} from '../../shared';
 
 type Props = {
   trees: CategoryTree[];
@@ -38,6 +38,11 @@ const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
     [trees]
   );
 
+  useEffect(() => {
+    setFilteredTrees(trees);
+    setSearchString('');
+  }, [trees]);
+
   const debouncedSearch = useDebounceCallback(search, 300);
 
   const onSearch = (searchValue: string) => {
@@ -52,18 +57,20 @@ const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
           {translate('pim_common.result_count', {itemsCount: filteredTrees.length.toString()}, filteredTrees.length)}
         </Search.ResultCount>
       </StyledSearch>
-      {filteredTrees.length === 0 && searchString !== '' &&
+      {filteredTrees.length === 0 && searchString !== '' && (
         <NoResults
           title={translate('pim_datagrid.no_results', {
             entityHint: translate('pim_enrich.entity.category.label'),
           })}
           subtitle={translate('pim_datagrid.no_results_subtitle')}
         />
-      }
-      {filteredTrees.length > 0 &&
+      )}
+      {filteredTrees.length > 0 && (
         <Table>
           <Table.Header>
-            <Table.HeaderCell>{translate('pim_enrich.entity.category.content.tree_list.columns.label')}</Table.HeaderCell>
+            <Table.HeaderCell>
+              {translate('pim_enrich.entity.category.content.tree_list.columns.label')}
+            </Table.HeaderCell>
           </Table.Header>
           <Table.Body>
             {filteredTrees.map(tree => (
@@ -76,7 +83,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
             ))}
           </Table.Body>
         </Table>
-      }
+      )}
     </>
   );
 };

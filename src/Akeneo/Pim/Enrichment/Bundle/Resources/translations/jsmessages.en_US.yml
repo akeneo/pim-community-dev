@@ -228,6 +228,8 @@ pim_enrich.entity.category:
         edit:
             not_found: Category not found
             default_tree_label: Tree
+    category_created: The tree "{{ tree }}" was successfully created
+    category_creation_error: The tree "{{ tree }}" could not be created
 
 pim_enrich.export.product:
     data:
