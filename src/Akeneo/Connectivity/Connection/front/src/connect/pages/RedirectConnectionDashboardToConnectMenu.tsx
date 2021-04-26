@@ -34,7 +34,9 @@ export const RedirectConnectionDashboardToConnectMenu = () => {
 
     const breadcrumb = (
         <Breadcrumb>
-            <Breadcrumb.Step>{translate('pim_menu.tab.activity')}</Breadcrumb.Step>
+            <Breadcrumb.Step href={`#${generateUrl('pim_dashboard_index')}`}>
+                {translate('pim_menu.tab.activity')}
+            </Breadcrumb.Step>
             <Breadcrumb.Step>{translate('pim_menu.item.connection_audit')}</Breadcrumb.Step>
         </Breadcrumb>
     );
