@@ -5,7 +5,7 @@ pim_menu:
     navigation:
         connect: Connect
     navigation_back:
-        connection: Back to connections
+        connection: Back to Connect
     navigation_block:
         connection: Connection navigation
     item:
