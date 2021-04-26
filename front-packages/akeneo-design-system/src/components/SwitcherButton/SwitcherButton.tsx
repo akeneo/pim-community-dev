@@ -2,6 +2,7 @@ import React, {Ref, ReactNode} from 'react';
 import styled, {css} from 'styled-components';
 import {ArrowDownIcon, CloseIcon} from '../../icons';
 import {AkeneoThemedProps, CommonStyle, getColor, getFontSize} from '../../theme';
+import {Override} from '../../shared';
 
 const SwitcherButtonContainer = styled.div`
   display: flex;
@@ -70,34 +71,37 @@ const CloseButton = styled.button`
   flex-shrink: 0;
 `;
 
-type SwitcherButtonProps = {
-  /**
-   * The label of the field
-   */
-  label: string;
+type SwitcherButtonProps = Override<
+  React.HTMLAttributes<HTMLDivElement>,
+  {
+    /**
+     * The label of the field
+     */
+    label: string;
 
-  /**
-   * The callback when the user clicks on the switcher button
-   */
-  onClick?: () => void;
+    /**
+     * The callback when the user clicks on the switcher button
+     */
+    onClick?: () => void;
 
-  /**
-   * Displays the composant in 1 or 2 lines.
-   */
-  inline?: boolean;
+    /**
+     * Displays the composant in 1 or 2 lines.
+     */
+    inline?: boolean;
 
-  /**
-   * If true, the composant will display a second button to remove the component
-   */
-  deletable?: boolean;
+    /**
+     * If true, the composant will display a second button to remove the component
+     */
+    deletable?: boolean;
 
-  /**
-   * The callback when the user clicks on the delete button
-   */
-  onDelete?: () => void;
+    /**
+     * The callback when the user clicks on the delete button
+     */
+    onDelete?: () => void;
 
-  children?: ReactNode;
-};
+    children?: ReactNode;
+  }
+>;
 
 /**
  * TODO.
