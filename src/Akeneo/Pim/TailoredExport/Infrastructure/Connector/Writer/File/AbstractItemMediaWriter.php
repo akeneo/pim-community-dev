@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\TailoredExport\Infrastructure\Connector\Writer;
+namespace Akeneo\Pim\TailoredExport\Infrastructure\Connector\Writer\File;
 
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
@@ -26,24 +26,22 @@ abstract class AbstractItemMediaWriter implements
 
     private FlatItemBufferFlusher $flusher;
     private BufferFactory $bufferFactory;
-    private FileExporterPathGeneratorInterface $fileExporterPath;
     private Filesystem $localFs;
-    private string $jobParamFilePath;
 
     protected ?StepExecution $stepExecution = null;
+
+    /** @var ?FlatItemBuffer<array> */
     private ?FlatItemBuffer $flatRowBuffer = null;
+
+    /** @var WrittenFileInfo[] */
     private array $writtenFiles = [];
 
     public function __construct(
         BufferFactory $bufferFactory,
-        FlatItemBufferFlusher $flusher,
-        FileExporterPathGeneratorInterface $fileExporterPath,
-        string $jobParamFilePath = 'filePath'
+        FlatItemBufferFlusher $flusher
     ) {
         $this->bufferFactory = $bufferFactory;
         $this->flusher = $flusher;
-        $this->fileExporterPath = $fileExporterPath;
-        $this->jobParamFilePath = $jobParamFilePath;
 
         $this->localFs = new Filesystem();
     }
@@ -65,12 +63,13 @@ abstract class AbstractItemMediaWriter implements
 
     /**
      * {@inheritdoc}
+     * @param array<array> $items
      */
     public function write(array $items): void
     {
-        $parameters = $this->stepExecution->getJobParameters();
+        $parameters = $this->getStepExecution()->getJobParameters();
 
-        $this->flatRowBuffer->write($items, [
+        $this->getFlatRowBuffer()->write($items, [
             'withHeader' => $parameters->get('withHeader'),
         ]);
     }
@@ -80,11 +79,11 @@ abstract class AbstractItemMediaWriter implements
      */
     public function flush(): void
     {
-        $this->flusher->setStepExecution($this->stepExecution);
+        $this->flusher->setStepExecution($this->getStepExecution());
 
-        $parameters = $this->stepExecution->getJobParameters();
+        $parameters = $this->getStepExecution()->getJobParameters();
         $writtenFiles = $this->flusher->flush(
-            $this->flatRowBuffer,
+            $this->getFlatRowBuffer(),
             $this->getWriterConfiguration(),
             $this->getPath(),
             ($parameters->has('linesPerFile') ? $parameters->get('linesPerFile') : -1)
@@ -103,16 +102,16 @@ abstract class AbstractItemMediaWriter implements
      */
     public function getPath(): string
     {
-        $parameters = $this->stepExecution->getJobParameters();
-        $jobExecution = $this->stepExecution->getJobExecution();
-        $filePath = $parameters->get($this->jobParamFilePath);
+        $parameters = $this->getStepExecution()->getJobParameters();
+        $jobExecution = $this->getStepExecution()->getJobExecution();
+        $filePath = $parameters->get('filePath');
 
         if (!str_contains($filePath, '%')) {
             return $filePath;
         }
 
         $jobLabel = '';
-        $datetime = $this->stepExecution->getStartTime()->format(self::DATETIME_FORMAT);
+        $datetime = $this->getStepExecution()->getStartTime()->format(self::DATETIME_FORMAT);
         if (null !== $jobExecution->getJobInstance()) {
             $jobLabel = preg_replace('#[^A-Za-z0-9\.]#', '_', $jobExecution->getJobInstance()->getLabel());
         }
@@ -142,4 +141,25 @@ abstract class AbstractItemMediaWriter implements
      * @return array<string, mixed>
      */
     abstract protected function getWriterConfiguration(): array;
+
+    private function getStepExecution(): StepExecution
+    {
+        if (!$this->stepExecution instanceof StepExecution) {
+            throw new \Exception('Reader have not been properly initialized');
+        }
+
+        return $this->stepExecution;
+    }
+
+    /**
+     * @return FlatItemBuffer<array>
+     */
+    private function getFlatRowBuffer(): FlatItemBuffer
+    {
+        if (!$this->flatRowBuffer instanceof FlatItemBuffer) {
+            throw new \Exception('FlatRowBuffer have not been properly initialized');
+        }
+
+        return $this->flatRowBuffer;
+    }
 }

@@ -6,7 +6,7 @@ services:
       - '@event_dispatcher'
       - '@akeneo_batch.job_repository'
       -
-        - '@akeneo.tailored_export.step.xlsx_product.export'
+        - '@akeneo.tailored_export.connector.step.xlsx_product.export'
     tags:
       - { name: akeneo_batch.job, connector: '%akeneo.tailored_export.connector.name%', type: '%pim_connector.job.export_type%' }
 
@@ -28,29 +28,37 @@ services:
     tags:
       - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
-  akeneo.tailored_export.reader.database.product:
+  akeneo.tailored_export.connector.reader.database.product:
     class: 'Akeneo\Pim\TailoredExport\Infrastructure\Connector\Reader\Database\ProductReader'
     arguments:
       - '@pim_catalog.query.product_query_builder_factory'
 
-  akeneo.tailored_export.processor.product_export:
+  akeneo.tailored_export.connector.processor.product_export:
     class: 'Akeneo\Pim\TailoredExport\Infrastructure\Connector\Processor\ProductExportProcessor'
 
-  akeneo.tailored_export.writer.xlsx.product:
-    class: 'Akeneo\Pim\TailoredExport\Infrastructure\Connector\Writer\Xlsx\ProductWriter'
+  akeneo.tailored_export.connector.writer.xlsx.product:
+    class: 'Akeneo\Pim\TailoredExport\Infrastructure\Connector\Writer\File\Xlsx\ProductWriter'
     arguments:
       - '@pim_connector.factory.flat_item_buffer'
       - '@pim_connector.writer.file.product.flat_item_buffer_flusher'
-      - '@pim_connector.writer.file.media_exporter_path_generator'
 
-  akeneo.tailored_export.step.xlsx_product.export:
+  akeneo.tailored_export.connector.writer.file.column_sorter:
+    class: 'Akeneo\Pim\TailoredExport\Infrastructure\Connector\Writer\File\ColumnSorter'
+
+  akeneo.tailored_export.connector.writer.flat_item_buffer_flusher.product:
+    class: 'Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher'
+    arguments:
+      - '@pim_connector.writer.file.default.column_presenter'
+      - '@akeneo.tailored_export.connector.writer.file.column_sorter'
+
+  akeneo.tailored_export.connector.step.xlsx_product.export:
     class: '%pim_connector.step.item_step.class%'
     arguments:
       - 'export'
       - '@event_dispatcher'
       - '@akeneo_batch.job_repository'
-      - '@akeneo.tailored_export.reader.database.product'
-      - '@akeneo.tailored_export.processor.product_export'
-      - '@akeneo.tailored_export.writer.xlsx.product'
+      - '@akeneo.tailored_export.connector.reader.database.product'
+      - '@akeneo.tailored_export.connector.processor.product_export'
+      - '@akeneo.tailored_export.connector.writer.xlsx.product'
       - '%pim_job_product_batch_size%'
       - '@akeneo_batch.job.job_stopper'
