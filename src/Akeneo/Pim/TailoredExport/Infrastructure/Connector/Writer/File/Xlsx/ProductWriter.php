@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\TailoredExport\Infrastructure\Connector\Writer\File\Xlsx;
 
 use Akeneo\Pim\TailoredExport\Infrastructure\Connector\Writer\File\AbstractItemMediaWriter;

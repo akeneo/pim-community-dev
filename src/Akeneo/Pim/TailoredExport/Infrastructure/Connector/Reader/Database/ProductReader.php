@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\TailoredExport\Infrastructure\Connector\Reader\Database;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;

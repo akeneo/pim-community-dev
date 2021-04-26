@@ -7,7 +7,6 @@ namespace Akeneo\Pim\TailoredExport\Infrastructure\Connector;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ConstraintCollectionProvider implements ConstraintCollectionProviderInterface
 {

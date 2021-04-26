@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\TailoredExport\Infrastructure\Connector\Writer\File;
 
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
@@ -9,7 +11,6 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
-use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
@@ -26,9 +27,7 @@ abstract class AbstractItemMediaWriter implements
 
     private FlatItemBufferFlusher $flusher;
     private BufferFactory $bufferFactory;
-    private Filesystem $localFs;
-
-    protected ?StepExecution $stepExecution = null;
+    private Filesystem $localFileSystem;
 
     /** @var ?FlatItemBuffer<array> */
     private ?FlatItemBuffer $flatRowBuffer = null;
@@ -36,14 +35,16 @@ abstract class AbstractItemMediaWriter implements
     /** @var WrittenFileInfo[] */
     private array $writtenFiles = [];
 
+    protected ?StepExecution $stepExecution = null;
+
     public function __construct(
         BufferFactory $bufferFactory,
-        FlatItemBufferFlusher $flusher
+        FlatItemBufferFlusher $flusher,
+        Filesystem $localFileSystem
     ) {
         $this->bufferFactory = $bufferFactory;
         $this->flusher = $flusher;
-
-        $this->localFs = new Filesystem();
+        $this->localFileSystem = $localFileSystem;
     }
 
     /**
@@ -57,7 +58,7 @@ abstract class AbstractItemMediaWriter implements
 
         $exportDirectory = dirname($this->getPath());
         if (!is_dir($exportDirectory)) {
-            $this->localFs->mkdir($exportDirectory);
+            $this->localFileSystem->mkdir($exportDirectory);
         }
     }
 
@@ -90,7 +91,7 @@ abstract class AbstractItemMediaWriter implements
         );
 
         foreach ($writtenFiles as $writtenFile) {
-            $this->writtenFiles[$writtenFile] = WrittenFileInfo::fromLocalFile(
+            $this->writtenFiles[] = WrittenFileInfo::fromLocalFile(
                 $writtenFile,
                 \basename($writtenFile)
             );

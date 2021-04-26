@@ -26,8 +26,6 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
             throw new \Exception('Processor have not been properly initialized');
         }
 
-        $this->stepExecution->incrementSummaryInfo('process');
-
         return ['id' => $product->getId()];
     }
 

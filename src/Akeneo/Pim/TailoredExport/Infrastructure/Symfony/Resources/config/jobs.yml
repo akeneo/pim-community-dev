@@ -41,6 +41,7 @@ services:
     arguments:
       - '@pim_connector.factory.flat_item_buffer'
       - '@pim_connector.writer.file.product.flat_item_buffer_flusher'
+      - '@filesystem'
 
   akeneo.tailored_export.connector.writer.file.column_sorter:
     class: 'Akeneo\Pim\TailoredExport\Infrastructure\Connector\Writer\File\ColumnSorter'
