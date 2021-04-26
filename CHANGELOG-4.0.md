@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9818: Handle SVG image show action in file input
+
 # 4.0.104 (2021-04-22)
 
 # 4.0.103 (2021-04-02)
