@@ -326,41 +326,41 @@ workflows:
                     - build_dev
 
   on_demand:
-        jobs:
-          - ready_to_build?:
-                type: approval
-                filters:
-                    branches:
-                        only: "4.0"
-          - build_dev:
-                requires:
-                    - ready_to_build?
-          - test_back_static_and_acceptance:
-                requires:
-                    - build_dev
-          - test_front_static_acceptance_and_integration:
-                requires:
-                    - build_dev
-          - test_back_phpunit:
-                requires:
-                    - build_dev
-          - test_back_data_migrations:
-                requires:
-                    - build_dev
-          - back_behat_legacy:
-                requires:
-                    - build_dev
+      jobs:
+        - ready_to_build?:
+              type: approval
+              filters:
+                  branches:
+                      only: "4.0"
+        - build_dev:
+              requires:
+                  - ready_to_build?
+        - test_back_static_and_acceptance:
+              requires:
+                  - build_dev
+        - test_front_static_acceptance_and_integration:
+              requires:
+                  - build_dev
+        - test_back_phpunit:
+              requires:
+                  - build_dev
+        - test_back_data_migrations:
+              requires:
+                  - build_dev
+        - back_behat_legacy:
+              requires:
+                  - build_dev
   pull_up:
-    jobs:
-      - pull-up/pull-up:
-          from: "4.0"
-          into: "5.0"
-          branch_prefix: "40_to_50"
-          checkout_ours: 'src/Akeneo/Platform/CommunityVersion.php **/translations/*.yml'
-          github_token: MICHEL_TAG_TOKEN
-          github_username: "micheltag"
-          slack_webhook: "${SLACK_URL_PULL_UP}"
-          filters:
-            branches:
-              only:
-                - "fix-pull-up"
+      jobs:
+        - pull-up/pull-up:
+            from: "4.0"
+            into: "5.0"
+            branch_prefix: "40_to_50"
+            checkout_ours: 'src/Akeneo/Platform/CommunityVersion.php **/translations/*.yml'
+            github_token: MICHEL_TAG_TOKEN
+            github_username: "micheltag"
+            slack_webhook: "${SLACK_URL_PULL_UP}"
+            filters:
+              branches:
+                only:
+                  - "4.0"
