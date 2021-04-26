@@ -102,7 +102,7 @@ open-cypress:
 # TODO add split by tests (circleci tests split --split-by=timings)
 end-to-end-front:
 ifeq ($(CI),true)
-	${CYPRESS_RUN} cypress run
+	$(DOCKER_COMPOSE) run -e CYPRESS_baseUrl=http://httpd --rm cypress
 else
 	${CYPRESS_RUN} cypress run
 endif
