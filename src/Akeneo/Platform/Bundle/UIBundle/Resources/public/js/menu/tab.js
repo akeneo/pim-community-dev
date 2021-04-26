@@ -31,7 +31,7 @@ define([
      */
     initialize: function (config) {
       this.config = {
-        // Define the page url (config.to) as the landing page for the section of menu (ex: pim_settings_index)
+        // Define the page url (config.to) as the landing page for the section of menu (ex: pim-menu-settings)
         isLandingSectionPage: false,
         ...config.config,
       };

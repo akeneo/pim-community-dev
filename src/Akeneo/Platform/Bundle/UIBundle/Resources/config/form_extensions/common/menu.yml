@@ -102,7 +102,7 @@ extensions:
             title: pim_menu.tab.settings
             iconModifier: iconSettings
             to: pim_settings_index
-            isLandingSection: true
+            isLandingSectionPage: true
 
     pim-menu-settings-column:
         module: pim/menu/column
