@@ -5,7 +5,7 @@ pim_menu:
     navigation:
         connect: Connect
     navigation_back:
-        connection: Back to connections
+        connection: Back to Connect
     navigation_block:
         connection: Connection navigation
     item:
@@ -16,9 +16,10 @@ pim_menu:
         connection_webhook_edit: Event subscription
         connection_webhook_event_logs: Event logs
         data_flows: Data flows
+        connect_connection_settings: Connection settings
 
 pim_title:
-    akeneo_connectivity_connection_settings_index: Connections
+    akeneo_connectivity_connection_settings_index: Connections settings
     akeneo_connectivity_connection_settings_edit: Connection settings
     akeneo_connectivity_connection_settings_any: Connection settings
     akeneo_connectivity_connection_audit_index: Connection dashboard
@@ -29,6 +30,7 @@ pim_title:
     akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
     akeneo_connectivity_connection_webhook_event_logs: Event logs
     akeneo_connectivity_connection_redirect_audit: Connection dashboard
+    akeneo_connectivity_connection_settings_redirect: Connections
 
 akeneo_connectivity.connection:
     connect:
