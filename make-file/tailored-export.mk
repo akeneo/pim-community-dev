@@ -1,6 +1,6 @@
 .PHONY: lint-back
 lint-back: #Doc: launch PHPStan for tailored export
-	$(PHP_RUN) vendor/bin/phpstan analyse --level=8 src/Akeneo/Pim/TailoredExport
+	$(PHP_RUN) vendor/bin/phpstan analyse --level=8 src/Akeneo/Pim/TailoredExport/src
 
 .PHONY: coupling-back
 coupling-back: #Doc: launch coupling detector for tailored export
