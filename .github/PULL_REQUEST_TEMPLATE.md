@@ -1,20 +1,12 @@
 **Description**
 
+<!-- Please write a description, add some context, and feel free to add screenshots if relevant. -->
+
 **Definition Of Done**
 
-| Q                                 | A
-| --------------------------------- | ---
-| CE Pull Request                   | -
-| Added Specs                       | Todo
-| Added legacy Behats               | Todo
-| Added acceptance tests            | Todo
-| Added integration tests           | Todo
-| Changelog updated                 | Todo
-| Review and 2 GTM                  | Todo
-| Micro Demo to the PO (Story only) | Todo
-| Migration script                  | -
-| Tech Doc                          | -
-
-`Todo`: Pending / Work in progress
-`OK`: Done / Validated
-`-`: Not needed
+- [ ] Link to CE Pull Request
+- [ ] Tests
+- [ ] Migration & Installer
+- [ ] PM Validation (Story)
+- [ ] Changelog (maintenance bug fixes)
+- [ ] Tech Doc
