@@ -2,7 +2,15 @@ import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {Breadcrumb, Link} from 'akeneo-design-system';
 import {PimView} from '@akeneo-pim-community/legacy-bridge';
-import {FullScreenError, PageContent, PageHeader, useSetPageTitle, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
+import {
+  FullScreenError,
+  PageContent,
+  PageHeader,
+  useSetPageTitle,
+  useRouter,
+  useSecurity,
+  useTranslate,
+} from '@akeneo-pim-community/shared';
 import {useCategoryTree} from '../../hooks';
 
 type Params = {

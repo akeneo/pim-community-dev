@@ -1,15 +1,16 @@
 import React, {FC} from 'react';
 import {Button, DeleteIllustration, getFontSize, Modal} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 
 type DeleteCategoryModalProps = {
   categoryLabel: string;
   closeModal: () => void;
   deleteCategory: () => void;
+  message: string;
 };
 
-const DeleteCategoryTreeModal: FC<DeleteCategoryModalProps> = ({categoryLabel, closeModal, deleteCategory}) => {
+const DeleteCategoryModal: FC<DeleteCategoryModalProps> = ({categoryLabel, closeModal, deleteCategory, message}) => {
   const translate = useTranslate();
 
   return (
@@ -17,7 +18,7 @@ const DeleteCategoryTreeModal: FC<DeleteCategoryModalProps> = ({categoryLabel, c
       <Modal.SectionTitle color="brand">{translate('pim_enrich.entity.category.plural_label')}</Modal.SectionTitle>
       <Modal.Title>{translate('pim_common.confirm_deletion')}</Modal.Title>
 
-      <Message>{translate('pim_enrich.entity.category.delete_confirmation', {name: categoryLabel})}</Message>
+      <Message>{translate(message, {name: categoryLabel})}</Message>
       <ActionButtons>
         <Button onClick={closeModal} level="tertiary">
           {translate('pim_common.cancel')}
@@ -42,4 +43,4 @@ const ActionButtons = styled.p`
   }
 `;
 
-export {DeleteCategoryTreeModal};
+export {DeleteCategoryModal};

@@ -1,17 +1,17 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
-import {Search, Table, useBooleanState} from 'akeneo-design-system';
+import {Button, Search, Table, useBooleanState} from 'akeneo-design-system';
 import {
   NotificationLevel,
   useDebounceCallback,
   useNotify,
   useRouter,
   useSecurity,
-  useTranslate
+  useTranslate,
 } from '@akeneo-pim-community/shared';
 import {CategoryTree} from '../../../models';
 import styled from 'styled-components';
 import {NoResults} from '../../shared';
-import {DeleteCategoryTreeModal} from './DeleteCategoryTreeModal';
+import {DeleteCategoryModal} from './DeleteCategoryModal';
 import {deleteCategory} from '../../../infrastructure/removers';
 
 type Props = {
@@ -52,13 +52,13 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
 
   const deleteCategoryTree = async () => {
     if (categoryTreeToDelete) {
-      const response = await deleteCategory(categoryTreeToDelete.id);
-      response && refreshCategoryTrees();
-      const message = response
+      const success = await deleteCategory(categoryTreeToDelete.id);
+      success && refreshCategoryTrees();
+      const message = success
         ? 'pim_enrich.entity.category.category_tree_deleted'
         : 'pim_enrich.entity.category.category_tree_deletion_error';
       notify(
-        response ? NotificationLevel.SUCCESS : NotificationLevel.ERROR,
+        success ? NotificationLevel.SUCCESS : NotificationLevel.ERROR,
         translate(message, {tree: categoryTreeToDelete.label})
       );
       setCategoryTreeToDelete(null);
@@ -121,7 +121,13 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                 >
                   <Table.Cell rowTitle>{tree.label}</Table.Cell>
                   <TableActionCell>
-                    <Button ghost level="danger" size={'small'} onClick={() => onDeleteCategoryTree(tree)} disabled={!tree.hasOwnProperty('productsNumber')}>
+                    <Button
+                      ghost
+                      level="danger"
+                      size={'small'}
+                      onClick={() => onDeleteCategoryTree(tree)}
+                      disabled={!tree.hasOwnProperty('productsNumber')}
+                    >
                       {translate('pim_common.delete')}
                     </Button>
                   </TableActionCell>
@@ -130,10 +136,11 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
             </Table.Body>
           </Table>
           {isConfirmationModalOpen && categoryTreeToDelete && (
-            <DeleteCategoryTreeModal
+            <DeleteCategoryModal
               categoryLabel={categoryTreeToDelete.label}
               closeModal={closeConfirmationModal}
               deleteCategory={deleteCategoryTree}
+              message={'pim_enrich.entity.category.delete_category_tree_confirmation'}
             />
           )}
         </>
