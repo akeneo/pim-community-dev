@@ -58,8 +58,8 @@ const useInfiniteEventSubscriptionLogs = (
         parameters.filters = JSON.stringify({
             levels: filters.levels,
             text: filters.text,
-            timestamp_from: filters.dateTime.start || null,
-            timestamp_to: filters.dateTime.end || null,
+            timestamp_from: filters.dateTimeStart || null,
+            timestamp_to: filters.dateTimeEnd || null,
         });
     }
 

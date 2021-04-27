@@ -25,7 +25,7 @@ const renderDateTimeInput = (props: React.ComponentProps<typeof DateTimeInput>, 
 test('it selects the datetime and returns the timestamp', () => {
     const onChange = jest.fn();
 
-    renderDateTimeInput({onChange, onError: jest.fn()}, {timeZone: 'UTC'});
+    renderDateTimeInput({onChange, defaultTime: '00:00'}, {timeZone: 'UTC'});
 
     const dateInput = screen.getByLabelText('Date') as HTMLInputElement;
     expect(dateInput.value).toBe('');
@@ -43,17 +43,17 @@ test('it selects the datetime and returns the timestamp', () => {
     expect(onChange).toHaveBeenCalledWith(timestamp);
 });
 
-test('it returns the timestamp when only the date is selected (as the time will be set automatically)', () => {
+test('it returns the timestamp when the date is selected (using the default time value)', () => {
     const onChange = jest.fn();
 
-    renderDateTimeInput({onChange, onError: jest.fn()}, {timeZone: 'UTC'});
+    renderDateTimeInput({onChange, defaultTime: '00:00'}, {timeZone: 'UTC'});
 
     const dateInput = screen.getByLabelText('Date') as HTMLInputElement;
     fireEvent.change(dateInput, {target: {value: '1970-01-01'}});
     expect(dateInput.value).toBe('1970-01-01');
 
     const timeInput = screen.getByLabelText('Time') as HTMLInputElement;
-    expect(timeInput.value).toBe('');
+    expect(timeInput.value).toBe('00:00');
 
     expect(onChange).toHaveBeenCalledTimes(1);
 });
@@ -61,7 +61,7 @@ test('it returns the timestamp when only the date is selected (as the time will 
 test('it doesnt return the timestamp when only the time is selected', () => {
     const onChange = jest.fn();
 
-    renderDateTimeInput({onChange, onError: jest.fn()}, {timeZone: 'UTC'});
+    renderDateTimeInput({onChange, defaultTime: '00:00'}, {timeZone: 'UTC'});
 
     const timeInput = screen.getByLabelText('Time') as HTMLInputElement;
     fireEvent.change(timeInput, {target: {value: '12:00'}});
@@ -81,7 +81,7 @@ test('for a user in the timezone "UTC", it displays the zoned datetime', () => {
     const onChange = jest.fn();
 
     const timestamp = 12 * 60 * 60; // 1970-01-01 at 12:00
-    renderDateTimeInput({value: timestamp, onChange, onError: jest.fn()}, {timeZone: 'UTC'});
+    renderDateTimeInput({value: timestamp, onChange, defaultTime: '00:00'}, {timeZone: 'UTC'});
 
     const dateInput = screen.getByLabelText('Date') as HTMLInputElement;
     const timeInput = screen.getByLabelText('Time') as HTMLInputElement;
@@ -94,7 +94,7 @@ test('for a user in the timezone "Europe/Paris", it displays the zoned datetime'
     const onChange = jest.fn();
 
     const timestamp = 12 * 60 * 60; // 1970-01-01 at 12:00
-    renderDateTimeInput({value: timestamp, onChange, onError: jest.fn()}, {timeZone: 'Europe/Paris'});
+    renderDateTimeInput({value: timestamp, onChange, defaultTime: '00:00'}, {timeZone: 'Europe/Paris'});
 
     const dateInput = screen.getByLabelText('Date') as HTMLInputElement;
     const timeInput = screen.getByLabelText('Time') as HTMLInputElement;
@@ -107,7 +107,7 @@ test('for a user in the timezone "Asia/Tokyo", it displays the zoned datetime', 
     const onChange = jest.fn();
 
     const timestamp = 20 * 60 * 60; // 1970-01-01 at 20:00
-    renderDateTimeInput({value: timestamp, onChange, onError: jest.fn()}, {timeZone: 'Asia/Tokyo'});
+    renderDateTimeInput({value: timestamp, onChange, defaultTime: '00:00'}, {timeZone: 'Asia/Tokyo'});
 
     const dateInput = screen.getByLabelText('Date') as HTMLInputElement;
     const timeInput = screen.getByLabelText('Time') as HTMLInputElement;
@@ -120,7 +120,7 @@ test('for a user in the timezone "Asia/Tokyo", it displays the zoned datetime', 
 test('for a user in the timezone "Asia/Tokyo", it selects the zoned datetime and returns the timestamp', () => {
     const onChange = jest.fn();
 
-    renderDateTimeInput({onChange, onError: jest.fn()}, {timeZone: 'Asia/Tokyo'});
+    renderDateTimeInput({onChange, defaultTime: '00:00'}, {timeZone: 'Asia/Tokyo'});
 
     const dateInput = screen.getByLabelText('Date') as HTMLInputElement;
     fireEvent.change(dateInput, {target: {value: '1970-01-02'}});

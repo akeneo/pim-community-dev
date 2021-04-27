@@ -11,7 +11,8 @@ test('it compares successfully the default filters values', () => {
                 EventSubscriptionLogLevel.ERROR,
             ],
             text: '',
-            dateTime: {},
+            dateTimeStart: undefined,
+            dateTimeEnd: undefined,
         })
     ).toBeTruthy();
 });
@@ -21,7 +22,8 @@ test('it fails to compare modified filters values with the default ones', () => 
         isSameAsDefaultFiltersValues({
             levels: [EventSubscriptionLogLevel.INFO],
             text: '',
-            dateTime: {},
+            dateTimeStart: undefined,
+            dateTimeEnd: undefined,
         })
     ).toBeFalsy();
 
@@ -34,7 +36,8 @@ test('it fails to compare modified filters values with the default ones', () => 
                 EventSubscriptionLogLevel.ERROR,
             ],
             text: 'search value',
-            dateTime: {},
+            dateTimeStart: undefined,
+            dateTimeEnd: undefined,
         })
     ).toBeFalsy();
 });

@@ -1,61 +1,36 @@
-import {Field, Helper} from 'akeneo-design-system';
-import React, {FC, useState} from 'react';
+import {Field} from 'akeneo-design-system';
+import React, {FC} from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '../../../shared/translate';
 import {DateTimeInput} from './DateTimeInput';
 
 type Timestamp = number;
 type Props = {
-    min?: Timestamp;
-    max?: Timestamp;
-    start?: Timestamp;
-    end?: Timestamp;
-    onChange: (start?: Timestamp, end?: Timestamp) => void;
+    value: {
+        start?: Timestamp;
+        end?: Timestamp;
+    };
+    onChange: (value: {start?: Timestamp; end?: Timestamp}) => void;
 };
 
-export const DateTimeRangeField: FC<Props> = ({min, max, start, end, onChange}) => {
+export const DateTimeRangeField: FC<Props> = ({value, onChange}) => {
     const translate = useTranslate();
-
-    const [errors, setErrors] = useState<{start?: string; end?: string}>({});
-
-    const handleChange = (start?: Timestamp, end?: Timestamp) => {
-        setErrors({});
-        onChange(start, end);
-    };
 
     return (
         <FlexContainer>
             <Field label={translate('akeneo_connectivity.connection.webhook.event_logs.list.date_range_filter.from')}>
                 <DateTimeInput
-                    value={start}
-                    min={min}
-                    max={end || max}
-                    onChange={start => handleChange(start, end)}
-                    onError={error => setErrors(errors => ({...errors, start: error}))}
+                    value={value.start}
+                    defaultTime='00:00'
+                    onChange={start => onChange({...value, start: start || undefined})}
                 />
-                <>
-                    {errors.start && (
-                        <Helper inline level='error'>
-                            {errors.start}
-                        </Helper>
-                    )}
-                </>
             </Field>
             <Field label={translate('akeneo_connectivity.connection.webhook.event_logs.list.date_range_filter.to')}>
                 <DateTimeInput
-                    value={end}
-                    min={start || min}
-                    max={max}
-                    onChange={end => handleChange(start, end)}
-                    onError={error => setErrors(errors => ({...errors, end: error}))}
+                    value={value.end}
+                    defaultTime='23:59'
+                    onChange={end => onChange({...value, end: end || undefined})}
                 />
-                <>
-                    {errors.end && (
-                        <Helper inline level='error'>
-                            {errors.end}
-                        </Helper>
-                    )}
-                </>
             </Field>
         </FlexContainer>
     );
