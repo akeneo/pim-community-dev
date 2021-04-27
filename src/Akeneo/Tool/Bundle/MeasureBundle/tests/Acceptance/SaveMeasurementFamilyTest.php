@@ -108,7 +108,6 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         $event = current($events)['event'];
         $this->assertInstanceOf(MeasurementFamilyUpdated::class, $event);
         $this->assertEquals($measurementFamilyCode, $event->getMeasurementFamilyCode()->normalize());
-
     }
 
     /**
