@@ -1,4 +1,4 @@
-import {Router} from '@akeneo-pim-community/legacy-bridge';
+import {Router} from '@akeneo-pim-community/shared';
 import {UserId} from '../models';
 
 const duplicateUser = async (router: Router, baseUserId: UserId, data: any): Promise<Response | null> => {

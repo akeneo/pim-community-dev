@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {TimePeriodFilter} from '../Filters';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type Props = {
   timePeriod: string;

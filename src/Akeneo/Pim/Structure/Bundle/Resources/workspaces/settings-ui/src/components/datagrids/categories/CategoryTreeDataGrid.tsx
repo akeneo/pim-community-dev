@@ -1,8 +1,14 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
-import {Button, Search, Table, useBooleanState} from 'akeneo-design-system';
-import {NotificationLevel, useNotify, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {Search, Table, useBooleanState} from 'akeneo-design-system';
+import {
+  NotificationLevel,
+  useDebounceCallback,
+  useNotify,
+  useRouter,
+  useSecurity,
+  useTranslate
+} from '@akeneo-pim-community/shared';
 import {CategoryTree} from '../../../models';
-import {useDebounceCallback} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {NoResults} from '../../shared';
 import {DeleteCategoryTreeModal} from './DeleteCategoryTreeModal';

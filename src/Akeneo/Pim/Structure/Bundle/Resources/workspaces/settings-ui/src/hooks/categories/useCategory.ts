@@ -1,5 +1,4 @@
-import {useRoute} from '@akeneo-pim-community/legacy-bridge';
-import {useFetch} from '@akeneo-pim-community/shared';
+import {useFetch, useRoute} from '@akeneo-pim-community/shared';
 import {Category} from '../../models';
 
 const useCategory = (categoryId: number) => {

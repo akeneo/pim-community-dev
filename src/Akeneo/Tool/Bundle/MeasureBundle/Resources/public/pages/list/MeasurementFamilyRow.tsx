@@ -5,7 +5,7 @@ import {
   getMeasurementFamilyLabel,
   getStandardUnitLabel,
 } from 'akeneomeasure/model/measurement-family';
-import {useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {useUserContext} from '@akeneo-pim-community/shared';
 import {Table} from 'akeneo-design-system';
 
 type MeasurementFamilyRowProps = {

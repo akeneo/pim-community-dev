@@ -1,6 +1,6 @@
 import React, {FC, useState} from 'react';
 import {Button, Field, Helper, Modal, ProductCategoryIllustration, TextInput} from 'akeneo-design-system';
-import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {saveNewCategoryTree, ValidationErrors} from '../../infrastructure/savers';
 

@@ -1,4 +1,4 @@
-import {Translate} from '@akeneo-pim-community/legacy-bridge';
+import {Translate} from '@akeneo-pim-community/shared';
 
 type IntlDuration = {
   translationKey: string;

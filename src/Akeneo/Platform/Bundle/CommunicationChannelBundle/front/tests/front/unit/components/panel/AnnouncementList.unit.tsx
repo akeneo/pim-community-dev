@@ -2,7 +2,7 @@ import React from 'react';
 import {act, getByText, getAllByText} from '@testing-library/react';
 import {AnnouncementList} from '@akeneo-pim-community/communication-channel/src/components/panel/AnnouncementList';
 import {formatCampaign} from '@akeneo-pim-community/communication-channel/src/tools/formatCampaign';
-import {renderDOMWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderDOMWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {getExpectedAnnouncements, getExpectedPimAnalyticsData} from '../../__mocks__/dataProvider';
 import {useHasNewAnnouncements} from '@akeneo-pim-community/communication-channel/src/hooks/useHasNewAnnouncements';
 import {useInfiniteScroll} from '@akeneo-pim-community/communication-channel/src/hooks/useInfiniteScroll';

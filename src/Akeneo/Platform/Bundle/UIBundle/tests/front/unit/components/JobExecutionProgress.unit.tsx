@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import {screen} from '@testing-library/react';
 import '@testing-library/jest-dom';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {JobExecutionProgress} from '../../../../Resources/public/js/job/execution/Progress';
-import {StepExecutionTracking} from '../../../../Resources/public/js/job/execution/model/job-execution';
+import {StepExecutionTracking} from '../../../../Resources/public/js/job/execution/models/job-execution';
 
-jest.mock('@akeneo-pim-community/legacy-bridge/src/hooks/useTranslate', () => ({
+jest.mock('@akeneo-pim-community/shared/lib/hooks/useTranslate', () => ({
   useTranslate: () => {
     return jest.fn((key: string, params: any, count: number) => {
       switch (key) {

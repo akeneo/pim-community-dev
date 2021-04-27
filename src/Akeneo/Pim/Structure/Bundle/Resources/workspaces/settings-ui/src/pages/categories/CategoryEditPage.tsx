@@ -1,8 +1,8 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {Breadcrumb} from 'akeneo-design-system';
-import {PimView, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
-import {FullScreenError, PageContent, PageHeader, useSetPageTitle} from '@akeneo-pim-community/shared';
+import {PimView} from '@akeneo-pim-community/legacy-bridge';
+import {FullScreenError, PageContent, PageHeader, useSetPageTitle, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {useCategory} from '../../hooks';
 import {Category} from '../../models';
 

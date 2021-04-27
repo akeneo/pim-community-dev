@@ -1,6 +1,5 @@
 import {useState, useCallback, useEffect} from 'react';
-import {useRoute} from '@akeneo-pim-community/legacy-bridge';
-import {baseFetcher} from '@akeneo-pim-community/shared';
+import {baseFetcher, useRoute} from '@akeneo-pim-community/shared';
 import {validatePimAnalyticsData} from '../validator/pimAnalyticsData';
 
 type PimVersion = {
