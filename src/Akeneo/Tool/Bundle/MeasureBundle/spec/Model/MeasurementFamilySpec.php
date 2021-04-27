@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Tool\Bundle\MeasureBundle\Model;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Event\MeasurementFamilyCreated;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LocaleIdentifier;
@@ -51,34 +52,38 @@ class MeasurementFamilySpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable()
+    function it_is_initializable_and_records_a_measurement_family_created_event_on_creation()
     {
         $this->shouldHaveType(MeasurementFamily::class);
+        $this->getRecordedEvents()->shouldBeEqualTo(
+            [new MeasurementFamilyCreated(MeasurementFamilyCode::fromString(self::MEASUREMENT_FAMILY_CODE))]
+        );
     }
 
-    function it_should_be_able_to_normalize_itself()
+    function it_can_be_created_from_its_normalized_form_and_should_be_able_to_normalize_itself()
     {
-        $this->normalize()->shouldReturn(
-            [
-                'code'               => self::MEASUREMENT_FAMILY_CODE,
-                'labels'             => self::MEASUREMENT_FAMILY_LABEL,
-                'standard_unit_code' => self::METER_UNIT_CODE,
-                'units'              => [
-                    [
-                        'code'                  => self::METER_UNIT_CODE,
-                        'labels'                => self::METER_LABELS,
-                        'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
-                        'symbol'                => self::METER_SYMBOL,
-                    ],
-                    [
-                        'code'                  => self::CENTIMETER_UNIT_CODE,
-                        'labels'                => self::CENTIMETER_LABELS,
-                        'convert_from_standard' => [['operator' => 'mul', 'value' => '5']],
-                        'symbol'                => self::CENTIMETER_SYMBOL,
-                    ]
+        $normalizedVersion = [
+            'code' => self::MEASUREMENT_FAMILY_CODE,
+            'labels' => self::MEASUREMENT_FAMILY_LABEL,
+            'standard_unit_code' => self::METER_UNIT_CODE,
+            'units' => [
+                [
+                    'code' => self::METER_UNIT_CODE,
+                    'labels' => self::METER_LABELS,
+                    'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
+                    'symbol' => self::METER_SYMBOL,
+                ],
+                [
+                    'code' => self::CENTIMETER_UNIT_CODE,
+                    'labels' => self::CENTIMETER_LABELS,
+                    'convert_from_standard' => [['operator' => 'mul', 'value' => '5']],
+                    'symbol' => self::CENTIMETER_SYMBOL,
                 ]
             ]
-        );
+        ];
+        $this->beConstructedThrough('fromNormalized', [$normalizedVersion]);
+        $this->normalize()->shouldReturn($normalizedVersion);
+        $this->getRecordedEvents()->shouldBe([]);
     }
 
     function it_should_not_be_able_create_a_measurement_family_having_no_units()

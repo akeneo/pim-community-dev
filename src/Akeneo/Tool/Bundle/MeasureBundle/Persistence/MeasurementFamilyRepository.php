@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Persistence;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Event\MeasurementFamilyCreated;
+use Akeneo\Tool\Bundle\MeasureBundle\Event\MeasurementFamilyUpdated;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
@@ -21,14 +23,15 @@ use Doctrine\DBAL\Types\Type;
  */
 class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     /** @var MeasurementFamily[] */
-    private $allMeasurementFamiliesCache = [];
+    private array $allMeasurementFamiliesCache = [];
 
     /** @var MeasurementFamily[] */
-    private $measurementFamilyCache = [];
+    private array $measurementFamilyCache = [];
+
+    private ?EventDispatcher $eventDispatcher;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -46,11 +49,12 @@ class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterfac
 
     public function getByCode(MeasurementFamilyCode $measurementFamilyCode): MeasurementFamily
     {
-        if (!isset($this->measurementFamilyCache[$measurementFamilyCode->normalize()])) {
-            $this->measurementFamilyCache[$measurementFamilyCode->normalize()] = $this->loadAssetFamily($measurementFamilyCode);
+        $normalizedMeasurementFamilyCode = $measurementFamilyCode->normalize();
+        if (!isset($this->measurementFamilyCache[$normalizedMeasurementFamilyCode])) {
+            $this->measurementFamilyCache[$normalizedMeasurementFamilyCode] = $this->loadAssetFamily($measurementFamilyCode);
         }
 
-        return $this->measurementFamilyCache[$measurementFamilyCode->normalize()];
+        return $this->measurementFamilyCache[$normalizedMeasurementFamilyCode];
     }
 
     public function save(MeasurementFamily $measurementFamily)

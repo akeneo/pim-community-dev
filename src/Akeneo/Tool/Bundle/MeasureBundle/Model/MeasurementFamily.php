@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Model;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Event\MeasurementFamilyCreated;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException;
+use Doctrine\DBAL\Types\Type;
 use Webmozart\Assert\Assert;
 
 /**
@@ -28,6 +30,8 @@ class MeasurementFamily
     /** @var array */
     private $units;
 
+    private array $recordedEvents = [];
+
     private function __construct(MeasurementFamilyCode $code, LabelCollection $labels, UnitCode $standardUnitCode, array $units)
     {
         Assert::allIsInstanceOf($units, Unit::class);
@@ -44,7 +48,49 @@ class MeasurementFamily
 
     public static function create(MeasurementFamilyCode $code, LabelCollection $labels, UnitCode $standardUnitCode, array $units): self
     {
-        return new self($code, $labels, $standardUnitCode, $units);
+        $newMeasurementFamily = new self($code, $labels, $standardUnitCode, $units);
+        $newMeasurementFamily->recordedEvents[] = new MeasurementFamilyCreated($newMeasurementFamily->code);
+
+        return $newMeasurementFamily;
+    }
+
+    public static function fromNormalized(array $normalizedMeasurementFamily): self
+    {
+        Assert::keyExists($normalizedMeasurementFamily, 'code');
+        Assert::keyExists($normalizedMeasurementFamily, 'labels');
+        Assert::keyExists($normalizedMeasurementFamily, 'standard_unit_code');
+        Assert::keyExists($normalizedMeasurementFamily, 'units');
+        Assert::isArray($normalizedMeasurementFamily['units']);
+
+        $units = array_map(
+            static function (array $normalizedUnit) {
+            Assert::keyExists($normalizedUnit, 'code');
+            Assert::keyExists($normalizedUnit, 'labels');
+            Assert::keyExists($normalizedUnit, 'symbol');
+            Assert::keyExists($normalizedUnit, 'convert_from_standard');
+
+            $operations = array_map(
+                static function (array $operation) {
+                    Assert::keyExists($operation, 'operator');
+                    Assert::keyExists($operation, 'value');
+
+                    return Operation::create($operation['operator'], $operation['value']);
+            }, $normalizedUnit['convert_from_standard']);
+
+            return Unit::create(
+                UnitCode::fromString($normalizedUnit['code']),
+                LabelCollection::fromArray($normalizedUnit['labels']),
+                $operations,
+                $normalizedUnit['symbol']
+            );
+        }, $normalizedMeasurementFamily['units']);
+
+        return new self(
+            MeasurementFamilyCode::fromString($normalizedMeasurementFamily['code']),
+            LabelCollection::fromArray($normalizedMeasurementFamily['labels']),
+            UnitCode::fromString($normalizedMeasurementFamily['standard_unit_code']),
+            $units
+        );
     }
 
     public function normalize(): array
@@ -76,6 +122,22 @@ class MeasurementFamily
         ];
     }
 
+    public function getUnitLabel(UnitCode $unitCode, LocaleIdentifier $localeIdentifier): string
+    {
+        $unit = $this->getUnit($unitCode, $this->units);
+
+        if (null === $unit) {
+            throw new UnitNotFoundException();
+        }
+
+        return $unit->getLabel($localeIdentifier);
+    }
+
+    public function getRecordedEvents(): array
+    {
+        return $this->recordedEvents;
+    }
+
     private function assertStandardUnitExists(UnitCode $standardUnitCode, array $units): void
     {
         $isStandardUnitCodePresentInUnits = !empty($this->getUnit($standardUnitCode, $units));
@@ -97,17 +159,6 @@ class MeasurementFamily
             $units
         );
         Assert::uniqueValues($normalizedUnitCodes);
-    }
-
-    public function getUnitLabel(UnitCode $unitCode, LocaleIdentifier $localeIdentifier): string
-    {
-        $unit = $this->getUnit($unitCode, $this->units);
-
-        if (null === $unit) {
-            throw new UnitNotFoundException();
-        }
-
-        return $unit->getLabel($localeIdentifier);
     }
 
     private function getUnit(UnitCode $standardUnitCode, array $units): ?Unit
