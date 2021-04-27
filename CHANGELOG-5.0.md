@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.22 (2021-04-27)
+
 ## Bug fixes
 
 - PIM-9830: Upgrade phpseclib dependency following security issue CVE-2021-30130
