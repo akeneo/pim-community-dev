@@ -14,7 +14,7 @@ type Timestamp = number;
 type Props = {
     value?: Timestamp;
     onChange: (value: Timestamp | null) => void;
-    defaultTime?: string;
+    defaultTime: string;
 };
 
 const dateTimeToDateInputString = (datetime: DateTime | null): string => {
@@ -33,7 +33,7 @@ export const DateTimeInput: FC<Props> = ({value, defaultTime, onChange}) => {
 
     const datetime = undefined === value ? null : DateTime.fromSeconds(value, {zone: timeZone});
 
-    const [values, setValues] = useState<{ date: string; time: string }>({
+    const [values, setValues] = useState<{date: string; time: string}>({
         date: null !== datetime ? datetime.toFormat(DATE_INPUT_FORMAT) : '',
         time: null !== datetime ? datetime.toFormat(TIME_INPUT_FORMAT) : '',
     });
@@ -51,7 +51,7 @@ export const DateTimeInput: FC<Props> = ({value, defaultTime, onChange}) => {
         if (value !== newTimestamp) {
             onChange(newTimestamp);
         }
-    }, [values]);
+    }, [onChange, timeZone, value, values]);
 
     useEffect(() => {
         if (value === undefined) {
@@ -73,7 +73,7 @@ export const DateTimeInput: FC<Props> = ({value, defaultTime, onChange}) => {
 
         setValues(values => ({
             date,
-            time: ('' === values.time && undefined !== defaultTime) ? defaultTime : values.time,
+            time: '' === values.time && undefined !== defaultTime ? defaultTime : values.time,
         }));
     };
 

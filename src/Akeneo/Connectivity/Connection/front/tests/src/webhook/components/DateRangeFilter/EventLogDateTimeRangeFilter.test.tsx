@@ -85,14 +85,14 @@ test('it displays the clear button when the datetime range is modified', () => {
 
     expect(screen.queryByTitle(/date_range_filter\.reset/)).not.toBeInTheDocument();
 
-    rerender({...defaultProps, isDirty: true});
+    rerender({...defaultProps, value: {start: 0}});
 
     expect(screen.queryByTitle(/date_range_filter\.reset/)).toBeInTheDocument();
 });
 
 test('it clears the datetime range', () => {
-    const onReset = jest.fn();
-    renderEventLogDateTimeRangeFilter({...defaultProps, isDirty: true, onReset}, {timeZone: 'UTC'});
+    const onChange = jest.fn();
+    renderEventLogDateTimeRangeFilter({...defaultProps, value: {start: 0}, onChange}, {timeZone: 'UTC'});
 
     const dropdownButton = screen.getByRole('button');
     fireEvent.click(dropdownButton);
@@ -100,5 +100,5 @@ test('it clears the datetime range', () => {
     const clearButton = screen.getByTitle(/date_range_filter\.reset/);
     fireEvent.click(clearButton);
 
-    expect(onReset).toBeCalled();
+    expect(onChange).toBeCalledWith({});
 });

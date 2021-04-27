@@ -12,7 +12,7 @@ type Props = {
         start?: Timestamp;
         end?: Timestamp;
     };
-    onChange: (value: {start?: Timestamp, end?: Timestamp}) => void;
+    onChange: (value: {start?: Timestamp; end?: Timestamp}) => void;
 };
 
 export const EventLogDateTimeRangeFilter: FC<Props> = ({value, onChange}) => {
@@ -23,7 +23,7 @@ export const EventLogDateTimeRangeFilter: FC<Props> = ({value, onChange}) => {
 
     const hasValue = undefined !== value.start || undefined !== value.end;
 
-    const createLabel = (value: {start?: Timestamp, end?: Timestamp}) => {
+    const createLabel = (value: {start?: Timestamp; end?: Timestamp}) => {
         const str = [];
         if (undefined !== value.start) {
             str.push(
@@ -45,10 +45,10 @@ export const EventLogDateTimeRangeFilter: FC<Props> = ({value, onChange}) => {
     };
 
     const handleReset = useCallback(() => {
-       onChange({
-           start: undefined,
-           end: undefined,
-       });
+        onChange({
+            start: undefined,
+            end: undefined,
+        });
     }, [onChange]);
 
     return (
@@ -84,10 +84,7 @@ export const EventLogDateTimeRangeFilter: FC<Props> = ({value, onChange}) => {
                         </FlexContainer>
                     </Dropdown.Header>
                     <DropdownBody>
-                        <DateTimeRangeField
-                            value={value}
-                            onChange={onChange}
-                        />
+                        <DateTimeRangeField value={value} onChange={onChange} />
                     </DropdownBody>
                 </Dropdown.Overlay>
             )}
