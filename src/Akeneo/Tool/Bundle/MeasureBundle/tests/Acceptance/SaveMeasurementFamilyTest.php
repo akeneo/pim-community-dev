@@ -8,7 +8,6 @@ use Akeneo\Test\Acceptance\Attribute\InMemoryIsThereAtLeastOneAttributeConfigure
 use Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyHandler;
-use Akeneo\Tool\Bundle\MeasureBundle\Event\MeasurementFamilyCreated;
 use Akeneo\Tool\Bundle\MeasureBundle\Event\MeasurementFamilyUpdated;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
@@ -21,17 +20,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SaveMeasurementFamilyTest extends AcceptanceTestCase
 {
-    /** * @var ValidatorInterface */
-    private $validator;
-
-    /** @var InMemoryMeasurementFamilyRepository */
-    private $measurementFamilyRepository;
-
-    /** @var SaveMeasurementFamilyHandler */
-    private $saveMeasurementFamilyHandler;
-
-    /** @var InMemoryIsThereAtLeastOneAttributeConfiguredWithMeasurementFamilyStub */
-    private $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
+    private ValidatorInterface$validator;
+    private InMemoryMeasurementFamilyRepository $measurementFamilyRepository;
+    private SaveMeasurementFamilyHandler $saveMeasurementFamilyHandler;
+    private InMemoryIsThereAtLeastOneAttributeConfiguredWithMeasurementFamilyStub $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
 
     public function setUp(): void
     {

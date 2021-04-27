@@ -17,23 +17,14 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateMeasurementFamilyTest extends AcceptanceTestCase
 {
-    /** * @var ValidatorInterface */
-    private $validator;
-
-    /** @var InMemoryMeasurementFamilyRepository */
-    private $measurementFamilyRepository;
-
-    /** @var CreateMeasurementFamilyHandler */
-    private $createMeasurementFamilyHandler;
-
-    /** @var InMemoryIsThereAtLeastOneAttributeConfiguredWithMeasurementFamilyStub */
-    private $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
-
+    private ValidatorInterface $validator;
+    private InMemoryMeasurementFamilyRepository $measurementFamilyRepository;
+    private CreateMeasurementFamilyHandler $createMeasurementFamilyHandler;
+    private InMemoryIsThereAtLeastOneAttributeConfiguredWithMeasurementFamilyStub $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
     private EventDispatcherMock $eventDispatcherMock;
 
     public function setUp(): void
