@@ -13,5 +13,5 @@ export {
     WebhookSettings,
     RedirectConnectionDashboardToConnectMenu,
     RedirectConnectionSettingsToConnectMenu,
-    Marketplace
+    Marketplace,
 };
