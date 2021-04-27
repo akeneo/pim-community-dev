@@ -19,6 +19,7 @@ import {
 } from '../wrong-credentials-combinations-context';
 import {Breadcrumb} from 'akeneo-design-system';
 import {UserButtons} from '../../shared/user';
+import {useRouter} from '../../shared/router/use-router';
 
 const MAXIMUM_NUMBER_OF_ALLOWED_CONNECTIONS = 50;
 
@@ -55,17 +56,16 @@ export const ListConnections = () => {
         });
     }, [listWrongCombinationRoute, dispatchCombinations]);
 
-    const handleCreate = () => history.push('/connections/create');
-
-    const systemHref = `#${useRoute('oro_config_configuration_system')}`;
+    const handleCreate = () => history.push('/connect/connection-settings/create');
+    const generateUrl = useRouter();
 
     const breadcrumb = (
         <Breadcrumb>
-            <Breadcrumb.Step href={systemHref}>
-                <Translate id='pim_menu.tab.system' />
+            <Breadcrumb.Step href={`#${generateUrl('akeneo_connectivity_connection_audit_index')}`}>
+                <Translate id='pim_menu.tab.connect' />
             </Breadcrumb.Step>
             <Breadcrumb.Step>
-                <Translate id='pim_menu.item.connection_settings' />
+                <Translate id='pim_menu.item.connect_connection_settings' />
             </Breadcrumb.Step>
         </Breadcrumb>
     );
@@ -91,7 +91,7 @@ export const ListConnections = () => {
     return (
         <>
             <PageHeader breadcrumb={breadcrumb} buttons={[createButton]} userButtons={<UserButtons />}>
-                <Translate id='pim_menu.item.connection_settings' />
+                <Translate id='pim_menu.item.connect_connection_settings' />
             </PageHeader>
 
             <PageContent>

@@ -1,21 +1,14 @@
 const mediator = require('oro/mediator');
 
 const highlightSystemNavigationConnectionsMenuItem = () => {
-  // 'System' tab & column
-  mediator.trigger('pim_menu:highlight:tab', {
-    extension: 'pim-menu-system',
-  });
-
-  // 'Connections' item
-  mediator.trigger('pim_menu:highlight:item', {
-    extension: 'pim-menu-system-connection-settings',
-  });
+  mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-connect'});
+  mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-connect-connection-settings'});
 };
 
 const highlightConnectionNavigationMenuItems = (routeName: string) => {
   // 'System' tab & 'Connection' column
   mediator.trigger('pim_menu:highlight:tab', {
-    extension: 'pim-menu-system',
+    extension: 'pim-menu-connect',
     columnExtension: 'pim-menu-connection-column',
   });
 
