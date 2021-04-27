@@ -47,7 +47,9 @@ class SaveMeasurementFamilyHandler
         );
 
         $this->measurementFamilyRepository->save($measurementFamily);
-        $this->eventDispatcher->dispatch(new MeasurementFamilyUpdated($measurementFamilyCode));
+        if (null !== $this->eventDispatcher) {
+            $this->eventDispatcher->dispatch(new MeasurementFamilyUpdated($measurementFamilyCode));
+        }
     }
 
     private function units(SaveMeasurementFamilyCommand $saveMeasurementFamilyCommand): array

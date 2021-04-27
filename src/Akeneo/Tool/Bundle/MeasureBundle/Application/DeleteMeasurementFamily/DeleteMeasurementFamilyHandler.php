@@ -37,6 +37,8 @@ class DeleteMeasurementFamilyHandler
     {
         $measurementFamilyCode = MeasurementFamilyCode::fromString($deleteMeasurementFamilyCommand->code);
         $this->measurementFamilyRepository->deleteByCode($measurementFamilyCode);
-        $this->eventDispatcher->dispatch(new MeasurementFamilyDeleted($measurementFamilyCode));
+        if (null !== $this->eventDispatcher) {
+            $this->eventDispatcher->dispatch(new MeasurementFamilyDeleted($measurementFamilyCode));
+        }
     }
 }

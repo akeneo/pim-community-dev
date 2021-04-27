@@ -79,12 +79,11 @@ class CreateMeasurementFamilyActionEndToEnd extends WebTestCase
         );
 
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $responseBody = json_decode($response->getContent(), true);
-        $this->assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $responseBody['code']);
         $this->assertEquals(
-            'The measurement family has data that does not comply with the business rules.',
-            $responseBody['message']
+            'This field can only contain letters, numbers, and underscores.',
+            $responseBody[0]['message']
         );
     }
 
@@ -123,7 +122,7 @@ class CreateMeasurementFamilyActionEndToEnd extends WebTestCase
         );
 
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
     private function measurementFamilyWithCode(string $code): MeasurementFamily

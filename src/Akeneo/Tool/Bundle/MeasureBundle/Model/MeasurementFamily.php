@@ -87,11 +87,6 @@ class MeasurementFamily
         return $unit->getLabel($localeIdentifier);
     }
 
-    public function getRecordedEvents(): array
-    {
-        return $this->recordedEvents;
-    }
-
     private function assertStandardUnitExists(UnitCode $standardUnitCode, array $units): void
     {
         $isStandardUnitCodePresentInUnits = !empty($this->getUnit($standardUnitCode, $units));

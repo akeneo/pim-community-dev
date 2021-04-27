@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SaveMeasurementFamilyTest extends AcceptanceTestCase
 {
-    private ValidatorInterface$validator;
+    private ValidatorInterface $validator;
     private InMemoryMeasurementFamilyRepository $measurementFamilyRepository;
     private SaveMeasurementFamilyHandler $saveMeasurementFamilyHandler;
     private InMemoryIsThereAtLeastOneAttributeConfiguredWithMeasurementFamilyStub $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily;

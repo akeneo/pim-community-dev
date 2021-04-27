@@ -8,7 +8,6 @@ use Akeneo\Test\Acceptance\Attribute\InMemoryIsThereAtLeastOneAttributeConfigure
 use Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyCommand;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyHandler;
-use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand;
 use Akeneo\Tool\Bundle\MeasureBundle\Event\MeasurementFamilyDeleted;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
@@ -53,7 +52,7 @@ class DeleteMeasurementFamilyTest extends AcceptanceTestCase
         $this->deleteMeasurementFamilyHandler->handle($deleteCommand);
 
         $this->assertEquals(0, $violations->count());
-        $this->assertMeasurementFamilyEventDispatched($measurementFamilyCode);
+        $this->assertMeasurementFamilyDeletedEventDispatched($measurementFamilyCode);
         $this->assertMeasurementFamilyDoesNotExists($measurementFamilyCode);
         $this->assertTrue(false);
     }
@@ -71,14 +70,29 @@ class DeleteMeasurementFamilyTest extends AcceptanceTestCase
         $deleteCommand->code = $measurementFamilyCode;
 
         $violations = $this->validator->validate($deleteCommand);
-        $this->deleteMeasurementFamilyHandler->handle($deleteCommand);
 
         $this->assertCannotRemoveTheMeasurementFamily($violations);
-        $this->assertMeasurementFamilyEventDispatched($measurementFamilyCode);
-        $this->assertMeasurementFamilyDoesNotExists($measurementFamilyCode);
     }
 
-    private function assertMeasurementFamilyEventDispatched(string $measurementFamilyCode): void
+    /**
+     * @test
+     */
+    public function it_cannot_delete_a_measurement_family_that_does_not_exist(): void
+    {
+        $this->isThereAtLeastOneAttributeConfiguredWithMeasurementFamily->setStub(false);
+
+        $deleteCommand = new DeleteMeasurementFamilyCommand();
+        $deleteCommand->code = 'unknown_measurement_family';
+
+        $violations = $this->validator->validate($deleteCommand);
+        $this->expectException(MeasurementFamilyNotFoundException::class);
+        $this->deleteMeasurementFamilyHandler->handle($deleteCommand);
+
+        $this->assertEquals(0, $violations->count());
+        $this->assertEmpty($this->eventDispatcherMock->getEvents());
+    }
+
+    private function assertMeasurementFamilyDeletedEventDispatched(string $measurementFamilyCode): void
     {
         $events = $this->eventDispatcherMock->getEvents();
         $this->assertCount(1, $events);
@@ -95,10 +109,7 @@ class DeleteMeasurementFamilyTest extends AcceptanceTestCase
             return;
         }
 
-        self::assertTrue(
-            false,
-            sprintf('Measurement family "%s" exists, expected not to exist', $measurementFamilyCode)
-        );
+        $this->fail(sprintf('Measurement family "%s" exists, expected not to exist', $measurementFamilyCode));
     }
 
     private function createMeasurementFamilyWithUnitsAndStandardUnit(string $measurementFamilyCode, array $unitCodes, string $standardUnitCode): void
