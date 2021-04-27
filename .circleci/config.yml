@@ -141,7 +141,6 @@ jobs:
           paths:
             - << parameters.path_to_front_packages >>/akeneo-design-system/lib
             - << parameters.path_to_front_packages >>/shared/lib
-            - << parameters.path_to_front_packages >>/tailored-export/lib
       - run:
           name: Build Javascript
           command: make javascript-dev
