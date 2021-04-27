@@ -1,5 +1,4 @@
 import {isEqual} from 'lodash';
-import {DateTime} from 'luxon';
 import {EventSubscriptionLogLevel} from './EventSubscriptionLogLevel';
 
 export type EventSubscriptionLogFilters = {
