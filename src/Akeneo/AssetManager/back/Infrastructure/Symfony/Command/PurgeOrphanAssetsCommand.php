@@ -3,7 +3,7 @@
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2017 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2021 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +17,6 @@ use League\Flysystem\FileNotFoundException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -71,7 +70,7 @@ class PurgeOrphanAssetsCommand extends Command
 
         if ($filesToPurge > 0) {
             $io = new SymfonyStyle($input, $output);
-            if (!$io->confirm('Do you want to continue and remove the files from storage?')) {
+            if (!$io->confirm(sprintf('We found %s asset to purge. Do you want to continue and remove the files from storage?', $filesToPurge))) {
                 return;
             }
             $this->removeFileFromStorage($output);
@@ -181,7 +180,7 @@ class PurgeOrphanAssetsCommand extends Command
 
         $progressBar = new ProgressBar($output, $this->countFilesToPurge());
         $progressBar->start();
-        $cpt = 0;
+        $fileRemoved = 0;
         while (false !== $result = $statement->fetch(\PDO::FETCH_ASSOC)) {
             try {
                 $fs->delete($result['file_key']);
@@ -189,8 +188,8 @@ class PurgeOrphanAssetsCommand extends Command
                 $output->writeln(sprintf('File "%s" not found in storage', $exception->getMessage()), OutputInterface::VERBOSITY_DEBUG);
             }
 
-            $cpt++;
-            if ($cpt % 100 === 0) {
+            $fileRemoved++;
+            if ($fileRemoved % 100 === 0) {
                 $progressBar->advance(100);
             }
         }
