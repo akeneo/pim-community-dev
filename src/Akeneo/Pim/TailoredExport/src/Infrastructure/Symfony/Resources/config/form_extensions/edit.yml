@@ -45,6 +45,17 @@ extensions:
             tabTitle: pim_common.properties
             tabCode: pim-job-instance-properties
 
+    pim-job-instance-xlsx-tailored-product-export-edit-permission:
+        module: pimee/common/tab/permission
+        parent: pim-job-instance-xlsx-tailored-product-export-edit-tabs
+        targetZone: container
+        aclResourceId: pimee_importexport_export_profile_edit_permissions
+        position: 115
+        config:
+            title: pim_common.permissions
+            entity: job_instance
+            tabCode: pim-job-instance-permission
+
     pim-job-instance-xlsx-tailored-product-export-edit-global:
         module: pim/job/common/edit/properties
         parent: pim-job-instance-xlsx-tailored-product-export-edit-tabs
