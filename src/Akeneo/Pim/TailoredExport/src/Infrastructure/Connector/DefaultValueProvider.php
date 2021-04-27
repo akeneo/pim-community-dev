@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 namespace Akeneo\Pim\TailoredExport\Infrastructure\Connector;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 
@@ -40,6 +41,15 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
     {
         $defaultValues = $this->simpleProvider->getDefaultValues();
         $defaultValues['columns'] = [];
+        $defaultValues['filters'] = [
+            'data' => [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operators::EQUALS,
+                    'value' => true,
+                ],
+            ],
+        ];
 
         return $defaultValues;
     }

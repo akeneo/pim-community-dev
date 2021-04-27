@@ -4,6 +4,8 @@ akeneo.tailored_export:
   form:
     job_instance:
       tab:
+        content:
+          title: Filter the data
         column:
           title: Select the columns
   column_list:

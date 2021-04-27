@@ -16,12 +16,7 @@ namespace Akeneo\Pim\TailoredExport\Infrastructure\Connector;
 use Akeneo\Pim\TailoredExport\Infrastructure\Validation\Columns;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
-use Symfony\Component\Validator\Constraints\All;
-use Symfony\Component\Validator\Constraints\Callback;
-use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\Count;
-use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ConstraintCollectionProvider implements ConstraintCollectionProviderInterface
 {
@@ -44,13 +39,37 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
     /**
      * {@inheritdoc}
      */
-    public function getConstraintCollection(): Collection
+    public function getConstraintCollection(): Assert\Collection
     {
         $baseConstraint = $this->simpleProvider->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
         $constraintFields['columns'] = new Columns();
+        $constraintFields['filters'] = new Assert\Collection([
+            'fields' => [
+                'data' => [
+                    new Assert\Type('array'),
+                    new Assert\All(['constraints' => [
+                        new Assert\Collection([
+                            'fields' => [
+                                'field' => new Assert\NotBlank(),
+                                'operator' => new Assert\NotBlank(),
+                                'context' => new Assert\Optional([
+                                    new Assert\Collection([
+                                        'fields' => [
+                                            'scope' => new Assert\Optional(),
+                                            'locale' => new Assert\Optional(),
+                                        ],
+                                    ]),
+                                ]),
+                            ],
+                            'allowExtraFields' => true,
+                        ])
+                    ]])
+                ]
+            ]
+        ]);
 
-        return new Collection(['fields' => $constraintFields]);
+        return new Assert\Collection(['fields' => $constraintFields]);
     }
 
     /**

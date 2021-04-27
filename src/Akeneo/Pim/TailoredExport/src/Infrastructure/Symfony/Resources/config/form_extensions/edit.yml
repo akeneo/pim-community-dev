@@ -66,6 +66,15 @@ extensions:
             tabTitle: pim_enrich.export.product.global_settings.title
             tabCode: pim-job-instance-global
 
+    pim-job-instance-xlsx-tailored-product-export-edit-filter-the-data:
+      module: pim/job/product/edit/content
+      parent: pim-job-instance-xlsx-tailored-product-export-edit-tabs
+      aclResourceId: pim_importexport_export_profile_content_edit
+      targetZone: container
+      position: 130
+      config:
+        tabTitle: akeneo.tailored_export.form.job_instance.tab.content.title
+
     pim-job-instance-xlsx-tailored-product-export-edit-columns:
         module: akeneotailoredexport/js/job/product/edit/columns
         parent: pim-job-instance-xlsx-tailored-product-export-edit-tabs
@@ -74,7 +83,6 @@ extensions:
         position: 135
         config:
             tabTitle: akeneo.tailored_export.form.job_instance.tab.column.title
-            tabCode: pim-job-instance-content
 
     pim-job-instance-xlsx-tailored-product-export-edit-history:
         module: pim/common/tab/history
@@ -140,6 +148,34 @@ extensions:
         parent: pim-job-instance-xlsx-tailored-product-export-edit
         targetZone: meta
         position: 100
+
+    pim-job-instance-xlsx-tailored-product-export-edit-filter-the-data-filters:
+        module: pim/job/product/edit/content/data
+        parent: pim-job-instance-xlsx-tailored-product-export-edit-filter-the-data
+        targetZone: data-filters
+        config:
+            filters:
+                -
+                    field: family
+                    view: akeneo-product-family-filter
+                -
+                    field: enabled
+                    view: akeneo-product-enabled-filter
+                -
+                    field: updated
+                    view: akeneo-product-updated-filter
+
+    pim-job-instance-xlsx-tailored-product-export-edit-filter-the-data-default-attribute-filters:
+        module: pim/job/product/edit/content/data/default-attribute-filters
+        parent: pim-job-instance-xlsx-tailored-product-export-edit-filter-the-data-filters
+        config:
+            types: [pim_catalog_identifier]
+
+    pim-job-instance-xlsx-tailored-product-export-edit-filter-the-data-add-filter:
+        module: pim/job/product/edit/content/data/add-select/attribute
+        parent: pim-job-instance-xlsx-tailored-product-export-edit-filter-the-data-filters
+        targetZone: headings
+        position: 90
 
     pim-job-instance-xlsx-tailored-product-export-edit-secondary-actions:
         module: pim/form/common/secondary-actions
