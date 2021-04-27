@@ -32,6 +32,10 @@ case "${STEP}" in
   ;;
 "PRE_APPLY")
   echo "[INFO] ENTER in PRE_APPLY step"
+  if [ ! -r ".kubeconfig" ]; then
+    terraform apply -input=false -auto-approve -target=module.pim.local_file.kubeconfig
+  fi
+  export KUBECONFIG=.kubeconfig
   for migration_script in $(ls -v ${UPGRADE_DIR}/steps/*.sh); do
     echo $(date) "[INFO][PRE_APPLY] ${migration_script}"
     $migration_script
@@ -40,6 +44,10 @@ case "${STEP}" in
   ;;
 "POST_APPLY")
   echo "[INFO] ENTER in POST_APPLY step"
+  if [ ! -r ".kubeconfig" ]; then
+    terraform apply -input=false -auto-approve -target=module.pim.local_file.kubeconfig
+  fi
+  export KUBECONFIG=.kubeconfig
   for migration_script in $(ls -v ${UPGRADE_DIR}/steps/*.sh); do
     echo $(date) "[INFO][POST_APPLY] ${migration_script}"
     $migration_script

@@ -246,11 +246,17 @@ mysql:
       requests:
         memory: 3072Mi
     readinessProbe:
-      initialDelaySeconds: 5
-      periodSeconds: 120
+      initialDelaySeconds: 30
+      periodSeconds: 30
       timeoutSeconds: 30
       successThreshold: 1
-      failureThreshold: 3
+      failureThreshold: 4
+    livenessProbe:
+      initialDelaySeconds: 120
+      periodSeconds: 60
+      timeoutSeconds: 30
+      successThreshold: 1
+      failureThreshold: 5
 
 memcached:
   image: memcached:1.6.7

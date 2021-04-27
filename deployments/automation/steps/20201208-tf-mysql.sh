@@ -6,9 +6,7 @@ if [ ${STEP} == "PRE_APPLY" ]; then
     if (! grep -q "mysql_disk_size" "${PWD}/main.tf.json"); then
 
         #Get disk informations
-        terraform apply -input=false -auto-approve -target=module.pim.local_file.kubeconfig
         MYSQL_PD_NAME=$(
-            export KUBECONFIG=.kubeconfig
             kubectl -n ${PFID} get pv $(kubectl -n ${PFID} get pvc data-mysql-server-0 -o jsonpath='{.spec.volumeName}') -o jsonpath='{.spec.gcePersistentDisk.pdName}'
         )
         MYSQL_SIZE=$(gcloud --project=${GOOGLE_PROJECT_ID} compute disks list --filter="name=\"${MYSQL_PD_NAME}\"" --limit=1 --format=json | jq -r '.[0]["sizeGb"]')
