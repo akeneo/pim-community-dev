@@ -24,6 +24,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class FileController
 {
     const DEFAULT_IMAGE_KEY = '__default_image__';
+    const SVG_MIME_TYPES = ['image/svg', 'image/svg+xml'];
 
     /** @var ImagineController */
     protected $imagineController;
@@ -84,23 +85,20 @@ class FileController
 
         $mimeType = $this->getMimeType($filename);
         $fileType = $this->fileTypeGuesser->guess($mimeType);
-        $result = $this->renderDefaultImage($fileType, $filter);
 
-        if (self::DEFAULT_IMAGE_KEY !== $filename) {
-            if (FileTypes::IMAGE === $fileType) {
-                try {
-                    $result = $this->imagineController->filterAction($request, $filename, $filter);
-
-                    if ('image/svg' === $mimeType) {
-                        return $this->getFileResponse($filename, 'image/svg+xml');
-                    }
-                } catch (NotFoundHttpException | \RuntimeException $exception) {
-                    $result = $this->renderDefaultImage(FileTypes::IMAGE, $filter);
-                }
-            }
+        if (self::DEFAULT_IMAGE_KEY === $filename || FileTypes::IMAGE !== $fileType) {
+            return $this->renderDefaultImage($fileType, $filter);
         }
 
-        return $result;
+        if (in_array($mimeType, self::SVG_MIME_TYPES)) {
+            return $this->getFileResponse($filename, 'image/svg+xml');
+        }
+
+        try {
+            return $this->imagineController->filterAction($request, $filename, $filter);
+        } catch (NotFoundHttpException | \RuntimeException $exception) {
+            return $this->renderDefaultImage(FileTypes::IMAGE, $filter);
+        }
     }
 
     private function getFileResponse(string $filename, string $mimeType): Response
