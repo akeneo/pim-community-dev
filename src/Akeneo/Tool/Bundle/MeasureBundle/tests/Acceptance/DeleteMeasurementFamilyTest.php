@@ -55,6 +55,7 @@ class DeleteMeasurementFamilyTest extends AcceptanceTestCase
         $this->assertEquals(0, $violations->count());
         $this->assertMeasurementFamilyEventDispatched($measurementFamilyCode);
         $this->assertMeasurementFamilyDoesNotExists($measurementFamilyCode);
+        $this->assertTrue(false);
     }
 
     /**
