@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9830: Upgrade phpseclib dependency following security issue CVE-2021-30130
+
 # 5.0.21 (2021-04-23)
 
 PIM-9823: [Backport] PIM-9734: Fix URI too long for rules on smart attributes
