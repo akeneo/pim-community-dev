@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9828: Fix Record & Asset text attributes not showing < or > characters
+
 # 4.0.104 (2021-04-22)
 
 ## Bug fixes
