@@ -1,9 +1,10 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {AkeneoThemedProps, Breadcrumb, ChannelsIllustration, getColor, getFontSize} from 'akeneo-design-system';
 import {useTranslate} from '../../shared/translate';
 import {PageHeader} from '../../common';
 import {UserButtons} from '../../shared/user';
 import styled from 'styled-components';
+import {useFetchMarketingUrl} from '../hooks/use-fetch-marketing-url';
 
 const LinkButton = styled.a<AkeneoThemedProps>`
     display: inline-flex;
@@ -66,12 +67,19 @@ const Caption = styled.p`
 
 export const Marketplace: FC = () => {
     const translate = useTranslate();
+    const fetchMarketplaceUrl = useFetchMarketingUrl();
+    const [marketplaceUrl, setMarketplaceUrl] = useState<string>('');
+
     const breadcrumb = (
         <Breadcrumb>
             <Breadcrumb.Step>{translate('pim_menu.tab.connect')}</Breadcrumb.Step>
             <Breadcrumb.Step>{translate('pim_menu.item.marketplace')}</Breadcrumb.Step>
         </Breadcrumb>
     );
+
+    useEffect(() => {
+        fetchMarketplaceUrl().then(setMarketplaceUrl);
+    }, [fetchMarketplaceUrl]);
 
     return (
         <>
@@ -86,12 +94,7 @@ export const Marketplace: FC = () => {
 
                 <Caption>{translate('akeneo_connectivity.connection.connect.marketplace.sub_title')}</Caption>
 
-                <LinkButton
-                    href='https://marketplace.akeneo.com/extensions?edition=all&version=all&api_use=1&sort=date'
-                    target='_blank'
-                    role='link'
-                    tabIndex='0'
-                >
+                <LinkButton href={marketplaceUrl} target='_blank' role='link' tabIndex='0'>
                     {translate('akeneo_connectivity.connection.connect.marketplace.link')}
                 </LinkButton>
             </PageContent>

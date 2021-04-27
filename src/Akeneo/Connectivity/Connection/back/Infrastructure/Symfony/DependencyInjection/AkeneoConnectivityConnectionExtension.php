@@ -24,6 +24,7 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('event_subscribers.yml');
         $loader->load('handlers.yml');
         $loader->load('install.yml');
+        $loader->load('marketplace_url.yml');
         $loader->load('message_handler.yml');
         $loader->load('queries.yml');
         $loader->load('repositories.yml');

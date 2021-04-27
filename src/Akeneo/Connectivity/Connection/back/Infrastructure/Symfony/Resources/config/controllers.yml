@@ -44,3 +44,9 @@ services:
             - '@akeneo_connectivity.connection.persistence.query.get_event_subscription_logs_query'
             - '@akeneo_connectivity.connection.persistence.query.search_event_subscription_debug_logs_query'
             - '@oro_security.security_facade'
+
+    akeneo_connectivity.connection.internal_api.controller.marketplace_url:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\MarketplaceUrlController
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.url_generator'
