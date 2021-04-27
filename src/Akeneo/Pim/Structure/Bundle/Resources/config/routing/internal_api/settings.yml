@@ -1,0 +1,4 @@
+pim_enrich_count_settings_entities:
+    path: /count-entities
+    defaults: { _controller: pim_enrich.controller.rest.settings:countEntitiesAction }
+    methods: [GET]

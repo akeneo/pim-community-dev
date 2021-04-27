@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Structure\Integration\Query\InternalApi;
 
-use Akeneo\Pim\Structure\Bundle\Query\InternalApi\CountSettingsEntitiesQuery;
 use Akeneo\Test\Integration\TestCase;
 
 /**
