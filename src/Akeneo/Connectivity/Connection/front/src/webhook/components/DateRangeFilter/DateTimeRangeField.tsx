@@ -6,23 +6,31 @@ import {DateTimeInput} from './DateTimeInput';
 
 type Timestamp = number;
 type Props = {
-    min?: Timestamp;
-    max?: Timestamp;
-    start?: Timestamp;
-    end?: Timestamp;
-    onChange: (start?: Timestamp, end?: Timestamp) => void;
+    value: {
+        start?: Timestamp;
+        end?: Timestamp;
+    };
+    onChange: (value: {start?: Timestamp; end?: Timestamp}) => void;
 };
 
-export const DateTimeRangeField: FC<Props> = ({min, max, start, end, onChange}) => {
+export const DateTimeRangeField: FC<Props> = ({value, onChange}) => {
     const translate = useTranslate();
 
     return (
         <FlexContainer>
             <Field label={translate('akeneo_connectivity.connection.webhook.event_logs.list.date_range_filter.from')}>
-                <DateTimeInput value={start} min={min} max={end || max} onChange={start => onChange(start, end)} />
+                <DateTimeInput
+                    value={value.start}
+                    defaultTime='00:00'
+                    onChange={start => onChange({...value, start: start || undefined})}
+                />
             </Field>
             <Field label={translate('akeneo_connectivity.connection.webhook.event_logs.list.date_range_filter.to')}>
-                <DateTimeInput value={end} min={start || min} max={max} onChange={end => onChange(start, end)} />
+                <DateTimeInput
+                    value={value.end}
+                    defaultTime='23:59'
+                    onChange={end => onChange({...value, end: end || undefined})}
+                />
             </Field>
         </FlexContainer>
     );

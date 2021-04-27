@@ -1,8 +1,7 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {Search, Table} from 'akeneo-design-system';
-import {useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useDebounceCallback, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {CategoryTree} from '../../../models';
-import {useDebounceCallback} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {NoResults} from '../../shared';
 

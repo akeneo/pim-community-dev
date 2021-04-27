@@ -39,23 +39,25 @@ const Arrow: FC = () => {
     return isExpanded ? <ArrowDownIcon /> : <ArrowRightIcon />;
 };
 
+const SESSION_STORAGE_KEY = 'connectivity_connection_event_subscription_logs_filters_2';
+
 const loadFiltersFromTheSession = () => {
-    const sessionFilters = sessionStorage.getItem('connectivity_connection_event_subscription_logs_filters');
+    const sessionFilters = sessionStorage.getItem(SESSION_STORAGE_KEY);
 
     return null !== sessionFilters ? JSON.parse(sessionFilters) : null;
 };
 
 const saveFiltersIntoTheSession = (filters: EventSubscriptionLogFilters) => {
-    sessionStorage.setItem('connectivity_connection_event_subscription_logs_filters', JSON.stringify(filters));
+    sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(filters));
 };
 
 export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => {
     const translate = useTranslate();
     const scrollContainer = useRef(null);
 
-    const [{filters}, setFilters] = useState<{
-        filters: EventSubscriptionLogFilters;
-    }>({filters: loadFiltersFromTheSession() || getDefaultFilters()});
+    const [filters, setFilters] = useState<EventSubscriptionLogFilters>(
+        loadFiltersFromTheSession() || getDefaultFilters()
+    );
     const isSearchActive = !isSameAsDefaultFiltersValues(filters);
 
     const {logs, total, isLoading, isInitialized} = useInfiniteEventSubscriptionLogs(
@@ -73,7 +75,7 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
     }
 
     const handleFiltersChange = (filters: EventSubscriptionLogFilters) => {
-        setFilters(state => ({...state, filters, isDefaultFilters: false}));
+        setFilters(state => ({...state, ...filters}));
         saveFiltersIntoTheSession(filters);
     };
 

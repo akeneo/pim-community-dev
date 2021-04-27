@@ -1,4 +1,4 @@
-import {useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {useRoute} from '@akeneo-pim-community/shared';
 import {Product} from '../models';
 
 const PLACEHOLDER_PATH = '/bundles/pimui/img/image_default.png';

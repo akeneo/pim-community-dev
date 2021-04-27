@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react';
-import {useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {useFetch, useRoute} from '@akeneo-pim-community/shared';
 import {CategoryTree} from '../../models';
-import {useFetch} from '@akeneo-pim-community/shared';
 
 const useCategoryTreeList = () => {
   const [trees, setTrees] = useState<CategoryTree[]>([]);

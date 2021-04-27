@@ -1,5 +1,5 @@
 import {useCallback} from 'react';
-import {useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {useUserContext} from '@akeneo-pim-community/shared';
 import {AttributeGroup} from '../../models';
 
 import {getLabel} from 'pimui/js/i18n';

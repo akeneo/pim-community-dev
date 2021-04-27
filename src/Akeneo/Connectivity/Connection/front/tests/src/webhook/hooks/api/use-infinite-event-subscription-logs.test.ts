@@ -13,9 +13,11 @@ beforeEach(() => {
 
 test('The first logs are fetched on mount', async () => {
     const ref = {current: document.getElementById('content')};
-
     mockFetchResponses({
-        'akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics': {
+        ['akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs?connection_code=alkemics&filters=' +
+        encodeURIComponent(
+            '{"levels":["info","notice","warning","error"],"text":"","timestamp_from":null,"timestamp_to":null}'
+        )]: {
             json: {
                 results: [
                     {
@@ -42,7 +44,6 @@ test('The first logs are fetched on mount', async () => {
             EventSubscriptionLogLevel.ERROR,
         ],
         text: '',
-        dateTime: {},
     };
 
     const {waitForNextUpdate, result, unmount} = renderHook(() =>

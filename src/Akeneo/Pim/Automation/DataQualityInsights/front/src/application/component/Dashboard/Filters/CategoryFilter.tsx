@@ -2,7 +2,7 @@ import React, {FC, useEffect, useState} from 'react';
 import {createPortal} from 'react-dom';
 import CategoryModal from '../CategoryModal/CategoryModal';
 import {useDashboardContext} from '../../../context/DashboardContext';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 
 interface Props {
