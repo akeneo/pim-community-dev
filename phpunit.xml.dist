@@ -44,6 +44,13 @@
             <directory suffix="Integration.php">src/Akeneo/Tool/Bundle/MeasureBundle/tests/Integration</directory>
         </testsuite>
 
+        <testsuite name="Akeneo_Measurement_Acceptance">
+            <directory suffix="Test.php">src/Akeneo/Tool/Bundle/MeasureBundle/tests/Acceptance</directory>
+        </testsuite>
+        <testsuite name="Akeneo_Measurement_EndToEnd">
+            <directory suffix="EndToEnd.php">src/Akeneo/Tool/Bundle/MeasureBundle/tests/EndToEnd</directory>
+        </testsuite>
+
         <testsuite name="Akeneo_Connectivity_Connection_EndToEnd">
             <directory suffix="EndToEnd.php">src/Akeneo/Connectivity/Connection/back/tests/EndToEnd</directory>
         </testsuite>

@@ -12,7 +12,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInte
 use Akeneo\Tool\Bundle\MeasureBundle\tests\EndToEnd\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateMeasurementFamilyActionTest extends WebTestCase
+class CreateMeasurementFamilyActionEndToEnd extends WebTestCase
 {
     /** @var MeasurementFamilyRepositoryInterface */
     private $measurementFamilyRepository;
