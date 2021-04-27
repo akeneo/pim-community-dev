@@ -46,7 +46,11 @@ const CategoriesIndex: FC = () => {
         </PageHeader.Title>
       </PageHeader>
       <PageContent>
-        {trees.length === 0 ? <EmptyCategoryTreeList /> : <CategoryTreesDataGrid trees={trees} />}
+        {trees.length === 0 ? (
+          <EmptyCategoryTreeList />
+        ) : (
+          <CategoryTreesDataGrid trees={trees} refreshCategoryTrees={load} />
+        )}
       </PageContent>
       {isModalOpen && <NewCategoryModal closeModal={closeModal} refreshCategoryTrees={load} />}
     </>

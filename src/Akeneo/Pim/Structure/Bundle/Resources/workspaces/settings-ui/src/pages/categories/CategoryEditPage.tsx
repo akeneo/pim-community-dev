@@ -4,7 +4,7 @@ import {Breadcrumb} from 'akeneo-design-system';
 import {PimView, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
 import {FullScreenError, PageContent, PageHeader, useSetPageTitle} from '@akeneo-pim-community/shared';
 import {useCategory} from '../../hooks';
-import {Category} from "../../models";
+import {Category} from '../../models';
 
 type Params = {
   categoryId: string;
@@ -18,7 +18,7 @@ const CategoryEditPage: FC = () => {
   const {category, status, load} = useCategory(parseInt(categoryId));
   const [categoryLabel, setCategoryLabel] = useState(`[${categoryId}]`);
   const [treeLabel, setTreeLabel] = useState(translate('pim_enrich.entity.category.content.edit.default_tree_label'));
-  const [tree, setTree] = useState<Category|null>(null);
+  const [tree, setTree] = useState<Category | null>(null);
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
 
@@ -29,7 +29,7 @@ const CategoryEditPage: FC = () => {
       return;
     }
     router.redirect(router.generate('pim_enrich_categorytree_tree', {id: tree.id}));
-  }
+  };
 
   useEffect(() => {
     load();

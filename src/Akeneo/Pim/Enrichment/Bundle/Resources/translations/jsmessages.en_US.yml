@@ -228,8 +228,12 @@ pim_enrich.entity.category:
         edit:
             not_found: Category not found
             default_tree_label: Tree
-    category_created: The tree "{{ tree }}" was successfully created
-    category_creation_error: The tree "{{ tree }}" could not be created
+    category_tree_created: The tree "{{ tree }}" was successfully created
+    category_tree_creation_error: The tree "{{ tree }}" could not be created
+    products_limit_exceeded:  This category contains more products than allowed for this operation ({{ limit }} products maximum)
+    delete_confirmation: Are you sure you want to delete the category {{ name }}? All sub-categories will be deleted. Products in these categories will not be deleted.
+    category_tree_deleted: The tree "{{ tree }}" was successfully deleted
+    category_tree_deletion_error: The tree "{{ tree }}" could not be deleted
 
 pim_enrich.export.product:
     data:

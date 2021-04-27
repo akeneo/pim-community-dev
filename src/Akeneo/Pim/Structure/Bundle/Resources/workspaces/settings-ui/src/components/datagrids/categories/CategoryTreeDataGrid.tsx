@@ -1,21 +1,27 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
-import {Search, Table} from 'akeneo-design-system';
-import {useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {Button, Search, Table, useBooleanState} from 'akeneo-design-system';
+import {NotificationLevel, useNotify, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {CategoryTree} from '../../../models';
 import {useDebounceCallback} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {NoResults} from '../../shared';
+import {DeleteCategoryTreeModal} from './DeleteCategoryTreeModal';
+import {deleteCategory} from '../../../infrastructure/removers';
 
 type Props = {
   trees: CategoryTree[];
+  refreshCategoryTrees: () => void;
 };
 
-const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
+const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const translate = useTranslate();
   const router = useRouter();
   const {isGranted} = useSecurity();
   const [searchString, setSearchString] = useState('');
   const [filteredTrees, setFilteredTrees] = useState<CategoryTree[]>(trees);
+  const notify = useNotify();
+  const [isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal] = useBooleanState();
+  const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTree | null>(null);
 
   const followCategoryTree = useCallback((tree: CategoryTree): void => {
     const url = router.generate('pim_enrich_categorytree_tree', {id: tree.id});
@@ -37,6 +43,33 @@ const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
     },
     [trees]
   );
+
+  const deleteCategoryTree = async () => {
+    if (categoryTreeToDelete) {
+      const response = await deleteCategory(categoryTreeToDelete.id);
+      response && refreshCategoryTrees();
+      const message = response
+        ? 'pim_enrich.entity.category.category_tree_deleted'
+        : 'pim_enrich.entity.category.category_tree_deletion_error';
+      notify(
+        response ? NotificationLevel.SUCCESS : NotificationLevel.ERROR,
+        translate(message, {tree: categoryTreeToDelete.label})
+      );
+      setCategoryTreeToDelete(null);
+    }
+    closeConfirmationModal();
+  };
+
+  const onDeleteCategoryTree = (categoryTree: CategoryTree) => {
+    if (categoryTree.productsNumber && categoryTree.productsNumber > 100) {
+      notify(NotificationLevel.INFO, translate('pim_enrich.entity.category.products_limit_exceeded', {limit: 100}));
+
+      return;
+    }
+
+    setCategoryTreeToDelete(categoryTree);
+    openConfirmationModal();
+  };
 
   useEffect(() => {
     setFilteredTrees(trees);
@@ -66,23 +99,38 @@ const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
         />
       )}
       {filteredTrees.length > 0 && (
-        <Table>
-          <Table.Header>
-            <Table.HeaderCell>
-              {translate('pim_enrich.entity.category.content.tree_list.columns.label')}
-            </Table.HeaderCell>
-          </Table.Header>
-          <Table.Body>
-            {filteredTrees.map(tree => (
-              <Table.Row
-                key={tree.code}
-                onClick={isGranted('pim_enrich_product_category_list') ? () => followCategoryTree(tree) : undefined}
-              >
-                <Table.Cell rowTitle>{tree.label}</Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
+        <>
+          <Table>
+            <Table.Header>
+              <Table.HeaderCell>
+                {translate('pim_enrich.entity.category.content.tree_list.columns.label')}
+              </Table.HeaderCell>
+              <Table.HeaderCell />
+            </Table.Header>
+            <Table.Body>
+              {filteredTrees.map(tree => (
+                <Table.Row
+                  key={tree.code}
+                  onClick={isGranted('pim_enrich_product_category_list') ? () => followCategoryTree(tree) : undefined}
+                >
+                  <Table.Cell rowTitle>{tree.label}</Table.Cell>
+                  <TableActionCell>
+                    <Button ghost level="danger" size={'small'} onClick={() => onDeleteCategoryTree(tree)} disabled={!tree.hasOwnProperty('productsNumber')}>
+                      {translate('pim_common.delete')}
+                    </Button>
+                  </TableActionCell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+          {isConfirmationModalOpen && categoryTreeToDelete && (
+            <DeleteCategoryTreeModal
+              categoryLabel={categoryTreeToDelete.label}
+              closeModal={closeConfirmationModal}
+              deleteCategory={deleteCategoryTree}
+            />
+          )}
+        </>
       )}
     </>
   );
@@ -90,6 +138,10 @@ const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
 
 const StyledSearch = styled(Search)`
   margin-bottom: 20px;
+`;
+
+const TableActionCell = styled(Table.ActionCell)`
+  width: 50px;
 `;
 
 export {CategoryTreesDataGrid};
