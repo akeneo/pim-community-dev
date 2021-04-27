@@ -8,6 +8,8 @@ use Akeneo\Test\Acceptance\Attribute\InMemoryIsThereAtLeastOneAttributeConfigure
 use Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyHandler;
+use Akeneo\Tool\Bundle\MeasureBundle\Event\MeasurementFamilyCreated;
+use Akeneo\Tool\Bundle\MeasureBundle\Event\MeasurementFamilyUpdated;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
@@ -39,73 +41,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         $this->measurementFamilyRepository->clear();
         $this->saveMeasurementFamilyHandler = $this->get('akeneo_measure.application.save_measurement_family_handler');
         $this->isThereAtLeastOneAttributeConfiguredWithMeasurementFamily = $this->get('akeneo.pim.structure.query.is_there_at_least_one_attribute_configured_with_measurement_family');
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_create_a_measurement_family(): void
-    {
-        $measurementFamilyCode = 'weight';
-        $measurementFamilyLabels = ['fr_FR' => 'Poids', 'en_US' => 'Weight'];
-        // kilogram unit
-        $kilogramUnitCode = 'kilogram';
-        $kilogramLabels = ['fr_FR' => 'kilogramme', 'en_US' => 'Kilogram'];
-        $kilogramConversion = ['operator' => 'mul', 'value' => '1'];
-        $kilogramSymbol = 'Km';
-        // gram unit
-        $gramUnitCode = 'gram';
-        $gramLabels = ['fr_FR' => 'Gramme', 'en_US' => 'Gram'];
-        $gramConversion = ['operator' => 'mul', 'value' => '0.001'];
-        $gramSymbol = 'g';
-        //command
-        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
-        $saveFamilyCommand->code = $measurementFamilyCode;
-        $saveFamilyCommand->labels = $measurementFamilyLabels;
-        $saveFamilyCommand->standardUnitCode = $kilogramUnitCode;
-        $saveFamilyCommand->units = [
-            [
-                'code' => $kilogramUnitCode,
-                'labels' => $kilogramLabels,
-                'convert_from_standard' => [$kilogramConversion],
-                'symbol' => $kilogramSymbol
-            ],
-            [
-                'code' => $gramUnitCode,
-                'labels' => $gramLabels,
-                'convert_from_standard' => [$gramConversion],
-                'symbol' => $gramSymbol
-            ]
-        ];
-        $this->assertMeasurementFamilyDoesNotExists($measurementFamilyCode);
-
-        $violations = $this->validator->validate($saveFamilyCommand);
-        $this->saveMeasurementFamilyHandler->handle($saveFamilyCommand);
-
-        self::assertEquals(0, $violations->count());
-        $expectedMeasurementFamily = MeasurementFamily::create(
-            MeasurementFamilyCode::fromString($measurementFamilyCode),
-            LabelCollection::fromArray($measurementFamilyLabels),
-            UnitCode::fromString($kilogramUnitCode),
-            [
-                Unit::create(
-                    UnitCode::fromString($kilogramUnitCode),
-                    LabelCollection::fromArray($kilogramLabels),
-                    [Operation::create($kilogramConversion['operator'], $kilogramConversion['value'])],
-                    $kilogramSymbol
-                ),
-                Unit::create(
-                    UnitCode::fromString($gramUnitCode),
-                    LabelCollection::fromArray($gramLabels),
-                    [Operation::create($gramConversion['operator'], $gramConversion['value'])],
-                    $gramSymbol
-                )
-            ]
-        );
-        $actualMeasurementFamily = $this->measurementFamilyRepository->getByCode(
-            MeasurementFamilyCode::fromString($measurementFamilyCode)
-        );
-        $this->assertEquals($expectedMeasurementFamily, $actualMeasurementFamily);
+        $this->eventDispatcherMock = $this->get('event_dispatcher');
     }
 
     /**
@@ -174,6 +110,13 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
             MeasurementFamilyCode::fromString($measurementFamilyCode)
         );
         $this->assertEquals($measurementFamily, $actualMeasurementFamily);
+
+        $events = $this->eventDispatcherMock->getEvents();
+        $this->assertCount(1, $events);
+        $event = current($events)['event'];
+        $this->assertInstanceOf(MeasurementFamilyUpdated::class, $event);
+        $this->assertEquals($measurementFamilyCode, $event->getMeasurementFamilyCode()->normalize());
+
     }
 
     /**
@@ -198,7 +141,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
         self::assertEquals('The standard unit code of the "WEIGHT" measurement family should be a multiply-by-1 operation', $violation->getMessage());
-        self::assertEquals('units[0].convert_from_standard', $violation->getPropertyPath());
+        self::assertEquals('units[0][convert_from_standard]', $violation->getPropertyPath());
     }
 
     /**
@@ -303,7 +246,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
      * @test
      * @dataProvider invalidLabels
      */
-    public function it_has_an_invalid_label($invalidLabels, string $expectedErrorMessage): void
+    public function it_has_an_invalid_label($invalidLabels, string $expectedErrorMessage, string $propertyPath): void
     {
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = 'WEIGHT';
@@ -323,7 +266,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
         self::assertEquals($expectedErrorMessage, $violation->getMessage());
-        self::assertEquals('labels', $violation->getPropertyPath());
+        self::assertEquals($propertyPath, $violation->getPropertyPath());
     }
 
     /**
@@ -417,9 +360,9 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
     /**
      * @test
-     * @dataProvider invalidLabels
+     * @dataProvider invalidUnitLabels
      */
-    public function it_has_a_unit_with_an_invalid_label($invalidLabels, string $expectedErrorMessage): void
+    public function it_has_a_unit_with_an_invalid_label($invalidLabels, string $expectedErrorMessage, string $propertyPath): void
     {
         $saveFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveFamilyCommand->code = 'WEIGHT';
@@ -439,7 +382,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
         self::assertEquals($expectedErrorMessage, $violation->getMessage());
-        self::assertEquals('units[0][labels]', $violation->getPropertyPath());
+        self::assertEquals($propertyPath, $violation->getPropertyPath());
     }
 
     /**
@@ -589,50 +532,6 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_cannot_create_too_many_measurement_families(): void
-    {
-        for ($i = 0; $i < 100; $i++) {
-            $measurementFamily = MeasurementFamily::create(
-                MeasurementFamilyCode::fromString(sprintf('unit_%d', $i)),
-                LabelCollection::fromArray(['en_US' => 'Custom measurement']),
-                UnitCode::fromString(sprintf('UNIT_%d', $i)),
-                [
-                    Unit::create(
-                        UnitCode::fromString(sprintf('UNIT_%d', $i)),
-                        LabelCollection::fromArray(['en_US' => 'Custom unit']),
-                        [Operation::create('mul', '1')],
-                        'mm²',
-                    ),
-                ]
-            );
-
-            $this->measurementFamilyRepository->save($measurementFamily);
-        }
-
-        $saveFamilyCommand = new SaveMeasurementFamilyCommand();
-        $saveFamilyCommand->code = 'WEIGHT';
-        $saveFamilyCommand->labels = [];
-        $saveFamilyCommand->standardUnitCode = 'kilogram';
-        $saveFamilyCommand->units = [
-            [
-                'code' => 'kilogram',
-                'labels' => [],
-                'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
-                'symbol' => 'Kg',
-            ]
-        ];
-
-        $violations = $this->validator->validate($saveFamilyCommand);
-
-        self::assertEquals(1, $violations->count());
-        $violation = $violations->get(0);
-        self::assertEquals('You’ve reached the limit of 100 measurement families.', $violation->getMessage());
-        self::assertEquals('', $violation->getPropertyPath());
-    }
-
-    /**
-     * @test
-     */
     public function it_does_not_allow_to_remove_a_unit_when_linked_to_a_product_attribute(): void
     {
         $measurementFamilyCode = 'WEIGHT';
@@ -762,11 +661,25 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
     public function invalidLabels(): array
     {
+        $as = str_repeat('a', 101);
+
         return [
-            'Locale code should be a string' => [[123 => 'my label'], 'This value should be of type string.'],
-            'Locale code cannot be too long' => [[str_repeat('a', 101) => 'my label'], 'This value is too long. It should have 100 characters or less.'],
-            'Label should be a string' => [['fr_FR' => 12], 'This value should be of type string.'],
-            'Label cannot be too long' => [['fr_FR' => str_repeat('a', 101)], 'This value is too long. It should have 100 characters or less.']
+            'Locale code should be a string' => [[123 => 'my label'], 'This value should be of type string.', 'labels[123]'],
+            'Locale code cannot be too long' => [[$as => 'my label'], 'This value is too long. It should have 100 characters or less.', sprintf('labels[%s]', $as)],
+            'Label should be a string' => [['fr_FR' => 12], 'This value should be of type string.', 'labels[fr_FR]'],
+            'Label cannot be too long' => [['fr_FR' => $as], 'This value is too long. It should have 100 characters or less.', 'labels[fr_FR]']
+        ];
+    }
+
+    public function invalidUnitLabels(): array
+    {
+        $as = str_repeat('a', 101);
+
+        return [
+            'Locale code should be a string' => [[123 => 'my label'], 'This value should be of type string.', 'units[0][labels][123]'],
+            'Locale code cannot be too long' => [[$as => 'my label'], 'This value is too long. It should have 100 characters or less.', sprintf('units[0][labels][%s]', $as)],
+            'Label should be a string' => [['fr_FR' => 12], 'This value should be of type string.', 'units[0][labels][fr_FR]'],
+            'Label cannot be too long' => [['fr_FR' => $as], 'This value is too long. It should have 100 characters or less.', 'units[0][labels][fr_FR]']
         ];
     }
 
@@ -781,7 +694,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     public function invalidConvertValue(): array
     {
         return [
-            'The convert value is not a valid number represented as a string' => ['1.24adv', 'The conversion value should be a number represented in a string (example: "0.2561")']
+            'The convert value is not a valid number represented as a string' => ['1.24adv', 'The operation value should be a valid number']
         ];
     }
 

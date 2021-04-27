@@ -25,3 +25,9 @@ services:
         decoration_inner_name: messenger.default_bus.inner
         arguments:
             - '@messenger.default_bus.inner'
+
+    akeneo_integration_tests.event_dispatcher:
+        class: 'Akeneo\Test\Acceptance\EventDispatcher\EventDispatcherMock'
+        decorates: event_dispatcher
+        arguments:
+            - '@akeneo_integration_tests.event_dispatcher.inner'

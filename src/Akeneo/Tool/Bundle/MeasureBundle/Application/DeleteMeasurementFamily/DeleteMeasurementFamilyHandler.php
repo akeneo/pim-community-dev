@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Event\MeasurementFamilyDeleted;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (https://www.akeneo.com)
@@ -17,9 +19,15 @@ class DeleteMeasurementFamilyHandler
     /** @var MeasurementFamilyRepositoryInterface */
     private $measurementFamilyRepository;
 
-    public function __construct(MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
-    {
+    private ?EventDispatcherInterface $eventDispatcher;
+
+    /** TODO: @pullup Remove = null */
+    public function __construct(
+        MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
+        EventDispatcherInterface $eventDispatcher = null
+    ) {
         $this->measurementFamilyRepository = $measurementFamilyRepository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -27,6 +35,8 @@ class DeleteMeasurementFamilyHandler
      */
     public function handle(DeleteMeasurementFamilyCommand $deleteMeasurementFamilyCommand): void
     {
-        $this->measurementFamilyRepository->deleteByCode(MeasurementFamilyCode::fromString($deleteMeasurementFamilyCommand->code));
+        $measurementFamilyCode = MeasurementFamilyCode::fromString($deleteMeasurementFamilyCommand->code);
+        $this->measurementFamilyRepository->deleteByCode($measurementFamilyCode);
+        $this->eventDispatcher->dispatch(new MeasurementFamilyDeleted($measurementFamilyCode));
     }
 }

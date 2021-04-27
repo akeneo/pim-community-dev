@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\MeasureBundle\tests\Acceptance;
 
 use Akeneo\Test\Acceptance\Attribute\InMemoryIsThereAtLeastOneAttributeConfiguredWithMeasurementFamilyStub;
+use Akeneo\Test\Acceptance\EventDispatcher\EventDispatcherMock;
 use Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateMeasurementFamilyCommand;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateMeasurementFamilyHandler;
+use Akeneo\Tool\Bundle\MeasureBundle\Event\MeasurementFamilyCreated;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
@@ -15,6 +17,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateMeasurementFamilyTest extends AcceptanceTestCase
@@ -31,6 +34,8 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
     /** @var InMemoryIsThereAtLeastOneAttributeConfiguredWithMeasurementFamilyStub */
     private $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
 
+    private EventDispatcherMock $eventDispatcherMock;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -39,6 +44,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
         $this->measurementFamilyRepository->clear();
         $this->createMeasurementFamilyHandler = $this->get('akeneo_measure.application.create_measurement_family_handler');
         $this->isThereAtLeastOneAttributeConfiguredWithMeasurementFamily = $this->get('akeneo.pim.structure.query.is_there_at_least_one_attribute_configured_with_measurement_family');
+        $this->eventDispatcherMock = $this->get('event_dispatcher');
     }
 
     /**
@@ -106,6 +112,11 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
             MeasurementFamilyCode::fromString($measurementFamilyCode)
         );
         $this->assertEquals($expectedMeasurementFamily, $actualMeasurementFamily);
+        $events = $this->eventDispatcherMock->getEvents();
+        $this->assertCount(1, $events);
+        $event = current($events)['event'];
+        $this->assertInstanceOf(MeasurementFamilyCreated::class, $event);
+        $this->assertEquals($measurementFamilyCode, $event->getMeasurementFamilyCode()->normalize());
     }
 
     /**
@@ -176,6 +187,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
         $violation = $violations->get(0);
         self::assertEquals('The standard unit code of the "WEIGHT" measurement family should be a multiply-by-1 operation', $violation->getMessage());
         self::assertEquals('units[0].convert_from_standard', $violation->getPropertyPath());
+        self::assertEmpty($this->eventDispatcherMock->getEvents());
     }
 
     /**
@@ -208,7 +220,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
      * @test
      * @dataProvider invalidLabels
      */
-    public function it_has_an_invalid_label($invalidLabels, string $expectedErrorMessage): void
+    public function it_has_an_invalid_label($invalidLabels, string $expectedErrorMessage, string $propertyPath): void
     {
         $saveFamilyCommand = new CreateMeasurementFamilyCommand();
         $saveFamilyCommand->code = 'WEIGHT';
@@ -228,7 +240,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
         self::assertEquals($expectedErrorMessage, $violation->getMessage());
-        self::assertEquals('labels', $violation->getPropertyPath());
+        self::assertEquals($propertyPath, $violation->getPropertyPath());
     }
 
     /**
@@ -322,9 +334,9 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
 
     /**
      * @test
-     * @dataProvider invalidLabels
+     * @dataProvider invalidUnitLabels
      */
-    public function it_has_a_unit_with_an_invalid_label($invalidLabels, string $expectedErrorMessage): void
+    public function it_has_a_unit_with_an_invalid_label($invalidLabels, string $expectedErrorMessage, string $propertyPath): void
     {
         $saveFamilyCommand = new CreateMeasurementFamilyCommand();
         $saveFamilyCommand->code = 'WEIGHT';
@@ -344,7 +356,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
         self::assertEquals($expectedErrorMessage, $violation->getMessage());
-        self::assertEquals('units[0][labels]', $violation->getPropertyPath());
+        self::assertEquals($propertyPath, $violation->getPropertyPath());
     }
 
     /**
@@ -496,7 +508,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
      */
     public function it_cannot_create_too_many_measurement_families(): void
     {
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 400; $i++) {
             $measurementFamily = MeasurementFamily::create(
                 MeasurementFamilyCode::fromString(sprintf('unit_%d', $i)),
                 LabelCollection::fromArray(['en_US' => 'Custom measurement']),
@@ -531,7 +543,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
 
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
-        self::assertEquals('You’ve reached the limit of 100 measurement families.', $violation->getMessage());
+        self::assertEquals('You’ve reached the limit of 300 measurement families.', $violation->getMessage());
         self::assertEquals('', $violation->getPropertyPath());
     }
 
@@ -581,11 +593,25 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
 
     public function invalidLabels(): array
     {
+        $as = str_repeat('a', 101);
+
         return [
-            'Locale code should be a string' => [[123 => 'my label'], 'This value should be of type string.'],
-            'Locale code cannot be too long' => [[str_repeat('a', 101) => 'my label'], 'This value is too long. It should have 100 characters or less.'],
-            'Label should be a string' => [['fr_FR' => 12], 'This value should be of type string.'],
-            'Label cannot be too long' => [['fr_FR' => str_repeat('a', 101)], 'This value is too long. It should have 100 characters or less.']
+            'Locale code should be a string' => [[123 => 'my label'], 'This value should be of type string.', 'labels[123]'],
+            'Locale code cannot be too long' => [[$as => 'my label'], 'This value is too long. It should have 100 characters or less.', sprintf('labels[%s]', $as)],
+            'Label should be a string' => [['fr_FR' => 12], 'This value should be of type string.', 'labels[fr_FR]'],
+            'Label cannot be too long' => [['fr_FR' => $as], 'This value is too long. It should have 100 characters or less.', 'labels[fr_FR]']
+        ];
+    }
+
+    public function invalidUnitLabels(): array
+    {
+        $as = str_repeat('a', 101);
+
+        return [
+            'Locale code should be a string' => [[123 => 'my label'], 'This value should be of type string.', 'units[0][labels][123]'],
+            'Locale code cannot be too long' => [[$as => 'my label'], 'This value is too long. It should have 100 characters or less.', sprintf('units[0][labels][%s]', $as)],
+            'Label should be a string' => [['fr_FR' => 12], 'This value should be of type string.', 'units[0][labels][fr_FR]'],
+            'Label cannot be too long' => [['fr_FR' => $as], 'This value is too long. It should have 100 characters or less.', 'units[0][labels][fr_FR]']
         ];
     }
 
@@ -600,7 +626,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
     public function invalidConvertValue(): array
     {
         return [
-            'The convert value is not a valid number represented as a string' => ['1.24adv', 'The conversion value should be a number represented in a string (example: "0.2561")']
+            'The convert value is not a valid number represented as a string' => ['1.24adv', 'The operation value should be a valid number']
         ];
     }
 
