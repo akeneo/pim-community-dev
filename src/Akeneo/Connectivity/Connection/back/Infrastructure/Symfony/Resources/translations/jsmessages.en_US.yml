@@ -17,6 +17,7 @@ pim_menu:
         connection_webhook_event_logs: Event logs
         data_flows: Data flows
         marketplace: Marketplace
+        new_label: NEW
 
 pim_title:
     akeneo_connectivity_connection_connect_marketplace: Marketplace
