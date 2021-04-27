@@ -12,6 +12,7 @@
 namespace Akeneo\Pim\Permission\Bundle\Controller\Ui;
 
 use Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController as BaseCategoryTreeController;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\Permission\Component\Attributes;
@@ -21,6 +22,7 @@ use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,6 +31,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Webmozart\Assert\Assert;
 
@@ -60,6 +64,11 @@ class CategoryTreeController extends BaseCategoryTreeController
         CategoryRepositoryInterface $categoryRepository,
         SecurityFacade $securityFacade,
         TranslatorInterface $translator,
+        NormalizerInterface $normalizer,
+        ObjectUpdaterInterface $categoryUpdater,
+        ValidatorInterface $validator,
+        NormalizerInterface $constraintViolationNormalizer,
+        CategoryItemsCounterInterface $categoryItemsCounter,
         array $rawConfiguration,
         CategoryAccessRepository $categoryAccessRepo,
         TokenStorageInterface $tokenStorage
@@ -73,6 +82,11 @@ class CategoryTreeController extends BaseCategoryTreeController
             $categoryRepository,
             $securityFacade,
             $translator,
+            $normalizer,
+            $categoryUpdater,
+            $validator,
+            $constraintViolationNormalizer,
+            $categoryItemsCounter,
             $rawConfiguration
         );
 
