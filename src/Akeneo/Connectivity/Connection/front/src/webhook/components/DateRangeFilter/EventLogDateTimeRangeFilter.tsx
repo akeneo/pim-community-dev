@@ -1,6 +1,6 @@
 import {Dropdown, EraseIcon, IconButton, SwitcherButton, useBooleanState} from 'akeneo-design-system';
 import {DateTime} from 'luxon';
-import React, {FC} from 'react';
+import React, {FC, useCallback} from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '../../../shared/translate';
 import {useUser} from '../../../shared/user';
@@ -12,33 +12,29 @@ type Props = {
         start?: Timestamp;
         end?: Timestamp;
     };
-    limit: {
-        min: Timestamp;
-        max: Timestamp;
-    };
-    isDirty: boolean;
-    onChange: (start?: Timestamp, end?: Timestamp) => void;
-    onReset: () => void;
+    onChange: (value: {start?: Timestamp; end?: Timestamp}) => void;
 };
 
-export const EventLogDateTimeRangeFilter: FC<Props> = ({value, limit, isDirty, onChange, onReset}) => {
+export const EventLogDateTimeRangeFilter: FC<Props> = ({value, onChange}) => {
     const translate = useTranslate();
     const {timeZone: zone, locale} = useUser();
 
     const [isOpen, open, close] = useBooleanState(false);
 
-    const createLabelValue = (start?: Timestamp, end?: Timestamp) => {
+    const hasValue = undefined !== value.start || undefined !== value.end;
+
+    const createLabel = (value: {start?: Timestamp; end?: Timestamp}) => {
         const str = [];
-        if (undefined !== start && start !== limit.min) {
-            str.push(
-                translate('akeneo_connectivity.connection.webhook.event_logs.list.date_range_filter.to'),
-                DateTime.fromSeconds(start, {zone}).toLocaleString({...DateTime.DATETIME_SHORT, locale})
-            );
-        }
-        if (undefined !== end && end !== limit.min) {
+        if (undefined !== value.start) {
             str.push(
                 translate('akeneo_connectivity.connection.webhook.event_logs.list.date_range_filter.from'),
-                DateTime.fromSeconds(end, {zone}).toLocaleString({...DateTime.DATETIME_SHORT, locale})
+                DateTime.fromSeconds(value.start, {zone}).toLocaleString({...DateTime.DATETIME_SHORT, locale})
+            );
+        }
+        if (undefined !== value.end) {
+            str.push(
+                translate('akeneo_connectivity.connection.webhook.event_logs.list.date_range_filter.to'),
+                DateTime.fromSeconds(value.end, {zone}).toLocaleString({...DateTime.DATETIME_SHORT, locale})
             );
         }
         if (str.length > 0) {
@@ -48,13 +44,20 @@ export const EventLogDateTimeRangeFilter: FC<Props> = ({value, limit, isDirty, o
         return translate('akeneo_connectivity.connection.webhook.event_logs.list.date_range_filter.all');
     };
 
+    const handleReset = useCallback(() => {
+        onChange({
+            start: undefined,
+            end: undefined,
+        });
+    }, [onChange]);
+
     return (
         <Dropdown>
             <SwitcherButton
                 label={translate('akeneo_connectivity.connection.webhook.event_logs.list.date_range_filter.label')}
                 onClick={open}
             >
-                {createLabelValue(value.start, value.end)}
+                {createLabel(value)}
             </SwitcherButton>
             {isOpen && (
                 <Dropdown.Overlay verticalPosition='down' onClose={close}>
@@ -67,7 +70,7 @@ export const EventLogDateTimeRangeFilter: FC<Props> = ({value, limit, isDirty, o
                                     )}
                                 </Dropdown.Title>
                             </GrowingFlexItem>
-                            {isDirty && (
+                            {hasValue && (
                                 <IconButton
                                     icon={<EraseIcon />}
                                     ghost='borderless'
@@ -75,19 +78,13 @@ export const EventLogDateTimeRangeFilter: FC<Props> = ({value, limit, isDirty, o
                                     title={translate(
                                         'akeneo_connectivity.connection.webhook.event_logs.list.date_range_filter.reset'
                                     )}
-                                    onClick={onReset}
+                                    onClick={handleReset}
                                 />
                             )}
                         </FlexContainer>
                     </Dropdown.Header>
                     <DropdownBody>
-                        <DateTimeRangeField
-                            min={limit.min}
-                            max={limit.max}
-                            start={value.start}
-                            end={value.end}
-                            onChange={onChange}
-                        />
+                        <DateTimeRangeField value={value} onChange={onChange} />
                     </DropdownBody>
                 </Dropdown.Overlay>
             )}
