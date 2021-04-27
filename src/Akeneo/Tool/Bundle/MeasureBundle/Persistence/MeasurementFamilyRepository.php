@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Persistence;
 
-use Akeneo\Tool\Bundle\MeasureBundle\Event\MeasurementFamilyCreated;
-use Akeneo\Tool\Bundle\MeasureBundle\Event\MeasurementFamilyUpdated;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
@@ -30,8 +28,6 @@ class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterfac
 
     /** @var MeasurementFamily[] */
     private array $measurementFamilyCache = [];
-
-    private ?EventDispatcher $eventDispatcher;
 
     public function __construct(Connection $sqlConnection)
     {
