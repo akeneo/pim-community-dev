@@ -24,6 +24,7 @@ export type CategoryTreeModel = {
   code: string;
   label: string;
   isRoot: boolean;
+  isLeaf: boolean;
   children?: CategoryTreeModel[];
 };
 
@@ -33,6 +34,7 @@ const convertToCategoryTree = (tree: BackendCategoryTree): CategoryTreeModel => 
     code: tree.attr['data-code'],
     label: tree.data,
     isRoot: tree.state.match(/root/) !== null,
+    isLeaf: tree.state.match(/leaf/) !== null,
     children: tree.children !== undefined ? tree.children.map(subtree => convertToCategoryTree(subtree)) : [],
   };
 };
@@ -46,10 +48,9 @@ const buildTreeNodeFromCategoryTree = (
     label: categoryTree.label,
     children: Array.isArray(categoryTree.children) ? categoryTree.children.map(child => child.id) : [],
     data: categoryTree,
-    isRoot: categoryTree.isRoot,
     parent,
     selected: false,
-    type: categoryTree.isRoot ? 'root' : 'node', // @todo add check for leaf
+    type: categoryTree.isRoot ? 'root' : categoryTree.isLeaf ? 'leaf' : 'node',
   };
 };
 

@@ -1,11 +1,21 @@
 import {TreeNode} from '../models';
 
 const findRoot = <T>(treeNodes: TreeNode<T>[]): TreeNode<T> | undefined => {
-  return treeNodes.find(treeNode => treeNode.isRoot);
+  return treeNodes.find(treeNode => treeNode.type === 'root');
 };
 
 const findByIdentifiers = <T>(treeNodes: TreeNode<T>[], identifiers: number[]): TreeNode<T>[] => {
-  return treeNodes.filter(treeNode => identifiers.includes(treeNode.identifier));
+  const nodes = treeNodes.filter(treeNode => identifiers.includes(treeNode.identifier));
+
+  const result: TreeNode<T>[] = [];
+  identifiers.map((identifier) => {
+    const node = nodes.find((node) => node.identifier === identifier);
+    if (node !== undefined) {
+      result.push(node);
+    }
+  });
+
+  return result;
 };
 
 const findOneByIdentifier = <T>(treeNodes: TreeNode<T>[], identifier: number): TreeNode<T> | undefined => {
@@ -42,4 +52,8 @@ const insert = <T>(treeNodes: TreeNode<T>[], node: TreeNode<T>, parent: number, 
   return [...treeNodes.filter(node => node.identifier !== newParentNode.identifier), newParentNode, newNode];
 };
 
-export {findByIdentifiers, findOneByIdentifier, findRoot, insert};
+const update = <T>(treeNodes: TreeNode<T>[], updatedNode: TreeNode<T>): TreeNode<T>[] => {
+  return [...treeNodes.filter(node => node.identifier !== updatedNode.identifier), updatedNode];
+};
+
+export {findByIdentifiers, findOneByIdentifier, findRoot, insert, update};

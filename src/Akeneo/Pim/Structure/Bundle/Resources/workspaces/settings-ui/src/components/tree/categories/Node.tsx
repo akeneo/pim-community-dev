@@ -10,7 +10,7 @@ type Props = {
 };
 
 const Node: FC<Props> = ({id, label, followCategory}) => {
-  const {node, children} = useCategoryTreeNode(id);
+  const {node, children, loadChildren} = useCategoryTreeNode(id);
 
   if (node === undefined) {
     return null;
@@ -20,9 +20,10 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
     <Tree
       value={node}
       label={label}
-      _isRoot={node.isRoot}
+      _isRoot={node.type === 'root'}
+      isLeaf={node.type === 'leaf'}
       onClick={!followCategory ? undefined : ({data}) => followCategory(data)}
-      onOpen={({data}) => console.log(`TODO load and show children ${data.code}`)}
+      onOpen={async () => loadChildren()}
     >
       {children.map(child => (
         <Node
