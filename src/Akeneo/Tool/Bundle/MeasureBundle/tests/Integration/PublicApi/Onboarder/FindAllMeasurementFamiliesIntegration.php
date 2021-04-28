@@ -176,7 +176,6 @@ final class FindAllMeasurementFamiliesIntegration extends TestCase
 
     /**
      * @return string[]
-     *
      */
     private function expectedAngleLabels(): array
     {
