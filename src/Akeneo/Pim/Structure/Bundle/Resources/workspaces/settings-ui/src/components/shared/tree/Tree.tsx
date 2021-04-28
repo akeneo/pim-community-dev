@@ -1,6 +1,14 @@
-import React, {isValidElement, PropsWithChildren, ReactElement, ReactNode, SyntheticEvent, useCallback} from 'react';
+import React, {
+  isValidElement,
+  PropsWithChildren,
+  ReactElement,
+  ReactNode,
+  SyntheticEvent,
+  useCallback,
+  useRef,
+} from 'react';
 import styled from 'styled-components';
-import {getColor, useBooleanState} from 'akeneo-design-system';
+import {getColor, useBooleanState, RowIcon} from 'akeneo-design-system';
 import {TreeNode} from '../../../models';
 import {ArrowButton, TreeArrowIcon, TreeRow} from './TreeRow';
 
@@ -14,6 +22,8 @@ const SubTreesContainer = styled.ul`
   padding: 0;
 `;
 
+const DragInitiator = styled.div``;
+
 type TreeProps<T> = {
   value: TreeNode<T>;
   label: string;
@@ -25,6 +35,7 @@ type TreeProps<T> = {
   onClose?: (value: TreeNode<T>) => void;
   onChange?: (value: TreeNode<T>, checked: boolean, event: SyntheticEvent) => void;
   onClick?: (value: TreeNode<T>) => void;
+  onDrop?: (value: TreeNode<T>, draggedId: number) => void;
   _isRoot?: boolean;
   children?: ReactNode;
 };
@@ -41,6 +52,7 @@ const Tree = <T,>({
   onOpen,
   onClose,
   onClick,
+  onDrop,
   _isRoot = true,
   ...rest
 }: PropsWithChildren<TreeProps<T>>) => {
@@ -52,6 +64,8 @@ const Tree = <T,>({
     subTrees.push(child);
   });
 
+  const dragRef = useRef<HTMLDivElement>(null);
+  const treeRowRef = useRef<HTMLDivElement>(null);
   const [isOpen, open, close] = useBooleanState(_isRoot);
 
   const handleOpen = useCallback(() => {
@@ -95,7 +109,49 @@ const Tree = <T,>({
   // https://www.w3.org/WAI/GL/wiki/Using_ARIA_trees
   const result = (
     <TreeContainer role="treeitem" aria-expanded={isOpen} {...rest}>
-      <TreeRow onClick={handleClick} $selected={selected}>
+      <TreeRow
+        ref={treeRowRef}
+        onClick={handleClick}
+        $selected={selected}
+        draggable
+        onDragStartCapture={event => {
+          if (event.target !== dragRef.current) {
+            event.preventDefault();
+          }
+        }}
+        onDragOver={event => {
+          event.stopPropagation();
+          event.preventDefault();
+          console.log(`dragover ${label}`, event)
+        }}
+        onDrop={event => {
+          event.stopPropagation();
+          event.preventDefault();
+          event.persist();
+          const identifier = parseInt(event.dataTransfer.getData('text/plain'));
+          console.log(`drop ${identifier} aside ${value.identifier} in parent ${value.parent}`);
+
+          if (onDrop) {
+            onDrop(value, identifier);
+          }
+          // @todo drop over parent node =>
+          // @todo drop over leaf node =>
+
+        }}
+      >
+        <DragInitiator
+          ref={dragRef}
+          draggable
+          onDragStart={event => {
+            if (!treeRowRef.current) {
+              return;
+            }
+            event.dataTransfer.setDragImage(treeRowRef.current, 0, 0);
+            event.dataTransfer.setData('text/plain', value.identifier.toString());
+          }}
+        >
+          <RowIcon size={16} />
+        </DragInitiator>
         <ArrowButton disabled={isLeaf} role="button" onClick={handleArrowClick}>
           {!isLeaf && <TreeArrowIcon $isFolderOpen={isOpen} size={14} />}
         </ArrowButton>

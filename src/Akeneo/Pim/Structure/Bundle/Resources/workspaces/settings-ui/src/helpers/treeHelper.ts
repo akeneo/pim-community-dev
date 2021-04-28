@@ -8,8 +8,8 @@ const findByIdentifiers = <T>(treeNodes: TreeNode<T>[], identifiers: number[]): 
   const nodes = treeNodes.filter(treeNode => identifiers.includes(treeNode.identifier));
 
   const result: TreeNode<T>[] = [];
-  identifiers.map((identifier) => {
-    const node = nodes.find((node) => node.identifier === identifier);
+  identifiers.map(identifier => {
+    const node = nodes.find(node => node.identifier === identifier);
     if (node !== undefined) {
       result.push(node);
     }
@@ -44,9 +44,12 @@ const insert = <T>(treeNodes: TreeNode<T>[], node: TreeNode<T>, parent: number, 
     newPosition = position <= parentNode.children.length ? position : parentNode.children.length;
   }
 
+  const newChildren = parentNode.children;
+  newChildren.splice(newPosition, 0, newNode.identifier);
+
   const newParentNode = {
     ...parentNode,
-    children: parentNode.children.splice(newPosition, 0, newNode.identifier),
+    children: newChildren,
   };
 
   return [...treeNodes.filter(node => node.identifier !== newParentNode.identifier), newParentNode, newNode];

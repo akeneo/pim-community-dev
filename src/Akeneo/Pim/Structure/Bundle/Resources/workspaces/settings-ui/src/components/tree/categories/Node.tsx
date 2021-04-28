@@ -10,7 +10,7 @@ type Props = {
 };
 
 const Node: FC<Props> = ({id, label, followCategory}) => {
-  const {node, children, loadChildren} = useCategoryTreeNode(id);
+  const {node, children, loadChildren, moveAfter} = useCategoryTreeNode(id);
 
   if (node === undefined) {
     return null;
@@ -24,6 +24,12 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
       isLeaf={node.type === 'leaf'}
       onClick={!followCategory ? undefined : ({data}) => followCategory(data)}
       onOpen={async () => loadChildren()}
+      onDrop={(value, draggedId: number) => {
+        moveAfter(draggedId, node);
+
+        // call callback to save it in backend
+        // what we have to do if the callback fails? keep original position
+      }}
     >
       {children.map(child => (
         <Node
