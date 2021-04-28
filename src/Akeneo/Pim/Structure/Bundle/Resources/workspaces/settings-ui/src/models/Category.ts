@@ -1,4 +1,5 @@
 import {LabelCollection} from '@akeneo-pim-community/shared';
+import {TreeNode} from './Tree';
 
 export type Category = {
   id: number;
@@ -36,4 +37,20 @@ const convertToCategoryTree = (tree: BackendCategoryTree): CategoryTreeModel => 
   };
 };
 
-export {convertToCategoryTree};
+const buildTreeNodeFromCategoryTree = (
+  categoryTree: CategoryTreeModel,
+  parent: number | null = null
+): TreeNode<CategoryTreeModel> => {
+  return {
+    identifier: categoryTree.id,
+    label: categoryTree.label,
+    children: Array.isArray(categoryTree.children) ? categoryTree.children.map(child => child.id) : [],
+    data: categoryTree,
+    isRoot: categoryTree.isRoot,
+    parent,
+    selected: false,
+    type: categoryTree.isRoot ? 'root' : 'node', // @todo add check for leaf
+  };
+};
+
+export {convertToCategoryTree, buildTreeNodeFromCategoryTree};

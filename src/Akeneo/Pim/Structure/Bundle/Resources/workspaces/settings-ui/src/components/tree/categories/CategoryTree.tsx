@@ -4,14 +4,14 @@ import {Node} from './Node';
 import {CategoryTreeProvider} from '../../providers';
 
 type Props = {
-  tree: CategoryTreeModel;
+  root: CategoryTreeModel;
   followCategory?: (category: CategoryTreeModel) => void;
 };
 
-const CategoryTree: FC<Props> = ({tree, ...rest}) => {
+const CategoryTree: FC<Props> = ({root, ...rest}) => {
   return (
-    <CategoryTreeProvider tree={tree}>
-      <Node id={tree.id} label={tree.label} {...rest} />
+    <CategoryTreeProvider root={root}>
+      <Node id={root.id} label={root.label} {...rest} />
     </CategoryTreeProvider>
   );
 };

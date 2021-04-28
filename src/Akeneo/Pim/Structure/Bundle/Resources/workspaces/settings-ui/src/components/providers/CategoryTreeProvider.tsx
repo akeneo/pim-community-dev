@@ -1,5 +1,5 @@
 import React, {createContext, FC} from 'react';
-import {CategoryTreeModel, TreeNode} from '../../models';
+import {buildTreeNodeFromCategoryTree, CategoryTreeModel, TreeNode} from '../../models';
 
 type CategoryTreeState = {
   nodes: TreeNode<CategoryTreeModel>[];
@@ -10,35 +10,15 @@ const CategoryTreeContext = createContext<CategoryTreeState>({
 });
 
 type Props = {
-  tree: CategoryTreeModel;
+  root: CategoryTreeModel;
 };
 
-const CategoryTreeProvider: FC<Props> = ({children, tree}) => {
-  const nodes: TreeNode<CategoryTreeModel>[] = [
-    {
-      identifier: tree.id,
-      label: tree.label,
-      children: Array.isArray(tree.children) ? tree.children.map(child => child.id) : [],
-      data: tree,
-      isRoot: tree.isRoot,
-      parent: null,
-      selected: false,
-      type: tree.isRoot ? 'root' : 'node', // @todo add check for leaf
-    },
-  ];
+const CategoryTreeProvider: FC<Props> = ({children, root}) => {
+  const nodes: TreeNode<CategoryTreeModel>[] = [buildTreeNodeFromCategoryTree(root)];
 
-  if (Array.isArray(tree.children)) {
-    tree.children.forEach(child => {
-      nodes.push({
-        identifier: child.id,
-        label: child.label,
-        children: Array.isArray(child.children) ? child.children.map(child => child.id) : [],
-        data: child,
-        isRoot: false,
-        parent: tree.id,
-        selected: false,
-        type: 'node', // @todo add check for leaf
-      });
+  if (Array.isArray(root.children)) {
+    root.children.forEach(child => {
+      nodes.push(buildTreeNodeFromCategoryTree(child, root.id));
     });
   }
 

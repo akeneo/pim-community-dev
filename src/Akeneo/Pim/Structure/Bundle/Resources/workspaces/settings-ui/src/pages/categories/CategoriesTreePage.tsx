@@ -82,7 +82,7 @@ const CategoriesTreePage: FC = () => {
           <>Tree {treeLabel}</>
         ) : (
           <CategoryTree
-            tree={tree}
+            root={tree}
             followCategory={
               isGranted('pim_enrich_product_category_edit') ? cat => followEditCategory(cat.id) : undefined
             }
