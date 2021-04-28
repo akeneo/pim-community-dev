@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Component\Query\InternalApi;
+namespace Akeneo\Platform\Bundle\UIBundle\Query;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)

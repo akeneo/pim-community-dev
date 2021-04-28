@@ -229,9 +229,3 @@ services:
         arguments:
             - '@pim_reference_data.registry'
             - '@pim_internal_api_serializer'
-
-    pim_enrich.controller.rest.settings:
-        public: true
-        class: Akeneo\Pim\Structure\Bundle\Controller\InternalApi\SettingsController
-        arguments:
-            - '@akeneo.pim.structure.query.count_settings_entities_query'

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\Query\InternalApi;
+namespace Akeneo\Platform\Bundle\UIBundle\Query\Sql;
 
-use Akeneo\Pim\Structure\Component\Query\InternalApi\CountSettingsEntitiesQueryInterface;
+use Akeneo\Platform\Bundle\UIBundle\Query\CountSettingsEntitiesQueryInterface;
 use Doctrine\DBAL\Connection;
 
 /**

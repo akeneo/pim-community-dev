@@ -13,3 +13,8 @@ measures:
 
 pim_settings_index:
     path: /settings
+
+pim_settings_count_entities:
+    path: /settings/rest/count-entities
+    defaults: { _controller: Akeneo\Platform\Bundle\UIBundle\Controller\SettingsController::countEntitiesAction }
+    methods: [GET]

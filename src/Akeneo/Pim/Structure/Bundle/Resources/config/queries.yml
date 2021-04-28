@@ -121,8 +121,3 @@ services:
         class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\Attribute\GetAllBlacklistedAttributeCodes
         arguments:
             - '@database_connection'
-
-    akeneo.pim.structure.query.count_settings_entities_query:
-        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\CountSettingsEntitiesQuery
-        arguments:
-            - '@database_connection'

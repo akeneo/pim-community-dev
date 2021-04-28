@@ -52,10 +52,6 @@ internal_api_grouptype:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/grouptype.yml'
     prefix: /configuration/rest/group-type
 
-internal_api_settings:
-    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/settings.yml'
-    prefix: /rest/settings
-
 ### Front routes
 front_routes:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/front.yml'

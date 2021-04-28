@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\Controller\InternalApi;
+namespace Akeneo\Platform\Bundle\UIBundle\Controller;
 
-use Akeneo\Pim\Structure\Component\Query\InternalApi\CountSettingsEntitiesQueryInterface;
+use Akeneo\Platform\Bundle\UIBundle\Query\CountSettingsEntitiesQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**

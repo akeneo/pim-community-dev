@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Structure\Integration\Query\InternalApi;
+namespace AkeneoTest\Platform\Integration\UI\Query;
 
 use Akeneo\Test\Integration\TestCase;
 
@@ -19,7 +19,7 @@ final class CountSettingsEntitiesQueryIntegration extends TestCase
 
     public function test_it_count_the_number_of_each_settings_entities()
     {
-        $result = $this->get('akeneo.pim.structure.query.count_settings_entities_query')->execute();
+        $result = $this->get('akeneo.pim_ui.query.count_settings_entities_query')->execute();
 
         $expectedCounts = [
           'count_categories' => 7,
