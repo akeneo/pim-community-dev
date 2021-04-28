@@ -1,3 +1,7 @@
+parameters:
+    pim_user.account_lock.duration: 120
+    pim_user.account_lock.max_consecutive_failures: 2
+
 services:
     pim_user.manager:
         class: 'Akeneo\UserManagement\Bundle\Manager\UserManager'
@@ -32,3 +36,5 @@ services:
             - '@security.encoder_factory'
             - '@pim_user.manager'
             - '%security.authentication.hide_user_not_found%'
+            - '%pim_user.account_lock.duration%'
+            - '%pim_user.account_lock.max_consecutive_failures%'
