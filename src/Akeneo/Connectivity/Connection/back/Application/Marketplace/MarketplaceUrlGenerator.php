@@ -6,7 +6,6 @@ namespace Akeneo\Connectivity\Connection\Application\Marketplace;
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\MarketplaceUrlGeneratorInterface;
 use Akeneo\Platform\VersionProviderInterface;
-use Webmozart\Assert\Assert;
 
 final class MarketplaceUrlGenerator implements MarketplaceUrlGeneratorInterface
 {
