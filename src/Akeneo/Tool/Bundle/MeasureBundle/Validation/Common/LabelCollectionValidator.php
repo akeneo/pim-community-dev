@@ -52,7 +52,7 @@ class LabelCollectionValidator extends ConstraintValidator
         }
     }
 
-    private function validateLabelForLocale(ValidatorInterface $validator, string $label, string $localeCode): void
+    private function validateLabelForLocale(ValidatorInterface $validator, $label, $localeCode): void
     {
         $violations = $validator->validate($label, [
             new Constraints\NotNull(),
