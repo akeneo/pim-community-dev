@@ -1,4 +1,4 @@
-import {BackendCategoryTree, Category, CategoryTree} from '@akeneo-pim-community/settings-ui';
+import {BackendCategoryTree, Category, CategoryTreeModel} from '@akeneo-pim-community/settings-ui';
 
 const aCategory = (code: string = 'a_category', label?: string, id: number = 1234): Category => ({
   id,
@@ -10,7 +10,7 @@ const aListOfCategories = (codes: string[]): Category[] => {
   return codes.map((code, index) => aCategory(code, undefined, index));
 };
 
-const aCategoryTree = (code: string, children: string[], isRoot: boolean = true, id: number = 1234): CategoryTree => {
+const aCategoryTree = (code: string, children: string[], isRoot: boolean = true, id: number = 1234): CategoryTreeModel => {
   const root = aCategory(code, `[${code}]`, id);
   return {
     ...root,

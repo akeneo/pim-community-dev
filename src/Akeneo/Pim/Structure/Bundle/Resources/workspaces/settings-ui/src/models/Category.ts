@@ -18,15 +18,15 @@ export type BackendCategoryTree = {
   children?: BackendCategoryTree[];
 };
 
-export type CategoryTree = {
+export type CategoryTreeModel = {
   id: number;
   code: string;
   label: string;
   isRoot: boolean;
-  children?: CategoryTree[];
+  children?: CategoryTreeModel[];
 };
 
-const convertToCategoryTree = (tree: BackendCategoryTree): CategoryTree => {
+const convertToCategoryTree = (tree: BackendCategoryTree): CategoryTreeModel => {
   return {
     id: parseInt(tree.attr.id.substring(5)), // remove the "node_" prefix and returns the number
     code: tree.attr['data-code'],

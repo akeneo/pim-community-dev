@@ -1,12 +1,12 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {Search, Table} from 'akeneo-design-system';
 import {useDebounceCallback, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
-import {CategoryTree} from '../../../models';
+import {CategoryTreeModel} from '../../../models';
 import styled from 'styled-components';
 import {NoResults} from '../../shared';
 
 type Props = {
-  trees: CategoryTree[];
+  trees: CategoryTreeModel[];
 };
 
 const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
@@ -14,9 +14,9 @@ const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
   const router = useRouter();
   const {isGranted} = useSecurity();
   const [searchString, setSearchString] = useState('');
-  const [filteredTrees, setFilteredTrees] = useState<CategoryTree[]>(trees);
+  const [filteredTrees, setFilteredTrees] = useState<CategoryTreeModel[]>(trees);
 
-  const followCategoryTree = useCallback((tree: CategoryTree): void => {
+  const followCategoryTree = useCallback((tree: CategoryTreeModel): void => {
     const url = router.generate('pim_enrich_categorytree_tree', {id: tree.id});
     router.redirect(url);
 
@@ -26,7 +26,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
   const search = useCallback(
     (searchString: string) => {
       setFilteredTrees(
-        trees.filter((tree: CategoryTree) => {
+        trees.filter((tree: CategoryTreeModel) => {
           return (
             tree.code.toLocaleLowerCase().includes(searchString.toLowerCase().trim()) ||
             tree.label.toLocaleLowerCase().includes(searchString.toLowerCase().trim())
