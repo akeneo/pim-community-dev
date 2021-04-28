@@ -61,3 +61,8 @@ pim_enrich_categorytree_get_products_number:
     path: /products-number-by-category-tree
     defaults: { _controller: pim_enrich.controller.category_tree.product:getCategoryTreesProductsNumberAction }
     methods: [GET]
+
+pim_enrich_categorytree_count_children:
+    path: /count-children
+    defaults: { _controller: pim_enrich.controller.category_tree.product:countChildrenAction }
+    methods: [GET]
