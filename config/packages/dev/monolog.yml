@@ -8,7 +8,7 @@ monolog:
       type: stream
       path: '%kernel.logs_dir%/%kernel.environment%.log'
       level: debug
-      channels: ['!event', '!event_api', '!business_event']
+      channels: ['!event']
     console:
       type:  console
-      channels: ['!event', '!doctrine', '!event_api', '!business_event']
+      channels: ['!event', '!doctrine']
