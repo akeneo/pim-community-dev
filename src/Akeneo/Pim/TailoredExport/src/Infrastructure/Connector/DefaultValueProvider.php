@@ -38,7 +38,10 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
      */
     public function getDefaultValues(): array
     {
-        return $this->simpleProvider->getDefaultValues();
+        $defaultValues = $this->simpleProvider->getDefaultValues();
+        $defaultValues['columns'] = [];
+
+        return $defaultValues;
     }
 
     /**

@@ -1,1 +1,8 @@
 batch_jobs.xlsx_tailored_product_export.label: Tailored product export in XLSX
+
+akeneo.tailored_export:
+    form:
+      job_instance:
+        tab:
+          column:
+            title: Select the columns

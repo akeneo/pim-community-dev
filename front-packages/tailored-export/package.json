@@ -1,5 +1,5 @@
 {
-  "name": "@akeneo-pim-community/tailored-export",
+  "name": "@akeneo-pim-enterprise/tailored-export",
   "version": "0.1.0",
   "private": true,
   "peerDependencies": {
@@ -37,7 +37,7 @@
     "lib:build": "tsc -p ./tsconfig.build.json",
     "translation:build": "cp ../../public/js/translation/en_US.js ./src/translations.json",
     "route:build": "cp ../../public/js/fos_js_routes.json ./src/routes.json",
-    "packages:build": "yarn --cwd=../akeneo-design-system run lib:build && yarn --cwd=../shared run lib:build"
+    "packages:build": "yarn --cwd=../../vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system run lib:build && yarn --cwd=../../vendor/akeneo/pim-community-dev/front-packages/shared run lib:build"
   },
   "eslintConfig": {
     "extends": [

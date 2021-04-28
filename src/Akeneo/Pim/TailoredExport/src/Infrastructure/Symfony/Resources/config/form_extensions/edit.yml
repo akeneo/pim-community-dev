@@ -66,6 +66,16 @@ extensions:
             tabTitle: pim_enrich.export.product.global_settings.title
             tabCode: pim-job-instance-global
 
+    pim-job-instance-xlsx-tailored-product-export-edit-columns:
+        module: akeneotailoredexport/js/job/product/edit/columns
+        parent: pim-job-instance-xlsx-tailored-product-export-edit-tabs
+        aclResourceId: pim_importexport_export_profile_content_edit
+        targetZone: container
+        position: 135
+        config:
+            tabTitle: akeneo.tailored_export.form.job_instance.tab.column.title
+            tabCode: pim-job-instance-content
+
     pim-job-instance-xlsx-tailored-product-export-edit-history:
         module: pim/common/tab/history
         parent: pim-job-instance-xlsx-tailored-product-export-edit-tabs
