@@ -116,7 +116,7 @@ type RowProps = Override<
   }
 >;
 
-const Row = ({children, multiline = false}: RowProps) => {
+const Row = ({children, multiline = false, ...rest}: RowProps) => {
   const actionCellChild: ReactElement[] = [];
   const cells: ReactNode[] = [];
   const helpers: ReactNode[] = [];
@@ -132,7 +132,7 @@ const Row = ({children, multiline = false}: RowProps) => {
   });
 
   return (
-    <RowContainer multiline={multiline} tabIndex={0}>
+    <RowContainer multiline={multiline} tabIndex={0} {...rest}>
       <RowContentContainer>
         <RowDataContainer>{cells}</RowDataContainer>
         {actionCellChild.length > 0 && <RowActionContainer>{actionCellChild}</RowActionContainer>}
