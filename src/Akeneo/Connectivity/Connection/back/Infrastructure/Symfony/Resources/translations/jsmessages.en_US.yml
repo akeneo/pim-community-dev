@@ -3,7 +3,7 @@ pim_menu:
     tab:
         connect: Connect
     navigation:
-        connect: Connect
+        connect: Connect navigation
     navigation_back:
         connection: Back to Connect
     navigation_block:
@@ -17,8 +17,11 @@ pim_menu:
         connection_webhook_event_logs: Event logs
         data_flows: Data flows
         connect_connection_settings: Connection settings
+        marketplace: Marketplace
+        new_label: NEW
 
 pim_title:
+    akeneo_connectivity_connection_connect_marketplace: Marketplace
     akeneo_connectivity_connection_settings_index: Connections settings
     akeneo_connectivity_connection_settings_edit: Connection settings
     akeneo_connectivity_connection_settings_any: Connection settings
@@ -37,6 +40,10 @@ akeneo_connectivity.connection:
         redirect:
             title: This page has been moved in the new Connect space 🔌
             link: To go there, click here
+        marketplace:
+            title: Want to connect your PIM with another application? 🤟
+            sub_title: Check our marketplace to see which application can be connected with Akeneo PIM.
+            link: Here you go!
     connections: Connections
     secondary_actions:
         title: Other actions

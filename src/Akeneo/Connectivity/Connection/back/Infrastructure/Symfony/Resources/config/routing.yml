@@ -29,6 +29,10 @@ akeneo_connectivity_connection_events_api_debug_rest:
 
 # Frontend
 
+## Marketplace
+akeneo_connectivity_connection_connect_marketplace:
+  path: '/connect/marketplace'
+
 ## Error Management
 akeneo_connectivity_connection_error_management_dashboard:
    path: '/connect/data-flows/business-errors'

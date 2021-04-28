@@ -4,6 +4,7 @@ import {ErrorManagement} from './infrastructure/ErrorManagement';
 import {Settings} from './infrastructure/Settings';
 import {RedirectConnectionDashboardToConnectMenu} from './infrastructure/RedirectConnectionDashboardToConnectMenu';
 import {RedirectConnectionSettingsToConnectMenu} from './infrastructure/RedirectConnectionSettingsToConnectMenu';
+import {Marketplace} from './infrastructure/Marketplace';
 
 export {
     Settings,
@@ -12,4 +13,5 @@ export {
     WebhookSettings,
     RedirectConnectionDashboardToConnectMenu,
     RedirectConnectionSettingsToConnectMenu,
+    Marketplace,
 };
