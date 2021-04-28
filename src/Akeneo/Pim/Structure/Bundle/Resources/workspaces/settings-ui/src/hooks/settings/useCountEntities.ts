@@ -7,7 +7,7 @@ type CountEntities = {
 
 const useCountEntities = (): CountEntities => {
   const [countEntities, setCountEntities] = useState<CountEntities>({});
-  const url = useRoute('pim_enrich_count_settings_entities');
+  const url = useRoute('pim_settings_count_entities');
 
   useEffect(() => {
     (async () => {
