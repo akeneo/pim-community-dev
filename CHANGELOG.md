@@ -58,6 +58,7 @@
 - PIM-9771: Fix the image preview when exporting a product as pdf
 - PIM-9829: Fix product grid crash when using a family filter on a deleted family
 - PIM-9820: Fix the Error 500 on the product grid with the date filter
+- PIM-9833: Fix null pointer exception on Product::getVariationLevel (CE contribution)
 
 ## New features
 
