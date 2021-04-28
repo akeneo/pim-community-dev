@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Job;
 
-use Akeneo\AssetManager\Application\Asset\DeleteAssets\DeleteAssetsCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditValueCommandFactoryInterface;
@@ -26,15 +25,14 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
-use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\AssetQueryBuilderInterface;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class MassEditAssetsTaskletSpec extends ObjectBehavior
 {
@@ -43,7 +41,7 @@ class MassEditAssetsTaskletSpec extends ObjectBehavior
         AssetQueryBuilderInterface $assetQueryBuilder,
         Client $assetClient,
         JobRepositoryInterface $jobRepository,
-        AssetIndexerInterface $assetIndexer,
+        EventAggregatorInterface $indexAssetEventAggregator,
         JobStopper $jobStopper,
         EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
@@ -53,7 +51,7 @@ class MassEditAssetsTaskletSpec extends ObjectBehavior
             $assetQueryBuilder,
             $assetClient,
             $jobRepository,
-            $assetIndexer,
+            $indexAssetEventAggregator,
             $jobStopper,
             $editValueCommandFactoryRegistry,
             $findAttributesIndexedByIdentifier,
@@ -67,7 +65,7 @@ class MassEditAssetsTaskletSpec extends ObjectBehavior
         AssetQueryBuilderInterface $assetQueryBuilder,
         Client $assetClient,
         JobStopper $jobStopper,
-        AssetIndexerInterface $assetIndexer,
+        EventAggregatorInterface $indexAssetEventAggregator,
         EditAssetHandler $editAssetsHandler,
         EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
@@ -216,7 +214,7 @@ class MassEditAssetsTaskletSpec extends ObjectBehavior
         $editAssetsHandler->__invoke($editAssetCommand2)->shouldBeCalledOnce();
         $editAssetsHandler->__invoke($editAssetCommand3)->shouldBeCalledOnce();
 
-        $assetIndexer->refresh()->shouldBeCalled();
+        $indexAssetEventAggregator->flushEvents()->shouldBeCalled();
 
         $this->execute();
     }
@@ -227,7 +225,7 @@ class MassEditAssetsTaskletSpec extends ObjectBehavior
         AssetQueryBuilderInterface $assetQueryBuilder,
         Client $assetClient,
         JobStopper $jobStopper,
-        AssetIndexerInterface $assetIndexer,
+        EventAggregatorInterface $indexAssetEventAggregator,
         EditAssetHandler $editAssetsHandler,
         EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
@@ -398,7 +396,7 @@ class MassEditAssetsTaskletSpec extends ObjectBehavior
         $editAssetCommand4 = new EditAssetCommand('packshot', 'tricky', $editValueAssetCommands);
         $editAssetsHandler->__invoke($editAssetCommand4)->shouldBeCalledOnce();
 
-        $assetIndexer->refresh()->shouldBeCalled();
+        $indexAssetEventAggregator->flushEvents()->shouldBeCalled();
 
         $this->execute();
     }
