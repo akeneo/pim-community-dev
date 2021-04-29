@@ -2,6 +2,9 @@
   "name": "@akeneo-pim-enterprise/tailored-export",
   "version": "0.1.0",
   "private": true,
+  "config": {
+    "front_packages_path": "../../vendor/akeneo/pim-community-dev/front-packages"
+  },
   "peerDependencies": {
     "react": "^16.14.0",
     "react-dom": "^16.9.12",
@@ -31,13 +34,13 @@
   },
   "proxy": "http://localhost:8080",
   "scripts": {
-    "start": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts start",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "app:start": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts start",
+    "test:run": "react-scripts test --watchAll=false --coverage --coverageDirectory=coverage",
+    "test:watch": "react-scripts test",
     "lib:build": "tsc -p ./tsconfig.build.json",
     "translation:build": "cp ../../public/js/translation/en_US.js ./src/translations.json",
     "route:build": "cp ../../public/js/fos_js_routes.json ./src/routes.json",
-    "packages:build": "yarn --cwd=../../vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system run lib:build && yarn --cwd=../../vendor/akeneo/pim-community-dev/front-packages/shared run lib:build"
+    "packages:build": "yarn --cwd=$npm_package_config_front_packages_path/akeneo-design-system run lib:build && yarn --cwd=$npm_package_config_front_packages_path/shared run lib:build"
   },
   "eslintConfig": {
     "extends": [
@@ -57,5 +60,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "jest": {
+    "coverageReporters": ["text-summary", "html"],
+    "coverageThreshold": {
+      "global": {
+        "statements": 100,
+        "functions": 100,
+        "lines": 100
+      }
+    }
+   }
 }

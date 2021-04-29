@@ -1,5 +1,4 @@
 import {ChannelReference, LocaleCode, LocaleReference} from '@akeneo-pim-community/shared';
-import {uuid} from 'akeneo-design-system';
 
 type Operation = {
   type: string;
@@ -48,9 +47,13 @@ type ColumnConfiguration = {
 
 type ColumnsConfiguration = ColumnConfiguration[];
 
-const createColumn = (newColumnName: string): ColumnConfiguration => {
+const createColumn = (newColumnName: string, uuid: string): ColumnConfiguration => {
+  if (null === /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i.exec(uuid)) {
+    throw new Error(`Column configuration creation requires a valid uuid: "${uuid}"`);
+  }
+
   return {
-    uuid: uuid(),
+    uuid,
     target: newColumnName,
     sources: [],
     format: {
@@ -68,18 +71,6 @@ const addColumn = (columns: ColumnsConfiguration, columnToAdd: ColumnConfigurati
 const removeColumn = (columns: ColumnsConfiguration, columnUuid: string): ColumnsConfiguration =>
   columns.filter(column => column.uuid !== columnUuid);
 
-const renameColumnTarget = (
-  columns: ColumnsConfiguration,
-  uuid: string,
-  updatedTarget: string
-): ColumnsConfiguration => {
-  return columns.map(column => {
-    if (column.uuid !== uuid) return column;
-
-    return {...column, target: updatedTarget};
-  });
-};
-
 const updateColumn = (columns: ColumnsConfiguration, updatedColumn: ColumnConfiguration): ColumnsConfiguration =>
   columns.map(column => {
     if (column.uuid !== updatedColumn.uuid) return column;
@@ -88,4 +79,4 @@ const updateColumn = (columns: ColumnsConfiguration, updatedColumn: ColumnConfig
   });
 
 export type {ColumnConfiguration, ColumnsConfiguration};
-export {createColumn, addColumn, removeColumn, renameColumnTarget, updateColumn};
+export {createColumn, addColumn, removeColumn, updateColumn};

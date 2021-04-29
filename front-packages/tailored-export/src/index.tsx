@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {ColumnsTab, ColumnsConfiguration} from './feature';
@@ -7,7 +7,7 @@ import {MicroFrontendDependenciesProvider, Routes, Translations} from '@akeneo-p
 import {routes} from './routes.json';
 import translations from './translations.json';
 
-const columnsConfiguration: ColumnsConfiguration = [
+const defaultColumnsConfiguration: ColumnsConfiguration = [
   {
     uuid: 'test_uuid_1',
     target: 'name',
@@ -205,11 +205,19 @@ const columnsConfiguration: ColumnsConfiguration = [
   },
 ];
 
+const ColumnsTabWithState = () => {
+  const [columnsConfiguration, setColumnsConfigurationChange] = useState<ColumnsConfiguration>(defaultColumnsConfiguration);
+
+  return (
+    <ColumnsTab columnsConfiguration={columnsConfiguration} onColumnsConfigurationChange={setColumnsConfigurationChange} />
+  );
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={pimTheme}>
       <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations as Translations}>
-        <ColumnsTab columnsConfiguration={columnsConfiguration} />
+        <ColumnsTabWithState />
       </MicroFrontendDependenciesProvider>
     </ThemeProvider>
   </React.StrictMode>,

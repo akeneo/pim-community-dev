@@ -8,11 +8,14 @@ import {
   ColumnConfiguration,
   updateColumn,
 } from './models/ColumnConfiguration';
-import {ColumnDetails} from 'feature/components/ColumnDetails/ColumnDetails';
-import {ColumnList} from 'feature/components/ColumnList/ColumnList';
+import {ColumnDetails} from './components/ColumnDetails/ColumnDetails';
+import {ColumnList} from './components/ColumnList/ColumnList';
+import {uuid} from 'akeneo-design-system';
 
 type ColumnProps = {
   columnsConfiguration: ColumnsConfiguration;
+
+  onColumnsConfigurationChange: (columnsConfiguration: ColumnsConfiguration) => void;
 };
 
 const Container = styled.div`
@@ -23,32 +26,31 @@ const Container = styled.div`
   gap: 20px;
 `;
 
-const ColumnsTab = ({columnsConfiguration}: ColumnProps) => {
-  const [columns, setColumns] = useState<ColumnsConfiguration>(columnsConfiguration);
+const ColumnsTab = ({columnsConfiguration, onColumnsConfigurationChange}: ColumnProps) => {
   const [selectedColumn, setSelectedColumn] = useState<string | null>(
     columnsConfiguration.length === 0 ? null : columnsConfiguration[0].uuid
   );
   const handleCreateColumn = (newColumnName: string) => {
-    const column = createColumn(newColumnName);
-    setColumns(columns => addColumn(columns, column));
+    const column = createColumn(newColumnName, uuid());
+    onColumnsConfigurationChange(addColumn(columnsConfiguration, column));
     setSelectedColumn(column.uuid);
   };
   const handleRemoveColumn = (columnUuid: string) => {
-    setColumns(columns => removeColumn(columns, columnUuid));
+    onColumnsConfigurationChange(removeColumn(columnsConfiguration, columnUuid));
   };
   const handleSelectColumn = (selectedColumn: string | null) => {
     setSelectedColumn(selectedColumn);
   };
   const handleChangeColumn = (column: ColumnConfiguration) => {
-    setColumns(columns => updateColumn(columns, column));
+    onColumnsConfigurationChange(updateColumn(columnsConfiguration, column));
   };
 
-  const selectedColumnConfiguration = columns.find(({uuid}) => selectedColumn === uuid) ?? null;
+  const selectedColumnConfiguration = columnsConfiguration.find(({uuid}) => selectedColumn === uuid) ?? null;
 
   return (
     <Container>
       <ColumnList
-        columnsConfiguration={columns}
+        columnsConfiguration={columnsConfiguration}
         selectedColumn={selectedColumnConfiguration}
         onColumnCreated={handleCreateColumn}
         onColumnChange={handleChangeColumn}
@@ -57,7 +59,7 @@ const ColumnsTab = ({columnsConfiguration}: ColumnProps) => {
       />
       <ColumnDetails
         columnConfiguration={selectedColumnConfiguration}
-        noColumns={columns.length === 0}
+        noColumns={columnsConfiguration.length === 0}
         onColumnChange={handleChangeColumn}
       />
     </Container>

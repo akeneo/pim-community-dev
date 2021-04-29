@@ -23,8 +23,7 @@ type ColumnDetailsProps = {
   onColumnChange: (column: ColumnConfiguration) => void;
 };
 
-const ColumnDetails = ({columnConfiguration, noColumns, onColumnChange}: ColumnDetailsProps) => {
-  console.log(onColumnChange);
+const ColumnDetails = ({columnConfiguration, noColumns}: ColumnDetailsProps) => {
   const translate = useTranslate();
   return (
     <Container>
