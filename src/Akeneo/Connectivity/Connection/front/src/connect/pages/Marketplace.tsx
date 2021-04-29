@@ -71,7 +71,7 @@ export const Marketplace: FC = () => {
     const fetchMarketplaceUrl = useFetchMarketingUrl();
     const [marketplaceUrl, setMarketplaceUrl] = useState<string>('');
     const generateUrl = useRouter();
-    const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`
+    const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
 
     const breadcrumb = (
         <Breadcrumb>
