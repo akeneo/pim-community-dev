@@ -38,6 +38,7 @@ type TreeProps<T> = {
   onDrop?: () => void;
   onDragStart?: () => void;
   onDragEnd?: () => void;
+  onDragOver?: () => void;
   // @todo define onDragEnter props
   // @todo define onDragLeave props
   // @todo define isValidDrop props
@@ -63,6 +64,7 @@ const Tree = <T,>({
   onDrop,
   onDragStart,
   onDragEnd,
+  onDragOver,
   _isRoot = true,
   disabled = false,
   ...rest
@@ -135,7 +137,10 @@ const Tree = <T,>({
           // @todo allow dragOver (stopPropagation and prevent event) when isValidDrop
           event.stopPropagation();
           event.preventDefault();
-          console.log(`dragover ${label}`, event);
+          if (onDragOver) {
+            onDragOver();
+          }
+
         }}
         onDragEnter={() => {
           // @todo if the hover element is a "closed" parent node, set a timer of 2s then open it with handleOpen()
