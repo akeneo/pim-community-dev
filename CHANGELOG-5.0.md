@@ -1,5 +1,56 @@
 # 5.0.x
 
+# 5.0.22 (2021-04-27)
+
+## Bug fixes
+
+- PIM-9830: Upgrade phpseclib dependency following security issue CVE-2021-30130
+
+# 5.0.21 (2021-04-23)
+
+PIM-9823: [Backport] PIM-9734: Fix URI too long for rules on smart attributes
+
+# 5.0.20 (2021-04-22)
+
+## Bug fixes
+- PIM-9815: Fix asset and record imports in XLSX when sone cells contain only numeric characters
+
+# 5.0.19 (2021-04-20)
+
+## Bug fixes
+
+- PIM-9814: Fix infinite loop when using get all assets API endpoint (Backport PIM-9702)
+- OB-752: Fix 5.0 memcached package issue
+
+# 5.0.18 (2021-04-15)
+
+## Bug fixes
+
+- PIM-9811: [Backport] PIM-9705: Replace rules codes list by a simple link to the attribute edit form on the PEF and the assets
+
+# 5.0.17 (2021-04-15)
+
+## Bug fixes
+
+- PIM-9810: Add missing status filter for published products
+
+# 5.0.16 (2021-04-08)
+
+## Bug fixes
+
+- PIM-9793: Fix custom rule import
+- PIM-9795: [Standard Kernel] Do not load Messenger configuration from EE if it exists in project 
+
+# 5.0.15 (2021-04-06)
+
+# 5.0.14 (2021-04-01)
+
+## Bug fixes
+
+- PIM-9751: Fix Standard Kernel for dev environment
+
+# 5.0.13 (2021-03-29)
+
 # 5.0.12 (2021-03-26)
 
 # 5.0.11 (2021-03-24)

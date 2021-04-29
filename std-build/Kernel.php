@@ -47,7 +47,7 @@ class Kernel extends BaseKernel
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
-        if (!in_array($this->environment,self::$supportedEnvs)) {
+        if (!in_array($this->environment, self::$supportedEnvs)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Unsupported environment:%s. The supported environments are:%s',
@@ -66,16 +66,13 @@ class Kernel extends BaseKernel
         $eeConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-enterprise-dev/config';
         $projectConfDir = $this->getProjectDir() . '/config';
 
-        # The first packages configuration, for CE dependency are loaded from the CE package configuration root dir
-        $this->loadPackagesConfigurationFromDependencyExceptSecurity($loader, $ceConfDir);
+        $this->loadAkeneoCommunityPackagesConfiguration($loader, $ceConfDir);
+        $this->loadAkeneoEnterprisePackagesConfiguration($loader, $eeConfDir, $projectConfDir, $baseEnv);
 
-        # The 2nd packages configuration for EE dependency and flexibility or on prem are loaded from EE config dirs
-        $this->loadPackagesConfigurationExceptSecurity($loader, $eeConfDir, $baseEnv);# Finally, the packages configuration for local environnement is loaded from the project
         $this->loadPackagesConfiguration($loader, $projectConfDir, $this->environment);
 
         $this->loadServicesConfiguration($loader, $ceConfDir, $baseEnv);
         $this->loadServicesConfiguration($loader, $eeConfDir, $baseEnv);
-        $this->loadServicesConfiguration($loader, $projectConfDir, $baseEnv);
         $this->loadServicesConfiguration($loader, $projectConfDir, $this->environment);
     }
 
@@ -83,8 +80,16 @@ class Kernel extends BaseKernel
     {
         $baseEnv = $this->getBaseEnv($this->environment);
 
-        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config', $baseEnv);
-        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/vendor/akeneo/pim-enterprise-dev/config', $baseEnv);
+        $this->loadRoutesConfiguration(
+            $routes,
+            $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config',
+            $baseEnv
+        );
+        $this->loadRoutesConfiguration(
+            $routes,
+            $this->getProjectDir() . '/vendor/akeneo/pim-enterprise-dev/config',
+            $baseEnv
+        );
         $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/config', $this->environment);
     }
 
@@ -114,21 +119,18 @@ class Kernel extends BaseKernel
     {
         $loader->load($confDir . '/{packages}/*.yml', 'glob');
         $loader->load($confDir . '/{packages}/' . $environment . '/*.yml', 'glob');
-        $loader->load($confDir . '/{packages}/' . $environment . '/**/*.yml', 'glob');
     }
 
     /**
-     * "security.yml" is the only configuration file that can not be override
-     * And load default package configuration from EE and CE
+     * Load default package configuration from CE root packages config
+     * - security configuration doesn't support multiple loads
      */
-    private function loadPackagesConfigurationFromDependencyExceptSecurity(LoaderInterface $loader, string $confDir): void
-    {
-        $files = array_merge(
-            glob($confDir . '/packages/*.yml'),
-        );
-
+    private function loadAkeneoCommunityPackagesConfiguration(
+        LoaderInterface $loader,
+        string $confDir
+    ): void {
         $files = array_filter(
-            $files,
+            glob($confDir . '/packages/*.yml'),
             function ($file) {
                 return 'security.yml' !== basename($file);
             }
@@ -140,32 +142,47 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * Load Packages Configuration from this project except security.yml
-     * security configuration doesn't support multiple loads
+     * Load default package configuration from EE root packages config and environment specific config
+     * - security configuration doesn't support multiple loads and MUST exist in project
+     * - Messenger configuration doesn't support multiple loads and CAN exists in project
+     *
+     * @see https://akeneo.atlassian.net/browse/PIM-9751
+     * @see https://akeneo.atlassian.net/browse/PIM-9795
      */
-    private function loadPackagesConfigurationExceptSecurity(LoaderInterface $loader, string $confDir, string $environment): void
-    {
+    private function loadAkeneoEnterprisePackagesConfiguration(
+        LoaderInterface $loader,
+        string $confDir,
+        string $projectConfDir,
+        string $environment
+    ): void {
         $files = array_merge(
             glob($confDir . '/packages/*.yml'),
-            glob($confDir . '/packages/' . $environment . '/*.yml'),
-            glob($confDir . '/packages/' . $environment . '/**/*.yml')
+            glob($confDir . '/packages/' . $environment . '/*.yml')
         );
 
-        $files = array_filter(
-            $files,
-            function ($file) {
-                return 'security.yml' !== basename($file);
+        $files = array_filter($files, function ($file) use ($projectConfDir) {
+            if ('security.yml' === basename($file)) {
+                return false;
             }
-        );
+            if (
+                'messenger.yml' === basename($file)
+                && file_exists($projectConfDir . '/packages/' . $this->environment . '/messenger.yml')
+            ) {
+                return false;
+            }
+
+            return true;
+        });
 
         foreach ($files as $file) {
             $loader->load($file, 'yaml');
         }
     }
+
     private function loadServicesConfiguration(LoaderInterface $loader, string $confDir, string $environment): void
     {
         $loader->load($confDir . '/{services}/*.yml', 'glob');
-        $loader->load($confDir . '/{services}/' . $environment . '/**/*.yml', 'glob');
+        $loader->load($confDir . '/{services}/' . $environment . '/*.yml', 'glob');
     }
 
     protected function isFlexibility(): bool
@@ -177,9 +194,8 @@ class Kernel extends BaseKernel
      * Return the base env matching the project env.
      * The base env is configured at the level of pim-enterprise-dev
      *
-     * The base env is the same as thr project env,
-     * except for prod environment, where it depends
-     * if it's on premise or on Flexibility
+     * The base env is the same as the project env, except for prod environment,
+     * where it depends if it's on premise or Flexibility
      */
     protected function getBaseEnv(string $projectEnv): string
     {
@@ -190,6 +206,7 @@ class Kernel extends BaseKernel
                 return 'prod_onprem';
             }
         }
+
         return $projectEnv;
     }
 }

@@ -49,7 +49,7 @@ cp $DEV_DISTRIB_DIR/config/bootstrap.php $STANDARD_DISTRIB_DIR/config/
 # Security configuration cannot be read on EE-dev and overriden in standard. We need to fully copy it
 cp $DEV_DISTRIB_DIR/config/packages/security.yml $STANDARD_DISTRIB_DIR/config/packages/security.yml
 
-# Partners are most likely to develop and deploy using local filesystem, not MinIO
+# Prepare dev configuration for partners
 cp -r $DEV_DISTRIB_DIR/config/packages/dev $STANDARD_DISTRIB_DIR/config/packages/
 
 # We need a console and FPM entrypoint
