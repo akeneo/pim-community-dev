@@ -92,7 +92,8 @@
         "phpstan/phpstan": "^0.12.25",
         "phpstan/phpstan-symfony": "^0.12.6",
         "mcustiel/phiremock": "2.1.1",
-        "phpstan/phpstan-webmozart-assert": "^0.12.7"
+        "phpstan/phpstan-webmozart-assert": "^0.12.7",
+        "jfcherng/php-diff": "^6.10"
     },
     "repositories": [
         {
