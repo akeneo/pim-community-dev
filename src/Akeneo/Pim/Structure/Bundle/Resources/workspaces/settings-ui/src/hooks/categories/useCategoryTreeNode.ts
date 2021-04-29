@@ -11,7 +11,7 @@ import {findByIdentifiers, findOneByIdentifier, update} from '../../helpers/tree
 import {useFetch, useRoute} from '@akeneo-pim-community/shared';
 
 const useCategoryTreeNode = (id: number) => {
-  const {nodes, setNodes} = useContext(CategoryTreeContext);
+  const {nodes, setNodes, ...rest} = useContext(CategoryTreeContext);
   const [node, setNode] = useState<TreeNode<CategoryTreeModel> | undefined>(undefined);
   const [children, setChildren] = useState<TreeNode<CategoryTreeModel>[]>([]);
 
@@ -26,77 +26,80 @@ const useCategoryTreeNode = (id: number) => {
 
   const {data, fetch, error: fetchError, status: fetchStatus} = useFetch<BackendCategoryTree>(url);
 
-  const moveAfter = useCallback((originalId: number, target: TreeNode<CategoryTreeModel>) => {
-    // find parent
-    // find original node
-    // find original parent
+  const moveAfter = useCallback(
+    (originalId: number, target: TreeNode<CategoryTreeModel>) => {
+      // find parent
+      // find original node
+      // find original parent
 
-    if (!target.parent) {
-      console.error('Can not move after root node');
-      // @todo handle error
-      return;
-    }
+      if (!target.parent) {
+        console.error('Can not move after root node');
+        // @todo handle error
+        return;
+      }
 
-    const movedNode = findOneByIdentifier(nodes, originalId);
-    if (!movedNode) {
-      console.error(`Node ${originalId} not found`);
-      // @todo handle error
-      return;
-    }
+      const movedNode = findOneByIdentifier(nodes, originalId);
+      if (!movedNode) {
+        console.error(`Node ${originalId} not found`);
+        // @todo handle error
+        return;
+      }
 
-    const targetParentNode = findOneByIdentifier(nodes, target.parent);
-    if (!targetParentNode) {
-      console.error(`Node ${target.parent} not found`);
-      // @todo handle error
-      return;
-    }
+      const targetParentNode = findOneByIdentifier(nodes, target.parent);
+      if (!targetParentNode) {
+        console.error(`Node ${target.parent} not found`);
+        // @todo handle error
+        return;
+      }
 
-    if (!movedNode.parent) {
-      console.error('Can not move root node');
-      // @todo handle error
-      return;
-    }
-    const originalParentNode = findOneByIdentifier(nodes, movedNode.parent);
-    if (!originalParentNode) {
-      console.error(`Node ${movedNode.parent} not found`);
-      // @todo handle error
-      return;
-    }
+      if (!movedNode.parent) {
+        console.error('Can not move root node');
+        // @todo handle error
+        return;
+      }
+      const originalParentNode = findOneByIdentifier(nodes, movedNode.parent);
+      if (!originalParentNode) {
+        console.error(`Node ${movedNode.parent} not found`);
+        // @todo handle error
+        return;
+      }
 
-    let newNodesList = nodes;
+      let newNodesList = nodes;
 
-    // update the children of parent
-    // We ensure that the moved node is not in the list
-    const parentChildrenIds = targetParentNode.children.filter(id => id !== movedNode.identifier);
-    const movedIndex = parentChildrenIds.findIndex(id => id === target.identifier);
+      // update the children of parent
+      // We ensure that the moved node is not in the list
+      const parentChildrenIds = targetParentNode.children.filter(id => id !== movedNode.identifier);
+      const movedIndex = parentChildrenIds.findIndex(id => id === target.identifier);
 
-    parentChildrenIds.splice(movedIndex + 1, 0, movedNode.identifier);
+      parentChildrenIds.splice(movedIndex + 1, 0, movedNode.identifier);
 
-    newNodesList = update(newNodesList, {
-      ...targetParentNode,
-      children: parentChildrenIds,
-    });
-
-    // update parent id for the original node
-    newNodesList = update(newNodesList, {
-      ...movedNode,
-      parent: targetParentNode.identifier,
-    });
-
-    // remove the original id from the original parent's children
-    // update the original parent
-    if (originalParentNode.identifier !== targetParentNode.identifier) {
       newNodesList = update(newNodesList, {
-        ...originalParentNode,
-        children: targetParentNode.children.filter(id => id !== movedNode.identifier),
+        ...targetParentNode,
+        children: parentChildrenIds,
       });
-    }
 
-    setNodes(newNodesList);
+      // update parent id for the original node
+      newNodesList = update(newNodesList, {
+        ...movedNode,
+        parent: targetParentNode.identifier,
+      });
 
-    // call callback to save it in backend
-    // what we have to do if the callback fails? keep original position
-  }, [nodes]);
+      // remove the original id from the original parent's children
+      // update the original parent
+      if (originalParentNode.identifier !== targetParentNode.identifier) {
+        newNodesList = update(newNodesList, {
+          ...originalParentNode,
+          children: targetParentNode.children.filter(id => id !== movedNode.identifier),
+        });
+      }
+
+      setNodes(newNodesList);
+
+      // call callback to save it in backend
+      // what we have to do if the callback fails? keep original position
+    },
+    [nodes]
+  );
 
   useEffect(() => {
     setNode(findOneByIdentifier(nodes, id));
@@ -131,6 +134,7 @@ const useCategoryTreeNode = (id: number) => {
     children,
     loadChildren: fetch,
     moveAfter,
+    ...rest,
   };
 };
 

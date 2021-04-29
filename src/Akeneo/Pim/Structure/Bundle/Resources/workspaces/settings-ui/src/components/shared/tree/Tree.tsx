@@ -8,7 +8,7 @@ import React, {
   useRef,
 } from 'react';
 import styled from 'styled-components';
-import {getColor, useBooleanState, RowIcon} from 'akeneo-design-system';
+import {getColor, RowIcon, useBooleanState} from 'akeneo-design-system';
 import {TreeNode} from '../../../models';
 import {ArrowButton, TreeArrowIcon, TreeRow} from './TreeRow';
 
@@ -35,14 +35,17 @@ type TreeProps<T> = {
   onClose?: (value: TreeNode<T>) => void;
   onChange?: (value: TreeNode<T>, checked: boolean, event: SyntheticEvent) => void;
   onClick?: (value: TreeNode<T>) => void;
-  onDrop?: (value: TreeNode<T>, draggedId: number) => void;
-  // @todo define onDragStart props
+  onDrop?: () => void;
+  onDragStart?: () => void;
+  onDragEnd?: () => void;
   // @todo define onDragEnter props
   // @todo define onDragLeave props
   // @todo define isValidDrop props
   // @todo define createDragImage props
   _isRoot?: boolean;
   children?: ReactNode;
+
+  disabled?: boolean;
 };
 
 const Tree = <T,>({
@@ -58,7 +61,10 @@ const Tree = <T,>({
   onClose,
   onClick,
   onDrop,
+  onDragStart,
+  onDragEnd,
   _isRoot = true,
+  disabled = false,
   ...rest
 }: PropsWithChildren<TreeProps<T>>) => {
   const subTrees: ReactElement<TreeProps<T>>[] = [];
@@ -118,6 +124,7 @@ const Tree = <T,>({
         ref={treeRowRef}
         onClick={handleClick}
         $selected={selected}
+        $disabled={disabled}
         draggable
         onDragStartCapture={event => {
           if (event.target !== dragRef.current) {
@@ -128,7 +135,7 @@ const Tree = <T,>({
           // @todo allow dragOver (stopPropagation and prevent event) when isValidDrop
           event.stopPropagation();
           event.preventDefault();
-          console.log(`dragover ${label}`, event)
+          console.log(`dragover ${label}`, event);
         }}
         onDragEnter={() => {
           // @todo if the hover element is a "closed" parent node, set a timer of 2s then open it with handleOpen()
@@ -142,10 +149,18 @@ const Tree = <T,>({
           event.stopPropagation();
           event.preventDefault();
           event.persist();
-          const identifier = parseInt(event.dataTransfer.getData('text/plain'));
+          //const identifier = parseInt(event.dataTransfer.getData('text/plain'));
 
           if (onDrop) {
-            onDrop(value, identifier);
+            onDrop();
+          }
+        }}
+        onDragEnd={event => {
+          event.stopPropagation();
+          event.preventDefault();
+
+          if (onDragEnd) {
+            onDragEnd();
           }
         }}
       >
@@ -157,8 +172,11 @@ const Tree = <T,>({
               return;
             }
             event.dataTransfer.setDragImage(treeRowRef.current, 0, 0);
-            event.dataTransfer.setData('text/plain', value.identifier.toString());
+            //event.dataTransfer.setData('text/plain', value.identifier.toString());
 
+            if (onDragStart) {
+              onDragStart();
+            }
             // @todo define dragImage with a proper style, call createDragImage
             // @todo if the dragged element is an "opened" parent node, close it with handleClose()
             // @todo call onDragStart

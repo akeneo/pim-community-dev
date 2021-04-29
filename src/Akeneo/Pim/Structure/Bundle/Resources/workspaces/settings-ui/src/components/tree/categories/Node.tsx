@@ -13,7 +13,7 @@ type Props = {
 };
 
 const Node: FC<Props> = ({id, label, followCategory}) => {
-  const {node, children, loadChildren, moveAfter} = useCategoryTreeNode(id);
+  const {node, children, loadChildren, moveAfter, draggedCategory, setDraggedCategory} = useCategoryTreeNode(id);
 
   if (node === undefined) {
     return null;
@@ -26,33 +26,50 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
       _isRoot={node.type === 'root'}
       isLeaf={node.type === 'leaf'}
       onClick={!followCategory ? undefined : ({data}) => followCategory(data)}
+      /* @todo if Node is the droppable category, define as "selected" */
+      /* @todo if Node is the dragged category, define as "disabled" */
+      disabled={draggedCategory !== null && node.identifier === draggedCategory.identifier}
       onOpen={async () => loadChildren()}
       /* @todo Tree is draggable if Node is draggable and the current node is not the root */
-      // onDragStart={() => {
-        // @todo update the category tree state with the dragged category, the original position and its parent id
-      // }}
+      onDragStart={() => {
+        // Root is not draggable
+        if (!node?.parent) {
+          return;
+        }
+        setDraggedCategory({
+          parentId: node?.parent,
+          position: 0, // @todo get the real position
+          identifier: node?.identifier,
+        });
+      }}
       // onDragOver={() => {
-        // @todo How to define the target?
+      // @todo How to define the target?
 
-        // @todo HOW TO define the target position?
-        // top-tier: the position will be "prev"
-        // mid-tier: if parent category, the position will be "first child" else, the position will be "next"
-        // bottom-tier: the position will be "next"
+      // @todo HOW TO define the target position?
+      // top-tier: the position will be "prev"
+      // mid-tier: if parent category, the position will be "first child" else, the position will be "next"
+      // bottom-tier: the position will be "next"
 
-        // @todo if is a valid target, update the category tree state with the droppable node position and parent id
-        // @todo if the hover element is a parent category the position will be 0 and the parent id is the hover element
+      // @todo if is a valid target, update the category tree state with the droppable node position and parent id
+      // @todo if the hover element is a parent category the position will be 0 and the parent id is the hover element
       // }}
       // onDragEnter={() => {
-        // @todo if the target is a descendant of the dragged item, drop is not valid
+      // @todo if the target is a descendant of the dragged item, drop is not valid
       // }}
       // onDragLeave={() => {
-        // @todo update the category tree state with a null droppable node position and null parent id
-        // so that we can handle the
+      // @todo update the category tree state with a null droppable node position and null parent id
+      // so that we can handle the
       // }}
-      onDrop={(value, draggedId: number) => {
-        moveAfter(draggedId, node);
+      onDrop={() => {
+        if (draggedCategory) {
+          moveAfter(draggedCategory.identifier, node);
+          setDraggedCategory(null);
+        }
         // @todo call onCategoryMoved with draggedId, target parent id and position
         // @todo what we have to do if the callback fails? keep original position
+      }}
+      onDragEnd={() => {
+        setDraggedCategory(null);
       }}
     >
       {children.map(child => (
@@ -64,8 +81,6 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
             label={child.label}
             followCategory={followCategory}
             /* @todo Node is draggable if the parent Node is draggable */
-            /* @todo if Node is the droppable category, define as "selected" */
-            /* @todo if Node is the dragged category, define as "disabled" */
           />
         </>
       ))}

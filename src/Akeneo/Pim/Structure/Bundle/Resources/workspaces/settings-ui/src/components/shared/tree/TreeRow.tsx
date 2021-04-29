@@ -1,7 +1,7 @@
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, ArrowRightIcon, getColor} from 'akeneo-design-system';
 
-const TreeRow = styled.div<{$selected: boolean} & AkeneoThemedProps>`
+const TreeRow = styled.div<{$selected: boolean; $disabled: boolean} & AkeneoThemedProps>`
   display: flex;
   flex-direction: row;
   height: 40px;
@@ -12,6 +12,12 @@ const TreeRow = styled.div<{$selected: boolean} & AkeneoThemedProps>`
     $selected &&
     css`
       color: ${getColor('blue100')};
+    `}
+
+  ${({$disabled}) =>
+    $disabled &&
+    css`
+      border: 1px solid ${getColor('red100')};
     `}
 `;
 
