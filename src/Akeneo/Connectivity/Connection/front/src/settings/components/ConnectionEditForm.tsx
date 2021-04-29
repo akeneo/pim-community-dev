@@ -74,7 +74,7 @@ export const ConnectionEditForm = ({connection}: Props) => {
                         </Helper>,
                     ]}
                 >
-                    <FlowTypeSelect value={values.flowType} onChange={handleFlowTypeChange} />
+                    <FlowTypeSelect value={values.flowType} onChange={handleFlowTypeChange} id='flow_type' />
                 </FormGroup>
 
                 <FormGroup

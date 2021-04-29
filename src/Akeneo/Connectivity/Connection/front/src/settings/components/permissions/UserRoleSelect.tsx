@@ -1,6 +1,6 @@
-import {Helper, Link} from 'akeneo-design-system';
-import React, {useEffect, useMemo, useState} from 'react';
-import {FormGroup, Select2, Select2Configuration} from '../../../common';
+import {Helper, Link, SelectInput} from 'akeneo-design-system';
+import React, {useEffect, useState} from 'react';
+import {FormGroup} from '../../../common';
 import {Translate} from '../../../shared/translate';
 import {useFetchUserRoles, UserRole} from '../../api-hooks/use-fetch-user-roles';
 
@@ -22,20 +22,13 @@ export const UserRoleSelect = ({userRoleId, onChange}: Props) => {
         setSelectedUserRole(userRoles.find(userRole => userRole.id === userRoleId));
     }, [userRoles, userRoleId]);
 
-    const handleUserRoleChange = (selectedUserRoleId?: string) => {
-        if (!selectedUserRoleId) {
+    const handleUserRoleChange = (selectedUserRoleId: string | null) => {
+        if (null === selectedUserRoleId) {
             return;
         }
         setSelectedUserRole(userRoles.find(userRole => userRole.id === selectedUserRoleId));
         onChange(selectedUserRoleId);
     };
-
-    const configuration: Select2Configuration = useMemo(
-        () => ({
-            data: userRoles.map(userRole => ({id: userRole.id, text: userRole.label})),
-        }),
-        [userRoles]
-    );
 
     if (!selectedUserRole) {
         return null;
@@ -61,8 +54,21 @@ export const UserRoleSelect = ({userRoleId, onChange}: Props) => {
                     </Helper>
                 ),
             ]}
+            controlId='user_role'
         >
-            <Select2 configuration={configuration} value={selectedUserRole.id} onChange={handleUserRoleChange} />
+            <SelectInput
+                value={selectedUserRole.id}
+                onChange={handleUserRoleChange}
+                clearable={false}
+                emptyResultLabel=''
+                id='user_role'
+            >
+                {userRoles.map(userRole => (
+                    <SelectInput.Option key={userRole.id} value={userRole.id}>
+                        {userRole.label}
+                    </SelectInput.Option>
+                ))}
+            </SelectInput>
         </FormGroup>
     );
 };

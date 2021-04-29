@@ -1,6 +1,6 @@
-import {Helper, Link} from 'akeneo-design-system';
-import React, {useEffect, useMemo, useState} from 'react';
-import {FormGroup, Select2, Select2Configuration} from '../../../common';
+import {Helper, Link, SelectInput} from 'akeneo-design-system';
+import React, {FC, useEffect, useState} from 'react';
+import {FormGroup} from '../../../common';
 import {Translate} from '../../../shared/translate';
 import {useFetchUserGroups, UserGroup} from '../../api-hooks/use-fetch-user-groups';
 
@@ -18,7 +18,7 @@ type Props = {
     onChange: (userGroupId: string | null) => void;
 };
 
-export const UserGroupSelect = ({userGroupId, onChange}: Props) => {
+export const UserGroupSelect: FC<Props> = ({userGroupId, onChange}: Props) => {
     const fetchUserGroups = useFetchUserGroups();
     const [userGroups, setUserGroups] = useState<UserGroup[]>([]);
     const [selectedUserGroup, setSelectedUserGroup] = useState<UserGroup>();
@@ -31,21 +31,10 @@ export const UserGroupSelect = ({userGroupId, onChange}: Props) => {
         setSelectedUserGroup(findUserGroup(userGroups, userGroupId));
     }, [userGroups, userGroupId]);
 
-    const handleUserGroupChange = (selectedUserGroupId?: string) => {
-        setSelectedUserGroup(findUserGroup(userGroups, selectedUserGroupId || null));
-        onChange(selectedUserGroupId || null);
+    const handleUserGroupChange = (selectedUserGroupId: string | null) => {
+        setSelectedUserGroup(findUserGroup(userGroups, selectedUserGroupId));
+        onChange(selectedUserGroupId);
     };
-
-    const configuration: Select2Configuration = useMemo(
-        () => ({
-            data: userGroups
-                .filter(({isDefault}) => false === isDefault)
-                .map(userGroup => ({id: userGroup.id, text: userGroup.label})),
-            allowClear: true,
-            placeholder: '<null>',
-        }),
-        [userGroups]
-    );
 
     if (!selectedUserGroup) {
         return null;
@@ -69,8 +58,22 @@ export const UserGroupSelect = ({userGroupId, onChange}: Props) => {
                     </Helper>
                 ),
             ]}
+            controlId='user_group'
         >
-            <Select2 configuration={configuration} value={selectedUserGroup.id} onChange={handleUserGroupChange} />
+            <SelectInput
+                value={(!selectedUserGroup.isDefault && selectedUserGroup.id) || null}
+                onChange={handleUserGroupChange}
+                emptyResultLabel=''
+                id='user_group'
+            >
+                {userGroups
+                    .filter(({isDefault}) => false === isDefault)
+                    .map(userGroup => (
+                        <SelectInput.Option key={userGroup.id} value={userGroup.id}>
+                            {userGroup.label}
+                        </SelectInput.Option>
+                    ))}
+            </SelectInput>
         </FormGroup>
     );
 };

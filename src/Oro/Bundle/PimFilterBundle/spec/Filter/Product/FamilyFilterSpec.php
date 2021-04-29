@@ -2,6 +2,7 @@
 
 namespace spec\Oro\Bundle\PimFilterBundle\Filter\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface;
@@ -26,6 +27,15 @@ class FamilyFilterSpec extends ObjectBehavior
     ) {
         $utility->applyFilter($datasource, 'family', 'IN', [2, 3])->shouldBeCalled();
 
-        $this->apply($datasource, ['type' => null, 'value' => [2, 3]]);
+        $this->apply($datasource, ['type' => 'IN', 'value' => [2, 3]])->shouldReturn(true);
+    }
+
+    function it_does_not_apply_filter_when_family_is_not_found(
+        FilterDatasourceAdapterInterface $datasource,
+        $utility
+    ) {
+        $utility->applyFilter($datasource, 'family', 'IN', ['deleted_family'])->willThrow(ObjectNotFoundException::class);
+
+        $this->apply($datasource, ['type' => 'IN', 'value' => ['deleted_family']])->shouldReturn(false);
     }
 }
