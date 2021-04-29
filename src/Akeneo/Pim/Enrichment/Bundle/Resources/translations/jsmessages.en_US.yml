@@ -230,6 +230,7 @@ pim_enrich.entity.category:
         edit:
             not_found: Category not found
             default_tree_label: Tree
+    new_category: New category
     category_tree_created: The tree "{{ tree }}" was successfully created
     category_tree_creation_error: The tree "{{ tree }}" could not be created
     products_limit_exceeded:  This category contains more products than allowed for this operation ({{ limit }} products maximum)
