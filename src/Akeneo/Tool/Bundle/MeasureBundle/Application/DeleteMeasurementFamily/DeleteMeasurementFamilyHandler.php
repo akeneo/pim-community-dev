@@ -16,15 +16,12 @@ use Psr\EventDispatcher\EventDispatcherInterface;
  */
 class DeleteMeasurementFamilyHandler
 {
-    /** @var MeasurementFamilyRepositoryInterface */
-    private $measurementFamilyRepository;
-
+    private MeasurementFamilyRepositoryInterface $measurementFamilyRepository;
     private ?EventDispatcherInterface $eventDispatcher;
 
-    /** TODO: @pullup Remove = null */
     public function __construct(
         MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
-        EventDispatcherInterface $eventDispatcher = null
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->measurementFamilyRepository = $measurementFamilyRepository;
         $this->eventDispatcher = $eventDispatcher;
@@ -37,8 +34,6 @@ class DeleteMeasurementFamilyHandler
     {
         $measurementFamilyCode = MeasurementFamilyCode::fromString($deleteMeasurementFamilyCommand->code);
         $this->measurementFamilyRepository->deleteByCode($measurementFamilyCode);
-        if (null !== $this->eventDispatcher) {
-            $this->eventDispatcher->dispatch(new MeasurementFamilyDeleted($measurementFamilyCode));
-        }
+        $this->eventDispatcher->dispatch(new MeasurementFamilyDeleted($measurementFamilyCode));
     }
 }

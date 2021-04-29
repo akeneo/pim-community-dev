@@ -21,15 +21,12 @@ use Psr\EventDispatcher\EventDispatcherInterface;
  */
 class SaveMeasurementFamilyHandler
 {
-    /** @var MeasurementFamilyRepositoryInterface */
-    private $measurementFamilyRepository;
-
+    private MeasurementFamilyRepositoryInterface $measurementFamilyRepository;
     private ?EventDispatcherInterface $eventDispatcher;
 
-    /** TODO: @pullup Remove = null */
     public function __construct(
         MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
-        EventDispatcherInterface $eventDispatcher = null
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->measurementFamilyRepository = $measurementFamilyRepository;
         $this->eventDispatcher = $eventDispatcher;
@@ -47,9 +44,7 @@ class SaveMeasurementFamilyHandler
         );
 
         $this->measurementFamilyRepository->save($measurementFamily);
-        if (null !== $this->eventDispatcher) {
-            $this->eventDispatcher->dispatch(new MeasurementFamilyUpdated($measurementFamilyCode));
-        }
+        $this->eventDispatcher->dispatch(new MeasurementFamilyUpdated($measurementFamilyCode));
     }
 
     private function units(SaveMeasurementFamilyCommand $saveMeasurementFamilyCommand): array
