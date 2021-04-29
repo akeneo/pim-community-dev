@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.106 (2021-04-29)
+
 ## Bug fixes
 
 - PIM-9832: Fix variant product images query by extracting image values before sorting
