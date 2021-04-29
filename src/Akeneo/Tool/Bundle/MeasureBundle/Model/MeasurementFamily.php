@@ -76,6 +76,17 @@ class MeasurementFamily
         ];
     }
 
+    public function getUnitLabel(UnitCode $unitCode, LocaleIdentifier $localeIdentifier): string
+    {
+        $unit = $this->getUnit($unitCode, $this->units);
+
+        if (null === $unit) {
+            throw new UnitNotFoundException();
+        }
+
+        return $unit->getLabel($localeIdentifier);
+    }
+
     private function assertStandardUnitExists(UnitCode $standardUnitCode, array $units): void
     {
         $isStandardUnitCodePresentInUnits = !empty($this->getUnit($standardUnitCode, $units));
@@ -97,17 +108,6 @@ class MeasurementFamily
             $units
         );
         Assert::uniqueValues($normalizedUnitCodes);
-    }
-
-    public function getUnitLabel(UnitCode $unitCode, LocaleIdentifier $localeIdentifier): string
-    {
-        $unit = $this->getUnit($unitCode, $this->units);
-
-        if (null === $unit) {
-            throw new UnitNotFoundException();
-        }
-
-        return $unit->getLabel($localeIdentifier);
     }
 
     private function getUnit(UnitCode $standardUnitCode, array $units): ?Unit
