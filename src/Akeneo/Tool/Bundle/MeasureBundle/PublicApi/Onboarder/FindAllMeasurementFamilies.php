@@ -16,7 +16,7 @@ class FindAllMeasurementFamilies
 {
     private MeasurementFamilyRepositoryInterface $measurementFamilyRepository;
 
-    public function __construct(MeasurementFamilyRepositoryInterface  $measurementFamilyRepository)
+    public function __construct(MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
     {
         $this->measurementFamilyRepository = $measurementFamilyRepository;
     }
