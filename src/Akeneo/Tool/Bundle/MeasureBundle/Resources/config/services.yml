@@ -42,16 +42,19 @@ services:
         class: Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyHandler
         arguments:
             - '@akeneo_measure.persistence.measurement_family_repository'
+            - '@event_dispatcher'
 
     akeneo_measure.application.create_measurement_family_handler:
         class: Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateMeasurementFamilyHandler
         arguments:
             - '@akeneo_measure.persistence.measurement_family_repository'
+            - '@event_dispatcher'
 
     akeneo_measure.application.delete_measurement_family_handler:
         class: Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyHandler
         arguments:
             - '@akeneo_measure.persistence.measurement_family_repository'
+            - '@event_dispatcher'
 
     akeneo_measure.validation.measurement_family.code_must_be_unique:
         class: Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\CodeMustBeUniqueValidator
