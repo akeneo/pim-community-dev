@@ -49,17 +49,16 @@ class ProductGridFilters extends BaseMultiSelectAsync {
   }
 
   protected convertBackendItem(item: NormalizedAttribute): Object {
-      const uiLocale = UserContext.get('uiLocale');
-      const catalogLocale = UserContext.get('catalogLocale');
-      return {
-        id: item.code,
-        text: i18n.getLabel(item.labels, item.group === "system" ? uiLocale : catalogLocale, item.code),
-        group: {
-          text: item.group
-              ? i18n.getLabel(this.attributeGroups[item.group].labels, item.group === "system" ? uiLocale : catalogLocale, item.group)
-              : '',
-        },
-      };
+    const locale = 'system' === item.group ? UserContext.get('uiLocale') : UserContext.get('catalogLocale');
+    return {
+      id: item.code,
+      text: i18n.getLabel(item.labels, locale, item.code),
+      group: {
+        text: item.group
+            ? i18n.getLabel(this.attributeGroups[item.group].labels, locale, item.group)
+            : '',
+      },
+    };
   }
 
   /**
