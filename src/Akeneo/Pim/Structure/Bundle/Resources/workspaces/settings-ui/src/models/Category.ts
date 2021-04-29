@@ -24,6 +24,7 @@ export type CategoryTree = {
   label: string;
   isRoot: boolean;
   children?: CategoryTree[];
+  productsNumber?: number;
 };
 
 const convertToCategoryTree = (tree: BackendCategoryTree): CategoryTree => {

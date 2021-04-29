@@ -12,9 +12,34 @@ const useCategoryTreeList = () => {
 
   const {data, fetch, status, error} = useFetch<CategoryTree[]>(url);
 
+  const {data: productsNumberByCategory, fetch: fetchProductsNumberByCategory} = useFetch<{
+    [categoryId: number]: number;
+  }>(useRoute('pim_enrich_categorytree_get_products_number'));
+
   useEffect(() => {
     setTrees(data || []);
+    if (data) {
+      (async () => {
+        await fetchProductsNumberByCategory();
+      })();
+    }
   }, [data]);
+
+  useEffect(() => {
+    if (productsNumberByCategory) {
+      const updatedTrees: CategoryTree[] = trees.map((tree: CategoryTree) => {
+        if (productsNumberByCategory.hasOwnProperty(tree.id)) {
+          return {
+            ...tree,
+            productsNumber: productsNumberByCategory[tree.id],
+          };
+        }
+
+        return tree;
+      });
+      setTrees(updatedTrees);
+    }
+  }, [productsNumberByCategory]);
 
   return {
     trees,
