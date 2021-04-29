@@ -22,6 +22,14 @@ akeneo_connectivity_connection_events_api_request_count | BASE TABLE
 akeneo_connectivity_connection_wrong_credentials_combination | BASE TABLE
 akeneo_file_storage_file_info | BASE TABLE
 akeneo_measurement | BASE TABLE
+akeneo_onboarder_message | BASE TABLE
+akeneo_onboarder_nice_to_have_attribute | BASE TABLE
+akeneo_onboarder_pre_ref_product | BASE TABLE
+akeneo_onboarder_retailer_contact | BASE TABLE
+akeneo_onboarder_supplier | BASE TABLE
+akeneo_onboarder_supplier_family | BASE TABLE
+akeneo_onboarder_supplier_has_catalog_locale | BASE TABLE
+akeneo_onboarder_supplier_user | BASE TABLE
 akeneo_reference_entity_attribute | BASE TABLE
 akeneo_reference_entity_record | BASE TABLE
 akeneo_reference_entity_reference_entity | BASE TABLE
@@ -134,6 +142,8 @@ pimee_workflow_published_product_association_published_group | BASE TABLE
 pimee_workflow_published_product_association_published_product | BASE TABLE
 pimee_workflow_published_product_completeness | BASE TABLE
 pimee_workflow_published_product_completeness_missing_attribute | BASE TABLE
+supplier | BASE TABLE
+supplier_family | BASE TABLE
 acl_classes | id | NO | int unsigned | PRI
 acl_classes | class_type | NO | varchar(200) | UNI
 acl_entries | id | NO | int unsigned | PRI
@@ -293,6 +303,36 @@ akeneo_measurement | code | NO | varchar(100) | PRI
 akeneo_measurement | labels | NO | json | 
 akeneo_measurement | standard_unit | NO | varchar(100) | 
 akeneo_measurement | units | NO | json | 
+akeneo_onboarder_message | identifier | NO | varchar(36) | PRI
+akeneo_onboarder_message | created_at | YES | datetime | 
+akeneo_onboarder_message | content_field | NO | longtext | 
+akeneo_onboarder_message | routingKey_field | NO | varchar(100) | 
+akeneo_onboarder_message | error_field | YES | longtext | 
+akeneo_onboarder_nice_to_have_attribute | family_id | NO | int | PRI
+akeneo_onboarder_nice_to_have_attribute | attribute_id | NO | int | PRI
+akeneo_onboarder_pre_ref_product | id | NO | varchar(255) | PRI
+akeneo_onboarder_pre_ref_product | supplier_reference | NO | varchar(255) | 
+akeneo_onboarder_pre_ref_product | raw_values | YES | json | 
+akeneo_onboarder_pre_ref_product | supplier_id | NO | varchar(36) | MUL
+akeneo_onboarder_pre_ref_product | family_id | NO | int | 
+akeneo_onboarder_pre_ref_product | raw_categories | YES | json | 
+akeneo_onboarder_pre_ref_product | created_at | NO | datetime | 
+akeneo_onboarder_pre_ref_product | is_rejected | NO | tinyint(1) | 
+akeneo_onboarder_retailer_contact | supplier_id | NO | char(36) | PRI
+akeneo_onboarder_retailer_contact | user_id | NO | int | PRI
+akeneo_onboarder_supplier | id | NO | int | PRI
+akeneo_onboarder_supplier | code | NO | varchar(50) | UNI
+akeneo_onboarder_supplier | sort_order | NO | int | 
+akeneo_onboarder_supplier | name | NO | varchar(255) | 
+akeneo_onboarder_supplier_family | supplier_id | NO | int | PRI
+akeneo_onboarder_supplier_family | family_id | NO | int | PRI
+akeneo_onboarder_supplier_has_catalog_locale | supplier_id | NO | char(36) | PRI
+akeneo_onboarder_supplier_has_catalog_locale | catalog_locale_id | NO | int | PRI
+akeneo_onboarder_supplier_user | identifier_field | NO | varchar(36) | PRI
+akeneo_onboarder_supplier_user | email_field | NO | varchar(255) | UNI
+akeneo_onboarder_supplier_user | firstName_field | NO | varchar(255) | 
+akeneo_onboarder_supplier_user | lastName_field | NO | varchar(255) | 
+akeneo_onboarder_supplier_user | phone_field | YES | varchar(20) | 
 akeneo_reference_entity_attribute | identifier | NO | varchar(255) | PRI
 akeneo_reference_entity_attribute | code | NO | varchar(255) | MUL
 akeneo_reference_entity_attribute | reference_entity_identifier | NO | varchar(255) | MUL
@@ -474,6 +514,7 @@ pim_catalog_attribute | backend_type | NO | varchar(255) |
 pim_catalog_attribute | properties | YES | longtext | 
 pim_catalog_attribute | created | NO | datetime | 
 pim_catalog_attribute | updated | NO | datetime | 
+pim_catalog_attribute | guidelines | NO | json | 
 pim_catalog_attribute_blacklist | attribute_code | NO | varchar(100) | PRI
 pim_catalog_attribute_blacklist | cleanup_job_execution_id | YES | int | MUL
 pim_catalog_attribute_group | id | NO | int | PRI
@@ -642,7 +683,7 @@ pim_data_quality_insights_product_score | evaluated_at | NO | date | PRI
 pim_data_quality_insights_product_score | scores | NO | json | 
 pim_datagrid_view | id | NO | int | PRI
 pim_datagrid_view | owner_id | YES | int | MUL
-pim_datagrid_view | label | NO | varchar(100) | UNI
+pim_datagrid_view | label | NO | varchar(100) | 
 pim_datagrid_view | type | YES | varchar(10) | 
 pim_datagrid_view | datagrid_alias | NO | varchar(255) | 
 pim_datagrid_view | columns | NO | longtext | 
@@ -676,8 +717,9 @@ pim_versioning_version | context | YES | varchar(255) |
 pim_versioning_version | version | YES | int | MUL
 pim_versioning_version | logged_at | NO | datetime | MUL
 pim_versioning_version | pending | NO | tinyint(1) | MUL
-pimee_data_quality_insights_text_checker_dictionary | locale_code | NO | varchar(20) | 
-pimee_data_quality_insights_text_checker_dictionary | word | NO | varchar(250) | MUL
+pimee_data_quality_insights_text_checker_dictionary | id | NO | int | PRI
+pimee_data_quality_insights_text_checker_dictionary | locale_code | NO | varchar(20) | MUL
+pimee_data_quality_insights_text_checker_dictionary | word | NO | varchar(250) | 
 pimee_dqi_attribute_locale_quality | attribute_code | NO | varchar(100) | PRI
 pimee_dqi_attribute_locale_quality | locale | NO | varchar(20) | PRI
 pimee_dqi_attribute_locale_quality | quality | NO | varchar(20) | 
@@ -807,3 +849,13 @@ pimee_workflow_published_product_completeness | missing_count | NO | int |
 pimee_workflow_published_product_completeness | required_count | NO | int | 
 pimee_workflow_published_product_completeness_missing_attribute | completeness_id | NO | int | PRI
 pimee_workflow_published_product_completeness_missing_attribute | missing_attribute_id | NO | int | PRI
+supplier | id | NO | char(36) | PRI
+supplier | logo_id | YES | int | UNI
+supplier | supplier_referent_id | NO | varchar(36) | UNI
+supplier | ui_locale_id | NO | int | MUL
+supplier | catalog_locale_id | NO | int | MUL
+supplier | code | NO | varchar(255) | UNI
+supplier | name | NO | varchar(255) | 
+supplier | allow_product_creation | NO | tinyint(1) | 
+supplier_family | supplier_id | NO | varchar(36) | PRI
+supplier_family | family_id | NO | int | PRI
