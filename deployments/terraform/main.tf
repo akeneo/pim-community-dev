@@ -6,7 +6,7 @@ terraform {
 
 provider "google" {
   project = var.google_project_id
-  version = ">= 3.21.0, < 4.0.0"
+  version = ">= 3.21.0, < 3.66.0"
 }
 
 provider "helm" {
