@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import {Tree} from '../../shared';
 import {CategoryTreeModel as CategoryTreeModel} from '../../../models';
 import {useCategoryTreeNode} from '../../../hooks';
+import {moveCategory} from "../../../infrastructure/savers";
 
 type Props = {
   id: number;
@@ -81,13 +82,22 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
       // so that we can handle the
       // }}
       onDrop={() => {
-        if (draggedCategory) {
+        // @todo rework to not have to do all these sanity checks
+        if (draggedCategory && node !== undefined && node.parent) {
           moveAfter(draggedCategory.identifier, node);
+
+          const moveSuccess = moveCategory({
+            identifier: draggedCategory.identifier,
+            parentId: node.parent,
+            previousCategoryId: node.identifier,
+          });
+
+          // @todo what we have to do if the callback fails? keep original position
+          console.log(moveSuccess);
+
           setDraggedCategory(null);
           setHoveredCategory(null);
         }
-        // @todo call onCategoryMoved with draggedId, target parent id and position
-        // @todo what we have to do if the callback fails? keep original position
       }}
       onDragEnd={() => {
         setDraggedCategory(null);
