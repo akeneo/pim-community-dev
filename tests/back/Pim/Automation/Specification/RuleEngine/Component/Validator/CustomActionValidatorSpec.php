@@ -91,7 +91,7 @@ class CustomActionValidatorSpec extends ObjectBehavior
 
         $chainedDenormalizer->supportsDenormalization(['type' => 'custom', 'foo' => 'bar'], 'custom')->shouldBeCalled()
                             ->willReturn(true);
-        $chainedDenormalizer->denormalize($customAction, 'custom')->shouldBeCalled()->willReturn($denormalizedAction);
+        $chainedDenormalizer->denormalize($customAction->toArray(), 'custom')->shouldBeCalled()->willReturn($denormalizedAction);
 
         $context->getValidator()->shouldBeCalled()->willReturn($validator);
         $validator->inContext($context)->shouldBeCalled()->willReturn($validator);
