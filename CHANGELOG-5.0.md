@@ -1,5 +1,31 @@
 # 5.0.x
 
+# 5.0.22 (2021-04-27)
+
+# 5.0.21 (2021-04-23)
+
+# 5.0.20 (2021-04-22)
+
+# 5.0.19 (2021-04-20)
+
+## Bug fixes
+
+- OB-752: Fix 5.0 memcached package issue
+
+# 5.0.18 (2021-04-15)
+
+# 5.0.17 (2021-04-15)
+
+# 5.0.16 (2021-04-08)
+
+## Bug fixes
+
+- PIM-9799: Improve PEF performance by avoid a useless render
+
+# 5.0.15 (2021-04-06)
+
+# 5.0.14 (2021-04-01)
+
 # 5.0.13 (2021-03-29)
 
 - PLG-137 - Fix filter "Image quality" label to avoid confusion

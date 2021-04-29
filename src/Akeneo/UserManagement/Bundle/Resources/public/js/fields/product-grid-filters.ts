@@ -49,13 +49,12 @@ class ProductGridFilters extends BaseMultiSelectAsync {
   }
 
   protected convertBackendItem(item: NormalizedAttribute): Object {
+    const locale = UserContext.get('system' === item.group ? 'uiLocale' : 'catalogLocale');
     return {
       id: item.code,
-      text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code),
+      text: i18n.getLabel(item.labels, locale, item.code),
       group: {
-        text: item.group
-          ? i18n.getLabel(this.attributeGroups[item.group].labels, UserContext.get('catalogLocale'), item.group)
-          : '',
+        text: item.group ? i18n.getLabel(this.attributeGroups[item.group].labels, locale, item.group) : '',
       },
     };
   }
@@ -94,7 +93,7 @@ class ProductGridFilters extends BaseMultiSelectAsync {
    */
   private static getSystemAttributeGroup(): NormalizedAttributeGroup {
     const result: NormalizedAttributeGroup = {labels: {}};
-    result['labels'][UserContext.get('catalogLocale')] = __('pim_datagrid.filters.system');
+    result['labels'][UserContext.get('uiLocale')] = __('pim_datagrid.filters.system');
 
     return result;
   }
