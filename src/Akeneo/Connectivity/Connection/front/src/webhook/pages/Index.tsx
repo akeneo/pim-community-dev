@@ -8,13 +8,13 @@ import {RegenerateWebhookSecret} from './RegenerateWebhookSecret';
 const Index = () => (
     <ErrorBoundary>
         <Switch>
-            <Route path='/connections/:connectionCode/event-subscription/regenerate-secret'>
+            <Route path='/connect/connection-settings/:connectionCode/event-subscription/regenerate-secret'>
                 <RegenerateWebhookSecret />
             </Route>
-            <Route path='/connections/:connectionCode/event-subscription'>
+            <Route path='/connect/connection-settings/:connectionCode/event-subscription'>
                 <EditConnectionWebhook />
             </Route>
-            <Route path='/connections/:connectionCode/event-logs'>
+            <Route path='/connect/connection-settings/:connectionCode/event-logs'>
                 <EventLogs />
             </Route>
         </Switch>

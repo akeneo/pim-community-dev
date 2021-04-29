@@ -2,8 +2,10 @@
 pim_menu:
     tab:
         connect: Connect
+    navigation:
+        connect: Connect navigation
     navigation_back:
-        connection: Back to connections
+        connection: Back to Connect
     navigation_block:
         connection: Connection navigation
     item:
@@ -13,9 +15,14 @@ pim_menu:
         connection_monitoring: Monitoring
         connection_webhook_edit: Event subscription
         connection_webhook_event_logs: Event logs
+        data_flows: Data flows
+        connect_connection_settings: Connection settings
+        marketplace: Marketplace
+        new_label: NEW
 
 pim_title:
-    akeneo_connectivity_connection_settings_index: Connections
+    akeneo_connectivity_connection_connect_marketplace: Marketplace
+    akeneo_connectivity_connection_settings_index: Connections settings
     akeneo_connectivity_connection_settings_edit: Connection settings
     akeneo_connectivity_connection_settings_any: Connection settings
     akeneo_connectivity_connection_audit_index: Connection dashboard
@@ -25,8 +32,19 @@ pim_title:
     akeneo_connectivity_connection_webhook_edit: Event subscription
     akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
     akeneo_connectivity_connection_webhook_event_logs: Event logs
+    akeneo_connectivity_connection_redirect_audit: Connection dashboard
+    akeneo_connectivity_connection_settings_redirect: Connections
 
 akeneo_connectivity.connection:
+    connect:
+        redirect.link: To go there, click here
+        dashboard_redirect.title: Find your Connection dashboard in the Connect menu
+        settings_redirect.title: Find your connection information in the Connect menu
+
+        marketplace:
+            title: Want to connect your PIM with another application? 🤟
+            sub_title: Check our marketplace to see which application can be connected with Akeneo PIM.
+            link: Here you go!
     connections: Connections
     secondary_actions:
         title: Other actions
@@ -157,9 +175,9 @@ akeneo_connectivity.connection:
 
     dashboard:
         helper:
-            title: 👋 Welcome to your connection dashboard!
-            description: Here, you will be able to track all the data flows that are collected into your PIM via your connections, as well as all the data flows that are distributed to your channels via your connections.
-            link: Want to know more? Here you go!
+            title: 👋 Welcome to Data flows!
+            description: Here, you can track the data flow between your PIM and third parties.
+            link: Want to know more about the Connect menu and Data flows? Here you go!
         user_survey:
             title: Want more data on this dashboard?
             content: Your feedback is really precious to us. Help us choose the next widget by answering this one-question survey!
