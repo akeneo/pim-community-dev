@@ -189,7 +189,11 @@ export const ConnectionCreateForm = () => {
                 ]}
                 required
             >
-                <FlowTypeSelect value={state.controls.flow_type.value as FlowType} onChange={handleFlowTypeSelect} />
+                <FlowTypeSelect
+                    value={state.controls.flow_type.value as FlowType}
+                    onChange={handleFlowTypeSelect}
+                    id='flow_type'
+                />
             </FormGroup>
 
             <ApplyButton onClick={handleSave} disabled={false === state.valid}>
