@@ -14,7 +14,7 @@ spec:
     image: curlimages/curl
     env:
       - name: TARGET
-        value: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}/monitoring/services_status
+        value: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}/monitoring/services_status?minimal_expected_status=yellow
       - name: MONITORING_AUTHENTICATION_TOKEN
         value: "X-AUTH-TOKEN: {{ required ".Values.pim.monitoring.authenticationToken" .Values.pim.monitoring.authenticationToken}}"
     command: ["/bin/sh", "-c"]

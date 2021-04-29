@@ -28,7 +28,10 @@ final class FileStorageCheckerIntegration extends TestCase
     {
         $this->getMountManager()->mountFilesystem('catalogStorage', new Filesystem(new NullAdapter()));
 
-        Assert::assertEquals(ServiceStatus::notOk('Failing file storages: catalogStorage'), $this->getFilestorageChecker()->status());
+        Assert::assertEquals(
+            ServiceStatus::notOk('Failing file storages: catalogStorage'),
+            $this->getFilestorageChecker()->status()
+        );
     }
 
     protected function getConfiguration()

@@ -18,8 +18,7 @@ use Doctrine\DBAL\DBALException;
 
 final class MysqlChecker
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {

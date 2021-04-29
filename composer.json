@@ -41,6 +41,7 @@
             "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "Akeneo\\Test\\": "vendor/akeneo/pim-community-dev/tests/back/",
             "AkeneoEnterprise\\Test\\Acceptance\\": "tests/back/Acceptance/",
+            "Specification\\Akeneo\\Platform\\": "tests/back/Platform/Specification/",
             "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": ["src/Akeneo/Pim/Automation/DataQualityInsights/tests/back", "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/tests/back"],
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/tests/back",
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back",
