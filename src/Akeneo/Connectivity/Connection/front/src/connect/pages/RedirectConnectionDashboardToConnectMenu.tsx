@@ -1,5 +1,5 @@
 import {Breadcrumb, ClientErrorIllustration} from 'akeneo-design-system';
-import React from 'react';
+import React, {FC} from 'react';
 import styled from 'styled-components';
 import {HelperLink, PageHeader} from '../../common';
 import {useRouter} from '../../shared/router/use-router';
@@ -28,7 +28,7 @@ const Heading = styled.h1`
     line-height: 1.2em;
 `;
 
-export const RedirectConnectionDashboardToConnectMenu = () => {
+export const RedirectConnectionDashboardToConnectMenu: FC = () => {
     const translate = useTranslate();
     const generateUrl = useRouter();
 
@@ -50,7 +50,7 @@ export const RedirectConnectionDashboardToConnectMenu = () => {
             <PageContent>
                 <ClientErrorIllustration width={500} height={250} />
 
-                <Heading>{translate('akeneo_connectivity.connection.connect.redirect.title')}</Heading>
+                <Heading>{translate('akeneo_connectivity.connection.connect.dashboard_redirect.title')}</Heading>
                 <Caption>
                     <HelperLink href={`#${generateUrl('akeneo_connectivity_connection_audit_index')}`}>
                         <Translate id='akeneo_connectivity.connection.connect.redirect.link' />
