@@ -1,8 +1,8 @@
-import {useEffect, useState} from "react";
-import {baseFetcher, useRoute} from "@akeneo-pim-community/shared";
+import {useEffect, useState} from 'react';
+import {baseFetcher, useRoute} from '@akeneo-pim-community/shared';
 
 type CountCategoryTreesChildren = {
-  [key: string]: number
+  [key: string]: number;
 };
 
 const useCountCategoryTreesChildren = (): CountCategoryTreesChildren => {

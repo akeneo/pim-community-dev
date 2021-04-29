@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import {NoResults} from '../../shared';
 import {DeleteCategoryModal} from './DeleteCategoryModal';
 import {deleteCategory} from '../../../infrastructure/removers';
-import {useCountCategoryTreesChildren} from "../../../hooks";
+import {useCountCategoryTreesChildren} from '../../../hooks';
 
 type Props = {
   trees: CategoryTree[];
@@ -127,7 +127,8 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                 >
                   <Table.Cell rowTitle>{tree.label}</Table.Cell>
                   <Table.Cell>
-                    {countTreesChildren.hasOwnProperty(tree.code) && translate(
+                    {countTreesChildren.hasOwnProperty(tree.code) &&
+                    translate(
                       'pim_enrich.entity.category.content.tree_list.columns.count_categories',
                       {count: countTreesChildren[tree.code]},
                       countTreesChildren[tree.code]
