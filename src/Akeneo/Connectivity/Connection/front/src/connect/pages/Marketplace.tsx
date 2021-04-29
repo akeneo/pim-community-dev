@@ -5,7 +5,7 @@ import {PageHeader} from '../../common';
 import {UserButtons} from '../../shared/user';
 import styled from 'styled-components';
 import {useFetchMarketingUrl} from '../hooks/use-fetch-marketing-url';
-import {useRoute} from '../../shared/router';
+import {useRouter} from '../../shared/router/use-router';
 
 const LinkButton = styled.a<AkeneoThemedProps>`
     display: inline-flex;
@@ -70,7 +70,8 @@ export const Marketplace: FC = () => {
     const translate = useTranslate();
     const fetchMarketplaceUrl = useFetchMarketingUrl();
     const [marketplaceUrl, setMarketplaceUrl] = useState<string>('');
-    const dashboardHref = `#${useRoute('akeneo_connectivity_connection_audit_index')}`;
+    const generateUrl = useRouter();
+    const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`
 
     const breadcrumb = (
         <Breadcrumb>
