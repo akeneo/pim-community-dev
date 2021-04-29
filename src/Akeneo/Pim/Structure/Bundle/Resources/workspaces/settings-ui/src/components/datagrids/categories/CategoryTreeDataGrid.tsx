@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import {NoResults} from '../../shared';
 import {DeleteCategoryModal} from './DeleteCategoryModal';
 import {deleteCategory} from '../../../infrastructure/removers';
+import {useCountCategoryTreesChildren} from '../../../hooks';
 
 type Props = {
   trees: CategoryTree[];
@@ -89,6 +90,8 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
     debouncedSearch(searchValue);
   };
 
+  const countTreesChildren = useCountCategoryTreesChildren();
+
   return (
     <>
       <StyledSearch searchValue={searchString} onSearchChange={onSearch} placeholder={translate('pim_common.search')}>
@@ -111,6 +114,9 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               <Table.HeaderCell>
                 {translate('pim_enrich.entity.category.content.tree_list.columns.label')}
               </Table.HeaderCell>
+              <Table.HeaderCell>
+                {translate('pim_enrich.entity.category.content.tree_list.columns.number_of_categories')}
+              </Table.HeaderCell>
               <Table.HeaderCell />
             </Table.Header>
             <Table.Body>
@@ -120,6 +126,14 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                   onClick={isGranted('pim_enrich_product_category_list') ? () => followCategoryTree(tree) : undefined}
                 >
                   <Table.Cell rowTitle>{tree.label}</Table.Cell>
+                  <Table.Cell>
+                    {countTreesChildren.hasOwnProperty(tree.code) &&
+                    translate(
+                      'pim_enrich.entity.category.content.tree_list.columns.count_categories',
+                      {count: countTreesChildren[tree.code]},
+                      countTreesChildren[tree.code]
+                    )}
+                  </Table.Cell>
                   <TableActionCell>
                     <Button
                       ghost
