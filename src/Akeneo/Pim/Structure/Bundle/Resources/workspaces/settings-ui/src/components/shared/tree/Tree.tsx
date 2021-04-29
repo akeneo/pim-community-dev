@@ -36,6 +36,11 @@ type TreeProps<T> = {
   onChange?: (value: TreeNode<T>, checked: boolean, event: SyntheticEvent) => void;
   onClick?: (value: TreeNode<T>) => void;
   onDrop?: (value: TreeNode<T>, draggedId: number) => void;
+  // @todo define onDragStart props
+  // @todo define onDragEnter props
+  // @todo define onDragLeave props
+  // @todo define isValidDrop props
+  // @todo define createDragImage props
   _isRoot?: boolean;
   children?: ReactNode;
 };
@@ -120,23 +125,28 @@ const Tree = <T,>({
           }
         }}
         onDragOver={event => {
+          // @todo allow dragOver (stopPropagation and prevent event) when isValidDrop
           event.stopPropagation();
           event.preventDefault();
           console.log(`dragover ${label}`, event)
+        }}
+        onDragEnter={() => {
+          // @todo if the hover element is a "closed" parent node, set a timer of 2s then open it with handleOpen()
+          // @todo call onDragEnter
+        }}
+        onDragLeave={() => {
+          // @todo if the hover element is a parent node, cancel the timer if exist
+          // @todo call onDragLeave
         }}
         onDrop={event => {
           event.stopPropagation();
           event.preventDefault();
           event.persist();
           const identifier = parseInt(event.dataTransfer.getData('text/plain'));
-          console.log(`drop ${identifier} aside ${value.identifier} in parent ${value.parent}`);
 
           if (onDrop) {
             onDrop(value, identifier);
           }
-          // @todo drop over parent node =>
-          // @todo drop over leaf node =>
-
         }}
       >
         <DragInitiator
@@ -148,6 +158,10 @@ const Tree = <T,>({
             }
             event.dataTransfer.setDragImage(treeRowRef.current, 0, 0);
             event.dataTransfer.setData('text/plain', value.identifier.toString());
+
+            // @todo define dragImage with a proper style, call createDragImage
+            // @todo if the dragged element is an "opened" parent node, close it with handleClose()
+            // @todo call onDragStart
           }}
         >
           <RowIcon size={16} />

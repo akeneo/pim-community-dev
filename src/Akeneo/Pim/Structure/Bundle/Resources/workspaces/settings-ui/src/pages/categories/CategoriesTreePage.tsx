@@ -1,14 +1,14 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
-import {Breadcrumb, Link} from 'akeneo-design-system';
+import {Breadcrumb} from 'akeneo-design-system';
 import {PimView} from '@akeneo-pim-community/legacy-bridge';
 import {
   FullScreenError,
   PageContent,
   PageHeader,
-  useSetPageTitle,
   useRouter,
   useSecurity,
+  useSetPageTitle,
   useTranslate,
 } from '@akeneo-pim-community/shared';
 import {useCategoryTree} from '../../hooks';
@@ -76,18 +76,13 @@ const CategoriesTreePage: FC = () => {
         <PageHeader.Title>{treeLabel}</PageHeader.Title>
       </PageHeader>
       <PageContent>
-        {/* @todo[PLG-94] replace content by the real tree category */}
-        {/* @todo[PLG-94] show loading feedback when tree is null? */}
-        {tree === null ? (
-          <>Tree {treeLabel}</>
-        ) : (
-          <CategoryTree
-            root={tree}
-            followCategory={
-              isGranted('pim_enrich_product_category_edit') ? cat => followEditCategory(cat.id) : undefined
-            }
-          />
-        )}
+        <CategoryTree
+          root={tree}
+          rootLabel={treeLabel}
+          followCategory={isGranted('pim_enrich_product_category_edit') ? cat => followEditCategory(cat.id) : undefined}
+          // @todo define draggable if isGranted('pim_enrich_product_category_edit')
+          // @todo define onCategoryMoved to save the move in database and request the 'pim_enrich_categorytree_movenode'
+        />
       </PageContent>
     </>
   );
