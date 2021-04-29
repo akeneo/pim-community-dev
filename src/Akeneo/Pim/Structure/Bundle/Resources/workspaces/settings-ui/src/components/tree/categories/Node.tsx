@@ -93,17 +93,15 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
         setHoveredCategory(null);
       }}
     >
+      {/* @todo if the droppable node position and parent id correspond, add a visual feedback here for the further moved category */}
       {children.map(child => (
-        <>
-          {/* @todo if the droppable node position and parent id correspond, add a visual feedback here for the further moved category */}
-          <Node
-            key={`category-node-${id}-${child.identifier}`}
-            id={child.identifier}
-            label={child.label}
-            followCategory={followCategory}
-            /* @todo Node is draggable if the parent Node is draggable */
-          />
-        </>
+        <Node
+          key={`category-node-${id}-${child.identifier}`}
+          id={child.identifier}
+          label={child.label}
+          followCategory={followCategory}
+          /* @todo Node is draggable if the parent Node is draggable */
+        />
       ))}
     </Tree>
   );
