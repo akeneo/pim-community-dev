@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import {Tree} from '../../shared';
 import {CategoryTreeModel as CategoryTreeModel} from '../../../models';
 import {useCategoryTreeNode} from '../../../hooks';
+import {findOneByIdentifier} from '../../../helpers/treeHelper';
 
 type Props = {
   id: number;
@@ -47,18 +48,18 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
           return;
         }
         setDraggedCategory({
-          parentId: node?.parent,
+          parentId: node.parent,
           position: 0, // @todo get the real position
           identifier: node?.identifier,
         });
       }}
       onDragOver={() => {
         // console.log(`dragover ${label}`, node?.identifier);
-        if (!node?.parent) {
+        if (!node?.parent || (hoveredCategory && hoveredCategory.identifier === node.identifier)) {
           return;
         }
         setHoveredCategory({
-          parentId: node?.parent,
+          parentId: node.parent,
           position: 0, // @todo get the real position
           identifier: node?.identifier,
         });
