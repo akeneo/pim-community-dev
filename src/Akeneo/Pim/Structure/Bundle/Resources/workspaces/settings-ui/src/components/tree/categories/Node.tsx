@@ -2,7 +2,6 @@ import React, {FC} from 'react';
 import {Tree} from '../../shared';
 import {CategoryTreeModel as CategoryTreeModel} from '../../../models';
 import {useCategoryTreeNode} from '../../../hooks';
-import {findOneByIdentifier} from '../../../helpers/treeHelper';
 
 type Props = {
   id: number;
@@ -23,6 +22,7 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
     setDraggedCategory,
     hoveredCategory,
     setHoveredCategory,
+    getCategoryPosition,
   } = useCategoryTreeNode(id);
 
   if (node === undefined) {
@@ -60,7 +60,7 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
         }
         setHoveredCategory({
           parentId: node.parent,
-          position: 0, // @todo get the real position
+          position: getCategoryPosition(node),
           identifier: node?.identifier,
         });
         // @todo How to define the target?

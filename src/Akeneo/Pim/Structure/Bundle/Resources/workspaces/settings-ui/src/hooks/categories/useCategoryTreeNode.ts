@@ -26,6 +26,15 @@ const useCategoryTreeNode = (id: number) => {
 
   const {data, fetch, error: fetchError, status: fetchStatus} = useFetch<BackendCategoryTree>(url);
 
+  const getCategoryPosition = (treeNode: TreeNode<CategoryTreeModel>): number => {
+    if (!treeNode.parent) {
+      return 0;
+    }
+    const categoryParent = findOneByIdentifier(nodes, treeNode.parent);
+
+    return categoryParent?.children.indexOf(treeNode.identifier) || 0;
+  };
+
   const moveAfter = useCallback(
     (originalId: number, target: TreeNode<CategoryTreeModel>) => {
       // find parent
@@ -134,6 +143,7 @@ const useCategoryTreeNode = (id: number) => {
     children,
     loadChildren: fetch,
     moveAfter,
+    getCategoryPosition,
     ...rest,
   };
 };
