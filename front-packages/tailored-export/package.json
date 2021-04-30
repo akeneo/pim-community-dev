@@ -63,6 +63,9 @@
   },
   "jest": {
     "coverageReporters": ["text-summary", "html"],
+    "coveragePathIgnorePatterns" : [
+      "<rootDir>/src/index.ts"
+    ],
     "coverageThreshold": {
       "global": {
         "statements": 100,

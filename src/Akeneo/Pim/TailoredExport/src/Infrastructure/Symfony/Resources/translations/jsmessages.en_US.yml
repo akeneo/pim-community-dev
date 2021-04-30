@@ -1,8 +1,29 @@
 batch_jobs.xlsx_tailored_product_export.label: Tailored product export in XLSX
 
 akeneo.tailored_export:
-    form:
-      job_instance:
-        tab:
-          column:
-            title: Select the columns
+  form:
+    job_instance:
+      tab:
+        column:
+          title: Select the columns
+  column_list:
+    title: Columns
+    column_row:
+      target_placeholder: The column name
+      remove: Remove column
+      no_source: No source
+    no_column_selection:
+      title: No columns selection to export
+  column_details:
+    sources:
+      title: Source(s)
+      add: Add source
+      no_source_selected:
+        title: No source selected for the moment.
+        subtitle: To know more about mappping and operations,
+        link: this article may help you
+      no_column_selected:
+        title: No column selected for the moment.
+        subtitle: You must define your columns selection in order to export. If you don’t know how,
+        link: take a look at this article.
+        add_column: Add first column

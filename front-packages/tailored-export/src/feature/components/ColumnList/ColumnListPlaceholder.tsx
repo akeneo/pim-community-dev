@@ -24,23 +24,20 @@ const Subtitle = styled.div`
 type ColumnListPlaceholderProps = {
   onColumnCreated: (target: string) => void;
 };
+
 const ColumnListPlaceholder = ({onColumnCreated}: ColumnListPlaceholderProps) => {
   const translate = useTranslate();
 
   return (
     <Container>
       <AttributesIllustration size={256} />
-      <Title>{translate('No columns selection to export')}</Title>
+      <Title>{translate('akeneo.tailored_export.column_list.no_column_selection.title')}</Title>
       <Subtitle>
-        {translate('You must define your columns selection in order to export. If you don’t know how, ')}
-        <Link href={'#'}>{translate('take a look at this article.')}</Link>
+        {translate('akeneo.tailored_export.column_list.no_column_selection.subtitle')}{' '}
+        <Link href={'#'}>{translate('akeneo.tailored_export.column_list.no_column_selection.link')}</Link>
       </Subtitle>
-      <Button
-        onClick={() => {
-          onColumnCreated('');
-        }}
-      >
-        {translate('Add first column')}
+      <Button onClick={() => onColumnCreated('')}>
+        {translate('akeneo.tailored_export.column_list.no_column_selection.add_column')}
       </Button>
     </Container>
   );

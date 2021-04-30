@@ -28,9 +28,11 @@ const ColumnDetails = ({columnConfiguration, noColumns}: ColumnDetailsProps) => 
   return (
     <Container>
       <SectionTitle sticky={0}>
-        <SectionTitle.Title>{translate('Source(s)')}</SectionTitle.Title>
+        <SectionTitle.Title>{translate('akeneo.tailored_export.column_details.sources.title')}</SectionTitle.Title>
         <SectionTitle.Spacer />
-        <Button disabled={columnConfiguration === null}>{translate('Add source')}</Button>
+        <Button disabled={columnConfiguration === null}>
+          {translate('akeneo.tailored_export.column_details.sources.add')}
+        </Button>
       </SectionTitle>
       <Content>
         {(null === columnConfiguration || columnConfiguration.sources.length === 0) && !noColumns && (

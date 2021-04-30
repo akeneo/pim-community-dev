@@ -53,44 +53,48 @@ const ColumnList = ({
   return (
     <Container>
       <SectionTitle sticky={0}>
-        <SectionTitle.Title>{translate('Columns')}</SectionTitle.Title>
+        <SectionTitle.Title>{translate('akeneo.tailored_export.column_list.title')}</SectionTitle.Title>
         <SectionTitle.Spacer />
       </SectionTitle>
       <List>
         {columnsConfiguration.map(column => (
-          <List.Row key={column.uuid} onClick={() => onColumnSelected(column.uuid)}>
+          <List.Row
+            key={column.uuid}
+            onClick={() => onColumnSelected(column.uuid)}
+            selected={selectedColumn?.uuid === column.uuid}
+          >
             <List.Cell width={300}>
               <TextInput
                 ref={null !== selectedColumn && column.uuid === selectedColumn.uuid ? inputRef : null}
                 onChange={updatedValue => onColumnChange({...column, target: updatedValue})}
                 onSubmit={() => handleFocusNextColumn(column.uuid)}
-                placeholder={translate('The column name')}
+                placeholder={translate('akeneo.tailored_export.column_list.column_row.target_placeholder')}
                 value={column.target}
               />
             </List.Cell>
-            <List.Cell width="auto">Sources list</List.Cell>
+            <List.Cell width="auto">{translate('akeneo.tailored_export.column_list.column_row.no_source')}</List.Cell>
             <List.RemoveCell>
               <IconButton
                 ghost="borderless"
                 level="tertiary"
                 icon={<CloseIcon />}
-                title={translate('Remove column')}
+                title={translate('akeneo.tailored_export.column_list.column_row.remove')}
                 onClick={event => handleColumnRemove(event, column.uuid)}
               />
             </List.RemoveCell>
           </List.Row>
         ))}
         {columnsConfiguration.length > 0 && columnsConfiguration[columnsConfiguration.length - 1].target !== '' && (
-          <List.Row onClick={() => onColumnSelected(null)}>
+          <List.Row onClick={() => onColumnSelected(null)} selected={selectedColumn === null}>
             <List.Cell width={300}>
               <TextInput
                 ref={null === selectedColumn ? inputRef : null}
                 onChange={onColumnCreated}
-                placeholder={translate('The column name')}
+                placeholder={translate('akeneo.tailored_export.column_list.column_row.target_placeholder')}
                 value=""
               />
             </List.Cell>
-            <List.Cell width="auto">{translate('No source')}</List.Cell>
+            <List.Cell width="auto">{translate('akeneo.tailored_export.column_list.column_row.no_source')}</List.Cell>
           </List.Row>
         )}
         {columnsConfiguration.length === 0 && <ColumnListPlaceholder onColumnCreated={onColumnCreated} />}

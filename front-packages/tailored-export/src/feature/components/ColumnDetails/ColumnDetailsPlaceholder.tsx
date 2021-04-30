@@ -29,10 +29,10 @@ const ColumnDetailsPlaceholder = () => {
   return (
     <Container>
       <RulesIllustration size={128} />
-      <Title>{translate('No source selected for the moment.')}</Title>
+      <Title>{translate('akeneo.tailored_export.column_details.sources.no_source_selected.title')}</Title>
       <SubTitle>
-        {translate('To know more about mappping and operations, ')}
-        <Link href={'#'}>{translate('this article may help you')}</Link>
+        {translate('akeneo.tailored_export.column_details.sources.no_source_selected.subtitle')}{' '}
+        <Link href={'#'}>{translate('akeneo.tailored_export.column_details.sources.no_source_selected.link')}</Link>
       </SubTitle>
     </Container>
   );
@@ -44,7 +44,7 @@ const NoSelectedColumn = () => {
   return (
     <Container>
       <RulesIllustration size={128} />
-      <Title>{translate('No column selected for the moment.')}</Title>
+      <Title>{translate('akeneo.tailored_export.column_details.sources.no_column_selected.title')}</Title>
     </Container>
   );
 };

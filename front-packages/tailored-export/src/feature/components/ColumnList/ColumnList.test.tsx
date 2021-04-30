@@ -1,6 +1,6 @@
 import React from 'react';
 import {screen, fireEvent} from '@testing-library/react';
-import {renderWithProviders} from '../../utils';
+import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ColumnList} from './ColumnList';
 import userEvent from '@testing-library/user-event';
 
@@ -9,12 +9,12 @@ test('it renders a placeholder when no column is selected', () => {
     {
       uuid: 1,
       target: 'my first column',
-      sources: []
+      sources: [],
     },
     {
       uuid: 2,
       target: 'my second column',
-      sources: []
+      sources: [],
     },
   ];
 
@@ -32,9 +32,9 @@ test('it renders a placeholder when no column is selected', () => {
   expect(screen.getByDisplayValue(/my first column/i)).toBeInTheDocument();
   expect(screen.getByDisplayValue(/my second column/i)).toBeInTheDocument();
 
-  expect(screen.getAllByText(/Sources list/i)).toHaveLength(2);
+  expect(screen.getAllByText(/akeneo.tailored_export.column_list.column_row.no_source/i)).toHaveLength(3);
 
-  const firstInput = screen.getAllByPlaceholderText('The column name')[2];
+  const firstInput = screen.getAllByPlaceholderText('akeneo.tailored_export.column_list.column_row.target_placeholder')[2];
   expect(firstInput).toHaveFocus();
 });
 
@@ -43,8 +43,8 @@ test('it remove a column', () => {
     {
       uuid: 1,
       target: 'my column',
-      sources: []
-    }
+      sources: [],
+    },
   ];
 
   const handleRemove = jest.fn();
@@ -60,7 +60,7 @@ test('it remove a column', () => {
     />
   );
 
-  const removeButton = screen.getByTitle('Remove column')
+  const removeButton = screen.getByTitle('akeneo.tailored_export.column_list.column_row.remove');
   fireEvent.click(removeButton);
 
   expect(handleRemove).toBeCalled();
@@ -71,8 +71,8 @@ test('it create a new column', () => {
     {
       uuid: 1,
       target: 'my column',
-      sources: []
-    }
+      sources: [],
+    },
   ];
 
   const handleCreate = jest.fn();
@@ -88,7 +88,7 @@ test('it create a new column', () => {
     />
   );
 
-  const lastInput = screen.getAllByPlaceholderText('The column name')[1];
+  const lastInput = screen.getAllByPlaceholderText('akeneo.tailored_export.column_list.column_row.target_placeholder')[1];
   userEvent.type(lastInput, 'm');
 
   expect(handleCreate).toBeCalledWith('m');
@@ -99,8 +99,8 @@ test('it update a column', () => {
     {
       uuid: 1,
       target: 'my column',
-      sources: []
-    }
+      sources: [],
+    },
   ];
 
   const handleColumnChange = jest.fn();
@@ -116,13 +116,13 @@ test('it update a column', () => {
     />
   );
 
-  const firstInput = screen.getAllByPlaceholderText('The column name')[0];
+  const firstInput = screen.getAllByPlaceholderText('akeneo.tailored_export.column_list.column_row.target_placeholder')[0];
   fireEvent.change(firstInput, {target: {value: 'my new column name'}});
 
   expect(handleColumnChange).toBeCalledWith({
     uuid: 1,
     target: 'my new column name',
-    sources: []
+    sources: [],
   });
 });
 
@@ -131,13 +131,13 @@ test('it move to next line when user type enter', async () => {
     {
       uuid: 1,
       target: 'my column',
-      sources: []
+      sources: [],
     },
     {
       uuid: 2,
       target: 'another column',
-      sources: []
-    }
+      sources: [],
+    },
   ];
 
   const handleColumnSelected = jest.fn();
@@ -153,7 +153,7 @@ test('it move to next line when user type enter', async () => {
     />
   );
 
-  const firstInput = screen.getAllByPlaceholderText('The column name')[0];
+  const firstInput = screen.getAllByPlaceholderText('akeneo.tailored_export.column_list.column_row.target_placeholder')[0];
   userEvent.type(firstInput, '{enter}');
 
   expect(handleColumnSelected).toHaveBeenCalledWith(2);
@@ -164,13 +164,13 @@ test('it focus the selected column', async () => {
     {
       uuid: 1,
       target: 'my column',
-      sources: []
+      sources: [],
     },
     {
       uuid: 2,
       target: 'another column',
-      sources: []
-    }
+      sources: [],
+    },
   ];
 
   renderWithProviders(
@@ -184,7 +184,7 @@ test('it focus the selected column', async () => {
     />
   );
 
-  const firstInput = screen.getAllByPlaceholderText('The column name')[0];
+  const firstInput = screen.getAllByPlaceholderText('akeneo.tailored_export.column_list.column_row.target_placeholder')[0];
 
   expect(firstInput).toHaveFocus();
 });
