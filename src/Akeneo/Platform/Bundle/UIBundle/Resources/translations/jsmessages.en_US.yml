@@ -384,8 +384,8 @@ pim_settings:
   count:
     categories: You have {{ countTrees }} trees and {{ countCategories }} categories
     channels: You have {{ count }} channels
-    locales: You have {{ count }} locales
-    currencies: You have {{ count }} currencies
+    locales: You have {{ count }} enabled locales
+    currencies: You have {{ count }} enabled currencies
     attribute_groups: You have {{ count }} attribute groups
     attributes: You have {{ count }} attributes
     families: You have {{ count }} families
