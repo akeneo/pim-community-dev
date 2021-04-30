@@ -70,4 +70,5 @@ const CategoryTreeProvider: FC<Props> = ({children, root}) => {
   return <CategoryTreeContext.Provider value={state}>{children}</CategoryTreeContext.Provider>;
 };
 
-export {CategoryTreeProvider, CategoryTreeState, CategoryTreeContext, MoveTarget};
+export type {DraggedCategory, HoveredCategory, MoveTarget, CategoryTreeState};
+export {CategoryTreeProvider, CategoryTreeContext};

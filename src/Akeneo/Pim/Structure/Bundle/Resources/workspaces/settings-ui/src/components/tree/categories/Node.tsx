@@ -3,6 +3,7 @@ import {Tree} from '../../shared';
 import {CategoryTreeModel as CategoryTreeModel} from '../../../models';
 import {useCategoryTreeNode} from '../../../hooks';
 import {moveCategory} from "../../../infrastructure/savers";
+import {MoveTarget} from "../../providers";
 
 type Props = {
   id: number;
@@ -67,20 +68,17 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
           const middleHeight = (hoveredCategoryDimensions.bottom - hoveredCategoryDimensions.top) / 2;
           const cursorRelativePosition = (cursorPosition.y) - hoveredCategoryDimensions.top;
 
-          // console.log(middleHeight, cursorRelativePosition)
-
-          const newMoveTarget = {
+          const newMoveTarget: MoveTarget = {
             position: cursorRelativePosition < middleHeight ? 'before' : 'after',
             parentId: node.parent,
             identifier: node?.identifier,
           };
           //TODO FIXME : fix bad perfs
-          if (!moveTarget || JSON.stringify(moveTarget) != JSON.stringify(newMoveTarget))
-            console.log('update');
+          if (!moveTarget || JSON.stringify(moveTarget) != JSON.stringify(newMoveTarget)) {
             setMoveTarget(newMoveTarget);
-          } else {
-            console.log('test')
           }
+          return;
+        }
 
         const hoveredCategoryPosition = getCategoryPosition(node);
         setHoveredCategory({
