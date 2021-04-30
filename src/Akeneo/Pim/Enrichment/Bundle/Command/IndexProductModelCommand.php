@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAn
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
+use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -24,6 +25,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class IndexProductModelCommand extends Command
 {
+    const RETRY_COUNTER = 3;
+    const INTIAL_WAIT_DELAY = 10;
+    const RETRY_LOGARITHMIC_INCREMENT = 2;
     protected static $defaultName = 'pim:product-model:index';
 
     private const DEFAULT_BATCH_SIZE = 1000;
@@ -126,7 +130,34 @@ class IndexProductModelCommand extends Command
 
         $progressBar->start();
         foreach ($chunkedProductModelCodes as $productModelCodes) {
-            $this->productModelDescendantAndAncestorsIndexer->indexFromProductModelCodes($productModelCodes);
+            $codes=join($productModelCodes, " ");
+            echo("Product models codes: {$codes}\n");
+
+            $backOverheat=false;
+            $retryCounter = self::RETRY_COUNTER;
+            $waitDelay = self::INTIAL_WAIT_DELAY;
+            do {
+                if ($backOverheat) {
+                    echo("Sleeping before retry due to back pressure {$waitDelay} seconds \n");
+                    sleep($waitDelay);
+                    echo("Waking up for retry...\n");
+                }
+                try {
+                    $this->productModelDescendantAndAncestorsIndexer->indexFromProductModelCodes($productModelCodes);
+                } catch (BadRequest400Exception $e) {
+                    if ($e->getCode() == 429) {
+                        $backOverheat = true;
+                        $waitDelay = $waitDelay * self::RETRY_LOGARITHMIC_INCREMENT;
+                        $retryCounter--;
+                        echo("Back pressure exception received, {$retryCounter} retries remaining...\n");
+                    }
+                }
+            } while ($backOverheat && $retryCounter > 0);
+
+            if ($backOverheat) {
+                throw $e;
+            }
+
             $indexedProductModelCount += count($productModelCodes);
             $progressBar->advance(count($productModelCodes));
         }
