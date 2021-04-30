@@ -14,6 +14,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * It migrates non consumed jobs from the akeneo_batch_execution_queue table to the messenger transport.
+ * The akeneo_batch_execution_queue table is not removed in this migration. The reason is in SAAS it's easier
+ * to rollback the code container but not the MySQL container. If we have to rollback for any reason, the MySQL
+ * table and its data would still be here and the old job queue system would work directly.
  *
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -47,8 +50,6 @@ final class Version_6_0_20210413070335_migrate_jobs_to_messenger extends Abstrac
         foreach ($jobExecutionMessages as $jobExecutionMessage) {
             $this->jobExecutionQueue->publish($jobExecutionMessage);
         }
-
-        $this->addSql('DROP TABLE akeneo_batch_job_execution_queue');
     }
 
     public function down(Schema $schema) : void
