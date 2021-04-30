@@ -42,7 +42,6 @@ final class Version_6_0_20210413070335_migrate_jobs_to_messenger_Integration ext
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
-        self::assertFalse($this->jobQueueTableExists());
         $messagesInNewQueues = $this->jobLauncher->getMessagesInQueues();
         self::assertCount(2, $messagesInNewQueues);
         $jobExecutionIds = array_map(
@@ -56,17 +55,19 @@ final class Version_6_0_20210413070335_migrate_jobs_to_messenger_Integration ext
 
     private function recreateQueueTableWithJobs(): void
     {
-        $this->connection->executeQuery(<<<SQL
-        create table akeneo_batch_job_execution_queue
-        (
-            id               int auto_increment primary key,
-            job_execution_id int          null,
-            options          json         null,
-            consumer         varchar(255) null,
-            create_time      datetime     null,
-            updated_time     datetime     null
-        ) collate = utf8mb4_unicode_ci;
-        SQL);
+        if (!$this->jobQueueTableExists()) {
+            $this->connection->executeQuery(<<<SQL
+            create table akeneo_batch_job_execution_queue
+            (
+                id               int auto_increment primary key,
+                job_execution_id int          null,
+                options          json         null,
+                consumer         varchar(255) null,
+                create_time      datetime     null,
+                updated_time     datetime     null
+            ) collate = utf8mb4_unicode_ci;
+            SQL);
+        }
 
         $this->connection->executeQuery(<<<SQL
         INSERT INTO akeneo_batch_job_instance (id, code, job_name, status, connector, raw_parameters, type)
