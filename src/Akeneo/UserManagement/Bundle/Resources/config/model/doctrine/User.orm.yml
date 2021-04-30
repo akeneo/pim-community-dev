@@ -112,6 +112,9 @@ Akeneo\UserManagement\Component\Model\User:
             type: integer
             nullable: false
             column: consecutive_authentication_failure_counter
+            options:
+                default: 0
+                unsigned: true
         authenticationFailureResetDate:
             type: datetime
             nullable: true
