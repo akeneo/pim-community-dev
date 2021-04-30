@@ -18,12 +18,14 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
     node,
     children,
     loadChildren,
-    moveAfter,
+    moveTo,
     draggedCategory,
     setDraggedCategory,
     hoveredCategory,
     setHoveredCategory,
     getCategoryPosition,
+    moveTarget,
+    setMoveTarget,
   } = useCategoryTreeNode(id);
 
   if (node === undefined) {
@@ -54,16 +56,41 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
           identifier: node?.identifier,
         });
       }}
-      onDragOver={() => {
+      onDragOver={(target, cursorPosition) => {
         // console.log(`dragover ${label}`, node?.identifier);
-        if (!node?.parent || (hoveredCategory && hoveredCategory.identifier === node.identifier)) {
+        if (!node?.parent) {
           return;
         }
+
+        if (hoveredCategory && hoveredCategory.identifier === node.identifier) {
+          const hoveredCategoryDimensions = target.getBoundingClientRect();
+          const middleHeight = (hoveredCategoryDimensions.bottom - hoveredCategoryDimensions.top) / 2;
+          const cursorRelativePosition = (cursorPosition.y) - hoveredCategoryDimensions.top;
+
+          // console.log(middleHeight, cursorRelativePosition)
+
+          const newMoveTarget = {
+            position: cursorRelativePosition < middleHeight ? 'before' : 'after',
+            parentId: node.parent,
+            identifier: node?.identifier,
+          };
+          //TODO FIXME : fix bad perfs
+          if (!moveTarget || JSON.stringify(moveTarget) != JSON.stringify(newMoveTarget))
+            console.log('update');
+            setMoveTarget(newMoveTarget);
+          } else {
+            console.log('test')
+          }
+
+        const hoveredCategoryPosition = getCategoryPosition(node);
         setHoveredCategory({
           parentId: node.parent,
-          position: getCategoryPosition(node),
+          position: hoveredCategoryPosition,
           identifier: node?.identifier,
         });
+
+
+
         // @todo How to define the target?
 
         // @todo HOW TO define the target position?
@@ -83,17 +110,17 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
       // }}
       onDrop={() => {
         // @todo rework to not have to do all these sanity checks
-        if (draggedCategory && node !== undefined && node.parent) {
-          moveAfter(draggedCategory.identifier, node);
+        if (draggedCategory && node !== undefined && moveTarget) {
+          moveTo(draggedCategory.identifier, moveTarget);
 
-          const moveSuccess = moveCategory({
-            identifier: draggedCategory.identifier,
-            parentId: node.parent,
-            previousCategoryId: node.identifier,
-          });
+          // const moveSuccess = moveCategory({
+          //   identifier: draggedCategory.identifier,
+          //   parentId: moveTarget.parentId,
+          //   previousCategoryId: node.identifier,
+          // });
 
           // @todo what we have to do if the callback fails? keep original position
-          console.log(moveSuccess);
+          // console.log(moveSuccess);
 
           setDraggedCategory(null);
           setHoveredCategory(null);

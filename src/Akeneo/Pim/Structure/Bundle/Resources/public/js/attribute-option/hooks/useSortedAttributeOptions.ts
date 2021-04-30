@@ -14,6 +14,7 @@ export const useSortedAttributeOptions = (
   manuallySortAttributeOptions: (attributeOptions: AttributeOption[]) => void
 ): UseSortedAttributeOptionsState => {
   const [sortedAttributeOptions, setSortedAttributeOptions] = useState<AttributeOption[] | null>(attributeOptions);
+
   const moveAttributeOption = useCallback(
     (sourceOptionCode: string, targetOptionCode: string) => {
       if (sortedAttributeOptions !== null && sourceOptionCode !== targetOptionCode) {

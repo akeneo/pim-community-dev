@@ -24,6 +24,11 @@ const SubTreesContainer = styled.ul`
 
 const DragInitiator = styled.div``;
 
+type CursorPosition = {
+  x: number;
+  y: number;
+}
+
 type TreeProps<T> = {
   value: TreeNode<T>;
   label: string;
@@ -38,7 +43,7 @@ type TreeProps<T> = {
   onDrop?: () => void;
   onDragStart?: () => void;
   onDragEnd?: () => void;
-  onDragOver?: () => void;
+  onDragOver?: (target: Element, cursorPosition: CursorPosition) => void;
   // @todo define onDragEnter props
   // @todo define onDragLeave props
   // @todo define isValidDrop props
@@ -137,8 +142,8 @@ const Tree = <T,>({
           // @todo allow dragOver (stopPropagation and prevent event) when isValidDrop
           event.stopPropagation();
           event.preventDefault();
-          if (onDragOver) {
-            onDragOver();
+          if (onDragOver && treeRowRef.current) {
+            onDragOver(treeRowRef.current, {x: event.clientX || event.target.clientX, y: event.clientY || event.target.clientY});
           }
 
         }}

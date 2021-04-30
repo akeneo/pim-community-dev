@@ -1,5 +1,5 @@
 import {useCallback, useContext, useEffect, useState} from 'react';
-import {CategoryTreeContext} from '../../components';
+import {CategoryTreeContext, MoveTarget} from '../../components';
 import {
   BackendCategoryTree,
   buildTreeNodeFromCategoryTree,
@@ -35,28 +35,28 @@ const useCategoryTreeNode = (id: number) => {
     return categoryParent?.children.indexOf(treeNode.identifier) || 0;
   };
 
-  const moveAfter = useCallback(
-    (originalId: number, target: TreeNode<CategoryTreeModel>) => {
+  const moveTo = useCallback(
+    (movedCategoryId: number, target: MoveTarget) => {
       // find parent
       // find original node
       // find original parent
 
-      if (!target.parent) {
+      if (!target.parentId) {
         console.error('Can not move after root node');
         // @todo handle error
         return;
       }
 
-      const movedNode = findOneByIdentifier(nodes, originalId);
+      const movedNode = findOneByIdentifier(nodes, movedCategoryId);
       if (!movedNode) {
-        console.error(`Node ${originalId} not found`);
+        console.error(`Node ${movedCategoryId} not found`);
         // @todo handle error
         return;
       }
 
-      const targetParentNode = findOneByIdentifier(nodes, target.parent);
+      const targetParentNode = findOneByIdentifier(nodes, target.parentId);
       if (!targetParentNode) {
-        console.error(`Node ${target.parent} not found`);
+        console.error(`Node ${target.parentId} not found`);
         // @todo handle error
         return;
       }
@@ -78,9 +78,20 @@ const useCategoryTreeNode = (id: number) => {
       // update the children of parent
       // We ensure that the moved node is not in the list
       const parentChildrenIds = targetParentNode.children.filter(id => id !== movedNode.identifier);
+
+      // console.log(targetParentNode.children, parentChildrenIds);
       const movedIndex = parentChildrenIds.findIndex(id => id === target.identifier);
 
-      parentChildrenIds.splice(movedIndex + 1, 0, movedNode.identifier);
+
+      // console.log(target.position);
+
+      parentChildrenIds.splice(
+        target.position === 'after' ? movedIndex + 1 : movedIndex,
+        0,
+        movedNode.identifier
+      );
+
+      // console.log(parentChildrenIds);
 
       newNodesList = update(newNodesList, {
         ...targetParentNode,
@@ -142,7 +153,7 @@ const useCategoryTreeNode = (id: number) => {
     node,
     children,
     loadChildren: fetch,
-    moveAfter,
+    moveTo,
     getCategoryPosition,
     ...rest,
   };
