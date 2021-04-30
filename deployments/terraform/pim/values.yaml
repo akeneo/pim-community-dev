@@ -102,7 +102,7 @@ pim:
       trapped: true
     webhook-consumer-process:
       enabled: true
-      pimCommand: "messenger:consume webhook --time-limit=3600 --memory-limit=384M"
+      pimCommand: "messenger:consume webhook --quiet --time-limit=3600 --memory-limit=384M"
       replicas: 1
       trapped: false
   replicas: 2
