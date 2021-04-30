@@ -144,6 +144,7 @@ class IndexProductModelCommand extends Command
                 }
                 try {
                     $this->productModelDescendantAndAncestorsIndexer->indexFromProductModelCodes($productModelCodes);
+                    $backOverheat=false;
                 } catch (BadRequest400Exception $e) {
                     if ($e->getCode() == 429) {
                         $backOverheat = true;
@@ -154,7 +155,7 @@ class IndexProductModelCommand extends Command
                 }
             } while ($backOverheat && $retryCounter > 0);
 
-            if ($backOverheat) {
+            if ($backOverheat && isset($e)) {
                 throw $e;
             }
 
