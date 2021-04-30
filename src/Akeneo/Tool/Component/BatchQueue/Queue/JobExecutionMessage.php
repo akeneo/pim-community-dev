@@ -21,6 +21,8 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface
     private \DateTime $createTime;
     private ?\DateTime $updatedTime;
     private array $options = [];
+    /** @TODO CPM-154: remove this property */
+    private string $consumer;
 
     private function __construct(
         UuidInterface $id,
