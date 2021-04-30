@@ -59,12 +59,13 @@ const RowActionContainer = styled.div`
   gap: 10px;
 `;
 
-const RowContainer = styled.div<{multiline: boolean} & AkeneoThemedProps>`
+const RowContainer = styled.div<{multiline: boolean; selected: boolean} & AkeneoThemedProps>`
   display: flex;
   flex-direction: column;
   outline-style: none;
   padding: 0 10px;
   border-bottom: 1px solid ${getColor('grey', 60)};
+  background-color: ${({selected}) => (selected ? getColor('blue', 20) : 'transparent')};
 
   &:hover {
     background-color: ${getColor('grey', 20)};
@@ -113,10 +114,15 @@ type RowProps = Override<
      * Define if line contain multiline content
      */
     multiline?: boolean;
+
+    /**
+     * Define if line is selected
+     */
+    selected?: boolean;
   }
 >;
 
-const Row = ({children, multiline = false, ...rest}: RowProps) => {
+const Row = ({children, multiline = false, selected = false, ...rest}: RowProps) => {
   const actionCellChild: ReactElement[] = [];
   const cells: ReactNode[] = [];
   const helpers: ReactNode[] = [];
@@ -132,7 +138,7 @@ const Row = ({children, multiline = false, ...rest}: RowProps) => {
   });
 
   return (
-    <RowContainer multiline={multiline} tabIndex={0} {...rest}>
+    <RowContainer multiline={multiline} tabIndex={0} selected={selected} {...rest}>
       <RowContentContainer>
         <RowDataContainer>{cells}</RowDataContainer>
         {actionCellChild.length > 0 && <RowActionContainer>{actionCellChild}</RowActionContainer>}
