@@ -79,8 +79,8 @@ const CategoriesTreePage: FC = () => {
         <CategoryTree
           root={tree}
           rootLabel={treeLabel}
+          sortable={isGranted('pim_enrich_product_category_edit')}
           followCategory={isGranted('pim_enrich_product_category_edit') ? cat => followEditCategory(cat.id) : undefined}
-          // @todo define draggable if isGranted('pim_enrich_product_category_edit')
           // @todo define onCategoryMoved to save the move in database and request the 'pim_enrich_categorytree_movenode'
         />
       </PageContent>

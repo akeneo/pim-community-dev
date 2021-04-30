@@ -27,7 +27,7 @@ const DragInitiator = styled.div``;
 type CursorPosition = {
   x: number;
   y: number;
-}
+};
 
 type TreeProps<T> = {
   value: TreeNode<T>;
@@ -52,6 +52,7 @@ type TreeProps<T> = {
   children?: ReactNode;
 
   disabled?: boolean;
+  draggable?: boolean;
 };
 
 const Tree = <T,>({
@@ -72,6 +73,7 @@ const Tree = <T,>({
   onDragOver,
   _isRoot = true,
   disabled = false,
+  draggable = false,
   ...rest
 }: PropsWithChildren<TreeProps<T>>) => {
   const subTrees: ReactElement<TreeProps<T>>[] = [];
@@ -132,7 +134,7 @@ const Tree = <T,>({
         onClick={handleClick}
         $selected={selected}
         $disabled={disabled}
-        draggable
+        draggable={draggable}
         onDragStartCapture={event => {
           if (event.target !== dragRef.current) {
             event.preventDefault();
@@ -143,9 +145,11 @@ const Tree = <T,>({
           event.stopPropagation();
           event.preventDefault();
           if (onDragOver && treeRowRef.current) {
-            onDragOver(treeRowRef.current, {x: event.clientX || event.target.clientX, y: event.clientY || event.target.clientY});
+            onDragOver(treeRowRef.current, {
+              x: event.clientX || event.target.clientX,
+              y: event.clientY || event.target.clientY,
+            });
           }
-
         }}
         onDragEnter={() => {
           // @todo if the hover element is a "closed" parent node, set a timer of 2s then open it with handleOpen()
@@ -174,26 +178,28 @@ const Tree = <T,>({
           }
         }}
       >
-        <DragInitiator
-          ref={dragRef}
-          draggable
-          onDragStart={event => {
-            if (!treeRowRef.current) {
-              return;
-            }
-            event.dataTransfer.setDragImage(treeRowRef.current, 0, 0);
-            //event.dataTransfer.setData('text/plain', value.identifier.toString());
+        {draggable && (
+          <DragInitiator
+            ref={dragRef}
+            draggable
+            onDragStart={event => {
+              if (!treeRowRef.current) {
+                return;
+              }
+              event.dataTransfer.setDragImage(treeRowRef.current, 0, 0);
+              //event.dataTransfer.setData('text/plain', value.identifier.toString());
 
-            if (onDragStart) {
-              onDragStart();
-            }
-            // @todo define dragImage with a proper style, call createDragImage
-            // @todo if the dragged element is an "opened" parent node, close it with handleClose()
-            // @todo call onDragStart
-          }}
-        >
-          <RowIcon size={16} />
-        </DragInitiator>
+              if (onDragStart) {
+                onDragStart();
+              }
+              // @todo define dragImage with a proper style, call createDragImage
+              // @todo if the dragged element is an "opened" parent node, close it with handleClose()
+              // @todo call onDragStart
+            }}
+          >
+            <RowIcon size={16} />
+          </DragInitiator>
+        )}
         <ArrowButton disabled={isLeaf} role="button" onClick={handleArrowClick}>
           {!isLeaf && <TreeArrowIcon $isFolderOpen={isOpen} size={14} />}
         </ArrowButton>

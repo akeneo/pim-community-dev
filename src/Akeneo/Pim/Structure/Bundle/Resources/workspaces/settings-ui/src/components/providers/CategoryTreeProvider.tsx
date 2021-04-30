@@ -27,7 +27,7 @@ type CategoryTreeState = {
   hoveredCategory: HoveredCategory | null;
   setHoveredCategory: (data: HoveredCategory | null) => void;
   moveTarget: MoveTarget | null;
-  setMoveTarget: (data: MoveTarget) => void;
+  setMoveTarget: (data: MoveTarget | null) => void;
 };
 
 const CategoryTreeContext = createContext<CategoryTreeState>({

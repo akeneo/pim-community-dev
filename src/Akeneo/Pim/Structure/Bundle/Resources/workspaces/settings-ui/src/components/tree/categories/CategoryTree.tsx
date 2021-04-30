@@ -6,12 +6,12 @@ import {CategoryTreeProvider} from '../../providers';
 type Props = {
   root: CategoryTreeModel | null;
   rootLabel: string;
+  sortable?: boolean;
   followCategory?: (category: CategoryTreeModel) => void;
-  // @todo add "draggable" props
   // @todo define onCategoryMoved action
 };
 
-const CategoryTree: FC<Props> = ({root, rootLabel, ...rest}) => {
+const CategoryTree: FC<Props> = ({root, rootLabel, sortable = false, ...rest}) => {
   /* @todo[PLG-94] show loading feedback when tree is null? */
   if (root === null) {
     return <>Tree {rootLabel}</>;
@@ -19,7 +19,7 @@ const CategoryTree: FC<Props> = ({root, rootLabel, ...rest}) => {
 
   return (
     <CategoryTreeProvider root={root}>
-      <Node id={root.id} label={root.label} {...rest} />
+      <Node id={root.id} label={root.label} sortable={sortable} {...rest} />
     </CategoryTreeProvider>
   );
 };

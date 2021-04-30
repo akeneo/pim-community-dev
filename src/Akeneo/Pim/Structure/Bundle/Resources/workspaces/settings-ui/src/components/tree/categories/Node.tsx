@@ -2,19 +2,18 @@ import React, {FC} from 'react';
 import {Tree} from '../../shared';
 import {CategoryTreeModel as CategoryTreeModel} from '../../../models';
 import {useCategoryTreeNode} from '../../../hooks';
-import {moveCategory} from "../../../infrastructure/savers";
-import {MoveTarget} from "../../providers";
+import {MoveTarget} from '../../providers';
 
 type Props = {
   id: number;
   label: string;
-  // @todo add "draggable" props
+  sortable?: boolean;
   followCategory?: (category: CategoryTreeModel) => void;
   // @todo define onCategoryMoved arguments
   onCategoryMoved?: () => void;
 };
 
-const Node: FC<Props> = ({id, label, followCategory}) => {
+const Node: FC<Props> = ({id, label, followCategory, sortable = false}) => {
   const {
     node,
     children,
@@ -40,11 +39,10 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
       _isRoot={node.type === 'root'}
       isLeaf={node.type === 'leaf'}
       onClick={!followCategory ? undefined : ({data}) => followCategory(data)}
-      /* @todo if Node is the droppable category, define as "selected" */
-      /* @todo if Node is the dragged category, define as "disabled" */
       disabled={draggedCategory !== null && node.identifier === draggedCategory.identifier}
       selected={hoveredCategory !== null && node.identifier === hoveredCategory.identifier}
       onOpen={async () => loadChildren()}
+      draggable={sortable && node.type !== 'root'}
       /* @todo Tree is draggable if Node is draggable and the current node is not the root */
       onDragStart={() => {
         // Root is not draggable
@@ -58,7 +56,6 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
         });
       }}
       onDragOver={(target, cursorPosition) => {
-        // console.log(`dragover ${label}`, node?.identifier);
         if (!node?.parent) {
           return;
         }
@@ -66,14 +63,14 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
         if (hoveredCategory && hoveredCategory.identifier === node.identifier) {
           const hoveredCategoryDimensions = target.getBoundingClientRect();
           const middleHeight = (hoveredCategoryDimensions.bottom - hoveredCategoryDimensions.top) / 2;
-          const cursorRelativePosition = (cursorPosition.y) - hoveredCategoryDimensions.top;
+          const cursorRelativePosition = cursorPosition.y - hoveredCategoryDimensions.top;
 
           const newMoveTarget: MoveTarget = {
             position: cursorRelativePosition < middleHeight ? 'before' : 'after',
             parentId: node.parent,
             identifier: node?.identifier,
           };
-          //TODO FIXME : fix bad perfs
+
           if (!moveTarget || JSON.stringify(moveTarget) != JSON.stringify(newMoveTarget)) {
             setMoveTarget(newMoveTarget);
           }
@@ -86,8 +83,6 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
           position: hoveredCategoryPosition,
           identifier: node?.identifier,
         });
-
-
 
         // @todo How to define the target?
 
@@ -110,34 +105,47 @@ const Node: FC<Props> = ({id, label, followCategory}) => {
         // @todo rework to not have to do all these sanity checks
         if (draggedCategory && node !== undefined && moveTarget) {
           moveTo(draggedCategory.identifier, moveTarget);
+          /*
+                    @todo pass the moveCategory as a props in CategoryTree
+                    const moveSuccess = moveCategory({
+                      identifier: draggedCategory.identifier,
+                      parentId: moveTarget.parentId,
+                      previousCategoryId: node.identifier,
+                    });
 
-          // const moveSuccess = moveCategory({
-          //   identifier: draggedCategory.identifier,
-          //   parentId: moveTarget.parentId,
-          //   previousCategoryId: node.identifier,
-          // });
-
-          // @todo what we have to do if the callback fails? keep original position
-          // console.log(moveSuccess);
+                    // @todo what we have to do if the callback fails? keep original position
+                    console.log(moveSuccess);
+           */
 
           setDraggedCategory(null);
           setHoveredCategory(null);
+          setMoveTarget(null);
         }
       }}
       onDragEnd={() => {
         setDraggedCategory(null);
         setHoveredCategory(null);
+        setMoveTarget(null);
       }}
     >
       {/* @todo if the droppable node position and parent id correspond, add a visual feedback here for the further moved category */}
+      {/* @todo handle preview, dragOver, dop, ... of the category when the user moving it */}
       {children.map(child => (
-        <Node
-          key={`category-node-${id}-${child.identifier}`}
-          id={child.identifier}
-          label={child.label}
-          followCategory={followCategory}
-          /* @todo Node is draggable if the parent Node is draggable */
-        />
+        <React.Fragment key={`category-node-${id}-${child.identifier}`}>
+          {moveTarget?.identifier === child.identifier && moveTarget.position === 'before' && (
+            <hr style={{color: 'red'}} />
+          )}
+          <Node
+            id={child.identifier}
+            label={child.label}
+            followCategory={followCategory}
+            sortable={sortable}
+            /* @todo Node is draggable if the parent Node is draggable */
+          />
+          {moveTarget?.identifier === child.identifier && moveTarget.position === 'after' && (
+            <hr style={{color: 'red'}} />
+          )}
+        </React.Fragment>
       ))}
     </Tree>
   );
