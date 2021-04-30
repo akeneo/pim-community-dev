@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9831: Fix export profile limitation on content's filters
+
 # 4.0.106 (2021-04-29)
 
 ## Bug fixes
