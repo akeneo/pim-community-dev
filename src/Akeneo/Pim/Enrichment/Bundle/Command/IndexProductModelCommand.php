@@ -24,9 +24,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class IndexProductModelCommand extends Command
 {
-    const RETRY_COUNTER = 3;
+    const RETRY_COUNTER = 10;
     const INTIAL_WAIT_DELAY = 10;
-    const RETRY_LOGARITHMIC_INCREMENT = 2;
+    const BACKOFF_LOGARITHMIC_INCREMENT = 2;
     protected static $defaultName = 'pim:product-model:index';
 
     private const DEFAULT_BATCH_SIZE = 1000;
@@ -51,6 +51,14 @@ class IndexProductModelCommand extends Command
         $this->productAndProductModelClient = $productAndProductModelClient;
         $this->productModelDescendantAndAncestorsIndexer = $productModelDescendantAndAncestorsIndexer;
         $this->connection = $connection;
+    }
+
+    /**
+     * @return ProductModelDescendantsAndAncestorsIndexer
+     */
+    public function getProductModelDescendantAndAncestorsIndexer(): ProductModelDescendantsAndAncestorsIndexer
+    {
+        return $this->productModelDescendantAndAncestorsIndexer;
     }
 
     /**
@@ -88,7 +96,7 @@ class IndexProductModelCommand extends Command
     {
         $this->checkIndexExists();
 
-        $batchSize = (int) $input->getOption('batch-size') ?: self::DEFAULT_BATCH_SIZE;
+        $batchSize = (int)$input->getOption('batch-size') ?: self::DEFAULT_BATCH_SIZE;
 
         if (true === $input->getOption('all')) {
             $chunkedProductModelCodes = $this->getAllRootProductModelCodes($batchSize);
@@ -132,33 +140,40 @@ class IndexProductModelCommand extends Command
             $codes=join($productModelCodes, " ");
             echo("Product models codes: {$codes}\n");
 
-            $backOverheat=false;
-            $retryCounter = self::RETRY_COUNTER;
-            $waitDelay = self::INTIAL_WAIT_DELAY;
+            $batchSize = sizeof($productModelCodes);
+            $backOverheat = false;
+            $retryCounter = IndexProductModelCommand::RETRY_COUNTER;
+            $waitDelay = IndexProductModelCommand::INTIAL_WAIT_DELAY;
+            $batchEsCodes = $productModelCodes;
             do {
                 if ($backOverheat) {
-                    echo("Sleeping before retry due to back pressure {$waitDelay} seconds \n");
+                    echo("Sleeping before retry due to back pressure {$waitDelay} seconds, with batch size of {$batchSize} \n");
                     sleep($waitDelay);
+                    $batchEsCodes = array_slice($productModelCodes, 0, $batchSize);
                     echo("Waking up for retry...\n");
                 }
                 try {
-                    $this->productModelDescendantAndAncestorsIndexer->indexFromProductModelCodes($productModelCodes);
-                    $backOverheat=false;
+                    $this->productModelDescendantAndAncestorsIndexer->indexFromProductModelCodes($batchEsCodes);
+                    array_splice($productModelCodes, 0, $batchSize);
+                    $backOverheat = false;
+                    $retryCounter = IndexProductModelCommand::RETRY_COUNTER;
+                    $waitDelay = IndexProductModelCommand::INTIAL_WAIT_DELAY;
+                    $indexedProductModelCount += count($batchEsCodes);
                 } catch (BadRequest400Exception $e) {
                     if ($e->getCode() == 429) {
                         $backOverheat = true;
-                        $waitDelay = $waitDelay * self::RETRY_LOGARITHMIC_INCREMENT;
+                        $waitDelay = $waitDelay + IndexProductModelCommand::INTIAL_WAIT_DELAY; //Heuristic: linear increment
                         $retryCounter--;
+                        $batchSize = intdiv($batchSize, IndexProductModelCommand::BACKOFF_LOGARITHMIC_INCREMENT); //Heuristic: logarithmics decrement
                         echo("Back pressure exception received, {$retryCounter} retries remaining...\n");
                     }
                 }
-            } while ($backOverheat && $retryCounter > 0);
+            } while (($backOverheat && $retryCounter) || sizeof($productModelCodes));
 
             if ($backOverheat && isset($e)) {
                 throw $e;
             }
 
-            $indexedProductModelCount += count($productModelCodes);
             $progressBar->advance(count($productModelCodes));
         }
         $progressBar->finish();
