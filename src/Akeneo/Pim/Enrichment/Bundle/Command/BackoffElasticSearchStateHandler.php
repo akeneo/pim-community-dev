@@ -18,12 +18,12 @@ class BackoffElasticSearchStateHandler
 
         $progressBar->start();
         foreach ($chunkedCodes as $codes) {
-            $treatedBachSize= sizeof($productModelCodes);
-            $batchSize = sizeof($productModelCodes);
+            $treatedBachSize= sizeof($codes);
+            $batchSize = sizeof($codes);
             $backOverheat = false;
             $retryCounter = self::RETRY_COUNTER;
             $waitDelay = self::INITIAL_WAIT_DELAY;
-            $batchEsCodes = $productModelCodes;
+            $batchEsCodes = $codes;
             do {
                 if ($backOverheat) {
                     echo("Sleeping before retry due to back pressure {$waitDelay} seconds, with batch size of {$batchSize} \n");
