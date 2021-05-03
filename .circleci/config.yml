@@ -742,7 +742,7 @@ jobs:
           - run:
                 name: Upgrade the duplicate environment
                 command: |
-                    INSTANCE_NAME_PREFIX=pimci-duplic IMAGE_TAG=${CIRCLE_SHA1} INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40) PIM_CONTEXT=deployment  make create-ci-release-files get_mysql_parameters_disk deploy
+                    UPGRADE_STEP_2=true PIM_CONTEXT=deployment IMAGE_TAG=$CIRCLE_SHA1 INSTANCE_NAME_PREFIX=pimci-duplic INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40) make create-ci-release-files get_mysql_parameters_disk deploy
           - run:
               name: Prepare infrastructure artifacts
               command: INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40) PIM_CONTEXT=deployment make prepare-infrastructure-artifacts

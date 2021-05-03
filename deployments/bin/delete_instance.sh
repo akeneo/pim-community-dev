@@ -36,7 +36,7 @@ export KUBECONFIG=.kubeconfig
 helm3 list -n "${PFID}" && helm3 uninstall ${PFID} -n ${PFID} || true
 (kubectl get ns ${PFID} | grep "$PFID") && kubectl delete ns ${PFID} || true
 
-LIST_PV_NAME=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .metadata.name] | unique | .[]')
+LIST_PV_NAME=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .metadata.name] | unique | .[]'|grep -v mysql)
 
 LIST_OF_DISK=""
 
