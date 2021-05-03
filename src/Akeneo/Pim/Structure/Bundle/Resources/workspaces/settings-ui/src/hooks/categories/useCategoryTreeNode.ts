@@ -27,12 +27,12 @@ const useCategoryTreeNode = (id: number) => {
   const {data, fetch, error: fetchError, status: fetchStatus} = useFetch<BackendCategoryTree>(url);
 
   const getCategoryPosition = (treeNode: TreeNode<CategoryTreeModel>): number => {
-    if (!treeNode.parent) {
+    if (!treeNode.parentId) {
       return 0;
     }
-    const categoryParent = findOneByIdentifier(nodes, treeNode.parent);
+    const categoryParent = findOneByIdentifier(nodes, treeNode.parentId);
 
-    return categoryParent?.children.indexOf(treeNode.identifier) || 0;
+    return categoryParent?.childrenIds.indexOf(treeNode.identifier) || 0;
   };
 
   const moveTo = useCallback(
@@ -60,14 +60,14 @@ const useCategoryTreeNode = (id: number) => {
         return;
       }
 
-      if (!movedNode.parent) {
+      if (!movedNode.parentId) {
         console.error('Can not move root node');
         // @todo handle error
         return;
       }
-      const originalParentNode = findOneByIdentifier(nodes, movedNode.parent);
+      const originalParentNode = findOneByIdentifier(nodes, movedNode.parentId);
       if (!originalParentNode) {
-        console.error(`Node ${movedNode.parent} not found`);
+        console.error(`Node ${movedNode.parentId} not found`);
         // @todo handle error
         return;
       }
@@ -76,7 +76,7 @@ const useCategoryTreeNode = (id: number) => {
 
       // update the children of parent
       // We ensure that the moved node is not in the list
-      const parentChildrenIds = targetParentNode.children.filter(id => id !== movedNode.identifier);
+      const parentChildrenIds = targetParentNode.childrenIds.filter(id => id !== movedNode.identifier);
 
       // console.log(targetParentNode.children, parentChildrenIds);
       const movedIndex = parentChildrenIds.findIndex(id => id === target.identifier);
@@ -89,7 +89,7 @@ const useCategoryTreeNode = (id: number) => {
 
       newNodesList = update(newNodesList, {
         ...targetParentNode,
-        children: parentChildrenIds,
+        childrenIds: parentChildrenIds,
         type: targetParentNode.type === 'leaf' ? 'node' : targetParentNode.type,
         childrenStatus: 'loaded',
       });
@@ -97,7 +97,7 @@ const useCategoryTreeNode = (id: number) => {
       // update parent id for the original node
       newNodesList = update(newNodesList, {
         ...movedNode,
-        parent: targetParentNode.identifier,
+        parentId: targetParentNode.identifier,
       });
 
       // remove the original id from the original parent's children
@@ -105,7 +105,7 @@ const useCategoryTreeNode = (id: number) => {
       if (originalParentNode.identifier !== targetParentNode.identifier) {
         newNodesList = update(newNodesList, {
           ...originalParentNode,
-          children: originalParentNode.children.filter(id => id !== movedNode.identifier),
+          childrenIds: originalParentNode.childrenIds.filter(id => id !== movedNode.identifier),
         });
       }
 
@@ -125,7 +125,7 @@ const useCategoryTreeNode = (id: number) => {
     if (!node) {
       return;
     }
-    setChildren(findByIdentifiers(nodes, node.children));
+    setChildren(findByIdentifiers(nodes, node.childrenIds));
   }, [node, nodes]);
 
   useEffect(() => {
@@ -138,7 +138,7 @@ const useCategoryTreeNode = (id: number) => {
 
     const updatedNodes = update(nodes, {
       ...node,
-      children: newChildren.map(child => child.identifier),
+      childrenIds: newChildren.map(child => child.identifier),
     });
 
     // @todo check uniqueness of new children

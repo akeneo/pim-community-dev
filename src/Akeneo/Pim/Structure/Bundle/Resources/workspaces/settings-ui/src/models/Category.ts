@@ -47,10 +47,9 @@ const buildTreeNodeFromCategoryTree = (
   return {
     identifier: categoryTree.id,
     label: categoryTree.label,
-    children: Array.isArray(categoryTree.children) ? categoryTree.children.map(child => child.id) : [],
+    childrenIds: Array.isArray(categoryTree.children) ? categoryTree.children.map(child => child.id) : [],
     data: categoryTree,
-    parent,
-    selected: false,
+    parentId: parent,
     type: categoryTree.isRoot ? 'root' : categoryTree.isLeaf ? 'leaf' : 'node',
     childrenStatus: categoryTree.children && categoryTree.children.length > 0 ? 'loaded' : 'idle',
   };

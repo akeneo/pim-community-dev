@@ -41,10 +41,10 @@ const insert = <T>(treeNodes: TreeNode<T>[], node: TreeNode<T>, parent: number, 
 
   let newPosition = 0;
   if (position > 0) {
-    newPosition = position <= parentNode.children.length ? position : parentNode.children.length;
+    newPosition = position <= parentNode.childrenIds.length ? position : parentNode.childrenIds.length;
   }
 
-  const newChildren = parentNode.children;
+  const newChildren = parentNode.childrenIds;
   newChildren.splice(newPosition, 0, newNode.identifier);
 
   const newParentNode = {
@@ -57,15 +57,15 @@ const insert = <T>(treeNodes: TreeNode<T>[], node: TreeNode<T>, parent: number, 
 
 const isDescendantOf = <T>(treeNodes: TreeNode<T>[], identifier: number, parentId: number): boolean => {
   const node = findOneByIdentifier(treeNodes, identifier);
-  if (!node || node.parent === null) {
+  if (!node || node.parentId === null) {
     return false;
   }
 
-  if (node.parent === parentId) {
+  if (node.parentId === parentId) {
     return true;
   }
 
-  return isDescendantOf(treeNodes, identifier, node.parent);
+  return isDescendantOf(treeNodes, identifier, node.parentId);
 };
 
 const update = <T>(treeNodes: TreeNode<T>[], updatedNode: TreeNode<T>): TreeNode<T>[] => {

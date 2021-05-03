@@ -1,10 +1,9 @@
 export type TreeNode<T> = {
   identifier: number;
   label: string;
-  parent: number | null;
-  children: number[];
+  parentId: number | null;
+  childrenIds: number[];
   data: T;
-  type?: 'leaf' | 'root' | 'node';
-  selected: boolean;
+  type: 'leaf' | 'root' | 'node';
   childrenStatus: 'idle' | 'loaded' | 'loading';
 };

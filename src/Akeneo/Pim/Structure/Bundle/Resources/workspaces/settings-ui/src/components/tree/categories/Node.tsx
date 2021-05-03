@@ -53,17 +53,17 @@ const Node: FC<Props> = ({id, label, followCategory, sortable = false}) => {
       /* @todo Tree is draggable if Node is draggable and the current node is not the root */
       onDragStart={() => {
         // Root is not draggable
-        if (!node?.parent) {
+        if (!node?.parentId) {
           return;
         }
         setDraggedCategory({
-          parentId: node.parent,
+          parentId: node.parentId,
           position: 0, // @todo get the real position
           identifier: node?.identifier,
         });
       }}
       onDragOver={(target, cursorPosition) => {
-        if (!node?.parent) {
+        if (!node?.parentId) {
           return;
         }
 
@@ -83,7 +83,7 @@ const Node: FC<Props> = ({id, label, followCategory, sortable = false}) => {
                 : cursorRelativePosition < bottomTierHeight
                 ? 'in'
                 : 'after',
-            parentId: node.parent,
+            parentId: node.parentId,
             identifier: node?.identifier,
           };
 
@@ -95,7 +95,7 @@ const Node: FC<Props> = ({id, label, followCategory, sortable = false}) => {
 
         const hoveredCategoryPosition = getCategoryPosition(node);
         setHoveredCategory({
-          parentId: node.parent,
+          parentId: node.parentId,
           position: hoveredCategoryPosition,
           identifier: node?.identifier,
         });
