@@ -53,7 +53,7 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
 
     private function incrementFailureCounter(UserInterface $user)
     {
-        if (is_null($user->getAuthenticationFailureResetDate())) {
+        if (null === $user->getAuthenticationFailureResetDate()) {
             $user->setAuthenticationFailureResetDate(new \DateTime());
         }
         $user->setConsecutiveAuthenticationFailureCounter(
