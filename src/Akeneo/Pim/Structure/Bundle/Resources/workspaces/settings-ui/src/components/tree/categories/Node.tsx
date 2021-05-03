@@ -110,20 +110,25 @@ const Node: FC<Props> = ({id, label, followCategory, sortable = false}) => {
       // @todo update the category tree state with a null droppable node position and null parent id
       // so that we can handle the
       // }}
-      onDrop={() => {
+      onDrop={async () => {
         // @todo rework to not have to do all these sanity checks
         if (draggedCategory && node !== undefined && moveTarget) {
-          moveTo(draggedCategory.identifier, moveTarget);
-          /*
-                    @todo pass the moveCategory as a props in CategoryTree
-                    const moveSuccess = moveCategory({
-                      identifier: draggedCategory.identifier,
-                      parentId: moveTarget.parentId,
-                      previousCategoryId: node.identifier,
-                    });
+          if (moveTarget.position === 'in' && node.type === 'node' && node.childrenStatus === 'idle') {
+            await loadChildren(); // @fixme conflict with the stateful moveTo, the nodes is not refreshed yet
+          }
 
-                    // @todo what we have to do if the callback fails? keep original position
-                    console.log(moveSuccess);
+          moveTo(draggedCategory.identifier, moveTarget);
+
+          /*
+            @todo pass the moveCategory as a props in CategoryTree
+            const moveSuccess = moveCategory({
+              identifier: draggedCategory.identifier,
+              parentId: moveTarget.parentId,
+              previousCategoryId: node.identifier,
+            });
+
+            // @todo what we have to do if the callback fails? keep original position
+            console.log(moveSuccess);
            */
 
           setDraggedCategory(null);

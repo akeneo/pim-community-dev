@@ -189,6 +189,11 @@ const Tree = <T,>({
           if (onDrop) {
             onDrop();
           }
+          if (timer !== null) {
+            console.log('clear timeout', timer, label);
+            clearTimeout(timer);
+            setTimer(null);
+          }
         }}
         onDragEnd={event => {
           event.stopPropagation();
@@ -196,6 +201,11 @@ const Tree = <T,>({
 
           if (onDragEnd) {
             onDragEnd();
+          }
+          if (timer !== null) {
+            console.log('clear timeout', timer, label);
+            clearTimeout(timer);
+            setTimer(null);
           }
         }}
       >
