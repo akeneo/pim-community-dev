@@ -10,11 +10,18 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Akeneo\Pim\TailoredExport\Infrastructure\Connector;
 
+use Akeneo\Pim\TailoredExport\Infrastructure\Validation\Columns;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ConstraintCollectionProvider implements ConstraintCollectionProviderInterface
 {
@@ -39,7 +46,11 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
      */
     public function getConstraintCollection(): Collection
     {
-        return $this->simpleProvider->getConstraintCollection();
+        $baseConstraint = $this->simpleProvider->getConstraintCollection();
+        $constraintFields = $baseConstraint->fields;
+        $constraintFields['columns'] = new Columns();
+
+        return new Collection(['fields' => $constraintFields]);
     }
 
     /**

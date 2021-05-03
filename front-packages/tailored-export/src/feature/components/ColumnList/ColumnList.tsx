@@ -1,10 +1,13 @@
 import React, {useEffect, useRef} from 'react';
-import {CloseIcon, IconButton, List, SectionTitle, TextInput, useAutoFocus} from 'akeneo-design-system';
+import {Helper, List, SectionTitle, TextInput, useAutoFocus} from 'akeneo-design-system';
 import {ColumnConfiguration, ColumnsConfiguration} from '../../models/ColumnConfiguration';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {SyntheticEvent} from 'react';
 import {ColumnListPlaceholder} from './ColumnListPlaceholder';
+import {ColumnRow} from './ColumnRow';
+import {useValidationErrors} from 'feature/contexts';
+
+const MAX_COLUMN_COUNT = 5;
 
 const Container = styled.div`
   flex: 1;
@@ -37,12 +40,6 @@ const ColumnList = ({
     focus();
   }, [selectedColumn, focus]);
 
-  const handleColumnRemove = (event: SyntheticEvent, uuid: string) => {
-    event.stopPropagation();
-    onColumnRemoved(uuid);
-    handleFocusNextColumn(uuid);
-  };
-
   const handleFocusNextColumn = (columnUuid: string) => {
     const currentColumnIndex = columnsConfiguration.findIndex(({uuid}) => columnUuid === uuid);
     const nextColumn = columnsConfiguration[currentColumnIndex + 1];
@@ -50,41 +47,37 @@ const ColumnList = ({
     onColumnSelected(undefined === nextColumn ? null : nextColumn.uuid);
   };
 
+  const generalErrors = useValidationErrors('[columns]');
+
+  const canAddColumn = MAX_COLUMN_COUNT > columnsConfiguration.length;
+  const isNotFirstColumn = 0 < columnsConfiguration.length;
+  const isLastColumnEmpty = columnsConfiguration[columnsConfiguration.length - 1].target === '';
+
   return (
     <Container>
       <SectionTitle sticky={0}>
         <SectionTitle.Title>{translate('akeneo.tailored_export.column_list.title')}</SectionTitle.Title>
         <SectionTitle.Spacer />
       </SectionTitle>
+      {generalErrors.map((error, index) => (
+        <Helper key={index} level="error">
+          {translate(error.messageTemplate, error.parameters)}
+        </Helper>
+      ))}
       <List>
         {columnsConfiguration.map(column => (
-          <List.Row
+          <ColumnRow
             key={column.uuid}
-            onClick={() => onColumnSelected(column.uuid)}
-            selected={selectedColumn?.uuid === column.uuid}
-          >
-            <List.Cell width={300}>
-              <TextInput
-                ref={null !== selectedColumn && column.uuid === selectedColumn.uuid ? inputRef : null}
-                onChange={updatedValue => onColumnChange({...column, target: updatedValue})}
-                onSubmit={() => handleFocusNextColumn(column.uuid)}
-                placeholder={translate('akeneo.tailored_export.column_list.column_row.target_placeholder')}
-                value={column.target}
-              />
-            </List.Cell>
-            <List.Cell width="auto">{translate('akeneo.tailored_export.column_list.column_row.no_source')}</List.Cell>
-            <List.RemoveCell>
-              <IconButton
-                ghost="borderless"
-                level="tertiary"
-                icon={<CloseIcon />}
-                title={translate('akeneo.tailored_export.column_list.column_row.remove')}
-                onClick={event => handleColumnRemove(event, column.uuid)}
-              />
-            </List.RemoveCell>
-          </List.Row>
+            ref={selectedColumn?.uuid === column.uuid ? inputRef : null}
+            column={column}
+            isSelected={selectedColumn?.uuid === column.uuid}
+            onColumnChange={onColumnChange}
+            onColumnRemoved={onColumnRemoved}
+            onColumnSelected={onColumnSelected}
+            onFocusNext={handleFocusNextColumn}
+          />
         ))}
-        {columnsConfiguration.length > 0 && columnsConfiguration[columnsConfiguration.length - 1].target !== '' && (
+        {canAddColumn && isNotFirstColumn && !isLastColumnEmpty && (
           <List.Row onClick={() => onColumnSelected(null)} selected={selectedColumn === null}>
             <List.Cell width={300}>
               <TextInput

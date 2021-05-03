@@ -27,3 +27,9 @@ akeneo.tailored_export:
         subtitle: You must define your columns selection in order to export. If you don’t know how,
         link: take a look at this article.
         add_column: Add first column
+  validation:
+    columns:
+      max_column_count_reached: You reached the maximum column count of {{ limit }}
+      target:
+        should_not_be_blank: The target should not be blank
+        max_length_reached: "{{ limit }} characters max"

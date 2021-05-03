@@ -30,16 +30,23 @@ class ColumnView extends BaseView {
    * {@inheritdoc}
    */
   render(): BaseView {
+    const formData = this.getFormData();
     ReactDOM.render(
       <ThemeProvider theme={pimTheme}>
         <DependenciesProvider>
-          <ColumnsTab columnsConfiguration={[]} />
+          <ColumnsTab
+            columnsConfiguration={formData.configuration.columns}
+            onColumnsConfigurationChange={columnsConfiguration => {
+              this.setData({...formData, configuration: {...formData.configuration, columns: columnsConfiguration}});
+              this.render();
+            }}
+          />
         </DependenciesProvider>
       </ThemeProvider>,
-        this.el
+      this.el
     );
 
-    this.el.style = 'height: calc(100vh - 256px)'
+    this.el.style = 'height: calc(100vh - 256px)';
     return this;
   }
 }

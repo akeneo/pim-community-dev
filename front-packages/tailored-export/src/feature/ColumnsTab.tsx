@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+import {uuid} from 'akeneo-design-system';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {
   ColumnsConfiguration,
   createColumn,
@@ -10,11 +12,11 @@ import {
 } from './models/ColumnConfiguration';
 import {ColumnDetails} from './components/ColumnDetails/ColumnDetails';
 import {ColumnList} from './components/ColumnList/ColumnList';
-import {uuid} from 'akeneo-design-system';
+import {ValidationErrorsContext} from './contexts/ValidationErrorsContext';
 
 type ColumnProps = {
   columnsConfiguration: ColumnsConfiguration;
-
+  validationErrors: ValidationError[];
   onColumnsConfigurationChange: (columnsConfiguration: ColumnsConfiguration) => void;
 };
 
@@ -26,7 +28,7 @@ const Container = styled.div`
   gap: 20px;
 `;
 
-const ColumnsTab = ({columnsConfiguration, onColumnsConfigurationChange}: ColumnProps) => {
+const ColumnsTab = ({columnsConfiguration, validationErrors, onColumnsConfigurationChange}: ColumnProps) => {
   const [selectedColumn, setSelectedColumn] = useState<string | null>(
     columnsConfiguration.length === 0 ? null : columnsConfiguration[0].uuid
   );
@@ -48,21 +50,23 @@ const ColumnsTab = ({columnsConfiguration, onColumnsConfigurationChange}: Column
   const selectedColumnConfiguration = columnsConfiguration.find(({uuid}) => selectedColumn === uuid) ?? null;
 
   return (
-    <Container>
-      <ColumnList
-        columnsConfiguration={columnsConfiguration}
-        selectedColumn={selectedColumnConfiguration}
-        onColumnCreated={handleCreateColumn}
-        onColumnChange={handleChangeColumn}
-        onColumnSelected={handleSelectColumn}
-        onColumnRemoved={handleRemoveColumn}
-      />
-      <ColumnDetails
-        columnConfiguration={selectedColumnConfiguration}
-        noColumns={columnsConfiguration.length === 0}
-        onColumnChange={handleChangeColumn}
-      />
-    </Container>
+    <ValidationErrorsContext.Provider value={validationErrors}>
+      <Container>
+        <ColumnList
+          columnsConfiguration={columnsConfiguration}
+          selectedColumn={selectedColumnConfiguration}
+          onColumnCreated={handleCreateColumn}
+          onColumnChange={handleChangeColumn}
+          onColumnSelected={handleSelectColumn}
+          onColumnRemoved={handleRemoveColumn}
+        />
+        <ColumnDetails
+          columnConfiguration={selectedColumnConfiguration}
+          noColumns={columnsConfiguration.length === 0}
+          onColumnChange={handleChangeColumn}
+        />
+      </Container>
+    </ValidationErrorsContext.Provider>
   );
 };
 

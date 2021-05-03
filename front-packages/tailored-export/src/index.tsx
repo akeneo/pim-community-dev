@@ -206,12 +206,31 @@ const defaultColumnsConfiguration: ColumnsConfiguration = [
 ];
 
 const ColumnsTabWithState = () => {
-  const [columnsConfiguration, setColumnsConfigurationChange] = useState<ColumnsConfiguration>(defaultColumnsConfiguration);
+  const [columnsConfiguration, setColumnsConfigurationChange] = useState<ColumnsConfiguration>(
+    defaultColumnsConfiguration
+  );
 
   return (
-    <ColumnsTab columnsConfiguration={columnsConfiguration} onColumnsConfigurationChange={setColumnsConfigurationChange} />
+    <ColumnsTab
+      validationErrors={[
+        {
+          messageTemplate: 'akeneo.tailored_export.validation.columns.target.max_length_reached',
+          parameters: {
+            '{{ value }}':
+              '\u0022akeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_source\u0022',
+            '{{ limit }}': 255,
+          },
+          message: 'akeneo.tailored_export.validation.columns.target.max_length_reached',
+          propertyPath: '[columns][453fd24c-5980-4219-8be3-590b880d591c][target]',
+          invalidValue:
+            'akeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_source',
+        },
+      ]}
+      columnsConfiguration={columnsConfiguration}
+      onColumnsConfigurationChange={setColumnsConfigurationChange}
+    />
   );
-}
+};
 
 ReactDOM.render(
   <React.StrictMode>
