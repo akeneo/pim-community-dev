@@ -55,8 +55,21 @@ const insert = <T>(treeNodes: TreeNode<T>[], node: TreeNode<T>, parent: number, 
   return [...treeNodes.filter(node => node.identifier !== newParentNode.identifier), newParentNode, newNode];
 };
 
+const isDescendantOf = <T>(treeNodes: TreeNode<T>[], identifier: number, parentId: number): boolean => {
+  const node = findOneByIdentifier(treeNodes, identifier);
+  if (!node || node.parent === null) {
+    return false;
+  }
+
+  if (node.parent === parentId) {
+    return true;
+  }
+
+  return isDescendantOf(treeNodes, identifier, node.parent);
+};
+
 const update = <T>(treeNodes: TreeNode<T>[], updatedNode: TreeNode<T>): TreeNode<T>[] => {
   return [...treeNodes.filter(node => node.identifier !== updatedNode.identifier), updatedNode];
 };
 
-export {findByIdentifiers, findOneByIdentifier, findRoot, insert, update};
+export {findByIdentifiers, findOneByIdentifier, findRoot, insert, update, isDescendantOf};

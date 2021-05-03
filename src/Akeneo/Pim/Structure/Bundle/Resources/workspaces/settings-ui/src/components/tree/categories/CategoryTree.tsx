@@ -6,7 +6,7 @@ import {CategoryTreeProvider} from '../../providers';
 type Props = {
   root: CategoryTreeModel | null;
   rootLabel: string;
-  sortable?: boolean;
+  sortable?: boolean; // @todo find a better name: editable?
   followCategory?: (category: CategoryTreeModel) => void;
   // @todo define onCategoryMoved action
 };

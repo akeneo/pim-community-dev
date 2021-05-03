@@ -133,7 +133,7 @@ const Node: FC<Props> = ({id, label, followCategory, sortable = false}) => {
       {children.map(child => (
         <React.Fragment key={`category-node-${id}-${child.identifier}`}>
           {moveTarget?.identifier === child.identifier && moveTarget.position === 'before' && (
-            <hr style={{color: 'red'}} />
+            <hr style={{borderColor: 'green'}} />
           )}
           <Node
             id={child.identifier}
@@ -143,7 +143,7 @@ const Node: FC<Props> = ({id, label, followCategory, sortable = false}) => {
             /* @todo Node is draggable if the parent Node is draggable */
           />
           {moveTarget?.identifier === child.identifier && moveTarget.position === 'after' && (
-            <hr style={{color: 'red'}} />
+            <hr style={{borderColor: 'green'}} />
           )}
         </React.Fragment>
       ))}

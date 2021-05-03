@@ -6,11 +6,13 @@ import React, {
   SyntheticEvent,
   useCallback,
   useRef,
+  useState,
 } from 'react';
 import styled from 'styled-components';
 import {getColor, RowIcon, useBooleanState} from 'akeneo-design-system';
 import {TreeNode} from '../../../models';
 import {ArrowButton, TreeArrowIcon, TreeRow} from './TreeRow';
+import Timeout = NodeJS.Timeout;
 
 const TreeContainer = styled.li`
   display: block;
@@ -87,6 +89,7 @@ const Tree = <T,>({
   const dragRef = useRef<HTMLDivElement>(null);
   const treeRowRef = useRef<HTMLDivElement>(null);
   const [isOpen, open, close] = useBooleanState(_isRoot);
+  const [timer, setTimer] = useState<Timeout | null>(null);
 
   const handleOpen = useCallback(() => {
     open();
@@ -154,10 +157,28 @@ const Tree = <T,>({
         onDragEnter={() => {
           // @todo if the hover element is a "closed" parent node, set a timer of 2s then open it with handleOpen()
           // @todo call onDragEnter
+
+          if (!isLeaf) {
+            if (timer) {
+              console.log('waiting timeout', timer, label);
+              return;
+            }
+
+            const timeoutId = setTimeout(() => {
+              handleOpen();
+            }, 2000);
+            console.log('set timeout', timeoutId, label);
+            setTimer(timeoutId);
+          }
         }}
         onDragLeave={() => {
           // @todo if the hover element is a parent node, cancel the timer if exist
           // @todo call onDragLeave
+          if (timer !== null) {
+            console.log('clear timeout', timer, label);
+            clearTimeout(timer);
+            setTimer(null);
+          }
         }}
         onDrop={event => {
           event.stopPropagation();
@@ -188,6 +209,10 @@ const Tree = <T,>({
               }
               event.dataTransfer.setDragImage(treeRowRef.current, 0, 0);
               //event.dataTransfer.setData('text/plain', value.identifier.toString());
+
+              if (!isLeaf) {
+                handleClose();
+              }
 
               if (onDragStart) {
                 onDragStart();

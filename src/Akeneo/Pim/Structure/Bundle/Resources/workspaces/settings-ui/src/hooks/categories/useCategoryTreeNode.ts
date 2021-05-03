@@ -37,10 +37,6 @@ const useCategoryTreeNode = (id: number) => {
 
   const moveTo = useCallback(
     (movedCategoryId: number, target: MoveTarget) => {
-      // find parent
-      // find original node
-      // find original parent
-
       if (!target.parentId) {
         console.error('Can not move after root node');
         // @todo handle error
@@ -82,16 +78,11 @@ const useCategoryTreeNode = (id: number) => {
       // console.log(targetParentNode.children, parentChildrenIds);
       const movedIndex = parentChildrenIds.findIndex(id => id === target.identifier);
 
-
-      // console.log(target.position);
-
       parentChildrenIds.splice(
         target.position === 'after' ? movedIndex + 1 : movedIndex,
         0,
         movedNode.identifier
       );
-
-      // console.log(parentChildrenIds);
 
       newNodesList = update(newNodesList, {
         ...targetParentNode,
@@ -109,7 +100,7 @@ const useCategoryTreeNode = (id: number) => {
       if (originalParentNode.identifier !== targetParentNode.identifier) {
         newNodesList = update(newNodesList, {
           ...originalParentNode,
-          children: targetParentNode.children.filter(id => id !== movedNode.identifier),
+          children: originalParentNode.children.filter(id => id !== movedNode.identifier),
         });
       }
 
