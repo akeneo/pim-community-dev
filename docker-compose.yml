@@ -57,6 +57,7 @@ services:
       - ./cypress:/cypress
       - ./cypress.json:/cypress.json
       - ./tests/front/e2e:/tests/front/e2e
+    ipc: host
     networks:
       - 'pim'
 
