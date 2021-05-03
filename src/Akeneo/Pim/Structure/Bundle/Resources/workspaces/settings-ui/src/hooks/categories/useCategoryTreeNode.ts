@@ -7,7 +7,7 @@ import {
   convertToCategoryTree,
   TreeNode,
 } from '../../models';
-import {findByIdentifiers, findOneByIdentifier, update} from '../../helpers/treeHelper';
+import {findByIdentifiers, findOneByIdentifier, update} from '../../helpers';
 import {useFetch, useRoute} from '@akeneo-pim-community/shared';
 
 const useCategoryTreeNode = (id: number) => {

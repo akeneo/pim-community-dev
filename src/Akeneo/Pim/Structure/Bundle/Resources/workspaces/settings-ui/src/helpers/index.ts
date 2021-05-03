@@ -1,1 +1,1 @@
-export * from './sortableTreeHelper';
+export * from './treeHelper';
