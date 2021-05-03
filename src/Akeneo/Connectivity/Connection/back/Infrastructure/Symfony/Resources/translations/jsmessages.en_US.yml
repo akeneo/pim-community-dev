@@ -156,9 +156,9 @@ akeneo_connectivity.connection:
         flash:
             success: Connection successfully deleted.
     helper:
-        title: 👋 Welcome to the feature that will properly connect your PIM!
+        title: '{0} For now, you have no connection to link your PIM to third-party applications.|{1} You have 1 connection linking your PIM to third-party applications. Well done, this way your PIM is well integrated into its ecosystem.|]1,Inf] You have {{ count }} connections linking your PIM to third-party applications. Well done, this way your PIM is well integrated into its ecosystem.'
         description: A PIM without any third-party integrations is kinda useless, isn't it? Thanks to connections, you can declare all the data flows that will be pushed inside and pulled outside your PIM.
-        link: Eager to know more? Find out what is a connection and how to make the most of it right here!
+        link: To find out more about Connections, check out this page
     flow_type_helper:
         message: Wondering what flow type is?
         link: We can help you right here!
