@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Event\MeasurementFamilyUpdated;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
@@ -11,6 +12,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author    Valentin Dijkstra <valentin.dijkstra@akeneo.com>
@@ -19,25 +21,30 @@ use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInte
  */
 class SaveMeasurementFamilyHandler
 {
-    /** @var MeasurementFamilyRepositoryInterface */
-    private $measurementFamilyRepository;
+    private MeasurementFamilyRepositoryInterface $measurementFamilyRepository;
+    private ?EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
-    {
+    public function __construct(
+        MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->measurementFamilyRepository = $measurementFamilyRepository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function handle(SaveMeasurementFamilyCommand $saveMeasurementFamilyCommand): void
     {
         $units = $this->units($saveMeasurementFamilyCommand);
+        $measurementFamilyCode = MeasurementFamilyCode::fromString($saveMeasurementFamilyCommand->code);
         $measurementFamily = MeasurementFamily::create(
-            MeasurementFamilyCode::fromString($saveMeasurementFamilyCommand->code),
+            $measurementFamilyCode,
             LabelCollection::fromArray($saveMeasurementFamilyCommand->labels),
             UnitCode::fromString($saveMeasurementFamilyCommand->standardUnitCode),
             $units
         );
 
         $this->measurementFamilyRepository->save($measurementFamily);
+        $this->eventDispatcher->dispatch(new MeasurementFamilyUpdated($measurementFamilyCode));
     }
 
     private function units(SaveMeasurementFamilyCommand $saveMeasurementFamilyCommand): array

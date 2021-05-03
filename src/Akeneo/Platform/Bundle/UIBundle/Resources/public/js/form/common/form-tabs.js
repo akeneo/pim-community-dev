@@ -74,12 +74,11 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/template/form/form-
           label: event.label,
           fieldErrorCount: 0,
         });
+        this.render();
       } else {
         existingTab.label = event.label;
         existingTab.isVisible = event.isVisible;
       }
-
-      this.render();
     },
 
     /**
