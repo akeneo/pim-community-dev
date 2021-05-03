@@ -1,20 +1,34 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
-import {Search, Table} from 'akeneo-design-system';
-import {useDebounceCallback, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
+import {Button, Search, Table, useBooleanState} from 'akeneo-design-system';
+import {
+  NotificationLevel,
+  useDebounceCallback,
+  useNotify,
+  useRouter,
+  useSecurity,
+  useTranslate,
+} from '@akeneo-pim-community/shared';
 import {CategoryTreeModel} from '../../../models';
 import styled from 'styled-components';
 import {NoResults} from '../../shared';
+import {DeleteCategoryModal} from './DeleteCategoryModal';
+import {deleteCategory} from '../../../infrastructure/removers';
+import {useCountCategoryTreesChildren} from '../../../hooks';
 
 type Props = {
   trees: CategoryTreeModel[];
+  refreshCategoryTrees: () => void;
 };
 
-const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
+const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const translate = useTranslate();
   const router = useRouter();
   const {isGranted} = useSecurity();
   const [searchString, setSearchString] = useState('');
   const [filteredTrees, setFilteredTrees] = useState<CategoryTreeModel[]>(trees);
+  const notify = useNotify();
+  const [isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal] = useBooleanState();
+  const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTreeModel | null>(null);
 
   const followCategoryTree = useCallback((tree: CategoryTreeModel): void => {
     const url = router.generate('pim_enrich_categorytree_tree', {id: tree.id});
@@ -37,6 +51,33 @@ const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
     [trees]
   );
 
+  const deleteCategoryTree = async () => {
+    if (categoryTreeToDelete) {
+      const success = await deleteCategory(categoryTreeToDelete.id);
+      success && refreshCategoryTrees();
+      const message = success
+        ? 'pim_enrich.entity.category.category_tree_deleted'
+        : 'pim_enrich.entity.category.category_tree_deletion_error';
+      notify(
+        success ? NotificationLevel.SUCCESS : NotificationLevel.ERROR,
+        translate(message, {tree: categoryTreeToDelete.label})
+      );
+      setCategoryTreeToDelete(null);
+    }
+    closeConfirmationModal();
+  };
+
+  const onDeleteCategoryTree = (categoryTree: CategoryTreeModel) => {
+    if (categoryTree.productsNumber && categoryTree.productsNumber > 100) {
+      notify(NotificationLevel.INFO, translate('pim_enrich.entity.category.products_limit_exceeded', {limit: 100}));
+
+      return;
+    }
+
+    setCategoryTreeToDelete(categoryTree);
+    openConfirmationModal();
+  };
+
   useEffect(() => {
     setFilteredTrees(trees);
     setSearchString('');
@@ -48,6 +89,8 @@ const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
     setSearchString(searchValue);
     debouncedSearch(searchValue);
   };
+
+  const countTreesChildren = useCountCategoryTreesChildren();
 
   return (
     <>
@@ -65,23 +108,56 @@ const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
         />
       )}
       {filteredTrees.length > 0 && (
-        <Table>
-          <Table.Header>
-            <Table.HeaderCell>
-              {translate('pim_enrich.entity.category.content.tree_list.columns.label')}
-            </Table.HeaderCell>
-          </Table.Header>
-          <Table.Body>
-            {filteredTrees.map(tree => (
-              <Table.Row
-                key={tree.code}
-                onClick={isGranted('pim_enrich_product_category_list') ? () => followCategoryTree(tree) : undefined}
-              >
-                <Table.Cell rowTitle>{tree.label}</Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
+        <>
+          <Table>
+            <Table.Header>
+              <Table.HeaderCell>
+                {translate('pim_enrich.entity.category.content.tree_list.columns.label')}
+              </Table.HeaderCell>
+              <Table.HeaderCell>
+                {translate('pim_enrich.entity.category.content.tree_list.columns.number_of_categories')}
+              </Table.HeaderCell>
+              <Table.HeaderCell />
+            </Table.Header>
+            <Table.Body>
+              {filteredTrees.map(tree => (
+                <Table.Row
+                  key={tree.code}
+                  onClick={isGranted('pim_enrich_product_category_list') ? () => followCategoryTree(tree) : undefined}
+                >
+                  <Table.Cell rowTitle>{tree.label}</Table.Cell>
+                  <Table.Cell>
+                    {countTreesChildren.hasOwnProperty(tree.code) &&
+                      translate(
+                        'pim_enrich.entity.category.content.tree_list.columns.count_categories',
+                        {count: countTreesChildren[tree.code]},
+                        countTreesChildren[tree.code]
+                      )}
+                  </Table.Cell>
+                  <TableActionCell>
+                    <Button
+                      ghost
+                      level="danger"
+                      size={'small'}
+                      onClick={() => onDeleteCategoryTree(tree)}
+                      disabled={!tree.hasOwnProperty('productsNumber')}
+                    >
+                      {translate('pim_common.delete')}
+                    </Button>
+                  </TableActionCell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+          {isConfirmationModalOpen && categoryTreeToDelete && (
+            <DeleteCategoryModal
+              categoryLabel={categoryTreeToDelete.label}
+              closeModal={closeConfirmationModal}
+              deleteCategory={deleteCategoryTree}
+              message={'pim_enrich.entity.category.delete_category_tree_confirmation'}
+            />
+          )}
+        </>
       )}
     </>
   );
@@ -89,6 +165,10 @@ const CategoryTreesDataGrid: FC<Props> = ({trees}) => {
 
 const StyledSearch = styled(Search)`
   margin-bottom: 20px;
+`;
+
+const TableActionCell = styled(Table.ActionCell)`
+  width: 50px;
 `;
 
 export {CategoryTreesDataGrid};

@@ -22,7 +22,7 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, refreshCategor
         setValidationErrors(errors);
         notify(
           NotificationLevel.ERROR,
-          translate('pim_enrich.entity.category.category_creation_error', {tree: newCategoryCode})
+          translate('pim_enrich.entity.category.category_tree_creation_error', {tree: newCategoryCode})
         );
         return;
       }
@@ -33,7 +33,7 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, refreshCategor
     closeModal();
     notify(
       NotificationLevel.SUCCESS,
-      translate('pim_enrich.entity.category.category_created', {tree: newCategoryCode})
+      translate('pim_enrich.entity.category.category_tree_created', {tree: newCategoryCode})
     );
   };
 
@@ -45,7 +45,7 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, refreshCategor
         </Button>
       </Modal.TopRightButtons>
       <Modal.SectionTitle color="brand">{translate('pim_enrich.entity.category.plural_label')}</Modal.SectionTitle>
-      <Modal.Title>{translate('new category')}</Modal.Title>
+      <Modal.Title>{translate('pim_enrich.entity.category.new_category')}</Modal.Title>
 
       <StyledField label={translate('pim_common.code')}>
         <TextInput

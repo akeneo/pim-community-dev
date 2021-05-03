@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Query\CountTreesChildrenInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -68,6 +70,10 @@ class CategoryTreeController extends Controller
 
     private NormalizerInterface $constraintViolationNormalizer;
 
+    private CategoryItemsCounterInterface $categoryItemsCounter;
+
+    private CountTreesChildrenInterface $countTreesChildrenQuery;
+
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         UserContext $userContext,
@@ -81,6 +87,8 @@ class CategoryTreeController extends Controller
         ObjectUpdaterInterface $categoryUpdater,
         ValidatorInterface $validator,
         NormalizerInterface $constraintViolationNormalizer,
+        CategoryItemsCounterInterface $categoryItemsCounter,
+        CountTreesChildrenInterface $countTreesChildrenQuery,
         array $rawConfiguration
     ) {
         $this->eventDispatcher = $eventDispatcher;
@@ -100,6 +108,8 @@ class CategoryTreeController extends Controller
         $this->categoryUpdater = $categoryUpdater;
         $this->validator = $validator;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
+        $this->categoryItemsCounter = $categoryItemsCounter;
+        $this->countTreesChildrenQuery = $countTreesChildrenQuery;
     }
 
     /**
@@ -371,6 +381,30 @@ class CategoryTreeController extends Controller
         $this->categoryRemover->remove($category);
 
         return new Response('', 204);
+    }
+
+
+    public function getCategoryTreesProductsNumberAction(): JsonResponse
+    {
+        $trees = $this->categoryRepository->getTrees();
+
+        $productsCountByCategories = array_fill_keys(
+            array_map(fn (CategoryInterface $category) => $category->getId(), $trees),
+            0
+        );
+
+        foreach ($trees as $tree) {
+            $productsCountByCategories[$tree->getId()] = $this->categoryItemsCounter->getItemsCountInCategory($tree, true);
+        }
+
+        return new JsonResponse($productsCountByCategories);
+    }
+
+    public function countChildrenAction(): JsonResponse
+    {
+        $countChildren = $this->countTreesChildrenQuery->execute();
+
+        return new JsonResponse($countChildren);
     }
 
     /**

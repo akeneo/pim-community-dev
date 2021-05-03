@@ -2,7 +2,15 @@ import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {Breadcrumb} from 'akeneo-design-system';
 import {PimView} from '@akeneo-pim-community/legacy-bridge';
-import {FullScreenError, PageContent, PageHeader, useSetPageTitle, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {
+  FullScreenError,
+  PageContent,
+  PageHeader,
+  useSetPageTitle,
+  useRouter,
+  useTranslate,
+  useUserContext,
+} from '@akeneo-pim-community/shared';
 import {useCategory} from '../../hooks';
 import {Category} from '../../models';
 
@@ -18,7 +26,7 @@ const CategoryEditPage: FC = () => {
   const {category, status, load} = useCategory(parseInt(categoryId));
   const [categoryLabel, setCategoryLabel] = useState(`[${categoryId}]`);
   const [treeLabel, setTreeLabel] = useState(translate('pim_enrich.entity.category.content.edit.default_tree_label'));
-  const [tree, setTree] = useState<Category|null>(null);
+  const [tree, setTree] = useState<Category | null>(null);
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
 
@@ -29,7 +37,7 @@ const CategoryEditPage: FC = () => {
       return;
     }
     router.redirect(router.generate('pim_enrich_categorytree_tree', {id: tree.id}));
-  }
+  };
 
   useEffect(() => {
     load();
