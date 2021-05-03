@@ -805,7 +805,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getVariationLevel(): int
     {
-        return $this->getParent()->getVariationLevel() + 1;
+        return $this->getParent() !== null ? $this->getParent()->getVariationLevel() + 1 : self::ROOT_VARIATION_LEVEL;
     }
 
     /**

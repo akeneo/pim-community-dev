@@ -27,6 +27,9 @@ pim_import_export:
       error: Export <strong>%label%</strong> fehlgeschlagen
       warning: Export <strong>%label%</strong> mit Warnmeldungen fertiggestellt
       success: Export <strong>%label%</strong> fertiggestellt
+      warnings:
+        xlsx_cell_conversion_error: Ausnahme während der Umwandlung der Spalte "{0}" in den PIM-Produkt-Attributtyp (bitte überprüfen Sie das Excel-Zellenformat)
+        xlsx_cell_date_to_text_conversion_error: Kann Zelle  {0} mit Datumsformat nicht in Textribut umwandeln
     import:
       error: Import <strong>%label%</strong> fehlgeschlagen
       warning: Import <strong>%label%</strong> mit Warnmeldungen fertiggestellt
