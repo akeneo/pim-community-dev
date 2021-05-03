@@ -53,6 +53,10 @@ services:
     build:
       context: .
       dockerfile: docker/cypress/Dockerfile
+    environment:
+      CYPRESS_baseUrl: '${CYPRESS_baseUrl:-http://httpd}'
+      CYPRESS_defaultCommandTimeout: '${CYPRESS_defaultCommandTimeout:-4000}'
+      CYPRESS_requestTimeout: '${CYPRESS_requestTimeout:-5000}'
     volumes:
       - ./cypress:/cypress
       - ./cypress.json:/cypress.json

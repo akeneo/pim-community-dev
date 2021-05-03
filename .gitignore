@@ -35,6 +35,7 @@ coverage/*
 .phpunit.result.cache
 cypress/videos
 cypress/screenshots
+akeneo-design-system
 
 ###> symfony/framework-bundle ###
 /.env.local
