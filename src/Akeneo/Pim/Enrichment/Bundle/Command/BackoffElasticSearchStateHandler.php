@@ -17,7 +17,7 @@ class BackoffElasticSearchStateHandler
         $indexedCount = 0;
 
         $progressBar->start();
-        foreach ($chunkedCodes as $productModelCodes) {
+        foreach ($chunkedCodes as $codes) {
             $treatedBachSize= sizeof($productModelCodes);
             $batchSize = sizeof($productModelCodes);
             $backOverheat = false;
