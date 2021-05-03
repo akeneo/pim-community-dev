@@ -95,6 +95,6 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
 
     private function isCounterReset(UserInterface $user): bool
     {
-        return is_null($user->getAuthenticationFailureResetDate());
+        return null === $user->getAuthenticationFailureResetDate();
     }
 }
