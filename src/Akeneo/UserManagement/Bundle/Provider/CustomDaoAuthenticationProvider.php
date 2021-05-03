@@ -62,7 +62,7 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
         $this->userManager->updateUser($user);
     }
 
-    private function validateAccountUnlocked(UserInterface $user)
+    private function validateAccountUnlocked(UserInterface $user): void
     {
         if ($this->isCounterReset($user)) {
             return;
