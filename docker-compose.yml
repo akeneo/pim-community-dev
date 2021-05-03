@@ -53,6 +53,8 @@ services:
     build:
       context: .
       dockerfile: docker/cypress/Dockerfile
+    environment:
+      CYPRESS_baseUrl: '${CYPRESS_baseUrl:-http://httpd}'
     volumes:
       - ./cypress:/cypress
       - ./cypress.json:/cypress.json
