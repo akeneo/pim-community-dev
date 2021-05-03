@@ -49,7 +49,7 @@ class BackoffElasticSearchStateHandler
                         $batchSize = intdiv($batchSize, self::BACKOFF_LOGARITHMIC_INCREMENT); //Heuristic: logarithmics decrement
                     }
                 }
-            } while (($backOverheat && $retryCounter) || sizeof($productModelCodes));
+            } while (($backOverheat && $retryCounter) || 0 !== count($productModelCodes));
 
             if ($backOverheat && isset($e)) {
                 throw $e;
