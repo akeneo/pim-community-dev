@@ -44,8 +44,7 @@ class IndexProductModelCommand extends Command
         Client $productAndProductModelClient,
         ProductModelDescendantsAndAncestorsIndexer $productModelDescendantAndAncestorsIndexer,
         Connection $connection
-    )
-    {
+    ) {
         parent::__construct();
         $this->productAndProductModelClient = $productAndProductModelClient;
         $this->productModelDescendantAndAncestorsIndexer = $productModelDescendantAndAncestorsIndexer;

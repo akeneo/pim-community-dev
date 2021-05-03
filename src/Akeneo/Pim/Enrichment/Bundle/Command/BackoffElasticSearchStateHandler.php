@@ -9,7 +9,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 class BackoffElasticSearchStateHandler
 {
     public const RETRY_COUNTER = 10;
-    public const INTIAL_WAIT_DELAY = 10;
+    public const INITIAL_WAIT_DELAY = 10;
     public const BACKOFF_LOGARITHMIC_INCREMENT = 2;
 
     public function doIndex(iterable $chunkedCodes, ProgressBar $progressBar, \Closure $codesEsHandler): int
@@ -18,10 +18,11 @@ class BackoffElasticSearchStateHandler
 
         $progressBar->start();
         foreach ($chunkedCodes as $productModelCodes) {
+            $treatedBachSize= sizeof($productModelCodes);
             $batchSize = sizeof($productModelCodes);
             $backOverheat = false;
             $retryCounter = self::RETRY_COUNTER;
-            $waitDelay = self::INTIAL_WAIT_DELAY;
+            $waitDelay = self::INITIAL_WAIT_DELAY;
             $batchEsCodes = $productModelCodes;
             do {
                 if ($backOverheat) {
@@ -34,12 +35,12 @@ class BackoffElasticSearchStateHandler
                     array_splice($productModelCodes, 0, $batchSize);
                     $backOverheat = false;
                     $retryCounter = self::RETRY_COUNTER;
-                    $waitDelay = self::INTIAL_WAIT_DELAY;
+                    $waitDelay = self::INITIAL_WAIT_DELAY;
                     $indexedCount += count($batchEsCodes);
                 } catch (BadRequest400Exception $e) {
                     if ($e->getCode() == 429) {
                         $backOverheat = true;
-                        $waitDelay = $waitDelay + self::INTIAL_WAIT_DELAY; //Heuristic: linear increment
+                        $waitDelay = $waitDelay + self::INITIAL_WAIT_DELAY; //Heuristic: linear increment
                         $retryCounter--;
                         $batchSize = intdiv($batchSize, self::BACKOFF_LOGARITHMIC_INCREMENT); //Heuristic: logarithmics decrement
                     }
@@ -50,7 +51,7 @@ class BackoffElasticSearchStateHandler
                 throw $e;
             }
 
-            $progressBar->advance(count($productModelCodes));
+            $progressBar->advance($treatedBachSize);
         }
         $progressBar->finish();
 
