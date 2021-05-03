@@ -56,7 +56,6 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
 
     public function it_rejects_authentication_when_limit_is_reached(UserManager $userManager)
     {
-        //TODO check user manager not called.
         $usernamePasswordToken = $this->initTokenInterface(
             self::ALLOWED_FAILED_ATTEMPTS,
             self::initialFailedAttemptDateBackFromNow(self::ACCOUNT_LOCK_DURATION - 1)
@@ -109,7 +108,7 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
     protected function assertCounterIsReset(UsernamePasswordToken $usernamePasswordToken, UserManager $userManager): void
     {
         $user = $usernamePasswordToken->getUser();
-        assert($user instanceof UserInterface);
+        Assert::true($user instanceof UserInterface);
         Assert::eq($user->getConsecutiveAuthenticationFailureCounter(), 0);
         Assert::null($user->getAuthenticationFailureResetDate());
         $userManager->updateUser(Argument::any())->shouldHaveBeenCalled();

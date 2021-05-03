@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Webmozart\Assert\Assert;
 
 class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
 {
@@ -40,7 +41,7 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
      */
     public function checkAuthentication(\Symfony\Component\Security\Core\User\UserInterface $user, UsernamePasswordToken $token)
     {
-        assert($user instanceof UserInterface);
+        Assert::true($user instanceof UserInterface);
         $this->validateAccountUnlocked($user);
         try {
             parent::checkAuthentication($user, $token);
