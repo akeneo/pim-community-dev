@@ -8,7 +8,7 @@ import {
   useSecurity,
   useTranslate,
 } from '@akeneo-pim-community/shared';
-import {CategoryTree} from '../../../models';
+import {CategoryTreeModel} from '../../../models';
 import styled from 'styled-components';
 import {NoResults} from '../../shared';
 import {DeleteCategoryModal} from './DeleteCategoryModal';
@@ -16,7 +16,7 @@ import {deleteCategory} from '../../../infrastructure/removers';
 import {useCountCategoryTreesChildren} from '../../../hooks';
 
 type Props = {
-  trees: CategoryTree[];
+  trees: CategoryTreeModel[];
   refreshCategoryTrees: () => void;
 };
 
@@ -25,12 +25,12 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const router = useRouter();
   const {isGranted} = useSecurity();
   const [searchString, setSearchString] = useState('');
-  const [filteredTrees, setFilteredTrees] = useState<CategoryTree[]>(trees);
+  const [filteredTrees, setFilteredTrees] = useState<CategoryTreeModel[]>(trees);
   const notify = useNotify();
   const [isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal] = useBooleanState();
-  const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTree | null>(null);
+  const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTreeModel | null>(null);
 
-  const followCategoryTree = useCallback((tree: CategoryTree): void => {
+  const followCategoryTree = useCallback((tree: CategoryTreeModel): void => {
     const url = router.generate('pim_enrich_categorytree_tree', {id: tree.id});
     router.redirect(url);
 
@@ -40,7 +40,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const search = useCallback(
     (searchString: string) => {
       setFilteredTrees(
-        trees.filter((tree: CategoryTree) => {
+        trees.filter((tree: CategoryTreeModel) => {
           return (
             tree.code.toLocaleLowerCase().includes(searchString.toLowerCase().trim()) ||
             tree.label.toLocaleLowerCase().includes(searchString.toLowerCase().trim())
@@ -67,7 +67,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
     closeConfirmationModal();
   };
 
-  const onDeleteCategoryTree = (categoryTree: CategoryTree) => {
+  const onDeleteCategoryTree = (categoryTree: CategoryTreeModel) => {
     if (categoryTree.productsNumber && categoryTree.productsNumber > 100) {
       notify(NotificationLevel.INFO, translate('pim_enrich.entity.category.products_limit_exceeded', {limit: 100}));
 
@@ -128,11 +128,11 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                   <Table.Cell rowTitle>{tree.label}</Table.Cell>
                   <Table.Cell>
                     {countTreesChildren.hasOwnProperty(tree.code) &&
-                    translate(
-                      'pim_enrich.entity.category.content.tree_list.columns.count_categories',
-                      {count: countTreesChildren[tree.code]},
-                      countTreesChildren[tree.code]
-                    )}
+                      translate(
+                        'pim_enrich.entity.category.content.tree_list.columns.count_categories',
+                        {count: countTreesChildren[tree.code]},
+                        countTreesChildren[tree.code]
+                      )}
                   </Table.Cell>
                   <TableActionCell>
                     <Button

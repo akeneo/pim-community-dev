@@ -1,17 +1,18 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
-import {Breadcrumb, Link} from 'akeneo-design-system';
+import {Breadcrumb} from 'akeneo-design-system';
 import {PimView} from '@akeneo-pim-community/legacy-bridge';
 import {
   FullScreenError,
   PageContent,
   PageHeader,
-  useSetPageTitle,
   useRouter,
   useSecurity,
+  useSetPageTitle,
   useTranslate,
 } from '@akeneo-pim-community/shared';
 import {useCategoryTree} from '../../hooks';
+import {CategoryTree} from '../../components';
 
 type Params = {
   treeId: string;
@@ -75,38 +76,13 @@ const CategoriesTreePage: FC = () => {
         <PageHeader.Title>{treeLabel}</PageHeader.Title>
       </PageHeader>
       <PageContent>
-        {/* @todo[PLG-94] replace content by the real tree category */}
-        {tree === null ? (
-          <>Tree {treeLabel}</>
-        ) : (
-          <>
-            <div>
-              <Link
-                onClick={isGranted('pim_enrich_product_category_edit') ? () => followEditCategory(tree.id) : undefined}
-                disabled={!isGranted('pim_enrich_product_category_edit')}
-              >
-                {treeLabel}
-              </Link>
-            </div>
-            <div>
-              {tree.children &&
-                tree.children.length > 0 &&
-                tree.children.map(cat => (
-                  <div>
-                    <Link
-                      key={cat.code}
-                      onClick={
-                        isGranted('pim_enrich_product_category_edit') ? () => followEditCategory(cat.id) : undefined
-                      }
-                      disabled={!isGranted('pim_enrich_product_category_edit')}
-                    >
-                      {cat.label}
-                    </Link>
-                  </div>
-                ))}
-            </div>
-          </>
-        )}
+        <CategoryTree
+          root={tree}
+          rootLabel={treeLabel}
+          sortable={isGranted('pim_enrich_product_category_edit')}
+          followCategory={isGranted('pim_enrich_product_category_edit') ? cat => followEditCategory(cat.id) : undefined}
+          // @todo define onCategoryMoved to save the move in database and request the 'pim_enrich_categorytree_movenode'
+        />
       </PageContent>
     </>
   );
