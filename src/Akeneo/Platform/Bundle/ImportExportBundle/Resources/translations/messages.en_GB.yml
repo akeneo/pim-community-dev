@@ -27,6 +27,9 @@ pim_import_export:
       error: Export <strong>%label%</strong> failed
       warning: Export <strong>%label%</strong> finished with some warnings
       success: Export <strong>%label%</strong> finished
+      warnings:
+        xlsx_cell_conversion_error: Please change values format in column {0} to match the targeted attribute type.
+        xlsx_cell_date_to_text_conversion_error: Impossible to import a date type format in a text attribute type. Please check column {0}.
     import:
       error: Import <strong>%label%</strong> failed
       warning: Import <strong>%label%</strong> finished with some warnings
