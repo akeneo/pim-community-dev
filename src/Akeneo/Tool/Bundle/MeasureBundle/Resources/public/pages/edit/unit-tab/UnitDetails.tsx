@@ -15,7 +15,6 @@ import {UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
 import {
   filterErrors,
   ValidationError,
-  useToggleState,
   TextField,
   Section,
   DeleteModal,
@@ -23,7 +22,7 @@ import {
   useUserContext,
   useSecurity,
 } from '@akeneo-pim-community/shared';
-import {Button, getColor, SectionTitle} from 'akeneo-design-system';
+import {Button, getColor, SectionTitle, useBooleanState} from 'akeneo-design-system';
 
 const Container = styled.div`
   margin-left: 40px;
@@ -62,7 +61,9 @@ const UnitDetails = ({
   const locales = useUiLocales();
   const locale = useUserContext().get('uiLocale');
   const selectedUnit = getUnit(measurementFamily, selectedUnitCode);
-  const [isConfirmDeleteUnitModalOpen, openConfirmDeleteUnitModal, closeConfirmDeleteUnitModal] = useToggleState(false);
+  const [isConfirmDeleteUnitModalOpen, openConfirmDeleteUnitModal, closeConfirmDeleteUnitModal] = useBooleanState(
+    false
+  );
 
   const handleRemoveUnit = useCallback(() => {
     onMeasurementFamilyChange(removeUnit(measurementFamily, selectedUnitCode));

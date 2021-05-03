@@ -8,7 +8,6 @@ export * from './useRoute';
 export * from './useRouter';
 export * from './useSecurity';
 export * from './useStorageState';
-export * from './useToggleState';
 export * from './useTranslate';
 export * from './useUploader';
 export * from './useUserContext';
