@@ -50,7 +50,10 @@ const useCategoryTreeNode = (id: number) => {
         return;
       }
 
-      const targetParentNode = findOneByIdentifier(nodes, target.parentId);
+      const targetParentNode = findOneByIdentifier(
+        nodes,
+        target.position === 'in' ? target.identifier : target.parentId
+      );
       if (!targetParentNode) {
         console.error(`Node ${target.parentId} not found`);
         // @todo handle error
@@ -79,7 +82,7 @@ const useCategoryTreeNode = (id: number) => {
       const movedIndex = parentChildrenIds.findIndex(id => id === target.identifier);
 
       parentChildrenIds.splice(
-        target.position === 'after' ? movedIndex + 1 : movedIndex,
+        target.position === 'in' ? 0 : target.position === 'after' ? movedIndex + 1 : movedIndex,
         0,
         movedNode.identifier
       );
@@ -87,6 +90,8 @@ const useCategoryTreeNode = (id: number) => {
       newNodesList = update(newNodesList, {
         ...targetParentNode,
         children: parentChildrenIds,
+        type: targetParentNode.type === 'leaf' ? 'node' : targetParentNode.type,
+        childrenStatus: 'loaded',
       });
 
       // update parent id for the original node

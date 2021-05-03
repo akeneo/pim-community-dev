@@ -38,10 +38,17 @@ const Node: FC<Props> = ({id, label, followCategory, sortable = false}) => {
       label={label}
       _isRoot={node.type === 'root'}
       isLeaf={node.type === 'leaf'}
+      isLoading={node.childrenStatus === 'loading'}
       onClick={!followCategory ? undefined : ({data}) => followCategory(data)}
       disabled={draggedCategory !== null && node.identifier === draggedCategory.identifier}
       selected={hoveredCategory !== null && node.identifier === hoveredCategory.identifier}
-      onOpen={async () => loadChildren()}
+      onOpen={async () => {
+        // @todo handle when children have already loaded
+        if (node.childrenStatus !== 'idle') {
+          return;
+        }
+        return loadChildren();
+      }}
       draggable={sortable && node.type !== 'root'}
       /* @todo Tree is draggable if Node is draggable and the current node is not the root */
       onDragStart={() => {
@@ -62,11 +69,20 @@ const Node: FC<Props> = ({id, label, followCategory, sortable = false}) => {
 
         if (hoveredCategory && hoveredCategory.identifier === node.identifier) {
           const hoveredCategoryDimensions = target.getBoundingClientRect();
-          const middleHeight = (hoveredCategoryDimensions.bottom - hoveredCategoryDimensions.top) / 2;
+          const topTierHeight = (hoveredCategoryDimensions.bottom - hoveredCategoryDimensions.top) / 3;
+          const bottomTierHeight = topTierHeight * 2;
           const cursorRelativePosition = cursorPosition.y - hoveredCategoryDimensions.top;
 
+          // top-tier: the position will be "before"
+          // mid-tier: the position will be "in"
+          // bottom-tier: the position will be "after"
           const newMoveTarget: MoveTarget = {
-            position: cursorRelativePosition < middleHeight ? 'before' : 'after',
+            position:
+              cursorRelativePosition < topTierHeight
+                ? 'before'
+                : cursorRelativePosition < bottomTierHeight
+                ? 'in'
+                : 'after',
             parentId: node.parent,
             identifier: node?.identifier,
           };
@@ -83,13 +99,6 @@ const Node: FC<Props> = ({id, label, followCategory, sortable = false}) => {
           position: hoveredCategoryPosition,
           identifier: node?.identifier,
         });
-
-        // @todo How to define the target?
-
-        // @todo HOW TO define the target position?
-        // top-tier: the position will be "prev"
-        // mid-tier: if parent category, the position will be "first child" else, the position will be "next"
-        // bottom-tier: the position will be "next"
 
         // @todo if is a valid target, update the category tree state with the droppable node position and parent id
         // @todo if the hover element is a parent category the position will be 0 and the parent id is the hover element

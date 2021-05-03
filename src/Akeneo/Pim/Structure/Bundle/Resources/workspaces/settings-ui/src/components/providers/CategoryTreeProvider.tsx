@@ -14,7 +14,7 @@ type HoveredCategory = {
 };
 
 type MoveTarget = {
-  position: 'after' | 'before';
+  position: 'after' | 'before' | 'in';
   parentId: number;
   identifier: number;
 };

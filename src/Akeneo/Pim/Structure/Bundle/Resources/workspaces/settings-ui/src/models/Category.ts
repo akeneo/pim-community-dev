@@ -52,6 +52,7 @@ const buildTreeNodeFromCategoryTree = (
     parent,
     selected: false,
     type: categoryTree.isRoot ? 'root' : categoryTree.isLeaf ? 'leaf' : 'node',
+    childrenStatus: categoryTree.children && categoryTree.children.length > 0 ? 'loaded' : 'idle',
   };
 };
 

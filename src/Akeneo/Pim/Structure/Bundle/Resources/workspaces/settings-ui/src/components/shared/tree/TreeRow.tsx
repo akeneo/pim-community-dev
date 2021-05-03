@@ -4,10 +4,12 @@ import {AkeneoThemedProps, ArrowRightIcon, getColor} from 'akeneo-design-system'
 const TreeRow = styled.div<{$selected: boolean; $disabled: boolean} & AkeneoThemedProps>`
   display: flex;
   flex-direction: row;
-  height: 40px;
-  line-height: 40px;
+  height: 54px;
+  line-height: 54px;
   overflow: hidden;
   width: 100%;
+  border: 1px solid ${getColor('grey100')};
+  
   ${({$selected}) =>
     $selected &&
     css`

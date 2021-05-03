@@ -6,5 +6,5 @@ export type TreeNode<T> = {
   data: T;
   type?: 'leaf' | 'root' | 'node';
   selected: boolean;
-  // @todo add data loaded status?
+  childrenStatus: 'idle' | 'loaded' | 'loading';
 };

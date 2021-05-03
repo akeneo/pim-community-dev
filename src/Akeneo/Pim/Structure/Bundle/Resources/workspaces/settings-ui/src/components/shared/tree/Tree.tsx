@@ -199,6 +199,7 @@ const Tree = <T,>({
           }
         }}
       >
+        {/* @todo handle loading state */}
         {draggable && (
           <DragInitiator
             ref={dragRef}
