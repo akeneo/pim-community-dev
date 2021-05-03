@@ -22,7 +22,7 @@ class BackoffElasticSearchStateHandler
 
         $progressBar->start();
         foreach ($chunkedCodes as $codes) {
-            $treatedBachSize= sizeof($codes);
+            $treatedBachSize= count($codes);
             $batchSize = sizeof($codes);
             $backOverheat = false;
             $retryCounter = self::RETRY_COUNTER;
