@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {ColumnListPlaceholder} from './ColumnListPlaceholder';
 import {ColumnRow} from './ColumnRow';
-import {useValidationErrors} from 'feature/contexts';
+import {useValidationErrors} from '../../contexts';
 
-const MAX_COLUMN_COUNT = 5;
+const MAX_COLUMN_COUNT = 1000;
 
 const Container = styled.div`
   flex: 1;
@@ -47,11 +47,10 @@ const ColumnList = ({
     onColumnSelected(undefined === nextColumn ? null : nextColumn.uuid);
   };
 
-  const generalErrors = useValidationErrors('[columns]');
+  const generalErrors = useValidationErrors('[columns]', true);
 
   const canAddColumn = MAX_COLUMN_COUNT > columnsConfiguration.length;
-  const isNotFirstColumn = 0 < columnsConfiguration.length;
-  const isLastColumnEmpty = columnsConfiguration[columnsConfiguration.length - 1].target === '';
+  const isLastColumnFilled = 0 < columnsConfiguration.length && columnsConfiguration[columnsConfiguration.length - 1].target !== '';
 
   return (
     <Container>
@@ -77,7 +76,7 @@ const ColumnList = ({
             onFocusNext={handleFocusNextColumn}
           />
         ))}
-        {canAddColumn && isNotFirstColumn && !isLastColumnEmpty && (
+        {canAddColumn && isLastColumnFilled && (
           <List.Row onClick={() => onColumnSelected(null)} selected={selectedColumn === null}>
             <List.Cell width={300}>
               <TextInput

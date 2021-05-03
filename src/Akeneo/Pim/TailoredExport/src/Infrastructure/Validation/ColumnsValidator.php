@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ColumnsValidator extends ConstraintValidator
 {
-    private const MAX_COLUMN_COUNT = 5;
+    private const MAX_COLUMN_COUNT = 1000;
     private const TARGET_MAX_LENGTH = 255;
 
     public function validate($columns, Constraint $constraint)
@@ -49,8 +49,20 @@ class ColumnsValidator extends ConstraintValidator
             return;
         }
 
+        $columnTargets = [];
         foreach ($columns as $column) {
             $this->validateColumn($validator, $column, $constraint);
+
+            if (isset($column['target'])) {
+                if (in_array($column['target'], $columnTargets)) {
+                    $this->context->buildViolation(Columns::TARGET_NAME_SHOULD_BE_UNIQUE)
+                        ->atPath(sprintf('[%s][target]', $column['uuid']))
+                        ->setInvalidValue($column['target'])
+                        ->addViolation();
+                } else {
+                    $columnTargets[] = $column['target'];
+                }
+            }
         }
     }
 

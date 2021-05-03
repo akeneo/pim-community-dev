@@ -33,3 +33,4 @@ akeneo.tailored_export:
       target:
         should_not_be_blank: The target should not be blank
         max_length_reached: "{{ limit }} characters max"
+        should_be_unique: Target name should be unique

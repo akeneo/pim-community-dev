@@ -31,7 +31,7 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
       onFocusNext(uuid);
     };
 
-    const targetErrors = useValidationErrors(`[columns][453fd24c-5980-4219-8be3-590b880d591c][target]`);
+    const targetErrors = useValidationErrors(`[columns][${column.uuid}][target]`, true);
 
     return (
       <List.Row key={column.uuid} onClick={() => onColumnSelected(column.uuid)} selected={isSelected}>

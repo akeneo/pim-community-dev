@@ -1,14 +1,16 @@
 import {createContext, useContext} from 'react';
-import {filterErrors, ValidationError} from '@akeneo-pim-community/shared';
+import {filterErrors, formatParameters, getErrorsForPath, ValidationError} from '@akeneo-pim-community/shared';
 
 type ValidationErrorsValue = ValidationError[];
 
 const ValidationErrorsContext = createContext<ValidationErrorsValue>([]);
 
-const useValidationErrors = (propertyPath: string) => {
+const useValidationErrors = (propertyPath: string, exactMatch: boolean) => {
   const validationErrors = useContext(ValidationErrorsContext);
 
-  return filterErrors(validationErrors, propertyPath);
+  const errors = exactMatch ? getErrorsForPath(validationErrors, propertyPath) : filterErrors(validationErrors, propertyPath);
+
+  return formatParameters(errors);
 };
 
 export {ValidationErrorsContext, useValidationErrors};
