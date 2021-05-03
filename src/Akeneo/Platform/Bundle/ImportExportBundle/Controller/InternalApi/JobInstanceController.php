@@ -446,7 +446,7 @@ class JobInstanceController
                 return new JsonResponse($errors, 400);
             }
 
-            $jobFileLocation = new JobFileLocation($code.DIRECTORY_SEPARATOR. $file->getClientOriginalName(), true);
+            $jobFileLocation = new JobFileLocation($code . DIRECTORY_SEPARATOR . $file->getClientOriginalName(), true);
 
             if ($this->filesystem->has($jobFileLocation->path())) {
                 $this->filesystem->delete($jobFileLocation->path());
@@ -505,9 +505,9 @@ class JobInstanceController
             throw new NotFoundHttpException(
                 sprintf(
                     'The following %s does not exist anymore. Please check configuration:<br />' .
-                    'Connector: %s<br />' .
-                    'Type: %s<br />' .
-                    'Alias: %s',
+                        'Connector: %s<br />' .
+                        'Type: %s<br />' .
+                        'Alias: %s',
                     $jobInstance->getType(),
                     $jobInstance->getConnector(),
                     $jobInstance->getType(),
@@ -564,6 +564,13 @@ class JobInstanceController
         if (count($parametersViolations) > 0) {
             foreach ($parametersViolations as $error) {
                 $accessor->setValue($errors, '[configuration]' . $error->getPropertyPath(), $error->getMessage());
+                $errors['normalized_errors'][] = $this->constraintViolationNormalizer->normalize(
+                    $error,
+                    'internal_api',
+                    [
+                        'translate' => false
+                    ]
+                );
             }
         }
 
@@ -571,6 +578,13 @@ class JobInstanceController
         if ($globalViolations->count() > 0) {
             foreach ($globalViolations as $error) {
                 $errors[$error->getPropertyPath()] = $error->getMessage();
+                $errors['normalized_errors'][] = $this->constraintViolationNormalizer->normalize(
+                    $error,
+                    'internal_api',
+                    [
+                        'translate' => false
+                    ]
+                );
             }
         }
 
@@ -603,7 +617,7 @@ class JobInstanceController
      *
      * @return JobExecution
      */
-    protected function launchJob(JobInstance $jobInstance) : JobExecution
+    protected function launchJob(JobInstance $jobInstance): JobExecution
     {
         $user = $this->tokenStorage->getToken()->getUser();
 

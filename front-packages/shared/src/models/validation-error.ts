@@ -1,7 +1,7 @@
 type ValidationError = {
   messageTemplate: string;
   parameters: {
-    [key: string]: string;
+    [key: string]: string | number | boolean;
   };
   message: string;
   propertyPath: string;
