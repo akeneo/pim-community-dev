@@ -22,39 +22,6 @@ const findOneByIdentifier = <T>(treeNodes: TreeNode<T>[], identifier: number): T
   return findByIdentifiers(treeNodes, [identifier])[0] || undefined;
 };
 
-const insert = <T>(treeNodes: TreeNode<T>[], node: TreeNode<T>, parent: number, position: number): TreeNode<T>[] => {
-  const parentNode = findOneByIdentifier(treeNodes, parent);
-  if (!parentNode) {
-    console.error(`The parent node ${parent} not found`);
-    return treeNodes;
-  }
-
-  if (findByIdentifiers(treeNodes, [node.identifier]).length > 0) {
-    console.error(`The node ${node.identifier} already exist`);
-    return treeNodes;
-  }
-
-  const newNode = {
-    ...node,
-    parent,
-  };
-
-  let newPosition = 0;
-  if (position > 0) {
-    newPosition = position <= parentNode.childrenIds.length ? position : parentNode.childrenIds.length;
-  }
-
-  const newChildren = parentNode.childrenIds;
-  newChildren.splice(newPosition, 0, newNode.identifier);
-
-  const newParentNode = {
-    ...parentNode,
-    children: newChildren,
-  };
-
-  return [...treeNodes.filter(node => node.identifier !== newParentNode.identifier), newParentNode, newNode];
-};
-
 const isDescendantOf = <T>(treeNodes: TreeNode<T>[], identifier: number, parentId: number): boolean => {
   const node = findOneByIdentifier(treeNodes, identifier);
   if (!node || node.parentId === null) {
@@ -72,4 +39,4 @@ const update = <T>(treeNodes: TreeNode<T>[], updatedNode: TreeNode<T>): TreeNode
   return [...treeNodes.filter(node => node.identifier !== updatedNode.identifier), updatedNode];
 };
 
-export {findByIdentifiers, findOneByIdentifier, findRoot, insert, update, isDescendantOf};
+export {findByIdentifiers, findOneByIdentifier, findRoot, update, isDescendantOf};
