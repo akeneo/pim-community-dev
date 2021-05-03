@@ -6,6 +6,10 @@ namespace Akeneo\Pim\Enrichment\Bundle\Command;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Symfony\Component\Console\Helper\ProgressBar;
 
+/**
+ * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class BackoffElasticSearchStateHandler
 {
     public const RETRY_COUNTER = 10;
