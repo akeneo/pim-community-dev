@@ -3,6 +3,9 @@
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\Manager;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -12,6 +15,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterfa
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\GetPublishedProductCompletenesses;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 
 /**
@@ -26,17 +30,12 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
  */
 class PublishedProductsManagerIntegration extends TestCase
 {
-    /** @var PublishedProductManager */
-    private $publishedProductManager;
+    use AssertEventCountTrait;
 
-    /** @var PublishedProductRepositoryInterface */
-    private $publishedProductRepository;
-
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
-
-    /** @var SaverInterface */
-    private $productSaver;
+    private PublishedProductManager $publishedProductManager;
+    private PublishedProductRepositoryInterface $publishedProductRepository;
+    private ProductRepositoryInterface $productRepository;
+    private SaverInterface $productSaver;
 
     /**
      * {@inheritdoc}
@@ -76,6 +75,7 @@ class PublishedProductsManagerIntegration extends TestCase
         $this->publishedProductManager = $this->get('pimee_workflow.manager.published_product');
         $this->productRepository = $this->get('pim_catalog.repository.product');
         $this->productSaver = $this->get('pim_catalog.saver.product');
+        $this->clearMessageBusObserver();
     }
 
     /**
@@ -91,6 +91,8 @@ class PublishedProductsManagerIntegration extends TestCase
         $product = $this->productRepository->findOneByIdentifier('foo');
         $this->publishedProductManager->publish($product);
 
+        $this->assertEventCount(0, ProductCreated::class);
+        $this->assertEventCount(0, ProductUpdated::class);
         $publishedProduct = $this->publishedProductRepository->findOneByOriginalProduct($product);
 
         $this->assertPublishedProductPropertiesEqual($product, $publishedProduct);
@@ -141,6 +143,9 @@ class PublishedProductsManagerIntegration extends TestCase
         $productBar = $this->productRepository->findOneByIdentifier('bar');
         $this->publishedProductManager->publishAll([$productFoo, $productBar]);
 
+        $this->assertEventCount(0, ProductCreated::class);
+        $this->assertEventCount(0, ProductUpdated::class);
+
         $this->assertNotNull($this->publishedProductRepository->findOneByOriginalProduct($productBar));
         $this->assertNotNull($this->publishedProductRepository->findOneByOriginalProduct($productFoo));
     }
@@ -149,6 +154,9 @@ class PublishedProductsManagerIntegration extends TestCase
     {
         $product = $this->productRepository->findOneByIdentifier('foo');
         $this->publishedProductManager->publish($product);
+
+        $this->assertEventCount(0, ProductUpdated::class);
+        $this->assertEventCount(0, ProductRemoved::class);
 
         $publishedProduct = $this->publishedProductRepository->findOneByOriginalProduct($product);
         $this->assertNotNull($publishedProduct);
@@ -247,4 +255,3 @@ class PublishedProductsManagerIntegration extends TestCase
         return $this->get('pimee_workflow.query.get_published_product_completenesses');
     }
 }
-
