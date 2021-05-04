@@ -34,7 +34,7 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
     const targetErrors = useValidationErrors(`[columns][${column.uuid}][target]`, true);
 
     return (
-      <List.Row key={column.uuid} onClick={() => onColumnSelected(column.uuid)} selected={isSelected}>
+      <List.Row key={column.uuid} onClick={() => onColumnSelected(column.uuid)} isSelected={isSelected}>
         <List.Cell width={300}>
           <Field>
             <TextInput

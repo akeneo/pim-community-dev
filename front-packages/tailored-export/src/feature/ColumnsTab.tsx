@@ -22,7 +22,6 @@ type ColumnProps = {
 
 const Container = styled.div`
   padding-top: 10px;
-  padding-bottom: 40px;
   height: 100%;
   display: flex;
   gap: 20px;

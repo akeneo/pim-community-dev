@@ -58,7 +58,7 @@ class ColumnView extends BaseView {
       this.el
     );
 
-    this.el.style = 'height: calc(100vh - 256px)';
+    this.el.style = 'height: calc(100vh - 278px)';
     return this;
   }
 }

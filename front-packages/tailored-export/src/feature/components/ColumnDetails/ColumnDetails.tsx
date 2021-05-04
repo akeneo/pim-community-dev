@@ -39,7 +39,6 @@ const ColumnDetails = ({columnConfiguration, noColumns}: ColumnDetailsProps) => 
           <ColumnDetailsPlaceholder />
         )}
         {noColumns && <NoSelectedColumn />}
-        <div>{columnConfiguration && columnConfiguration.uuid}</div>
       </Content>
     </Container>
   );

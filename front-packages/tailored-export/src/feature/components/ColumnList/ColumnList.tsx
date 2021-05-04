@@ -77,7 +77,7 @@ const ColumnList = ({
           />
         ))}
         {canAddColumn && isLastColumnFilled && (
-          <List.Row onClick={() => onColumnSelected(null)} selected={selectedColumn === null}>
+          <List.Row onClick={() => onColumnSelected(null)} isSelected={selectedColumn === null}>
             <List.Cell width={300}>
               <TextInput
                 ref={null === selectedColumn ? inputRef : null}
