@@ -122,15 +122,29 @@ class IndexProductModelCommand extends Command
             return self::ERROR_CODE_USAGE;
         }
 
-        $numberOfIndexedProducts = $this->batchEsStateHandler->doIndex($chunkedProductModelCodes, new ProgressBar($output, $productModelCount),
+        $numberOfIndexedProducts = $this->doIndex($chunkedProductModelCodes, new ProgressBar($output, $productModelCount),
             function ($codes) {
                 $this->productModelDescendantAndAncestorsIndexer->indexFromProductModelCodes($codes);
-            });
+            },$output);
 
-        $output->writeln('');
         $output->writeln(sprintf('<info>%d product models indexed</info>', $numberOfIndexedProducts));
 
         return 0;
+    }
+
+    private function doIndex(iterable $chunkedCodes, ProgressBar $progressBar, \Closure $codesEsHandler, OutputInterface $output): int
+    {
+        $indexedCount = 0;
+
+        $progressBar->start();
+        foreach ($chunkedCodes as $codes) {
+            $treatedBachSize = $this->batchEsStateHandler->bulkIndex($codes, $output, $codesEsHandler);
+            $indexedCount+=$indexedCount;
+            $progressBar->advance($treatedBachSize);
+        }
+        $progressBar->finish();
+
+        return $indexedCount;
     }
 
     private function getAllRootProductModelCodes(int $batchSize): iterable
