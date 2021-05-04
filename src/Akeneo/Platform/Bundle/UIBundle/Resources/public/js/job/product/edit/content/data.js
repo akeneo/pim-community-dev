@@ -179,14 +179,11 @@ define([
           var filtersContainer = this.$('.filters').empty();
           var configuredFieldCodes = _.pluck(this.config.filters, 'field');
           var savedFieldCodes = _.pluck(this.filterViews, 'filterCode').sort();
-          var fieldCodes = _.union(configuredFieldCodes, _.without(savedFieldCodes)
-                    );
+          var fieldCodes = _.union(configuredFieldCodes, _.without(savedFieldCodes));
 
-                    if (identifier) {
-                        fieldCodes = _.union(configuredFieldCodes, _.without(savedFieldCodes, identifier.code), [
-            identifier.code,
-          ]);
-                    }
+          if (identifier) {
+            fieldCodes = _.union(configuredFieldCodes, _.without(savedFieldCodes, identifier.code), [identifier.code]);
+          }
 
           var filterViews = _.map(
             fieldCodes,
