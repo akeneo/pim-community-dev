@@ -53,8 +53,6 @@ services:
     volumes:
       - './:/srv/pim:ro'
       - '/dev/shm:/dev/shm'
-    ports:
-      - '${DOCKER_PORT_SELENIUM:-5910}:5900'
     networks:
       - 'pim'
 
@@ -83,8 +81,6 @@ services:
       MYSQL_PASSWORD: '${APP_DATABASE_PASSWORD}'
     volumes:
       - './docker/initdb.d:/docker-entrypoint-initdb.d:ro'
-    ports:
-      - '${DOCKER_PORT_MYSQL:-33006}:3306'
     networks:
       - 'pim'
 
@@ -93,8 +89,6 @@ services:
     environment:
       ES_JAVA_OPTS: '${ES_JAVA_OPTS:--Xms512m -Xmx512m}'
       discovery.type: 'single-node'
-    ports:
-      - '${DOCKER_PORT_ELASTICSEARCH:-9210}:9200'
     networks:
       - 'pim'
 
