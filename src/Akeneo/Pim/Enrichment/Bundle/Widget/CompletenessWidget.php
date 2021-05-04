@@ -47,7 +47,7 @@ class CompletenessWidget implements WidgetInterface
      */
     public function getTemplate(): string
     {
-        return 'AkeneoPimEnrichmentBundle:Widget:completeness.html.twig';
+        return '';
     }
 
     /**
