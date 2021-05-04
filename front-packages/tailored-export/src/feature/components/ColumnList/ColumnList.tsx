@@ -50,7 +50,8 @@ const ColumnList = ({
   const globalErrors = useValidationErrors('[columns]', true);
 
   const canAddColumn = MAX_COLUMN_COUNT > columnsConfiguration.length;
-  const isLastColumnFilled = 0 < columnsConfiguration.length && columnsConfiguration[columnsConfiguration.length - 1].target !== '';
+  const isLastColumnFilled =
+    0 < columnsConfiguration.length && columnsConfiguration[columnsConfiguration.length - 1].target !== '';
 
   return (
     <Container>

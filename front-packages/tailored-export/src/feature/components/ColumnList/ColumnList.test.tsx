@@ -35,11 +35,13 @@ test('it renders a placeholder when no column is selected', () => {
 
   expect(screen.getAllByText(/akeneo.tailored_export.column_list.column_row.no_source/i)).toHaveLength(3);
 
-  const firstInput = screen.getAllByPlaceholderText('akeneo.tailored_export.column_list.column_row.target_placeholder')[2];
+  const firstInput = screen.getAllByPlaceholderText(
+    'akeneo.tailored_export.column_list.column_row.target_placeholder'
+  )[2];
   expect(firstInput).toHaveFocus();
 });
 
-test('it remove a column', () => {
+test('it can remove a column', () => {
   const columnsConfiguration = [
     {
       uuid: 1,
@@ -64,10 +66,13 @@ test('it remove a column', () => {
   const removeButton = screen.getByTitle('akeneo.tailored_export.column_list.column_row.remove');
   fireEvent.click(removeButton);
 
+  const confirmButton = screen.getByText('pim_common.delete');
+  fireEvent.click(confirmButton);
+
   expect(handleRemove).toBeCalled();
 });
 
-test('it create a new column', () => {
+test('it can create a new column', () => {
   const columnsConfiguration = [
     {
       uuid: 1,
@@ -89,13 +94,15 @@ test('it create a new column', () => {
     />
   );
 
-  const lastInput = screen.getAllByPlaceholderText('akeneo.tailored_export.column_list.column_row.target_placeholder')[1];
+  const lastInput = screen.getAllByPlaceholderText(
+    'akeneo.tailored_export.column_list.column_row.target_placeholder'
+  )[1];
   userEvent.type(lastInput, 'm');
 
   expect(handleCreate).toBeCalledWith('m');
 });
 
-test('it update a column', () => {
+test('it can update a column', () => {
   const columnsConfiguration = [
     {
       uuid: 1,
@@ -117,7 +124,9 @@ test('it update a column', () => {
     />
   );
 
-  const firstInput = screen.getAllByPlaceholderText('akeneo.tailored_export.column_list.column_row.target_placeholder')[0];
+  const firstInput = screen.getAllByPlaceholderText(
+    'akeneo.tailored_export.column_list.column_row.target_placeholder'
+  )[0];
   fireEvent.change(firstInput, {target: {value: 'my new column name'}});
 
   expect(handleColumnChange).toBeCalledWith({
@@ -139,26 +148,27 @@ test('it displays validation errors', () => {
   const handleColumnChange = jest.fn();
 
   renderWithProviders(
-
-    <ValidationErrorsContext.Provider value={[
-      {
-        messageTemplate: 'akeneo.tailored_export.validation.columns.target.max_length_reached',
-        parameters: {
-          '{{ value }}': 'way too long',
-          '{{ limit }}': 255,
+    <ValidationErrorsContext.Provider
+      value={[
+        {
+          messageTemplate: 'akeneo.tailored_export.validation.columns.target.max_length_reached',
+          parameters: {
+            '{{ value }}': 'way too long',
+            '{{ limit }}': 255,
+          },
+          message: 'akeneo.tailored_export.validation.columns.target.max_length_reached',
+          propertyPath: '[columns][1][target]',
+          invalidValue: 'way too long',
         },
-        message: 'akeneo.tailored_export.validation.columns.target.max_length_reached',
-        propertyPath: '[columns][1][target]',
-        invalidValue: 'way too long',
-      },
-      {
-        messageTemplate: 'akeneo.tailored_export.validation.columns.max_column_count',
-        parameters: {},
-        message: 'akeneo.tailored_export.validation.columns.max_column_count',
-        propertyPath: '[columns]',
-        invalidValue: '',
-      }
-    ]}>
+        {
+          messageTemplate: 'akeneo.tailored_export.validation.columns.max_column_count',
+          parameters: {},
+          message: 'akeneo.tailored_export.validation.columns.max_column_count',
+          propertyPath: '[columns]',
+          invalidValue: '',
+        },
+      ]}
+    >
       <ColumnList
         columnsConfiguration={columnsConfiguration}
         onColumnChange={handleColumnChange}
@@ -204,7 +214,9 @@ test('it move to next line when user type enter', async () => {
     />
   );
 
-  const firstInput = screen.getAllByPlaceholderText('akeneo.tailored_export.column_list.column_row.target_placeholder')[0];
+  const firstInput = screen.getAllByPlaceholderText(
+    'akeneo.tailored_export.column_list.column_row.target_placeholder'
+  )[0];
   userEvent.type(firstInput, '{enter}');
 
   expect(handleColumnSelected).toHaveBeenCalledWith(2);
@@ -235,7 +247,9 @@ test('it focus the selected column', async () => {
     />
   );
 
-  const firstInput = screen.getAllByPlaceholderText('akeneo.tailored_export.column_list.column_row.target_placeholder')[0];
+  const firstInput = screen.getAllByPlaceholderText(
+    'akeneo.tailored_export.column_list.column_row.target_placeholder'
+  )[0];
 
   expect(firstInput).toHaveFocus();
 });

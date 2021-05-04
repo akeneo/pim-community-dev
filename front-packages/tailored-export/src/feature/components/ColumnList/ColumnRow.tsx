@@ -34,7 +34,7 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
     const handleConfirmColumnRemove = () => {
       onColumnRemoved(column.uuid);
       onFocusNext(column.uuid);
-    }
+    };
 
     const targetErrors = useValidationErrors(`[columns][${column.uuid}][target]`, true);
 
@@ -78,7 +78,6 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
           </DeleteModal>
         )}
       </>
-
     );
   }
 );

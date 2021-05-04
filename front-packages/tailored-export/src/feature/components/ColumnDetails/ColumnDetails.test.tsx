@@ -12,13 +12,17 @@ test('it renders column details', () => {
 test('it renders placeholder when there is no column', () => {
   renderWithProviders(<ColumnDetails columnConfiguration={null} onColumnChange={jest.fn} noColumns={true} />);
 
-  expect(screen.getByText(/akeneo.tailored_export.column_details.sources.no_column_selected.title/i)).toBeInTheDocument();
+  expect(
+    screen.getByText(/akeneo.tailored_export.column_details.sources.no_column_selected.title/i)
+  ).toBeInTheDocument();
 });
 
 test('it renders placeholder when there is no column configuration', () => {
   renderWithProviders(<ColumnDetails columnConfiguration={null} onColumnChange={jest.fn} noColumns={false} />);
 
-  expect(screen.getByText(/akeneo.tailored_export.column_details.sources.no_source_selected.title/i)).toBeInTheDocument();
+  expect(
+    screen.getByText(/akeneo.tailored_export.column_details.sources.no_source_selected.title/i)
+  ).toBeInTheDocument();
 });
 
 test('it renders placeholder when there is no source selected', () => {
@@ -30,5 +34,7 @@ test('it renders placeholder when there is no source selected', () => {
     <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn} noColumns={false} />
   );
 
-  expect(screen.getByText(/akeneo.tailored_export.column_details.sources.no_source_selected.title/i)).toBeInTheDocument();
+  expect(
+    screen.getByText(/akeneo.tailored_export.column_details.sources.no_source_selected.title/i)
+  ).toBeInTheDocument();
 });
