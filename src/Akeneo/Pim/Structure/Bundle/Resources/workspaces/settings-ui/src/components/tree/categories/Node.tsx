@@ -156,6 +156,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
                 event.stopPropagation();
                 addCategory(id);
               }}
+              // @todo use translated label
             >
               New Category
             </Button>
@@ -169,6 +170,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
                 event.stopPropagation();
                 deleteCategory(id);
               }}
+              // @todo use translated label
             >
               Delete
             </Button>
