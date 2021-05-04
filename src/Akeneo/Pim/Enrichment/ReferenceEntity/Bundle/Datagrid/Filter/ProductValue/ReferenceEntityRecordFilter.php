@@ -18,6 +18,7 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindExistingRecordCodesInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
@@ -65,12 +66,21 @@ class ReferenceEntityRecordFilter extends ChoiceFilter
 
         $operator = $this->getOperator($data['type']);
 
-        $this->util->applyFilter(
-            $ds,
-            $this->get(ProductFilterUtility::DATA_NAME_KEY),
-            $operator,
-            $data['value']
-        );
+        try {
+            $this->util->applyFilter(
+                $ds,
+                $this->get(ProductFilterUtility::DATA_NAME_KEY),
+                $operator,
+                $data['value']
+            );
+        } catch (InvalidPropertyException $exception) {
+            // In case where the record no longer exists, the filter is ignored.
+            if (InvalidPropertyException::VALID_ENTITY_CODE_EXPECTED_CODE === $exception->getCode()) {
+                return false;
+            }
+
+            throw $exception;
+        }
 
         return true;
     }

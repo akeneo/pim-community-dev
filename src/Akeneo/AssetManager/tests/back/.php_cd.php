@@ -49,6 +49,7 @@ $rules = [
         'Imagine\Image',
         'Imagine\Exception',
         'League\Flysystem\FilesystemInterface',
+        'League\Flysystem\FileNotFoundException',
 
         // TODO: asset families should not depend on PIM
         'Akeneo\Pim\Enrichment\AssetManager\Component',
