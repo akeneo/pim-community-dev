@@ -3,6 +3,7 @@ NODE_RUN = $(DOCKER_COMPOSE) run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP
 YARN_RUN = $(NODE_RUN) yarn
 PHP_RUN = $(DOCKER_COMPOSE) run -u www-data --rm php php
 PHP_EXEC = $(DOCKER_COMPOSE) exec -u www-data fpm php
+COVERAGE?=false
 
 .DEFAULT_GOAL := help
 

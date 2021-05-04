@@ -44,6 +44,8 @@ unit-back: var/tests/phpspec
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	.circleci/find_non_executed_phpspec.sh
+else ifeq ($(COVERAGE),true)
+	XDEBUG_MODE=coverage ${PHP_RUN} -d memory_limit=-1 vendor/bin/phpspec run --config=phpspec-coverage.yml.dist
 else
 	${PHP_RUN} vendor/bin/phpspec run
 endif

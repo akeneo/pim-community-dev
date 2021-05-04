@@ -178,6 +178,9 @@
             "ref": "3d21344765fd3440a85bdd27d4cada186ec628bd"
         }
     },
+    "friends-of-phpspec/phpspec-code-coverage": {
+        "version": "v6.1.0"
+    },
     "friendsofphp/php-cs-fixer": {
         "version": "2.2",
         "recipe": {

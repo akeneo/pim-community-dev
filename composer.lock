@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bbec77fa79215f8765c5010ed013f055",
+    "content-hash": "93a8fba9c213703a27ce612f6ffff736",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -11718,6 +11718,96 @@
                 "source": "https://github.com/FriendsOfBehat/SymfonyExtension/tree/v2.2.0"
             },
             "time": "2021-02-04T15:45:42+00:00"
+        },
+        {
+            "name": "friends-of-phpspec/phpspec-code-coverage",
+            "version": "v6.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/friends-of-phpspec/phpspec-code-coverage.git",
+                "reference": "cb6177eb8ce45cdde990ff3e6db3b44fbbb17364"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/friends-of-phpspec/phpspec-code-coverage/zipball/cb6177eb8ce45cdde990ff3e6db3b44fbbb17364",
+                "reference": "cb6177eb8ce45cdde990ff3e6db3b44fbbb17364",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 7.3",
+                "phpspec/phpspec": "^6.0 || ^7.0",
+                "phpunit/php-code-coverage": "^9.0"
+            },
+            "conflict": {
+                "sebastian/comparator": "< 2.0"
+            },
+            "require-dev": {
+                "drupol/php-conventions": "^3.0",
+                "vimeo/psalm": "^4.7"
+            },
+            "suggest": {
+                "ext-pcov": "Install PCov extension to generate code coverage.",
+                "ext-xdebug": "Install Xdebug to generate phpspec code coverage."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "FriendsOfPhpSpec\\PhpSpec\\CodeCoverage\\": "src/"
+                },
+                "files": [
+                    "src/bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ek9",
+                    "email": "dev@ek9.co",
+                    "homepage": "https://ek9.co"
+                },
+                {
+                    "name": "Henrik Bjornskov"
+                },
+                {
+                    "name": "Stéphane Hulard",
+                    "email": "s.hulard@chstudio.fr",
+                    "homepage": "https://chstudio.fr"
+                },
+                {
+                    "name": "Pol Dellaiera",
+                    "email": "pol.dellaiera@protonmail.com",
+                    "homepage": "https://not-a-number.io/"
+                },
+                {
+                    "name": "Jay Linski",
+                    "homepage": "https://github.com/jaylinski"
+                }
+            ],
+            "description": "Generate Code Coverage reports for PhpSpec tests",
+            "homepage": "https://github.com/friends-of-phpspec/phpspec-code-coverage",
+            "keywords": [
+                "code-coverage",
+                "coverage",
+                "phpspec",
+                "report",
+                "spec",
+                "test",
+                "tests"
+            ],
+            "support": {
+                "docs": "https://github.com/friends-of-phpspec/phpspec-code-coverage#phpspec-code-coverage",
+                "issues": "https://github.com/friends-of-phpspec/phpspec-code-coverage/issues",
+                "source": "https://github.com/friends-of-phpspec/phpspec-code-coverage"
+            },
+            "time": "2021-03-30T20:51:42+00:00"
         },
         {
             "name": "friendsofphp/php-cs-fixer",

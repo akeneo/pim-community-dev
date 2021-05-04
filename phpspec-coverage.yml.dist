@@ -1,0 +1,14 @@
+## Rename this file in phpspec.yml to customize the phpspec configuration
+extensions:
+  FriendsOfPhpSpec\PhpSpec\CodeCoverage\CodeCoverageExtension:
+    format:
+      - html
+      - clover
+    output:
+      html: coverage/coverage-phpspec
+      clover: coverage/coverage-phpspec/coverage.xml
+    whitelist:
+      - src
+    blacklist:
+      - src/Acme
+      - src/Behat

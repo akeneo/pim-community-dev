@@ -1,0 +1,37 @@
+name: Codecov
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions:  apcu, bcmath, curl, exif, fileinfo, gd, imagick, intl, json, mbstring, openssl, pdo, xml, zip
+          coverage: xdebug
+      - name: Build application
+        run: make vendor
+      - name: Build application
+        run: make vendor
+      - name: Run backend unit tests with coverage
+        run: COVERAGE=true make unit-back
+      - name: Upload test code coverage data on codecov
+        uses: codecov/codecov-action@v1
+        with:
+          files: build/coverage-phpspec/coverage.xml
+          flags: unittests
+          name: codecov-umbrella # optional
+          fail_ci_if_error: true # optional (default = false)
+          verbose: false # optional (default = false)
+          token: ${{ secrets.CODECOV_TOKEN }}
