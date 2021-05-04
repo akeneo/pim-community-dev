@@ -1,5 +1,14 @@
 # 5.0.x
 
+## BC breaks
+
+- API-1557:
+    - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductCreatedAndUpdatedEventSubscriber` implements `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface`.
+    - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelCreatedAndUpdatedEventSubscriber` implements `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface`.
+    - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelRemovedEventSubscriber` implements `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface`.
+    - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductRemovedEventSubscriber` implements `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface`.
+    -  Public methods have been changed according to the new interface.
+
 # 5.0.22 (2021-04-27)
 
 # 5.0.21 (2021-04-23)
