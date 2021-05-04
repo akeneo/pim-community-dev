@@ -7,9 +7,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 128px;
-  padding: 20px;
   gap: 10px;
+  margin-top: 40px;
 `;
 const Title = styled.div`
   color: ${getColor('grey', 140)};

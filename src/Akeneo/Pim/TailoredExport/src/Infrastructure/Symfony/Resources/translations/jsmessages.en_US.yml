@@ -11,21 +11,21 @@ akeneo.tailored_export:
   column_list:
     title: Columns
     column_row:
-      target_placeholder: The column name
+      target_placeholder: Define your new column name here
       remove: Remove column
       no_source: No source
     no_column_selection:
       title: No columns selection to export
-      subtitle: To know more about mappping and operations,
+      subtitle: To know more about mapping and operations,
       link: this article may help you
       add_column: Add first column
   column_details:
     sources:
-      title: Source(s)
+      title: Sources
       add: Add source
       no_source_selected:
         title: No source selected for the moment.
-        subtitle: To know more about mappping and operations,
+        subtitle: To know more about mapping and operations,
         link: this article may help you
       no_column_selected:
         title: No column selected for the moment.
@@ -35,6 +35,6 @@ akeneo.tailored_export:
     columns:
       max_column_count_reached: You reached the maximum column count of {{ limit }}
       target:
-        should_not_be_blank: The target should not be blank
-        max_length_reached: "{{ limit }} characters max"
-        should_be_unique: Target name should be unique
+        should_not_be_blank: Column name should not be blank
+        max_length_reached: Column name is too long. It should have {{ limit }} characters or less.
+        should_be_unique: Column name should be unique
