@@ -102,7 +102,6 @@ class WebhookEventBuilder
 
         foreach ($pimEvents as $pimEvent) {
             $data = $eventDataCollection->getEventData($pimEvent);
-            $version = $eventDataCollection->getEventVersion($pimEvent);
 
             if (null === $data) {
                 throw new \LogicException(sprintf('Event %s should have event data', $pimEvent->getUuid()));
@@ -124,8 +123,7 @@ class WebhookEventBuilder
                 $pimEvent->getAuthor(),
                 $context['pim_source'],
                 $data,
-                $pimEvent,
-                $version
+                $pimEvent
             );
         }
 

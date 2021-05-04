@@ -13,9 +13,8 @@ use Akeneo\Platform\Component\EventQueue\EventInterface;
 class EventDataCollection
 {
     private array $events;
-    private array $versions;
 
-    public function setEventData(EventInterface $event, array $data, ?string $version = null): self
+    public function setEventData(EventInterface $event, array $data): self
     {
         $uuid = $event->getUuid();
 
@@ -24,7 +23,6 @@ class EventDataCollection
         }
 
         $this->events[$uuid] = $data;
-        $this->versions[$uuid] = $version;
 
         return $this;
     }
@@ -38,7 +36,6 @@ class EventDataCollection
         }
 
         $this->events[$uuid] = $error;
-        $this->versions[$uuid] = null;
 
         return $this;
     }
@@ -51,12 +48,5 @@ class EventDataCollection
         $uuid = $event->getUuid();
 
         return $this->events[$uuid] ?? null;
-    }
-
-    public function getEventVersion(EventInterface $event): ?string
-    {
-        $uuid = $event->getUuid();
-
-        return $this->versions[$uuid] ?? null;
     }
 }

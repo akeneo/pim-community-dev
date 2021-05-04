@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEvent
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLogger;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataVersionLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
@@ -41,7 +40,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         WebhookClient $client,
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
-        EventDataVersionLogger $eventDataVersionLogger,
         DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
         EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
@@ -54,7 +52,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $builder,
             $logger,
             $eventSubscriptionSkippedOwnEventLogger,
-            $eventDataVersionLogger,
             $eventsApiDebugRepository,
             $eventsApiRequestRepository,
             $cacheClearer,
@@ -115,8 +112,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                         $author,
                         'staging.akeneo.com',
                         ['data'],
-                        $this->createEvent($author, ['data']),
-                        'product_version'
+                        $this->createEvent($author, ['data'])
                     ),
                 ]
             );
@@ -212,8 +208,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                         $erpAuthor,
                         'staging.akeneo.com',
                         ['data'],
-                        $this->createEvent($erpAuthor, ['data']),
-                        'product_version'
+                        $this->createEvent($erpAuthor, ['data'])
                     ),
                 ]
             );
