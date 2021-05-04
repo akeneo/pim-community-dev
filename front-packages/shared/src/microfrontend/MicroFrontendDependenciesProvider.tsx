@@ -107,6 +107,7 @@ const MicroFrontendDependenciesProvider = ({
         mediator: {
           trigger: (event: string, _options?: unknown) => console.log('Triggering', event),
           on: (_event: string, _callback: () => void) => {},
+          off: (_event: string, _callback: () => void) => {},
         },
       }}
     >
