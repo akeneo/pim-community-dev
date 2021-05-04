@@ -11,6 +11,7 @@ const Container = styled.div<{disabled: boolean; onClick: () => void} & AkeneoTh
   display: inline-flex;
   opacity: ${({disabled}) => disabled && 0.5};
   cursor: ${({disabled, onClick}) => (disabled ? 'not-allowed' : onClick !== undefined ? 'pointer' : 'inherit')};
+  background: ${getColor('white')}};
 
   :hover {
     border-color: ${({disabled}) => !disabled && getColor('grey', 60)};
@@ -77,7 +78,7 @@ type IconCardGridProps = {
 
 const IconCardGrid = styled.div<IconCardGridProps & AkeneoThemedProps>`
   display: grid;
-  grid-template-columns: repeat(auto-fill, ${({size}) => ('big' === size ? 301 : 240)}px);
+  grid-template-columns: repeat(auto-fit, minmax(${({size}) => ('big' === size ? 300 : 240)}px, 1fr));
   gap: 25px;
 `;
 
