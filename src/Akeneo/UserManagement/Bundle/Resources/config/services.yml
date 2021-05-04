@@ -1,6 +1,6 @@
 parameters:
-    pim_user.account_lock.duration: 120
-    pim_user.account_lock.max_consecutive_failures: 2
+    pim_user.account_lock.duration: 300
+    pim_user.account_lock.max_consecutive_failures: 5
 
 services:
     pim_user.manager:
