@@ -65,7 +65,7 @@ const RowContainer = styled.div<{isMultiline: boolean; isSelected: boolean} & Ak
   outline-style: none;
   padding: 0 10px;
   border-bottom: 1px solid ${getColor('grey', 60)};
-  background-color: ${({selected}) => (selected ? getColor('blue', 20) : 'transparent')};
+  background-color: ${({isSelected}) => (isSelected ? getColor('blue', 20) : 'transparent')};
 
   &:hover {
     background-color: ${getColor('grey', 20)};
