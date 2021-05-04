@@ -97,12 +97,16 @@ export const ListConnections = () => {
             <PageContent>
                 <Helper>
                     <HelperTitle>
-                        <Translate id='akeneo_connectivity.connection.helper.title' />
+                        <Translate
+                            id='akeneo_connectivity.connection.helper.title'
+                            placeholders={{count: Object.keys(connections).length.toString()}}
+                            count={Object.keys(connections).length}
+                        />
                     </HelperTitle>
-                    <p>
-                        <Translate id='akeneo_connectivity.connection.helper.description' />
-                    </p>
-                    <HelperLink href='https://help.akeneo.com/pim/articles/what-is-a-connection.html' target='_blank'>
+                    <HelperLink
+                        href='https://help.akeneo.com/pim/serenity/articles/manage-your-connections.html'
+                        target='_blank'
+                    >
                         <Translate id='akeneo_connectivity.connection.helper.link' />
                     </HelperLink>
                 </Helper>
