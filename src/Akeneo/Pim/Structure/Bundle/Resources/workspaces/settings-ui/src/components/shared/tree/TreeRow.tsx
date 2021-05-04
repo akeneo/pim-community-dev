@@ -4,12 +4,17 @@ import {AkeneoThemedProps, ArrowRightIcon, getColor} from 'akeneo-design-system'
 const TreeRow = styled.div<{$selected: boolean; $disabled: boolean} & AkeneoThemedProps>`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+
+  box-sizing: border-box;
   height: 54px;
   line-height: 54px;
+  padding: 0 20px;
   overflow: hidden;
   width: 100%;
   border: 1px solid ${getColor('grey100')};
-  
+
   ${({$selected}) =>
     $selected &&
     css`
@@ -46,4 +51,21 @@ const TreeArrowIcon = styled(ArrowRightIcon)<{$isFolderOpen: boolean} & AkeneoTh
   cursor: pointer;
 `;
 
-export {TreeRow, TreeArrowIcon, ArrowButton};
+const RowInnerContainer = styled.div`
+  display: flex;
+  flex-grow: 1;
+  z-index: 1;
+  max-width: 65%;
+`;
+
+const RowActionsContainer = styled.div`
+  display: flex;
+  opacity: 0;
+  z-index: 1;
+
+  ${TreeRow}:hover & {
+    opacity: 1;
+  }
+`;
+
+export {TreeRow, TreeArrowIcon, ArrowButton, RowActionsContainer, RowInnerContainer};

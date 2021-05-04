@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {CategoryTreeModel as CategoryTreeModel} from '../../../models';
+import {CategoryTreeModel} from '../../../models';
 import {Node} from './Node';
 import {CategoryTreeProvider} from '../../providers';
 
@@ -8,6 +8,8 @@ type Props = {
   rootLabel: string;
   sortable?: boolean; // @todo find a better name: editable?
   followCategory?: (category: CategoryTreeModel) => void;
+  addCategory?: (categoryId: number) => void; // @todo define arguments that we really need
+  deleteCategory?: (categoryId: number) => void; // @todo define arguments that we really need
   // @todo define onCategoryMoved action
 };
 
