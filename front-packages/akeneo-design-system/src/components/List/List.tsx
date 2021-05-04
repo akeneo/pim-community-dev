@@ -59,7 +59,7 @@ const RowActionContainer = styled.div`
   gap: 10px;
 `;
 
-const RowContainer = styled.div<{multiline: boolean; selected: boolean} & AkeneoThemedProps>`
+const RowContainer = styled.div<{isMultiline: boolean; isSelected: boolean} & AkeneoThemedProps>`
   display: flex;
   flex-direction: column;
   outline-style: none;
@@ -80,11 +80,11 @@ const RowContainer = styled.div<{multiline: boolean; selected: boolean} & Akeneo
   }
 
   ${CellContainer} {
-    align-items: ${({multiline}) => (multiline ? 'start' : 'center')};
+    align-items: ${({isMultiline}) => (isMultiline ? 'start' : 'center')};
   }
 
   ${TitleCell}, ${RemoveCellContainer} {
-    height: ${({multiline}) => (multiline ? '74px' : 'auto')};
+    height: ${({isMultiline}) => (isMultiline ? '74px' : 'auto')};
     align-items: center;
   }
 `;
@@ -113,16 +113,16 @@ type RowProps = Override<
     /**
      * Define if line contain multiline content
      */
-    multiline?: boolean;
+    isMultiline?: boolean;
 
     /**
      * Define if line is selected
      */
-    selected?: boolean;
+    isSelected?: boolean;
   }
 >;
 
-const Row = ({children, multiline = false, selected = false, ...rest}: RowProps) => {
+const Row = ({children, isMultiline = false, isSelected = false, ...rest}: RowProps) => {
   const actionCellChild: ReactElement[] = [];
   const cells: ReactNode[] = [];
   const helpers: ReactNode[] = [];
@@ -138,7 +138,7 @@ const Row = ({children, multiline = false, selected = false, ...rest}: RowProps)
   });
 
   return (
-    <RowContainer multiline={multiline} tabIndex={0} selected={selected} {...rest}>
+    <RowContainer isMultiline={isMultiline} tabIndex={0} isSelected={isSelected} {...rest}>
       <RowContentContainer>
         <RowDataContainer>{cells}</RowDataContainer>
         {actionCellChild.length > 0 && <RowActionContainer>{actionCellChild}</RowActionContainer>}
