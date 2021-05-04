@@ -1,5 +1,5 @@
 import notify from 'akeneoassetmanager/application/event/notify';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 
 export const notifyAssetFamilyWellSaved = () => {
   return notify('success', 'pim_asset_manager.asset_family.notification.save.success');

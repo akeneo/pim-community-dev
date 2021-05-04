@@ -1,5 +1,5 @@
 import formState, {FormState} from 'akeneoassetmanager/application/reducer/state';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {combineReducers} from 'redux';
 import EditionValue, {areValuesEqual} from 'akeneoassetmanager/domain/model/asset/edition-value';
 import EditionAsset, {createEmptyEditionAsset} from 'akeneoassetmanager/domain/model/asset/edition-asset';

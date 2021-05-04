@@ -1,5 +1,5 @@
 import {FormState, createFormState} from 'akeneoassetmanager/application/reducer/state';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {NormalizedPermissionCollection} from 'akeneoassetmanager/domain/model/asset-family/permission';
 
 export interface PermissionState {

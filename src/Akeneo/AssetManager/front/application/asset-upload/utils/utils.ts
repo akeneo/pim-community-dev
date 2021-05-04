@@ -6,7 +6,7 @@ import Line, {
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {AssetFamily, getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/creation-asset';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 
 const findAssetByCode = (assets: CreationAsset[], code: AssetCode): CreationAsset | null => {

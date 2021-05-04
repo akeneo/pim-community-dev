@@ -1,6 +1,6 @@
 import {AssetFamily, createEmptyAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import formState, {FormState} from 'akeneoassetmanager/application/reducer/state';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {combineReducers} from 'redux';
 import {File} from 'akeneoassetmanager/domain/model/file';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';

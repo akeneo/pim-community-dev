@@ -1,5 +1,5 @@
 import {Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 
 export const optionEditionStart = (options: Option[]) => {
   return {type: 'OPTIONS_EDITION_START', options: options.map((option: Option) => option)};

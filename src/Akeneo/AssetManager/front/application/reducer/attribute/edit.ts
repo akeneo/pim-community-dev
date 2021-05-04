@@ -1,4 +1,4 @@
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {NormalizedTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {getAttributeReducer, Reducer} from 'akeneoassetmanager/application/configuration/attribute';

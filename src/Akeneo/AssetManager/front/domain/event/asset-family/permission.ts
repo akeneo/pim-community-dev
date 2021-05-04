@@ -1,4 +1,4 @@
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {PermissionCollection} from 'akeneoassetmanager/domain/model/asset-family/permission';
 
 export const permissionEditionReceived = (permissions: PermissionCollection) => {

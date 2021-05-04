@@ -1,6 +1,6 @@
+import {ValidationError} from '@akeneo-pim-community/shared';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
 
 export enum LineStatus {

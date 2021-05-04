@@ -10,10 +10,15 @@ import {
   SectionTitle,
   useProgress,
 } from 'akeneo-design-system';
-import {getErrorsForPath, NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
+import {
+  getErrorsForPath,
+  NotificationLevel,
+  useNotify,
+  useTranslate,
+  ValidationError,
+} from '@akeneo-pim-community/shared';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {Context} from 'akeneoassetmanager/domain/model/context';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {useUpdaterCollection} from 'akeneoassetmanager/application/component/library/MassEdit/hooks/useUpdaterCollection';
 import {AddAttributeDropdown} from 'akeneoassetmanager/application/component/library/MassEdit/components/AddAttributeDropdown';
 import {EmptyUpdaterCollection} from 'akeneoassetmanager/application/component/library/MassEdit/components/EmptyUpdaterCollection';
