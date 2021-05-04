@@ -8,9 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEvent
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLogger;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventBuildLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataVersionLogger;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SkipOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
@@ -43,8 +41,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         WebhookClient $client,
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
-        EventBuildLogger $eventBuildLogger,
-        SkipOwnEventLogger $skipOwnEventLogger,
         EventDataVersionLogger $eventDataVersionLogger,
         DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
@@ -57,8 +53,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $client,
             $builder,
             $logger,
-            $eventBuildLogger,
-            $skipOwnEventLogger,
             $eventSubscriptionSkippedOwnEventLogger,
             $eventDataVersionLogger,
             $eventsApiDebugRepository,
@@ -320,104 +314,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    public function it_logs_the_time_it_take_to_build_the_api_events(
-        SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
-        WebhookUserAuthenticator $webhookUserAuthenticator,
-        WebhookClient $client,
-        WebhookEventBuilder $builder,
-        LoggerInterface $logger,
-        EventBuildLogger $eventBuildLogger,
-        SkipOwnEventLogger $skipOwnEventLogger,
-        EventDataVersionLogger $eventDataVersionLogger,
-        DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
-        CacheClearerInterface $cacheClearer,
-        EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
-        EventsApiDebugRepository $eventsApiDebugRepository
-    ): void {
-        $getTimeIterable = (function () {
-            yield 2; // Start - subscription 1
-            yield 3; // End
-            yield 5; // Start - subscription 2
-            yield 8; // End
-            yield 13; // Start - (ignored)
-        })();
-
-        /** @var callable Mock a function that return the current time in milliseconds. */
-        $getTimeCallable = function () use ($getTimeIterable) {
-            $time = $getTimeIterable->current();
-            $getTimeIterable->next();
-
-            return $time;
-        };
-
-        $this->beConstructedWith(
-            $selectActiveWebhooksQuery,
-            $webhookUserAuthenticator,
-            $client,
-            $builder,
-            $logger,
-            $eventBuildLogger,
-            $skipOwnEventLogger,
-            $eventSubscriptionSkippedOwnEventLogger,
-            $eventDataVersionLogger,
-            $eventsApiDebugRepository,
-            $eventsApiRequestRepository,
-            $cacheClearer,
-            'staging.akeneo.com',
-            $getTimeCallable,
-        );
-
-        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
-        $bulkEvent = new BulkEvent(
-            [
-                $this->createEvent($author, ['data']),
-            ]
-        );
-
-        $subscription1 = new ActiveWebhook('ecommerce', 42, 'a_secret', 'http://localhost/');
-        $subscription2 = new ActiveWebhook('ecommerce', 42, 'a_secret', 'http://localhost/');
-
-        $selectActiveWebhooksQuery->execute()->willReturn([$subscription1, $subscription2]);
-
-        $user = new User();
-        $user->setUsername('ecommerce_0000');
-        $webhookUserAuthenticator->authenticate(42)->willReturn($user);
-
-        $builder
-            ->build(Argument::cetera())
-            ->willReturn(
-                [
-                    new WebhookEvent(
-                        'product.created',
-                        '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
-                        '2020-01-01T00:00:00+00:00',
-                        $author,
-                        'staging.akeneo.com',
-                        ['data'],
-                        $this->createEvent($author, ['data'])
-                    ),
-                ]
-            );
-
-        $eventsApiRequestRepository->upsert(Argument::any(), Argument::any())->shouldBeCalled();
-
-        $client->bulkSend(
-            Argument::that(
-                function (iterable $iterable) {
-                    iterator_to_array($iterable); // Call the iterator to run the code.
-
-                    return true;
-                }
-            )
-        )->shouldBeCalled();
-
-        $command = new SendBusinessEventToWebhooksCommand($bulkEvent);
-        $this->handle($command);
-
-        $expectedBuildTime = (3 - 2) + (8 - 5);
-        $eventBuildLogger->log(2, $expectedBuildTime, 2, $bulkEvent)->shouldBeCalled();
-    }
-
     public function test_it_logs_for_the_events_api_debug_when_an_event_subscription_skipped_its_own_event(
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
         WebhookUserAuthenticator $webhookUserAuthenticator,
@@ -470,7 +366,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $timestamp = 1577836800;
         $uuid = '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c';
 
-        return new class ($author, $data, $timestamp, $uuid) extends Event
+        return new class($author, $data, $timestamp, $uuid) extends Event
         {
             public function getName(): string
             {
