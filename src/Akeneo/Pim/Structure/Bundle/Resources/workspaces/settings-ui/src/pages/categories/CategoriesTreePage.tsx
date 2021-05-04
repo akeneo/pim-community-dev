@@ -81,8 +81,8 @@ const CategoriesTreePage: FC = () => {
           rootLabel={treeLabel}
           sortable={isGranted('pim_enrich_product_category_edit')}
           followCategory={isGranted('pim_enrich_product_category_edit') ? cat => followEditCategory(cat.id) : undefined}
-          addCategory={categoryId => console.log(`add new category in ${categoryId}`)}
-          deleteCategory={categoryId => console.log(`delete category ${categoryId}`)}
+          addCategory={categoryId => console.log(`add new category in ${categoryId}`)} // @todo implement the creation of a new category and handle isGranted pim_enrich_product_category_create
+          deleteCategory={categoryId => console.log(`delete category ${categoryId}`)} // @todo implement the deletion of the category and handle isGranted pim_enrich_product_category_remove
           // @todo define onCategoryMoved to save the move in database and request the 'pim_enrich_categorytree_movenode'
         />
       </PageContent>
