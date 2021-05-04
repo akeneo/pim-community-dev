@@ -47,7 +47,7 @@ const ItemContainer = styled.div<{tall: boolean; disabled: boolean} & AkeneoThem
           &:hover a,
           &:hover {
             background: ${getColor('grey', 20)};
-            color: ${getColor('brand', 140)};
+            color: ${getColor('grey', 140)};
           }
           &:active a,
           &:active {
