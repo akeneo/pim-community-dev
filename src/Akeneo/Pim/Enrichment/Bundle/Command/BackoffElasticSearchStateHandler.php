@@ -25,7 +25,7 @@ class BackoffElasticSearchStateHandler
         return array($backOverheat, $retryCounter);
     }
 
-    public function bulkIndex($codes, \Closure $codesEsHandler):int
+    public function bulkIndex(array $codes, \Closure $codesEsHandler):int
     {
         $batchSize = count($codes);
         $indexed = 0;
@@ -39,6 +39,7 @@ class BackoffElasticSearchStateHandler
 
             try {
                 $codesEsHandler($batchEsCodes);
+
                 array_splice($codes, 0, $batchSize);
                 list($backOverheat, $retryCounter) = $this->resetState();
                 $indexed += count($batchEsCodes);
