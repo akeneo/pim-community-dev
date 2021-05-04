@@ -15,7 +15,7 @@
     "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
     "generate-asset-manager-models": "node $npm_package_config_source/frontend/build/json-schema-to-typescript.js vendor/akeneo/pim-enterprise-dev/src/Akeneo/AssetManager/definitions/ public/bundles/akeneoassetmanager/infrastructure/model/",
     "generate-models": "yarn generate-asset-manager-models && yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
-    "packages:build": "yarn --cwd=$npm_package_config_source packages:build"
+    "packages:build": "yarn --cwd=$npm_package_config_source packages:build && yarn --cwd=vendor/akeneo/pim-enterprise-dev enterprise-packages:build"
   },
   "workspaces": [
     "vendor/akeneo/pim-enterprise-dev",

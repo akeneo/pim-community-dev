@@ -108,6 +108,7 @@ jobs:
           paths:
             - vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/lib
             - vendor/akeneo/pim-community-dev/front-packages/shared/lib
+            - front-packages/tailored-export/lib
       - run:
           name: Build Javascript
           command: make javascript-dev
