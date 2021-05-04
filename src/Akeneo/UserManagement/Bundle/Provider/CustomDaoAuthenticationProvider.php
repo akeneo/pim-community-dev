@@ -17,6 +17,10 @@ use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Webmozart\Assert\Assert;
 
+/**
+ * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
 {
     /** @var UserManager */
