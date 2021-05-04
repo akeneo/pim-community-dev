@@ -126,7 +126,7 @@ class IndexProductModelCommand extends Command
         $numberOfIndexedProducts = $this->doIndex($chunkedProductModelCodes, new ProgressBar($output, $productModelCount),
             function ($codes) {
                 $this->productModelDescendantAndAncestorsIndexer->indexFromProductModelCodes($codes);
-            },$output);
+            }, $output);
 
         $output->writeln(sprintf('<info>%d product models indexed</info>', $numberOfIndexedProducts));
 
@@ -139,7 +139,7 @@ class IndexProductModelCommand extends Command
 
         $progressBar->start();
         foreach ($chunkedCodes as $codes) {
-            $treatedBachSize = $this->batchEsStateHandler->bulkIndex($codes, $output, $codesEsHandler);
+            $treatedBachSize = $this->batchEsStateHandler->bulkIndex($codes, $codesEsHandler);
             $indexedCount+=$indexedCount;
             $progressBar->advance($treatedBachSize);
         }
