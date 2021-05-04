@@ -1,3 +1,4 @@
+
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
@@ -212,20 +213,7 @@ const ColumnsTabWithState = () => {
 
   return (
     <ColumnsTab
-      validationErrors={[
-        {
-          messageTemplate: 'akeneo.tailored_export.validation.columns.target.max_length_reached',
-          parameters: {
-            '{{ value }}':
-              '\u0022akeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_source\u0022',
-            '{{ limit }}': 255,
-          },
-          message: 'akeneo.tailored_export.validation.columns.target.max_length_reached',
-          propertyPath: '[columns][453fd24c-5980-4219-8be3-590b880d591c][target]',
-          invalidValue:
-            'akeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_sourceakeneo.tailored_export.column_list.column_row.no_source',
-        },
-      ]}
+      validationErrors={[]}
       columnsConfiguration={columnsConfiguration}
       onColumnsConfigurationChange={setColumnsConfigurationChange}
     />

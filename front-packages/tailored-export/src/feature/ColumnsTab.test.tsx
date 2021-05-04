@@ -19,7 +19,7 @@ test('It open the source panel related to the column selected', () => {
   ];
 
   renderWithProviders(
-    <ColumnsTab columnsConfiguration={columnsConfiguration} onColumnsConfigurationChange={jest.fn} />
+    <ColumnsTab columnsConfiguration={columnsConfiguration} validationErrors={[]} onColumnsConfigurationChange={jest.fn} />
   );
 
   expect(screen.getByText('fbf9cff9-e95c-4e7d-983b-2947c7df90df')).toBeInTheDocument();
@@ -47,6 +47,7 @@ test('It create a column when user enter a text in last input', () => {
   renderWithProviders(
     <ColumnsTab
       columnsConfiguration={columnsConfiguration}
+      validationErrors={[]}
       onColumnsConfigurationChange={handleColumnsConfigurationChange}
     />
   );
@@ -86,6 +87,7 @@ test('It update column when user change value input', () => {
   renderWithProviders(
     <ColumnsTab
       columnsConfiguration={columnsConfiguration}
+      validationErrors={[]}
       onColumnsConfigurationChange={handleColumnsConfigurationChange}
     />
   );
@@ -116,6 +118,7 @@ test('It delete column when user click on delete button', () => {
   renderWithProviders(
     <ColumnsTab
       columnsConfiguration={columnsConfiguration}
+      validationErrors={[]}
       onColumnsConfigurationChange={handleColumnsConfigurationChange}
     />
   );

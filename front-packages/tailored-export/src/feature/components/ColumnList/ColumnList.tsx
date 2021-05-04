@@ -47,7 +47,7 @@ const ColumnList = ({
     onColumnSelected(undefined === nextColumn ? null : nextColumn.uuid);
   };
 
-  const generalErrors = useValidationErrors('[columns]', true);
+  const globalErrors = useValidationErrors('[columns]', true);
 
   const canAddColumn = MAX_COLUMN_COUNT > columnsConfiguration.length;
   const isLastColumnFilled = 0 < columnsConfiguration.length && columnsConfiguration[columnsConfiguration.length - 1].target !== '';
@@ -58,7 +58,7 @@ const ColumnList = ({
         <SectionTitle.Title>{translate('akeneo.tailored_export.column_list.title')}</SectionTitle.Title>
         <SectionTitle.Spacer />
       </SectionTitle>
-      {generalErrors.map((error, index) => (
+      {globalErrors.map((error, index) => (
         <Helper key={index} level="error">
           {translate(error.messageTemplate, error.parameters)}
         </Helper>

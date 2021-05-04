@@ -6,6 +6,7 @@ namespace Akeneo\Pim\TailoredExport\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Length;
@@ -86,7 +87,9 @@ class ColumnsValidator extends ConstraintValidator
                 ],
                 'sources' => new Sources(),
                 'format' => new Collection([
-                    'type' => new Type(['type' => 'string']), //TODO use Enum concat
+                    'type' => new Choice([
+                        'choices' => ['concat'],
+                    ]),
                     'elements' => [
                         new Type([
                             'type' => 'array',

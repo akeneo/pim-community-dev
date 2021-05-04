@@ -3,6 +3,7 @@ import {screen, fireEvent} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ColumnList} from './ColumnList';
 import userEvent from '@testing-library/user-event';
+import {ValidationErrorsContext} from '../../contexts';
 
 test('it renders a placeholder when no column is selected', () => {
   const columnsConfiguration = [
@@ -124,6 +125,56 @@ test('it update a column', () => {
     target: 'my new column name',
     sources: [],
   });
+});
+
+test('it displays validation errors', () => {
+  const columnsConfiguration = [
+    {
+      uuid: 1,
+      target: 'my column',
+      sources: [],
+    },
+  ];
+
+  const handleColumnChange = jest.fn();
+
+  renderWithProviders(
+
+    <ValidationErrorsContext.Provider value={[
+      {
+        messageTemplate: 'akeneo.tailored_export.validation.columns.target.max_length_reached',
+        parameters: {
+          '{{ value }}': 'way too long',
+          '{{ limit }}': 255,
+        },
+        message: 'akeneo.tailored_export.validation.columns.target.max_length_reached',
+        propertyPath: '[columns][1][target]',
+        invalidValue: 'way too long',
+      },
+      {
+        messageTemplate: 'akeneo.tailored_export.validation.columns.max_column_count',
+        parameters: {},
+        message: 'akeneo.tailored_export.validation.columns.max_column_count',
+        propertyPath: '[columns]',
+        invalidValue: '',
+      }
+    ]}>
+      <ColumnList
+        columnsConfiguration={columnsConfiguration}
+        onColumnChange={handleColumnChange}
+        onColumnCreated={jest.fn}
+        onColumnRemoved={jest.fn}
+        onColumnSelected={jest.fn}
+        selectedColumn={null}
+      />
+    </ValidationErrorsContext.Provider>
+  );
+
+  const validationError = screen.getByText('akeneo.tailored_export.validation.columns.target.max_length_reached');
+  expect(validationError).toBeInTheDocument();
+
+  const globalError = screen.getByText('akeneo.tailored_export.validation.columns.max_column_count');
+  expect(globalError).toBeInTheDocument();
 });
 
 test('it move to next line when user type enter', async () => {
