@@ -27,7 +27,7 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
 
     public function let(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, EncoderFactoryInterface $encoderFactory, UserManager $userManager)
     {
-        $this->beConstructedWith($userProvider, $userChecker, self::PROVIDER_KEY, $encoderFactory, $userManager, false, self::ACCOUNT_LOCK_DURATION, self::ALLOWED_FAILED_ATTEMPTS);
+        $this->beConstructedWith($userProvider, $userChecker, self::PROVIDER_KEY, $encoderFactory, $userManager, self::ACCOUNT_LOCK_DURATION, self::ALLOWED_FAILED_ATTEMPTS, false);
     }
 
     public function it_is_initializable()

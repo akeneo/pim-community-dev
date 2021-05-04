@@ -35,6 +35,6 @@ services:
             - ''
             - '@security.encoder_factory'
             - '@pim_user.manager'
-            - '%security.authentication.hide_user_not_found%'
             - '%pim_user.account_lock.duration%'
             - '%pim_user.account_lock.max_consecutive_failures%'
+            - '%security.authentication.hide_user_not_found%'

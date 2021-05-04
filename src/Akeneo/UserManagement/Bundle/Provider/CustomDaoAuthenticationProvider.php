@@ -28,7 +28,7 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
     /** @var int */
     private $accountMaxConsecutiveFailure;
 
-    public function __construct(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, string $providerKey, EncoderFactoryInterface $encoderFactory, UserManager $userManager, bool $hideUserNotFoundExceptions = true, int $accountLockDuration, int $accountMaxConsecutiveFailure)
+    public function __construct(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, string $providerKey, EncoderFactoryInterface $encoderFactory, UserManager $userManager, int $accountLockDuration, int $accountMaxConsecutiveFailure, bool $hideUserNotFoundExceptions = true)
     {
         parent::__construct($userProvider, $userChecker, $providerKey, $encoderFactory, $hideUserNotFoundExceptions);
         $this->userManager = $userManager;
@@ -41,8 +41,11 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
      */
     public function checkAuthentication(\Symfony\Component\Security\Core\User\UserInterface $user, UsernamePasswordToken $token)
     {
-        Assert::true($user instanceof UserInterface);
+        Assert::isInstanceOf($user, UserInterface::class);
         $this->validateAccountUnlocked($user);
+        if ($this->shouldResetCounter($user)) {
+            $this->resetLockingState($user);
+        }
         try {
             parent::checkAuthentication($user, $token);
             $this->resetLockingState($user);
@@ -72,10 +75,6 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
             && ($user->getConsecutiveAuthenticationFailureCounter() >= $this->accountMaxConsecutiveFailure)) {
             throw new LockedAccountException($this->accountLockDuration);
         }
-
-        if (!$this->isWithinLockTimePeriod($user)) {
-            $this->resetLockingState($user);
-        }
     }
 
     private function resetLockingState(UserInterface $user): void
@@ -97,5 +96,11 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
     private function isCounterReset(UserInterface $user): bool
     {
         return null === $user->getAuthenticationFailureResetDate();
+    }
+
+    protected function shouldResetCounter(SecurityUserInterface $user): bool
+    {
+        return !$this->isCounterReset($user)
+            && !$this->isWithinLockTimePeriod($user);
     }
 }
