@@ -133,23 +133,6 @@ Feature: Select a project to display products to enrich
     And I should see products tshirt-skyrim and tshirt-the-witcher-3
     And I should see the text "2016 summer collection"
 
-  Scenario: The owner can not click on contributors section of the widget to select project
-    Given I am logged in as "Julia"
-    And I am on the dashboard page
-    When I select "Mary" contributor
-    Then I should not see the select project link in the "todo" section of the teamwork assistant widget
-    And I should not see the select project link in the "in-progress" section of the teamwork assistant widget
-    When I select "Julia" contributor
-    And I click on the "in-progress" section of the teamwork assistant widget
-    Then I should be on the products page
-    And I should see products tshirt-skyrim and tshirt-the-witcher-3
-    And I should see the text "2016 summer collection"
-    When I am on the dashboard page
-    And I click on the "in-progress" section of the teamwork assistant widget
-    Then I should be on the products page
-    And I should see products tshirt-skyrim and tshirt-the-witcher-3
-    And I should see the text "2016 summer collection"
-
   Scenario: A contributor can select a project from the project creation notification
     Given I am logged in as "Mary"
     And I am on the dashboard page

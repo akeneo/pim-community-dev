@@ -56,7 +56,7 @@ Feature: Follow project completeness
     And I wait for the "project_calculation" job to finish
     When I am on the dashboard page
     Then I should see the teamwork assistant widget
-    And I should see the text "Collection Winter 2030 E-Commerce | English (United States)"
+    And I should see the text "Collection Winter 2030"
     And I should see the following teamwork assistant completeness:
       | todo | in_progress | done |
       | 0    | 3           | 0    |

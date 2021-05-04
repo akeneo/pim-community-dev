@@ -17,6 +17,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ProposalWidgetSpec extends ObjectBehavior
 {
@@ -49,7 +50,7 @@ class ProposalWidgetSpec extends ObjectBehavior
 
     function it_exposes_the_proposal_widget_template()
     {
-        $this->getTemplate()->shouldReturn('AkeneoPimWorkflowBundle:Proposal/Widget:proposal.html.twig');
+        $this->getTemplate()->shouldReturn('');
     }
 
     function it_exposes_the_proposal_widget_template_parameters($authorizationChecker)
@@ -58,11 +59,12 @@ class ProposalWidgetSpec extends ObjectBehavior
         $this->getParameters()->shouldBeArray();
     }
 
-    function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($authorizationChecker)
+    function it_throws_an_exception_if_the_user_is_not_the_owner_of_any_categories($authorizationChecker)
     {
         $authorizationChecker->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(false);
         $this->getParameters()->shouldReturn(['show' => false]);
-        $this->getData()->shouldReturn([]);
+
+        $this->shouldThrow(AccessDeniedException::class)->during('getData', []);
     }
 
     function it_exposes_proposal_data(
@@ -71,7 +73,7 @@ class ProposalWidgetSpec extends ObjectBehavior
         $productDraftRepository,
         $productModelDraftRepository,
         $presenter,
-        RouterInterface $router,
+        $router,
         ProductDraft $first,
         ProductModelDraft $second,
         ProductInterface $firstProduct,
@@ -80,9 +82,6 @@ class ProposalWidgetSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(true);
         $productDraftRepository->findApprovableByUser($user, 10)->willReturn([$first]);
         $productModelDraftRepository->findApprovableByUser($user, 10)->willReturn([$second]);
-
-        $router->generate('pim_enrich_product_edit', ['id' => 1])->willReturn('/enrich/product/1');
-        $router->generate('pim_enrich_product_model_edit', ['id' => 2])->willReturn('/enrich/product-model/2');
 
         $first->getEntityWithValue()->willReturn($firstProduct);
         $second->getEntityWithValue()->willReturn($secondProductModel);
@@ -106,13 +105,16 @@ class ProposalWidgetSpec extends ObjectBehavior
         $presenter->present($firstCreatedAt, $options)->willReturn($firstCreatedAt->format('m/d/Y'));
         $presenter->present($secondCreatedAt, $options)->willReturn($secondCreatedAt->format('m/d/Y'));
 
+        $router->generate('pim_enrich_product_edit', ['id' => 1])->willReturn('/enrich/product/1');
+        $router->generate('pim_enrich_product_model_edit', ['id' => 2])->willReturn('/enrich/product_model/2');
+
         $this->getData()->shouldReturn(
             [
                 [
                     'productId'        => 1,
                     'productLabel'     => 'First product',
                     'authorFullName'   => 'Julia Stark',
-                    'productViewUrl' => '/enrich/product/1',
+                    'productEditUrl'   => '/enrich/product/1',
                     'productReviewUrl' =>
                         '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=julia&f%5Bidentifier%5D%5Bvalue%5D=sku1&f%5Bidentifier%5D%5Btype%5D=1',
                     'createdAt'        => $firstCreatedAt->format('m/d/Y')
@@ -121,7 +123,7 @@ class ProposalWidgetSpec extends ObjectBehavior
                     'productId'        => 2,
                     'productLabel'     => 'Second product',
                     'authorFullName'   => 'Julia Stark',
-                    'productViewUrl' => '/enrich/product-model/2',
+                    'productEditUrl'   => '/enrich/product_model/2',
                     'productReviewUrl' =>
                         '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=julia&f%5Bidentifier%5D%5Bvalue%5D=sku2&f%5Bidentifier%5D%5Btype%5D=1',
                     'createdAt'        => $secondCreatedAt->format('m/d/Y')

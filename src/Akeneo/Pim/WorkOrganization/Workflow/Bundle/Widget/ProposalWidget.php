@@ -12,7 +12,9 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Widget;
 
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
@@ -20,6 +22,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -76,7 +79,7 @@ class ProposalWidget implements WidgetInterface
      */
     public function getTemplate()
     {
-        return 'AkeneoPimWorkflowBundle:Proposal/Widget:proposal.html.twig';
+        return '';
     }
 
     /**
@@ -93,7 +96,7 @@ class ProposalWidget implements WidgetInterface
     public function getData()
     {
         if (!$this->isDisplayable()) {
-            return [];
+            throw new AccessDeniedException();
         }
 
         $user = $this->tokenStorage->getToken()->getUser();
@@ -109,16 +112,11 @@ class ProposalWidget implements WidgetInterface
         $route = $this->router->generate('pimee_workflow_proposal_index');
 
         foreach ($proposals as $proposal) {
-            $viewUrl = $this->router->generate(
-                $proposal instanceof ProductDraft ? 'pim_enrich_product_edit': 'pim_enrich_product_model_edit',
-                ['id' => $proposal->getEntityWithValue()->getId()]
-            );
-
             $result[] = [
                 'productId'        => $proposal->getEntityWithValue()->getId(),
                 'productLabel'     => $proposal->getEntityWithValue()->getLabel(),
                 'authorFullName'   => $proposal->getAuthorLabel(),
-                'productViewUrl' => $viewUrl,
+                'productEditUrl'   => $this->getProductEditUrl($proposal),
                 'productReviewUrl' => $route . $this->getProposalGridParametersAsUrl(
                         $proposal->getAuthor(),
                         $proposal instanceof ProductDraft ? $proposal->getEntityWithValue()->getIdentifier() : $proposal->getEntityWithValue()->getCode()
@@ -169,5 +167,12 @@ class ProposalWidget implements WidgetInterface
         ];
 
         return '|g/' . http_build_query($gridParameters, 'flags_');
+    }
+
+    private function getProductEditUrl(EntityWithValuesDraftInterface $proposal): string
+    {
+        $route = $proposal instanceof ProductModelDraft ? 'pim_enrich_product_model_edit' : 'pim_enrich_product_edit';
+
+        return $this->router->generate($route, ['id' => $proposal->getEntityWithValue()->getId()]);
     }
 }

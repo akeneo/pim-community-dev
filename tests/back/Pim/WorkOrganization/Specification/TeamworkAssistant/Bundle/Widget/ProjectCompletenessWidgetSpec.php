@@ -26,7 +26,7 @@ class ProjectCompletenessWidgetSpec extends ObjectBehavior
 
     function it_has_a_template()
     {
-        $this->getTemplate()->shouldReturn('AkeneoPimTeamworkAssistantBundle:Widget:completeness.html.twig');
+        $this->getTemplate()->shouldReturn('');
     }
 
     function it_has_parameters()

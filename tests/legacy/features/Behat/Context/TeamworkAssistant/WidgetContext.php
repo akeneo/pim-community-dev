@@ -62,7 +62,7 @@ class WidgetContext extends PimContext
      */
     public function iSelectProject($projectLabel)
     {
-        $this->getTeamworkAssistantWidget()->getProjectSelector()->setValue($projectLabel);
+        $this->getTeamworkAssistantWidget()->selectProject($projectLabel);
     }
 
     /**
@@ -72,7 +72,7 @@ class WidgetContext extends PimContext
      */
     public function iSelectContributor($contributorName)
     {
-        $this->getTeamworkAssistantWidget()->getContributorSelector()->setValue($contributorName);
+        $this->getTeamworkAssistantWidget()->selectContributor($contributorName);
     }
 
     /**
@@ -112,7 +112,7 @@ class WidgetContext extends PimContext
      */
     public function iShouldSeeTheProject($not, $projectName)
     {
-        $values = $this->getTeamworkAssistantWidget()->getProjectSelector()->getAvailableValues();
+        $values = $this->getTeamworkAssistantWidget()->getChoicesFromProjectsSelector();
         $found = false;
 
         foreach ($values as $value) {
@@ -188,7 +188,7 @@ class WidgetContext extends PimContext
                 new Given('I am logged in as "Julia"'),
                 new Given('I am on the dashboard page'),
                 new Given('I select "Julia" contributor'),
-                new Given('I should see the text "2016 summer collection E-Commerce | English (United States)"'),
+                new Given('I should see the text "2016 summer collection"'),
                 new Given('I should see the text "Julia Stark"'),
                 new When('I click on the "todo" section of the teamwork assistant widget')
             ];
@@ -222,7 +222,7 @@ class WidgetContext extends PimContext
                 new Given('I am logged in as "Julia"'),
                 new Given('I am on the dashboard page'),
                 new Given('I select "Julia" contributor'),
-                new Given('I should see the text "2016 summer collection E-Commerce | English (United States)"'),
+                new Given('I should see the text "2016 summer collection"'),
                 new Given('I should see the text "Julia Stark"'),
                 new When('I click on the "in-progress" section of the teamwork assistant widget')
             ];
@@ -256,7 +256,7 @@ class WidgetContext extends PimContext
                 new Given('I am logged in as "Julia"'),
                 new Given('I am on the dashboard page'),
                 new Given('I select "Julia" contributor'),
-                new Given('I should see the text "2016 summer collection E-Commerce | English (United States)"'),
+                new Given('I should see the text "2016 summer collection"'),
                 new Given('I should see the text "Julia Stark"'),
                 new When('I click on the "done" section of the teamwork assistant widget')
             ];

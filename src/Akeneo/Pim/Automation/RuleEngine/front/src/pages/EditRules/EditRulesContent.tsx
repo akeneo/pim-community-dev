@@ -52,10 +52,7 @@ const EditRulesContent: React.FC<Props> = ({
   const router = useBackboneRouter();
   const notify = useNotify();
   const currentCatalogLocale = userContext.get('catalogLocale');
-  const [urlSettings] = generateAndRedirect(
-    router,
-    'pim_enrich_attribute_index'
-  );
+  const [urlSettings] = generateAndRedirect(router, 'pim_settings_index');
   const [urlRules] = generateAndRedirect(
     router,
     'pimee_catalog_rule_rule_index'

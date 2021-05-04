@@ -32,12 +32,14 @@ teamwork_assistant:
         no_project_create: create a new project
         description: Description
         due_date: Due date
-        todo: TODO
-        in_progress: IN PROGRESS
-        done: DONE
+        todo: Todo
+        in_progress: In progress
+        done: Done
         all_contributors: All contributors
         you: You
         display_products: Display products
+        projects: Projects
+        contributors: Contributors
         placeholder:
             contributor_selector: Search contributor
             project_selector: Search project
@@ -45,6 +47,8 @@ teamwork_assistant:
             to_start: PRODUCTS TO START
             in_progress: PRODUCTS IN PROGRESS
             done: PRODUCTS DONE
+        searching: searching...
+        no_search_results: Sorry, there is no results.
 
 pim_datagrid:
     view_selector:

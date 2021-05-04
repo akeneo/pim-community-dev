@@ -192,8 +192,8 @@ const Proposal: React.FC<ProposalProps> = ({
             {translate(`pim_datagrid.workflow.status.${formattedChanges.status_label}`)}
           </Badge>
           <span>
-            {translate('pim_datagrid.workflow.by')}
-            <Highlight>{authorLabel}</Highlight>
+            {translate('pim_datagrid.workflow.by')}&nbsp;
+            <Highlight>{authorLabel.trim()}</Highlight>&nbsp;
             {translate('pim_datagrid.workflow.at')}&nbsp;
             <Highlight>{createdAt}</Highlight>
           </span>
@@ -224,7 +224,7 @@ const Proposal: React.FC<ProposalProps> = ({
               data-scope={change.scope}
               data-locale={change.locale}
             >
-              <div style={{display: 'flex', overflow: 'hidden'}}>
+              <div style={{display: 'flex', overflow: 'hidden', alignItems: 'start'}}>
                 <Attribute title={change.attributeLabel}>{change.attributeLabel}</Attribute>
                 {(change.scope || change.locale) && (
                   <LocaleScope>

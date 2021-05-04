@@ -49,7 +49,6 @@ config:
         pimee/product-edit-form/send-for-approval-comment: akeneopimworkflow/js/product/form/send-for-approval-comment
         pimee/product-edit-form/proposal-add-comment:      akeneopimworkflow/js/product/form/proposal-add-comment
         pimee/product-edit-form/abstract-add-notification-comment: akeneopimworkflow/js/product/form/abstract-add-notification-comment
-        pimee/dashboard/proposal-widget:                   akeneopimworkflow/js/proposal/widget/proposal-widget
         pimee/user/fields/visible-boolean:                 akeneopimworkflow/js/user/fields/visible-boolean.ts
         pimee/mass-edit-form/product/send-for-approval:    akeneopimworkflow/js/mass-edit/product/send-for-approval.ts
 
@@ -66,7 +65,6 @@ config:
         pimee/template/product/submit-draft-sequential-edit:    akeneopimworkflow/templates/product/submit-draft-sequential-edit.html
         pimee/template/product/original-product:                akeneopimworkflow/templates/product/original-product.html
         pimee/template/product/tab/attribute/modified-by-draft: akeneopimworkflow/templates/product/tab/attributes/modified-by-draft.html
-        pimee/templates/dashboard/proposal-widget: akeneopimworkflow/templates/proposal/widget/proposal-widget.html
         pimee/templates/dashboard/view-all-btn: akeneopimworkflow/templates/proposal/widget/view-all-btn.html
         pimee/templates/proposals/grid/filters: akeneopimworkflow/templates/proposal/grid/filters.html
 

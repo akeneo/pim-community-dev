@@ -1,0 +1,8 @@
+services:
+    akeneo.pimee_ui.query.count_settings_entities_query:
+        class: Akeneo\Platform\Bundle\UIBundle\Query\Sql\CountEnterpriseSettingsEntitiesQuery
+        decorates: akeneo.pim_ui.query.count_settings_entities_query
+        decoration_inner_name: akeneo.pim_ui.query.count_settings_entities_query.community
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim_ui.query.count_settings_entities_query.community'

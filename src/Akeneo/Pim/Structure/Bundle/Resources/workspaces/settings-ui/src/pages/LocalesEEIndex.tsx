@@ -30,7 +30,7 @@ const LocalesEEIndex: FC = () => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const {locales, load, isPending} = useLocalesIndexState();
-  const settingsHomePageRoute = useRoute('pim_enrich_attribute_index');
+  const settingsHomePageRoute = useRoute('pim_settings_index');
   const settingsChannelPageRoute = useRoute('pim_enrich_channel_index');
   const {refresh, getDictionaryTotalWords, localesDictionaryInfo} = useLocalesDictionaryInfo(locales);
 
