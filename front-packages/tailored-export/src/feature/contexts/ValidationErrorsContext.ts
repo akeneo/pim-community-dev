@@ -8,7 +8,9 @@ const ValidationErrorsContext = createContext<ValidationErrorsValue>([]);
 const useValidationErrors = (propertyPath: string, exactMatch: boolean) => {
   const validationErrors = useContext(ValidationErrorsContext);
 
-  const errors = exactMatch ? getErrorsForPath(validationErrors, propertyPath) : filterErrors(validationErrors, propertyPath);
+  const errors = exactMatch
+    ? getErrorsForPath(validationErrors, propertyPath)
+    : filterErrors(validationErrors, propertyPath);
 
   return formatParameters(errors);
 };

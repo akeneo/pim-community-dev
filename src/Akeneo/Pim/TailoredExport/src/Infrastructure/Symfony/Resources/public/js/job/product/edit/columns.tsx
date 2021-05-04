@@ -27,7 +27,9 @@ class ColumnView extends BaseView {
 
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', () => this.setValidationErrors([]));
 
-    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', validationError => this.setValidationErrors(validationError.response.normalized_errors));
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', validationError =>
+      this.setValidationErrors(validationError.response.normalized_errors)
+    );
 
     return BaseView.prototype.configure.apply(this, arguments);
   }
