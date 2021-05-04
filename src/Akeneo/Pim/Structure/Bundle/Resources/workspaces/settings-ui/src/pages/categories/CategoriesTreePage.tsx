@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
-import {Breadcrumb} from 'akeneo-design-system';
+import {Breadcrumb, useBooleanState} from 'akeneo-design-system';
 import {PimView} from '@akeneo-pim-community/legacy-bridge';
 import {
   FullScreenError,
@@ -13,6 +13,7 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useCategoryTree} from '../../hooks';
 import {CategoryTree} from '../../components';
+import {NewCategoryModal} from "./NewCategoryModal";
 
 type Params = {
   treeId: string;
@@ -25,6 +26,9 @@ const CategoriesTreePage: FC = () => {
   const {isGranted} = useSecurity();
   const {tree, status, load} = useCategoryTree(parseInt(treeId));
   const [treeLabel, setTreeLabel] = useState(`[${treeId}]`);
+  const [isModalOpen, openModal, closeModal] = useBooleanState();
+  const [parentCode, setParentCode] = useState<string | null>(null);
+  const [parentId, setParentId] = useState<number | null>(null);
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_tree', {'category.label': treeLabel}));
 
@@ -35,6 +39,23 @@ const CategoriesTreePage: FC = () => {
       return;
     }
     router.redirect(router.generate('pim_enrich_categorytree_edit', {id: id.toString()}));
+  };
+
+  const addCategoryInTree = (parentCode: string, parentId: number) => {
+    setParentCode(parentCode);
+    setParentId(parentId);
+    openModal();
+  };
+
+  const handleCloseModal = () => {
+    setParentCode(null);
+    setParentId(null);
+    closeModal();
+  };
+
+  const onCreateCategory = () => {
+    // @todo refresh only the parent of the created category
+    load();
   };
 
   useEffect(() => {
@@ -81,10 +102,13 @@ const CategoriesTreePage: FC = () => {
           rootLabel={treeLabel}
           sortable={isGranted('pim_enrich_product_category_edit')}
           followCategory={isGranted('pim_enrich_product_category_edit') ? cat => followEditCategory(cat.id) : undefined}
-          addCategory={categoryId => console.log(`add new category in ${categoryId}`)} // @todo implement the creation of a new category and handle isGranted pim_enrich_product_category_create
+          addCategory={isGranted('pim_enrich_product_category_create') ? addCategoryInTree : undefined} // @todo implement the creation of a new category and handle isGranted pim_enrich_product_category_create
           deleteCategory={categoryId => console.log(`delete category ${categoryId}`)} // @todo implement the deletion of the category and handle isGranted pim_enrich_product_category_remove
           // @todo define onCategoryMoved to save the move in database and request the 'pim_enrich_categorytree_movenode'
         />
+        {isModalOpen && parentCode !== null && (
+          <NewCategoryModal closeModal={handleCloseModal} onCreate={onCreateCategory} parentCode={parentCode} />
+        )}
       </PageContent>
     </>
   );

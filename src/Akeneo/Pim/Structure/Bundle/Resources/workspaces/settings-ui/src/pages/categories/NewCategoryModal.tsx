@@ -6,10 +6,11 @@ import {saveNewCategoryTree, ValidationErrors} from '../../infrastructure/savers
 
 type NewCategoryModalProps = {
   closeModal: () => void;
-  refreshCategoryTrees: () => void;
+  onCreate: () => void;
+  parentCode?: string
 };
 
-const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, refreshCategoryTrees}) => {
+const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, parentCode}) => {
   const translate = useTranslate();
   const [newCategoryCode, setNewCategoryCode] = useState('');
   const notify = useNotify();
@@ -17,28 +18,33 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, refreshCategor
 
   const createNewCategoryTree = async () => {
     if (newCategoryCode.trim() !== '') {
-      const errors = await saveNewCategoryTree(newCategoryCode);
+      const errors = await saveNewCategoryTree(newCategoryCode, parentCode);
       if (Object.keys(errors).length > 0) {
         setValidationErrors(errors);
         notify(
           NotificationLevel.ERROR,
-          translate('pim_enrich.entity.category.category_tree_creation_error', {tree: newCategoryCode})
+          translate(
+            parentCode === undefined ? 'pim_enrich.entity.category.category_tree_creation_error' : 'pim_enrich.entity.category.category_creation_error',
+            {code: newCategoryCode}
+          )
         );
         return;
       }
     }
 
-    refreshCategoryTrees();
+    onCreate();
     setValidationErrors({});
     closeModal();
     notify(
       NotificationLevel.SUCCESS,
-      translate('pim_enrich.entity.category.category_tree_created', {tree: newCategoryCode})
+      translate(
+        parentCode === undefined ? 'pim_enrich.entity.category.category_tree_created' : 'pim_enrich.entity.category.category_created',
+        {code: newCategoryCode})
     );
   };
 
   return (
-    <Modal closeTitle="Close" onClose={closeModal} illustration={<ProductCategoryIllustration />}>
+    <Modal closeTitle="Close" onClose={closeModal} illustration={<ProductCategoryIllustration/>}>
       <Modal.TopRightButtons>
         <Button level="primary" onClick={createNewCategoryTree} disabled={newCategoryCode.trim() === ''}>
           {translate('pim_common.create')}
