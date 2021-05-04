@@ -41,16 +41,6 @@ services:
             - '@akeneo_connectivity.connection.clock'
             - !tagged akeneo_connectivity.connection.webhook.event_normalizer
 
-    akeneo_connectivity.connection.webhook.event_build_logger:
-        class: Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventBuildLogger
-        arguments:
-            - '@monolog.logger.event_api'
-
-    akeneo_connectivity.connection.webhook.event_data_build_error_logger:
-        class: Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataBuildErrorLogger
-        arguments:
-            - '@monolog.logger.event_api'
-
     akeneo_connectivity.connection.webhook.reach_request_limit_logger:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\ReachRequestLimitLogger
         arguments:
@@ -58,10 +48,5 @@ services:
 
     akeneo_connectivity.connection.webhook.send_api_event_request_logger:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger
-        arguments:
-            - '@monolog.logger.event_api'
-
-    akeneo_connectivity.connection.webhook.skip_own_event_logger:
-        class: Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SkipOwnEventLogger
         arguments:
             - '@monolog.logger.event_api'
