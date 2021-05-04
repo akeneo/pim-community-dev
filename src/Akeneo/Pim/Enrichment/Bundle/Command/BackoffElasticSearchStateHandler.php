@@ -18,55 +18,34 @@ class BackoffElasticSearchStateHandler
     public const INITIAL_WAIT_DELAY = 10;
     public const BACKOFF_LOGARITHMIC_INCREMENT = 2;
 
-    public function doIndex(iterable $chunkedCodes, ProgressBar $progressBar, \Closure $codesEsHandler, OutputInterface $output): int
-    {
-        $indexedCount = 0;
-
-        $progressBar->start();
-        foreach ($chunkedCodes as $codes) {
-            $treatedBachSize= count($codes);
-
-            $this->bulkExecute($codes, $output, $codesEsHandler);
-
-            $progressBar->advance($treatedBachSize);
-        }
-        $progressBar->finish();
-
-        return $indexedCount;
-    }
-
     protected function resetState(): array
     {
         $backOverheat = false;
         $retryCounter = self::RETRY_COUNTER;
-        $waitDelay = self::INITIAL_WAIT_DELAY;
-        return array($backOverheat, $retryCounter, $waitDelay);
+        return array($backOverheat, $retryCounter);
     }
 
-    public  function bulkIndex($codes, OutputInterface $output, \Closure $codesEsHandler):int
+    public function bulkIndex($codes, \Closure $codesEsHandler):int
     {
         $batchSize = count($codes);
         $indexed = 0;
-        list($backOverheat, $retryCounter, $waitDelay) = $this->resetState();
+        list($backOverheat, $retryCounter) = $this->resetState();
 
         do {
             $batchEsCodes = $codes;
             if ($backOverheat) {
-                $output->writeln("Sleeping before retry due to back pressure {$waitDelay} seconds, with batch size of {$batchSize} \n");
-                sleep($waitDelay);
                 $batchEsCodes = array_slice($codes, 0, $batchSize);
             }
 
             try {
                 $codesEsHandler($batchEsCodes);
                 array_splice($codes, 0, $batchSize);
-                list($backOverheat, $retryCounter, $waitDelay) = $this->resetState();
+                list($backOverheat, $retryCounter) = $this->resetState();
                 $indexed += count($batchEsCodes);
             } catch (BadRequest400Exception $e) {
                 if ($e->getCode() == Response::HTTP_TOO_MANY_REQUESTS) {
                     $backOverheat = true;
                     $retryCounter--;
-                    $waitDelay = $waitDelay + self::INITIAL_WAIT_DELAY; //Heuristic: linear increment
                     $batchSize = intdiv($batchSize, self::BACKOFF_LOGARITHMIC_INCREMENT); //Heuristic: logarithmics decrement
                 }
             }
