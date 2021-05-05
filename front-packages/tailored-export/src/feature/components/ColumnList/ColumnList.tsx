@@ -98,7 +98,7 @@ const ColumnList = ({
             onFocusNext={handleFocusNextColumn}
           />
         ))}
-        {canAddColumn && (
+        {canAddColumn && !placeholderDisplayed && (
           <List.Row onClick={() => onColumnSelected(null)} isSelected={selectedColumn === null}>
             <List.Cell width={300}>
               <TextInput
