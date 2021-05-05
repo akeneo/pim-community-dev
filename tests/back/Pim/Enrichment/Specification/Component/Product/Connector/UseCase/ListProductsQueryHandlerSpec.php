@@ -87,6 +87,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
+            null,
             null
         );
 
@@ -104,6 +105,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
+            null,
             null
         );
 
@@ -152,6 +154,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
+            null,
             null
         );
 
@@ -169,6 +172,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
+            null,
             null
         );
 
@@ -218,6 +222,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
+            null,
             null
         );
 
@@ -235,6 +240,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
+            null,
             null
         );
 
@@ -379,6 +385,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
+            null,
             null
         );
 
@@ -432,6 +439,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
+            null,
             null
         );
         $connectorProductWithQualityScores = $connectorProduct->buildWithQualityScores(

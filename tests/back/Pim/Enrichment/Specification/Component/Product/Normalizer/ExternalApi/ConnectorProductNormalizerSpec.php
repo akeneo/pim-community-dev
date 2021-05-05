@@ -76,7 +76,8 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             new ReadValueCollection(),
             (new ChannelLocaleRateCollection())
                 ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(81))
-                ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(73))
+                ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(73)),
+            null
         );
 
         $connector2 = new ConnectorProduct(
@@ -93,6 +94,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             [],
             ['a_metadata' => 'viande'],
             new ReadValueCollection(),
+            null,
             null
         );
 
@@ -194,6 +196,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             ],
             [],
             new ReadValueCollection(),
+            null,
             null
         );
 
