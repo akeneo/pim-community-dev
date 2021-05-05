@@ -45,7 +45,7 @@ Cypress.Commands.add('login', () => {
 
 Cypress.Commands.add('goToProductsGrid', () => {
   //We should rework the HTML to have proper role/aria selectors
-  cy.findByText('Activity').should('have.class', 'AknHeader-menuItem--active');
+  cy.get('a[href="#/dashboard"]').should('have.class', 'AknColumn-navigationLink--active');
 
   cy.findByText('Products').click();
 
