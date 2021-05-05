@@ -2,7 +2,7 @@ import React, {FC, useState} from 'react';
 import {Button, Field, Helper, Modal, ProductCategoryIllustration, TextInput} from 'akeneo-design-system';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
-import {saveNewCategoryTree, ValidationErrors} from '../../infrastructure/savers';
+import {createCategory, ValidationErrors} from '../../infrastructure/savers';
 
 type NewCategoryModalProps = {
   closeModal: () => void;
@@ -18,7 +18,7 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, pare
 
   const createNewCategoryTree = async () => {
     if (newCategoryCode.trim() !== '') {
-      const errors = await saveNewCategoryTree(newCategoryCode, parentCode);
+      const errors = await createCategory(newCategoryCode, parentCode);
       if (Object.keys(errors).length > 0) {
         setValidationErrors(errors);
         notify(

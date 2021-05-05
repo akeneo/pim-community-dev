@@ -6,7 +6,7 @@ type ValidationErrors = {
   [fieldCode: string]: string;
 };
 
-const saveNewCategoryTree = async (code: string, parent?: string): Promise<ValidationErrors> => {
+const createCategory = async (code: string, parent?: string): Promise<ValidationErrors> => {
   const response = await fetch(Routing.generate(ROUTE_NAME), {
     method: 'POST',
     headers: {
@@ -23,4 +23,4 @@ const saveNewCategoryTree = async (code: string, parent?: string): Promise<Valid
   return {};
 };
 
-export {saveNewCategoryTree, ValidationErrors};
+export {createCategory, ValidationErrors};
