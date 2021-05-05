@@ -4,7 +4,7 @@ import {ThemeProvider} from 'styled-components';
 import {render} from '@testing-library/react';
 import {renderHook} from '@testing-library/react-hooks';
 import {pimTheme} from 'akeneo-design-system';
-import {DependenciesContext} from '../src/DependenciesContext';
+import {DependenciesContext} from '../DependenciesContext';
 import {mockedDependencies} from './mockedDependencies';
 
 const DefaultProviders: FC = ({children}) => (

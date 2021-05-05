@@ -1,6 +1,6 @@
 import {act} from '@testing-library/react-hooks';
 import {useUploader} from './useUploader';
-import {renderHookWithProviders} from '../../tests/utils';
+import {renderHookWithProviders} from '../tests/utils';
 
 const imageFile = new File(['foo'], 'foo.jpg', {type: 'image/jpeg'});
 const fileInfo = {

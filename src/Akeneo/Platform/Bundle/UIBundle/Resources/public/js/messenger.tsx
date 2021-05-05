@@ -1,50 +1,9 @@
-import React, {ReactElement, ReactNode, useCallback} from 'react';
+import React, {ReactElement, ReactNode} from 'react';
 import ReactDOM from 'react-dom';
-import styled, {ThemeProvider} from 'styled-components';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {ThemeProvider} from 'styled-components';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {
-  AnimateMessageBar,
-  FlashMessage,
-  IconProps,
-  MessageBar,
-  MessageBarLevel,
-  pimTheme,
-  uuid,
-} from 'akeneo-design-system';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column-reverse;
-  position: fixed;
-  bottom: 44px;
-  right: 44px;
-  z-index: 100000;
-  gap: 10px;
-`;
-
-type IdentifiableFlashMessage = FlashMessage & {identifier: string};
-
-const Notifications = ({
-  notifications,
-  onNotificationClosed,
-}: {
-  notifications: IdentifiableFlashMessage[];
-  onNotificationClosed: (identifier: string) => void;
-}) => {
-  const handleClose = useCallback((identifier: string) => () => onNotificationClosed(identifier), []);
-  const translate = useTranslate();
-
-  return (
-    <Container>
-      {notifications.map(({identifier, ...props}) => (
-        <AnimateMessageBar key={identifier}>
-          <MessageBar {...props} onClose={handleClose(identifier)} dismissTitle={translate('pim_common.close')} />
-        </AnimateMessageBar>
-      ))}
-    </Container>
-  );
-};
+import {IdentifiableFlashMessage, Notifications} from '@akeneo-pim-community/shared';
+import {FlashMessage, IconProps, MessageBarLevel, pimTheme, uuid} from 'akeneo-design-system';
 
 let notifications: IdentifiableFlashMessage[] = [];
 

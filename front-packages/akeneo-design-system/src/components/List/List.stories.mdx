@@ -1,22 +1,19 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {List} from './List.tsx';
 import {
-    IconButton,
-    NumberInput,
-    SelectInput,
-    MultiSelectInput,
-    TextInput,
-    Locale,
-    Button,
-    Helper
+  IconButton,
+  NumberInput,
+  SelectInput,
+  MultiSelectInput,
+  TextInput,
+  Locale,
+  Button,
+  Helper,
 } from '../../components';
 import {CloseIcon} from '../../icons';
 import {Content, ListContextContainer} from '../../storybook/PreviewGallery';
 
-<Meta
-  title="Components/List"
-  component={List}
-/>
+<Meta title="Components/List" component={List} />
 
 # List
 
@@ -33,7 +30,9 @@ List allow users to analyze and manipulate data, it differs from Table component
         <List.TitleCell width="auto">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</List.TitleCell>
       </List.Row>
       <List.Row>
-        <List.TitleCell width="auto">Pellentesque ultrices nibh ac magna lacinia, sit amet posuere libero eleifend.</List.TitleCell>
+        <List.TitleCell width="auto">
+          Pellentesque ultrices nibh ac magna lacinia, sit amet posuere libero eleifend.
+        </List.TitleCell>
       </List.Row>
       <List.Row>
         <List.TitleCell width="auto">Proin sed quam mattis, volutpat nisi a, rutrum elit.</List.TitleCell>
@@ -51,12 +50,14 @@ List allow users to analyze and manipulate data, it differs from Table component
 <ArgsTable story="Standard" />
 
 ## Actions
+
 <Canvas>
   <Story name="Actions">
     <List>
       <List.Row>
         <List.TitleCell width="auto">
-          A real biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiig text without action, it really important to show the component comportment.
+          A real biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiig text without action, it really important to show the
+          component comportment.
         </List.TitleCell>
         <List.RemoveCell>
           <IconButton ghost="borderless" level="tertiary" icon={<CloseIcon />} title="" />
@@ -64,7 +65,8 @@ List allow users to analyze and manipulate data, it differs from Table component
       </List.Row>
       <List.Row>
         <List.TitleCell width="auto">
-          A real biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiig text with one action, it really important to show the component comportment.
+          A real biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiig text with one action, it really important to show the
+          component comportment.
         </List.TitleCell>
         <List.ActionCell>
           <Button>First action</Button>
@@ -75,7 +77,8 @@ List allow users to analyze and manipulate data, it differs from Table component
       </List.Row>
       <List.Row>
         <List.TitleCell width="auto">
-          A real biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiig text with three action, it really important to show the component comportment.
+          A real biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiig text with three action, it really important to show the
+          component comportment.
         </List.TitleCell>
         <List.ActionCell>
           <Button>First action</Button>
@@ -88,7 +91,8 @@ List allow users to analyze and manipulate data, it differs from Table component
       </List.Row>
       <List.Row>
         <List.TitleCell width="auto">
-          A real biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiig text with three action, it really important to show the component comportment.
+          A real biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiig text with three action, it really important to show the
+          component comportment.
         </List.TitleCell>
         <List.ActionCell>
           <Button>First action</Button>
@@ -101,20 +105,29 @@ List allow users to analyze and manipulate data, it differs from Table component
 </Canvas>
 
 ## Error
+
 <Canvas>
   <Story name="Error">
     <List>
       <List.Row>
         <List.TitleCell width="auto">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</List.TitleCell>
         <List.RowHelpers>
-          <Helper level="error">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod labore et dolore magna aliqua.</Helper>
+          <Helper level="error">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod labore et dolore magna aliqua.
+          </Helper>
         </List.RowHelpers>
       </List.Row>
       <List.Row>
-        <List.TitleCell width="auto">Pellentesque ultrices nibh ac magna lacinia, sit amet posuere libero eleifend.</List.TitleCell>
+        <List.TitleCell width="auto">
+          Pellentesque ultrices nibh ac magna lacinia, sit amet posuere libero eleifend.
+        </List.TitleCell>
         <List.RowHelpers>
-          <Helper level="info">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod labore et dolore magna aliqua.</Helper>
-          <Helper level="error">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod labore et dolore magna aliqua.</Helper>
+          <Helper level="info">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod labore et dolore magna aliqua.
+          </Helper>
+          <Helper level="error">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod labore et dolore magna aliqua.
+          </Helper>
         </List.RowHelpers>
       </List.Row>
       <List.Row>
@@ -130,16 +143,41 @@ List allow users to analyze and manipulate data, it differs from Table component
   </Story>
 </Canvas>
 
+## Selected Row
+
+<Canvas>
+  <Story name="Selected">
+    <List>
+      <List.Row>
+        <List.TitleCell width="auto">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</List.TitleCell>
+      </List.Row>
+      <List.Row isSelected>
+        <List.TitleCell width="auto">
+          Pellentesque ultrices nibh ac magna lacinia, sit amet posuere libero eleifend.
+        </List.TitleCell>
+      </List.Row>
+      <List.Row>
+        <List.TitleCell width="auto">Proin sed quam mattis, volutpat nisi a, rutrum elit.</List.TitleCell>
+      </List.Row>
+      <List.Row>
+        <List.TitleCell width="auto">Ut ac purus auctor, aliquam mi id, egestas ligula.</List.TitleCell>
+      </List.Row>
+      <List.Row>
+        <List.TitleCell width="auto">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</List.TitleCell>
+      </List.Row>
+    </List>
+  </Story>
+</Canvas>
+
 ## Complex list
+
 <Canvas>
   <Story name="Complex">
     {args => {
       return (
         <List>
           <List.Row>
-            <List.TitleCell width="auto">
-              Label
-            </List.TitleCell>
+            <List.TitleCell width="auto">Label</List.TitleCell>
             <List.Cell width={400}>
               <TextInput value="example" onChange={() => {}} />
             </List.Cell>
@@ -159,16 +197,14 @@ List allow users to analyze and manipulate data, it differs from Table component
               <IconButton ghost="borderless" level="tertiary" icon={<CloseIcon />} title="" />
             </List.RemoveCell>
           </List.Row>
-          <List.Row multiline>
-            <List.TitleCell width="auto">
-              Description is very long
-            </List.TitleCell>
+          <List.Row isMultiline>
+            <List.TitleCell width="auto">Description is very long</List.TitleCell>
             <List.Cell width={400}>
               <Content width={400} height={300}>
                 Large content
               </Content>
             </List.Cell>
-            <List.Cell width={380} >
+            <List.Cell width={380}>
               <ListContextContainer>
                 <SelectInput value="ecommerce" clearable={false} emptyResultLabel="">
                   <SelectInput.Option value="ecommerce">Ecommerce</SelectInput.Option>
@@ -185,9 +221,7 @@ List allow users to analyze and manipulate data, it differs from Table component
             </List.RemoveCell>
           </List.Row>
           <List.Row>
-            <List.TitleCell width="auto">
-              Label
-            </List.TitleCell>
+            <List.TitleCell width="auto">Label</List.TitleCell>
             <List.Cell width={400}>
               <NumberInput value="12" onChange={() => {}} />
             </List.Cell>
@@ -207,16 +241,14 @@ List allow users to analyze and manipulate data, it differs from Table component
               <IconButton ghost="borderless" level="tertiary" icon={<CloseIcon />} title="" />
             </List.RemoveCell>
           </List.Row>
-          <List.Row multiline>
-            <List.TitleCell width="auto" >
-              Label
-            </List.TitleCell>
+          <List.Row isMultiline>
+            <List.TitleCell width="auto">Label</List.TitleCell>
             <List.Cell width={400}>
               <MultiSelectInput
-                  value={["red", "green", "blue", "yellow", "orange", "cyan"]}
-                  onChange={() => {}}
-                  emptyResultLabel=""
-                  removeLabel=""
+                value={['red', 'green', 'blue', 'yellow', 'orange', 'cyan']}
+                onChange={() => {}}
+                emptyResultLabel=""
+                removeLabel=""
               >
                 <MultiSelectInput.Option value="red">Red</MultiSelectInput.Option>
                 <MultiSelectInput.Option value="green">Green</MultiSelectInput.Option>
@@ -227,7 +259,7 @@ List allow users to analyze and manipulate data, it differs from Table component
                 <MultiSelectInput.Option value="purple">Purple</MultiSelectInput.Option>
               </MultiSelectInput>
             </List.Cell>
-            <List.Cell width={380} >
+            <List.Cell width={380}>
               <ListContextContainer>
                 <SelectInput value="append" clearable={false} emptyResultLabel="">
                   <SelectInput.Option value="append">Append</SelectInput.Option>
@@ -246,10 +278,14 @@ List allow users to analyze and manipulate data, it differs from Table component
             <List.RemoveCell>
               <IconButton ghost="borderless" level="tertiary" icon={<CloseIcon />} title="" />
             </List.RemoveCell>
-              <List.RowHelpers>
-                  <Helper level="info">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod labore et dolore magna aliqua.</Helper>
-                  <Helper level="error">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod labore et dolore magna aliqua.</Helper>
-              </List.RowHelpers>
+            <List.RowHelpers>
+              <Helper level="info">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod labore et dolore magna aliqua.
+              </Helper>
+              <Helper level="error">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod labore et dolore magna aliqua.
+              </Helper>
+            </List.RowHelpers>
           </List.Row>
         </List>
       );
