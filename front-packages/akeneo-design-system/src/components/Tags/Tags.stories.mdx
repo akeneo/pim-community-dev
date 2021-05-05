@@ -1,5 +1,5 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
-import {Tags} from './Tags.tsx';
+import {Tags, Tag} from './Tags.tsx';
 
 <Meta
   title="Components/Tags"
@@ -7,7 +7,7 @@ import {Tags} from './Tags.tsx';
   argTypes={{
     level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
   }}
-  args={{level: 'primary', children: 'Tags text'}}
+  args={{level: 'primary'}}
 />
 
 # Tags
@@ -25,7 +25,15 @@ TODO
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <Tags {...args} />;
+      return <Tags {...args} >
+        <Tag color='red'>Red</Tag>
+        <Tag color='blue'>Blue</Tag>
+        <Tag color='dark blue'>Dark Blue</Tag>
+        <Tag color='purple'>Purple</Tag>
+        <Tag color='dark purple'>Dark Purple</Tag>
+        <Tag color='green'>Green</Tag>
+        <Tag color='yellow'>Yellow</Tag>
+      </Tags>;
     }}
   </Story>
 </Canvas>
@@ -39,15 +47,7 @@ TODO
     {args => {
       return (
         <>
-          <Tags {...args} level="primary">
-            Primary
-          </Tags>
-          <Tags {...args} level="warning">
-            Warning
-          </Tags>
-          <Tags {...args} level="danger">
-            Danger
-          </Tags>
+          <Tags {...args} level="primary"></Tags>
         </>
       );
     }}
