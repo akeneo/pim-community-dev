@@ -1,0 +1,77 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {TabBar} from './TabBar.tsx';
+import {Badge} from '../Badge/Badge';
+
+<Meta title="Components/TabBar" component={TabBar} />
+
+# TabBar
+
+## Usage
+
+Tabs are used to move from one content to another within the same context.
+
+## Format
+
+**Text**
+
+Each label describes its content and defines the expectations of the user. Labels are concise and use one or two words maximum. Icons are not allowed in tab labels.
+
+**Order**
+
+The order of the tabs must be consistent across the entire application. Related tabs should be gathered.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <TabBar {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## With Badges
+
+<Canvas>
+  <Story name="With Badges">
+    {args => {
+      return (
+        <>
+          <TabBar {...args}>
+            <TabBar.Tab>
+              First tab <Badge level="warning">2</Badge>
+            </TabBar.Tab>
+            <TabBar.Tab isActive={true}>Another tab</TabBar.Tab>
+            <TabBar.Tab>
+              Last tab <Badge level="danger">0</Badge>
+            </TabBar.Tab>
+          </TabBar>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With Pills
+
+<Canvas>
+  <Story name="With Pills">
+    {args => {
+      return (
+        <>
+          <TabBar {...args}>
+            <TabBar.Tab>
+              First tab <Pill level="warning" />
+            </TabBar.Tab>
+            <TabBar.Tab isActive={true}>Another tab</TabBar.Tab>
+            <TabBar.Tab>
+              Last tab <Pill level="danger" />
+            </TabBar.Tab>
+          </TabBar>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
