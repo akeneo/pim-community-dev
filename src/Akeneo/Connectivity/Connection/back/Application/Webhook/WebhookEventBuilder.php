@@ -11,6 +11,7 @@ use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
+use Akeneo\Query\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -67,7 +68,7 @@ class WebhookEventBuilder
     {
         $resolver = new OptionsResolver();
         $resolver->setRequired(['user', 'pim_source', 'connection_code']);
-        $resolver->setAllowedTypes('user', UserInterface::class);
+        $resolver->setAllowedTypes('user', User::class);
         $resolver->setAllowedTypes('pim_source', 'string');
         $resolver->setAllowedTypes('connection_code', 'string');
 

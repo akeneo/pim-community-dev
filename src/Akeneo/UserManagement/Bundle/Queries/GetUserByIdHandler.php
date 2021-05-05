@@ -3,16 +3,16 @@
 
 namespace Akeneo\UserManagement\Bundle\Queries;
 
-use Akeneo\Queries\GetUserByIdQuery;
+use Akeneo\Query\GetUserByIdQuery;
+use Akeneo\Query\User;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class GetUserByIdHandler implements MessageSubscriberInterface
 {
-
     private UserRepositoryInterface $repository;
-
     private NormalizerInterface $normalizer;
 
     public function __construct(UserRepositoryInterface $repository,NormalizerInterface $normalizer)
@@ -28,11 +28,13 @@ class GetUserByIdHandler implements MessageSubscriberInterface
         ];
     }
 
-    public function __invoke(GetUserByIdQuery $query)
+    // TODO: Handle error
+    public function __invoke(GetUserByIdQuery $query) :User
     {
+        /** @var UserInterface $user */
         $user = $this->repository->find($query->getId());
 
-        return $this->normalizer->normalize($user);
+        return new User($user->getId(), $user->getUsername());
     }
 }
 

@@ -50,14 +50,14 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
         return true;
     }
 
-    public function build(BulkEventInterface $bulkEvent, UserInterface $user): EventDataCollection
+    public function build(BulkEventInterface $event, \Akeneo\Query\User $user): EventDataCollection
     {
-        $products = $this->getConnectorProducts($this->getProductIdentifiers($bulkEvent->getEvents()), $user->getId());
+        $products = $this->getConnectorProducts($this->getProductIdentifiers($event->getEvents()), $user->getId());
 
         $collection = new EventDataCollection();
 
         /** @var ProductCreated|ProductUpdated $event */
-        foreach ($bulkEvent->getEvents() as $event) {
+        foreach ($event->getEvents() as $event) {
             $product = $products[$event->getIdentifier()] ?? null;
 
             if (null === $product) {

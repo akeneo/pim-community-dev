@@ -31,12 +31,12 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
         return true;
     }
 
-    public function build(BulkEventInterface $bulkEvent, UserInterface $user): EventDataCollection
+    public function build(BulkEventInterface $event, \Akeneo\Query\User $user): EventDataCollection
     {
         $collection = new EventDataCollection();
 
         /** @var ProductRemoved $event */
-        foreach ($bulkEvent->getEvents() as $event) {
+        foreach ($event->getEvents() as $event) {
             $data = [
                 'resource' => [
                     'identifier' => $event->getIdentifier()

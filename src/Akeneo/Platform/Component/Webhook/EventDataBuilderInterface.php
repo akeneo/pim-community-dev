@@ -16,7 +16,9 @@ interface EventDataBuilderInterface
     public function supports(BulkEventInterface $event): bool;
 
     /**
-     * @return array<mixed> Normalized data.
+     * @param BulkEventInterface $event
+     * @param \Akeneo\Query\User $user
+     * @return EventDataCollection Normalized data.
      */
-    public function build(BulkEventInterface $event, UserInterface $user): EventDataCollection;
+    public function build(BulkEventInterface $event, \Akeneo\Query\User $user): EventDataCollection;
 }

@@ -1,10 +1,8 @@
 <?php
 
+// TODO: move to UserManagement ?
+namespace Akeneo\Query;
 
-namespace Akeneo\Queries;
-
-
-use spec\Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistrySpec;
 
 final class GetUserByIdQuery
 {
