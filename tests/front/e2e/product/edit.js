@@ -1,5 +1,5 @@
 describe('edit product', () => {
-  it('It can go to the first product of the products grid', () => {
+  it('It can enrich the first product of the products grid', () => {
     cy.login();
 
     cy.goToProductsGrid();
