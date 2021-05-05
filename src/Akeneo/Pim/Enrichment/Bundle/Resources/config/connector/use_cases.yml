@@ -120,3 +120,8 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQuery'
             - '@akeneo.pim.automation.data_quality_insights.feature'
+
+    akeneo.pim.enrichment.use_cases.get_products_with_completenesses:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithCompletenesses
+        arguments:
+            - 'akeneo.pim.enrichment.product.query.get_product_completenesses'
