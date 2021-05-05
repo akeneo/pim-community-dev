@@ -1,8 +1,8 @@
-import {Operation, Operator} from 'akeneomeasure/model/operation';
-import {Unit} from 'akeneomeasure/model/unit';
-import {LocaleCode} from 'akeneomeasure/model/locale';
-import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {ValidationError, Translate} from '@akeneo-pim-community/shared';
+import {Operation, Operator} from '../../../model/operation';
+import {Unit} from '../../../model/unit';
+import {LocaleCode} from '../../../model/locale';
+import {MeasurementFamily} from '../../../model/measurement-family';
 
 type CreateUnitForm = {
   code: string;
@@ -58,4 +58,5 @@ const validateCreateUnitForm = (
   return [];
 };
 
-export {CreateUnitForm, initializeCreateUnitForm, createUnitFromForm, validateCreateUnitForm};
+export {initializeCreateUnitForm, createUnitFromForm, validateCreateUnitForm};
+export type {CreateUnitForm};

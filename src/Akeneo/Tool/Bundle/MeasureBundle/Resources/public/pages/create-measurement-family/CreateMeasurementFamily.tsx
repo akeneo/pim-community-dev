@@ -1,13 +1,13 @@
 import React, {useCallback, useState} from 'react';
 import {Helper, MeasurementIllustration, Button, Modal, SectionTitle} from 'akeneo-design-system';
-import {useCreateMeasurementFamilySaver} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-saver';
+import {useCreateMeasurementFamilySaver} from './hooks/use-create-measurement-family-saver';
 import {
   CreateMeasurementFamilyForm,
   initializeCreateMeasurementFamilyForm,
   createMeasurementFamilyFromForm,
-} from 'akeneomeasure/pages/create-measurement-family/form/create-measurement-family-form';
-import {useForm} from 'akeneomeasure/hooks/use-form';
-import {MeasurementFamilyCode} from 'akeneomeasure/model/measurement-family';
+} from './form/create-measurement-family-form';
+import {useForm} from '../../hooks/use-form';
+import {MeasurementFamilyCode} from '../../model/measurement-family';
 import {
   ValidationError,
   getErrorsForPath,

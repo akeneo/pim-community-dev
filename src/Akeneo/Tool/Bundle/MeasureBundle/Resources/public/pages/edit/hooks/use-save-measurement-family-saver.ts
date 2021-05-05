@@ -1,4 +1,4 @@
-import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
+import {MeasurementFamily} from '../../../model/measurement-family';
 import {useRouter, ValidationError} from '@akeneo-pim-community/shared';
 
 type SaverResult = {
