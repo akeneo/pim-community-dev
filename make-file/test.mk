@@ -102,7 +102,7 @@ open-cypress:
 # TODO add split by tests (circleci tests split --split-by=timings)
 end-to-end-front:
 ifeq ($(CI),true)
-	CYPRESS_defaultCommandTimeout=6000 $(DOCKER_COMPOSE) run --rm cypress
+	CYPRESS_defaultCommandTimeout=8000 $(DOCKER_COMPOSE) run --rm cypress
 else
 	${CYPRESS_RUN} cypress run
 endif
