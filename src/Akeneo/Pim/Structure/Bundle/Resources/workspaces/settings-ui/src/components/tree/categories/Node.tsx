@@ -113,10 +113,6 @@ const Node: FC<Props> = ({id, label, followCategory, sortable = false}) => {
       onDrop={async () => {
         // @todo rework to not have to do all these sanity checks
         if (draggedCategory && node !== undefined && moveTarget) {
-          if (moveTarget.position === 'in' && node.type === 'node' && node.childrenStatus === 'idle') {
-            await loadChildren(); // @fixme conflict with the stateful moveTo, the nodes is not refreshed yet
-          }
-
           moveTo(draggedCategory.identifier, moveTarget);
 
           /*
