@@ -2,8 +2,7 @@ import React, {useRef} from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 import {AssetsIllustration, Checkbox, Button, useAutoFocus, Modal, Field, SelectInput} from 'akeneo-design-system';
-import {getErrorsForPath, Section, TextField, useTranslate} from '@akeneo-pim-community/shared';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {getErrorsForPath, Section, TextField, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {

@@ -1,6 +1,6 @@
 import React from 'react';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {List} from 'akeneo-design-system';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {UpdaterRow} from 'akeneoassetmanager/application/component/library/MassEdit/components/UpdaterRow';
 import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
 import Channel from 'akeneoassetmanager/domain/model/channel';

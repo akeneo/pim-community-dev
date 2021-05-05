@@ -12,7 +12,7 @@ import {
   Dropdown,
   MoreIcon,
 } from 'akeneo-design-system';
-import {useTranslate, Section} from '@akeneo-pim-community/shared';
+import {useTranslate, Section, ValidationError} from '@akeneo-pim-community/shared';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
@@ -31,7 +31,6 @@ import {
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 import Ajv from 'ajv';
 import {getErrorsViewStartedWith} from 'akeneoassetmanager/application/component/app/validation-error';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
 import {ConfirmModal} from 'akeneoassetmanager/application/component/app/modal';
 import namingConventionSchema from 'akeneoassetmanager/infrastructure/model/asset-family/naming-convention.schema.json';

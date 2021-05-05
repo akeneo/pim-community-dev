@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- API-1557: Published products do not produce Pim events anymore
+
 # 5.0.22 (2021-04-27)
 
 ## Bug fixes

@@ -1,4 +1,4 @@
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 
 export default interface Saver<CreateEntity, EditEntity> {
   save: (entity: EditEntity) => Promise<ValidationError[] | null>;

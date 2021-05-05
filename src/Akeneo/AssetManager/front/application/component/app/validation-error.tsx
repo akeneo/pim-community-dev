@@ -1,5 +1,5 @@
 import React from 'react';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {Helper} from 'akeneo-design-system';
 import translate from 'akeneoassetmanager/tools/translator';
 

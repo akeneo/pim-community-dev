@@ -2,8 +2,7 @@ import React, {useRef} from 'react';
 import {connect} from 'react-redux';
 import styled, {FlattenSimpleInterpolation} from 'styled-components';
 import {DeleteIcon, Key, Checkbox, Button, SectionTitle, useAutoFocus, useBooleanState} from 'akeneo-design-system';
-import {DeleteModal, getErrorsForPath, TextField, useTranslate} from '@akeneo-pim-community/shared';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {DeleteModal, getErrorsForPath, TextField, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {

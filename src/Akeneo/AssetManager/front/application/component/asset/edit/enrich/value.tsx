@@ -1,20 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
+import {Field, Helper} from 'akeneo-design-system';
+import {ValidationError, useTranslate} from '@akeneo-pim-community/shared';
 import LocaleReference, {
   localeReferenceAreEqual,
   localeReferenceStringValue,
 } from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference, {channelReferenceAreEqual} from 'akeneoassetmanager/domain/model/channel-reference';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getDataFieldView} from 'akeneoassetmanager/application/configuration/value';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {getValuesForChannelAndLocale, isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
 import {hasFieldAsTarget} from 'akeneoassetmanager/domain/model/asset-family/transformation';
-import {Field, Helper} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
 import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {isTextAreaAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 

@@ -1,6 +1,6 @@
 import Line, {Thumbnail} from 'akeneoassetmanager/application/asset-upload/model/line';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {FileInfo} from 'akeneo-design-system';
 
 type ThumbnailForLine = {

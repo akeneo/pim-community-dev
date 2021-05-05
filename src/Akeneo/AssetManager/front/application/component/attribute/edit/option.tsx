@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {Button, Key, CloseIcon, Modal, SectionTitle, getColor} from 'akeneo-design-system';
 import {Section, TextField, useTranslate} from '@akeneo-pim-community/shared';
 import {getLabel} from 'pimui/js/i18n';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
   optionEditionCancel,

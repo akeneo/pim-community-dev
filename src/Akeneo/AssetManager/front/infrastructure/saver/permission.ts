@@ -1,4 +1,4 @@
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import AssetFamilyIdentifier, {
   assetFamilyIdentifierStringValue,

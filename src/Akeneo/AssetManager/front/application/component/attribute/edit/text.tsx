@@ -1,7 +1,6 @@
 import React from 'react';
 import {Checkbox, Field, SelectInput} from 'akeneo-design-system';
-import {getErrorsForPath, TextField, useTranslate} from '@akeneo-pim-community/shared';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {getErrorsForPath, TextField, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {
   TextAttribute,

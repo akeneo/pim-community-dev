@@ -3,7 +3,7 @@ import AttributeIdentifier, {
   attributeIdentifierStringValue,
 } from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {deleteJSON} from 'akeneoassetmanager/tools/fetch';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import AssetFamilyIdentifier, {
   assetFamilyIdentifierStringValue,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
