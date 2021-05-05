@@ -220,9 +220,11 @@ jobs:
                 path: var/tests/phpunit
           - store_artifacts:
                 path: var/logs
+
   test_front_cypress:
     machine:
       image: ubuntu-1604:201903-01
+    resource_class: large
     steps:
       - attach_workspace:
           at: ~/
@@ -239,20 +241,21 @@ jobs:
           name: Start containers
           command: |
             docker load -i php-pim-image.tar
-            APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage selenium pubsub-emulator' make up
+            APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage pubsub-emulator' make up
             docker/wait_docker_up.sh
       - run:
           name: Install database
           command: APP_ENV=behat O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
       - run:
           name: Launch Cypress
-          command: make end-to-end-front
+          command: CYPRESS_defaultCommandTimeout=8000 make end-to-end-front
       - store_artifacts:
           path: cypress/screenshots
       - store_artifacts:
           path: cypress/videos
       - store_artifacts:
           path: var/logs
+
   test_back_behat_legacy:
     machine:
         image: ubuntu-2004:202101-01
@@ -683,9 +686,6 @@ workflows:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
                     - test_back_phpunit
-          - test_front_cypress:
-              requires:
-                - build_dev
           - ready_to_build_only_ce?:
                 type: approval
                 filters:

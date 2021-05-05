@@ -95,18 +95,9 @@ else
 	@echo Run end to end test locally is too long, please use the target defined for your bounded context (ex: bounded-context-end-to-end-back)
 endif
 
-open-cypress:
-	${CYPRESS_RUN} cypress open
-
-
 # TODO add split by tests (circleci tests split --split-by=timings)
 end-to-end-front:
-ifeq ($(CI),true)
-	CYPRESS_defaultCommandTimeout=8000 $(DOCKER_COMPOSE) run --rm cypress
-else
-	${CYPRESS_RUN} cypress run
-endif
-
+	$(DOCKER_COMPOSE) run --rm cypress
 
 # How to debug a behat locally?
 # -----------------------------

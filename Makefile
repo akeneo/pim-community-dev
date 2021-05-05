@@ -3,7 +3,6 @@ NODE_RUN = $(DOCKER_COMPOSE) run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP
 YARN_RUN = $(NODE_RUN) yarn
 PHP_RUN = $(DOCKER_COMPOSE) run -u www-data --rm php php
 PHP_EXEC = $(DOCKER_COMPOSE) exec -u www-data fpm php
-CYPRESS_RUN = $(DOCKER_COMPOSE) run --rm cypress
 CYPRESS_OPEN = $(DOCKER_COMPOSE) run -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --rm cypress
 
 .DEFAULT_GOAL := help
