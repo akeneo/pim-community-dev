@@ -1,4 +1,0 @@
-services:
-  Akeneo\Pim\Enrichment\Bundle\Queries\GetProductHandler:
-    tags:
-      - { name: messenger.message_handler, bus: query.bus }
