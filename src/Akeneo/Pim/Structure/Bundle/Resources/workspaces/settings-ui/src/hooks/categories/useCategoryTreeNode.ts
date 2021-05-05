@@ -171,6 +171,7 @@ const useCategoryTreeNode = (id: number) => {
     const updatedNodes = update(nodes, {
       ...node,
       childrenIds: newChildren.map(child => child.identifier),
+      childrenStatus: 'loaded',
     });
 
     // @todo check uniqueness of new children

@@ -5,7 +5,6 @@ export type Category = {
   id: number;
   code: string;
   labels: LabelCollection;
-  parent: string;
   root: Category | null;
 };
 

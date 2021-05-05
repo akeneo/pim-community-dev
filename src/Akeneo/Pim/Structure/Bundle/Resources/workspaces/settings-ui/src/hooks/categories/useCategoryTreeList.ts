@@ -27,7 +27,7 @@ const useCategoryTreeList = () => {
 
   useEffect(() => {
     if (productsNumberByCategory) {
-      const updatedTrees: CategoryTree[] = trees.map((tree: CategoryTree) => {
+      const updatedTrees: CategoryTreeModel[] = trees.map((tree: CategoryTreeModel) => {
         if (productsNumberByCategory.hasOwnProperty(tree.id)) {
           return {
             ...tree,

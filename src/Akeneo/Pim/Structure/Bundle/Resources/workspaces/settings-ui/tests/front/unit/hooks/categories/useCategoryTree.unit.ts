@@ -1,4 +1,4 @@
-import {renderHookWithProviders} from '@akeneo-pim-community/shared/tests/utils';
+import {renderHookWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {CategoryTreeModel, useCategoryTree} from '@akeneo-pim-community/settings-ui';
 import {aBackendCategoryTree, aCategoryTree} from '../../../utils/provideCategoryHelper';
 import {act} from 'react-test-renderer';
@@ -31,6 +31,7 @@ describe('useCategoryTree', () => {
       'a_root_category',
       ['a_category', 'a_second_category'],
       true,
+      false,
       treeId
     );
     const response = aBackendCategoryTree('a_root_category', ['a_category', 'a_second_category'], true, treeId);

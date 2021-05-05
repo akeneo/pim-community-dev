@@ -9,7 +9,7 @@ const TreeRow = styled.div<{$selected: boolean; $disabled: boolean} & AkeneoThem
   overflow: hidden;
   width: 100%;
   border: 1px solid ${getColor('grey100')};
-  
+
   ${({$selected}) =>
     $selected &&
     css`
