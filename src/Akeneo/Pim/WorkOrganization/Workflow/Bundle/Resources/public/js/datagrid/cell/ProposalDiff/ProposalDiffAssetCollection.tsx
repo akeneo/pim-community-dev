@@ -1,6 +1,6 @@
 import React from 'react';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
-import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {getMediaPreviewUrl, getImageDownloadUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import EditionAsset, {
   getEditionAssetMainMediaThumbnail,
   getEditionAssetMediaData,
@@ -14,6 +14,10 @@ const UserContext = require('pim/user-context');
 import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
 import {ReloadPreviewProvider} from 'akeneoassetmanager/application/hooks/useReloadPreview';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
+import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
+import {isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
+import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
+import {getMediaLinkUrl} from 'akeneoassetmanager/domain/model/asset/data/media-link';
 
 type AssetFamilyIdentifier = string;
 
@@ -42,7 +46,7 @@ const ProposalDiffAssetCollection: React.FC<ProposalDiffAssetCollectionProps> = 
     <ReloadPreviewProvider {...rest}>
       {assets.map((asset, i) => {
         if (!asset) {
-          return <></>;
+          return <span key={`undefined-asset-${i}`} />;
         }
 
         const attribute = getAttributeAsMainMedia(asset.assetFamily);
@@ -57,15 +61,14 @@ const ProposalDiffAssetCollection: React.FC<ProposalDiffAssetCollectionProps> = 
           )
         );
         let downloadUrl = undefined;
-        if (!isMediaLinkAttribute(attribute)) {
-          downloadUrl = getMediaPreviewUrl(
-            getEditionAssetMainMediaThumbnail(
-              asset,
-              UserContext.get('catalogScope'),
-              UserContext.get('catalogLocale'),
-              MediaPreviewType.Preview
-            )
-          );
+        if (
+          !(
+            (isMediaLinkAttribute(attribute) &&
+              (MediaTypes.youtube === attribute.media_type || MediaTypes.vimeo === attribute.media_type)) ||
+            isDataEmpty(data)
+          )
+        ) {
+          downloadUrl = isMediaFileData(data) ? getImageDownloadUrl(data) : getMediaLinkUrl(data, attribute);
         }
 
         const isDiff =
