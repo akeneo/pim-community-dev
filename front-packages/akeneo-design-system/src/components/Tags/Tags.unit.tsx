@@ -1,11 +1,30 @@
 import React from 'react';
-import {Tags} from './Tags';
+import {Tag, Tags} from './Tags';
 import {render, screen} from '../../storybook/test-util';
 
 test('it renders its children properly', () => {
-  render(<Tags>Tags content</Tags>);
+  render(
+    <Tags>
+      <Tag color="red">yolo</Tag>
+    </Tags>
+  );
 
-  expect(screen.getByText('Tags content')).toBeInTheDocument();
+  expect(screen.getByText('yolo')).toBeInTheDocument();
+});
+
+test('it fails when there are invalid children', () => {
+  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
+
+  expect(() => {
+    render(
+      <Tags>
+        tata
+        <span>yolo</span>
+      </Tags>
+    );
+  }).toThrowError();
+
+  mockConsole.mockRestore();
 });
 
 // Those tests should pass directly if you follow the contributing guide.
