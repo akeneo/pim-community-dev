@@ -20,9 +20,9 @@ type Props = {
 const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory, sortable = false}) => {
   const {
     node,
-    setNode,
     children,
     loadChildren,
+    forceReloadChildren,
     moveTo,
     draggedCategory,
     setDraggedCategory,
@@ -38,11 +38,6 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
   if (node === undefined) {
     return null;
   }
-
-  const onCategoryAdded = (parentNode: TreeNode<CategoryTreeModel>) => {
-    setNode({...parentNode, childrenStatus: 'to-reload'});
-    // @todo open the current node?
-  };
 
   return (
     <Tree
@@ -163,7 +158,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
               size="small"
               onClick={event => {
                 event.stopPropagation();
-                addCategory(node.data.code, () => onCategoryAdded(node));
+                addCategory(node.data.code, () => forceReloadChildren());
               }}
             >
               {translate('pim_enrich.entity.category.new_category')}

@@ -117,6 +117,12 @@ const useCategoryTreeNode = (id: number) => {
     [nodes]
   );
 
+  const forceReloadChildren = useCallback(() => {
+    if (node) {
+      setNode({...node, childrenStatus: 'to-reload'});
+    }
+  }, [node]);
+
   useEffect(() => {
     setNode(findOneByIdentifier(nodes, id));
   }, [id, nodes]);
@@ -158,6 +164,7 @@ const useCategoryTreeNode = (id: number) => {
     setNode,
     children,
     loadChildren,
+    forceReloadChildren,
     moveTo,
     getCategoryPosition,
     ...rest,
