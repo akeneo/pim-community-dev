@@ -1,6 +1,6 @@
 import React, {forwardRef, SyntheticEvent} from 'react';
 import styled from 'styled-components';
-import {CloseIcon, Helper, IconButton, List, TextInput, useBooleanState} from 'akeneo-design-system';
+import {CloseIcon, getColor, Helper, IconButton, List, TextInput, useBooleanState} from 'akeneo-design-system';
 import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import {ColumnConfiguration} from '../../models/ColumnConfiguration';
 import {useValidationErrors} from '../../contexts';
@@ -10,6 +10,12 @@ const Field = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
+`;
+
+const SourceList = styled.div`
+  color: ${getColor('grey', 100)};
+  font-style: italic;
+  margin-left: 20px;
 `;
 
 type ColumnRowProps = {
@@ -40,14 +46,14 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
 
     return (
       <>
-        <List.Row key={column.uuid} onClick={() => onColumnSelected(column.uuid)} isSelected={isSelected}>
+        <List.Row key={column.uuid} onClick={() => onColumnSelected(column.uuid)} isSelected={isSelected} isMultiline={targetErrors.length !== 0}>
           <List.Cell width={300}>
             <Field>
               <TextInput
                 ref={ref}
                 onChange={updatedValue => onColumnChange({...column, target: updatedValue})}
                 onSubmit={() => onFocusNext(column.uuid)}
-                placeholder={translate('akeneo.tailored_export.column_list.column_row.target_placeholder')}
+                invalid={targetErrors.length !== 0}
                 value={column.target}
               />
               {targetErrors.map((error, index) => (
@@ -57,7 +63,9 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
               ))}
             </Field>
           </List.Cell>
-          <List.Cell width="auto">{translate('akeneo.tailored_export.column_list.column_row.no_source')}</List.Cell>
+          <List.Cell width="auto">
+            <SourceList>{translate('akeneo.tailored_export.column_list.column_row.no_source')}</SourceList>
+          </List.Cell>
           <List.RemoveCell>
             <IconButton
               ghost="borderless"

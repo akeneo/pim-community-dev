@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {Helper, List, SectionTitle, TextInput, useAutoFocus} from 'akeneo-design-system';
+import {getColor, Helper, List, SectionTitle, TextInput, useAutoFocus} from 'akeneo-design-system';
 import {ColumnConfiguration, ColumnsConfiguration} from '../../models/ColumnConfiguration';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -13,6 +13,12 @@ const Container = styled.div`
   flex: 1;
   height: 100%;
   overflow-y: auto;
+`;
+
+const SourceList = styled.div`
+  color: ${getColor('grey', 100)};
+  font-style: italic;
+  margin-left: 20px;
 `;
 
 type ColumnListProps = {
@@ -87,11 +93,13 @@ const ColumnList = ({
                 value=""
               />
             </List.Cell>
-            <List.Cell width="auto">{translate('akeneo.tailored_export.column_list.column_row.no_source')}</List.Cell>
+            <List.Cell width="auto">
+              <SourceList>{translate('akeneo.tailored_export.column_list.column_row.no_source')}</SourceList>
+            </List.Cell>
           </List.Row>
         )}
-        {columnsConfiguration.length === 0 && <ColumnListPlaceholder onColumnCreated={onColumnCreated} />}
       </List>
+      {columnsConfiguration.length === 0 && <ColumnListPlaceholder onColumnCreated={onColumnCreated} />}
     </Container>
   );
 };
