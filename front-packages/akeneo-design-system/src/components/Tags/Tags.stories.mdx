@@ -1,0 +1,55 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Tags} from './Tags.tsx';
+
+<Meta
+  title="Components/Tags"
+  component={Tags}
+  argTypes={{
+    level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
+  }}
+  args={{level: 'primary', children: 'Tags text'}}
+/>
+
+# Tags
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Tags {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <Tags {...args} level="primary">
+            Primary
+          </Tags>
+          <Tags {...args} level="warning">
+            Warning
+          </Tags>
+          <Tags {...args} level="danger">
+            Danger
+          </Tags>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
