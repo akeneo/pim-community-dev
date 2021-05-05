@@ -19,6 +19,11 @@ type Params = {
   treeId: string;
 };
 
+type NewCategoryState = {
+   parentCode: string;
+   onCreate: () => void;
+};
+
 const CategoriesTreePage: FC = () => {
   let {treeId} = useParams<Params>();
   const router = useRouter();
@@ -27,8 +32,7 @@ const CategoriesTreePage: FC = () => {
   const {tree, status, load} = useCategoryTree(parseInt(treeId));
   const [treeLabel, setTreeLabel] = useState(`[${treeId}]`);
   const [isNewCategoryModalOpen, openNewCategoryModal, closeNewCategoryModal] = useBooleanState();
-  const [newCategoryParentCode, setNewCategoryParentCode] = useState<string | null>(null);
-  const [onNewCategoryAdded, setOnNewCategoryAdded] = useState<() => {} | null>(null);
+  const [newCategory, setNewCategory] = useState<NewCategoryState | null>(null);
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_tree', {'category.label': treeLabel}));
 
@@ -41,14 +45,13 @@ const CategoriesTreePage: FC = () => {
     router.redirect(router.generate('pim_enrich_categorytree_edit', {id: id.toString()}));
   };
 
-  const addCategory = (parentCode: string, onCategoryAdded: () => {}) => {
-    setNewCategoryParentCode(parentCode);
-    setOnNewCategoryAdded(() => () => onCategoryAdded());
+  const addCategory = (parentCode: string, onCreate: () => void) => {
+    setNewCategory({parentCode, onCreate});
     openNewCategoryModal();
   };
 
   const handleCloseNewCategoryModal = () => {
-    setNewCategoryParentCode(null);
+    setNewCategory(null);
     closeNewCategoryModal();
   };
 
@@ -100,11 +103,11 @@ const CategoriesTreePage: FC = () => {
           deleteCategory={categoryId => console.log(`delete category ${categoryId}`)} // @todo implement the deletion of the category and handle isGranted pim_enrich_product_category_remove
           // @todo define onCategoryMoved to save the move in database and request the 'pim_enrich_categorytree_movenode'
         />
-        {isNewCategoryModalOpen && newCategoryParentCode !== null && onNewCategoryAdded !== null && (
+        {isNewCategoryModalOpen && newCategory !== null && (
           <NewCategoryModal
             closeModal={handleCloseNewCategoryModal}
-            onCreate={onNewCategoryAdded}
-            parentCode={newCategoryParentCode}
+            onCreate={newCategory.onCreate}
+            parentCode={newCategory.parentCode}
           />
         )}
       </PageContent>

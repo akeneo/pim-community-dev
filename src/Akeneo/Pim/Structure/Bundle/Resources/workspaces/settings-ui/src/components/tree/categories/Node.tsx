@@ -158,7 +158,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
               size="small"
               onClick={event => {
                 event.stopPropagation();
-                addCategory(node.data.code, () => forceReloadChildren());
+                addCategory(node.data.code, forceReloadChildren);
               }}
             >
               {translate('pim_enrich.entity.category.new_category')}
