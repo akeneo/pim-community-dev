@@ -53,6 +53,65 @@ class GetProductCompletenessesIntegration extends TestCase
         $this->assertCompletenessContains($completenesses, 'tablet', 'en_US', 4, 2);
     }
 
+    public function test_it_returns_completenesses_of_several_product_id(): void
+    {
+        $this->createProduct(
+            'productA',
+            'familyA3',
+            [
+                'a_yes_no' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => false,
+                    ],
+                ],
+                'a_localized_and_scopable_text_area' => [
+                    [
+                        'scope' => 'ecommerce',
+                        'locale' => 'en_US',
+                        'data' => 'A great description',
+                    ],
+                    [
+                        'scope' => 'tablet',
+                        'locale' => 'fr_FR',
+                        'data' => 'Une super description',
+                    ],
+                ],
+            ]
+        );
+        $this->createProduct(
+            'productA2',
+            'familyA3',
+            [
+                'a_yes_no' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => true,
+                    ],
+                ],
+                'a_localized_and_scopable_text_area' => [
+                    [
+                        'scope' => 'ecommerce',
+                        'locale' => 'en_US',
+                        'data' => 'An amazing description',
+                    ],
+                    [
+                        'scope' => 'tablet',
+                        'locale' => 'fr_FR',
+                        'data' => null,
+                    ],
+                ],
+            ]
+        );
+
+        $ids = [
+            $this->getProductId('productA'),
+            $this->getProductId('productA2'),
+        ];
+    }
+
     public function test_that_it_returns_an_empty_array_for_a_product_without_family()
     {
         $this->createProduct(

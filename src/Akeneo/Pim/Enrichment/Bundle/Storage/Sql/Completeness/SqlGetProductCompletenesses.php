@@ -51,4 +51,9 @@ SQL;
             $rows
         ));
     }
+
+    public function fromProductIds(array $productIds): array
+    {
+
+    }
 }

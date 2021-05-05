@@ -19,4 +19,11 @@ interface GetProductCompletenesses
      * @return ProductCompletenessCollection
      */
     public function fromProductId(int $productId): ProductCompletenessCollection;
+
+    /**
+     * @param array $productIds
+     *
+     * @return array{string: ProductCompletenessCollection}
+     */
+    public function fromProductIds(array $productIds): array;
 }
