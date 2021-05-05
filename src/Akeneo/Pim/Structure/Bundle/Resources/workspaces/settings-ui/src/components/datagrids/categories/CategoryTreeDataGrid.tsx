@@ -127,11 +127,11 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                 >
                   <Table.Cell rowTitle>{tree.label}</Table.Cell>
                   <Table.Cell>
-                    {countTreesChildren.hasOwnProperty(tree.code) &&
+                    {countTreesChildren !== null &&
                     translate(
                       'pim_enrich.entity.category.content.tree_list.columns.count_categories',
-                      {count: countTreesChildren[tree.code]},
-                      countTreesChildren[tree.code]
+                      {count: countTreesChildren.hasOwnProperty(tree.code) ? countTreesChildren[tree.code] : 0},
+                      countTreesChildren.hasOwnProperty(tree.code) ? countTreesChildren[tree.code] : 0
                     )}
                   </Table.Cell>
                   <TableActionCell>
