@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
-import {Unit, UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
+import {ErrorBadge} from '../../../shared/components/ErrorBadge';
+import {Unit, UnitCode, getUnitLabel} from '../../../model/unit';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {Badge, Table} from 'akeneo-design-system';
 
@@ -12,7 +12,7 @@ const UnitCodeContainer = styled.span`
   flex: 1;
 `;
 
-const UnitCode = styled.span`
+const UnitCodeLabel = styled.span`
   flex: 1;
 `;
 
@@ -33,7 +33,7 @@ const UnitRow = ({unit, isStandardUnit, isSelected = false, isInvalid = false, o
       <Table.Cell rowTitle={true}>{getUnitLabel(unit, locale)}</Table.Cell>
       <Table.Cell>
         <UnitCodeContainer>
-          <UnitCode>{unit.code}</UnitCode>
+          <UnitCodeLabel>{unit.code}</UnitCodeLabel>
           {isStandardUnit && <Badge level="tertiary">{translate('measurements.family.standard_unit')}</Badge>}
           {isInvalid && <ErrorBadge />}
         </UnitCodeContainer>

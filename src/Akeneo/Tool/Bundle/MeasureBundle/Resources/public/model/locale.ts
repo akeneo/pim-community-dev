@@ -10,4 +10,4 @@ type Locale = {
   language: LocaleLanguage;
 };
 
-export {LocaleCode, Locale};
+export type {LocaleCode, Locale};

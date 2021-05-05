@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import {MeasurementFamilyRow} from 'akeneomeasure/pages/list/MeasurementFamilyRow';
-import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
-import {Direction} from 'akeneomeasure/model/direction';
+import {MeasurementFamilyRow} from '../list/MeasurementFamilyRow';
+import {MeasurementFamily} from '../../model/measurement-family';
+import {Direction} from '../../model/direction';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Table} from 'akeneo-design-system';
 
