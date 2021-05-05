@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {Tree} from '../../shared';
-import {CategoryTreeModel as CategoryTreeModel} from '../../../models';
+import {CategoryTreeModel as CategoryTreeModel, TreeNode} from '../../../models';
 import {useCategoryTreeNode} from '../../../hooks';
 import {MoveTarget} from '../../providers';
 import {Button} from 'akeneo-design-system';
@@ -13,13 +13,14 @@ type Props = {
   followCategory?: (category: CategoryTreeModel) => void;
   // @todo define onCategoryMoved arguments
   onCategoryMoved?: () => void;
-  addCategory?: (parentCode: string) => void;
+  addCategory?: (parentCode: string, onCategoryAdded: () => {}) => void;
   deleteCategory?: (categoryId: number) => void; // @todo define arguments that we really need
 };
 
 const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory, sortable = false}) => {
   const {
     node,
+    setNode,
     children,
     loadChildren,
     moveTo,
@@ -37,6 +38,11 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
   if (node === undefined) {
     return null;
   }
+
+  const onCategoryAdded = (parentNode: TreeNode<CategoryTreeModel>) => {
+    setNode({...parentNode, childrenStatus: 'to-reload'});
+    // @todo open the current node?
+  };
 
   return (
     <Tree
@@ -157,7 +163,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
               size="small"
               onClick={event => {
                 event.stopPropagation();
-                addCategory(node.data.code);
+                addCategory(node.data.code, () => onCategoryAdded(node));
               }}
             >
               {translate('pim_enrich.entity.category.new_category')}

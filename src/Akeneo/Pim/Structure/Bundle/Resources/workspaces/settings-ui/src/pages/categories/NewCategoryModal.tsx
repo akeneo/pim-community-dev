@@ -32,8 +32,8 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, pare
       }
     }
 
-    onCreate();
     setValidationErrors({});
+    onCreate();
     closeModal();
     notify(
       NotificationLevel.SUCCESS,

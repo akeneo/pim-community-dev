@@ -1,6 +1,5 @@
 import React, {createContext, FC, useState} from 'react';
 import {buildTreeNodeFromCategoryTree, CategoryTreeModel, TreeNode} from '../../models';
-import {useBooleanState} from "akeneo-design-system";
 
 type DraggedCategory = {
   parentId: number;
@@ -18,11 +17,6 @@ type MoveTarget = {
   position: 'after' | 'before' | 'in';
   parentId: number;
   identifier: number;
-};
-
-type RequestAddCategory = {
-  parentCode: string;
-  parentId: number;
 };
 
 type CategoryTreeState = {
@@ -62,7 +56,6 @@ const CategoryTreeProvider: FC<Props> = ({children, root}) => {
   const [draggedCategory, setDraggedCategory] = useState<DraggedCategory | null>(null);
   const [hoveredCategory, setHoveredCategory] = useState<HoveredCategory | null>(null);
   const [moveTarget, setMoveTarget] = useState<MoveTarget | null>(null);
-  const [requestAddCategory, setRequestAddCategory] = useState<RequestAddCategory | null>(null);
 
   const state = {
     nodes,
@@ -73,8 +66,6 @@ const CategoryTreeProvider: FC<Props> = ({children, root}) => {
     setHoveredCategory,
     moveTarget,
     setMoveTarget,
-    requestAddCategory,
-    setRequestAddCategory,
   };
   return <CategoryTreeContext.Provider value={state}>{children}</CategoryTreeContext.Provider>;
 };
