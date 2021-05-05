@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - API-1557: Published products do not produce Pim events anymore
+- PIM-9845: Ensure that filters on published products take into account the scope & the locale
 
 # 5.0.22 (2021-04-27)
 
