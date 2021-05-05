@@ -39,24 +39,18 @@ class GetAllAttributeOptionsSpellcheckQuery implements GetAllAttributeOptionsSpe
         $query = <<<SQL
 SELECT attribute_code, attribute_option_code, evaluated_at, result
 FROM pimee_dqi_attribute_option_spellcheck
-WHERE attribute_code = :attributeCode {searchAfterCondition}
+WHERE attribute_code = :attributeCode AND attribute_option_code > :searchAfterOptionCode
 ORDER BY attribute_code, attribute_option_code
 {limit}
 ;
 SQL;
-        $queryParams = ['attributeCode' => strval($attributeCode)];
-        $searchAfterCondition = '';
-        if ($searchAfterOptionCode) {
-            $searchAfterCondition = "AND attribute_option_code > :searchAfter";
-            $queryParams = ['attributeCode' => strval($attributeCode), 'searchAfter' => $searchAfterOptionCode];
-        }
-        $query = strtr($query, [
-            '{limit}' => $limit > 0 ? sprintf('LIMIT %d', $limit) : '',
-            '{searchAfterCondition}' => $searchAfterCondition,
-        ]);
+        $query = str_replace('{limit}', $limit > 0 ? sprintf('LIMIT %d', $limit) : '', $query);
 
         return $this->dbConnection
-            ->executeQuery($query, $queryParams)
+            ->executeQuery($query, [
+                'attributeCode' => strval($attributeCode),
+                'searchAfterOptionCode' => $searchAfterOptionCode ?? '',
+            ])
             ->fetchAll(\PDO::FETCH_FUNC, [$this, 'format']);
     }
 
