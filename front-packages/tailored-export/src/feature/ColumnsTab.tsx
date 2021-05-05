@@ -9,20 +9,20 @@ import {ValidationErrorsContext} from './contexts/ValidationErrorsContext';
 
 const MAX_COLUMN_COUNT = 1000;
 
-type ColumnProps = {
+const Container = styled.div`
+  padding-top: 10px;
+  display: flex;
+  gap: 20px;
+  height: calc(100vh - 278px);
+`;
+
+type ColumnsTabProps = {
   columnsConfiguration: ColumnConfiguration[];
   validationErrors: ValidationError[];
   onColumnsConfigurationChange: (columnsConfiguration: ColumnConfiguration[]) => void;
 };
 
-const Container = styled.div`
-  padding-top: 10px;
-  height: 100%;
-  display: flex;
-  gap: 20px;
-`;
-
-const ColumnsTab = ({columnsConfiguration, validationErrors, onColumnsConfigurationChange}: ColumnProps) => {
+const ColumnsTab = ({columnsConfiguration, validationErrors, onColumnsConfigurationChange}: ColumnsTabProps) => {
   const [selectedColumn, setSelectedColumn] = useState<string | null>(
     columnsConfiguration.length === 0 ? null : columnsConfiguration[0].uuid
   );
@@ -78,3 +78,4 @@ const ColumnsTab = ({columnsConfiguration, validationErrors, onColumnsConfigurat
 };
 
 export {ColumnsTab, MAX_COLUMN_COUNT};
+export type {ColumnsTabProps};

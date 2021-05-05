@@ -46,7 +46,7 @@ const ColumnList = ({
 
   useEffect(() => {
     focus();
-  }, [selectedColumn, focus]);
+  }, [selectedColumn, focus, placeholderDisplayed]);
 
   const handleFocusNextColumn = (columnUuid: string) => {
     const currentColumnIndex = columnsConfiguration.findIndex(({uuid}) => columnUuid === uuid);
