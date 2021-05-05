@@ -7,7 +7,7 @@ import {Notifications} from '../components';
 
 type Translations = {
   locale: string;
-  messages: {[key: string]: string};
+  messages: {[key: string]: string | null};
 };
 
 type Routes = {

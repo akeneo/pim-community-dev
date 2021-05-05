@@ -1,6 +1,6 @@
+import {LocaleCode} from '@akeneo-pim-community/shared';
 import {MeasurementFamily} from '../../../model/measurement-family';
 import {Operator} from '../../../model/operation';
-import {LocaleCode} from '../../../model/locale';
 
 type CreateMeasurementFamilyForm = {
   family_code: string;

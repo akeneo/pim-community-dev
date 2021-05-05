@@ -1,7 +1,6 @@
 import {useCallback, useEffect, useState} from 'react';
-import {Locale} from '../../model/locale';
+import {useRoute, Locale} from '@akeneo-pim-community/shared';
 import {baseFetcher} from '../fetcher/base-fetcher';
-import {useRoute} from '@akeneo-pim-community/shared';
 
 let uiLocalesPromise: Promise<Locale[]> | null = null;
 const fetchUiLocales = async (route: string): Promise<Locale[]> => {

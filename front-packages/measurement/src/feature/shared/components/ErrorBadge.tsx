@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import {getColor} from 'akeneo-design-system';
 
+//TODO Use DSM Pill
 const ErrorBadge = styled.div.attrs(() => ({role: 'alert'}))`
   width: 10px;
   height: 10px;
