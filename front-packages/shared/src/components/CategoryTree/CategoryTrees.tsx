@@ -138,6 +138,7 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
               tree.selected && (
                 <CategoryTree
                   key={tree.code}
+                  categoryTreeCode={tree.code}
                   init={() => customInitTree(tree)}
                   childrenCallback={childrenCallback}
                   onClick={handleClick}
