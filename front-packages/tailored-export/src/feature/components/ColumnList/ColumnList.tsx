@@ -1,13 +1,12 @@
-import React, {useEffect, useRef} from 'react';
-import {getColor, Helper, List, SectionTitle, TextInput, useAutoFocus} from 'akeneo-design-system';
-import {ColumnConfiguration, ColumnsConfiguration} from '../../models/ColumnConfiguration';
+import React, {ClipboardEvent, useEffect, useRef} from 'react';
+import {getColor, Helper, List, SectionTitle, TextInput, useAutoFocus, useBooleanState} from 'akeneo-design-system';
+import {ColumnConfiguration} from '../../models/ColumnConfiguration';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {ColumnListPlaceholder} from './ColumnListPlaceholder';
 import {ColumnRow} from './ColumnRow';
 import {useValidationErrors} from '../../contexts';
-
-const MAX_COLUMN_COUNT = 1000;
+import {MAX_COLUMN_COUNT} from '../../ColumnsTab';
 
 const Container = styled.div`
   flex: 1;
@@ -22,9 +21,10 @@ const SourceList = styled.div`
 `;
 
 type ColumnListProps = {
-  columnsConfiguration: ColumnsConfiguration;
+  columnsConfiguration: ColumnConfiguration[];
   selectedColumn: ColumnConfiguration | null;
   onColumnCreated: (target: string) => void;
+  onColumnsCreated: (targets: string[]) => void;
   onColumnChange: (column: ColumnConfiguration) => void;
   onColumnSelected: (uuid: string | null) => void;
   onColumnRemoved: (uuid: string) => void;
@@ -34,6 +34,7 @@ const ColumnList = ({
   columnsConfiguration,
   selectedColumn,
   onColumnCreated,
+  onColumnsCreated,
   onColumnChange,
   onColumnSelected,
   onColumnRemoved,
@@ -41,6 +42,7 @@ const ColumnList = ({
   const translate = useTranslate();
   const inputRef = useRef<HTMLInputElement>(null);
   const focus = useAutoFocus(inputRef);
+  const [placeholderDisplayed, , hidePlaceholder] = useBooleanState(0 === columnsConfiguration.length);
 
   useEffect(() => {
     focus();
@@ -53,11 +55,24 @@ const ColumnList = ({
     onColumnSelected(undefined === nextColumn ? null : nextColumn.uuid);
   };
 
+  const handlePaste = (event: ClipboardEvent<HTMLInputElement>) => {
+    const clipboardData = event.clipboardData;
+    const pastedData = clipboardData?.getData('Text');
+
+    const pastedColumns = pastedData?.split('\t');
+
+    const currentColumnIsEmpty = null === selectedColumn || '' === selectedColumn.target;
+    const currentColumnIsLastColumn =
+      null === selectedColumn || columnsConfiguration.indexOf(selectedColumn) === columnsConfiguration.length - 1;
+    if (undefined !== pastedColumns && pastedColumns.length > 1 && currentColumnIsEmpty && currentColumnIsLastColumn) {
+      event.preventDefault(); // We need to prevent default to not trigger onChange event
+      onColumnsCreated(pastedColumns.filter(Boolean));
+    }
+  };
+
   const globalErrors = useValidationErrors('[columns]', true);
 
   const canAddColumn = MAX_COLUMN_COUNT > columnsConfiguration.length;
-  const isLastColumnFilled =
-    0 < columnsConfiguration.length && columnsConfiguration[columnsConfiguration.length - 1].target !== '';
 
   return (
     <Container>
@@ -83,12 +98,13 @@ const ColumnList = ({
             onFocusNext={handleFocusNextColumn}
           />
         ))}
-        {canAddColumn && isLastColumnFilled && (
+        {canAddColumn && (
           <List.Row onClick={() => onColumnSelected(null)} isSelected={selectedColumn === null}>
             <List.Cell width={300}>
               <TextInput
                 ref={null === selectedColumn ? inputRef : null}
                 onChange={onColumnCreated}
+                onPaste={handlePaste}
                 placeholder={translate('akeneo.tailored_export.column_list.column_row.target_placeholder')}
                 value=""
               />
@@ -99,7 +115,7 @@ const ColumnList = ({
           </List.Row>
         )}
       </List>
-      {columnsConfiguration.length === 0 && <ColumnListPlaceholder onColumnCreated={onColumnCreated} />}
+      {placeholderDisplayed && <ColumnListPlaceholder onColumnCreated={hidePlaceholder} />}
     </Container>
   );
 };

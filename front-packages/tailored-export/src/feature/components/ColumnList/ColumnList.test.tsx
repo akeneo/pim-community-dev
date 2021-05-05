@@ -4,18 +4,27 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ColumnList} from './ColumnList';
 import userEvent from '@testing-library/user-event';
 import {ValidationErrorsContext} from '../../contexts';
+import {ColumnConfiguration} from '../../models/ColumnConfiguration';
 
 test('it renders a placeholder when no column is selected', () => {
-  const columnsConfiguration = [
+  const columnsConfiguration: ColumnConfiguration[] = [
     {
-      uuid: 1,
+      uuid: '1',
       target: 'my first column',
       sources: [],
+      format: {
+        type: 'concat',
+        elements: [],
+      },
     },
     {
-      uuid: 2,
+      uuid: '2',
       target: 'my second column',
       sources: [],
+      format: {
+        type: 'concat',
+        elements: [],
+      },
     },
   ];
 
@@ -24,6 +33,7 @@ test('it renders a placeholder when no column is selected', () => {
       columnsConfiguration={columnsConfiguration}
       onColumnChange={jest.fn}
       onColumnCreated={jest.fn}
+      onColumnsCreated={jest.fn}
       onColumnRemoved={jest.fn}
       onColumnSelected={jest.fn}
       selectedColumn={null}
@@ -42,11 +52,15 @@ test('it renders a placeholder when no column is selected', () => {
 });
 
 test('it can remove a column', () => {
-  const columnsConfiguration = [
+  const columnsConfiguration: ColumnConfiguration[] = [
     {
-      uuid: 1,
+      uuid: '1',
       target: 'my column',
       sources: [],
+      format: {
+        type: 'concat',
+        elements: [],
+      },
     },
   ];
 
@@ -57,6 +71,7 @@ test('it can remove a column', () => {
       columnsConfiguration={columnsConfiguration}
       onColumnChange={jest.fn}
       onColumnCreated={jest.fn}
+      onColumnsCreated={jest.fn}
       onColumnRemoved={handleRemove}
       onColumnSelected={jest.fn}
       selectedColumn={null}
@@ -73,11 +88,15 @@ test('it can remove a column', () => {
 });
 
 test('it can create a new column', () => {
-  const columnsConfiguration = [
+  const columnsConfiguration: ColumnConfiguration[] = [
     {
-      uuid: 1,
+      uuid: '1',
       target: 'my column',
       sources: [],
+      format: {
+        type: 'concat',
+        elements: [],
+      },
     },
   ];
 
@@ -88,6 +107,7 @@ test('it can create a new column', () => {
       columnsConfiguration={columnsConfiguration}
       onColumnChange={jest.fn}
       onColumnCreated={handleCreate}
+      onColumnsCreated={handleCreate}
       onColumnRemoved={jest.fn}
       onColumnSelected={jest.fn}
       selectedColumn={null}
@@ -103,11 +123,15 @@ test('it can create a new column', () => {
 });
 
 test('it can update a column', () => {
-  const columnsConfiguration = [
+  const columnsConfiguration: ColumnConfiguration[] = [
     {
-      uuid: 1,
+      uuid: '1',
       target: 'my column',
       sources: [],
+      format: {
+        type: 'concat',
+        elements: [],
+      },
     },
   ];
 
@@ -118,6 +142,7 @@ test('it can update a column', () => {
       columnsConfiguration={columnsConfiguration}
       onColumnChange={handleColumnChange}
       onColumnCreated={jest.fn}
+      onColumnsCreated={jest.fn}
       onColumnRemoved={jest.fn}
       onColumnSelected={jest.fn}
       selectedColumn={null}
@@ -130,18 +155,26 @@ test('it can update a column', () => {
   fireEvent.change(firstInput, {target: {value: 'my new column name'}});
 
   expect(handleColumnChange).toBeCalledWith({
-    uuid: 1,
+    uuid: '1',
     target: 'my new column name',
     sources: [],
+    format: {
+      elements: [],
+      type: 'concat',
+    },
   });
 });
 
 test('it displays validation errors', () => {
-  const columnsConfiguration = [
+  const columnsConfiguration: ColumnConfiguration[] = [
     {
-      uuid: 1,
+      uuid: '1',
       target: 'my column',
       sources: [],
+      format: {
+        type: 'concat',
+        elements: [],
+      },
     },
   ];
 
@@ -173,6 +206,7 @@ test('it displays validation errors', () => {
         columnsConfiguration={columnsConfiguration}
         onColumnChange={handleColumnChange}
         onColumnCreated={jest.fn}
+        onColumnsCreated={jest.fn}
         onColumnRemoved={jest.fn}
         onColumnSelected={jest.fn}
         selectedColumn={null}
@@ -188,16 +222,24 @@ test('it displays validation errors', () => {
 });
 
 test('it move to next line when user type enter', async () => {
-  const columnsConfiguration = [
+  const columnsConfiguration: ColumnConfiguration[] = [
     {
-      uuid: 1,
+      uuid: '1',
       target: 'my column',
       sources: [],
+      format: {
+        type: 'concat',
+        elements: [],
+      },
     },
     {
-      uuid: 2,
+      uuid: '2',
       target: 'another column',
       sources: [],
+      format: {
+        type: 'concat',
+        elements: [],
+      },
     },
   ];
 
@@ -208,31 +250,38 @@ test('it move to next line when user type enter', async () => {
       columnsConfiguration={columnsConfiguration}
       onColumnChange={jest.fn}
       onColumnCreated={jest.fn}
+      onColumnsCreated={jest.fn}
       onColumnRemoved={jest.fn}
       onColumnSelected={handleColumnSelected}
       selectedColumn={null}
     />
   );
 
-  const firstInput = screen.getAllByPlaceholderText(
-    'akeneo.tailored_export.column_list.column_row.target_placeholder'
-  )[0];
+  const firstInput = screen.getByDisplayValue('my column');
   userEvent.type(firstInput, '{enter}');
 
-  expect(handleColumnSelected).toHaveBeenCalledWith(2);
+  expect(handleColumnSelected).toHaveBeenCalledWith('2');
 });
 
 test('it focus the selected column', async () => {
-  const columnsConfiguration = [
+  const columnsConfiguration: ColumnConfiguration[] = [
     {
-      uuid: 1,
+      uuid: '1',
       target: 'my column',
       sources: [],
+      format: {
+        type: 'concat',
+        elements: [],
+      },
     },
     {
-      uuid: 2,
+      uuid: '2',
       target: 'another column',
       sources: [],
+      format: {
+        type: 'concat',
+        elements: [],
+      },
     },
   ];
 
@@ -241,6 +290,7 @@ test('it focus the selected column', async () => {
       columnsConfiguration={columnsConfiguration}
       onColumnChange={jest.fn}
       onColumnCreated={jest.fn}
+      onColumnsCreated={jest.fn}
       onColumnRemoved={jest.fn}
       onColumnSelected={jest.fn}
       selectedColumn={columnsConfiguration[0]}

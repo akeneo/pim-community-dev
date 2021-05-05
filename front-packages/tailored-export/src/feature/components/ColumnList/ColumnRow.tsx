@@ -46,7 +46,12 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
 
     return (
       <>
-        <List.Row key={column.uuid} onClick={() => onColumnSelected(column.uuid)} isSelected={isSelected} isMultiline={targetErrors.length !== 0}>
+        <List.Row
+          key={column.uuid}
+          onClick={() => onColumnSelected(column.uuid)}
+          isSelected={isSelected}
+          isMultiline={targetErrors.length !== 0}
+        >
           <List.Cell width={300}>
             <Field>
               <TextInput

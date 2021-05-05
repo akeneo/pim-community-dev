@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
-import {ColumnsTab, ColumnsConfiguration} from './feature';
+import {ColumnsTab} from './feature';
 import {pimTheme} from 'akeneo-design-system';
 import {MicroFrontendDependenciesProvider, Routes, Translations} from '@akeneo-pim-community/shared';
 import {routes} from './routes.json';
 import translations from './translations.json';
+import {ColumnConfiguration} from './feature/models/ColumnConfiguration';
 
-const defaultColumnsConfiguration: ColumnsConfiguration = [
+const defaultColumnsConfiguration: ColumnConfiguration[] = [
   {
     uuid: 'test_uuid_1',
     target: 'name',
@@ -206,7 +207,7 @@ const defaultColumnsConfiguration: ColumnsConfiguration = [
 ];
 
 const ColumnsTabWithState = () => {
-  const [columnsConfiguration, setColumnsConfigurationChange] = useState<ColumnsConfiguration>(
+  const [columnsConfiguration, setColumnsConfigurationChange] = useState<ColumnConfiguration[]>(
     defaultColumnsConfiguration
   );
 

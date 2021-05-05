@@ -4,17 +4,22 @@ import {ColumnsTab} from './ColumnsTab';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {fireEvent} from '@testing-library/dom';
+import {ColumnConfiguration} from './models/ColumnConfiguration';
 
 jest.mock('akeneo-design-system/lib/shared/uuid', () => ({
   uuid: () => '276b6361-badb-48a1-98ef-d75baa235148',
 }));
 
 test('It open the source panel related to the column selected', () => {
-  const columnsConfiguration = [
+  const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
       target: 'my column',
       sources: [],
+      format: {
+        type: 'concat',
+        elements: [],
+      },
     },
   ];
 
@@ -42,11 +47,15 @@ test('It open the source panel related to the column selected', () => {
 });
 
 test('It create a column when user enter a text in last input', () => {
-  const columnsConfiguration = [
+  const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
       target: 'my column',
       sources: [],
+      format: {
+        elements: [],
+        type: 'concat',
+      },
     },
   ];
 
@@ -70,6 +79,10 @@ test('It create a column when user enter a text in last input', () => {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
       target: 'my column',
       sources: [],
+      format: {
+        elements: [],
+        type: 'concat',
+      },
     },
     {
       uuid: '276b6361-badb-48a1-98ef-d75baa235148',
@@ -84,11 +97,15 @@ test('It create a column when user enter a text in last input', () => {
 });
 
 test('It update column when user change value input', () => {
-  const columnsConfiguration = [
+  const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
       target: 'my column',
       sources: [],
+      format: {
+        elements: [],
+        type: 'concat',
+      },
     },
   ];
 
@@ -112,16 +129,24 @@ test('It update column when user change value input', () => {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
       target: 'my new column name',
       sources: [],
+      format: {
+        elements: [],
+        type: 'concat',
+      },
     },
   ]);
 });
 
 test('It delete column when user click on delete button', () => {
-  const columnsConfiguration = [
+  const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
       target: 'my column',
       sources: [],
+      format: {
+        elements: [],
+        type: 'concat',
+      },
     },
   ];
 

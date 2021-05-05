@@ -2,22 +2,17 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import {uuid} from 'akeneo-design-system';
 import {ValidationError} from '@akeneo-pim-community/shared';
-import {
-  ColumnsConfiguration,
-  createColumn,
-  addColumn,
-  removeColumn,
-  ColumnConfiguration,
-  updateColumn,
-} from './models/ColumnConfiguration';
+import {createColumn, addColumn, removeColumn, ColumnConfiguration, updateColumn} from './models/ColumnConfiguration';
 import {ColumnDetails} from './components/ColumnDetails/ColumnDetails';
 import {ColumnList} from './components/ColumnList/ColumnList';
 import {ValidationErrorsContext} from './contexts/ValidationErrorsContext';
 
+const MAX_COLUMN_COUNT = 1000;
+
 type ColumnProps = {
-  columnsConfiguration: ColumnsConfiguration;
+  columnsConfiguration: ColumnConfiguration[];
   validationErrors: ValidationError[];
-  onColumnsConfigurationChange: (columnsConfiguration: ColumnsConfiguration) => void;
+  onColumnsConfigurationChange: (columnsConfiguration: ColumnConfiguration[]) => void;
 };
 
 const Container = styled.div`
@@ -35,6 +30,18 @@ const ColumnsTab = ({columnsConfiguration, validationErrors, onColumnsConfigurat
     const column = createColumn(newColumnName, uuid());
     onColumnsConfigurationChange(addColumn(columnsConfiguration, column));
     setSelectedColumn(column.uuid);
+  };
+  const handleCreateColumns = (newColumnNames: string[]) => {
+    const newColumns = newColumnNames.reduce((existingColumns, newColumnName) => {
+      if (existingColumns.length === MAX_COLUMN_COUNT) return existingColumns;
+
+      const columnToAdd = createColumn(newColumnName, uuid());
+
+      return addColumn(existingColumns, columnToAdd);
+    }, columnsConfiguration);
+
+    onColumnsConfigurationChange(newColumns);
+    setSelectedColumn(newColumns[newColumns.length - 1].uuid);
   };
   const handleRemoveColumn = (columnUuid: string) => {
     onColumnsConfigurationChange(removeColumn(columnsConfiguration, columnUuid));
@@ -55,6 +62,7 @@ const ColumnsTab = ({columnsConfiguration, validationErrors, onColumnsConfigurat
           columnsConfiguration={columnsConfiguration}
           selectedColumn={selectedColumnConfiguration}
           onColumnCreated={handleCreateColumn}
+          onColumnsCreated={handleCreateColumns}
           onColumnChange={handleChangeColumn}
           onColumnSelected={handleSelectColumn}
           onColumnRemoved={handleRemoveColumn}
@@ -69,5 +77,4 @@ const ColumnsTab = ({columnsConfiguration, validationErrors, onColumnsConfigurat
   );
 };
 
-export {ColumnsTab};
-export type {ColumnsConfiguration};
+export {ColumnsTab, MAX_COLUMN_COUNT};
