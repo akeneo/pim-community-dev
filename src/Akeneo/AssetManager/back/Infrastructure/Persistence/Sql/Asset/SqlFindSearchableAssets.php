@@ -68,6 +68,7 @@ SQL;
                 $result['identifier'],
                 $result['asset_family_identifier'],
                 $result['code'],
+                $result['updated_at'],
                 ValuesDecoder::decode($result['value_collection']),
                 $result['attribute_as_label']
             );
