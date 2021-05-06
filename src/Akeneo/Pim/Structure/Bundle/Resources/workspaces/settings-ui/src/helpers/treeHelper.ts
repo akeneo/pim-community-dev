@@ -36,7 +36,7 @@ const isDescendantOf = <T>(treeNodes: TreeNode<T>[], identifier: number, parentI
 };
 
 const findLoadedDescendantsIdentifiers = <T>(treeNodes: TreeNode<T>[], parent: TreeNode<T>): number[] => {
-  if (parent.childrenStatus !== 'loaded') {
+  if (parent.childrenIds.length === 0 || parent.childrenStatus !== 'loaded') {
     return [];
   }
 
