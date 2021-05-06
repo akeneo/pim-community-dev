@@ -368,6 +368,7 @@ pim_enrich.mass_edit.product:
       description: Le parent des produits variants et des sous modèles de produits sélectionnés dans la grille va être modifié avec ce modèle de produit.
 pim_datagrid:
   no_entities: "Aucune {{ entityHint }} trouvée"
+  no_results: "Désolé, il n’y a aucun(e) {{ entityHint }} pour votre recherche."
   mass_action_group:
     bulk_actions:
       label: Actions de masse
