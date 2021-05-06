@@ -100,7 +100,21 @@ const MicroFrontendDependenciesProvider = ({
           generate: generateUrl,
           redirect: (_fragment: string, _options?: object) => alert('Not implemented'),
         },
-        translate: (id: string) => translations.messages[`jsmessages:${id}`] ?? id,
+        translate: (id: string, placeholders = {}) => {
+          const message = translations.messages[`jsmessages:${id}`] ?? id;
+
+          return Object.keys(placeholders).reduce(
+            (message, placeholderKey) =>
+              message
+                // replaceAll is only available in esnext.
+                // We don't want to activate it in the tsconfig file as shared package should be as compatible as possible
+                // @ts-ignore
+                .replaceAll(`{{ ${placeholderKey} }}`, String(placeholders[placeholderKey]))
+                // @ts-ignore
+                .replaceAll(placeholderKey, String(placeholders[placeholderKey])),
+            message
+          );
+        },
         viewBuilder: {
           build: async (_viewName: string) => Promise.resolve(),
         },
