@@ -88,7 +88,7 @@ const UpdaterRow = ({updater, uiLocale, readOnly = false, errors, onChange, onRe
         </List.Row>
       }
     >
-      <List.Row multiline={true}>
+      <List.Row isMultiline={true}>
         <List.TitleCell width="auto">
           <AttributeName htmlFor={id}>
             {getLabel(updater.attribute.labels, uiLocale, updater.attribute.code)}
