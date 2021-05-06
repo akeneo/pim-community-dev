@@ -282,6 +282,7 @@ class ProductController
         $query->userId = $user->getId();
         $query->withAttributeOptions = $request->query->get('with_attribute_options', 'false');
         $query->withQualityScores = $request->query->getAlpha('with_quality_scores', 'false');
+        $query->withCompletenesses = $request->query->getAlpha('with_completenesses', 'false');
 
         try {
             $this->listProductsQueryValidator->validate($query);
@@ -806,6 +807,10 @@ class ProductController
         }
         if (true === $query->withQualityScores()) {
             $queryParameters['with_quality_scores'] = 'true';
+        }
+
+        if (true === $query->withCompletenesses()) {
+            $queryParameters['with_completenesses'] = 'true';
         }
 
         if (PaginationTypes::OFFSET === $query->paginationType) {
