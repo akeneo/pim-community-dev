@@ -278,13 +278,12 @@ class CategoryTreeController extends Controller
      * Create a tree or category
      *
      * @param Request $request
-     * @param int     $parent
      *
      * @throws AccessDeniedException
      *
      * @return Response
      */
-    public function createAction(Request $request, $parent = null)
+    public function createAction(Request $request)
     {
         if (false === $this->securityFacade->isGranted($this->buildAclName('category_create'))) {
             throw new AccessDeniedException();
