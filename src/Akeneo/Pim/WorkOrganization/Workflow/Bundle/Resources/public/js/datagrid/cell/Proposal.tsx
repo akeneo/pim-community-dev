@@ -27,7 +27,7 @@ const ProposalDescription = styled.div`
   display: flex;
   align-items: center;
   & > *:not(:last-child) {
-    margin-right: 10px;
+    margin-right: 5px;
   }
 `;
 
@@ -191,12 +191,10 @@ const Proposal: React.FC<ProposalProps> = ({
           >
             {translate(`pim_datagrid.workflow.status.${formattedChanges.status_label}`)}
           </Badge>
-          <span>
-            {translate('pim_datagrid.workflow.by')}&nbsp;
-            <Highlight>{authorLabel.trim()}</Highlight>&nbsp;
-            {translate('pim_datagrid.workflow.at')}&nbsp;
-            <Highlight>{createdAt}</Highlight>
-          </span>
+          <span>{translate('pim_datagrid.workflow.by')}</span>
+          <Highlight>{authorLabel.trim()}</Highlight>
+          <span>{translate('pim_datagrid.workflow.at')}</span>
+          <Highlight>{createdAt}</Highlight>
         </ProposalDescription>
         <ProposalDescription>
           {formattedChanges.status === 'ready' && formattedChanges.approve && (

@@ -880,12 +880,14 @@ jobs:
                 name: Load make commands
                 command: cp vendor/akeneo/pim-onboarder/onboarder.mk make-file/onboarder.mk
           - run:
+                name: Install onboarder tests dependencies
+                command: docker-compose run -u www-data --rm php php /usr/local/bin/composer require "knplabs/github-api:^3.0" "php-http/guzzle6-adapter:^2.0" "http-interop/http-factory-guzzle:^1.0" --no-interaction --dev
+          - run:
                 name: Add configuration files to run the bundle tests from the PIM
                 command: |
                     rm -f docker-compose.override.yml
                     PIM_VERSION=master SETUP_FOR_CI=1 PIM_CONTEXT=onboarder make setup-onboarder-parameters
                     PIM_VERSION=master PIM_CONTEXT=onboarder make setup-onboarder-tests
-                    docker-compose run --rm php php /usr/local/bin/composer dumpautoload
           - run:
                 name: Change owner of PIM as some files have been created with wrong owner
                 command: sudo chown -R 1000:1000 ~/project
@@ -913,6 +915,9 @@ jobs:
           - run:
                 name: Execute end-to-end tests
                 command: PIM_CONTEXT=onboarder make test-end-to-end
+          - run:
+                name: Execute synchronization end-to-end tests
+                command: PIM_CONTEXT=onboarder GITHUB_TOKEN=${GITHUB_TOKEN} make test-synchronization-end-to-end
           - run:
               name: Restart FPM with Onboarder feature turned off
               command: make up APP_ENV=behat FLAG_ONBOARDER_ENABLED=0 C='fpm'
