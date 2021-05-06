@@ -1,6 +1,6 @@
 import React, {useState, useContext, useCallback, useEffect} from 'react';
 import styled, {css} from 'styled-components';
-import {ConfigContext} from 'akeneomeasure/context/config-context';
+import {ConfigContext} from '../../context/config-context';
 import {
   ArrowDownIcon,
   ArrowIcon,
@@ -15,8 +15,8 @@ import {
   AkeneoThemedProps,
   LockIcon,
 } from 'akeneo-design-system';
-import {Operation, Operator, emptyOperation} from 'akeneomeasure/model/operation';
-import {useLocalizedNumber} from 'akeneomeasure/shared/hooks/use-localized-number';
+import {Operation, Operator, emptyOperation} from '../../model/operation';
+import {useLocalizedNumber} from '../../shared/hooks/use-localized-number';
 import {
   ValidationError,
   filterErrors,
@@ -97,12 +97,12 @@ const OperatorSelectorLabel = styled.label`
   font-size: ${getFontSize('small')};
 `;
 
-const OperatorOption = styled.div<{isSelected?: boolean}>`
+const OperatorOption = styled.div<{isSelected?: boolean} & AkeneoThemedProps>`
   margin-top: 18px;
   cursor: pointer;
 
-  ${props =>
-    props.isSelected &&
+  ${({isSelected}) =>
+    isSelected &&
     css`
       color: ${getColor('brand', 100)};
       font-style: italic;

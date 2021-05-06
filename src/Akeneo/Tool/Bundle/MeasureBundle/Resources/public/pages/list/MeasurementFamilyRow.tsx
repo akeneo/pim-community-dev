@@ -1,10 +1,6 @@
 import React from 'react';
 import {useHistory} from 'react-router-dom';
-import {
-  MeasurementFamily,
-  getMeasurementFamilyLabel,
-  getStandardUnitLabel,
-} from 'akeneomeasure/model/measurement-family';
+import {MeasurementFamily, getMeasurementFamilyLabel, getStandardUnitLabel} from '../../model/measurement-family';
 import {useUserContext} from '@akeneo-pim-community/shared';
 import {Table} from 'akeneo-design-system';
 

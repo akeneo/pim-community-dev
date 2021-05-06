@@ -10,8 +10,8 @@ import {
   useTranslate,
   useRoute,
   Security,
+  PimView,
 } from '@akeneo-pim-community/shared';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
 import {
   Breadcrumb,
   Button,

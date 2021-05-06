@@ -1,3 +1,3 @@
-import {Edit} from 'akeneomeasure/pages/edit/Edit';
+import {Edit} from './Edit';
 
 export {Edit};

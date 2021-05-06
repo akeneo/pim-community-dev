@@ -1,4 +1,4 @@
-import {unformatNumber, formatNumber} from 'akeneomeasure/shared/tools/number';
+import {unformatNumber, formatNumber} from '../tools/number';
 import {useUserContext} from '@akeneo-pim-community/shared';
 
 const useLocalizedNumber = (): [(number: string) => string, (number: string) => string] => {
