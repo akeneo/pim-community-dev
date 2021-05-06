@@ -40,7 +40,7 @@ const findLoadedDescendantsIdentifiers = <T>(treeNodes: TreeNode<T>[], parent: T
     return [];
   }
 
-  let descendantsIdentifiers = [];
+  let descendantsIdentifiers: number[] = [];
   parent.childrenIds.map((childId: number) => {
     descendantsIdentifiers.push(childId);
 

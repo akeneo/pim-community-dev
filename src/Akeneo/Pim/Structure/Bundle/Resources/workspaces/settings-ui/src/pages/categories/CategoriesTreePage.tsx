@@ -16,8 +16,8 @@ import {
 import {useCategoryTree} from '../../hooks';
 import {CategoryTree} from '../../components';
 import {NewCategoryModal} from './NewCategoryModal';
-import {DeleteCategoryModal} from "../../components/datagrids/categories/DeleteCategoryModal";
-import {deleteCategory} from "../../infrastructure/removers";
+import {DeleteCategoryModal} from '../../components/datagrids/categories/DeleteCategoryModal';
+import {deleteCategory} from '../../infrastructure/removers';
 
 type Params = {
   treeId: string;
@@ -32,7 +32,7 @@ type CategoryToDelete = {
   identifier: number;
   label: string;
   onDelete: () => void;
-}
+};
 
 const CategoriesTreePage: FC = () => {
   let {treeId} = useParams<Params>();
@@ -85,7 +85,7 @@ const CategoriesTreePage: FC = () => {
     }
 
     const success = await deleteCategory(categoryToDelete.identifier);
-    success && categoryToDelete.onDelete() ;
+    success && categoryToDelete.onDelete();
 
     const message = success
       ? 'pim_enrich.entity.category.category_deleted'

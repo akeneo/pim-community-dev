@@ -157,13 +157,10 @@ const useCategoryTreeNode = (id: number) => {
     const parent = findOneByIdentifier(nodes, node.parentId);
     if (!parent) {
       // @todo what to do for this kind of unexpected error? do nothing? log error message? force reload the page?
-      console.log('parent not found');
       return;
     }
 
     const nodesToRemove = [node.identifier, ...findLoadedDescendantsIdentifiers(nodes, node)];
-
-    console.log('nodesToRemove', nodesToRemove);
 
     setNodes(nodes.filter(treeNode => !nodesToRemove.includes(treeNode.identifier)));
   };
