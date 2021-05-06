@@ -87,14 +87,20 @@ final class ApplyProductSearchQueryParametersToPQB
                 }
 
                 /**
-                 * Today, external API uses the "product_index" to search the products. This index indexes parent data
-                 * with help of 'ancestors.codes' and 'ancestors.ids'.
-                 * To avoid a big refactoring (i.e. use the product_and_product_model_index, TIP-1150), we consider to change the
-                 * parent filter to a dedicated one `AncestorCodeFilter`.
+                 * In v3.2, the 'parent' filter was internally replaced by 'ancestor.code' filter, because
+                 * the parent property was not indexed in the products index (which does not exist anymore).
+                 * The 'ancestor.code' filter:
+                 * - only concerned products
+                 * - only accepted the '=' operator
+                 *
+                 * In order to avoid a functional BC break, we keep this behavior when filter is 'parent' and
+                 * operator is '=', but we now allow the use of the other operators for the 'parent' filter:
+                 * - 'IN', 'EMPTY' and 'NOT EMPTY' operators can now be used
+                 * - the 'parent' filter can now be used with product models as well as with products
                  *
                  * @see src/Akeneo/Pim/Enrichment/Bundle/Elasticsearch/Filter/Field/AncestorCodeFilter.php
                  */
-                if ($propertyCode === 'parent') {
+                if ('parent' === $propertyCode && Operators::EQUALS === ($filter['operator'] ?? null)) {
                     $pqb->addfilter('ancestor.code', $filter['operator'], $value, $context);
                 } else {
                     $pqb->addFilter($propertyCode, $filter['operator'], $value, $context);
