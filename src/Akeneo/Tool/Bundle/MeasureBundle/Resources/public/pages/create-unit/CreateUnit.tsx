@@ -1,4 +1,5 @@
 import React, {useCallback, useContext, useRef, useState} from 'react';
+import styled from 'styled-components';
 import {
   Helper,
   MeasurementIllustration,
@@ -39,6 +40,10 @@ type CreateUnitProps = {
   onClose: () => void;
   onNewUnit: (unit: Unit) => void;
 };
+
+const FormGroup = styled(Section)`
+  max-width: 400px;
+`;
 
 const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) => {
   const translate = useTranslate();
@@ -113,39 +118,41 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
         {measurementFamily.is_locked && (
           <Helper level="warning">{translate('measurements.unit.will_be_read_only')}</Helper>
         )}
-        <TextField
-          ref={firstFieldRef}
-          label={translate('pim_common.code')}
-          value={form.code}
-          onChange={value => setFormValue('code', value)}
-          required={true}
-          errors={getErrorsForPath(errors, 'code')}
-        />
-        <TextField
-          label={translate('pim_common.label')}
-          value={form.label}
-          onChange={value => setFormValue('label', value)}
-          locale={locale}
-          errors={getErrorsForPath(errors, `labels[${locale}]`)}
-        />
-        <TextField
-          label={translate('measurements.form.input.symbol')}
-          value={form.symbol}
-          onChange={value => setFormValue('symbol', value)}
-          errors={getErrorsForPath(errors, 'symbol')}
-        />
-        <OperationCollection
-          operations={form.operations}
-          onOperationsChange={(operations: Operation[]) => setFormValue('operations', operations)}
-          errors={filterErrors(errors, `convert_from_standard`)}
-        />
-        <Checkbox
-          id="measurements.unit.create_another"
-          checked={createAnotherUnit}
-          onChange={(checked: boolean) => setCreateAnotherUnit(checked)}
-        >
-          {translate('measurements.unit.create_another')}
-        </Checkbox>
+        <FormGroup>
+          <TextField
+            ref={firstFieldRef}
+            label={translate('pim_common.code')}
+            value={form.code}
+            onChange={value => setFormValue('code', value)}
+            required={true}
+            errors={getErrorsForPath(errors, 'code')}
+          />
+          <TextField
+            label={translate('pim_common.label')}
+            value={form.label}
+            onChange={value => setFormValue('label', value)}
+            locale={locale}
+            errors={getErrorsForPath(errors, `labels[${locale}]`)}
+          />
+          <TextField
+            label={translate('measurements.form.input.symbol')}
+            value={form.symbol}
+            onChange={value => setFormValue('symbol', value)}
+            errors={getErrorsForPath(errors, 'symbol')}
+          />
+          <OperationCollection
+            operations={form.operations}
+            onOperationsChange={(operations: Operation[]) => setFormValue('operations', operations)}
+            errors={filterErrors(errors, `convert_from_standard`)}
+          />
+          <Checkbox
+            id="measurements.unit.create_another"
+            checked={createAnotherUnit}
+            onChange={(checked: boolean) => setCreateAnotherUnit(checked)}
+          >
+            {translate('measurements.unit.create_another')}
+          </Checkbox>
+        </FormGroup>
       </Section>
       <Modal.BottomButtons>
         <Button onClick={handleAdd} disabled={config.units_max <= measurementFamily.units.length}>
