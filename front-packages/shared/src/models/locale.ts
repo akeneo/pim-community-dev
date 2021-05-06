@@ -1,4 +1,5 @@
 type LocaleCode = string;
+type LocaleReference = LocaleCode | null;
 type LocaleLabel = string;
 type LocaleRegion = string;
 type LocaleLanguage = string;
@@ -54,4 +55,4 @@ const localeExists = (locales: Locale[], currentLocale: LocaleCode) => {
 };
 
 export {createLocaleFromCode, denormalizeLocale, localeExists, isLocales, isLocale};
-export type {Locale, LocaleCode, LocaleLabel, LocaleRegion, LocaleLanguage};
+export type {Locale, LocaleCode, LocaleLabel, LocaleRegion, LocaleLanguage, LocaleReference};

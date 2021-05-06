@@ -1,6 +1,6 @@
 import React, {ReactElement} from 'react';
 import {PageHeader} from './PageHeader';
-import {renderWithProviders} from '../../../tests/utils';
+import {renderWithProviders} from '../../tests/utils';
 
 describe('PageHeader', () => {
   const renderWithContext = (children: ReactElement | ReactElement[] | string, showPlaceholder: boolean = false) => {
