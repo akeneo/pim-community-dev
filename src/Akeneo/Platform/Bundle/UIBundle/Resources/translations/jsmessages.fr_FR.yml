@@ -360,6 +360,7 @@ pim_settings:
   count:
     locales: Vous avez {{ count }} locales activées
     currencies: Vous avez {{ count }} devises activées
+    attribute_groups: Vous avez {{ count }} groupes d'attributs
     attributes: Vous avez {{ count }} attributs
     families: Vous avez {{ count }} familles
     association_types: Vous avez {{ count }} types d'association
