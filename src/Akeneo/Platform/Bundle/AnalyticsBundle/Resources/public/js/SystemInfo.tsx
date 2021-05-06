@@ -1,9 +1,8 @@
 import React, {ReactElement} from 'react';
-import {PageContent, PageHeader, useRoute, useTranslate} from '@akeneo-pim-community/shared';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
-import {Breadcrumb, Table, Button} from 'akeneo-design-system';
-import {useSystemInfo} from './SystemInfoHook';
 import styled from 'styled-components';
+import {Breadcrumb, Table, Button} from 'akeneo-design-system';
+import {PageContent, PageHeader, useRoute, useTranslate, PimView} from '@akeneo-pim-community/shared';
+import {useSystemInfo} from './SystemInfoHook';
 
 const TableCell = styled(Table.Cell)`
   white-space: normal;

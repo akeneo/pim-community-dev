@@ -1,6 +1,6 @@
 import React, {useRef, useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {useIsMounted, useViewBuilder} from '@akeneo-pim-community/shared';
+import {useIsMounted, useViewBuilder} from '../hooks';
 
 type View = {
   setElement: (element: HTMLElement | null) => View;
