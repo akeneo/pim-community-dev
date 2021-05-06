@@ -56,8 +56,8 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
       const success = await deleteCategory(categoryTreeToDelete.id);
       success && refreshCategoryTrees();
       const message = success
-        ? 'pim_enrich.entity.category.category_tree_deleted'
-        : 'pim_enrich.entity.category.category_tree_deletion_error';
+        ? 'pim_enrich.entity.category.category_tree_deletion.success'
+        : 'pim_enrich.entity.category.category_tree_deletion.error';
       notify(
         success ? NotificationLevel.SUCCESS : NotificationLevel.ERROR,
         translate(message, {tree: categoryTreeToDelete.label})
@@ -69,7 +69,14 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
 
   const onDeleteCategoryTree = (categoryTree: CategoryTree) => {
     if (categoryTree.productsNumber && categoryTree.productsNumber > 100) {
-      notify(NotificationLevel.INFO, translate('pim_enrich.entity.category.products_limit_exceeded', {limit: 100}));
+      notify(
+        NotificationLevel.INFO,
+        translate('pim_enrich.entity.category.category_tree_deletion.products_limit_exceeded.title'),
+        translate('pim_enrich.entity.category.category_tree_deletion.products_limit_exceeded.message', {
+          tree: categoryTree.label,
+          limit: 100,
+        })
+      );
 
       return;
     }
@@ -128,11 +135,11 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                   <Table.Cell rowTitle>{tree.label}</Table.Cell>
                   <Table.Cell>
                     {countTreesChildren !== null &&
-                    translate(
-                      'pim_enrich.entity.category.content.tree_list.columns.count_categories',
-                      {count: countTreesChildren.hasOwnProperty(tree.code) ? countTreesChildren[tree.code] : 0},
-                      countTreesChildren.hasOwnProperty(tree.code) ? countTreesChildren[tree.code] : 0
-                    )}
+                      translate(
+                        'pim_enrich.entity.category.content.tree_list.columns.count_categories',
+                        {count: countTreesChildren.hasOwnProperty(tree.code) ? countTreesChildren[tree.code] : 0},
+                        countTreesChildren.hasOwnProperty(tree.code) ? countTreesChildren[tree.code] : 0
+                      )}
                   </Table.Cell>
                   <TableActionCell>
                     <Button
@@ -154,7 +161,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               categoryLabel={categoryTreeToDelete.label}
               closeModal={closeConfirmationModal}
               deleteCategory={deleteCategoryTree}
-              message={'pim_enrich.entity.category.delete_category_tree_confirmation'}
+              message={'pim_enrich.entity.category.category_tree_deletion.confirmation'}
             />
           )}
         </>
