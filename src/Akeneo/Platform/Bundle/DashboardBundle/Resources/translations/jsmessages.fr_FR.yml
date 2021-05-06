@@ -1,6 +1,16 @@
 pim_dashboard:
+  title: Tableau de bord des activités
+  greetings: Bonjour {{ name }} !
+  welcome_sentence:
+    message4: C'est bon de vous avoir avec nous.
+    message6: Mettons-nous au travail.
+    message8: Prêt à démarrer?
   widget:
     completeness:
       load_more: 'Voir plus...'
+      title: Complétude par canal et par locale
+    last_operations:
+      title: Dernières opérations
+  version: Version
 pim_title:
   pim_dashboard_index: Tableau de bord
