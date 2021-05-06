@@ -31,6 +31,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
     getCategoryPosition,
     moveTarget,
     setMoveTarget,
+    deleteTreeNode,
   } = useCategoryTreeNode(id);
 
   const translate = useTranslate();
@@ -167,7 +168,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
               size="small"
               onClick={event => {
                 event.stopPropagation();
-                deleteCategory(id);
+                deleteCategory(id, label, deleteTreeNode);
               }}
             >
               {translate('pim_common.delete')}

@@ -243,6 +243,9 @@ pim_enrich.entity.category:
         products_limit_exceeded:
             title: This tree cannot be deleted
             message: The "{{ tree }}" tree contains more than {{ limit }} products and therefore cannot be deleted.
+    delete_category_confirmation: Are you sure you want to delete the category {{ name }}? Products in this category will not be deleted.
+    category_deleted: The category "{{ name }}" was successfully deleted
+    category_deletion_error: The category "{{ name }}" could not be deleted
 
 
 pim_enrich.export.product:

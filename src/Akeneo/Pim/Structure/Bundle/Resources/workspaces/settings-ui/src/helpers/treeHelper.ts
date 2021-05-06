@@ -35,8 +35,26 @@ const isDescendantOf = <T>(treeNodes: TreeNode<T>[], identifier: number, parentI
   return isDescendantOf(treeNodes, identifier, node.parentId);
 };
 
+const findLoadedDescendantsIdentifiers = <T>(treeNodes: TreeNode<T>[], parent: TreeNode<T>): number[] => {
+  if (parent.childrenStatus !== 'loaded') {
+    return [];
+  }
+
+  let descendantsIdentifiers = [];
+  parent.childrenIds.map((childId: number) => {
+    descendantsIdentifiers.push(childId);
+
+    const child = findOneByIdentifier(treeNodes, childId);
+    if (child) {
+      descendantsIdentifiers = [...descendantsIdentifiers, ...findLoadedDescendantsIdentifiers(treeNodes, child)];
+    }
+  });
+
+  return descendantsIdentifiers;
+};
+
 const update = <T>(treeNodes: TreeNode<T>[], updatedNode: TreeNode<T>): TreeNode<T>[] => {
   return [...treeNodes.filter(node => node.identifier !== updatedNode.identifier), updatedNode];
 };
 
-export {findByIdentifiers, findOneByIdentifier, findRoot, update, isDescendantOf};
+export {findByIdentifiers, findOneByIdentifier, findRoot, update, isDescendantOf, findLoadedDescendantsIdentifiers};

@@ -7,7 +7,7 @@ import {
   convertToCategoryTree,
   TreeNode,
 } from '../../models';
-import {findByIdentifiers, findOneByIdentifier, update} from '../../helpers';
+import {findByIdentifiers, findLoadedDescendantsIdentifiers, findOneByIdentifier, update} from '../../helpers';
 import {useFetch, useRoute} from '@akeneo-pim-community/shared';
 
 type Move = {
@@ -149,6 +149,25 @@ const useCategoryTreeNode = (id: number) => {
     [nodes]
   );
 
+  const deleteTreeNode = () => {
+    if (!node || !node.parentId) {
+      return;
+    }
+
+    const parent = findOneByIdentifier(nodes, node.parentId);
+    if (!parent) {
+      // @todo what to do for this kind of unexpected error? do nothing? log error message? force reload the page?
+      console.log('parent not found');
+      return;
+    }
+
+    const nodesToRemove = [node.identifier, ...findLoadedDescendantsIdentifiers(nodes, node)];
+
+    console.log('nodesToRemove', nodesToRemove);
+
+    setNodes(nodes.filter(treeNode => !nodesToRemove.includes(treeNode.identifier)));
+  };
+
   const forceReloadChildren = useCallback(() => {
     if (node) {
       setNode({...node, childrenStatus: 'to-reload'});
@@ -223,6 +242,7 @@ const useCategoryTreeNode = (id: number) => {
     forceReloadChildren,
     moveTo,
     getCategoryPosition,
+    deleteTreeNode,
     ...rest,
   };
 };
