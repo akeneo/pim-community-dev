@@ -31,7 +31,7 @@ const useCategoryTreeNode = (id: number) => {
     include_sub: '0',
   });
 
-  const {data, fetch, error: fetchError, status: fetchStatus} = useFetch<BackendCategoryTree>(url);
+  const {data, fetch: loadChildren, error: fetchError, status: fetchStatus} = useFetch<BackendCategoryTree>(url);
 
   const getCategoryPosition = (treeNode: TreeNode<CategoryTreeModel>): number => {
     if (!treeNode.parentId) {
@@ -149,6 +149,12 @@ const useCategoryTreeNode = (id: number) => {
     [nodes]
   );
 
+  const forceReloadChildren = useCallback(() => {
+    if (node) {
+      setNode({...node, childrenStatus: 'to-reload'});
+    }
+  }, [node]);
+
   useEffect(() => {
     setNode(findOneByIdentifier(nodes, id));
   }, [id, nodes]);
@@ -172,11 +178,18 @@ const useCategoryTreeNode = (id: number) => {
       ...node,
       childrenIds: newChildren.map(child => child.identifier),
       childrenStatus: 'loaded',
+      type: node.type !== 'root' ? (newChildren.length > 0 ? 'node' : 'leaf') : 'root',
     });
 
     // @todo check uniqueness of new children
     setNodes([...updatedNodes, ...newChildren]);
   }, [data]);
+
+  useEffect(() => {
+    if (node?.childrenStatus === 'to-reload') {
+      loadChildren();
+    }
+  }, [node?.childrenStatus]);
 
   useEffect(() => {
     if (move === null) {
@@ -185,7 +198,7 @@ const useCategoryTreeNode = (id: number) => {
 
     if (move.status === 'pending') {
       const loadChildrenBeforeMove = async () => {
-        await fetch();
+        await loadChildren();
 
         setMove({
           ...move,
@@ -206,7 +219,8 @@ const useCategoryTreeNode = (id: number) => {
   return {
     node,
     children,
-    loadChildren: fetch,
+    loadChildren,
+    forceReloadChildren,
     moveTo,
     getCategoryPosition,
     ...rest,

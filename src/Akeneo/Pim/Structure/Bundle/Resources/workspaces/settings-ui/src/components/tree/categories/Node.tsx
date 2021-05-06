@@ -1,8 +1,10 @@
 import React, {FC} from 'react';
 import {Tree} from '../../shared';
-import {CategoryTreeModel as CategoryTreeModel} from '../../../models';
+import {CategoryTreeModel as CategoryTreeModel, TreeNode} from '../../../models';
 import {useCategoryTreeNode} from '../../../hooks';
 import {MoveTarget} from '../../providers';
+import {Button} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type Props = {
   id: number;
@@ -11,13 +13,16 @@ type Props = {
   followCategory?: (category: CategoryTreeModel) => void;
   // @todo define onCategoryMoved arguments
   onCategoryMoved?: () => void;
+  addCategory?: (parentCode: string, onCategoryAdded: () => {}) => void;
+  deleteCategory?: (categoryId: number) => void; // @todo define arguments that we really need
 };
 
-const Node: FC<Props> = ({id, label, followCategory, sortable = false}) => {
+const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory, sortable = false}) => {
   const {
     node,
     children,
     loadChildren,
+    forceReloadChildren,
     moveTo,
     draggedCategory,
     setDraggedCategory,
@@ -27,6 +32,8 @@ const Node: FC<Props> = ({id, label, followCategory, sortable = false}) => {
     moveTarget,
     setMoveTarget,
   } = useCategoryTreeNode(id);
+
+  const translate = useTranslate();
 
   if (node === undefined) {
     return null;
@@ -138,6 +145,36 @@ const Node: FC<Props> = ({id, label, followCategory, sortable = false}) => {
         setMoveTarget(null);
       }}
     >
+      {(addCategory || deleteCategory) && (
+        <Tree.Actions key={`category-actions-${id}`}>
+          {addCategory && (
+            <Button
+              ghost
+              level={'primary'}
+              size="small"
+              onClick={event => {
+                event.stopPropagation();
+                addCategory(node.data.code, forceReloadChildren);
+              }}
+            >
+              {translate('pim_enrich.entity.category.new_category')}
+            </Button>
+          )}
+          {deleteCategory && node.type !== 'root' && (
+            <Button
+              ghost
+              level={'danger'}
+              size="small"
+              onClick={event => {
+                event.stopPropagation();
+                deleteCategory(id);
+              }}
+            >
+              {translate('pim_common.delete')}
+            </Button>
+          )}
+        </Tree.Actions>
+      )}
       {/* @todo if the droppable node position and parent id correspond, add a visual feedback here for the further moved category */}
       {/* @todo handle preview, dragOver, dop, ... of the category when the user moving it */}
       {children.map(child => (
@@ -149,8 +186,9 @@ const Node: FC<Props> = ({id, label, followCategory, sortable = false}) => {
             id={child.identifier}
             label={child.label}
             followCategory={followCategory}
+            addCategory={addCategory}
+            deleteCategory={deleteCategory}
             sortable={sortable}
-            /* @todo Node is draggable if the parent Node is draggable */
           />
           {moveTarget?.identifier === child.identifier && moveTarget.position === 'after' && (
             <hr style={{borderColor: 'green'}} />

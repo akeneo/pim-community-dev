@@ -6,14 +6,14 @@ type ValidationErrors = {
   [fieldCode: string]: string;
 };
 
-const saveNewCategoryTree = async (code: string): Promise<ValidationErrors> => {
+const createCategory = async (code: string, parent?: string): Promise<ValidationErrors> => {
   const response = await fetch(Routing.generate(ROUTE_NAME), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       Accept: 'application/json',
     },
-    body: JSON.stringify({code}),
+    body: JSON.stringify({code, parent}),
   });
 
   if (!response.ok) {
@@ -23,4 +23,4 @@ const saveNewCategoryTree = async (code: string): Promise<ValidationErrors> => {
   return {};
 };
 
-export {saveNewCategoryTree, ValidationErrors};
+export {createCategory, ValidationErrors};

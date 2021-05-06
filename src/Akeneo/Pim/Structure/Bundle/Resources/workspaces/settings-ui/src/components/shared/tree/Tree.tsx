@@ -11,7 +11,8 @@ import React, {
 import styled from 'styled-components';
 import {getColor, RowIcon, useBooleanState} from 'akeneo-design-system';
 import {TreeNode} from '../../../models';
-import {ArrowButton, TreeArrowIcon, TreeRow} from './TreeRow';
+import {ArrowButton, RowActionsContainer, RowInnerContainer, TreeArrowIcon, TreeRow} from './TreeRow';
+import {TreeActions} from './TreeActions';
 import Timeout = NodeJS.Timeout;
 
 const TreeContainer = styled.li`
@@ -79,7 +80,14 @@ const Tree = <T,>({
   ...rest
 }: PropsWithChildren<TreeProps<T>>) => {
   const subTrees: ReactElement<TreeProps<T>>[] = [];
+  let actions: ReactNode | null = null;
+
   React.Children.forEach(children, child => {
+    if (isValidElement(child) && child.type === TreeActions) {
+      actions = child;
+      return;
+    }
+
     if (!isValidElement<TreeProps<T>>(child)) {
       return;
     }
@@ -209,37 +217,40 @@ const Tree = <T,>({
           }
         }}
       >
-        {/* @todo handle loading state */}
-        {draggable && (
-          <DragInitiator
-            ref={dragRef}
-            draggable
-            onDragStart={event => {
-              if (!treeRowRef.current) {
-                return;
-              }
-              event.dataTransfer.setDragImage(treeRowRef.current, 0, 0);
-              //event.dataTransfer.setData('text/plain', value.identifier.toString());
+        <RowInnerContainer>
+          {/* @todo handle loading state */}
+          {draggable && (
+            <DragInitiator
+              ref={dragRef}
+              draggable
+              onDragStart={event => {
+                if (!treeRowRef.current) {
+                  return;
+                }
+                event.dataTransfer.setDragImage(treeRowRef.current, 0, 0);
+                //event.dataTransfer.setData('text/plain', value.identifier.toString());
 
-              if (!isLeaf) {
-                handleClose();
-              }
+                if (!isLeaf) {
+                  handleClose();
+                }
 
-              if (onDragStart) {
-                onDragStart();
-              }
-              // @todo define dragImage with a proper style, call createDragImage
-              // @todo if the dragged element is an "opened" parent node, close it with handleClose()
-              // @todo call onDragStart
-            }}
-          >
-            <RowIcon size={16} />
-          </DragInitiator>
-        )}
-        <ArrowButton disabled={isLeaf} role="button" onClick={handleArrowClick}>
-          {!isLeaf && <TreeArrowIcon $isFolderOpen={isOpen} size={14} />}
-        </ArrowButton>
-        {label}
+                if (onDragStart) {
+                  onDragStart();
+                }
+                // @todo define dragImage with a proper style, call createDragImage
+                // @todo if the dragged element is an "opened" parent node, close it with handleClose()
+                // @todo call onDragStart
+              }}
+            >
+              <RowIcon size={16} />
+            </DragInitiator>
+          )}
+          <ArrowButton disabled={isLeaf} role="button" onClick={handleArrowClick}>
+            {!isLeaf && <TreeArrowIcon $isFolderOpen={isOpen} size={14} />}
+          </ArrowButton>
+          {label}
+        </RowInnerContainer>
+        {actions && <RowActionsContainer>{actions}</RowActionsContainer>}
       </TreeRow>
       {isOpen && !isLeaf && subTrees.length > 0 && (
         <SubTreesContainer role="group">
@@ -258,5 +269,7 @@ const Tree = <T,>({
 };
 
 Tree.displayName = 'Tree';
+TreeActions.displayName = 'Tree.Actions';
+Tree.Actions = TreeActions;
 
 export {Tree};
