@@ -1,6 +1,6 @@
 import React from 'react';
 import {Illustration} from '.';
-import {renderWithProviders} from '../../../../tests/utils';
+import {renderWithProviders} from '../../../tests/utils';
 
 describe('Page Header Illustration', () => {
   test('it renders illustration with alt title', () => {

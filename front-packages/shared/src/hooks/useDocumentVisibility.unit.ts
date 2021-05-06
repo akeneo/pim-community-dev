@@ -1,6 +1,6 @@
 import {act} from '@testing-library/react-hooks';
 import {useDocumentVisibility} from './useDocumentVisibility';
-import {renderHookWithProviders} from '../../tests/utils';
+import {renderHookWithProviders} from '../tests/utils';
 
 test('It returns the visibility of the document', () => {
   const {result} = renderHookWithProviders(() => useDocumentVisibility());

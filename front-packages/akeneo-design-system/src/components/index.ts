@@ -7,6 +7,7 @@ export * from './Dropdown/Dropdown';
 export * from './Field/Field';
 export * from './Helper/Helper';
 export * from './IconButton/IconButton';
+export * from './IconCard/IconCard';
 export * from './Image/Image';
 export * from './Information/Information';
 export * from './Input';

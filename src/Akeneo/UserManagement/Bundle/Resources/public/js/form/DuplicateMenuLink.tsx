@@ -1,5 +1,5 @@
 import React from 'react';
-import {useToggleState} from '@akeneo-pim-community/shared';
+import {useBooleanState} from 'akeneo-design-system';
 import {DuplicateUserApp} from '@akeneo-pim-community/user-ui';
 
 const Router = require('pim/router');
@@ -11,7 +11,7 @@ type DuplicateMenuLinkProps = {
 };
 
 const DuplicateMenuLink = ({userId, userCode}: DuplicateMenuLinkProps) => {
-  const [isAppOpened, openApp, closeApp] = useToggleState(false);
+  const [isAppOpened, openApp, closeApp] = useBooleanState(false);
 
   const onDuplicateSuccess = (duplicatedUserId: number) => {
     Router.redirect(Router.generate('pim_user_edit', {identifier: duplicatedUserId}));

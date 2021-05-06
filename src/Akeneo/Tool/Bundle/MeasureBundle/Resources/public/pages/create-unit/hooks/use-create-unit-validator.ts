@@ -1,6 +1,6 @@
-import {MeasurementFamilyCode} from 'akeneomeasure/model/measurement-family';
-import {Unit} from 'akeneomeasure/model/unit';
 import {ValidationError, useRouter} from '@akeneo-pim-community/shared';
+import {MeasurementFamilyCode} from '../../../model/measurement-family';
+import {Unit} from '../../../model/unit';
 
 type ValidatorResult = {
   valid: boolean;

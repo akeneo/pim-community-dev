@@ -1,6 +1,6 @@
 import React, {SyntheticEvent} from 'react';
-import {Button, ButtonProps, ExportIllustration, Helper, Link, Modal} from 'akeneo-design-system';
-import {useRoute, useSecurity, useTranslate, useToggleState} from '@akeneo-pim-community/shared';
+import {Button, ButtonProps, ExportIllustration, Helper, Link, Modal, useBooleanState} from 'akeneo-design-system';
+import {useRoute, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 
 type StopJobActionProps = {
   id: string;
@@ -13,7 +13,7 @@ const StopJobAction = ({id, jobLabel, isStoppable, onStop, children, ...rest}: S
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const stopRoute = useRoute('pim_enrich_job_tracker_rest_stop', {id});
-  const [isConfirmOpen, openConfirm, closeConfirm] = useToggleState(false);
+  const [isConfirmOpen, openConfirm, closeConfirm] = useBooleanState(false);
 
   const handleStop = async () => {
     closeConfirm();

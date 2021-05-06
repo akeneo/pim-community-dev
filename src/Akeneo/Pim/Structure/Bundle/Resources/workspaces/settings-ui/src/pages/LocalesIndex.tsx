@@ -1,10 +1,9 @@
 import React, {FC, useEffect} from 'react';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
-import {PageContent, PageHeader, useRoute, useTranslate} from '@akeneo-pim-community/shared';
+import {Breadcrumb, getColor, Helper as BaseHelper} from 'akeneo-design-system';
+import {PageContent, PageHeader, useRoute, useTranslate, PimView} from '@akeneo-pim-community/shared';
 import {LocalesDataGrid} from '../components';
 import {useLocalesIndexState} from '../hooks';
 import styled from 'styled-components';
-import {Breadcrumb, getColor, Helper as BaseHelper} from 'akeneo-design-system';
 
 const Helper = styled(BaseHelper)`
   margin-bottom: 20px;
@@ -23,7 +22,7 @@ const HelperContent = styled.span`
 const LocalesIndex: FC = () => {
   const translate = useTranslate();
   const {locales, load, isPending} = useLocalesIndexState();
-  const settingsHomePageRoute = useRoute('pim_enrich_attribute_index');
+  const settingsHomePageRoute = useRoute('pim_settings_index');
   const settingsChannelPageRoute = useRoute('pim_enrich_channel_index');
 
   useEffect(() => {

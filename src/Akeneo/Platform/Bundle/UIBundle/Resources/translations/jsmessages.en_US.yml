@@ -322,6 +322,7 @@ pim_title:
     pim_enrich_job_tracker_show:           Process tracker | Show job
     pim_enrich_mass_edit_action:           Mass Edit
     pim_analytics_system_info_index:       System information
+    pim_settings_index:                    Settings
 
 pim_menu:
     tab:
@@ -338,7 +339,7 @@ pim_menu:
         attribute_group: Attribute groups
         channel: Channels
         currency: Currencies
-        dashboard: Dashboard
+        dashboard: Activity dashboard
         family: Families
         group: Groups
         group_type: Group types
@@ -360,7 +361,9 @@ pim_menu:
         activity: Activity navigation
         system: System navigation
         user: Users management navigation
-        settings: Settings navigation
+        settings:
+          product: Product settings
+          catalog: Catalog settings
         product: Product navigation
         product_infos: Product infos
 
@@ -374,3 +377,21 @@ pim_notification:
         export: Export
         quick_export: Quick Export
         mass_edit: Mass Edit
+
+pim_settings:
+  settings_menu: Settings menu
+  catalog_settings: Catalog settings
+  product_settings: Product settings
+  count:
+    categories: You have {{ countTrees }} trees and {{ countCategories }} categories
+    channels: You have {{ count }} channels
+    locales: You have {{ count }} enabled locales
+    currencies: You have {{ count }} enabled currencies
+    attribute_groups: You have {{ count }} attribute groups
+    attributes: You have {{ count }} attributes
+    families: You have {{ count }} families
+    measurements: You have {{ count }} measurements
+    association_types: You have {{ count }} association types
+    group_types: You have {{ count }} group types
+    groups: You have {{ count }} groups
+    rules: You have {{ count }} enabled rules

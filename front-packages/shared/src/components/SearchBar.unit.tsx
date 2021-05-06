@@ -1,6 +1,6 @@
 import React from 'react';
 import {fireEvent} from '@testing-library/react';
-import {renderWithProviders} from '../../tests/utils';
+import {renderWithProviders} from '../tests/utils';
 import {SearchBar} from './SearchBar';
 
 test('It calls the onSearchChange callback when the value is changed', () => {
