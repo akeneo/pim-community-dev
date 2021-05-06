@@ -161,7 +161,6 @@ const useCategoryTreeNode = (id: number) => {
 
   return {
     node,
-    setNode,
     children,
     loadChildren,
     forceReloadChildren,
