@@ -11,10 +11,21 @@ const TabBarContainer = styled.div`
 `;
 
 type TabProps = {
+  /**
+   * Define if the tab is active.
+   */
   isActive: boolean;
+  /**
+   * Function called when the user click on tab.
+   */
+  onClick?: () => void;
+  /**
+   * Content of the Tab.
+   */
+  children: ReactNode;
 };
 
-const Tab = styled.div<TabProps & AkeneoThemedProps>`
+const TabContainer = styled.div<TabProps & AkeneoThemedProps>`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -29,6 +40,14 @@ const Tab = styled.div<TabProps & AkeneoThemedProps>`
   }
 `;
 
+const Tab = ({children, isActive, ...rest}: TabProps) => {
+  return (
+    <TabContainer tabIndex={0} role="tab" aria-selected={isActive} isActive={isActive} {...rest}>
+      {children}
+    </TabContainer>
+  );
+};
+
 type TabBarProps = {
   /**
    * Tabs of the Tab bar.
@@ -40,7 +59,11 @@ type TabBarProps = {
  * TabBar is used to move from one content to another within the same context.
  */
 const TabBar = ({children, ...rest}: TabBarProps) => {
-  return <TabBarContainer {...rest}>{children}</TabBarContainer>;
+  return (
+    <TabBarContainer role="tablist" {...rest}>
+      {children}
+    </TabBarContainer>
+  );
 };
 
 TabBar.Tab = Tab;

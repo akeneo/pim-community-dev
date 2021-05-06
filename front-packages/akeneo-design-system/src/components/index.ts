@@ -26,3 +26,4 @@ export * from './TabBar/TabBar';
 export * from './Table/Table';
 export * from './Toolbar/Toolbar';
 export * from './Tree/Tree';
+export * from './Pill/Pill';

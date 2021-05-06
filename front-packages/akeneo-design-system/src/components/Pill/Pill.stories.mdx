@@ -1,0 +1,48 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Pill} from './Pill.tsx';
+
+<Meta
+  title="Components/Pill"
+  component={Pill}
+  argTypes={{
+    level: {control: {type: 'select', options: ['warning', 'danger']}},
+  }}
+  args={{level: 'warning'}}
+/>
+
+# Pill
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Pill {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <Pill {...args} level="warning" />
+          <Pill {...args} level="danger" />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
