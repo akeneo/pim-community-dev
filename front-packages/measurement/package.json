@@ -32,7 +32,7 @@
   },
   "proxy": "http://localhost:8080",
   "scripts": {
-    "app:start": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts start",
+    "app:start": "yarn translation:build; yarn route:build; yarn packages:build && react-scripts start",
     "test:run": "react-scripts test --watchAll=false --coverage --coverageDirectory=coverage",
     "test:watch": "react-scripts test",
     "lib:build": "tsc -p ./tsconfig.build.json",
