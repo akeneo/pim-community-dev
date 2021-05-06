@@ -22,8 +22,8 @@ import {
   useUserContext,
   useSecurity,
   useRoute,
+  PimView,
 } from '@akeneo-pim-community/shared';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
 
 const useSorting = (
   defaultColumn: string
