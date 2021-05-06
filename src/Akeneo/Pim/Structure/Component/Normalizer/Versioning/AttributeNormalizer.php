@@ -3,10 +3,9 @@
 namespace Akeneo\Pim\Structure\Component\Normalizer\Versioning;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Doctrine\Common\Collections\Collection;
+use Akeneo\Pim\Structure\Component\Query\InternalApi\GetAttributeOptionCodes;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * A normalizer to transform an AttributeInterface entity into a flat array
@@ -24,24 +23,19 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     const CHANNEL_SCOPE = 'Channel';
 
     /** @var string[] */
-    protected $supportedFormats = ['flat'];
+    protected array $supportedFormats = ['flat'];
+    protected NormalizerInterface $standardNormalizer;
+    protected NormalizerInterface $translationNormalizer;
+    protected GetAttributeOptionCodes $getAttributeOptionCodes;
 
-    /** @var NormalizerInterface */
-    protected $standardNormalizer;
-
-    /** @var NormalizerInterface  */
-    protected $translationNormalizer;
-
-    /**
-     * @param NormalizerInterface $standardNormalizer
-     * @param NormalizerInterface $translationNormalizer
-     */
     public function __construct(
         NormalizerInterface $standardNormalizer,
-        NormalizerInterface $translationNormalizer
+        NormalizerInterface $translationNormalizer,
+        GetAttributeOptionCodes $getAttributeOptionCodes
     ) {
         $this->standardNormalizer = $standardNormalizer;
         $this->translationNormalizer = $translationNormalizer;
+        $this->getAttributeOptionCodes = $getAttributeOptionCodes;
     }
 
     /**
@@ -84,19 +78,13 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
 
     protected function normalizeOptions(AttributeInterface $attribute): ?string
     {
-        $options = $attribute->getOptions();
-        Assert::implementsInterface($options, Collection::class);
-        if ($options->isEmpty()) {
-            return null;
-        }
-
+        $attributeOptionCodes = $this->getAttributeOptionCodes->forAttributeCode($attribute->getCode());
         $data = [];
-        foreach ($options as $option) {
-            $data[] = 'Code:' . $option->getCode();
+        foreach ($attributeOptionCodes as $attributeOptionCode) {
+            $data[] = 'Code:' . $attributeOptionCode;
         }
-        $options = implode(self::GROUP_SEPARATOR, $data);
 
-        return $options;
+        return implode(self::GROUP_SEPARATOR, $data);
     }
 
     private function normalizeTranslations(array $labels, array $context): array

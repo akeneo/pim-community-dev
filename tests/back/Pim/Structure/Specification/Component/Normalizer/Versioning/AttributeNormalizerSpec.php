@@ -2,22 +2,21 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Normalizer\Versioning;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeOption;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\TranslationNormalizer;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Normalizer\Versioning\AttributeNormalizer;
+use Akeneo\Pim\Structure\Component\Query\InternalApi\GetAttributeOptionCodes;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class AttributeNormalizerSpec extends ObjectBehavior
 {
     function let(
         AttributeNormalizer $attributeNormalizerStandard,
-        TranslationNormalizer $translationNormalizer
+        TranslationNormalizer $translationNormalizer,
+        GetAttributeOptionCodes $getAttributeOptionCodes
     ) {
-        $this->beConstructedWith($attributeNormalizerStandard, $translationNormalizer);
+        $this->beConstructedWith($attributeNormalizerStandard, $translationNormalizer, $getAttributeOptionCodes);
     }
 
     function it_is_initializable()
@@ -41,19 +40,13 @@ class AttributeNormalizerSpec extends ObjectBehavior
     function it_normalizes_attribute(
         AttributeNormalizer $attributeNormalizerStandard,
         TranslationNormalizer $translationNormalizer,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        GetAttributeOptionCodes $getAttributeOptionCodes
     ) {
-        $size = new AttributeOption();
-        $size->setCode('size');
-        $en = new AttributeOptionValue();
-        $fr =new AttributeOptionValue();
-        $en->setLocale('en_US');
-        $en->setValue('big');
-        $fr->setLocale('fr_FR');
-        $fr->setValue('grand');
-        $size->addOptionValue($en);
-        $size->addOptionValue($fr);
-        $attribute->getOptions()->willReturn(new ArrayCollection([$size]));
+        $attribute->getCode()->willReturn('attribute_size');
+        $getAttributeOptionCodes->forAttributeCode('attribute_size')->willReturn(
+            new \ArrayIterator(['size'])
+        );
         $attribute->isRequired()->willReturn(false);
         $attribute->isLocaleSpecific()->willReturn(false);
 
