@@ -1,6 +1,6 @@
 import {act} from 'react-test-renderer';
-import {renderHookWithProviders} from '../../tests/utils';
 import {useFetch} from './useFetch';
+import {renderHookWithProviders} from '../tests';
 
 declare global {
   namespace NodeJS {
