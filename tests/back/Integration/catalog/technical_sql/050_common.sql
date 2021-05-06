@@ -133,12 +133,12 @@ INSERT INTO `pim_catalog_attribute_translation` VALUES (3521,2523,'SKU','en_US')
 
 /*!40000 ALTER TABLE `pim_catalog_category` DISABLE KEYS */;
 DELETE FROM `pim_catalog_category`;
-INSERT INTO `pim_catalog_category` VALUES
-(895,NULL,'master','2016-08-04 14:28:49',895,0,1,10),
-(896,895,'categoryA','2016-08-04 14:28:49',895,1,2,7),
-(897,896,'categoryA1','2016-08-04 14:28:49',895,2,3,4),
-(898,896,'categoryA2','2016-08-04 14:28:49',895,2,5,6),
-(899,895,'categoryB','2016-08-04 14:28:49',895,1,8,9);
+INSERT INTO `pim_catalog_category` (`id`, `parent_id`, `code`, `created`, `updated`, `root`, `lvl`, `lft`, `rgt`) VALUES
+(895,NULL,'master','2016-08-04 14:28:49','2016-08-04 14:28:49',895,0,1,10),
+(896,895,'categoryA','2016-08-04 14:28:49','2016-08-04 14:28:49',895,1,2,7),
+(897,896,'categoryA1','2016-08-04 14:28:49','2016-08-04 14:28:49',895,2,3,4),
+(898,896,'categoryA2','2016-08-04 14:28:49','2016-08-04 14:28:49',895,2,5,6),
+(899,895,'categoryB','2016-08-04 14:28:49','2016-08-04 14:28:49',895,1,8,9);
 /*!40000 ALTER TABLE `pim_catalog_category` ENABLE KEYS */;
 
 
