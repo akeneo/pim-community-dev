@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Webhook;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErrorLogger;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataBuildErrorLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
@@ -24,7 +23,6 @@ class WebhookEventBuilder
 {
     /** @var iterable<EventDataBuilderInterface> */
     private iterable $eventDataBuilders;
-    private EventDataBuildErrorLogger $eventDataBuildErrorLogger;
     private ApiEventBuildErrorLogger $apiEventBuildErrorLogger;
 
     /**
@@ -32,11 +30,9 @@ class WebhookEventBuilder
      */
     public function __construct(
         iterable $eventDataBuilders,
-        EventDataBuildErrorLogger $eventDataBuildErrorLogger,
         ApiEventBuildErrorLogger $apiEventBuildErrorLogger
     ) {
         $this->eventDataBuilders = $eventDataBuilders;
-        $this->eventDataBuildErrorLogger = $eventDataBuildErrorLogger;
         $this->apiEventBuildErrorLogger = $apiEventBuildErrorLogger;
     }
 
@@ -106,20 +102,12 @@ class WebhookEventBuilder
 
         foreach ($pimEvents as $pimEvent) {
             $data = $eventDataCollection->getEventData($pimEvent);
-            $version = $eventDataCollection->getEventVersion($pimEvent);
 
             if (null === $data) {
                 throw new \LogicException(sprintf('Event %s should have event data', $pimEvent->getUuid()));
             }
 
             if ($data instanceof \Throwable) {
-                $this->eventDataBuildErrorLogger->log(
-                    $data->getMessage(),
-                    $context['connection_code'],
-                    $context['user']->getId(),
-                    $pimEvent
-                );
-
                 $this->apiEventBuildErrorLogger->logResourceNotFoundOrAccessDenied(
                     $context['connection_code'],
                     $pimEvent
@@ -135,8 +123,7 @@ class WebhookEventBuilder
                 $pimEvent->getAuthor(),
                 $context['pim_source'],
                 $data,
-                $pimEvent,
-                $version
+                $pimEvent
             );
         }
 
