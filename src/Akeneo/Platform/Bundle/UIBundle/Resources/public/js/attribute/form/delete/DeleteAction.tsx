@@ -1,5 +1,6 @@
 import React from 'react';
-import {useToggleState, useRouter, useTranslate} from '@akeneo-pim-community/shared';
+import {useBooleanState} from 'akeneo-design-system';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {DeleteModal} from './DeleteModal';
 
 type DeleteActionProps = {
@@ -9,7 +10,7 @@ type DeleteActionProps = {
 const DeleteAction = ({attributeCode}: DeleteActionProps) => {
   const translate = useTranslate();
   const router = useRouter();
-  const [isModalOpen, openModal, closeModal] = useToggleState(false);
+  const [isModalOpen, openModal, closeModal] = useBooleanState(false);
 
   const handleDeleted = () => {
     router.redirect(router.generate('pim_enrich_attribute_index'));

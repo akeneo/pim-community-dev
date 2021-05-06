@@ -1,5 +1,5 @@
 import React from 'react';
-import {renderWithProviders} from '../../tests/utils';
+import {renderWithProviders} from '../tests/utils';
 import {FullScreenError} from './FullScreenError';
 
 test('It display a client error', () => {

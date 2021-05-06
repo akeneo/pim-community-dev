@@ -250,9 +250,9 @@ class BaseView extends Backbone.View<any> implements View {
   /**
    * Render a React component with the given props wrapped with PIM theme & legacy providers inside the given container
    */
-  renderReact(
-    componentType: string | React.FunctionComponent | React.ComponentClass,
-    props: React.Attributes,
+  renderReact<T>(
+    componentType: string | React.FunctionComponent | React.ComponentClass | React.ElementType,
+    props: T,
     container: Element
   ) {
     this.reactRef = container;

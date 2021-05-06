@@ -2,6 +2,7 @@ import {Locale, LocaleCode, isLocales, denormalizeLocale} from '../models';
 import {isLabelCollection, LabelCollection, getLabel} from '../models';
 
 type ChannelCode = string;
+type ChannelReference = ChannelCode | null;
 
 type Channel = {
   code: ChannelCode;
@@ -41,4 +42,4 @@ const denormalizeChannel = (channel: any): Channel => {
 };
 
 export {getChannelLabel, denormalizeChannel};
-export type {ChannelCode, Channel};
+export type {ChannelCode, Channel, ChannelReference};

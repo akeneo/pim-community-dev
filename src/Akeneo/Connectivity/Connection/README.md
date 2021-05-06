@@ -11,7 +11,7 @@ It's also where users can:
 - enable the connection tracking. Connection tracking is used to track data in the Connection dashboard.
 - set-up the user group and role that will be used for permissions application
 
-**Features:** Settings,
+**Features:** Settings
 
 ## Connection monitoring
 
@@ -27,4 +27,4 @@ Public API that defines the API Event requests sent to an external application i
 **Features:** Webhook
 
 - [Ubiquitous language]('./docs/events_api/ubiquitous_language.md)
-- [Architecture](./docs/events_api/webhook_architecture.md)
+- [Architecture](./docs/events_api/architecture.md)

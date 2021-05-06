@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import {useHistory} from 'react-router-dom';
+import {MeasurementIllustration, Link, Button, Information, Breadcrumb, useBooleanState} from 'akeneo-design-system';
 import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
-import {MeasurementIllustration, Link, Button, Information, Breadcrumb} from 'akeneo-design-system';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
 import {
   sortMeasurementFamily,
@@ -17,7 +17,6 @@ import {
   NoDataSection,
   NoDataTitle,
   NoDataText,
-  useToggleState,
   PageContent,
   useTranslate,
   useUserContext,
@@ -52,8 +51,8 @@ const List = () => {
   const [searchValue, setSearchValue] = useState('');
   const [sortColumn, getSortDirection, toggleSortDirection] = useSorting('label');
   const [measurementFamilies] = useMeasurementFamilies();
-  const [isCreateModalOpen, openCreateModal, closeCreateModal] = useToggleState(false);
-  const settingsHref = `#${useRoute('pim_enrich_attribute_index')}`;
+  const [isCreateModalOpen, openCreateModal, closeCreateModal] = useBooleanState(false);
+  const settingsHref = useRoute('pim_settings_index');
 
   const handleModalClose = useCallback(
     (createdMeasurementFamilyCode?: MeasurementFamilyCode) => {
@@ -93,7 +92,7 @@ const List = () => {
         }
         breadcrumb={
           <Breadcrumb>
-            <Breadcrumb.Step href={settingsHref}>{__('pim_menu.tab.settings')}</Breadcrumb.Step>
+            <Breadcrumb.Step href={`#${settingsHref}`}>{__('pim_menu.tab.settings')}</Breadcrumb.Step>
             <Breadcrumb.Step>{__('pim_menu.item.measurements')}</Breadcrumb.Step>
           </Breadcrumb>
         }

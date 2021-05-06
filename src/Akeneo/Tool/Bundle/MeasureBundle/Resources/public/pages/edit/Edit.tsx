@@ -29,16 +29,16 @@ import {
   useUserContext,
   useSecurity,
   useRoute,
+  useRouter,
   filterErrors,
   ValidationError,
   partitionErrors,
-  useToggleState,
   FullScreenError,
   PageContent,
   DeleteModal,
 } from '@akeneo-pim-community/shared';
 import {PimView} from '@akeneo-pim-community/legacy-bridge';
-import {Helper, Button, Breadcrumb} from 'akeneo-design-system';
+import {Helper, Button, Breadcrumb, useBooleanState} from 'akeneo-design-system';
 
 enum Tab {
   Units = 'units',
@@ -105,13 +105,14 @@ const Edit = () => {
   const [measurementFamily, setMeasurementFamily] = useMeasurementFamily(measurementFamilyCode);
   const [selectedUnitCode, selectUnitCode] = useState<UnitCode | null>(null);
   const [errors, setErrors] = useState<ValidationError[]>([]);
-  const [isAddUnitModalOpen, openAddUnitModal, closeAddUnitModal] = useToggleState(false);
+  const [isAddUnitModalOpen, openAddUnitModal, closeAddUnitModal] = useBooleanState(false);
   const [
     isConfirmDeleteMeasurementFamilyModalOpen,
     openConfirmDeleteMeasurementFamilyModal,
     closeConfirmDeleteMeasurementFamilyModal,
-  ] = useToggleState(false);
-  const settingsHref = `#${useRoute('pim_enrich_attribute_index')}`;
+  ] = useBooleanState(false);
+  const settingsHref = useRoute('pim_settings_index');
+  const router = useRouter();
 
   const {setHasUnsavedChanges} = useContext(UnsavedChangesContext);
   const [isModified, resetState] = useUnsavedChanges<MeasurementFamily | null>(
@@ -265,7 +266,9 @@ const Edit = () => {
         buttons={buttons}
         breadcrumb={
           <Breadcrumb>
-            <Breadcrumb.Step href={settingsHref}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
+            <Breadcrumb.Step onClick={() => router.redirect(settingsHref)}>
+              {translate('pim_menu.tab.settings')}
+            </Breadcrumb.Step>
             <Breadcrumb.Step href={history.createHref({pathname: '/'})}>
               {translate('pim_menu.item.measurements')}
             </Breadcrumb.Step>
