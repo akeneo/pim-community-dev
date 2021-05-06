@@ -102,8 +102,8 @@ const CategoriesTreePage: FC = () => {
     success && categoryToDelete.onDelete();
 
     const message = success
-      ? 'pim_enrich.entity.category.category_deleted'
-      : 'pim_enrich.entity.category.category_deletion_error';
+      ? 'pim_enrich.entity.category.category_deletion.success'
+      : 'pim_enrich.entity.category.category_deletion.error';
 
     notify(
       success ? NotificationLevel.SUCCESS : NotificationLevel.ERROR,
@@ -173,7 +173,7 @@ const CategoriesTreePage: FC = () => {
             categoryLabel={categoryToDelete.label}
             closeModal={handleCloseDeleteCategoryModal}
             deleteCategory={handleDeleteCategory}
-            message={'pim_enrich.entity.category.delete_category_confirmation'}
+            message={'pim_enrich.entity.category.category_deletion.confirmation'}
           />
         )}
       </PageContent>
