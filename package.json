@@ -19,7 +19,7 @@
     "webpack-test": "yarn generate-models && webpack --config webpack-test.config.js",
     "lint": "eslint src/**/*.js --config .eslintrc --ignore-path .eslintignore --quiet && yarn prettier:check",
     "lint-fix": "yarn prettier:run && eslint src/**/*.js --config .eslintrc --ignore-path .eslintignore --quiet --fix",
-    "unit": "yarn packages:unit && jest --no-cache --config tests/front/unit/jest/unit.jest.js --runInBand",
+    "unit": "yarn packages:unit && yarn run pim:unit",
     "integration": "jest --no-cache --config ./tests/front/integration/jest/integration.jest.js",
     "acceptance": "cucumber-js --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",
     "acceptance-html-report": "yarn acceptance ./tests/features/ -f json:public/test_dist/acceptance-js.json && node frontend/test/acceptance/generate-html-report.js",
@@ -29,7 +29,8 @@
     "dsm:build": "yarn --cwd=front-packages/akeneo-design-system install --frozen-lockfile; yarn --cwd=front-packages/akeneo-design-system lib:build",
     "shared:build": "yarn --cwd=front-packages/shared install --frozen-lockfile; yarn --cwd=front-packages/shared lib:build",
     "packages:build": "yarn dsm:build; yarn shared:build",
-    "packages:unit": "yarn --cwd=front-packages/shared test:unit:run"
+    "packages:unit": "yarn --cwd=front-packages/shared test:unit:run",
+    "pim:unit": "jest --no-cache --config tests/front/unit/jest/unit.jest.js --runInBand"
   },
   "repository": {
     "type": "git",
