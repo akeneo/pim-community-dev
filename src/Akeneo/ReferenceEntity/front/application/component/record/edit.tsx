@@ -1,8 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import {DeleteModal} from '@akeneo-pim-community/shared';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
+import {DeleteModal, PimView} from '@akeneo-pim-community/shared';
 import {EditState as State} from 'akeneoreferenceentity/application/reducer/record/edit';
 import Sidebar from 'akeneoreferenceentity/application/component/app/sidebar';
 import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
