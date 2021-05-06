@@ -10,6 +10,7 @@ const TableHead = styled.thead<{sticky?: number} & AkeneoThemedProps>`
       th {
         position: sticky;
         top: ${sticky}px;
+        z-index: 1;
         background-color: ${getColor('white')};
       }
     `}
