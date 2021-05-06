@@ -13,7 +13,7 @@ type Props = {
   followCategory?: (category: CategoryTreeModel) => void;
   // @todo define onCategoryMoved arguments
   onCategoryMoved?: () => void;
-  addCategory?: (parentCode: string, onCategoryAdded: () => {}) => void;
+  addCategory?: (parentCode: string, onCategoryAdded: () => void) => void;
   deleteCategory?: (categoryId: number) => void; // @todo define arguments that we really need
 };
 

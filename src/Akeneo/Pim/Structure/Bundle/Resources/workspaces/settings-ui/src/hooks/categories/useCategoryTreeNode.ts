@@ -31,7 +31,7 @@ const useCategoryTreeNode = (id: number) => {
     include_sub: '0',
   });
 
-  const {data, fetch: loadChildren, error: fetchError, status: fetchStatus} = useFetch<BackendCategoryTree>(url);
+  const {data, fetch: loadChildren, status: loadChildrenStatus} = useFetch<BackendCategoryTree>(url);
 
   const getCategoryPosition = (treeNode: TreeNode<CategoryTreeModel>): number => {
     if (!treeNode.parentId) {
@@ -215,6 +215,18 @@ const useCategoryTreeNode = (id: number) => {
       return;
     }
   }, [move]);
+
+  useEffect(() => {
+    if (!node || loadChildrenStatus !== 'fetching') {
+      return;
+    }
+    const newNodesList = update(nodes, {
+      ...node,
+      childrenStatus: 'loading',
+    });
+
+    setNodes(newNodesList);
+  }, [loadChildrenStatus]);
 
   return {
     node,
