@@ -1,4 +1,5 @@
 pim_analytics:
+  new_patch_available: Neuer Patch verfügbar
   system_info:
     title: Systeminformationen
     download: Herunterladen
