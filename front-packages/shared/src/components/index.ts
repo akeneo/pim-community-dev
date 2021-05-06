@@ -6,5 +6,6 @@ export * from './LocaleSelector';
 export * from './NoData';
 export * from './Notifications';
 export * from './page';
+export * from './PimView';
 export * from './SearchBar';
 export * from './TextField';

@@ -1,6 +1,5 @@
 import React, {FC, useEffect} from 'react';
-import {PageContent, PageHeader, useRoute, useTranslate} from '@akeneo-pim-community/shared';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
+import {PageContent, PageHeader, useRoute, useTranslate, PimView} from '@akeneo-pim-community/shared';
 import {AttributeGroupsCreateButton, AttributeGroupsDataGrid} from '../components';
 import {useAttributeGroupsIndexState} from '../hooks';
 import {Breadcrumb} from 'akeneo-design-system';
