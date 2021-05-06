@@ -1,68 +1,72 @@
 import React, {Ref, ReactNode, isValidElement} from 'react';
 import styled from 'styled-components';
+import {AkeneoThemedProps} from 'theme';
 
 //TODO be sure to select the appropriate container element here
-const Tag = styled.div<{color: 'green' | 'blue' | 'dark blue' | 'purple' | 'dark purple' | 'yellow' | 'red'}>`
+const Tag = styled.div<{tint: 'green' | 'blue' | 'dark_blue' | 'purple' | 'dark_purple' | 'yellow' | 'red'} & AkeneoThemedProps>`
   border: 1px solid;
-  border-color: ${({color}) =>
+  border-color: ${({tint}) =>
     ({
       green: '#81cccc',
       blue: '#4ca8e0',
-      'dark blue': '#5e63b6',
+      dark_blue: '#5e63b6',
       purple: '#9452ba',
-      'dark purple': '#52267d',
+      dark_purple: '#52267d',
       yellow: '#fcce76',
       red: '#f74b64',
-    }[color])};
-  color: ${({color}) =>
+    }[tint])};
+  color: ${({tint}) =>
     ({
       green: '#5da8a6',
       blue: '#3278b7',
-      'dark blue': '#3b438c',
+      dark_blue: '#3b438c',
       purple: '#763e9e',
-      'dark purple': '#36145e',
+      dark_purple: '#36145e',
       yellow: '#ca8411',
       red: '#c92343',
-    }[color])};
-  background-color: ${({color}) =>
+    }[tint])};
+  background-color: ${({tint}) =>
     ({
       green: '#f5fafa',
-      blue: '##f0f7fc',
-      'dark blue': '#efeff8',
+      blue: '#f0f7fc',
+      dark_blue: '#efeff8',
       purple: '#f3eef9',
-      'dark purple': '#eeeaf2',
+      dark_purple: '#eeeaf2',
       yellow: '#fefbf2',
       red: '#fdedf0',
-    }[color])};
-  height: 18px;
+    }[tint])};
+  height: 16px;
   line-height: 16px;
   padding: 0 6px;
-  display: inline;
+  display: inline-block;
   border-radius: 2px;
   font-size: 11px;
-  margin: 0 6px;
+  margin: 0 10px 10px 0;
+  text-transform:uppercase;
+  overflow:hidden;
+  max-width:200px;
+  white-space:nowrap;
+  text-overflow:ellipsis;
 `;
-const TagsContainer = styled.div<{level: string}>``;
+const TagsContainer = styled.div`
+    margin-right:-10px;
+    margin-bottom:-10px;
+`;
 
 type TagsProps = {
   /**
-   * TODO.
-   */
-  level?: 'primary' | 'warning' | 'danger';
-
-  /**
-   * TODO.
+   * list of Tag elements.
    */
   children?: ReactNode;
 };
 
 /**
- * TODO.
+ * This component displays a set of Tag elements inline.
  */
 const Tags = React.forwardRef<HTMLDivElement, TagsProps>(
-  ({level = 'primary', children, ...rest}: TagsProps, forwardedRef: Ref<HTMLDivElement>) => {
+  ({children, ...rest}: TagsProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (
-      <TagsContainer level={level} ref={forwardedRef} {...rest}>
+      <TagsContainer  ref={forwardedRef} {...rest}>
         {React.Children.map(children, child => {
           if (isValidElement(child) && child.type === Tag) {
             return child;

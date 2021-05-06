@@ -4,52 +4,37 @@ import {Tags, Tag} from './Tags.tsx';
 <Meta
   title="Components/Tags"
   component={Tags}
-  argTypes={{
-    level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
-  }}
-  args={{level: 'primary'}}
+  argTypes={{}}
+  args={{}}
 />
 
 # Tags
 
 ## Usage
 
-TODO
+Tags can be used to display a list of keywords.
 
-### TODO
+A `Tags` element can only accept a list of `Tag` children.
 
-TODO
+Each Tag must have one `tint` attribute that you can pick in that list: `'green' | 'blue' | 'dark_blue' | 'purple' | 'dark_purple' | 'yellow' | 'red'`
 
 ## Playground
 
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <Tags {...args} >
-        <Tag color='red'>Red</Tag>
-        <Tag color='blue'>Blue</Tag>
-        <Tag color='dark blue'>Dark Blue</Tag>
-        <Tag color='purple'>Purple</Tag>
-        <Tag color='dark purple'>Dark Purple</Tag>
-        <Tag color='green'>Green</Tag>
-        <Tag color='yellow'>Yellow</Tag>
+      return <Tags {...args}>
+        <Tag tint='red'>Red</Tag>
+        <Tag tint='blue'>Blue</Tag>
+        <Tag tint='dark_blue'>Dark Blue</Tag>
+        <Tag tint='purple'>Purple</Tag>
+        <Tag tint='dark_purple'>Dark Purple</Tag>
+        <Tag tint='green'>Green</Tag>
+        <Tag tint='yellow'>Yellow</Tag>
+        <Tag tint='red'>Very very very very looooonnnnnng teeeexxt</Tag>
       </Tags>;
     }}
   </Story>
 </Canvas>
 
 <ArgsTable story="Standard" />
-
-## Variation on level
-
-<Canvas>
-  <Story name="Level">
-    {args => {
-      return (
-        <>
-          <Tags {...args} level="primary"></Tags>
-        </>
-      );
-    }}
-  </Story>
-</Canvas>
