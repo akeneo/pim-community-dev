@@ -36,8 +36,8 @@ import {
   FullScreenError,
   PageContent,
   DeleteModal,
+  PimView,
 } from '@akeneo-pim-community/shared';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
 import {Helper, Button, Breadcrumb, useBooleanState} from 'akeneo-design-system';
 
 enum Tab {
