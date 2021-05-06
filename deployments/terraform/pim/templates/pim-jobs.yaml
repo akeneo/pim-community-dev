@@ -31,10 +31,6 @@ spec:
             role: {{ $jobName }} # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
             {{- include "pim.standardLabels" $tplCtx | indent 12 }}
             {{- include "pim.extraLabels" $tplCtx | indent 12 }}
-          annotations:
-            checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") $tplCtx | replace  (printf "%s-%s" $tplCtx.Chart.Name $tplCtx.Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
-            checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") $tplCtx | replace  (printf "%s-%s" $tplCtx.Chart.Name $tplCtx.Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
-            checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") $tplCtx | replace  (printf "%s-%s" $tplCtx.Chart.Name $tplCtx.Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
         spec:
           containers:
           - name: php

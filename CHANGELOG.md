@@ -40,6 +40,8 @@
 - PIM-9813: Add missing translation key for unpublish bulk action
 - PIM-9819: Fix overflow on ref entities tabs
 - PIM-9771: Fix the image preview when exporting a product as pdf
+- PIM-9822: Fix Error 500 after deleting a filterable asset family attribute
+- PIM-9825: Fix Assets not being properly reindexed after bulk edit
 
 ## Improvements
 

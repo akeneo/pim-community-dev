@@ -20,11 +20,8 @@ namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
  */
 final class ServiceStatus
 {
-    /** @var bool */
-    private $ok;
-
-    /** @var string */
-    private $message;
+    private bool $ok;
+    private string $message;
 
     private function __construct(
         bool $ok,
@@ -34,12 +31,12 @@ final class ServiceStatus
         $this->message = $message;
     }
 
-    public static function ok()
+    public static function ok(): self
     {
         return new self(true, 'OK');
     }
 
-    public static function notOk(string $message)
+    public static function notOk(string $message): self
     {
         return new self(false, $message);
     }

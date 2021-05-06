@@ -63,7 +63,7 @@ config:
         pimee/rule-manager:                       pimenterpriseui/js/product/rule-manager
 
         # Controllers
-#        pimee/controller/attribute/create: pimenterpriseui/js/controller/attribute/create
+        pim/controller/dashboard: pimenterpriseui/js/controller/pim-enterprise-dashboard.tsx
 
         # Form extensions
         pimee/product-edit-form/attributes/copy:                      pimenterpriseui/js/product/form/attributes/copy

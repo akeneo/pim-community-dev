@@ -17,8 +17,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
 
 final class ElasticsearchChecker
 {
-    /** @var ClientRegistry */
-    private $clientRegistry;
+    private ClientRegistry $clientRegistry;
 
     public function __construct(ClientRegistry $clientRegistry)
     {

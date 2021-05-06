@@ -1,5 +1,5 @@
 import {postJSON} from 'akeneoassetmanager/tools/fetch';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {AttributeWithOptions, OptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';

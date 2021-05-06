@@ -89,41 +89,37 @@ Feature: Follow project completeness
     Given I am logged in as "Claude"
     And I am on the dashboard page
     Then I should see the teamwork assistant widget
-    And I should see the text "Collection Winter 2030 E-Commerce | English (United States)"
-    And I should see the contributor selector
+    And I should see the text "Collection Winter 2030"
     And I should see the following teamwork assistant completeness:
       | todo | in_progress | done |
       | 0    | 2           | 1    |
-    And I should see the text "0% PRODUCTS TO START"
-    And I should see the text "67% PRODUCTS IN PROGRESS"
-    And I should see the text "33% PRODUCTS DONE"
+    And I should see the text "0% products to start"
+    And I should see the text "67% products in progress"
+    And I should see the text "33% products done"
     And I should see the text "Please do your best to finish before Winter."
-    And I should see the text "Due date: 08/25/2030"
+    And I should see the text "Due date - 08/25/2030"
     When I select "Collection Summer 2030" project
-    Then I should see the text "Collection Summer 2030 E-Commerce | English (United States)"
-    And I should see the contributor selector
+    Then I should see the text "Collection Summer 2030"
     And I should see the following teamwork assistant completeness:
       | todo | in_progress | done |
       | 0    | 2           | 1    |
-    And I should see the text "0% PRODUCTS TO START"
-    And I should see the text "67% PRODUCTS IN PROGRESS"
-    And I should see the text "33% PRODUCTS DONE"
+    And I should see the text " 0% products to start"
+    And I should see the text "67% products in progress"
+    And I should see the text "33% products done"
     And I should see the text "Please do your best to finish before Summer."
-    And I should see the text "Due date: 10/25/2030"
+    And I should see the text "Due date - 10/25/2030"
 
   Scenario: I should see the contributor selector if I'm not owner of the project
     Given I am logged in as "Mary"
     And I am on the dashboard page
     Then I should see the teamwork assistant widget
-    And I should see the text "Collection Winter 2030 E-Commerce | English (United States)"
-    And I should see the contributor selector
+    And I should see the text "Collection Winter 2030"
     When I select "Collection Summer 2030" project
-    Then I should see the text "Collection Summer 2030 E-Commerce | English (United States)"
+    Then I should see the text "Collection Summer 2030"
     When I select "Mary Smith" contributor
     And I should see the text "Mary Smith"
     When I select "Collection Winter 2030" project
-    And I should see the text "Collection Winter 2030 E-Commerce | English (United States)"
-    But I should see the contributor selector
+    And I should see the text "Collection Winter 2030"
 
   @skip
   Scenario: Successfully display the widget without project

@@ -218,6 +218,29 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
+  test_database:
+      machine:
+          image: ubuntu-1604:201903-01
+      parallelism: 1
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: |
+                    docker load -i php-pim-image.tar
+                    APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
+                    vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+          - run:
+                name: Install database
+                command: APP_ENV=dev make database
+          - run:
+              name: Database test
+              command: APP_ENV=dev PIM_CONTEXT=test make test-database-structure
+
   test_back_phpunit:
       machine:
           image: ubuntu-2004:202010-01
@@ -613,6 +636,90 @@ jobs:
               command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete
               when: on_fail
 
+  prepare_pr_ge_environment:
+      environment:
+          <<: *envVarsDeployDev
+      machine:
+          image: ubuntu-2004:202010-01
+      steps:
+          - attach_workspace:
+              at: ~/
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+              name: Get CE version from same branch name or master
+              command: |
+                if curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH}; then
+                    CE_BRANCH=${CIRCLE_BRANCH}
+                else
+                    CE_BRANCH=master
+                fi
+                IMAGE_TAG=$(echo growth-$CIRCLE_SHA1 | cut -b 1-40)
+                echo "CE branch to use: $CE_BRANCH"
+                echo "Image tag: $IMAGE_TAG"
+                echo export IMAGE_TAG=$IMAGE_TAG >> $BASH_ENV
+                echo export CE_BRANCH=$CE_BRANCH >> $BASH_ENV
+          - run:
+              name: Install yq
+              command: |
+                wget https://github.com/mikefarah/yq/releases/download/2.4.0/yq_linux_386
+                sudo mv yq_linux_386 /usr/local/bin/yq
+                sudo chmod +x /usr/local/bin/yq
+          - run:
+              name: Prepare the Growth Edition
+              command: |
+                mv /home/circleci/project /home/circleci/ee_project
+                git clone --branch $CE_BRANCH git@github.com:akeneo/pim-community-dev.git /home/circleci/project
+                cd /home/circleci/project
+                /home/circleci/ee_project/growth_edition/prepare_growth_edition.sh /home/circleci/project
+          - run:
+              name: Build the Growth Edition prod image
+              command: |
+                DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --target prod \
+                  --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG \
+                  --build-arg COMPOSER_AUTH=${COMPOSER_AUTH} .
+                docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG
+          - run:
+              name: Persist env vars for next jobs
+              command: |
+                  echo export IMAGE_TAG=$IMAGE_TAG >> persisted_env_vars
+                  echo export IMAGE_TAG_SHORTED=$(echo $CIRCLE_SHA1 | cut -c -7) >> persisted_env_vars
+                  echo export TYPE="grth" >> persisted_env_vars
+                  echo export PRODUCT_REFERENCE_TYPE="growth_edition_instance" >> persisted_env_vars
+                  echo export PRODUCT_REFERENCE_CODE="growth_edition_sandbox" >> persisted_env_vars
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - project
+
+  deploy_pr_ge_environment:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+              at: ~/
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+              name: Check Circle CI PR
+              command: |
+                if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
+                echo "This environment will be available at https://pimci-pr-ge-${CIRCLE_PULL_REQUEST##*/}.dev.cloud.akeneo.com once deployed :) "
+          - run:
+              name: Deploy PR environment
+              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr-ge INSTANCE_NAME=pimci-pr-ge-${CIRCLE_PULL_REQUEST##*/} ACTIVATE_MONITORING=false PIM_CONTEXT=deployment make deploy-serenity
+          - run:
+              name: Prepare infrastructure artifacts
+              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr-ge INSTANCE_NAME=pimci-pr-ge-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
+              when: on_fail
+          - store_artifacts:
+              path: ~/artifacts/infra
+          - run:
+              name: Remove env on kubernetes
+              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr-ge INSTANCE_NAME=pimci-pr-ge-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete
+              when: on_fail
+
   test_upgrade_from_serenity_customer_db:
       environment:
           <<: *envVarsDeployDev
@@ -635,7 +742,7 @@ jobs:
           - run:
                 name: Upgrade the duplicate environment
                 command: |
-                    INSTANCE_NAME_PREFIX=pimci-duplic IMAGE_TAG=${CIRCLE_SHA1} INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40) PIM_CONTEXT=deployment  make create-ci-release-files get_mysql_parameters_disk deploy
+                    UPGRADE_STEP_2=true PIM_CONTEXT=deployment IMAGE_TAG=$CIRCLE_SHA1 INSTANCE_NAME_PREFIX=pimci-duplic INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40) make create-ci-release-files get_mysql_parameters_disk deploy
           - run:
               name: Prepare infrastructure artifacts
               command: INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40) PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
@@ -772,12 +879,14 @@ jobs:
                 name: Load make commands
                 command: cp vendor/akeneo/pim-onboarder/onboarder.mk make-file/onboarder.mk
           - run:
+                name: Install onboarder tests dependencies
+                command: docker-compose run -u www-data --rm php php /usr/local/bin/composer require "knplabs/github-api:^3.0" "php-http/guzzle6-adapter:^2.0" "http-interop/http-factory-guzzle:^1.0" --no-interaction --dev
+          - run:
                 name: Add configuration files to run the bundle tests from the PIM
                 command: |
                     rm -f docker-compose.override.yml
                     PIM_VERSION=master SETUP_FOR_CI=1 PIM_CONTEXT=onboarder make setup-onboarder-parameters
                     PIM_VERSION=master PIM_CONTEXT=onboarder make setup-onboarder-tests
-                    docker-compose run --rm php php /usr/local/bin/composer dumpautoload
           - run:
                 name: Change owner of PIM as some files have been created with wrong owner
                 command: sudo chown -R 1000:1000 ~/project
@@ -805,6 +914,9 @@ jobs:
           - run:
                 name: Execute end-to-end tests
                 command: PIM_CONTEXT=onboarder make test-end-to-end
+          - run:
+                name: Execute synchronization end-to-end tests
+                command: PIM_CONTEXT=onboarder GITHUB_TOKEN=${GITHUB_TOKEN} make test-synchronization-end-to-end
           - run:
               name: Restart FPM with Onboarder feature turned off
               command: make up APP_ENV=behat FLAG_ONBOARDER_ENABLED=0 C='fpm'
@@ -895,10 +1007,13 @@ jobs:
           - run:
               name: Prepare the Terraform module with the upgrade script
               command: |
-                cp -r /home/circleci/project/growth_edition/deployments /home/circleci/project/deployments/terraform/
+                mkdir -p /home/circleci/project/deployments/terraform/deployments
+                cp -r /home/circleci/project/deployments/automation /home/circleci/project/deployments/terraform/deployments
           - run:
               name: Push Terraform modules to GCS
-              command: BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/
+              command: |
+                BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/terraform/deployments/terraform
           - run:
               name: Tag the Docker image with the definitive tag
               command: |
@@ -961,7 +1076,24 @@ workflows:
                 requires:
                     - deploy_pr_environment?
 
+          - deploy_pr_ge_environment?:
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - master
+                requires:
+                    - test_cronjobs_existence
+          - prepare_pr_ge_environment:
+                requires:
+                    - deploy_pr_ge_environment?
+          - deploy_pr_ge_environment:
+                requires:
+                    - prepare_pr_ge_environment
           - test_front_code_style:
+                requires:
+                    - build_dev
+          - test_database:
                 requires:
                     - build_dev
           - test_back_static_and_acceptance:
@@ -970,7 +1102,6 @@ workflows:
           - test_front_static_acceptance_and_integration:
                 requires:
                     - build_dev
-
           - test_back_phpunit:
                 requires:
                     - build_dev

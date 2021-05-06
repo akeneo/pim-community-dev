@@ -1,9 +1,9 @@
 extensions:
     pim-menu-enrich-rule:
         module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
+        parent: pim-menu-product-settings-block
         aclResourceId: pimee_catalog_rule_rule_view_permissions
-        position: 180
+        position: 80
         config:
             title: pim_menu.item.rule
             to: pimee_catalog_rule_rule_index

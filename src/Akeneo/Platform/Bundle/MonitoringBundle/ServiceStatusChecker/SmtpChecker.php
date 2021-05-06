@@ -17,8 +17,7 @@ use Exception;
 
 final class SmtpChecker
 {
-    /** @var \Swift_Transport */
-    private $transport;
+    private \Swift_Transport $transport;
 
     public function __construct(\Swift_Transport $transport)
     {

@@ -16,4 +16,3 @@ Feature: Check menu items visibility
     And I should not see the text "There are unsaved changes."
     And I should not see the text "Loading"
     Then I should not see the text "System"
-    And I should see the text "You have no current project"

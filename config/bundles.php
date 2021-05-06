@@ -83,6 +83,7 @@ return [
     Akeneo\Pim\TrialEdition\Infrastructure\Symfony\AkeneoPimEnterpriseTrialEditionBundle::class =>  ['all' => true],
 
     // Dev related bundles
+    Akeneo\Tool\Bundle\DatabaseMetadataBundle\AkeneoDatabaseMetadataBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
     Symfony\Bundle\WebServerBundle\WebServerBundle::class => ['dev' => true, 'test' => true, 'behat' => true],

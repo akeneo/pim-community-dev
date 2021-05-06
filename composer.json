@@ -41,6 +41,7 @@
             "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "Akeneo\\Test\\": "vendor/akeneo/pim-community-dev/tests/back/",
             "AkeneoEnterprise\\Test\\Acceptance\\": "tests/back/Acceptance/",
+            "Specification\\Akeneo\\Platform\\": "tests/back/Platform/Specification/",
             "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": ["src/Akeneo/Pim/Automation/DataQualityInsights/tests/back", "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/tests/back"],
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/tests/back",
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back",
@@ -58,10 +59,10 @@
     "require": {
         "ext-json": "*",
         "akeneo/pim-community-dev": "dev-master",
-        "akeneo/pim-onboarder": "^4.3.3",
+        "akeneo/pim-onboarder": "^4.3.8",
         "hslavich/oneloginsaml-bundle": "1.5.1",
         "justinrainbow/json-schema": "^5.2",
-        "phpseclib/phpseclib": "2.0.29",
+        "phpseclib/phpseclib": "2.0.31",
         "superbalist/flysystem-google-storage": "7.2.2",
         "grpc/grpc": "1.30.0",
         "mekras/php-speller": "^2.1.4"
@@ -92,7 +93,8 @@
         "phpstan/phpstan": "^0.12.25",
         "phpstan/phpstan-symfony": "^0.12.6",
         "mcustiel/phiremock": "2.1.1",
-        "phpstan/phpstan-webmozart-assert": "^0.12.7"
+        "phpstan/phpstan-webmozart-assert": "^0.12.7",
+        "jfcherng/php-diff": "^6.10"
     },
     "repositories": [
         {

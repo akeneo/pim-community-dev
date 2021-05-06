@@ -1,6 +1,6 @@
 import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {postJSON} from 'akeneoassetmanager/tools/fetch';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';

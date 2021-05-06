@@ -33,7 +33,7 @@ class ProjectCompletenessWidget implements WidgetInterface
      */
     public function getTemplate()
     {
-        return 'AkeneoPimTeamworkAssistantBundle:Widget:completeness.html.twig';
+        return '';
     }
 
     /**

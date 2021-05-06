@@ -3,10 +3,6 @@ set -eo pipefail
 set -x
 
 if [ ${STEP} == "PRE_APPLY" ]; then
-
-    terraform apply -input=false -auto-approve -target=module.pim.local_file.kubeconfig
-    export KUBECONFIG=.kubeconfig
-
     kubectl delete -n ${PFID} cronjob --all
 
     if [ ! -z ${SKIP_SHUTDOWN} ] && [ ${SKIP_SHUTDOWN} == "false" ]; then
@@ -21,10 +17,6 @@ fi
 
 if [ ${STEP} == "POST_APPLY" ]; then
     if [ ! -z ${SKIP_SHUTDOWN} ] && [ ${SKIP_SHUTDOWN} == "false" ]; then
-
-        terraform apply -input=false -auto-approve -target=module.pim.local_file.kubeconfig
-        export KUBECONFIG=.kubeconfig
-        
         PARALLEL_WEB=$(yq m -x ${TF_PATH_PIM_MODULE}/pim/values.yaml tf-helm-pim-values.yaml values.yaml | yq r - pim.replicas)
         PARALLEL_DAEMON_DEFAULT=$(yq m -x ${TF_PATH_PIM_MODULE}/pim/values.yaml tf-helm-pim-values.yaml values.yaml | yq r - pim.daemons.default.replicas)
         PARALLEL_DAEMON_WEBHOOK=$(yq m -x ${TF_PATH_PIM_MODULE}/pim/values.yaml tf-helm-pim-values.yaml values.yaml | yq r - pim.daemons.webhook-consumer-process.replicas)

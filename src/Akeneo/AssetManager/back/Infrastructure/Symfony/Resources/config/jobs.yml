@@ -195,7 +195,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.query_builder'
             - '@akeneo_assetmanager.client.asset'
             - '@akeneo_batch.job_repository'
-            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator'
             - '@akeneo_batch.job.job_stopper'
             - '@akeneo_assetmanager.application.registry.asset.edit_asset_value_command_factory_registry'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'

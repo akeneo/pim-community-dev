@@ -122,10 +122,11 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
     null
   );
   const [scrollContainerRef, scrollTop] = useScroll<HTMLDivElement>();
-  const [filterCollection, setFilterCollection] = useStoredState<Filter[]>(
+  const [storedFilterCollection, setStoredFilterCollection] = useStoredState<Filter[]>(
     `akeneo.asset_manager.grid.filter_collection_${currentAssetFamilyIdentifier}`,
     []
   );
+  const [filterCollection, setFilterCollection] = useState<Filter[]>([]);
   const [excludedAssetCollection] = useState<AssetCode[]>([]);
   const [searchValue, setSearchValue] = useStoredState<string>('akeneo.asset_manager.grid.search_value', '');
   const [searchResult, setSearchResult] = useState<SearchResult<ListAsset>>(emptySearchResult());
@@ -166,6 +167,20 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
     context,
     selection
   );
+
+  useEffect(() => {
+    if (null === currentAssetFamily) return;
+
+    const filterKeys = currentAssetFamily.attributes.map(({identifier}) => `values.${identifier}`);
+    const filteredCollection = storedFilterCollection.filter(({field}) => filterKeys.includes(field));
+    setFilterCollection(filteredCollection);
+  }, [currentAssetFamily]);
+
+  useEffect(() => {
+    if (null === currentAssetFamily) return;
+
+    setStoredFilterCollection(filterCollection);
+  }, [filterCollection]);
 
   const updateResults = useFetchResult(createQuery)(
     true,

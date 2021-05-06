@@ -8,3 +8,12 @@ pimee_enrich.entity.product:
     flash:
       success: The product {{ product_identifier }} has been duplicated with success.
       success_with_attribute_codes: The product {{ product_identifier }} has been duplicated with success. You need to enrich the {{ unique_attribute_codes }} with unique values
+
+pim_dashboard:
+  widget:
+    teamwork_assistant:
+      title: Projects
+      helper: To know more about projects and how you can improve your completeness, <a href="{{ link }}" target="_blank">check our helpcenter</a>.
+      no_project:
+        title: Projects can help you track a product selection enrichment progress.
+        subtitle: Create your first project.

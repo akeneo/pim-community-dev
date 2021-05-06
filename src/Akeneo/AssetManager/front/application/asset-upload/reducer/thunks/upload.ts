@@ -15,7 +15,7 @@ import createQueue from 'p-limit';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Locale from 'akeneoassetmanager/domain/model/locale';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {FileInfo} from 'akeneo-design-system';
 
 const CONCURRENCY = 5;

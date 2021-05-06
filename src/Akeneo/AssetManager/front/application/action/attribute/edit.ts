@@ -7,7 +7,7 @@ import {
   attributeEditionCancel,
 } from 'akeneoassetmanager/domain/event/attribute/edit';
 import AttributeIdentifier, {attributeidentifiersAreEqual} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
   notifyAttributeWellSaved,

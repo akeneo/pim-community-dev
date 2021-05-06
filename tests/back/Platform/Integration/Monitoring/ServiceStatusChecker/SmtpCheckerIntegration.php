@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Platform\Integration\Monitoring\ServiceStatusChecker;
 
+use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ServiceStatus;
 use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\SmtpChecker;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;

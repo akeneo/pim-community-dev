@@ -111,7 +111,7 @@ services:
         class: '%pim_catalog.query.filter.registry.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
-            -
+
     pimee_workflow.query.elasticsearch.filter.category:
         class: '%pim_catalog.query.elasticsearch.filter.category.class%'
         arguments:
@@ -370,6 +370,14 @@ services:
                 - '<='
                 - '<'
                 - 'EMPTY'
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.published_product_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.status:
+        class: '%pim_catalog.query.elasticsearch.filter.status.class%'
+        arguments:
+            - ['enabled']
+            - ['=', '!=']
         tags:
             - { name: 'pimee_workflow.elasticsearch.query.published_product_filter', priority: 30 }
 

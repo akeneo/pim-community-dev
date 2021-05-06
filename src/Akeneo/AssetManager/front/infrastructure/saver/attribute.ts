@@ -1,6 +1,6 @@
 import Saver from 'akeneoassetmanager/domain/saver/attribute';
 import {postJSON} from 'akeneoassetmanager/tools/fetch';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import MinimalAttribute from 'akeneoassetmanager/domain/model/attribute/minimal';
 import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';

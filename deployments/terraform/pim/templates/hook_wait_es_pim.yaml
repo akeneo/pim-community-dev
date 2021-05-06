@@ -21,10 +21,6 @@ spec:
         app.kubernetes.io/component: "hook-wait-es-pim"
         {{- include "pim.standardLabels" . | indent 8 }}
         {{- include "pim.extraLabels" . | indent 8 }}
-      annotations:
-        checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
-        checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
-        checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
     spec:
       restartPolicy: Never
       containers:

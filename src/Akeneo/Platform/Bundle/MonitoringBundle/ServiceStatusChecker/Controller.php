@@ -51,7 +51,8 @@ final class Controller
 
     public function getAction(Request $request): JsonResponse
     {
-        $authenticationToken = $request->headers->get('X-AUTH-TOKEN', null);
+        $authenticationToken = $request->headers->get('X-AUTH-TOKEN');
+        $failOnOptionalServices = $request->query->has('fail_on_optional_services');
 
         if (null === $authenticationToken || $authenticationToken !== $this->authenticationToken) {
             throw new AccessDeniedHttpException();
@@ -63,44 +64,53 @@ final class Controller
         $smtpStatus = $this->smtpChecker->status();
         $pubSubStatus = $this->pubSubStatusChecker->status();
 
-        $responseStatus = Response::HTTP_OK;
-
-        if (
-            !$mysqlStatus->isOk()
-            || !$esStatus->isOk()
-            || !$fileStorageStatus->isOk()
-            || !$smtpStatus->isOk()
-            || !$pubSubStatus->isOk()
-        ) {
-            $responseStatus = Response::HTTP_INTERNAL_SERVER_ERROR;
-        }
-
-        return new JsonResponse(
-            [
-                'service_status' => [
-                    'mysql' => [
-                        'ok' => $mysqlStatus->isOk(),
-                        'message' => $mysqlStatus->getMessage(),
-                    ],
-                    'elasticsearch' => [
-                        'ok' => $esStatus->isOk(),
-                        'message' => $esStatus->getMessage(),
-                    ],
-                    'file_storage' => [
-                        'ok' => $fileStorageStatus->isOk(),
-                        'message' => $fileStorageStatus->getMessage(),
-                    ],
-                    'smtp' => [
-                        'ok' => $smtpStatus->isOk(),
-                        'message' => $smtpStatus->getMessage(),
-                    ],
-                    'pub_sub' => [
-                        'ok' => $pubSubStatus->isOk(),
-                        'message' => $pubSubStatus->getMessage(),
-                    ],
+        $responseContent = [
+            'service_status' => [
+                'mysql' => [
+                    'ok' => $mysqlStatus->isOk(),
+                    'optional' => false,
+                    'message' => $mysqlStatus->getMessage(),
+                ],
+                'elasticsearch' => [
+                    'ok' => $esStatus->isOk(),
+                    'optional' => false,
+                    'message' => $esStatus->getMessage(),
+                ],
+                'file_storage' => [
+                    'ok' => $fileStorageStatus->isOk(),
+                    'optional' => false,
+                    'message' => $fileStorageStatus->getMessage(),
+                ],
+                'smtp' => [
+                    'ok' => $smtpStatus->isOk(),
+                    'optional' => true,
+                    'message' => $smtpStatus->getMessage(),
+                ],
+                'pub_sub' => [
+                    'ok' => $pubSubStatus->isOk(),
+                    'optional' => false,
+                    'message' => $pubSubStatus->getMessage(),
                 ],
             ],
-            $responseStatus
-        );
+        ];
+
+        $responseStatus = $this->isResponseSuccesful($responseContent['service_status'], $failOnOptionalServices) ?
+            Response::HTTP_OK : Response::HTTP_INTERNAL_SERVER_ERROR;
+
+        return new JsonResponse($responseContent, $responseStatus);
+    }
+
+    private function isResponseSuccesful(array $responseContent, bool $failOnOptionalServices): bool
+    {
+        foreach ($responseContent as $result) {
+            if (!$result['ok'] && !$result['optional']) {
+                return false;
+            }
+            if (!$result['ok'] && $failOnOptionalServices) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

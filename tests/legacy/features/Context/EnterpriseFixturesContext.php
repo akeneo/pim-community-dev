@@ -392,23 +392,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @Given /^I should see the following proposals on the widget:$/
-     *
-     * @param TableNode $table
-     *
-     * @throws \Exception
-     */
-    public function iShouldSeeTheFollowingProposalsOnTheWidget(TableNode $table)
-    {
-        $expectedProposals = $table->getHash();
-        $this->spin(function () use ($expectedProposals) {
-            $actualProposals = $this->getCurrentPage()->getElement('Proposal widget')->getProposalsToReview();
-
-            return $expectedProposals == $actualProposals;
-        }, sprintf('Failed to find the following proposals "%s"', print_r($expectedProposals, true)));
-    }
-
-    /**
      * @param TableNode $table
      *
      * @Given /^the following published products?:$/

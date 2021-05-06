@@ -21,9 +21,9 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
-use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\AssetCursor;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\AssetQueryBuilderInterface;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
@@ -43,7 +43,7 @@ class MassEditAssetsTasklet implements TaskletInterface, TrackableTaskletInterfa
     private EditAssetHandler $editAssetsHandler;
     private JobRepositoryInterface $jobRepository;
     private int $batchSize;
-    private AssetIndexerInterface $assetIndexer;
+    private EventAggregatorInterface $indexAssetEventAggregator;
     private JobStopper $jobStopper;
     private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry;
     private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
@@ -53,7 +53,7 @@ class MassEditAssetsTasklet implements TaskletInterface, TrackableTaskletInterfa
         AssetQueryBuilderInterface $assetQueryBuilder,
         Client $assetClient,
         JobRepositoryInterface $jobRepository,
-        AssetIndexerInterface $assetIndexer,
+        EventAggregatorInterface $indexAssetEventAggregator,
         JobStopper $jobStopper,
         EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
@@ -63,7 +63,7 @@ class MassEditAssetsTasklet implements TaskletInterface, TrackableTaskletInterfa
         $this->assetQueryBuilder = $assetQueryBuilder;
         $this->assetClient = $assetClient;
         $this->jobRepository = $jobRepository;
-        $this->assetIndexer = $assetIndexer;
+        $this->indexAssetEventAggregator = $indexAssetEventAggregator;
         $this->jobStopper = $jobStopper;
         $this->editValueCommandFactoryRegistry = $editValueCommandFactoryRegistry;
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
@@ -122,7 +122,7 @@ class MassEditAssetsTasklet implements TaskletInterface, TrackableTaskletInterfa
 
         if ($this->jobStopper->isStopping($this->stepExecution)) {
             $this->jobStopper->stop($this->stepExecution);
-            $this->assetIndexer->refresh();
+            $this->indexAssetEventAggregator->flushEvents();
 
             return;
         }
@@ -131,7 +131,7 @@ class MassEditAssetsTasklet implements TaskletInterface, TrackableTaskletInterfa
             $this->editAssets($assetFamilyIdentifier, $assetCodesToEdit, $editAssetValueCommands);
         }
 
-        $this->assetIndexer->refresh();
+        $this->indexAssetEventAggregator->flushEvents();
     }
 
     private function editAssets(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodesToEdit, array $editAssetValueCommands)

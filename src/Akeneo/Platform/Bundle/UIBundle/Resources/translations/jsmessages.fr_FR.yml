@@ -7,3 +7,9 @@ pimee_enrich.entity.product:
     flash:
       success: Le produit {{ product_identifier }} a été dupliqué avec succès.
       success_with_attribute_codes: Le produit {{ product_identifier }} a été dupliqué avec succès. Vous devez enrichir le {{ unique_attribute_codes }} avec des valeurs uniques
+pim_dashboard:
+  widget:
+    teamwork_assistant:
+      title: Projets
+      no_project:
+        subtitle: Créez votre premier projet.

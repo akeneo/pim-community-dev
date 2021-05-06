@@ -92,16 +92,90 @@ class TeamworkAssistantWidgetDecorator extends ElementDecorator
      */
     public function getLinkFromSection($sectionName)
     {
-        $parent = $this->spin(function () use ($sectionName) {
-            $box = $this->find('css', sprintf('.teamwork-assistant-completeness-%s', $sectionName));
-            if (null === $box) {
+        $sectionOrder = [
+            'todo' => 0,
+            'in-progress' => 1,
+            'done' => 2,
+        ];
+
+        return $this->spin(function () use ($sectionOrder, $sectionName) {
+            $link = $this->findAll('css', 'a[class*="project-datagrid-link"]');
+            if (count($link) === 0) {
                 return false;
             }
-            return $box->getParent();
+
+            return $link[$sectionOrder[$sectionName]];
         }, sprintf('"%s" box not found in completeness.', $sectionName));
+    }
 
-        $parent->mouseOver();
+    public function selectContributor(string $contributorName)
+    {
+        $this->openWidgetDropdown('.contributor-selector');
 
-        return $parent->find('css', 'a');
+        $contributorLabel = $this->spin(function () use ($contributorName) {
+            $label = $this->find('css', sprintf('.contributor-label:contains("%s")', $contributorName));
+            if ($label === null) {
+                return false;
+            }
+
+            return $label;
+        }, 'contributor label not found');
+
+
+        $contributorLabel->click();
+    }
+
+    public function selectProject(string $projectLabel)
+    {
+        $this->openWidgetDropdown('.project-selector');
+
+        $projectLabel = $this->spin(function () use ($projectLabel) {
+            $label = $this->find('css', sprintf('.project-label:contains("%s")', $projectLabel));
+            if ($label === null) {
+                return false;
+            }
+
+            return $label;
+        }, 'project label not found');
+
+
+        $projectLabel->click();
+    }
+
+    public function getChoicesFromProjectsSelector()
+    {
+        $this->openWidgetDropdown('.project-selector');
+
+        $projectsLabels = $this->spin(function () {
+            $labelElements = $this->findAll('css', '.project-label');
+            if (count($labelElements) === 0) {
+                return false;
+            }
+
+            $labels = [];
+            foreach ($labelElements as $label) {
+                $labels[] = $label->getText();
+            }
+
+            return $labels;
+        }, 'projects labels not found');
+
+        $this->find('css', '[data-testid="backdrop"]')->click();
+
+        return $projectsLabels;
+    }
+
+    private function openWidgetDropdown(string $selector)
+    {
+        $dropdownLabel = $this->spin(function () use ($selector) {
+            $dropdownLabel = $this->find('css', $selector);
+            if ($dropdownLabel === null) {
+                return false;
+            }
+
+            return $dropdownLabel;
+        }, 'selector not found');
+
+        $dropdownLabel->click();
     }
 }

@@ -1,4 +1,4 @@
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {NormalizableAdditionalProperty, Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
 export const attributeEditionStart = (attribute: Attribute) => {

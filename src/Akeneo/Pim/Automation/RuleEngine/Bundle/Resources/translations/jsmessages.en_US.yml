@@ -453,6 +453,9 @@ pim_notification:
         execute_rules: Rules execution
 
 pim_menu:
+    navigation:
+        settings:
+            automation: Automation
     item:
         rule: Rules
 

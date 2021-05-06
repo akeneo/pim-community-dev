@@ -1,6 +1,5 @@
 import React, {FC, useEffect} from 'react';
-import {PageContent, PageHeader, useRoute, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
+import {PageContent, PageHeader, PimView, useRoute, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {useLocalesIndexState} from '@akeneo-pim-community/settings-ui';
 import styled from 'styled-components';
 import {Breadcrumb, getColor, Helper as BaseHelper} from 'akeneo-design-system';
@@ -30,7 +29,7 @@ const LocalesEEIndex: FC = () => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const {locales, load, isPending} = useLocalesIndexState();
-  const settingsHomePageRoute = useRoute('pim_enrich_attribute_index');
+  const settingsHomePageRoute = useRoute('pim_settings_index');
   const settingsChannelPageRoute = useRoute('pim_enrich_channel_index');
   const {refresh, getDictionaryTotalWords, localesDictionaryInfo} = useLocalesDictionaryInfo(locales);
 

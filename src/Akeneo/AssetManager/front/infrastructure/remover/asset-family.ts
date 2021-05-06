@@ -1,6 +1,6 @@
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {deleteJSON} from 'akeneoassetmanager/tools/fetch';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import Remover from 'akeneoassetmanager/domain/remover/remover';
 import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';

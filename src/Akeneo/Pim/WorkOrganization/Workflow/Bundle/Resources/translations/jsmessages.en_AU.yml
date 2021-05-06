@@ -12,11 +12,30 @@ pim_datagrid:
     proposal: There is no proposal to review. Try to change your search criteria.
     product_draft: There is no product draft to review. Try to change your search criteria.
   workflow:
+    partial_approve: Approve changes on attribute {{ attribute }} of the product {{ product }}
+    partial_reject: Reject changes on attribute {{ attribute }} of the product {{ product }}
+    by: by
+    at: at
     status:
       in_progress: In progress
       ready: Waiting for approval
+      can_be_partially_reviewed: Can be partially reviewed
+      can_not_be_approved: Can't be reviewed
+      can_not_be_deleted: Can't be deleted
     status_message:
       ready: Waiting for approval
+      in_progress: This proposal is currently in progress and has not been submitted yet.
+      can_be_partially_reviewed: You can review this proposal only partially because some changes apply on values you can't edit. Please contact your administrator to change your rights.
+      can_not_be_approved: You can't review this proposal because all changes apply on values you can't edit. Please contact your administrator to change your rights.
+      can_not_be_deleted: You can't delete this proposal because all changes apply on values you can't edit. Please contact your administrator to change your rights.
+    draft_in_progress: A draft is in progress by {{ author }} for this product.
+    no_diff: The value "{{ value }}" is the same between the proposal and the working copy.
+    new_value: 'New value:'
+    old_value: 'Old value:'
+    actions:
+      approve_all: Approve all
+      refuse_all: Reject all
+    characters_left: ']-Inf, 1]{{ count }} character left|]1, Inf[{{ count }} characters left'
 pimee_datagrid:
   cells:
     expand:
@@ -41,14 +60,20 @@ pimee_workflow:
       error: "The proposal can't be applied due to the following error: {{ error }}"
     reject:
       title: Reject proposal
+      success: The proposal has been rejected
+      error: "The proposal can't be rejected due to the following error: {{ error }}"
     remove:
       title: Remove proposal
+      success: The proposal has been removed
+      error: "The proposal can't be removed due to the following error: {{ error }}"
     partial_approve:
       title: Approve partial information
       success: The proposal has been successfully partially validated
+      error: "The proposal can't be partially approved due to the following error: {{ error }}"
     partial_reject:
       title: Partially reject changes
       success: The changes have been successfully rejected
+      error: "The proposal can't be partially rejected due to the following error: {{ error }}"
 batch_jobs:
   csv_published_product_export:
     label: Published product export in CSV
@@ -88,6 +113,8 @@ batch_jobs:
     perform.label: Xlsx published products grid context quick export
   publish_product:
     perform.label: Publish products
+  unpublish_product:
+    perform.label: Unpublish products
   default_steps:
     clean_attribute:
       clean_draft: Cleaning proposals
@@ -110,6 +137,8 @@ pimee_dashboard:
       product: Product
       review: Review
       empty: No proposals to review
+      title: Proposals to review
+      view_all: View all proposals
     header.view_all: View all
 pimee_enrich.entity.product:
   module:

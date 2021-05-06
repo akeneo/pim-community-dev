@@ -22,8 +22,7 @@ use Webmozart\Assert\Assert;
 
 class CustomActionValidator extends ConstraintValidator
 {
-    /** @var DenormalizerInterface */
-    private $chainedDenormalizer;
+    private DenormalizerInterface $chainedDenormalizer;
 
     public function __construct(DenormalizerInterface $chainedDenormalizer)
     {
@@ -40,7 +39,8 @@ class CustomActionValidator extends ConstraintValidator
             return;
         }
 
-        if (!$this->chainedDenormalizer->supportsDenormalization($value->data, $actionType)) {
+        $normalizedAction = $value->toArray();
+        if (!$this->chainedDenormalizer->supportsDenormalization($normalizedAction, $actionType)) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('type')
                 ->setInvalidValue($actionType)
@@ -50,7 +50,7 @@ class CustomActionValidator extends ConstraintValidator
         }
 
         try {
-            $customAction = $this->chainedDenormalizer->denormalize($value, $actionType);
+            $customAction = $this->chainedDenormalizer->denormalize($normalizedAction, $actionType);
         } catch (\Exception $e) {
             // do nothing
             return;

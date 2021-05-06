@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {CloseIcon, getColor, getFontSize, IconButton, SelectInput, List, useId} from 'akeneo-design-system';
-import {getErrorsForPath, useTranslate} from '@akeneo-pim-community/shared';
-import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
+import {getErrorsForPath, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
 import {getFieldView} from 'akeneoassetmanager/application/configuration/value';
 import {useConfig} from 'akeneoassetmanager/application/hooks/useConfig';
@@ -89,7 +88,7 @@ const UpdaterRow = ({updater, uiLocale, readOnly = false, errors, onChange, onRe
         </List.Row>
       }
     >
-      <List.Row multiline={true}>
+      <List.Row isMultiline={true}>
         <List.TitleCell width="auto">
           <AttributeName htmlFor={id}>
             {getLabel(updater.attribute.labels, uiLocale, updater.attribute.code)}

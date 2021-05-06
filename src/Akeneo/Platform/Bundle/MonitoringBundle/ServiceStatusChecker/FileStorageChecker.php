@@ -27,8 +27,7 @@ final class FileStorageChecker
         'assetStorage'
     ];
 
-    /** @var MountManager */
-    private $mountManager;
+    private MountManager $mountManager;
 
     public function __construct(MountManager $mountManager)
     {

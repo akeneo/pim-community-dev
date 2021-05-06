@@ -102,7 +102,7 @@ pim:
       trapped: true
     webhook-consumer-process:
       enabled: true
-      pimCommand: "messenger:consume webhook --time-limit=3600 --memory-limit=384M"
+      pimCommand: "messenger:consume webhook --quiet --time-limit=3600 --memory-limit=384M"
       replicas: 1
       trapped: false
   replicas: 2
@@ -246,11 +246,17 @@ mysql:
       requests:
         memory: 3072Mi
     readinessProbe:
-      initialDelaySeconds: 5
-      periodSeconds: 120
+      initialDelaySeconds: 30
+      periodSeconds: 30
       timeoutSeconds: 30
       successThreshold: 1
-      failureThreshold: 3
+      failureThreshold: 4
+    livenessProbe:
+      initialDelaySeconds: 120
+      periodSeconds: 60
+      timeoutSeconds: 30
+      successThreshold: 1
+      failureThreshold: 5
 
 memcached:
   image: memcached:1.6.7
