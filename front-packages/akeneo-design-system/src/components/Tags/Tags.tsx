@@ -74,8 +74,8 @@ type TagsProps = {
 /**
  * This component displays a set of Tag elements inline.
  */
-const Tags = React.forwardRef<HTMLDivElement, TagsProps>(
-  ({children, ...rest}: TagsProps, forwardedRef: Ref<HTMLDivElement>) => {
+const Tags = React.forwardRef<HTMLUListElement, TagsProps>(
+  ({children, ...rest}: TagsProps, forwardedRef: Ref<HTMLUListElement>) => {
     const getTitle = (children?: ReactNode) => {
       let label = '';
 
