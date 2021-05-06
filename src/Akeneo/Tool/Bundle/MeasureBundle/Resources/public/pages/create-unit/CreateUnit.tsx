@@ -9,19 +9,18 @@ import {
   useShortcut,
   Key,
 } from 'akeneo-design-system';
-import {useForm} from 'akeneomeasure/hooks/use-form';
-import {getMeasurementFamilyLabel, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
-import {Unit} from 'akeneomeasure/model/unit';
+import {useForm} from '../../hooks/use-form';
+import {getMeasurementFamilyLabel, MeasurementFamily} from '../../model/measurement-family';
+import {Unit} from '../../model/unit';
 import {
   CreateUnitForm,
   createUnitFromForm,
   initializeCreateUnitForm,
   validateCreateUnitForm,
-} from 'akeneomeasure/pages/create-unit/form/create-unit-form';
-import {useCreateUnitValidator} from 'akeneomeasure/pages/create-unit/hooks/use-create-unit-validator';
-import {Operation} from 'akeneomeasure/model/operation';
-import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
-import {ConfigContext} from 'akeneomeasure/context/config-context';
+} from '../../pages/create-unit/form/create-unit-form';
+import {useCreateUnitValidator} from '../../pages/create-unit/hooks/use-create-unit-validator';
+import {Operation} from '../../model/operation';
+import {OperationCollection} from '../../pages/common/OperationCollection';
 import {
   filterErrors,
   ValidationError,
@@ -33,6 +32,7 @@ import {
   NotificationLevel,
   useUserContext,
 } from '@akeneo-pim-community/shared';
+import {ConfigContext} from '../../context/config-context';
 
 type CreateUnitProps = {
   measurementFamily: MeasurementFamily;

@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import styled from 'styled-components';
-import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
+import {OperationCollection} from '../../common/OperationCollection';
 import {
   setUnitSymbol,
   setUnitLabel,
@@ -8,10 +8,10 @@ import {
   MeasurementFamily,
   getUnit,
   removeUnit,
-} from 'akeneomeasure/model/measurement-family';
-import {Operation} from 'akeneomeasure/model/operation';
-import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
-import {UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
+} from '../../../model/measurement-family';
+import {Operation} from '../../../model/operation';
+import {useUiLocales} from '../../../shared/hooks/use-ui-locales';
+import {UnitCode, getUnitLabel} from '../../../model/unit';
 import {
   filterErrors,
   ValidationError,
