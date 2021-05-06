@@ -1,9 +1,10 @@
 import React, {FC} from 'react';
 import {Tree} from '../../shared';
-import {CategoryTreeModel as CategoryTreeModel} from '../../../models';
+import {CategoryTreeModel as CategoryTreeModel, TreeNode} from '../../../models';
 import {useCategoryTreeNode} from '../../../hooks';
 import {MoveTarget} from '../../providers';
 import {Button} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type Props = {
   id: number;
@@ -12,7 +13,7 @@ type Props = {
   followCategory?: (category: CategoryTreeModel) => void;
   // @todo define onCategoryMoved arguments
   onCategoryMoved?: () => void;
-  addCategory?: (categoryId: number) => void; // @todo define arguments that we really need
+  addCategory?: (parentCode: string, onCategoryAdded: () => {}) => void;
   deleteCategory?: (categoryId: number) => void; // @todo define arguments that we really need
 };
 
@@ -21,6 +22,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
     node,
     children,
     loadChildren,
+    forceReloadChildren,
     moveTo,
     draggedCategory,
     setDraggedCategory,
@@ -30,6 +32,8 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
     moveTarget,
     setMoveTarget,
   } = useCategoryTreeNode(id);
+
+  const translate = useTranslate();
 
   if (node === undefined) {
     return null;
@@ -116,10 +120,6 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
       onDrop={async () => {
         // @todo rework to not have to do all these sanity checks
         if (draggedCategory && node !== undefined && moveTarget) {
-          if (moveTarget.position === 'in' && node.type === 'node' && node.childrenStatus === 'idle') {
-            await loadChildren(); // @fixme conflict with the stateful moveTo, the nodes is not refreshed yet
-          }
-
           moveTo(draggedCategory.identifier, moveTarget);
 
           /*
@@ -154,11 +154,10 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
               size="small"
               onClick={event => {
                 event.stopPropagation();
-                addCategory(id);
+                addCategory(node.data.code, forceReloadChildren);
               }}
-              // @todo use translated label
             >
-              New Category
+              {translate('pim_enrich.entity.category.new_category')}
             </Button>
           )}
           {deleteCategory && node.type !== 'root' && (
@@ -170,9 +169,8 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
                 event.stopPropagation();
                 deleteCategory(id);
               }}
-              // @todo use translated label
             >
-              Delete
+              {translate('pim_common.delete')}
             </Button>
           )}
         </Tree.Actions>

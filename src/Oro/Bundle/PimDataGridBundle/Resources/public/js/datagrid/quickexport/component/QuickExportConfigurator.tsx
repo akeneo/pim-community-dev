@@ -1,9 +1,9 @@
 import React from 'react';
-import {useToggleState, useTranslate, useStorageState} from '@akeneo-pim-community/shared';
+import {useTranslate, useStorageState} from '@akeneo-pim-community/shared';
 import {Form, FormValue} from './Form';
 import {Select} from './Select';
 import {Option} from './Option';
-import {FileXlsxIcon, FileCsvIcon, Modal, Button} from 'akeneo-design-system';
+import {FileXlsxIcon, FileCsvIcon, Modal, Button, useBooleanState} from 'akeneo-design-system';
 
 type QuickExportConfiguratorProps = {
   showWithLabelsSelect: boolean;
@@ -18,7 +18,7 @@ const QuickExportConfigurator = ({
   onActionLaunch,
   getProductCount,
 }: QuickExportConfiguratorProps) => {
-  const [isModalOpen, openModal, closeModal] = useToggleState(false);
+  const [isModalOpen, openModal, closeModal] = useBooleanState(false);
   const translate = useTranslate();
   const [formValue, setFormValue] = useStorageState<FormValue>({}, 'quick_export_configuration');
 

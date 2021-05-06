@@ -118,6 +118,12 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                             $qb->andWhere($qb->expr()->gt('r.left', $parentCategory->getLeft()));
                             $qb->andWhere($qb->expr()->lt('r.right', $parentCategory->getRight()));
                             $qb->andWhere($qb->expr()->eq('r.root', $parentCategory->getRoot()));
+                        } elseif ('is_root' === $property) {
+                            if (true === (bool)$criterion['value']) {
+                                $qb->andWhere($qb->expr()->isNull('r.parent'));
+                            } else {
+                                $qb->andWhere($qb->expr()->isNotNull('r.parent'));
+                            }
                         } else {
                             $qb->andWhere($qb->expr()->eq($field, $parameter));
                             $qb->setParameter($parameter, $criterion['value']);
@@ -171,6 +177,20 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                         new Assert\Type([
                             'type' => 'string',
                             'message' => 'In order to search on category parent you must send a parent code category as value, {{ type }} given.'
+                        ]),
+                    ],
+                ])
+            ]),
+            'is_root' => new Assert\All([
+                new Assert\Collection([
+                    'operator' => new Assert\IdenticalTo([
+                        'value' => '=',
+                        'message' => 'In order to search on category is_root you must use "=" operator, {{ value }} given.',
+                    ]),
+                    'value' => [
+                        new Assert\Type([
+                            'type' => 'bool',
+                            'message' => 'In order to search on category is_root you must send a {{ type }} value, {{ value }} given.'
                         ]),
                     ],
                 ])

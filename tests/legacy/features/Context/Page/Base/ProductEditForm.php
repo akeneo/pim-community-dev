@@ -38,12 +38,12 @@ class ProductEditForm extends Form
                 'Available attributes search'     => ['css' => '.add-attribute .select2-search input[type="text"]'],
                 'Select2 dropmask'                => ['css' => '.select2-drop-mask'],
                 'Completeness dropdown'            => [
-                    'css'        => '.AknCompletenessPanel-block',
+                    'css'        => '.completeness-block',
                     'decorators' => [
                         DropdownDecorator::class
                     ]
                 ],
-                'Completeness dropdown button' => ['css' => '.AknTitleContainer-meta .AknDropdown'],
+                'Completeness dropdown button' => ['css' => '.completeness-badge button'],
                 'Variant navigation' => [
                     'css'        => '.AknVariantNavigation',
                     'decorators' => [

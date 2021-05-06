@@ -5,5 +5,5 @@ export type TreeNode<T> = {
   childrenIds: number[];
   data: T;
   type: 'leaf' | 'root' | 'node';
-  childrenStatus: 'idle' | 'loaded' | 'loading';
+  childrenStatus: 'idle' | 'loaded' | 'loading' | 'to-reload';
 };

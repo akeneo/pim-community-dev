@@ -1,6 +1,5 @@
 import React, {FC, useEffect} from 'react';
-import {PageContent, PageHeader, useRoute, useTranslate} from '@akeneo-pim-community/shared';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
+import {PageContent, PageHeader, useRoute, useTranslate, PimView} from '@akeneo-pim-community/shared';
 import {AttributeGroupsCreateButton, AttributeGroupsDataGrid} from '../components';
 import {useAttributeGroupsIndexState} from '../hooks';
 import {Breadcrumb} from 'akeneo-design-system';
@@ -8,7 +7,7 @@ import {Breadcrumb} from 'akeneo-design-system';
 const AttributeGroupsIndex: FC = () => {
   const {groups, load, isPending} = useAttributeGroupsIndexState();
   const translate = useTranslate();
-  const settingsHomePageRoute = useRoute('pim_enrich_attribute_index');
+  const settingsHomePageRoute = useRoute('pim_settings_index');
 
   useEffect(() => {
     (async () => {
@@ -21,7 +20,7 @@ const AttributeGroupsIndex: FC = () => {
       <PageHeader showPlaceholder={isPending}>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
-            <Breadcrumb.Step href={settingsHomePageRoute}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
+            <Breadcrumb.Step href={`#${settingsHomePageRoute}`}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
             <Breadcrumb.Step>{translate('pim_enrich.entity.attribute_group.plural_label')}</Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>

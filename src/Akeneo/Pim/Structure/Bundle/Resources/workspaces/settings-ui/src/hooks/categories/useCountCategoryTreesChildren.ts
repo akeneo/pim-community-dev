@@ -5,8 +5,8 @@ type CountCategoryTreesChildren = {
   [key: string]: number;
 };
 
-const useCountCategoryTreesChildren = (): CountCategoryTreesChildren => {
-  const [countChildren, setCountChildren] = useState<CountCategoryTreesChildren>({});
+const useCountCategoryTreesChildren = (): CountCategoryTreesChildren | null => {
+  const [countChildren, setCountChildren] = useState<CountCategoryTreesChildren>(null);
   const url = useRoute('pim_enrich_categorytree_count_children');
 
   useEffect(() => {

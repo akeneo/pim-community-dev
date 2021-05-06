@@ -30,7 +30,11 @@ define([
      * {@inheritdoc}
      */
     initialize: function (config) {
-      this.config = config.config;
+      this.config = {
+        // Define the page url (config.to) as the landing page for the section of menu (ex: pim-menu-settings)
+        isLandingSectionPage: false,
+        ...config.config,
+      };
       this.items = [];
 
       mediator.on('pim_menu:highlight:tab', this.highlight, this);
@@ -54,7 +58,7 @@ define([
     render: function () {
       this.$el.empty();
 
-      if (!this.config.to && !this.hasChildren()) {
+      if ((!this.config.to || this.config.isLandingSectionPage) && !this.hasChildren()) {
         return this;
       }
 

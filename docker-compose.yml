@@ -16,6 +16,7 @@ services:
       - '${HOST_COMPOSER_HOME:-~/.composer}:/var/www/.composer'
     working_dir: '/srv/pim'
     command: 'php'
+    init: true
     networks:
       - 'pim'
 

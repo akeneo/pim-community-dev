@@ -1,27 +1,21 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {useHistory, useParams, Prompt} from 'react-router-dom';
 import styled from 'styled-components';
-import {useMeasurementFamily} from 'akeneomeasure/hooks/use-measurement-family';
-import {UnitTab} from 'akeneomeasure/pages/edit/unit-tab';
-import {PropertyTab} from 'akeneomeasure/pages/edit/PropertyTab';
-import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
-import {addUnit, getMeasurementFamilyLabel, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
-import {Unit, UnitCode} from 'akeneomeasure/model/unit';
-import {
-  DropdownLink,
-  SecondaryActionsDropdownButton,
-} from 'akeneomeasure/shared/components/SecondaryActionsDropdownButton';
-import {useSaveMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-save-measurement-family-saver';
-import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
-import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
-import {useUnsavedChanges} from 'akeneomeasure/shared/hooks/use-unsaved-changes';
-import {UnsavedChanges} from 'akeneomeasure/shared/components/UnsavedChanges';
-import {UnsavedChangesContext} from 'akeneomeasure/context/unsaved-changes-context';
-import {
-  useMeasurementFamilyRemover,
-  MeasurementFamilyRemoverResult,
-} from 'akeneomeasure/hooks/use-measurement-family-remover';
-import {ConfigContext} from 'akeneomeasure/context/config-context';
+import {useMeasurementFamily} from '../../hooks/use-measurement-family';
+import {UnitTab} from './unit-tab';
+import {PropertyTab} from './PropertyTab';
+import {PageHeader, PageHeaderPlaceholder} from '../../shared/components/PageHeader';
+import {addUnit, getMeasurementFamilyLabel, MeasurementFamily} from '../../model/measurement-family';
+import {Unit, UnitCode} from '../../model/unit';
+import {DropdownLink, SecondaryActionsDropdownButton} from '../../shared/components/SecondaryActionsDropdownButton';
+import {useSaveMeasurementFamilySaver} from './hooks/use-save-measurement-family-saver';
+import {ErrorBadge} from '../../shared/components/ErrorBadge';
+import {CreateUnit} from '../create-unit/CreateUnit';
+import {useUnsavedChanges} from '../../shared/hooks/use-unsaved-changes';
+import {UnsavedChanges} from '../../shared/components/UnsavedChanges';
+import {UnsavedChangesContext} from '../../context/unsaved-changes-context';
+import {useMeasurementFamilyRemover, MeasurementFamilyRemoverResult} from '../../hooks/use-measurement-family-remover';
+import {ConfigContext} from '../../context/config-context';
 import {
   useTranslate,
   useNotify,
@@ -29,16 +23,16 @@ import {
   useUserContext,
   useSecurity,
   useRoute,
+  useRouter,
   filterErrors,
   ValidationError,
   partitionErrors,
-  useToggleState,
   FullScreenError,
   PageContent,
   DeleteModal,
+  PimView,
 } from '@akeneo-pim-community/shared';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
-import {Helper, Button, Breadcrumb} from 'akeneo-design-system';
+import {Helper, Button, Breadcrumb, useBooleanState} from 'akeneo-design-system';
 
 enum Tab {
   Units = 'units',
@@ -105,13 +99,14 @@ const Edit = () => {
   const [measurementFamily, setMeasurementFamily] = useMeasurementFamily(measurementFamilyCode);
   const [selectedUnitCode, selectUnitCode] = useState<UnitCode | null>(null);
   const [errors, setErrors] = useState<ValidationError[]>([]);
-  const [isAddUnitModalOpen, openAddUnitModal, closeAddUnitModal] = useToggleState(false);
+  const [isAddUnitModalOpen, openAddUnitModal, closeAddUnitModal] = useBooleanState(false);
   const [
     isConfirmDeleteMeasurementFamilyModalOpen,
     openConfirmDeleteMeasurementFamilyModal,
     closeConfirmDeleteMeasurementFamilyModal,
-  ] = useToggleState(false);
-  const settingsHref = `#${useRoute('pim_enrich_attribute_index')}`;
+  ] = useBooleanState(false);
+  const settingsHref = useRoute('pim_settings_index');
+  const router = useRouter();
 
   const {setHasUnsavedChanges} = useContext(UnsavedChangesContext);
   const [isModified, resetState] = useUnsavedChanges<MeasurementFamily | null>(
@@ -265,7 +260,9 @@ const Edit = () => {
         buttons={buttons}
         breadcrumb={
           <Breadcrumb>
-            <Breadcrumb.Step href={settingsHref}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
+            <Breadcrumb.Step onClick={() => router.redirect(settingsHref)}>
+              {translate('pim_menu.tab.settings')}
+            </Breadcrumb.Step>
             <Breadcrumb.Step href={history.createHref({pathname: '/'})}>
               {translate('pim_menu.item.measurements')}
             </Breadcrumb.Step>

@@ -1,30 +1,25 @@
 import React, {useCallback, useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
-import {MeasurementIllustration, Link, Button, Information, Breadcrumb} from 'akeneo-design-system';
-import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
-import {
-  sortMeasurementFamily,
-  filterOnLabelOrCode,
-  MeasurementFamilyCode,
-} from 'akeneomeasure/model/measurement-family';
-import {MeasurementFamilyTable} from 'akeneomeasure/pages/list/MeasurementFamilyTable';
-import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
-import {TablePlaceholder} from 'akeneomeasure/pages/common/Table';
-import {Direction} from 'akeneomeasure/model/direction';
+import {MeasurementIllustration, Link, Button, Information, Breadcrumb, useBooleanState} from 'akeneo-design-system';
+import {PageHeader, PageHeaderPlaceholder} from '../../shared/components/PageHeader';
+import {useMeasurementFamilies} from '../../hooks/use-measurement-families';
+import {sortMeasurementFamily, filterOnLabelOrCode, MeasurementFamilyCode} from '../../model/measurement-family';
+import {MeasurementFamilyTable} from '../list/MeasurementFamilyTable';
+import {CreateMeasurementFamily} from '../create-measurement-family/CreateMeasurementFamily';
+import {TablePlaceholder} from '../common/Table';
+import {Direction} from '../../model/direction';
 import {
   SearchBar,
   NoDataSection,
   NoDataTitle,
   NoDataText,
-  useToggleState,
   PageContent,
   useTranslate,
   useUserContext,
   useSecurity,
   useRoute,
+  PimView,
 } from '@akeneo-pim-community/shared';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
 
 const useSorting = (
   defaultColumn: string
@@ -52,8 +47,8 @@ const List = () => {
   const [searchValue, setSearchValue] = useState('');
   const [sortColumn, getSortDirection, toggleSortDirection] = useSorting('label');
   const [measurementFamilies] = useMeasurementFamilies();
-  const [isCreateModalOpen, openCreateModal, closeCreateModal] = useToggleState(false);
-  const settingsHref = `#${useRoute('pim_enrich_attribute_index')}`;
+  const [isCreateModalOpen, openCreateModal, closeCreateModal] = useBooleanState(false);
+  const settingsHref = useRoute('pim_settings_index');
 
   const handleModalClose = useCallback(
     (createdMeasurementFamilyCode?: MeasurementFamilyCode) => {
@@ -93,7 +88,7 @@ const List = () => {
         }
         breadcrumb={
           <Breadcrumb>
-            <Breadcrumb.Step href={settingsHref}>{__('pim_menu.tab.settings')}</Breadcrumb.Step>
+            <Breadcrumb.Step href={`#${settingsHref}`}>{__('pim_menu.tab.settings')}</Breadcrumb.Step>
             <Breadcrumb.Step>{__('pim_menu.item.measurements')}</Breadcrumb.Step>
           </Breadcrumb>
         }

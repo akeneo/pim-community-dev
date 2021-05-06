@@ -117,6 +117,38 @@ class CategoryRepositoryApiResourceIntegration extends TestCase
         Assert::assertEquals('ring', $categories[4]->getCode());
     }
 
+    public function test_to_search_root_categories_only(): void
+    {
+        $this->initFixtures();
+
+        $categories = $this->getRepository()->searchAfterOffset(
+            ['is_root' => [['operator' => '=', 'value' => true]]],
+            ['code' => 'ASC'],
+            10,
+            0
+        );
+        Assert::assertCount(3, $categories);
+        Assert::assertEquals('accessories', $categories[0]->getCode());
+        Assert::assertEquals('clothes', $categories[1]->getCode());
+        Assert::assertEquals('master', $categories[2]->getCode());
+    }
+
+    public function test_to_search_non_root_categories_only(): void
+    {
+        $this->initFixtures();
+
+        $categories = $this->getRepository()->searchAfterOffset(
+            ['is_root' => [['operator' => '=', 'value' => false]]],
+            ['code' => 'ASC'],
+            10,
+            0
+        );
+
+        Assert::assertCount(9, $categories);
+        Assert::assertEquals('bob', $categories[0]->getCode());
+        Assert::assertEquals('women', $categories[8]->getCode());
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();

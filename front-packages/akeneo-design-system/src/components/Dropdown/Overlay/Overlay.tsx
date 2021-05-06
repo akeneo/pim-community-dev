@@ -1,6 +1,6 @@
 import React, {ReactNode, useRef, useState, useEffect} from 'react';
 import styled, {css} from 'styled-components';
-import {Key} from '../../../shared';
+import {Key, Override} from '../../../shared';
 import {
   HorizontalPosition,
   useHorizontalPosition,
@@ -25,7 +25,7 @@ const Container = styled.div<
   position: absolute;
   opacity: ${({visible}) => (visible ? 1 : 0)};
   transition: opacity 0.15s ease-in-out;
-  z-index: 2;
+  z-index: 11;
 
   ${({verticalPosition}) =>
     'up' === verticalPosition
@@ -45,19 +45,22 @@ const Container = styled.div<
         `};
 `;
 
-type OverlayProps = {
-  /**
-   * Vertical position of the overlay (forced).
-   */
-  verticalPosition?: VerticalPosition;
+type OverlayProps = Override<
+  React.HTMLAttributes<HTMLDivElement>,
+  {
+    /**
+     * Vertical position of the overlay (forced).
+     */
+    verticalPosition?: VerticalPosition;
 
-  /**
-   * What to do on overlay closing.
-   */
-  onClose: () => void;
+    /**
+     * What to do on overlay closing.
+     */
+    onClose: () => void;
 
-  children: ReactNode;
-};
+    children: ReactNode;
+  }
+>;
 
 const Backdrop = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
   position: fixed;
@@ -65,10 +68,10 @@ const Backdrop = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1;
+  z-index: 10;
 `;
 
-const Overlay = ({verticalPosition, onClose, children}: OverlayProps) => {
+const Overlay = ({verticalPosition, onClose, children, ...rest}: OverlayProps) => {
   const overlayRef = useRef<HTMLDivElement>(null);
   verticalPosition = useVerticalPosition(overlayRef, verticalPosition);
   const horizontalPosition = useHorizontalPosition(overlayRef);
@@ -87,6 +90,7 @@ const Overlay = ({verticalPosition, onClose, children}: OverlayProps) => {
         visible={visible}
         horizontalPosition={horizontalPosition}
         verticalPosition={verticalPosition}
+        {...rest}
       >
         {children}
       </Container>

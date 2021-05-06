@@ -6,9 +6,6 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLogger;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventBuildLogger;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataVersionLogger;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SkipOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
@@ -35,15 +32,11 @@ final class SendBusinessEventToWebhooksHandler
     private WebhookClient $client;
     private WebhookEventBuilder $builder;
     private LoggerInterface $logger;
-    private EventBuildLogger $eventBuildLogger;
-    private SkipOwnEventLogger $skipOwnEventLogger;
     private EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger;
-    private EventDataVersionLogger $eventDataVersionLogger;
     private EventsApiDebugRepository $eventsApiDebugRepository;
     private EventsApiRequestCountRepository $eventsApiRequestRepository;
     private CacheClearerInterface $cacheClearer;
     private string $pimSource;
-    private ?\Closure $getTimeCallable;
 
     public function __construct(
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
@@ -51,30 +44,22 @@ final class SendBusinessEventToWebhooksHandler
         WebhookClient $client,
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
-        EventBuildLogger $eventBuildLogger,
-        SkipOwnEventLogger $skipOwnEventLogger,
         EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
-        EventDataVersionLogger $eventDataVersionLogger,
         EventsApiDebugRepository $eventsApiDebugRepository,
         EventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
-        string $pimSource,
-        ?callable $getTimeCallable = null
+        string $pimSource
     ) {
         $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
         $this->webhookUserAuthenticator = $webhookUserAuthenticator;
         $this->client = $client;
         $this->builder = $builder;
         $this->logger = $logger;
-        $this->eventBuildLogger = $eventBuildLogger;
-        $this->skipOwnEventLogger = $skipOwnEventLogger;
         $this->eventSubscriptionSkippedOwnEventLogger = $eventSubscriptionSkippedOwnEventLogger;
-        $this->eventDataVersionLogger = $eventDataVersionLogger;
         $this->eventsApiDebugRepository = $eventsApiDebugRepository;
         $this->eventsApiRequestRepository = $eventsApiRequestRepository;
         $this->cacheClearer = $cacheClearer;
         $this->pimSource = $pimSource;
-        $this->getTimeCallable = null !== $getTimeCallable ? \Closure::fromCallable($getTimeCallable) : null;
     }
 
     public function handle(SendBusinessEventToWebhooksCommand $command): void
@@ -89,8 +74,6 @@ final class SendBusinessEventToWebhooksHandler
 
         $requests = function () use ($pimEventBulk, $webhooks) {
             $apiEventsRequestCount = 0;
-            $cumulatedTimeMs = 0;
-            $startTime = $this->getTime();
             $versions = [];
 
             foreach ($webhooks as $webhook) {
@@ -111,17 +94,9 @@ final class SendBusinessEventToWebhooksHandler
                         ]
                     );
 
-                    foreach ($apiEvents as $apiEvent) {
-                        if (null !== $apiEvent->version()) {
-                            $versions[$apiEvent->getPimEvent()->getUuid()] = $apiEvent->version();
-                        }
-                    }
-
                     if (0 === count($apiEvents)) {
                         continue;
                     }
-
-                    $cumulatedTimeMs += $this->getTime() - $startTime;
 
                     yield new WebhookRequest(
                         $webhook,
@@ -129,23 +104,13 @@ final class SendBusinessEventToWebhooksHandler
                     );
 
                     $apiEventsRequestCount++;
-
-                    $startTime = $this->getTime();
                 } catch (WebhookEventDataBuilderNotFoundException $dataBuilderNotFoundException) {
                     $this->logger->warning($dataBuilderNotFoundException->getMessage());
                 }
             }
 
-            foreach ($versions as $version) {
-                $this->eventDataVersionLogger->log($version);
-            }
-
             $this->eventsApiRequestRepository
                 ->upsert(new \DateTimeImmutable('now', new \DateTimeZone('UTC')), $apiEventsRequestCount);
-
-            if ($apiEventsRequestCount > 0) {
-                $this->eventBuildLogger->log(count($webhooks), $cumulatedTimeMs, $apiEventsRequestCount, $pimEventBulk);
-            }
         };
 
         $this->client->bulkSend($requests());
@@ -163,8 +128,6 @@ final class SendBusinessEventToWebhooksHandler
             $bulkEvent->getEvents(),
             function (EventInterface $event) use ($username, $webhook) {
                 if ($username === $event->getAuthor()->name()) {
-                    $this->skipOwnEventLogger->log($event, $webhook->connectionCode());
-
                     $this->eventSubscriptionSkippedOwnEventLogger
                         ->logEventSubscriptionSkippedOwnEvent(
                             $webhook->connectionCode(),
@@ -183,17 +146,5 @@ final class SendBusinessEventToWebhooksHandler
         }
 
         return new BulkEvent($events);
-    }
-
-    /**
-     * Get the current time in milliseconds.
-     */
-    private function getTime(): int
-    {
-        if (null !== $this->getTimeCallable) {
-            return call_user_func($this->getTimeCallable);
-        }
-
-        return (int)round(microtime(true) * 1000);
     }
 }

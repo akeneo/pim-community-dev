@@ -32,6 +32,11 @@ class VersionProvider implements VersionProviderInterface
         return $this->edition->asString();
     }
 
+    public function getVersion(): string
+    {
+        return $this->version;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -39,7 +44,7 @@ class VersionProvider implements VersionProviderInterface
     {
         if (!$this->isSaaSVersion()) {
             $matches = [];
-            $isMatching = preg_match('/^(?P<patch>\d+.\d+.\d+)/', $this->version, $matches);
+            $isMatching = preg_match('/^(?P<patch>\d+\.\d+\.\d+)/', $this->version, $matches);
 
             if (!$isMatching) {
                 return $this->version;
@@ -55,7 +60,7 @@ class VersionProvider implements VersionProviderInterface
     {
         if (!$this->isSaaSVersion()) {
             $matches = [];
-            $isMatching = preg_match('/^(?P<minor>\d+.\d+).\d+/', $this->version, $matches);
+            $isMatching = preg_match('/^(?P<minor>\d+\.\d+)\.\d+/', $this->version, $matches);
 
             if (!$isMatching) {
                 return $this->version;
