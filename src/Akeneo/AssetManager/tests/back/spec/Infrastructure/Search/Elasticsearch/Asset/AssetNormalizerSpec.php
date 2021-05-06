@@ -153,6 +153,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                 'data' => ['industrial', 'street furniture']
             ],
         ];
+        $stark->updatedAt=new \DateTimeImmutable();
 
         $coco = new SearchableAssetItem();
         $coco->identifier = 'designer_coco_fingerprint';
@@ -170,6 +171,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                 'data' => ['fashion', 'fragrance']
             ],
         ];
+        $coco->updatedAt=new \DateTimeImmutable();
 
         $findActivatedLocales->findAll()->shouldBeCalledOnce()->willReturn(['en_US', 'fr_FR', 'de_DE']);
         $findSearchableAssets
@@ -203,8 +205,11 @@ class AssetNormalizerSpec extends ObjectBehavior
         $normalizedAssets[0]['identifier']->shouldBeEqualTo('designer_stark_fingerprint');
         $normalizedAssets[0]['code']->shouldBeEqualTo('stark');
         $normalizedAssets[0]['asset_family_code']->shouldBeEqualTo('designer');
+        $normalizedAssets[0]['updated_at']->shouldBeEqualTo($stark->updatedAt->getTimestamp());
         $normalizedAssets[1]['identifier']->shouldBeEqualTo('designer_coco_fingerprint');
+
         $normalizedAssets[1]['code']->shouldBeEqualTo('coco');
         $normalizedAssets[1]['asset_family_code']->shouldBeEqualTo('designer');
+        $normalizedAssets[1]['updated_at']->shouldBeEqualTo($coco->updatedAt->getTimestamp());
     }
 }

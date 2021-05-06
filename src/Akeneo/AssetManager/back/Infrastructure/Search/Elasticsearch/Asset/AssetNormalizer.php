@@ -130,7 +130,6 @@ class AssetNormalizer implements AssetNormalizerInterface
     {
         $matrix = [];
 
-        $activatedLocaleCodes = $this->findActivatedLocales->findAll();
         foreach ($activatedLocaleCodes as $activatedLocaleCode) {
             $label = $searchableAssetItem->labels[$activatedLocaleCode] ?? '';
             $matrix[$activatedLocaleCode] = trim(sprintf('%s %s', $searchableAssetItem->code, $label));

@@ -50,7 +50,7 @@ SQL;
     public function byAssetIdentifiers(array $assetIdentifiers): \Iterator
     {
         $sqlQuery = <<<SQL
-        SELECT asset.identifier, asset.asset_family_identifier, asset.code, asset.value_collection, asset_family.attribute_as_label
+        SELECT asset.identifier, asset.asset_family_identifier, asset.code, asset.value_collection, asset_family.attribute_as_label, asset.updated_at
         FROM akeneo_asset_manager_asset asset
         INNER JOIN akeneo_asset_manager_asset_family asset_family
             ON asset_family.identifier = asset.asset_family_identifier
