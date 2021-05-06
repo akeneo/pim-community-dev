@@ -22,7 +22,7 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, refreshCategor
         setValidationErrors(errors);
         notify(
           NotificationLevel.ERROR,
-          translate('pim_enrich.entity.category.category_tree_creation_error', {tree: newCategoryCode})
+          translate('pim_enrich.entity.category.category_tree_creation.error', {tree: newCategoryCode})
         );
         return;
       }
@@ -33,7 +33,7 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, refreshCategor
     closeModal();
     notify(
       NotificationLevel.SUCCESS,
-      translate('pim_enrich.entity.category.category_tree_created', {tree: newCategoryCode})
+      translate('pim_enrich.entity.category.category_tree_creation.success', {tree: newCategoryCode})
     );
   };
 
