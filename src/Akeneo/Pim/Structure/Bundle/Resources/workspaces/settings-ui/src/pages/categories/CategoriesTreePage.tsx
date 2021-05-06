@@ -1,11 +1,11 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {Breadcrumb, useBooleanState} from 'akeneo-design-system';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
 import {
   FullScreenError,
   PageContent,
   PageHeader,
+  PimView,
   useRouter,
   useSecurity,
   useSetPageTitle,

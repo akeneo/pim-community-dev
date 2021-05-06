@@ -1,3 +1,3 @@
-import {List} from 'akeneomeasure/pages/list/List';
+import {List} from './List';
 
 export {List};

@@ -1,4 +1,4 @@
-import {renderHookWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
+import {renderHookWithProviders} from '@akeneo-pim-community/shared';
 import {CategoryTreeModel, useCategoryTree} from '@akeneo-pim-community/settings-ui';
 import {aBackendCategoryTree, aCategoryTree} from '../../../utils/provideCategoryHelper';
 import {act} from 'react-test-renderer';

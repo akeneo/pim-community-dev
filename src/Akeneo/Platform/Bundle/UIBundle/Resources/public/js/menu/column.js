@@ -11,12 +11,14 @@
 define(['underscore', 'pim/form/common/column', 'pim/router', 'oro/mediator'], function (_, Column, router, mediator) {
   return Column.extend({
     active: false,
+    isVisible: true,
 
     /**
      * {@inheritdoc}
      */
     initialize: function () {
       mediator.on('pim_menu:highlight:tab', this.highlight, this);
+      mediator.on('pim_menu:hide', this.hide, this);
 
       Column.prototype.initialize.apply(this, arguments);
     },
@@ -25,7 +27,7 @@ define(['underscore', 'pim/form/common/column', 'pim/router', 'oro/mediator'], f
      * {@inheritdoc}
      */
     render: function () {
-      if (this.active) {
+      if (this.active && this.isVisible) {
         return Column.prototype.render.apply(this, arguments);
       } else {
         return this.$el.empty();
@@ -44,6 +46,15 @@ define(['underscore', 'pim/form/common/column', 'pim/router', 'oro/mediator'], f
         this.active = event.columnExtension === this.code;
       } else {
         this.active = event.extension === this.getTab();
+      }
+      this.isVisible = true;
+
+      this.render();
+    },
+
+    hide: function (menuIdentifier) {
+      if (this.code === menuIdentifier) {
+        this.isVisible = false;
       }
 
       this.render();

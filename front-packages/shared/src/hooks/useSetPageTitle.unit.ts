@@ -1,5 +1,5 @@
-import {renderHookWithProviders} from '../../tests/utils';
 import {useSetPageTitle} from './useSetPageTitle';
+import {renderHookWithProviders} from '../tests';
 
 describe('useSetPageTitle', () => {
   test('it updates the document title', () => {

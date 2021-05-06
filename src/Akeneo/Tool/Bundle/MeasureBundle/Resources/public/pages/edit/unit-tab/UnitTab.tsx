@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import {MeasurementFamily, filterOnLabelOrCode, getUnitIndex} from 'akeneomeasure/model/measurement-family';
+import {MeasurementFamily, filterOnLabelOrCode, getUnitIndex} from '../../../model/measurement-family';
 import {MeasurementIllustration, Table} from 'akeneo-design-system';
-import {UnitCode} from 'akeneomeasure/model/unit';
-import {UnitDetails} from 'akeneomeasure/pages/edit/unit-tab/UnitDetails';
-import {UnitRow} from 'akeneomeasure/pages/edit/unit-tab/UnitRow';
+import {UnitCode} from '../../../model/unit';
+import {UnitDetails} from './UnitDetails';
+import {UnitRow} from './UnitRow';
 import {
   SearchBar,
   NoDataSection,

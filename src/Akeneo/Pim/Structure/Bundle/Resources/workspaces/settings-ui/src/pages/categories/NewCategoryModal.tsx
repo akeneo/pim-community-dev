@@ -25,7 +25,7 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, pare
           NotificationLevel.ERROR,
           translate(
             parentCode === undefined
-              ? 'pim_enrich.entity.category.category_tree_creation_error'
+              ? 'pim_enrich.entity.category.category_tree_creation.error'
               : 'pim_enrich.entity.category.category_creation_error',
             {code: newCategoryCode}
           )
@@ -41,7 +41,7 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, pare
       NotificationLevel.SUCCESS,
       translate(
         parentCode === undefined
-          ? 'pim_enrich.entity.category.category_tree_created'
+          ? 'pim_enrich.entity.category.category_tree_creation.success'
           : 'pim_enrich.entity.category.category_created',
         {code: newCategoryCode}
       )

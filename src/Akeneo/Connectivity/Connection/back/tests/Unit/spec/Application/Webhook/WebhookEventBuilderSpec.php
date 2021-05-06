@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErrorLogger;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\EventDataBuildErrorLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
@@ -28,12 +27,10 @@ class WebhookEventBuilderSpec extends ObjectBehavior
     public function let(
         EventDataBuilderInterface $notSupportedEventDataBuilder,
         EventDataBuilderInterface $supportedEventDataBuilder,
-        EventDataBuildErrorLogger $eventDataBuildErrorLogger,
         ApiEventBuildErrorLogger $apiEventBuildErrorLogger
     ): void {
         $this->beConstructedWith(
             [$notSupportedEventDataBuilder, $supportedEventDataBuilder],
-            $eventDataBuildErrorLogger,
             $apiEventBuildErrorLogger
         );
     }
@@ -85,8 +82,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
     public function it_does_not_build_a_webhook_event_when_an_error_has_occured(
         EventDataBuilderInterface $notSupportedEventDataBuilder,
         EventDataBuilderInterface $supportedEventDataBuilder,
-        UserInterface $user,
-        EventDataBuildErrorLogger $eventDataBuildErrorLogger
+        UserInterface $user
     ): void {
         $user->getId()->willReturn(1);
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
@@ -101,13 +97,6 @@ class WebhookEventBuilderSpec extends ObjectBehavior
 
         $supportedEventDataBuilder->build($pimEventBulk, $user)->willReturn($collection);
 
-        $eventDataBuildErrorLogger->log(
-            '',
-            'ecommerce',
-            1,
-            $pimEvent
-        )->shouldBeCalled();
-
         $this->build(
             $pimEventBulk,
             [
@@ -116,8 +105,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                 'connection_code' => 'ecommerce',
             ]
         )->shouldBeLike(
-            [
-            ]
+            []
         );
     }
 
@@ -157,12 +145,10 @@ class WebhookEventBuilderSpec extends ObjectBehavior
 
     public function it_throws_an_error_if_the_business_event_is_not_supported(
         UserInterface $user,
-        EventDataBuildErrorLogger $eventDataBuildErrorLogger,
         ApiEventBuildErrorLogger $apiEventBuildErrorLogger
     ): void {
         $this->beConstructedWith(
             [],
-            $eventDataBuildErrorLogger,
             $apiEventBuildErrorLogger
         );
 

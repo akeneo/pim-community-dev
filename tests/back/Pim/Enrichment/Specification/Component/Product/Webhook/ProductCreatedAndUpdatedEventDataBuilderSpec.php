@@ -97,44 +97,36 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $getConnectorProductsQuery->fromProductIdentifiers(['blue_jean', 'red_jean'], 10, null, null, null)->willReturn($productList);
 
         $expectedCollection = new EventDataCollection();
-        $expectedCollection->setEventData(
-            $blueJeanEvent,
-            [
-                'resource' => [
-                    'identifier' => 'blue_jean',
-                    'created' => '2020-04-23T15:55:50+00:00',
-                    'updated' => '2020-04-25T15:55:50+00:00',
-                    'enabled' => true,
-                    'family' => null,
-                    'categories' => [],
-                    'groups' => [],
-                    'parent' => null,
-                    'values' => (object) [],
-                    'associations' => (object) [],
-                    'quantified_associations' => (object) [],
-                ],
+        $expectedCollection->setEventData($blueJeanEvent, [
+            'resource' => [
+                'identifier' => 'blue_jean',
+                'created' => '2020-04-23T15:55:50+00:00',
+                'updated' => '2020-04-25T15:55:50+00:00',
+                'enabled' => true,
+                'family' => null,
+                'categories' => [],
+                'groups' => [],
+                'parent' => null,
+                'values' => (object) [],
+                'associations' => (object) [],
+                'quantified_associations' => (object) [],
             ],
-            'product_blue_jean_1587830150',
-        );
-        $expectedCollection->setEventData(
-            $redJeanEvent,
-            [
-                'resource' => [
-                    'identifier' => 'red_jean',
-                    'created' => '2020-04-23T15:55:50+00:00',
-                    'updated' => '2020-04-25T15:55:50+00:00',
-                    'enabled' => true,
-                    'family' => null,
-                    'categories' => [],
-                    'groups' => [],
-                    'parent' => null,
-                    'values' => (object) [],
-                    'associations' => (object) [],
-                    'quantified_associations' => (object) [],
-                ],
+        ]);
+        $expectedCollection->setEventData($redJeanEvent, [
+            'resource' => [
+                'identifier' => 'red_jean',
+                'created' => '2020-04-23T15:55:50+00:00',
+                'updated' => '2020-04-25T15:55:50+00:00',
+                'enabled' => true,
+                'family' => null,
+                'categories' => [],
+                'groups' => [],
+                'parent' => null,
+                'values' => (object) [],
+                'associations' => (object) [],
+                'quantified_associations' => (object) [],
             ],
-            'product_red_jean_1587830150',
-        );
+        ]);
 
         $collection = $this->build($bulkEvent, $user)->getWrappedObject();
 
@@ -160,25 +152,21 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $bulkEvent = new BulkEvent([$blueJeanEvent, $redJeanEvent]);
 
         $expectedCollection = new EventDataCollection();
-        $expectedCollection->setEventData(
-            $blueJeanEvent,
-            [
-                'resource' => [
-                    'identifier' => 'blue_jean',
-                    'created' => '2020-04-23T15:55:50+00:00',
-                    'updated' => '2020-04-25T15:55:50+00:00',
-                    'enabled' => true,
-                    'family' => null,
-                    'categories' => [],
-                    'groups' => [],
-                    'parent' => null,
-                    'values' => (object) [],
-                    'associations' => (object) [],
-                    'quantified_associations' => (object) [],
-                ],
+        $expectedCollection->setEventData($blueJeanEvent, [
+            'resource' => [
+                'identifier' => 'blue_jean',
+                'created' => '2020-04-23T15:55:50+00:00',
+                'updated' => '2020-04-25T15:55:50+00:00',
+                'enabled' => true,
+                'family' => null,
+                'categories' => [],
+                'groups' => [],
+                'parent' => null,
+                'values' => (object) [],
+                'associations' => (object) [],
+                'quantified_associations' => (object) [],
             ],
-            'product_blue_jean_1587830150',
-        );
+        ]);
         $expectedCollection->setEventDataError($redJeanEvent, new ProductNotFoundException('red_jean'));
 
         $collection = $this->build($bulkEvent, $user)->getWrappedObject();

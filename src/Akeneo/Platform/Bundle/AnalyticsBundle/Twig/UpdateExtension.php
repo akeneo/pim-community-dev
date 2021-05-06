@@ -20,13 +20,9 @@ class UpdateExtension extends \Twig_Extension
     /** @var string */
     protected $updateServerUrl;
 
-    /** @var VersionProviderInterface */
-    private $versionProvider;
-
-    public function __construct(ConfigManager $configManager, VersionProviderInterface $versionProvider, $updateServerUrl)
+    public function __construct(ConfigManager $configManager, $updateServerUrl)
     {
         $this->configManager = $configManager;
-        $this->versionProvider = $versionProvider;
         $this->updateServerUrl = $updateServerUrl;
     }
 
@@ -48,7 +44,7 @@ class UpdateExtension extends \Twig_Extension
      */
     public function isLastPatchEnabled()
     {
-        return !$this->versionProvider->isSaaSVersion() && $this->configManager->get('pim_analytics.version_update');
+        return $this->configManager->get('pim_analytics.version_update');
     }
 
     /**

@@ -1,13 +1,13 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {Breadcrumb} from 'akeneo-design-system';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
 import {
   FullScreenError,
   PageContent,
   PageHeader,
-  useSetPageTitle,
+  PimView,
   useRouter,
+  useSetPageTitle,
   useTranslate,
   useUserContext,
 } from '@akeneo-pim-community/shared';
