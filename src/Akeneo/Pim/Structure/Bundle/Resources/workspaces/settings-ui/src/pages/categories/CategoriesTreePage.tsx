@@ -18,6 +18,7 @@ import {CategoryTree} from '../../components';
 import {NewCategoryModal} from './NewCategoryModal';
 import {DeleteCategoryModal} from '../../components/datagrids/categories/DeleteCategoryModal';
 import {deleteCategory} from '../../infrastructure/removers';
+import {useCountNumberOfProductsByCategory} from '../../infrastructure/fetchers';
 
 type Params = {
   treeId: string;
@@ -33,6 +34,8 @@ type CategoryToDelete = {
   label: string;
   onDelete: () => void;
 };
+
+const MAX_NUMBER_OF_PRODUCTS_TO_ALLOW_DELETE = 100;
 
 const CategoriesTreePage: FC = () => {
   let {treeId} = useParams<Params>();
@@ -68,8 +71,19 @@ const CategoriesTreePage: FC = () => {
     closeNewCategoryModal();
   };
 
-  const confirmDeleteCategory = (identifier: number, label: string, onDelete: () => void) => {
-    // @todo: check if category has less than 100 products
+  const confirmDeleteCategory = async (identifier: number, label: string, onDelete: () => void) => {
+    // @todo consider the risk of this call being too long (modal not display until the response)
+    const numberOfProducts = await useCountNumberOfProductsByCategory(identifier);
+
+    if (numberOfProducts > MAX_NUMBER_OF_PRODUCTS_TO_ALLOW_DELETE) {
+      notify(
+        NotificationLevel.INFO,
+        translate('pim_enrich.entity.category.products_limit_exceeded', {limit: MAX_NUMBER_OF_PRODUCTS_TO_ALLOW_DELETE})
+      );
+
+      return;
+    }
+
     setCategoryToDelete({identifier, label, onDelete});
     openDeleteCategoryModal();
   };
