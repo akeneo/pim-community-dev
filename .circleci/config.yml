@@ -1011,7 +1011,9 @@ jobs:
                 cp -r /home/circleci/project/deployments/automation /home/circleci/project/deployments/terraform/deployments
           - run:
               name: Push Terraform modules to GCS
-              command: BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/
+              command: |
+                BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/terraform/deployments/terraform
           - run:
               name: Tag the Docker image with the definitive tag
               command: |
