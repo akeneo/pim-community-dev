@@ -14,6 +14,7 @@ import {TreeNode} from '../../../models';
 import {ArrowButton, DragInitiator, RowActionsContainer, RowInnerContainer, TreeArrowIcon, TreeRow} from './TreeRow';
 import {TreeActions} from './TreeActions';
 import Timeout = NodeJS.Timeout;
+import {TreeIcon} from './TreeIcon';
 
 const TreeContainer = styled.li<{isRoot: boolean} & AkeneoThemedProps>`
   display: block;
@@ -253,6 +254,7 @@ const Tree = <T,>({
           <ArrowButton disabled={isLeaf} role="button" onClick={handleArrowClick}>
             {!isLeaf && <TreeArrowIcon $isFolderOpen={isOpen} size={14} />}
           </ArrowButton>
+          <TreeIcon isLoading={isLoading} isLeaf={isLeaf} selected={selected} />
           {label}
         </RowInnerContainer>
         {actions && <RowActionsContainer>{actions}</RowActionsContainer>}

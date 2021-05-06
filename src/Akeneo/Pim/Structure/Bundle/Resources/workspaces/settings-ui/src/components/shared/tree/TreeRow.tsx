@@ -52,6 +52,7 @@ const TreeRow = styled.div<{$selected: boolean; $disabled: boolean; isRoot: bool
 `;
 
 const ArrowButton = styled.button`
+  height: 30px;
   width: 30px;
   vertical-align: middle;
   margin-right: 2px;
@@ -77,6 +78,8 @@ const RowInnerContainer = styled.div`
   flex-grow: 1;
   z-index: 1;
   max-width: 65%;
+  
+  align-items: center;
 
   &:hover {
     cursor: pointer;
@@ -94,8 +97,9 @@ const RowActionsContainer = styled.div`
 `;
 
 const DragInitiator = styled.div`
+  display: flex;
+  align-items: center;
   color: ${getColor('grey100')};
-  vertical-align: middle;
 `;
 
 export {TreeRow, TreeArrowIcon, ArrowButton, RowActionsContainer, RowInnerContainer, DragInitiator};
