@@ -1,11 +1,11 @@
-import {renderHookWithProviders} from '@akeneo-pim-community/shared/tests/utils';
+import {renderHookWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {Category, useCategoryTreeList} from '@akeneo-pim-community/settings-ui';
 import {act} from 'react-test-renderer';
 import {aListOfCategories} from '../../../utils/provideCategoryHelper';
 
 describe('useCategoryTreeList', () => {
   const renderUseCategoryTreeList = () => {
-    return renderHookWithProviders(useCategoryTreeList);
+    return renderHookWithProviders(() => useCategoryTreeList());
   };
 
   beforeEach(() => {

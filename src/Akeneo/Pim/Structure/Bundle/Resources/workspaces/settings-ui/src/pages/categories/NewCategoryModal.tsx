@@ -7,7 +7,7 @@ import {createCategory, ValidationErrors} from '../../infrastructure/savers';
 type NewCategoryModalProps = {
   closeModal: () => void;
   onCreate: () => void;
-  parentCode?: string
+  parentCode?: string;
 };
 
 const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, parentCode}) => {
@@ -24,7 +24,9 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, pare
         notify(
           NotificationLevel.ERROR,
           translate(
-            parentCode === undefined ? 'pim_enrich.entity.category.category_tree_creation_error' : 'pim_enrich.entity.category.category_creation_error',
+            parentCode === undefined
+              ? 'pim_enrich.entity.category.category_tree_creation_error'
+              : 'pim_enrich.entity.category.category_creation_error',
             {code: newCategoryCode}
           )
         );
@@ -38,13 +40,16 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, pare
     notify(
       NotificationLevel.SUCCESS,
       translate(
-        parentCode === undefined ? 'pim_enrich.entity.category.category_tree_created' : 'pim_enrich.entity.category.category_created',
-        {code: newCategoryCode})
+        parentCode === undefined
+          ? 'pim_enrich.entity.category.category_tree_created'
+          : 'pim_enrich.entity.category.category_created',
+        {code: newCategoryCode}
+      )
     );
   };
 
   return (
-    <Modal closeTitle="Close" onClose={closeModal} illustration={<ProductCategoryIllustration/>}>
+    <Modal closeTitle="Close" onClose={closeModal} illustration={<ProductCategoryIllustration />}>
       <Modal.TopRightButtons>
         <Button level="primary" onClick={createNewCategoryTree} disabled={newCategoryCode.trim() === ''}>
           {translate('pim_common.create')}

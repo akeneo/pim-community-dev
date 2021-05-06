@@ -10,10 +10,17 @@ import {
 import {findByIdentifiers, findOneByIdentifier, update} from '../../helpers';
 import {useFetch, useRoute} from '@akeneo-pim-community/shared';
 
+type Move = {
+  identifier: number;
+  target: MoveTarget;
+  status: 'pending' | 'ready';
+};
+
 const useCategoryTreeNode = (id: number) => {
   const {nodes, setNodes, ...rest} = useContext(CategoryTreeContext);
   const [node, setNode] = useState<TreeNode<CategoryTreeModel> | undefined>(undefined);
   const [children, setChildren] = useState<TreeNode<CategoryTreeModel>[]>([]);
+  const [move, setMove] = useState<Move | null>(null);
 
   const url = useRoute('pim_enrich_categorytree_children', {
     _format: 'json',
@@ -37,15 +44,38 @@ const useCategoryTreeNode = (id: number) => {
 
   const moveTo = useCallback(
     (movedCategoryId: number, target: MoveTarget) => {
-      if (!target.parentId) {
-        console.error('Can not move after root node');
+      const targetParentNode = findOneByIdentifier(
+        nodes,
+        target.position === 'in' ? target.identifier : target.parentId
+      );
+      if (!targetParentNode) {
+        console.error(`Node ${target.parentId} not found`);
         // @todo handle error
         return;
       }
 
-      const movedNode = findOneByIdentifier(nodes, movedCategoryId);
+      setMove({
+        identifier: movedCategoryId,
+        target,
+        status:
+          target.position === 'in' && targetParentNode.type === 'node' && targetParentNode.childrenStatus === 'idle'
+            ? 'pending'
+            : 'ready',
+      });
+    },
+    [nodes]
+  );
+
+  const doMove = useCallback(
+    (move: Move) => {
+      const {identifier, target, status} = move;
+      if (status !== 'ready') {
+        return;
+      }
+
+      const movedNode = findOneByIdentifier(nodes, identifier);
       if (!movedNode) {
-        console.error(`Node ${movedCategoryId} not found`);
+        console.error(`Node ${identifier} not found`);
         // @todo handle error
         return;
       }
@@ -113,6 +143,8 @@ const useCategoryTreeNode = (id: number) => {
 
       // call callback to save it in backend
       // what we have to do if the callback fails? keep original position
+
+      setMove(null);
     },
     [nodes]
   );
@@ -157,7 +189,32 @@ const useCategoryTreeNode = (id: number) => {
     if (node?.childrenStatus === 'to-reload') {
       loadChildren();
     }
-  }, [node?.childrenStatus])
+  }, [node?.childrenStatus]);
+
+  useEffect(() => {
+    if (move === null) {
+      return;
+    }
+
+    if (move.status === 'pending') {
+      const loadChildrenBeforeMove = async () => {
+        await loadChildren();
+
+        setMove({
+          ...move,
+          status: 'ready',
+        });
+      };
+      loadChildrenBeforeMove();
+
+      return;
+    }
+
+    if (move.status === 'ready') {
+      doMove(move);
+      return;
+    }
+  }, [move]);
 
   return {
     node,

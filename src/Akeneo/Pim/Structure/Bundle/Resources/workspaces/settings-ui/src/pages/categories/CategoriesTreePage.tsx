@@ -13,15 +13,15 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useCategoryTree} from '../../hooks';
 import {CategoryTree} from '../../components';
-import {NewCategoryModal} from "./NewCategoryModal";
+import {NewCategoryModal} from './NewCategoryModal';
 
 type Params = {
   treeId: string;
 };
 
 type NewCategoryState = {
-   parentCode: string;
-   onCreate: () => void;
+  parentCode: string;
+  onCreate: () => void;
 };
 
 const CategoriesTreePage: FC = () => {

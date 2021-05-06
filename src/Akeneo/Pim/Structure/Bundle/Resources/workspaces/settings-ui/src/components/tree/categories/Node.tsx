@@ -4,7 +4,7 @@ import {CategoryTreeModel as CategoryTreeModel, TreeNode} from '../../../models'
 import {useCategoryTreeNode} from '../../../hooks';
 import {MoveTarget} from '../../providers';
 import {Button} from 'akeneo-design-system';
-import {useTranslate} from "@akeneo-pim-community/shared";
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type Props = {
   id: number;
@@ -120,10 +120,6 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
       onDrop={async () => {
         // @todo rework to not have to do all these sanity checks
         if (draggedCategory && node !== undefined && moveTarget) {
-          if (moveTarget.position === 'in' && node.type === 'node' && node.childrenStatus === 'idle') {
-            await loadChildren(); // @fixme conflict with the stateful moveTo, the nodes is not refreshed yet
-          }
-
           moveTo(draggedCategory.identifier, moveTarget);
 
           /*
