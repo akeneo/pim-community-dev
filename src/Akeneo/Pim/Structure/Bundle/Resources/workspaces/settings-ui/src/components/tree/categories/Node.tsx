@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {Tree} from '../../shared';
-import {CategoryTreeModel as CategoryTreeModel, TreeNode} from '../../../models';
+import {CategoryTreeModel as CategoryTreeModel} from '../../../models';
 import {useCategoryTreeNode} from '../../../hooks';
 import {MoveTarget} from '../../providers';
 import {Button} from 'akeneo-design-system';
@@ -13,8 +13,8 @@ type Props = {
   followCategory?: (category: CategoryTreeModel) => void;
   // @todo define onCategoryMoved arguments
   onCategoryMoved?: () => void;
-  addCategory?: (parentCode: string, onCategoryAdded: () => void) => void;
-  deleteCategory?: (categoryId: number) => void; // @todo define arguments that we really need
+  addCategory?: (parentCode: string, onCreate: () => void) => void;
+  deleteCategory?: (identifier: number, label: string, onDelete: () => void) => void;
 };
 
 const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory, sortable = false}) => {
