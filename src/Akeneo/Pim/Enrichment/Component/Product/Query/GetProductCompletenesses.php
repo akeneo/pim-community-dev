@@ -17,8 +17,10 @@ interface GetProductCompletenesses
 
     /**
      * @param array $productIds
+     * @param string|null $channel Filtered by given channel
+     * @param array $locales Filtered by given locales
      *
      * @return array{int: ProductCompletenessCollection} Array indexed by product id
      */
-    public function fromProductIds(array $productIds): array;
+    public function fromProductIds(array $productIds, ?string $channel = null, array $locales = []): array;
 }

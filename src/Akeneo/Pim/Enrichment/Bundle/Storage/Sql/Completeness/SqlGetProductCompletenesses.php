@@ -31,9 +31,23 @@ final class SqlGetProductCompletenesses implements GetProductCompletenesses
     /**
      * {@inheritdoc}
      */
-    public function fromProductIds(array $productIds): array
+    public function fromProductIds(array $productIds, ?string $channel = null, array $locales = []): array
     {
-        $sql = <<<SQL
+        $andWhere = '';
+        $params = ['productIds' => $productIds];
+        $types = ['productIds' => Connection::PARAM_INT_ARRAY];
+        if (null !== $channel) {
+            $andWhere .= 'AND channel.code = :channel ';
+            $params['channel'] = $channel;
+        }
+        if (!empty($locales)) {
+            $andWhere .= 'AND locale.code IN (:locales) ';
+            $params['locales'] = $locales;
+            $types['locales'] = Connection::PARAM_STR_ARRAY;
+        }
+
+        $sql = sprintf(
+            <<<SQL
 SELECT 
        completeness.product_id AS product_id,
        JSON_ARRAYAGG(
@@ -47,14 +61,12 @@ SELECT
 FROM pim_catalog_completeness completeness
     INNER JOIN pim_catalog_channel channel ON completeness.channel_id = channel.id
     INNER JOIN pim_catalog_locale locale ON completeness.locale_id = locale.id
-WHERE completeness.product_id IN (:productIds)
+WHERE completeness.product_id IN (:productIds) %s
 GROUP BY product_id
-SQL;
-        $rows = $this->connection->executeQuery(
-            $sql,
-            ['productIds' => $productIds],
-            ['productIds' => Connection::PARAM_INT_ARRAY]
-        )->fetchAll();
+SQL,
+            $andWhere
+        );
+        $rows = $this->connection->executeQuery($sql, $params, $types)->fetchAll();
 
         $results = array_reduce(
             $rows,
