@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 
 /**
@@ -24,5 +25,31 @@ class GetProductsWithCompletenesses implements GetProductsWithCompletenessesInte
     public function fromConnectorProduct(ConnectorProduct $product): ConnectorProduct
     {
         return $product->buildWithCompletenesses($this->getProductCompletenesses->fromProductId($product->id()));
+    }
+
+    public function fromConnectorProductList(
+        ConnectorProductList $connectorProductList,
+        ?string $channel = null,
+        array $locales = []
+    ): ConnectorProductList {
+        $productIdentifiers = array_map(
+            fn (ConnectorProduct $connectorProduct) => $connectorProduct->id(),
+            $connectorProductList->connectorProducts()
+        );
+
+        $productCompletenesses = $this->getProductCompletenesses->fromProductIds(
+            $productIdentifiers,
+            $channel,
+            $locales
+        );
+
+        return new ConnectorProductList(
+            $connectorProductList->totalNumberOfProducts(),
+            array_map(
+                fn (ConnectorProduct $product) =>
+                    $product->buildWithCompletenesses($productCompletenesses[$product->id()]),
+                $connectorProductList->connectorProducts()
+            )
+        );
     }
 }
