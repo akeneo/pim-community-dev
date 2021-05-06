@@ -1,9 +1,16 @@
-import React, {Ref, ReactNode, isValidElement} from 'react';
+import React, {Ref, ReactNode, isValidElement, ReactElement} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps} from 'theme';
 
-//TODO be sure to select the appropriate container element here
-const Tag = styled.div<{tint: 'green' | 'blue' | 'dark_blue' | 'purple' | 'dark_purple' | 'yellow' | 'red'} & AkeneoThemedProps>`
+/**
+ * The colors defined in this file are the alternative ones
+ * You will find the hex colors on this page:
+ * https://www.notion.so/akeneo/Alternative-colors-0f5283c1b02f4fd4a418f1e20f2efa99
+ * Those colors will most likely only be used with the tags components
+ */
+const Tag = styled.li<
+  {tint: 'green' | 'blue' | 'dark_blue' | 'purple' | 'dark_purple' | 'yellow' | 'red'} & AkeneoThemedProps
+>`
   border: 1px solid;
   border-color: ${({tint}) =>
     ({
@@ -42,15 +49,19 @@ const Tag = styled.div<{tint: 'green' | 'blue' | 'dark_blue' | 'purple' | 'dark_
   border-radius: 2px;
   font-size: 11px;
   margin: 0 10px 10px 0;
-  text-transform:uppercase;
-  overflow:hidden;
-  max-width:200px;
-  white-space:nowrap;
-  text-overflow:ellipsis;
+  text-transform: uppercase;
+  overflow: hidden;
+  max-width: 200px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
-const TagsContainer = styled.div`
-    margin-right:-10px;
-    margin-bottom:-10px;
+const TagsContainer = styled.ul`
+  margin-right: -10px;
+  margin-bottom: -10px;
+  padding-inline-start: 0;
+  margin-block-end: 0;
+  margin-block-start: 0;
+  list-style-type: none;
 `;
 
 type TagsProps = {
@@ -65,11 +76,26 @@ type TagsProps = {
  */
 const Tags = React.forwardRef<HTMLDivElement, TagsProps>(
   ({children, ...rest}: TagsProps, forwardedRef: Ref<HTMLDivElement>) => {
+    const getTitle = (children?: ReactNode) => {
+      let label = '';
+
+      React.Children.map(children, child => {
+        if (typeof child === 'string') {
+          label += child;
+        }
+      });
+
+      return label;
+    };
+
     return (
-      <TagsContainer  ref={forwardedRef} {...rest}>
+      <TagsContainer ref={forwardedRef} {...rest}>
         {React.Children.map(children, child => {
           if (isValidElement(child) && child.type === Tag) {
-            return child;
+            const tag = child as ReactElement<{title?: string; children?: ReactNode}, 'Tag'>;
+            return React.cloneElement(child, {
+              title: tag.props?.title || getTitle(tag.props?.children),
+            });
           }
           throw new Error('A Tags element can only have Tag children');
         })}
