@@ -16,12 +16,6 @@ const treeRowBackgroundStyles = css<{$selected: boolean; $disabled: boolean; isR
     background-color: ${getColor('white')};
     border-bottom: 1px solid ${getColor('grey60')};
 
-    ${({isRoot}) =>
-      isRoot &&
-      css`
-        border-top: 1px solid ${getColor('grey60')};
-      `}
-
     ${({$selected}) =>
       $selected &&
       css`
