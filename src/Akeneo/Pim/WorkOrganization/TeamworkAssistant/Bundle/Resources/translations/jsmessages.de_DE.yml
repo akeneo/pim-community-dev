@@ -32,12 +32,10 @@ teamwork_assistant:
     no_project_create: erstellen Sie ein neues Projekt
     description: Beschreibung
     due_date: Fälligkeitsdatum
-    todo: Zu erledigen
-    in_progress: In Bearbeitung
-    done: Fertig
     all_contributors: Alle Mitwirkenden
     you: Du
     display_products: Produkte anzeigen
+    projects: Projekte
     placeholder:
       contributor_selector: Suche Mitwirkende
       project_selector: Suche Projekt

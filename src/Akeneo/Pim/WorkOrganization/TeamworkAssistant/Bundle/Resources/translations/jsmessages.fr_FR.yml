@@ -32,12 +32,14 @@ teamwork_assistant:
     no_project_create: Créer un nouveau projet
     description: Description
     due_date: Date d’échéance
-    todo: A FAIRE
-    in_progress: EN COURS
-    done: FINI
+    todo: À faire
+    in_progress: En cours
+    done: Terminé
     all_contributors: Tous les contributeurs
     you: Vous
     display_products: Afficher les produits
+    projects: Projets
+    contributors: Contributeurs
     placeholder:
       contributor_selector: Rechercher un contributeur
       project_selector: Rechercher un projet
@@ -45,6 +47,8 @@ teamwork_assistant:
       to_start: PRODUITS A COMMENCER
       in_progress: PRODUITS EN COURS
       done: PRODUITS TERMINÉS
+    searching: recherche en cours...
+    no_search_results: Désolé, il n'y a aucun résultat.
 pim_datagrid:
   view_selector:
     project: Projets

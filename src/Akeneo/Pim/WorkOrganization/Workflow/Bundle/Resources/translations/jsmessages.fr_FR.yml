@@ -137,6 +137,8 @@ pimee_dashboard:
       product: Produit
       review: Examiner
       empty: Il n'y a aucune proposition à examiner
+      title: Propositions à relire
+      view_all: Voir toutes les propositions
     header.view_all: Afficher tout
 pimee_enrich.entity.product:
   module:
