@@ -1,6 +1,6 @@
 import React, {forwardRef, SyntheticEvent} from 'react';
 import styled from 'styled-components';
-import {CloseIcon, getColor, Helper, IconButton, List, TextInput, useBooleanState} from 'akeneo-design-system';
+import {CloseIcon, getColor, Helper, IconButton, Table, TextInput, useBooleanState} from 'akeneo-design-system';
 import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import {ColumnConfiguration} from '../../models/ColumnConfiguration';
 import {useValidationErrors} from '../../contexts';
@@ -16,6 +16,14 @@ const SourceList = styled.div`
   color: ${getColor('grey', 100)};
   font-style: italic;
   margin-left: 20px;
+`;
+
+const TargetCell = styled(Table.Cell)`
+  width: 400px;
+`;
+
+const RemoveCell = styled(Table.Cell)`
+  width: 50px;
 `;
 
 type ColumnRowProps = {
@@ -46,13 +54,8 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
 
     return (
       <>
-        <List.Row
-          key={column.uuid}
-          onClick={() => onColumnSelected(column.uuid)}
-          isSelected={isSelected}
-          isMultiline={targetErrors.length !== 0}
-        >
-          <List.Cell width={300}>
+        <Table.Row key={column.uuid} onClick={() => onColumnSelected(column.uuid)} isSelected={isSelected}>
+          <TargetCell>
             <Field>
               <TextInput
                 ref={ref}
@@ -67,11 +70,11 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
                 </Helper>
               ))}
             </Field>
-          </List.Cell>
-          <List.Cell width="auto">
+          </TargetCell>
+          <Table.Cell>
             <SourceList>{translate('akeneo.tailored_export.column_list.column_row.no_source')}</SourceList>
-          </List.Cell>
-          <List.RemoveCell>
+          </Table.Cell>
+          <RemoveCell>
             <IconButton
               ghost="borderless"
               level="tertiary"
@@ -79,8 +82,8 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
               title={translate('akeneo.tailored_export.column_list.column_row.remove')}
               onClick={handleColumnRemove}
             />
-          </List.RemoveCell>
-        </List.Row>
+          </RemoveCell>
+        </Table.Row>
         {isDeleteModalOpen && (
           <DeleteModal
             title={translate('akeneo.tailored_export.column_list.title')}
@@ -95,4 +98,4 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
   }
 );
 
-export {ColumnRow};
+export {ColumnRow, TargetCell};

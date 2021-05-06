@@ -1,10 +1,10 @@
 import React, {ClipboardEvent, useEffect, useRef} from 'react';
-import {getColor, Helper, List, SectionTitle, TextInput, useAutoFocus, useBooleanState} from 'akeneo-design-system';
+import {getColor, Helper, SectionTitle, Table, TextInput, useAutoFocus, useBooleanState} from 'akeneo-design-system';
 import {ColumnConfiguration} from '../../models/ColumnConfiguration';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {ColumnListPlaceholder} from './ColumnListPlaceholder';
-import {ColumnRow} from './ColumnRow';
+import {ColumnRow, TargetCell} from './ColumnRow';
 import {useValidationErrors} from '../../contexts';
 import {MAX_COLUMN_COUNT} from '../../ColumnsTab';
 
@@ -85,36 +85,46 @@ const ColumnList = ({
           {translate(error.messageTemplate, error.parameters)}
         </Helper>
       ))}
-      <List>
-        {columnsConfiguration.map(column => (
-          <ColumnRow
-            key={column.uuid}
-            ref={selectedColumn?.uuid === column.uuid ? inputRef : null}
-            column={column}
-            isSelected={selectedColumn?.uuid === column.uuid}
-            onColumnChange={onColumnChange}
-            onColumnRemoved={onColumnRemoved}
-            onColumnSelected={onColumnSelected}
-            onFocusNext={handleFocusNextColumn}
-          />
-        ))}
-        {canAddColumn && !placeholderDisplayed && (
-          <List.Row onClick={() => onColumnSelected(null)} isSelected={selectedColumn === null}>
-            <List.Cell width={300}>
-              <TextInput
-                ref={null === selectedColumn ? inputRef : null}
-                onChange={onColumnCreated}
-                onPaste={handlePaste}
-                placeholder={translate('akeneo.tailored_export.column_list.column_row.target_placeholder')}
-                value=""
+      {!placeholderDisplayed && (
+        <Table>
+          <Table.Header sticky={44}>
+            <Table.HeaderCell>{translate('akeneo.tailored_export.column_list.header.column_name')}</Table.HeaderCell>
+            <Table.HeaderCell>{translate('akeneo.tailored_export.column_list.header.source_data')}</Table.HeaderCell>
+            <Table.HeaderCell />
+          </Table.Header>
+          <Table.Body>
+            {columnsConfiguration.map(column => (
+              <ColumnRow
+                key={column.uuid}
+                ref={selectedColumn?.uuid === column.uuid ? inputRef : null}
+                column={column}
+                isSelected={selectedColumn?.uuid === column.uuid}
+                onColumnChange={onColumnChange}
+                onColumnRemoved={onColumnRemoved}
+                onColumnSelected={onColumnSelected}
+                onFocusNext={handleFocusNextColumn}
               />
-            </List.Cell>
-            <List.Cell width="auto">
-              <SourceList>{translate('akeneo.tailored_export.column_list.column_row.no_source')}</SourceList>
-            </List.Cell>
-          </List.Row>
-        )}
-      </List>
+            ))}
+            {canAddColumn && (
+              <Table.Row onClick={() => onColumnSelected(null)} isSelected={selectedColumn === null}>
+                <TargetCell>
+                  <TextInput
+                    ref={null === selectedColumn ? inputRef : null}
+                    onChange={onColumnCreated}
+                    onPaste={handlePaste}
+                    placeholder={translate('akeneo.tailored_export.column_list.column_row.target_placeholder')}
+                    value=""
+                  />
+                </TargetCell>
+                <Table.Cell>
+                  <SourceList>{translate('akeneo.tailored_export.column_list.column_row.no_source')}</SourceList>
+                </Table.Cell>
+                <Table.Cell />
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
+      )}
       {placeholderDisplayed && <ColumnListPlaceholder onColumnCreated={hidePlaceholder} />}
     </Container>
   );

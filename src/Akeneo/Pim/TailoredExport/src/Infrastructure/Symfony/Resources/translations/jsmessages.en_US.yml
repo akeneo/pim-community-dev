@@ -10,6 +10,9 @@ akeneo.tailored_export:
           title: Select the columns
   column_list:
     title: Columns
+    header:
+      column_name: Column name
+      source_data: Source Data
     column_row:
       target_placeholder: Define your new column name here
       remove: Remove column
