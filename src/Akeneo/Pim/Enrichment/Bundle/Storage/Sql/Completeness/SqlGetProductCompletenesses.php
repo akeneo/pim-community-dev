@@ -16,8 +16,7 @@ use Doctrine\DBAL\Connection;
  */
 final class SqlGetProductCompletenesses implements GetProductCompletenesses
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -26,34 +25,64 @@ final class SqlGetProductCompletenesses implements GetProductCompletenesses
 
     public function fromProductId(int $productId): ProductCompletenessCollection
     {
+        return $this->fromProductIds([$productId])[$productId];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fromProductIds(array $productIds): array
+    {
         $sql = <<<SQL
 SELECT 
-       channel.code AS channel_code,
-       locale.code AS locale_code,
-       completeness.required_count AS required_count,
-       completeness.missing_count AS missing_count
+       completeness.product_id AS product_id,
+       JSON_ARRAYAGG(
+           JSON_OBJECT(
+               'channel_code', channel.code,
+               'locale_code', locale.code,
+               'required_count', completeness.required_count,
+               'missing_count', completeness.missing_count
+           )
+       ) AS completenesses
 FROM pim_catalog_completeness completeness
     INNER JOIN pim_catalog_channel channel ON completeness.channel_id = channel.id
     INNER JOIN pim_catalog_locale locale ON completeness.locale_id = locale.id
-WHERE completeness.product_id = :productId
+WHERE completeness.product_id IN (:productIds)
+GROUP BY product_id
 SQL;
-        $rows = $this->connection->executeQuery($sql, ['productId' => $productId])->fetchAll();
+        $rows = $this->connection->executeQuery(
+            $sql,
+            ['productIds' => $productIds],
+            ['productIds' => Connection::PARAM_INT_ARRAY]
+        )->fetchAll();
 
-        return new ProductCompletenessCollection($productId, array_map(
-            function (array $row): ProductCompleteness {
-                return new ProductCompleteness(
-                    $row['channel_code'],
-                    $row['locale_code'],
-                    (int)$row['required_count'],
-                    (int)$row['missing_count']
-                );
+        $results = array_reduce(
+            $rows,
+            function (array $normalized, array $row) {
+                $productId = (int) $row['product_id'];
+                $normalized[$productId] = new ProductCompletenessCollection($productId, array_map(
+                    function (array $completeness): ProductCompleteness {
+                        return new ProductCompleteness(
+                            $completeness['channel_code'],
+                            $completeness['locale_code'],
+                            (int) $completeness['required_count'],
+                            (int) $completeness['missing_count']
+                        );
+                    },
+                    json_decode($row['completenesses'], true)
+                ));
+
+                return $normalized;
             },
-            $rows
-        ));
-    }
+            []
+        );
+        $missingIds = array_diff($productIds, array_keys($results));
+        if (!empty($missingIds)) {
+            foreach ($missingIds as $missingId) {
+                $results[$missingId] = new ProductCompletenessCollection($missingId, []);
+            }
+        }
 
-    public function fromProductIds(array $productIds): array
-    {
-
+        return $results;
     }
 }

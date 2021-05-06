@@ -106,10 +106,23 @@ class GetProductCompletenessesIntegration extends TestCase
             ]
         );
 
-        $ids = [
-            $this->getProductId('productA'),
-            $this->getProductId('productA2'),
-        ];
+        $idProdA = $this->getProductId('productA');
+        $idProdA2 = $this->getProductId('productA2');
+        $completenesses = $this
+            ->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
+            ->fromProductIds([$idProdA, $idProdA2]);
+
+        Assert::assertCount(2, $completenesses);
+
+        Assert::arrayHasKey($idProdA);
+        Assert::assertCount(6, $completenesses[$idProdA]);
+        $this->assertCompletenessContains($completenesses[$idProdA], 'ecommerce', 'en_US', 4, 1);
+        $this->assertCompletenessContains($completenesses[$idProdA], 'tablet', 'en_US', 4, 2);
+
+        Assert::arrayHasKey('productA2');
+        Assert::assertCount(6, $completenesses[$idProdA2]);
+        $this->assertCompletenessContains($completenesses[$idProdA2], 'ecommerce', 'en_US', 4, 1);
+        $this->assertCompletenessContains($completenesses[$idProdA2], 'tablet', 'en_US', 4, 2);
     }
 
     public function test_that_it_returns_an_empty_array_for_a_product_without_family()
