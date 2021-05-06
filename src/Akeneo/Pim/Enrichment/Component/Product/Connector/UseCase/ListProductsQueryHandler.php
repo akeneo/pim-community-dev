@@ -56,6 +56,8 @@ final class ListProductsQueryHandler
 
     private GetProductsWithQualityScoresInterface $getProductsWithQualityScores;
 
+    private GetProductsWithCompletenessesInterface $getProductsWithCompletenesses;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $channelRepository,
         ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
@@ -65,7 +67,8 @@ final class ListProductsQueryHandler
         GetConnectorProducts $getConnectorProductsQuery,
         GetConnectorProducts $getConnectorProductsQuerywithOptions,
         EventDispatcherInterface $eventDispatcher,
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores
+        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
+        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses
     ) {
         $this->channelRepository = $channelRepository;
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
@@ -76,6 +79,7 @@ final class ListProductsQueryHandler
         $this->getConnectorProductsQuerywithOptions = $getConnectorProductsQuerywithOptions;
         $this->eventDispatcher = $eventDispatcher;
         $this->getProductsWithQualityScores = $getProductsWithQualityScores;
+        $this->getProductsWithCompletenesses = $getProductsWithCompletenesses;
     }
 
     /**
@@ -127,6 +131,13 @@ final class ListProductsQueryHandler
 
         if ($query->withQualityScores()) {
             $connectorProductList = $this->getProductsWithQualityScores->fromConnectorProductList(
+                $connectorProductList,
+                $query->channelCode,
+                $queryLocales ?? []
+            );
+        }
+        if ($query->withCompletenesses()) {
+            $connectorProductList = $this->getProductsWithCompletenesses->fromConnectorProductList(
                 $connectorProductList,
                 $query->channelCode,
                 $queryLocales ?? []
