@@ -8,6 +8,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateColl
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
@@ -77,11 +79,17 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             (new ChannelLocaleRateCollection())
                 ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(81))
                 ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(73)),
-            null
+            new ProductCompletenessCollection(
+                1,
+                [
+                    new ProductCompleteness('ecommerce', 'en_US', 10, 5),
+                    new ProductCompleteness('ecommerce', 'fr_FR', 10, 1),
+                ]
+            )
         );
 
         $connector2 = new ConnectorProduct(
-            1,
+            2,
             'identifier_2',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -98,7 +106,27 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             null
         );
 
-        $this->normalizeConnectorProductList(new ConnectorProductList(1, [$connector1, $connector2]))->shouldBeLike([
+        $connector3 = new ConnectorProduct(
+            3,
+            'identifier_3',
+            new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
+            true,
+            null,
+            [],
+            [],
+            null,
+            [],
+            [],
+            ['a_metadata' => 'viande'],
+            new ReadValueCollection(),
+            null,
+            new ProductCompletenessCollection(3, [])
+        );
+
+        $this->normalizeConnectorProductList(
+            new ConnectorProductList(3, [$connector1, $connector2, $connector3])
+        )->shouldBeLike([
             [
                 'identifier' => 'identifier_1',
                 'created' => '2019-04-23T15:55:50+00:00',
@@ -138,9 +166,13 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                     ],
                 ],
                 'quality_scores' => [
-                     ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'B'],
-                     ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => 'C'],
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'B'],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => 'C'],
                 ],
+                'completenesses' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 50],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => 90],
+                ]
             ],
             [
                 'identifier' => 'identifier_2',
@@ -155,6 +187,21 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 'associations' => (object) [],
                 'quantified_associations' => (object) [],
                 'metadata' => ['a_metadata' => 'viande'],
+            ],
+            [
+                'identifier' => 'identifier_3',
+                'created' => '2019-04-23T15:55:50+00:00',
+                'updated' => '2019-04-25T15:55:50+00:00',
+                'enabled' => true,
+                'family' => null,
+                'categories' => [],
+                'groups' => [],
+                'parent' => null,
+                'values' => (object) [],
+                'associations' => (object) [],
+                'quantified_associations' => (object) [],
+                'metadata' => ['a_metadata' => 'viande'],
+                'completenesses' => (object) [],
             ],
         ]);
     }
