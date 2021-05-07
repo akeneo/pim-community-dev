@@ -78,7 +78,11 @@ const CategoriesTreePage: FC = () => {
     if (numberOfProducts > MAX_NUMBER_OF_PRODUCTS_TO_ALLOW_DELETE) {
       notify(
         NotificationLevel.INFO,
-        translate('pim_enrich.entity.category.products_limit_exceeded', {limit: MAX_NUMBER_OF_PRODUCTS_TO_ALLOW_DELETE})
+        translate('pim_enrich.entity.category.category_deletion.products_limit_exceeded.title'),
+        translate('pim_enrich.entity.category.category_deletion.products_limit_exceeded.message', {
+          label,
+          limit: MAX_NUMBER_OF_PRODUCTS_TO_ALLOW_DELETE,
+        })
       );
 
       return;
