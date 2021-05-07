@@ -10,6 +10,7 @@ services:
       SRNT_GOOGLE_BUCKET_NAME: 'akecld-saas-dev-core-dev-test'
     volumes:
       - '${GCP_CREDENTIALS:-./config/gcp_credentials.json}:/srv/pim/config/gcp_credentials.json:ro'
+      - './docker/fpm.conf:/etc/php/7.4/fpm/pool.d/zzz-akeneo.conf'
     networks:
       - 'pim'
 

@@ -35,6 +35,7 @@ services:
       ASPELL_BINARY_PATH: '${ASPELL_BINARY_PATH:-aspell}'
     volumes:
       - './:/srv/pim'
+      - './docker/fpm.conf:/etc/php/7.4/fpm/pool.d/zzz-akeneo.conf'
     working_dir: '/srv/pim'
     command: 'php-fpm -F'
     networks:

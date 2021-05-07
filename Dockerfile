@@ -71,7 +71,6 @@ RUN sed -i '/<policy domain="coder" rights="none" pattern="PDF" \/>/c\  <policy 
 
 COPY docker/php.ini /etc/php/7.4/cli/conf.d/99-akeneo.ini
 COPY docker/php.ini /etc/php/7.4/fpm/conf.d/99-akeneo.ini
-COPY docker/fpm.conf /etc/php/7.4/fpm/pool.d/zzz-akeneo.conf
 
 #
 # Image used for development

@@ -76,6 +76,10 @@ spec:
             - name: fpm
               containerPort: 9000
           volumeMounts:
+            - mountPath: /etc/php/7.4/fpm/pool.d/zzz-akeneo.conf
+              subPath: zzz-akeneo.conf
+              name: conf-fpm
+              readOnly: true
             - name: web-src
               mountPath: /srv/pim/public
             - name: google-cloud-pim-storage-key
@@ -168,6 +172,12 @@ spec:
                 path: httpd.conf
               - key: mime.types
                 path: mime.types
+        - name: conf-fpm
+          configMap:
+            name: pim-config
+            items:
+              - key: fpm.conf
+                path: zzz-akeneo.conf
         - name: google-cloud-pim-storage-key
           secret:
             secretName: pim-secrets
