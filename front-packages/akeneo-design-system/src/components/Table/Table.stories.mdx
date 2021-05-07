@@ -162,7 +162,12 @@ To compare information, for example how many products are completed versus how m
     {args => {
       const [orderedRows, setOrderedRow] = useState(rows);
       return (
-        <Table>
+        <Table
+          isOrderable
+          onReorder={newIndices => {
+            setOrderedRow(rows => newIndices.map(index => rows[index]));
+          }}
+        >
           <Table.Header>
             <Table.HeaderCell>Image</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>
@@ -172,11 +177,7 @@ To compare information, for example how many products are completed versus how m
             <Table.HeaderCell>Conservation status</Table.HeaderCell>
             <Table.HeaderCell>Actions</Table.HeaderCell>
           </Table.Header>
-          <Table.Body
-            onReorder={newIndices => {
-              setOrderedRow(rows => newIndices.map(index => rows[index]));
-            }}
-          >
+          <Table.Body>
             {orderedRows.map(row => (
               <Table.Row key={row.name}>
                 <Table.Cell>

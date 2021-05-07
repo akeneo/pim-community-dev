@@ -1,25 +1,33 @@
-import React, {ReactNode, Ref, SyntheticEvent, useState} from 'react';
+import React, {ReactNode, Ref, SyntheticEvent, cloneElement, Children, useState, useContext} from 'react';
 import {TableRowProps} from '../TableRow/TableRow';
 import {useId} from '../../../hooks';
+import {TableContext} from '../TableContext';
 
+/**
+ * Recursively find the draggable parent not to know which element got dropped on.
+ */
 const getDropRow = (element: HTMLElement | null): number => {
-  if (null === element) throw new Error('Parent not found');
+  if (null === element) throw new Error('Draggable parent not found');
 
-  return undefined !== element.dataset.index ? parseInt(element.dataset.index) : getDropRow(element.parentElement);
+  return undefined !== element.dataset.draggableIndex
+    ? parseInt(element.dataset.draggableIndex)
+    : getDropRow(element.parentElement);
 };
 
 const generateReorderedIndices = (size: number, draggedIndex: number, droppedIndex: number) => {
-  const originalArray = Array.from([...new Array(size)].keys());
+  //Generate en array of indices from original size
+  const originalArray = Array.from([...Array.from({length: size})].keys());
+
+  //Remove the moved element
   const arrayWithoutDraggedItem = originalArray.filter(index => draggedIndex !== index);
 
+  //Place it at the dropped position
   arrayWithoutDraggedItem.splice(droppedIndex, 0, draggedIndex);
 
   return arrayWithoutDraggedItem;
 };
 
 type TableBodyProps = {
-  onReorder?: (indices: number[]) => void;
-
   /**
    * Header rows
    */
@@ -27,30 +35,26 @@ type TableBodyProps = {
 };
 
 const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
-  ({children, onReorder, ...rest}: TableBodyProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
-    const [draggedElement, setDraggedElement] = useState<number | null>(null);
+  ({children, ...rest}: TableBodyProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
+    const {isOrderable, onReorder} = useContext(TableContext);
+    const [draggedElementIndex, setDraggedElementIndex] = useState<number | null>(null);
     const uuid = useId('draggable_');
 
-    let totalDraggableItems = 0;
-    const decoratedChildren =
-      undefined !== onReorder
-        ? React.Children.map(children, child => {
-            if (React.isValidElement<TableRowProps>(child)) {
-              const currentDraggableIndex = totalDraggableItems;
-              totalDraggableItems++;
+    const decoratedChildren = isOrderable
+      ? Children.map(children, (child, index) => {
+          if (!React.isValidElement<TableRowProps>(child)) {
+            throw Error('Children of Table.Body should be a valid react element');
+          }
 
-              return React.cloneElement(child, {
-                draggable: true,
-                'data-index': currentDraggableIndex,
-                onDragStart: () => {
-                  setDraggedElement(currentDraggableIndex);
-                },
-              });
-            }
-
-            return child;
-          })
-        : children;
+          return cloneElement(child, {
+            'data-draggable-index': index,
+            canBeDraggedOver: null !== draggedElementIndex && draggedElementIndex !== index,
+            onDragStart: () => {
+              setDraggedElementIndex(index);
+            },
+          });
+        })
+      : children;
 
     return (
       <tbody
@@ -58,17 +62,22 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
         {...rest}
         data-uuid={uuid}
         onDrop={(event: SyntheticEvent<HTMLTableSectionElement>) => {
-          if (event.currentTarget.dataset.uuid === uuid && null !== draggedElement && onReorder) {
-            const droppedElement = getDropRow(event.target as HTMLElement);
-            console.log(`Dragged element "${draggedElement}" got dropped at position "${droppedElement}"`);
-            const newIndices = generateReorderedIndices(totalDraggableItems, draggedElement, droppedElement);
-            console.log('new indicies are', newIndices);
+          if (event.currentTarget.dataset.uuid === uuid && null !== draggedElementIndex && isOrderable && onReorder) {
+            const droppedElementIndex = getDropRow(event.target as HTMLElement);
+
+            const newIndices = generateReorderedIndices(
+              Children.count(children),
+              draggedElementIndex,
+              droppedElementIndex
+            );
             onReorder(newIndices);
-            setDraggedElement(null);
+
+            setDraggedElementIndex(null);
             event.stopPropagation();
           }
         }}
         onDragOver={event => {
+          //Needed to trigger the onDrop event.
           event.stopPropagation();
           event.preventDefault();
         }}
@@ -80,3 +89,4 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
 );
 
 export {TableBody};
+export type {TableBodyProps};

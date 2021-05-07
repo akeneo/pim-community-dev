@@ -1,32 +1,51 @@
-import React, {ReactNode, Ref, SyntheticEvent} from 'react';
+import React, {ReactNode, Ref, SyntheticEvent, HTMLAttributes, forwardRef, useContext} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
-import {Checkbox} from '../..';
-import {SelectableContext} from '../SelectableContext';
+import {Checkbox} from '../../../components';
+import {Override} from '../../../shared';
+import {TableContext} from '../TableContext';
+import {TableCell} from '../TableCell/TableCell';
+import {RowIcon} from 'icons';
+import {useBooleanState} from 'hooks';
 
-type TableRowProps = {
-  /**
-   * Content of the row
-   */
-  children?: ReactNode;
+type TableRowProps = Override<
+  HTMLAttributes<HTMLTableRowElement>,
+  {
+    /**
+     * Content of the row
+     */
+    children?: ReactNode;
 
-  /**
-   * Function called when the user clicks on the row checkbox, required when table is selectable
-   */
-  onSelectToggle?: (isSelected: boolean) => void;
+    /**
+     * Function called when the user clicks on the row checkbox, required when table is selectable
+     */
+    onSelectToggle?: (isSelected: boolean) => void;
 
-  /**
-   * Define if the row is selected, required when table is selectable
-   */
-  isSelected?: boolean;
+    /**
+     * Define if the row is selected, required when table is selectable
+     */
+    isSelected?: boolean;
 
-  /**
-   * Function called when the user clicks on the row
-   */
-  onClick?: (event: SyntheticEvent) => void;
-};
+    /**
+     * Function called when the user clicks on the row
+     */
+    onClick?: (event: SyntheticEvent) => void;
+  } & {
+    /**
+     * @private
+     */
+    'data-draggable-index': number;
 
-const RowContainer = styled.tr<{isSelected: boolean; isClickable: boolean} & AkeneoThemedProps>`
+    /**
+     * @private
+     */
+    canBeDraggedOver: boolean;
+  }
+>;
+
+const RowContainer = styled.tr<
+  {isSelected: boolean; isClickable: boolean; canBeDraggedOver: boolean} & AkeneoThemedProps
+>`
   ${({isSelected}) =>
     isSelected &&
     css`
@@ -40,6 +59,15 @@ const RowContainer = styled.tr<{isSelected: boolean; isClickable: boolean} & Ake
     css`
       &:hover {
         cursor: pointer;
+      }
+    `}
+
+  ${({canBeDraggedOver}) =>
+    canBeDraggedOver &&
+    css`
+      &:hover {
+        background: blue;
+        border-bottom: 2px solid red;
       }
     `}
 
@@ -67,9 +95,24 @@ const CheckboxContainer = styled.td<{isVisible: boolean}>`
   }
 `;
 
-const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
-  ({isSelected, onSelectToggle, onClick, children, ...rest}: TableRowProps, forwardedRef: Ref<HTMLTableRowElement>) => {
-    const {isSelectable, displayCheckbox} = React.useContext(SelectableContext);
+const HandleContainer = styled.div`
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  :active {
+    cursor: grabbing;
+  }
+`;
+
+const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
+  (
+    {isSelected, canBeDraggedOver, onSelectToggle, onClick, children, ...rest}: TableRowProps,
+    forwardedRef: Ref<HTMLTableRowElement>
+  ) => {
+    const [isDragged, drag, drop] = useBooleanState();
+    const {isSelectable, displayCheckbox, isOrderable} = useContext(TableContext);
     if (isSelectable && (undefined === isSelected || undefined === onSelectToggle)) {
       throw Error('A row in a selectable table should have the prop "isSelected" and "onSelectToggle"');
     }
@@ -85,6 +128,9 @@ const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
         isClickable={undefined !== onClick}
         isSelected={!!isSelected}
         onClick={onClick}
+        canBeDraggedOver={canBeDraggedOver}
+        draggable={isOrderable && isDragged}
+        onDragEnd={drop}
         {...rest}
       >
         {isSelectable && (
@@ -100,6 +146,13 @@ const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
               }}
             />
           </CheckboxContainer>
+        )}
+        {isOrderable && (
+          <TableCell onMouseDown={drag} onMouseUp={drop}>
+            <HandleContainer>
+              <RowIcon size={16} />
+            </HandleContainer>
+          </TableCell>
         )}
         {children}
       </RowContainer>

@@ -5,7 +5,7 @@ import {TableHeader} from './TableHeader/TableHeader';
 import {TableHeaderCell} from './TableHeaderCell/TableHeaderCell';
 import {TableActionCell} from './TableActionCell/TableActionCell';
 import {TableRow} from './TableRow/TableRow';
-import {SelectableContext} from './SelectableContext';
+import {TableContext} from './TableContext';
 import {TableBody} from './TableBody/TableBody';
 import {Override} from '../../shared';
 
@@ -32,17 +32,47 @@ type TableProps = Override<
      * The content of the table
      */
     children?: ReactNode;
-  }
+  } & (
+    | {
+        /**
+         * Define if rows can be ordered
+         */
+        isOrderable: false;
+
+        /**
+         * Called when an element got drag and drop on the table
+         */
+        onReorder: undefined;
+      }
+    | {
+        /**
+         * Define if rows can be ordered
+         */
+        isOrderable: true;
+
+        /**
+         * Called when an element got drag and drop on the table
+         */
+        onReorder: (updatedIndices: number[]) => void;
+      }
+  )
 >;
 
 /**
  * Tables allow users to analyze and manipulate data.
  */
-const Table = ({isSelectable = false, displayCheckbox = false, children, ...rest}: TableProps) => {
+const Table = ({
+  isSelectable = false,
+  displayCheckbox = false,
+  isOrderable = false,
+  onReorder,
+  children,
+  ...rest
+}: TableProps) => {
   return (
-    <SelectableContext.Provider value={{isSelectable, displayCheckbox}}>
+    <TableContext.Provider value={{isSelectable, displayCheckbox, isOrderable, onReorder}}>
       <TableContainer {...rest}>{children}</TableContainer>
-    </SelectableContext.Provider>
+    </TableContext.Provider>
   );
 };
 
