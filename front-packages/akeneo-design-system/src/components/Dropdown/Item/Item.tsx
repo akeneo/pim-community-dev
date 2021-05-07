@@ -39,9 +39,9 @@ const ItemContainer = styled.div<{tall: boolean; disabled: boolean} & AkeneoThem
         `
       : css`
           cursor: pointer;
-          color: ${getColor('grey', 140)};
+          color: ${getColor('grey', 120)};
           a {
-            color: ${getColor('grey', 140)};
+            color: ${getColor('grey', 120)};
           }
 
           &:hover a,
@@ -51,9 +51,8 @@ const ItemContainer = styled.div<{tall: boolean; disabled: boolean} & AkeneoThem
           }
           &:active a,
           &:active {
-            color: ${getColor('brand', 100)};
+            color: ${getColor('grey', 140)};
             font-weight: 700;
-            font-style: italic;
           }
         `}
 `;
