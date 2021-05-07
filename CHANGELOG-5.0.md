@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.24 (2021-05-07)
+
 ## Bug fixes
 
 - PIM-9846: [Backport] PIM-9822: Asset Manager - Error 500 after deleting a filterable asset family attribute
