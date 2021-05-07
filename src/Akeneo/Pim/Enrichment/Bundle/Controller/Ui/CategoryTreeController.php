@@ -353,7 +353,7 @@ class CategoryTreeController extends Controller
         ]);
 
         // @todo[PLG-94] remove unused Twig templates AkeneoPimEnrichmentBundle:CategoryTree:%s.html.twig
-        return new JsonResponse($normalizedCategory,Response::HTTP_OK);
+        return new JsonResponse($normalizedCategory, Response::HTTP_OK);
     }
 
     /**
