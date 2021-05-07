@@ -7,6 +7,9 @@ type Props = {
   root: CategoryTreeModel | null;
   rootLabel: string;
   sortable?: boolean; // @todo find a better name: editable?
+  followCategory?: (category: CategoryTreeModel) => void;
+  addCategory?: (parentCode: string, onCreate: () => void) => void;
+  deleteCategory?: (identifier: number, label: string, onDelete: () => void) => void;
   // @todo define onCategoryMoved action
 };
 
