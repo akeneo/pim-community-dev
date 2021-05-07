@@ -79,12 +79,16 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     protected function normalizeOptions(AttributeInterface $attribute): ?string
     {
         $attributeOptionCodes = $this->getAttributeOptionCodes->forAttributeCode($attribute->getCode());
-        $data = [];
+        $normalizedOption = null;
         foreach ($attributeOptionCodes as $attributeOptionCode) {
-            $data[] = 'Code:' . $attributeOptionCode;
+            if (null === $normalizedOption) {
+                $normalizedOption = 'Code:' . $attributeOptionCode;
+            } else {
+                $normalizedOption .= self::GROUP_SEPARATOR . 'Code:' . $attributeOptionCode;
+            }
         }
 
-        return implode(self::GROUP_SEPARATOR, $data);
+        return $normalizedOption;
     }
 
     private function normalizeTranslations(array $labels, array $context): array
