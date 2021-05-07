@@ -7,3 +7,11 @@ pimee_enrich.entity.product:
     flash:
       success: Das Produkt {{ product_identifier }} wurde erfolgreich dupliziert.
       success_with_attribute_codes: Das Produkt {{ product_identifier }} wurde erfolgreich dupliziert. Sie müssen {{ unique_attribute_codes }} mit einzigartigen Werten anreichern.
+pim_dashboard:
+  widget:
+    teamwork_assistant:
+      title: Projekte
+      helper: Um mehr über Projekte zu erfahren und wie Sie die  Vollständigkeit verbessern können <a href="{{ link }}" target="_blank">gehe zum Hilfezentrum</a>.
+      no_project:
+        title: Projekte können Ihnen helfen, einen Fortschritt bei der Produktauswahl zu verfolgen.
+        subtitle: Erstellen Sie Ihr erstes Projekt.

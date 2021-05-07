@@ -447,6 +447,9 @@ pim_notification:
     mass_edit_rule: Massenbearbeitung Regel
     execute_rules: Regel-Ausführung
 pim_menu:
+  navigation:
+    settings:
+      automation: Automatisierung
   item:
     rule: Regeln
 pim_title:
