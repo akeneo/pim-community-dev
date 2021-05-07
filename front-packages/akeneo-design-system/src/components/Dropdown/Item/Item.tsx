@@ -52,7 +52,6 @@ const ItemContainer = styled.div<{tall: boolean; disabled: boolean} & AkeneoThem
           &:active a,
           &:active {
             color: ${getColor('grey', 140)};
-            font-weight: 700;
           }
         `}
 `;
