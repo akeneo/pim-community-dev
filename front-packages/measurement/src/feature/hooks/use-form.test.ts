@@ -1,8 +1,5 @@
-'use strict';
-
-import '@testing-library/jest-dom/extend-expect';
 import {act, renderHook} from '@testing-library/react-hooks';
-import {useForm} from 'akeneomeasure/hooks/use-form';
+import {useForm} from './use-form';
 
 type Form = {
   code: string;

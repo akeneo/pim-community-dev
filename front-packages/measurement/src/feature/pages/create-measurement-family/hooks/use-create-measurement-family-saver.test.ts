@@ -1,10 +1,5 @@
-'use strict';
-
-import React from 'react';
-import '@testing-library/jest-dom/extend-expect';
-import {renderHook} from '@testing-library/react-hooks';
-import {useCreateMeasurementFamilySaver} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-saver';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {useCreateMeasurementFamilySaver} from './use-create-measurement-family-saver';
+import {renderHookWithProviders} from '@akeneo-pim-community/shared';
 
 declare global {
   namespace NodeJS {
@@ -13,8 +8,6 @@ declare global {
     }
   }
 }
-
-const wrapper = ({children}) => <DependenciesProvider>{children}</DependenciesProvider>;
 
 const measurementFamily = Object.freeze({
   code: 'custom_metric',
@@ -50,7 +43,7 @@ test('It returns a success response when saving', async () => {
     ok: true,
   }));
 
-  const {result} = renderHook(() => useCreateMeasurementFamilySaver(), {wrapper});
+  const {result} = renderHookWithProviders(() => useCreateMeasurementFamilySaver());
   const save = result.current;
 
   expect(await save(measurementFamily)).toEqual({
@@ -72,7 +65,7 @@ test('It returns a list of errors when there is a validation problem', async () 
     json: () => Promise.resolve(errors),
   }));
 
-  const {result} = renderHook(() => useCreateMeasurementFamilySaver(), {wrapper});
+  const {result} = renderHookWithProviders(() => useCreateMeasurementFamilySaver());
   const save = result.current;
 
   expect(await save(measurementFamily)).toEqual({
@@ -86,7 +79,7 @@ test('An error is thrown if the server does not respond correctly', async () => 
     ok: false,
   }));
 
-  const {result} = renderHook(() => useCreateMeasurementFamilySaver(), {wrapper});
+  const {result} = renderHookWithProviders(() => useCreateMeasurementFamilySaver());
   const save = result.current;
 
   expect(save(measurementFamily)).rejects.toThrow();

@@ -18,10 +18,10 @@ import {
   createUnitFromForm,
   initializeCreateUnitForm,
   validateCreateUnitForm,
-} from '../../pages/create-unit/form/create-unit-form';
-import {useCreateUnitValidator} from '../../pages/create-unit/hooks/use-create-unit-validator';
+} from '../create-unit/form/create-unit-form';
+import {useCreateUnitValidator} from '../create-unit/hooks/use-create-unit-validator';
 import {Operation} from '../../model/operation';
-import {OperationCollection} from '../../pages/common/OperationCollection';
+import {OperationCollection} from '../common/OperationCollection';
 import {
   filterErrors,
   ValidationError,

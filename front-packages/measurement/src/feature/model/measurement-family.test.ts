@@ -11,7 +11,7 @@ import {
   getUnitIndex,
   removeUnit,
   addUnit,
-} from 'akeneomeasure/model/measurement-family';
+} from './measurement-family';
 
 const measurementFamily = {
   code: 'AREA',

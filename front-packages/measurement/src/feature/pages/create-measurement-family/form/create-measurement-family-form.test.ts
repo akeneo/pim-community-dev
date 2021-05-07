@@ -1,10 +1,4 @@
-'use strict';
-
-import '@testing-library/jest-dom/extend-expect';
-import {
-  initializeCreateMeasurementFamilyForm,
-  createMeasurementFamilyFromForm,
-} from 'akeneomeasure/pages/create-measurement-family/form/create-measurement-family-form';
+import {initializeCreateMeasurementFamilyForm, createMeasurementFamilyFromForm} from './create-measurement-family-form';
 
 describe('create-measurement-family-form', () => {
   test('It can create an empty form state', () => {

@@ -1,7 +1,4 @@
-'use strict';
-
-import '@testing-library/jest-dom/extend-expect';
-import {useUnsavedChanges} from 'akeneomeasure/shared/hooks/use-unsaved-changes';
+import {useUnsavedChanges} from './use-unsaved-changes';
 import {renderHook, act} from '@testing-library/react-hooks';
 
 test('It can define if the model has been changed', async () => {

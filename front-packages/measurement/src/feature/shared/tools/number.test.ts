@@ -1,4 +1,4 @@
-import {unformatNumber, formatNumber} from 'akeneomeasure/shared/tools/number';
+import {unformatNumber, formatNumber} from './number';
 
 describe('tools/number.ts', () => {
   it('should unformat a number with the provided decimal separator', () => {

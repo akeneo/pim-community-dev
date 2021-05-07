@@ -1,7 +1,7 @@
 import React from 'react';
 import {fireEvent, screen} from '@testing-library/react';
-import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
-import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
+import {OperationCollection} from './OperationCollection';
+import {renderWithProviders} from '@akeneo-pim-community/shared';
 
 test('It renders the given operations', () => {
   const operations = [

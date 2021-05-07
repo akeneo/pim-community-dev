@@ -1,7 +1,7 @@
+import React from 'react';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {Edit} from './pages/edit';
 import {List} from './pages/list';
-import React from 'react';
 
 const MeasurementApp = () => {
   return (

@@ -40,7 +40,7 @@ const useSorting = (
 };
 
 const List = () => {
-  const __ = useTranslate();
+  const translate = useTranslate();
   const {isGranted} = useSecurity();
   const locale = useUserContext().get('uiLocale');
   const history = useHistory();
@@ -83,13 +83,13 @@ const List = () => {
         }
         buttons={
           isGranted('akeneo_measurements_measurement_family_create')
-            ? [<Button onClick={openCreateModal}>{__('pim_common.create')}</Button>]
+            ? [<Button onClick={openCreateModal}>{translate('pim_common.create')}</Button>]
             : []
         }
         breadcrumb={
           <Breadcrumb>
-            <Breadcrumb.Step href={`#${settingsHref}`}>{__('pim_menu.tab.settings')}</Breadcrumb.Step>
-            <Breadcrumb.Step>{__('pim_menu.item.measurements')}</Breadcrumb.Step>
+            <Breadcrumb.Step href={`#${settingsHref}`}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
+            <Breadcrumb.Step>{translate('pim_menu.item.measurements')}</Breadcrumb.Step>
           </Breadcrumb>
         }
       >
@@ -98,7 +98,7 @@ const List = () => {
             <PageHeaderPlaceholder />
           </div>
         ) : (
-          __(
+          translate(
             'measurements.family.result_count',
             {itemsCount: measurementFamiliesCount.toString()},
             measurementFamiliesCount
@@ -107,10 +107,10 @@ const List = () => {
       </PageHeader>
 
       <PageContent>
-        <Information illustration={<MeasurementIllustration />} title={`👋  ${__('measurements.helper.title')}`}>
-          <p>{__('measurements.helper.text')}</p>
+        <Information illustration={<MeasurementIllustration />} title={`👋  ${translate('measurements.helper.title')}`}>
+          <p>{translate('measurements.helper.text')}</p>
           <Link href="https://help.akeneo.com/pim/articles/what-about-measurements.html" target="_blank">
-            {__('measurements.helper.link')}
+            {translate('measurements.helper.link')}
           </Link>
         </Information>
         {null === filteredMeasurementFamilies && (
@@ -123,16 +123,16 @@ const List = () => {
         {null !== filteredMeasurementFamilies && 0 === measurementFamiliesCount && (
           <NoDataSection>
             <MeasurementIllustration />
-            <NoDataTitle>{__('measurements.family.no_data.title')}</NoDataTitle>
+            <NoDataTitle>{translate('measurements.family.no_data.title')}</NoDataTitle>
             <NoDataText>
-              <Link onClick={openCreateModal}>{__('measurements.family.no_data.link')}</Link>
+              <Link onClick={openCreateModal}>{translate('measurements.family.no_data.link')}</Link>
             </NoDataText>
           </NoDataSection>
         )}
         {null !== filteredMeasurementFamilies && 0 < measurementFamiliesCount && (
           <>
             <SearchBar
-              placeholder={__('measurements.search.placeholder')}
+              placeholder={translate('measurements.search.placeholder')}
               count={filteredMeasurementFamiliesCount}
               searchValue={searchValue}
               onSearchChange={setSearchValue}
@@ -140,7 +140,7 @@ const List = () => {
             {0 === filteredMeasurementFamiliesCount && (
               <NoDataSection>
                 <MeasurementIllustration />
-                <NoDataTitle>{__('measurements.family.no_result.title')}</NoDataTitle>
+                <NoDataTitle>{translate('measurements.family.no_result.title')}</NoDataTitle>
               </NoDataSection>
             )}
             {0 < filteredMeasurementFamiliesCount && (

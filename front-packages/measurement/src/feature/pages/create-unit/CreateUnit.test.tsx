@@ -1,10 +1,7 @@
-'use strict';
-
 import React from 'react';
-import '@testing-library/jest-dom/extend-expect';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
-import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
+import {CreateUnit} from './CreateUnit';
+import {renderWithProviders} from '@akeneo-pim-community/shared';
 
 declare global {
   namespace NodeJS {

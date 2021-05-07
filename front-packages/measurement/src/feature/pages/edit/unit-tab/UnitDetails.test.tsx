@@ -1,7 +1,7 @@
 import React from 'react';
 import {act, fireEvent, screen, waitFor} from '@testing-library/react';
-import {UnitDetails} from 'akeneomeasure/pages/edit/unit-tab/UnitDetails';
-import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
+import {UnitDetails} from './UnitDetails';
+import {renderWithProviders} from '@akeneo-pim-community/shared';
 
 declare global {
   namespace NodeJS {
@@ -48,29 +48,30 @@ const measurementFamily = {
   is_locked: false,
 };
 
-beforeAll(() => {
+beforeEach(() => {
   const mockFetch = jest.fn().mockImplementationOnce(route => {
     switch (route) {
       case 'pim_localization_locale_index':
-        return {
-          json: () => [
-            {
-              code: 'en_US',
-            },
-            {
-              code: 'fr_FR',
-            },
-          ],
-        };
+        return Promise.resolve({
+          json: () =>
+            Promise.resolve([
+              {
+                code: 'en_US',
+              },
+              {
+                code: 'fr_FR',
+              },
+            ]),
+        });
       default:
-        return {json: () => []};
+        return Promise.resolve({json: () => Promise.resolve([])});
     }
   });
 
   global.fetch = mockFetch;
 });
 
-afterAll(() => {
+afterEach(() => {
   global.fetch && global.fetch.mockClear();
   delete global.fetch;
 });

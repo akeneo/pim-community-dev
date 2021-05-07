@@ -1,4 +1,3 @@
-var fs = require('fs');
 const baseConfig = require(`${__dirname}/../../common/base.jest.json`);
 
 const unitConfig = {
@@ -9,9 +8,6 @@ const unitConfig = {
   coveragePathIgnorePatterns: [
     'front-packages',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge',
-    'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/components/',
-    'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/pages/create-measurement-family/CreateMeasurementFamily.tsx',
-    'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/pages/create-unit/CreateUnit.tsx',
     'src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front/src/components/panel/announcement/Image.tsx',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/public/js/view',
     'src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/contexts',
@@ -54,12 +50,7 @@ const unitConfig = {
       statements: 100,
       functions: 100,
       lines: 100,
-    },
-    '**/Akeneo/Tool/Bundle/MeasureBundle/**': {
-      statements: 100,
-      functions: 100,
-      lines: 100,
-    },
+    }
   },
   setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
   setupFiles: [`${__dirname}/mocks.js`, `${__dirname}/fetchMock.ts`],
