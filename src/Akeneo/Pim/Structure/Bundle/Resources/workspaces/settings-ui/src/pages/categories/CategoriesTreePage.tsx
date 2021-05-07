@@ -70,7 +70,7 @@ const CategoriesTreePage: FC = () => {
     closeNewCategoryModal();
   };
 
-  const confirmDeleteCategory = async (identifier: number, label: string, onDelete: () => void, numberOfProducts: number) => {
+  const confirmDeleteCategory = async (identifier: number, label: string, numberOfProducts: number, onDelete: () => void) => {
     if (numberOfProducts > MAX_NUMBER_OF_PRODUCTS_TO_ALLOW_DELETE) {
       notify(
         NotificationLevel.INFO,

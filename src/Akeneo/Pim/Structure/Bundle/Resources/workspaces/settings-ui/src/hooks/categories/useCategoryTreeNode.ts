@@ -149,7 +149,8 @@ const useCategoryTreeNode = (id: number) => {
     [nodes]
   );
 
-  const deleteTreeNode = () => {
+  // Remove the node and its descendants when a category is deleted,
+  const onDeleteCategory = () => {
     if (!node || !node.parentId) {
       return;
     }
@@ -239,7 +240,7 @@ const useCategoryTreeNode = (id: number) => {
     forceReloadChildren,
     moveTo,
     getCategoryPosition,
-    deleteTreeNode,
+    onDeleteCategory,
     ...rest,
   };
 };

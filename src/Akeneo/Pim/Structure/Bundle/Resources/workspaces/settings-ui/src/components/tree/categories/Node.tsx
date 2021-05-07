@@ -15,7 +15,7 @@ type Props = {
   // @todo define onCategoryMoved arguments
   onCategoryMoved?: () => void;
   addCategory?: (parentCode: string, onCreate: () => void) => void;
-  deleteCategory?: (identifier: number, label: string, onDelete: () => void, numberOfProducts: number) => void;
+  deleteCategory?: (identifier: number, label: string, numberOfProducts: number, onDelete: () => void) => void;
 };
 
 const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory, sortable = false}) => {
@@ -32,7 +32,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
     getCategoryPosition,
     moveTarget,
     setMoveTarget,
-    deleteTreeNode,
+    onDeleteCategory,
   } = useCategoryTreeNode(id);
 
   const translate = useTranslate();
@@ -171,7 +171,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
               onClick={event => {
                 event.stopPropagation();
                 countProductsBeforeDeleteCategory((nbProducts: number) =>
-                  deleteCategory(id, label, deleteTreeNode, nbProducts)
+                  deleteCategory(id, label, nbProducts, onDeleteCategory)
                 );
               }}
             >
