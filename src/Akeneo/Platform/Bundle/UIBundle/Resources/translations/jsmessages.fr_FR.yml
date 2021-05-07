@@ -305,6 +305,7 @@ pim_title:
   pim_enrich_job_tracker_show: Traqueur de processus | Voir la tâche
   pim_enrich_mass_edit_action: Edition en masse
   pim_analytics_system_info_index: Informations système
+  pim_settings_index: Paramètres
 pim_menu:
   tab:
     activity: Activité
@@ -320,7 +321,7 @@ pim_menu:
     attribute_group: Groupes d'attributs
     channel: Canaux
     currency: Devises
-    dashboard: Tableau de bord
+    dashboard: Tableau de bord des activités
     family: Familles
     group: Groupes
     group_type: Types de groupes
@@ -341,7 +342,8 @@ pim_menu:
     activity: Centre d'activité
     system: Navigation système
     user: Navigation utilisateurs
-    settings: Navigation paramètres
+    settings:
+      product: Paramètres produit
     product: Navigation produit
     product_infos: Infos produit
   user:
@@ -353,3 +355,15 @@ pim_notification:
     export: Export
     quick_export: Export rapide
     mass_edit: Edition en masse
+pim_settings:
+  product_settings: Paramètres produit
+  count:
+    locales: Vous avez {{ count }} locales activées
+    currencies: Vous avez {{ count }} devises activées
+    attribute_groups: Vous avez {{ count }} groupes d'attributs
+    attributes: Vous avez {{ count }} attributs
+    families: Vous avez {{ count }} familles
+    association_types: Vous avez {{ count }} types d'association
+    group_types: Vous avez {{ count }} types de groupe
+    groups: Vous avez {{ count }} groupes
+    rules: Vous avez {{ count }} règles activées

@@ -3,4 +3,3 @@
 export * from './dependencies';
 export * from './tools';
 export * from './DependenciesProvider';
-export * from './PimView';

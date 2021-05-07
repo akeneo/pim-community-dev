@@ -147,7 +147,7 @@ pim_import_export:
       file_path: Dateipfad
   widget:
     last_operations:
-      empty: Keine Vorgänge gefunden
+      empty: Momentan ist keine Operation vorhanden.
       date: Datum
       profile_name: Profilname
       details: Details

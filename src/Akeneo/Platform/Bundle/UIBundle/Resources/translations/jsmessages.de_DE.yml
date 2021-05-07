@@ -305,6 +305,7 @@ pim_title:
   pim_enrich_job_tracker_show: Prozess-Tracker | Job anzeigen
   pim_enrich_mass_edit_action: Massenbearbeitung
   pim_analytics_system_info_index: Systeminformationen
+  pim_settings_index: Einstellungen
 pim_menu:
   tab:
     activity: Übersicht
@@ -320,7 +321,7 @@ pim_menu:
     attribute_group: Attributgruppen
     channel: Ausgabekanäle
     currency: Währungen
-    dashboard: Dashboard
+    dashboard: Aktivitäts-Dashboard
     family: Produktfamilien
     group: Gruppen
     group_type: Gruppentypen
@@ -341,7 +342,9 @@ pim_menu:
     activity: Navigation Übersicht
     system: Navigation System
     user: Navigation Benutzerverwaltung
-    settings: Navigation Einstellung
+    settings:
+      product: Artikel Einstellungen
+      catalog: Katalogeinstellungen
     product: Navigation Produkte
     product_infos: Produktinformationen
   user:
@@ -353,3 +356,20 @@ pim_notification:
     export: Export
     quick_export: Schnellexport
     mass_edit: Massenbearbeitung
+pim_settings:
+  settings_menu: Konfigurationsmenü
+  catalog_settings: Katalogeinstellungen
+  product_settings: Artikel Einstellungen
+  count:
+    categories: Du hast {{ countTrees }} Bäume und {{ countCategories }} Kategorien
+    channels: Du hast {{ count }} Kanäle
+    locales: Sie haben {{ count }} Gebietsschemata aktiviert
+    currencies: Sie haben {{ count }} Währungen aktiviert
+    attribute_groups: Sie haben {{ count }} Attributgruppen
+    attributes: Sie haben {{ count }} Attribute
+    families: Du hast {{ count }} Familien
+    measurements: Sie haben {{ count }} Messungen
+    association_types: Sie haben {{ count }} Verbindungstypen
+    group_types: Sie haben {{ count }} Gruppentypen
+    groups: Du hast {{ count }} Gruppen
+    rules: Du hast {{ count }} aktivierte Regeln
