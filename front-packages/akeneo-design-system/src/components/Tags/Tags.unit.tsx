@@ -5,11 +5,11 @@ import {render, screen} from '../../storybook/test-util';
 test('it renders its children properly', () => {
   render(
     <Tags>
-      <Tag color="red">yolo</Tag>
+      <Tag color="red">Red Tag</Tag>
     </Tags>
   );
 
-  expect(screen.getByText('yolo')).toBeInTheDocument();
+  expect(screen.getByText('Red Tag')).toBeInTheDocument();
 });
 
 test('it fails when there are invalid children', () => {
@@ -19,7 +19,7 @@ test('it fails when there are invalid children', () => {
     render(
       <Tags>
         tata
-        <span>yolo</span>
+        <span>span tag</span>
       </Tags>
     );
   }).toThrowError();
@@ -27,9 +27,6 @@ test('it fails when there are invalid children', () => {
   mockConsole.mockRestore();
 });
 
-// Those tests should pass directly if you follow the contributing guide.
-// If you add required props to your Component, these tests will fail
-// and you will need to add these required props here as well
 test('Tags supports forwardRef', () => {
   const ref = {current: null};
 

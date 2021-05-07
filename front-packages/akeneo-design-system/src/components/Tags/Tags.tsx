@@ -1,6 +1,6 @@
-import React, {Ref, ReactNode, isValidElement, ReactElement} from 'react';
+import React, {Ref, ReactNode, isValidElement} from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps} from 'theme';
+import {AkeneoThemedProps, getFontSize} from 'theme';
 
 /**
  * The colors defined in this file are the alternative ones
@@ -8,9 +8,11 @@ import {AkeneoThemedProps} from 'theme';
  * https://www.notion.so/akeneo/Alternative-colors-0f5283c1b02f4fd4a418f1e20f2efa99
  * Those colors will most likely only be used with the tags components
  */
-const Tag = styled.li<
-  {tint: 'green' | 'blue' | 'dark_blue' | 'purple' | 'dark_purple' | 'yellow' | 'red'} & AkeneoThemedProps
->`
+type Tint = 'green' | 'blue' | 'dark_blue' | 'purple' | 'dark_purple' | 'yellow' | 'red';
+type TagProps = {
+  tint: Tint;
+} & React.HTMLAttributes<HTMLLIElement>;
+const Tag = styled.li<TagProps & AkeneoThemedProps>`
   border: 1px solid;
   border-color: ${({tint}) =>
     ({
@@ -47,7 +49,7 @@ const Tag = styled.li<
   padding: 0 6px;
   display: inline-block;
   border-radius: 2px;
-  font-size: 11px;
+  font-size: ${getFontSize('small')};
   margin: 0 10px 10px 0;
   text-transform: uppercase;
   overflow: hidden;
@@ -91,10 +93,10 @@ const Tags = React.forwardRef<HTMLUListElement, TagsProps>(
     return (
       <TagsContainer ref={forwardedRef} {...rest}>
         {React.Children.map(children, child => {
-          if (isValidElement(child) && child.type === Tag) {
-            const tag = child as ReactElement<{title?: string; children?: ReactNode}, 'Tag'>;
+          if (isValidElement<TagProps>(child) && child.type === Tag) {
+            //const tag = child as ReactElement<{title?: string; children?: ReactNode}, 'Tag'>;
             return React.cloneElement(child, {
-              title: tag.props?.title || getTitle(tag.props?.children),
+              title: child.props?.title || getTitle(child.props?.children),
             });
           }
           throw new Error('A Tags element can only have Tag children');
