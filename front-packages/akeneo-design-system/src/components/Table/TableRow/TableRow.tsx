@@ -108,3 +108,4 @@ const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
 );
 
 export {TableRow};
+export type {TableRowProps};
