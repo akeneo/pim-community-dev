@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class MetricFilterType extends AbstractType
 {
     /** @staticvar string */
-    const NAME = 'pim_type_metric_filter';
+    public const NAME = 'pim_type_metric_filter';
 
     /**
      * {@inheritdoc}

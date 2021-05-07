@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EntityFilterType extends AbstractChoiceType
 {
-    const NAME = 'oro_type_entity_filter';
+    public const NAME = 'oro_type_entity_filter';
 
     /**
      * {@inheritDoc}

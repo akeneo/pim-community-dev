@@ -17,10 +17,10 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 class LengthGuesser implements ConstraintGuesserInterface
 {
     /** @staticvar int */
-    const TEXT_FIELD_LENGTH = 255;
+    public const TEXT_FIELD_LENGTH = 255;
 
     /** @staticvar int */
-    const TEXTAREA_FIELD_LENGTH = 65535;
+    public const TEXTAREA_FIELD_LENGTH = 65535;
 
     /**
      * {@inheritdoc}

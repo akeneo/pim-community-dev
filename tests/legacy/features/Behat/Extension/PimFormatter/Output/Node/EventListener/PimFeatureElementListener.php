@@ -90,7 +90,7 @@ final class PimFeatureElementListener implements EventListener
      * @param Formatter $formatter
      * @param Event     $event
      */
-    public function printFeatureOnAfterEvent(Formatter $formatter, Event $event) : void
+    public function printFeatureOnAfterEvent(Formatter $formatter, Event $event): void
     {
         if (!$event instanceof AfterFeatureTested) {
             return;
@@ -117,7 +117,7 @@ final class PimFeatureElementListener implements EventListener
      *
      * @param ScenarioTested $event
      */
-    private function captureScenarioEvent(ScenarioTested $event) : void
+    private function captureScenarioEvent(ScenarioTested $event): void
     {
         if ($event instanceof AfterScenarioTested) {
             $this->afterScenarioTestedEvents[$event->getScenario()->getLine()] = [
@@ -134,7 +134,7 @@ final class PimFeatureElementListener implements EventListener
      *
      * @param Event $event
      */
-    private function captureFeatureOnBeforeEvent(Event $event) : void
+    private function captureFeatureOnBeforeEvent(Event $event): void
     {
         if (!$event instanceof BeforeFeatureTested) {
             return;
@@ -148,7 +148,7 @@ final class PimFeatureElementListener implements EventListener
      *
      * @param StepTested $event
      */
-    private function captureStepEvent(StepTested $event) : void
+    private function captureStepEvent(StepTested $event): void
     {
         if ($event instanceof AfterStepTested) {
             $this->afterStepTestedEvents[$event->getStep()->getLine()] = $event;
@@ -186,7 +186,7 @@ final class PimFeatureElementListener implements EventListener
      * So, when there is an exception caught into the teardown of a step, we add a failure node.
      *
      */
-    private function markScenarioAsFailedWhenThereAreTeardownExceptions(array $stepEvents, Formatter $formatter):void
+    private function markScenarioAsFailedWhenThereAreTeardownExceptions(array $stepEvents, Formatter $formatter): void
     {
         $message = 'This scenario has an error not properly catched by behat. It is probably a JS error. Exception: "%s".';
         $failedSteps = array_filter($stepEvents, function (AfterStepTested $afterStepTested) {

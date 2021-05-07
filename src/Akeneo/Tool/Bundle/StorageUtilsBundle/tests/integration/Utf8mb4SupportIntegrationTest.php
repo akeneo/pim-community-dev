@@ -14,7 +14,7 @@ use Doctrine\DBAL\Schema\AbstractSchemaManager;
  */
 class Utf8mb4SupportIntegrationTest extends TestCase
 {
-    const TEST_TABLE_NAME = "test_integration_storageutils_utf8mb4";
+    public const TEST_TABLE_NAME = "test_integration_storageutils_utf8mb4";
 
     /** @var AbstractSchemaManager */
     protected $schemaManager;
@@ -29,7 +29,7 @@ class Utf8mb4SupportIntegrationTest extends TestCase
         $this->schemaManager = $this->connection->getSchemaManager();
     }
 
-    public function testUtf8mb4Support() : void
+    public function testUtf8mb4Support(): void
     {
         if ($this->schemaManager->tablesExist([self::TEST_TABLE_NAME])) {
             $this->schemaManager->dropTable(self::TEST_TABLE_NAME);
@@ -70,7 +70,7 @@ class Utf8mb4SupportIntegrationTest extends TestCase
         $this->assertEquals("𝌆", $resultFromDb);
     }
 
-    public function tearDown() : void
+    public function tearDown(): void
     {
         if ($this->schemaManager->tablesExist([self::TEST_TABLE_NAME])) {
             $this->schemaManager->dropTable(self::TEST_TABLE_NAME);

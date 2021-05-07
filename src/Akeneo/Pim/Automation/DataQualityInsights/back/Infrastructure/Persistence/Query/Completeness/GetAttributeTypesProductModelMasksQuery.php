@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;

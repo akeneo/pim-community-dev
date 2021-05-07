@@ -19,7 +19,7 @@ final class StorageEvents
      *
      * @staticvar string
      */
-    const PRE_REMOVE = 'akeneo.storage.pre_remove';
+    public const PRE_REMOVE = 'akeneo.storage.pre_remove';
 
     /**
      * This event is thrown after an object gets removed.
@@ -29,7 +29,7 @@ final class StorageEvents
      *
      * @staticvar string
      */
-    const POST_REMOVE = 'akeneo.storage.post_remove';
+    public const POST_REMOVE = 'akeneo.storage.post_remove';
 
     /**
      * This event is thrown before several objects get removed.
@@ -39,7 +39,7 @@ final class StorageEvents
      *
      * @staticvar string
      */
-    const PRE_REMOVE_ALL = 'akeneo.storage.pre_remove_all';
+    public const PRE_REMOVE_ALL = 'akeneo.storage.pre_remove_all';
 
     /**
      * This event is thrown after several objects have been removed.
@@ -49,7 +49,7 @@ final class StorageEvents
      *
      * @staticvar string
      */
-    const POST_REMOVE_ALL = 'akeneo.storage.post_remove_all';
+    public const POST_REMOVE_ALL = 'akeneo.storage.post_remove_all';
 
     /**
      * This event is thrown before an object gets saved.
@@ -59,7 +59,7 @@ final class StorageEvents
      *
      * @staticvar string
      */
-    const PRE_SAVE = 'akeneo.storage.pre_save';
+    public const PRE_SAVE = 'akeneo.storage.pre_save';
 
     /**
      * This event is thrown after an object gets saved.
@@ -69,7 +69,7 @@ final class StorageEvents
      *
      * @staticvar string
      */
-    const POST_SAVE = 'akeneo.storage.post_save';
+    public const POST_SAVE = 'akeneo.storage.post_save';
 
     /**
      * This event is thrown before several objects get saved.
@@ -79,7 +79,7 @@ final class StorageEvents
      *
      * @staticvar string
      */
-    const PRE_SAVE_ALL = 'akeneo.storage.pre_save_all';
+    public const PRE_SAVE_ALL = 'akeneo.storage.pre_save_all';
 
     /**
      * This event is thrown after several objects have been saved.
@@ -89,5 +89,5 @@ final class StorageEvents
      *
      * @staticvar string
      */
-    const POST_SAVE_ALL = 'akeneo.storage.post_save_all';
+    public const POST_SAVE_ALL = 'akeneo.storage.post_save_all';
 }

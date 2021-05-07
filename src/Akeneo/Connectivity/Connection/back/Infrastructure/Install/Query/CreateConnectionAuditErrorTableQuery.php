@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Install\Query;
@@ -10,7 +11,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Install\Query;
  */
 final class CreateConnectionAuditErrorTableQuery
 {
-    const QUERY = <<<SQL
+    public const QUERY = <<<SQL
 CREATE TABLE IF NOT EXISTS akeneo_connectivity_connection_audit_error(
     connection_code VARCHAR(100) NOT NULL,
     error_datetime DATETIME NOT NULL,

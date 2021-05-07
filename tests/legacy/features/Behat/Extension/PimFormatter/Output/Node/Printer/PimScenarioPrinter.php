@@ -60,7 +60,7 @@ final class PimScenarioPrinter
      * @param ScenarioLikeInterface $scenario
      * @param TestResult            $result
      */
-    public function printOpenTag(Formatter $formatter, FeatureNode $feature, ScenarioLikeInterface $scenario, TestResult $result) : void
+    public function printOpenTag(Formatter $formatter, FeatureNode $feature, ScenarioLikeInterface $scenario, TestResult $result): void
     {
         $fileAndLine = sprintf('%s:%s', $this->relativizePaths($feature->getFile()), $scenario->getLine());
 

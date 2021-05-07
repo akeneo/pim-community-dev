@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class FixtureJobLoader
 {
     /** @staticvar */
-    const JOB_TYPE = 'fixtures';
+    public const JOB_TYPE = 'fixtures';
 
     /** @var JobInstancesBuilder */
     private $jobInstancesBuilder;

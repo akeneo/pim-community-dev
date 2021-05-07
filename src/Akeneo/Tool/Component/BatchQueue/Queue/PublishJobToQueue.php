@@ -144,7 +144,7 @@ class PublishJobToQueue
         return $jobParameters;
     }
 
-    private function validateJobParameters(JobInstance $jobInstance, JobParameters $jobParameters, string $code) : void
+    private function validateJobParameters(JobInstance $jobInstance, JobParameters $jobParameters, string $code): void
     {
         // We merge the JobInstance from the JobManager EntityManager to the DefaultEntityManager
         // in order to be able to have a working UniqueEntity validation

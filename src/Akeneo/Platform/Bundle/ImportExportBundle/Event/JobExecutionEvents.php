@@ -19,7 +19,7 @@ final class JobExecutionEvents
      *
      * @staticvar string
      */
-    const PRE_SHOW = 'pim_import_export.job_execution.pre_show';
+    public const PRE_SHOW = 'pim_import_export.job_execution.pre_show';
 
     /**
      * This event is thrown before the log of a job execution is downloaded
@@ -29,7 +29,7 @@ final class JobExecutionEvents
      *
      * @staticvar string
      */
-    const PRE_DOWNLOAD_LOG = 'pim_import_export.job_execution.pre_dl_log';
+    public const PRE_DOWNLOAD_LOG = 'pim_import_export.job_execution.pre_dl_log';
 
     /**
      * This event is thrown before the files of a job execution is downloaded
@@ -39,5 +39,5 @@ final class JobExecutionEvents
      *
      * @staticvar string
      */
-    const PRE_DOWNLOAD_FILES = 'pim_import_export.job_execution.pre_dl_files';
+    public const PRE_DOWNLOAD_FILES = 'pim_import_export.job_execution.pre_dl_files';
 }

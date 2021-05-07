@@ -21,7 +21,7 @@ class OrmSelectorExtension extends AbstractExtension
     /**
      * @var string
      */
-    const COLUMN_SELECTOR_PATH = 'selector';
+    public const COLUMN_SELECTOR_PATH = 'selector';
 
     /**
      * @var SelectorInterface[]

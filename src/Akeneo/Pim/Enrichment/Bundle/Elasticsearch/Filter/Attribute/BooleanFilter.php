@@ -47,7 +47,7 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($attribute, $value);
         }
-        
+
 
         $attributePath = $this->getAttributePath($attribute, $locale, $channel);
 

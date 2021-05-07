@@ -78,7 +78,7 @@ class ListChildrenCategoriesWithCountNotIncludingSubCategories implements Query\
         array $categoryIdsInPath,
         string $translationLocaleCode,
         ?int $categoryIdToFilterWith
-    ) : array {
+    ): array {
         $parentCategoryId = array_shift($categoryIdsInPath);
         $subchildCategoryId = $categoryIdsInPath[0] ?? null;
 
@@ -89,9 +89,9 @@ class ListChildrenCategoriesWithCountNotIncludingSubCategories implements Query\
         $categories = [];
         foreach ($categoriesWithCount as $category) {
             $childrenCategoriesToExpand = null !== $subchildCategoryId && $subchildCategoryId === (int) $category['child_id'] ?
-                $this->getRecursivelyCategories($categoryIdsInPath, $translationLocaleCode, $categoryIdToFilterWith): [];
+                $this->getRecursivelyCategories($categoryIdsInPath, $translationLocaleCode, $categoryIdToFilterWith) : [];
 
-            $isUsedAsFilter = null !== $categoryIdToFilterWith ? (int) $category['child_id'] === $categoryIdToFilterWith: false;
+            $isUsedAsFilter = null !== $categoryIdToFilterWith ? (int) $category['child_id'] === $categoryIdToFilterWith : false;
 
             $categories[] = new ChildCategory(
                 (int) $category['child_id'],

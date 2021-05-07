@@ -26,12 +26,12 @@ use Doctrine\Common\Collections\Collection;
  */
 class JobInstance
 {
-    const STATUS_READY = 0;
-    const STATUS_DRAFT = 1;
-    const STATUS_IN_PROGRESS = 2;
+    public const STATUS_READY = 0;
+    public const STATUS_DRAFT = 1;
+    public const STATUS_IN_PROGRESS = 2;
 
-    const TYPE_IMPORT = 'import';
-    const TYPE_EXPORT = 'export';
+    public const TYPE_IMPORT = 'import';
+    public const TYPE_EXPORT = 'export';
 
     /** @var integer */
     protected $id;

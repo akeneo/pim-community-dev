@@ -14,17 +14,17 @@ class OrmSorterExtension extends AbstractExtension
     /**
      * Query param
      */
-    const SORTERS_ROOT_PARAM = '_sort_by';
+    public const SORTERS_ROOT_PARAM = '_sort_by';
 
     /**
      * Ascending sorting direction
      */
-    const DIRECTION_ASC = "ASC";
+    public const DIRECTION_ASC = "ASC";
 
     /**
      * Descending sorting direction
      */
-    const DIRECTION_DESC = "DESC";
+    public const DIRECTION_DESC = "DESC";
 
     /**
      * {@inheritDoc}
@@ -147,7 +147,7 @@ class OrmSorterExtension extends AbstractExtension
         $sorters = $this->getSorters($config);
 
         $defaultSorters = $config->offsetGetByPath(Configuration::DEFAULT_SORTERS_PATH, []);
-        $sortBy = $this->requestParams->get(self::SORTERS_ROOT_PARAM) ? : $defaultSorters;
+        $sortBy = $this->requestParams->get(self::SORTERS_ROOT_PARAM) ?: $defaultSorters;
 
         // if default sorter was not specified, just take first sortable column
         if (!$sortBy && $sorters) {

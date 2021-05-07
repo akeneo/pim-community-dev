@@ -136,7 +136,7 @@ final class Row
         int $technicalId,
         ?string $parentCode,
         WriteValueCollection $values
-    ):self {
+    ): self {
         return new self(
             $identifier,
             $familyCode,
@@ -169,7 +169,7 @@ final class Row
         array $childrenCompleteness,
         ?string $parent,
         WriteValueCollection $values
-    ):self {
+    ): self {
         return new self(
             $code,
             $familyCode,

@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\TranslationBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;

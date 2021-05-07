@@ -17,7 +17,7 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator implements Ad
 {
     use SpinCapableTrait;
 
-    const NOT_FOUND_MESSAGE = 'No matches found';
+    public const NOT_FOUND_MESSAGE = 'No matches found';
 
     /**
      * @var string baseClass

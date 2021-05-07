@@ -9,13 +9,13 @@ class AbstractExtensionTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Testing class name
      */
-    const TESTING_CLASS = AbstractExtension::class;
+    public const TESTING_CLASS = AbstractExtension::class;
 
     /**#@+
      * Test parameters
      */
-    const TEST_TEMPLATE_NAME = 'test_template_name';
-    const TEST_BLOCK_HTML = 'test_block_html';
+    public const TEST_TEMPLATE_NAME = 'test_template_name';
+    public const TEST_BLOCK_HTML = 'test_block_html';
     /**#@-*/
 
     /**

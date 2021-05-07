@@ -24,8 +24,8 @@ use Twig\Environment;
  */
 class ProductPdfRenderer implements RendererInterface
 {
-    const PDF_FORMAT = 'pdf';
-    const THUMBNAIL_FILTER = 'pdf_thumbnail';
+    public const PDF_FORMAT = 'pdf';
+    public const THUMBNAIL_FILTER = 'pdf_thumbnail';
 
     protected Environment $templating;
     protected PdfBuilderInterface $pdfBuilder;

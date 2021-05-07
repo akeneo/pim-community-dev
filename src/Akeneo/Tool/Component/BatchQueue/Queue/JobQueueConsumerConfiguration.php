@@ -51,9 +51,9 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
 
     /** @var array */
     private $listSupportedSettings = ["whitelistedJobInstanceCodes", "blacklistedJobInstanceCodes", "queueCheckInterval", "timeToLive"];
-    
 
-    public function setWhitelistedJobInstanceCodes(array $codes): Self
+
+    public function setWhitelistedJobInstanceCodes(array $codes): self
     {
         if (empty($codes)) {
             return $this;
@@ -74,7 +74,7 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
         return $this;
     }
 
-    public function setBlacklistedJobInstanceCodes(array $codes): Self
+    public function setBlacklistedJobInstanceCodes(array $codes): self
     {
         if (empty($codes)) {
             return $this;
@@ -95,14 +95,14 @@ class JobQueueConsumerConfiguration implements \ArrayAccess
         return $this;
     }
 
-    public function setQueueCheckInterval(int $interval): Self
+    public function setQueueCheckInterval(int $interval): self
     {
         $this->queueCheckInterval = $interval;
 
         return $this;
     }
 
-    public function setTimeToLive(int $iterations): Self
+    public function setTimeToLive(int $iterations): self
     {
         $this->timeToLive = $iterations;
 

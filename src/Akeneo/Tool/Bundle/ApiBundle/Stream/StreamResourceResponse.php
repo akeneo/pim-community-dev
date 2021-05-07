@@ -29,7 +29,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 class StreamResourceResponse
 {
-    const CONTENT_TYPE = 'application/vnd.akeneo.collection+json';
+    public const CONTENT_TYPE = 'application/vnd.akeneo.collection+json';
 
     /** @var HttpKernelInterface */
     protected $httpKernel;

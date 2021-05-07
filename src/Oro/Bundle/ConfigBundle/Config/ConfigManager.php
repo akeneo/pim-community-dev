@@ -9,8 +9,8 @@ use Symfony\Component\Form\FormInterface;
 
 class ConfigManager
 {
-    const SECTION_VIEW_SEPARATOR = '___';
-    const SECTION_MODEL_SEPARATOR = '.';
+    public const SECTION_VIEW_SEPARATOR = '___';
+    public const SECTION_MODEL_SEPARATOR = '.';
 
     /**
      * @var ObjectManager
@@ -100,7 +100,7 @@ class ConfigManager
             $value->setValue($newItemValue);
 
             $config->getValues()->add($value);
-            
+
             $this->storedSettings[$entityName][$entityId][$newItemKey[0]][$newItemKey[1]] = $newItemValue;
         }
 

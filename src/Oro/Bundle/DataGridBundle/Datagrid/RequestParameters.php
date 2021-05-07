@@ -7,8 +7,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class RequestParameters
 {
-    const ADDITIONAL_PARAMETERS = '_parameters';
-    const DEFAULT_ROOT_PARAM = 'grid';
+    public const ADDITIONAL_PARAMETERS = '_parameters';
+    public const DEFAULT_ROOT_PARAM = 'grid';
 
     /** @var string */
     protected $rootParam;
@@ -56,7 +56,7 @@ class RequestParameters
             $parameters[$type] = $value;
         }
 
-        $this->getRequest()->query->set($this->rootParam ? : self::DEFAULT_ROOT_PARAM, $parameters);
+        $this->getRequest()->query->set($this->rootParam ?: self::DEFAULT_ROOT_PARAM, $parameters);
     }
 
     /**
@@ -84,7 +84,7 @@ class RequestParameters
      */
     public function getRootParameterValue()
     {
-        return $this->getRequest()->get($this->rootParam ? : self::DEFAULT_ROOT_PARAM, []);
+        return $this->getRequest()->get($this->rootParam ?: self::DEFAULT_ROOT_PARAM, []);
     }
 
     /**

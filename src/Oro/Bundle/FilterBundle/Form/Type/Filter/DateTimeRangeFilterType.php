@@ -10,9 +10,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DateTimeRangeFilterType extends AbstractType
 {
-    const TYPE_BETWEEN = DateRangeFilterType::TYPE_BETWEEN;
-    const TYPE_NOT_BETWEEN = DateRangeFilterType::TYPE_NOT_BETWEEN;
-    const NAME = 'oro_type_datetime_range_filter';
+    public const TYPE_BETWEEN = DateRangeFilterType::TYPE_BETWEEN;
+    public const TYPE_NOT_BETWEEN = DateRangeFilterType::TYPE_NOT_BETWEEN;
+    public const NAME = 'oro_type_datetime_range_filter';
 
     /**
      * {@inheritDoc}

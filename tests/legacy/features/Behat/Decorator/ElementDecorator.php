@@ -48,7 +48,7 @@ abstract class ElementDecorator
 
         return $element;
     }
-    
+
     /**
      * Get the <body> NodeElement
      *

@@ -27,7 +27,7 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
  */
 final class DefaultAttributeValidation implements DocumentationBuilderInterface
 {
-    const SUPPORTED_CONSTRAINTS_CODES = [
+    public const SUPPORTED_CONSTRAINTS_CODES = [
         Boolean::NOT_BOOLEAN_ERROR,
         IsNumeric::IS_NUMERIC,
         IsString::IS_STRING,

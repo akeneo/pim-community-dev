@@ -55,7 +55,7 @@ SQL;
         } else {
             return [];
         }
-        
+
         $valuesOfSiblings = [];
         $rows = $this->connection->executeQuery(
             $sql,

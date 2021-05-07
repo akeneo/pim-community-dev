@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class Boolean extends Constraint
 {
-    const NOT_BOOLEAN_ERROR = '541d44c2-0cec-4b43-87f7-5df101b2a951';
+    public const NOT_BOOLEAN_ERROR = '541d44c2-0cec-4b43-87f7-5df101b2a951';
 
     /** @var string */
     public $message = 'The {{ attribute_code }} attribute requires a boolean value (true or false) as data, a {{ given_type }} was detected.';

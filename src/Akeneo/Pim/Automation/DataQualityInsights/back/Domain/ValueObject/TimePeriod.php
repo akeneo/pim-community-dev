@@ -10,10 +10,10 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
  */
 final class TimePeriod
 {
-    const DAILY = 'daily';
-    const WEEKLY = 'weekly';
-    const MONTHLY = 'monthly';
-    const YEARLY = 'yearly';
+    public const DAILY = 'daily';
+    public const WEEKLY = 'weekly';
+    public const MONTHLY = 'monthly';
+    public const YEARLY = 'yearly';
 
     private const ALLOWED_VALUES = [
         self::DAILY,

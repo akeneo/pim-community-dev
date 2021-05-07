@@ -9,7 +9,7 @@ class DateTimeRangeFilter extends AbstractDateFilter
     /**
      * DateTime object as string format
      */
-    const DATETIME_FORMAT = 'Y-m-d H:i:s';
+    public const DATETIME_FORMAT = 'Y-m-d H:i:s';
 
     /**
      * {@inheritdoc}

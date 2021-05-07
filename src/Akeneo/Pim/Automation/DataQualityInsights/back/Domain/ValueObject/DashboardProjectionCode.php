@@ -10,7 +10,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
  */
 final class DashboardProjectionCode
 {
-    const CATALOG = 'catalog';
+    public const CATALOG = 'catalog';
 
     /** @var string */
     private $code;

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Akeneo\Tool\Component\Connector\Exception;
 
 /**

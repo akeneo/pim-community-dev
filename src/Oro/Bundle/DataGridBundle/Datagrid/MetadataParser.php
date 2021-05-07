@@ -15,7 +15,7 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class MetadataParser
 {
-    const ROUTE = 'oro_datagrid_index';
+    public const ROUTE = 'oro_datagrid_index';
 
     /** @var FragmentHandler */
     private $fragmentHandler;

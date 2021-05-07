@@ -12,5 +12,5 @@ final class AttributeGroupEvents
     /**
      * This event is dispatched after an attribute group is created or updated by the UI.
      */
-    const POST_SAVE = 'pim_enrich.attribute_group.post_save';
+    public const POST_SAVE = 'pim_enrich.attribute_group.post_save';
 }

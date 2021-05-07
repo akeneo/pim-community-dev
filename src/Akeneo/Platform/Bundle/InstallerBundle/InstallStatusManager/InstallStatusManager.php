@@ -45,7 +45,7 @@ class InstallStatusManager
      *
      * @return \DateTime
      */
-    public function getPimInstallDateTime() : ?\DateTime
+    public function getPimInstallDateTime(): ?\DateTime
     {
         $sql = 'SELECT create_time FROM INFORMATION_SCHEMA.TABLES
                 WHERE table_schema = :database_name
@@ -80,7 +80,7 @@ class InstallStatusManager
     /**
     * @return bool Return a boolean about installation state of the PIM
     */
-    public function isPimInstalled() : bool
+    public function isPimInstalled(): bool
     {
         try {
             $this->getPimInstallDateTime();

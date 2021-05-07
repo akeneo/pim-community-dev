@@ -15,9 +15,9 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterLocalizersPass implements CompilerPassInterface
 {
-    const LOCALIZATION_LOCALIZER_REGISTRY = 'pim_catalog.localization.localizer.registry';
+    public const LOCALIZATION_LOCALIZER_REGISTRY = 'pim_catalog.localization.localizer.registry';
 
-    const LOCALIZATION_LOCALIZER_TAG = 'pim_catalog.localization.localizer';
+    public const LOCALIZATION_LOCALIZER_TAG = 'pim_catalog.localization.localizer';
 
     /**
      * {@inheritdoc}

@@ -15,8 +15,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    const FIELD_ASSOCIATIONS = 'associations';
-    const FIELD_QUANTIFIED_ASSOCIATIONS = 'quantified_associations';
+    public const FIELD_ASSOCIATIONS = 'associations';
+    public const FIELD_QUANTIFIED_ASSOCIATIONS = 'quantified_associations';
 
     /** @var NormalizerInterface */
     private $propertiesNormalizer;

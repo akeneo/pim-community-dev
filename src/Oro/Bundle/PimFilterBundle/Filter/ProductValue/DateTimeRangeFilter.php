@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class DateTimeRangeFilter extends AbstractDateFilter
 {
-    const DATETIME_FORMAT = 'Y-m-d H:i:s';
+    public const DATETIME_FORMAT = 'Y-m-d H:i:s';
 
     /** @var UserContext */
     private $userContext;

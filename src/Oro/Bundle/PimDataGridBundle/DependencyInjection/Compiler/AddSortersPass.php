@@ -16,10 +16,10 @@ use Symfony\Component\DependencyInjection\Reference;
 class AddSortersPass implements CompilerPassInterface
 {
     /** @staticvar string */
-    const SORTER_EXTENSION_ID = 'pim_datagrid.extension.sorter';
+    public const SORTER_EXTENSION_ID = 'pim_datagrid.extension.sorter';
 
     /** @staticvar string */
-    const TAG_NAME = 'pim_datagrid.extension.sorter';
+    public const TAG_NAME = 'pim_datagrid.extension.sorter';
 
     /**
      * {@inheritdoc}

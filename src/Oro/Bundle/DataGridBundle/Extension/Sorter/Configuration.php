@@ -8,10 +8,10 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    const SORTERS_PATH = '[sorters]';
-    const COLUMNS_PATH = '[sorters][columns]';
-    const MULTISORT_PATH = '[sorters][multiple_sorting]';
-    const DEFAULT_SORTERS_PATH = '[sorters][default]';
+    public const SORTERS_PATH = '[sorters]';
+    public const COLUMNS_PATH = '[sorters][columns]';
+    public const MULTISORT_PATH = '[sorters][multiple_sorting]';
+    public const DEFAULT_SORTERS_PATH = '[sorters][default]';
 
     /**
      * {@inheritDoc}

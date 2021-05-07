@@ -19,7 +19,7 @@ final class JobProfileEvents
      *
      * @staticvar string
      */
-    const PRE_EDIT = 'pim_import_export.job_profile.pre_edit';
+    public const PRE_EDIT = 'pim_import_export.job_profile.pre_edit';
 
     /**
      * This event is thrown after a job profile has been edited
@@ -29,7 +29,7 @@ final class JobProfileEvents
      *
      * @staticvar string
      */
-    const POST_EDIT = 'pim_import_export.job_profile.post_edit';
+    public const POST_EDIT = 'pim_import_export.job_profile.post_edit';
 
     /**
      * This event is thrown before a job profile is executed
@@ -39,7 +39,7 @@ final class JobProfileEvents
      *
      * @staticvar string
      */
-    const PRE_EXECUTE = 'pim_import_export.job_profile.pre_execute';
+    public const PRE_EXECUTE = 'pim_import_export.job_profile.pre_execute';
 
     /**
      * This event is thrown after a job profile has been executed
@@ -49,7 +49,7 @@ final class JobProfileEvents
      *
      * @staticvar string
      */
-    const POST_EXECUTE = 'pim_import_export.job_profile.post_execute';
+    public const POST_EXECUTE = 'pim_import_export.job_profile.post_execute';
 
     /**
      * This event is thrown before a job profile is removed
@@ -59,7 +59,7 @@ final class JobProfileEvents
      *
      * @staticvar string
      */
-    const PRE_REMOVE = 'pim_import_export.job_profile.pre_remove';
+    public const PRE_REMOVE = 'pim_import_export.job_profile.pre_remove';
 
     /**
      * This event is thrown before a job profile is shown
@@ -69,5 +69,5 @@ final class JobProfileEvents
      *
      * @staticvar string
      */
-    const PRE_SHOW = 'pim_import_export.job_profile.pre_show';
+    public const PRE_SHOW = 'pim_import_export.job_profile.pre_show';
 }

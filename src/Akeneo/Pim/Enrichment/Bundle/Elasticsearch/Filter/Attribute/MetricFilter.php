@@ -21,7 +21,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    const PATH_SUFFIX = 'base_data';
+    public const PATH_SUFFIX = 'base_data';
 
     /** @var MeasureManager */
     protected $measureManager;

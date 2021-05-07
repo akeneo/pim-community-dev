@@ -262,7 +262,7 @@ class SaveMeasurementFamiliesAction
 
     private function saveMeasurementFamilyCommand(array $normalizedMeasurementFamily): SaveMeasurementFamilyCommand
     {
-        $saveMeasurementFamilyCommand = new SaveMeasurementFamilyCommand;
+        $saveMeasurementFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveMeasurementFamilyCommand->code = $normalizedMeasurementFamily['code'];
         $saveMeasurementFamilyCommand->standardUnitCode = $normalizedMeasurementFamily['standard_unit_code'];
         $saveMeasurementFamilyCommand->labels = $normalizedMeasurementFamily['labels'] ?? [];

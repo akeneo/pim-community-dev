@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class FileController
 {
-    const DEFAULT_IMAGE_KEY = '__default_image__';
+    public const DEFAULT_IMAGE_KEY = '__default_image__';
 
     /** @var ImagineController */
     protected $imagineController;

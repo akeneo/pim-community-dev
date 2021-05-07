@@ -7,7 +7,7 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 
 class BooleanFilter extends ChoiceFilter
 {
-    const NULLABLE_KEY = 'nullable';
+    public const NULLABLE_KEY = 'nullable';
 
     /**
      * {@inheritdoc}

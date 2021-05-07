@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Channel\Bundle\Storage\Orm;
@@ -69,7 +70,7 @@ final class ChannelSaver implements ChannelSaverInterface
         $this->dispatchChannelEvents($data);
     }
 
-    private function formatDataOptionsAndEvents(array $channels, array $commonOptions) : array
+    private function formatDataOptionsAndEvents(array $channels, array $commonOptions): array
     {
         return array_map(
             function (ChannelInterface $channel) use ($commonOptions) {

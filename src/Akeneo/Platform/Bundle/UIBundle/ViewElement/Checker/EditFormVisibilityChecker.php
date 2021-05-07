@@ -12,7 +12,7 @@ namespace Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker;
 class EditFormVisibilityChecker extends NonEmptyPropertyVisibilityChecker
 {
     /** @staticvar string */
-    const PATH = '[form].vars[value].id';
+    public const PATH = '[form].vars[value].id';
 
     /**
      * {@inheritdoc}

@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    const ITEM_SEPARATOR = ',';
+    public const ITEM_SEPARATOR = ',';
 
     /** @var string[] */
     protected $supportedFormats = ['flat'];

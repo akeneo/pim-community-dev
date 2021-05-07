@@ -8,8 +8,8 @@ use Oro\Bundle\SecurityBundle\Annotation\Loader\AclAnnotationLoaderInterface;
 
 class AclAnnotationProvider
 {
-    const CACHE_NAMESPACE = 'AclAnnotation';
-    const CACHE_KEY = 'data';
+    public const CACHE_NAMESPACE = 'AclAnnotation';
+    public const CACHE_KEY = 'data';
 
     /**
      * @var AclAnnotationLoaderInterface[]

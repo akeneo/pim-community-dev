@@ -14,8 +14,8 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 class DatagridView
 {
     /** @staticvar string */
-    const TYPE_PUBLIC = 'public';
-    const TYPE_PRIVATE = 'private';
+    public const TYPE_PUBLIC = 'public';
+    public const TYPE_PRIVATE = 'private';
 
     /** @var int */
     protected $id;

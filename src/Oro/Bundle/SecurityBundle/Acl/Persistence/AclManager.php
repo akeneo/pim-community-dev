@@ -27,10 +27,10 @@ class AclManager extends AbstractAclManager
     /**
      * We can not use BATCH_SIZE of Symfony ACL due to a bug check in the cache
      */
-    const MAX_BATCH_SIZE = 1;
+    public const MAX_BATCH_SIZE = 1;
 
-    const CLASS_ACE = 'Class';
-    const OBJECT_ACE = 'Object';
+    public const CLASS_ACE = 'Class';
+    public const OBJECT_ACE = 'Object';
 
     /**
      * @var ObjectIdentityFactory

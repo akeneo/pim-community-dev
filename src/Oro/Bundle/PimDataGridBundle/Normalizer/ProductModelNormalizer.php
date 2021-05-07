@@ -113,7 +113,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
      *
      * @return string|null
      */
-    private function getFamilyLabel(ProductModelInterface $productModel, string $locale) : ?string
+    private function getFamilyLabel(ProductModelInterface $productModel, string $locale): ?string
     {
         $family = $productModel->getFamilyVariant()->getFamily();
         if (null === $family) {
@@ -131,7 +131,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
      *
      * @return string
      */
-    private function getLabel(string $familyCode, ?string $familyLabel) : string
+    private function getLabel(string $familyCode, ?string $familyLabel): string
     {
         return empty($familyLabel) ? sprintf('[%s]', $familyCode) : $familyLabel;
     }
@@ -142,7 +142,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
      *
      * @return array|null
      */
-    private function normalizeImage(?ValueInterface $data, array $context = []) : ?array
+    private function normalizeImage(?ValueInterface $data, array $context = []): ?array
     {
         return $this->imageNormalizer->normalize($data, $context['data_locale'], $context['data_channel']);
     }
@@ -156,7 +156,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
      *
      * @return array
      */
-    private function normalizeValues(WriteValueCollection $values, $format, array $context = []) : array
+    private function normalizeValues(WriteValueCollection $values, $format, array $context = []): array
     {
         foreach ($context['filter_types'] as $filterType) {
             $values = $this->filter->filterCollection($values, $filterType, $context);

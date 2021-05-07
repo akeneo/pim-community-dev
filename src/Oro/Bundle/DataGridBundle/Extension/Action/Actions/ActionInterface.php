@@ -6,7 +6,7 @@ use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 
 interface ActionInterface
 {
-    const ACL_KEY = 'acl_resource';
+    public const ACL_KEY = 'acl_resource';
 
     /**
      * Filter name

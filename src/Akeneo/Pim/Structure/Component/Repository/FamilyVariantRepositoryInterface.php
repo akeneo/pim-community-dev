@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Akeneo\Pim\Structure\Component\Repository;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;

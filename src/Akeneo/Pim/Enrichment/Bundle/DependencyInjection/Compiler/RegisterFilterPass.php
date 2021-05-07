@@ -16,13 +16,13 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterFilterPass implements CompilerPassInterface
 {
     /** @staticvar string The registry id */
-    const REGISTRY_ID = 'pim_catalog.filter.chained';
+    public const REGISTRY_ID = 'pim_catalog.filter.chained';
 
     /** @staticvar string */
-    const COLLECTION_FILTER_TAG = 'pim_catalog.filter.collection';
+    public const COLLECTION_FILTER_TAG = 'pim_catalog.filter.collection';
 
     /** @staticvar string */
-    const OBJECT_FILTER_TAG = 'pim_catalog.filter.object';
+    public const OBJECT_FILTER_TAG = 'pim_catalog.filter.object';
 
     /**
      * {@inheritdoc}

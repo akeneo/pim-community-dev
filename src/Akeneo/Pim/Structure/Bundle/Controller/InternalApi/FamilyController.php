@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class FamilyController
 {
-    const FAMILY_VARIANTS_LIMIT = 20;
+    public const FAMILY_VARIANTS_LIMIT = 20;
 
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;

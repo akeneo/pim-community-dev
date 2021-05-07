@@ -14,31 +14,31 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 interface ConfiguratorInterface
 {
     /** @staticvar string */
-    const SOURCE_PATH = '[source][%s]';
+    public const SOURCE_PATH = '[source][%s]';
 
     /** @staticvar string */
-    const SOURCE_KEY = 'source';
+    public const SOURCE_KEY = 'source';
 
     /** @staticvar string */
-    const AVAILABLE_COLUMNS_KEY = 'available_columns';
+    public const AVAILABLE_COLUMNS_KEY = 'available_columns';
 
     /** @staticvar string */
-    const DISPLAYED_ATTRIBUTES_KEY = 'displayed_attribute_ids';
+    public const DISPLAYED_ATTRIBUTES_KEY = 'displayed_attribute_ids';
 
     /** @staticvar string */
-    const DISPLAYED_COLUMNS_KEY = 'displayed_columns';
+    public const DISPLAYED_COLUMNS_KEY = 'displayed_columns';
 
     /** @staticvar string */
-    const DISPLAYED_LOCALE_KEY = 'locale_code';
+    public const DISPLAYED_LOCALE_KEY = 'locale_code';
 
     /** @staticvar string */
-    const DISPLAYED_SCOPE_KEY = 'scope_code';
+    public const DISPLAYED_SCOPE_KEY = 'scope_code';
 
     /** @staticvar string */
-    const REPOSITORY_PARAMETERS_KEY = 'repository_parameters';
+    public const REPOSITORY_PARAMETERS_KEY = 'repository_parameters';
 
     /** @staticvar string */
-    const USEABLE_ATTRIBUTES_KEY = 'attributes_configuration';
+    public const USEABLE_ATTRIBUTES_KEY = 'attributes_configuration';
 
     /**
      * Configure the grid

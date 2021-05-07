@@ -9,7 +9,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class IterableObject implements \ArrayAccess, \IteratorAggregate
 {
-    const NAME_KEY = 'name';
+    public const NAME_KEY = 'name';
 
     /** @var PropertyAccessor */
     protected $accessor;
@@ -138,7 +138,7 @@ class IterableObject implements \ArrayAccess, \IteratorAggregate
      */
     public function offsetGetByPath($path, $default = null)
     {
-        return $this->accessor->getValue($this, $path) ? : $default;
+        return $this->accessor->getValue($this, $path) ?: $default;
     }
 
     /**

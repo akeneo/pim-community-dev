@@ -19,8 +19,8 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Writer extends AbstractFileWriter implements ItemWriterInterface, FlushableInterface
 {
-    const INLINE_ARRAY_LEVEL = 8;
-    const INDENT_SPACES = 4;
+    public const INLINE_ARRAY_LEVEL = 8;
+    public const INDENT_SPACES = 4;
 
     /** @var ArrayConverterInterface */
     protected $arrayConverter;

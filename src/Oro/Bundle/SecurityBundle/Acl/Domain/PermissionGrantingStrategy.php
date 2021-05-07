@@ -16,9 +16,9 @@ use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
  */
 class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
 {
-    const ALL = 'all';
-    const ANY = 'any';
-    const EQUAL = 'equal';
+    public const ALL = 'all';
+    public const ANY = 'any';
+    public const EQUAL = 'equal';
 
     /**
      * @var AuditLoggerInterface

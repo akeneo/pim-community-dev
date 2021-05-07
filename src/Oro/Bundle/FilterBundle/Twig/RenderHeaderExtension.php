@@ -7,17 +7,17 @@ class RenderHeaderExtension extends AbstractExtension
     /**
      * Extension name
      */
-    const NAME = 'oro_filter_render_header';
+    public const NAME = 'oro_filter_render_header';
 
     /**
      * Block with required JS files
      */
-    const HEADER_JAVASCRIPT = 'oro_filter_header_javascript';
+    public const HEADER_JAVASCRIPT = 'oro_filter_header_javascript';
 
     /**
      * Block with required CSS files
      */
-    const HEADER_STYLESHEET = 'oro_filter_header_stylesheet';
+    public const HEADER_STYLESHEET = 'oro_filter_header_stylesheet';
 
     /**
      * @return array

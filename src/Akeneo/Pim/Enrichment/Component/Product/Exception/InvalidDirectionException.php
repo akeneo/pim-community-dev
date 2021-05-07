@@ -11,7 +11,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Exception;
  */
 class InvalidDirectionException extends \LogicException
 {
-    const NOT_SUPPORTED_CODE = 300;
+    public const NOT_SUPPORTED_CODE = 300;
 
     /** @var array */
     protected $directions;

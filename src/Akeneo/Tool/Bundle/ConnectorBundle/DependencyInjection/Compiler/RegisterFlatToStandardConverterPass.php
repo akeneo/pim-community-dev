@@ -16,13 +16,13 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterFlatToStandardConverterPass implements CompilerPassInterface
 {
     /** @staticvar */
-    const CONVERTER_REGISTRY = 'pim_connector.array_converter.flat_to_standard.product.value_converter.registry';
+    public const CONVERTER_REGISTRY = 'pim_connector.array_converter.flat_to_standard.product.value_converter.registry';
 
     /** @staticvar */
-    const CONVERTER_TAG = 'pim_connector.array_converter.flat_to_standard.product.value_converter';
+    public const CONVERTER_TAG = 'pim_connector.array_converter.flat_to_standard.product.value_converter';
 
     /** @staticvar int The default priority in registry stack */
-    const DEFAULT_PRIORITY = 100;
+    public const DEFAULT_PRIORITY = 100;
 
     /**
      * {@inheritdoc}

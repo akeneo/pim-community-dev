@@ -65,7 +65,7 @@ final class FilterValues
             $values = array_values($values);
         }
 
-        $standardFormatValues = array_filter($standardFormatValues, function ($value) :bool {
+        $standardFormatValues = array_filter($standardFormatValues, function ($value): bool {
             return [] !== $value;
         });
 

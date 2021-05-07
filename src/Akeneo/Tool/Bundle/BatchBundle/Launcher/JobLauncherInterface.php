@@ -26,5 +26,5 @@ interface JobLauncherInterface
      *
      * @return JobExecution
      */
-    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = []) : JobExecution;
+    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = []): JobExecution;
 }

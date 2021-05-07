@@ -11,8 +11,8 @@ namespace Akeneo\Connectivity\Connection\Domain\ErrorManagement;
  */
 final class ErrorTypes
 {
-    const TECHNICAL = 'technical';
-    const BUSINESS = 'business';
+    public const TECHNICAL = 'technical';
+    public const BUSINESS = 'business';
 
     /**
      * @return array<ErrorTypes::*>

@@ -7,11 +7,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class SystemAwareResolver implements ContainerAwareInterface
 {
-    const PARAMETER_REGEX = '#%([\w\._]+)%#';
-    const STATIC_METHOD_REGEX = '#%([\w\._]+)%::([\w\._]+)#';
-    const STATIC_METHOD_CLEAN_REGEX = '#([^\'"%:\s]+)::([\w\._]+)#';
-    const SERVICE_METHOD = '#@([\w\._]+)->([\w\._]+)(\((.*)\))*#';
-    const SERVICE = '#@([\w\._]+)#';
+    public const PARAMETER_REGEX = '#%([\w\._]+)%#';
+    public const STATIC_METHOD_REGEX = '#%([\w\._]+)%::([\w\._]+)#';
+    public const STATIC_METHOD_CLEAN_REGEX = '#([^\'"%:\s]+)::([\w\._]+)#';
+    public const SERVICE_METHOD = '#@([\w\._]+)->([\w\._]+)(\((.*)\))*#';
+    public const SERVICE = '#@([\w\._]+)#';
 
     /**
      * @var ContainerInterface

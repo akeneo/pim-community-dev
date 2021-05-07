@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class IsString extends Constraint
 {
-    const IS_STRING = '88729141-2bb8-4cbb-bb56-31229e09f45b';
+    public const IS_STRING = '88729141-2bb8-4cbb-bb56-31229e09f45b';
 
     /** @var string */
     public $message = 'The %attribute% attribute requires a string, a %givenType% was detected.';

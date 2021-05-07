@@ -11,16 +11,16 @@ namespace Akeneo\Tool\Component\StorageUtils\Exception;
  */
 class InvalidPropertyException extends PropertyException
 {
-    const EXPECTED_CODE = 100;
-    const DATE_EXPECTED_CODE = 101;
+    public const EXPECTED_CODE = 100;
+    public const DATE_EXPECTED_CODE = 101;
 
-    const NOT_EMPTY_VALUE_EXPECTED_CODE = 200;
+    public const NOT_EMPTY_VALUE_EXPECTED_CODE = 200;
 
-    const VALID_ENTITY_CODE_EXPECTED_CODE = 300;
-    const VALID_GROUP_TYPE_EXPECTED_CODE = 301;
-    const VALID_GROUP_EXPECTED_CODE = 302;
-    const VALID_PATH_EXPECTED_CODE = 304;
-    const VALID_DATA_EXPECTED_CODE = 305;
+    public const VALID_ENTITY_CODE_EXPECTED_CODE = 300;
+    public const VALID_GROUP_TYPE_EXPECTED_CODE = 301;
+    public const VALID_GROUP_EXPECTED_CODE = 302;
+    public const VALID_PATH_EXPECTED_CODE = 304;
+    public const VALID_DATA_EXPECTED_CODE = 305;
 
     /** @var string */
     protected $propertyValue;

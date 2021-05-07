@@ -30,7 +30,7 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents() : array
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::POST_REMOVE   => ['deleteProduct'],
@@ -38,7 +38,7 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
         ];
     }
 
-    public function deleteProduct(RemoveEvent $event) : void
+    public function deleteProduct(RemoveEvent $event): void
     {
         $product = $event->getSubject();
         if (!$product instanceof ProductInterface) {

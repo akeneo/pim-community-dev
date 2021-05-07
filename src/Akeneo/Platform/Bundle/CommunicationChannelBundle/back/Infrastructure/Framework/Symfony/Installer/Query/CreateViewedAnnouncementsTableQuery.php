@@ -11,7 +11,7 @@ namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\
  */
 final class CreateViewedAnnouncementsTableQuery
 {
-    const QUERY = <<<SQL
+    public const QUERY = <<<SQL
 CREATE TABLE IF NOT EXISTS akeneo_communication_channel_viewed_announcements(
     announcement_id VARCHAR(100) NOT NULL,
     user_id INT NOT NULL,

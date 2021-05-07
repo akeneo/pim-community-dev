@@ -9,26 +9,26 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class AclConfigurationPass implements CompilerPassInterface
 {
-    const NEW_ACL_VOTER_CLASS = 'oro_security.acl.voter.class';
-    const NEW_ACL_PROVIDER = 'oro_security.acl.provider';
-    const NEW_ACL_DBAL_PROVIDER_CLASS = 'oro_security.acl.dbal.provider.class';
-    const NEW_ACL_PERMISSION_GRANTING_STRATEGY = 'oro_security.acl.permission_granting_strategy';
-    const NEW_ACL_PERMISSION_MAP = 'oro_security.acl.permission_map';
-    const NEW_ACL_OBJECT_ID_STRATEGY = 'oro_security.acl.object_identity_retrieval_strategy';
+    public const NEW_ACL_VOTER_CLASS = 'oro_security.acl.voter.class';
+    public const NEW_ACL_PROVIDER = 'oro_security.acl.provider';
+    public const NEW_ACL_DBAL_PROVIDER_CLASS = 'oro_security.acl.dbal.provider.class';
+    public const NEW_ACL_PERMISSION_GRANTING_STRATEGY = 'oro_security.acl.permission_granting_strategy';
+    public const NEW_ACL_PERMISSION_MAP = 'oro_security.acl.permission_map';
+    public const NEW_ACL_OBJECT_ID_STRATEGY = 'oro_security.acl.object_identity_retrieval_strategy';
 
-    const DEFAULT_ACL_VOTER = 'security.acl.voter.basic_permissions';
-    const DEFAULT_ACL_VOTER_LINK = 'oro_security.acl.voter_link';
-    const DEFAULT_ACL_PROVIDER = 'security.acl.dbal.provider';
-    const DEFAULT_ACL_CACHE = 'security.acl.cache.doctrine';
+    public const DEFAULT_ACL_VOTER = 'security.acl.voter.basic_permissions';
+    public const DEFAULT_ACL_VOTER_LINK = 'oro_security.acl.voter_link';
+    public const DEFAULT_ACL_PROVIDER = 'security.acl.dbal.provider';
+    public const DEFAULT_ACL_CACHE = 'security.acl.cache.doctrine';
 
-    const ACL_EXTENSION_SELECTOR = 'oro_security.acl.extension_selector';
-    const ACL_EXTENSION_TAG = 'oro_security.acl.extension';
+    public const ACL_EXTENSION_SELECTOR = 'oro_security.acl.extension_selector';
+    public const ACL_EXTENSION_TAG = 'oro_security.acl.extension';
 
-    const DEFAULT_ACL_CACHE_CLASS = AclCache::class;
+    public const DEFAULT_ACL_CACHE_CLASS = AclCache::class;
 
-    const DOCTRINE_CONVERTER = 'sensio_framework_extra.converter.doctrine.orm';
-    const DOCTRINE_CONVERTER_CLASS = 'Oro\Bundle\SecurityBundle\Request\ParamConverter\DoctrineParamConverter';
-    const SECURITY_FACADE_SERVICE = 'oro_security.security_facade';
+    public const DOCTRINE_CONVERTER = 'sensio_framework_extra.converter.doctrine.orm';
+    public const DOCTRINE_CONVERTER_CLASS = 'Oro\Bundle\SecurityBundle\Request\ParamConverter\DoctrineParamConverter';
+    public const SECURITY_FACADE_SERVICE = 'oro_security.security_facade';
 
     /**
      * {@inheritDoc}

@@ -29,7 +29,7 @@ class AuthenticatedJobLauncher implements JobLauncherInterface
     /**
      * {@inheritdoc}
      */
-    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = []) : JobExecution
+    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = []): JobExecution
     {
         $configuration['is_user_authenticated'] = true;
 

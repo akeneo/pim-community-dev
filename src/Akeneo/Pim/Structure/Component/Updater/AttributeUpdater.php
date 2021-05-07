@@ -360,7 +360,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
         return new \DateTime($date);
     }
 
-    private function filterReadOnlyFields(array $dataToFilter) : array
+    private function filterReadOnlyFields(array $dataToFilter): array
     {
         $readOnlyFields = ['group_labels'];
 

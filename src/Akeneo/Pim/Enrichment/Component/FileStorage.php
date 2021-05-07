@@ -9,5 +9,5 @@ namespace Akeneo\Pim\Enrichment\Component;
  */
 final class FileStorage
 {
-    const CATALOG_STORAGE_ALIAS = 'catalogStorage';
+    public const CATALOG_STORAGE_ALIAS = 'catalogStorage';
 }

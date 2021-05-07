@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EntityIdentifierType extends AbstractType
 {
-    const NAME = 'pim_enrich_entity_identifier';
+    public const NAME = 'pim_enrich_entity_identifier';
 
     /**
      * @var ManagerRegistry

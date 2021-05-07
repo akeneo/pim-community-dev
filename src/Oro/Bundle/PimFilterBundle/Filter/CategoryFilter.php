@@ -19,16 +19,16 @@ use Symfony\Component\Form\FormFactoryInterface;
 class CategoryFilter extends NumberFilter
 {
     /** @staticvar integer */
-    const UNKNOWN_TREE = 0;
+    public const UNKNOWN_TREE = 0;
 
     /** @staticvar integer */
-    const DEFAULT_TYPE = 1;
+    public const DEFAULT_TYPE = 1;
 
     /** @staticvar integer */
-    const UNCLASSIFIED_CATEGORY = -1;
+    public const UNCLASSIFIED_CATEGORY = -1;
 
     /** @staticvar integer */
-    const ALL_CATEGORY = -2;
+    public const ALL_CATEGORY = -2;
 
     /** @var CategoryRepositoryInterface */
     protected $categoryRepo;
@@ -81,8 +81,8 @@ class CategoryFilter extends NumberFilter
         }
 
         return [
-            'includeSub' => isset($data['type'])                ? (bool) $data['type']               : true,
-            'treeId'     => isset($data['value']['treeId'])     ? (int) $data['value']['treeId']     : null,
+            'includeSub' => isset($data['type']) ? (bool) $data['type'] : true,
+            'treeId'     => isset($data['value']['treeId']) ? (int) $data['value']['treeId'] : null,
             'categoryId' => isset($data['value']['categoryId']) ? (int) $data['value']['categoryId'] : null
         ];
     }

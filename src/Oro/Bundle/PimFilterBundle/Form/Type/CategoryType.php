@@ -18,7 +18,7 @@ use Symfony\Component\Form\FormView;
 class CategoryType extends AbstractType
 {
     /** @staticvar string */
-    const NAME = 'pim_type_category';
+    public const NAME = 'pim_type_category';
 
     /**
      * {@inheritdoc}

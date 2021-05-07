@@ -10,8 +10,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 
 class GridViewsExtension extends AbstractExtension
 {
-    const VIEWS_LIST_KEY = 'views_list';
-    const VIEWS_PARAM_KEY = 'view';
+    public const VIEWS_LIST_KEY = 'views_list';
+    public const VIEWS_PARAM_KEY = 'view';
 
     /**
      * {@inheritDoc}

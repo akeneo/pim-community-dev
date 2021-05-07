@@ -16,10 +16,10 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterAttributeConstraintGuessersPass implements CompilerPassInterface
 {
     /** @staticvar string */
-    const SERVICE_CHAINED = 'pim_catalog.validator.constraint_guesser.chained_attribute';
+    public const SERVICE_CHAINED = 'pim_catalog.validator.constraint_guesser.chained_attribute';
 
     /** @staticvar string */
-    const SERVICE_TAG = 'pim_catalog.constraint_guesser.attribute';
+    public const SERVICE_TAG = 'pim_catalog.constraint_guesser.attribute';
 
     /**
      * {@inheritdoc}

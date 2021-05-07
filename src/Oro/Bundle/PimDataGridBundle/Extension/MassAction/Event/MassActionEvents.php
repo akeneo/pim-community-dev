@@ -21,12 +21,12 @@ final class MassActionEvents
      *
      * @staticvar string
      */
-    const MASS_DELETE_POST_HANDLER = 'pim_datagrid.extension.mass_action.delete.post_handler';
-    const MASS_DELETE_PRE_HANDLER = 'pim_datagrid.extension.mass_action.delete.pre_handler';
-    const MASS_EDIT_POST_HANDLER = 'pim_datagrid.extension.mass_action.edit.post_handler';
-    const MASS_EDIT_PRE_HANDLER = 'pim_datagrid.extension.mass_action.edit.pre_handler';
-    const MASS_EXPORT_POST_HANDLER = 'pim_datagrid.extension.mass_action.export.post_handler';
-    const MASS_EXPORT_PRE_HANDLER = 'pim_datagrid.extension.mass_action.export.pre_handler';
-    const SEQUENTIAL_EDIT_POST_HANDLER = 'pim_datagrid.extension.mass_action.sequential_edit.post_handler';
-    const SEQUENTIAL_EDIT_PRE_HANDLER = 'pim_datagrid.extension.mass_action.sequential_edit.pre_handler';
+    public const MASS_DELETE_POST_HANDLER = 'pim_datagrid.extension.mass_action.delete.post_handler';
+    public const MASS_DELETE_PRE_HANDLER = 'pim_datagrid.extension.mass_action.delete.pre_handler';
+    public const MASS_EDIT_POST_HANDLER = 'pim_datagrid.extension.mass_action.edit.post_handler';
+    public const MASS_EDIT_PRE_HANDLER = 'pim_datagrid.extension.mass_action.edit.pre_handler';
+    public const MASS_EXPORT_POST_HANDLER = 'pim_datagrid.extension.mass_action.export.post_handler';
+    public const MASS_EXPORT_PRE_HANDLER = 'pim_datagrid.extension.mass_action.export.pre_handler';
+    public const SEQUENTIAL_EDIT_POST_HANDLER = 'pim_datagrid.extension.mass_action.sequential_edit.post_handler';
+    public const SEQUENTIAL_EDIT_PRE_HANDLER = 'pim_datagrid.extension.mass_action.sequential_edit.pre_handler';
 }

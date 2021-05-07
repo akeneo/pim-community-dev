@@ -24,11 +24,11 @@ class OrmPagerExtension extends AbstractExtension
     /**
      * Query params
      */
-    const PAGER_ROOT_PARAM = '_pager';
-    const PAGE_PARAM = '_page';
-    const PER_PAGE_PARAM = '_per_page';
+    public const PAGER_ROOT_PARAM = '_pager';
+    public const PAGE_PARAM = '_page';
+    public const PER_PAGE_PARAM = '_per_page';
 
-    const TOTAL_PARAM = 'totalRecords';
+    public const TOTAL_PARAM = 'totalRecords';
 
     /** @var Pager */
     protected $pager;

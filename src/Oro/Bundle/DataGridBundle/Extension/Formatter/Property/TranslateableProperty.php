@@ -6,8 +6,8 @@ use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
 class TranslateableProperty extends FieldProperty
 {
-    const DOMAIN_KEY = 'domain';
-    const LOCALE_KEY = 'locale';
+    public const DOMAIN_KEY = 'domain';
+    public const LOCALE_KEY = 'locale';
 
     /** @var array */
     protected $excludeParams = [self::DOMAIN_KEY, self::LOCALE_KEY];

@@ -13,9 +13,9 @@ use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
  */
 class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
 {
-    const FAMILY_GRID_NAME = 'family-grid';
+    public const FAMILY_GRID_NAME = 'family-grid';
 
-    const PRODUCT_GRID_NAME = 'product-grid';
+    public const PRODUCT_GRID_NAME = 'product-grid';
 
     /** @var MassActionDispatcher */
     protected $massActionDispatcher;

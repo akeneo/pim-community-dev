@@ -10,12 +10,12 @@ namespace Akeneo\Connectivity\Connection\Domain\Webhook\Model;
  */
 class EventsApiDebugLogLevels
 {
-    const NOTICE = 'notice';
-    const INFO = 'info';
-    const WARNING = 'warning';
-    const ERROR = 'error';
+    public const NOTICE = 'notice';
+    public const INFO = 'info';
+    public const WARNING = 'warning';
+    public const ERROR = 'error';
 
-    const ALL = [
+    public const ALL = [
         self::INFO,
         self::NOTICE,
         self::WARNING,

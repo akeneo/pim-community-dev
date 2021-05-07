@@ -10,7 +10,7 @@ abstract class AbstractDateFilter extends AbstractFilter
     /**
      * DateTime object as string format
      */
-    const DATETIME_FORMAT = 'Y-m-d';
+    public const DATETIME_FORMAT = 'Y-m-d';
 
     /**
      * {@inheritdoc}

@@ -17,14 +17,14 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class QuantifiedAssociationsValidator extends ConstraintValidator
 {
-    const ALLOWED_LINK_TYPES = [
+    public const ALLOWED_LINK_TYPES = [
         'products',
         'product_models',
     ];
 
-    const MAX_ASSOCIATIONS = 100;
-    const MIN_QUANTITY = 1;
-    const MAX_QUANTITY = 2147483647;
+    public const MAX_ASSOCIATIONS = 100;
+    public const MIN_QUANTITY = 1;
+    public const MAX_QUANTITY = 2147483647;
 
     /** @var AssociationTypeRepositoryInterface */
     private $associationTypeRepository;

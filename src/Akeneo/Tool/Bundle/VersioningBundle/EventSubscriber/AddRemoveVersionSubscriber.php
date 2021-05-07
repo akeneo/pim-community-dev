@@ -99,7 +99,7 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
         );
 
         $version->setVersion(null !== $previousVersion ? $previousVersion->getVersion() + 1 : 1)
-            ->setSnapshot(null !== $previousVersion ? $previousVersion->getSnapshot(): [])
+            ->setSnapshot(null !== $previousVersion ? $previousVersion->getSnapshot() : [])
             ->setChangeset([]);
 
         $options = $event->getArguments();

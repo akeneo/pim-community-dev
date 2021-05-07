@@ -15,7 +15,7 @@ use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInt
  */
 class RepositoryDatasource implements DatasourceInterface, ParameterizableInterface
 {
-    const DEFAULT_QUERY_PARAMS_KEY = 'default_query_params';
+    public const DEFAULT_QUERY_PARAMS_KEY = 'default_query_params';
 
     /** @var DatagridRepositoryInterface */
     protected $repository;

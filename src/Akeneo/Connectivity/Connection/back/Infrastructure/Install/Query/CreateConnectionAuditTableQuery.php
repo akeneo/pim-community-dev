@@ -11,7 +11,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Install\Query;
  */
 final class CreateConnectionAuditTableQuery
 {
-    const QUERY = <<<SQL
+    public const QUERY = <<<SQL
 CREATE TABLE IF NOT EXISTS akeneo_connectivity_connection_audit_product(
     connection_code VARCHAR(100) NOT NULL,
     event_datetime DATETIME NOT NULL,

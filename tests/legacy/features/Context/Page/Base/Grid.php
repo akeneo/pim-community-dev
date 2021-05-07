@@ -13,13 +13,13 @@ use Behat\Mink\Element\NodeElement;
  */
 class Grid extends Index
 {
-    const FILTER_CONTAINS         = 1;
-    const FILTER_DOES_NOT_CONTAIN = 2;
-    const FILTER_IS_EQUAL_TO      = 3;
-    const FILTER_STARTS_WITH      = 4;
-    const FILTER_ENDS_WITH        = 5;
-    const FILTER_IS_EMPTY         = 'empty';
-    const FILTER_IN_LIST          = 'in';
+    public const FILTER_CONTAINS         = 1;
+    public const FILTER_DOES_NOT_CONTAIN = 2;
+    public const FILTER_IS_EQUAL_TO      = 3;
+    public const FILTER_STARTS_WITH      = 4;
+    public const FILTER_ENDS_WITH        = 5;
+    public const FILTER_IS_EMPTY         = 'empty';
+    public const FILTER_IN_LIST          = 'in';
 
     protected $filterDecorators = [
         'tree' => [

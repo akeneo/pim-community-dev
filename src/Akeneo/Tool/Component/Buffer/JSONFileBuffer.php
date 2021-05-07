@@ -14,7 +14,7 @@ use Akeneo\Tool\Component\Buffer\Exception\UnsupportedItemTypeException;
  */
 class JSONFileBuffer implements BufferInterface
 {
-    const FILE_PREFIX = 'akeneo_buffer_';
+    public const FILE_PREFIX = 'akeneo_buffer_';
 
     /** @var string */
     protected $filename;

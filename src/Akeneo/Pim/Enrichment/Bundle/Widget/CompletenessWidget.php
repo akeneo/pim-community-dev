@@ -15,7 +15,6 @@ use Akeneo\UserManagement\Bundle\Context\UserContext;
  */
 class CompletenessWidget implements WidgetInterface
 {
-
     /** @var UserContext */
     protected $userContext;
 

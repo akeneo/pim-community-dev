@@ -16,16 +16,16 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterJobsPass implements CompilerPassInterface
 {
     /** @staticvar string The registry id */
-    const REGISTRY_ID = 'akeneo_batch.job.job_registry';
+    public const REGISTRY_ID = 'akeneo_batch.job.job_registry';
 
     /** @staticvar string */
-    const SERVICE_TAG = 'akeneo_batch.job';
+    public const SERVICE_TAG = 'akeneo_batch.job';
 
     /** @staticvar string */
-    const DEFAULT_CONNECTOR = 'default';
+    public const DEFAULT_CONNECTOR = 'default';
 
     /** @staticvar string */
-    const DEFAULT_JOB_TYPE = 'default';
+    public const DEFAULT_JOB_TYPE = 'default';
 
     /**
      * {@inheritdoc}

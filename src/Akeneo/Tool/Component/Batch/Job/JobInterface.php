@@ -16,7 +16,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
  */
 interface JobInterface
 {
-    const WORKING_DIRECTORY_PARAMETER = 'working_directory';
+    public const WORKING_DIRECTORY_PARAMETER = 'working_directory';
 
     /**
      * @return string the name of this job

@@ -303,7 +303,7 @@ final class FillMissingProductValues implements FillMissingValuesInterface
         return $valuesInStandardFormat;
     }
 
-    private function getChannels() : array
+    private function getChannels(): array
     {
         if (null === $this->channels) {
             $this->channels = $this->channelRepository->findAll();
@@ -312,7 +312,7 @@ final class FillMissingProductValues implements FillMissingValuesInterface
         return $this->channels;
     }
 
-    private function getLocales() : array
+    private function getLocales(): array
     {
         if (null === $this->locales) {
             $this->locales = $this->localeRepository->getActivatedLocales();
@@ -321,7 +321,7 @@ final class FillMissingProductValues implements FillMissingValuesInterface
         return $this->locales;
     }
 
-    private function getCurrencies() : array
+    private function getCurrencies(): array
     {
         $currencies = [];
         foreach ($this->getChannels() as $channel) {

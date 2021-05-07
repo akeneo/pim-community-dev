@@ -25,8 +25,8 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  */
 abstract class ApiTestCase extends WebTestCase
 {
-    const USERNAME = 'admin';
-    const PASSWORD = 'admin';
+    public const USERNAME = 'admin';
+    public const PASSWORD = 'admin';
 
     /** @var KernelInterface */
     protected $testKernel;

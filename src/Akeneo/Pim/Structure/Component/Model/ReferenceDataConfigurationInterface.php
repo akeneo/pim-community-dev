@@ -11,8 +11,8 @@ namespace Akeneo\Pim\Structure\Component\Model;
  */
 interface ReferenceDataConfigurationInterface
 {
-    const TYPE_SIMPLE = 'simple';
-    const TYPE_MULTI = 'multi';
+    public const TYPE_SIMPLE = 'simple';
+    public const TYPE_MULTI = 'multi';
 
     /**
      * @return string

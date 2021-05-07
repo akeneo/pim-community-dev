@@ -16,8 +16,8 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class GetAllEventSubscriptionDebugLogsQuery implements GetAllEventSubscriptionDebugLogsQueryInterface
 {
-    const MAX_NUMBER_OF_NOTICE_AND_INFO_LOGS = 100;
-    const MAX_LIFETIME_OF_WARNING_AND_ERROR_LOGS = 72 * 60 * 60; // 72h
+    public const MAX_NUMBER_OF_NOTICE_AND_INFO_LOGS = 100;
+    public const MAX_LIFETIME_OF_WARNING_AND_ERROR_LOGS = 72 * 60 * 60; // 72h
 
     private Client $elasticsearchClient;
     private Clock $clock;

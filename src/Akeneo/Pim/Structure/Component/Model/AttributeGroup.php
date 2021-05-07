@@ -15,7 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class AttributeGroup implements AttributeGroupInterface
 {
     /** @staticvar string */
-    const DEFAULT_GROUP_CODE = 'other';
+    public const DEFAULT_GROUP_CODE = 'other';
 
     /**
      * @var int

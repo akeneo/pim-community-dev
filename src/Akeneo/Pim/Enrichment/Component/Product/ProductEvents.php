@@ -19,7 +19,7 @@ final class ProductEvents
      *
      * @staticvar string
      */
-    const CREATE = 'pim_catalog.create_product';
+    public const CREATE = 'pim_catalog.create_product';
 
     /**
      * This event is thrown before several products get removed
@@ -29,7 +29,7 @@ final class ProductEvents
      *
      * @staticvar string
      */
-    const PRE_MASS_REMOVE = 'pim_catalog.pre_mass_remove.product';
+    public const PRE_MASS_REMOVE = 'pim_catalog.pre_mass_remove.product';
 
     /**
      * This event is thrown after several products have been removed.
@@ -39,5 +39,5 @@ final class ProductEvents
      *
      * @staticvar string
      */
-    const POST_MASS_REMOVE = 'pim_catalog.post_mass_remove.product';
+    public const POST_MASS_REMOVE = 'pim_catalog.post_mass_remove.product';
 }

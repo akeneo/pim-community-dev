@@ -14,7 +14,7 @@ use Oro\Bundle\DataGridBundle\ORM\Query\QueryCountCalculator;
 
 class CountCalculatorTest extends \PHPUnit_Framework_TestCase
 {
-    const TEST_COUNT = 42;
+    public const TEST_COUNT = 42;
 
     /**
      * @param string $dql

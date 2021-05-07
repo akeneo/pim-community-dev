@@ -6,8 +6,8 @@ use Doctrine\Common\Cache\CacheProvider;
 
 class ActionMetadataProvider
 {
-    const CACHE_NAMESPACE = 'AclAction';
-    const CACHE_KEY = 'data';
+    public const CACHE_NAMESPACE = 'AclAction';
+    public const CACHE_KEY = 'data';
 
     /**
      * @var AclAnnotationProvider

@@ -86,7 +86,7 @@ class QueueJobLauncher implements JobLauncherInterface
     /**
      * {@inheritdoc}
      */
-    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = []) : JobExecution
+    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = []): JobExecution
     {
         $options = ['env' => $this->environment];
         if (isset($configuration['send_email']) && method_exists($user, 'getEmail')) {
@@ -113,7 +113,7 @@ class QueueJobLauncher implements JobLauncherInterface
      *
      * @return JobExecution
      */
-    private function createJobExecution(JobInstance $jobInstance, UserInterface $user, array $configuration) : JobExecution
+    private function createJobExecution(JobInstance $jobInstance, UserInterface $user, array $configuration): JobExecution
     {
         $job = $this->jobRegistry->get($jobInstance->getJobName());
         $configuration = array_merge($jobInstance->getRawParameters(), $configuration);

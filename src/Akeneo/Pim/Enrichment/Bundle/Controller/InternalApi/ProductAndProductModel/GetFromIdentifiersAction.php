@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class GetFromIdentifiersAction
 {
-    const MAX_RESULTS = 100;
+    public const MAX_RESULTS = 100;
 
     /** @var ProductQueryBuilderFactoryInterface */
     private $productQueryBuilderFactory;

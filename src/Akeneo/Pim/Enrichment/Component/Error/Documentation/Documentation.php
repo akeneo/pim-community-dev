@@ -11,8 +11,8 @@ namespace Akeneo\Pim\Enrichment\Component\Error\Documentation;
  */
 class Documentation
 {
-    const STYLE_TEXT = 'text';
-    const STYLE_INFORMATION = 'information';
+    public const STYLE_TEXT = 'text';
+    public const STYLE_INFORMATION = 'information';
 
     /** @var string */
     private $message;

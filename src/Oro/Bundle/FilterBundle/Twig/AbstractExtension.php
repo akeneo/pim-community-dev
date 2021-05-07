@@ -7,7 +7,7 @@ abstract class AbstractExtension extends \Twig_Extension
     /**
      * Extension name
      */
-    const NAME = 'oro_filter_abstract';
+    public const NAME = 'oro_filter_abstract';
 
     /**
      * @var string

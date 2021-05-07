@@ -9,7 +9,7 @@ class RenderHeaderExtensionTest extends AbstractExtensionTestCase
     /**
      * Testing class name
      */
-    const TESTING_CLASS = RenderHeaderExtension::class;
+    public const TESTING_CLASS = RenderHeaderExtension::class;
 
     /**
      * @var RenderHeaderExtension

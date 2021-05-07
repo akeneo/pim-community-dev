@@ -12,20 +12,20 @@ namespace Akeneo\Tool\Component\StorageUtils\Exception;
  */
 class InvalidPropertyTypeException extends PropertyException
 {
-    const EXPECTED_CODE = 100;
+    public const EXPECTED_CODE = 100;
 
-    const SCALAR_EXPECTED_CODE = 101;
-    const BOOLEAN_EXPECTED_CODE = 102;
-    const FLOAT_EXPECTED_CODE = 103;
-    const INTEGER_EXPECTED_CODE = 104;
-    const NUMERIC_EXPECTED_CODE = 105;
-    const STRING_EXPECTED_CODE = 106;
+    public const SCALAR_EXPECTED_CODE = 101;
+    public const BOOLEAN_EXPECTED_CODE = 102;
+    public const FLOAT_EXPECTED_CODE = 103;
+    public const INTEGER_EXPECTED_CODE = 104;
+    public const NUMERIC_EXPECTED_CODE = 105;
+    public const STRING_EXPECTED_CODE = 106;
 
-    const ARRAY_EXPECTED_CODE = 200;
-    const VALID_ARRAY_STRUCTURE_EXPECTED_CODE = 201;
-    const ARRAY_OF_ARRAYS_EXPECTED_CODE = 202;
-    const ARRAY_KEY_EXPECTED_CODE = 203;
-    const ARRAY_OF_OBJECTS_EXPECTED_CODE = 204;
+    public const ARRAY_EXPECTED_CODE = 200;
+    public const VALID_ARRAY_STRUCTURE_EXPECTED_CODE = 201;
+    public const ARRAY_OF_ARRAYS_EXPECTED_CODE = 202;
+    public const ARRAY_KEY_EXPECTED_CODE = 203;
+    public const ARRAY_OF_OBJECTS_EXPECTED_CODE = 204;
 
     /** @var mixed */
     protected $propertyValue;

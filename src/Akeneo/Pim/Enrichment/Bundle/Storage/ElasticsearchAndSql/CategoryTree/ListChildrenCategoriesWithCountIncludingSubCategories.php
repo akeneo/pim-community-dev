@@ -78,7 +78,7 @@ class ListChildrenCategoriesWithCountIncludingSubCategories implements Query\Lis
         array $categoryIdsInPath,
         string $translationLocaleCode,
         ?int $categoryIdToSelectedAsFilter
-    ) : array {
+    ): array {
         $parentCategoryId = array_shift($categoryIdsInPath);
         $subchildCategoryId = $categoryIdsInPath[0] ?? null;
 
@@ -89,10 +89,10 @@ class ListChildrenCategoriesWithCountIncludingSubCategories implements Query\Lis
         $categories = [];
         foreach ($categoriesWithProductCount as $category) {
             $childrenCategoriesToExpand = null !== $subchildCategoryId && $subchildCategoryId === (int) $category['child_id'] ?
-                $this->getRecursivelyCategories($categoryIdsInPath, $translationLocaleCode, $categoryIdToSelectedAsFilter): [];
+                $this->getRecursivelyCategories($categoryIdsInPath, $translationLocaleCode, $categoryIdToSelectedAsFilter) : [];
 
             $isLeaf = count($category['children_codes']) === 0;
-            $isUsedAsFilter = null !== $categoryIdToSelectedAsFilter ? (int) $category['child_id'] === $categoryIdToSelectedAsFilter: false;
+            $isUsedAsFilter = null !== $categoryIdToSelectedAsFilter ? (int) $category['child_id'] === $categoryIdToSelectedAsFilter : false;
 
             $categories[] = new ChildCategory(
                 (int) $category['child_id'],

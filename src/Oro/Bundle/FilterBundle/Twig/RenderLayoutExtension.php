@@ -10,12 +10,12 @@ class RenderLayoutExtension extends AbstractExtension
     /**
      * Extension name
      */
-    const NAME = 'oro_filter_render_layout';
+    public const NAME = 'oro_filter_render_layout';
 
     /**
      * JS block suffix
      */
-    const SUFFIX = '_js';
+    public const SUFFIX = '_js';
 
     /**
      * @return array

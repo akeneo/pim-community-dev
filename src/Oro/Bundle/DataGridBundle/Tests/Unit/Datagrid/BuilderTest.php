@@ -16,13 +16,13 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 class BuilderTest extends \PHPUnit_Framework_TestCase
 {
-    const TEST_DATASOURCE_TYPE = 'array';
-    const TEST_DATAGRID_NAME = 'testGrid';
-    const TEST_ACL_NAME = 'testACL';
-    const TEST_ACL_DESCRIPTOR = 'testACLDescriptor';
+    public const TEST_DATASOURCE_TYPE = 'array';
+    public const TEST_DATAGRID_NAME = 'testGrid';
+    public const TEST_ACL_NAME = 'testACL';
+    public const TEST_ACL_DESCRIPTOR = 'testACLDescriptor';
 
-    const DEFAULT_DATAGRID_CLASS = Datagrid::class;
-    const DEFAULT_ACCEPTOR_CLASS = Acceptor::class;
+    public const DEFAULT_DATAGRID_CLASS = Datagrid::class;
+    public const DEFAULT_ACCEPTOR_CLASS = Acceptor::class;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject|Builder */
     protected $builder;

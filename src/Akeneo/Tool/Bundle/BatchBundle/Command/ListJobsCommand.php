@@ -24,7 +24,7 @@ class ListJobsCommand extends Command
     /**
      * @staticvar string Option used to list all jobs
      */
-    const LIST_ALL = 'all';
+    public const LIST_ALL = 'all';
 
     /** @var JobRepositoryInterface */
     private $jobRepository;

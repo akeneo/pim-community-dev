@@ -14,7 +14,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class ConstraintViolationListException extends \InvalidArgumentException
 {
-    const MESSAGE = 'akeneo_connectivity.connection.constraint_violation_list_exception';
+    public const MESSAGE = 'akeneo_connectivity.connection.constraint_violation_list_exception';
 
     /** @var ConstraintViolationListInterface<ConstraintViolationInterface> */
     private $constraintViolationList;

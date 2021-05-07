@@ -37,7 +37,7 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     protected AttributeRepositoryInterface $attributeRepository;
     protected UserContext $userContext;
 
-    const ATTRIBUTE_HEADER_SEPARATOR = "-";
+    public const ATTRIBUTE_HEADER_SEPARATOR = "-";
 
     public function __construct(
         UserManager $userManager,

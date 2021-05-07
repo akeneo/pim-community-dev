@@ -16,28 +16,28 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterProductUpdaterPass implements CompilerPassInterface
 {
     /** @staticvar */
-    const SETTER_REGISTRY = 'pim_catalog.updater.setter.registry';
+    public const SETTER_REGISTRY = 'pim_catalog.updater.setter.registry';
 
     /** @staticvar */
-    const SETTER_TAG = 'pim_catalog.updater.setter';
+    public const SETTER_TAG = 'pim_catalog.updater.setter';
 
     /** @staticvar */
-    const COPIER_REGISTRY = 'pim_catalog.updater.copier.registry';
+    public const COPIER_REGISTRY = 'pim_catalog.updater.copier.registry';
 
     /** @staticvar */
-    const COPIER_TAG = 'pim_catalog.updater.copier';
+    public const COPIER_TAG = 'pim_catalog.updater.copier';
 
     /** @staticvar */
-    const ADDER_REGISTRY = 'pim_catalog.updater.adder.registry';
+    public const ADDER_REGISTRY = 'pim_catalog.updater.adder.registry';
 
     /** @staticvar */
-    const ADDER_TAG = 'pim_catalog.updater.adder';
+    public const ADDER_TAG = 'pim_catalog.updater.adder';
 
     /** @staticvar */
-    const REMOVER_REGISTRY = 'pim_catalog.updater.remover.registry';
+    public const REMOVER_REGISTRY = 'pim_catalog.updater.remover.registry';
 
     /** @staticvar */
-    const REMOVER_TAG = 'pim_catalog.updater.remover';
+    public const REMOVER_TAG = 'pim_catalog.updater.remover';
 
     /**
      * {@inheritdoc}

@@ -38,7 +38,7 @@ class ReferenceDataCollectionValue extends AbstractValue implements
     /**
      * {@inheritdoc}
      */
-    public function getReferenceDataCodes() : array
+    public function getReferenceDataCodes(): array
     {
         return $this->data;
     }

@@ -14,7 +14,7 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
  */
 class MassOperationConverter implements ConverterInterface
 {
-    const EDIT_COMMON_JOB_CODE = 'edit_common_attributes';
+    public const EDIT_COMMON_JOB_CODE = 'edit_common_attributes';
 
     /** @var UserContext */
     protected $userContext;

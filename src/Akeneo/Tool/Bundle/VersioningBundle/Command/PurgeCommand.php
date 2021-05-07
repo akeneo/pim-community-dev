@@ -26,7 +26,7 @@ class PurgeCommand extends Command
 {
     protected static $defaultName = 'pim:versioning:purge';
 
-    const DEFAULT_MORE_THAN_DAYS = 90;
+    public const DEFAULT_MORE_THAN_DAYS = 90;
 
     /** @var LoggerInterface */
     private $logger;

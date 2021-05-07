@@ -34,7 +34,7 @@ class UserFactory implements SimpleFactoryInterface
 
     /** @var GroupRepositoryInterface */
     protected $groupRepository;
-    
+
     /** @var RoleRepositoryInterface */
     protected $roleRepository;
 

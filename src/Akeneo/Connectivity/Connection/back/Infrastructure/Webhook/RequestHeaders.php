@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook;
@@ -10,6 +11,6 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook;
  */
 final class RequestHeaders
 {
-    const HEADER_REQUEST_SIGNATURE = 'X-Akeneo-Request-Signature';
-    const HEADER_REQUEST_TIMESTAMP = 'X-Akeneo-Request-Timestamp';
+    public const HEADER_REQUEST_SIGNATURE = 'X-Akeneo-Request-Signature';
+    public const HEADER_REQUEST_TIMESTAMP = 'X-Akeneo-Request-Timestamp';
 }

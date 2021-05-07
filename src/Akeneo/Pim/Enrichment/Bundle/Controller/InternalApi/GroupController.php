@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class GroupController
 {
     /** @staticvar integer The maximum number of group products to be displayed */
-    const MAX_PRODUCTS = 5;
+    public const MAX_PRODUCTS = 5;
 
     /** @var GroupRepositoryInterface */
     protected $groupRepository;

@@ -20,8 +20,8 @@ use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
  */
 abstract class BaseEntityMaskBuilder extends MaskBuilder
 {
-    const SERVICE_BITS = -1073741824;  // 0xC0000000
-    const REMOVE_SERVICE_BITS = 1073741823;   // 0x3FFFFFFF
+    public const SERVICE_BITS = -1073741824;  // 0xC0000000
+    public const REMOVE_SERVICE_BITS = 1073741823;   // 0x3FFFFFFF
 
     /**
      * Constructor

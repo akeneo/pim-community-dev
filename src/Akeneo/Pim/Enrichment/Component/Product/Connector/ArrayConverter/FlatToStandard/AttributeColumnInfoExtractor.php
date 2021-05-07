@@ -14,9 +14,9 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  */
 class AttributeColumnInfoExtractor
 {
-    const ARRAY_SEPARATOR = ',';
-    const FIELD_SEPARATOR = '-';
-    const UNIT_SEPARATOR = ' ';
+    public const ARRAY_SEPARATOR = ',';
+    public const FIELD_SEPARATOR = '-';
+    public const UNIT_SEPARATOR = ' ';
 
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;

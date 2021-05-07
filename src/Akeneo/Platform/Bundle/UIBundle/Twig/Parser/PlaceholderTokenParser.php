@@ -1,4 +1,5 @@
 <?php
+
 namespace Akeneo\Platform\Bundle\UIBundle\Twig\Parser;
 
 use Akeneo\Platform\Bundle\UIBundle\Twig\Node\PlaceholderNode;

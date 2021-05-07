@@ -9,5 +9,5 @@ final class AttributeEvents
     /**
      * This event is dispatched after attribute values are cleaned up from products & product models.
      */
-    const POST_CLEAN = 'pim_enrich.attribute.post_clean';
+    public const POST_CLEAN = 'pim_enrich.attribute.post_clean';
 }

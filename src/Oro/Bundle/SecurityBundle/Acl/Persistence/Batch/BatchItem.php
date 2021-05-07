@@ -9,10 +9,10 @@ use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface as SID;
 
 class BatchItem
 {
-    const STATE_NONE = 0;
-    const STATE_CREATE = 1;
-    const STATE_UPDATE = 2;
-    const STATE_DELETE = 3;
+    public const STATE_NONE = 0;
+    public const STATE_CREATE = 1;
+    public const STATE_UPDATE = 2;
+    public const STATE_DELETE = 3;
 
     /**
      * @var OID

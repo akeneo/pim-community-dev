@@ -8,9 +8,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class FieldNodeDefinitionTest extends \PHPUnit_Framework_TestCase
 {
-    const TEST_NAME = 'testNodeName';
-    const TEST_TYPE = 'text';
-    const TEST_ACL = 'acl';
+    public const TEST_NAME = 'testNodeName';
+    public const TEST_TYPE = 'text';
+    public const TEST_ACL = 'acl';
 
     protected $testDefinition = [
         'options'      => [

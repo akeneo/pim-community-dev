@@ -41,8 +41,8 @@ final class PimFormatterFactory implements FormatterFactory
     /*
      * Available services
      */
-    const ROOT_LISTENER_ID = 'pim.output.node.listener.junit';
-    const RESULT_TO_STRING_CONVERTER_ID = 'pim.output.node.printer.result_to_string';
+    public const ROOT_LISTENER_ID = 'pim.output.node.listener.junit';
+    public const RESULT_TO_STRING_CONVERTER_ID = 'pim.output.node.printer.result_to_string';
 
     /**
      * {@inheritdoc}
@@ -67,7 +67,7 @@ final class PimFormatterFactory implements FormatterFactory
      *
      * @param ContainerBuilder $container
      */
-    private function loadPrinterHelpers(ContainerBuilder $container) : void
+    private function loadPrinterHelpers(ContainerBuilder $container): void
     {
         $definition = new Definition(ResultToStringConverter::class);
         $container->setDefinition(self::RESULT_TO_STRING_CONVERTER_ID, $definition);
@@ -78,7 +78,7 @@ final class PimFormatterFactory implements FormatterFactory
      *
      * @param ContainerBuilder $container
      */
-    private function loadCorePrinters(ContainerBuilder $container) : void
+    private function loadCorePrinters(ContainerBuilder $container): void
     {
         $definition = new Definition(JUnitSuitePrinter::class, [
             new Reference('pim.output.junit.statistics'),
@@ -109,7 +109,7 @@ final class PimFormatterFactory implements FormatterFactory
      *
      * @param ContainerBuilder $container
      */
-    private function loadRootNodeListener(ContainerBuilder $container) : void
+    private function loadRootNodeListener(ContainerBuilder $container): void
     {
         $definition = new Definition(JUnitOutlineStoreListener::class, [
             new Reference('pim.output.node.printer.junit.suite')
@@ -138,7 +138,7 @@ final class PimFormatterFactory implements FormatterFactory
      *
      * @param ContainerBuilder $container
      */
-    private function loadFormatter(ContainerBuilder $container) : void
+    private function loadFormatter(ContainerBuilder $container): void
     {
         $definition = new Definition(PhaseStatistics::class);
         $container->setDefinition('pim.output.junit.statistics', $definition);
@@ -174,7 +174,7 @@ final class PimFormatterFactory implements FormatterFactory
      *
      * @return Definition
      */
-    private function createOutputPrinterDefinition() : Definition
+    private function createOutputPrinterDefinition(): Definition
     {
         return new Definition(JUnitOutputPrinter::class, [
             new Definition(FilesystemOutputFactory::class),

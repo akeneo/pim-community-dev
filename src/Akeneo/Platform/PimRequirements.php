@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform;
 
-use \PDO;
+use PDO;
 use Symfony\Component\Intl\Intl;
 use Symfony\Requirements\Requirement;
 
@@ -20,15 +20,15 @@ use Symfony\Requirements\Requirement;
  */
 class PimRequirements
 {
-    const REQUIRED_PHP_VERSION = '7.4.0';
-    const REQUIRED_GD_VERSION = '2.0';
-    const REQUIRED_GHOSTSCRIPT_VERSION = '9.27';
-    const REQUIRED_CURL_VERSION = '7.0';
-    const REQUIRED_ICU_VERSION = '4.2';
-    const LOWEST_REQUIRED_MYSQL_VERSION = '8.0.18';
-    const GREATEST_REQUIRED_MYSQL_VERSION = '8.1.0';
+    public const REQUIRED_PHP_VERSION = '7.4.0';
+    public const REQUIRED_GD_VERSION = '2.0';
+    public const REQUIRED_GHOSTSCRIPT_VERSION = '9.27';
+    public const REQUIRED_CURL_VERSION = '7.0';
+    public const REQUIRED_ICU_VERSION = '4.2';
+    public const LOWEST_REQUIRED_MYSQL_VERSION = '8.0.18';
+    public const GREATEST_REQUIRED_MYSQL_VERSION = '8.1.0';
 
-    const REQUIRED_EXTENSIONS = [
+    public const REQUIRED_EXTENSIONS = [
         'apcu',
         'bcmath',
         'curl',
@@ -176,7 +176,7 @@ class PimRequirements
     /**
      * Returns a global MySQL configuration variable value
      */
-    protected function getMySQLVariableValue(string $variableName) : ?string
+    protected function getMySQLVariableValue(string $variableName): ?string
     {
         $variableValue = null;
 
@@ -212,7 +212,7 @@ class PimRequirements
      * If it exits, an attempt to connect is done, and can result in an exception
      * if no connection is reached.
      */
-    protected function getConnection() : PDO
+    protected function getConnection(): PDO
     {
         return new PDO(
             sprintf(

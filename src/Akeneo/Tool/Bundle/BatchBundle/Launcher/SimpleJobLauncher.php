@@ -83,7 +83,7 @@ class SimpleJobLauncher implements JobLauncherInterface
     /**
      * {@inheritdoc}
      */
-    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = []) : JobExecution
+    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = []): JobExecution
     {
         $emailParameter = '';
         if (isset($configuration['send_email']) && method_exists($user, 'getEmail')) {
@@ -122,7 +122,7 @@ class SimpleJobLauncher implements JobLauncherInterface
      *
      * @param string $cmd
      */
-    protected function launchInBackground(string $cmd) : void
+    protected function launchInBackground(string $cmd): void
     {
         exec($cmd . ' &');
     }
@@ -138,7 +138,7 @@ class SimpleJobLauncher implements JobLauncherInterface
      *
      * @return JobExecution
      */
-    protected function createJobExecution(JobInstance $jobInstance, UserInterface $user, array $configuration) : JobExecution
+    protected function createJobExecution(JobInstance $jobInstance, UserInterface $user, array $configuration): JobExecution
     {
         $job = $this->jobRegistry->get($jobInstance->getJobName());
         $configuration = array_merge($jobInstance->getRawParameters(), $configuration);

@@ -19,12 +19,12 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class User implements UserInterface
 {
-    const ROLE_DEFAULT = 'ROLE_USER';
-    const GROUP_DEFAULT = 'All';
-    const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
-    const DEFAULT_TIMEZONE = 'UTC';
-    const TYPE_USER = 'user';
-    const TYPE_API = 'api';
+    public const ROLE_DEFAULT = 'ROLE_USER';
+    public const GROUP_DEFAULT = 'All';
+    public const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
+    public const DEFAULT_TIMEZONE = 'UTC';
+    public const TYPE_USER = 'user';
+    public const TYPE_API = 'api';
 
     /** @var int|string */
     protected $id;
@@ -537,7 +537,7 @@ class User implements UserInterface
      */
     public function setEnabled($enabled)
     {
-        $this->enabled = (boolean) $enabled;
+        $this->enabled = (bool) $enabled;
 
         return $this;
     }

@@ -12,7 +12,7 @@ namespace Oro\Bundle\PimDataGridBundle\Extension\Formatter\Property\ProductValue
 class TwigProperty extends FieldProperty
 {
     /** @staticvar string */
-    const TEMPLATE_KEY = 'template';
+    public const TEMPLATE_KEY = 'template';
 
     /** @var \Twig_Environment */
     protected $environment;

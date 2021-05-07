@@ -16,13 +16,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CategoryFilterType extends NumberFilterType
 {
     /** @staticvar integer */
-    const EXCLUDE_SUB = 0;
+    public const EXCLUDE_SUB = 0;
 
     /** @staticvar integer */
-    const INCLUDE_SUB = 1;
+    public const INCLUDE_SUB = 1;
 
     /** @staticvar string */
-    const NAME = 'pim_type_category_filter';
+    public const NAME = 'pim_type_category_filter';
 
     /**
      * {@inheritdoc}

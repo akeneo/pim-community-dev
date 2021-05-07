@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class ResetController extends Controller
 {
-    const SESSION_EMAIL = 'pim_user_reset_email';
+    public const SESSION_EMAIL = 'pim_user_reset_email';
 
     /** @var UserManager */
     private $userManager;

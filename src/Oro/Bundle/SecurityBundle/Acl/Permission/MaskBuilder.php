@@ -39,23 +39,23 @@ abstract class MaskBuilder
      * All characters are allowed here, but only a character defined in self::OFF constant
      * is interpreted as bit placeholder.
      */
-    const PATTERN_ALL_OFF = '................................';
+    public const PATTERN_ALL_OFF = '................................';
 
     /**
      * Defines the brief form of a human-readable format of a bitmask
      */
-    const PATTERN_ALL_OFF_BRIEF = '................................';
+    public const PATTERN_ALL_OFF_BRIEF = '................................';
 
     /**
      * A symbol is used in PATTERN_ALL_* constants as a placeholder of a bit
      */
-    const OFF = '.';
+    public const OFF = '.';
 
     /**
      * The default character is used in a human-readable format to show that a bit in the bitmask is set
      * If you want more readable character please define CODE_* constants in your mask builder class.
      */
-    const ON = '*';
+    public const ON = '*';
 
     protected $mask;
 

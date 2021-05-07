@@ -15,7 +15,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class BuildBefore extends Event implements GridEventInterface
 {
-    const NAME = 'oro_datagrid.datgrid.build.before';
+    public const NAME = 'oro_datagrid.datgrid.build.before';
 
     /** @var DatagridInterface */
     protected $datagrid;

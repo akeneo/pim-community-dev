@@ -30,7 +30,7 @@ use Doctrine\ORM\PersistentCollection;
  */
 class DoctrineJobRepository implements JobRepositoryInterface
 {
-    const DATETIME_FORMAT = 'Y-m-d H:i:s';
+    public const DATETIME_FORMAT = 'Y-m-d H:i:s';
 
     /* @var EntityManager */
     protected $jobManager = null;

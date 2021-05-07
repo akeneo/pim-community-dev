@@ -11,5 +11,5 @@ namespace Akeneo\Tool\Component\Localization\Factory;
  */
 class DateTimeFactory extends DateFactory
 {
-    const TYPE_TIME = \IntlDateFormatter::SHORT;
+    public const TYPE_TIME = \IntlDateFormatter::SHORT;
 }

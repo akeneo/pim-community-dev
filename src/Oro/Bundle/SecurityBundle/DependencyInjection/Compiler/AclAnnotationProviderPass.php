@@ -8,8 +8,8 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class AclAnnotationProviderPass implements CompilerPassInterface
 {
-    const PROVIDER_SERVICE_NAME = 'oro_security.acl.annotation_provider';
-    const TAG_NAME = 'oro_security.acl.config_loader';
+    public const PROVIDER_SERVICE_NAME = 'oro_security.acl.annotation_provider';
+    public const TAG_NAME = 'oro_security.acl.config_loader';
 
     /**
      * {@inheritDoc}

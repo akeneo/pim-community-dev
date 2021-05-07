@@ -39,7 +39,7 @@ class CloseSessionListener implements EventSubscriberInterface
     /**
      * Save and close the session.
      */
-    public function closeSession(RequestEvent $event) : void
+    public function closeSession(RequestEvent $event): void
     {
         if (!$event->getRequest()->hasSession()) {
             return;

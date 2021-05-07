@@ -86,7 +86,7 @@ class CompletenessProductMask
     {
         $difference = array_diff($attributeRequirementMaskPerChannelAndLocale->mask(), $productMask);
 
-        $missingAttributeCodes = array_map(function (string $mask) : string {
+        $missingAttributeCodes = array_map(function (string $mask): string {
             return substr($mask, 0, strpos($mask, RequiredAttributesMaskForChannelAndLocale::ATTRIBUTE_CHANNEL_LOCALE_SEPARATOR));
         }, $difference);
 

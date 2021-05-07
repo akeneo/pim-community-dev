@@ -20,7 +20,7 @@ class PurgeJobExecutionCommand extends Command
 {
     protected static $defaultName = 'akeneo:batch:purge-job-execution';
 
-    const DEFAULT_NUMBER_OF_DAYS = 90;
+    public const DEFAULT_NUMBER_OF_DAYS = 90;
 
     /** @var PurgeJobExecution */
     private $purgeJobExecution;

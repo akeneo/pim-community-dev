@@ -62,7 +62,7 @@ class JobParameters implements \IteratorAggregate, \Countable
      *
      * @internal
      */
-    public function set(string $key, $value):void
+    public function set(string $key, $value): void
     {
         $this->parameters[$key] = $value;
     }

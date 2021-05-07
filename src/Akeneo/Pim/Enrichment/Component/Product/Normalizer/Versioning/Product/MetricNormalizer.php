@@ -15,10 +15,10 @@ use Webmozart\Assert\Assert;
  */
 class MetricNormalizer extends AbstractValueDataNormalizer implements CacheableSupportsMethodInterface
 {
-    const LABEL_SEPARATOR = '-';
-    const MULTIPLE_FIELDS_FORMAT = 'multiple_fields';
-    const SINGLE_FIELD_FORMAT = 'single_field';
-    const UNIT_LABEL = 'unit';
+    public const LABEL_SEPARATOR = '-';
+    public const MULTIPLE_FIELDS_FORMAT = 'multiple_fields';
+    public const SINGLE_FIELD_FORMAT = 'single_field';
+    public const UNIT_LABEL = 'unit';
 
     /** @var string[] */
     protected $supportedFormats = ['flat'];

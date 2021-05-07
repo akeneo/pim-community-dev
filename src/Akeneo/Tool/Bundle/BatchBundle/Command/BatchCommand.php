@@ -40,9 +40,9 @@ class BatchCommand extends Command
 {
     protected static $defaultName = 'akeneo:batch:job';
 
-    const EXIT_SUCCESS_CODE = 0;
-    const EXIT_ERROR_CODE = 1;
-    const EXIT_WARNING_CODE = 2;
+    public const EXIT_SUCCESS_CODE = 0;
+    public const EXIT_ERROR_CODE = 1;
+    public const EXIT_WARNING_CODE = 2;
 
 
     /** @var LoggerInterface */
@@ -345,7 +345,7 @@ class BatchCommand extends Command
      *
      * @throws \RuntimeException
      */
-    protected function validateJobParameters(JobInstance $jobInstance, JobParameters $jobParameters, string $code) : void
+    protected function validateJobParameters(JobInstance $jobInstance, JobParameters $jobParameters, string $code): void
     {
         // We merge the JobInstance from the JobManager EntityManager to the DefaultEntityManager
         // in order to be able to have a working UniqueEntity validation

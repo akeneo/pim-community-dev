@@ -9,13 +9,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TextFilterType extends AbstractType
 {
-    const TYPE_CONTAINS = 1;
-    const TYPE_NOT_CONTAINS = 2;
-    const TYPE_EQUAL = 3;
-    const TYPE_STARTS_WITH = 4;
-    const TYPE_ENDS_WITH = 5;
-    const TYPE_EMPTY = 'empty';
-    const NAME = 'oro_type_text_filter';
+    public const TYPE_CONTAINS = 1;
+    public const TYPE_NOT_CONTAINS = 2;
+    public const TYPE_EQUAL = 3;
+    public const TYPE_STARTS_WITH = 4;
+    public const TYPE_ENDS_WITH = 5;
+    public const TYPE_EMPTY = 'empty';
+    public const NAME = 'oro_type_text_filter';
 
     protected TranslatorInterface $translator;
 

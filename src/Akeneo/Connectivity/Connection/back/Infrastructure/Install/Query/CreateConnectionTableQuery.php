@@ -17,7 +17,7 @@ final class CreateConnectionTableQuery
      * The anonymization script for cloned PIM instances must be updated after any change on the structure.
      * See `pim-enterprise-dev/deployments/bin/clone_serenity.sh`.
      */
-    const QUERY = <<<'SQL'
+    public const QUERY = <<<'SQL'
     CREATE TABLE IF NOT EXISTS akeneo_connectivity_connection(
         client_id INT NOT NULL UNIQUE,
         user_id INT NOT NULL,

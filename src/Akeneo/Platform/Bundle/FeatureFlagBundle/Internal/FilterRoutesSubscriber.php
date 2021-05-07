@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class FilterRoutesSubscriber implements EventSubscriberInterface
 {
-    const FEATURE_KEY = '_feature';
+    public const FEATURE_KEY = '_feature';
 
     /** @var FeatureFlags */
     private $featureFlags;

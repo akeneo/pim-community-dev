@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Akeneo\Tool\Component\Connector\ArrayConverter\StandardToFlat;
 
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;

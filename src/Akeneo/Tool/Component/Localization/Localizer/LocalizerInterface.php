@@ -16,11 +16,11 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 interface LocalizerInterface
 {
-    const DEFAULT_DATE_FORMAT = 'yyyy-MM-dd';
+    public const DEFAULT_DATE_FORMAT = 'yyyy-MM-dd';
 
-    const DEFAULT_DATETIME_FORMAT = 'yyyy-MM-dd HH:mm';
+    public const DEFAULT_DATETIME_FORMAT = 'yyyy-MM-dd HH:mm';
 
-    const DEFAULT_DECIMAL_SEPARATOR = '.';
+    public const DEFAULT_DECIMAL_SEPARATOR = '.';
 
     /**
      * Data provided respects the expected format ?

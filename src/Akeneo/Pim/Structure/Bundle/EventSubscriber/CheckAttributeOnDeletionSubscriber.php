@@ -79,7 +79,7 @@ class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
         }
 
         $attributeIds = array_map(
-            fn (AttributeInterface $attr):int => $attr->getId(),
+            fn (AttributeInterface $attr): int => $attr->getId(),
             $attributes
         );
 

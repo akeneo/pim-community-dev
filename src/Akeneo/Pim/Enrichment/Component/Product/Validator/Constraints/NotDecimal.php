@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class NotDecimal extends Constraint
 {
-    const NOT_DECIMAL = 'a2ea1e5f-9310-4213-891e-84347c550587';
+    public const NOT_DECIMAL = 'a2ea1e5f-9310-4213-891e-84347c550587';
 
     /** @var string */
     public $message = 'The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.';

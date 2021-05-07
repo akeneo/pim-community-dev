@@ -8,7 +8,7 @@ use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 
 class BuildBeforeTest extends \PHPUnit_Framework_TestCase
 {
-    const TEST_STRING = 'testString';
+    public const TEST_STRING = 'testString';
 
     public function testEventCreation()
     {

@@ -21,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class AjaxChoiceFilterType extends ChoiceFilterType
 {
     /** @staticvar string */
-    const NAME = 'pim_type_ajax_choice_filter';
+    public const NAME = 'pim_type_ajax_choice_filter';
 
     /**
      * {@inheritdoc}

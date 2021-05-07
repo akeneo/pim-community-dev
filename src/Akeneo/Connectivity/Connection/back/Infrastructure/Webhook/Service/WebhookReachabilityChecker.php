@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service;
@@ -23,10 +24,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
 {
     /** @var string */
-    const POST = 'POST';
+    public const POST = 'POST';
 
     /** @var string */
-    const CONNECTION_FAILED = 'Failed to connect to server';
+    public const CONNECTION_FAILED = 'Failed to connect to server';
 
     /** @var ClientInterface */
     private $client;

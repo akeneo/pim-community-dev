@@ -20,12 +20,12 @@ final class PurgeVersionEvents
      *
      * The event listener receives PurgeVersionEvent instance
      */
-    const PRE_ADVISEMENT = 'pim_versioning.purge_version.pre_advisement';
+    public const PRE_ADVISEMENT = 'pim_versioning.purge_version.pre_advisement';
 
     /**
      * This event is dispatched before a version is purged
      *
      * Thee event listener receives PurgeVersionEvent instance
      */
-    const PRE_PURGE = 'pim_versioning.purge_version.pre_purge';
+    public const PRE_PURGE = 'pim_versioning.purge_version.pre_purge';
 }

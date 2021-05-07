@@ -16,10 +16,10 @@ use Symfony\Component\DependencyInjection\Reference;
 class AddFilterTypesPass implements CompilerPassInterface
 {
     /** @staticvar string */
-    const FILTER_EXTENSION_ID = 'pim_datagrid.extension.filter';
+    public const FILTER_EXTENSION_ID = 'pim_datagrid.extension.filter';
 
     /** @staticvar string */
-    const TAG_NAME = 'oro_filter.extension.orm_filter.filter';
+    public const TAG_NAME = 'oro_filter.extension.orm_filter.filter';
 
     /**
      * {@inheritdoc}

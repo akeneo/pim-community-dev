@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Akeneo\Pim\Enrichment\Component\Product\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;

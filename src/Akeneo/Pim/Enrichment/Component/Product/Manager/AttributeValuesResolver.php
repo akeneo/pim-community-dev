@@ -53,7 +53,7 @@ class AttributeValuesResolver implements AttributeValuesResolverInterface
      *
      * @return array:array
      */
-    public function resolveEligibleValues(array $attributes, array $channels = null, array $locales = null) : array
+    public function resolveEligibleValues(array $attributes, array $channels = null, array $locales = null): array
     {
         $this->channels = $channels;
         $this->locales  = $locales;
@@ -92,7 +92,7 @@ class AttributeValuesResolver implements AttributeValuesResolverInterface
      *
      * @return array
      */
-    protected function filterExpectedValues(AttributeInterface $attribute, array $values) : array
+    protected function filterExpectedValues(AttributeInterface $attribute, array $values): array
     {
         if ($attribute->isLocaleSpecific()) {
             $availableLocales = $attribute->getAvailableLocaleCodes();
@@ -113,7 +113,7 @@ class AttributeValuesResolver implements AttributeValuesResolverInterface
      *
      * @return array
      */
-    protected function getLocaleRows(AttributeInterface $attribute) : array
+    protected function getLocaleRows(AttributeInterface $attribute): array
     {
         $locales = $this->getLocales();
         $localeRows = [];
@@ -136,7 +136,7 @@ class AttributeValuesResolver implements AttributeValuesResolverInterface
      *
      * @return array
      */
-    protected function getScopeRows(AttributeInterface $attribute) : array
+    protected function getScopeRows(AttributeInterface $attribute): array
     {
         $channels = $this->getChannels();
         $scopeRows = [];
@@ -159,7 +159,7 @@ class AttributeValuesResolver implements AttributeValuesResolverInterface
      *
      * @return array
      */
-    protected function getScopeToLocaleRows(AttributeInterface $attribute) : array
+    protected function getScopeToLocaleRows(AttributeInterface $attribute): array
     {
         $channels = $this->getChannels();
         $scopeToLocaleRows = [];
@@ -180,7 +180,7 @@ class AttributeValuesResolver implements AttributeValuesResolverInterface
     /**
      * @return ChannelInterface[]
      */
-    protected function getChannels() : array
+    protected function getChannels(): array
     {
         if (null === $this->channels) {
             $this->channels = $this->channelRepository->findAll();
@@ -192,7 +192,7 @@ class AttributeValuesResolver implements AttributeValuesResolverInterface
     /**
      * @return LocaleInterface[]
      */
-    protected function getLocales() : array
+    protected function getLocales(): array
     {
         if (null === $this->locales) {
             $this->locales = $this->localeRepository->getActivatedLocales();

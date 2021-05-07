@@ -603,7 +603,7 @@ class JobInstanceController
      *
      * @return JobExecution
      */
-    protected function launchJob(JobInstance $jobInstance) : JobExecution
+    protected function launchJob(JobInstance $jobInstance): JobExecution
     {
         $user = $this->tokenStorage->getToken()->getUser();
 

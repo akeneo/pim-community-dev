@@ -21,7 +21,7 @@ class RegisterSerializerPass implements CompilerPassInterface
     protected $serializerServiceId;
 
     /** @staticvar integer The default priority for services */
-    const DEFAULT_PRIORITY = 100;
+    public const DEFAULT_PRIORITY = 100;
 
     /**
      * @param string $serializerServiceId

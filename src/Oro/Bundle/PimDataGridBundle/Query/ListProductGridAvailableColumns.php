@@ -11,7 +11,7 @@ namespace Oro\Bundle\PimDataGridBundle\Query;
  */
 interface ListProductGridAvailableColumns
 {
-    const COLUMNS_PER_PAGE = 25;
+    public const COLUMNS_PER_PAGE = 25;
 
     /**
      * @param string $locale        Code of the locale for the translation of the labels

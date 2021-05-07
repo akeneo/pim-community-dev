@@ -11,7 +11,7 @@ namespace Oro\Bundle\PimDataGridBundle\Query;
  */
 interface ListAttributesUseableInProductGrid
 {
-    const ATTRIBUTES_PER_PAGE = 25;
+    public const ATTRIBUTES_PER_PAGE = 25;
 
     /**
      * Fetch a paginated list of attributes for the product grid

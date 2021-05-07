@@ -11,9 +11,9 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject;
  */
 class FlowType
 {
-    const DATA_SOURCE = 'data_source';
-    const DATA_DESTINATION = 'data_destination';
-    const OTHER = 'other';
+    public const DATA_SOURCE = 'data_source';
+    public const DATA_DESTINATION = 'data_destination';
+    public const OTHER = 'other';
 
     private const CONSTRAINT_KEY = 'akeneo_connectivity.connection.connection.constraint.flow_type.%s';
 

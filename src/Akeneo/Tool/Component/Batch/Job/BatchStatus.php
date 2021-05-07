@@ -13,7 +13,7 @@ namespace Akeneo\Tool\Component\Batch\Job;
  */
 class BatchStatus
 {
-    const __DEFAULT = self::UNKNOWN;
+    public const __DEFAULT = self::UNKNOWN;
 
     protected $value;
 
@@ -37,14 +37,14 @@ class BatchStatus
      * steps that have finished processing, but were not successful, and where
      * they should be skipped on a restart (so FAILED is the wrong status).
      */
-    const COMPLETED = 1;
-    const STARTING = 2;
-    const STARTED = 3;
-    const STOPPING = 4;
-    const STOPPED = 5;
-    const FAILED = 6;
-    const ABANDONED = 7;
-    const UNKNOWN = 8;
+    public const COMPLETED = 1;
+    public const STARTING = 2;
+    public const STARTED = 3;
+    public const STOPPING = 4;
+    public const STOPPED = 5;
+    public const FAILED = 6;
+    public const ABANDONED = 7;
+    public const UNKNOWN = 8;
 
     protected static $statusLabels = [
         self::COMPLETED => 'COMPLETED',

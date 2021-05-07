@@ -44,7 +44,7 @@ SQL;
         $normalized[FlowType::OTHER] = ['tracked' => 0, 'untracked' => 0];
 
         foreach ($data as $row) {
-            $status = (bool) $row['auditable'] ? 'tracked':'untracked';
+            $status = (bool) $row['auditable'] ? 'tracked' : 'untracked';
             $normalized[$row['flow_type']][$status] = $row['flow_type_count'];
         }
 

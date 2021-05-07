@@ -18,7 +18,7 @@ use Oro\Bundle\PimDataGridBundle\Datasource\RepositoryDatasource;
 class AddLocaleCodeToGridListener
 {
     /** @staticvar string */
-    const LOCALE_PARAMETER = '[options][locale_parameter]';
+    public const LOCALE_PARAMETER = '[options][locale_parameter]';
 
     /** @var RequestParameters */
     protected $requestParams;

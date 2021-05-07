@@ -23,7 +23,7 @@ use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface as SID;
  */
 class AclPrivilegeRepository
 {
-    const ROOT_PRIVILEGE_NAME = '(default)';
+    public const ROOT_PRIVILEGE_NAME = '(default)';
 
     /**
      * @var AclManager

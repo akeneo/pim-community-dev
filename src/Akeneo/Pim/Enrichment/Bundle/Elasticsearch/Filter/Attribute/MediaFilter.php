@@ -18,7 +18,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    const PATH_SUFFIX = 'original_filename';
+    public const PATH_SUFFIX = 'original_filename';
 
     public function __construct(
         ElasticsearchFilterValidator $filterValidator,

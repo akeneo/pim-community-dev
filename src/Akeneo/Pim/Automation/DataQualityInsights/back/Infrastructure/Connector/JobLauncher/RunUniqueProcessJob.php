@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\AnotherJobStillRunningException;

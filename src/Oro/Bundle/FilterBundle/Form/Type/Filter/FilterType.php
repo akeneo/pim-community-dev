@@ -13,10 +13,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FilterType extends AbstractType
 {
-    const NAME = 'oro_type_filter';
-    const TYPE_EMPTY = 'empty';
-    const TYPE_NOT_EMPTY = 'not empty';
-    const TYPE_IN_LIST = 'in';
+    public const NAME = 'oro_type_filter';
+    public const TYPE_EMPTY = 'empty';
+    public const TYPE_NOT_EMPTY = 'not empty';
+    public const TYPE_IN_LIST = 'in';
 
     protected TranslatorInterface $translator;
 

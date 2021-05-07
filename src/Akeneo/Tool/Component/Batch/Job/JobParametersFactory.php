@@ -51,7 +51,7 @@ class JobParametersFactory
      *
      * @return JobParameters
      */
-    public function createFromRawParameters(JobExecution $jobExecution) : JobParameters
+    public function createFromRawParameters(JobExecution $jobExecution): JobParameters
     {
         return new $this->jobParametersClass($jobExecution->getRawParameters());
     }

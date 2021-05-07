@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Install\Query;
@@ -10,7 +11,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Install\Query;
  */
 final class CreateWrongCredentialsCombinationQuery
 {
-    const QUERY = <<<SQL
+    public const QUERY = <<<SQL
 CREATE TABLE akeneo_connectivity_connection_wrong_credentials_combination
 (
     connection_code     varchar(100) not null,

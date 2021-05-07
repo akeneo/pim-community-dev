@@ -6,8 +6,8 @@ use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
 class TwigTemplateProperty extends AbstractProperty
 {
-    const CONTEXT_KEY = 'context';
-    const TEMPLATE_KEY = 'template';
+    public const CONTEXT_KEY = 'context';
+    public const TEMPLATE_KEY = 'template';
 
     /** @var array */
     protected $excludeParams = [self::CONTEXT_KEY, self::TEMPLATE_KEY];

@@ -17,13 +17,13 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 class FileGuesser implements ConstraintGuesserInterface
 {
     /** @staticvar string */
-    const MEGABYTE_UNIT = 'M';
+    public const MEGABYTE_UNIT = 'M';
 
     /** @staticvar string */
-    const KILOBYTE_UNIT = 'k';
+    public const KILOBYTE_UNIT = 'k';
 
     /** @staticvar string */
-    const KILOBYTE_MULTIPLIER = 1024;
+    public const KILOBYTE_MULTIPLIER = 1024;
 
     /**
      * {@inheritdoc}

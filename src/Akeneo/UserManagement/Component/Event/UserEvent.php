@@ -14,5 +14,5 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 final class UserEvent extends GenericEvent
 {
     /** @var string Event triggered after a user post update */
-    const POST_UPDATE = 'pim_user.update.post';
+    public const POST_UPDATE = 'pim_user.update.post';
 }

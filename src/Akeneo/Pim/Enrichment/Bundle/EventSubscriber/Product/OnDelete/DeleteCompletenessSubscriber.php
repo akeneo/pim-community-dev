@@ -30,7 +30,7 @@ final class DeleteCompletenessSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents() : array
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::POST_REMOVE      => 'deleteForOneProduct',
@@ -38,7 +38,7 @@ final class DeleteCompletenessSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function deleteForOneProduct(RemoveEvent $event) : void
+    public function deleteForOneProduct(RemoveEvent $event): void
     {
         $product = $event->getSubject();
         if (!$this->checkProduct($product) || !$this->checkEventUnitary($event)) {

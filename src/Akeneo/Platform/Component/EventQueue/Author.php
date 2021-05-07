@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Platform\Component\EventQueue;
@@ -14,10 +15,10 @@ use Webmozart\Assert\Assert;
 class Author
 {
     /** @var string */
-    const TYPE_API = 'api';
+    public const TYPE_API = 'api';
 
     /** @var string */
-    const TYPE_UI = 'ui';
+    public const TYPE_UI = 'ui';
 
     /** @var string */
     private $name;

@@ -18,10 +18,10 @@ use Symfony\Component\HttpFoundation\Request;
 class ConfigureHistoryGridListener
 {
     /** @staticvar string */
-    const GRID_PARAM_CLASS = 'object_class';
+    public const GRID_PARAM_CLASS = 'object_class';
 
     /** @staticvar string */
-    const GRID_PARAM_OBJECT_ID = 'object_id';
+    public const GRID_PARAM_OBJECT_ID = 'object_id';
 
     /**
      * @var Request

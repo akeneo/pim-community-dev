@@ -16,7 +16,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
  */
 class MeasureConverter
 {
-    const SCALE = 12;
+    public const SCALE = 12;
 
     /** * @var string */
     protected $family;

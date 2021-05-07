@@ -21,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PriceFilterType extends AbstractType
 {
     /** @staticvar string */
-    const NAME = 'pim_type_price_filter';
+    public const NAME = 'pim_type_price_filter';
 
     /**
      * @var CurrencyRepositoryInterface

@@ -18,7 +18,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 interface ProductUniqueDataInterface
 {
-    public function getId():int;
+    public function getId(): int;
 
     public function getProduct(): ProductInterface;
 
@@ -30,5 +30,5 @@ interface ProductUniqueDataInterface
 
     public function setRawData(string $rawData): void;
 
-    public function isEqual(ProductUniqueDataInterface $uniqueValue):bool;
+    public function isEqual(ProductUniqueDataInterface $uniqueValue): bool;
 }

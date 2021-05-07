@@ -14,13 +14,13 @@ namespace Akeneo\Tool\Component\Batch\Job;
  */
 class ExitStatus
 {
-    const MAX_SEVERITY = 7;
+    public const MAX_SEVERITY = 7;
 
     /**
      * Convenient constant value representing unknown state - assumed not
      * continuable.
      */
-    const UNKNOWN = "UNKNOWN";
+    public const UNKNOWN = "UNKNOWN";
 
     /**
      * Convenient constant value representing continuable state where processing
@@ -29,29 +29,29 @@ class ExitStatus
      * another thread or process and the caller is not required to wait for the
      * result.
      */
-    const EXECUTING = "EXECUTING";
+    public const EXECUTING = "EXECUTING";
 
     /**
      * Convenient constant value representing finished processing.
      */
-    const COMPLETED = "COMPLETED";
+    public const COMPLETED = "COMPLETED";
 
     /**
      * Convenient constant value representing job that did no processing (e.g.
      * because it was already complete).
      */
-    const NOOP = "NOOP";
+    public const NOOP = "NOOP";
 
     /**
      * Convenient constant value representing finished processing with an error.
      */
-    const FAILED = "FAILED";
+    public const FAILED = "FAILED";
 
     /**
      * Convenient constant value representing finished processing with
      * interrupted status.
      */
-    const STOPPED = "STOPPED";
+    public const STOPPED = "STOPPED";
 
     protected static $statusSeverity = [
         self::EXECUTING => 1,

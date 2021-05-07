@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    const DECIMAL_PRECISION = 4;
+    public const DECIMAL_PRECISION = 4;
 
     /** @var NormalizerInterface */
     private $normalizer;

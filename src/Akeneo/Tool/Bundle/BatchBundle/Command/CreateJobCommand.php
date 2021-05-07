@@ -26,8 +26,8 @@ class CreateJobCommand extends Command
 {
     protected static $defaultName = 'akeneo:batch:create-job';
 
-    const EXIT_SUCCESS_CODE = 0;
-    const EXIT_ERROR_CODE = 1;
+    public const EXIT_SUCCESS_CODE = 0;
+    public const EXIT_ERROR_CODE = 1;
 
     /** @var ValidatorInterface */
     private $validator;

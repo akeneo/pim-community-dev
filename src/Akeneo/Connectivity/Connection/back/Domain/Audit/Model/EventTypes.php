@@ -11,7 +11,7 @@ namespace Akeneo\Connectivity\Connection\Domain\Audit\Model;
  */
 final class EventTypes
 {
-    const PRODUCT_CREATED = 'product_created';
-    const PRODUCT_UPDATED = 'product_updated';
-    const PRODUCT_READ = 'product_read';
+    public const PRODUCT_CREATED = 'product_created';
+    public const PRODUCT_UPDATED = 'product_updated';
+    public const PRODUCT_READ = 'product_read';
 }

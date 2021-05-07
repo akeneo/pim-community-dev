@@ -25,7 +25,7 @@ use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\MassActionHandlerI
 class MassActionDispatcher
 {
     /** @staticvar string */
-    const FAMILY_GRID_NAME = 'family-grid';
+    public const FAMILY_GRID_NAME = 'family-grid';
 
     /** @var MassActionHandlerRegistry */
     protected $handlerRegistry;

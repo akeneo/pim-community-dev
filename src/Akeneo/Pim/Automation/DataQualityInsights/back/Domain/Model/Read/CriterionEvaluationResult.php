@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleDataCollection;
