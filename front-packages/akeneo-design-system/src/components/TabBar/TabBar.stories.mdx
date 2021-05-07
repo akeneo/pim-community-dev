@@ -1,0 +1,96 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {TabBar} from './TabBar.tsx';
+import {Badge} from '../Badge/Badge';
+import {Pill} from '../Pill/Pill';
+import {useState} from 'react';
+
+<Meta title="Components/TabBar" component={TabBar} />
+
+# TabBar
+
+## Usage
+
+Tabs are used to move from one content to another within the same context.
+
+## Format
+
+**Text**
+
+Each label describes its content and defines the expectations of the user. Labels are concise and use one or two words maximum. Icons are not allowed in tab labels.
+
+**Order**
+
+The order of the tabs must be consistent across the entire application. Related tabs should be gathered.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [activeTab, setActiveTab] = useState('firstTab');
+      return (
+        <>
+          <TabBar {...args}>
+            <TabBar.Tab isActive={activeTab === 'firstTab'} onClick={() => setActiveTab('firstTab')}>
+              First tab
+            </TabBar.Tab>
+            <TabBar.Tab isActive={activeTab === 'anotherTab'} onClick={() => setActiveTab('anotherTab')}>
+              Another tab
+            </TabBar.Tab>
+            <TabBar.Tab isActive={activeTab === 'lastTab'} onClick={() => setActiveTab('lastTab')}>
+              Last tab
+            </TabBar.Tab>
+          </TabBar>
+        </>
+      )
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## With Badges
+
+<Canvas>
+  <Story name="With Badges">
+    {args => {
+      const [activeTab, setActiveTab] = useState('firstTab');
+      return (
+        <>
+          <TabBar {...args}>
+            <TabBar.Tab isActive={activeTab === 'firstTab'} onClick={() => setActiveTab('firstTab')}>
+              First tab <Badge level="warning">2</Badge>
+            </TabBar.Tab>
+            <TabBar.Tab isActive={activeTab === 'anotherTab'} onClick={() => setActiveTab('anotherTab')}>Another tab</TabBar.Tab>
+            <TabBar.Tab isActive={activeTab === 'lastTab'} onClick={() => setActiveTab('lastTab')}>
+              Last tab <Badge level="danger">0</Badge>
+            </TabBar.Tab>
+          </TabBar>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With Pills
+
+<Canvas>
+  <Story name="With Pills">
+    {args => {
+      const [activeTab, setActiveTab] = useState('firstTab');
+      return (
+        <>
+          <TabBar {...args}>
+            <TabBar.Tab isActive={activeTab === 'firstTab'} onClick={() => setActiveTab('firstTab')}>
+              First tab <Pill level="warning" />
+            </TabBar.Tab>
+            <TabBar.Tab isActive={activeTab === 'anotherTab'} onClick={() => setActiveTab('anotherTab')}>Another tab</TabBar.Tab>
+            <TabBar.Tab isActive={activeTab === 'lastTab'} onClick={() => setActiveTab('lastTab')}>
+              Last tab <Pill level="danger" />
+            </TabBar.Tab>
+          </TabBar>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
