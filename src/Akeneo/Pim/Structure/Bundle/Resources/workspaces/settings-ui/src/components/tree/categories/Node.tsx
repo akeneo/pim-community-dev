@@ -5,6 +5,7 @@ import {useCategoryTreeNode} from '../../../hooks';
 import {MoveTarget} from '../../providers';
 import {Button} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {useCountProductsBeforeDeleteCategory} from '../../../hooks';
 
 type Props = {
   id: number;
@@ -14,7 +15,7 @@ type Props = {
   // @todo define onCategoryMoved arguments
   onCategoryMoved?: () => void;
   addCategory?: (parentCode: string, onCreate: () => void) => void;
-  deleteCategory?: (identifier: number, label: string, onDelete: () => void) => void;
+  deleteCategory?: (identifier: number, label: string, onDelete: () => void, numberOfProducts: number) => void;
 };
 
 const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory, sortable = false}) => {
@@ -35,6 +36,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
   } = useCategoryTreeNode(id);
 
   const translate = useTranslate();
+  const countProductsBeforeDeleteCategory = useCountProductsBeforeDeleteCategory(id);
 
   if (node === undefined) {
     return null;
@@ -168,7 +170,9 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
               size="small"
               onClick={event => {
                 event.stopPropagation();
-                deleteCategory(id, label, deleteTreeNode);
+                countProductsBeforeDeleteCategory((nbProducts: number) =>
+                  deleteCategory(id, label, deleteTreeNode, nbProducts)
+                );
               }}
             >
               {translate('pim_common.delete')}
