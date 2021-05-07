@@ -22,7 +22,7 @@ const useMeasurementFamily = (
 
   useEffect(() => {
     (async () => fetchMeasurementFamily(measurementFamilyCode))();
-  }, []);
+  }, [fetchMeasurementFamily, measurementFamilyCode]);
 
   return [measurementFamily, setMeasurementFamily];
 };

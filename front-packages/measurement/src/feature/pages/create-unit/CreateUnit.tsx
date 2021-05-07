@@ -104,6 +104,7 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
     handleClose,
     setErrors,
     translate,
+    focusFirstField,
   ]);
 
   useShortcut(Key.Enter, handleAdd);

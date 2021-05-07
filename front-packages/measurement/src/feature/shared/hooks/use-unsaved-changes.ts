@@ -48,7 +48,9 @@ const useUnsavedChanges = <ValueType>(entity: ValueType, beforeUnloadMessage: st
     return () => window.removeEventListener('beforeunload', handleUnload);
   }, [handleUnload]);
 
-  useEffect(() => updateValue(entity), [entity]);
+  useEffect(() => {
+    updateValue(entity);
+  }, [updateValue, entity]);
 
   return [isModified, resetValue];
 };

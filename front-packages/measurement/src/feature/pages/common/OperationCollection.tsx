@@ -1,6 +1,5 @@
 import React, {useState, useContext, useCallback, useEffect} from 'react';
 import styled, {css} from 'styled-components';
-import {ConfigContext} from '../../context/config-context';
 import {
   ArrowDownIcon,
   ArrowIcon,
@@ -15,8 +14,6 @@ import {
   AkeneoThemedProps,
   LockIcon,
 } from 'akeneo-design-system';
-import {Operation, Operator, emptyOperation} from '../../model/operation';
-import {useLocalizedNumber} from '../../shared/hooks/use-localized-number';
 import {
   ValidationError,
   filterErrors,
@@ -24,6 +21,9 @@ import {
   formatParameters,
   useTranslate,
 } from '@akeneo-pim-community/shared';
+import {Operation, Operator, emptyOperation} from '../../model/operation';
+import {useLocalizedNumber} from '../../shared/hooks/use-localized-number';
+import {ConfigContext} from '../../context/config-context';
 
 const Container = styled.div<{level: number}>`
   position: relative;
@@ -163,7 +163,7 @@ const OperationCollection = ({
   const [shouldHideErrors, setShouldHideErrors] = useState(false);
   useEffect(() => {
     setShouldHideErrors(false);
-  }, [JSON.stringify(errors)]);
+  }, [errors.length]);
 
   return (
     <div>

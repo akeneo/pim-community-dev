@@ -1,21 +1,7 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {useHistory, useParams, Prompt} from 'react-router-dom';
 import styled from 'styled-components';
-import {useMeasurementFamily} from '../../hooks/use-measurement-family';
-import {UnitTab} from './unit-tab';
-import {PropertyTab} from './PropertyTab';
-import {PageHeader, PageHeaderPlaceholder} from '../../shared/components/PageHeader';
-import {addUnit, getMeasurementFamilyLabel, MeasurementFamily} from '../../model/measurement-family';
-import {Unit, UnitCode} from '../../model/unit';
-import {DropdownLink, SecondaryActionsDropdownButton} from '../../shared/components/SecondaryActionsDropdownButton';
-import {useSaveMeasurementFamilySaver} from './hooks/use-save-measurement-family-saver';
-import {ErrorBadge} from '../../shared/components/ErrorBadge';
-import {CreateUnit} from '../create-unit/CreateUnit';
-import {useUnsavedChanges} from '../../shared/hooks/use-unsaved-changes';
-import {UnsavedChanges} from '../../shared/components/UnsavedChanges';
-import {UnsavedChangesContext} from '../../context/unsaved-changes-context';
-import {useMeasurementFamilyRemover, MeasurementFamilyRemoverResult} from '../../hooks/use-measurement-family-remover';
-import {ConfigContext} from '../../context/config-context';
+import {Helper, Button, Breadcrumb, useBooleanState} from 'akeneo-design-system';
 import {
   useTranslate,
   useNotify,
@@ -31,8 +17,22 @@ import {
   PageContent,
   DeleteModal,
   PimView,
+  PageHeader,
+  SecondaryActions,
+  UnsavedChanges,
 } from '@akeneo-pim-community/shared';
-import {Helper, Button, Breadcrumb, useBooleanState} from 'akeneo-design-system';
+import {useMeasurementFamily} from '../../hooks/use-measurement-family';
+import {UnitTab} from './unit-tab';
+import {PropertyTab} from './PropertyTab';
+import {addUnit, getMeasurementFamilyLabel, MeasurementFamily} from '../../model/measurement-family';
+import {Unit, UnitCode} from '../../model/unit';
+import {useSaveMeasurementFamilySaver} from './hooks/use-save-measurement-family-saver';
+import {ErrorBadge} from '../../shared/components/ErrorBadge';
+import {CreateUnit} from '../create-unit/CreateUnit';
+import {useUnsavedChanges} from '../../shared/hooks/use-unsaved-changes';
+import {UnsavedChangesContext} from '../../context/unsaved-changes-context';
+import {useMeasurementFamilyRemover, MeasurementFamilyRemoverResult} from '../../hooks/use-measurement-family-remover';
+import {ConfigContext} from '../../context/config-context';
 
 enum Tab {
   Units = 'units',
@@ -113,16 +113,18 @@ const Edit = () => {
     measurementFamily,
     translate('pim_ui.flash.unsaved_changes')
   );
-  useEffect(() => setHasUnsavedChanges(isModified), [isModified]);
+  useEffect(() => {
+    setHasUnsavedChanges(isModified);
+  }, [isModified, setHasUnsavedChanges]);
 
   // If the measurement family code changes, we select the standard unit code by default
   useEffect(() => {
-    if (null === measurementFamily) {
+    if (undefined === measurementFamily?.code) {
       return;
     }
 
     selectUnitCode(measurementFamily.standard_unit_code);
-  }, [measurementFamily?.code]);
+  }, [measurementFamily?.code, measurementFamily?.standard_unit_code]);
 
   const saveMeasurementFamily = useSaveMeasurementFamilySaver();
   const handleSaveMeasurementFamily = useCallback(async () => {
@@ -149,7 +151,7 @@ const Edit = () => {
       console.error(error);
       notify(NotificationLevel.ERROR, translate('measurements.family.save.flash.error'));
     }
-  }, [measurementFamily, locale, saveMeasurementFamily, notify, translate, setErrors, resetState]);
+  }, [measurementFamily, saveMeasurementFamily, notify, translate, setErrors, resetState]);
 
   const removeMeasurementFamily = useMeasurementFamilyRemover();
   const handleRemoveMeasurementFamily = useCallback(async () => {
@@ -197,37 +199,6 @@ const Edit = () => {
     );
   }
 
-  const buttons = [];
-  if (isGranted('akeneo_measurements_measurement_family_delete') && !measurementFamily.is_locked) {
-    buttons.push(
-      <SecondaryActionsDropdownButton title={translate('pim_common.other_actions')} key={0}>
-        <DropdownLink onClick={openConfirmDeleteMeasurementFamilyModal}>
-          {translate('measurements.family.delete.button')}
-        </DropdownLink>
-      </SecondaryActionsDropdownButton>
-    );
-  }
-
-  if (isGranted('akeneo_measurements_measurement_unit_add')) {
-    buttons.push(
-      <Button
-        level="secondary"
-        ghost={true}
-        onClick={openAddUnitModal}
-        disabled={config.units_max <= measurementFamily.units.length}
-      >
-        {translate('measurements.unit.add')}
-      </Button>
-    );
-  }
-
-  if (
-    isGranted('akeneo_measurements_measurement_unit_edit') ||
-    isGranted('akeneo_measurements_measurement_family_edit_properties')
-  ) {
-    buttons.push(<Button onClick={handleSaveMeasurementFamily}>{translate('pim_common.save')}</Button>);
-  }
-
   const [unitsErrors, propertiesErrors, otherErrors] = partitionErrors(errors, [
     error => error.propertyPath.startsWith('units'),
     error => error.propertyPath.startsWith('code') || error.propertyPath.startsWith('labels'),
@@ -250,15 +221,8 @@ const Edit = () => {
           {translate('measurements.family.delete.confirm')}
         </DeleteModal>
       )}
-      <PageHeader
-        userButtons={
-          <PimView
-            className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
-            viewName="pim-measurements-user-navigation"
-          />
-        }
-        buttons={buttons}
-        breadcrumb={
+      <PageHeader>
+        <PageHeader.Breadcrumb>
           <Breadcrumb>
             <Breadcrumb.Step onClick={() => router.redirect(settingsHref)}>
               {translate('pim_menu.tab.settings')}
@@ -268,16 +232,44 @@ const Edit = () => {
             </Breadcrumb.Step>
             <Breadcrumb.Step>{measurementFamilyLabel}</Breadcrumb.Step>
           </Breadcrumb>
-        }
-        state={isModified && <UnsavedChanges />}
-      >
-        {null === measurementFamily ? (
-          <div className={`AknLoadingPlaceHolderContainer`}>
-            <PageHeaderPlaceholder />
-          </div>
-        ) : (
-          <div>{measurementFamilyLabel}</div>
-        )}
+        </PageHeader.Breadcrumb>
+        <PageHeader.UserActions>
+          <PimView
+            className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
+            viewName="pim-measurements-user-navigation"
+          />
+        </PageHeader.UserActions>
+        <PageHeader.Actions>
+          {isGranted('akeneo_measurements_measurement_family_delete') && !measurementFamily.is_locked && (
+            <SecondaryActions>
+              <SecondaryActions.Item onClick={openConfirmDeleteMeasurementFamilyModal}>
+                {translate('measurements.family.delete.button')}
+              </SecondaryActions.Item>
+            </SecondaryActions>
+          )}
+          {isGranted('akeneo_measurements_measurement_unit_add') && (
+            <Button
+              level="secondary"
+              ghost={true}
+              onClick={openAddUnitModal}
+              disabled={config.units_max <= measurementFamily.units.length}
+            >
+              {translate('measurements.unit.add')}
+            </Button>
+          )}
+          {(isGranted('akeneo_measurements_measurement_unit_edit') ||
+            isGranted('akeneo_measurements_measurement_family_edit_properties')) && (
+            <Button onClick={handleSaveMeasurementFamily}>{translate('pim_common.save')}</Button>
+          )}
+        </PageHeader.Actions>
+        <PageHeader.Title>
+          {null === measurementFamily ? (
+            <div className="AknLoadingPlaceHolder">&nbsp;</div>
+          ) : (
+            <div>{measurementFamilyLabel}</div>
+          )}
+        </PageHeader.Title>
+        <PageHeader.State>{isModified && <UnsavedChanges />}</PageHeader.State>
       </PageHeader>
       <PageContent>
         <TabsContainer>

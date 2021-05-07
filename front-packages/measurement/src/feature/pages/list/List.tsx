@@ -1,13 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {MeasurementIllustration, Link, Button, Information, Breadcrumb, useBooleanState} from 'akeneo-design-system';
-import {PageHeader, PageHeaderPlaceholder} from '../../shared/components/PageHeader';
-import {useMeasurementFamilies} from '../../hooks/use-measurement-families';
-import {sortMeasurementFamily, filterOnLabelOrCode, MeasurementFamilyCode} from '../../model/measurement-family';
-import {MeasurementFamilyTable} from '../list/MeasurementFamilyTable';
-import {CreateMeasurementFamily} from '../create-measurement-family/CreateMeasurementFamily';
-import {TablePlaceholder} from '../common/Table';
-import {Direction} from '../../model/direction';
 import {
   SearchBar,
   NoDataSection,
@@ -19,7 +12,14 @@ import {
   useSecurity,
   useRoute,
   PimView,
+  PageHeader,
 } from '@akeneo-pim-community/shared';
+import {useMeasurementFamilies} from '../../hooks/use-measurement-families';
+import {sortMeasurementFamily, filterOnLabelOrCode, MeasurementFamilyCode} from '../../model/measurement-family';
+import {MeasurementFamilyTable} from '../list/MeasurementFamilyTable';
+import {CreateMeasurementFamily} from '../create-measurement-family/CreateMeasurementFamily';
+import {TablePlaceholder} from '../common/Table';
+import {Direction} from '../../model/direction';
 
 const useSorting = (
   defaultColumn: string
@@ -74,38 +74,36 @@ const List = () => {
   return (
     <>
       <CreateMeasurementFamily isOpen={isCreateModalOpen} onClose={handleModalClose} />
-      <PageHeader
-        userButtons={
-          <PimView
-            className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
-            viewName="pim-measurements-user-navigation"
-          />
-        }
-        buttons={
-          isGranted('akeneo_measurements_measurement_family_create')
-            ? [<Button onClick={openCreateModal}>{translate('pim_common.create')}</Button>]
-            : []
-        }
-        breadcrumb={
+      <PageHeader>
+        <PageHeader.Breadcrumb>
           <Breadcrumb>
             <Breadcrumb.Step href={`#${settingsHref}`}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
             <Breadcrumb.Step>{translate('pim_menu.item.measurements')}</Breadcrumb.Step>
           </Breadcrumb>
-        }
-      >
-        {null === filteredMeasurementFamilies ? (
-          <div className={`AknLoadingPlaceHolderContainer`}>
-            <PageHeaderPlaceholder />
-          </div>
-        ) : (
-          translate(
-            'measurements.family.result_count',
-            {itemsCount: measurementFamiliesCount.toString()},
-            measurementFamiliesCount
-          )
-        )}
+        </PageHeader.Breadcrumb>
+        <PageHeader.UserActions>
+          <PimView
+            className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
+            viewName="pim-measurements-user-navigation"
+          />
+        </PageHeader.UserActions>
+        <PageHeader.Actions>
+          {isGranted('akeneo_measurements_measurement_family_create') && (
+            <Button onClick={openCreateModal}>{translate('pim_common.create')}</Button>
+          )}
+        </PageHeader.Actions>
+        <PageHeader.Title>
+          {null === filteredMeasurementFamilies ? (
+            <div className="AknLoadingPlaceHolder">&nbsp;</div>
+          ) : (
+            translate(
+              'measurements.family.result_count',
+              {itemsCount: measurementFamiliesCount.toString()},
+              measurementFamiliesCount
+            )
+          )}
+        </PageHeader.Title>
       </PageHeader>
-
       <PageContent>
         <Information illustration={<MeasurementIllustration />} title={`👋  ${translate('measurements.helper.title')}`}>
           <p>{translate('measurements.helper.text')}</p>
