@@ -46,6 +46,11 @@ pim_reference_entity:
         is_not_expected: 'A locale is not expected for attribute "%attribute_code%" because it has not a value per locale.'
         is_not_activated: 'The locale "%locale_identifier%" is not activated.'
         is_not_activated_for_channel: 'The locale "%locale_identifier%" is not activated for the channel "%channel_identifier%".'
+      number:
+        should_be_string: 'This field should be a string'
+        should_be_integer: 'This field should be an integer'
+        integer_too_long: 'This integer is too big'
+        should_be_numeric: 'This field should be a numeric value with the right decimal separator'
   attribute:
     validation:
       options:
@@ -59,6 +64,12 @@ pim_reference_entity:
         should_be_an_integer: 'This value should be an integer.'
       max_file_size:
         should_be_a_number: 'This value should be a number.'
+      min_value:
+        should_be_a_number: 'This value should be a number with the right decimal separator.'
+        cannot_be_greater_than_max: 'The min cannot be greater than the max'
+      max_value:
+        should_be_a_number: 'This value should be a number with the right decimal separator.'
+        cannot_be_lower_than_min: 'The max cannot be lower than the min'
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
         reserved_codes: 'The code cannot be any of those values: "{{ comma_separated_reserved_keywords }}"'
@@ -75,3 +86,13 @@ pim_reference_entity:
       record_type:
         is_required: 'You need to specify the reference entity type to create a Reference Entity link attribute'
         reference_entity_should_exist: 'The reference entity "%reference_entity_code%" was not found.'
+      prefix:
+        should_not_be_empty: 'The prefix cannot be an empty string.'
+      suffix:
+        should_not_be_empty: 'The suffix cannot be an empty string.'
+      media_type:
+        not_expected: 'The media type given is not corresponding to the expected ones (%supported_media_types%).'
+  product_value:
+    validation:
+      record_should_exist: 'Property "%attribute_code%" expects a valid record code. The record "%invalid_record%" does not exist'
+      records_should_exist: 'Property "%attribute_code%" expects valid record codes. The following records do not exist: "%invalid_records%"'

@@ -1,5 +1,15 @@
+pim_menu:
+  item:
+    franklin: Статистика Франкліна
 akeneo_franklin_insights:
   entity:
+    franklin_attribute:
+      type:
+        metric: Метрика
+        multiselect: 'Множинний вибір'
+        number: Номер
+        select: Виберіть
+        text: Текст
     identifier_mapping:
       fields:
         status:
