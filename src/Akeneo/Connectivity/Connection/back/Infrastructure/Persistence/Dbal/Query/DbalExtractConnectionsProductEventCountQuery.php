@@ -21,11 +21,9 @@ use Doctrine\DBAL\Types\Types;
  */
 class DbalExtractConnectionsProductEventCountQuery implements ExtractConnectionsProductEventCountQuery
 {
-    /** @var DbalConnection */
-    private $dbalConnection;
+    private DbalConnection $dbalConnection;
 
-    /** @var string */
-    private $productClass;
+    private string $productClass;
 
     public function __construct(DbalConnection $dbalConnection, string $productClass)
     {
@@ -33,6 +31,9 @@ class DbalExtractConnectionsProductEventCountQuery implements ExtractConnections
         $this->productClass = $productClass;
     }
 
+    /**
+     * @return HourlyEventCount[]
+     */
     public function extractCreatedProductsByConnection(HourlyInterval $hourlyInterval): array
     {
         $sqlQuery = <<<SQL
@@ -78,6 +79,9 @@ SQL;
         return $dailyEventCount;
     }
 
+    /**
+     * @return HourlyEventCount[]
+     */
     public function extractUpdatedProductsByConnection(HourlyInterval $hourlyInterval): array
     {
         $sqlQuery = <<<SQL

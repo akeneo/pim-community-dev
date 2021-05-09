@@ -18,11 +18,9 @@ use FOS\OAuthServerBundle\Util\Random;
  */
 class FosRegenerateClientSecret implements RegenerateClientSecret
 {
-    /** @var ClientManagerInterface */
-    private $clientManager;
+    private ClientManagerInterface $clientManager;
 
-    /** @var DbalConnection */
-    private $dbalConnection;
+    private DbalConnection $dbalConnection;
 
     public function __construct(ClientManagerInterface $clientManager, DbalConnection $dbalConnection)
     {
@@ -52,7 +50,7 @@ class FosRegenerateClientSecret implements RegenerateClientSecret
         return $fosClient;
     }
 
-    private function deleteApiToken(ClientId $clientId)
+    private function deleteApiToken(ClientId $clientId): void
     {
         $deleteSqlAccessToken = <<<SQL
 DELETE FROM pim_api_access_token WHERE client = :client_id

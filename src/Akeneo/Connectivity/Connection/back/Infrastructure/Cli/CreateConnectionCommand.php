@@ -21,10 +21,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CreateConnectionCommand extends Command
 {
+    /**
+     * @var string
+     */
     protected static $defaultName = 'akeneo:connectivity-connection:create';
 
-    /** @var CreateConnectionHandler */
-    private $createConnection;
+    private CreateConnectionHandler $createConnection;
 
     public function __construct(CreateConnectionHandler $createConnection)
     {
@@ -35,7 +37,7 @@ class CreateConnectionCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Creates a new connection')
@@ -74,7 +76,7 @@ class CreateConnectionCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $code = $input->getArgument('code');
         $label = $input->getOption('label') ?? $code;

@@ -13,8 +13,7 @@ use Doctrine\DBAL\Connection;
  */
 class DbalAreCredentialsValidCombinationQuery implements AreCredentialsValidCombinationQuery
 {
-    /** @var Connection */
-    private $dbalConnection;
+    private Connection $dbalConnection;
 
     public function __construct(Connection $dbalConnection)
     {

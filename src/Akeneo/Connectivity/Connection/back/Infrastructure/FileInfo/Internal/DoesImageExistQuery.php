@@ -13,8 +13,7 @@ use Doctrine\DBAL\Connection as DbalConnection;
  */
 class DoesImageExistQuery implements DoesImageExistQueryInterface
 {
-    /** @var DbalConnection */
-    private $dbalConnection;
+    private DbalConnection $dbalConnection;
 
     public function __construct(DbalConnection $dbalConnection)
     {

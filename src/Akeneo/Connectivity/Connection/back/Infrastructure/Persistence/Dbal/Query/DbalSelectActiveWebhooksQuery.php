@@ -16,14 +16,16 @@ use Doctrine\DBAL\FetchMode;
  */
 class DbalSelectActiveWebhooksQuery implements SelectActiveWebhooksQuery
 {
-    /** @var DbalConnection */
-    private $dbalConnection;
+    private DbalConnection $dbalConnection;
 
     public function __construct(DbalConnection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }
 
+    /**
+     * @return ActiveWebhook[]
+     */
     public function execute(): array
     {
         $sql = <<<SQL
