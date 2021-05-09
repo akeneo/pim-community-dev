@@ -69,23 +69,23 @@ class CategorySaverIntegration extends TestCase
         /** @var Category */
         $jeans = $this->createCategory([
             'code' => 'jeans',
-            'parent' => 'master',
+            'parent' => 'master'
         ]);
 
-        $updated = $jeans->getUpdated()->getTimestamp();
+        // Set the updated property to timestamp 0.
+        $jeans->setUpdated(new \DateTime('@0'));
+        $this->getCategorySaver()->save($jeans);
 
         $this->createCategory([
             'code' => 'clothes',
         ]);
-
-        sleep(1);
 
         $this->updateCategory($jeans, [
             'parent' => 'clothes'
         ]);
 
         Assert::assertGreaterThan(
-            $updated,
+            0,
             $jeans->getUpdated()->getTimestamp()
         );
     }
@@ -115,9 +115,9 @@ class CategorySaverIntegration extends TestCase
             'parent' => 'pants',
         ]);
 
-        $updated = $jeans->getUpdated()->getTimestamp();
-
-        sleep(1);
+        // Set the updated property to timestamp 0.
+        $jeans->setUpdated(new \DateTime('@0'));
+        $this->getCategorySaver()->save($jeans);
 
         $this->createCategory([
             'code' => 'clothes',
@@ -129,7 +129,7 @@ class CategorySaverIntegration extends TestCase
         ]);
 
         Assert::assertEquals(
-            $updated,
+            0,
             $jeans->getUpdated()->getTimestamp()
         );
     }
@@ -153,7 +153,9 @@ class CategorySaverIntegration extends TestCase
             'parent' => 'master',
         ]);
 
-        $jeansUpdated = $jeans->getUpdated()->getTimestamp();
+        // Set the updated property to timestamp 0.
+        $jeans->setUpdated(new \DateTime('@0'));
+        $this->getCategorySaver()->save($jeans);
 
         /** @var Category */
         $shoes = $this->createCategoryWithoutSaving([
@@ -163,20 +165,20 @@ class CategorySaverIntegration extends TestCase
         $this->getCategoryRepository()->persistAsNextSiblingOf($shoes, $jeans);
         $this->getCategorySaver()->save($shoes);
 
-        $shoesUpdated = $shoes->getUpdated()->getTimestamp();
-
-        sleep(1);
+        // Set the updated property to timestamp 0.
+        $shoes->setUpdated(new \DateTime('@0'));
+        $this->getCategorySaver()->save($shoes);
 
         $this->getCategoryRepository()->persistAsNextSiblingOf($jeans, $shoes);
         $this->getCategorySaver()->save($jeans);
 
         Assert::assertEquals(
-            $jeansUpdated,
+            0,
             $jeans->getUpdated()->getTimestamp()
         );
 
         Assert::assertEquals(
-            $shoesUpdated,
+            0,
             $shoes->getUpdated()->getTimestamp()
         );
     }
@@ -186,9 +188,9 @@ class CategorySaverIntegration extends TestCase
         /** @var Category */
         $master = $this->getCategoryRepository()->findOneByIdentifier('master');
 
-        $updated = $master->getUpdated()->getTimestamp();
-
-        sleep(1);
+        // Set the updated property to timestamp 0.
+        $master->setUpdated(new \DateTime('@0'));
+        $this->getCategorySaver()->save($master);
 
         $this->updateCategory($master, [
             'labels' => [
@@ -197,7 +199,7 @@ class CategorySaverIntegration extends TestCase
         ]);
 
         Assert::assertGreaterThan(
-            $updated,
+            0,
             $master->getUpdated()->getTimestamp()
         );
     }
