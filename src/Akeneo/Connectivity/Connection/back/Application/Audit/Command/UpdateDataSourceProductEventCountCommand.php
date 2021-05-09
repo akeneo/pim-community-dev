@@ -13,8 +13,7 @@ use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
  */
 final class UpdateDataSourceProductEventCountCommand
 {
-    /** @var HourlyInterval */
-    private $hourlyInterval;
+    private HourlyInterval $hourlyInterval;
 
     public function __construct(HourlyInterval $hourlyInterval)
     {

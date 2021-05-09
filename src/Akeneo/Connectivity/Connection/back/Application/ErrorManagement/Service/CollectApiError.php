@@ -28,20 +28,15 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class CollectApiError
 {
-    /** @var BusinessErrorRepository */
-    private $repository;
+    private BusinessErrorRepository $repository;
 
-    /** @var ConnectionContextInterface */
-    private $connectionContext;
+    private ConnectionContextInterface $connectionContext;
 
-    /** @var UpdateConnectionErrorCountHandler */
-    private $updateErrorCountHandler;
+    private UpdateConnectionErrorCountHandler $updateErrorCountHandler;
 
-    /** @var Serializer */
-    private $serializer;
+    private Serializer $serializer;
 
-    /** @var ApiErrorCollection */
-    private $errors;
+    private ApiErrorCollection $errors;
 
     public function __construct(
         ConnectionContextInterface $connectionContext,

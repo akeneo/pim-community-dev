@@ -13,10 +13,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 interface EventsApiDebugResponseErrorLogger
 {
     /**
-     * @param string $connectionCode
      * @param array<WebhookEvent> $events
-     * @param string $url
-     * @param int $statusCode
      * @param array<array<string>> $headers
      */
     public function logEventsApiRequestFailed(string $connectionCode, array $events, string $url, int $statusCode, array $headers): void;

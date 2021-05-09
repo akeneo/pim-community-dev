@@ -11,8 +11,7 @@ namespace Akeneo\Connectivity\Connection\Application\Settings\Command;
  */
 class DeleteConnectionCommand
 {
-    /** @var string */
-    private $code;
+    private string $code;
 
     public function __construct(string $code)
     {
