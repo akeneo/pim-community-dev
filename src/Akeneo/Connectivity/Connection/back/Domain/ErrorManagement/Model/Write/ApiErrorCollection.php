@@ -12,7 +12,7 @@ class ApiErrorCollection
     /**
      * @var array<ErrorTypes::*, ApiErrorInterface[]>
      */
-    private $apiErrors;
+    private array $apiErrors;
 
     /**
      * @param ApiErrorInterface[] $apiErrors

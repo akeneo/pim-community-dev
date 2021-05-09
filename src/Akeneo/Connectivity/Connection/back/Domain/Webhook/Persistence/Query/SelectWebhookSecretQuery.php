@@ -10,8 +10,5 @@ namespace Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query;
  */
 interface SelectWebhookSecretQuery
 {
-    /**
-     * @param string $code
-     */
     public function execute(string $code): ?string;
 }

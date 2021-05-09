@@ -11,17 +11,13 @@ namespace Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read;
  */
 class ConnectionWebhook
 {
-    /** @var string */
-    private $connectionCode;
+    private string $connectionCode;
 
-    /** @var ?string */
-    private $secret;
+    private ?string $secret;
 
-    /** @var ?string */
-    private $url;
+    private ?string $url;
 
-    /** @var bool */
-    private $enabled;
+    private bool $enabled;
 
     public function __construct(
         string $connectionCode,
