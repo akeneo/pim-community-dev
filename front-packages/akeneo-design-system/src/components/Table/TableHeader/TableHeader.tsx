@@ -37,14 +37,14 @@ type TableHeaderProps = {
 
 const TableHeader = React.forwardRef<HTMLTableSectionElement, TableHeaderProps>(
   ({children, sticky, ...rest}: TableHeaderProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
-    const {isSelectable, isOrderable} = React.useContext(TableContext);
+    const {isSelectable, isDragAndDroppable} = React.useContext(TableContext);
 
     return (
       <TableHead sticky={sticky} ref={forwardedRef}>
         <tr {...rest}>
           {/* Add new column for checkbox to be displayed properly in the tbody */}
           {isSelectable && <SelectColumn />}
-          {isOrderable && <OrderColumn />}
+          {isDragAndDroppable && <OrderColumn />}
           {children}
         </tr>
       </TableHead>

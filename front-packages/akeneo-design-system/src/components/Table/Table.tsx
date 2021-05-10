@@ -35,20 +35,17 @@ type TableProps = Override<
   } & (
     | {
         /**
-         * Define if rows can be ordered
+         * Define if rows can be ordered by drag and drop
          */
-        isOrderable: false;
+        isDragAndDroppable?: false;
 
-        /**
-         * Called when an element got drag and drop on the table
-         */
-        onReorder: undefined;
+        onReorder?: undefined;
       }
     | {
         /**
          * Define if rows can be ordered
          */
-        isOrderable: true;
+        isDragAndDroppable: true;
 
         /**
          * Called when an element got drag and drop on the table
@@ -64,13 +61,13 @@ type TableProps = Override<
 const Table = ({
   isSelectable = false,
   displayCheckbox = false,
-  isOrderable = false,
-  onReorder,
+  isDragAndDroppable = false,
+  onReorder = undefined,
   children,
   ...rest
 }: TableProps) => {
   return (
-    <TableContext.Provider value={{isSelectable, displayCheckbox, isOrderable, onReorder}}>
+    <TableContext.Provider value={{isSelectable, displayCheckbox, isDragAndDroppable, onReorder}}>
       <TableContainer {...rest}>{children}</TableContainer>
     </TableContext.Provider>
   );

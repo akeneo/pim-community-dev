@@ -1,6 +1,7 @@
 import React from 'react';
 import {Table} from './Table';
 import {render, screen} from '../../storybook/test-util';
+import {fireEvent} from '@testing-library/dom';
 
 test('it renders its children properly', () => {
   render(
@@ -85,6 +86,44 @@ test('it renders table with checkbox when it is selectable and row is selected',
   );
 
   expect(screen.queryByRole('checkbox')).toBeInTheDocument();
+});
+
+test('it renders table with drag and drop', () => {
+  const handleReorder = jest.fn();
+  const setData = jest.fn();
+  const getData = jest.fn(() => 0);
+
+  render(
+    <Table isDragAndDroppable={true} onReorder={handleReorder}>
+      <Table.Header>
+        <Table.HeaderCell>An header</Table.HeaderCell>
+        <Table.HeaderCell>Another header</Table.HeaderCell>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>A cell</Table.Cell>
+          <Table.Cell>Another cell</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>A cell</Table.Cell>
+          <Table.Cell>Another cell</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>A cell</Table.Cell>
+          <Table.Cell>Another cell</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  );
+
+  fireEvent.mouseDown(screen.getAllByTestId('dragAndDrop')[1]);
+  fireEvent.dragStart(screen.getAllByRole('row')[1], { dataTransfer: { setData, getData }});
+  fireEvent.dragEnter(screen.getAllByRole('row')[2], { dataTransfer: { setData, getData }});
+  fireEvent.dragLeave(screen.getAllByRole('row')[2], { dataTransfer: { setData, getData }});
+  fireEvent.dragEnter(screen.getAllByRole('row')[3], { dataTransfer: { setData, getData }});
+  fireEvent.drop(screen.getAllByRole('row')[3], { dataTransfer: { setData, getData }});
+
+  expect(handleReorder).toHaveBeenCalledWith([1, 2, 0]);
 });
 
 test('Table supports ...rest props', () => {
