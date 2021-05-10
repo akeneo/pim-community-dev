@@ -1,4 +1,4 @@
-import React, {ReactNode, Ref, cloneElement, Children, useContext} from 'react';
+import React, {ReactNode, Ref, cloneElement, Children, useContext, useState} from 'react';
 import {TableRowProps} from '../TableRow/TableRow';
 import {useId} from '../../../hooks';
 import {TableContext} from '../TableContext';
@@ -13,6 +13,7 @@ type TableBodyProps = {
 
 const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
   ({children, ...rest}: TableBodyProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
+    const [draggedElement, setDraggedElement] = useState<number | null>(null);
     const {isDragAndDroppable, onReorder} = useContext(TableContext);
     const tableId = useId('table_');
     const [handleDrop, handleDragOver] = useDrop(tableId, Children.count(children), onReorder);
@@ -25,6 +26,13 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
 
           return cloneElement(child, {
             rowIndex: index,
+            draggedElement,
+            onDragStart: () => {
+              setDraggedElement(index);
+            },
+            onDragEnd: () => {
+              setDraggedElement(null);
+            },
           });
         })
       : children;

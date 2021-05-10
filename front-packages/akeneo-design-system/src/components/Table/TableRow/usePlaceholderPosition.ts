@@ -1,21 +1,20 @@
-import {DragEvent, useState} from 'react';
+import {useState} from 'react';
 
 type PlaceholderPosition = 'top' | 'bottom' | 'none';
 
-const usePlaceholderPosition = (rowIndex: number) => {
+const usePlaceholderPosition = (rowIndex: number, draggedElement?: number) => {
   const [overingCount, setOveringCount] = useState(0);
   const [placeholderPosition, setPlaceholderPosition] = useState<PlaceholderPosition>('none');
 
   return [
     overingCount === 0 ? 'none' : placeholderPosition,
-    (event: DragEvent) => {
+    () => {
+      if (undefined === draggedElement) return;
       setOveringCount(count => count + 1);
-      const draggedElementIndex = Number(event.target);
-      setPlaceholderPosition(
-        draggedElementIndex === rowIndex ? 'none' : draggedElementIndex > rowIndex ? 'top' : 'bottom'
-      );
+      setPlaceholderPosition(draggedElement >= rowIndex ? 'top' : 'bottom');
     },
     () => {
+      if (undefined === draggedElement) return;
       setOveringCount(count => count - 1);
     },
     () => {

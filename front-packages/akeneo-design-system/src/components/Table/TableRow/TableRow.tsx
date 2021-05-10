@@ -36,6 +36,11 @@ type TableRowProps = Override<
      * @private
      */
     rowIndex?: number;
+
+    /**
+     * @private
+     */
+    draggedElement?: number | null;
   }
 >;
 
@@ -61,13 +66,13 @@ const RowContainer = styled.tr<
   ${({placeholderPosition}) =>
     placeholderPosition === 'top' &&
     css`
-      border-top: 4px solid ${getColor('blue', 40)});
+      background: linear-gradient(to bottom, ${getColor('blue', 40)} 4px, ${getColor('white')} 0px);
     `}
 
   ${({placeholderPosition}) =>
     placeholderPosition === 'bottom' &&
     css`
-      border-bottom: 4px solid ${getColor('blue', 40)};
+      background: linear-gradient(to top, ${getColor('blue', 40)} 4px, ${getColor('white')} 0px);
     `}
 
   &:hover > td {
@@ -107,11 +112,11 @@ const HandleContainer = styled.div`
 
 const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
   (
-    {rowIndex = 0, isSelected, onSelectToggle, onClick, children, ...rest}: TableRowProps,
+    {rowIndex = 0, draggedElement, isSelected, onSelectToggle, onClick, children, ...rest}: TableRowProps,
     forwardedRef: Ref<HTMLTableRowElement>
   ) => {
     const [isDragged, drag, drop] = useBooleanState();
-    const [placeholderPosition, dragEnter, dragLeave, dragEnd] = usePlaceholderPosition(rowIndex);
+    const [placeholderPosition, dragEnter, dragLeave, dragEnd] = usePlaceholderPosition(rowIndex, draggedElement);
 
     const {isSelectable, displayCheckbox, isDragAndDroppable} = useContext(TableContext);
     if (isSelectable && (undefined === isSelected || undefined === onSelectToggle)) {
