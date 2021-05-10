@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\TableAttribute\back\Infrastructure\Symfony;
+namespace Akeneo\Pim\TableAttribute\Infrastructure\Symfony;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
