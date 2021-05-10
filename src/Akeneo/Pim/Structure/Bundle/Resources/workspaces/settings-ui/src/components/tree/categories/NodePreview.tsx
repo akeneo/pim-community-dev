@@ -12,8 +12,6 @@ const NodePreview: FC<Props> = ({id}) => {
   if (node === undefined) {
     return null;
   }
-  //return <hr style={{borderColor: 'green'}} />;
-
   return <Tree value={node} label={node.label} _isRoot={false} isLeaf={node.type === 'leaf'} selected={true} />;
 };
 
