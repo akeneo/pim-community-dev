@@ -184,3 +184,12 @@ services:
             - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores_without_permissions'
             - '@pimee_security.query.get_all_viewable_locales_for_user'
             - '@security.token_storage'
+
+    akeneo.pim.enrichment.use_cases.get_products_with_completenesses_with_permissions:
+        class: Akeneo\Pim\Permission\Component\Connector\GetProductsWithCompletenessesWithPermissions
+        decorates: akeneo.pim.enrichment.use_cases.get_products_with_completenesses
+        decoration_inner_name: akeneo.pim.enrichment.use_cases.get_products_with_completenesses_without_permissions
+        arguments:
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses_without_permissions'
+            - '@pimee_security.query.get_all_viewable_locales_for_user'
+            - '@security.token_storage'
