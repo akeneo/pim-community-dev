@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9849: [Backport] PIM-9226: Fix error on channel deletion after migrating from v3.2
+
 # 4.0.107 (2021-05-03)
 
 # 4.0.106 (2021-04-29)

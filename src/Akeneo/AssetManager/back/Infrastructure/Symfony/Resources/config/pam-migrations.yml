@@ -39,3 +39,11 @@ services:
     akeneo.pim.asset.factory.value.reference_data_collection:
         class: Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\AssetCollectionValueFactory
         tags: ['akeneo.pim.enrichment.factory.product_value']
+
+    # TODO @merge 5.0: remove this service definition
+    Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM\RemovePAMForeignKeysToAllowChannelDeletionCommand:
+        arguments:
+            - '@database_connection'
+            - '%env(APP_DATABASE_NAME)%'
+        tags:
+            - { name: console.command }
