@@ -263,6 +263,7 @@ pim_asset_manager:
         subtitle: '商品をアセットファミリーにリンクするためには新規作成してください:'
         link: 商品属性の新規作成
       not_enough_items:
+        title: '{{ productCount }}/{{ totalCount }} 個の製品のみが表示されます。'
         subtitle:
           usable_in_grid: リンクされた商品を全て調べるには以下をクリックするだけ！
           not_usable_in_grid: リンクされた商品をすべて確認するには商品属性を「一覧表で利用可能」に設定してください。
@@ -479,6 +480,7 @@ pim_asset_manager:
     media_file:
       placeholder: ドラッグ＆ドロップでアップロードするか、こちらをクリック
       read_only: このメディアリンクは読み取り専用です
+      uploading: アップロード中...
   modal:
     delete:
       subtitle: 削除を確認

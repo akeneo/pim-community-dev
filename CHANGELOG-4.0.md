@@ -4,6 +4,12 @@
 
 - PIM-9838: fix project completeness selection filter on product grid's bulk edit and quick export
 
+# 4.0.108 (2021-05-10)
+
+## Bug fixes
+
+- PIM-9849: [Backport] PIM-9226: Fix error on channel deletion after migrating from v3.2
+
 # 4.0.107 (2021-05-03)
 
 # 4.0.106 (2021-04-29)
