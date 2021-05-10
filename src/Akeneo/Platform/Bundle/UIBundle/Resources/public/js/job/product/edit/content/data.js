@@ -99,8 +99,9 @@ define([
 
             this.filterViews.push(filterView);
           }.bind(this)
-        )
-        .always(function () {
+        ).catch(function(error) {
+            console.error(error);
+        }).always(function () {
           deferred.resolve();
         });
 

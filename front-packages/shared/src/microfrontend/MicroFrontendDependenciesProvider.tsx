@@ -37,6 +37,13 @@ const MicroFrontendDependenciesProvider = ({
       throw new Error(`Route ${route} not found`);
     }
 
+//    const routeParameters = routeConf.tokens
+//      .map((token: string[]) => token[0] === 'variable' ? token[3] : null).filter(Boolean);
+
+//    const unusedParameters = Object.keys(parameters ?? {}).filter(x => routeParameters.includes(x));
+    let queryString =
+      parameters ? '?' + Object.entries(parameters).map(([key, val]) => `${key}=${val}`).join('&') : '';
+
     return routeConf.tokens
       .map((token: string[]) => {
         switch (token[0]) {
@@ -53,7 +60,7 @@ const MicroFrontendDependenciesProvider = ({
         }
       })
       .reverse()
-      .join('');
+      .join('') + queryString;
   };
 
   const currentUserUrl = generateUrl('pim_user_user_rest_get_current');
