@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Domain\Config;
 
 use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnDataType;
 use Webmozart\Assert\Assert;
 
 class TextColumn extends ColumnDefinition
@@ -29,6 +30,10 @@ class TextColumn extends ColumnDefinition
         $labels = $normalized['labels'] ?? [];
         Assert::isArray($labels);
 
-        return new self(ColumnCode::fromString($normalized['code']), self::DATATYPE, $labels);
+        return new self(
+            ColumnCode::fromString($normalized['code']),
+            ColumnDataType::fromString(self::DATATYPE),
+            $labels
+        );
     }
 }

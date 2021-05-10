@@ -14,20 +14,20 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Domain\Config;
 
 use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnDataType;
 use Webmozart\Assert\Assert;
 
 abstract class ColumnDefinition
 {
     protected ColumnCode $code;
-    protected string $dataType;
+    protected ColumnDataType $dataType;
     /** @var string[] */
     protected array $labels;
 
     // validation rules: specific to each data type
 
-    protected function __construct(ColumnCode $code, string $dataType, array $labels = [])
+    protected function __construct(ColumnCode $code, ColumnDataType $dataType, array $labels = [])
     {
-        Assert::stringNotEmpty($dataType);
         Assert::allString(\array_keys($labels));
         Assert::allString($labels);
 
@@ -41,7 +41,7 @@ abstract class ColumnDefinition
         return $this->code;
     }
 
-    public function dataType(): string
+    public function dataType(): ColumnDataType
     {
         return $this->dataType;
     }

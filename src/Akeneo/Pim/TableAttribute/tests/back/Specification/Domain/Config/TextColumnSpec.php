@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Domain\Config;
 
 use Akeneo\Pim\TableAttribute\Domain\Config\TextColumn;
 use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnDataType;
 use PhpSpec\ObjectBehavior;
 
 class TextColumnSpec extends ObjectBehavior
@@ -23,7 +24,8 @@ class TextColumnSpec extends ObjectBehavior
 
     function it_is_a_text_column()
     {
-        $this->dataType()->shouldBe('text');
+        $this->dataType()->shouldHaveType(ColumnDataType::class);
+        $this->dataType()->asString()->shouldBe('text');
     }
 
     function it_has_a_code()
