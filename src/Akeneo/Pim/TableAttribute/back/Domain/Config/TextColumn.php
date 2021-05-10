@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Domain\Config;
 
+use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnCode;
 use Webmozart\Assert\Assert;
 
 class TextColumn extends ColumnDefinition
@@ -24,13 +25,10 @@ class TextColumn extends ColumnDefinition
     public static function fromNormalized(array $normalized): self
     {
         Assert::keyExists($normalized, 'code');
-        Assert::stringNotEmpty($normalized['code']);
 
         $labels = $normalized['labels'] ?? [];
         Assert::isArray($labels);
 
-        return new self($normalized['code'], self::DATATYPE, $labels);
+        return new self(ColumnCode::fromString($normalized['code']), self::DATATYPE, $labels);
     }
-
-
 }

@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\TableAttribute\Domain\Config;
 
 use Akeneo\Pim\TableAttribute\Domain\Config\TextColumn;
+use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnCode;
 use PhpSpec\ObjectBehavior;
 
 class TextColumnSpec extends ObjectBehavior
@@ -27,7 +28,8 @@ class TextColumnSpec extends ObjectBehavior
 
     function it_has_a_code()
     {
-        $this->code()->shouldBe('ingredients');
+        $this->code()->shouldHaveType(ColumnCode::class);
+        $this->code()->asString()->shouldBe('ingredients');
     }
 
     function it_has_labels()
