@@ -46,6 +46,10 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
         return false;
       }
 
+      if (draggedCategory.identifier === moveTarget.identifier) {
+        return false;
+      }
+
       const previewPosition =
         moveTarget.position === 'before' ? position - 1 : moveTarget.position === 'after' ? position + 1 : position;
       const isOriginalPosition =
@@ -70,7 +74,13 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
       isLoading={node.childrenStatus === 'loading'}
       onClick={!followCategory ? undefined : ({data}) => followCategory(data)}
       disabled={draggedCategory !== null && node.identifier === draggedCategory.identifier}
-      selected={moveTarget !== null && node.identifier === moveTarget.identifier && moveTarget.position === 'in'}
+      selected={
+        moveTarget !== null &&
+        node.identifier === moveTarget.identifier &&
+        moveTarget.position === 'in' &&
+        draggedCategory !== null &&
+        draggedCategory.identifier !== node.identifier
+      }
       onOpen={async () => {
         // @todo handle when children have already loaded
         if (node.childrenStatus !== 'idle') {
@@ -141,8 +151,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
       // so that we can handle the
       // }}
       onDrop={async () => {
-        // @todo rework to not have to do all these sanity checks
-        if (draggedCategory && node !== undefined && moveTarget) {
+        if (draggedCategory && moveTarget && draggedCategory.identifier !== moveTarget.identifier) {
           moveTo(draggedCategory.identifier, moveTarget);
 
           /*
