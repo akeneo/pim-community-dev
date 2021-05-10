@@ -8,24 +8,29 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import styled from 'styled-components';
-import {getColor, RowIcon, useBooleanState} from 'akeneo-design-system';
+import styled, {css} from 'styled-components';
+import {AkeneoThemedProps, getColor, RowIcon, useBooleanState} from 'akeneo-design-system';
 import {TreeNode} from '../../../models';
-import {ArrowButton, RowActionsContainer, RowInnerContainer, TreeArrowIcon, TreeRow} from './TreeRow';
+import {ArrowButton, DragInitiator, RowActionsContainer, RowInnerContainer, TreeArrowIcon, TreeRow} from './TreeRow';
 import {TreeActions} from './TreeActions';
 import Timeout = NodeJS.Timeout;
+import {TreeIcon} from './TreeIcon';
 
-const TreeContainer = styled.li`
+const TreeContainer = styled.li<{isRoot: boolean} & AkeneoThemedProps>`
   display: block;
   color: ${getColor('grey140')};
+
+  ${({isRoot}) =>
+    isRoot &&
+    css`
+      position: relative;
+    `};
 `;
 
 const SubTreesContainer = styled.ul`
   margin: 0 0 0 20px;
   padding: 0;
 `;
-
-const DragInitiator = styled.div``;
 
 type CursorPosition = {
   x: number;
@@ -139,19 +144,20 @@ const Tree = <T,>({
 
   // https://www.w3.org/WAI/GL/wiki/Using_ARIA_trees
   const result = (
-    <TreeContainer role="treeitem" aria-expanded={isOpen} {...rest}>
+    <TreeContainer role="treeitem" aria-expanded={isOpen} isRoot={_isRoot} {...rest}>
       <TreeRow
         ref={treeRowRef}
         onClick={handleClick}
         $selected={selected}
         $disabled={disabled}
+        isRoot={_isRoot}
         draggable={draggable}
-        onDragStartCapture={event => {
+        onDragStartCapture={(event: React.DragEvent) => {
           if (event.target !== dragRef.current) {
             event.preventDefault();
           }
         }}
-        onDragOver={event => {
+        onDragOver={(event: React.DragEvent) => {
           // @todo allow dragOver (stopPropagation and prevent event) when isValidDrop
           event.stopPropagation();
           event.preventDefault();
@@ -188,7 +194,7 @@ const Tree = <T,>({
             setTimer(null);
           }
         }}
-        onDrop={event => {
+        onDrop={(event: React.DragEvent) => {
           event.stopPropagation();
           event.preventDefault();
           event.persist();
@@ -203,7 +209,7 @@ const Tree = <T,>({
             setTimer(null);
           }
         }}
-        onDragEnd={event => {
+        onDragEnd={(event: React.DragEvent) => {
           event.stopPropagation();
           event.preventDefault();
 
@@ -223,7 +229,7 @@ const Tree = <T,>({
             <DragInitiator
               ref={dragRef}
               draggable
-              onDragStart={event => {
+              onDragStart={(event: React.DragEvent) => {
                 if (!treeRowRef.current) {
                   return;
                 }
@@ -242,12 +248,13 @@ const Tree = <T,>({
                 // @todo call onDragStart
               }}
             >
-              <RowIcon size={16} />
+              <RowIcon size={16} shapeRendering="crispEdges" />
             </DragInitiator>
           )}
           <ArrowButton disabled={isLeaf} role="button" onClick={handleArrowClick}>
             {!isLeaf && <TreeArrowIcon $isFolderOpen={isOpen} size={14} />}
           </ArrowButton>
+          <TreeIcon isLoading={isLoading} isLeaf={isLeaf} selected={selected} />
           {label}
         </RowInnerContainer>
         {actions && <RowActionsContainer>{actions}</RowActionsContainer>}

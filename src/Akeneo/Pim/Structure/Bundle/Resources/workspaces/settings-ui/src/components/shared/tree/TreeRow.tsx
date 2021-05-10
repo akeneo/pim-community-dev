@@ -1,7 +1,41 @@
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, ArrowRightIcon, getColor} from 'akeneo-design-system';
 
-const TreeRow = styled.div<{$selected: boolean; $disabled: boolean} & AkeneoThemedProps>`
+const treeRowBackgroundStyles = css<{$selected: boolean; $disabled: boolean; isRoot: boolean} & AkeneoThemedProps>`
+  &:before {
+    content: ' ';
+    position: absolute;
+    box-sizing: border-box;
+    z-index: 0;
+    left: 0;
+    right: 0;
+    padding: 0;
+    width: 100%;
+    height: 54px;
+
+    background-color: ${getColor('white')};
+    border-bottom: 1px solid ${getColor('grey60')};
+
+    ${({$selected}) =>
+      $selected &&
+      css`
+        color: ${getColor('blue100')};
+        border-color: ${getColor('blue100')};
+      `}
+
+    ${({$disabled}) =>
+      $disabled &&
+      css`
+        border-color: ${getColor('red100')};
+      `}
+  }
+
+  &:hover:before {
+    background-color: ${getColor('grey20')};
+  }
+`;
+
+const TreeRow = styled.div<{$selected: boolean; $disabled: boolean; isRoot: boolean} & AkeneoThemedProps>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -13,20 +47,8 @@ const TreeRow = styled.div<{$selected: boolean; $disabled: boolean} & AkeneoThem
   padding: 0 20px;
   overflow: hidden;
   width: 100%;
-  border: 1px solid ${getColor('grey100')};
 
-  ${({$selected}) =>
-    $selected &&
-    css`
-      color: ${getColor('blue100')};
-      border: 1px solid ${getColor('blue100')};
-    `}
-
-  ${({$disabled}) =>
-    $disabled &&
-    css`
-      border: 1px solid ${getColor('red100')};
-    `}
+  ${treeRowBackgroundStyles}
 `;
 
 const ArrowButton = styled.button`
@@ -56,6 +78,12 @@ const RowInnerContainer = styled.div`
   flex-grow: 1;
   z-index: 1;
   max-width: 65%;
+  
+  align-items: center;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const RowActionsContainer = styled.div`
@@ -68,4 +96,10 @@ const RowActionsContainer = styled.div`
   }
 `;
 
-export {TreeRow, TreeArrowIcon, ArrowButton, RowActionsContainer, RowInnerContainer};
+const DragInitiator = styled.div`
+  display: flex;
+  align-items: center;
+  color: ${getColor('grey100')};
+`;
+
+export {TreeRow, TreeArrowIcon, ArrowButton, RowActionsContainer, RowInnerContainer, DragInitiator};
