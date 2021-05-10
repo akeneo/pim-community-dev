@@ -57,7 +57,7 @@ lint-front: #Doc: launch all YARN linter tests
 ### Unit tests
 .PHONY: unit-back
 unit-back: var/tests/phpspec community-unit-back #Doc: launch all PHPSec unit tests
-	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-unit-back 
+	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-unit-back
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-unit-back
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
