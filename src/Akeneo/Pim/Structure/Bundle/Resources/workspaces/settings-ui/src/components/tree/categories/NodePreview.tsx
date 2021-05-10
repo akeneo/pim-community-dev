@@ -7,12 +7,26 @@ type Props = {
 };
 
 const NodePreview: FC<Props> = ({id}) => {
-  const {node} = useCategoryTreeNode(id);
+  const {node, draggedCategory, moveTarget, moveTo} = useCategoryTreeNode(id);
 
   if (node === undefined) {
     return null;
   }
-  return <Tree value={node} label={node.label} _isRoot={false} isLeaf={node.type === 'leaf'} selected={true} />;
+  return (
+    <Tree
+      value={node}
+      label={node.label}
+      _isRoot={false}
+      isLeaf={node.type === 'leaf'}
+      selected={true}
+      onDrop={() => {
+        if (draggedCategory && moveTarget && draggedCategory.identifier !== moveTarget.identifier) {
+          moveTo(draggedCategory.identifier, moveTarget);
+          // @todo persist in backend
+        }
+      }}
+    />
+  );
 };
 
 export {NodePreview};

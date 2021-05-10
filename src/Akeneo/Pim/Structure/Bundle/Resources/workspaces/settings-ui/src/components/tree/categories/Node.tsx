@@ -166,6 +166,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
             console.log(moveSuccess);
            */
 
+          // @todo: why onDragEnd is not fired when moving "in"?
           setDraggedCategory(null);
           setHoveredCategory(null);
           setMoveTarget(null);
