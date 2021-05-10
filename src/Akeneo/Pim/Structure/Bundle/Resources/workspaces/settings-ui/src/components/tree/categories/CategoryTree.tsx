@@ -9,7 +9,7 @@ type Props = {
   sortable?: boolean; // @todo find a better name: editable?
   followCategory?: (category: CategoryTreeModel) => void;
   addCategory?: (parentCode: string, onCreate: () => void) => void;
-  deleteCategory?: (categoryId: number) => void; // @todo define arguments that we really need
+  deleteCategory?: (identifier: number, label: string, numberOfProducts: number, onDelete: () => void) => void;
   // @todo define onCategoryMoved action
 };
 

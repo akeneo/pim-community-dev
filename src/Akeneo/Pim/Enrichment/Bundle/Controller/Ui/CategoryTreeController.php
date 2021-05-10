@@ -399,6 +399,15 @@ class CategoryTreeController extends Controller
         return new JsonResponse($productsCountByCategories);
     }
 
+    public function countCategoryProducts(int $id): Response
+    {
+        $category = $this->findCategory($id);
+
+        $numberOfProducts = $this->categoryItemsCounter->getItemsCountInCategory($category, true);
+
+        return new JsonResponse($numberOfProducts);
+    }
+
     public function countChildrenAction(): JsonResponse
     {
         $countChildren = $this->countTreesChildrenQuery->execute();
