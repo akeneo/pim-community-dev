@@ -1,4 +1,4 @@
-import React, {ReactNode, Ref, SyntheticEvent, cloneElement, Children, useState, useContext} from 'react';
+import React, {ReactNode, Ref, DragEvent, SyntheticEvent, cloneElement, Children, useState, useContext} from 'react';
 import {TableRowProps} from '../TableRow/TableRow';
 import {useId} from '../../../hooks';
 import {TableContext} from '../TableContext';
@@ -47,9 +47,9 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
           }
 
           return cloneElement(child, {
-            'data-draggable-index': index,
-            canBeDraggedOver: null !== draggedElementIndex,
-            onDragStart: () => {
+            rowIndex: index,
+            onDragStart: (event: DragEvent) => {
+              event.dataTransfer?.setData('text/plain', String(index));
               setDraggedElementIndex(index);
             },
           });

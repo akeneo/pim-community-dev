@@ -34,16 +34,11 @@ type TableRowProps = Override<
     /**
      * @private
      */
-    'data-draggable-index': number;
-
-    /**
-     * @private
-     */
-    canBeDraggedOver: boolean;
+    rowIndex: number;
   }
 >;
 
-const RowContainer = styled.tr<{isSelected: boolean; isClickable: boolean; isDraggedOver: boolean} & AkeneoThemedProps>`
+const RowContainer = styled.tr<{isSelected: boolean; isClickable: boolean; placeholderPosition: PlaceholderPosition} & AkeneoThemedProps>`
   ${({isSelected}) =>
     isSelected &&
     css`
@@ -60,11 +55,13 @@ const RowContainer = styled.tr<{isSelected: boolean; isClickable: boolean; isDra
       }
     `}
 
-  ${({isDraggedOver}) =>
-    isDraggedOver &&
-    css`
-      border-bottom: 2px solid red;
-    `}
+  ${({placeholderPosition}) => placeholderPosition === 'top' && css`
+    border-top: 2px solid red;
+  `}
+
+  ${({placeholderPosition}) => placeholderPosition === 'bottom' && css`
+    border-bottom: 2px solid red;
+  `}
 
   &:hover > td {
     opacity: 1;
@@ -101,13 +98,21 @@ const HandleContainer = styled.div`
   }
 `;
 
-const useDragOver = () => {
+type PlaceholderPosition = 'top' | 'bottom' | 'none';
+
+const usePlaceholderPosition = (rowIndex: number) => {
   const [overingCount, setOveringCount] = useState(0);
+  const [placeholderPosition, setPlaceholderPosition] = useState<PlaceholderPosition>('none');
 
   return [
-    overingCount > 0,
-    () => {
+    overingCount > 0 ? placeholderPosition : 'none',
+    (event: DragEvent) => {
       setOveringCount(count => count + 1);
+      if (Number(event.dataTransfer?.getData('text/plain')) === rowIndex) {
+        setPlaceholderPosition('none');
+        return;
+      }
+      setPlaceholderPosition(Number(event.dataTransfer?.getData('text/plain')) > rowIndex ? 'top' : 'bottom');
     },
     () => {
       setOveringCount(count => count - 1);
@@ -120,11 +125,11 @@ const useDragOver = () => {
 
 const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
   (
-    {isSelected, canBeDraggedOver, onSelectToggle, onClick, children, ...rest}: TableRowProps,
+    {rowIndex, isSelected, onSelectToggle, onClick, children, ...rest}: TableRowProps,
     forwardedRef: Ref<HTMLTableRowElement>
   ) => {
     const [isDragged, drag, drop] = useBooleanState();
-    const [isDraggedOver, dragEnter, dragLeave, dragEnd] = useDragOver();
+    const [placeholderPosition, dragEnter, dragLeave, dragEnd] = usePlaceholderPosition(rowIndex);
 
     const {isSelectable, displayCheckbox, isOrderable} = useContext(TableContext);
     if (isSelectable && (undefined === isSelected || undefined === onSelectToggle)) {
@@ -142,10 +147,15 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
         isClickable={undefined !== onClick}
         isSelected={!!isSelected}
         onClick={onClick}
-        isDraggedOver={isDraggedOver}
+        placeholderPosition={placeholderPosition}
         draggable={isOrderable && isDragged}
+        data-draggable-index={rowIndex}
         onDragEnter={dragEnter}
         onDragLeave={dragLeave}
+        onDrop={(event: DragEvent) => {
+          event.preventDefault();
+          dragEnd();
+        }}
         onDragEnd={() => {
           drop();
           dragEnd();
