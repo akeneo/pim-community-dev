@@ -1178,24 +1178,24 @@ workflows:
                 requires:
                     - checkout
 
-  hourly_cleanup:
-      triggers:
-          - schedule:
-                cron: "0 * * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
-
-      jobs:
-          - checkout
-          - delete_pr_environments_hourly:
-                requires:
-                    - checkout
-          - mr_proper:
-                requires:
-                  - delete_pr_environments_hourly
-
+#  hourly_cleanup:
+#      triggers:
+#          - schedule:
+#                cron: "0 * * * *"
+#                filters:
+#                    branches:
+#                        only:
+#                            - master
+#
+#      jobs:
+#          - checkout
+#          - delete_pr_environments_hourly:
+#                requires:
+#                    - checkout
+#          - mr_proper:
+#                requires:
+#                  - delete_pr_environments_hourly
+#
   nightly-beta:
       triggers:
           - schedule:
