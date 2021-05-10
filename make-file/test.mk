@@ -95,7 +95,6 @@ else
 	@echo Run end to end test locally is too long, please use the target defined for your bounded context (ex: bounded-context-end-to-end-back)
 endif
 
-# TODO add split by tests (circleci tests split --split-by=timings)
 end-to-end-front:
 	$(DOCKER_COMPOSE) run --rm cypress
 

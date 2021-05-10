@@ -26,21 +26,11 @@
 
 import '@testing-library/cypress/add-commands';
 
-Cypress.Commands.add('login', () => {
+Cypress.Commands.add('login', (username, password) => {
   cy.visit('/user/login');
-  cy.findByLabelText('Username or Email').type('admin');
-
-  cy.findByLabelText('Password').type('admin');
-
-  // cy.intercept('/configuration/feature-flags').as('featureFlag');
-  // cy.intercept('/rest/user').as('user');
-  cy.intercept('/analytics/collect_data').as('analytics');
-
+  cy.findByLabelText('Username or Email').type(username);
+  cy.findByLabelText('Password').type(password);
   cy.findByRole('button', 'Login').click();
-
-  // cy.wait('@featureFlag'); //4000ms
-  // cy.wait('@user'); //4000ms
-  // cy.wait('@analytics', 20000); //4000ms
 });
 
 Cypress.Commands.add('goToProductsGrid', () => {
@@ -53,14 +43,6 @@ Cypress.Commands.add('goToProductsGrid', () => {
   cy.intercept('/datagrid_view/rest/product-grid/default*').as('productDatagridViews');
   cy.wait('@productDatagridViews');
   cy.wait('@productDatagrid');
-});
-
-Cypress.Commands.add('goToExports', () => {
-  //We should rework the HTML to have proper role/aria selectors
-  cy.findAllByText(/dashboard/i);
-  cy.wait(2000);
-
-  cy.findByText('Exports').click();
 });
 
 Cypress.Commands.add('selectFirstProductInDatagrid', () => {

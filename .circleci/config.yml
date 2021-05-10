@@ -221,7 +221,7 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
-  test_front_cypress:
+  cypress_sanity_checks:
     machine:
       image: ubuntu-1604:201903-01
     resource_class: large
@@ -700,8 +700,8 @@ workflows:
                 is_ee_built: false
                 requires:
                     - checkout_ce
-          - test_front_cypress:
-                name: test_front_cypress_ce
+          - cypress_sanity_checks:
+                name: cypress_sanity_checks_ce
                 requires:
                   - build_dev_ce
           - test_back_static_and_acceptance:
