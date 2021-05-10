@@ -30,13 +30,7 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
       : children;
 
     return (
-      <tbody
-        ref={forwardedRef}
-        data-table-id={tableId}
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-        {...rest}
-      >
+      <tbody ref={forwardedRef} data-table-id={tableId} onDrop={handleDrop} onDragOver={handleDragOver} {...rest}>
         {decoratedChildren}
       </tbody>
     );

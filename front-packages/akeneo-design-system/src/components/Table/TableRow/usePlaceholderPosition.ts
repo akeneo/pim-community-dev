@@ -10,7 +10,7 @@ const usePlaceholderPosition = (rowIndex: number) => {
     overingCount === 0 ? 'none' : placeholderPosition,
     (event: DragEvent) => {
       setOveringCount(count => count + 1);
-      const draggedElementIndex = Number(event.dataTransfer.getData('text/plain'));
+      const draggedElementIndex = Number(event.target);
       setPlaceholderPosition(
         draggedElementIndex === rowIndex ? 'none' : draggedElementIndex > rowIndex ? 'top' : 'bottom'
       );
