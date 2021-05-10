@@ -133,9 +133,11 @@ const useCategoryTreeNode = (id: number) => {
       // remove the original id from the original parent's children
       // update the original parent
       if (originalParentNode.identifier !== targetParentNode.identifier) {
+        const updateOriginalParentChildren = originalParentNode.childrenIds.filter(id => id !== movedNode.identifier);
         newNodesList = update(newNodesList, {
           ...originalParentNode,
-          childrenIds: originalParentNode.childrenIds.filter(id => id !== movedNode.identifier),
+          childrenIds: updateOriginalParentChildren,
+          type: originalParentNode.type !== 'root' ? (updateOriginalParentChildren.length > 0 ? 'node' : 'leaf') : 'root',
         });
       }
 
@@ -149,21 +151,29 @@ const useCategoryTreeNode = (id: number) => {
     [nodes]
   );
 
-  // Remove the node and its descendants when a category is deleted,
+  // When a category is deleted, update its parent's node and remove the category's node and its descendants.
   const onDeleteCategory = () => {
     if (!node || !node.parentId) {
       return;
     }
 
-    const parent = findOneByIdentifier(nodes, node.parentId);
-    if (!parent) {
-      // @todo what to do for this kind of unexpected error? do nothing? log error message? force reload the page?
+    const nodesToRemove = [node.identifier, ...findLoadedDescendantsIdentifiers(nodes, node)];
+    const updatedNodes = nodes.filter(treeNode => !nodesToRemove.includes(treeNode.identifier));
+
+    const parentNode = findOneByIdentifier(nodes, node.parentId);
+    if (!parentNode) {
+      setNodes(updatedNodes);
       return;
     }
 
-    const nodesToRemove = [node.identifier, ...findLoadedDescendantsIdentifiers(nodes, node)];
+    const updatedParentChildren = parentNode.childrenIds.filter(childId => childId !== node.identifier);
+    const updatedParent: TreeNode<CategoryTreeModel> = {
+      ...parentNode,
+      childrenIds: updatedParentChildren,
+      type: parentNode.type !== 'root' ? (updatedParentChildren.length > 0 ? 'node' : 'leaf') : 'root',
+    };
 
-    setNodes(nodes.filter(treeNode => !nodesToRemove.includes(treeNode.identifier)));
+    setNodes(update(updatedNodes, updatedParent));
   };
 
   const forceReloadChildren = useCallback(() => {
