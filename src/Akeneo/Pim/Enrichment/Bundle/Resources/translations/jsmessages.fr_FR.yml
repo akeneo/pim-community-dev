@@ -369,10 +369,8 @@ pim_enrich.mass_edit.product:
 pim_datagrid:
   no_entities: "Aucune {{ entityHint }} trouvée"
   no_entities.product: "Aucun produit trouvé"
-  no_entities.published product: "Aucun produit publié trouvé"
   no_results: "Désolé, il n’y a aucun(e) {{ entityHint }} pour votre recherche."
   no_results.product: "Désolé, il n’y a aucun produit pour votre recherche."
-  no_results.published product: "Désolé, il n’y a aucun produit publié pour votre recherche."
   mass_action_group:
     bulk_actions:
       label: Actions de masse
