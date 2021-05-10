@@ -15,22 +15,17 @@ namespace Akeneo\Pim\TableAttribute\Domain\Config;
 
 use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnDataType;
-use Webmozart\Assert\Assert;
 
 abstract class ColumnDefinition
 {
     protected ColumnCode $code;
     protected ColumnDataType $dataType;
-    /** @var string[] */
-    protected array $labels;
+    protected LabelCollection $labels;
 
     // validation rules: specific to each data type
 
-    protected function __construct(ColumnCode $code, ColumnDataType $dataType, array $labels = [])
+    protected function __construct(ColumnCode $code, ColumnDataType $dataType, LabelCollection $labels)
     {
-        Assert::allString(\array_keys($labels));
-        Assert::allString($labels);
-
         $this->code = $code;
         $this->dataType = $dataType;
         $this->labels = $labels;
@@ -46,7 +41,7 @@ abstract class ColumnDefinition
         return $this->dataType;
     }
 
-    public function labels(): array
+    public function labels(): LabelCollection
     {
         return $this->labels;
     }

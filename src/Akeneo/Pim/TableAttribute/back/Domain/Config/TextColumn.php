@@ -33,7 +33,7 @@ class TextColumn extends ColumnDefinition
         return new self(
             ColumnCode::fromString($normalized['code']),
             ColumnDataType::fromString(self::DATATYPE),
-            $labels
+            LabelCollection::fromNormalized($labels)
         );
     }
 }

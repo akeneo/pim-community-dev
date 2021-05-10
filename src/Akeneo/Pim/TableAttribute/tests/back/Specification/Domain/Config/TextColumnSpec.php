@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\TableAttribute\Domain\Config;
 
+use Akeneo\Pim\TableAttribute\Domain\Config\LabelCollection;
 use Akeneo\Pim\TableAttribute\Domain\Config\TextColumn;
 use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnDataType;
@@ -36,6 +37,7 @@ class TextColumnSpec extends ObjectBehavior
 
     function it_has_labels()
     {
-        $this->labels()->shouldReturn(['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients']);
+        $this->labels()->shouldHaveType(LabelCollection::class);
+        $this->labels()->labels()->shouldReturn(['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients']);
     }
 }
