@@ -16,25 +16,26 @@ const treeRowBackgroundStyles = css<{$selected: boolean; $disabled: boolean; isR
     background-color: ${getColor('white')};
     border-bottom: 1px solid ${getColor('grey60')};
 
+    ${({$disabled}) =>
+      $disabled &&
+      css`
+        background-color: ${getColor('grey20')};
+      `}
+
     ${({$selected}) =>
       $selected &&
       css`
         color: ${getColor('blue100')};
-        border-color: ${getColor('blue100')};
-      `}
-
-    ${({$disabled}) =>
-      $disabled &&
-      css`
-        border-color: ${getColor('red100')};
+        background-color: ${getColor('blue20')};
       `}
   }
 
   &:hover:before {
-    background-color: ${getColor('grey20')};
+    background-color: ${({$selected}) => getColor($selected ? 'blue20' : 'grey20')};
   }
 `;
 
+// @todo should we use other props like isDragOver, isValidDrop or isDrag?
 const TreeRow = styled.div<{$selected: boolean; $disabled: boolean; isRoot: boolean} & AkeneoThemedProps>`
   display: flex;
   flex-direction: row;
@@ -49,6 +50,18 @@ const TreeRow = styled.div<{$selected: boolean; $disabled: boolean; isRoot: bool
   width: 100%;
 
   ${treeRowBackgroundStyles}
+
+  ${({$selected}) =>
+    $selected &&
+    css`
+      color: ${getColor('blue100')};
+    `}
+
+  ${({$disabled}) =>
+    $disabled &&
+    css`
+      opacity: 40%;
+    `}
 `;
 
 const ArrowButton = styled.button`
@@ -78,7 +91,7 @@ const RowInnerContainer = styled.div`
   flex-grow: 1;
   z-index: 1;
   max-width: 65%;
-  
+
   align-items: center;
 
   &:hover {

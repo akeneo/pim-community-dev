@@ -5,6 +5,7 @@ import {useCategoryTreeNode} from '../../../hooks';
 import {MoveTarget} from '../../providers';
 import {Button} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {NodePreview} from './NodePreview';
 
 type Props = {
   id: number;
@@ -48,7 +49,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
       isLoading={node.childrenStatus === 'loading'}
       onClick={!followCategory ? undefined : ({data}) => followCategory(data)}
       disabled={draggedCategory !== null && node.identifier === draggedCategory.identifier}
-      selected={hoveredCategory !== null && node.identifier === hoveredCategory.identifier}
+      selected={moveTarget !== null && node.identifier === moveTarget.identifier && moveTarget.position === 'in'}
       onOpen={async () => {
         // @todo handle when children have already loaded
         if (node.childrenStatus !== 'idle') {
@@ -175,12 +176,10 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
           )}
         </Tree.Actions>
       )}
-      {/* @todo if the droppable node position and parent id correspond, add a visual feedback here for the further moved category */}
-      {/* @todo handle preview, dragOver, dop, ... of the category when the user moving it */}
       {children.map(child => (
         <React.Fragment key={`category-node-${id}-${child.identifier}`}>
-          {moveTarget?.identifier === child.identifier && moveTarget.position === 'before' && (
-            <hr style={{borderColor: 'green'}} />
+          {moveTarget?.identifier === child.identifier && moveTarget.position === 'before' && draggedCategory && (
+            <NodePreview id={draggedCategory.identifier} />
           )}
           <Node
             id={child.identifier}
@@ -190,8 +189,8 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
             deleteCategory={deleteCategory}
             sortable={sortable}
           />
-          {moveTarget?.identifier === child.identifier && moveTarget.position === 'after' && (
-            <hr style={{borderColor: 'green'}} />
+          {moveTarget?.identifier === child.identifier && moveTarget.position === 'after' && draggedCategory && (
+            <NodePreview id={draggedCategory.identifier} />
           )}
         </React.Fragment>
       ))}
