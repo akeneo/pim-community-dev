@@ -362,6 +362,9 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
+orbs:
+  pull-up: akeneo-orbs/pull-up@1.0
+
 workflows:
   version: 2
   pull_request:
@@ -452,7 +455,6 @@ workflows:
                     branches:
                         only:
                             - "5.0"
-
       jobs:
           - checkout_ce
           - build_dev:
@@ -474,6 +476,21 @@ workflows:
           - test_back_data_migrations:
                 requires:
                     - build_dev
+
+  pull_up:
+    jobs:
+      - pull-up/pull-up:
+          from: "5.0"
+          into: "master"
+          branch_prefix: "50_to_master"
+          checkout_ours: 'src/Akeneo/Platform/CommunityVersion.php **/translations/*.yml'
+          github_token: MICHEL_TAG_TOKEN
+          github_username: "micheltag"
+          slack_webhook: "${SLACK_URL_PULL_UP}"
+          filters:
+            branches:
+              only:
+                - "5.0"
 
 commands:
   restore_persisted_env_vars:

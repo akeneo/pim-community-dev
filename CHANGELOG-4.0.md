@@ -1,5 +1,39 @@
 # 4.0.x
 
+# 4.0.107 (2021-05-03)
+
+## Bug fixes
+
+- PIM-9831: Fix export profile limitation on content's filters
+
+# 4.0.106 (2021-04-29)
+
+## Bug fixes
+
+- PIM-9832: Fix variant product images query by extracting image values before sorting
+
+# 4.0.105 (2021-04-27)
+
+## Bug fixes
+
+- PIM-9818: Handle SVG image show action in file input
+
+# 4.0.104 (2021-04-22)
+
+# 4.0.103 (2021-04-02)
+
+## Bug fixes
+
+- PIM-9726: Mitigate deadlock issues on category API (backport PIM-9548)
+
+# 4.0.102 (2021-03-31)
+
+## Bug fixes
+
+- PIM-9766: Prevent letter usage in grid Number filters
+- PIM-9774: Fix variant axis 'metric' validation on import.
+- PIM-9789: Synchronously update product form image on change
+
 # 4.0.101 (2021-03-29)
 
 # 4.0.100 (2021-03-26)
