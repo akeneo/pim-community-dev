@@ -41,11 +41,6 @@ class OroToPimGridFilterAdapterSpec extends ObjectBehavior
 
         $massActionRawFilters = [
             [
-                'field' => 'sku',
-                'operator' => 'CONTAINS',
-                'value' => 'DP',
-            ],
-            [
                 'field' => 'categories.id',
                 'operator' => 'IN',
                 'value' => [12, 13, 14],
@@ -91,11 +86,6 @@ class OroToPimGridFilterAdapterSpec extends ObjectBehavior
 
         $massActionRawFilters = [
             [
-                'field' => 'sku',
-                'operator' => 'CONTAINS',
-                'value' => 'DP',
-            ],
-            [
                 'field' => 'categories.id',
                 'operator' => 'IN',
                 'value' => [12, 13, 14],
@@ -105,6 +95,37 @@ class OroToPimGridFilterAdapterSpec extends ObjectBehavior
                 'operator' => 'IN',
                 'value' => ['product_id1', 'product_id2', 'product_id3'],
             ]
+        ];
+
+        $massActionDispatcher->getRawFilters($parameters)->willReturn($massActionRawFilters);
+
+        $this->adapt($parameters)->shouldReturn($massActionRawFilters);
+    }
+
+    function it_adapts_filters_ignoring_completeness_if_raw_filters_contains_sku_fields($massActionDispatcher) {
+        $parameters = [
+            'dataLocale' => 'en_US',
+            'dataScope' => ['value' => 'ecommerce'],
+            'gridName' => 'product-grid',
+            'filters' => [
+                'project_completeness' => [
+                    'value' => 5
+                ]
+            ],
+            'values' => ['product_id1', 'product_id2', 'product_id3']
+        ];
+
+        $massActionRawFilters = [
+            [
+                'field' => 'sku',
+                'operator' => 'CONTAINS',
+                'value' => 'DP',
+            ],
+            [
+                'field' => 'categories.id',
+                'operator' => 'IN',
+                'value' => [12, 13, 14],
+            ],
         ];
 
         $massActionDispatcher->getRawFilters($parameters)->willReturn($massActionRawFilters);
