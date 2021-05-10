@@ -10,7 +10,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithCompletenessesInterface;
 use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Webmozart\Assert\Assert;
 
 class GetProductsWithCompletenessesWithPermissions implements GetProductsWithCompletenessesInterface
 {
@@ -46,6 +48,16 @@ class GetProductsWithCompletenessesWithPermissions implements GetProductsWithCom
 
     public function fromConnectorProductList(ConnectorProductList $connectorProductList, ?string $channel = null, array $locales = []): ConnectorProductList
     {
+        $viewableLocales = array_intersect(
+            $this->getAllViewableLocalesForUser->fetchAll($this->getUserId()),
+            $locales
+        );
+
+        return $this->getProductsWithCompletenesses->fromConnectorProductList(
+            $connectorProductList,
+            $channel,
+            $viewableLocales
+        );
     }
 
     private function getUserId(): int
@@ -55,6 +67,7 @@ class GetProductsWithCompletenessesWithPermissions implements GetProductsWithCom
             throw new \DomainException('A user must be connected to apply permissions.');
         }
         $user = $token->getUser();
+        Assert::isInstanceOf($user, UserInterface::class);
 
         return $user->getId();
     }

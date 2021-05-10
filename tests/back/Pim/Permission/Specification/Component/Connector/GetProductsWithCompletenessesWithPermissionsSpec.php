@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Permission\Component\Connector;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithCompletenessesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Permission\Component\Connector\GetProductsWithCompletenessesWithPermissions;
@@ -36,7 +37,7 @@ class GetProductsWithCompletenessesWithPermissionsSpec extends ObjectBehavior
         $this->shouldImplement(GetProductsWithCompletenessesInterface::class);
     }
 
-    public function it_get_connector_products_with_completenesses_with_permission(
+    public function it_applies_permission_when_adding_completenesses_to_a_connector_product(
         GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
         GetAllViewableLocalesForUser $getAllViewableLocalesForUser,
         TokenStorageInterface $tokenStorage,
@@ -92,6 +93,40 @@ class GetProductsWithCompletenessesWithPermissionsSpec extends ObjectBehavior
         $getProductsWithCompletenesses->fromConnectorProduct($connectProduct)->willReturn($productWithEmptyCollection);
 
         $this->fromConnectorProduct($connectProduct)->shouldBeLike($productWithEmptyCollection);
+    }
+
+    public function it_applies_permission_when_adding_completenesses_to_a_connector_product_list(
+        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
+        GetAllViewableLocalesForUser $getAllViewableLocalesForUser,
+        TokenStorageInterface $tokenStorage,
+        TokenInterface $token
+    ): void {
+        $user = (new User())->setId(42);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
+
+        $viewableLocales = ['en_US', 'de_DE'];
+        $getAllViewableLocalesForUser->fetchAll(42)->willReturn($viewableLocales);
+
+        $ecommerceUSHalf = new ProductCompleteness('ecommerce', 'en_US', 10, 5);
+        $ecommerceUSComplete = new ProductCompleteness('ecommerce', 'en_US', 10, 0);
+        $connectorProductList = new ConnectorProductList(
+            2,
+            [$this->getConnectorProduct(15), $this->getConnectorProduct(42)]
+        );
+        $listWithCompletenesses = new ConnectorProductList(
+            2,
+            [
+                $this->getConnectorProduct(15, new ProductCompletenessCollection(15, [$ecommerceUSHalf])),
+                $this->getConnectorProduct(42, new ProductCompletenessCollection(15, [$ecommerceUSComplete])),
+            ]
+        );
+        $getProductsWithCompletenesses
+            ->fromConnectorProductList($connectorProductList, 'ecommerce', ['en_US'])
+            ->shouldBeCalled()
+            ->willReturn($listWithCompletenesses);
+
+        $this->fromConnectorProductList($connectorProductList, 'ecommerce', ['en_US', 'fr_FR'])->shouldReturn($listWithCompletenesses);
     }
 
     public function it_throws_an_exception_if_there_is_no_user_connected(TokenStorageInterface $tokenStorage): void
