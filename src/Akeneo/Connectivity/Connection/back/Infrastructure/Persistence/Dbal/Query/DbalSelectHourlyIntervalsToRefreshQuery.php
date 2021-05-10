@@ -36,7 +36,7 @@ WHERE updated < DATE_ADD(event_datetime, INTERVAL 1 HOUR) ORDER BY event_datetim
 SQL;
         $dateTimes = $this->dbalConnection->executeQuery($selectSQL)->fetchAll(FetchMode::COLUMN);
 
-        return array_map(fn(string $dateTime) => HourlyInterval::createFromDateTime(
+        return array_map(fn (string $dateTime) => HourlyInterval::createFromDateTime(
             \DateTimeImmutable::createFromFormat(
                 $this->dbalConnection->getDatabasePlatform()->getDateTimeFormatString(),
                 $dateTime,

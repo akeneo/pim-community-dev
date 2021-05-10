@@ -23,15 +23,15 @@ class ConnectionContext implements ConnectionContextInterface
 
     private ConnectionRepository $connectionRepository;
 
-    private ?string $clientId;
+    private ?string $clientId = null;
 
-    private ?string $username;
+    private ?string $username = null;
 
-    private ?Connection $connection;
+    private ?Connection $connection = null;
 
-    private ?bool $collectable;
+    private ?bool $collectable = null;
 
-    private ?bool $areCredentialsValidCombination;
+    private ?bool $areCredentialsValidCombination = null;
 
     public function __construct(
         AreCredentialsValidCombinationQuery $areCredentialsValidCombinationQuery,

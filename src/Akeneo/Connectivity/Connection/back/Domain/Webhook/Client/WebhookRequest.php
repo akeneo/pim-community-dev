@@ -61,7 +61,7 @@ class WebhookRequest
     {
         return [
             'events' => \array_map(
-                fn(WebhookEvent $apiEvent): array => [
+                fn (WebhookEvent $apiEvent): array => [
                     'action' => $apiEvent->action(),
                     'event_id' => $apiEvent->eventId(),
                     'event_datetime' => $apiEvent->eventDateTime(),
