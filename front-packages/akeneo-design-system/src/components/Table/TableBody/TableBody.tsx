@@ -48,7 +48,7 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
 
           return cloneElement(child, {
             'data-draggable-index': index,
-            canBeDraggedOver: null !== draggedElementIndex && draggedElementIndex !== index,
+            canBeDraggedOver: null !== draggedElementIndex,
             onDragStart: () => {
               setDraggedElementIndex(index);
             },

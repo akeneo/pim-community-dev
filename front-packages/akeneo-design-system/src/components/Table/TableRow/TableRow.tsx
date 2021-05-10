@@ -1,4 +1,4 @@
-import React, {ReactNode, Ref, SyntheticEvent, HTMLAttributes, forwardRef, useContext} from 'react';
+import React, {ReactNode, Ref, SyntheticEvent, HTMLAttributes, forwardRef, useContext, useState} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {Checkbox} from '../../../components';
@@ -43,9 +43,7 @@ type TableRowProps = Override<
   }
 >;
 
-const RowContainer = styled.tr<
-  {isSelected: boolean; isClickable: boolean; canBeDraggedOver: boolean} & AkeneoThemedProps
->`
+const RowContainer = styled.tr<{isSelected: boolean; isClickable: boolean; isDraggedOver: boolean} & AkeneoThemedProps>`
   ${({isSelected}) =>
     isSelected &&
     css`
@@ -62,13 +60,10 @@ const RowContainer = styled.tr<
       }
     `}
 
-  ${({canBeDraggedOver}) =>
-    canBeDraggedOver &&
+  ${({isDraggedOver}) =>
+    isDraggedOver &&
     css`
-      &:hover {
-        background: blue;
-        border-bottom: 2px solid red;
-      }
+      border-bottom: 2px solid red;
     `}
 
   &:hover > td {
@@ -106,12 +101,31 @@ const HandleContainer = styled.div`
   }
 `;
 
+const useDragOver = () => {
+  const [overingCount, setOveringCount] = useState(0);
+
+  return [
+    overingCount > 0,
+    () => {
+      setOveringCount(count => count + 1);
+    },
+    () => {
+      setOveringCount(count => count - 1);
+    },
+    () => {
+      setOveringCount(0);
+    },
+  ] as const;
+};
+
 const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
   (
     {isSelected, canBeDraggedOver, onSelectToggle, onClick, children, ...rest}: TableRowProps,
     forwardedRef: Ref<HTMLTableRowElement>
   ) => {
     const [isDragged, drag, drop] = useBooleanState();
+    const [isDraggedOver, dragEnter, dragLeave, dragEnd] = useDragOver();
+
     const {isSelectable, displayCheckbox, isOrderable} = useContext(TableContext);
     if (isSelectable && (undefined === isSelected || undefined === onSelectToggle)) {
       throw Error('A row in a selectable table should have the prop "isSelected" and "onSelectToggle"');
@@ -128,9 +142,14 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
         isClickable={undefined !== onClick}
         isSelected={!!isSelected}
         onClick={onClick}
-        canBeDraggedOver={canBeDraggedOver}
+        isDraggedOver={isDraggedOver}
         draggable={isOrderable && isDragged}
-        onDragEnd={drop}
+        onDragEnter={dragEnter}
+        onDragLeave={dragLeave}
+        onDragEnd={() => {
+          drop();
+          dragEnd();
+        }}
         {...rest}
       >
         {isSelectable && (
