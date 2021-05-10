@@ -7,7 +7,7 @@ import {
   convertToCategoryTree,
   TreeNode,
 } from '../../models';
-import {findByIdentifiers, findOneByIdentifier, update} from '../../helpers';
+import {findByIdentifiers, findLoadedDescendantsIdentifiers, findOneByIdentifier, update} from '../../helpers';
 import {useFetch, useRoute} from '@akeneo-pim-community/shared';
 
 type Move = {
@@ -149,6 +149,23 @@ const useCategoryTreeNode = (id: number) => {
     [nodes]
   );
 
+  // Remove the node and its descendants when a category is deleted,
+  const onDeleteCategory = () => {
+    if (!node || !node.parentId) {
+      return;
+    }
+
+    const parent = findOneByIdentifier(nodes, node.parentId);
+    if (!parent) {
+      // @todo what to do for this kind of unexpected error? do nothing? log error message? force reload the page?
+      return;
+    }
+
+    const nodesToRemove = [node.identifier, ...findLoadedDescendantsIdentifiers(nodes, node)];
+
+    setNodes(nodes.filter(treeNode => !nodesToRemove.includes(treeNode.identifier)));
+  };
+
   const forceReloadChildren = useCallback(() => {
     if (node) {
       setNode({...node, childrenStatus: 'to-reload'});
@@ -223,6 +240,7 @@ const useCategoryTreeNode = (id: number) => {
     forceReloadChildren,
     moveTo,
     getCategoryPosition,
+    onDeleteCategory,
     ...rest,
   };
 };
