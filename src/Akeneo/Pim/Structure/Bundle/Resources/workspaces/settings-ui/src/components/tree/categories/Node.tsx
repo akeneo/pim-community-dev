@@ -1,10 +1,11 @@
 import React, {FC} from 'react';
 import {Tree} from '../../shared';
-import {CategoryTreeModel as CategoryTreeModel, TreeNode} from '../../../models';
+import {CategoryTreeModel as CategoryTreeModel} from '../../../models';
 import {useCategoryTreeNode} from '../../../hooks';
 import {MoveTarget} from '../../providers';
 import {Button} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {useCountProductsBeforeDeleteCategory} from '../../../hooks';
 
 type Props = {
   id: number;
@@ -13,8 +14,8 @@ type Props = {
   followCategory?: (category: CategoryTreeModel) => void;
   // @todo define onCategoryMoved arguments
   onCategoryMoved?: () => void;
-  addCategory?: (parentCode: string, onCategoryAdded: () => void) => void;
-  deleteCategory?: (categoryId: number) => void; // @todo define arguments that we really need
+  addCategory?: (parentCode: string, onCreate: () => void) => void;
+  deleteCategory?: (identifier: number, label: string, numberOfProducts: number, onDelete: () => void) => void;
 };
 
 const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory, sortable = false}) => {
@@ -31,9 +32,11 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
     getCategoryPosition,
     moveTarget,
     setMoveTarget,
+    onDeleteCategory,
   } = useCategoryTreeNode(id);
 
   const translate = useTranslate();
+  const countProductsBeforeDeleteCategory = useCountProductsBeforeDeleteCategory(id);
 
   if (node === undefined) {
     return null;
@@ -167,7 +170,9 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
               size="small"
               onClick={event => {
                 event.stopPropagation();
-                deleteCategory(id);
+                countProductsBeforeDeleteCategory((nbProducts: number) =>
+                  deleteCategory(id, label, nbProducts, onDeleteCategory)
+                );
               }}
             >
               {translate('pim_common.delete')}
