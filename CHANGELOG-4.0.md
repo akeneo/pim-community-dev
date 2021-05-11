@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9838: fix project completeness selection filter on product grid's bulk edit and quick export
+
 # 4.0.108 (2021-05-10)
 
 # 4.0.107 (2021-05-03)
