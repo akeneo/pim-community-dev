@@ -5,3 +5,7 @@ table-attribute-coupling-back:
 .PHONY: table-attribute-static-back
 table-attribute-static-back:
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/Pim/TableAttribute/tests/back/phpstan.neon.dist
+
+.PHONY: table-attribute-unit-back
+table-attribute-unit-back:
+	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Pim/TableAttribute/tests/back/Specification
