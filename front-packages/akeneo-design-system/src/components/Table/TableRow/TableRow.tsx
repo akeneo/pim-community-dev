@@ -9,41 +9,6 @@ import {RowIcon} from 'icons';
 import {useBooleanState} from 'hooks';
 import {PlaceholderPosition, usePlaceholderPosition} from './usePlaceholderPosition';
 
-type TableRowProps = Override<
-  HTMLAttributes<HTMLTableRowElement>,
-  {
-    /**
-     * Content of the row
-     */
-    children?: ReactNode;
-
-    /**
-     * Function called when the user clicks on the row checkbox, required when table is selectable
-     */
-    onSelectToggle?: (isSelected: boolean) => void;
-
-    /**
-     * Define if the row is selected, required when table is selectable
-     */
-    isSelected?: boolean;
-
-    /**
-     * Function called when the user clicks on the row
-     */
-    onClick?: (event: SyntheticEvent) => void;
-  } & {
-    /**
-     * @private
-     */
-    rowIndex?: number;
-
-    /**
-     * @private
-     */
-    draggedElement?: number | null;
-  }
->;
-
 const RowContainer = styled.tr<
   {isSelected: boolean; isClickable: boolean; placeholderPosition: PlaceholderPosition} & AkeneoThemedProps
 >`
@@ -109,14 +74,48 @@ const HandleContainer = styled.div`
     cursor: grabbing;
   }
 `;
+type TableRowProps = Override<
+  HTMLAttributes<HTMLTableRowElement>,
+  {
+    /**
+     * Content of the row
+     */
+    children?: ReactNode;
+
+    /**
+     * Function called when the user clicks on the row checkbox, required when table is selectable
+     */
+    onSelectToggle?: (isSelected: boolean) => void;
+
+    /**
+     * Define if the row is selected, required when table is selectable
+     */
+    isSelected?: boolean;
+
+    /**
+     * Function called when the user clicks on the row
+     */
+    onClick?: (event: SyntheticEvent) => void;
+  } & {
+    /**
+     * @private
+     */
+    rowIndex?: number;
+
+    /**
+     * @private
+     */
+    draggedElementIndex?: number | null;
+  }
+>;
 
 const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
   (
-    {rowIndex = 0, draggedElement, isSelected, onSelectToggle, onClick, children, ...rest}: TableRowProps,
+    {rowIndex = 0, draggedElementIndex = null, isSelected, onSelectToggle, onClick, children, ...rest}: TableRowProps,
     forwardedRef: Ref<HTMLTableRowElement>
   ) => {
     const [isDragged, drag, drop] = useBooleanState();
-    const [placeholderPosition, dragEnter, dragLeave, dragEnd] = usePlaceholderPosition(rowIndex, draggedElement);
+    const [placeholderPosition, dragEnter, dragLeave, dragEnd] = usePlaceholderPosition(rowIndex, draggedElementIndex);
 
     const {isSelectable, displayCheckbox, isDragAndDroppable} = useContext(TableContext);
     if (isSelectable && (undefined === isSelected || undefined === onSelectToggle)) {
@@ -138,17 +137,9 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
         draggable={isDragAndDroppable && isDragged}
         data-draggable-index={rowIndex}
         onDragEnter={dragEnter}
-        onDragStart={(event: DragEvent) => {
-          event.dataTransfer.setData('text/plain', String(rowIndex));
-        }}
         onDragLeave={dragLeave}
         onDrop={(event: DragEvent) => {
           event.preventDefault();
-          dragEnd();
-        }}
-        onDragEnd={(event: DragEvent) => {
-          event.preventDefault();
-          drop();
           dragEnd();
         }}
         {...rest}

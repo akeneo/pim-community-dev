@@ -90,8 +90,6 @@ test('it renders table with checkbox when it is selectable and row is selected',
 
 test('it renders table with drag and drop', () => {
   const handleReorder = jest.fn();
-  const setData = jest.fn();
-  const getData = jest.fn(() => 0);
 
   render(
     <Table isDragAndDroppable={true} onReorder={handleReorder}>
@@ -117,11 +115,12 @@ test('it renders table with drag and drop', () => {
   );
 
   fireEvent.mouseDown(screen.getAllByTestId('dragAndDrop')[1]);
-  fireEvent.dragStart(screen.getAllByRole('row')[1], { dataTransfer: { setData, getData }});
-  fireEvent.dragEnter(screen.getAllByRole('row')[2], { dataTransfer: { setData, getData }});
-  fireEvent.dragLeave(screen.getAllByRole('row')[2], { dataTransfer: { setData, getData }});
-  fireEvent.dragEnter(screen.getAllByRole('row')[3], { dataTransfer: { setData, getData }});
-  fireEvent.drop(screen.getAllByRole('row')[3], { dataTransfer: { setData, getData }});
+  fireEvent.dragStart(screen.getAllByRole('row')[1]);
+  fireEvent.dragEnter(screen.getAllByRole('row')[2]);
+  fireEvent.dragLeave(screen.getAllByRole('row')[2]);
+  fireEvent.dragEnter(screen.getAllByRole('row')[3]);
+  fireEvent.drop(screen.getAllByRole('row')[3]);
+  fireEvent.dragEnd(screen.getAllByRole('row')[1]);
 
   expect(handleReorder).toHaveBeenCalledWith([1, 2, 0]);
 });

@@ -56,24 +56,6 @@ test('it calls onClick handler when user clicks on row', () => {
   expect(onClick).toBeCalled();
 });
 
-test('it register the row id in the drag event', () => {
-  const setData = jest.fn();
-  render(
-    <Table isDragAndDroppable={true} onReorder={jest.fn}>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>A value</Table.Cell>
-          <Table.Cell>Another value</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  );
-
-  fireEvent.dragStart(screen.getByRole('row'), { dataTransfer: { setData }});
-
-  expect(setData).toBeCalledWith('text/plain', '0');
-});
-
 test('it throws when onSelectToggle is not given on selectable table', () => {
   const mockConsole = jest.spyOn(console, 'error').mockImplementation();
   const cellRender = () =>

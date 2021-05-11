@@ -1,8 +1,8 @@
-import React, {ReactNode, Ref, cloneElement, Children, useContext, useState} from 'react';
+import React, {ReactNode, Ref, cloneElement, Children, useContext} from 'react';
 import {TableRowProps} from '../TableRow/TableRow';
-import {useId} from '../../../hooks';
 import {TableContext} from '../TableContext';
 import {useDrop} from './useDrop';
+import {useDragElementIndex} from 'components/Table/TableBody/useDragElementIndex';
 
 type TableBodyProps = {
   /**
@@ -13,32 +13,29 @@ type TableBodyProps = {
 
 const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
   ({children, ...rest}: TableBodyProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
-    const [draggedElement, setDraggedElement] = useState<number | null>(null);
-    const {isDragAndDroppable, onReorder} = useContext(TableContext);
-    const tableId = useId('table_');
-    const [handleDrop, handleDragOver] = useDrop(tableId, Children.count(children), onReorder);
+    const [draggedElementIndex, onDragStart, onDragEnd] = useDragElementIndex();
+    const {isDragAndDroppable} = useContext(TableContext);
 
     const decoratedChildren = isDragAndDroppable
-      ? Children.map(children, (child, index) => {
+      ? Children.map(children, (child, rowIndex) => {
           if (!React.isValidElement<TableRowProps>(child)) {
             throw Error('Children of Table.Body should be a valid react element');
           }
 
           return cloneElement(child, {
-            rowIndex: index,
-            draggedElement,
-            onDragStart: () => {
-              setDraggedElement(index);
-            },
-            onDragEnd: () => {
-              setDraggedElement(null);
-            },
+            rowIndex,
+            draggedElementIndex,
+            onDragStart: () => onDragStart(rowIndex),
+            onDragEnd,
           });
         })
       : children;
 
+    const rowCount = Children.count(children);
+    const [tableId, onDrop, onDragOver] = useDrop(rowCount, draggedElementIndex);
+
     return (
-      <tbody ref={forwardedRef} data-table-id={tableId} onDrop={handleDrop} onDragOver={handleDragOver} {...rest}>
+      <tbody ref={forwardedRef} data-table-id={tableId} onDrop={onDrop} onDragOver={onDragOver} {...rest}>
         {decoratedChildren}
       </tbody>
     );

@@ -1,4 +1,6 @@
-import {DragEvent} from 'react';
+import {useId} from '../../../hooks';
+import {DragEvent, useContext} from 'react';
+import {TableContext} from 'components/Table/TableContext';
 
 /**
  * Recursively find the draggable parent not to know which element got dropped on.
@@ -24,16 +26,14 @@ const generateReorderedIndices = (size: number, draggedIndex: number, droppedInd
   return arrayWithoutDraggedItem;
 };
 
-const useDrop = (tableId: string, tableSize: number, onReorder?: (reorderedIndexes: number[]) => void) => {
+const useDrop = (tableSize: number, draggedElementIndex: number | null) => {
+  const tableId = useId('table_');
+  const {onReorder} = useContext(TableContext);
+
   const handleDrop = (event: DragEvent<HTMLTableSectionElement>) => {
-    const draggedElementIndex = Number(event.dataTransfer.getData('text/plain'));
-    if (event.currentTarget.dataset.tableId === tableId && onReorder) {
+    if (event.currentTarget.dataset.tableId === tableId && onReorder && null !== draggedElementIndex) {
       const droppedElementIndex = getDropRow(event.target as HTMLElement);
-      const newIndices = generateReorderedIndices(
-        tableSize,
-        draggedElementIndex,
-        droppedElementIndex
-      );
+      const newIndices = generateReorderedIndices(tableSize, draggedElementIndex, droppedElementIndex);
 
       onReorder(newIndices);
 
@@ -47,7 +47,7 @@ const useDrop = (tableId: string, tableSize: number, onReorder?: (reorderedIndex
     event.preventDefault();
   };
 
-  return [handleDrop, handleDragOver] as const;
+  return [tableId, handleDrop, handleDragOver] as const;
 };
 
 export {useDrop};
