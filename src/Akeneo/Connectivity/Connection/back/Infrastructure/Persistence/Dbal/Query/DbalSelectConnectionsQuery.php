@@ -15,14 +15,16 @@ use Doctrine\DBAL\Connection as DbalConnection;
  */
 class DbalSelectConnectionsQuery implements SelectConnectionsQuery
 {
-    /** @var DbalConnection */
-    private $dbalConnection;
+    private DbalConnection $dbalConnection;
 
     public function __construct(DbalConnection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }
 
+    /**
+     * @return Connection[]
+     */
     public function execute(): array
     {
         $selectSQL = <<<SQL

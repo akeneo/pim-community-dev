@@ -344,6 +344,7 @@ pim_menu:
     user: Navigation utilisateurs
     settings:
       product: Paramètres produit
+      catalog: Paramètres du catalogue
     product: Navigation produit
     product_infos: Infos produit
   user:
@@ -356,8 +357,11 @@ pim_notification:
     quick_export: Export rapide
     mass_edit: Edition en masse
 pim_settings:
+  settings_menu: Menu des paramètres
+  catalog_settings: Paramètres du catalogue
   product_settings: Paramètres produit
   count:
+    channels: Vous avez {{ count }} canaux
     locales: Vous avez {{ count }} locales activées
     currencies: Vous avez {{ count }} devises activées
     attribute_groups: Vous avez {{ count }} groupes d'attributs

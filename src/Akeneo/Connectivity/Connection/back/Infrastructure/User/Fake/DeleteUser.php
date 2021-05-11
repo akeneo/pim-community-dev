@@ -16,6 +16,5 @@ class DeleteUser implements DeleteUserInterface
 {
     public function execute(UserId $userId): void
     {
-        return;
     }
 }

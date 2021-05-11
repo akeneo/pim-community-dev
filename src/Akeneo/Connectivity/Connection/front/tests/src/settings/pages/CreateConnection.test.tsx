@@ -56,6 +56,6 @@ describe('testing CreateConnection page', () => {
             }),
         });
 
-        expect(history.location.pathname).toBe('/connections/magento/edit');
+        expect(history.location.pathname).toBe('/connect/connection-settings/magento/edit');
     });
 });

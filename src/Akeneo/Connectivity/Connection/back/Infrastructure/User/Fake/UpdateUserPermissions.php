@@ -14,8 +14,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repositor
  */
 class UpdateUserPermissions implements UpdateUserPermissionsInterface
 {
-    /** @var InMemoryUserPermissionsRepository */
-    private $userPermissionsRepository;
+    private InMemoryUserPermissionsRepository $userPermissionsRepository;
 
     public function __construct(InMemoryUserPermissionsRepository $userPermissionsRepository)
     {

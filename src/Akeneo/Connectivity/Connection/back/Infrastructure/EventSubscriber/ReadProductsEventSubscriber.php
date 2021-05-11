@@ -25,11 +25,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class ReadProductsEventSubscriber implements EventSubscriberInterface
 {
-    /** @var ConnectionContextInterface */
-    private $connectionContext;
+    private ConnectionContextInterface $connectionContext;
 
-    /** @var UpdateDataDestinationProductEventCountHandler */
-    private $updateDataDestinationProductEventCountHandler;
+    private UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler;
 
     public function __construct(
         ConnectionContextInterface $connectionContext,

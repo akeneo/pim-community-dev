@@ -14,8 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class WrongCredentialsCombinationController
 {
-    /** @var WrongCredentialsCombinationRepository */
-    private $repository;
+    private WrongCredentialsCombinationRepository $repository;
 
     public function __construct(WrongCredentialsCombinationRepository $repository)
     {

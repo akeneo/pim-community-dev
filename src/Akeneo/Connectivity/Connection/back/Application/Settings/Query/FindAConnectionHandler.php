@@ -14,8 +14,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConne
  */
 class FindAConnectionHandler
 {
-    /** @var SelectConnectionWithCredentialsByCodeQuery */
-    private $selectConnectionWithCredentialsByCodeQuery;
+    private SelectConnectionWithCredentialsByCodeQuery $selectConnectionWithCredentialsByCodeQuery;
 
     public function __construct(SelectConnectionWithCredentialsByCodeQuery $selectConnectionWithCredentialsByCodeQuery)
     {

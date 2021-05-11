@@ -20,7 +20,7 @@ class EventSubscriptionSendApiEventRequestLog
     private bool $success;
     private float $startTime;
     private ?float $endTime = null;
-    private ?ResponseInterface $response;
+    private ?ResponseInterface $response = null;
 
     /**
      * @param array<string, int|string> $headers

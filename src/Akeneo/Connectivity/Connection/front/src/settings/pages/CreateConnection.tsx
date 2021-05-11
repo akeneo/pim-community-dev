@@ -12,7 +12,7 @@ export const CreateConnection = () => {
             subTitle={<Translate id='akeneo_connectivity.connection.connections' />}
             title={<Translate id='akeneo_connectivity.connection.create_connection.title' />}
             description={<Translate id='akeneo_connectivity.connection.create_connection.description' />}
-            onCancel={() => history.push('/connections')}
+            onCancel={() => history.push('/connect/connection-settings')}
         >
             <ConnectionCreateForm />
         </Modal>
