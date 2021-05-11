@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9860: Fix Asset collection attribute not being usable as default grid filter
+
 # 4.0.108 (2021-05-10)
 
 ## Bug fixes
