@@ -232,5 +232,13 @@ define([
 
       return formattedChoices;
     },
+
+    /**
+     * {@inheritdoc}
+     */
+    _hideCriteria: function () {
+      TextFilter.prototype._hideCriteria.apply(this, arguments);
+      this.$(this.criteriaValueSelectors.value).select2('close');
+    },
   });
 });

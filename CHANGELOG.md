@@ -64,6 +64,7 @@
 - PIM-9827: Fix HTTP 500 when using POST/PATCH with incorrect format
 - PIM-9857: Fix Microgram & Microliter conversion operations
 - PIM-9853: Make the word "product" translatable
+- PIM-9741: Fix choice filter mask not closing when selecting with keyboard
 
 ## New features
 
