@@ -45,8 +45,6 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
      */
     public function checkAuthentication(\Symfony\Component\Security\Core\User\UserInterface $user, UsernamePasswordToken $token)
     {
-        Assert::isInstanceOf($user, UserInterface::class);
-        Assert::isInstanceOf($token, UsernamePasswordToken::class);
         $this->validateAccountUnlocked($user);
         if ($this->shouldResetCounter($user)) {
             $this->resetLockingState($user);
