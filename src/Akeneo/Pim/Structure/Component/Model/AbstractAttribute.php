@@ -162,6 +162,8 @@ abstract class AbstractAttribute implements AttributeInterface
     /** @var string[] */
     protected array $guidelines = [];
 
+    protected ?array $rawTableConfiguration = null;
+
     /**
      * Constructor
      */
@@ -1091,5 +1093,10 @@ abstract class AbstractAttribute implements AttributeInterface
     public function getGuidelinesLocaleCodes(): array
     {
         return array_keys($this->guidelines);
+    }
+
+    public function setRawTableConfiguration(?array $rawTableConfiguration): void
+    {
+        $this->rawTableConfiguration = $rawTableConfiguration;
     }
 }
