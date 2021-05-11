@@ -44,7 +44,7 @@ class OroToPimGridFilterAdapter extends BaseAdapter
             $filters = $this->massActionDispatcher->getRawFilters($parameters);
 
             //It is project view from grid
-            if (isset($parameters['filters']['project_completeness'])) {
+            if (isset($parameters['filters']['project_completeness']) && !$this->containsFilters($filters, ['id', 'sku'])) {
                 $filters = array_merge(
                     $filters,
                     $this->getCompletenessForProjectFilter(
@@ -92,5 +92,15 @@ class OroToPimGridFilterAdapter extends BaseAdapter
             default:
                 return [];
         }
+    }
+
+    private function containsFilters(array $filters, array $fieldNames): bool
+    {
+        foreach ($filters as $filter) {
+            if (in_array($filter['field'], $fieldNames)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

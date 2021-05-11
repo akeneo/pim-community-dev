@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9860: Fix Asset collection attribute not being usable as default grid filter
+- PIM-9838: fix project completeness selection filter on product grid's bulk edit and quick export
 
 # 4.0.108 (2021-05-10)
 
