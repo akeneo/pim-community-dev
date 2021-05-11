@@ -30,7 +30,7 @@ test('it does not call on reorder callback when user try to drag and drop to ano
           draggableIndex: '2',
         },
       },
-    }
+    },
   };
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
