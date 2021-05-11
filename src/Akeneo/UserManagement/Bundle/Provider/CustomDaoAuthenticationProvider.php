@@ -23,8 +23,7 @@ use Webmozart\Assert\Assert;
  */
 class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
 {
-    /** @var UserManager */
-    private $userManager;
+    private UserManager $userManager;
 
     /** @var int */
     private $accountLockDuration;
@@ -43,7 +42,7 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
     /**
      * {@inheritdoc}
      */
-    public function checkAuthentication(\Symfony\Component\Security\Core\User\UserInterface $user, UsernamePasswordToken $token)
+    public function checkAuthentication(SecurityUserInterface $user, UsernamePasswordToken $token)
     {
         $this->validateAccountUnlocked($user);
         if ($this->shouldResetCounter($user)) {
