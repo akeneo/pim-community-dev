@@ -18,7 +18,7 @@ class LockedAccountException extends AuthenticationException
 {
     public function __construct(int $lockduration)
     {
-        parent::__construct("Your account has been locked for {$lockduration} seconds after too many authentication attempts.");
+        parent::__construct("Your account is locked for {$lockduration} minutes after too many authentication attempts.");
     }
     public function getMessageKey()
     {
