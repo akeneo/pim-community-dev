@@ -34,7 +34,13 @@ ONBOARDER_PIM_GEN_FILE ?=
 WITH_SUPPLIERS ?= false
 USE_ONBOARDER_CATALOG ?= false
 UPGRADE_STEP_2 ?= false
+PIM_SRC_DIR_GE ?=
+MAIN_TF_TEMPLATE ?= serenity_instance
 
+ifeq ($(TYPE),grth)
+	PIM_SRC_DIR_GE := gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/growth-edition-dev/$(IMAGE_TAG)
+	MAIN_TF_TEMPLATE := growth_instance
+endif
 
 ifeq ($(CI),true)
 	TF_INPUT_FALSE ?= -input=false
@@ -209,12 +215,13 @@ endif
 .PHONY: create-pim-main-tf
 create-pim-main-tf: $(INSTANCE_DIR)
 ifeq ($(ACTIVATE_MONITORING),true)
-	jq -s '.[0] * .[1]' $(PWD)/deployments/config/serenity_instance.tpl.tf.json  $(PWD)/deployments/config/serenity_instance_monitoring.tpl.tf.json  > $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp
+	jq -s '.[0] * .[1]' $(PWD)/deployments/config/$(MAIN_TF_TEMPLATE).tpl.tf.json  $(PWD)/deployments/config/$(MAIN_TF_TEMPLATE)_monitoring.tpl.tf.json  > $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
 else
-	cat $(PWD)/deployments/config/serenity_instance.tpl.tf.json > $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp
+	cat $(PWD)/deployments/config/$(MAIN_TF_TEMPLATE).tpl.tf.json > $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
 	@echo "-- WARNING: MONITORING is not activated on this PR. If your PR impact monitoring, please activate it."
 	@echo "To activate it show 'deactivate_monitoring' and 'ACTIVATE_MONITORING' on '.CircleCi/config.yml'"
 endif
+
 	CLUSTER_DNS_NAME=$(CLUSTER_DNS_NAME) \
 	GOOGLE_CLUSTER_ZONE=$(GOOGLE_CLUSTER_ZONE) \
 	GOOGLE_MANAGED_ZONE_DNS=$(GOOGLE_MANAGED_ZONE_DNS) \
@@ -223,6 +230,7 @@ endif
 	IMAGE_TAG=$(IMAGE_TAG) \
 	INSTANCE_NAME=$(INSTANCE_NAME) \
 	PFID=$(PFID) \
+	PIM_SRC_DIR_GE=$(PIM_SRC_DIR_GE) \
 	PIM_SRC_DIR=$(PIM_SRC_DIR) \
 	TYPE=$(TYPE) \
 	PRODUCT_REFERENCE_TYPE=$(PRODUCT_REFERENCE_TYPE) \
@@ -231,14 +239,23 @@ endif
 	MYSQL_DISK_NAME=$(PFID)-mysql \
 	MYSQL_SOURCE_SNAPSHOT=$(MYSQL_SOURCE_SNAPSHOT) \
 	MAILGUN_API_KEY=${MAILGUN_API_KEY} \
-	envsubst < $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
-	rm -rf $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp
+	envsubst < $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
+	rm -rf $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
+
 
 .PHONY: change-terraform-source-version
 change-terraform-source-version: #Doc: change terraform source to deploy infra with a custom git version
+ifeq ($(TYPE),srnt)
 	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform?ref=$(IMAGE_TAG)"
 ifeq ($(ACTIVATE_MONITORING),true)
 	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform/monitoring?ref=$(IMAGE_TAG)"
+endif
+endif
+ifeq ($(TYPE),grth)
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/growth-edition/$(IMAGE_TAG)/terraform/deployments/terraform"
+ifeq ($(ACTIVATE_MONITORING),true)
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/growth-edition/$(IMAGE_TAG)/terraform/deployments/terraform/monitoring/"
+endif
 endif
 
 .PHONY: test-prod

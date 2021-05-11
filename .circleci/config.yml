@@ -539,6 +539,52 @@ jobs:
                 command: IMAGE_TAG=$CIRCLE_SHA1 PIM_CONTEXT=deployment make delete
                 when: always
 
+  test_upgrade_growth_from_last_release:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - add_ssh_keys
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+                name: Get latest release & export variables
+                command: |
+                    GS_GROWTH=$(gsutil ls -l gs://akecld-terraform-modules/growth-edition | sort -r | head -n 1 || true)
+                    LATEST_RELEASE=$(echo ${GS_GROWTH} | cut -d/ -f5)
+                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                    echo export LATEST_RELEASE=${LATEST_RELEASE} >> $BASH_ENV
+                    echo export INSTANCE_NAME_PREFIX=pimup >> $BASH_ENV
+                    echo export INSTANCE_NAME=pimup-$(echo $CIRCLE_SHA1 | cut -c -7) >> $BASH_ENV
+                    echo export CIRCLE_SHA1=${CIRCLE_SHA1} >> $BASH_ENV
+          - run:
+                name: Deploy instance with latest release
+                command: |
+                    IMAGE_TAG=${LATEST_RELEASE} PIM_CONTEXT=deployment make create-ci-release-files
+                    IMAGE_TAG=${LATEST_RELEASE} PIM_CONTEXT=deployment make change-terraform-source-version
+                    IMAGE_TAG=${LATEST_RELEASE} PIM_CONTEXT=deployment make deploy
+          - run:
+                name: Upgrade
+                command: UPGRADE_STEP_2=true PIM_CONTEXT=deployment make deploy-serenity
+          - run:
+                name: Production tests on upgraded env
+                command: PIM_CONTEXT=deployment make test-prod
+          - run:
+                name: Check that upgrader pod ran
+                command: kubectl get pods --namespace=grth-pimup-$(echo $CIRCLE_SHA1 | cut -c -7) | grep pim-upgrader
+          - run:
+                name: Prepare infrastructure artifacts
+                command: PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
+                when: on_fail
+          - store_artifacts:
+                path: ~/artifacts/infra
+          - run:
+                name: Remove upgraded env
+                command: PIM_CONTEXT=deployment make delete
+                when: always
+
   release:
       environment:
           <<: *envVarsDeployDev
@@ -947,7 +993,7 @@ jobs:
               command: |
                   docker run --rm -v $PWD/growth_edition/last_good_ce:/app composer composer install
                   CE_COMMIT_HASH=$(docker run --rm -v $PWD/growth_edition/last_good_ce:/app composer php get_last_good_ce_revision.php)
-                  IMAGE_TAG=$(echo growth-$CE_COMMIT_HASH | cut -b 1-40)
+                  IMAGE_TAG=$(echo growth-$CE_COMMIT_HASH | cut -b 1-20)$(echo $CIRCLE_SHA1 | cut -b 1-20)
                   GROWTH_RELEASE_NAME=growth-v$(date +%Y%m%d%H%M%S)
 
                   echo "CE Commit hash used: $CE_COMMIT_HASH"
@@ -981,6 +1027,7 @@ jobs:
                     --build-arg COMPOSER_AUTH=${COMPOSER_AUTH} .
                   docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG
                   docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME
+                  BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/ gs://akecld-terraform-modules/growth-edition-dev/$IMAGE_TAG/
           - run:
               name: Persist env vars for next jobs
               command: |
@@ -1158,9 +1205,12 @@ workflows:
           - test_deploy:
                 requires:
                     - test_cronjobs_existence
-          - release_growth_edition:
+          - test_upgrade_growth_from_last_release:
                     requires:
                         - test_deploy
+          - release_growth_edition:
+                    requires:
+                        - test_upgrade_growth_from_last_release
 
   nightly_deployments:
       triggers:
