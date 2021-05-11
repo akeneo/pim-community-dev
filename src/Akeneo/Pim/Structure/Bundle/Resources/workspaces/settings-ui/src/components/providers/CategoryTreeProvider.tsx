@@ -30,7 +30,7 @@ type CategoryTreeState = {
   setHoveredCategory: (data: HoveredCategory | null) => void;
   moveTarget: MoveTarget | null;
   setMoveTarget: (data: MoveTarget | null) => void;
-  onMove: () => void;
+  resetMove: () => void;
 };
 
 const CategoryTreeContext = createContext<CategoryTreeState>({
@@ -42,7 +42,7 @@ const CategoryTreeContext = createContext<CategoryTreeState>({
   setHoveredCategory: () => {},
   moveTarget: null,
   setMoveTarget: () => {},
-  onMove: () => {},
+  resetMove: () => {},
 });
 
 type Props = {
@@ -61,7 +61,7 @@ const CategoryTreeProvider: FC<Props> = ({children, root}) => {
   const [hoveredCategory, setHoveredCategory] = useState<HoveredCategory | null>(null);
   const [moveTarget, setMoveTarget] = useState<MoveTarget | null>(null);
 
-  const onMove = () => {
+  const resetMove = () => {
     setDraggedCategory(null);
     setHoveredCategory(null);
     setMoveTarget(null);
@@ -95,7 +95,7 @@ const CategoryTreeProvider: FC<Props> = ({children, root}) => {
     setHoveredCategory,
     moveTarget,
     setMoveTarget,
-    onMove
+    resetMove
   };
   return <CategoryTreeContext.Provider value={state}>{children}</CategoryTreeContext.Provider>;
 };

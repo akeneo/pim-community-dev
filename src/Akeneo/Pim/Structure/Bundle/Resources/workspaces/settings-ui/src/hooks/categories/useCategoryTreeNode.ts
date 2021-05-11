@@ -75,6 +75,10 @@ const useCategoryTreeNode = (id: number) => {
         return;
       }
 
+      if (identifier === target.identifier) {
+        return;
+      }
+
       const movedNode = findOneByIdentifier(nodes, identifier);
       if (!movedNode) {
         console.error(`Node ${identifier} not found`);
@@ -147,9 +151,6 @@ const useCategoryTreeNode = (id: number) => {
 
       // call callback to save it in backend
       // what we have to do if the callback fails? keep original position
-
-      move.onMove();
-      setMove(null);
     },
     [nodes]
   );
@@ -242,6 +243,9 @@ const useCategoryTreeNode = (id: number) => {
 
     if (move.status === 'ready') {
       doMove(move);
+      move.onMove();
+      setMove(null);
+
       return;
     }
   }, [move]);

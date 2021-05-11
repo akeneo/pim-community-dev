@@ -33,7 +33,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
     getCategoryPosition,
     moveTarget,
     setMoveTarget,
-    onMove,
+    resetMove,
     onDeleteCategory,
   } = useCategoryTreeNode(id);
 
@@ -151,8 +151,8 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
       // so that we can handle the
       // }}
       onDrop={async () => {
-        if (draggedCategory && moveTarget && draggedCategory.identifier !== moveTarget.identifier) {
-          moveTo(draggedCategory.identifier, moveTarget, onMove);
+        if (draggedCategory && moveTarget) {
+          moveTo(draggedCategory.identifier, moveTarget, resetMove);
 
           /*
             @todo pass the moveCategory as a props in CategoryTree
@@ -167,6 +167,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
            */
         }
       }}
+      onDragEnd={() => resetMove()}
     >
       {(addCategory || deleteCategory) && (
         <Tree.Actions key={`category-actions-${id}`}>
