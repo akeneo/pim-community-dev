@@ -5,8 +5,8 @@ import {Checkbox} from '../../../components';
 import {Override} from '../../../shared';
 import {TableContext} from '../TableContext';
 import {TableCell} from '../TableCell/TableCell';
-import {RowIcon} from 'icons';
-import {useBooleanState} from 'hooks';
+import {RowIcon} from '../../../icons';
+import {useBooleanState} from '../../../hooks';
 import {PlaceholderPosition, usePlaceholderPosition} from './usePlaceholderPosition';
 
 const RowContainer = styled.tr<
@@ -96,7 +96,7 @@ type TableRowProps = Override<
      * Function called when the user clicks on the row
      */
     onClick?: (event: SyntheticEvent) => void;
-  } & {
+
     /**
      * @private
      */

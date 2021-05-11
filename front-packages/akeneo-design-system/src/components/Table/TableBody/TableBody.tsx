@@ -2,7 +2,7 @@ import React, {ReactNode, Ref, cloneElement, Children, useContext} from 'react';
 import {TableRowProps} from '../TableRow/TableRow';
 import {TableContext} from '../TableContext';
 import {useDrop} from './useDrop';
-import {useDragElementIndex} from 'components/Table/TableBody/useDragElementIndex';
+import {useDragElementIndex} from './useDragElementIndex';
 
 type TableBodyProps = {
   /**
@@ -15,7 +15,6 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
   ({children, ...rest}: TableBodyProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
     const [draggedElementIndex, onDragStart, onDragEnd] = useDragElementIndex();
     const {isDragAndDroppable} = useContext(TableContext);
-
     const decoratedChildren = isDragAndDroppable
       ? Children.map(children, (child, rowIndex) => {
           if (!React.isValidElement<TableRowProps>(child)) {

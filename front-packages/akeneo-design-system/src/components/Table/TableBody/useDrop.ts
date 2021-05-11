@@ -1,6 +1,6 @@
 import {useId} from '../../../hooks';
 import {DragEvent, useContext} from 'react';
-import {TableContext} from 'components/Table/TableContext';
+import {TableContext} from '../TableContext';
 
 /**
  * Recursively find the draggable parent not to know which element got dropped on.

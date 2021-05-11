@@ -70,7 +70,7 @@ test('it does not on reorder callback when user drag and drop', () => {
   expect(stopPropagation).toHaveBeenCalled();
 });
 
-test('it throw an error when we cannot find the target index', () => {
+test('it throws an error when it cannot find the target index', () => {
   const {result} = renderHook(() => useDrop(4, 1), {wrapper});
 
   const [tableId, handleDrop] = result.current;
