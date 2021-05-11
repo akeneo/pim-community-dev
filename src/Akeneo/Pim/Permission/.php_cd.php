@@ -181,6 +181,11 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface',
 
+        // Required to add completenesses into external API.
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithCompletenessesInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness',
+        'Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection',
+
         // TIP-998: Move Access entities to component
         'Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess',
 
