@@ -11,8 +11,7 @@ use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 
 class BusinessEventHandler implements MessageSubscriberInterface
 {
-    /** @var SendBusinessEventToWebhooksHandler */
-    private $commandHandler;
+    private SendBusinessEventToWebhooksHandler $commandHandler;
 
     public function __construct(SendBusinessEventToWebhooksHandler $commandHandler)
     {

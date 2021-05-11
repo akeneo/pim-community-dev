@@ -10,8 +10,7 @@ namespace Akeneo\Connectivity\Connection\Domain\ValueObject;
  */
 class Url
 {
-    /** @var string */
-    private $url;
+    private string $url;
 
     public function __construct(string $url)
     {

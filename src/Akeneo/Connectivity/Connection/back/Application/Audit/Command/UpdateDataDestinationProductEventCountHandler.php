@@ -15,8 +15,7 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCoun
  */
 class UpdateDataDestinationProductEventCountHandler
 {
-    /** @var EventCountRepository */
-    private $eventCountRepository;
+    private EventCountRepository $eventCountRepository;
 
     public function __construct(EventCountRepository $eventCountRepository)
     {

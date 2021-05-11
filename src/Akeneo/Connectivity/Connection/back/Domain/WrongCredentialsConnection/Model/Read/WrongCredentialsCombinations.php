@@ -12,7 +12,7 @@ namespace Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model
 class WrongCredentialsCombinations
 {
     /** @var array<string, WrongCredentialsCombination> */
-    private $wrongCombinations;
+    private array $wrongCombinations;
 
     /**
      * @param array<array{connection_code: string, users: array<string, string>}> $combinations
@@ -40,7 +40,7 @@ class WrongCredentialsCombinations
     {
         return array_reduce(
             $this->wrongCombinations,
-            function (array $normalized, WrongCredentialsCombination $wrongCombination) {
+            function (array $normalized, WrongCredentialsCombination $wrongCombination): array {
                 $normalized[$wrongCombination->connectionCode()] = $wrongCombination->normalize();
 
                 return $normalized;

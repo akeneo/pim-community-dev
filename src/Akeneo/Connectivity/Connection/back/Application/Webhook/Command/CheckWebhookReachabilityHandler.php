@@ -13,8 +13,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\DTO\UrlReachabilityStatus;
  */
 final class CheckWebhookReachabilityHandler
 {
-    /** @var UrlReachabilityCheckerInterface */
-    private $reachabilityChecker;
+    private UrlReachabilityCheckerInterface $reachabilityChecker;
 
     public function __construct(UrlReachabilityCheckerInterface $reachabilityChecker)
     {

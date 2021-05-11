@@ -15,8 +15,7 @@ use Doctrine\DBAL\Types\Types;
  */
 class DbalErrorCountRepository implements ErrorCountRepository
 {
-    /** @var DbalConnection */
-    private $dbalConnection;
+    private DbalConnection $dbalConnection;
 
     public function __construct(DbalConnection $dbalConnection)
     {

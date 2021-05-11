@@ -12,8 +12,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class EnabledWebhookRequiresAnUrl extends Constraint
 {
-    /** @var string */
-    public $message = 'akeneo_connectivity.connection.webhook.error.required';
+    public string $message = 'akeneo_connectivity.connection.webhook.error.required';
 
     public function getTargets(): string
     {

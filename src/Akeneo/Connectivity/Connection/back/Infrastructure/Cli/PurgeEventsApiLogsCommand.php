@@ -16,6 +16,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PurgeEventsApiLogsCommand extends Command
 {
+    /**
+     * @var string
+     */
     protected static $defaultName = 'akeneo:connectivity-connection:purge-events-api-logs';
 
     private PurgeEventsApiSuccessLogsQuery $purgeSuccessLogsQuery;

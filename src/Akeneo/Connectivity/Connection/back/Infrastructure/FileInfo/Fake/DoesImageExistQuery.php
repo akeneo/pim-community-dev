@@ -12,7 +12,7 @@ use Akeneo\Connectivity\Connection\Application\Settings\Service\DoesImageExistQu
  */
 class DoesImageExistQuery implements DoesImageExistQueryInterface
 {
-    private $database = [
+    private array $database = [
         'a/b/c/image.jpg',
         'c/b/a/image.jpg'
     ];

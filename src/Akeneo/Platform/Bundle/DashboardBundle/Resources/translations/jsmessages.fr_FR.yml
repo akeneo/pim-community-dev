@@ -2,7 +2,10 @@ pim_dashboard:
   title: Tableau de bord des activités
   greetings: Bonjour {{ name }} !
   welcome_sentence:
+    message2: Ravi de vous voir ici.
+    message3: Heureux de vous voir ici.
     message4: C'est bon de vous avoir avec nous.
+    message5: C'est parti !
     message6: Mettons-nous au travail.
     message8: Prêt à démarrer?
   widget:

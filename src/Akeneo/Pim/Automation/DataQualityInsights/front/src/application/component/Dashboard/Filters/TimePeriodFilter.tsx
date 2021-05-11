@@ -1,6 +1,7 @@
 import React, {FunctionComponent} from 'react';
-import {DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD} from '../../../constant';
+import {Dropdown, SwitcherButton, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD} from '../../../constant';
 
 const handleTimePeriodChange = (value: string) => {
   window.dispatchEvent(
@@ -18,54 +19,40 @@ interface TimePeriodFilterProps {
 
 const TimePeriodFilter: FunctionComponent<TimePeriodFilterProps> = ({timePeriod}) => {
   const translate = useTranslate();
+  const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
+
+  const handleItemClick = (timePeriod: string) => () => {
+    handleTimePeriodChange(timePeriod);
+    closeDropdown();
+  };
+
   return (
-    <div className="AknFilterBox-filterContainer AknDropdown">
-      <button
-        type="button"
-        className="AknFilterBox-filter AknActionButton AknActionButton--withoutBorder"
-        data-toggle="dropdown"
+    <Dropdown>
+      <SwitcherButton
+        label={translate('akeneo_data_quality_insights.dqi_dashboard.time_period.label')}
+        onClick={openDropdown}
       >
-        <span className="AknFilterBox-filterLabel">
-          {translate('akeneo_data_quality_insights.dqi_dashboard.time_period.label')}
-        </span>
-        <span className="AknActionButton-highlight">
-          <span>{translate(`akeneo_data_quality_insights.dqi_dashboard.time_period.${timePeriod}`)}</span>
-          <span className="AknActionButton-caret" />
-        </span>
-      </button>
-      <ul className="AknDropdown-menu">
-        <div className="AknDropdown-menuTitle">
-          {translate('akeneo_data_quality_insights.dqi_dashboard.time_period.daily')}
-        </div>
-        <li>
-          <a
-            className={`AknDropdown-menuLink ${timePeriod === 'daily' ? 'AknDropdown-menuLink--active' : ''}`}
-            data-label={translate('akeneo_data_quality_insights.dqi_dashboard.time_period.daily')}
-            onClick={() => handleTimePeriodChange('daily')}
-          >
-            {translate('akeneo_data_quality_insights.dqi_dashboard.time_period.daily')}
-          </a>
-        </li>
-        <li>
-          <a
-            className={`AknDropdown-menuLink ${timePeriod === 'weekly' ? 'AknDropdown-menuLink--active' : ''}`}
-            data-label={translate('akeneo_data_quality_insights.dqi_dashboard.time_period.weekly')}
-            onClick={() => handleTimePeriodChange('weekly')}
-          >
-            {translate('akeneo_data_quality_insights.dqi_dashboard.time_period.weekly')}
-          </a>
-        </li>
-        <li>
-          <a
-            className={`AknDropdown-menuLink ${timePeriod === 'monthly' ? 'AknDropdown-menuLink--active' : ''}`}
-            data-label={translate('akeneo_data_quality_insights.dqi_dashboard.time_period.monthly')}
-            onClick={() => handleTimePeriodChange('monthly')}
-          >
-            {translate('akeneo_data_quality_insights.dqi_dashboard.time_period.monthly')}
-          </a>
-        </li>
-      </ul>
-    </div>
+        {translate(`akeneo_data_quality_insights.dqi_dashboard.time_period.${timePeriod}`)}
+      </SwitcherButton>
+      {isDropdownOpen && (
+        <Dropdown.Overlay onClose={closeDropdown}>
+          <Dropdown.Header>
+            <Dropdown.Title>{translate('akeneo_data_quality_insights.dqi_dashboard.time_period.label')}</Dropdown.Title>
+          </Dropdown.Header>
+          <Dropdown.ItemCollection>
+            <Dropdown.Item onClick={handleItemClick('daily')}>
+              {translate('akeneo_data_quality_insights.dqi_dashboard.time_period.daily')}
+            </Dropdown.Item>
+            <Dropdown.Item onClick={handleItemClick('weekly')}>
+              {translate('akeneo_data_quality_insights.dqi_dashboard.time_period.weekly')}
+            </Dropdown.Item>
+            <Dropdown.Item onClick={handleItemClick('monthly')}>
+              {translate('akeneo_data_quality_insights.dqi_dashboard.time_period.monthly')}
+            </Dropdown.Item>
+          </Dropdown.ItemCollection>
+        </Dropdown.Overlay>
+      )}
+    </Dropdown>
   );
 };
 

@@ -14,9 +14,6 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Erro
  */
 interface SelectErrorCountPerConnectionQuery
 {
-    /**
-     * @return ErrorCountPerConnection
-     */
     public function execute(
         ErrorType $errorType,
         \DateTimeImmutable $fromDateTime,

@@ -21,20 +21,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class CreateConnectionHandler
 {
-    /** @var ConnectionRepository */
-    private $repository;
+    private ConnectionRepository $repository;
 
-    /** @var CreateClientInterface */
-    private $createClient;
+    private CreateClientInterface $createClient;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var CreateUserInterface */
-    private $createUser;
+    private CreateUserInterface $createUser;
 
-    /** @var FindAConnectionHandler */
-    private $findAConnectionHandler;
+    private FindAConnectionHandler $findAConnectionHandler;
 
     public function __construct(
         ValidatorInterface $validator,

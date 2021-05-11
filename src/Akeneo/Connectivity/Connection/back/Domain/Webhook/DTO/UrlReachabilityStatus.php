@@ -10,11 +10,9 @@ namespace Akeneo\Connectivity\Connection\Domain\Webhook\DTO;
  */
 class UrlReachabilityStatus
 {
-    /** @var bool */
-    private $success;
+    private bool $success;
 
-    /** @var string */
-    private $message;
+    private string $message;
 
     public function __construct(bool $success, string $message)
     {
