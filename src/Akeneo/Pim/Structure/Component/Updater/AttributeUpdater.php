@@ -145,6 +145,10 @@ class AttributeUpdater implements ObjectUpdaterInterface
             if (null !== $data && !is_scalar($data)) {
                 throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
             }
+        } elseif ('table_configuration' === $field) {
+            if (!is_array($data)) {
+                throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
+            }
         } else {
             throw UnknownPropertyException::unknownProperty($field);
         }
@@ -194,6 +198,9 @@ class AttributeUpdater implements ObjectUpdaterInterface
                         $attribute->addGuidelines($localeCode, $localeGuidelines);
                     }
                 }
+                break;
+            case 'table_configuration':
+                $attribute->setRawTableConfiguration($data);
                 break;
             default:
                 if (in_array($field, $this->properties)) {
