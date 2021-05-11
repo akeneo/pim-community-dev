@@ -17,14 +17,20 @@ use Webmozart\Assert\Assert;
 
 final class TableConfiguration
 {
-    /** @var ColumnDefinition[] */
+    /** @var array<int, ColumnDefinition> */
     private array $columnDefinitions;
 
+    /**
+     * @param array<int, ColumnDefinition> $columnDefinitions
+     */
     private function __construct(array $columnDefinitions)
     {
         $this->columnDefinitions = $columnDefinitions;
     }
 
+    /**
+     * @param array<int, ColumnDefinition> $columnDefinitions
+     */
     public static function fromColumnDefinitions(array $columnDefinitions): self
     {
         Assert::allIsInstanceOf($columnDefinitions, ColumnDefinition::class);

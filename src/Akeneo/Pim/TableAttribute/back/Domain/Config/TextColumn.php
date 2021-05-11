@@ -17,12 +17,17 @@ use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnDataType;
 use Webmozart\Assert\Assert;
 
-class TextAbstractColumn extends AbstractColumnDefinition
+class TextColumn extends AbstractColumnDefinition
 {
     private const DATATYPE = 'text';
 
     // validation for text (min, max chars)
 
+    /**
+     * @param array<string, mixed> $normalized
+     *
+     * @return self
+     */
     public static function fromNormalized(array $normalized): self
     {
         Assert::keyExists($normalized, 'code');

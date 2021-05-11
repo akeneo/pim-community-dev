@@ -21,6 +21,8 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 class AkeneoPimTableAttributeExtension extends Extension
 {
     /**
+     * @param array<string, mixed> $configs
+     *
      * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container): void

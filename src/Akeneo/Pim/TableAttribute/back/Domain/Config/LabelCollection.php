@@ -21,14 +21,22 @@ use Webmozart\Assert\Assert;
  */
 final class LabelCollection
 {
-    /** @var string[] */
+    /** @var array<string, string> */
     private array $labels;
 
+    /**
+     * @param array<string, string> $labels
+     */
     private function __construct(array $labels)
     {
         $this->labels = $labels;
     }
 
+    /**
+     * @param array<string, string> $normalizedLabels
+     *
+     * @return static
+     */
     public static function fromNormalized(array $normalizedLabels): self
     {
         Assert::allString($normalizedLabels);
@@ -38,7 +46,7 @@ final class LabelCollection
     }
 
     /**
-     * @return string[]
+     * @return array<string, string>
      */
     public function labels(): array
     {
