@@ -129,6 +129,74 @@ class GetProductsWithCompletenessesWithPermissionsSpec extends ObjectBehavior
         $this->fromConnectorProductList($connectorProductList, 'ecommerce', ['en_US', 'fr_FR'])->shouldReturn($listWithCompletenesses);
     }
 
+    public function it_applies_permission_when_adding_completenesses_to_a_connector_product_list_and_without_locale_filter(
+        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
+        GetAllViewableLocalesForUser $getAllViewableLocalesForUser,
+        TokenStorageInterface $tokenStorage,
+        TokenInterface $token
+    ): void {
+        $user = (new User())->setId(42);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
+
+        $viewableLocales = ['en_US'];
+        $getAllViewableLocalesForUser->fetchAll(42)->willReturn($viewableLocales);
+
+        $ecommerceUS = new ProductCompleteness('ecommerce', 'en_US', 10, 5);
+        $printUS = new ProductCompleteness('print', 'en_US', 10, 0);
+        $connectorProductList = new ConnectorProductList(
+            2,
+            [$this->getConnectorProduct(15), $this->getConnectorProduct(42)]
+        );
+        $listWithCompletenesses = new ConnectorProductList(
+            2,
+            [
+                $this->getConnectorProduct(15, new ProductCompletenessCollection(15, [$ecommerceUS])),
+                $this->getConnectorProduct(42, new ProductCompletenessCollection(15, [$printUS])),
+            ]
+        );
+        $getProductsWithCompletenesses
+            ->fromConnectorProductList($connectorProductList, null, ['en_US'])
+            ->shouldBeCalled()
+            ->willReturn($listWithCompletenesses);
+
+        $this->fromConnectorProductList($connectorProductList)->shouldReturn($listWithCompletenesses);
+    }
+
+    public function it_applies_permission_when_adding_completenesses_to_a_connector_product_list_but_no_locale_viewable(
+        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
+        GetAllViewableLocalesForUser $getAllViewableLocalesForUser,
+        TokenStorageInterface $tokenStorage,
+        TokenInterface $token
+    ): void {
+        $user = (new User())->setId(42);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
+
+        $viewableLocales = [];
+        $getAllViewableLocalesForUser->fetchAll(42)->willReturn($viewableLocales);
+
+        $ecommerceUS = new ProductCompleteness('ecommerce', 'en_US', 10, 5);
+        $printUS = new ProductCompleteness('print', 'en_US', 10, 0);
+        $connectorProductList = new ConnectorProductList(
+            2,
+            [$this->getConnectorProduct(15), $this->getConnectorProduct(42)]
+        );
+        $listWithCompletenesses = new ConnectorProductList(
+            2,
+            [
+                $this->getConnectorProduct(15, new ProductCompletenessCollection(15, [$ecommerceUS])),
+                $this->getConnectorProduct(42, new ProductCompletenessCollection(15, [$printUS])),
+            ]
+        );
+        $getProductsWithCompletenesses
+            ->fromConnectorProductList($connectorProductList, null, $viewableLocales)
+            ->shouldBeCalled()
+            ->willReturn($listWithCompletenesses);
+
+        $this->fromConnectorProductList($connectorProductList, null, ['en_US', 'fr_FR'])->shouldReturn($listWithCompletenesses);
+    }
+
     public function it_throws_an_exception_if_there_is_no_user_connected(TokenStorageInterface $tokenStorage): void
     {
         $tokenStorage->getToken()->willReturn(null);

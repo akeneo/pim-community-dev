@@ -48,10 +48,8 @@ class GetProductsWithCompletenessesWithPermissions implements GetProductsWithCom
 
     public function fromConnectorProductList(ConnectorProductList $connectorProductList, ?string $channel = null, array $locales = []): ConnectorProductList
     {
-        $viewableLocales = array_intersect(
-            $this->getAllViewableLocalesForUser->fetchAll($this->getUserId()),
-            $locales
-        );
+        $allViewableLocales = $this->getAllViewableLocalesForUser->fetchAll($this->getUserId());
+        $viewableLocales = empty($locales) ? $allViewableLocales : array_intersect($locales, $allViewableLocales);
 
         return $this->getProductsWithCompletenesses->fromConnectorProductList(
             $connectorProductList,
