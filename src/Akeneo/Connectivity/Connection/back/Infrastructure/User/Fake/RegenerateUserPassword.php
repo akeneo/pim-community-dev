@@ -15,8 +15,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repositor
  */
 class RegenerateUserPassword implements RegenerateUserPasswordService
 {
-    /** @var InMemoryConnectionRepository */
-    private $connectionRepository;
+    private InMemoryConnectionRepository $connectionRepository;
 
     public function __construct(InMemoryConnectionRepository $connectionRepository)
     {

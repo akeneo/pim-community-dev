@@ -13,8 +13,7 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository
  */
 class UpdateConnectionErrorCountHandler
 {
-    /** @var ErrorCountRepository */
-    private $errorCountRepository;
+    private ErrorCountRepository $errorCountRepository;
 
     public function __construct(ErrorCountRepository $errorCountRepository)
     {

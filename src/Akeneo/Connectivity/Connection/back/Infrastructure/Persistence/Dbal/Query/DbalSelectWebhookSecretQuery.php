@@ -14,8 +14,7 @@ use Doctrine\DBAL\FetchMode;
  */
 class DbalSelectWebhookSecretQuery implements SelectWebhookSecretQuery
 {
-    /** @var DbalConnection */
-    private $dbalConnection;
+    private DbalConnection $dbalConnection;
 
     public function __construct(DbalConnection $dbalConnection)
     {

@@ -11,8 +11,7 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject;
  */
 class ConnectionLabel
 {
-    /** @var string */
-    private $label;
+    private string $label;
 
     public function __construct(string $label)
     {

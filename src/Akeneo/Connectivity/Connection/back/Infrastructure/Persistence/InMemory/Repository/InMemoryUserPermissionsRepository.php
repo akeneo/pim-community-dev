@@ -6,19 +6,19 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Rep
 
 final class InMemoryUserPermissionsRepository
 {
-    private $roles = [
+    private array $roles = [
         0 => 'ROLE_USER',
         1 => 'ROLE_API'
     ];
 
-    private $groups = [
+    private array $groups = [
         2 => 'All',
         3 => 'API'
     ];
 
-    private $userRoles = [];
+    private array $userRoles = [];
 
-    private $userGroups = [];
+    private array $userGroups = [];
 
     /**
      * @throws \InvalidArgumentException

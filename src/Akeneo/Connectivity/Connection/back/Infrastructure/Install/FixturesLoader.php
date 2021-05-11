@@ -21,18 +21,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class FixturesLoader
 {
-    private $dbalConnection;
-    private $fileStorer;
-    private $validator;
-    private $userFactory;
-    private $userUpdater;
-    private $userSaver;
-    private $userRoleFactory;
-    private $userRoleUpdater;
-    private $userRoleSaver;
-    private $userGroupFactory;
-    private $userGroupUpdater;
-    private $userGroupSaver;
+    private DbalConnection $dbalConnection;
+    private FileStorerInterface $fileStorer;
+    private ValidatorInterface $validator;
+    private SimpleFactoryInterface $userFactory;
+    private ObjectUpdaterInterface $userUpdater;
+    private SaverInterface $userSaver;
+    private SimpleFactoryInterface $userRoleFactory;
+    private ObjectUpdaterInterface $userRoleUpdater;
+    private SaverInterface $userRoleSaver;
+    private SimpleFactoryInterface $userGroupFactory;
+    private ObjectUpdaterInterface $userGroupUpdater;
+    private SaverInterface $userGroupSaver;
 
     public function __construct(
         DbalConnection $dbalConnection,

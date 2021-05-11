@@ -20,17 +20,13 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
  */
 final class UpdateUserPermissions implements UpdateUserPermissionsInterface
 {
-    /** @var UserManager */
-    private $userManager;
+    private UserManager $userManager;
 
-    /** @var RoleRepository */
-    private $roleRepository;
+    private RoleRepository $roleRepository;
 
-    /** @var GroupRepository */
-    private $groupRepository;
+    private GroupRepository $groupRepository;
 
-    /** @var ObjectUpdaterInterface */
-    private $userUpdater;
+    private ObjectUpdaterInterface $userUpdater;
 
     public function __construct(
         UserManager $userManager,

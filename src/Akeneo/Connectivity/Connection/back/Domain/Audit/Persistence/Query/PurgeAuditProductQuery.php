@@ -14,8 +14,6 @@ interface PurgeAuditProductQuery
      * Returns the number of rows deleted.
      *
      * @param \DateTimeImmutable $before Delete rows that have been saved strictly before this datetime.
-     *
-     * @return int
      */
     public function execute(\DateTimeImmutable $before): int;
 }

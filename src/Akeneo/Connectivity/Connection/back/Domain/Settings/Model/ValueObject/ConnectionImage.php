@@ -11,8 +11,7 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject;
  */
 class ConnectionImage
 {
-    /** @var string */
-    private $filePath;
+    private string $filePath;
 
     public function __construct(string $filePath)
     {

@@ -61,17 +61,15 @@ class WebhookRequest
     {
         return [
             'events' => \array_map(
-                function (WebhookEvent $apiEvent) {
-                    return [
-                        'action' => $apiEvent->action(),
-                        'event_id' => $apiEvent->eventId(),
-                        'event_datetime' => $apiEvent->eventDateTime(),
-                        'author' => $apiEvent->author()->name(),
-                        'author_type' => $apiEvent->author()->type(),
-                        'pim_source' => $apiEvent->pimSource(),
-                        'data' => $apiEvent->data(),
-                    ];
-                },
+                fn (WebhookEvent $apiEvent): array => [
+                    'action' => $apiEvent->action(),
+                    'event_id' => $apiEvent->eventId(),
+                    'event_datetime' => $apiEvent->eventDateTime(),
+                    'author' => $apiEvent->author()->name(),
+                    'author_type' => $apiEvent->author()->type(),
+                    'pim_source' => $apiEvent->pimSource(),
+                    'data' => $apiEvent->data(),
+                ],
                 $this->apiEvents
             ),
         ];
