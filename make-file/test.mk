@@ -38,10 +38,11 @@ check-sf-services: #Doc: check Sf services
 lint-back: #Doc: launch all PHP linter tests
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
-	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim --level 2
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Automation --level 3
+	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Enrichment --level 2
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Permission --level 3
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Structure --level 8
+	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/WorkOrganization --level 2
 	PIM_CONTEXT=data-quality-insights $(MAKE) data-quality-insights-lint-back data-quality-insights-phpstan
 	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-lint-back
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-lint-back
