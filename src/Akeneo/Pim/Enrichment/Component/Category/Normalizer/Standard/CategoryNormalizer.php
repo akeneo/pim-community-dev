@@ -17,12 +17,15 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
     /** @var TranslationNormalizer */
     protected $translationNormalizer;
 
+    protected NormalizerInterface $normalizer;
+
     /**
      * @param TranslationNormalizer $translationNormalizer
      */
-    public function __construct(TranslationNormalizer $translationNormalizer)
+    public function __construct(TranslationNormalizer $translationNormalizer, NormalizerInterface $normalizer)
     {
         $this->translationNormalizer = $translationNormalizer;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -31,9 +34,10 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
     public function normalize($category, $format = null, array $context = [])
     {
         return [
-            'code'   => $category->getCode(),
+            'code' => $category->getCode(),
             'parent' => null !== $category->getParent() ? $category->getParent()->getCode() : null,
             'labels' => $this->translationNormalizer->normalize($category, 'standard', $context),
+            'updated' => $this->normalizer->normalize($category->getUpdated(), $format),
         ];
     }
 
