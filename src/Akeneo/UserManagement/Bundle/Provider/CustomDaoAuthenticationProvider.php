@@ -25,11 +25,9 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
 {
     private UserManager $userManager;
 
-    /** @var int */
-    private $accountLockDuration;
+    private int $accountLockDuration;
 
-    /** @var int */
-    private $accountMaxConsecutiveFailure;
+    private int $accountMaxConsecutiveFailure;
 
     public function __construct(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, string $providerKey, EncoderFactoryInterface $encoderFactory, UserManager $userManager, int $accountLockDuration, int $accountMaxConsecutiveFailure, bool $hideUserNotFoundExceptions = true)
     {
