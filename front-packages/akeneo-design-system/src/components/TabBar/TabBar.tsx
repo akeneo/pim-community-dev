@@ -5,7 +5,7 @@ import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 const TabBarContainer = styled.div`
   display: flex;
   gap: 10px;
-  margin: 0 40px 20px;
+  margin-bottom: 20px;
   height: 44px;
   border-bottom: 1px solid ${getColor('grey', 80)};
 `;
