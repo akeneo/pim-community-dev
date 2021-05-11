@@ -30,6 +30,7 @@ type CategoryTreeState = {
   setHoveredCategory: (data: HoveredCategory | null) => void;
   moveTarget: MoveTarget | null;
   setMoveTarget: (data: MoveTarget | null) => void;
+  onMove: () => void;
 };
 
 const CategoryTreeContext = createContext<CategoryTreeState>({
@@ -41,6 +42,7 @@ const CategoryTreeContext = createContext<CategoryTreeState>({
   setHoveredCategory: () => {},
   moveTarget: null,
   setMoveTarget: () => {},
+  onMove: () => {},
 });
 
 type Props = {
@@ -58,6 +60,12 @@ const CategoryTreeProvider: FC<Props> = ({children, root}) => {
   const [draggedCategory, setDraggedCategory] = useState<DraggedCategory | null>(null);
   const [hoveredCategory, setHoveredCategory] = useState<HoveredCategory | null>(null);
   const [moveTarget, setMoveTarget] = useState<MoveTarget | null>(null);
+
+  const onMove = () => {
+    setDraggedCategory(null);
+    setHoveredCategory(null);
+    setMoveTarget(null);
+  };
 
   useEffect(() => {
     if (draggedCategory === null || draggedCategory.status !== 'pending') {
@@ -87,6 +95,7 @@ const CategoryTreeProvider: FC<Props> = ({children, root}) => {
     setHoveredCategory,
     moveTarget,
     setMoveTarget,
+    onMove
   };
   return <CategoryTreeContext.Provider value={state}>{children}</CategoryTreeContext.Provider>;
 };

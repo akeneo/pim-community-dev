@@ -7,7 +7,6 @@ import {Button} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useCountProductsBeforeDeleteCategory} from '../../../hooks';
 import {NodePreview} from './NodePreview';
-import {move} from 'formik';
 
 type Props = {
   id: number;
@@ -34,6 +33,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
     getCategoryPosition,
     moveTarget,
     setMoveTarget,
+    onMove,
     onDeleteCategory,
   } = useCategoryTreeNode(id);
 
@@ -152,7 +152,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
       // }}
       onDrop={async () => {
         if (draggedCategory && moveTarget && draggedCategory.identifier !== moveTarget.identifier) {
-          moveTo(draggedCategory.identifier, moveTarget);
+          moveTo(draggedCategory.identifier, moveTarget, onMove);
 
           /*
             @todo pass the moveCategory as a props in CategoryTree
@@ -165,17 +165,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
             // @todo what we have to do if the callback fails? keep original position
             console.log(moveSuccess);
            */
-
-          // @todo: why onDragEnd is not fired when moving "in"?
-          setDraggedCategory(null);
-          setHoveredCategory(null);
-          setMoveTarget(null);
         }
-      }}
-      onDragEnd={() => {
-        setDraggedCategory(null);
-        setHoveredCategory(null);
-        setMoveTarget(null);
       }}
     >
       {(addCategory || deleteCategory) && (

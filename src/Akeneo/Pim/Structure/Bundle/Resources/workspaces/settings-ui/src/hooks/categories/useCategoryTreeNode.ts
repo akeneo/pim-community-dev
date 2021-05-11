@@ -14,6 +14,7 @@ type Move = {
   identifier: number;
   target: MoveTarget;
   status: 'pending' | 'ready';
+  onMove: () => void;
 };
 
 const useCategoryTreeNode = (id: number) => {
@@ -43,7 +44,7 @@ const useCategoryTreeNode = (id: number) => {
   };
 
   const moveTo = useCallback(
-    (movedCategoryId: number, target: MoveTarget) => {
+    (movedCategoryId: number, target: MoveTarget, onMove: () => void) => {
       const targetParentNode = findOneByIdentifier(
         nodes,
         target.position === 'in' ? target.identifier : target.parentId
@@ -61,6 +62,7 @@ const useCategoryTreeNode = (id: number) => {
           target.position === 'in' && targetParentNode.type === 'node' && targetParentNode.childrenStatus === 'idle'
             ? 'pending'
             : 'ready',
+        onMove,
       });
     },
     [nodes]
@@ -146,6 +148,7 @@ const useCategoryTreeNode = (id: number) => {
       // call callback to save it in backend
       // what we have to do if the callback fails? keep original position
 
+      move.onMove();
       setMove(null);
     },
     [nodes]

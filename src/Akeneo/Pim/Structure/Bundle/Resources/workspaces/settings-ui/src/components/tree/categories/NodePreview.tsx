@@ -7,7 +7,7 @@ type Props = {
 };
 
 const NodePreview: FC<Props> = ({id}) => {
-  const {node, draggedCategory, moveTarget, moveTo} = useCategoryTreeNode(id);
+  const {node, draggedCategory, moveTarget, moveTo, onMove} = useCategoryTreeNode(id);
 
   if (node === undefined) {
     return null;
@@ -21,8 +21,7 @@ const NodePreview: FC<Props> = ({id}) => {
       selected={true}
       onDrop={() => {
         if (draggedCategory && moveTarget && draggedCategory.identifier !== moveTarget.identifier) {
-          moveTo(draggedCategory.identifier, moveTarget);
-          // @todo persist in backend
+          moveTo(draggedCategory.identifier, moveTarget, onMove);
         }
       }}
     />
