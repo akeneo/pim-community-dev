@@ -7,7 +7,7 @@ type Props = {
 };
 
 const NodePreview: FC<Props> = ({id}) => {
-  const {node, draggedCategory, moveTarget, moveTo, onMove} = useCategoryTreeNode(id);
+  const {node, draggedCategory, moveTarget, moveTo, resetMove} = useCategoryTreeNode(id);
 
   if (node === undefined) {
     return null;
@@ -20,8 +20,8 @@ const NodePreview: FC<Props> = ({id}) => {
       isLeaf={node.type === 'leaf'}
       selected={true}
       onDrop={() => {
-        if (draggedCategory && moveTarget && draggedCategory.identifier !== moveTarget.identifier) {
-          moveTo(draggedCategory.identifier, moveTarget, onMove);
+        if (draggedCategory && moveTarget) {
+          moveTo(draggedCategory.identifier, moveTarget, resetMove);
         }
       }}
     />
