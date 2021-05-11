@@ -153,18 +153,6 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
       onDrop={async () => {
         if (draggedCategory && moveTarget) {
           moveTo(draggedCategory.identifier, moveTarget, resetMove);
-
-          /*
-            @todo pass the moveCategory as a props in CategoryTree
-            const moveSuccess = moveCategory({
-              identifier: draggedCategory.identifier,
-              parentId: moveTarget.parentId,
-              previousCategoryId: node.identifier,
-            });
-
-            // @todo what we have to do if the callback fails? keep original position
-            console.log(moveSuccess);
-           */
         }
       }}
       onDragEnd={() => resetMove()}
