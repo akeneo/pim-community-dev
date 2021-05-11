@@ -16,8 +16,7 @@ use Doctrine\DBAL\Types\Types;
  */
 class DbalEventCountRepository implements EventCountRepository
 {
-    /** @var DbalConnection */
-    private $dbalConnection;
+    private DbalConnection $dbalConnection;
 
     public function __construct(DbalConnection $dbalConnection)
     {

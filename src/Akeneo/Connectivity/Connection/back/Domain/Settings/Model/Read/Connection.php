@@ -11,20 +11,15 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\Read;
  */
 class Connection
 {
-    /** @var string */
-    private $code;
+    private string $code;
 
-    /** @var string */
-    private $label;
+    private string $label;
 
-    /** @var string */
-    private $flowType;
+    private string $flowType;
 
-    /** @var string|null */
-    private $image;
+    private ?string $image;
 
-    /** @var boolean */
-    private $auditable;
+    private bool $auditable;
 
     public function __construct(
         string $code,

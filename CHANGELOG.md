@@ -61,7 +61,9 @@
 - PIM-9833: Fix null pointer exception on Product::getVariationLevel (CE contribution)
 - PIM-9826: Display the system attribute filters with the UI locale on the user account settings
 - PIM-9834: Fix MySQL error when trying to import new attribute options to attributes with a lot of options already
+- PIM-9850: Fix broken section title in DQI dashboard
 - PIM-9827: Fix HTTP 500 when using POST/PATCH with incorrect format
+- PIM-9857: Fix Microgram & Microliter conversion operations
 
 ## New features
 

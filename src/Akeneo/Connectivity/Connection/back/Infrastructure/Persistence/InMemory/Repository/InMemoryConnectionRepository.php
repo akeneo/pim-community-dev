@@ -14,7 +14,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\Connec
  */
 class InMemoryConnectionRepository implements ConnectionRepository
 {
-    public $dataRows = [];
+    public array $dataRows = [];
 
     public function create(Connection $connection): void
     {

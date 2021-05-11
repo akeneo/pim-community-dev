@@ -10,14 +10,11 @@ namespace Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Read;
  */
 final class BusinessError
 {
-    /** @var string */
-    private $connectionCode;
+    private string $connectionCode;
 
-    /** @var \DateTimeImmutable */
-    private $dateTime;
+    private \DateTimeImmutable $dateTime;
 
-    /** @var string */
-    private $content;
+    private string $content;
 
     public function __construct(string $connectionCode, \DateTimeImmutable $dateTime, string $content)
     {
@@ -38,7 +35,7 @@ final class BusinessError
         return [
             'connection_code' => $this->connectionCode,
             'date_time' => $this->dateTime->format(\DateTimeInterface::ATOM),
-            'content' => json_decode($this->content, true)
+            'content' => json_decode($this->content, true, 512, JSON_THROW_ON_ERROR)
         ];
     }
 }

@@ -23,20 +23,15 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class WebhookController
 {
-    /** @var GetAConnectionWebhookHandler */
-    private $getAConnectionWebhookHandler;
+    private GetAConnectionWebhookHandler $getAConnectionWebhookHandler;
 
-    /** @var CheckWebhookReachabilityHandler */
-    private $checkWebhookReachabilityHandler;
+    private CheckWebhookReachabilityHandler $checkWebhookReachabilityHandler;
 
-    /** @var UpdateWebhookHandler */
-    private $updateConnectionWebhookHandler;
+    private UpdateWebhookHandler $updateConnectionWebhookHandler;
 
-    /** @var SecurityFacade */
-    private $securityFacade;
+    private SecurityFacade $securityFacade;
 
-    /** @var GenerateWebhookSecretHandler */
-    private $generateWebhookSecretHandler;
+    private GenerateWebhookSecretHandler $generateWebhookSecretHandler;
 
     public function __construct(
         SecurityFacade $securityFacade,

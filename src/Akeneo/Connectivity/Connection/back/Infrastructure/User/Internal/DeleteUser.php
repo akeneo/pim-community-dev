@@ -16,11 +16,9 @@ use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
  */
 class DeleteUser implements DeleteUserInterface
 {
-    /** @var UserRepositoryInterface*/
-    private $repository;
+    private UserRepositoryInterface $repository;
 
-    /** @var RemoverInterface*/
-    private $remover;
+    private RemoverInterface $remover;
 
     public function __construct(UserRepositoryInterface $repository, RemoverInterface $remover)
     {

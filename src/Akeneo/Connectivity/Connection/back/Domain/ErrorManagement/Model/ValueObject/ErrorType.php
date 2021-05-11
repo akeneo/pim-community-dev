@@ -12,8 +12,7 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
  */
 class ErrorType
 {
-    /** @var string */
-    private $type;
+    private string $type;
 
     public function __construct(string $type)
     {

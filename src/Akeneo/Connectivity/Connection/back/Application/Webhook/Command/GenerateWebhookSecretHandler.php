@@ -14,11 +14,9 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SaveWebhookS
  */
 class GenerateWebhookSecretHandler
 {
-    /** @var GenerateSecretInterface */
-    private $generateSecret;
+    private GenerateSecretInterface $generateSecret;
 
-    /** @var SaveWebhookSecretQuery */
-    private $saveQuery;
+    private SaveWebhookSecretQuery $saveQuery;
 
     public function __construct(GenerateSecretInterface $generateSecret, SaveWebhookSecretQuery $saveQuery)
     {

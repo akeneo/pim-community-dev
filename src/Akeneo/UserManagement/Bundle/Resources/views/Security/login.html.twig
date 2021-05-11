@@ -22,16 +22,16 @@
     <form action="{{ path(action_route) }}" method="post" class="Form form-signin">
         <div class="InputGroup">
             <div class="InputBlock">
-                <label class="InputLabel" for="prependedInput">{{ 'pim_user.user.login.username_or_email'|trans }}</label>
+                <label class="InputLabel" for="username_input">{{ 'pim_user.user.login.username_or_email'|trans }}</label>
                 <div class="InputContainer">
-                    <input class="InputText" type="text" id="prependedInput" autofocus="autofocus" name="_username"
+                    <input class="InputText" type="text" id="username_input" autofocus="autofocus" name="_username"
                            value="{{ last_username }}" required="required" size="1"/>
                 </div>
             </div>
             <div class="InputBlock">
-                <label class="InputLabel" for="prependedInput2">{{ 'pim_user.user.fields.password'|trans }}</label>
+                <label class="InputLabel" for="password_input">{{ 'pim_user.user.fields.password'|trans }}</label>
                 <div class="InputContainer">
-                    <input class="InputText" type="password" id="prependedInput2" name="_password" required="required"
+                    <input class="InputText" type="password" id="password_input" name="_password" required="required"
                            autocomplete="off" size="1"/>
                 </div>
             </div>
@@ -66,8 +66,8 @@
     {{ parent() }}
     <script type="text/javascript" nonce="{{ js_nonce() }}">
       (function () {
-        const username = document.getElementById('prependedInput');
-        const password = document.getElementById('prependedInput2');
+        const username = document.getElementById('username_input');
+        const password = document.getElementById('password_input');
         const submit = document.getElementById('_submit');
         const form = document.querySelector('form.Form');
 

@@ -11,13 +11,9 @@ namespace Akeneo\Connectivity\Connection\Domain\Audit\Model\Read;
  */
 final class ErrorCount
 {
-    /** @var string */
-    private $connectionCode;
+    private string $connectionCode;
 
-    /**
-     * @var int
-     */
-    private $count;
+    private int $count;
 
     public function __construct(string $connectionCode, int $count)
     {

@@ -27,52 +27,67 @@ akeneo_connectivity_connection_events_api_debug_rest:
     name_prefix: akeneo_connectivity_connection_events_api_debug_rest_
     prefix: /rest/events-api-debug
 
+akeneo_connectivity_connection_marketplace_url_rest_get:
+    path: '/rest/marketplace-url'
+    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.marketplace_url:get }
+    methods: [GET]
+
 # Frontend
+
+## Marketplace
+akeneo_connectivity_connection_connect_marketplace:
+  path: '/connect/marketplace'
 
 ## Error Management
 akeneo_connectivity_connection_error_management_dashboard:
-   path: '/connection/dashboard/business-errors'
+   path: '/connect/data-flows/business-errors'
 
 akeneo_connectivity_connection_error_management_connection_monitoring:
-   path: '/connections/{code}/monitoring'
+   path: '/connect/connection-settings/{code}/monitoring'
    requirements:
         code: '[a-zA-Z0-9_]+'
 
 ## Audit
 akeneo_connectivity_connection_audit_index:
-    path: '/connection/dashboard'
+    path: '/connect/data-flows'
 
 akeneo_connectivity_connection_audit_any:
-    path: '/connection/dashboard/{any}'
+    path: '/connect/data-flows/{any}'
     requirements:
         any: .*
 
+akeneo_connectivity_connection_redirect_audit:
+  path: '/connection/dashboard'
+
 ## Webhook
 akeneo_connectivity_connection_webhook_regenerate_secret:
-    path: '/connections/{code}/event-subscription/regenerate-secret'
+    path: '/connect/connection-settings/{code}/event-subscription/regenerate-secret'
     requirements:
         code: '[a-zA-Z0-9_]+'
 
 akeneo_connectivity_connection_webhook_edit:
-    path: '/connections/{code}/event-subscription'
+    path: '/connect/connection-settings/{code}/event-subscription'
     requirements:
         code: '[a-zA-Z0-9_]+'
 
 akeneo_connectivity_connection_webhook_event_logs:
-    path: '/connections/{code}/event-logs'
+    path: '/connect/connection-settings/{code}/event-logs'
     requirements:
         code: '[a-zA-Z0-9_]+'
 
 ## Settings
+akeneo_connectivity_connection_settings_redirect:
+  path: '/connections'
+
 akeneo_connectivity_connection_settings_index:
-    path: '/connections'
+    path: '/connect/connection-settings'
 
 akeneo_connectivity_connection_settings_edit:
-    path: '/connections/{code}/edit'
+    path: '/connect/connection-settings/{code}/edit'
     requirements:
         code: '[a-zA-Z0-9_]+'
 
 akeneo_connectivity_connection_settings_any:
-    path: '/connections/{any}'
+    path: '/connect/connection-settings/{any}'
     requirements:
         any: .*

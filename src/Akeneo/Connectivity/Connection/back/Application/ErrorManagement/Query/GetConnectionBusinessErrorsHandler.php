@@ -14,8 +14,7 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Query\Sele
  */
 class GetConnectionBusinessErrorsHandler
 {
-    /** @var SelectLastConnectionBusinessErrorsQuery */
-    private $selectLastConnectionBusinessErrorsQuery;
+    private SelectLastConnectionBusinessErrorsQuery $selectLastConnectionBusinessErrorsQuery;
 
     public function __construct(SelectLastConnectionBusinessErrorsQuery $selectLastConnectionBusinessErrorsQuery)
     {
