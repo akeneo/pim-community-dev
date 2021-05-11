@@ -11,7 +11,7 @@ const composeEnhancers = composeWithDevTools({
   name: 'Akeneo PIM / Attribute edit form / attribute options / Store',
 });
 
-export const createStoreWithInitialState = (initialState = {}) =>
+export const createStoreWithInitialState = (initialState: any = {}) =>
   createStore(
     combineReducers({
       attributeOptions: attributeOptionsReducer,
