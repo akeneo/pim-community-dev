@@ -46,6 +46,7 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
     public function checkAuthentication(\Symfony\Component\Security\Core\User\UserInterface $user, UsernamePasswordToken $token)
     {
         Assert::isInstanceOf($user, UserInterface::class);
+        Assert::isInstanceOf($token, UsernamePasswordToken::class);
         $this->validateAccountUnlocked($user);
         if ($this->shouldResetCounter($user)) {
             $this->resetLockingState($user);
@@ -94,7 +95,7 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
 
     private function isWithinLockTimePeriod(UserInterface $user): bool
     {
-        return ((new \DateTime())->modify("-{$this->accountLockDuration} second") <= $user->getAuthenticationFailureResetDate());
+        return ((new \DateTime())->modify("-{$this->accountLockDuration} minute") <= $user->getAuthenticationFailureResetDate());
     }
 
     private function isCounterReset(UserInterface $user): bool
