@@ -977,8 +977,10 @@ jobs:
               command: |
                   DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --target prod \
                     --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG \
+                    --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME \
                     --build-arg COMPOSER_AUTH=${COMPOSER_AUTH} .
                   docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG
+                  docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME
           - run:
               name: Persist env vars for next jobs
               command: |
