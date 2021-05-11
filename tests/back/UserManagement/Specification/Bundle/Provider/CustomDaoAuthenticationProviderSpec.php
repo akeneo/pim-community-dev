@@ -21,13 +21,15 @@ use Webmozart\Assert\Assert;
 
 class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
 {
-    const ACCOUNT_LOCK_DURATION = 120;
+    const ACCOUNT_LOCK_DURATION = 2;
     const ALLOWED_FAILED_ATTEMPTS = 10;
     const PROVIDER_KEY = "providerKey";
+    const USERNAME = "username";
 
     public function let(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, EncoderFactoryInterface $encoderFactory, UserManager $userManager)
     {
         $this->beConstructedWith($userProvider, $userChecker, self::PROVIDER_KEY, $encoderFactory, $userManager, self::ACCOUNT_LOCK_DURATION, self::ALLOWED_FAILED_ATTEMPTS, false);
+
     }
 
     public function it_is_initializable()
@@ -35,107 +37,147 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
         $this->shouldHaveType(CustomDaoAuthenticationProvider::class);
     }
 
-    public function it_can_authenticate_when_counter_is_reset(UserManager $userManager)
+    public function it_can_authenticate_when_counter_is_reset(UserManager $userManager, UserInterface $user, UsernamePasswordToken $usernamePasswordToken)
     {
-        $this->authenticate($this
-            ->initTokenInterface(0, null));
+        $this->it_initUser($user, 0, null);
+        $this->it_initUserNamePasswordTokenWithUser($usernamePasswordToken, $user);
+
+        $this->authenticate($usernamePasswordToken);
+
         $userManager->updateUser()->shouldNotHaveBeenCalled();
     }
 
-    public function it_can_authenticate_under_max_limit_counter(UserManager $userManager)
+    public function it_can_authenticate_under_max_limit_counter(UserManager $userManager, UserInterface $user, UsernamePasswordToken $usernamePasswordToken)
     {
-        $usernamePasswordToken = $this->initTokenInterface(
+        $this->it_initUser(
+            $user,
             self::ALLOWED_FAILED_ATTEMPTS - 1,
             $this->initialFailedAttemptDateBackFromNow(1)
         );
 
+        $this->it_initUserNamePasswordTokenWithUser($usernamePasswordToken, $user);
+
         $this->authenticate($usernamePasswordToken);
 
-        $this->assertCounterIsReset($usernamePasswordToken, $userManager);
+        $this->it_shouldResetlockState($user, $userManager);
     }
 
-    public function it_rejects_authentication_when_limit_is_reached(UserManager $userManager)
+    public function it_rejects_authentication_when_limit_is_reached(UserManager $userManager, UserInterface $user, UsernamePasswordToken $usernamePasswordToken)
     {
-        $usernamePasswordToken = $this->initTokenInterface(
-            self::ALLOWED_FAILED_ATTEMPTS,
-            self::initialFailedAttemptDateBackFromNow(self::ACCOUNT_LOCK_DURATION - 1)
-        );
-        $user = $usernamePasswordToken->getUser();
+        $this->it_initUser($user, self::ALLOWED_FAILED_ATTEMPTS, $this->initialFailedAttemptDateBackFromNow(self::ACCOUNT_LOCK_DURATION - 1));
+        $this->it_initUserNamePasswordTokenWithUser($usernamePasswordToken, $user);
 
         $this->shouldThrow(new LockedAccountException(self::ACCOUNT_LOCK_DURATION))
             ->duringAuthenticate($usernamePasswordToken);
-
-        $userManager->updateUser()->shouldNotHaveBeenCalled();
+        $this->it_shouldNotChangeState($userManager);
     }
 
-    public function it_increase_failed_attempts_counter(UserManager $userManager, UserProviderInterface $userProvider, EncoderFactoryInterface $encoderFactory, PasswordEncoderInterface $passwordEncoder)
+    public function it_increase_failed_attempts_counter(EncoderFactoryInterface $encoderFactory, UserManager $userManager, UserProviderInterface $userProvider, PasswordEncoderInterface $passwordEncoder, UserInterface $user, UsernamePasswordToken $usernamePasswordToken)
     {
-        $user = $this->initUser(
+        $this->it_initUser(
+            $user,
             self::ALLOWED_FAILED_ATTEMPTS - 1,
-            self::initialFailedAttemptDateBackFromNow(self::ACCOUNT_LOCK_DURATION - 1)
+            $this->initialFailedAttemptDateBackFromNow(self::ACCOUNT_LOCK_DURATION - 1)
         );
-        $usernamePasswordToken = $this->initializeMockForBadPassword("username", $encoderFactory, $passwordEncoder, $userProvider, $user);
+
+        $this->it_initUsernamePasswordToken($usernamePasswordToken);
+        $userProvider->loadUserByUsername(self::USERNAME)->willReturn($user);
+        $passwordEncoder->isPasswordValid(Argument::any(), Argument::any(), Argument::any())->willReturn(false);
+        $encoderFactory->getEncoder(Argument::any())->willReturn($passwordEncoder);
 
         $this->shouldThrow(BadCredentialsException::class)
             ->duringAuthenticate($usernamePasswordToken);
 
-        $this->checkLockStateUpdated($userManager, $user, self::ALLOWED_FAILED_ATTEMPTS);
+        $this->it_checkLockStateUpdated($userManager, $user, self::ALLOWED_FAILED_ATTEMPTS);
     }
 
-    public function it_initialize_failed_attempts_after_reset(UserManager $userManager, UserProviderInterface $userProvider, EncoderFactoryInterface $encoderFactory, PasswordEncoderInterface $passwordEncoder)
+    public function it_initialize_failed_attempts_after_reset(UserManager $userManager, UserProviderInterface $userProvider, EncoderFactoryInterface $encoderFactory, PasswordEncoderInterface $passwordEncoder, UserInterface $user, UsernamePasswordToken $usernamePasswordToken)
     {
-        $user = $this->initUser(
+        $this->it_initUser(
+            $user,
             self::ALLOWED_FAILED_ATTEMPTS - 1,
-            self::initialFailedAttemptDateBackFromNow(self::ACCOUNT_LOCK_DURATION - 1)
+            self::initialFailedAttemptDateBackFromNow(self::ACCOUNT_LOCK_DURATION + 1)
         );
-        $usernamePasswordToken = $this->initializeMockForBadPassword("username", $encoderFactory, $passwordEncoder, $userProvider, $user);
+        $user->getConsecutiveAuthenticationFailureCounter()->willReturn(0);
+        $this->it_initUsernamePasswordToken($usernamePasswordToken);
+        $userProvider->loadUserByUsername(self::USERNAME)->willReturn($user);
+        $encoderFactory->getEncoder(Argument::any())->willReturn($passwordEncoder);
 
         $this->shouldThrow(BadCredentialsException::class)
             ->duringAuthenticate($usernamePasswordToken);
-    }
 
-    protected function initTokenInterface(int $consecutiveAuthenticationFailures, \DateTime $dateInitialLoginFailure): UsernamePasswordToken
-    {
-        $user = $this->initUser($consecutiveAuthenticationFailures, $dateInitialLoginFailure);
-        return new UsernamePasswordToken($user, null, self::PROVIDER_KEY);
+        $this->it_checkLockStateReset($user, $userManager);
+
+        $this->it_checkLockStateInitialized($userManager, $user);
+
     }
 
     private static function initialFailedAttemptDateBackFromNow(int $secondsBehind): \DateTime
     {
-        return (new \DateTime())->modify("-{$secondsBehind} second");
+        return (new \DateTime())->modify("-{$secondsBehind} minute");
     }
 
-    protected function assertCounterIsReset(UsernamePasswordToken $usernamePasswordToken, UserManager $userManager): void
+    private function it_checkLockStateUpdated(UserManager $userManager, UserInterface $user, int $fal): void
     {
-        $user = $usernamePasswordToken->getUser();
-        Assert::true($user instanceof UserInterface);
-        Assert::eq($user->getConsecutiveAuthenticationFailureCounter(), 0);
-        Assert::null($user->getAuthenticationFailureResetDate());
+        $user->setConsecutiveAuthenticationFailureCounter($fal)->shouldHaveBeenCalledOnce();
+        $user->setAuthenticationFailureResetDate()->shouldNotBeCalled();
         $userManager->updateUser(Argument::any())->shouldHaveBeenCalled();
     }
 
-    protected function checkLockStateUpdated(UserManager $userManager, UserInterface $user, int $fal): void
+    private function it_checkLockStateInitialized(UserManager $userManager, UserInterface $user)
     {
-        Assert::eq($user->getConsecutiveAuthenticationFailureCounter(), $fal);
+        $user->setConsecutiveAuthenticationFailureCounter(1)->shouldHaveBeenCalledOnce();
+        $user->setAuthenticationFailureResetDate()->shouldNotBeCalled();
+        $userManager->updateUser(Argument::any())->shouldHaveBeenCalled();
+
+    }
+
+    private function it_initUsernamePasswordToken(UsernamePasswordToken $usernamePasswordToken)
+    {
+        $usernamePasswordToken->getUser()->willReturn(self::USERNAME);
+        $usernamePasswordToken->getProviderKey()->willReturn(self::PROVIDER_KEY);
+        $usernamePasswordToken->getRoles(false)->willReturn([]);
+        $usernamePasswordToken->getAttributes()->willReturn([]);
+        $usernamePasswordToken->getUsername()->willReturn(self::USERNAME);
+        $usernamePasswordToken->getCredentials()->willReturn([]);
+    }
+
+    private function it_initUser(UserInterface $user, int $i, \DateTime $initialFailureDate): void
+    {
+        $user->getConsecutiveAuthenticationFailureCounter()->willReturn($i);
+        $user->getAuthenticationFailureResetDate()->willReturn($initialFailureDate);
+        $user->getRoles()->willReturn([]);
+        $user->getPassword()->willReturn("");
+        $user->getSalt()->willReturn("");
+    }
+
+    private function it_shouldResetlockState($user, $userManager): void
+    {
+        $user->setConsecutiveAuthenticationFailureCounter(0)->shouldHaveBeenCalledOnce();
+        $user->setAuthenticationFailureResetDate(null)->shouldHaveBeenCalledOnce();
         $userManager->updateUser(Argument::any())->shouldHaveBeenCalled();
     }
 
-    protected function initUser(int $consecutiveAuthenticationFailures, \DateTime $dateInitialLoginFailure): User
+    private function it_shouldNotChangeState($userManager): \Prophecy\Prophecy\MethodProphecy
     {
-        $user = new User();
-        $user->setConsecutiveAuthenticationFailureCounter($consecutiveAuthenticationFailures);
-        if ($dateInitialLoginFailure) {
-            $user->setAuthenticationFailureResetDate($dateInitialLoginFailure);
-        }
-        return $user;
+        return $userManager->updateUser()->shouldNotHaveBeenCalled();
     }
 
-    protected function initializeMockForBadPassword(string $username, EncoderFactoryInterface $encoderFactory, PasswordEncoderInterface $passwordEncoder, UserProviderInterface $userProvider, User $user): UsernamePasswordToken
+    private function it_initUserNamePasswordTokenWithUser(UsernamePasswordToken $usernamePasswordToken, UserInterface $user): void
     {
-        $usernamePasswordToken = new UsernamePasswordToken($username, null, self::PROVIDER_KEY);
-        $encoderFactory->getEncoder($username)->willReturn($passwordEncoder);
-        $passwordEncoder->isPasswordValid(Argument::allOf())->willReturn(false);
-        $userProvider->loadUserByUsername($username)->willReturn($user);
-        return $usernamePasswordToken;
+        $usernamePasswordToken->getUser()->willReturn($user);
+        $usernamePasswordToken->getProviderKey()->willReturn(self::PROVIDER_KEY);
+        $usernamePasswordToken->getRoles(false)->willReturn([]);
+        $usernamePasswordToken->getAttributes()->willReturn([]);
+        $usernamePasswordToken->getUsername()->willReturn(self::USERNAME);
+        $usernamePasswordToken->getCredentials()->willReturn([]);
     }
+
+    private function it_checkLockStateReset(UserInterface $user, UserManager $userManager): void
+    {
+        $user->setConsecutiveAuthenticationFailureCounter(0)->shouldHaveBeenCalledOnce();
+        $user->setAuthenticationFailureResetDate(null)->shouldHaveBeenCalled();
+        $userManager->updateUser($user)->shouldHaveBeenCalled();
+    }
+
 }
