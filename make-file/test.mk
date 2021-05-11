@@ -17,10 +17,12 @@ coupling-back: #Doc: launch all coupling detector tests
 	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-coupling-back
 	PIM_CONTEXT=communication-channel $(MAKE) communication-channel-coupling-back
 	PIM_CONTEXT=tailored-export $(MAKE) coupling-back
+	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-coupling-back
 
 ### Static tests
-static-back: check-pullup check-sf-services #Doc: launch PHP static analyzer asset-manager & check Sf services
+static-back: check-pullup check-sf-services #Doc: launch PHP static analyzer & check Sf services
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-static-back
+	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-static-back
 	echo "Job done! Nothing more to do here..."
 
 .PHONY: check-pullup
@@ -63,6 +65,7 @@ unit-back: var/tests/phpspec community-unit-back #Doc: launch all PHPSec unit te
 	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-unit-back
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-unit-back
 	PIM_CONTEXT=tailored-export $(MAKE) unit-back
+	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-unit-back
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
