@@ -11,22 +11,26 @@ const Container = styled.div<{disabled: boolean; onClick: () => void} & AkeneoTh
   display: inline-flex;
   opacity: ${({disabled}) => disabled && 0.5};
   cursor: ${({disabled, onClick}) => (disabled ? 'not-allowed' : onClick !== undefined ? 'pointer' : 'inherit')};
+  background: ${getColor('white')}
+}
 
-  :hover {
-    border-color: ${({disabled}) => !disabled && getColor('grey', 60)};
-    background: ${({disabled}) => !disabled && getColor('grey', 20)};
-  }
+;
 
-  :active {
-    outline: none;
-    background: ${({disabled}) => !disabled && getColor('grey', 20)};
-    border-color: ${({disabled}) => !disabled && getColor('grey', 80)};
-  }
+:hover {
+  border-color: ${({disabled}) => !disabled && getColor('grey', 60)};
+  background: ${({disabled}) => !disabled && getColor('grey', 20)};
+}
 
-  :focus:not(:active) {
-    box-shadow: 0 0 0 2px ${getColor('blue', 40)};
-    outline: none;
-  }
+:active {
+  outline: none;
+  background: ${({disabled}) => !disabled && getColor('grey', 20)};
+  border-color: ${({disabled}) => !disabled && getColor('grey', 80)};
+}
+
+:focus:not(:active) {
+  box-shadow: 0 0 0 2px ${getColor('blue', 40)};
+  outline: none;
+}
 `;
 
 const IconContainer = styled.div`
@@ -71,14 +75,10 @@ const Content = styled.div`
   ${TruncableMixin};
 `;
 
-type IconCardGridProps = {
-  size?: 'normal' | 'big';
-};
-
-const IconCardGrid = styled.div<IconCardGridProps & AkeneoThemedProps>`
+const IconCardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, ${({size}) => ('big' === size ? 301 : 240)}px);
-  gap: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
 `;
 
 type IconCardProps = {

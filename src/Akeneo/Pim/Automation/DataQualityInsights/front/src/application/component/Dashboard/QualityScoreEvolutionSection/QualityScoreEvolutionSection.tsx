@@ -1,10 +1,11 @@
 import React, {FC, ReactElement, useEffect, useState} from 'react';
+import styled from 'styled-components';
+import {SectionTitle} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {QualityScore} from '../../QualityScore';
 import {QualityScoreEvolutionChart} from './QualityScoreEvolutionChart';
 import {RawScoreEvolutionData, useFetchQualityScoreEvolution} from '../../../../infrastructure/hooks';
 import {EmptyChartPlaceholder} from '../EmptyChartPlaceholder';
-import styled from 'styled-components';
 
 type Props = {
   locale: string;
@@ -53,10 +54,11 @@ const QualityScoreEvolutionSection: FC<Props> = ({categoryCode, familyCode, chan
 
   return (
     <Container>
-      <div className="AknSubsection-title">
-        <span>{translate('akeneo_data_quality_insights.dqi_dashboard.quality_score_evolution.title')}</span>
-      </div>
-
+      <SectionTitle>
+        <SectionTitle.Title>
+          {translate('akeneo_data_quality_insights.dqi_dashboard.quality_score_evolution.title')}
+        </SectionTitle.Title>
+      </SectionTitle>
       <ChartContainer>
         {dataset === null && <div className="AknLoadingMask" />}
         {showPlaceholder(dataset) ? <EmptyChartPlaceholder /> : chart}

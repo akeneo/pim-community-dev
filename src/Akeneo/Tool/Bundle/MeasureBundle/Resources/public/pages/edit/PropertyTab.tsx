@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import {SectionTitle} from 'akeneo-design-system';
-import {MeasurementFamily, setMeasurementFamilyLabel} from 'akeneomeasure/model/measurement-family';
-import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
+import {MeasurementFamily, setMeasurementFamilyLabel} from '../../model/measurement-family';
+import {useUiLocales} from '../../shared/hooks/use-ui-locales';
 import {
   ValidationError,
   filterErrors,

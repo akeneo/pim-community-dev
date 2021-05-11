@@ -1,17 +1,13 @@
 import React, {useCallback, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {MeasurementIllustration, Link, Button, Information, Breadcrumb, useBooleanState} from 'akeneo-design-system';
-import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
-import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
-import {
-  sortMeasurementFamily,
-  filterOnLabelOrCode,
-  MeasurementFamilyCode,
-} from 'akeneomeasure/model/measurement-family';
-import {MeasurementFamilyTable} from 'akeneomeasure/pages/list/MeasurementFamilyTable';
-import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
-import {TablePlaceholder} from 'akeneomeasure/pages/common/Table';
-import {Direction} from 'akeneomeasure/model/direction';
+import {PageHeader, PageHeaderPlaceholder} from '../../shared/components/PageHeader';
+import {useMeasurementFamilies} from '../../hooks/use-measurement-families';
+import {sortMeasurementFamily, filterOnLabelOrCode, MeasurementFamilyCode} from '../../model/measurement-family';
+import {MeasurementFamilyTable} from '../list/MeasurementFamilyTable';
+import {CreateMeasurementFamily} from '../create-measurement-family/CreateMeasurementFamily';
+import {TablePlaceholder} from '../common/Table';
+import {Direction} from '../../model/direction';
 import {
   SearchBar,
   NoDataSection,
@@ -22,8 +18,8 @@ import {
   useUserContext,
   useSecurity,
   useRoute,
+  PimView,
 } from '@akeneo-pim-community/shared';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
 
 const useSorting = (
   defaultColumn: string
