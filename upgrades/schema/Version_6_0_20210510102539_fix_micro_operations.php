@@ -56,7 +56,7 @@ SQL;
         }
 
         $units = json_decode($existingUnits, true);
-        $units = array_map('self::getCorrectedUnit', $units);
+        $units = array_map([$this, 'getCorrectedUnit'], $units);
 
         $this->addSql($updateUnitsSql, [
             'measurement_family_code' => $measurementFamilyCode,
