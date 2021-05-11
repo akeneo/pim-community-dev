@@ -55,6 +55,8 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
     const isActiveEventSubscriptionsLimitReached = () =>
         activeEventSubscriptionsLimit.current >= activeEventSubscriptionsLimit.limit;
 
+    const connectCode = webhook.connectionCode;
+
     return (
         <>
             <FormGroup
@@ -131,7 +133,7 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
                         <RegenerateButton
                             onClick={() =>
                                 history.push(
-                                    `/connections/${webhook.connectionCode}/event-subscription/regenerate-secret`
+                                    `/connect/connection-settings/${connectCode}/event-subscription/regenerate-secret`
                                 )
                             }
                         />

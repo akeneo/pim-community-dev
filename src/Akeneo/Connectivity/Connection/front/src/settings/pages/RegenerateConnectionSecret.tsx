@@ -17,7 +17,7 @@ export const RegenerateConnectionSecret = () => {
     const url = useRoute('akeneo_connectivity_connection_rest_regenerate_secret', {code});
 
     const handleRedirect = () => {
-        history.push(`/connections/${code}/edit`);
+        history.push(`/connect/connection-settings/${code}/edit`);
     };
 
     const handleClick = async () => {
