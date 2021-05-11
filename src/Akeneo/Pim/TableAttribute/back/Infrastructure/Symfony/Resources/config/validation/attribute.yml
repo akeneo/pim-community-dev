@@ -1,0 +1,3 @@
+Akeneo\Pim\Structure\Component\Model\Attribute:
+    constraints:
+        - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\TableAttribute: ~

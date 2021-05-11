@@ -29,5 +29,6 @@ class AkeneoPimTableAttributeExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('attribute_types.yml');
+        $loader->load('validators.yml');
     }
 }
