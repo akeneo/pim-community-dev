@@ -14,26 +14,20 @@ use Akeneo\Platform\Component\EventQueue\EventInterface;
  */
 class WebhookEvent
 {
-    /** @var string */
-    private $action;
+    private string $action;
 
-    /** @var string */
-    private $eventId;
+    private string $eventId;
 
-    /** @var string */
-    private $eventDateTime;
+    private string $eventDateTime;
 
     /** @var array<mixed> */
-    private $data;
+    private array $data;
 
-    /** @var Author */
-    private $author;
+    private Author $author;
 
-    /** @var string */
-    private $pimSource;
+    private string $pimSource;
 
-    /** @var EventInterface */
-    private $pimEvent;
+    private EventInterface $pimEvent;
 
     /**
      * @param array<mixed> $data

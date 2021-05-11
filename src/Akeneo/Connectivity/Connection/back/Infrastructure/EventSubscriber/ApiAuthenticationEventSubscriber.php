@@ -17,11 +17,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ApiAuthenticationEventSubscriber implements EventSubscriberInterface
 {
-    /** @var ConnectionContextInterface */
-    private $connectionContext;
+    private ConnectionContextInterface $connectionContext;
 
-    /** @var WrongCredentialsCombinationRepository */
-    private $repository;
+    private WrongCredentialsCombinationRepository $repository;
 
     public function __construct(
         ConnectionContextInterface $connectionContext,
@@ -31,6 +29,9 @@ class ApiAuthenticationEventSubscriber implements EventSubscriberInterface
         $this->repository = $repository;
     }
 
+    /**
+     * @return array<class-string<ApiAuthenticationEvent>, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return [ApiAuthenticationEvent::class => 'checkCredentialsCombination'];

@@ -16,8 +16,7 @@ use FOS\OAuthServerBundle\Util\Random;
  */
 class FakeRegenerateClientSecret implements RegenerateClientSecret
 {
-    /** @var InMemoryConnectionRepository */
-    private $connectionRepository;
+    private InMemoryConnectionRepository $connectionRepository;
 
     public function __construct(InMemoryConnectionRepository $connectionRepository)
     {

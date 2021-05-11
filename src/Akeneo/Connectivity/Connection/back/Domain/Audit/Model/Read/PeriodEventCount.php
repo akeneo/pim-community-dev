@@ -13,17 +13,14 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\HourlyEventCount;
  */
 final class PeriodEventCount
 {
-    /** @var string */
-    private $connectionCode;
+    private string $connectionCode;
 
-    /** @var \DateTimeImmutable */
-    private $fromDateTime;
+    private \DateTimeImmutable $fromDateTime;
 
-    /** @var \DateTimeImmutable */
-    private $upToDateTime;
+    private \DateTimeImmutable $upToDateTime;
 
     /** @var HourlyEventCount[] */
-    private $hourlyEventCounts;
+    private array $hourlyEventCounts;
 
     /**
      * @param HourlyEventCount[] $hourlyEventCounts

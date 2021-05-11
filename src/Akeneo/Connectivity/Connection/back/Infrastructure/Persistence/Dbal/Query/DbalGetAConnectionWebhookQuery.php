@@ -15,8 +15,7 @@ use Doctrine\DBAL\Connection as DbalConnection;
  */
 class DbalGetAConnectionWebhookQuery implements GetAConnectionWebhookQuery
 {
-    /** @var DbalConnection */
-    private $dbalConnection;
+    private DbalConnection $dbalConnection;
 
     public function __construct(DbalConnection $dbalConnection)
     {

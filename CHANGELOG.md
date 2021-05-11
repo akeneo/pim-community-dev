@@ -60,7 +60,9 @@
 - PIM-9820: Fix the Error 500 on the product grid with the date filter
 - PIM-9833: Fix null pointer exception on Product::getVariationLevel (CE contribution)
 - PIM-9826: Display the system attribute filters with the UI locale on the user account settings
+- PIM-9850: Fix broken section title in DQI dashboard
 - PIM-9827: Fix HTTP 500 when using POST/PATCH with incorrect format
+- PIM-9857: Fix Microgram & Microliter conversion operations
 
 ## New features
 

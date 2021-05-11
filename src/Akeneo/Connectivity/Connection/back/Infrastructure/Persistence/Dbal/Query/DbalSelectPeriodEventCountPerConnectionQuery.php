@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodEventCountPerConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\DateTimePeriod;
@@ -22,14 +23,16 @@ class DbalSelectPeriodEventCountPerConnectionQuery implements SelectPeriodEventC
 {
     use PeriodEventCountTrait;
 
-    /** @var Connection */
-    private $dbalConnection;
+    private Connection $dbalConnection;
 
     public function __construct(Connection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }
 
+    /**
+     * @return PeriodEventCount[]
+     */
     public function execute(
         string $eventType,
         DateTimePeriod $period
@@ -39,13 +42,11 @@ class DbalSelectPeriodEventCountPerConnectionQuery implements SelectPeriodEventC
         $perConnection = $this->getPeriodEventCountPerConnection($eventType, $period, $connectionCodes);
         $forAllConnections = $this->getPeriodEventCountForAllConnections($eventType, $period, $connectionCodes);
 
-        $periodEventCountPerConnection = $this->createPeriodEventCountPerConnection(
+        return $this->createPeriodEventCountPerConnection(
             $period,
             $connectionCodes,
             array_merge($perConnection, $forAllConnections),
         );
-
-        return $periodEventCountPerConnection;
     }
 
     /**
@@ -75,6 +76,7 @@ SQL;
 
     /**
      * @param string[] $connectionCodes
+     * @return mixed[]
      */
     private function getPeriodEventCountPerConnection(
         string $eventType,
@@ -91,7 +93,7 @@ WHERE connection_code IN (:connection_codes)
 ORDER BY conn.code, audit.event_datetime
 SQL;
 
-        $hourlyEventCountsData = $this->dbalConnection->executeQuery(
+        return $this->dbalConnection->executeQuery(
             $sql,
             [
                 'event_type' => $eventType,
@@ -105,12 +107,11 @@ SQL;
                 'connection_codes' => Connection::PARAM_STR_ARRAY,
             ]
         )->fetchAll();
-
-        return $hourlyEventCountsData;
     }
 
     /**
      * @param string[] $connectionCodes
+     * @return mixed[]
      */
     private function getPeriodEventCountForAllConnections(
         string $eventType,
@@ -126,7 +127,8 @@ AND event_type = :event_type
 GROUP BY event_datetime
 ORDER BY event_datetime
 SQL;
-        $hourlyEventCountsData = $this->dbalConnection->executeQuery(
+
+        return $this->dbalConnection->executeQuery(
             $sql,
             [
                 'all' => AllConnectionCode::CODE,
@@ -141,11 +143,9 @@ SQL;
                 'connection_codes' => Connection::PARAM_STR_ARRAY,
             ]
         )->fetchAll();
-
-        return $hourlyEventCountsData;
     }
 
-    private function getFlowTypeForEventType(string $eventType)
+    private function getFlowTypeForEventType(string $eventType): string
     {
         $flowType = '';
 

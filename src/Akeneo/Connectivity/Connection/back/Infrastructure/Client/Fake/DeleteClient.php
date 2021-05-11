@@ -16,6 +16,5 @@ class DeleteClient implements DeleteClientInterface
 {
     public function execute(ClientId $clientId): void
     {
-        return;
     }
 }
