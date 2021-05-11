@@ -156,7 +156,6 @@ class User implements UserInterface
 
     private int $consecutiveAuthenticationFailureCounter=0;
 
-    /** @var DateTime|null */
     private ?\DateTime $authenticationFailureResetDate=null;
 
     protected $type = self::TYPE_USER;
