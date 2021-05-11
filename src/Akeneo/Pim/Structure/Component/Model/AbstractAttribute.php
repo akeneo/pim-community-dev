@@ -1103,6 +1103,11 @@ abstract class AbstractAttribute implements AttributeInterface
         return array_keys($this->guidelines);
     }
 
+    public function getRawTableConfiguration(): ?array
+    {
+        return $this->rawTableConfiguration;
+    }
+
     public function setRawTableConfiguration(?array $rawTableConfiguration): void
     {
         $this->rawTableConfiguration = $rawTableConfiguration;
