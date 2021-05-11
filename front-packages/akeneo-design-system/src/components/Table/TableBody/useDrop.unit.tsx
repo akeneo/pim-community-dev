@@ -17,7 +17,7 @@ test('it does not call on reorder callback when user try to drag and drop to ano
   const {result} = renderHook(() => useDrop(10, 1), {wrapper});
 
   const [, handleDrop] = result.current;
-  handleDrop({
+  const event = {
     currentTarget: {
       dataset: {
         tableId: 'another_table_id',
@@ -28,10 +28,14 @@ test('it does not call on reorder callback when user try to drag and drop to ano
       parentElement: {
         dataset: {
           draggableIndex: '2',
-        } as any,
-      } as any,
-    },
-  } as any);
+        },
+      },
+    }
+  };
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  handleDrop(event);
 
   expect(onReorder).not.toHaveBeenCalled();
 });
@@ -41,7 +45,7 @@ test('it does not on reorder callback when user drag and drop', () => {
   const {result} = renderHook(() => useDrop(4, 1), {wrapper});
 
   const [tableId, handleDrop] = result.current;
-  handleDrop({
+  const event = {
     currentTarget: {
       dataset: {
         tableId,
@@ -52,11 +56,15 @@ test('it does not on reorder callback when user drag and drop', () => {
       parentElement: {
         dataset: {
           draggableIndex: '2',
-        } as any,
-      } as any,
+        },
+      },
     },
     stopPropagation,
-  } as any);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  handleDrop(event);
 
   expect(onReorder).toHaveBeenCalledWith([0, 2, 1, 3]);
   expect(stopPropagation).toHaveBeenCalled();
@@ -67,8 +75,8 @@ test('it throw an error when we cannot find the target index', () => {
 
   const [tableId, handleDrop] = result.current;
 
-  expect(() =>
-    handleDrop({
+  expect(() => {
+    const event = {
       currentTarget: {
         dataset: {
           tableId,
@@ -79,8 +87,12 @@ test('it throw an error when we cannot find the target index', () => {
         parentElement: null,
       },
       stopPropagation: jest.fn,
-    } as any)
-  ).toThrowError('Draggable parent not found');
+    };
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    handleDrop(event);
+  }).toThrowError('Draggable parent not found');
 });
 
 test('it does not call on reorder callback on dragover', () => {
@@ -89,10 +101,14 @@ test('it does not call on reorder callback on dragover', () => {
   const {result} = renderHook(() => useDrop(4, 1), {wrapper});
 
   const [, , handleDragOver] = result.current;
-  handleDragOver({
+  const event = {
     stopPropagation,
     preventDefault,
-  } as any);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  handleDragOver(event);
 
   expect(stopPropagation).toHaveBeenCalled();
   expect(preventDefault).toHaveBeenCalled();

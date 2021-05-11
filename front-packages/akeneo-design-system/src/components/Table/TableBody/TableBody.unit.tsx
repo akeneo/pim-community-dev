@@ -40,7 +40,7 @@ test('Table.Body supports ...rest props', () => {
 test('it only supports table rows', () => {
   expect(() => {
     render(
-      <Table isDragAndDroppable={true} onReorder={() => {}}>
+      <Table isDragAndDroppable={true} onReorder={jest.fn}>
         <Table.Body>A bad value</Table.Body>
       </Table>
     );

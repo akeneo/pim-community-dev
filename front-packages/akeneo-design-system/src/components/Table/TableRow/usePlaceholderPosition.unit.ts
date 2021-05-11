@@ -12,24 +12,24 @@ test('it return the placeholder position related to the drop position', () => {
   });
   expect(result.current[0]).toBe('bottom');
 
-  let {result: rerenderedResult} = renderHook(() => usePlaceholderPosition(2, 3));
-  const [, rerenderedDragEnter, dragLeave, dragEnd] = rerenderedResult.current;
+  const {result: reRenderedResult} = renderHook(() => usePlaceholderPosition(2, 3));
+  const [, reRenderedDragEnter, dragLeave, dragEnd] = reRenderedResult.current;
 
   void act(() => {
-    rerenderedDragEnter();
+    reRenderedDragEnter();
   });
 
-  expect(rerenderedResult.current[0]).toBe('top');
+  expect(reRenderedResult.current[0]).toBe('top');
 
   void act(() => {
     dragLeave();
   });
-  expect(rerenderedResult.current[0]).toBe('none');
+  expect(reRenderedResult.current[0]).toBe('none');
 
   void act(() => {
     dragEnd();
   });
-  expect(rerenderedResult.current[0]).toBe('none');
+  expect(reRenderedResult.current[0]).toBe('none');
 });
 
 test('it does not give placeholder when dragged element is the same than the dropped', () => {
