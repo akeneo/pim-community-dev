@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinati
 use Akeneo\Connectivity\Connection\Application\ConnectionContextInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\Webhook\ProductsSentWithSuccess;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -41,7 +42,10 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [ReadProductsEvent::class => 'saveReadProducts'];
+        return [
+            ReadProductsEvent::class => 'saveReadProducts',
+            ProductsSentWithSuccess::class => 'saveProductsSentToWebhook'
+        ];
     }
 
     /**
@@ -49,10 +53,20 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
      */
     public function saveReadProducts(ReadProductsEvent $event): void
     {
+        $this->saveProductsCount(count($event->productIds()));
+    }
+
+    public function saveProductsSentToWebhook(ProductsSentWithSuccess $event): void
+    {
+        $this->saveProductsCount(count($event->getIdentifiers()));
+    }
+
+    private function saveProductsCount(int $count): void
+    {
         if (!$this->connectionContext->isCollectable()) {
             return;
         }
-        if (0 === count($event->productIds())) {
+        if (0 === $count) {
             return;
         }
 
@@ -65,7 +79,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
             new UpdateDataDestinationProductEventCountCommand(
                 (string) $connection->code(),
                 HourlyInterval::createFromDateTime(new \DateTimeImmutable('now', new \DateTimeZone('UTC'))),
-                count($event->productIds())
+                $count
             )
         );
     }

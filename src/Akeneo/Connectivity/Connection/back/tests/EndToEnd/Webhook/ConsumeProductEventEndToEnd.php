@@ -7,7 +7,9 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -16,6 +18,7 @@ use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use Doctrine\DBAL\Connection as DbalConnection;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -30,14 +33,61 @@ use PHPUnit\Framework\Assert;
 class ConsumeProductEventEndToEnd extends ApiTestCase
 {
     private ProductInterface $referenceProduct;
+    private ProductInterface $referenceProductB;
     private Author $referenceAuthor;
+    private DbalConnection $dbalConnection;
+    private ProductLoader $productLoader;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->referenceProduct = $this->loadReferenceProduct();
+        // TODO use loaders
+
+        $this->get('akeneo_connectivity.connection.fixtures.enrichment.category')
+            ->create(['code' => 'category']);
+        $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
+            ->create(['code' => 'boolean_attribute', 'type' => 'pim_catalog_boolean']);
+        $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
+            ->create(['code' => 'text_attribute', 'type' => 'pim_catalog_text']);
+        $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
+            ->create(['code' => 'another_text_attribute', 'type' => 'pim_catalog_text']);
+        $this->get('akeneo_connectivity.connection.fixtures.structure.family')
+            ->create(['code' => 'family', 'attributes' => ['boolean_attribute', 'text_attribute']]);
+
         $this->referenceAuthor = Author::fromNameAndType('julia', Author::TYPE_UI);
+        $this->dbalConnection = self::$container->get('database_connection');
+        $this->productLoader = self::$container->get('akeneo_connectivity.connection.fixtures.enrichment.product');
+
+        $this->referenceProduct = $this->productLoader->create(
+            'product',
+            [
+                'family' => 'family',
+                'enabled' => true,
+                'categories' => ['category'],
+                'groups' => [],
+                'values' => [
+                    'another_text_attribute' => [
+                        ['data' => 'text attribute', 'locale' => null, 'scope' => null],
+                    ],
+                ],
+            ]
+        );
+        $this->referenceProductB = $this->productLoader->create(
+            'productB',
+            [
+                'family' => 'family',
+                'enabled' => true,
+                'categories' => ['category'],
+                'groups' => [],
+                'values' => [
+                    'another_text_attribute' => [
+                        ['data' => 'text attribute', 'locale' => null, 'scope' => null],
+                    ],
+                ],
+            ]
+        );
+
         $connection = $this->loadConnection();
 
         $this->get('akeneo_connectivity.connection.fixtures.webhook_loader')->initWebhook($connection->code());
@@ -60,6 +110,12 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
                     1607094167,
                     '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
                 ),
+                new ProductCreated(
+                    $this->referenceAuthor,
+                    ['identifier' => $this->referenceProductB->getIdentifier()],
+                    1607094167,
+                    '0d932313-8eae-4f4a-bf37-33d3a932b8c9'
+                ),
             ]
         );
 
@@ -74,6 +130,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
 
+        Assert::assertEquals(2, (int) $this->getEventCount('ecommerce'));
         $this->assertEquals($this->expectedProductCreatedPayload(), $requestContent);
     }
 
@@ -108,6 +165,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
 
+        Assert::assertEquals(1, (int) $this->getEventCount('ecommerce'));
         $this->assertEquals($this->expectedProductUpdatedPayload(), $requestContent);
     }
 
@@ -147,32 +205,11 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $this->assertEquals($this->expectedProductRemovedPayload(), $requestContent);
     }
 
-    private function loadReferenceProduct(): ProductInterface
+    private function loadReferenceProduct(string $identifier): ProductInterface
     {
-        $this->get('akeneo_connectivity.connection.fixtures.enrichment.category')
-            ->create(['code' => 'category']);
-        $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
-            ->create(['code' => 'boolean_attribute', 'type' => 'pim_catalog_boolean']);
-        $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
-            ->create(['code' => 'text_attribute', 'type' => 'pim_catalog_text']);
-        $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
-            ->create(['code' => 'another_text_attribute', 'type' => 'pim_catalog_text']);
-        $this->get('akeneo_connectivity.connection.fixtures.structure.family')
-            ->create(['code' => 'family', 'attributes' => ['boolean_attribute', 'text_attribute']]);
-
         return $this->get('akeneo_connectivity.connection.fixtures.enrichment.product')->create(
-            'product',
-            [
-                'family' => 'family',
-                'enabled' => true,
-                'categories' => ['category'],
-                'groups' => [],
-                'values' => [
-                    'another_text_attribute' => [
-                        ['data' => 'text attribute', 'locale' => null, 'scope' => null],
-                    ],
-                ],
-            ]
+            $identifier,
+
         );
     }
 
@@ -183,7 +220,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
                 'ecommerce',
                 'Ecommerce',
                 FlowType::DATA_DESTINATION,
-                false
+                true
             );
         $this->get('akeneo_connectivity.connection.fixtures.connection_loader')->update(
             $connection->code(),
@@ -299,6 +336,20 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
                 'quantified_associations' => [],
             ],
         ];
+    }
+
+    private function getEventCount(string $connectionCode)
+    {
+        $sql = <<<SQL
+SELECT event_count
+FROM akeneo_connectivity_connection_audit_product
+WHERE connection_code = :connection_code
+AND event_type = 'product_read'
+SQL;
+
+        return $this->dbalConnection->fetchColumn($sql, [
+            'connection_code' => $connectionCode,
+        ]);
     }
 
     protected function getConfiguration(): Configuration
