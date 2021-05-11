@@ -16,33 +16,9 @@ namespace Akeneo\Pim\TableAttribute\Domain\Config;
 use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnDataType;
 
-abstract class ColumnDefinition
+interface ColumnDefinition
 {
-    protected ColumnCode $code;
-    protected ColumnDataType $dataType;
-    protected LabelCollection $labels;
-
-    // validation rules: specific to each data type
-
-    protected function __construct(ColumnCode $code, ColumnDataType $dataType, LabelCollection $labels)
-    {
-        $this->code = $code;
-        $this->dataType = $dataType;
-        $this->labels = $labels;
-    }
-
-    public function code(): ColumnCode
-    {
-        return $this->code;
-    }
-
-    public function dataType(): ColumnDataType
-    {
-        return $this->dataType;
-    }
-
-    public function labels(): LabelCollection
-    {
-        return $this->labels;
-    }
+    public function code(): ColumnCode;
+    public function dataType(): ColumnDataType;
+    public function labels(): LabelCollection;
 }

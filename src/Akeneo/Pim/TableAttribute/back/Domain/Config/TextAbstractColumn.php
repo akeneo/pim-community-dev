@@ -17,7 +17,7 @@ use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnDataType;
 use Webmozart\Assert\Assert;
 
-class TextColumn extends ColumnDefinition
+class TextAbstractColumn extends AbstractColumnDefinition
 {
     private const DATATYPE = 'text';
 

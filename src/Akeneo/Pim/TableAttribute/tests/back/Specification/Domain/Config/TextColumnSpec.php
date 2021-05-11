@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\TableAttribute\Domain\Config;
 
 use Akeneo\Pim\TableAttribute\Domain\Config\LabelCollection;
-use Akeneo\Pim\TableAttribute\Domain\Config\TextColumn;
+use Akeneo\Pim\TableAttribute\Domain\Config\TextAbstractColumn;
 use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnDataType;
 use PhpSpec\ObjectBehavior;
@@ -20,7 +20,7 @@ class TextColumnSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(TextColumn::class);
+        $this->shouldHaveType(TextAbstractColumn::class);
     }
 
     function it_is_a_text_column()
