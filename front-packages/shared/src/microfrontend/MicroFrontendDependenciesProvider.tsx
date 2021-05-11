@@ -37,30 +37,36 @@ const MicroFrontendDependenciesProvider = ({
       throw new Error(`Route ${route} not found`);
     }
 
-//    const routeParameters = routeConf.tokens
-//      .map((token: string[]) => token[0] === 'variable' ? token[3] : null).filter(Boolean);
+    //    const routeParameters = routeConf.tokens
+    //      .map((token: string[]) => token[0] === 'variable' ? token[3] : null).filter(Boolean);
 
-//    const unusedParameters = Object.keys(parameters ?? {}).filter(x => routeParameters.includes(x));
-    let queryString =
-      parameters ? '?' + Object.entries(parameters).map(([key, val]) => `${key}=${val}`).join('&') : '';
+    //    const unusedParameters = Object.keys(parameters ?? {}).filter(x => routeParameters.includes(x));
+    let queryString = parameters
+      ? '?' +
+        Object.entries(parameters)
+          .map(([key, val]) => `${key}=${val}`)
+          .join('&')
+      : '';
 
-    return routeConf.tokens
-      .map((token: string[]) => {
-        switch (token[0]) {
-          case 'text':
-            return token[1];
-          case 'variable':
-            if (parameters === undefined) {
-              throw new Error(`Missing parameter: ${token[3]}`);
-            }
+    return (
+      routeConf.tokens
+        .map((token: string[]) => {
+          switch (token[0]) {
+            case 'text':
+              return token[1];
+            case 'variable':
+              if (parameters === undefined) {
+                throw new Error(`Missing parameter: ${token[3]}`);
+              }
 
-            return token[1] + parameters[token[3]];
-          default:
-            throw new Error(`Unexpected token type: ${token[0]}`);
-        }
-      })
-      .reverse()
-      .join('') + queryString;
+              return token[1] + parameters[token[3]];
+            default:
+              throw new Error(`Unexpected token type: ${token[0]}`);
+          }
+        })
+        .reverse()
+        .join('') + queryString
+    );
   };
 
   const currentUserUrl = generateUrl('pim_user_user_rest_get_current');

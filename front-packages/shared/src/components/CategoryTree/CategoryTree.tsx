@@ -14,7 +14,7 @@ type CategoryTreeModel = {
 };
 
 type CategoryTreeProps = {
-  categoryTreeCode?: string,
+  categoryTreeCode?: string;
   init: (categoryTreeCode?: string) => Promise<CategoryTreeModel>;
   childrenCallback: (value: any) => Promise<CategoryTreeModel[]>;
   onChange?: (value: string, checked: boolean) => void;
