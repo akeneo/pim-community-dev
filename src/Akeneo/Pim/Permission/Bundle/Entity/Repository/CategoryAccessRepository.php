@@ -53,15 +53,9 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
     }
 
     /**
-     * Revoke access to a category
-     * If excluded user groups are provided, access will not be revoked for these group
-     *
-     * @param CategoryInterface $category
-     * @param Group[]           $excludedGroups
-     *
-     * @return int
+     * @return array
      */
-    public function revokeAccess(CategoryInterface $category, array $excludedGroups = [])
+    public function findAccessesToRevoke(CategoryInterface $category, array $excludedGroups = []): array
     {
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -74,12 +68,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
                 ->setParameter('excludedGroups', $excludedGroups);
         }
 
-        $entities = $qb->getQuery()->execute();
-        foreach ($entities as $categoryAccess) {
-            $this->_em->remove($categoryAccess);
-        }
-
-        return count($entities);
+        return $qb->getQuery()->execute();
     }
 
     /**
