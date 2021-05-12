@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @author Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  */
-final class TableAttribute extends Constraint
+final class IsTableAttributeConfigured extends Constraint
 {
     public function getTargets(): array
     {

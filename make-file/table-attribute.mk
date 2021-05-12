@@ -10,3 +10,7 @@ table-attribute-static-back:
 .PHONY: table-attribute-unit-back
 table-attribute-unit-back:
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Pim/TableAttribute/tests/back/Specification
+
+.PHONY: table-attribute-acceptance-back
+table-attribute-acceptance-back:
+	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Pim/TableAttribute/tests/back/behat.yml --format pim --out var/tests/behat/table-attribute --format progress --out std --colors $(O)

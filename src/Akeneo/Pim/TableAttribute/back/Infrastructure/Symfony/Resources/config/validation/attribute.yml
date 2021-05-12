@@ -1,3 +1,6 @@
 Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
-        - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\TableAttribute: ~
+        - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsTableAttributeConfigured: ~
+# TODO: make the validation for rawTableConfiguration
+#    properties:
+#        rawTableConfiguration:

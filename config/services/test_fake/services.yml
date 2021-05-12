@@ -26,6 +26,8 @@ imports:
     - { resource: ../../../src/Akeneo/Pim/Automation/RuleEngine/tests/back/Acceptance/Resources/config/services.yml }
     # Tailored Exports
     - { resource: ../../../src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Acceptance/Resources/config/services.yml }
+    # Table Attribute
+    - { resource: ../../../src/Akeneo/Pim/TableAttribute/tests/back/Acceptance/Resources/config/services.yml }
 
     - { resource: ../../../vendor/akeneo/pim-community-dev/config/services/test/test_services.yml }
 
