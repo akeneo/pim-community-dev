@@ -80,6 +80,13 @@ class Builder
         return $this;
     }
 
+    public function withType(string $type): Builder
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
     public function aTextAttribute(): Builder
     {
         $this->type = new Type(AttributeTypes::TEXT);
