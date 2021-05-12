@@ -34,6 +34,7 @@ const TabContainer = styled.div<TabProps & AkeneoThemedProps>`
   border-bottom: 3px solid ${({isActive}) => (isActive ? getColor('brand', 100) : 'transparent')};
   font-size: ${getFontSize('big')};
   cursor: pointer;
+  white-space: nowrap;
 
   &:hover {
     color: ${getColor('brand', 100)};
