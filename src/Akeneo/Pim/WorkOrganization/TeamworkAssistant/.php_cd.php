@@ -19,6 +19,7 @@ $rules = [
         'Sensio\Bundle\FrameworkExtraBundle',
         'Webmozart\Assert\Assert',
         'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component',
+        'Symfony\Contracts\Translation\TranslatorInterface',
 
         // TIP-1004: WidgetInterface located in Platform is used in multiple contexts
         // TIP-966: TWA should not be linked to Locale
