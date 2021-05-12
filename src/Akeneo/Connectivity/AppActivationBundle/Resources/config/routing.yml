@@ -1,3 +1,13 @@
 controllers:
     resource: ../../Controller/
     type: annotation
+
+fos_oauth_server_authorize:
+    path: /apps/oauth/v2/auth
+    methods: ['GET', 'POST']
+    defaults: { _controller: fos_oauth_server.controller.authorize:authorizeAction }
+
+apps_oauth_server_token:
+    path: /apps/oauth/v2/token
+    methods: ['GET', 'POST']
+    defaults: { _controller: fos_oauth_server.controller.token:tokenAction }

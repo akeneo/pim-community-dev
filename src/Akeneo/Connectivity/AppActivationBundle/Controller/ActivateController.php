@@ -6,6 +6,7 @@ use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,9 +28,11 @@ class ActivateController
      */
     public function activate(string $id): Response
     {
+        sleep(1);
+
         $client = $this->findOrCreateClient($id);
 
-        return new Response('hello world');
+        return new RedirectResponse('http://localhost:8081/connect?from=http://localhost:8080');
     }
 
     private function findOrCreateClient(string $id): Client
