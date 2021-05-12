@@ -18,7 +18,6 @@ $rules = [
         // TODO: The feature uses the datagrid
         'Oro\Bundle\PimDataGridBundle',
         //PIM-9806
-        'DateTime',
         'Doctrine\ORM\Mapping',
 
         // TIP-945: User Management should not depend on Channel and Enrichment
