@@ -1,7 +1,6 @@
 import React, {Ref, ReactElement} from 'react';
 import styled from 'styled-components';
-import {Helper, HelperProps, InputProps, Locale, LocaleProps} from '../../components';
-import {getColor} from '../../theme';
+import {Helper, HelperProps, InputProps, Locale, LocaleProps, Pill} from '../../components';
 import {useId} from '../../hooks';
 
 const FieldContainer = styled.div<{fullWidth: boolean}>`
@@ -16,6 +15,7 @@ const LabelContainer = styled.div`
   line-height: 16px;
   margin-bottom: 8px;
   max-width: 460px;
+  gap: 5px;
 `;
 
 const Label = styled.label`
@@ -24,23 +24,11 @@ const Label = styled.label`
 
 const Channel = styled.span`
   text-transform: capitalize;
-
-  :not(:last-child) {
-    margin-right: 5px;
-  }
 `;
 
 const HelperContainer = styled.div`
   margin-top: 5px;
   max-width: 460px;
-`;
-
-const IncompleteBadge = styled.div`
-  border-radius: 50%;
-  background-color: ${getColor('yellow', 100)};
-  width: 8px;
-  height: 8px;
-  margin-right: 4px;
 `;
 
 type FieldChild = ReactElement<InputProps<unknown>> | ReactElement<HelperProps> | FieldChild[] | false | null;
@@ -108,7 +96,7 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
     return (
       <FieldContainer ref={forwardedRef} fullWidth={fullWidth ?? false} {...rest}>
         <LabelContainer>
-          {incomplete && <IncompleteBadge />}
+          {incomplete && <Pill level="warning" />}
           <Label htmlFor={inputId} id={labelId}>
             {label}
             {requiredLabel && (

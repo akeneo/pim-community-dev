@@ -1,0 +1,114 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {TabBar} from './TabBar.tsx';
+import {Badge} from '../Badge/Badge';
+import {Pill} from '../Pill/Pill';
+import {useState} from 'react';
+
+<Meta title="Components/TabBar" component={TabBar} />
+
+# TabBar
+
+## Usage
+
+Tabs are used to move from one content to another within the same context.
+
+## Format
+
+**Text**
+
+Each label describes its content and defines the expectations of the user. Labels are concise and use one or two words maximum. Icons are not allowed in tab labels.
+
+**Order**
+
+The order of the tabs must be consistent across the entire application. Related tabs should be gathered.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [activeTab, setActiveTab] = useState('firstTab');
+      return (
+        <TabBar {...args}>
+          <TabBar.Tab isActive={activeTab === 'firstTab'} onClick={() => setActiveTab('firstTab')}>
+            First tab
+          </TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'anotherTab'} onClick={() => setActiveTab('anotherTab')}>
+            Another tab
+          </TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'lastTab'} onClick={() => setActiveTab('lastTab')}>
+            Last tab
+          </TabBar.Tab>
+        </TabBar>
+      )
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## With Badges
+
+<Canvas>
+  <Story name="With Badges">
+    {args => {
+      const [activeTab, setActiveTab] = useState('firstTab');
+      return (
+        <TabBar {...args}>
+          <TabBar.Tab isActive={activeTab === 'firstTab'} onClick={() => setActiveTab('firstTab')}>
+            First tab <Badge level="warning">2</Badge>
+          </TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'anotherTab'} onClick={() => setActiveTab('anotherTab')}>Another tab</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'lastTab'} onClick={() => setActiveTab('lastTab')}>
+            Last tab <Badge level="danger">0</Badge>
+          </TabBar.Tab>
+        </TabBar>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With Pills
+
+<Canvas>
+  <Story name="With Pills">
+    {args => {
+      const [activeTab, setActiveTab] = useState('firstTab');
+      return (
+        <TabBar {...args}>
+          <TabBar.Tab isActive={activeTab === 'firstTab'} onClick={() => setActiveTab('firstTab')}>
+            First tab <Pill level="warning" />
+          </TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'anotherTab'} onClick={() => setActiveTab('anotherTab')}>Another tab</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'lastTab'} onClick={() => setActiveTab('lastTab')}>
+            Last tab <Pill level="danger" />
+          </TabBar.Tab>
+        </TabBar>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With a lot of tabs
+
+<Canvas>
+  <Story name="Lot of tabs">
+    {args => {
+      const [activeTab, setActiveTab] = useState('firstTab');
+      return (
+        <TabBar {...args}>
+          <TabBar.Tab isActive={activeTab === 'tab1'} onClick={() => setActiveTab('tab1')}>Tab n°1</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab2'} onClick={() => setActiveTab('tab2')}>Tab n°2</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab3'} onClick={() => setActiveTab('tab3')}>Tab n°3</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab4'} onClick={() => setActiveTab('tab4')}>Tab n°4</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab5'} onClick={() => setActiveTab('tab5')}>Tab n°5</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab6'} onClick={() => setActiveTab('tab6')}>Tab n°6</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab7'} onClick={() => setActiveTab('tab7')}>Tab n°7</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab8'} onClick={() => setActiveTab('tab8')}>Tab n°8</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab9'} onClick={() => setActiveTab('tab9')}>Tab n°9</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab10'} onClick={() => setActiveTab('tab10')}>Looooongtab</TabBar.Tab>
+        </TabBar>
+      );
+    }}
+  </Story>
+</Canvas>
