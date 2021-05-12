@@ -2,7 +2,7 @@ import React from 'react';
 import {Dropdown} from './Dropdown';
 import {Link, Image, Button} from '../../components';
 import {render, screen, fireEvent} from '../../storybook/test-util';
-import {Checkbox} from 'components/Checkbox/Checkbox';
+import {Checkbox} from '../Checkbox/Checkbox';
 
 test('it renders its children properly', () => {
   render(

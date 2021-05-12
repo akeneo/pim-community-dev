@@ -36,3 +36,13 @@ test('Table.Body supports ...rest props', () => {
 
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
+
+test('it only supports table rows', () => {
+  expect(() => {
+    render(
+      <Table isDragAndDroppable={true} onReorder={jest.fn}>
+        <Table.Body>A bad value</Table.Body>
+      </Table>
+    );
+  }).toThrowError('Children of Table.Body should be a valid react element');
+});
