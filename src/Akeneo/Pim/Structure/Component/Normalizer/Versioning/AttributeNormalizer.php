@@ -22,7 +22,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     const GLOBAL_SCOPE = 'Global';
     const CHANNEL_SCOPE = 'Channel';
 
-    private const MAX_NUMBER_OF_ATTRIBUTE_OPTIONS_CODE = 1000;
+    private const MAX_NUMBER_OF_ATTRIBUTE_OPTIONS_CODE = 10000;
 
     /** @var string[] */
     protected array $supportedFormats = ['flat'];
@@ -52,8 +52,8 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
         $flatAttribute['available_locales'] = implode(self::ITEM_SEPARATOR, $standardAttribute['available_locales']);
         $flatAttribute['locale_specific'] = $attribute->isLocaleSpecific();
 
+        /** @phpstan-ignore-next-line */
         unset($flatAttribute['labels']);
-        /** @phpstan-ignore-line */
         $flatAttribute += $this->normalizeTranslations($standardAttribute['labels'], $context);
 
         $flatAttribute['options'] = $this->normalizeOptions($attribute);
@@ -82,20 +82,21 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     protected function normalizeOptions(AttributeInterface $attribute): ?string
     {
         $attributeOptionCodes = $this->getAttributeOptionCodes->forAttributeCode($attribute->getCode());
-        $normalizedOption = null;
+        $normalizedOptions = '';
 
         $count = 0;
         foreach ($attributeOptionCodes as $attributeOptionCode) {
-            if (null === $normalizedOption) {
-                $normalizedOption = 'Code:' . $attributeOptionCode;
-            } elseif ($count < self::MAX_NUMBER_OF_ATTRIBUTE_OPTIONS_CODE) {
-                $normalizedOption .= self::GROUP_SEPARATOR . 'Code:' . $attributeOptionCode;
+            if ($count >= self::MAX_NUMBER_OF_ATTRIBUTE_OPTIONS_CODE) {
+                return  $normalizedOptions;
             }
-
+            if ($count > 0) {
+                $normalizedOptions .= self::GROUP_SEPARATOR;
+            }
+            $normalizedOptions .= 'Code:' . $attributeOptionCode;
             $count++;
         }
 
-        return $normalizedOption;
+        return $normalizedOptions === '' ? null : $normalizedOptions;
     }
 
     private function normalizeTranslations(array $labels, array $context): array

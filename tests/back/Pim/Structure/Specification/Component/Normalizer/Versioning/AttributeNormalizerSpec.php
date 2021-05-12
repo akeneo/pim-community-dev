@@ -17,7 +17,8 @@ class AttributeNormalizerSpec extends ObjectBehavior
         AttributeNormalizer $attributeNormalizerStandard,
         TranslationNormalizer $translationNormalizer,
         GetAttributeOptionCodes $getAttributeOptionCodes
-    ) {
+    )
+    {
         $this->beConstructedWith($attributeNormalizerStandard, $translationNormalizer, $getAttributeOptionCodes);
     }
 
@@ -44,7 +45,8 @@ class AttributeNormalizerSpec extends ObjectBehavior
         TranslationNormalizer $translationNormalizer,
         AttributeInterface $attribute,
         GetAttributeOptionCodes $getAttributeOptionCodes
-    ) {
+    )
+    {
         $attribute->getCode()->willReturn('attribute_size');
         $getAttributeOptionCodes->forAttributeCode('attribute_size')
             ->willReturn(new \ArrayIterator(['size']));
@@ -60,75 +62,168 @@ class AttributeNormalizerSpec extends ObjectBehavior
             ->willReturn(true);
         $attributeNormalizerStandard->normalize($attribute, 'standard', [])
             ->willReturn([
-                'type'                   => 'Yes/No',
-                'code'                   => 'attribute_size',
-                'group'                  => 'size',
-                'unique'                 => true,
+                'type' => 'Yes/No',
+                'code' => 'attribute_size',
+                'group' => 'size',
+                'unique' => true,
                 'useable_as_grid_filter' => false,
-                'allowed_extensions'     => ['csv', 'xml', 'json'],
+                'allowed_extensions' => ['csv', 'xml', 'json'],
                 'labels' => [],
-                'metric_family'          => 'Length',
-                'default_metric_unit'    => 'Centimenter',
-                'reference_data_name'    => 'color',
-                'available_locales'      => ['en_US', 'fr_FR'],
-                'locale_specific'        => false,
-                'max_characters'         => null,
-                'validation_rule'        => null,
-                'validation_regexp'      => null,
-                'wysiwyg_enabled'        => false,
-                'number_min'             => '1',
-                'number_max'             => '10',
-                'decimals_allowed'       => false,
-                'negative_allowed'       => false,
-                'date_min'               => null,
-                'date_max'               => null,
-                'max_file_size'          => '0',
-                'minimum_input_length'   => null,
-                'sort_order'             => 1,
-                'localizable'            => true,
-                'scopable'               => true,
-                'required'               => false
+                'metric_family' => 'Length',
+                'default_metric_unit' => 'Centimenter',
+                'reference_data_name' => 'color',
+                'available_locales' => ['en_US', 'fr_FR'],
+                'locale_specific' => false,
+                'max_characters' => null,
+                'validation_rule' => null,
+                'validation_regexp' => null,
+                'wysiwyg_enabled' => false,
+                'number_min' => '1',
+                'number_max' => '10',
+                'decimals_allowed' => false,
+                'negative_allowed' => false,
+                'date_min' => null,
+                'date_max' => null,
+                'max_file_size' => '0',
+                'minimum_input_length' => null,
+                'sort_order' => 1,
+                'localizable' => true,
+                'scopable' => true,
+                'required' => false
             ]);
 
         $this->normalize($attribute, 'flat', [])->shouldReturn(
             [
-                'type'                   => 'Yes/No',
-                'code'                   => 'attribute_size',
-                'group'                  => 'size',
-                'unique'                 => true,
+                'type' => 'Yes/No',
+                'code' => 'attribute_size',
+                'group' => 'size',
+                'unique' => true,
                 'useable_as_grid_filter' => false,
-                'allowed_extensions'     => 'csv,xml,json',
-                'metric_family'          => 'Length',
-                'default_metric_unit'    => 'Centimenter',
-                'reference_data_name'    => 'color',
-                'available_locales'      => 'en_US,fr_FR',
-                'locale_specific'        => false,
-                'max_characters'         => null,
-                'validation_rule'        => null,
-                'validation_regexp'      => null,
-                'wysiwyg_enabled'        => false,
-                'number_min'             => '1',
-                'number_max'             => '10',
-                'decimals_allowed'       => false,
-                'negative_allowed'       => false,
-                'date_min'               => null,
-                'date_max'               => null,
-                'max_file_size'          => '0',
-                'minimum_input_length'   => null,
-                'sort_order'             => 1,
-                'localizable'            => true,
-                'required'               => false,
-                'options'                => 'Code:size',
-                'scope'                  => 'Channel',
+                'allowed_extensions' => 'csv,xml,json',
+                'metric_family' => 'Length',
+                'default_metric_unit' => 'Centimenter',
+                'reference_data_name' => 'color',
+                'available_locales' => 'en_US,fr_FR',
+                'locale_specific' => false,
+                'max_characters' => null,
+                'validation_rule' => null,
+                'validation_regexp' => null,
+                'wysiwyg_enabled' => false,
+                'number_min' => '1',
+                'number_max' => '10',
+                'decimals_allowed' => false,
+                'negative_allowed' => false,
+                'date_min' => null,
+                'date_max' => null,
+                'max_file_size' => '0',
+                'minimum_input_length' => null,
+                'sort_order' => 1,
+                'localizable' => true,
+                'required' => false,
+                'options' => 'Code:size',
+                'scope' => 'Channel',
             ]
         );
+    }
 
+    function it_normalizes_attribute_with_multiple_options_values(
+        AttributeNormalizer $attributeNormalizerStandard,
+        TranslationNormalizer $translationNormalizer,
+        AttributeInterface $attribute,
+        GetAttributeOptionCodes $getAttributeOptionCodes
+    ) {
+        $attribute->getCode()->willReturn('attribute_size');
         $getAttributeOptionCodes->forAttributeCode('attribute_size')
             ->willReturn(new \ArrayIterator(['size', 'color', 'test']));
-        $this->normalize($attribute, 'flat', [])->shouldHaveKeyWithValue('options', 'Code:size|Code:color|Code:test');
+        $attribute->isRequired()->willReturn(false);
+        $attribute->isLocaleSpecific()->willReturn(false);
 
+        $translationNormalizer->supportsNormalization(Argument::cetera())
+            ->willReturn(true);
+        $translationNormalizer->normalize(Argument::cetera())
+            ->willReturn([]);
+
+        $attributeNormalizerStandard->normalize($attribute, 'standard', [])
+            ->willReturn([
+                'type' => 'Yes/No',
+                'code' => 'attribute_size',
+                'group' => 'size',
+                'unique' => true,
+                'useable_as_grid_filter' => false,
+                'allowed_extensions' => ['csv', 'xml', 'json'],
+                'labels' => [],
+                'metric_family' => 'Length',
+                'default_metric_unit' => 'Centimenter',
+                'reference_data_name' => 'color',
+                'available_locales' => ['en_US', 'fr_FR'],
+                'locale_specific' => false,
+                'max_characters' => null,
+                'validation_rule' => null,
+                'validation_regexp' => null,
+                'wysiwyg_enabled' => false,
+                'number_min' => '1',
+                'number_max' => '10',
+                'decimals_allowed' => false,
+                'negative_allowed' => false,
+                'date_min' => null,
+                'date_max' => null,
+                'max_file_size' => '0',
+                'minimum_input_length' => null,
+                'sort_order' => 1,
+                'localizable' => true,
+                'scopable' => true,
+                'required' => false
+            ]);
+        $attributeNormalizerStandard->supportsNormalization($attribute, 'standard', [])
+            ->willReturn(true);
+        $this->normalize($attribute, 'flat', [])->shouldHaveKeyWithValue('options', 'Code:size|Code:color|Code:test');
+    }
+
+    function it_doesnt_normalize_more_options_than_the_limit(
+        AttributeNormalizer $attributeNormalizerStandard,
+        TranslationNormalizer $translationNormalizer,
+        AttributeInterface $attribute,
+        GetAttributeOptionCodes $getAttributeOptionCodes
+    ) {
+        $attribute->getCode()->willReturn('attribute_size');
         $getAttributeOptionCodes->forAttributeCode('attribute_size')
-            ->willReturn(new \ArrayIterator(array_fill(0, 1000+1, 'banana')));
+            ->willReturn(new \ArrayIterator(array_fill(0, 1000 + 1, 'banana')));
+        $attribute->isRequired()->willReturn(false);
+        $attribute->isLocaleSpecific()->willReturn(false);
+
+        $translationNormalizer->supportsNormalization(Argument::cetera())
+            ->willReturn(true);
+        $translationNormalizer->normalize(Argument::cetera())
+            ->willReturn([]);
+
+        $attributeNormalizerStandard->normalize($attribute, 'standard', [])
+            ->willReturn([
+                'allowed_extensions' => ['csv', 'xml', 'json'],
+                'labels' => [],
+                'metric_family' => 'Length',
+                'default_metric_unit' => 'Centimenter',
+                'reference_data_name' => 'color',
+                'available_locales' => ['en_US', 'fr_FR'],
+                'locale_specific' => false,
+                'max_characters' => null,
+                'validation_rule' => null,
+                'validation_regexp' => null,
+                'wysiwyg_enabled' => false,
+                'number_min' => '1',
+                'number_max' => '10',
+                'decimals_allowed' => false,
+                'negative_allowed' => false,
+                'date_min' => null,
+                'date_max' => null,
+                'max_file_size' => '0',
+                'minimum_input_length' => null,
+                'sort_order' => 1,
+                'localizable' => true,
+                'scopable' => true,
+                'required' => false
+            ]);
+        $attributeNormalizerStandard->supportsNormalization($attribute, 'standard', [])
+            ->willReturn(true);
         $results = $this->normalize($attribute, 'flat', []);
         $results->shouldHaveKey('options');
         Assert::assertEquals(1000, count(explode('|', $results->getWrappedObject()['options'])));
