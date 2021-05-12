@@ -49,11 +49,12 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
         $this->entityManager->getConnection()->beginTransaction();
         try {
             $this->entityManager->persist($attribute);
+            $this->entityManager->flush();
+
             foreach ($this->additionalSavers as $additionalSaver) {
                 $additionalSaver->save($attribute, $options);
             }
 
-            $this->entityManager->flush();
             $this->entityManager->getConnection()->commit();
         } catch (\Throwable $e) {
             $this->entityManager->getConnection()->rollBack();
@@ -83,12 +84,14 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
                 $this->eventDispatcher->dispatch(new GenericEvent($attribute, $options), StorageEvents::PRE_SAVE);
 
                 $this->entityManager->persist($attribute);
+            }
+            $this->entityManager->flush();
+            foreach ($attributes as $attribute) {
                 foreach ($this->additionalSavers as $additionalSaver) {
                     $additionalSaver->save($attribute, $options);
                 }
             }
 
-            $this->entityManager->flush();
             $this->entityManager->getConnection()->commit();
         } catch (\Throwable $e) {
             $this->entityManager->getConnection()->rollBack();
