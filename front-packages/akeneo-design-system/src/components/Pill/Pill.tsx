@@ -17,7 +17,7 @@ type PillProps = {
 
 const Pill = React.forwardRef<HTMLDivElement, PillProps>(
   ({level = 'warning', ...rest}: PillProps, forwardedRef: Ref<HTMLDivElement>) => {
-    return <PillContainer role={level == 'danger' ? 'alert' : undefined} level={level} ref={forwardedRef} {...rest} />;
+    return <PillContainer role={level === 'danger' ? 'alert' : undefined} level={level} ref={forwardedRef} {...rest} />;
   }
 );
 
