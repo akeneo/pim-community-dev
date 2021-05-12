@@ -155,7 +155,7 @@ const useCategoryTreeNode = (id: number) => {
       const persistSuccess = moveCategory({
         identifier,
         parentId: target.position === 'in' ? target.identifier : target.parentId,
-        previousCategoryId: determineAfterWhichCategoryIdentifierToMove(target, originalParentNode.childrenIds),
+        previousCategoryId: determineAfterWhichCategoryIdentifierToMove(target, targetParentNode.childrenIds),
       });
 
       // what we have to do if the callback fails? keep original position
