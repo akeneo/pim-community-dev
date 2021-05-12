@@ -29,19 +29,17 @@ The order of the tabs must be consistent across the entire application. Related 
     {args => {
       const [activeTab, setActiveTab] = useState('firstTab');
       return (
-        <>
-          <TabBar {...args}>
-            <TabBar.Tab isActive={activeTab === 'firstTab'} onClick={() => setActiveTab('firstTab')}>
-              First tab
-            </TabBar.Tab>
-            <TabBar.Tab isActive={activeTab === 'anotherTab'} onClick={() => setActiveTab('anotherTab')}>
-              Another tab
-            </TabBar.Tab>
-            <TabBar.Tab isActive={activeTab === 'lastTab'} onClick={() => setActiveTab('lastTab')}>
-              Last tab
-            </TabBar.Tab>
-          </TabBar>
-        </>
+        <TabBar {...args}>
+          <TabBar.Tab isActive={activeTab === 'firstTab'} onClick={() => setActiveTab('firstTab')}>
+            First tab
+          </TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'anotherTab'} onClick={() => setActiveTab('anotherTab')}>
+            Another tab
+          </TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'lastTab'} onClick={() => setActiveTab('lastTab')}>
+            Last tab
+          </TabBar.Tab>
+        </TabBar>
       )
     }}
   </Story>
@@ -56,17 +54,15 @@ The order of the tabs must be consistent across the entire application. Related 
     {args => {
       const [activeTab, setActiveTab] = useState('firstTab');
       return (
-        <>
-          <TabBar {...args}>
-            <TabBar.Tab isActive={activeTab === 'firstTab'} onClick={() => setActiveTab('firstTab')}>
-              First tab <Badge level="warning">2</Badge>
-            </TabBar.Tab>
-            <TabBar.Tab isActive={activeTab === 'anotherTab'} onClick={() => setActiveTab('anotherTab')}>Another tab</TabBar.Tab>
-            <TabBar.Tab isActive={activeTab === 'lastTab'} onClick={() => setActiveTab('lastTab')}>
-              Last tab <Badge level="danger">0</Badge>
-            </TabBar.Tab>
-          </TabBar>
-        </>
+        <TabBar {...args}>
+          <TabBar.Tab isActive={activeTab === 'firstTab'} onClick={() => setActiveTab('firstTab')}>
+            First tab <Badge level="warning">2</Badge>
+          </TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'anotherTab'} onClick={() => setActiveTab('anotherTab')}>Another tab</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'lastTab'} onClick={() => setActiveTab('lastTab')}>
+            Last tab <Badge level="danger">0</Badge>
+          </TabBar.Tab>
+        </TabBar>
       );
     }}
   </Story>
@@ -79,17 +75,15 @@ The order of the tabs must be consistent across the entire application. Related 
     {args => {
       const [activeTab, setActiveTab] = useState('firstTab');
       return (
-        <>
-          <TabBar {...args}>
-            <TabBar.Tab isActive={activeTab === 'firstTab'} onClick={() => setActiveTab('firstTab')}>
-              First tab <Pill level="warning" />
-            </TabBar.Tab>
-            <TabBar.Tab isActive={activeTab === 'anotherTab'} onClick={() => setActiveTab('anotherTab')}>Another tab</TabBar.Tab>
-            <TabBar.Tab isActive={activeTab === 'lastTab'} onClick={() => setActiveTab('lastTab')}>
-              Last tab <Pill level="danger" />
-            </TabBar.Tab>
-          </TabBar>
-        </>
+        <TabBar {...args}>
+          <TabBar.Tab isActive={activeTab === 'firstTab'} onClick={() => setActiveTab('firstTab')}>
+            First tab <Pill level="warning" />
+          </TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'anotherTab'} onClick={() => setActiveTab('anotherTab')}>Another tab</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'lastTab'} onClick={() => setActiveTab('lastTab')}>
+            Last tab <Pill level="danger" />
+          </TabBar.Tab>
+        </TabBar>
       );
     }}
   </Story>
@@ -98,7 +92,7 @@ The order of the tabs must be consistent across the entire application. Related 
 ## With a lot of tabs
 
 <Canvas>
-  <Story name="Log of tabs">
+  <Story name="Lot of tabs">
     {args => {
       const [activeTab, setActiveTab] = useState('firstTab');
       return (

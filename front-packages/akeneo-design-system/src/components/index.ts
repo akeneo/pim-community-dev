@@ -17,6 +17,7 @@ export * from './Locale/Locale';
 export * from './MessageBar/MessageBar';
 export * from './Modal/Modal';
 export * from './Pagination/Pagination';
+export * from './Pill/Pill';
 export * from './ProgressBar/ProgressBar';
 export * from './ProgressIndicator/ProgressIndicator';
 export * from './Search/Search';
