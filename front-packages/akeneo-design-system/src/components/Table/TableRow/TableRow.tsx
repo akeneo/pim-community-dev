@@ -1,32 +1,17 @@
-import React, {ReactNode, Ref, SyntheticEvent} from 'react';
+import React, {ReactNode, Ref, SyntheticEvent, HTMLAttributes, forwardRef, useContext, DragEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
-import {Checkbox} from '../..';
-import {SelectableContext} from '../SelectableContext';
+import {Checkbox} from '../../../components';
+import {Override} from '../../../shared';
+import {TableContext} from '../TableContext';
+import {TableCell} from '../TableCell/TableCell';
+import {RowIcon} from '../../../icons';
+import {useBooleanState} from '../../../hooks';
+import {PlaceholderPosition, usePlaceholderPosition} from './usePlaceholderPosition';
 
-type TableRowProps = {
-  /**
-   * Content of the row
-   */
-  children?: ReactNode;
-
-  /**
-   * Function called when the user clicks on the row checkbox, required when table is selectable
-   */
-  onSelectToggle?: (isSelected: boolean) => void;
-
-  /**
-   * Define if the row is selected, required when table is selectable
-   */
-  isSelected?: boolean;
-
-  /**
-   * Function called when the user clicks on the row
-   */
-  onClick?: (event: SyntheticEvent) => void;
-};
-
-const RowContainer = styled.tr<{isSelected: boolean; isClickable: boolean} & AkeneoThemedProps>`
+const RowContainer = styled.tr<
+  {isSelected: boolean; isClickable: boolean; placeholderPosition: PlaceholderPosition} & AkeneoThemedProps
+>`
   ${({isSelected}) =>
     isSelected &&
     css`
@@ -41,6 +26,18 @@ const RowContainer = styled.tr<{isSelected: boolean; isClickable: boolean} & Ake
       &:hover {
         cursor: pointer;
       }
+    `}
+
+  ${({placeholderPosition}) =>
+    placeholderPosition === 'top' &&
+    css`
+      background: linear-gradient(to bottom, ${getColor('blue', 40)} 4px, ${getColor('white')} 0px);
+    `}
+
+  ${({placeholderPosition}) =>
+    placeholderPosition === 'bottom' &&
+    css`
+      background: linear-gradient(to top, ${getColor('blue', 40)} 4px, ${getColor('white')} 0px);
     `}
 
   &:hover > td {
@@ -67,9 +64,60 @@ const CheckboxContainer = styled.td<{isVisible: boolean}>`
   }
 `;
 
-const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
-  ({isSelected, onSelectToggle, onClick, children, ...rest}: TableRowProps, forwardedRef: Ref<HTMLTableRowElement>) => {
-    const {isSelectable, displayCheckbox} = React.useContext(SelectableContext);
+const HandleContainer = styled.div`
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  :active {
+    cursor: grabbing;
+  }
+`;
+type TableRowProps = Override<
+  HTMLAttributes<HTMLTableRowElement>,
+  {
+    /**
+     * Content of the row
+     */
+    children?: ReactNode;
+
+    /**
+     * Function called when the user clicks on the row checkbox, required when table is selectable
+     */
+    onSelectToggle?: (isSelected: boolean) => void;
+
+    /**
+     * Define if the row is selected, required when table is selectable
+     */
+    isSelected?: boolean;
+
+    /**
+     * Function called when the user clicks on the row
+     */
+    onClick?: (event: SyntheticEvent) => void;
+
+    /**
+     * @private
+     */
+    rowIndex?: number;
+
+    /**
+     * @private
+     */
+    draggedElementIndex?: number | null;
+  }
+>;
+
+const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
+  (
+    {rowIndex = 0, draggedElementIndex = null, isSelected, onSelectToggle, onClick, children, ...rest}: TableRowProps,
+    forwardedRef: Ref<HTMLTableRowElement>
+  ) => {
+    const [isDragged, drag, drop] = useBooleanState();
+    const [placeholderPosition, dragEnter, dragLeave, dragEnd] = usePlaceholderPosition(rowIndex, draggedElementIndex);
+
+    const {isSelectable, displayCheckbox, isDragAndDroppable} = useContext(TableContext);
     if (isSelectable && (undefined === isSelected || undefined === onSelectToggle)) {
       throw Error('A row in a selectable table should have the prop "isSelected" and "onSelectToggle"');
     }
@@ -85,6 +133,15 @@ const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
         isClickable={undefined !== onClick}
         isSelected={!!isSelected}
         onClick={onClick}
+        placeholderPosition={placeholderPosition}
+        draggable={isDragAndDroppable && isDragged}
+        data-draggable-index={rowIndex}
+        onDragEnter={dragEnter}
+        onDragLeave={dragLeave}
+        onDrop={(event: DragEvent) => {
+          event.preventDefault();
+          dragEnd();
+        }}
         {...rest}
       >
         {isSelectable && (
@@ -101,6 +158,13 @@ const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
             />
           </CheckboxContainer>
         )}
+        {isDragAndDroppable && (
+          <TableCell onMouseDown={drag} onMouseUp={drop} data-testid="dragAndDrop">
+            <HandleContainer>
+              <RowIcon size={16} />
+            </HandleContainer>
+          </TableCell>
+        )}
         {children}
       </RowContainer>
     );
@@ -108,3 +172,4 @@ const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
 );
 
 export {TableRow};
+export type {TableRowProps};
