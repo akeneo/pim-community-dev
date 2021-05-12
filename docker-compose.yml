@@ -61,6 +61,7 @@ services:
       - ./cypress:/cypress
       - ./cypress.json:/cypress.json
       - ./tests/front/e2e:/tests/front/e2e
+    profiles: ['end-to-end']
     ipc: host
     networks:
       - 'pim'
