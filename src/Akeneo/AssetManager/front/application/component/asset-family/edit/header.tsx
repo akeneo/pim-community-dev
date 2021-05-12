@@ -1,7 +1,7 @@
 import React, {useRef, ReactNode} from 'react';
 import {connect} from 'react-redux';
 import {useAutoFocus} from 'akeneo-design-system';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
+import {PimView} from '@akeneo-pim-community/shared';
 import EditState from 'akeneoassetmanager/application/component/app/edit-state';
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
 import {File} from 'akeneoassetmanager/domain/model/file';

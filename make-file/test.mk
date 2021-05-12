@@ -159,3 +159,6 @@ endif
 .PHONY: test-database-structure
 test-database-structure: #Doc: test database structure
 	$(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bash -c 'bin/console pimee:database:inspect -f --env=test && bin/console pimee:database:diff --env=test'
+
+end-to-end-front:
+	$(DOCKER_COMPOSE) run --rm cypress

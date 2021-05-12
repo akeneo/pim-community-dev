@@ -1,5 +1,4 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
 import {
   BooleanInput,
   Breadcrumb,
@@ -10,7 +9,7 @@ import {
   TextInput,
   TextAreaInput,
 } from 'akeneo-design-system';
-import {useRouter, useTranslate, PageContent, PageHeader} from '@akeneo-pim-community/shared';
+import {useRouter, useTranslate, PageContent, PageHeader, PimView} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {
   SSOConfigurationType,

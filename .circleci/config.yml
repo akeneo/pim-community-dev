@@ -365,6 +365,41 @@ jobs:
             name: Front unit tests
             command: PIM_CONTEXT=test make unit-front
 
+  test_front_end_to_end:
+      machine:
+          image: ubuntu-1604:201903-01
+      resource_class: large
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Create yarn cache folder
+                command: mkdir -p  ~/.cache/yarn
+          - run:
+                name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+          - run:
+                name: Start containers
+                command: |
+                    docker load -i php-pim-image.tar
+                    APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage pubsub-emulator' make up
+                    docker/wait_docker_up.sh
+          - run:
+                name: Install database
+                command: APP_ENV=behat O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
+          - run:
+                name: Launch Cypress
+                command: PIM_CONTEXT=test CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000 make end-to-end-front
+          - store_artifacts:
+                path: cypress/screenshots
+          - store_artifacts:
+                path: cypress/videos
+          - store_artifacts:
+                path: var/logs
+
   test_back_performance:
     machine:
         image: ubuntu-2004:202010-01
@@ -488,10 +523,19 @@ jobs:
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
+
+  destroy_deployed_env:
+      environment:
+        <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
           - run:
               name: Remove env on kubernetes
               command: PIM_CONTEXT=deployment make delete
-              when: always
 
   test_upgrade_from_last_release:
       environment:
@@ -538,6 +582,52 @@ jobs:
           - run:
                 name: Remove upgraded env
                 command: IMAGE_TAG=$CIRCLE_SHA1 PIM_CONTEXT=deployment make delete
+                when: always
+
+  test_upgrade_growth_from_last_release:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - add_ssh_keys
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+                name: Get latest release & export variables
+                command: |
+                    GS_GROWTH=$(gsutil ls -l gs://akecld-terraform-modules/growth-edition | sort -r | head -n 1 || true)
+                    LATEST_RELEASE=$(echo ${GS_GROWTH} | cut -d/ -f5)
+                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                    echo export LATEST_RELEASE=${LATEST_RELEASE} >> $BASH_ENV
+                    echo export INSTANCE_NAME_PREFIX=pimup >> $BASH_ENV
+                    echo export INSTANCE_NAME=pimup-$(echo $CIRCLE_SHA1 | cut -c -7) >> $BASH_ENV
+                    echo export CIRCLE_SHA1=${CIRCLE_SHA1} >> $BASH_ENV
+          - run:
+                name: Deploy instance with latest release
+                command: |
+                    IMAGE_TAG=${LATEST_RELEASE} PIM_CONTEXT=deployment make create-ci-release-files
+                    IMAGE_TAG=${LATEST_RELEASE} PIM_CONTEXT=deployment make change-terraform-source-version
+                    IMAGE_TAG=${LATEST_RELEASE} PIM_CONTEXT=deployment make deploy
+          - run:
+                name: Upgrade
+                command: UPGRADE_STEP_2=true PIM_CONTEXT=deployment make deploy-serenity
+          - run:
+                name: Production tests on upgraded env
+                command: PIM_CONTEXT=deployment make test-prod
+          - run:
+                name: Check that upgrader pod ran
+                command: kubectl get pods --namespace=grth-pimup-$(echo $CIRCLE_SHA1 | cut -c -7) | grep pim-upgrader
+          - run:
+                name: Prepare infrastructure artifacts
+                command: PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
+                when: on_fail
+          - store_artifacts:
+                path: ~/artifacts/infra
+          - run:
+                name: Remove upgraded env
+                command: PIM_CONTEXT=deployment make delete
                 when: always
 
   release:
@@ -636,6 +726,32 @@ jobs:
               name: Remove env on kubernetes
               command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete
               when: on_fail
+
+  ui_sanity_checks:
+      machine:
+          image: ubuntu-1604:201903-01
+      resource_class: large
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Create yarn cache folder
+                command: mkdir -p  ~/.cache/yarn
+          - run:
+                name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+          - run:
+                name: Launch Cypress
+                command: IMAGE_TAG_SHORTED=$(echo $CIRCLE_SHA1 | cut -c -7) PIM_CONTEXT=deployment CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000  make smoke-tests
+          - store_artifacts:
+                path: cypress/screenshots
+          - store_artifacts:
+                path: cypress/videos
+          - store_artifacts:
+                path: var/logs
 
   prepare_pr_ge_environment:
       environment:
@@ -948,7 +1064,7 @@ jobs:
               command: |
                   docker run --rm -v $PWD/growth_edition/last_good_ce:/app composer composer install
                   CE_COMMIT_HASH=$(docker run --rm -v $PWD/growth_edition/last_good_ce:/app composer php get_last_good_ce_revision.php)
-                  IMAGE_TAG=$(echo growth-$CE_COMMIT_HASH | cut -b 1-40)
+                  IMAGE_TAG=$(echo growth-$CE_COMMIT_HASH | cut -b 1-20)$(echo $CIRCLE_SHA1 | cut -b 1-20)
                   GROWTH_RELEASE_NAME=growth-v$(date +%Y%m%d%H%M%S)
 
                   echo "CE Commit hash used: $CE_COMMIT_HASH"
@@ -978,8 +1094,11 @@ jobs:
               command: |
                   DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --target prod \
                     --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG \
+                    --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME \
                     --build-arg COMPOSER_AUTH=${COMPOSER_AUTH} .
                   docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG
+                  docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME
+                  BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/ gs://akecld-terraform-modules/growth-edition-dev/$IMAGE_TAG/
           - run:
               name: Persist env vars for next jobs
               command: |
@@ -1012,7 +1131,9 @@ jobs:
                 cp -r /home/circleci/project/deployments/automation /home/circleci/project/deployments/terraform/deployments
           - run:
               name: Push Terraform modules to GCS
-              command: BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/
+              command: |
+                BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/terraform/deployments/terraform
           - run:
               name: Tag the Docker image with the definitive tag
               command: |
@@ -1049,6 +1170,13 @@ workflows:
           - test_deploy:
                 requires:
                     - test_cronjobs_existence
+          - ui_sanity_checks:
+                requires:
+                    - build_dev
+                    - test_deploy
+          - destroy_deployed_env:
+                requires:
+                    - ui_sanity_checks
           - test_upgrade_from_last_release:
                 requires:
                     - test_deploy
@@ -1099,6 +1227,9 @@ workflows:
                 requires:
                     - build_dev
           - test_front_static_acceptance_and_integration:
+                requires:
+                    - build_dev
+          - test_front_end_to_end:
                 requires:
                     - build_dev
           - test_back_phpunit:
@@ -1155,9 +1286,12 @@ workflows:
           - test_deploy:
                 requires:
                     - test_cronjobs_existence
-          - release_growth_edition:
+          - test_upgrade_growth_from_last_release:
                     requires:
                         - test_deploy
+          - release_growth_edition:
+                    requires:
+                        - test_upgrade_growth_from_last_release
 
   nightly_deployments:
       triggers:
@@ -1177,24 +1311,24 @@ workflows:
                 requires:
                     - checkout
 
-  hourly_cleanup:
-      triggers:
-          - schedule:
-                cron: "0 * * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
-
-      jobs:
-          - checkout
-          - delete_pr_environments_hourly:
-                requires:
-                    - checkout
-          - mr_proper:
-                requires:
-                  - delete_pr_environments_hourly
-
+#  hourly_cleanup:
+#      triggers:
+#          - schedule:
+#                cron: "0 * * * *"
+#                filters:
+#                    branches:
+#                        only:
+#                            - master
+#
+#      jobs:
+#          - checkout
+#          - delete_pr_environments_hourly:
+#                requires:
+#                    - checkout
+#          - mr_proper:
+#                requires:
+#                  - delete_pr_environments_hourly
+#
   nightly-beta:
       triggers:
           - schedule:

@@ -55,9 +55,10 @@ return [
     Akeneo\Platform\Bundle\UIBundle\PimUIBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle::class => ['all' => true],
     Akeneo\Connectivity\Connection\Infrastructure\Symfony\AkeneoConnectivityConnectionBundle::class => ['all' => true],
-    Akeneo\Platform\Bundle\FeatureFlagBundle\AkeneoFeatureFlagBundle::class =>  ['all' => true],
-    Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\AkeneoCommunicationChannelBundle::class =>  ['all' => true],
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\AkeneoDataQualityInsightsBundle::class =>  ['all' => true],
+    Akeneo\Platform\Bundle\FeatureFlagBundle\AkeneoFeatureFlagBundle::class => ['all' => true],
+    Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\AkeneoCommunicationChannelBundle::class => ['all' => true],
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\AkeneoDataQualityInsightsBundle::class => ['all' => true],
+    Akeneo\Platform\Bundle\FrameworkBundle\PimEnterpriseFrameworkBundle::class => ['all' => true],
 
     // PIM Enterprise bundle
     Akeneo\Tool\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle::class => ['all' => true],
@@ -78,9 +79,9 @@ return [
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\AkeneoPimEnterpriseDataQualityInsightsBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Product\Bundle\AkeneoPimEnterpriseProductEnrichmentBundle::class => ['all' => true],
     Akeneo\Pim\Structure\Bundle\AkeneoPimEnterpriseStructureBundle::class => ['all' => true],
-    Akeneo\SharedCatalog\AkeneoSharedCatalogBundle::class =>  ['all' => true],
-    AkeneoEnterprise\Connectivity\Connection\Infrastructure\Symfony\AkeneoEnterpriseConnectivityConnectionBundle::class =>  ['all' => true],
-    Akeneo\Pim\TrialEdition\Infrastructure\Symfony\AkeneoPimEnterpriseTrialEditionBundle::class =>  ['all' => true],
+    Akeneo\SharedCatalog\AkeneoSharedCatalogBundle::class => ['all' => true],
+    AkeneoEnterprise\Connectivity\Connection\Infrastructure\Symfony\AkeneoEnterpriseConnectivityConnectionBundle::class => ['all' => true],
+    Akeneo\Pim\TrialEdition\Infrastructure\Symfony\AkeneoPimEnterpriseTrialEditionBundle::class => ['all' => true],
     Akeneo\Pim\TailoredExport\Infrastructure\Symfony\AkeneoTailoredExportBundle::class => ['all' => true],
 
     // Dev related bundles

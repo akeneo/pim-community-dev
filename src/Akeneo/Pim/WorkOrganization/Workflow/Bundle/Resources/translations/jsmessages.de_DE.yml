@@ -137,6 +137,8 @@ pimee_dashboard:
       product: Produkt
       review: Überprüfung
       empty: Keine zu überprüfende Vorschläge
+      title: Zu prüfende Vorschläge
+      view_all: Alle Vorschläge anzeigen
     header.view_all: Alle anzeigen
 pimee_enrich.entity.product:
   module:
