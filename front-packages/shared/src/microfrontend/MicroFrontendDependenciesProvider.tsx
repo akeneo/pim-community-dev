@@ -37,23 +37,32 @@ const MicroFrontendDependenciesProvider = ({
       throw new Error(`Route ${route} not found`);
     }
 
-    return routeConf.tokens
-      .map((token: string[]) => {
-        switch (token[0]) {
-          case 'text':
-            return token[1];
-          case 'variable':
-            if (parameters === undefined) {
-              throw new Error(`Missing parameter: ${token[3]}`);
-            }
+    let queryString = parameters
+      ? '?' +
+        Object.entries(parameters)
+          .map(([key, val]) => `${key}=${val}`)
+          .join('&')
+      : '';
 
-            return token[1] + parameters[token[3]];
-          default:
-            throw new Error(`Unexpected token type: ${token[0]}`);
-        }
-      })
-      .reverse()
-      .join('');
+    return (
+      routeConf.tokens
+        .map((token: string[]) => {
+          switch (token[0]) {
+            case 'text':
+              return token[1];
+            case 'variable':
+              if (parameters === undefined) {
+                throw new Error(`Missing parameter: ${token[3]}`);
+              }
+
+              return token[1] + parameters[token[3]];
+            default:
+              throw new Error(`Unexpected token type: ${token[0]}`);
+          }
+        })
+        .reverse()
+        .join('') + queryString
+    );
   };
 
   const currentUserUrl = generateUrl('pim_user_user_rest_get_current');
