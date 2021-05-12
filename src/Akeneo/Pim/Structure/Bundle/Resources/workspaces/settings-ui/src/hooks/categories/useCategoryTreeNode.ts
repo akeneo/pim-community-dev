@@ -9,6 +9,7 @@ import {
 } from '../../models';
 import {findByIdentifiers, findLoadedDescendantsIdentifiers, findOneByIdentifier, update} from '../../helpers';
 import {useFetch, useRoute} from '@akeneo-pim-community/shared';
+import {moveCategory} from '../../infrastructure/savers';
 
 type Move = {
   identifier: number;
@@ -143,17 +144,44 @@ const useCategoryTreeNode = (id: number) => {
         newNodesList = update(newNodesList, {
           ...originalParentNode,
           childrenIds: updateOriginalParentChildren,
-          type: originalParentNode.type !== 'root' ? (updateOriginalParentChildren.length > 0 ? 'node' : 'leaf') : 'root',
+          type:
+            originalParentNode.type !== 'root' ? (updateOriginalParentChildren.length > 0 ? 'node' : 'leaf') : 'root',
         });
       }
 
       setNodes(newNodesList);
 
-      // call callback to save it in backend
+      // Call to backend to persist the movement
+      const persistSuccess = moveCategory({
+        identifier,
+        parentId: target.position === 'in' ? target.identifier : target.parentId,
+        previousCategoryId: determineAfterWhichCategoryIdentifierToMove(target, targetParentNode.childrenIds),
+      });
+
       // what we have to do if the callback fails? keep original position
+      console.log('Persist movement', persistSuccess);
     },
     [nodes]
   );
+
+  // @todo Move in another location, or refactor.
+  const determineAfterWhichCategoryIdentifierToMove = (
+    target: MoveTarget,
+    childrenIds: number[]
+  ): number | null => {
+    if (target.position === 'after') {
+      return target.identifier;
+    }
+
+    if (target.position === 'before') {
+      const targetIndex = childrenIds.indexOf(target.identifier) - 1;
+      if (targetIndex >= 0 && childrenIds[targetIndex]) {
+        return childrenIds[targetIndex];
+      }
+    }
+
+    return null;
+  };
 
   // When a category is deleted, update its parent's node and remove the category's node and its descendants.
   const onDeleteCategory = () => {
