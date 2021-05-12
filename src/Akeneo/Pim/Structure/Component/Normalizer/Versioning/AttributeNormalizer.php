@@ -22,6 +22,8 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     const GLOBAL_SCOPE = 'Global';
     const CHANNEL_SCOPE = 'Channel';
 
+    private const MAX_NUMBER_OF_ATTRIBUTE_OPTIONS_CODE = 1000;
+
     /** @var string[] */
     protected array $supportedFormats = ['flat'];
     protected NormalizerInterface $standardNormalizer;
@@ -50,7 +52,8 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
         $flatAttribute['available_locales'] = implode(self::ITEM_SEPARATOR, $standardAttribute['available_locales']);
         $flatAttribute['locale_specific'] = $attribute->isLocaleSpecific();
 
-        unset($flatAttribute['labels']); /** @phpstan-ignore-line */
+        unset($flatAttribute['labels']);
+        /** @phpstan-ignore-line */
         $flatAttribute += $this->normalizeTranslations($standardAttribute['labels'], $context);
 
         $flatAttribute['options'] = $this->normalizeOptions($attribute);
@@ -80,12 +83,16 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     {
         $attributeOptionCodes = $this->getAttributeOptionCodes->forAttributeCode($attribute->getCode());
         $normalizedOption = null;
+
+        $count = 0;
         foreach ($attributeOptionCodes as $attributeOptionCode) {
             if (null === $normalizedOption) {
                 $normalizedOption = 'Code:' . $attributeOptionCode;
-            } else {
+            } elseif ($count < self::MAX_NUMBER_OF_ATTRIBUTE_OPTIONS_CODE) {
                 $normalizedOption .= self::GROUP_SEPARATOR . 'Code:' . $attributeOptionCode;
             }
+
+            $count++;
         }
 
         return $normalizedOption;
