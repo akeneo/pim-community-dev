@@ -1,5 +1,5 @@
 import {useCountProductsByCategory} from './useCountProductsByCategory';
-import {useEffect, useState} from "react";
+import {useEffect, useState} from 'react';
 
 type CategoryDeletion = {
   callback: (nbProducts: number) => void;
@@ -11,9 +11,7 @@ const useCountProductsBeforeDeleteCategory = (categoryId: number) => {
   const [categoryDeletion, setCategoryDeletion] = useState<CategoryDeletion | null>(null);
   const {numberOfProducts, loadNumberOfProducts} = useCountProductsByCategory(categoryId);
 
-  const beforeDelete = (
-    deleteCategory: (nbProducts: number) => void
-  ) => {
+  const beforeDelete = (deleteCategory: (nbProducts: number) => void) => {
     setCategoryDeletion({callback: deleteCategory, status: numberOfProducts !== null ? 'ready' : 'pending'});
   };
 

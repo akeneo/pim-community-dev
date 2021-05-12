@@ -165,10 +165,7 @@ const useCategoryTreeNode = (id: number) => {
   );
 
   // @todo Move in another location, or refactor.
-  const determineAfterWhichCategoryIdentifierToMove = (
-    target: MoveTarget,
-    childrenIds: number[]
-  ): number | null => {
+  const determineAfterWhichCategoryIdentifierToMove = (target: MoveTarget, childrenIds: number[]): number | null => {
     if (target.position === 'after') {
       return target.identifier;
     }

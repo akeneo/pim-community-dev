@@ -95,7 +95,7 @@ const CategoryTreeProvider: FC<Props> = ({children, root}) => {
     setHoveredCategory,
     moveTarget,
     setMoveTarget,
-    resetMove
+    resetMove,
   };
   return <CategoryTreeContext.Provider value={state}>{children}</CategoryTreeContext.Provider>;
 };

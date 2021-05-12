@@ -47,7 +47,9 @@ const CategoryEditPage: FC = () => {
     const rootCategory = category && category.root ? category.root : category;
     const uiLocale = userContext.get('uiLocale');
 
-    setCategoryLabel(category && category.labels.hasOwnProperty(uiLocale) ? category.labels[uiLocale] : `[${categoryId}]`);
+    setCategoryLabel(
+      category && category.labels.hasOwnProperty(uiLocale) ? category.labels[uiLocale] : `[${categoryId}]`
+    );
     setTreeLabel(
       rootCategory
         ? rootCategory.labels[userContext.get('uiLocale')]
