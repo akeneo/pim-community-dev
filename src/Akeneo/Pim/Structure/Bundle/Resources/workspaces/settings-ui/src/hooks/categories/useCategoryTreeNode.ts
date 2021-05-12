@@ -9,11 +9,13 @@ import {
 } from '../../models';
 import {findByIdentifiers, findLoadedDescendantsIdentifiers, findOneByIdentifier, update} from '../../helpers';
 import {useFetch, useRoute} from '@akeneo-pim-community/shared';
+import {moveCategory} from '../../infrastructure/savers';
 
 type Move = {
   identifier: number;
   target: MoveTarget;
   status: 'pending' | 'ready';
+  onMove: () => void;
 };
 
 const useCategoryTreeNode = (id: number) => {
@@ -43,7 +45,7 @@ const useCategoryTreeNode = (id: number) => {
   };
 
   const moveTo = useCallback(
-    (movedCategoryId: number, target: MoveTarget) => {
+    (movedCategoryId: number, target: MoveTarget, onMove: () => void) => {
       const targetParentNode = findOneByIdentifier(
         nodes,
         target.position === 'in' ? target.identifier : target.parentId
@@ -61,6 +63,7 @@ const useCategoryTreeNode = (id: number) => {
           target.position === 'in' && targetParentNode.type === 'node' && targetParentNode.childrenStatus === 'idle'
             ? 'pending'
             : 'ready',
+        onMove,
       });
     },
     [nodes]
@@ -70,6 +73,10 @@ const useCategoryTreeNode = (id: number) => {
     (move: Move) => {
       const {identifier, target, status} = move;
       if (status !== 'ready') {
+        return;
+      }
+
+      if (identifier === target.identifier) {
         return;
       }
 
@@ -133,37 +140,72 @@ const useCategoryTreeNode = (id: number) => {
       // remove the original id from the original parent's children
       // update the original parent
       if (originalParentNode.identifier !== targetParentNode.identifier) {
+        const updateOriginalParentChildren = originalParentNode.childrenIds.filter(id => id !== movedNode.identifier);
         newNodesList = update(newNodesList, {
           ...originalParentNode,
-          childrenIds: originalParentNode.childrenIds.filter(id => id !== movedNode.identifier),
+          childrenIds: updateOriginalParentChildren,
+          type:
+            originalParentNode.type !== 'root' ? (updateOriginalParentChildren.length > 0 ? 'node' : 'leaf') : 'root',
         });
       }
 
       setNodes(newNodesList);
 
-      // call callback to save it in backend
-      // what we have to do if the callback fails? keep original position
+      // Call to backend to persist the movement
+      const persistSuccess = moveCategory({
+        identifier,
+        parentId: target.position === 'in' ? target.identifier : target.parentId,
+        previousCategoryId: determineAfterWhichCategoryIdentifierToMove(target, targetParentNode.childrenIds),
+      });
 
-      setMove(null);
+      // what we have to do if the callback fails? keep original position
+      console.log('Persist movement', persistSuccess);
     },
     [nodes]
   );
 
-  // Remove the node and its descendants when a category is deleted,
+  // @todo Move in another location, or refactor.
+  const determineAfterWhichCategoryIdentifierToMove = (
+    target: MoveTarget,
+    childrenIds: number[]
+  ): number | null => {
+    if (target.position === 'after') {
+      return target.identifier;
+    }
+
+    if (target.position === 'before') {
+      const targetIndex = childrenIds.indexOf(target.identifier) - 1;
+      if (targetIndex >= 0 && childrenIds[targetIndex]) {
+        return childrenIds[targetIndex];
+      }
+    }
+
+    return null;
+  };
+
+  // When a category is deleted, update its parent's node and remove the category's node and its descendants.
   const onDeleteCategory = () => {
     if (!node || !node.parentId) {
       return;
     }
 
-    const parent = findOneByIdentifier(nodes, node.parentId);
-    if (!parent) {
-      // @todo what to do for this kind of unexpected error? do nothing? log error message? force reload the page?
+    const nodesToRemove = [node.identifier, ...findLoadedDescendantsIdentifiers(nodes, node)];
+    const updatedNodes = nodes.filter(treeNode => !nodesToRemove.includes(treeNode.identifier));
+
+    const parentNode = findOneByIdentifier(nodes, node.parentId);
+    if (!parentNode) {
+      setNodes(updatedNodes);
       return;
     }
 
-    const nodesToRemove = [node.identifier, ...findLoadedDescendantsIdentifiers(nodes, node)];
+    const updatedParentChildren = parentNode.childrenIds.filter(childId => childId !== node.identifier);
+    const updatedParent: TreeNode<CategoryTreeModel> = {
+      ...parentNode,
+      childrenIds: updatedParentChildren,
+      type: parentNode.type !== 'root' ? (updatedParentChildren.length > 0 ? 'node' : 'leaf') : 'root',
+    };
 
-    setNodes(nodes.filter(treeNode => !nodesToRemove.includes(treeNode.identifier)));
+    setNodes(update(updatedNodes, updatedParent));
   };
 
   const forceReloadChildren = useCallback(() => {
@@ -229,6 +271,9 @@ const useCategoryTreeNode = (id: number) => {
 
     if (move.status === 'ready') {
       doMove(move);
+      move.onMove();
+      setMove(null);
+
       return;
     }
   }, [move]);

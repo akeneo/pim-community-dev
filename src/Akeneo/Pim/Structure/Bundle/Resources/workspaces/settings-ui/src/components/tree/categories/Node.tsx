@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useCallback} from 'react';
 import {Tree} from '../../shared';
 import {CategoryTreeModel as CategoryTreeModel} from '../../../models';
 import {useCategoryTreeNode} from '../../../hooks';
@@ -6,6 +6,7 @@ import {MoveTarget} from '../../providers';
 import {Button} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useCountProductsBeforeDeleteCategory} from '../../../hooks';
+import {NodePreview} from './NodePreview';
 
 type Props = {
   id: number;
@@ -32,11 +33,33 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
     getCategoryPosition,
     moveTarget,
     setMoveTarget,
+    resetMove,
     onDeleteCategory,
   } = useCategoryTreeNode(id);
 
   const translate = useTranslate();
   const countProductsBeforeDeleteCategory = useCountProductsBeforeDeleteCategory(id);
+
+  const isValidPreviewPosition = useCallback(
+    (position: number): boolean => {
+      if (draggedCategory === null || moveTarget === null || draggedCategory.status !== 'ready') {
+        return false;
+      }
+
+      if (draggedCategory.identifier === moveTarget.identifier) {
+        return false;
+      }
+
+      const previewPosition =
+        moveTarget.position === 'before' ? position - 1 : moveTarget.position === 'after' ? position + 1 : position;
+      const isOriginalPosition =
+        moveTarget.identifier === draggedCategory.identifier ||
+        (draggedCategory.parentId === moveTarget.parentId && draggedCategory.position === previewPosition);
+
+      return !isOriginalPosition;
+    },
+    [draggedCategory, moveTarget]
+  );
 
   if (node === undefined) {
     return null;
@@ -51,7 +74,13 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
       isLoading={node.childrenStatus === 'loading'}
       onClick={!followCategory ? undefined : ({data}) => followCategory(data)}
       disabled={draggedCategory !== null && node.identifier === draggedCategory.identifier}
-      selected={hoveredCategory !== null && node.identifier === hoveredCategory.identifier}
+      selected={
+        moveTarget !== null &&
+        node.identifier === moveTarget.identifier &&
+        moveTarget.position === 'in' &&
+        draggedCategory !== null &&
+        draggedCategory.identifier !== node.identifier
+      }
       onOpen={async () => {
         // @todo handle when children have already loaded
         if (node.childrenStatus !== 'idle') {
@@ -68,8 +97,9 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
         }
         setDraggedCategory({
           parentId: node.parentId,
-          position: 0, // @todo get the real position
-          identifier: node?.identifier,
+          position: 0,
+          status: 'pending',
+          identifier: node.identifier,
         });
       }}
       onDragOver={(target, cursorPosition) => {
@@ -121,32 +151,11 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
       // so that we can handle the
       // }}
       onDrop={async () => {
-        // @todo rework to not have to do all these sanity checks
-        if (draggedCategory && node !== undefined && moveTarget) {
-          moveTo(draggedCategory.identifier, moveTarget);
-
-          /*
-            @todo pass the moveCategory as a props in CategoryTree
-            const moveSuccess = moveCategory({
-              identifier: draggedCategory.identifier,
-              parentId: moveTarget.parentId,
-              previousCategoryId: node.identifier,
-            });
-
-            // @todo what we have to do if the callback fails? keep original position
-            console.log(moveSuccess);
-           */
-
-          setDraggedCategory(null);
-          setHoveredCategory(null);
-          setMoveTarget(null);
+        if (draggedCategory && moveTarget) {
+          moveTo(draggedCategory.identifier, moveTarget, resetMove);
         }
       }}
-      onDragEnd={() => {
-        setDraggedCategory(null);
-        setHoveredCategory(null);
-        setMoveTarget(null);
-      }}
+      onDragEnd={() => resetMove()}
     >
       {(addCategory || deleteCategory) && (
         <Tree.Actions key={`category-actions-${id}`}>
@@ -180,13 +189,13 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
           )}
         </Tree.Actions>
       )}
-      {/* @todo if the droppable node position and parent id correspond, add a visual feedback here for the further moved category */}
-      {/* @todo handle preview, dragOver, dop, ... of the category when the user moving it */}
-      {children.map(child => (
+      {children.map((child, index) => (
         <React.Fragment key={`category-node-${id}-${child.identifier}`}>
-          {moveTarget?.identifier === child.identifier && moveTarget.position === 'before' && (
-            <hr style={{borderColor: 'green'}} />
-          )}
+          {draggedCategory &&
+            moveTarget &&
+            moveTarget.identifier === child.identifier &&
+            moveTarget.position === 'before' &&
+            isValidPreviewPosition(index) && <NodePreview id={draggedCategory.identifier} />}
           <Node
             id={child.identifier}
             label={child.label}
@@ -195,9 +204,11 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
             deleteCategory={deleteCategory}
             sortable={sortable}
           />
-          {moveTarget?.identifier === child.identifier && moveTarget.position === 'after' && (
-            <hr style={{borderColor: 'green'}} />
-          )}
+          {draggedCategory &&
+            moveTarget &&
+            moveTarget.identifier === child.identifier &&
+            moveTarget.position === 'after' &&
+            isValidPreviewPosition(index) && <NodePreview id={draggedCategory.identifier} />}
         </React.Fragment>
       ))}
     </Tree>

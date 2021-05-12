@@ -1,10 +1,12 @@
-import React, {createContext, FC, useState} from 'react';
+import React, {createContext, FC, useEffect, useState} from 'react';
 import {buildTreeNodeFromCategoryTree, CategoryTreeModel, TreeNode} from '../../models';
+import {findOneByIdentifier} from '../../helpers';
 
 type DraggedCategory = {
   parentId: number;
   position: number;
   identifier: number;
+  status: 'pending' | 'ready';
 };
 
 type HoveredCategory = {
@@ -28,6 +30,7 @@ type CategoryTreeState = {
   setHoveredCategory: (data: HoveredCategory | null) => void;
   moveTarget: MoveTarget | null;
   setMoveTarget: (data: MoveTarget | null) => void;
+  resetMove: () => void;
 };
 
 const CategoryTreeContext = createContext<CategoryTreeState>({
@@ -39,6 +42,7 @@ const CategoryTreeContext = createContext<CategoryTreeState>({
   setHoveredCategory: () => {},
   moveTarget: null,
   setMoveTarget: () => {},
+  resetMove: () => {},
 });
 
 type Props = {
@@ -57,6 +61,31 @@ const CategoryTreeProvider: FC<Props> = ({children, root}) => {
   const [hoveredCategory, setHoveredCategory] = useState<HoveredCategory | null>(null);
   const [moveTarget, setMoveTarget] = useState<MoveTarget | null>(null);
 
+  const resetMove = () => {
+    setDraggedCategory(null);
+    setHoveredCategory(null);
+    setMoveTarget(null);
+  };
+
+  useEffect(() => {
+    if (draggedCategory === null || draggedCategory.status !== 'pending') {
+      return;
+    }
+    const parentCategory = findOneByIdentifier(nodes, draggedCategory.parentId);
+
+    if (!parentCategory) {
+      return;
+    }
+
+    const position = parentCategory.childrenIds.indexOf(draggedCategory.identifier);
+
+    setDraggedCategory({
+      ...draggedCategory,
+      status: 'ready',
+      position: position >= 0 ? position : 0,
+    });
+  }, [draggedCategory]);
+
   const state = {
     nodes,
     setNodes,
@@ -66,6 +95,7 @@ const CategoryTreeProvider: FC<Props> = ({children, root}) => {
     setHoveredCategory,
     moveTarget,
     setMoveTarget,
+    resetMove
   };
   return <CategoryTreeContext.Provider value={state}>{children}</CategoryTreeContext.Provider>;
 };

@@ -7,8 +7,6 @@ type MovedCategory = {
 };
 
 const moveCategory = async (movedCategory: MovedCategory): Promise<boolean> => {
-  console.log('moveCategory', movedCategory);
-
   const url = Routing.generate('pim_enrich_categorytree_movenode', {
     id: movedCategory.identifier.toString(),
     parent: movedCategory.parentId.toString(),
