@@ -129,6 +129,7 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
                 ScalarValue::localizableValue('root_product_model_view_attribute', true, 'en_US'),
                 ScalarValue::localizableValue('root_product_model_view_attribute', true, 'fr_FR'),
             ]),
+            null,
             null
         );
         $expectedProductList = new ConnectorProductList(1, [$expectedProduct]);
@@ -292,6 +293,7 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
                 ScalarValue::localizableValue('root_product_model_view_attribute', true, 'en_US'),
                 ScalarValue::localizableValue('root_product_model_view_attribute', true, 'fr_FR'),
             ]),
+            null,
             null
         );
         $expectedProductList = new ConnectorProductList(1, [$expectedProduct]);
