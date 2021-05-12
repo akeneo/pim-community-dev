@@ -7,7 +7,9 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Normalizer\Versioning\AttributeNormalizer;
 use Akeneo\Pim\Structure\Component\Query\InternalApi\GetAttributeOptionCodes;
 use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\Assert;
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AttributeNormalizerSpec extends ObjectBehavior
 {
@@ -26,7 +28,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
 
     function it_is_a_normalizer()
     {
-        $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->shouldImplement(NormalizerInterface::class);
     }
 
     function it_supports_attribute_normalization_into_flat(AttributeInterface $attribute)
@@ -44,9 +46,8 @@ class AttributeNormalizerSpec extends ObjectBehavior
         GetAttributeOptionCodes $getAttributeOptionCodes
     ) {
         $attribute->getCode()->willReturn('attribute_size');
-        $getAttributeOptionCodes->forAttributeCode('attribute_size')->willReturn(
-            new \ArrayIterator(['size'])
-        );
+        $getAttributeOptionCodes->forAttributeCode('attribute_size')
+            ->willReturn(new \ArrayIterator(['size']));
         $attribute->isRequired()->willReturn(false);
         $attribute->isLocaleSpecific()->willReturn(false);
 
@@ -121,5 +122,15 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'scope'                  => 'Channel',
             ]
         );
+
+        $getAttributeOptionCodes->forAttributeCode('attribute_size')
+            ->willReturn(new \ArrayIterator(['size', 'color', 'test']));
+        $this->normalize($attribute, 'flat', [])->shouldHaveKeyWithValue('options', 'Code:size|Code:color|Code:test');
+
+        $getAttributeOptionCodes->forAttributeCode('attribute_size')
+            ->willReturn(new \ArrayIterator(array_fill(0, 1000+1, 'banana')));
+        $results = $this->normalize($attribute, 'flat', []);
+        $results->shouldHaveKey('options');
+        Assert::assertEquals(1000, count(explode('|', $results->getWrappedObject()['options'])));
     }
 }
