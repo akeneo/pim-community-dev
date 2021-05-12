@@ -1,6 +1,10 @@
 pim_menu:
+  tab:
+    connect: Connect
+  navigation:
+    connect: Navigation dans Connect
   navigation_back:
-    connection: Retour aux connexions
+    connection: Retour vers Connect
   navigation_block:
     connection: Navigation connexions
   item:
@@ -10,8 +14,13 @@ pim_menu:
     connection_monitoring: Supervision
     connection_webhook_edit: Souscription aux événements
     connection_webhook_event_logs: Journal des événements
+    data_flows: Flux de données
+    connect_connection_settings: Paramètres de connexion
+    marketplace: Marketplace
+    new_label: NOUVEAU
 pim_title:
-  akeneo_connectivity_connection_settings_index: Connexions
+  akeneo_connectivity_connection_connect_marketplace: Marketplace
+  akeneo_connectivity_connection_settings_index: Paramètres des connexions
   akeneo_connectivity_connection_settings_edit: Paramètres de connexion
   akeneo_connectivity_connection_settings_any: Paramètres de connexion
   akeneo_connectivity_connection_audit_index: Tableau de bord des connexions
@@ -21,7 +30,17 @@ pim_title:
   akeneo_connectivity_connection_webhook_edit: Souscription aux événements
   akeneo_connectivity_connection_webhook_regenerate_secret: Souscription aux événements
   akeneo_connectivity_connection_webhook_event_logs: Journal des événements
+  akeneo_connectivity_connection_redirect_audit: Tableau de bord des connexions
+  akeneo_connectivity_connection_settings_redirect: Connexions
 akeneo_connectivity.connection:
+  connect:
+    redirect.link: Pour y aller, cliquez ici
+    dashboard_redirect.title: Trouvez votre tableau de bord Flux de données dans le menu Connect
+    settings_redirect.title: Trouvez les informations de vos connexions dans le menu Connect
+    marketplace:
+      title: Vous voulez connecter votre PIM avec une autre application ? 🤟
+      sub_title: Consultez notre marketplace pour voir quelles applications peuvent être connectées avec Akeneo PIM.
+      link: C'est parti!
   connections: Connexions
   secondary_actions:
     title: Autres actions
@@ -133,9 +152,9 @@ akeneo_connectivity.connection:
     flash:
       success: Connexion supprimée avec succès.
   helper:
-    title: '👋 Bienvenue dans cette fonctionnalité qui vous aidera à bien connecter votre PIM !'
+    title: '{0} Pour l''instant, vous n''avez aucune connexion pour lier votre PIM à des applications tierces.{1} Vous avez 1 connexion reliant votre PIM à une application tierce. Bien joué, ainsi votre PIM est bien intégré dans son écosystème.|]1,Inf] Vous avez {{ count }} connexions reliant votre PIM à des applications tierces. Bien joué, votre PIM est ainsi bien intégré dans son écosystème.'
     description: Un PIM non connecté, c'est un peu inutile, non ? Grâce aux connexions, vous pouvez déclarer facilement tous les flux de données qui sont envoyés dans votre PIM, ainsi que ceux qui en sortent.
-    link: Envie d'en savoir plus ? Découvrez ce qu'est une connexion et comment en tirer le meilleur parti ici !
+    link: Pour en savoir plus sur les Connexions, consultez cette page
   flow_type_helper:
     message: Mais qu'est-ce qu'un type de flux ?
     link: Nous pouvons vous aider ici !
@@ -151,9 +170,9 @@ akeneo_connectivity.connection:
   grid.wrong_credentials_combination_helper: Certaines des connexions ci-dessous n'utilisent pas leur username. Elles sont identifiées par un warning jaune.
   dashboard:
     helper:
-      title: '👋 Bienvenue dans le tableau de bord de vos connexions !'
-      description: Ici, vous pouvez suivre tous les flux de données qui circulent via vos connexions, que ce soit des données entrantes provenant de vos sources ou de données sortantes distribuées sur vos destinations.
-      link: Envie d'en savoir plus ? Rendez-vous ici !
+      title: '👋 Bienvenue dans le tableau de bord de vos flux de données!'
+      description: Ici, vous pouvez suivre les flux de données entre votre PIM et des applications tierces.
+      link: Vous voulez en savoir plus sur le menu Connect et les flux de données?
     user_survey:
       title: Envie de voir plus de données sur ce tableau de bord ?
       content: Vos retours sont très précieux à nos yeux. Voter pour le prochain widget que vous souhaitez voir apparaître sur ce tableau de bord !
