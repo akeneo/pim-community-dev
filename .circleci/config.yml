@@ -364,6 +364,41 @@ jobs:
             name: Front unit tests
             command: PIM_CONTEXT=test make unit-front
 
+  test_front_end_to_end:
+      machine:
+          image: ubuntu-1604:201903-01
+      resource_class: large
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Create yarn cache folder
+                command: mkdir -p  ~/.cache/yarn
+          - run:
+                name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+          - run:
+                name: Start containers
+                command: |
+                    docker load -i php-pim-image.tar
+                    APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage pubsub-emulator' make up
+                    docker/wait_docker_up.sh
+          - run:
+                name: Install database
+                command: APP_ENV=behat O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
+          - run:
+                name: Launch Cypress
+                command: PIM_CONTEXT=test CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000 make end-to-end-front
+          - store_artifacts:
+                path: cypress/screenshots
+          - store_artifacts:
+                path: cypress/videos
+          - store_artifacts:
+                path: var/logs
+
   test_back_performance:
     machine:
         image: ubuntu-2004:202010-01
@@ -487,10 +522,19 @@ jobs:
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
+
+  destroy_deployed_env:
+      environment:
+        <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
           - run:
               name: Remove env on kubernetes
               command: PIM_CONTEXT=deployment make delete
-              when: always
 
   test_upgrade_from_last_release:
       environment:
@@ -681,6 +725,32 @@ jobs:
               name: Remove env on kubernetes
               command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete
               when: on_fail
+
+  ui_sanity_checks:
+      machine:
+          image: ubuntu-1604:201903-01
+      resource_class: large
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Create yarn cache folder
+                command: mkdir -p  ~/.cache/yarn
+          - run:
+                name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+          - run:
+                name: Launch Cypress
+                command: IMAGE_TAG_SHORTED=$(echo $CIRCLE_SHA1 | cut -c -7) PIM_CONTEXT=deployment CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000  make smoke-tests
+          - store_artifacts:
+                path: cypress/screenshots
+          - store_artifacts:
+                path: cypress/videos
+          - store_artifacts:
+                path: var/logs
 
   prepare_pr_ge_environment:
       environment:
@@ -1099,6 +1169,13 @@ workflows:
           - test_deploy:
                 requires:
                     - test_cronjobs_existence
+          - ui_sanity_checks:
+                requires:
+                    - build_dev
+                    - test_deploy
+          - destroy_deployed_env:
+                requires:
+                    - ui_sanity_checks
           - test_upgrade_from_last_release:
                 requires:
                     - test_deploy
@@ -1149,6 +1226,9 @@ workflows:
                 requires:
                     - build_dev
           - test_front_static_acceptance_and_integration:
+                requires:
+                    - build_dev
+          - test_front_end_to_end:
                 requires:
                     - build_dev
           - test_back_phpunit:

@@ -269,6 +269,10 @@ test-prod:
 	done
 	helm3 test ${PFID} -n ${PFID} --debug --logs
 
+.PHONY: smoke-tests
+smoke-tests: #Doc: Run Cypress smoke tests on deployed env
+	CYPRESS_baseUrl=https://$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS) PIM_CONTEXT=test make end-to-end-front
+
 .PHONY: release
 release:
 ifeq ($(CI),true)

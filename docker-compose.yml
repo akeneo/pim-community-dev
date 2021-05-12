@@ -131,6 +131,21 @@ services:
     networks:
       - 'pim'
 
+  cypress:
+    build:
+      context: .
+      dockerfile: docker/cypress/Dockerfile
+    environment:
+      CYPRESS_baseUrl: '${CYPRESS_baseUrl:-http://httpd}'
+      CYPRESS_defaultCommandTimeout: '${CYPRESS_defaultCommandTimeout:-4000}'
+      CYPRESS_requestTimeout: '${CYPRESS_requestTimeout:-5000}'
+    volumes:
+      - ./:/srv/cypress
+    working_dir: /srv/cypress
+    ipc: host
+    networks:
+      - 'pim'
+
   blackfire:
     image: blackfire/blackfire
     environment:
