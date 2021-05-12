@@ -21,7 +21,6 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
     node,
     children,
     loadChildren,
-    forceReloadChildren,
     moveTo,
     draggedCategory,
     setDraggedCategory,
@@ -32,6 +31,10 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
     setMoveTarget,
     resetMove,
     onDeleteCategory,
+    onCreateCategory,
+    isOpen,
+    open,
+    close,
   } = useCategoryTreeNode(id);
 
   const translate = useTranslate();
@@ -68,6 +71,9 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
             : 'bottom'
           : undefined
       }
+      isOpen={node.type === 'root' ? true : isOpen}
+      open={open}
+      close={close}
       onOpen={async () => {
         if (node.childrenStatus !== 'idle') {
           return;
@@ -141,7 +147,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
               size="small"
               onClick={event => {
                 event.stopPropagation();
-                addCategory(node.data.code, forceReloadChildren);
+                addCategory(node.data.code, onCreateCategory);
               }}
             >
               {translate('pim_enrich.entity.category.new_category')}

@@ -10,6 +10,7 @@ import {
 import {findByIdentifiers, findLoadedDescendantsIdentifiers, findOneByIdentifier, update} from '../../helpers';
 import {useFetch, useRoute} from '@akeneo-pim-community/shared';
 import {moveCategory} from '../../infrastructure/savers';
+import {useBooleanState} from 'akeneo-design-system';
 
 type Move = {
   identifier: number;
@@ -23,6 +24,7 @@ const useCategoryTreeNode = (id: number) => {
   const [node, setNode] = useState<TreeNode<CategoryTreeModel> | undefined>(undefined);
   const [children, setChildren] = useState<TreeNode<CategoryTreeModel>[]>([]);
   const [move, setMove] = useState<Move | null>(null);
+  const [isOpen, open, close] = useBooleanState(false);
 
   const url = useRoute('pim_enrich_categorytree_children', {
     _format: 'json',
@@ -205,9 +207,11 @@ const useCategoryTreeNode = (id: number) => {
     setNodes(update(updatedNodes, updatedParent));
   };
 
-  const forceReloadChildren = useCallback(() => {
+  // When a category is created inside the node, force reload children and open it.
+  const onCreateCategory = useCallback(() => {
     if (node) {
       setNode({...node, childrenStatus: 'to-reload'});
+      open();
     }
   }, [node]);
 
@@ -291,10 +295,13 @@ const useCategoryTreeNode = (id: number) => {
     node,
     children,
     loadChildren,
-    forceReloadChildren,
     moveTo,
     getCategoryPosition,
     onDeleteCategory,
+    onCreateCategory,
+    isOpen,
+    open,
+    close,
     ...rest,
   };
 };
