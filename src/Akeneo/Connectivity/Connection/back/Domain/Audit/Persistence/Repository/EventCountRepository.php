@@ -18,8 +18,5 @@ interface EventCountRepository
      */
     public function bulkInsert(array $hourlyEventCounts): void;
 
-    /**
-     * @param HourlyEventCount $hourlyEventCounts
-     */
     public function upsert(HourlyEventCount $hourlyEventCounts): void;
 }

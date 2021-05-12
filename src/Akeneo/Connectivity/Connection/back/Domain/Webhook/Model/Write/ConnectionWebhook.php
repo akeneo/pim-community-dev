@@ -12,14 +12,11 @@ use Akeneo\Connectivity\Connection\Domain\ValueObject\Url;
  */
 class ConnectionWebhook
 {
-    /** @var string */
-    private $code;
+    private string $code;
 
-    /** @var bool */
-    private $enabled;
+    private bool $enabled;
 
-    /** @var ?Url */
-    private $url;
+    private ?Url $url = null;
 
     public function __construct(string $code, bool $enabled, ?string $url = null)
     {

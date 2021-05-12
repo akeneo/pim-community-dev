@@ -18,14 +18,16 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 final class ApiErrorEventSubscriber implements EventSubscriberInterface
 {
-    /** @var CollectApiError */
-    private $collectApiError;
+    private CollectApiError $collectApiError;
 
     public function __construct(CollectApiError $collectApiError)
     {
         $this->collectApiError = $collectApiError;
     }
 
+    /**
+     * @return string[]
+     */
     public static function getSubscribedEvents(): array
     {
         return [

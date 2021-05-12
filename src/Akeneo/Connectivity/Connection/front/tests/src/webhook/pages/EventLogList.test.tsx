@@ -10,7 +10,7 @@ import {EventSubscriptionLogLevel} from '@src/webhook/model/EventSubscriptionLog
 
 describe('testing events logs page', () => {
     const history = createMemoryHistory({
-        initialEntries: ['/connections/alkemics/event-logs'],
+        initialEntries: ['/connect/connection-settings/alkemics/event-logs'],
     });
 
     const fetchConnectionResponses: MockFetchResponses = {

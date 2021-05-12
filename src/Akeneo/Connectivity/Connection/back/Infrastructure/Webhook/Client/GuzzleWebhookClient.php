@@ -88,16 +88,6 @@ class GuzzleWebhookClient implements WebhookClient
                     $webhookRequestLog->setEndTime(microtime(true));
                     $webhookRequestLog->setResponse($response);
 
-                    $this->sendApiEventRequestLogger->log(
-                        $webhookRequestLog->getWebhookRequest(),
-                        $webhookRequestLog->getStartTime(),
-                        $webhookRequestLog->getEndTime(),
-                        $webhookRequestLog->getHeaders(),
-                        $webhookRequestLog->getMessage(),
-                        $webhookRequestLog->isSuccess(),
-                        $webhookRequestLog->getResponse()
-                    );
-
                     $this->debugLogger->logEventsApiRequestSucceed(
                         $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
                         $webhookRequestLog->getWebhookRequest()->apiEvents(),

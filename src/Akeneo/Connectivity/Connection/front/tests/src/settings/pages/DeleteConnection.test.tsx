@@ -15,10 +15,10 @@ describe('testing DeleteConnection page', () => {
     it('deletes a connection', async () => {
         fetchMock.mockResponseOnce('', {status: 204});
 
-        const history = createMemoryHistory({initialEntries: ['/connections/franklin/delete']});
+        const history = createMemoryHistory({initialEntries: ['/connect/connection-settings/franklin/delete']});
         const {getByText} = renderWithProviders(
             <Router history={history}>
-                <Route path='/connections/:code/delete'>
+                <Route path='/connect/connection-settings/:code/delete'>
                     <ConnectionsProvider>
                         <DeleteConnection />
                     </ConnectionsProvider>
@@ -40,6 +40,6 @@ describe('testing DeleteConnection page', () => {
             method: 'DELETE',
         });
 
-        expect(history.location.pathname).toBe('/connections');
+        expect(history.location.pathname).toBe('/connect/connection-settings');
     });
 });

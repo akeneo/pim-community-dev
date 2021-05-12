@@ -13,11 +13,9 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionC
  */
 abstract class ApiError implements ApiErrorInterface
 {
-    /** @var string */
-    private $content;
+    private string $content;
 
-    /** @var \DateTimeImmutable */
-    private $dateTime;
+    private \DateTimeImmutable $dateTime;
 
     public function __construct(string $content, \DateTimeImmutable $dateTime = null)
     {
@@ -51,10 +49,13 @@ abstract class ApiError implements ApiErrorInterface
 
     abstract public function type(): ErrorType;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function normalize(): array
     {
         return [
-            'content' => json_decode($this->content(), true),
+            'content' => json_decode($this->content(), true, 512, JSON_THROW_ON_ERROR),
             'error_datetime' => $this->dateTime->format(\DateTimeInterface::ATOM),
         ];
     }

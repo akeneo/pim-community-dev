@@ -1,7 +1,7 @@
 import React, {ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
-import {SelectableContext} from '../SelectableContext';
+import {TableContext} from '../TableContext';
 
 const TableHead = styled.thead<{sticky?: number} & AkeneoThemedProps>`
   ${({sticky}) =>
@@ -19,6 +19,10 @@ const TableHead = styled.thead<{sticky?: number} & AkeneoThemedProps>`
 const SelectColumn = styled.th`
   width: 40px;
 `;
+const OrderColumn = styled.th`
+  width: 40px;
+  background: linear-gradient(to top, ${getColor('grey', 120)} 1px, ${getColor('white')} 0px);
+`;
 
 type TableHeaderProps = {
   /**
@@ -34,13 +38,14 @@ type TableHeaderProps = {
 
 const TableHeader = React.forwardRef<HTMLTableSectionElement, TableHeaderProps>(
   ({children, sticky, ...rest}: TableHeaderProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
-    const {isSelectable} = React.useContext(SelectableContext);
+    const {isSelectable, isDragAndDroppable} = React.useContext(TableContext);
 
     return (
       <TableHead sticky={sticky} ref={forwardedRef}>
         <tr {...rest}>
           {/* Add new column for checkbox to be displayed properly in the tbody */}
           {isSelectable && <SelectColumn />}
+          {isDragAndDroppable && <OrderColumn />}
           {children}
         </tr>
       </TableHead>
@@ -49,3 +54,4 @@ const TableHeader = React.forwardRef<HTMLTableSectionElement, TableHeaderProps>(
 );
 
 export {TableHeader};
+export type {TableHeaderProps};

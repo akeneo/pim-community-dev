@@ -3916,7 +3916,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "0.000001"
+                        "value": "0.000000001"
                     }
                 ],
                 "symbol": "μl"
@@ -4693,7 +4693,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "0.000001"
+                        "value": "0.000000001"
                     }
                 ],
                 "symbol": "μg"

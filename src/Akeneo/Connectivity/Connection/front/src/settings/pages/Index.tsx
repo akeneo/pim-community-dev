@@ -15,22 +15,22 @@ export const Index = () => (
         <WrongCredentialsCombinationsProvider>
             <ConnectionsProvider>
                 <Switch>
-                    <Route path='/connections/:code/edit'>
+                    <Route path='/connect/connection-settings/:code/edit'>
                         <EditConnection />
                     </Route>
-                    <Route path='/connections/:code/regenerate-secret'>
+                    <Route path='/connect/connection-settings/:code/regenerate-secret'>
                         <RegenerateConnectionSecret />
                     </Route>
-                    <Route path='/connections/:code/regenerate-password'>
+                    <Route path='/connect/connection-settings/:code/regenerate-password'>
                         <RegenerateConnectionPassword />
                     </Route>
-                    <Route path='/connections/:code/delete'>
+                    <Route path='/connect/connection-settings/:code/delete'>
                         <DeleteConnection />
                     </Route>
-                    <Route path='/connections/create'>
+                    <Route path='/connect/connection-settings/create'>
                         <CreateConnection />
                     </Route>
-                    <Route path='/connections'>
+                    <Route path='/connect/connection-settings'>
                         <ListConnections />
                     </Route>
                 </Switch>

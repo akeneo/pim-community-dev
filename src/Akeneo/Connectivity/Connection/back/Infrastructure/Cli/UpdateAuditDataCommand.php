@@ -20,16 +20,16 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class UpdateAuditDataCommand extends Command
 {
+    /**
+     * @var string
+     */
     protected static $defaultName = 'akeneo:connectivity-audit:update-data';
 
-    /** @var UpdateDataSourceProductEventCountHandler */
-    private $updateDataSourceProductEventCountHandler;
+    private UpdateDataSourceProductEventCountHandler $updateDataSourceProductEventCountHandler;
 
-    /** @var DbalSelectHourlyIntervalsToRefreshQuery */
-    private $selectHourlyIntervalsToRefreshQuery;
+    private DbalSelectHourlyIntervalsToRefreshQuery $selectHourlyIntervalsToRefreshQuery;
 
-    /** @var PurgeAuditProductQuery */
-    private $purgeQuery;
+    private PurgeAuditProductQuery $purgeQuery;
 
     public function __construct(
         UpdateDataSourceProductEventCountHandler $updateDataSourceProductEventCountHandler,

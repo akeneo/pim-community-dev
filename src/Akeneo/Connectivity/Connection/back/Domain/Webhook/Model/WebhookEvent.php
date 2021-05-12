@@ -14,28 +14,20 @@ use Akeneo\Platform\Component\EventQueue\EventInterface;
  */
 class WebhookEvent
 {
-    /** @var string */
-    private $action;
+    private string $action;
 
-    /** @var string */
-    private $eventId;
+    private string $eventId;
 
-    /** @var string */
-    private $eventDateTime;
+    private string $eventDateTime;
 
     /** @var array<mixed> */
-    private $data;
+    private array $data;
 
-    /** @var Author */
-    private $author;
+    private Author $author;
 
-    /** @var string */
-    private $pimSource;
+    private string $pimSource;
 
-    /** @var EventInterface */
-    private $pimEvent;
-
-    private ?string $version;
+    private EventInterface $pimEvent;
 
     /**
      * @param array<mixed> $data
@@ -47,8 +39,7 @@ class WebhookEvent
         Author $author,
         string $pimSource,
         array $data,
-        EventInterface $pimEvent,
-        ?string $version = null
+        EventInterface $pimEvent
     ) {
         $this->action = $action;
         $this->eventId = $eventId;
@@ -57,7 +48,6 @@ class WebhookEvent
         $this->author = $author;
         $this->pimSource = $pimSource;
         $this->pimEvent = $pimEvent;
-        $this->version = $version;
     }
 
     public function action(): string
@@ -96,10 +86,5 @@ class WebhookEvent
     public function getPimEvent(): EventInterface
     {
         return $this->pimEvent;
-    }
-
-    public function version(): ?string
-    {
-        return $this->version;
     }
 }

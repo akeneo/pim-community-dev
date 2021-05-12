@@ -6,6 +6,7 @@ import {
   useRouter,
   useSecurity,
   useTranslate,
+  PimView,
 } from '@akeneo-pim-community/shared';
 import {
   AssociateIcon,
@@ -25,7 +26,6 @@ import {
   TagIcon,
   ValueIcon,
 } from 'akeneo-design-system';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
 import {useCountEntities} from '../hooks/settings';
 
@@ -104,7 +104,7 @@ const SettingsIndex = () => {
               <SectionTitle.Title>{translate('pim_settings.catalog_settings')}</SectionTitle.Title>
             </SectionTitle>
             <SectionContent>
-              <IconCardGrid size={'big'}>
+              <IconCardGrid>
                 {canAccessCategories && (
                   <IconCard
                     icon={<CategoryIcon />}
@@ -167,7 +167,7 @@ const SettingsIndex = () => {
               <SectionTitle.Title>{translate('pim_settings.product_settings')}</SectionTitle.Title>
             </SectionTitle>
             <SectionContent>
-              <IconCardGrid size={'big'}>
+              <IconCardGrid>
                 {canAccessAttributeGroups && (
                   <IconCard
                     icon={<TagIcon />}

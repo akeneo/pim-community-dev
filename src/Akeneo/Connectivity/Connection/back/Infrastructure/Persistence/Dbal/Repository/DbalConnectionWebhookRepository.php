@@ -15,8 +15,7 @@ use Doctrine\DBAL\Types\Types;
  */
 class DbalConnectionWebhookRepository implements ConnectionWebhookRepository
 {
-    /** @var DbalConnection */
-    private $dbalConnection;
+    private DbalConnection $dbalConnection;
 
     public function __construct(DbalConnection $dbalConnection)
     {

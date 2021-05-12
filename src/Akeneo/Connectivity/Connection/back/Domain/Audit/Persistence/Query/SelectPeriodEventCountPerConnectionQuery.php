@@ -19,7 +19,6 @@ interface SelectPeriodEventCountPerConnectionQuery
      * period.
      *
      * @param string $eventType Value from the EventTypes enum
-     * @param DateTimePeriod $period
      *
      * @return PeriodEventCount[]
      */

@@ -17,11 +17,9 @@ use Doctrine\DBAL\Driver\Connection as DbalConnection;
  */
 class RegenerateUserPassword implements RegenerateUserPasswordService
 {
-    /** @var UserManager */
-    private $userManager;
+    private UserManager $userManager;
 
-    /** @var DbalConnection */
-    private $dbalConnection;
+    private DbalConnection $dbalConnection;
 
     public function __construct(
         UserManager $userManager,
@@ -61,7 +59,7 @@ class RegenerateUserPassword implements RegenerateUserPasswordService
         return str_shuffle(ucfirst(substr(uniqid(), 0, 9)));
     }
 
-    private function deleteApiToken(UserId $userId)
+    private function deleteApiToken(UserId $userId): void
     {
         $deleteSqlAccessToken = <<<SQL
 DELETE FROM pim_api_access_token WHERE user = :user_id
