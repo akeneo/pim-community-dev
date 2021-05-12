@@ -271,15 +271,20 @@ JSON;
         $categoryStandard = [
             'code'   => 'categoryA2',
             'parent' => 'categoryA1',
+            'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
                 'en_US' => 'Category A2 updated',
             ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
+        $normalizedCategory = $normalizer->normalize($category);
+
+        NormalizedCategoryCleaner::clean($categoryStandard);
+        NormalizedCategoryCleaner::clean($normalizedCategory);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-        $this->assertSame($categoryStandard, $normalizer->normalize($category));
+        $this->assertSame($categoryStandard, $normalizedCategory);
     }
 
     public function testPartialUpdateWithEmptyLabels()
@@ -301,13 +306,18 @@ JSON;
         $categoryStandard = [
             'code'   => 'categoryA',
             'parent' => 'master',
+            'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
+        $normalizedCategory = $normalizer->normalize($category);
+
+        NormalizedCategoryCleaner::clean($categoryStandard);
+        NormalizedCategoryCleaner::clean($normalizedCategory);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-        $this->assertSame($categoryStandard, $normalizer->normalize($category));
+        $this->assertSame($categoryStandard, $normalizedCategory);
     }
 
     public function testResponseWhenContentIsEmpty()
