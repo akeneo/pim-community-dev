@@ -37,7 +37,7 @@ const MicroFrontendDependenciesProvider = ({
       throw new Error(`Route ${route} not found`);
     }
 
-    let queryString = parameters
+    const queryString = parameters
       ? '?' +
         Object.entries(parameters)
           .map(([key, val]) => `${key}=${val}`)

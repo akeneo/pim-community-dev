@@ -12,6 +12,9 @@ const PillContainer = styled.div<{level: PillLevel} & AkeneoThemedProps>`
 type PillLevel = 'warning' | 'danger';
 
 type PillProps = {
+  /**
+   * The level of the Pill.
+   */
   level?: PillLevel;
 };
 
