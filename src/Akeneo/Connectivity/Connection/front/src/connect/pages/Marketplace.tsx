@@ -100,6 +100,10 @@ export const Marketplace: FC = () => {
                 <LinkButton href={marketplaceUrl} target='_blank' role='link' tabIndex='0'>
                     {translate('akeneo_connectivity.connection.connect.marketplace.link')}
                 </LinkButton>
+                <br/>
+                <LinkButton href={`/apps/activate/fake`} role='link' tabIndex='1'>
+                    Activate Fake Extension
+                </LinkButton>
             </PageContent>
         </>
     );
