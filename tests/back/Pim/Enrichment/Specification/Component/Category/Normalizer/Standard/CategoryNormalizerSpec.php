@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard;
 
 use Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard\CategoryNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
@@ -10,9 +11,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class CategoryNormalizerSpec extends ObjectBehavior
 {
-    function let(TranslationNormalizer $translationNormalizer)
+    function let(TranslationNormalizer $translationNormalizer, DateTimeNormalizer $dateTimeNormalizer)
     {
-        $this->beConstructedWith($translationNormalizer);
+        $this->beConstructedWith($translationNormalizer, $dateTimeNormalizer);
     }
 
     function it_is_initializable()
@@ -33,35 +34,58 @@ class CategoryNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($category, 'json')->shouldReturn(false);
     }
 
-    function it_normalizes_category($translationNormalizer, CategoryInterface $category)
-    {
-        $translationNormalizer->normalize($category, 'standard', [])->willReturn([]);
+    function it_normalizes_category(
+        $translationNormalizer,
+        CategoryInterface $category,
+        DateTimeNormalizer $dateTimeNormalizer
+    ) {
+        $updated = new \DateTime('2016-06-14T13:12:50');
 
         $category->getCode()->willReturn('my_code');
         $category->getParent()->willReturn(null);
+        $category->getUpdated()->willReturn($updated);
 
-        $this->normalize($category)->shouldReturn([
-            'code'   => 'my_code',
-            'parent' => null,
-            'labels' => []
-        ]);
+        $translationNormalizer->normalize($category, 'standard', [])->willReturn([]);
+        $dateTimeNormalizer->normalize($updated, null)->willReturn(
+            '2016-06-14T13:12:50+01:00'
+        );
+
+        $this->normalize($category)->shouldReturn(
+            [
+                'code' => 'my_code',
+                'parent' => null,
+                'updated' => '2016-06-14T13:12:50+01:00',
+                'labels' => [],
+            ]
+        );
     }
 
     function it_normalizes_category_with_parent(
         $translationNormalizer,
         CategoryInterface $category,
-        CategoryInterface $parent
+        CategoryInterface $parent,
+        DateTimeNormalizer $dateTimeNormalizer
     ) {
-        $translationNormalizer->normalize($category, 'standard', [])->willReturn([]);
+
+        $updated = new \DateTime('2016-06-14T13:12:50');
 
         $category->getCode()->willReturn('my_code');
         $category->getParent()->willReturn($parent);
         $parent->getCode()->willReturn('my_parent');
+        $category->getUpdated()->willReturn($updated);
 
-        $this->normalize($category)->shouldReturn([
-            'code'   => 'my_code',
-            'parent' => 'my_parent',
-            'labels' => []
-        ]);
+        $translationNormalizer->normalize($category, 'standard', [])->willReturn([]);
+        $dateTimeNormalizer->normalize($updated, null)->willReturn(
+            '2016-06-14T13:12:50+01:00'
+        );
+
+        $this->normalize($category)->shouldReturn(
+            [
+                'code' => 'my_code',
+                'parent' => 'my_parent',
+                'updated' => '2016-06-14T13:12:50+01:00',
+                'labels' => [],
+            ]
+        );
     }
 }

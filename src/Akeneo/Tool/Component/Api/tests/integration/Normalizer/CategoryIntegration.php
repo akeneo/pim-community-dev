@@ -2,6 +2,8 @@
 
 namespace Akeneo\Tool\Component\Api\tests\integration\Normalizer;
 
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
+
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -14,7 +16,8 @@ class CategoryIntegration extends AbstractNormalizerTestCase
         $expected = [
             'code'   => 'master',
             'parent' => null,
-            'labels' => new \StdClass()
+            'updated' => '2016-06-14T13:12:50+02:00',
+            'labels' => new \StdClass(),
         ];
 
         $this->assert('master', $expected);
@@ -25,6 +28,7 @@ class CategoryIntegration extends AbstractNormalizerTestCase
         $expected = [
             'code'   => 'categoryA',
             'parent' => 'master',
+            'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
                 'en_US' => 'Category A',
                 'fr_FR' => 'Catégorie A'
@@ -40,6 +44,9 @@ class CategoryIntegration extends AbstractNormalizerTestCase
         $serializer = $this->get('pim_external_api_serializer');
 
         $result = $serializer->normalize($repository->findOneByIdentifier($identifier), 'external_api');
+
+        NormalizedCategoryCleaner::clean($expected);
+        NormalizedCategoryCleaner::clean($result);
 
         $this->assertEquals($expected, $result);
     }

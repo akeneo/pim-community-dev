@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Category\ExternalApi;
 
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateListCategoryEndToEnd extends ApiTestCase
@@ -37,6 +38,7 @@ JSON;
             'categoryA2' => [
                 'code'   => 'categoryA2',
                 'parent' => 'categoryA',
+                'updated' => '2016-06-14T13:12:50+02:00',
                 'labels' => [
                     'en_US' => 'category A2'
                 ]
@@ -44,6 +46,7 @@ JSON;
             'categoryD' => [
                 'code'   => 'categoryD',
                 'parent' => 'master',
+                'updated' => '2016-06-14T13:12:50+02:00',
                 'labels' => []
             ]
         ];
@@ -280,6 +283,9 @@ JSON;
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier($code);
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
         $standardizedCategory = $normalizer->normalize($category);
+
+        NormalizedCategoryCleaner::clean($expectedCategory);
+        NormalizedCategoryCleaner::clean($standardizedCategory);
 
         $this->assertSame($expectedCategory, $standardizedCategory);
     }

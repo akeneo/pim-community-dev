@@ -3,6 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Category\ExternalApi;
 
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateCategoryEndToEnd extends ApiTestCase
@@ -44,13 +45,18 @@ JSON;
         $categoryStandard = [
             'code'   => 'new_category_incompleted',
             'parent' => null,
+            'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
+        $categoryNormalized = $normalizer->normalize($category);
+
+        NormalizedCategoryCleaner::clean($categoryStandard);
+        NormalizedCategoryCleaner::clean($categoryNormalized);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
-        $this->assertSame($categoryStandard, $normalizer->normalize($category));
+        $this->assertSame($categoryStandard, $categoryNormalized);
     }
 
     /**
@@ -77,16 +83,21 @@ JSON;
         $categoryStandard = [
             'code'   => 'categoryD',
             'parent' => 'master',
+            'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
                 'en_US' => 'Category D',
                 'fr_FR' => 'Catégorie D',
             ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
+        $categoryNormalized = $normalizer->normalize($category);
+
+        NormalizedCategoryCleaner::clean($categoryStandard);
+        NormalizedCategoryCleaner::clean($categoryNormalized);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
-        $this->assertSame($categoryStandard, $normalizer->normalize($category));
+        $this->assertSame($categoryStandard, $categoryNormalized);
     }
 
     public function testCategoryCreationWithEmptyLabels()
@@ -111,15 +122,20 @@ JSON;
         $categoryStandard = [
             'code'   => 'empty_label_category',
             'parent' => 'master',
+            'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
                 'en_US' => 'US label'
             ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
+        $categoryNormalized = $normalizer->normalize($category);
+
+        NormalizedCategoryCleaner::clean($categoryStandard);
+        NormalizedCategoryCleaner::clean($categoryNormalized);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
-        $this->assertSame($categoryStandard, $normalizer->normalize($category));
+        $this->assertSame($categoryStandard, $categoryNormalized);
     }
 
     public function testResponseWhenContentIsEmpty()
