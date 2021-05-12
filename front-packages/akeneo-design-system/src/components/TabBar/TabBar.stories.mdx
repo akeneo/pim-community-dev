@@ -94,3 +94,27 @@ The order of the tabs must be consistent across the entire application. Related 
     }}
   </Story>
 </Canvas>
+
+## With a lot of tabs
+
+<Canvas>
+  <Story name="Log of tabs">
+    {args => {
+      const [activeTab, setActiveTab] = useState('firstTab');
+      return (
+        <TabBar {...args}>
+          <TabBar.Tab isActive={activeTab === 'tab1'} onClick={() => setActiveTab('tab1')}>Tab n°1</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab2'} onClick={() => setActiveTab('tab2')}>Tab n°2</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab3'} onClick={() => setActiveTab('tab3')}>Tab n°3</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab4'} onClick={() => setActiveTab('tab4')}>Tab n°4</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab5'} onClick={() => setActiveTab('tab5')}>Tab n°5</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab6'} onClick={() => setActiveTab('tab6')}>Tab n°6</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab7'} onClick={() => setActiveTab('tab7')}>Tab n°7</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab8'} onClick={() => setActiveTab('tab8')}>Tab n°8</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab9'} onClick={() => setActiveTab('tab9')}>Tab n°9</TabBar.Tab>
+          <TabBar.Tab isActive={activeTab === 'tab10'} onClick={() => setActiveTab('tab10')}>Looooongtab</TabBar.Tab>
+        </TabBar>
+      );
+    }}
+  </Story>
+</Canvas>
