@@ -1,0 +1,7 @@
+services:
+    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Normalizer\AttributeNormalizer:
+        decorates: 'pim_catalog.normalizer.standard.attribute'
+        decoration_inner_name: 'base_standard_attribute_normalizer'
+        arguments:
+            - '@base_standard_attribute_normalizer'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\DummyTableConfigurationRepository'

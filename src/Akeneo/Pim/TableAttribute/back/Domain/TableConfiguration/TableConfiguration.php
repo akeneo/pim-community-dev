@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\TableAttribute\Domain\Config;
+namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Webmozart\Assert\Assert;
 
@@ -43,5 +43,16 @@ final class TableConfiguration
         Assert::uniqueValues($codes);
 
         return new self($columnDefinitions);
+    }
+
+    /**
+     * @return array<int, array>
+     */
+    public function normalize(): array
+    {
+        return array_map(
+            fn (ColumnDefinition $columnDefinition): array => $columnDefinition->normalize(),
+            $this->columnDefinitions
+        );
     }
 }

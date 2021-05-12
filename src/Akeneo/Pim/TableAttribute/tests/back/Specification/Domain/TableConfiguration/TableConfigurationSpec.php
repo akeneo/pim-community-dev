@@ -1,10 +1,10 @@
 <?php
 
-namespace Specification\Akeneo\Pim\TableAttribute\Domain\Config;
+namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
-use Akeneo\Pim\TableAttribute\Domain\Config\ColumnDefinition;
-use Akeneo\Pim\TableAttribute\Domain\Config\TableConfiguration;
-use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use PhpSpec\ObjectBehavior;
 
 class TableConfigurationSpec extends ObjectBehavior

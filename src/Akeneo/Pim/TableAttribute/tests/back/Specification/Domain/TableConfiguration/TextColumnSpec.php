@@ -1,11 +1,11 @@
 <?php
 
-namespace Specification\Akeneo\Pim\TableAttribute\Domain\Config;
+namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
-use Akeneo\Pim\TableAttribute\Domain\Config\LabelCollection;
-use Akeneo\Pim\TableAttribute\Domain\Config\TextColumn;
-use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnCode;
-use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnDataType;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\LabelCollection;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use PhpSpec\ObjectBehavior;
 
 class TextColumnSpec extends ObjectBehavior

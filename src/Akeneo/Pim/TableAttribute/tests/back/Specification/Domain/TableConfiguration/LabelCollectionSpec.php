@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\TableAttribute\Domain\Config;
+namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use PhpSpec\ObjectBehavior;
 

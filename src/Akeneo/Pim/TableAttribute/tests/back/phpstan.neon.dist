@@ -1,6 +1,0 @@
-parameters:
-    level: 8
-    paths:
-        - %rootDir%/../../../src/Akeneo/Pim/TableAttribute
-    excludes_analyse:
-        - %rootDir%/../../../src/Akeneo/Pim/TableAttribute/tests/back/Specification/*

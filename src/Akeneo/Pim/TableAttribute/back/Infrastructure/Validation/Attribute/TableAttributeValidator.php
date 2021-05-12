@@ -15,8 +15,8 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\TableAttribute\Domain\Config\TableConfiguration;
-use Akeneo\Pim\TableAttribute\Domain\Config\TextColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -26,7 +26,7 @@ use Webmozart\Assert\Assert;
  */
 final class TableAttributeValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         Assert::implementsInterface($value, AttributeInterface::class);
         Assert::isInstanceOf($constraint, TableAttribute::class);
@@ -54,5 +54,4 @@ final class TableAttributeValidator extends ConstraintValidator
 //        $validator = $context->getValidator()->inContext($context);
 //        $validator->validate($value->getRawTableConfiguration(), [...]);
     }
-
 }

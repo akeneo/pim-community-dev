@@ -1,0 +1,20 @@
+services:
+    pim_catalog.saver.attribute:
+        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            -
+                - '@Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Saver\TableConfigurationSaver'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Saver\TableConfigurationSaver:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\DummyTableConfigurationRepository'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\DummyTableConfigurationRepository: ~
+
+    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubscriber\LoadRawTableConfiguration:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\DummyTableConfigurationRepository'
+        tags:
+            - { name: doctrine.event_subscriber }

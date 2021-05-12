@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\TableAttribute\Domain\Config\ValueObject;
+namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject;
 
 use Webmozart\Assert\Assert;
 
@@ -19,25 +19,24 @@ use Webmozart\Assert\Assert;
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  */
-final class ColumnCode
+final class ColumnDataType
 {
-    private string $code;
+    private string $dataType;
 
-    private function __construct(string $code)
+    private function __construct(string $dataType)
     {
-        $this->code = $code;
+        $this->dataType = $dataType;
     }
 
-    public static function fromString(string $code): self
+    public static function fromString(string $dataType): self
     {
-        Assert::stringNotEmpty($code);
-        // @todo: validate the format
+        Assert::stringNotEmpty($dataType);
 
-        return new self($code);
+        return new self($dataType);
     }
 
     public function asString(): string
     {
-        return $this->code;
+        return $this->dataType;
     }
 }

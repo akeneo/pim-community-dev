@@ -83,13 +83,15 @@ JSON;
         self::assertSame([
             [
                 'code' => 'ingredients',
-                'type' => 'text',
+                'data_type' => 'text',
+                'labels' => [],
             ],
             [
                 'code' => 'quantity',
-                'type' => 'text',
+                'data_type' => 'text',
+                'labels' => [],
             ]
-        ], $decoded);
+        ], $decoded['table_configuration']);
     }
 
     /**
@@ -99,5 +101,4 @@ JSON;
     {
         return $this->catalog->useTechnicalCatalog();
     }
-
 }

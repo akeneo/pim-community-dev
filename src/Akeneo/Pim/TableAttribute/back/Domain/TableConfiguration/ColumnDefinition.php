@@ -11,14 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\TableAttribute\Domain\Config;
+namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
-use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnCode;
-use Akeneo\Pim\TableAttribute\Domain\Config\ValueObject\ColumnDataType;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 
 interface ColumnDefinition
 {
     public function code(): ColumnCode;
     public function dataType(): ColumnDataType;
     public function labels(): LabelCollection;
+    /** @return array<string, mixed> */
+    public function normalize(): array;
 }

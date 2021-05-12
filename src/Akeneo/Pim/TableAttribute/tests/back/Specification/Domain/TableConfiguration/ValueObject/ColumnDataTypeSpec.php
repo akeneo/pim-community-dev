@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\TableAttribute\Domain\Config\ValueObject;
+namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject;
 
 use PhpSpec\ObjectBehavior;
 
