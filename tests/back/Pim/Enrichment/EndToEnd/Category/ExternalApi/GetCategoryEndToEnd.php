@@ -25,21 +25,10 @@ class GetCategoryEndToEnd extends ApiTestCase
             'labels' => [],
         ];
 
-        $standardCategory = <<<JSON
-{
-    "code": "master",
-    "parent": null,
-    "updated" => "2016-06-14T13:12:50+02:00",
-    "labels": {}
-}
-JSON;
-
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-
         $this->assertResponse($response,$expectedCategory );
-        //$this->assertJsonStringEqualsJsonString($standardCategory, $response->getContent());
     }
 
     public function testGetACompleteCategory()
@@ -48,21 +37,20 @@ JSON;
 
         $client->request('GET', 'api/rest/v1/categories/categoryA');
 
-        $standardCategory = <<<JSON
-{
-    "code": "categoryA",
-    "parent": "master",
-    "updated" => "2016-06-14T13:12:50+02:00",
-    "labels": {
-        "en_US": "Category A",
-        "fr_FR": "Catégorie A"
-    }
-}
-JSON;
+        $expectedCategory = [
+            'code' => 'categoryA',
+            'parent' => "master",
+            'updated' => '2016-06-14T13:12:50+02:00',
+            'labels' => [
+                "en_US"=> "Category A",
+                "fr_FR"=> "Catégorie A",
+            ],
+        ];
 
         $response = $client->getResponse();
+
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($standardCategory, $response->getContent());
+        $this->assertResponse($response, $expectedCategory);
     }
 
     public function testNotFoundACategory()
