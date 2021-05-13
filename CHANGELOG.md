@@ -65,6 +65,7 @@
 - PIM-9857: Fix Microgram & Microliter conversion operations
 - PIM-9853: Make the word "product" translatable
 - PIM-9741: Fix choice filter mask not closing when selecting with keyboard
+- PIM-9806: Enable authentication temporary lock to protect against brute force attack 
 
 ## New features
 
