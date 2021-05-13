@@ -47,5 +47,5 @@ xdebug-on:
 
 .PHONY: cypress-interactive
 cypress-interactive:
-	docker-compose -f docker-compose-e2e.yml run --rm -u 1000:1000 -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --entrypoint cypress cypress open --project .
+	docker-compose -f docker-compose-cypress.yml run --rm -u 1000:1000 -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --entrypoint cypress cypress open --project .
 

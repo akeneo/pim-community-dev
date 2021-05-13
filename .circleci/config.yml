@@ -241,7 +241,7 @@ jobs:
           name: Start containers
           command: |
             docker load -i php-pim-image.tar
-            APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage pubsub-emulator' make up
+            APP_ENV=behat make up
             docker/wait_docker_up.sh
       - run:
           name: Install database
