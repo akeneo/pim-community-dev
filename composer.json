@@ -115,7 +115,7 @@
         "symfony/routing": "4.4.18",
         "symfony/security-acl": "3.0.2",
         "symfony/security-bundle": "4.4.18",
-        "symfony/security-core": "4.4.18",
+        "symfony/security-core": "4.4.23",
         "symfony/security-csrf": "4.4.18",
         "symfony/security-http": "4.4.18",
         "symfony/swiftmailer-bundle": "^3.2",
