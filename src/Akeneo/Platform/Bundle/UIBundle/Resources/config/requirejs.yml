@@ -49,6 +49,8 @@ config:
                     module: pim/controller/redirect
                 pimee_workflow_product_draft_mass_approve:
                     module: pim/controller/redirect
+                pimee_workflow_product_draft_mass_refuse:
+                    module: pim/controller/redirect
                 teamwork_assistant_project_show:
                     module: pim/controller/template
                 pimee_catalog_rule_rule_index:
