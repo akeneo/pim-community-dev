@@ -66,7 +66,8 @@
 - PIM-9856: Fix children completeness query being too long
 - PIM-9853: Make the word "product" translatable
 - PIM-9741: Fix choice filter mask not closing when selecting with keyboard
-- PIM-9806: Enable authentication temporary lock to protect against brute force attack 
+- PIM-9806: Enable authentication temporary lock to protect against brute force attack
+- PIM-9864: Fix 500 error when using DateTime filter with invalid value
 
 ## New features
 
