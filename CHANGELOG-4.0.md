@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.110 (2021-05-14)
+
 ## Bug fixes
 
 - PIM-9862: [Backport] Fix SQL sort buffer size issue when the catalog has a very large number of categories
