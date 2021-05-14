@@ -17,8 +17,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         AttributeNormalizer $attributeNormalizerStandard,
         TranslationNormalizer $translationNormalizer,
         GetAttributeOptionCodes $getAttributeOptionCodes
-    )
-    {
+    ) {
         $this->beConstructedWith($attributeNormalizerStandard, $translationNormalizer, $getAttributeOptionCodes);
     }
 
@@ -45,8 +44,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         TranslationNormalizer $translationNormalizer,
         AttributeInterface $attribute,
         GetAttributeOptionCodes $getAttributeOptionCodes
-    )
-    {
+    ) {
         $attribute->getCode()->willReturn('attribute_size');
         $getAttributeOptionCodes->forAttributeCode('attribute_size')
             ->willReturn(new \ArrayIterator(['size']));
@@ -187,7 +185,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
     ) {
         $attribute->getCode()->willReturn('attribute_size');
         $getAttributeOptionCodes->forAttributeCode('attribute_size')
-            ->willReturn(new \ArrayIterator(array_fill(0, 1000 + 1, 'banana')));
+            ->willReturn(new \ArrayIterator(array_fill(0, 10000 + 1, 'banana')));
         $attribute->isRequired()->willReturn(false);
         $attribute->isLocaleSpecific()->willReturn(false);
 
@@ -226,6 +224,6 @@ class AttributeNormalizerSpec extends ObjectBehavior
             ->willReturn(true);
         $results = $this->normalize($attribute, 'flat', []);
         $results->shouldHaveKey('options');
-        Assert::assertEquals(1000, count(explode('|', $results->getWrappedObject()['options'])));
+        Assert::assertEquals(10000, count(explode('|', $results->getWrappedObject()['options'])));
     }
 }
