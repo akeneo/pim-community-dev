@@ -63,6 +63,7 @@
 - PIM-9850: Fix broken section title in DQI dashboard
 - PIM-9827: Fix HTTP 500 when using POST/PATCH with incorrect format
 - PIM-9857: Fix Microgram & Microliter conversion operations
+- PIM-9856: Fix children completeness query being too long
 - PIM-9853: Make the word "product" translatable
 - PIM-9741: Fix choice filter mask not closing when selecting with keyboard
 - PIM-9806: Enable authentication temporary lock to protect against brute force attack 
