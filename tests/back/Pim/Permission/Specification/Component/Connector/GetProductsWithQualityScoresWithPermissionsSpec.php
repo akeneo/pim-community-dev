@@ -116,7 +116,8 @@ class GetProductsWithQualityScoresWithPermissionsSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
-            $qualityScore
+            $qualityScore,
+            null
         );
     }
 
