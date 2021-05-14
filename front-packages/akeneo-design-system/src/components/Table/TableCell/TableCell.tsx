@@ -1,7 +1,8 @@
 import React, {ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
-import {Image} from '../..';
+import {Image} from '../../../components';
+import {Override} from '../../../shared';
 
 const TableCellContainer = styled.td<{rowTitle: boolean} & AkeneoThemedProps>`
   color: ${getColor('grey', 140)};
@@ -27,17 +28,20 @@ const TableCellInnerContainer = styled.div`
   min-height: 24px;
 `;
 
-type TableCellProps = {
-  /**
-   * Content of the cell.
-   */
-  children?: ReactNode;
+type TableCellProps = Override<
+  React.HTMLAttributes<HTMLTableCellElement>,
+  {
+    /**
+     * Content of the cell.
+     */
+    children?: ReactNode;
 
-  /**
-   * Define the cell as the title of the row.
-   */
-  rowTitle?: boolean;
-};
+    /**
+     * Define the cell as the title of the row.
+     */
+    rowTitle?: boolean;
+  }
+>;
 
 const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
   ({children, rowTitle = false, ...rest}: TableCellProps, forwardedRef: Ref<HTMLTableCellElement>) => {

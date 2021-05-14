@@ -110,6 +110,11 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    pim_catalog.event_subscriber.category.save.set_updated_property_on_translation_update_subscriber:
+        class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnSave\SetUpdatedPropertyOnTranslationUpdateSubscriber
+        tags:
+            - { name: doctrine.event_subscriber }
+
     pim_catalog.event_subscriber.init_completeness_db_schema:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitCompletenessDbSchemaSubscriber'
         arguments:

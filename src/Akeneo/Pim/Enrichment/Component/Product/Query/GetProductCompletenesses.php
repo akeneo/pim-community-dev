@@ -13,10 +13,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletene
  */
 interface GetProductCompletenesses
 {
-    /**
-     * @param int $productId
-     *
-     * @return ProductCompletenessCollection
-     */
     public function fromProductId(int $productId): ProductCompletenessCollection;
+
+    /**
+     * @param array $productIds
+     * @param string|null $channel Filtered by given channel
+     * @param array $locales Filtered by given locales
+     *
+     * @return array{int: ProductCompletenessCollection} Array indexed by product id
+     */
+    public function fromProductIds(array $productIds, ?string $channel = null, array $locales = []): array;
 }

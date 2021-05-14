@@ -13,7 +13,7 @@ abstract class AbstractTranslation
     /** @var string */
     protected $locale;
 
-    /** @var string */
+    /** @var mixed */
     protected $foreignKey;
 
     /**
@@ -53,11 +53,11 @@ abstract class AbstractTranslation
     /**
      * Set foreignKey
      *
-     * @param string $foreignKey
+     * @param mixed $foreignKey
      *
      * @return AbstractTranslation
      */
-    public function setForeignKey($foreignKey)
+    public function setForeignKey($foreignKey): self
     {
         $this->foreignKey = $foreignKey;
 
@@ -67,7 +67,7 @@ abstract class AbstractTranslation
     /**
      * Get foreignKey
      *
-     * @return string $foreignKey
+     * @return mixed
      */
     public function getForeignKey()
     {

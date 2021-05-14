@@ -2,6 +2,8 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Normalizer\Standard;
 
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
+
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -14,6 +16,7 @@ class CategoryIntegration extends AbstractStandardNormalizerTestCase
         $expected = [
             'code'   => 'master',
             'parent' => null,
+            'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => []
         ];
 
@@ -25,6 +28,7 @@ class CategoryIntegration extends AbstractStandardNormalizerTestCase
         $expected = [
             'code'   => 'categoryA',
             'parent' => 'master',
+            'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
                 'en_US' => 'Category A',
                 'fr_FR' => 'Catégorie A'
@@ -40,6 +44,9 @@ class CategoryIntegration extends AbstractStandardNormalizerTestCase
         $serializer = $this->get('pim_standard_format_serializer');
 
         $result = $serializer->normalize($repository->findOneByIdentifier($identifier), 'standard');
+
+        NormalizedCategoryCleaner::clean($expected);
+        NormalizedCategoryCleaner::clean($result);
 
         $this->assertSame($expected, $result);
     }

@@ -100,6 +100,9 @@ define([
             this.filterViews.push(filterView);
           }.bind(this)
         )
+        .catch(function (error) {
+          console.error(error);
+        })
         .always(function () {
           deferred.resolve();
         });

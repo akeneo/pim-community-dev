@@ -56,4 +56,14 @@ interface CategoryInterface extends
     public function getChannels(): Collection;
 
     public function getLabel(): string;
+
+    /**
+     * Set updated datetime
+     */
+    public function setUpdated(\DateTime $updated): self;
+
+    /**
+     * Get updated datetime
+     */
+    public function getUpdated(): \DateTime;
 }

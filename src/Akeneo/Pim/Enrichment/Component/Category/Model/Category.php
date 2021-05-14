@@ -39,6 +39,8 @@ class Category extends BaseCategory implements CategoryInterface
     /** @var \DateTime */
     protected $created;
 
+    private \DateTime $updated;
+
     public function __construct()
     {
         parent::__construct();
@@ -47,6 +49,7 @@ class Category extends BaseCategory implements CategoryInterface
         $this->productModels = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->channels = new ArrayCollection();
+        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
     /**
@@ -99,6 +102,18 @@ class Category extends BaseCategory implements CategoryInterface
     public function getCreated()
     {
         return $this->created;
+    }
+
+    public function setUpdated(\DateTime $updated): self
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    public function getUpdated(): \DateTime
+    {
+        return $this->updated;
     }
 
     /**
@@ -177,7 +192,7 @@ class Category extends BaseCategory implements CategoryInterface
     {
         $translated = ($this->getTranslation()) ? $this->getTranslation()->getLabel() : null;
 
-        return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
+        return ($translated !== '' && $translated !== null) ? $translated : '[' . $this->getCode() . ']';
     }
 
     /**
