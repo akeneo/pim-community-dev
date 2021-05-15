@@ -245,7 +245,7 @@ jobs:
             docker/wait_docker_up.sh
       - run:
           name: Install database
-          command: APP_ENV=behat O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
+          command: APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
       - run:
           name: Launch Cypress
           command: CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000 make end-to-end-front
