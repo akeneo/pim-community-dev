@@ -90,6 +90,14 @@ spec:
 {{- if $tplCtx.Values.common.phpConfCLI }}
 {{ toYaml $tplCtx.Values.common.phpConfCLI | indent 12 }}
 {{- end }}
+      initContainers:
+        - name: php-wait-for-dependencies
+          image: {{ template "pim.imageNameAndTag" $tplCtx }}
+          imagePullPolicy: {{ $tplCtx.Values.image.pim.pullPolicy | quote }}
+          command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && php bin/wait-for-dependencies"']
+          envFrom: [ configMapRef: { name: {{ template "pim.fullName" $tplCtx }}-env } ]
+          env:
+            - { name: APP_DATABASE_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mysqlPimUserPassword } } }
       volumes:
         - name: google-cloud-pim-storage-key
           secret:

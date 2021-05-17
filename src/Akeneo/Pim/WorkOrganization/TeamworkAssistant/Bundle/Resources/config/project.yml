@@ -222,3 +222,16 @@ services:
         class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Persistence\Query\IsUserOwnerOfProjectsQuery'
         arguments:
             - '@database_connection'
+
+    pimee_teamwork_assistant.query.sql.is_user_user_group_attached_to_project:
+        class: Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Persistence\Query\SqlIsUserGroupAttachedToProject
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\RemoveUserGroupSubscriber:
+        class: Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\RemoveUserGroupSubscriber
+        arguments:
+            - '@pimee_teamwork_assistant.query.sql.is_user_user_group_attached_to_project'
+            - '@translator'
+        tags:
+            - { name: kernel.event_subscriber }

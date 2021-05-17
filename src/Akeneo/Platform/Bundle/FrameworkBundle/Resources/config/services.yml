@@ -1,0 +1,10 @@
+services:
+    exception_listener:
+        class: 'Akeneo\Platform\Bundle\FrameworkBundle\EventListener\ErrorListener'
+        arguments:
+            - '%kernel.error_controller%'
+            - '@logger'
+            - '%kernel.debug%'
+        tags:
+            - { name: "kernel.event_subscriber" }
+            - { name: "monolog.logger", channel: "request" }

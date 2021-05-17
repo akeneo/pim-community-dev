@@ -45,3 +45,9 @@ services:
             - '@pimee_security.manager.job_profile_access'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Permission\Bundle\EventSubscriber\UpdateCategoryTimestampOnPermissionUpdatesSubscriber:
+        arguments:
+            - '@pim_catalog.saver.category'
+        tags:
+            - { name: kernel.event_subscriber }
