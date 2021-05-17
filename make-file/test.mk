@@ -96,7 +96,7 @@ else
 endif
 
 end-to-end-front:
-	$(DOCKER_COMPOSE) run --rm cypress
+	$(DOCKER_COMPOSE) -f docker-compose-cypress.yml run --rm cypress
 
 # How to debug a behat locally?
 # -----------------------------
