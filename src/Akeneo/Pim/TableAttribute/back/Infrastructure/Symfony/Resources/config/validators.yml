@@ -7,3 +7,8 @@ services:
         tags:
             - { name: 'validator.constraint_validator' }
 
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\LabelCollectionValidator:
+        arguments:
+            - '@pim_channel.query.cache.channel_exists_with_locale'
+        tags:
+            - { name: 'validator.constraint_validator' }

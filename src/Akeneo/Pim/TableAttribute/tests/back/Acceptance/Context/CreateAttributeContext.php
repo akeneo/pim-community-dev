@@ -138,6 +138,54 @@ final class CreateAttributeContext implements Context
         $this->saveAttribute($attribute);
     }
 
+    /**
+     * @When I create a table attribute with a configuration having invalid column labels format
+     */
+    public function iCreateATableAttributeWithAConfigurationHavingInvalidColumnLabelsFormat()
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'type' => 'text',
+                'code' => 'ingredients',
+            ], [
+                'type' => 'text',
+                'code' => 'quantity',
+                'labels' => 'A label without locale'
+            ]
+        ]);
+        $this->saveAttribute($attribute);
+    }
+
+    /**
+     * @When I create a table attribute with a configuration having non activated locale
+     */
+    public function iCreateATableAttributeWithAConfigurationHavingNonActivatedLocale()
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'type' => 'text',
+                'code' => 'ingredients',
+            ], [
+                'type' => 'text',
+                'code' => 'quantity',
+                'labels' => [
+                    'pt_DTC' => 'a label'
+                ]
+            ]
+        ]);
+        $this->saveAttribute($attribute);
+    }
+
     private function saveAttribute(AttributeInterface $attribute): void
     {
         $violations = $this->validator->validate($attribute);

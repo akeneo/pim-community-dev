@@ -6,6 +6,8 @@ default:
             contexts:
                 - Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\CreateAttributeContext
                 - Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\ConstraintViolationsContext
+                - test.channel.context
+                - test.locale.context
             filters:
                 tags: '@acceptance-back'
     extensions:

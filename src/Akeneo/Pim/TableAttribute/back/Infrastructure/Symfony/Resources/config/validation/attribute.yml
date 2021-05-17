@@ -8,15 +8,26 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                   min: 2
                   minMessage: "TODO another error message"
             - All:
+                  - Type: array
                   - Collection:
                         fields:
                             code:
-                                - NotBlank:
-                                      message: "TODO code blank"
-                                - Regex:
-                                      pattern: /^[a-zA-Z0-9_]+$/
-                                      message: "TODO bad code"
-
-                            type: ~
-                        missingFieldsMessage: "TODO yet another error message: {{ field }}"
+                                - Required:
+                                    - NotBlank:
+                                          message: "TODO code blank"
+                                    - Regex:
+                                          pattern: /^[a-zA-Z0-9_]+$/
+                                          message: "TODO bad code"
+                            type:
+                                - Required: ~
+                            labels:
+                                - Optional:
+                                    - Type:
+                                          type: array
+                                          message: "TODO invalid labels format"
+                                    - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\LabelCollection: ~
+                                    - All:
+                                          - Type: string
+                                          - NotNull: ~
+                        missingFieldsMessage: "TODO Missing mandatory field: {{ field }}"
             - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsColumnCodeUnique: ~
