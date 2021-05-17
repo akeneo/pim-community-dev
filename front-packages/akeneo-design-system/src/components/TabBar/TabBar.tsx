@@ -1,5 +1,6 @@
 import React, {
   Children,
+  cloneElement,
   HTMLAttributes,
   isValidElement,
   ReactNode,
@@ -10,7 +11,7 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
-import {Dropdown, IconButton} from '../../../lib';
+import {Dropdown, IconButton} from '../../components';
 import {MoreIcon} from '../../icons';
 import {useBooleanState} from '../../hooks';
 
@@ -28,25 +29,6 @@ const TabBarContainer = styled.div`
   flex-wrap: wrap;
   overflow: hidden;
 `;
-
-type TabProps = {
-  /**
-   * Define if the tab is active.
-   */
-  isActive: boolean;
-  /**
-   * Function called when the user click on tab.
-   */
-  onClick?: () => void;
-  /**
-   * Content of the Tab.
-   */
-  children: ReactNode;
-
-  parentRef: RefObject<HTMLDivElement>;
-
-  onVisibilityChange: (newVisibility: boolean) => void;
-};
 
 const TabContainer = styled.div<TabProps & AkeneoThemedProps>`
   display: flex;
@@ -66,12 +48,40 @@ const TabContainer = styled.div<TabProps & AkeneoThemedProps>`
   }
 `;
 
+type TabProps = {
+  /**
+   * Define if the tab is active.
+   */
+  isActive: boolean;
+
+  /**
+   * Function called when the user click on tab.
+   */
+  onClick?: () => void;
+
+  /**
+   * Content of the Tab.
+   */
+  children: ReactNode;
+
+  parentRef?: RefObject<HTMLDivElement>;
+
+  onVisibilityChange?: (newVisibility: boolean) => void;
+};
+
 const Tab = ({children, isActive, parentRef, onVisibilityChange, ...rest}: TabProps) => {
-  const ref = useRef<HTMLDivElement>();
+  const ref = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    if (undefined === ref.current) return;
+    if (undefined === parentRef) {
+      throw new Error('TabBar.Tab can not be used outside TabBar');
+    }
+
     const tabElement = ref.current;
     const tabBarElement = parentRef.current;
+
+    /* istanbul ignore next first render */
+    if (null === tabElement) return;
 
     const options = {
       root: tabBarElement,
@@ -80,7 +90,7 @@ const Tab = ({children, isActive, parentRef, onVisibilityChange, ...rest}: TabPr
     };
 
     const observer = new IntersectionObserver(event => {
-      onVisibilityChange(event[0].isIntersecting);
+      onVisibilityChange?.(event[0].isIntersecting);
     }, options);
 
     observer.observe(tabElement);
@@ -113,9 +123,11 @@ const TabBar = ({children, ...rest}: TabBarProps) => {
   const [isOpen, open, close] = useBooleanState();
 
   const decoratedChildren = Children.map(children, (child, index) => {
-    if (!React.isValidElement<TabProps>(child)) return child;
+    if (!isValidElement<TabProps>(child)) {
+      throw new Error('TabBar only accepts TabBar.Tab as children');
+    }
 
-    return React.cloneElement(child, {
+    return cloneElement(child, {
       parentRef: ref,
       onVisibilityChange: (isVisible: boolean) => {
         setHiddenElements(previousHiddenElements =>
@@ -132,7 +144,7 @@ const TabBar = ({children, ...rest}: TabBarProps) => {
       <TabBarContainer ref={ref} role="tablist" {...rest}>
         {decoratedChildren}
       </TabBarContainer>
-      {hiddenElements.length > 0 && (
+      {0 < hiddenElements.length && (
         <Dropdown>
           <IconButton level="tertiary" ghost="borderless" icon={<MoreIcon />} title={'Open'} onClick={open} />
           {isOpen && (
@@ -144,7 +156,16 @@ const TabBar = ({children, ...rest}: TabBarProps) => {
                 {decoratedChildren?.map((child, index) => {
                   if (!hiddenElements.includes(index) || !isValidElement<TabProps>(child)) return;
 
-                  return <Dropdown.Item key={index}>{child.props.children}</Dropdown.Item>;
+                  const handleClick = () => {
+                    close();
+                    child.props.onClick?.();
+                  };
+
+                  return (
+                    <Dropdown.Item key={index} onClick={handleClick}>
+                      {child.props.children}
+                    </Dropdown.Item>
+                  );
                 })}
               </Dropdown.ItemCollection>
             </Dropdown.Overlay>
