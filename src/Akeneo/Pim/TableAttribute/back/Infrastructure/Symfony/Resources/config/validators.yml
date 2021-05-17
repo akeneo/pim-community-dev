@@ -1,4 +1,4 @@
 services:
-    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\TableAttributeValidator:
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsTableAttributeConfiguredValidator:
         tags:
             - {name: 'validator.constraint_validator'}

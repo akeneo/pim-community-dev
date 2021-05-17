@@ -90,7 +90,8 @@ return [
     // @todo: set all on final merge
     Akeneo\Pim\TableAttribute\Infrastructure\Symfony\AkeneoPimTableAttributeBundle::class => [
         'dev' => true,
-        'test' => true
+        'test' => true,
+        'test_fake' => true,
     ],
 
     // Dev related bundles

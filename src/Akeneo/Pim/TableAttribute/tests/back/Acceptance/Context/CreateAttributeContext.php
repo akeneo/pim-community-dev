@@ -32,12 +32,13 @@ final class CreateAttributeContext implements Context
 
     public function __construct(
         ValidatorInterface $validator,
-        InMemoryAttributeRepository $attributeRepository
+        InMemoryAttributeRepository $attributeRepository,
+        ConstraintViolationsContext $constraintViolationsContext
     ) {
         $this->attributeBuilder = new Builder();
         $this->validator = $validator;
         $this->attributeRepository = $attributeRepository;
-        $this->constraintViolationsContext = new ConstraintViolationsContext();
+        $this->constraintViolationsContext = $constraintViolationsContext;
     }
 
     /**
@@ -47,6 +48,7 @@ final class CreateAttributeContext implements Context
     {
         $attribute = $this->attributeBuilder
             ->withCode('table')
+            ->withGroupCode('marketing')
             ->withType(AttributeTypes::TABLE)
             ->build();
         $this->saveAttribute($attribute);

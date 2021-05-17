@@ -3,4 +3,6 @@ services:
         arguments:
             - '@validator'
             - '@pim_catalog.repository.attribute'
+            - '@Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\ConstraintViolationsContext'
 
+    Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\ConstraintViolationsContext: ~

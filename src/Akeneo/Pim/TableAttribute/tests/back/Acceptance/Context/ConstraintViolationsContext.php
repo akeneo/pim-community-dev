@@ -56,12 +56,20 @@ final class ConstraintViolationsContext implements Context
      */
     public function thereIsAViolationWithMessage(string $message): void
     {
+        $actualViolationMessages = [];
+
         foreach ($this->constraintViolationList as $constraintViolation) {
             if ($constraintViolation->getMessage() === $message) {
                 return;
             }
+            $actualViolationMessages[] = $constraintViolation->getMessage();
         }
 
-        throw new \RuntimeException('No violation found with message.');
+
+
+        throw new \RuntimeException(sprintf('No violation found with message "%s", actual messages are %s',
+            $message,
+            implode(PHP_EOL, $actualViolationMessages)
+        ));
     }
 }
