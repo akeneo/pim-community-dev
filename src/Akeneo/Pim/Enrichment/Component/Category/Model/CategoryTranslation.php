@@ -13,9 +13,6 @@ use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
  */
 class CategoryTranslation extends AbstractTranslation implements CategoryTranslationInterface
 {
-    /** Change foreign key to add constraint and work with basic entity */
-    protected $foreignKey;
-
     /** @var string */
     protected $label;
 
@@ -35,5 +32,20 @@ class CategoryTranslation extends AbstractTranslation implements CategoryTransla
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * @param CategoryInterface $foreignKey
+     */
+    public function setForeignKey($foreignKey): self
+    {
+        $this->foreignKey = $foreignKey;
+
+        return $this;
+    }
+
+    public function getForeignKey(): CategoryInterface
+    {
+        return $this->foreignKey;
     }
 }

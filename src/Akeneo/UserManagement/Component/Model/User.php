@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\NoopWordInflector;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -151,6 +152,10 @@ class User implements UserInterface
 
     /** @var array $property bag for properties extension */
     private $properties = [];
+
+    private int $consecutiveAuthenticationFailureCounter=0;
+
+    private ?\DateTime $authenticationFailureResetDate=null;
 
     protected $type = self::TYPE_USER;
 
@@ -1114,6 +1119,38 @@ class User implements UserInterface
         $propertyName = $this->getInflector()->tableize($propertyName);
 
         return $this->properties[$propertyName] ?? null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConsecutiveAuthenticationFailureCounter(): int
+    {
+        return $this->consecutiveAuthenticationFailureCounter;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConsecutiveAuthenticationFailureCounter(int $consecutiveAuthenticationFailureCounter): void
+    {
+        $this->consecutiveAuthenticationFailureCounter = $consecutiveAuthenticationFailureCounter;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthenticationFailureResetDate(): ?\DateTime
+    {
+        return $this->authenticationFailureResetDate;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAuthenticationFailureResetDate(?\DateTime $authenticationFailureResetDate): void
+    {
+        $this->authenticationFailureResetDate = $authenticationFailureResetDate;
     }
 
     public function duplicate(): UserInterface

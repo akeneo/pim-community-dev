@@ -16,8 +16,7 @@ use Doctrine\DBAL\Connection;
  */
 final class SqlGetProductCompletenesses implements GetProductCompletenesses
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -26,29 +25,76 @@ final class SqlGetProductCompletenesses implements GetProductCompletenesses
 
     public function fromProductId(int $productId): ProductCompletenessCollection
     {
-        $sql = <<<SQL
+        return $this->fromProductIds([$productId])[$productId];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fromProductIds(array $productIds, ?string $channel = null, array $locales = []): array
+    {
+        $andWhere = '';
+        $params = ['productIds' => $productIds];
+        $types = ['productIds' => Connection::PARAM_INT_ARRAY];
+        if (null !== $channel) {
+            $andWhere .= 'AND channel.code = :channel ';
+            $params['channel'] = $channel;
+        }
+        if (!empty($locales)) {
+            $andWhere .= 'AND locale.code IN (:locales) ';
+            $params['locales'] = $locales;
+            $types['locales'] = Connection::PARAM_STR_ARRAY;
+        }
+
+        $sql = sprintf(
+            <<<SQL
 SELECT 
-       channel.code AS channel_code,
-       locale.code AS locale_code,
-       completeness.required_count AS required_count,
-       completeness.missing_count AS missing_count
+       completeness.product_id AS product_id,
+       JSON_ARRAYAGG(
+           JSON_OBJECT(
+               'channel_code', channel.code,
+               'locale_code', locale.code,
+               'required_count', completeness.required_count,
+               'missing_count', completeness.missing_count
+           )
+       ) AS completenesses
 FROM pim_catalog_completeness completeness
     INNER JOIN pim_catalog_channel channel ON completeness.channel_id = channel.id
     INNER JOIN pim_catalog_locale locale ON completeness.locale_id = locale.id
-WHERE completeness.product_id = :productId
-SQL;
-        $rows = $this->connection->executeQuery($sql, ['productId' => $productId])->fetchAll();
+WHERE completeness.product_id IN (:productIds) %s
+GROUP BY product_id
+SQL,
+            $andWhere
+        );
+        $rows = $this->connection->executeQuery($sql, $params, $types)->fetchAll();
 
-        return new ProductCompletenessCollection($productId, array_map(
-            function (array $row): ProductCompleteness {
-                return new ProductCompleteness(
-                    $row['channel_code'],
-                    $row['locale_code'],
-                    (int)$row['required_count'],
-                    (int)$row['missing_count']
-                );
+        $results = array_reduce(
+            $rows,
+            function (array $normalized, array $row) {
+                $productId = (int) $row['product_id'];
+                $normalized[$productId] = new ProductCompletenessCollection($productId, array_map(
+                    function (array $completeness): ProductCompleteness {
+                        return new ProductCompleteness(
+                            $completeness['channel_code'],
+                            $completeness['locale_code'],
+                            (int) $completeness['required_count'],
+                            (int) $completeness['missing_count']
+                        );
+                    },
+                    json_decode($row['completenesses'], true)
+                ));
+
+                return $normalized;
             },
-            $rows
-        ));
+            []
+        );
+        $missingIds = array_diff($productIds, array_keys($results));
+        if (!empty($missingIds)) {
+            foreach ($missingIds as $missingId) {
+                $results[$missingId] = new ProductCompletenessCollection($missingId, []);
+            }
+        }
+
+        return $results;
     }
 }

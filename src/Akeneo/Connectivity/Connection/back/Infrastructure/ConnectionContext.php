@@ -17,29 +17,21 @@ use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence
  */
 class ConnectionContext implements ConnectionContextInterface
 {
-    /** @var AreCredentialsValidCombinationQuery */
-    private $areCredentialsValidCombinationQuery;
+    private AreCredentialsValidCombinationQuery $areCredentialsValidCombinationQuery;
 
-    /** @var SelectConnectionCodeByClientIdQuery */
-    private $selectConnectionCodeByClientIdQuery;
+    private SelectConnectionCodeByClientIdQuery $selectConnectionCodeByClientIdQuery;
 
-    /** @var ConnectionRepository */
-    private $connectionRepository;
+    private ConnectionRepository $connectionRepository;
 
-    /** @var string */
-    private $clientId;
+    private ?string $clientId = null;
 
-    /** @var string */
-    private $username;
+    private ?string $username = null;
 
-    /** @var Connection */
-    private $connection;
+    private ?Connection $connection = null;
 
-    /** @var bool */
-    private $collectable;
+    private ?bool $collectable = null;
 
-    /** @var bool */
-    private $areCredentialsValidCombination;
+    private ?bool $areCredentialsValidCombination = null;
 
     public function __construct(
         AreCredentialsValidCombinationQuery $areCredentialsValidCombinationQuery,

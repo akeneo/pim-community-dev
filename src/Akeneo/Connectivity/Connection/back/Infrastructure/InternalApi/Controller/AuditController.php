@@ -23,17 +23,13 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AuditController
 {
-    /** @var UserContext */
-    private $userContext;
+    private UserContext $userContext;
 
-    /** @var GetPeriodEventCountPerConnectionHandler */
-    private $getPeriodEventCountPerConnectionHandler;
+    private GetPeriodEventCountPerConnectionHandler $getPeriodEventCountPerConnectionHandler;
 
-    /** @var GetErrorCountPerConnectionHandler */
-    private $getErrorCountPerConnectionHandler;
+    private GetErrorCountPerConnectionHandler $getErrorCountPerConnectionHandler;
 
-    /** @var GetPeriodErrorCountPerConnectionHandler */
-    private $getPeriodErrorCountPerConnectionHandler;
+    private GetPeriodErrorCountPerConnectionHandler $getPeriodErrorCountPerConnectionHandler;
 
     public function __construct(
         UserContext $userContext,
@@ -130,6 +126,9 @@ class AuditController
         return new JsonResponse($data);
     }
 
+    /**
+     * @return \DateTimeImmutable[]
+     */
     private function createUserDateTimeInterval(
         string $endDateUser,
         \DateTimeZone $timezone,
@@ -152,6 +151,9 @@ class AuditController
         return [$startDateTimeUser, $endDateTimeUser];
     }
 
+    /**
+     * @return \DateTimeImmutable[]
+     */
     private function createUtcDateTimeInterval(
         \DateTimeImmutable $startDateTimeUser,
         \DateTimeImmutable $endDateTimeUser

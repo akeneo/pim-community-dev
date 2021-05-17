@@ -235,7 +235,8 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
-            $qualityScore
+            $qualityScore,
+            null
         );
     }
 }

@@ -380,6 +380,9 @@ pim_enrich.mass_edit.product:
 
 pim_datagrid:
     no_entities: "No {{ entityHint }} found"
+    no_entities.product: "No product found" # Custom translation for product grid
+    no_results: "Sorry, there is no {{ entityHint }} for your search."
+    no_results.product: "Sorry, there is no product for your search." # Custom translation for product grid
     mass_action_group:
         bulk_actions:
             label: Bulk Actions

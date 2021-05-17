@@ -13,8 +13,7 @@ use Doctrine\DBAL\Connection as DbalConnection;
  */
 class DbalSaveWebhookSecretQuery implements SaveWebhookSecretQuery
 {
-    /** @var DbalConnection */
-    private $dbalConnection;
+    private DbalConnection $dbalConnection;
 
     public function __construct(DbalConnection $dbalConnection)
     {

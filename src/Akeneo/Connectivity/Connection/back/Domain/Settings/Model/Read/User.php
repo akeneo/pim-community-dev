@@ -10,12 +10,9 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\Read;
  */
 class User
 {
-    /** @var int */
-    private $id;
-    /** @var string */
-    private $username;
-    /** @var string */
-    private $password;
+    private int $id;
+    private string $username;
+    private string $password;
 
     public function __construct(int $id, string $username, string $password)
     {

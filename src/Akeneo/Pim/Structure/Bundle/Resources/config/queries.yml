@@ -121,3 +121,8 @@ services:
         class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\Attribute\GetAllBlacklistedAttributeCodes
         arguments:
             - '@database_connection'
+
+    akeneo.pim.structure.query.get_attribute_option_codes:
+        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeOption\SqlGetAttributeOptionCodes
+        arguments:
+            - '@database_connection'

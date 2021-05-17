@@ -15,8 +15,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repositor
  */
 class CreateUser implements CreateUserInterface
 {
-    /** @var InMemoryUserPermissionsRepository */
-    private $userPermissionsRepository;
+    private InMemoryUserPermissionsRepository $userPermissionsRepository;
 
     public function __construct(InMemoryUserPermissionsRepository $userPermissionsRepository)
     {

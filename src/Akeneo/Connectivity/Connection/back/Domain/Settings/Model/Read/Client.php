@@ -11,14 +11,11 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\Read;
  */
 class Client
 {
-    /** @var int */
-    private $id;
+    private int $id;
 
-    /** @var string */
-    private $clientId;
+    private string $clientId;
 
-    /** @var string */
-    private $secret;
+    private string $secret;
 
     public function __construct(int $id, string $clientId, string $secret)
     {

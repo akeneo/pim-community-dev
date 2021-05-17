@@ -401,6 +401,7 @@ class FixturesLoader implements FixturesLoaderInterface
             '--quick',
             '--skip-add-locks',
             '--skip-disable-keys',
+            '--complete-insert',
             $this->databaseName,
             '> '.$filepath,
         ]);

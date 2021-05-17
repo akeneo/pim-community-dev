@@ -28,11 +28,9 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
     /** @var string */
     const CONNECTION_FAILED = 'Failed to connect to server';
 
-    /** @var ClientInterface */
-    private $client;
+    private ClientInterface $client;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
     public function __construct(ClientInterface $client, ValidatorInterface $validator)
     {
