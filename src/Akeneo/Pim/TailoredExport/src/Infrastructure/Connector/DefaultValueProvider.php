@@ -48,6 +48,11 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
                     'operator' => Operators::EQUALS,
                     'value' => true,
                 ],
+                [
+                    'field' => 'categories',
+                    'operator' => Operators::NOT_IN_LIST,
+                    'value' => []
+                ]
             ],
         ];
 

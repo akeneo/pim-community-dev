@@ -162,8 +162,14 @@ extensions:
                     field: enabled
                     view: akeneo-product-enabled-filter
                 -
+                    field: categories
+                    view: akeneo-product-all-category-filter
+                -
                     field: updated
                     view: akeneo-product-updated-filter
+
+    akeneo-product-all-category-filter:
+        module: akeneotailoredexport/js/job/product/edit/filter-categories
 
     pim-job-instance-xlsx-tailored-product-export-edit-filter-the-data-default-attribute-filters:
         module: pim/job/product/edit/content/data/default-attribute-filters

@@ -1,5 +1,5 @@
 import BaseView = require('pimui/js/view/base');
-import {ColumnConfiguration, ColumnsTab, ColumnsTabProps} from '@akeneo-pim-enterprise/tailored-export';
+import {ColumnsTab, ColumnsTabProps} from '@akeneo-pim-enterprise/tailored-export';
 import {ValidationError} from '@akeneo-pim-community/shared';
 
 const __ = require('oro/translator');
@@ -41,7 +41,7 @@ class ColumnView extends BaseView {
 
     const props: ColumnsTabProps = {
       columnsConfiguration: formData.configuration.columns,
-      onColumnsConfigurationChange: (columnsConfiguration: ColumnConfiguration[]) => {
+      onColumnsConfigurationChange: columnsConfiguration => {
         this.setData({...formData, configuration: {...formData.configuration, columns: columnsConfiguration}});
         this.render();
       },

@@ -9,9 +9,10 @@ import {
   getColor,
   getFontSize,
 } from 'akeneo-design-system';
-import {ColumnConfiguration, ColumnsTab} from './feature';
+import {CategoryFilter, ColumnsTab} from './feature';
 import {useEffect} from 'react';
 import {NotificationLevel, useNotify, useRoute, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {ColumnConfiguration} from './feature/models/ColumnConfiguration';
 
 const JOB_CODE = 'mmm';
 
@@ -74,6 +75,14 @@ const SaveButton = styled(Button)`
 type JobConfiguration = {
   code: string;
   configuration: {
+    filters: {
+      data: {
+        field: string;
+        value: string[];
+        operator: string;
+        context: any;
+      }[];
+    };
     columns: ColumnConfiguration[];
   };
 };
@@ -87,7 +96,27 @@ const FakePIM = () => {
   const translate = useTranslate();
 
   const handleColumnConfigurationChange = (columnConfiguration: ColumnConfiguration[]) => {
-    setJobConfiguration(jobConfiguration => ({...jobConfiguration, configuration: {columns: columnConfiguration}}));
+    if (null !== jobConfiguration) {
+      setJobConfiguration({
+        ...jobConfiguration,
+        configuration: {...jobConfiguration.configuration, columns: columnConfiguration},
+      });
+    }
+  };
+
+  const handleCategoryChange = (categoriesSelected: string[]) => {
+    if (jobConfiguration === null) return;
+
+    const newFilters = jobConfiguration.configuration.filters.data.map(filter => {
+      if (filter.field !== 'categories') return filter;
+
+      return {...filter, operator: categoriesSelected.length === 0 ? 'NOT IN' : 'IN', value: categoriesSelected};
+    });
+
+    setJobConfiguration({
+      ...jobConfiguration,
+      configuration: {...jobConfiguration.configuration, filters: {data: newFilters}},
+    });
   };
 
   const saveJobConfiguration = async () => {
@@ -122,6 +151,13 @@ const FakePIM = () => {
     fetchJobConfiguration();
   }, [route]);
 
+  if (jobConfiguration === null) return null;
+  const categoryFilter = jobConfiguration.configuration.filters.data.find(filter => {
+    return filter.field === 'categories';
+  });
+
+  const categoriesSelected = categoryFilter ? categoryFilter['value'] : [];
+
   return (
     <Container>
       <Menu>
@@ -136,6 +172,8 @@ const FakePIM = () => {
             </Breadcrumb>
             <Title>Tailored Exports</Title>
           </div>
+          {categoriesSelected.length === 0 ? 'All products' : `${categoriesSelected.length} selected category`}
+          <CategoryFilter categoriesSelected={categoriesSelected} setCategoriesSelected={handleCategoryChange} />
           <SaveButton onClick={saveJobConfiguration}>Save</SaveButton>
         </Header>
         <Tabs>
@@ -146,13 +184,11 @@ const FakePIM = () => {
           <Tab isActive={true}>Select the columns</Tab>
           <Tab>History</Tab>
         </Tabs>
-        {null !== jobConfiguration && (
-          <ColumnsTab
-            validationErrors={validationErrors}
-            columnsConfiguration={jobConfiguration.configuration.columns}
-            onColumnsConfigurationChange={handleColumnConfigurationChange}
-          />
-        )}
+        <ColumnsTab
+          validationErrors={validationErrors}
+          columnsConfiguration={jobConfiguration.configuration.columns}
+          onColumnsConfigurationChange={handleColumnConfigurationChange}
+        />
       </Page>
     </Container>
   );
