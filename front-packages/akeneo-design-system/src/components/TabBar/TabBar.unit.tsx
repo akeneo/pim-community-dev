@@ -13,7 +13,7 @@ const intersectionObserverMock = (callback: EntryCallback) => ({
 window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
 
 test('TabBar supports ...rest props', () => {
-  render(<TabBar data-testid="my_value" />);
+  render(<TabBar moreButtonTitle="More" data-testid="my_value" />);
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
 
@@ -21,7 +21,7 @@ test('it renders its children properly', () => {
   const handleClick = jest.fn();
 
   render(
-    <TabBar>
+    <TabBar moreButtonTitle="More">
       <TabBar.Tab isActive={false} onClick={handleClick}>
         First tab
       </TabBar.Tab>
@@ -43,7 +43,7 @@ test('it throws when using invalid children', () => {
 
   expect(() =>
     render(
-      <TabBar>
+      <TabBar moreButtonTitle="More">
         <TabBar.Tab isActive={false}>First tab</TabBar.Tab>
         Invalid child
       </TabBar>
@@ -65,7 +65,7 @@ test('it displays a Dropdown button when having a lot of tabs', () => {
   const handleClick = jest.fn();
 
   render(
-    <TabBar>
+    <TabBar moreButtonTitle="More">
       <TabBar.Tab isActive={false}>First tab</TabBar.Tab>
       <TabBar.Tab isActive={false}>Another tab</TabBar.Tab>
       <TabBar.Tab isActive={false} onClick={handleClick}>
@@ -78,10 +78,7 @@ test('it displays a Dropdown button when having a lot of tabs', () => {
     entryCallback?.([{isIntersecting: false}]);
   });
 
-  userEvent.click(screen.getByTitle('Open'));
-
-  expect(screen.getByText('Elements')).toBeInTheDocument();
-
+  userEvent.click(screen.getByTitle('More'));
   userEvent.click(screen.getByTitle('Last tab'));
 
   expect(handleClick).toHaveBeenCalled();

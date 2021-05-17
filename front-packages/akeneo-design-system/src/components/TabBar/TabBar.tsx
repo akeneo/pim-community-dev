@@ -23,7 +23,6 @@ const Container = styled.div`
 const TabBarContainer = styled.div`
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
   flex-grow: 1;
   height: 44px;
   flex-wrap: wrap;
@@ -64,8 +63,14 @@ type TabProps = {
    */
   children: ReactNode;
 
+  /**
+   * @private
+   */
   parentRef?: RefObject<HTMLDivElement>;
 
+  /**
+   * @private
+   */
   onVisibilityChange?: (newVisibility: boolean) => void;
 };
 
@@ -109,6 +114,11 @@ const Tab = ({children, isActive, parentRef, onVisibilityChange, ...rest}: TabPr
 
 type TabBarProps = {
   /**
+   * Title of the More button.
+   */
+  moreButtonTitle: string;
+
+  /**
    * Tabs of the Tab bar.
    */
   children?: ReactNode;
@@ -117,7 +127,7 @@ type TabBarProps = {
 /**
  * TabBar is used to move from one content to another within the same context.
  */
-const TabBar = ({children, ...rest}: TabBarProps) => {
+const TabBar = ({moreButtonTitle, children, ...rest}: TabBarProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [hiddenElements, setHiddenElements] = useState<number[]>([]);
   const [isOpen, open, close] = useBooleanState();
@@ -146,12 +156,9 @@ const TabBar = ({children, ...rest}: TabBarProps) => {
       </TabBarContainer>
       {0 < hiddenElements.length && (
         <Dropdown>
-          <IconButton level="tertiary" ghost="borderless" icon={<MoreIcon />} title={'Open'} onClick={open} />
+          <IconButton level="tertiary" ghost="borderless" icon={<MoreIcon />} title={moreButtonTitle} onClick={open} />
           {isOpen && (
             <Dropdown.Overlay verticalPosition="down" onClose={close}>
-              <Dropdown.Header>
-                <Dropdown.Title>Elements</Dropdown.Title>
-              </Dropdown.Header>
               <Dropdown.ItemCollection>
                 {decoratedChildren?.map((child, index) => {
                   if (!hiddenElements.includes(index) || !isValidElement<TabProps>(child)) return;
