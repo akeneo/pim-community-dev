@@ -72,14 +72,13 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
           : undefined
       }
       isOpen={node.type === 'root' ? true : isOpen}
-      open={open}
-      close={close}
-      onOpen={async () => {
-        if (node.childrenStatus !== 'idle') {
-          return;
+      open={() => {
+        open();
+        if (node.childrenStatus === 'idle') {
+          loadChildren();
         }
-        return loadChildren();
       }}
+      close={close}
       draggable={sortable && node.type !== 'root'}
       onDragStart={() => {
         // Root is not draggable
