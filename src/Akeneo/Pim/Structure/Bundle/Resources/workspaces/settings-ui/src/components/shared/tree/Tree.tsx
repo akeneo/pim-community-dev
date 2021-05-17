@@ -199,7 +199,7 @@ const Tree = <T,>({
         }}
         onDragEnter={() => {
           // @fixme does not work when the user enter in a sub element of the row
-          if (!isLeaf) {
+          if (!isLeaf && !disabled) {
             if (timer) {
               return;
             }
