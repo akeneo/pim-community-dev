@@ -1,4 +1,13 @@
-import React, {ReactNode, Ref, SyntheticEvent, HTMLAttributes, forwardRef, useContext, DragEvent} from 'react';
+import React, {
+  ReactNode,
+  Ref,
+  SyntheticEvent,
+  HTMLAttributes,
+  forwardRef,
+  useContext,
+  DragEvent,
+  useEffect,
+} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {Checkbox} from '../../../components';
@@ -111,7 +120,17 @@ type TableRowProps = Override<
 
 const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
   (
-    {rowIndex = 0, draggedElementIndex = null, isSelected, onSelectToggle, onClick, children, ...rest}: TableRowProps,
+    {
+      rowIndex = 0,
+      draggedElementIndex = null,
+      isSelected,
+      onSelectToggle,
+      onClick,
+      // onDragStart,
+      // onDragEnd,
+      children,
+      ...rest
+    }: TableRowProps,
     forwardedRef: Ref<HTMLTableRowElement>
   ) => {
     const [isDragged, drag, drop] = useBooleanState();
@@ -122,10 +141,17 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
       throw Error('A row in a selectable table should have the prop "isSelected" and "onSelectToggle"');
     }
 
-    const handleCheckboxChange = (e: SyntheticEvent) => {
-      e.stopPropagation();
-      undefined !== onSelectToggle && onSelectToggle(!isSelected);
+    const handleCheckboxChange = (event: SyntheticEvent) => {
+      event.stopPropagation();
+      onSelectToggle?.(!isSelected);
     };
+
+    useEffect(() => {
+      if (null === draggedElementIndex) {
+        drop();
+        dragEnd();
+      }
+    }, [draggedElementIndex]);
 
     return (
       <RowContainer
@@ -133,16 +159,32 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
         isClickable={undefined !== onClick}
         isSelected={!!isSelected}
         onClick={onClick}
+        {...rest}
         placeholderPosition={placeholderPosition}
         draggable={isDragAndDroppable && isDragged}
         data-draggable-index={rowIndex}
+        // onDragOver={(event: SyntheticEvent) => {
+        //   event.preventDefault();
+        // }}
+        // onDragEnd={(event: DragEvent<HTMLTableRowElement>) => {
+        //   drop();
+        //   onDragEnd?.(event);
+        //   console.log('dragend', event);
+        // }}
+        // onDragStart={(event: DragEvent<HTMLTableRowElement>) => {
+        //   drag();
+        //   onDragStart?.(event);
+        //   event.dataTransfer.setData('text/plain', rowIndex.toString());
+        // }}
         onDragEnter={dragEnter}
         onDragLeave={dragLeave}
-        onDrop={(event: DragEvent) => {
-          event.preventDefault();
-          dragEnd();
-        }}
-        {...rest}
+        // onDrop={(event: DragEvent<HTMLTableRowElement>) => {
+        //   console.log('dropin');
+        //   event.preventDefault();
+        //   dragEnd();
+        //   drop();
+        //   onDragEnd?.(event);
+        // }}
       >
         {isSelectable && (
           <CheckboxContainer
