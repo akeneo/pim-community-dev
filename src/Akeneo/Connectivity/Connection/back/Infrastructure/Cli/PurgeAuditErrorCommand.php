@@ -16,10 +16,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PurgeAuditErrorCommand extends Command
 {
+    /**
+     * @var string
+     */
     protected static $defaultName = 'akeneo:connectivity-audit:purge-error-count';
 
-    /** @var PurgeAuditErrorQuery */
-    private $purgeAuditErrorsQuery;
+    private PurgeAuditErrorQuery $purgeAuditErrorsQuery;
 
     public function __construct(PurgeAuditErrorQuery $purgeAuditErrorsQuery)
     {

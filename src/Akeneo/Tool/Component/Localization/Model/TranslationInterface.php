@@ -37,7 +37,7 @@ interface TranslationInterface
     /**
      * Set foreignKey
      *
-     * @param string $foreignKey
+     * @param mixed $foreignKey
      *
      * @return TranslationInterface
      */
@@ -46,7 +46,7 @@ interface TranslationInterface
     /**
      * Get foreignKey
      *
-     * @return string $foreignKey
+     * @return mixed
      */
     public function getForeignKey();
 }

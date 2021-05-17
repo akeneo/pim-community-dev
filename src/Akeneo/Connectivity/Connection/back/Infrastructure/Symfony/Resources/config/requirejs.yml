@@ -2,6 +2,8 @@ config:
     config:
         pim/controller-registry:
             controllers:
+                akeneo_connectivity_connection_connect_marketplace:
+                    module: pim/controller/connectivity/connection/connect/marketplace
                 akeneo_connectivity_connection_error_management_dashboard:
                     module: pim/controller/connectivity/connection/error-management
                 akeneo_connectivity_connection_error_management_connection_monitoring:
@@ -29,11 +31,22 @@ config:
                     module: pim/controller/connectivity/connection/audit
                 akeneo_connectivity_connection_audit_any:
                     module: pim/controller/connectivity/connection/audit
+                akeneo_connectivity_connection_redirect_audit:
+                    module: pim/controller/connectivity/connection/audit-redirect
+                akeneo_connectivity_connection_settings_redirect:
+                    module: pim/controller/connectivity/connection/settings-redirect
+                    aclResourceId: akeneo_connectivity_connection_manage_settings
 
     paths:
+        pim/controller/connectivity/connection/connect/marketplace: akeneoconnectivityconnection/js/controller/marketplace.tsx
         pim/controller/connectivity/connection/settings: akeneoconnectivityconnection/js/controller/settings.tsx
         pim/controller/connectivity/connection/error-management: akeneoconnectivityconnection/js/controller/error-management.tsx
         pim/controller/connectivity/connection/webhook: akeneoconnectivityconnection/js/controller/webhook.tsx
         pim/controller/connectivity/connection/audit: akeneoconnectivityconnection/js/controller/audit.tsx
+        pim/controller/connectivity/connection/audit-redirect: akeneoconnectivityconnection/js/controller/audit-redirect.tsx
+        pim/controller/connectivity/connection/settings-redirect: akeneoconnectivityconnection/js/controller/settings-redirect.tsx
 
+        pim/menu/connectivity/connection/marketplace-item: akeneoconnectivityconnection/js/menu/marketplace-item.js
         pim/menu/connectivity/connection/connection-params-provider: akeneoconnectivityconnection/js/menu/connection-params-provider.ts
+
+        pim/menu/connectivity/connection/templates/marketplace-item: akeneoconnectivityconnection/templates/marketplace-item.html

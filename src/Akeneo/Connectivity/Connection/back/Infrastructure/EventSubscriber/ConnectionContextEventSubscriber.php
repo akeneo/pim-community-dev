@@ -16,8 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ConnectionContextEventSubscriber implements EventSubscriberInterface
 {
-    /** @var ConnectionContext */
-    private $connectionContext;
+    private ConnectionContext $connectionContext;
 
     public function __construct(ConnectionContext $connectionContext)
     {

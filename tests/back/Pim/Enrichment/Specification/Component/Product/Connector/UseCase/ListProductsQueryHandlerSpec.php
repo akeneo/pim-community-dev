@@ -7,9 +7,12 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCas
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ApplyProductSearchQueryParametersToPQB;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithCompletenessesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
@@ -35,7 +38,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         GetConnectorProducts $getConnectorProducts,
         GetConnectorProducts $getConnectorProductsWithOptions,
         EventDispatcherInterface $eventDispatcher,
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores
+        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
+        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses
     ) {
         $this->beConstructedWith(
             $channelRepository,
@@ -46,7 +50,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             $getConnectorProducts,
             $getConnectorProductsWithOptions,
             $eventDispatcher,
-            $getProductsWithQualityScores
+            $getProductsWithQualityScores,
+            $getProductsWithCompletenesses
         );
     }
 
@@ -87,6 +92,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
+            null,
             null
         );
 
@@ -104,6 +110,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
+            null,
             null
         );
 
@@ -152,6 +159,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
+            null,
             null
         );
 
@@ -169,6 +177,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
+            null,
             null
         );
 
@@ -218,6 +227,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
+            null,
             null
         );
 
@@ -235,6 +245,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
+            null,
             null
         );
 
@@ -379,6 +390,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
+            null,
             null
         );
 
@@ -432,6 +444,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             new ReadValueCollection(),
+            null,
             null
         );
         $connectorProductWithQualityScores = $connectorProduct->buildWithQualityScores(
@@ -448,5 +461,69 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
 
         $this->handle($query)->shouldBeLike(new ConnectorProductList(1, [$connectorProductWithQualityScores]));
+    }
+
+    function it_adds_completenesses_to_products_if_option_is_activated(
+        ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
+        ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
+        PrimaryKeyEncrypter $primaryKeyEncrypter,
+        ProductQueryBuilderInterface $pqb,
+        GetConnectorProducts $getConnectorProducts,
+        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses
+    ) {
+        $query = new ListProductsQuery();
+        $query->paginationType = PaginationTypes::SEARCH_AFTER;
+        $query->limit = 42;
+        $query->searchAfter = '69';
+        $query->userId = 1;
+        $query->withCompletenesses = 'true';
+
+        $primaryKeyEncrypter->decrypt('69')->shouldBeCalled()->willReturn('encoded69');
+
+        $searchAfterPqbFactory->create([
+            'limit' => 42,
+            'search_after_unique_key' => 'product_encoded69',
+            'search_after' => ['product_encoded69']
+        ])->shouldBeCalled()->willReturn($pqb);
+
+        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+
+        $connectorProduct = new ConnectorProduct(
+            5,
+            'identifier_5',
+            new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
+            true,
+            'family_code',
+            ['category_code_1', 'category_code_2'],
+            ['group_code_1', 'group_code_2'],
+            'parent_product_model_code',
+            [],
+            [],
+            [],
+            new ReadValueCollection(),
+            null,
+            null
+        );
+        $connectorProductWithCompletenesses = $connectorProduct->buildWithCompletenesses(
+            new ProductCompletenessCollection(
+                5,
+                [
+                    new ProductCompleteness('ecommerce', 'en_US', 10, 5),
+                    new ProductCompleteness('ecommerce', 'fr_FR', 10, 1),
+                ]
+            )
+        );
+
+        $productList = new ConnectorProductList(1, [$connectorProduct]);
+        $getConnectorProducts
+            ->fromProductQueryBuilder($pqb, 1, null, null, null)
+            ->willReturn($productList);
+
+        $getProductsWithCompletenesses->fromConnectorProductList($productList, null, [])->willReturn(new ConnectorProductList(1, [$connectorProductWithCompletenesses]));
+
+        $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
+
+        $this->handle($query)->shouldBeLike(new ConnectorProductList(1, [$connectorProductWithCompletenesses]));
     }
 }

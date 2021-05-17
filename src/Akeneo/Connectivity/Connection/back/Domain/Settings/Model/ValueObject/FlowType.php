@@ -18,7 +18,7 @@ class FlowType
     private const CONSTRAINT_KEY = 'akeneo_connectivity.connection.connection.constraint.flow_type.%s';
 
     /** @var FlowType::* */
-    private $flowType;
+    private string $flowType;
 
     public function __construct(string $flowType)
     {

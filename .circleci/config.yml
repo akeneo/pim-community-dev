@@ -221,6 +221,41 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
+  cypress_sanity_checks:
+    machine:
+      image: ubuntu-1604:201903-01
+    resource_class: large
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Change owner on project dir in order to archive the project into the workspace
+          command: sudo chown -R 1000:1000 ../project
+      - run:
+          name: Create yarn cache folder
+          command: mkdir -p  ~/.cache/yarn
+      - run:
+          name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+          command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+      - run:
+          name: Start containers
+          command: |
+            docker load -i php-pim-image.tar
+            APP_ENV=dev C='fpm mysql elasticsearch httpd object-storage pubsub-emulator' make up
+            docker/wait_docker_up.sh
+      - run:
+          name: Install database
+          command: APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
+      - run:
+          name: Launch Cypress
+          command: CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000 make end-to-end-front
+      - store_artifacts:
+          path: cypress/screenshots
+      - store_artifacts:
+          path: cypress/videos
+      - store_artifacts:
+          path: var/logs
+
   test_back_behat_legacy:
     machine:
         image: ubuntu-2004:202101-01
@@ -356,6 +391,9 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?cols=service%2Ccomponent%2Cpfid&from_ts=0&index=main&live=true&messageDisplay=inline&query=kube_namespace%3Asrnt-pimci-${IMAGE_TAG_SHORTED}&stream_sort=time%2Casc&to_ts=-1"
+          - run:
               name: Deploy PIM on kubernetes
               command: PIM_CONTEXT=deployment make deploy-serenity
           - run:
@@ -383,29 +421,40 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
-                name: Latest SaaS prod deployment on kubernetes
+                name: Get latest release & export variables
                 command: |
                     git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt
                     LATEST_RELEASE=$(head -n 1 /tmp/pim-tags.txt)
                     echo $LATEST_RELEASE
-                    export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
-                    INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$LATEST_RELEASE PIM_CONTEXT=deployment make deploy-serenity
+                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                    echo export IMAGE_TAG=${LATEST_RELEASE} >> $BASH_ENV
+                    echo export INSTANCE_NAME_PREFIX=pimup >> $BASH_ENV
+                    echo export INSTANCE_NAME=pimup-$(echo $CIRCLE_SHA1 | cut -c -7) >> $BASH_ENV
+                    echo export CIRCLE_SHA1=${CIRCLE_SHA1} >> $BASH_ENV
+          - run:
+                name: Deploy instance with latest release
+                command: |
+                    PIM_CONTEXT=deployment make create-ci-release-files
+                    PIM_CONTEXT=deployment make change-terraform-source-version
+                    PIM_CONTEXT=deployment make deploy
           - run:
                 name: Upgrade
-                command: |
-                    INSTANCE_NAME_PREFIX=pimup PIM_CONTEXT=deployment make deploy-serenity
+                command: UPGRADE_STEP_2=true PIM_CONTEXT=deployment IMAGE_TAG=$CIRCLE_SHA1 make deploy-serenity
           - run:
                 name: Production tests on upgraded env
-                command: INSTANCE_NAME_PREFIX=pimup PIM_CONTEXT=deployment make test-prod
+                command: PIM_CONTEXT=deployment make test-prod
+          - run:
+                name: Check that upgrader pod ran
+                command: kubectl get pods --namespace=srnt-pimup-$(echo $CIRCLE_SHA1 | cut -c -7) | grep pim-upgrader
           - run:
                 name: Prepare infrastructure artifacts
-                command: INSTANCE_NAME_PREFIX=pimup PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
+                command: PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
                 when: on_fail
           - store_artifacts:
                 path: ~/artifacts/infra
           - run:
                 name: Remove upgraded env
-                command: INSTANCE_NAME_PREFIX=pimup PIM_CONTEXT=deployment make delete
+                command: IMAGE_TAG=$CIRCLE_SHA1 PIM_CONTEXT=deployment make delete
                 when: always
 
   deploy_pr_environment:
@@ -651,7 +700,6 @@ workflows:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
                     - test_back_phpunit
-
           - ready_to_build_only_ce?:
                 type: approval
                 filters:
@@ -666,6 +714,10 @@ workflows:
                 is_ee_built: false
                 requires:
                     - checkout_ce
+          - cypress_sanity_checks:
+                name: cypress_sanity_checks_ce
+                requires:
+                  - build_dev_ce
           - test_back_static_and_acceptance:
                 name: test_back_static_and_acceptance_ce
                 requires:

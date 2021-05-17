@@ -51,13 +51,11 @@ class WebhookEventBuilder
             $context['user']
         );
 
-        $apiEvents = $this->buildWebhookEvents(
+        return $this->buildWebhookEvents(
             $pimEventBulk->getEvents(),
             $eventDataCollection,
             $context
         );
-
-        return $apiEvents;
     }
 
     /**

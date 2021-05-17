@@ -19,7 +19,9 @@ const EventSubscriptionDisabled: FC<{connectionCode: string}> = ({connectionCode
                 <Link
                     decorated
                     href={history.createHref({
-                        pathname: generatePath('/connections/:connectionCode/event-subscription', {connectionCode}),
+                        pathname: generatePath('/connect/connection-settings/:connectionCode/event-subscription', {
+                            connectionCode,
+                        }),
                     })}
                     target='_self'
                 >

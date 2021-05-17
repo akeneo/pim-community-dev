@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
@@ -16,17 +17,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UpdateWebhookHandler
 {
-    /** @var ConnectionWebhookRepository */
-    private $repository;
+    private ConnectionWebhookRepository $repository;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var SelectWebhookSecretQuery */
-    private $selectWehbookSecretQuery;
+    private SelectWebhookSecretQuery $selectWehbookSecretQuery;
 
-    /** @var GenerateWebhookSecretHandler */
-    private $generateWebhookSecretHandler;
+    private GenerateWebhookSecretHandler $generateWebhookSecretHandler;
 
     public function __construct(
         ConnectionWebhookRepository $repository,
@@ -53,7 +50,8 @@ class UpdateWebhookHandler
 
         $this->repository->update($webhook);
 
-        if (null === $this->selectWehbookSecretQuery->execute($connectionCode)) {
+        $secret = $this->selectWehbookSecretQuery->execute($connectionCode);
+        if (null === $secret) {
             $this->generateWebhookSecretHandler->handle(
                 new GenerateWebhookSecretCommand($connectionCode),
             );
