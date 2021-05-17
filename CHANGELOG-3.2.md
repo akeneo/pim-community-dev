@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.84 (2021-05-17)
+
 ## Bug fixes
 
 - PIM-9778: Fix Job tracker redirection after mass refusing proposals
