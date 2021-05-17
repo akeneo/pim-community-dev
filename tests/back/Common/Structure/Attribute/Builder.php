@@ -23,6 +23,9 @@ class Builder
     /** @var string */
     private $type;
 
+    /** @var string */
+    private $groupCode;
+
     /** @var bool */
     private $isUnique;
 
@@ -61,6 +64,11 @@ class Builder
         $attribute->setLocalizable($this->localizable);
         $attribute->setDecimalsAllowed(false);
         $attribute->setBackendType($this->backendType);
+        if (null !== $this->groupCode) {
+            $group = new Model\AttributeGroup();
+            $group->setCode($this->groupCode);
+            $attribute->setGroup($group);
+        }
         foreach ($this->guidelines as $localeCode => $localeGuidelines) {
             $attribute->addGuidelines($localeCode, $localeGuidelines);
         }
@@ -83,6 +91,13 @@ class Builder
     public function withType(string $type): Builder
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function withGroupCode(string $groupCode): Builder
+    {
+        $this->groupCode = $groupCode;
 
         return $this;
     }
