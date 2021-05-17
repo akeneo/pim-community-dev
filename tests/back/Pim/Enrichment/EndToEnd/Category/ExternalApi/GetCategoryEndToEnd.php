@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Category\ExternalApi;
 
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetCategoryEndToEnd extends ApiTestCase
@@ -16,17 +18,17 @@ class GetCategoryEndToEnd extends ApiTestCase
 
         $client->request('GET', 'api/rest/v1/categories/master');
 
-        $standardCategory = <<<JSON
-{
-    "code": "master",
-    "parent": null,
-    "labels": {}
-}
-JSON;
+        $expectedCategory = [
+            'code' => 'master',
+            'parent' => null,
+            'updated' => '2016-06-14T13:12:50+02:00',
+            'labels' => [],
+        ];
 
         $response = $client->getResponse();
+
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($standardCategory, $response->getContent());
+        $this->assertResponse($response,$expectedCategory );
     }
 
     public function testGetACompleteCategory()
@@ -35,20 +37,20 @@ JSON;
 
         $client->request('GET', 'api/rest/v1/categories/categoryA');
 
-        $standardCategory = <<<JSON
-{
-    "code": "categoryA",
-    "parent": "master",
-    "labels": {
-        "en_US": "Category A",
-        "fr_FR": "Catégorie A"
-    }
-}
-JSON;
+        $expectedCategory = [
+            'code' => 'categoryA',
+            'parent' => 'master',
+            'updated' => '2016-06-14T13:12:50+02:00',
+            'labels' => [
+                'en_US'=> 'Category A',
+                'fr_FR'=> 'Catégorie A',
+            ],
+        ];
 
         $response = $client->getResponse();
+
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($standardCategory, $response->getContent());
+        $this->assertResponse($response, $expectedCategory);
     }
 
     public function testNotFoundACategory()
@@ -63,6 +65,16 @@ JSON;
         $this->assertCount(2, $content, 'response contains 2 items');
         $this->assertSame(Response::HTTP_NOT_FOUND, $content['code']);
         $this->assertSame('Category "not_found" does not exist.', $content['message']);
+    }
+
+    private function assertResponse(Response $response, array $expected)
+    {
+        $result = json_decode($response->getContent(), true);
+
+        NormalizedCategoryCleaner::clean($expected);
+        NormalizedCategoryCleaner::clean($result);
+
+        $this->assertEquals($expected, $result);
     }
 
     /**

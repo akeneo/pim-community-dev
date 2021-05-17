@@ -14,11 +14,9 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCoun
  */
 final class UpdateDataSourceProductEventCountHandler
 {
-    /** @var ExtractConnectionsProductEventCountQuery */
-    private $extractConnectionsEventCountQuery;
+    private ExtractConnectionsProductEventCountQuery $extractConnectionsEventCountQuery;
 
-    /** @var EventCountRepository */
-    private $eventCountRepository;
+    private EventCountRepository $eventCountRepository;
 
     public function __construct(
         ExtractConnectionsProductEventCountQuery $extractConnectionsEventCountQuery,

@@ -36,6 +36,7 @@ const LabelAndValueContainer = styled.button<{$inline: boolean} & AkeneoThemedPr
 
 const Label = styled.label<{$inline: boolean} & AkeneoThemedProps>`
   cursor: pointer;
+  white-space: nowrap;
   ${({$inline}) =>
     $inline
       ? css`

@@ -31,6 +31,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.attribute'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
+            - '@akeneo.pim.structure.query.get_attribute_option_codes'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 

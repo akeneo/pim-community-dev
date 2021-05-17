@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithCompletenessesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQueryHandler;
@@ -168,6 +169,8 @@ class ProductController
 
     private RemoveParentInterface $removeParent;
 
+    private GetProductsWithCompletenessesInterface $getProductsWithCompletenesses;
+
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -201,7 +204,8 @@ class ProductController
         DuplicateValueChecker $duplicateValueChecker,
         LoggerInterface $logger,
         GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
-        RemoveParentInterface $removeParent
+        RemoveParentInterface $removeParent,
+        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -236,6 +240,7 @@ class ProductController
         $this->logger = $logger;
         $this->getProductsWithQualityScores = $getProductsWithQualityScores;
         $this->removeParent = $removeParent;
+        $this->getProductsWithCompletenesses = $getProductsWithCompletenesses;
     }
 
     /**
@@ -277,6 +282,7 @@ class ProductController
         $query->userId = $user->getId();
         $query->withAttributeOptions = $request->query->get('with_attribute_options', 'false');
         $query->withQualityScores = $request->query->getAlpha('with_quality_scores', 'false');
+        $query->withCompletenesses = $request->query->getAlpha('with_completenesses', 'false');
 
         try {
             $this->listProductsQueryValidator->validate($query);
@@ -323,6 +329,9 @@ class ProductController
 
             if ($request->query->getAlpha('with_quality_scores', 'false') === 'true') {
                 $product = $this->getProductsWithQualityScores->fromConnectorProduct($product);
+            }
+            if ($request->query->getAlpha('with_completenesses', 'false') === 'true') {
+                $product = $this->getProductsWithCompletenesses->fromConnectorProduct($product);
             }
         } catch (ObjectNotFoundException $e) {
             throw new NotFoundHttpException(sprintf('Product "%s" does not exist or you do not have permission to access it.', $code));
@@ -798,6 +807,10 @@ class ProductController
         }
         if (true === $query->withQualityScores()) {
             $queryParameters['with_quality_scores'] = 'true';
+        }
+
+        if (true === $query->withCompletenesses()) {
+            $queryParameters['with_completenesses'] = 'true';
         }
 
         if (PaginationTypes::OFFSET === $query->paginationType) {

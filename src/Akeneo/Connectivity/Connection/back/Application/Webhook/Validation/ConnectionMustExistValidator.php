@@ -16,8 +16,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ConnectionMustExistValidator extends ConstraintValidator
 {
-    /** @var ConnectionRepository */
-    private $repository;
+    private ConnectionRepository $repository;
 
     public function __construct(ConnectionRepository $repository)
     {
@@ -30,7 +29,8 @@ class ConnectionMustExistValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ConnectionMustExist::class);
         }
 
-        if (null === $this->repository->findOneByCode($value)) {
+        $connection = $this->repository->findOneByCode($value);
+        if (null === $connection) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }

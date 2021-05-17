@@ -16,11 +16,9 @@ use Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repositor
  */
 class InMemorySelectConnectionWithCredentialsByCodeQuery implements SelectConnectionWithCredentialsByCodeQuery
 {
-    /** @var InMemoryConnectionRepository */
-    private $connectionRepository;
+    private InMemoryConnectionRepository $connectionRepository;
 
-    /** @var InMemoryUserPermissionsRepository */
-    private $userPermissionsRepository;
+    private InMemoryUserPermissionsRepository $userPermissionsRepository;
 
     public function __construct(
         InMemoryConnectionRepository $connectionRepository,

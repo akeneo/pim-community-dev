@@ -12,7 +12,7 @@ namespace Akeneo\Connectivity\Connection\Domain\Audit\Model\Read;
 final class ErrorCountPerConnection
 {
     /** @var ErrorCount[] */
-    private $errorCounts;
+    private array $errorCounts;
 
     /**
      * @param ErrorCount[] $errorCounts

@@ -10,14 +10,11 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
  */
 class UpdateWebhookCommand
 {
-    /** @var string */
-    private $code;
+    private string $code;
 
-    /** @var bool */
-    private $enabled;
+    private bool $enabled;
 
-    /** @var ?string */
-    private $url;
+    private ?string $url;
 
     public function __construct(string $code, bool $enabled, ?string $url = null)
     {

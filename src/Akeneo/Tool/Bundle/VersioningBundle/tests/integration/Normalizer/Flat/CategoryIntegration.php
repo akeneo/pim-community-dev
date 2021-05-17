@@ -2,6 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\tests\integration\Normalizer\Flat;
 
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
+
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -16,6 +18,7 @@ class CategoryIntegration extends AbstractFlatNormalizerTestCase
         $expected = [
             'code'   => 'master',
             'parent' => null,
+            'updated' => '2016-06-14T13:12:50+02:00',
         ];
 
         $this->assert('master', $expected);
@@ -26,6 +29,7 @@ class CategoryIntegration extends AbstractFlatNormalizerTestCase
         $expected = [
             'code'        => 'categoryA',
             'parent'      => 'master',
+            'updated' => '2016-06-14T13:12:50+02:00',
             'label-en_US' => 'Category A',
             'label-fr_FR' => 'Catégorie A',
         ];
@@ -37,6 +41,9 @@ class CategoryIntegration extends AbstractFlatNormalizerTestCase
     {
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier($identifier);
         $flatAttribute = $this->get('pim_versioning.serializer')->normalize($category, 'flat');
+
+        NormalizedCategoryCleaner::clean($flatAttribute);
+        NormalizedCategoryCleaner::clean($expected);
 
         $this->assertSame($expected, $flatAttribute);
     }

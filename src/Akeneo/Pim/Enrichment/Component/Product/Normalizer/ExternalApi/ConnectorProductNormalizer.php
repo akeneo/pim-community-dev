@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
@@ -45,6 +46,7 @@ final class ConnectorProductNormalizer
     {
         $values = $this->valuesNormalizer->normalize($connectorProduct->values());
         $qualityScores = $connectorProduct->qualityScores();
+        $completenesses = $connectorProduct->completenesses();
 
         $normalizedProduct =  [
             'identifier' => $connectorProduct->identifier(),
@@ -62,6 +64,10 @@ final class ConnectorProductNormalizer
 
         if ($qualityScores !== null) {
             $normalizedProduct['quality_scores'] = $this->normalizeQualityScores($qualityScores);
+        }
+        if ($completenesses !== null) {
+            $normalizedCompletenesses = $this->normalizeCompletenesses($completenesses);
+            $normalizedProduct['completenesses'] = empty($normalizedCompletenesses) ? (object) [] : $normalizedCompletenesses;
         }
 
         if (!empty($connectorProduct->metadata())) {
@@ -86,5 +92,19 @@ final class ConnectorProductNormalizer
         }
 
         return $qualityScores;
+    }
+
+    private function normalizeCompletenesses(ProductCompletenessCollection $completenessCollection): array
+    {
+        $completenesses = [];
+        foreach ($completenessCollection as $completeness) {
+            $completenesses[] = [
+                'scope' => $completeness->channelCode(),
+                'locale' => $completeness->localeCode(),
+                'data' => $completeness->ratio(),
+            ];
+        }
+
+        return $completenesses;
     }
 }

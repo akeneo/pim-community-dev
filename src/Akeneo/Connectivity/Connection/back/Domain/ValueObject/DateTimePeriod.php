@@ -10,11 +10,9 @@ namespace Akeneo\Connectivity\Connection\Domain\ValueObject;
  */
 final class DateTimePeriod
 {
-    /** @var \DateTimeImmutable */
-    private $start;
+    private \DateTimeImmutable $start;
 
-    /** @var \DateTimeImmutable */
-    private $end;
+    private \DateTimeImmutable $end;
 
     public function __construct(\DateTimeImmutable $start, \DateTimeImmutable $end)
     {

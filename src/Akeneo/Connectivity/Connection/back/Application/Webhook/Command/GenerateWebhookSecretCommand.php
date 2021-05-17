@@ -10,8 +10,7 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
  */
 class GenerateWebhookSecretCommand
 {
-    /** @var string */
-    private $connectionCode;
+    private string $connectionCode;
 
     public function __construct(string $connectionCode)
     {

@@ -10,11 +10,9 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
  */
 class CheckWebhookReachabilityCommand
 {
-    /** @var string */
-    private $webhookUrl;
+    private string $webhookUrl;
 
-    /** @var string */
-    private $secret;
+    private string $secret;
 
     public function __construct(string $webhookUrl, string $secret)
     {
