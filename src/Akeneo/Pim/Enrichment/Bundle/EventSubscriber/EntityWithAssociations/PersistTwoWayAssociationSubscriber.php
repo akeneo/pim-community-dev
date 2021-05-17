@@ -16,13 +16,22 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterface
 {
     private ManagerRegistry $registry;
-    private ProductIndexerInterface $productIndexer;
-    private ProductModelIndexerInterface $productModelIndexer;
 
+    /** TODO pull up master remove nullable variable */
+    private ?ProductIndexerInterface $productIndexer;
+
+    /** TODO pull up master remove nullable variable */
+    private ?ProductModelIndexerInterface $productModelIndexer;
+
+    private array $productIdentifiersToIndex = [];
+    private array $productModelCodesToIndex = [];
+
+
+    /** TODO pull up master remove null */
     public function __construct(
         ManagerRegistry $registry,
-        ProductIndexerInterface $productIndexer,
-        ProductModelIndexerInterface $productModelIndexer
+        ProductIndexerInterface $productIndexer = null,
+        ProductModelIndexerInterface $productModelIndexer = null
     ) {
         $this->registry = $registry;
         $this->productIndexer = $productIndexer;
@@ -33,6 +42,7 @@ final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterfa
     {
         return [
             StorageEvents::PRE_SAVE => 'handlePreSave',
+            StorageEvents::POST_SAVE => 'indexAssociatedEntities',
         ];
     }
 
@@ -45,8 +55,6 @@ final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterfa
         }
 
         $em = $this->registry->getManager();
-        $productIdentifiers = [];
-        $productModelCodes = [];
 
         /** @var AssociationInterface $association */
         foreach ($entity->getAssociations() as $association) {
@@ -58,21 +66,25 @@ final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterfa
 
             foreach ($association->getProducts() as $product) {
                 $em->persist($product);
-                $productIdentifiers[] = $product->getIdentifier();
+                $this->productIdentifiersToIndex[] = $product->getIdentifier();
             }
 
             foreach ($association->getProductModels() as $productModel) {
                 $em->persist($productModel);
-                $productModelCodes[] = $productModel->getCode();
+                $this->productModelCodesToIndex[] = $productModel->getCode();
             }
         }
-
-        $this->indexAssociatedEntities($productIdentifiers, $productModelCodes);
     }
 
-    private function indexAssociatedEntities(array $productIdentifiers, array $productModelCodes)
+    public function indexAssociatedEntities()
     {
-        $this->productIndexer->indexFromProductIdentifiers($productIdentifiers);
-        $this->productModelIndexer->indexFromProductModelCodes($productModelCodes);
+        /** TODO pullup remove this if statement */
+        if ($this->productIndexer !== null && $this->productModelIndexer !== null) {
+            $this->productIndexer->indexFromProductIdentifiers($this->productIdentifiersToIndex);
+            $this->productModelIndexer->indexFromProductModelCodes($this->productModelCodesToIndex);
+        }
+
+        $this->productIdentifiersToIndex = [];
+        $this->productModelCodesToIndex = [];
     }
 }
