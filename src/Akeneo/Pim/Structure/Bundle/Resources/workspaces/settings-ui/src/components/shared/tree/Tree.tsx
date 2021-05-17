@@ -11,12 +11,35 @@ import React, {
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, RowIcon, useBooleanState} from 'akeneo-design-system';
 import {TreeNode} from '../../../models';
-import {ArrowButton, DragInitiator, RowActionsContainer, RowInnerContainer, TreeArrowIcon, TreeRow} from './TreeRow';
+import {
+  ArrowButton,
+  DragInitiator,
+  PlaceholderPosition,
+  RowActionsContainer,
+  RowInnerContainer,
+  TreeArrowIcon,
+  TreeRow,
+} from './TreeRow';
 import {TreeActions} from './TreeActions';
-import Timeout = NodeJS.Timeout;
 import {TreeIcon} from './TreeIcon';
 
-const TreeContainer = styled.li<{isRoot: boolean} & AkeneoThemedProps>`
+const placeholderPositionStyles = css<{placeholderPosition?: PlaceholderPosition} & AkeneoThemedProps>`
+  &:after {
+    content: ' ';
+    position: absolute;
+    box-sizing: border-box;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    padding: 0;
+    width: 100%;
+    height: 4px;
+    margin-top: -2px;
+    background: linear-gradient(to top, ${getColor('blue', 40)} 4px, ${getColor('white')} 0px);
+    pointer-events: none;
+  }
+`;
+const TreeContainer = styled.li<{isRoot: boolean; placeholderPosition?: PlaceholderPosition} & AkeneoThemedProps>`
   display: block;
   color: ${getColor('grey140')};
 
@@ -25,6 +48,8 @@ const TreeContainer = styled.li<{isRoot: boolean} & AkeneoThemedProps>`
     css`
       position: relative;
     `};
+
+  ${({placeholderPosition}) => placeholderPosition && placeholderPositionStyles}
 `;
 
 const SubTreesContainer = styled.ul`
@@ -52,15 +77,12 @@ type TreeProps<T> = {
   onDragStart?: () => void;
   onDragEnd?: () => void;
   onDragOver?: (target: Element, cursorPosition: CursorPosition) => void;
-  // @todo define onDragEnter props
-  // @todo define onDragLeave props
-  // @todo define isValidDrop props
-  // @todo define createDragImage props
   _isRoot?: boolean;
   children?: ReactNode;
 
   disabled?: boolean;
   draggable?: boolean;
+  placeholderPosition?: PlaceholderPosition;
 };
 
 const Tree = <T,>({
@@ -82,6 +104,7 @@ const Tree = <T,>({
   _isRoot = true,
   disabled = false,
   draggable = false,
+  placeholderPosition,
   ...rest
 }: PropsWithChildren<TreeProps<T>>) => {
   const subTrees: ReactElement<TreeProps<T>>[] = [];
@@ -102,7 +125,7 @@ const Tree = <T,>({
   const dragRef = useRef<HTMLDivElement>(null);
   const treeRowRef = useRef<HTMLDivElement>(null);
   const [isOpen, open, close] = useBooleanState(_isRoot);
-  const [timer, setTimer] = useState<Timeout | null>(null);
+  const [timer, setTimer] = useState<number | null>(null);
 
   const handleOpen = useCallback(() => {
     open();
@@ -144,7 +167,13 @@ const Tree = <T,>({
 
   // https://www.w3.org/WAI/GL/wiki/Using_ARIA_trees
   const result = (
-    <TreeContainer role="treeitem" aria-expanded={isOpen} isRoot={_isRoot} {...rest}>
+    <TreeContainer
+      role="treeitem"
+      aria-expanded={isOpen}
+      isRoot={_isRoot}
+      placeholderPosition={isOpen && placeholderPosition === 'bottom' ? placeholderPosition : undefined}
+      {...rest}
+    >
       <TreeRow
         ref={treeRowRef}
         onClick={handleClick}
@@ -152,42 +181,37 @@ const Tree = <T,>({
         $disabled={disabled}
         isRoot={_isRoot}
         draggable={draggable}
+        placeholderPosition={isOpen && placeholderPosition === 'bottom' ? undefined : placeholderPosition}
         onDragStartCapture={(event: React.DragEvent) => {
           if (event.target !== dragRef.current) {
             event.preventDefault();
           }
         }}
         onDragOver={(event: React.DragEvent) => {
-          // @todo allow dragOver (stopPropagation and prevent event) when isValidDrop
           event.stopPropagation();
           event.preventDefault();
           if (onDragOver && treeRowRef.current) {
             onDragOver(treeRowRef.current, {
-              x: event.clientX || event.target.clientX,
-              y: event.clientY || event.target.clientY,
+              x: event.clientX,
+              y: event.clientY,
             });
           }
         }}
         onDragEnter={() => {
-          // @todo if the hover element is a "closed" parent node, set a timer of 2s then open it with handleOpen()
-          // @todo call onDragEnter
-
+          // @fixme does not work when the user enter in a sub element of the row
           if (!isLeaf) {
             if (timer) {
-              console.log('waiting timeout', timer, label);
               return;
             }
 
             const timeoutId = setTimeout(() => {
               handleOpen();
             }, 2000);
-            console.log('set timeout', timeoutId, label);
             setTimer(timeoutId);
           }
         }}
         onDragLeave={() => {
-          // @todo if the hover element is a parent node, cancel the timer if exist
-          // @todo call onDragLeave
+          // @fixme does not work when the user enter in a sub element of the row
           if (timer !== null) {
             console.log('clear timeout', timer, label);
             clearTimeout(timer);
@@ -224,7 +248,6 @@ const Tree = <T,>({
         }}
       >
         <RowInnerContainer>
-          {/* @todo handle loading state */}
           {draggable && (
             <DragInitiator
               ref={dragRef}

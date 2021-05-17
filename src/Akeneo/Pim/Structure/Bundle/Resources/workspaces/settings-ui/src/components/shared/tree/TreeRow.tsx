@@ -1,7 +1,39 @@
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, ArrowRightIcon, getColor} from 'akeneo-design-system';
 
-const treeRowBackgroundStyles = css<{$selected: boolean; $disabled: boolean; isRoot: boolean} & AkeneoThemedProps>`
+type PlaceholderPosition = 'top' | 'bottom';
+
+type TreeRowProps = {
+  $selected: boolean;
+  $disabled: boolean;
+  isRoot: boolean;
+  placeholderPosition?: PlaceholderPosition;
+};
+
+const placeholderPositionStyles = css<{placeholderPosition?: PlaceholderPosition} & AkeneoThemedProps>`
+  &:after {
+    content: ' ';
+    position: absolute;
+    box-sizing: border-box;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    padding: 0;
+    width: 100%;
+    height: 4px;
+    margin-top: -2px;
+    background: linear-gradient(to top, ${getColor('blue', 40)} 4px, ${getColor('white')} 0px);
+    pointer-events: none;
+
+    ${({placeholderPosition}) =>
+      placeholderPosition === 'bottom' &&
+      css`
+        margin-top: 52px;
+      `}
+  }
+`;
+
+const treeRowBackgroundStyles = css<TreeRowProps & AkeneoThemedProps>`
   &:before {
     content: ' ';
     position: absolute;
@@ -33,10 +65,11 @@ const treeRowBackgroundStyles = css<{$selected: boolean; $disabled: boolean; isR
   &:hover:before {
     background-color: ${({$selected}) => getColor($selected ? 'blue20' : 'grey20')};
   }
+
+  ${({placeholderPosition}) => placeholderPosition && placeholderPositionStyles}
 `;
 
-// @todo should we use other props like isDragOver, isValidDrop or isDrag?
-const TreeRow = styled.div<{$selected: boolean; $disabled: boolean; isRoot: boolean} & AkeneoThemedProps>`
+const TreeRow = styled.div<TreeRowProps & AkeneoThemedProps>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -115,4 +148,5 @@ const DragInitiator = styled.div`
   color: ${getColor('grey100')};
 `;
 
+export type {PlaceholderPosition};
 export {TreeRow, TreeArrowIcon, ArrowButton, RowActionsContainer, RowInnerContainer, DragInitiator};
