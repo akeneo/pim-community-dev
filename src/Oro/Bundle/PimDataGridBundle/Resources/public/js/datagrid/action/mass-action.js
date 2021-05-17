@@ -124,7 +124,8 @@ function(_, messenger, __, Dialog, AbstractAction) {
 
             if (state.parameters !== undefined && state.parameters.view !== undefined) {
                 result.view = {
-                    columns: state.parameters.view.columns
+                    columns: state.parameters.view.columns,
+                    id: state.parameters.view.id,
                 };
             }
 

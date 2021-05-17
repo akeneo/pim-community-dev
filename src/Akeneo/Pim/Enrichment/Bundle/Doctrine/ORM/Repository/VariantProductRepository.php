@@ -55,14 +55,32 @@ class VariantProductRepository implements VariantProductRepositoryInterface
         $qb = $this->entityManager->createQueryBuilder();
 
         $qb
-            ->select('vp')
+            ->select('vp.identifier')
             ->from(ProductInterface::class, 'vp')
             ->where('vp.parent = :parent')
             ->setParameter('parent', $parent)
             ->orderBy('vp.created', 'ASC')
             ->addOrderBy('vp.identifier', 'ASC')
-            ->setMaxResults(1)
-        ;
+            ->setMaxResults(1);
+
+        $results = $qb->getQuery()->getOneOrNullResult();
+
+        if (null === $results || !isset($results['identifier'])) {
+            return null;
+        }
+
+        return $this->findByIdentifier($results['identifier']);
+    }
+
+    private function findByIdentifier(string $identifier): ?ProductInterface
+    {
+        $qb = $this->entityManager->createQueryBuilder();
+
+        $qb
+            ->select('vp')
+            ->from(ProductInterface::class, 'vp')
+            ->where('vp.identifier = :identifier')
+            ->setParameter('identifier', $identifier);
 
         $results = $qb->getQuery()->execute();
 
