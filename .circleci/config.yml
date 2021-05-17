@@ -241,14 +241,14 @@ jobs:
           name: Start containers
           command: |
             docker load -i php-pim-image.tar
-            APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage pubsub-emulator' make up
+            APP_ENV=dev C='fpm mysql elasticsearch httpd object-storage pubsub-emulator' make up
             docker/wait_docker_up.sh
       - run:
           name: Install database
-          command: APP_ENV=behat O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
+          command: APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
       - run:
           name: Launch Cypress
-          command: CYPRESS_defaultCommandTimeout=8000 make end-to-end-front
+          command: CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000 make end-to-end-front
       - store_artifacts:
           path: cypress/screenshots
       - store_artifacts:
