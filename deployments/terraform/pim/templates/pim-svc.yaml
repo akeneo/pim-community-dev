@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "pim.extraLabels" . | indent 4 }}
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     component: pim-web
     role: pim-web
