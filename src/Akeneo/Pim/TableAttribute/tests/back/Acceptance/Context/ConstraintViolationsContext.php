@@ -52,7 +52,7 @@ final class ConstraintViolationsContext implements Context
     }
 
     /**
-     * @Then There is a violation with message ":message"
+     * @Then /^There is a violation with message: (?P<message>.*)$/
      */
     public function thereIsAViolationWithMessage(string $message): void
     {
@@ -64,8 +64,6 @@ final class ConstraintViolationsContext implements Context
             }
             $actualViolationMessages[] = $constraintViolation->getMessage();
         }
-
-
 
         throw new \RuntimeException(sprintf('No violation found with message "%s", actual messages are %s',
             $message,

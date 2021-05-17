@@ -42,6 +42,28 @@ final class CreateAttributeContext implements Context
     }
 
     /**
+     * @When I create a table attribute with a valid configuration
+     */
+    public function iCreateATableAttributeWithAValidConfiguration(): void
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'type' => 'text',
+                'code' => 'ingredients'
+            ], [
+                'type' => 'text',
+                'code' => 'quantity'
+            ]
+        ]);
+        $this->saveAttribute($attribute);
+    }
+
+    /**
      * @When I create a table attribute without table configuration
      */
     public function iCreateATableAttributeWithoutConfiguration(): void
@@ -51,6 +73,68 @@ final class CreateAttributeContext implements Context
             ->withGroupCode('marketing')
             ->withType(AttributeTypes::TABLE)
             ->build();
+        $this->saveAttribute($attribute);
+    }
+
+    /**
+     * @When I create a table attribute with a configuration with only one column
+     */
+    public function iCreateATableAttributeWithAConfigurationWithOnlyOneColumn(): void
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'type' => 'text',
+                'code' => 'ingredients',
+            ]
+        ]);
+        $this->saveAttribute($attribute);
+    }
+
+    /**
+     * @When I create a table attribute with a configuration without column code
+     */
+    public function iCreateATableAttributeWithAConfigurationWithoutColumnCode()
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'type' => 'text',
+                'code' => 'ingredients',
+            ], [
+                'type' => 'text',
+            ]
+        ]);
+        $this->saveAttribute($attribute);
+    }
+
+    /**
+     * @When I create a table attribute with a configuration having column code ":code"
+     */
+    public function iCreateATableAttributeWithAConfigurationHavingColumnCode($code)
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'type' => 'text',
+                'code' => 'ingredients',
+            ], [
+                'type' => 'text',
+                'code' => $code,
+            ]
+        ]);
         $this->saveAttribute($attribute);
     }
 

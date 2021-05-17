@@ -1,6 +1,22 @@
 Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
         - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsTableAttributeConfigured: ~
-# TODO: make the validation for rawTableConfiguration
-#    properties:
-#        rawTableConfiguration:
+    properties:
+        rawTableConfiguration:
+            - Type: array
+            - Count:
+                  min: 2
+                  minMessage: "TODO another error message"
+            - All:
+                  - Collection:
+                        fields:
+                            code:
+                                - NotBlank:
+                                      message: "TODO code blank"
+                                - Regex:
+                                      pattern: /^[a-zA-Z0-9_]+$/
+                                      message: "TODO bad code"
+
+                            type: ~
+                        missingFieldsMessage: "TODO yet another error message: {{ field }}"
+            - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsColumnCodeUnique: ~

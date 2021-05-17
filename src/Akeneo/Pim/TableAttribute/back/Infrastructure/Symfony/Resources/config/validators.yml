@@ -1,4 +1,9 @@
 services:
     Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsTableAttributeConfiguredValidator:
         tags:
-            - {name: 'validator.constraint_validator'}
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsColumnCodeUniqueValidator:
+        tags:
+            - { name: 'validator.constraint_validator' }
+
