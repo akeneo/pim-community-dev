@@ -52,6 +52,9 @@ const ColumnsTab = ({columnsConfiguration, validationErrors, onColumnsConfigurat
   const handleChangeColumn = (column: ColumnConfiguration) => {
     onColumnsConfigurationChange(updateColumn(columnsConfiguration, column));
   };
+  const handleReorderColumns = (newIndices: number[]) => {
+    onColumnsConfigurationChange(newIndices.map(index => columnsConfiguration[index]));
+  };
 
   const selectedColumnConfiguration = columnsConfiguration.find(({uuid}) => selectedColumn === uuid) ?? null;
 
@@ -66,6 +69,7 @@ const ColumnsTab = ({columnsConfiguration, validationErrors, onColumnsConfigurat
           onColumnChange={handleChangeColumn}
           onColumnSelected={handleSelectColumn}
           onColumnRemoved={handleRemoveColumn}
+          onColumnReorder={handleReorderColumns}
         />
         <ColumnDetails
           columnConfiguration={selectedColumnConfiguration}

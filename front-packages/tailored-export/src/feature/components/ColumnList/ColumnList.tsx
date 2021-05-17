@@ -28,6 +28,7 @@ type ColumnListProps = {
   onColumnChange: (column: ColumnConfiguration) => void;
   onColumnSelected: (uuid: string | null) => void;
   onColumnRemoved: (uuid: string) => void;
+  onColumnReorder: (newIndices: number[]) => void;
 };
 
 const ColumnList = ({
@@ -38,6 +39,7 @@ const ColumnList = ({
   onColumnChange,
   onColumnSelected,
   onColumnRemoved,
+  onColumnReorder,
 }: ColumnListProps) => {
   const translate = useTranslate();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -86,7 +88,7 @@ const ColumnList = ({
         </Helper>
       ))}
       {!placeholderDisplayed && (
-        <Table>
+        <Table isDragAndDroppable={true} onReorder={onColumnReorder}>
           <Table.Header sticky={44}>
             <Table.HeaderCell>{translate('akeneo.tailored_export.column_list.header.column_name')}</Table.HeaderCell>
             <Table.HeaderCell>{translate('akeneo.tailored_export.column_list.header.source_data')}</Table.HeaderCell>
@@ -105,6 +107,8 @@ const ColumnList = ({
                 onFocusNext={handleFocusNextColumn}
               />
             ))}
+          </Table.Body>
+          <Table.Body>
             {canAddColumn && (
               <Table.Row onClick={() => onColumnSelected(null)} isSelected={selectedColumn === null}>
                 <TargetCell>

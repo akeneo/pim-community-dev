@@ -36,7 +36,10 @@ type ColumnRowProps = {
 };
 
 const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
-  ({column, isSelected, onColumnChange, onFocusNext, onColumnSelected, onColumnRemoved}: ColumnRowProps, ref) => {
+  (
+    {column, isSelected, onColumnChange, onFocusNext, onColumnSelected, onColumnRemoved, ...rest}: ColumnRowProps,
+    ref
+  ) => {
     const translate = useTranslate();
     const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useBooleanState();
 
@@ -54,7 +57,7 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
 
     return (
       <>
-        <Table.Row key={column.uuid} onClick={() => onColumnSelected(column.uuid)} isSelected={isSelected}>
+        <Table.Row key={column.uuid} onClick={() => onColumnSelected(column.uuid)} isSelected={isSelected} {...rest}>
           <TargetCell>
             <Field>
               <TextInput
