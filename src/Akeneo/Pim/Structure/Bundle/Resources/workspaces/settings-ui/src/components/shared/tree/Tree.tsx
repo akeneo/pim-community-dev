@@ -280,7 +280,7 @@ const Tree = <T,>({
           <TreeIcon isLoading={isLoading} isLeaf={isLeaf && !selected} selected={selected} />
           {label}
         </RowInnerContainer>
-        {actions && <RowActionsContainer>{actions}</RowActionsContainer>}
+        {actions && !disabled && <RowActionsContainer>{actions}</RowActionsContainer>}
       </TreeRow>
       {isOpen && !isLeaf && subTrees.length > 0 && (
         <SubTreesContainer role="group">
