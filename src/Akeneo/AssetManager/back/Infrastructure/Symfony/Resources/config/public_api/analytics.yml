@@ -1,4 +1,12 @@
 services:
+    akeneo.asset_manager.infrastructure.public_api.analytics.aggregated_average_max_number_of_value_per_asset:
+        class: Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AggregatedAverageMaxNumberOfValuePerAsset
+        arguments:
+            - '@database_connection'
+            - '%average_max_number_of_values_per_asset_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
     akeneo_assetmanager.infrastructure.persistence.query.analytics.count_asset_families:
         class: Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlCountAssetFamilies
         arguments:
@@ -13,6 +21,9 @@ services:
         class: Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfValuesPerAsset
         arguments:
             - '@database_connection'
+            - '%average_max_number_of_values_per_asset_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query_to_aggregate }
 
     akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_asset_family:
         class: Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAttributesPerAssetFamily
