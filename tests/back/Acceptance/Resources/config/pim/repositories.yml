@@ -56,3 +56,13 @@ services:
 
     pim_catalog.repository.attribute_group:
         class: 'Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository'
+
+    doctrine.orm.validator.unique:
+        class: AkeneoTest\Acceptance\Common\InMemoryUniqueEntityValidator
+        arguments:
+            - '@property_accessor'
+            -
+                'Akeneo\Pim\Structure\Component\Model\Attribute': '@pim_catalog.repository.attribute'
+                'Akeneo\Pim\Structure\Component\Model\AttributeGroup': '@pim_catalog.repository.attribute_group'
+        tags:
+            - { name: validator.constraint_validator, alias: doctrine.orm.validator.unique }
