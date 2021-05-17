@@ -5,4 +5,5 @@ export * from './usePosition';
 export * from './useProgress';
 export * from './useSelection';
 export * from './useShortcut';
+export * from './useTabBar';
 export * from './useTheme';
