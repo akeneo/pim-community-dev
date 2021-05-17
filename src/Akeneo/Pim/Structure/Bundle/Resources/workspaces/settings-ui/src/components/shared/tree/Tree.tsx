@@ -274,10 +274,10 @@ const Tree = <T,>({
               <RowIcon size={16} shapeRendering="crispEdges" />
             </DragInitiator>
           )}
-          <ArrowButton disabled={isLeaf} role="button" onClick={handleArrowClick}>
-            {!isLeaf && <TreeArrowIcon $isFolderOpen={isOpen} size={14} />}
+          <ArrowButton disabled={isLeaf && !selected} role="button" onClick={handleArrowClick}>
+            {(!isLeaf || selected) && <TreeArrowIcon $isFolderOpen={isOpen} size={14} />}
           </ArrowButton>
-          <TreeIcon isLoading={isLoading} isLeaf={isLeaf} selected={selected} />
+          <TreeIcon isLoading={isLoading} isLeaf={isLeaf && !selected} selected={selected} />
           {label}
         </RowInnerContainer>
         {actions && <RowActionsContainer>{actions}</RowActionsContainer>}
