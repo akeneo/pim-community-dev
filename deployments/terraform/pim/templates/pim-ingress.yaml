@@ -16,6 +16,9 @@ metadata:
     {{- include "pim.extraLabels" . | indent 4 }}
 
 spec:
+  tls:
+  - hosts:
+    - {{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
   rules:
   - host: {{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
     http:
