@@ -4,6 +4,8 @@ namespace Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard;
 
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Akeneo\Tool\Component\Connector\Exception\ArrayConversionException;
+use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 
 /**
  * Convert flat format to standard format for attribute
@@ -89,6 +91,14 @@ class Attribute implements ArrayConverterInterface
             'date_max'=== $field
         ) {
             $convertedItem[$field] = $this->convertDate($data);
+        } elseif ('table_configuration' === $field) {
+            if ('' !== $data && null !== $data) {
+                try {
+                    $convertedItem[$field] = \json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new DataArrayConversionException('TODO invalid json string', 0, $e);
+                }
+            }
         } elseif (in_array($field, $booleanFields, true) && '' !== $data) {
             $convertedItem[$field] = (bool) $data;
         } elseif ('' !== $data) {
