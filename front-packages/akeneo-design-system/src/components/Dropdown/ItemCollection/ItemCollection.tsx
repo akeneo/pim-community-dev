@@ -13,6 +13,11 @@ type ItemCollectionProps = Override<
   React.HTMLAttributes<HTMLDivElement>,
   {
     /**
+     * Handler called when the next page is almost reached.
+     */
+    onNextPage?: () => void;
+
+    /**
      * The list of items.
      */
     children: ReactNode;
