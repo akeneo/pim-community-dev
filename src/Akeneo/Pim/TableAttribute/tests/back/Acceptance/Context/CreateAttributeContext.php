@@ -98,7 +98,7 @@ final class CreateAttributeContext implements Context
     /**
      * @When I create a table attribute with a configuration without column code
      */
-    public function iCreateATableAttributeWithAConfigurationWithoutColumnCode()
+    public function iCreateATableAttributeWithAConfigurationWithoutColumnCode(): void
     {
         $attribute = $this->attributeBuilder
             ->withCode('table')
@@ -119,7 +119,7 @@ final class CreateAttributeContext implements Context
     /**
      * @When I create a table attribute with a configuration having column code ":code"
      */
-    public function iCreateATableAttributeWithAConfigurationHavingColumnCode($code)
+    public function iCreateATableAttributeWithAConfigurationHavingColumnCode(string $code): void
     {
         $attribute = $this->attributeBuilder
             ->withCode('table')
@@ -139,9 +139,77 @@ final class CreateAttributeContext implements Context
     }
 
     /**
+     * @When I create a table attribute with a configuration without type
+     */
+    public function iCreateATableAttributeWithoutType(): void
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'type' => 'text',
+                'code' => 'ingredients',
+            ],
+            [
+                'code' => 'quantity',
+            ]
+        ]);
+        $this->saveAttribute($attribute);
+    }
+
+    /**
+     * @When I create a table attribute with a configuration having unknown type
+     */
+    public function iCreateATableAttributeHavingUnknownType(): void
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'type' => 'text',
+                'code' => 'ingredients',
+            ],
+            [
+                'type' => 'unknown',
+                'code' => 'quantity',
+            ]
+        ]);
+        $this->saveAttribute($attribute);
+    }
+
+    /**
+     * @When I create a table attribute with a configuration having invalid type
+     */
+    public function iCreateATableAttributeHavingInvalidType(): void
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'type' => 'text',
+                'code' => 'ingredients',
+            ],
+            [
+                'type' => 1,
+                'code' => 'quantity',
+            ]
+        ]);
+        $this->saveAttribute($attribute);
+    }
+
+    /**
      * @When I create a table attribute with a configuration having invalid column labels format
      */
-    public function iCreateATableAttributeWithAConfigurationHavingInvalidColumnLabelsFormat()
+    public function iCreateATableAttributeWithAConfigurationHavingInvalidColumnLabelsFormat(): void
     {
         $attribute = $this->attributeBuilder
             ->withCode('table')
@@ -164,7 +232,7 @@ final class CreateAttributeContext implements Context
     /**
      * @When I create a table attribute with a configuration having non activated locale
      */
-    public function iCreateATableAttributeWithAConfigurationHavingNonActivatedLocale()
+    public function iCreateATableAttributeWithAConfigurationHavingNonActivatedLocale(): void
     {
         $attribute = $this->attributeBuilder
             ->withCode('table')

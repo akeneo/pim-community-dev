@@ -36,6 +36,18 @@ Feature: Create a table attribute
     When I create a table attribute with a configuration having column code "ingredients"
     Then There is a violation with message: TODO IsColumnCodeUnique message ingredients
 
+  Scenario: Cannot create a table configuration without type
+    When I create a table attribute with a configuration without type
+    Then There is a violation with message: TODO Missing mandatory field: "type"
+
+  Scenario: Cannot create a table configuration having unknown type
+    When I create a table attribute with a configuration having unknown type
+    Then There is a violation with message: TODO unknown type
+
+  Scenario: Cannot create a table configuration having invalid type
+    When I create a table attribute with a configuration having invalid type
+    Then There is a violation with message: TODO invalid type format
+
   Scenario: Cannot create a table configuration with invalid column labels format
     When I create a table attribute with a configuration having invalid column labels format
     Then There is a violation with message: TODO invalid labels format
@@ -43,5 +55,3 @@ Feature: Create a table attribute
   Scenario: Cannot create a table configuration with non activated locale
     When I create a table attribute with a configuration having non activated locale
     Then There is a violation with message: The locale "pt_DTC" is not activated
-
-  # TODO Add tests about missing type or wrong type or wrong labels format

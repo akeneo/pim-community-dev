@@ -19,7 +19,13 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                                           pattern: /^[a-zA-Z0-9_]+$/
                                           message: "TODO bad code"
                             type:
-                                - Required: ~
+                                - Required:
+                                      - Type:
+                                          type: string
+                                          message: "TODO invalid type format"
+                                      - Choice:
+                                          choices: ["text"]
+                                          message: "TODO unknown type"
                             labels:
                                 - Optional:
                                     - Type:
