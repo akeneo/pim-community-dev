@@ -22,6 +22,9 @@
         <testsuite name="Integration">
             <directory suffix="Integration.php">.</directory>
         </testsuite>
+        <testsuite name="EndToEnd">
+            <directory suffix="EndToEnd.php">.</directory>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>
