@@ -39,6 +39,14 @@ services:
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
 
+    akeneo.reference_entity.infrastructure.public_api.analytics.aggregated_average_max_number_of_values_per_record:
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AggregatedAverageMaxNumberOfValuesPerRecord
+        arguments:
+            - '@database_connection'
+            - '%average_max_number_of_values_per_record_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
     # Query functions
     akeneo_referenceentity.infrastructure.persistence.query.analytics.count_reference_entities:
         class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlCountReferenceEntities
