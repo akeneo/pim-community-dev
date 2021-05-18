@@ -1,10 +1,12 @@
+import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Dropdown} from './Dropdown';
-import {Button, Image, Badge, Link, Checkbox} from '../../components';
+import {Button, Image, Badge, Link, Checkbox, Search} from '../../components';
 import {useBooleanState} from '../../hooks';
 import {SpaceContainer, useSelection} from '../../storybook';
 import {ArrowDownIcon} from '../../icons';
 import {action} from '@storybook/addon-actions';
+import {usePaginatedResults} from './usePaginatedResults';
 
 <Meta
   title="Components/Dropdown"
@@ -108,6 +110,44 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                   <Dropdown.Item disabled={true}>
                     <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Disabled link</Link>
                   </Dropdown.Item>
+                </Dropdown.ItemCollection>
+              </Dropdown.Overlay>
+            )}
+          </Dropdown>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With Sections
+
+<Canvas>
+  <Story name="With Sections" height={260}>
+    {args => {
+      const [searchValue, setSearchValue] = useState('');
+      const [items, handleNextPage] = usePaginatedResults(searchValue);
+      const [isOpen, open, close] = useBooleanState(true);
+      return (
+        <SpaceContainer height={200}>
+          <Dropdown>
+            <Button onClick={open}>
+              Simple <ArrowDownIcon />
+            </Button>
+            {isOpen && (
+              <Dropdown.Overlay verticalPosition="down" onClose={close}>
+                <Dropdown.Header>
+                  <Search
+                    onSearchChange={setSearchValue}
+                    placeholder="Search"
+                    searchValue={searchValue}
+                    title="Search"
+                  />
+                </Dropdown.Header>
+                <Dropdown.ItemCollection onNextPage={handleNextPage}>
+                  {items.map(item => (
+                    <Dropdown.Item key={item.id}>{item.text}</Dropdown.Item>
+                  ))}
                 </Dropdown.ItemCollection>
               </Dropdown.Overlay>
             )}
