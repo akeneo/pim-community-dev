@@ -66,7 +66,7 @@ connectivity-connection-lint-back:
 	$(PHP_RUN) vendor/bin/phpstan analyse --level=5 src/Akeneo/Connectivity/Connection/back/Infrastructure
 
 connectivity-connection-unit-back:
-	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
+	XDEBUG_MODE=coverage $(PHP_RUN) vendor/bin/phpspec run -c src/Akeneo/Connectivity/Connection/back/tests/phpspec.yml.dist src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
 
 connectivity-connection-acceptance-back: var/tests/behat/connectivity/connection
 	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --format pim --out var/tests/behat/connectivity/connection --format progress --out std --colors
