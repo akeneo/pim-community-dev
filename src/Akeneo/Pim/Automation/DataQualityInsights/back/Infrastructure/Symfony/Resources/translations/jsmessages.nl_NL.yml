@@ -134,21 +134,18 @@ akeneo_data_quality_insights:
       all_missing_attributes: Alle ontbrekende attributen
     back_to_products: Terug naar producten
   attribute_group:
-    helper_dqi_info: De berekening van de kwaliteitsscore houdt alleen rekening met attributen die behoren tot attribuutgroepen die geactiveerd zijn voor kwaliteitsberekening.
     helper_dqi_link: Meer informatie over ons helpcenter.
-    activation: Activeren
     dqi_status: Datakwaliteit inzichten
-    activated: Geactiveerd
     disabled: Uitgeschakeld
     used_groups_helper: "De volgende attribuutgroepen worden meegenomen in de berekening van de datakwaliteitsscore:"
-    all_groups_evaluated: Alle attribuutgroepen van dit product worden meegenomen bij de berekening van de kwaliteitsscore. Om de meest relevante kwaliteitsscore te krijgen, <a href="{{ link }}" target="_blank">leer hoe attribuutgroepen te deactiveren in ons help center.</a>
   product_grid:
     filter_label:
       quality_score: Kwaliteitsscore
       enrichment_quality: Verrijkingskwaliteit
-      images_quality: Afbeeldingskwaliteit
     filter_value:
       good: Goed
       to_improve: Te verbeteren
+      yes: true
+      no: false
 pim_title:
   akeneo_data_quality_insights_dashboard: Datakwaliteit inzichten

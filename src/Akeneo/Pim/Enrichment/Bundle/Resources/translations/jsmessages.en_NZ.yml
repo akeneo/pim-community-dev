@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Settings
+    mass_delete: Deletion
 flash:
   comment:
     create:
@@ -370,6 +371,7 @@ pim_datagrid:
       label: Complete
     identifier:
       label: Identifier
+  search: Search on {{ label }}
 batch_jobs:
   add_association:
     label: Associate
