@@ -19,7 +19,6 @@ fi
 helm3 repo add akeneo-charts gs://akeneo-charts/
 helm3 dependency update ${PED_DIR}/terraform/pim
 
-# Traefik resources are skipped since no OpenAPI JSON are provided
 if (($K8S_CLUSTER_VERSION_ENABLED == 1)); then
     K8S_MASTER_VERSION=$(kubectl version -o json | jq -r '.serverVersion.gitVersion' | sed -nre 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p')
     if [[ ! -d v${K8S_MASTER_VERSION}-standalone ]]; then
