@@ -75,7 +75,11 @@ connectivity-connection-integration-back:
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Connectivity_Connection_Integration
 else
-	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_Integration $(0)
+	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
+		-c src/Akeneo/Connectivity/Connection/back/tests/ \
+		--coverage-clover coverage/connectivity/integration/coverage.xml \
+		--coverage-html coverage/connectivity/integration/ \
+		--testsuite Integration $(0)
 endif
 
 connectivity-connection-e2e-back:
