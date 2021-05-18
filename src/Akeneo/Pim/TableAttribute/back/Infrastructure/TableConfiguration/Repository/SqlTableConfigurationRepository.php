@@ -18,6 +18,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigur
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -59,7 +60,7 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                     ON DUPLICATE KEY UPDATE column_order = VALUES(column_order), labels = VALUES(labels)
                     SQL,
                     [
-                        'id' => uniqid($column['code'] . '_'),
+                        'id' =>  ($column['code'] . '_' . Uuid::uuid4()->toString()),
                         'attribute_id' => $attributeId,
                         'code' => $column['code'],
                         'data_type' => $column['data_type'],

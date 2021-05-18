@@ -15,22 +15,16 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Normalizer
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     private NormalizerInterface $baseAttributeNormalizer;
-    private TableConfigurationRepository $tableConfigurationRepository;
 
-    public function __construct(
-        NormalizerInterface $baseAttributeNormalizer,
-        TableConfigurationRepository $tableConfigurationRepository
-    ) {
+    public function __construct(NormalizerInterface $baseAttributeNormalizer)
+    {
         $this->baseAttributeNormalizer = $baseAttributeNormalizer;
-        $this->tableConfigurationRepository = $tableConfigurationRepository;
     }
 
     /**

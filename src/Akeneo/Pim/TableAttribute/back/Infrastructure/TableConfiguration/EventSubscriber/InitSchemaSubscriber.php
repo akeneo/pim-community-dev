@@ -41,7 +41,7 @@ final class InitSchemaSubscriber implements EventSubscriberInterface
     {
         $sql = <<<SQL
         create table pim_catalog_table_column (
-            id varchar(64) not null,
+            id varchar(137) not null,
             attribute_id int not null,
             code varchar(100) not null,
             data_type varchar(20) not null,
@@ -50,7 +50,7 @@ final class InitSchemaSubscriber implements EventSubscriberInterface
             labels json not null default ('{}')
         );
         alter table pim_catalog_table_column add constraint pim_catalog_table_column_pk primary key (id);
-        alter table pim_catalog_table_column add constraint pim_catalog_table_column_attribute_id_fk foreign key (attribute_id) REFERENCES pim_catalog_attribute(id);
+        alter table pim_catalog_table_column add constraint pim_catalog_table_column_attribute_id_fk foreign key (attribute_id) REFERENCES pim_catalog_attribute(id) ON DELETE CASCADE ON UPDATE CASCADE;
         alter table pim_catalog_table_column add constraint pim_catalog_table_column_attribute_code_unique unique (attribute_id, code);
         alter table pim_catalog_table_column add constraint pim_catalog_table_column_attribute_order_unique unique (attribute_id, column_order);
         SQL;
