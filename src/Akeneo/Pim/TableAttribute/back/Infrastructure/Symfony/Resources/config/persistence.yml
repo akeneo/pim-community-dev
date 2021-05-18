@@ -9,13 +9,16 @@ services:
 
     Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Saver\TableConfigurationSaver:
         arguments:
-            - '@Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\DummyTableConfigurationRepository'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
 
-    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\DummyTableConfigurationRepository: ~
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\SqlTableConfigurationRepository
+        arguments:
+            - '@database_connection'
 
     Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubscriber\LoadRawTableConfiguration:
         arguments:
-            - '@Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\DummyTableConfigurationRepository'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
         tags:
             - { name: doctrine.event_subscriber }
 

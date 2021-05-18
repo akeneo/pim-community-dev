@@ -44,7 +44,6 @@ JSON;
         $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
         $response = $client->getResponse();
 
-        print_r($response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
