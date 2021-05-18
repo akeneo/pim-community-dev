@@ -1,5 +1,5 @@
 import {useBooleanState} from 'hooks';
-import {useEffect, useState} from 'react';
+import {DependencyList, useCallback, useEffect, useState} from 'react';
 
 const useDebounce = (value: any, delay: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -17,32 +17,35 @@ const useDebounce = (value: any, delay: number) => {
   return debouncedValue;
 };
 
-const usePaginatedResults = <Type>(fetcher: (page: number) => Promise<Type[]>) => {
+const usePaginatedResults = <Type>(fetcher: (page: number) => Promise<Type[]>, dependencies: DependencyList[]) => {
   const [results, setResults] = useState<Type[] | null>(null);
   const [page, setPage] = useState<number>(0);
   const [isFetching, startFetching, stopFetching] = useBooleanState();
   const [isLastPage, onLastPage, notOnLastPage] = useBooleanState();
+  const memoisedFetcher = useCallback(fetcher, dependencies);
 
   useEffect(() => {
     if (null !== results) {
-      setResults(null);
       setPage(0);
       notOnLastPage();
     }
-  }, [fetcher]);
+  }, [memoisedFetcher]);
 
   useEffect(() => {
     if (isFetching || isLastPage) return;
 
     startFetching();
-    fetcher(page).then(newResults => {
+    memoisedFetcher(page).then(newResults => {
       if (newResults.length === 0) onLastPage();
-      setResults(currentResults => [...(currentResults ?? []), ...newResults]);
+
+      setResults(currentResults => [...(0 === page || null === currentResults ? [] : currentResults), ...newResults]);
       stopFetching();
     });
-  }, [page]);
+  }, [page, memoisedFetcher, results]);
 
-  return [results ?? [], () => setPage(page => (isFetching || isLastPage ? page : page + 1))];
+  const fetchNextPage = () => setPage(page => (isFetching || isLastPage ? page : page + 1));
+
+  return [results ?? [], fetchNextPage];
 };
 
 export {usePaginatedResults, useDebounce};
