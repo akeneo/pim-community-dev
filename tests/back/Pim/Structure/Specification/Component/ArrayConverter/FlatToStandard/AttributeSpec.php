@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard;
 
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
@@ -200,5 +201,29 @@ class AttributeSpec extends ObjectBehavior
             'labels'   => [],
             'date_min' => 'not a date'
         ]);
+    }
+
+    function it_converts_a_valid_table_configuration()
+    {
+        $this->convert(['table_configuration' => '[{"foo":"bar"}]'])->shouldReturn([
+            'labels' => [],
+            'table_configuration' => [['foo' => 'bar']],
+        ]);
+    }
+
+    function it_does_not_convert_an_empty_table_configuration()
+    {
+        $this->convert(['table_configuration' => ''])->shouldReturn(['labels' => []]);
+        $this->convert(['table_configuration' => null])->shouldReturn(['labels' => []]);
+    }
+
+    function it_throws_an_exception_if_table_configuration_is_not_a_valid_json_string()
+    {
+        $this->shouldThrow(DataArrayConversionException::class)->during(
+            'convert',
+            [
+                ['table_configuration' => '{"invalid json:true}']
+            ]
+        );
     }
 }
