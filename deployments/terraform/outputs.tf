@@ -43,3 +43,7 @@ output "tf-helm-pim-values" {
 output "type" {
   value = local.type
 }
+
+output "monitoring_authentication_token" {
+  value = local.monitoring_authentication_token
+}
