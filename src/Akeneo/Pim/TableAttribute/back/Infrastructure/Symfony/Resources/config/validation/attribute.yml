@@ -21,7 +21,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                                     - Length:
                                           max: 100
                                           maxMessage: pim_table_configuration.validation.table_configuration.too_long_code
-                            type:
+                            data_type:
                                 - Required:
                                       - Type:
                                           type: string

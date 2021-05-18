@@ -59,3 +59,7 @@ Feature: Create a table attribute
   Scenario: Cannot create a table configuration with non activated locale
     When I create a table attribute with a configuration having non activated locale
     Then There is a violation with message: The "pt_DTC" locale doesn't exist or is not activated
+
+  Scenario: Cannot create a non table attribute with a table configuration
+    When I create a text attribute with a table configuration
+    Then There is a violation with message: TODO error message non table

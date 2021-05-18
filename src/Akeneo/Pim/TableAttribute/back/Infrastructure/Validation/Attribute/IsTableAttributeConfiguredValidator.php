@@ -28,13 +28,11 @@ final class IsTableAttributeConfiguredValidator extends ConstraintValidator
     {
         Assert::implementsInterface($value, AttributeInterface::class);
         Assert::isInstanceOf($constraint, IsTableAttributeConfigured::class);
-        if (AttributeTypes::TABLE !== $value->getType()) {
-            return;
-        }
-
-        if (null === $value->getRawTableConfiguration()) {
-            $this->context->buildViolation('pim_table_configuration.validation.table_configuration.must_be_filled', [])
-                ->atPath('table_configuration')->addViolation();
+        if (AttributeTypes::TABLE !== $value->getType() && null !== $value->getRawTableConfiguration()) {
+            $this->context->buildViolation('TODO error message non table', [])->atPath('table_configuration')
+                ->addViolation();
+        } elseif (AttributeTypes::TABLE === $value->getType() && null === $value->getRawTableConfiguration()) {
+            $this->context->buildViolation('pim_table_configuration.validation.table_configuration.must_be_filled', [])->atPath('table_configuration')->addViolation();
         }
     }
 }
