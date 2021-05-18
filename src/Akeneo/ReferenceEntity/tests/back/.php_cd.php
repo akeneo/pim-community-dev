@@ -39,6 +39,8 @@ $rules = [
 
         // TODO: reference entities should not depend on PIM
         'Akeneo\Pim\Enrichment\ReferenceEntity\Component',
+        'Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes',
+        'Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery',
     ])->in('Akeneo\ReferenceEntity\Infrastructure'),
 ];
 
