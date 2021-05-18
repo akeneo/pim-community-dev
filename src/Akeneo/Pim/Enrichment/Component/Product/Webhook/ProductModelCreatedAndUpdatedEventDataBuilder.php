@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
+use Akeneo\Connectivity\OctoCouplingDefenseSystem\UserManagement\PublicApi\Query\GetUserById\User;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
@@ -50,7 +51,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
         return true;
     }
 
-    public function build(BulkEventInterface $event, \Akeneo\Query\User $user): EventDataCollection
+    public function build(BulkEventInterface $event, User $user): EventDataCollection
     {
         $productModels = $this->getConnectorProductModels($this->getProductModelCodes($event->getEvents()), $user->getId());
 

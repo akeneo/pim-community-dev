@@ -1,9 +1,11 @@
 <?php
 
+namespace Akeneo\Connectivity\OctoCouplingDefenseSystem\UserManagement\PublicApi\Query\GetUserById;
 
-namespace Akeneo\Query;
-
-
+/**
+ * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class User
 {
     private int $id;

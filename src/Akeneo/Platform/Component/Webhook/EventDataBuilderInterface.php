@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Component\Webhook;
 
+use Akeneo\Connectivity\OctoCouplingDefenseSystem\UserManagement\PublicApi\Query\GetUserById\User;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -16,9 +16,7 @@ interface EventDataBuilderInterface
     public function supports(BulkEventInterface $event): bool;
 
     /**
-     * @param BulkEventInterface $event
-     * @param \Akeneo\Query\User $user
      * @return EventDataCollection Normalized data.
      */
-    public function build(BulkEventInterface $event, \Akeneo\Query\User $user): EventDataCollection;
+    public function build(BulkEventInterface $event, User $user): EventDataCollection;
 }

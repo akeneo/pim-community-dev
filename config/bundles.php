@@ -46,6 +46,7 @@ return [
     Akeneo\Platform\Bundle\UIBundle\PimUIBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle::class => ['all' => true],
     Akeneo\Connectivity\Connection\Infrastructure\Symfony\AkeneoConnectivityConnectionBundle::class => ['all' => true],
+    Akeneo\Connectivity\OctoCouplingDefenseSystem\Symfony\OctoCouplingDefenseSystemBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\FeatureFlagBundle\AkeneoFeatureFlagBundle::class => ['all' => true],
     Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\AkeneoCommunicationChannelBundle::class => ['all' => true],
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\AkeneoDataQualityInsightsBundle::class => ['all' => true],

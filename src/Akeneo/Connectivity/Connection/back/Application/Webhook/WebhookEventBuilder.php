@@ -7,12 +7,11 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErrorLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
+use Akeneo\Connectivity\OctoCouplingDefenseSystem\UserManagement\PublicApi\Query\GetUserById\User;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
-use Akeneo\Query\User;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

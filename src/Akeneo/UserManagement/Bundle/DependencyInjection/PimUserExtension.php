@@ -53,7 +53,6 @@ class PimUserExtension extends Extension
         $loader->load('array_converters.yml');
         $loader->load('commands.yml');
         $loader->load('processors.yml');
-        $loader->load('query_bus.yml');
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
