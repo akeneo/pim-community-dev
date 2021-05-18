@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9865: [Backport] PIM-9771: Export to PDF doesn't export Image
+
 # 5.0.24 (2021-05-07)
 
 ## Bug fixes

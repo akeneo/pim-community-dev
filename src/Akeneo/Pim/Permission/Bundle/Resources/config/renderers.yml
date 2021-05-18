@@ -6,6 +6,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\DompdfBuilder'
         arguments:
             - '%pim_ce_dev_src_folder_location%/src'
+            - '%kernel.project_dir%/public'
 
     pimee_security.renderer.product_pdf:
         class: '%pimee_security.renderer.product_pdf.class%'
