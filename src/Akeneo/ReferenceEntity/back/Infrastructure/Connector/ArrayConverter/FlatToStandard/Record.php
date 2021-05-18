@@ -21,6 +21,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 use Webmozart\Assert\Assert;
 
@@ -118,6 +119,9 @@ final class Record implements ArrayConverterInterface
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($item['referenceEntityIdentifier'] ?? '');
         $convertedItem = ['values' => ['label' => []]];
         foreach ($item as $field => $data) {
+            if ($data instanceof \DateTime) {
+                throw new BusinessArrayConversionException("Can not convert cell  {$field} with date format to attribute of type text", "pim_import_export.notification.export.warnings.xlsx_cell_date_to_text_conversion_error", [$field]);
+            }
             $convertedItem = $this->convertField(
                 $convertedItem,
                 $options[self::DIRECTORY_PATH_OPTION_KEY],
