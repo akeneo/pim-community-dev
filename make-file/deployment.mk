@@ -239,8 +239,8 @@ endif
 	MYSQL_DISK_NAME=$(PFID)-mysql \
 	MYSQL_SOURCE_SNAPSHOT=$(MYSQL_SOURCE_SNAPSHOT) \
 	MAILGUN_API_KEY=${MAILGUN_API_KEY} \
-	envsubst < $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
-	rm -rf $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp
+	envsubst < $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
+	rm -rf $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
 	echo "COMMENT THESES LINES BELOW AFTER MERGING & RELEASING BRANCH 'status-check'"
 	yq d -i $(INSTANCE_DIR)/main.tf.json 'module.pim-monitoring.monitoring_authentication_token'
