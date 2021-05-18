@@ -5,7 +5,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.count_reference_entities'
             - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_records_per_reference_entity'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_values_per_record'
+            - '@akeneo.reference_entity.infrastructure.public_api.analytics.aggregated_average_max_number_of_values_per_record'
             - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_reference_entity'
             - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.localizable_only'
             - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.scopable_only'
@@ -62,6 +62,9 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfValuesPerRecord
         arguments:
             - '@database_connection'
+            - '%average_max_number_of_values_per_record_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query_to_aggregate }
 
     akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_reference_entity:
         class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAttributesPerReferenceEntity

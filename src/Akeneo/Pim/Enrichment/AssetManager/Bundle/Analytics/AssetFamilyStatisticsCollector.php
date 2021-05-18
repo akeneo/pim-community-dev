@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Bundle\Analytics;
 
+use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AggregatedAverageMaxNumberOfValuePerAsset;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerAssetFamily\SqlLocalizableOnly;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerAssetFamily\SqlScopableAndLocalizable;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerAssetFamily\SqlScopableOnly;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAssetsPerAssetFamily;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAttributesPerAssetFamily;
-use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfValuesPerAsset;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\SqlCountAssetFamilies;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 
@@ -25,7 +25,7 @@ class AssetFamilyStatisticsCollector implements DataCollectorInterface
     /** @var SqlAverageMaxNumberOfAssetsPerAssetFamily */
     private $averageMaxNumberOfAssetsPerAssetFamily;
 
-    /** @var SqlAverageMaxNumberOfValuesPerAsset */
+    /** @var AggregatedAverageMaxNumberOfValuePerAsset */
     private $averageMaxNumberOfValuesPerAsset;
 
     /** @var SqlAverageMaxNumberOfAttributesPerAssetFamily */
@@ -43,7 +43,7 @@ class AssetFamilyStatisticsCollector implements DataCollectorInterface
     public function __construct(
         SqlCountAssetFamilies $countAssetFamilies,
         SqlAverageMaxNumberOfAssetsPerAssetFamily $averageMaxNumberOfAssetsPerAssetFamily,
-        SqlAverageMaxNumberOfValuesPerAsset $averageMaxNumberOfValuesPerAsset,
+        AggregatedAverageMaxNumberOfValuePerAsset $averageMaxNumberOfValuesPerAsset,
         SqlAverageMaxNumberOfAttributesPerAssetFamily $averageMaxNumberOfAttributesPerAssetFamily,
         SqlLocalizableOnly $localizableOnly,
         SqlScopableOnly $scopableOnly,
