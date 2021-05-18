@@ -19,7 +19,6 @@ const LinkButton = styled.a<AkeneoThemedProps>`
     border-style: none;
     padding: 0 15px;
     height: 32px;
-    width: 121px;
     cursor: pointer;
     font-family: inherit;
     transition: background-color 0.1s ease;

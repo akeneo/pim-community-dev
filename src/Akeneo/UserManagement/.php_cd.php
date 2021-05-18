@@ -17,6 +17,8 @@ $rules = [
         'Webmozart\Assert\Assert',
         // TODO: The feature uses the datagrid
         'Oro\Bundle\PimDataGridBundle',
+        //PIM-9806
+        'Doctrine\ORM\Mapping',
 
         // TIP-945: User Management should not depend on Channel and Enrichment
         'Akeneo\Channel\Component\Model\LocaleInterface',

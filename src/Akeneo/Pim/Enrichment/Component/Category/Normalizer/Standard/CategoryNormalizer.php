@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard;
 
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;

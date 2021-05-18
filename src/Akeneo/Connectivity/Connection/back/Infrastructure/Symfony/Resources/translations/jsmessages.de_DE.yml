@@ -1,6 +1,4 @@
 pim_menu:
-  navigation_back:
-    connection: Zurück zu Verbindungen
   navigation_block:
     connection: Verbindungs-Navigation
   item:
@@ -10,8 +8,8 @@ pim_menu:
     connection_monitoring: Überwachung
     connection_webhook_edit: Event-Abonnement
     connection_webhook_event_logs: Ereignis-Logs
+    connect_connection_settings: Verbindungseinstellungen
 pim_title:
-  akeneo_connectivity_connection_settings_index: Verbindungen
   akeneo_connectivity_connection_settings_edit: Verbindungseinstellungen
   akeneo_connectivity_connection_settings_any: Verbindungseinstellungen
   akeneo_connectivity_connection_audit_index: Verbindungs-Dashboard
@@ -21,6 +19,8 @@ pim_title:
   akeneo_connectivity_connection_webhook_edit: Event-Abonnement
   akeneo_connectivity_connection_webhook_regenerate_secret: Event-Abonnement
   akeneo_connectivity_connection_webhook_event_logs: Ereignis-Logs
+  akeneo_connectivity_connection_redirect_audit: Verbindungs-Dashboard
+  akeneo_connectivity_connection_settings_redirect: Verbindungen
 akeneo_connectivity.connection:
   connections: Verbindungen
   secondary_actions:
@@ -133,9 +133,7 @@ akeneo_connectivity.connection:
     flash:
       success: Verbindung erfolgreich gelöscht.
   helper:
-    title: '👋 Willkommen bei der Funktion, die Ihr PIM korrekt verbindet!'
     description: Ein PIM ohne jegliche Integration von Drittanbietern ist unnütz, oder? Dank Verbindungen können Sie alle Datenströme deklarieren, die nach innen geschoben und außerhalb Ihrer PIM gezogen werden.
-    link: Sie möchten mehr wissen? Finden Sie heraus, was eine Verbindung ist und wie Sie das Beste daraus machen können!
   flow_type_helper:
     message: Sie fragen sich, was "Flow Type" ist?
     link: Wir können Ihnen hier helfen!
@@ -150,10 +148,6 @@ akeneo_connectivity.connection:
       extension_not_allowed: Die Datei, die Sie hochladen möchten, ist leider nicht erlaubt.
   grid.wrong_credentials_combination_helper: Einige der folgenden Verbindungen verwenden nicht ihre Benutzernamen für die Verbindung. Sie werden durch ein gelbes Warnzeichen identifiziert.
   dashboard:
-    helper:
-      title: '👋 Willkommen auf deinem Verbindungs-Dashboard!'
-      description: Hier können Sie alle Datenströme, die in Ihrem PIM erfasst werden, über Ihre Verbindungen verfolgen, sowie alle Datenströme, die über Ihre Verbindungen an Ihre Kanäle verteilt werden.
-      link: Möchten Sie mehr wissen? Hier geht's!
     user_survey:
       title: Möchten Sie weitere Daten auf diesem Dashboard?
       content: Ihr Feedback ist für uns wirklich wertvoll. Helfen Sie uns, das nächste Widget auszuwählen, indem Sie diese Umfrage mit einer Frage beantworten!
@@ -272,7 +266,6 @@ akeneo_connectivity.connection:
         link: Um zu verstehen, wie man dieses Problem löst, besuchen Sie bitte das API-Hilfe-Center.
       search_filter:
         placeholder: Suche in Fehlermeldungen
-        result_count: '{0} keine Ergebnisse|{1} 1 Ergebnis|[2,Inf] {{ total }} Ergebnisse'
       error_list:
         date_time_column:
           title: Tag und Zeit
