@@ -2,8 +2,8 @@ apiVersion: v2
 name: pim
 description: Akeneo PIM - Enterprise Cloud Edition
 icon: https://raw.githubusercontent.com/akeneo/pim-community-dev/master/public/favicon.ico
-version: 0.0.0-ff55b1065ee7f8cd1b444787548c7fc00a1743cd
-appVersion: ff55b1065ee7f8cd1b444787548c7fc00a1743cd
+version: 0.0.0
+appVersion: 0.0.0
 dependencies:
   - name: mysql
     version: "2.0.12"
