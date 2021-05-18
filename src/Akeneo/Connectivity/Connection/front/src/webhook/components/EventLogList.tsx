@@ -29,7 +29,6 @@ const loadingBreath = keyframes`
     50%{background-position:100% 50%}
     100%{background-position:0% 50%}
 `;
-
 const MessageContainer = styled.span`
     padding-right: 15px;
 `;
