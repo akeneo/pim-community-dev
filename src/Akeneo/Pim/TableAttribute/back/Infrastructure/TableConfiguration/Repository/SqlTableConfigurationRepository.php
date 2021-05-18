@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
@@ -42,14 +43,17 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                 ['attribute_id' => $attributeId]
             );
             foreach ($tableConfiguration->normalize() as $columnOrder => $column) {
-                $this->connection->executeQuery(
-                    'INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order) VALUES (:id, :attribute_id, :code, :data_type, :column_order)',
+                $this->connection->executeQuery(<<<SQL
+                    INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels)
+                    VALUES (:id, :attribute_id, :code, :data_type, :column_order, :labels)
+                    SQL,
                     [
                         'id' => uniqid($column['code'] . '_'),
                         'attribute_id' => $attributeId,
                         'code' => $column['code'],
                         'data_type' => $column['data_type'],
                         'column_order' => $columnOrder,
+                        'labels' => \json_encode($column['labels']),
                     ]
                 );
             }
@@ -68,9 +72,26 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
 
     public function getByAttributeId(int $attributeId): TableConfiguration
     {
-        return TableConfiguration::fromColumnDefinitions([
-            TextColumn::fromNormalized(['code' => 'ingredients', 'type' => 'text']),
-            TextColumn::fromNormalized(['code' => 'quantity', 'type' => 'text']),
-        ]);
+        $statement = $this->connection->executeQuery(<<<SQL
+            SELECT id, code, data_type, column_order, labels
+            FROM pim_catalog_table_column
+            WHERE attribute_id = :attributeId
+            ORDER BY column_order
+            SQL,
+            [
+                'attributeId' => $attributeId,
+            ]
+        );
+        $results = $statement->fetchAll();
+
+        return TableConfiguration::fromColumnDefinitions(
+            array_map(
+                fn (array $row): ColumnDefinition => TextColumn::fromNormalized([
+                    'code' => $row['code'],
+                    'labels' => \json_decode($row['labels'], true),
+                ]),
+                $results
+            )
+        );
     }
 }

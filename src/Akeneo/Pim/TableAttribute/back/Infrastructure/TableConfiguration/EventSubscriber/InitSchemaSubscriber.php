@@ -46,7 +46,8 @@ final class InitSchemaSubscriber implements EventSubscriberInterface
             code varchar(100) not null,
             data_type varchar(20) not null,
             column_order int not null,
-            validations json not null default ('{}')
+            validations json not null default ('{}'),
+            labels json not null default ('{}')
         );
         alter table pim_catalog_table_column add constraint pim_catalog_table_column_pk primary key (id);
         alter table pim_catalog_table_column add constraint pim_catalog_table_column_attribute_id_fk foreign key (attribute_id) REFERENCES pim_catalog_attribute(id);

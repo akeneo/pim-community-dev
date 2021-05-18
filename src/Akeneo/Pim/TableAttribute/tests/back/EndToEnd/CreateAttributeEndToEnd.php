@@ -15,6 +15,7 @@ namespace Akeneo\Pim\TableAttribute\tests\back\EndToEnd;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -49,27 +50,9 @@ JSON;
 
     public function testItCreatesAValidTableAttribute(): void
     {
-        $data =
-            <<<JSON
-    {
-        "code":"a_table_attribute",
-        "type":"pim_catalog_table",
-        "group":"attributeGroupA",
-        "table_configuration": [
-            {
-                "code": "ingredients",
-                "type": "text"
-            },
-            {
-                "code": "quantity",
-                "type": "text"
-            }
-        ]
-    }
-JSON;
-
         $client = $this->createAuthenticatedClient();
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+
+        $this->createValidTableAttribute($client);
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
 
@@ -83,7 +66,10 @@ JSON;
             [
                 'code' => 'ingredients',
                 'data_type' => 'text',
-                'labels' => [],
+                'labels' => [
+                    "en_US" => "Ingredients",
+                    "fr_FR" => "Ingrédients",
+                ],
             ],
             [
                 'code' => 'quantity',
@@ -93,11 +79,85 @@ JSON;
         ], $decoded['table_configuration']);
     }
 
+
+    public function testItUpdatesATableAttribute(): void
+    {
+        $client = $this->createAuthenticatedClient();
+        $this->createValidTableAttribute($client);
+
+        $data =
+            <<<JSON
+    {
+        "code":"a_table_attribute",
+        "type":"pim_catalog_table",
+        "group":"attributeGroupA",
+        "table_configuration": [
+            {
+                "code": "ingredients",
+                "type": "text",
+                "labels": {
+                    "fr_FR":"Ingraydients",
+                    "de_DE":"Zutat"
+                }
+            },
+            {
+                "code": "quantity",
+                "type": "text"
+            }
+        ]
+    }
+JSON;
+
+        $client = $this->createAuthenticatedClient();
+        $client->request('PATCH', 'api/rest/v1/attributes/a_table_attribute', [], [], [], $data);
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+
+        $client = $this->createAuthenticatedClient();
+        $client->request(Request::METHOD_GET, 'api/rest/v1/attributes/a_table_attribute');
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $decoded = \json_decode($response->getContent(), true);
+        self::assertArrayHasKey('table_configuration', $decoded);
+        self::assertEqualsCanonicalizing([
+            "fr_FR" => "Ingraydients",
+            "de_DE" => "Zutat",
+        ], $decoded['table_configuration'][0]['labels']);
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function createValidTableAttribute(Client $client)
+    {
+        $data =
+            <<<JSON
+    {
+        "code":"a_table_attribute",
+        "type":"pim_catalog_table",
+        "group":"attributeGroupA",
+        "table_configuration": [
+            {
+                "code": "ingredients",
+                "type": "text",
+                "labels": {
+                    "en_US":"Ingredients",
+                    "fr_FR":"Ingrédients"
+                }
+            },
+            {
+                "code": "quantity",
+                "type": "text"
+            }
+        ]
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
     }
 }
