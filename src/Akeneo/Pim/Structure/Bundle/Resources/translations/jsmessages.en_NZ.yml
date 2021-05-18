@@ -137,7 +137,6 @@ pim_enrich.entity.attribute:
     date_min: Min date
     decimals_allowed: Decimal values allowed
     default_metric_unit:
-      label: Default metric unit
       choose: Choose a unit
     group:
       label: Attribute group
@@ -147,7 +146,6 @@ pim_enrich.entity.attribute:
     max_characters: Max characters
     max_file_size: Max file size (MB)
     metric_family:
-      label: Metric family
       choose: Choose a family
     minimum_input_length: Minimum length for autocompletion
     name: Name
@@ -171,7 +169,6 @@ pim_enrich.entity.attribute:
       pim_catalog_image: Image
       pim_catalog_boolean: "Yes/No"
       pim_catalog_date: Date
-      pim_catalog_metric: Metric
       pim_reference_data_simpleselect: Reference data simple select
       pim_reference_data_multiselect: Reference data multi select
     unique: Unique value

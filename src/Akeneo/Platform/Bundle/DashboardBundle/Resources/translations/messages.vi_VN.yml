@@ -1,0 +1,10 @@
+pim_dashboard:
+  title: Bảng điều khiển
+  version: Phiên bản
+  widget:
+    completeness:
+      title: Sự đầy đủ qua các kênh và nội địa
+    last_operations:
+      title: Các hoạt động cuối cùng
+      status: Trạng thái
+      type: Kiểu

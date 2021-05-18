@@ -1,0 +1,56 @@
+batch_jobs:
+  csv_currency_export:
+    label: Izvoz valute u CSV
+    export.label: Izvoz valute
+  csv_currency_import:
+    label: Uvoz valute iz CSV
+    import.label: Uvoz valute
+  xlsx_currency_export:
+    label: Izvoz valute u XLSX
+    export.label: Izvoz valute
+  xlsx_currency_import:
+    label: Uvoz valute iz XLSX
+    import.label: Uvoz valute
+  csv_locale_export:
+    label: Izvoz lokala u CSV
+    export.label: Izvoz lokala
+  csv_locale_import:
+    label: Uvoz lokala iz CSV
+    import.label: Uvoz lokala
+  xlsx_locale_export:
+    label: Izvoz lokala u XLSX
+    export.label: Izvoz lokala
+  xlsx_locale_import:
+    label: Uvoz lokala iz XLSX
+    import.label: Uvoz lokala
+  csv_channel_export:
+    label: Izvoz kanala u CSV
+    export.label: Izvoz kanala
+  csv_channel_import:
+    label: Uvoz kanala iz CSV
+    import.label: Uvoz kanala
+  xlsx_channel_export:
+    label: Izvoz kanala u XLSX
+    export.label: Izvoz kanala
+  xlsx_channel_import:
+    label: Uvoz kanala iz XLSX
+    import.label: Uvoz kanala
+pim_enrich.entity.channel:
+  label: kanal
+  uppercase_label: Kanal
+  flash:
+    delete:
+      success: Kanal je uspješno uklonjen
+      fail: Ne možete izbrisati ovaj kanal
+  property:
+    category_tree: Stablo kategorije
+    do_not_convert: Ne pretvaraj
+  module:
+    delete:
+      confirm: Jeste li sigurni da želite izbrisati ovaj kanal?
+pim_enrich.entity.locale:
+  label: lokalizacija
+  uppercase_label: Postavke jezika i regije
+  plural_label: Lokalizacija
+pim_enrich.entity.currency:
+  plural_label: Valute

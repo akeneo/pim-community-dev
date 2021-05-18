@@ -1,0 +1,166 @@
+#Entities
+Job: Loc de muncă
+Connector: Conector
+pim_import_export:
+  job: Lucru
+  connector: Conector
+  ## Job status
+  status:
+    0: Pregătit
+  batch_status:
+    1: Finalizat
+    2: Se porneşte
+    3: Inceput
+    4: Se opreşte
+    5: Oprit
+    6: Eşuată
+    7: Abandonată
+    8: Necunoscută
+  download_archive:
+    archive: descarcă arhiva generată| descarcă arhivele generate
+    output: descarcă fişierul generat | descarcă fişierele generate
+    input: descarcă fişierul ce poate fi citit | descarcă fişierele ce pot fi citite
+    invalid_xlsx: descarcă datele invalide
+    invalid_csv: descarcă datele incorecte
+  notification:
+    export:
+      error: Exportarea <strong>%label%</strong> a eșuat
+      warning: Exportarea <strong>%label%</strong> s-a finalizat cu unele avertismente
+      success: Exportarea <strong>%label%</strong> a fost finalizată
+    import:
+      error: Importarea <strong>%label%</strong> a eşuat
+      warning: Importarea <strong>%label%</strong> s-a finalizat cu unele avertismente
+      success: Importare <strong>%label%</strong> a fost finalizată
+  list: Selectează o sarcină
+  job_profile:
+    tab:
+      property.title: Proprietăți generale
+      history.title: Istoric
+      job_content.title: Conținut
+#Page titles:
+pim_title.export_profile.index: Exportă profilele de management
+pim_title.export_profile.edit: Profil export %job.label% | Editează
+pim_title.export_profile.show: Profil export %job.label% | vizualizează
+pim_title.export_execution.index: Exportă istoricul executărilor
+pim_title.export_execution.show: Exportă executările | Detalii
+pim_title.import_profile.index: Importă profilele de management
+pim_title.import_profile.edit: Profil de import %job.label% | Editează
+pim_title.import_profile.show: Profil de import %job.label% | Vizualizează
+pim_title.import_execution.index: Importă istoricul executărilor
+pim_title.import_execution.show: Importă executările | Detalii
+#Entity and page header titles
+export profile:
+  title: exportă profil
+  edit: modifică profil de export
+import profile:
+  title: importă profile
+  edit: modifică profil de import
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: Vizualizează lista profilelor de export
+      create: Creează un profil de export
+      show: Vizualizează un profil de export
+      edit: Modifică un profil de export
+      remove: Şterge un profil de export
+      launch: Lansează un profil de export
+      property_edit: Modifică proprietățile generale a profilului de export
+      property_show: Vizualizează proprietățile generale a profilului de export
+      history: Vezi istoricul profilului de export
+      content_edit: Modifică conținutul unui profil de export
+      content_show: Vizualizează conținutul unui profil de export
+    import_profile:
+      index: Vizualizează lista profilelor de import
+      create: Creează un profil de import
+      show: Vizualizează un profil de import
+      edit: Modifică un profil de import
+      remove: Şterge un profil de import
+      launch: Lansează un profil de import
+      history: Vezi istoricul profilului de import
+    export_execution:
+      index: Vizualizează lista rapoartelor de export
+      show: Vizualizează detaliile raportului de export
+      dl_log: Descarcă jurnalul raportului de export
+      dl_files: Descarcă fișierele exportate
+    import_execution:
+      index: Vizualizează lista rapoartelor de import
+      show: Vizualizează detaliile raportului de import
+      dl_log: Descarcă jurnalul raportului de import
+      dl_files: Descarcă fișierele importate
+  acl_group:
+    export: Profile de export
+    import: Profile de import
+#Buttons
+btn:
+  create:
+    export profile: creează un profil de export
+    import profile: creează un profil de import
+Upload and import now: Încarcă și importă acum
+import now: Importă acum
+export now: Exportă acum
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: Sunteți sigur că doriți să ștergeți profilul de export %name%?
+    import profile: Ești sigur că dorești să ștegi profilul de import %name%?
+#Flash messages
+flash:
+  export:
+    created: Exportul a fost creeat cu succes
+    removed: Exportul a fost șters
+    updated: Exportul a fost actualizat cu succes
+    running: Exportul se execută
+  import:
+    created: Importul a fost creeat cu succes
+    removed: Importul a fost șters
+    updated: Importul a fost actualizat cu succes
+    running: Importul se execută
+#Tabs
+General properties: Proprietăți generale
+History: Istoric
+pane.accordion:
+  properties: Proprietăți
+  global_settings: Setări globale
+  filters: Filtre
+#Popin titles
+popin.create:
+  export_profile.title: Creează un profil de export
+  import_profile.title: Creează un profil de import
+#Job execution
+'Display item': Afișează element
+'Hide item': Ascunde element
+'Collecting data about job execution...': Se colectează datele despre executarea sarcinii...
+'You must select a file to upload': Trebuie să selectezi un fișier pentru a îl încărca
+Download log: Descarcă jurnal
+Show profile: Arată profil
+execution details: detaliile execuției
+job_execution.summary:
+  read: citește
+  write: scris
+  skip: sărit
+  create: creat
+  update: actualizat
+  update_products: produse actualizate
+  skip_products: produse sărite
+  displayed: primele avertismente afişate
+  charset_validator:
+    title: 'Codificarea fişierului:'
+    skipped: omis, extensie în lista albă
+Step: Pas
+Status: Stare
+Warnings: Advertismente
+Summary: Rezumat
+Start: Începe
+End: Termină
+#Process tracker
+set_attribute_requirements: Setează cerințele atributelor
+COMPLETED: Finalizat
+STARTING: Începând
+STARTED: Inceput
+STOPPING: Oprind
+STOPPED: Oprit
+FAILED: Eşuat
+ABANDONED: Abandonat
+UNKNOWN: Necunoscut
+warning.label: Avertisment
