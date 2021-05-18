@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useCallback} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Dropdown} from './Dropdown';
 import {Button, Image, Badge, Link, Checkbox, Search} from '../../components';
@@ -6,7 +6,7 @@ import {useBooleanState} from '../../hooks';
 import {SpaceContainer, useSelection} from '../../storybook';
 import {ArrowDownIcon} from '../../icons';
 import {action} from '@storybook/addon-actions';
-import {usePaginatedResults} from './usePaginatedResults';
+import {usePaginatedResults, useDebounce} from './usePaginatedResults';
 
 <Meta
   title="Components/Dropdown"
@@ -125,13 +125,126 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 <Canvas>
   <Story name="With Sections" height={260}>
     {args => {
-      const [searchValue, setSearchValue] = useState('');
-      const [items, handleNextPage] = usePaginatedResults(searchValue);
+      const fetchItems = async (page) => {
+        if (page > 3) return Promise.resolve([]);
+        return new Promise(resolve => {
+          setTimeout(
+            () =>
+              resolve([
+                {
+                  id: `${page} name`,
+                  text: `${page} Name`,
+                },
+                {
+                  id: `${page} collection`,
+                  text: 'Collection',
+                },
+                {
+                  id: `${page} description`,
+                  text: 'Description',
+                },
+                {
+                  id: `${page} brand`,
+                  text: 'Brand',
+                },
+                {
+                  id: `${page} response_time`,
+                  text: 'Response time (ms)',
+                },
+                {
+                  id: `${page} variation_name`,
+                  text: 'Variant Name',
+                },
+                {
+                  id: `${page} variation_description`,
+                  text: 'Variant description',
+                },
+                {
+                  id: `${page} release_date`,
+                  text: 'Release date',
+                },
+                {
+                  id: `${page} name2`,
+                  text: `${page} Name`,
+                },
+                {
+                  id: `${page} collection2`,
+                  text: 'Collection',
+                },
+                {
+                  id: `${page} description2`,
+                  text: 'Description',
+                },
+                {
+                  id: `${page} brand2`,
+                  text: 'Brand',
+                },
+                {
+                  id: `${page} response_time2`,
+                  text: 'Response time (ms)',
+                },
+                {
+                  id: `${page} variation_name2`,
+                  text: 'Variant Name',
+                },
+                {
+                  id: `${page} variation_description2`,
+                  text: 'Variant description',
+                },
+                {
+                  id: `${page} release_date2`,
+                  text: 'Release date',
+                },
+                {
+                  id: `${page} name3`,
+                  text: `${page} Name`,
+                },
+                {
+                  id: `${page} collection3`,
+                  text: 'Collection',
+                },
+                {
+                  id: `${page} description3`,
+                  text: 'Description',
+                },
+                {
+                  id: `${page} brand3`,
+                  text: 'Brand',
+                },
+                {
+                  id: `${page} response_time3`,
+                  text: 'Response time (ms)',
+                },
+                {
+                  id: `${page} variation_name3`,
+                  text: 'Variant Name',
+                },
+                {
+                  id: `${page} variation_description3`,
+                  text: 'Variant description',
+                },
+                {
+                  id: `${page} release_date3`,
+                  text: 'Release date',
+                },
+              ]),
+            200
+          );
+        });
+      };
       const [isOpen, open, close] = useBooleanState(true);
+      const [searchValue, setSearchValue] = useState('');
+      const debouncedSearchValue = useDebounce(searchValue)
+      const [items, handleNextPage] = usePaginatedResults(useCallback((page) => {
+        return fetchItems(page, debouncedSearchValue);
+      }, [debouncedSearchValue]));
       return (
         <SpaceContainer height={200}>
           <Dropdown>
-            <Button onClick={open}>
+            <Button onClick={() => {
+              open();
+              searchValue('');
+            }}>
               Simple <ArrowDownIcon />
             </Button>
             {isOpen && (
@@ -145,8 +258,8 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                   />
                 </Dropdown.Header>
                 <Dropdown.ItemCollection onNextPage={handleNextPage}>
-                  {items.map(item => (
-                    <Dropdown.Item key={item.id}>{item.text}</Dropdown.Item>
+                  {items.map((item, index) => (
+                    <Dropdown.Item key={index}>{item.text}</Dropdown.Item>
                   ))}
                 </Dropdown.ItemCollection>
               </Dropdown.Overlay>
