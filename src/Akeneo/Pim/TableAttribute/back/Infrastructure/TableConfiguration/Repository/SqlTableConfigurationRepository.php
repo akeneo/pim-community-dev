@@ -33,19 +33,30 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
 
     public function save(int $attributeId, TableConfiguration $tableConfiguration): void
     {
+        $newColumnCodes = array_map(
+            fn (array $columnDefinition): string => $columnDefinition['code'],
+            $tableConfiguration->normalize()
+        );
+
         $isTransactionActive = $this->connection->isTransactionActive();
         if (!$isTransactionActive) {
             $this->connection->beginTransaction();
         }
         try {
             $this->connection->executeQuery(
-                'DELETE FROM pim_catalog_table_column WHERE attribute_id = :attribute_id',
-                ['attribute_id' => $attributeId]
+                'DELETE FROM pim_catalog_table_column WHERE attribute_id = :attribute_id AND code NOT IN (:newColumnCodes)',
+                [
+                    'attribute_id' => $attributeId,
+                    'newColumnCodes' => $newColumnCodes,
+                ], [
+                    'newColumnCodes' => Connection::PARAM_STR_ARRAY,
+                ]
             );
             foreach ($tableConfiguration->normalize() as $columnOrder => $column) {
                 $this->connection->executeQuery(<<<SQL
                     INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels)
                     VALUES (:id, :attribute_id, :code, :data_type, :column_order, :labels)
+                    ON DUPLICATE KEY UPDATE column_order = VALUES(column_order), labels = VALUES(labels)
                     SQL,
                     [
                         'id' => uniqid($column['code'] . '_'),
