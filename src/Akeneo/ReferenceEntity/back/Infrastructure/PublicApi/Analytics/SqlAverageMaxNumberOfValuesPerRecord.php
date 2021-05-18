@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics;
 
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxVolumes;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 use Doctrine\DBAL\Connection;
 
 /**
