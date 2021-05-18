@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
-import {Breadcrumb} from 'akeneo-design-system';
+import {Breadcrumb, TabBar, useTabBar} from 'akeneo-design-system';
 import {
   FullScreenError,
   PageContent,
@@ -10,6 +10,7 @@ import {
   useSetPageTitle,
   useTranslate,
   useUserContext,
+  useSessionStorageState,
 } from '@akeneo-pim-community/shared';
 import {useCategory} from '../../hooks';
 import {Category} from '../../models';
@@ -17,6 +18,9 @@ import {Category} from '../../models';
 type Params = {
   categoryId: string;
 };
+
+const propertyTabName = '#pim_enrich-category-tab-property';
+const historyTabName = '#pim_enrich-category-tab-history';
 
 const CategoryEditPage: FC = () => {
   const {categoryId} = useParams<Params>();
@@ -27,6 +31,8 @@ const CategoryEditPage: FC = () => {
   const [categoryLabel, setCategoryLabel] = useState(`[${categoryId}]`);
   const [treeLabel, setTreeLabel] = useState(translate('pim_enrich.entity.category.content.edit.default_tree_label'));
   const [tree, setTree] = useState<Category | null>(null);
+  const [activeTab, setActiveTab] = useSessionStorageState(propertyTabName, 'pim_category_activeTab');
+  const [isCurrent, switchTo] = useTabBar(activeTab);
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
 
@@ -89,7 +95,26 @@ const CategoryEditPage: FC = () => {
         </PageHeader.UserActions>
         <PageHeader.Title>{categoryLabel}</PageHeader.Title>
       </PageHeader>
-      <PageContent>Edit {categoryLabel}</PageContent>
+      <PageContent>
+        <TabBar moreButtonTitle={'More'}>
+          <TabBar.Tab isActive={isCurrent(propertyTabName)} onClick={() => {
+            setActiveTab(propertyTabName);
+            switchTo(propertyTabName)();
+          }}>
+            {translate('pim_common.properties')}
+          </TabBar.Tab>
+          <TabBar.Tab isActive={isCurrent(historyTabName)} onClick={() => {
+            setActiveTab(historyTabName);
+            switchTo(historyTabName)();
+          }}>
+            {translate('pim_common.history')}
+          </TabBar.Tab>
+        </TabBar>
+
+        {isCurrent(propertyTabName) && <div>{translate('pim_common.properties')}</div>}
+        {isCurrent(historyTabName) && <div>{translate('pim_common.history')}</div>}
+
+      </PageContent>
     </>
   );
 };
