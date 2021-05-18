@@ -42,6 +42,7 @@ test('it does not call on reorder callback when user try to drag and drop to ano
 
 test('it does not on reorder callback when user drag and drop', () => {
   const stopPropagation = jest.fn();
+  const preventDefault = jest.fn();
   const {result} = renderHook(() => useDrop(4, 1), {wrapper});
 
   const [tableId, handleDrop] = result.current;
@@ -60,6 +61,7 @@ test('it does not on reorder callback when user drag and drop', () => {
       },
     },
     stopPropagation,
+    preventDefault,
   };
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -68,6 +70,7 @@ test('it does not on reorder callback when user drag and drop', () => {
 
   expect(onReorder).toHaveBeenCalledWith([0, 2, 1, 3]);
   expect(stopPropagation).toHaveBeenCalled();
+  expect(preventDefault).toHaveBeenCalled();
 });
 
 test('it throws an error when it cannot find the target index', () => {

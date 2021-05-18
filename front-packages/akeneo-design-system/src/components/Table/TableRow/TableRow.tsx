@@ -1,13 +1,4 @@
-import React, {
-  ReactNode,
-  Ref,
-  SyntheticEvent,
-  HTMLAttributes,
-  forwardRef,
-  useContext,
-  DragEvent,
-  useEffect,
-} from 'react';
+import React, {ReactNode, Ref, SyntheticEvent, HTMLAttributes, forwardRef, useContext, useEffect} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {Checkbox} from '../../../components';
@@ -120,17 +111,7 @@ type TableRowProps = Override<
 
 const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
   (
-    {
-      rowIndex = 0,
-      draggedElementIndex = null,
-      isSelected,
-      onSelectToggle,
-      onClick,
-      // onDragStart,
-      // onDragEnd,
-      children,
-      ...rest
-    }: TableRowProps,
+    {rowIndex = 0, draggedElementIndex = null, isSelected, onSelectToggle, onClick, children, ...rest}: TableRowProps,
     forwardedRef: Ref<HTMLTableRowElement>
   ) => {
     const [isDragged, drag, drop] = useBooleanState();
@@ -159,32 +140,12 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
         isClickable={undefined !== onClick}
         isSelected={!!isSelected}
         onClick={onClick}
-        {...rest}
         placeholderPosition={placeholderPosition}
         draggable={isDragAndDroppable && isDragged}
         data-draggable-index={rowIndex}
-        // onDragOver={(event: SyntheticEvent) => {
-        //   event.preventDefault();
-        // }}
-        // onDragEnd={(event: DragEvent<HTMLTableRowElement>) => {
-        //   drop();
-        //   onDragEnd?.(event);
-        //   console.log('dragend', event);
-        // }}
-        // onDragStart={(event: DragEvent<HTMLTableRowElement>) => {
-        //   drag();
-        //   onDragStart?.(event);
-        //   event.dataTransfer.setData('text/plain', rowIndex.toString());
-        // }}
         onDragEnter={dragEnter}
         onDragLeave={dragLeave}
-        // onDrop={(event: DragEvent<HTMLTableRowElement>) => {
-        //   console.log('dropin');
-        //   event.preventDefault();
-        //   dragEnd();
-        //   drop();
-        //   onDragEnd?.(event);
-        // }}
+        {...rest}
       >
         {isSelectable && (
           <CheckboxContainer
