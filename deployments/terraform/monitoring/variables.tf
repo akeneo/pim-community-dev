@@ -29,4 +29,11 @@ variable "product_reference_type" {
   type = string
 }
 
+variable "monitoring_authentication_token" {
+  type = string
+}
 
+variable "monitoring_url" {
+  type = string
+  default = "/monitoring/services_status"
+}

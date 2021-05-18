@@ -17,10 +17,11 @@ provider "helm" {
 }
 
 locals {
-  type                = "${replace(var.product_reference_type, "growth_", "") != var.product_reference_type}" ? "grth" : "srnt"
-  pfid                = "${local.type}-${var.instance_name}"
-  mailgun_login_name  = format("%s-%s", local.pfid, var.google_project_id)
-  mailgun_login_email = "${local.mailgun_login_name}@${var.mailgun_domain}"
+  type                            = "${replace(var.product_reference_type, "growth_", "") != var.product_reference_type}" ? "grth" : "srnt"
+  pfid                            = "${local.type}-${var.instance_name}"
+  mailgun_login_name              = format("%s-%s", local.pfid, var.google_project_id)
+  mailgun_login_email             = "${local.mailgun_login_name}@${var.mailgun_domain}"
+  monitoring_authentication_token = var.monitoring_authentication_token != "" ? var.monitoring_authentication_token : random_string.monitoring_authentication_token.result
 }
 
 resource "random_string" "mailgun_password" {
