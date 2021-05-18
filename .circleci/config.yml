@@ -650,9 +650,6 @@ workflows:
           - test_deploy:
                 requires:
                     - build_prod
-          - test_upgrade_from_last_release:
-                requires:
-                    - test_deploy
           - deploy_pr_environment?:
                 type: approval
                 filters:
