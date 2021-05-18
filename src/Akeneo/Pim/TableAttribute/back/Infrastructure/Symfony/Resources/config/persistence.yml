@@ -18,3 +18,9 @@ services:
             - '@Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\DummyTableConfigurationRepository'
         tags:
             - { name: doctrine.event_subscriber }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubscriber\InitSchemaSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }

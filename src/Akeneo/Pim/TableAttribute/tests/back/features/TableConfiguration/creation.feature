@@ -36,6 +36,10 @@ Feature: Create a table attribute
     When I create a table attribute with a configuration having column code "ingredients"
     Then There is a violation with message: TODO IsColumnCodeUnique message ingredients
 
+  Scenario: Cannot create a table configuration with too long code
+    When I create a table attribute with a configuration having column code "ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients"
+    Then There is a violation with message: TODO too long code
+
   Scenario: Cannot create a table configuration without type
     When I create a table attribute with a configuration without type
     Then There is a violation with message: TODO Missing mandatory field: "type"

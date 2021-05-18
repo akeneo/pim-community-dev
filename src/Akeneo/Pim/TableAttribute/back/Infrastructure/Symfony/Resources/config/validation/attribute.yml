@@ -18,6 +18,9 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                                     - Regex:
                                           pattern: /^[a-zA-Z0-9_]+$/
                                           message: "TODO bad code"
+                                    - Length:
+                                          max: 100
+                                          maxMessage: TODO too long code
                             type:
                                 - Required:
                                       - Type:
