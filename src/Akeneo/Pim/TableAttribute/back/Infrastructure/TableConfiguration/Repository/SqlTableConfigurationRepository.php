@@ -49,12 +49,14 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                 [
                     'attribute_id' => $attributeId,
                     'newColumnCodes' => $newColumnCodes,
-                ], [
+                ],
+                [
                     'newColumnCodes' => Connection::PARAM_STR_ARRAY,
                 ]
             );
             foreach ($tableConfiguration->normalize() as $columnOrder => $column) {
-                $this->connection->executeQuery(<<<SQL
+                $this->connection->executeQuery(
+                    <<<SQL
                     INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels)
                     VALUES (:id, :attribute_id, :code, :data_type, :column_order, :labels)
                     ON DUPLICATE KEY UPDATE column_order = VALUES(column_order), labels = VALUES(labels)
@@ -84,7 +86,8 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
 
     public function getByAttributeId(int $attributeId): TableConfiguration
     {
-        $statement = $this->connection->executeQuery(<<<SQL
+        $statement = $this->connection->executeQuery(
+            <<<SQL
             SELECT id, code, data_type, column_order, labels
             FROM pim_catalog_table_column
             WHERE attribute_id = :attributeId

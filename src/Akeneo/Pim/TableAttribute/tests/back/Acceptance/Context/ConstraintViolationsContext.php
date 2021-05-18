@@ -45,9 +45,9 @@ final class ConstraintViolationsContext implements Context
             $violationMessages[] = $constraintViolation->getMessage();
         }
 
-        Assert::count($violationMessages, 0, sprintf(
+        Assert::count($violationMessages, 0, \sprintf(
             'Some violations were raised: %s',
-            implode(PHP_EOL, $violationMessages)
+            \implode(PHP_EOL, $violationMessages)
         ));
     }
 
@@ -65,9 +65,10 @@ final class ConstraintViolationsContext implements Context
             $actualViolationMessages[] = $constraintViolation->getMessage();
         }
 
-        throw new \RuntimeException(sprintf('No violation found with message "%s", actual messages are %s',
+        throw new \RuntimeException(\sprintf(
+            'No violation found with message "%s", actual messages are %s',
             $message,
-            implode(PHP_EOL, $actualViolationMessages)
+            \implode(PHP_EOL, $actualViolationMessages)
         ));
     }
 }
