@@ -1,6 +1,7 @@
 # 5.0.x
 
 - OB-806: Add missing migration on `pim_catalog_completeness` table
+- PIM-9865: [Backport] PIM-9771: Export to PDF doesn't export Image
 
 # 5.0.24 (2021-05-07)
 
