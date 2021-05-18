@@ -142,15 +142,17 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                       )}
                   </Table.Cell>
                   <TableActionCell>
-                    <Button
-                      ghost
-                      level="danger"
-                      size={'small'}
-                      onClick={() => onDeleteCategoryTree(tree)}
-                      disabled={!tree.hasOwnProperty('productsNumber')}
-                    >
-                      {translate('pim_common.delete')}
-                    </Button>
+                    {isGranted('pim_enrich_product_category_remove') && (
+                      <Button
+                        ghost
+                        level="danger"
+                        size={'small'}
+                        onClick={() => onDeleteCategoryTree(tree)}
+                        disabled={!tree.hasOwnProperty('productsNumber')}
+                      >
+                        {translate('pim_common.delete')}
+                      </Button>
+                    )}
                   </TableActionCell>
                 </Table.Row>
               ))}
