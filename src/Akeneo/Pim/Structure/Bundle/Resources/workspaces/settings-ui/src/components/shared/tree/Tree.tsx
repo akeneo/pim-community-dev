@@ -199,7 +199,7 @@ const Tree = <T,>({
         }}
         onDragEnter={() => {
           // @fixme does not work when the user enter in a sub element of the row
-          if (!isLeaf) {
+          if (!isLeaf && !disabled) {
             if (timer) {
               return;
             }
@@ -274,13 +274,13 @@ const Tree = <T,>({
               <RowIcon size={16} shapeRendering="crispEdges" />
             </DragInitiator>
           )}
-          <ArrowButton disabled={isLeaf} role="button" onClick={handleArrowClick}>
-            {!isLeaf && <TreeArrowIcon $isFolderOpen={isOpen} size={14} />}
+          <ArrowButton disabled={isLeaf && !selected} role="button" onClick={handleArrowClick}>
+            {(!isLeaf || selected) && <TreeArrowIcon $isFolderOpen={isOpen} size={14} />}
           </ArrowButton>
-          <TreeIcon isLoading={isLoading} isLeaf={isLeaf} selected={selected} />
+          <TreeIcon isLoading={isLoading} isLeaf={isLeaf && !selected} selected={selected} />
           {label}
         </RowInnerContainer>
-        {actions && <RowActionsContainer>{actions}</RowActionsContainer>}
+        {actions && !disabled && <RowActionsContainer>{actions}</RowActionsContainer>}
       </TreeRow>
       {isOpen && !isLeaf && subTrees.length > 0 && (
         <SubTreesContainer role="group">
