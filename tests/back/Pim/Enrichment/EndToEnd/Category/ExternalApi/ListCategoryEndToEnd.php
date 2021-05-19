@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Category\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class ListCategoryEndToEnd extends ApiTestCase
@@ -67,13 +68,9 @@ JSON;
     }
 }
 JSON;
-        $firstPageResponse = $firstPageClient->getResponse();
-        $this->assertSame(Response::HTTP_OK, $firstPageResponse->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($expectedFirstPage, $firstPageResponse->getContent());
 
-        $secondPageResponse = $secondPageClient->getResponse();
-        $this->assertSame(Response::HTTP_OK, $secondPageResponse->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($expectedSecondPage, $secondPageResponse->getContent());
+        $this->assertSameResponse($expectedFirstPage, $firstPageClient->getResponse());
+        $this->assertSameResponse($expectedSecondPage, $secondPageClient->getResponse());
     }
 
     /**
@@ -126,6 +123,7 @@ JSON;
                 },
                 "code": "categoryA1-1",
                 "parent": "categoryA1",
+                "updated" : "2016-06-14T13:12:50+02:00",
                 "labels": {}
             },
             {
@@ -136,6 +134,7 @@ JSON;
                 },
                 "code": "categoryA1-1-1",
                 "parent": "categoryA1-1",
+                "updated" : "2016-06-14T13:12:50+02:00",
                 "labels": {}
             },
             {$categories['categoryA2']}
@@ -144,11 +143,8 @@ JSON;
 }
 JSON;
 
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+        $this->assertSameResponse($expected, $client->getResponse());
     }
-
 
     public function testListCategoriesWithCount()
     {
@@ -183,9 +179,7 @@ JSON;
 }
 JSON;
 
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+        $this->assertSameResponse($expected, $client->getResponse());
     }
 
     public function testListCategoriesByCodes()
@@ -219,9 +213,7 @@ JSON;
 }
 JSON;
 
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+        $this->assertSameResponse($expected, $client->getResponse());
     }
 
     public function testOutOfRangeListCategories()
@@ -274,6 +266,7 @@ JSON;
     },
     "code": "master",
     "parent": null,
+    "updated" : "2016-06-14T13:12:50+02:00",
     "labels": {}
 }
 JSON;
@@ -286,6 +279,7 @@ JSON;
     },
     "code": "categoryA",
     "parent": "master",
+    "updated" : "2016-06-14T13:12:50+02:00",
     "labels": {
         "en_US": "Category A",
         "fr_FR": "Catégorie A"
@@ -301,6 +295,7 @@ JSON;
     },
     "code": "categoryA1",
     "parent": "categoryA",
+    "updated" : "2016-06-14T13:12:50+02:00",
     "labels": {}
 }
 JSON;
@@ -313,6 +308,7 @@ JSON;
     },
     "code": "categoryA2",
     "parent": "categoryA",
+    "updated" : "2016-06-14T13:12:50+02:00",
     "labels": {}
 }
 JSON;
@@ -325,6 +321,7 @@ JSON;
     },
     "code": "categoryB",
     "parent": "master",
+    "updated" : "2016-06-14T13:12:50+02:00",
     "labels": {}
 }
 JSON;
@@ -337,6 +334,7 @@ JSON;
     },
     "code": "categoryC",
     "parent": "master",
+    "updated" : "2016-06-14T13:12:50+02:00",
     "labels": {}
 }
 JSON;
@@ -349,10 +347,29 @@ JSON;
     },
     "code": "master_china",
     "parent": null,
+    "updated" : "2016-06-14T13:12:50+02:00",
     "labels": {}
 }
 JSON;
 
         return $categories;
+    }
+
+    private function assertSameResponse(string $expectedJson, Response $actualResponse) {
+        $this->assertSame(Response::HTTP_OK, $actualResponse->getStatusCode());
+
+        $responseContent = json_decode($actualResponse->getContent(), true);
+        $expectedContent = json_decode($expectedJson, true);
+
+        $this->normalizeCategories($responseContent['_embedded']['items']);
+        $this->normalizeCategories($expectedContent['_embedded']['items']);
+
+        $this->assertEquals($expectedContent, $responseContent);
+    }
+
+    private function normalizeCategories(array &$categories) {
+        foreach ($categories as &$category) {
+            NormalizedCategoryCleaner::clean($category);
+        }
     }
 }

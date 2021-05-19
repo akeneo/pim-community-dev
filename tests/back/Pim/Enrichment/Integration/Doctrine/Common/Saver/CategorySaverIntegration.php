@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard\CategoryNormali
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
 use PHPUnit\Framework\Assert;
 
 class CategorySaverIntegration extends TestCase
@@ -50,6 +51,9 @@ class CategorySaverIntegration extends TestCase
 
         $persistedCategory = $this->getCategoryRepository()->findOneByIdentifier('bar');
         $persistedNormalizedCategory = $this->getCategoryNormalizer()->normalize($persistedCategory);
+
+        NormalizedCategoryCleaner::clean($createdNormalizedCategory);
+        NormalizedCategoryCleaner::clean($persistedNormalizedCategory);
 
         self::assertEquals($createdNormalizedCategory, $persistedNormalizedCategory);
     }

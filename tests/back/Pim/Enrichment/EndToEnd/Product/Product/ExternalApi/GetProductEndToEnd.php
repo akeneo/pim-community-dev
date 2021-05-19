@@ -243,6 +243,63 @@ class GetProductEndToEnd extends AbstractProductTestCase
         $this->assertResponse($response, $expectedProduct);
     }
 
+    public function test_it_gets_a_product_with_completenesses()
+    {
+        $this->createProduct('product', [
+            'family'     => 'familyA',
+            'categories' => [],
+            'groups'     => [],
+            'values'     => [
+                'a_simple_select' => [
+                    ['data' => 'optionA', 'locale' => null, 'scope' => null]
+                ],
+            ],
+        ]);
+
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/products/product?with_completenesses=true');
+
+        $expectedProduct = [
+            'identifier'    => 'product',
+            'family'        => 'familyA',
+            'parent'        => null,
+            'groups'        => [],
+            'categories'    => [],
+            'enabled'       => true,
+            'values'        => [
+                'a_simple_select' => [
+                    [
+                        'data' => 'optionA',
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                ],
+            ],
+            'created'       => '2016-06-14T13:12:50+02:00',
+            'updated'       => '2016-06-14T13:12:50+02:00',
+            'associations'  => [
+                'PACK'   => ['groups' => [], 'products' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'UPSELL' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'X_SELL' => ['groups' => [], 'products' => [], 'product_models' => []],
+            ],
+            'quantified_associations' => [],
+            'completenesses' => [
+                ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 10],
+                ['scope' => 'ecommerce_china', 'locale' => 'en_US', 'data' => 100],
+                ['scope' => 'ecommerce_china', 'locale' => 'zh_CN', 'data' => 100],
+                ['scope' => 'tablet', 'locale' => 'de_DE', 'data' => 10],
+                ['scope' => 'tablet', 'locale' => 'en_US', 'data' => 10],
+                ['scope' => 'tablet', 'locale' => 'fr_FR', 'data' => 10],
+            ]
+        ];
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertResponse($response, $expectedProduct);
+    }
+
     /**
      * {@inheritdoc}
      */

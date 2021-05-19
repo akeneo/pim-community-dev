@@ -3,10 +3,9 @@
 namespace Akeneo\Pim\Structure\Component\Normalizer\Versioning;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Doctrine\Common\Collections\Collection;
+use Akeneo\Pim\Structure\Component\Query\InternalApi\GetAttributeOptionCodes;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * A normalizer to transform an AttributeInterface entity into a flat array
@@ -23,25 +22,22 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     const GLOBAL_SCOPE = 'Global';
     const CHANNEL_SCOPE = 'Channel';
 
+    private const MAX_NUMBER_OF_ATTRIBUTE_OPTIONS_CODE = 10000;
+
     /** @var string[] */
-    protected $supportedFormats = ['flat'];
+    protected array $supportedFormats = ['flat'];
+    protected NormalizerInterface $standardNormalizer;
+    protected NormalizerInterface $translationNormalizer;
+    protected GetAttributeOptionCodes $getAttributeOptionCodes;
 
-    /** @var NormalizerInterface */
-    protected $standardNormalizer;
-
-    /** @var NormalizerInterface  */
-    protected $translationNormalizer;
-
-    /**
-     * @param NormalizerInterface $standardNormalizer
-     * @param NormalizerInterface $translationNormalizer
-     */
     public function __construct(
         NormalizerInterface $standardNormalizer,
-        NormalizerInterface $translationNormalizer
+        NormalizerInterface $translationNormalizer,
+        GetAttributeOptionCodes $getAttributeOptionCodes
     ) {
         $this->standardNormalizer = $standardNormalizer;
         $this->translationNormalizer = $translationNormalizer;
+        $this->getAttributeOptionCodes = $getAttributeOptionCodes;
     }
 
     /**
@@ -56,7 +52,8 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
         $flatAttribute['available_locales'] = implode(self::ITEM_SEPARATOR, $standardAttribute['available_locales']);
         $flatAttribute['locale_specific'] = $attribute->isLocaleSpecific();
 
-        unset($flatAttribute['labels']); /** @phpstan-ignore-line */
+        /** @phpstan-ignore-next-line */
+        unset($flatAttribute['labels']);
         $flatAttribute += $this->normalizeTranslations($standardAttribute['labels'], $context);
 
         $flatAttribute['options'] = $this->normalizeOptions($attribute);
@@ -84,19 +81,22 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
 
     protected function normalizeOptions(AttributeInterface $attribute): ?string
     {
-        $options = $attribute->getOptions();
-        Assert::implementsInterface($options, Collection::class);
-        if ($options->isEmpty()) {
-            return null;
+        $attributeOptionCodes = $this->getAttributeOptionCodes->forAttributeCode($attribute->getCode());
+        $normalizedOptions = '';
+
+        $count = 0;
+        foreach ($attributeOptionCodes as $attributeOptionCode) {
+            if ($count >= self::MAX_NUMBER_OF_ATTRIBUTE_OPTIONS_CODE) {
+                return  $normalizedOptions;
+            }
+            if ($count > 0) {
+                $normalizedOptions .= self::GROUP_SEPARATOR;
+            }
+            $normalizedOptions .= 'Code:' . $attributeOptionCode;
+            $count++;
         }
 
-        $data = [];
-        foreach ($options as $option) {
-            $data[] = 'Code:' . $option->getCode();
-        }
-        $options = implode(self::GROUP_SEPARATOR, $data);
-
-        return $options;
+        return $normalizedOptions === '' ? null : $normalizedOptions;
     }
 
     private function normalizeTranslations(array $labels, array $context): array

@@ -241,14 +241,14 @@ jobs:
           name: Start containers
           command: |
             docker load -i php-pim-image.tar
-            APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage pubsub-emulator' make up
+            APP_ENV=dev C='fpm mysql elasticsearch httpd object-storage pubsub-emulator' make up
             docker/wait_docker_up.sh
       - run:
           name: Install database
-          command: APP_ENV=behat O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
+          command: APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
       - run:
           name: Launch Cypress
-          command: CYPRESS_defaultCommandTimeout=8000 make end-to-end-front
+          command: CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000 make end-to-end-front
       - store_artifacts:
           path: cypress/screenshots
       - store_artifacts:
@@ -627,6 +627,29 @@ jobs:
           - store_artifacts:
                 path: ~/project/pim/var/logs
 
+  test_database:
+      machine:
+          image: ubuntu-1604:201903-01
+      parallelism: 1
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: |
+                    docker load -i php-pim-image.tar
+                    APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
+                    docker/wait_docker_up.sh
+          - run:
+                name: Install database
+                command: APP_ENV=dev make database
+          - run:
+              name: Database test
+              command: APP_ENV=dev PIM_CONTEXT=test make test-database-structure
+
 workflows:
   version: 2
   pull_request:
@@ -650,9 +673,6 @@ workflows:
           - test_deploy:
                 requires:
                     - build_prod
-          - test_upgrade_from_last_release:
-                requires:
-                    - test_deploy
           - deploy_pr_environment?:
                 type: approval
                 filters:
@@ -675,6 +695,9 @@ workflows:
           - deploy_pr_environment:
                 requires:
                     - deploy_pr_environment?
+          - test_database:
+                requires:
+                    - build_dev
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev

@@ -53,6 +53,93 @@ class GetProductCompletenessesIntegration extends TestCase
         $this->assertCompletenessContains($completenesses, 'tablet', 'en_US', 4, 2);
     }
 
+    public function test_it_returns_completenesses_of_several_product_id(): void
+    {
+        $this->initProducts();
+
+        $idProdA = $this->getProductId('productA');
+        $idProdA2 = $this->getProductId('productA2');
+        $completenesses = $this
+            ->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
+            ->fromProductIds([$idProdA, $idProdA2]);
+
+        Assert::assertCount(2, $completenesses);
+
+        Assert::assertArrayHasKey($idProdA, $completenesses);
+        Assert::assertCount(6, $completenesses[$idProdA]);
+        $this->assertCompletenessContains($completenesses[$idProdA], 'ecommerce', 'en_US', 4, 1);
+        $this->assertCompletenessContains($completenesses[$idProdA], 'tablet', 'en_US', 4, 2);
+
+        Assert::assertArrayHasKey($idProdA2, $completenesses);
+        Assert::assertCount(6, $completenesses[$idProdA2]);
+        $this->assertCompletenessContains($completenesses[$idProdA2], 'ecommerce', 'en_US', 4, 1);
+        $this->assertCompletenessContains($completenesses[$idProdA2], 'tablet', 'en_US', 4, 2);
+    }
+
+    public function test_it_returns_completenesses_of_several_product_id_filtered_by_channel_and_locales(): void
+    {
+        $this->initProducts();
+        $idProdA = $this->getProductId('productA');
+        $idProdA2 = $this->getProductId('productA2');
+        $completenesses = $this
+            ->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
+            ->fromProductIds([$idProdA, $idProdA2], 'ecommerce_china', ['en_US', 'fr_FR']);
+
+        Assert::assertCount(2, $completenesses);
+
+        Assert::assertArrayHasKey($idProdA, $completenesses);
+        Assert::assertCount(1, $completenesses[$idProdA]);
+        $this->assertCompletenessContains($completenesses[$idProdA], 'ecommerce_china', 'en_US', 1, 0);
+
+        Assert::assertArrayHasKey($idProdA2, $completenesses);
+        Assert::assertCount(1, $completenesses[$idProdA2]);
+        $this->assertCompletenessContains($completenesses[$idProdA2], 'ecommerce_china', 'en_US', 1, 0);
+    }
+
+    public function test_it_returns_completenesses_of_several_product_id_filtered_by_channel(): void
+    {
+        $this->initProducts();
+        $idProdA = $this->getProductId('productA');
+        $idProdA2 = $this->getProductId('productA2');
+        $completenesses = $this
+            ->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
+            ->fromProductIds([$idProdA, $idProdA2], 'ecommerce_china');
+
+        Assert::assertCount(2, $completenesses);
+
+        Assert::assertArrayHasKey($idProdA, $completenesses);
+        Assert::assertCount(2, $completenesses[$idProdA]);
+        $this->assertCompletenessContains($completenesses[$idProdA], 'ecommerce_china', 'en_US', 1, 0);
+        $this->assertCompletenessContains($completenesses[$idProdA], 'ecommerce_china', 'zh_CN', 1, 0);
+
+        Assert::assertArrayHasKey($idProdA2, $completenesses);
+        Assert::assertCount(2, $completenesses[$idProdA2]);
+        $this->assertCompletenessContains($completenesses[$idProdA2], 'ecommerce_china', 'en_US', 1, 0);
+        $this->assertCompletenessContains($completenesses[$idProdA2], 'ecommerce_china', 'zh_CN', 1, 0);
+    }
+
+    public function test_it_returns_completenesses_of_several_product_id_filtered_by_locale(): void
+    {
+        $this->initProducts();
+        $idProdA = $this->getProductId('productA');
+        $idProdA2 = $this->getProductId('productA2');
+        $completenesses = $this
+            ->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
+            ->fromProductIds([$idProdA, $idProdA2], null, ['zh_CN', 'fr_FR']);
+
+        Assert::assertCount(2, $completenesses);
+
+        Assert::assertArrayHasKey($idProdA, $completenesses);
+        Assert::assertCount(2, $completenesses[$idProdA]);
+        $this->assertCompletenessContains($completenesses[$idProdA], 'tablet', 'fr_FR', 4, 1);
+        $this->assertCompletenessContains($completenesses[$idProdA], 'ecommerce_china', 'zh_CN', 1, 0);
+
+        Assert::assertArrayHasKey($idProdA2, $completenesses);
+        Assert::assertCount(2, $completenesses[$idProdA2]);
+        $this->assertCompletenessContains($completenesses[$idProdA2], 'tablet', 'fr_FR', 4, 2);
+        $this->assertCompletenessContains($completenesses[$idProdA2], 'ecommerce_china', 'zh_CN', 1, 0);
+    }
+
     public function test_that_it_returns_an_empty_array_for_a_product_without_family()
     {
         $this->createProduct(
@@ -88,6 +175,60 @@ class GetProductCompletenessesIntegration extends TestCase
     protected function getConfiguration()
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function initProducts(): void
+    {
+        $this->createProduct(
+            'productA',
+            'familyA3',
+            [
+                'a_yes_no' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => false,
+                    ],
+                ],
+                'a_localized_and_scopable_text_area' => [
+                    [
+                        'scope' => 'ecommerce',
+                        'locale' => 'en_US',
+                        'data' => 'A great description',
+                    ],
+                    [
+                        'scope' => 'tablet',
+                        'locale' => 'fr_FR',
+                        'data' => 'Une super description',
+                    ],
+                ],
+            ]
+        );
+        $this->createProduct(
+            'productA2',
+            'familyA3',
+            [
+                'a_yes_no' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => true,
+                    ],
+                ],
+                'a_localized_and_scopable_text_area' => [
+                    [
+                        'scope' => 'ecommerce',
+                        'locale' => 'en_US',
+                        'data' => 'An amazing description',
+                    ],
+                    [
+                        'scope' => 'tablet',
+                        'locale' => 'fr_FR',
+                        'data' => null,
+                    ],
+                ],
+            ]
+        );
     }
 
     private function createProduct(string $identifier, ?string $familyCode, array $values): void

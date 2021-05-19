@@ -1,6 +1,4 @@
 pim_menu:
-  navigation_back:
-    connection: Back to connections
   navigation_block:
     connection: Connection navigation
   item:
@@ -10,8 +8,8 @@ pim_menu:
     connection_monitoring: Monitoring
     connection_webhook_edit: Event subscription
     connection_webhook_event_logs: Event logs
+    connect_connection_settings: Connection settings
 pim_title:
-  akeneo_connectivity_connection_settings_index: Connections
   akeneo_connectivity_connection_settings_edit: Connection settings
   akeneo_connectivity_connection_settings_any: Connection settings
   akeneo_connectivity_connection_audit_index: Connection dashboard
@@ -21,6 +19,8 @@ pim_title:
   akeneo_connectivity_connection_webhook_edit: Event subscription
   akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
   akeneo_connectivity_connection_webhook_event_logs: Event logs
+  akeneo_connectivity_connection_redirect_audit: Connection dashboard
+  akeneo_connectivity_connection_settings_redirect: Connections
 akeneo_connectivity.connection:
   connections: Connections
   secondary_actions:
@@ -133,9 +133,7 @@ akeneo_connectivity.connection:
     flash:
       success: Connection successfully deleted.
   helper:
-    title: '👋 Welcome to the feature that will properly connect your PIM!'
     description: A PIM without any third-party integrations is kinda useless, isn't it? Thanks to connections, you can declare all the data flows that will be pushed inside and pulled outside your PIM.
-    link: Eager to know more? Find out what is a connection and how to make the most of it right here!
   flow_type_helper:
     message: Wondering what flow type is?
     link: We can help you right here!
@@ -150,10 +148,6 @@ akeneo_connectivity.connection:
       extension_not_allowed: Sorry, the file you are trying to upload has an extension not allowed.
   grid.wrong_credentials_combination_helper: Some of the connections below are not using their connection usernames. They are identified by a yellow warning sign.
   dashboard:
-    helper:
-      title: '👋 Welcome to your connection dashboard!'
-      description: Here, you will be able to track all the data flows that are collected into your PIM via your connections, as well as all the data flows that are distributed to your channels via your connections.
-      link: Want to know more? Here you go!
     user_survey:
       title: Want more data on this dashboard?
       content: Your feedback is really precious to us. Help us choose the next widget by answering this one-question survey!
@@ -272,7 +266,6 @@ akeneo_connectivity.connection:
         link: To understand how to solve this, please visit the API help center.
       search_filter:
         placeholder: Search in error messages
-        result_count: '{0} No results|{1} 1 result|[2,Inf] {{ total }} results'
       error_list:
         date_time_column:
           title: Day and time

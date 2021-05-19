@@ -29,7 +29,7 @@ const TableCellInnerContainer = styled.div`
 `;
 
 type TableCellProps = Override<
-  React.HTMLAttributes<HTMLTableCellElement>,
+  React.TdHTMLAttributes<HTMLTableCellElement>,
   {
     /**
      * Content of the cell.
