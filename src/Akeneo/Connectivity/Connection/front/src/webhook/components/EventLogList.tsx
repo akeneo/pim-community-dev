@@ -44,7 +44,7 @@ const LoadingRow = styled(Table.Row)`
     border-color: ${getColor('white')};
     border-style: solid;
 `;
-const LoadingCell = styled.td.attrs(({colSpan}) => ({colSpan: colSpan}))`
+const LoadingCell = styled(Table.Cell)`
     height: 65px;
     animation: ${loadingBreath} 2s infinite;
     content: '';
