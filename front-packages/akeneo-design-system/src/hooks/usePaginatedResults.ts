@@ -1,29 +1,27 @@
 import {useBooleanState, useIsMounted} from '.';
-import {DependencyList, useCallback, useEffect, useState} from 'react';
+import {DependencyList, useEffect, useState} from 'react';
 
 const usePaginatedResults = <Type>(fetcher: (page: number) => Promise<Type[]>, dependencies: DependencyList) => {
   const [results, setResults] = useState<Type[] | null>(null);
   const [page, setPage] = useState<number>(0);
   const [isFetching, startFetching, stopFetching] = useBooleanState();
   const [isLastPage, onLastPage, notOnLastPage] = useBooleanState();
-  const memoisedFetcher = useCallback(fetcher, dependencies);
   const isMounted = useIsMounted();
 
   useEffect(() => {
-    console.log('ho!', page, dependencies);
     if (null === results) return;
 
     setPage(0);
     notOnLastPage();
     // We need this to re-trigger the fetching of results in case of search on first load
     setResults([...results]);
-  }, [memoisedFetcher]);
+  }, dependencies);
 
   useEffect(() => {
     if (isFetching || isLastPage) return;
 
     const fetchResults = async () => {
-      const newResults = await memoisedFetcher(page);
+      const newResults = await fetcher(page);
 
       if (!isMounted()) return;
 
@@ -38,7 +36,7 @@ const usePaginatedResults = <Type>(fetcher: (page: number) => Promise<Type[]>, d
     };
 
     startFetching();
-    fetchResults();
+    void fetchResults();
   }, [page, results]);
 
   const fetchNextPage = () => {

@@ -1,7 +1,7 @@
 import {Key, Override} from '../../../shared';
 import React, {ReactNode, Children, useRef, useCallback, KeyboardEvent, useEffect} from 'react';
 import styled from 'styled-components';
-import {useAutoFocus} from '../../../hooks';
+import {useAutoFocus, useCombinedRefs} from '../../../hooks';
 
 const ItemCollectionContainer = styled.div`
   max-height: 320px;
@@ -25,12 +25,12 @@ type ItemCollectionProps = Override<
 >;
 
 const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
-  ({children, onNextPage, ...rest}: ItemCollectionProps, forwardedRef): React.ReactElement => {
+  ({children, onNextPage, ...rest}: ItemCollectionProps, forwardedRef) => {
     const firstItemRef = useRef<HTMLDivElement>(null);
     const lastItemRef = useRef<HTMLDivElement>(null);
 
     const internalRef = useRef<HTMLDivElement>(null);
-    forwardedRef = null !== forwardedRef ? forwardedRef : internalRef;
+    const containerRef = useCombinedRefs(internalRef, forwardedRef);
 
     const handleKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
       if (null !== event.currentTarget) {
@@ -56,7 +56,7 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
     });
 
     useEffect(() => {
-      const containerElement = null !== forwardedRef ? (forwardedRef as any).current : null;
+      const containerElement = containerRef.current;
       const lastElement = lastItemRef.current;
 
       if (undefined === onNextPage || null === containerElement || null === lastItemRef.current) return;
@@ -67,6 +67,7 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
         threshold: 1.0,
       };
 
+      /* istanbul ignore next first render */
       if (null === lastElement) return;
 
       const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
@@ -75,13 +76,15 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
 
       observer.observe(lastElement);
 
-      return () => observer.unobserve(lastElement);
-    }, [onNextPage, (forwardedRef as any).current, lastItemRef.current]);
+      return () => {
+        observer.unobserve(lastElement);
+      };
+    }, [onNextPage, containerRef.current, lastItemRef.current]);
 
     useAutoFocus(firstItemRef);
 
     return (
-      <ItemCollectionContainer {...rest} ref={forwardedRef}>
+      <ItemCollectionContainer {...rest} ref={containerRef}>
         {decoratedChildren}
       </ItemCollectionContainer>
     );

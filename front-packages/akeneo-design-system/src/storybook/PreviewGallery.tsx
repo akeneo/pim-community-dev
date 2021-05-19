@@ -88,7 +88,7 @@ const SpaceContainer = styled.div<{width: number; height: number}>`
   flex-direction: column;
 `;
 
-const fakeFetcher = async (page: number = 0, searchValue: string = '') => {
+const fakeFetcher = async (page = 0, searchValue = '') => {
   const items = [
     {
       id: `name_${page}`,
