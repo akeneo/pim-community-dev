@@ -17,6 +17,7 @@ $rules = [
         [
             'Webmozart\Assert',
             'Akeneo\Pim\TableAttribute\Domain',
+            'Ramsey\Uuid\Uuid',
 
             // symfony dependencies
             'Symfony\Component\DependencyInjection',
@@ -24,18 +25,20 @@ $rules = [
             'Symfony\Component\Config\FileLocator',
             'Symfony\Component\Validator',
             'Symfony\Component\Serializer',
+            'Symfony\Component\EventDispatcher\EventSubscriberInterface',
 
             // doctrine
             'Doctrine\Common\EventSubscriber',
             'Doctrine\ORM\Event\LifecycleEventArgs',
             'Doctrine\ORM\Events',
+            'Doctrine\DBAL\Connection',
 
             // pim dependencies
             'Akeneo\Pim\Structure\Component',
             'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
-
-
-
+            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
+            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+            'Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];
