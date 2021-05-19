@@ -1,0 +1,9 @@
+extensions:
+    pim-attribute-edit-form-table-options-tab:
+        module: pim/table-attribute/attribute/tab
+        parent: pim-attribute-edit-form-form-tabs
+        targetZone: container
+        position: 110
+        config:
+            label: pim_table_attribute.form.attribute.tab.table_options
+            activeForTypes: [ 'pim_catalog_table' ]

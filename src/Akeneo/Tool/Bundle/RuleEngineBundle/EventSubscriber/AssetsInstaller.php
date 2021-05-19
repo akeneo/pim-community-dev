@@ -24,6 +24,7 @@ class AssetsInstaller
 
     public function installAssets(bool $shouldSymlink): void
     {
+        // TODO DRY this file
         $originDir = __DIR__ . '/../../../../Pim/Automation/RuleEngine/front/src';
         $targetDir = $this->projectDir . '/public/bundles/akeneopimruleengine';
         if ($shouldSymlink) {

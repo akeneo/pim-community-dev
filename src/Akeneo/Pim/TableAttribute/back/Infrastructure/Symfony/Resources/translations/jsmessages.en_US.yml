@@ -1,0 +1,6 @@
+pim_table_attribute:
+    form:
+        attribute:
+            tab:
+                # TODO Right wording?
+                table_options: Table options
