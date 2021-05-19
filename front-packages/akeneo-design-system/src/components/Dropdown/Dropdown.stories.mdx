@@ -2,11 +2,10 @@ import {useState, useCallback} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Dropdown} from './Dropdown';
 import {Button, Image, Badge, Link, Checkbox, Search} from '../../components';
-import {useBooleanState} from '../../hooks';
+import {useBooleanState, usePaginatedResults, useDebounce} from '../../hooks';
 import {SpaceContainer, useSelection, fakeFetcher} from '../../storybook';
 import {ArrowDownIcon} from '../../icons';
 import {action} from '@storybook/addon-actions';
-import {usePaginatedResults, useDebounce} from './usePaginatedResults';
 
 <Meta
   title="Components/Dropdown"
@@ -120,41 +119,39 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
   </Story>
 </Canvas>
 
-## With Sections
+## With Search and pagination
 
 <Canvas>
-  <Story name="With Sections" height={260}>
+  <Story name="With search and pagination" height={260}>
     {args => {
       const [isOpen, open, close] = useBooleanState(true);
-      const [searchValue, setSearchValue] = useState('');
-      const debouncedSearchValue = useDebounce(searchValue)
-      const [items, handleNextPage] = usePaginatedResults((page) => fakeFetcher(page, debouncedSearchValue), [debouncedSearchValue]);
+      const Overlay = () => {
+        const [searchValue, setSearchValue] = useState('');
+        const debouncedSearchValue = useDebounce(searchValue)
+        const [items, handleNextPage] = usePaginatedResults((page) => fakeFetcher(page, debouncedSearchValue), [debouncedSearchValue]);
+        return (<Dropdown.Overlay verticalPosition="down" onClose={close}>
+          <Dropdown.Header>
+            <Search
+              onSearchChange={setSearchValue}
+              placeholder="Search"
+              searchValue={searchValue}
+              title="Search"
+            />
+          </Dropdown.Header>
+          <Dropdown.ItemCollection onNextPage={handleNextPage}>
+            {items.map((item, index) => (
+              <Dropdown.Item key={index}>{item.text}</Dropdown.Item>
+            ))}
+          </Dropdown.ItemCollection>
+        </Dropdown.Overlay>)
+      }
       return (
-        <SpaceContainer height={200}>
+        <SpaceContainer height={500}>
           <Dropdown>
-            <Button onClick={() => {
-              open();
-              searchValue('');
-            }}>
+            <Button onClick={open}>
               Simple <ArrowDownIcon />
             </Button>
-            {isOpen && (
-              <Dropdown.Overlay verticalPosition="down" onClose={close}>
-                <Dropdown.Header>
-                  <Search
-                    onSearchChange={setSearchValue}
-                    placeholder="Search"
-                    searchValue={searchValue}
-                    title="Search"
-                  />
-                </Dropdown.Header>
-                <Dropdown.ItemCollection onNextPage={handleNextPage}>
-                  {items.map((item, index) => (
-                    <Dropdown.Item key={index}>{item.text}</Dropdown.Item>
-                  ))}
-                </Dropdown.ItemCollection>
-              </Dropdown.Overlay>
-            )}
+            {isOpen && (<Overlay />)}
           </Dropdown>
         </SpaceContainer>
       );
