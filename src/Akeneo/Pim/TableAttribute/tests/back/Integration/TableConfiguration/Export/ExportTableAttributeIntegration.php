@@ -41,14 +41,14 @@ final class ExportTableAttributeIntegration extends TestCase
             [
                 [
                     'code' => 'ingredients',
-                    'type' => 'text',
+                    'data_type' => 'text',
                     'labels' => [
                         'en_US' => 'Ingredients',
                     ],
                 ],
                 [
                     'code' => 'quantity',
-                    'type' => 'text',
+                    'data_type' => 'text',
                     'labels' => [
                         'en_US' => 'Quantity',
                     ],
@@ -89,14 +89,14 @@ final class ExportTableAttributeIntegration extends TestCase
             [
                 [
                     'code' => 'ingredients',
-                    'type' => 'text',
+                    'data_type' => 'text',
                     'labels' => [
                         'en_US' => 'Ingredients',
                     ],
                 ],
                 [
                     'code' => 'quantity',
-                    'type' => 'text',
+                    'data_type' => 'text',
                     'labels' => [
                         'en_US' => 'Quantity',
                     ],
@@ -155,14 +155,14 @@ final class ExportTableAttributeIntegration extends TestCase
             'table_configuration' => [
                 [
                     'code' => 'ingredients',
-                    'type' => 'text',
+                    'data_type' => 'text',
                     'labels' => [
                         'en_US' => 'Ingredients',
                     ],
                 ],
                 [
                     'code' => 'quantity',
-                    'type' => 'text',
+                    'data_type' => 'text',
                     'labels' => [
                         'en_US' => 'Quantity',
                     ],

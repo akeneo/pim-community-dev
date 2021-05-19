@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\tests\back\Integration\TableConfiguration\Import;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -34,7 +35,8 @@ class ImportTableAttributeIntegration extends TestCase
     {
         $csv = <<<CSV
 code;type;localizable;scopable;group;unique;sort_order;table_configuration
-nutrition;pim_catalog_table;0;0;other;0;2;[{"code":"ingredients","data_type":"text"},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"}}]
+nutrition;pim_catalog_table;0;0;other;0;2;[{"code":"ingredients","data_type":"text","labels":{"en_US":"Ingredients"}},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"}}]
+storage;pim_catalog_table;0;0;other;0;3;[{"code":"dimension","data_type":"text","labels":{"en_US":"Dimension"}},{"code":"value","data_type":"text","labels":{"en_US":"Value"}}]
 CSV;
         $this->jobLauncher->launchImport(self::CSV_IMPORT_JOB_CODE, $csv);
 
@@ -42,10 +44,21 @@ CSV;
         Assert::assertNotNull($nutritionAttribute);
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'ingredients', 'data_type' => 'text', 'labels' => []],
+                ['code' => 'ingredients', 'data_type' => 'text', 'labels' => ['en_US' => 'Ingredients']],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity']],
             ],
             $nutritionAttribute->getRawTableConfiguration()
+        );
+
+        $storageAttribute = $this->attributeRepository->findOneByIdentifier('storage');
+        Assert::assertNotNull($storageAttribute);
+        Assert::assertSame(AttributeTypes::TABLE, $storageAttribute->getType());
+        Assert::assertEqualsCanonicalizing(
+            [
+                ['code' => 'dimension', 'data_type' => 'text', 'labels' => ['en_US' => 'Dimension']],
+                ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value']],
+            ],
+            $storageAttribute->getRawTableConfiguration()
         );
     }
 
@@ -68,6 +81,16 @@ CSV;
                     '5',
                     '[{"code":"ingredients","data_type":"text","labels":{"en_US":"Ingredients"}},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"}}]',
                 ],
+                [
+                    'storage',
+                    'pim_catalog_table',
+                    '0',
+                    '0',
+                    'other',
+                    '0',
+                    '6',
+                    '[{"code":"dimension","data_type":"text","labels":{"en_US":"Dimension"}},{"code":"value","data_type":"text","labels":{"en_US":"Value"}}]',
+                ],
             ]
         );
         $writer->close();
@@ -89,6 +112,17 @@ CSV;
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity']],
             ],
             $nutritionAttribute->getRawTableConfiguration()
+        );
+
+        $storageAttribute = $this->attributeRepository->findOneByIdentifier('storage');
+        Assert::assertNotNull($storageAttribute);
+        Assert::assertSame(AttributeTypes::TABLE, $storageAttribute->getType());
+        Assert::assertEqualsCanonicalizing(
+            [
+                ['code' => 'dimension', 'data_type' => 'text', 'labels' => ['en_US' => 'Dimension']],
+                ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value']],
+            ],
+            $storageAttribute->getRawTableConfiguration()
         );
     }
 
@@ -122,6 +156,32 @@ CSV;
                 'raw_parameters' => 'a:2:{s:13:"uploadAllowed";b:1;s:25:"invalid_items_file_format";s:4:"xlsx";}',
             ]
         );
+
+        $attribute = $this->get('pim_catalog.factory.attribute')->create();
+        $this->get('pim_catalog.updater.attribute')->update(
+            $attribute,
+            [
+                'code' => 'nutrition',
+                'type' => AttributeTypes::TABLE,
+                'group' => 'other',
+                'localizable' => false,
+                'scopable' => false,
+                'table_configuration' => [
+                    [
+                        'code' => 'ingredients',
+                        'data_type' => 'text',
+                    ],
+                    [
+                        'code' => 'quantity',
+                        'data_type' => 'text',
+                    ],
+                ]
+            ]
+        );
+        $violations = $this->get('validator')->validate($attribute);
+        Assert::assertCount(0, $violations, \sprintf('The attribute is not valid: %s', $violations));
+
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
     protected function getConfiguration(): Configuration
