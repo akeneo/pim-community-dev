@@ -2,12 +2,12 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import {
   AkeneoIcon,
-  AkeneoThemedProps,
   Breadcrumb,
   Button,
   ExportXlsxIllustration,
   getColor,
   getFontSize,
+  TabBar,
 } from 'akeneo-design-system';
 import {CategoryFilter, ColumnsTab} from './feature';
 import {useEffect} from 'react';
@@ -31,24 +31,6 @@ const Header = styled.div`
 const Title = styled.div`
   color: ${getColor('brand', 100)};
   font-size: ${getFontSize('title')};
-`;
-
-const Tabs = styled.div`
-  display: flex;
-  width: 100%;
-  height: 45px;
-  border-bottom: 1px solid ${getColor('grey', 60)};
-  gap: 50px;
-  font-size: ${getFontSize('big')};
-  color: ${getColor('grey', 120)};
-`;
-
-const Tab = styled.span<{isActive: boolean} & AkeneoThemedProps>`
-  display: flex;
-  align-items: center;
-  height: 100%;
-  color: ${({isActive}) => (isActive ? getColor('brand', 100) : getColor('grey', 120))};
-  border-bottom: 2px solid ${({isActive}) => (isActive ? getColor('brand', 100) : 'transparent')};
 `;
 
 const Menu = styled.div`
@@ -176,14 +158,14 @@ const FakePIM = () => {
           <CategoryFilter categoriesSelected={categoriesSelected} setCategoriesSelected={handleCategoryChange} />
           <SaveButton onClick={saveJobConfiguration}>Save</SaveButton>
         </Header>
-        <Tabs>
-          <Tab>Properties</Tab>
-          <Tab>Permissions</Tab>
-          <Tab>Global settings</Tab>
-          <Tab>Filter the data</Tab>
-          <Tab isActive={true}>Select the columns</Tab>
-          <Tab>History</Tab>
-        </Tabs>
+        <TabBar moreButtonTitle={translate('pim_common.more')}>
+          <TabBar.Tab isActive={false}>Properties</TabBar.Tab>
+          <TabBar.Tab isActive={false}>Permissions</TabBar.Tab>
+          <TabBar.Tab isActive={false}>Global settings</TabBar.Tab>
+          <TabBar.Tab isActive={false}>Filter the data</TabBar.Tab>
+          <TabBar.Tab isActive={true}>Select the columns</TabBar.Tab>
+          <TabBar.Tab isActive={false}>History</TabBar.Tab>
+        </TabBar>
         <ColumnsTab
           validationErrors={validationErrors}
           columnsConfiguration={jobConfiguration.configuration.columns}
