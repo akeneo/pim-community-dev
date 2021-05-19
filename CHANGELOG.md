@@ -72,6 +72,7 @@
 - PIM-9869: Fix download log in job tracker is only available when log is located in the fpm server
 - PIM-9777: Fix error message when trying to delete an attribute linked to an entity
 - PIM-9873: Fix since last n day filter in product export
+- PIM-9852: Fix exception during PRE_REMOVE on removeAll cause ES desynchronisation
 
 ## New features
 
