@@ -41,7 +41,7 @@ variable "instance_name" {
 }
 
 variable "mailgun_api_key" {
-  type    = string
+  type = string
 }
 
 variable "mailgun_domain" {
@@ -58,8 +58,9 @@ variable "mailgun_port" {
 }
 
 variable "monitoring_authentication_token" {
-  type    = string
-  default = ""
+  type        = string
+  description = "Monitoring authentication token (Leave empty for auto-generated)"
+  default     = ""
 }
 
 variable "papo_project_code" {
@@ -79,7 +80,7 @@ variable "product_reference_type" {
 }
 
 variable "type" {
-  type = string
+  type    = string
   default = "srnt"
 }
 

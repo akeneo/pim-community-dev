@@ -62,7 +62,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
         }
 
         if (!$this->isBase64Encoded($data)) {
-            $this->logger->error(
+            $this->logger->notice(
                 'The preview generator for type requires a base64 encoded input.',
                 [
                     'data'      => $data,
@@ -96,7 +96,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
                 );
             }
         } catch (RuntimeException $exception) {
-            $this->logger->error(
+            $this->logger->notice(
                 'Exception when trying to create a thumbnail',
                 [
                     'data'        => $data,
@@ -110,7 +110,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
 
             throw new CouldNotGeneratePreviewException($exception->getMessage());
         } catch (\Exception $exception) {
-            $this->logger->error(
+            $this->logger->notice(
                 'Exception when trying to create a thumbnail',
                 [
                     'data'        => $data,
@@ -135,7 +135,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
         }
 
         if (!$this->isBase64Encoded($data)) {
-            $this->logger->error(
+            $this->logger->notice(
                 'The preview generator for type requires a base64 encoded input.',
                 [
                     'data'      => $data,

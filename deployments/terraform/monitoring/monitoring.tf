@@ -1,7 +1,7 @@
 resource "google_logging_metric" "login-response-time-distribution" {
   name            = "${local.pfid}-login-response-time-distribution"
-  description     = "Distribution of response time on the /user/login url."
-  filter          = "resource.type=k8s_container AND jsonPayload.http.path=\"/user/login\" AND resource.labels.namespace_name=${local.pfid}"
+  description     = "Distribution of response time on the ${var.monitoring_url} url."
+  filter          = "resource.type=k8s_container AND jsonPayload.http.path=\"${var.monitoring_url}\" AND resource.labels.namespace_name=${local.pfid}"
   value_extractor = "EXTRACT(jsonPayload.http.duration_micros)"
   label_extractors = {
     "response_code" = "EXTRACT(jsonPayload.http.response_code)"
@@ -31,9 +31,13 @@ resource "google_monitoring_uptime_check_config" "https" {
   project      = var.google_project_id
 
   http_check {
-    path    = "/user/login"
+    path    = "${var.monitoring_url}"
     port    = "443"
+    headers = {
+      X-AUTH-TOKEN = "${var.monitoring_authentication_token}"
+    }
     use_ssl = true
+    validate_ssl = false
   }
 
   monitored_resource {

@@ -1,3 +1,4 @@
+
 # What is a bounded context and a context map?
 
 ## Bounded context
@@ -7,6 +8,32 @@
 > Typically, a bounded context belongs to only one team and is decoupled from the others. 
 
 Today, that's not the case for us because our bounded contexts are coupled together. But this is the direction we'd like to go. We discovered several bounded contexts but **you should keep in mind that they are likely to evolve in the future!**  
+
+
+### Definitions
+
+- **User Management**: Define the users, their preferences and their functional perimeter, so that it reflects 
+  the customer organization.
+- **Channel**: The settings to distribute a product selection to a given market, based on some geographical parameters.
+- **Asset Manager** (Enterprise Edition only): Library of media shared by several entities (products, reference entities, etc.) 
+  to bring added value and leverage the product experience.
+- **Reference entity** (Enterprise Edition only): Structured and rich data shared by several products 
+  to bring added value and leverage the product experience.
+- **Enrichment**: Bring added value to the products by enriching their information, 
+  and follow their quality to create the basis of a compelling product experience.
+- **Structure**: The structure is the catalog foundations to modelize products. It should be tailored to customer needs.
+- **Permissions**: (Enterprise Edition only): Allow for the separation of privileges by user group on the product information.
+- **Teamwork assistant** : Organize the teamwork around projects to follow the enrichment of a set of products 
+  in order to increase users productivity.
+- **Workflow**: Allow category managers to validate contributions from internal or external contributors.
+- **Rule engine**: Enrich products by automating repetitive tasks based on business rules in order 
+  to increase users' productivity.
+- **Connectivity** : Manage connections with external systems and provides information and tools to ease connectivity.
+- **Shared Catalogs**: Shared Catalogs helps you improve collaboration with your external and internal stakeholders 
+  by easily sharing the latest product information from Akeneo PIM through a secured portal.
+- **Trial Edition**: TODO
+- **Tool**: Technical libraries that could be used outside Akeneo.
+- **Platform**: Everything that glues all the other bounded contexts together to make it a consistent application.
 
 ## Context map
 
@@ -77,7 +104,6 @@ Those bounded contexts are related to two main topics which are **Automation** a
 > Automatically enrich product information inside the PIM to increase users' productivity.
 
 - **Rule engine**: Enrich products by automating repetitive tasks based on business rules in order to increase users' productivity.
-- **Franklin Insight**: A virtual contributor who suggests technical product information in order to save users’ time.
 
 #### Work Organization
 

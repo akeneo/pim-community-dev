@@ -468,11 +468,11 @@ class CategoryAccessManager
      * @param CategoryInterface $category
      * @param GroupInterface[]  $excludedGroups
      *
-     * @return int
      */
     public function revokeAccess(CategoryInterface $category, array $excludedGroups = [])
     {
-        return $this->accessRepository->revokeAccess($category, $excludedGroups);
+        $accesses = $this->accessRepository->findAccessesToRevoke($category, $excludedGroups);
+        $this->accessRemover->removeAll($accesses);
     }
 
     /**

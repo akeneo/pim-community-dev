@@ -51,11 +51,14 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $accessRepository,
         $accessSaver,
         Group $user,
-        Group $admin
+        Group $admin,
+        BulkRemoverInterface $accessRemover,
+        ProductCategoryAccess $productCategoryAccess
     ) {
         $category->getId()->willReturn(1);
         $accessRepository->findOneBy(Argument::any())->willReturn(array());
-        $accessRepository->revokeAccess($category, [$admin, $user])->shouldBeCalled();
+        $accessRepository->findAccessesToRevoke($category, [$admin, $user])->willReturn([$productCategoryAccess]);
+        $accessRemover->removeAll([$productCategoryAccess])->shouldBeCalled();
         $accessSaver->saveAll(Argument::any())->shouldBeCalled();
         $this->setAccess($category, [$user, $admin], [$admin], [$admin], true);
     }
@@ -65,11 +68,14 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $accessRepository,
         $accessSaver,
         Group $user,
-        Group $admin
+        Group $admin,
+        BulkRemoverInterface $accessRemover,
+        ProductCategoryAccess $productCategoryAccess
     ) {
         $category->getId()->willReturn(1);
         $accessRepository->findOneBy(Argument::any())->willReturn(array());
-        $accessRepository->revokeAccess($category, [$admin, $user])->shouldBeCalled();
+        $accessRepository->findAccessesToRevoke($category, [$admin, $user])->willReturn([$productCategoryAccess]);
+        $accessRemover->removeAll([$productCategoryAccess])->shouldBeCalled();
         $accessSaver->saveAll(Argument::any())->shouldBeCalled();
 
         $this->setAccess($category, [$user, $admin], [$admin], [$admin], false);

@@ -45,7 +45,7 @@ class GetAttributeSpellcheckEvaluationSpec extends ObjectBehavior
         $attributeOptionsSpellcheckEvaluation = $this->givenAttributeOptionsSpellcheckEvaluation($attributeCode);
         $attributeSpellcheckEvaluation = $this->givenAttributeSpellcheckEvaluation($attributeCode);
 
-        $attributeOptionsSpellcheckQuery->byAttributeCode($attributeCode)->willReturn($attributeOptionsSpellcheckEvaluation);
+        $attributeOptionsSpellcheckQuery->byAttributeCode($attributeCode, 10000, null)->willReturn($attributeOptionsSpellcheckEvaluation);
         $attributeSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn($attributeSpellcheckEvaluation);
 
         $this->get($attributeCode)->shouldBeLike([
@@ -74,13 +74,43 @@ class GetAttributeSpellcheckEvaluationSpec extends ObjectBehavior
         ]);
     }
 
+    public function it_returns_formatted_evaluation_using_search_after_query(
+        $attributeOptionsSpellcheckQuery,
+        $attributeSpellcheckQuery
+    ) {
+        $attributeCode = new AttributeCode('attribute_processed');
+        $attributeOptionsSpellcheckEvaluation = [];
+        foreach (range(1, 10002) as $option) {
+            $attributeOptionsSpellcheckEvaluation[] = new AttributeOptionSpellcheck(
+                new AttributeOptionCode($attributeCode, (string) $option),
+                new \DateTimeImmutable('2020-06-10 10:00:00'),
+                (new SpellcheckResultByLocaleCollection())
+                    ->add(new LocaleCode('de_DE'), new SpellCheckResult(true))
+                    ->add(new LocaleCode('en_US'), new SpellCheckResult(true))
+                    ->add(new LocaleCode('fr_FR'), new SpellCheckResult(false))
+            );
+        }
+        $attributeOptionsSpellcheckEvaluationChunked = array_chunk($attributeOptionsSpellcheckEvaluation, 10000);
+        $attributeSpellcheckEvaluation = $this->givenAttributeSpellcheckEvaluation($attributeCode);
+
+        $attributeOptionsSpellcheckQuery->byAttributeCode($attributeCode, 10000, null)
+            ->willReturn($attributeOptionsSpellcheckEvaluationChunked[0]);
+        $attributeOptionsSpellcheckQuery->byAttributeCode($attributeCode, 10000, '10000')
+            ->willReturn($attributeOptionsSpellcheckEvaluationChunked[1]);
+        $attributeSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn($attributeSpellcheckEvaluation);
+
+        $result = $this->get($attributeCode);
+        $result['options_count']->shouldBe(20004);
+        $result['options']->shouldHaveCount(10002);
+    }
+
     public function it_returns_formatted_evaluation_when_spelling_has_not_been_calculated(
         $attributeOptionsSpellcheckQuery,
         $attributeSpellcheckQuery
     ) {
         $attributeCode = new AttributeCode('attribute_not_processed');
 
-        $attributeOptionsSpellcheckQuery->byAttributeCode($attributeCode)->willReturn([]);
+        $attributeOptionsSpellcheckQuery->byAttributeCode($attributeCode, 10000, null)->willReturn([]);
         $attributeSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(null);
 
         $this->get($attributeCode)->shouldBeLike([

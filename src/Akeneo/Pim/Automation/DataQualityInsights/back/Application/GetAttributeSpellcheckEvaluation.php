@@ -20,11 +20,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 
 class GetAttributeSpellcheckEvaluation
 {
-    /** @var GetAllAttributeOptionsSpellcheckQueryInterface */
-    private $attributeOptionsSpellcheckQuery;
+    private const ATTRIBUTE_OPTION_QUERY_BATCH_SIZE = 10000;
 
-    /** @var GetAttributeSpellcheckQueryInterface */
-    private $attributeSpellcheckQuery;
+    private GetAllAttributeOptionsSpellcheckQueryInterface $attributeOptionsSpellcheckQuery;
+    private GetAttributeSpellcheckQueryInterface $attributeSpellcheckQuery;
 
     public function __construct(
         GetAllAttributeOptionsSpellcheckQueryInterface $attributeOptionsSpellcheckQuery,
@@ -36,21 +35,28 @@ class GetAttributeSpellcheckEvaluation
 
     public function get(AttributeCode $attributeCode): array
     {
-        $attributeOptionsSpellcheck = $this->attributeOptionsSpellcheckQuery->byAttributeCode($attributeCode);
         $attributeSpellcheck = $this->attributeSpellcheckQuery->getByAttributeCode($attributeCode);
 
-        $options = array_reduce($attributeOptionsSpellcheck, function (array $previousData, AttributeOptionSpellcheck $attributeOptionSpellcheck) {
-            return array_replace($previousData, [
-                strval($attributeOptionSpellcheck->getAttributeOptionCode()) => [
+        $options = [];
+        $optionsCount = 0;
+        $lastAttributeOptionCode = null;
+        do {
+            $attributeOptionsSpellcheck = $this->attributeOptionsSpellcheckQuery->byAttributeCode(
+                $attributeCode,
+                self::ATTRIBUTE_OPTION_QUERY_BATCH_SIZE,
+                $lastAttributeOptionCode
+            );
+
+            /** @var AttributeOptionSpellcheck $attributeOptionSpellcheck */
+            foreach ($attributeOptionsSpellcheck as $attributeOptionSpellcheck) {
+                $lastAttributeOptionCode = strval($attributeOptionSpellcheck->getAttributeOptionCode());
+                $options[$lastAttributeOptionCode] = [
                     'toImprove' => $attributeOptionSpellcheck->getResult()->getLabelsToImproveNumber(),
                     'locales' => $attributeOptionSpellcheck->getResult()->toArrayBool()
-                ]
-            ]);
-        }, []);
-
-        $optionsCount = array_reduce($attributeOptionsSpellcheck, function (int $previousCount, AttributeOptionSpellcheck $attributeOptionSpellcheck) {
-            return $previousCount + $attributeOptionSpellcheck->getResult()->getLabelsToImproveNumber();
-        }, 0);
+                ];
+                $optionsCount += $attributeOptionSpellcheck->getResult()->getLabelsToImproveNumber();
+            }
+        } while (count($attributeOptionsSpellcheck) === self::ATTRIBUTE_OPTION_QUERY_BATCH_SIZE);
 
         $labelsCount = 0;
         $labels = [];

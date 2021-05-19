@@ -19,8 +19,11 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 interface GetAllAttributeOptionsSpellcheckQueryInterface
 {
     /**
-     * @param AttributeCode $attributeCode
      * @return AttributeOptionSpellcheck[]
      */
-    public function byAttributeCode(AttributeCode $attributeCode): array;
+    public function byAttributeCode(
+        AttributeCode $attributeCode,
+        int $limit = 0,
+        ?string $searchAfterOptionCode = null
+    ): array;
 }

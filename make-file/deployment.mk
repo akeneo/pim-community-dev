@@ -241,7 +241,11 @@ endif
 	MAILGUN_API_KEY=${MAILGUN_API_KEY} \
 	envsubst < $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
-
+ifeq ($(INSTANCE_NAME_PREFIX),pimup)
+	echo "COMMENT THESES LINES BELOW AFTER MERGING & RELEASING BRANCH 'status-check'"
+	yq d -i $(INSTANCE_DIR)/main.tf.json 'module.pim-monitoring.monitoring_authentication_token'
+	echo "COMMENT THESES LINES AFTER MERGING & RELEASING BRANCH 'status-check' IN PRODUCTION"
+endif
 
 .PHONY: change-terraform-source-version
 change-terraform-source-version: #Doc: change terraform source to deploy infra with a custom git version

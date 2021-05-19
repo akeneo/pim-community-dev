@@ -424,6 +424,8 @@ oro_user | phone | YES | varchar(20) |
 oro_user | timezone | NO | varchar(30) | 
 oro_user | user_type | NO | varchar(20) | 
 oro_user | properties | NO | json | 
+oro_user | consecutive_authentication_failure_counter | NO | int unsigned | 
+oro_user | authentication_failure_reset_date | YES | datetime | 
 oro_user | catalogLocale_id | YES | int | MUL
 oro_user | catalogScope_id | YES | int | MUL
 oro_user | defaultTree_id | YES | int | MUL
@@ -548,7 +550,8 @@ pim_catalog_attribute_translation | locale | NO | varchar(20) | MUL
 pim_catalog_category | id | NO | int | PRI
 pim_catalog_category | parent_id | YES | int | MUL
 pim_catalog_category | code | NO | varchar(100) | UNI
-pim_catalog_category | created | NO | datetime | 
+pim_catalog_category | created | NO | datetime |
+pim_catalog_category | updated | NO | datetime |
 pim_catalog_category | root | NO | int | 
 pim_catalog_category | lvl | NO | int | 
 pim_catalog_category | lft | NO | int | MUL
