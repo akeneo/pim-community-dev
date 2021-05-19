@@ -29,16 +29,15 @@ $rules = [
 
             // doctrine
             'Doctrine\Common\EventSubscriber',
+            'Doctrine\DBAL\Connection',
             'Doctrine\ORM\Event\LifecycleEventArgs',
             'Doctrine\ORM\Events',
-            'Doctrine\DBAL\Connection',
 
             // pim dependencies
             'Akeneo\Pim\Structure\Component',
             'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
-            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
-            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
-            'Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface',
+            'Akeneo\Channel\Component\Query\PublicApi',
+            'Akeneo\Platform\Bundle\InstallerBundle\Event',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];
