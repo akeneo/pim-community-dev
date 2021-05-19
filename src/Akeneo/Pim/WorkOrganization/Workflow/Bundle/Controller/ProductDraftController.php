@@ -171,7 +171,7 @@ class ProductDraftController
      */
     public function massRefuseAction(Request $request)
     {
-        $request->request->add(['actionName' => 'massApprove']);
+        $request->request->add(['actionName' => 'massRefuse']);
         $parameters = $this->parameterParser->parse($request);
         $filters = $this->gridFilterAdapter->adapt($parameters);
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_REFUSE_JOB_CODE);
