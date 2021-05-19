@@ -10,16 +10,8 @@ import React, {
 } from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, RowIcon} from 'akeneo-design-system';
-import {TreeNode} from '../../../models';
-import {
-  ArrowButton,
-  DragInitiator,
-  PlaceholderPosition,
-  RowActionsContainer,
-  RowInnerContainer,
-  TreeArrowIcon,
-  TreeRow,
-} from './TreeRow';
+import {PlaceholderPosition, TreeNode} from '../../../models';
+import {ArrowButton, DragInitiator, RowActionsContainer, RowInnerContainer, TreeArrowIcon, TreeRow} from './TreeRow';
 import {TreeActions} from './TreeActions';
 import {TreeIcon} from './TreeIcon';
 
@@ -57,7 +49,7 @@ const SubTreesContainer = styled.ul`
   padding: 0;
 `;
 
-type CursorPosition = {
+export type CursorPosition = {
   x: number;
   y: number;
 };
@@ -215,7 +207,8 @@ const Tree = <T,>({
               return;
             }
 
-            const timeoutId = setTimeout(() => {
+            // @ts-ignore
+            const timeoutId: number = setTimeout(() => {
               handleOpen();
             }, 2000);
             setTimer(timeoutId);

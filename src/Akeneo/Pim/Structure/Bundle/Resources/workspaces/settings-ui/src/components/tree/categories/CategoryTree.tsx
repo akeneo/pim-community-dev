@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import {CategoryTreeModel} from '../../../models';
 import {Node} from './Node';
 import {CategoryTreeProvider} from '../../providers';
+import {OrderableTreeProvider} from '../../shared/providers/OrderableTreeProvider';
 
 type Props = {
   root: CategoryTreeModel | null;
@@ -21,7 +22,9 @@ const CategoryTree: FC<Props> = ({root, rootLabel, sortable = false, ...rest}) =
 
   return (
     <CategoryTreeProvider root={root}>
-      <Node id={root.id} label={root.label} sortable={sortable} {...rest} />
+      <OrderableTreeProvider isActive={sortable}>
+        <Node id={root.id} label={root.label} sortable={sortable} {...rest} />
+      </OrderableTreeProvider>
     </CategoryTreeProvider>
   );
 };

@@ -1,10 +1,11 @@
-import {useCallback, useContext, useEffect, useState} from 'react';
-import {CategoryTreeContext, MoveTarget} from '../../components';
+import {useCallback, useContext, useEffect, useMemo, useState} from 'react';
+import {CategoryTreeContext} from '../../components';
 import {
   BackendCategoryTree,
   buildTreeNodeFromCategoryTree,
   CategoryTreeModel,
   convertToCategoryTree,
+  DropTarget,
   TreeNode,
 } from '../../models';
 import {findByIdentifiers, findLoadedDescendantsIdentifiers, findOneByIdentifier, update} from '../../helpers';
@@ -14,15 +15,15 @@ import {useBooleanState} from 'akeneo-design-system';
 
 type Move = {
   identifier: number;
-  target: MoveTarget;
+  target: DropTarget;
   status: 'pending' | 'ready';
   onMove: () => void;
 };
 
 const useCategoryTreeNode = (id: number) => {
   const {nodes, setNodes, ...rest} = useContext(CategoryTreeContext);
-  const [node, setNode] = useState<TreeNode<CategoryTreeModel> | undefined>(undefined);
-  const [children, setChildren] = useState<TreeNode<CategoryTreeModel>[]>([]);
+  //const [node, setNode] = useState<TreeNode<CategoryTreeModel> | undefined>(undefined);
+  //const [children, setChildren] = useState<TreeNode<CategoryTreeModel>[]>([]);
   const [move, setMove] = useState<Move | null>(null);
   const [isOpen, open, close] = useBooleanState(false);
 
@@ -37,6 +38,9 @@ const useCategoryTreeNode = (id: number) => {
 
   const {data, fetch: loadChildren, status: loadChildrenStatus} = useFetch<BackendCategoryTree>(url);
 
+  const node = useMemo(() => findOneByIdentifier(nodes, id), [id, nodes]);
+  const children = useMemo(() => (!node ? [] : findByIdentifiers(nodes, node.childrenIds)), [node, nodes]);
+
   const getCategoryPosition = (treeNode: TreeNode<CategoryTreeModel>): number => {
     if (!treeNode.parentId) {
       return 0;
@@ -47,7 +51,7 @@ const useCategoryTreeNode = (id: number) => {
   };
 
   const moveTo = useCallback(
-    (movedCategoryId: number, target: MoveTarget, onMove: () => void) => {
+    (movedCategoryId: number, target: DropTarget, onMove: () => void) => {
       const targetParentNode = findOneByIdentifier(
         nodes,
         target.position === 'in' ? target.identifier : target.parentId
@@ -167,7 +171,7 @@ const useCategoryTreeNode = (id: number) => {
   );
 
   // @todo Move in another location, or refactor.
-  const determineAfterWhichCategoryIdentifierToMove = (target: MoveTarget, childrenIds: number[]): number | null => {
+  const determineAfterWhichCategoryIdentifierToMove = (target: DropTarget, childrenIds: number[]): number | null => {
     if (target.position === 'after') {
       return target.identifier;
     }
@@ -210,21 +214,29 @@ const useCategoryTreeNode = (id: number) => {
   // When a category is created inside the node, force reload children and open it.
   const onCreateCategory = useCallback(() => {
     if (node) {
-      setNode({...node, childrenStatus: 'to-reload'});
+      //setNode({...node, childrenStatus: 'to-reload'});
+
+      const updatedNodes = update(nodes, {
+        ...node,
+        childrenStatus: 'to-reload',
+      });
+
+      setNodes([...updatedNodes]);
       open();
     }
   }, [node]);
+  /*
+    useEffect(() => {
+      setNode(findOneByIdentifier(nodes, id));
+    }, [id, nodes]);
 
-  useEffect(() => {
-    setNode(findOneByIdentifier(nodes, id));
-  }, [id, nodes]);
-
-  useEffect(() => {
-    if (!node) {
-      return;
-    }
-    setChildren(findByIdentifiers(nodes, node.childrenIds));
-  }, [node, nodes]);
+    useEffect(() => {
+      if (!node) {
+        return;
+      }
+      setChildren(findByIdentifiers(nodes, node.childrenIds));
+    }, [node, nodes]);
+  */
 
   useEffect(() => {
     if (!node || !Array.isArray(data)) {
