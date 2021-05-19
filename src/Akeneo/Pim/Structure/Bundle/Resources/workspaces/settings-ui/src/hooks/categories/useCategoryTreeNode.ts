@@ -212,8 +212,6 @@ const useCategoryTreeNode = (id: number) => {
   // When a category is created inside the node, force reload children and open it.
   const onCreateCategory = useCallback(() => {
     if (node) {
-      //setNode({...node, childrenStatus: 'to-reload'});
-
       const updatedNodes = update(nodes, {
         ...node,
         childrenStatus: 'to-reload',
@@ -223,18 +221,6 @@ const useCategoryTreeNode = (id: number) => {
       open();
     }
   }, [node]);
-  /*
-    useEffect(() => {
-      setNode(findOneByIdentifier(nodes, id));
-    }, [id, nodes]);
-
-    useEffect(() => {
-      if (!node) {
-        return;
-      }
-      setChildren(findByIdentifiers(nodes, node.childrenIds));
-    }, [node, nodes]);
-  */
 
   useEffect(() => {
     if (!node || !Array.isArray(data)) {
@@ -290,15 +276,27 @@ const useCategoryTreeNode = (id: number) => {
   }, [move]);
 
   useEffect(() => {
-    if (!node || loadChildrenStatus !== 'fetching') {
+    if (!node) {
       return;
     }
-    const newNodesList = update(nodes, {
-      ...node,
-      childrenStatus: 'loading',
-    });
 
-    setNodes(newNodesList);
+    if (loadChildrenStatus === 'error') {
+      const newNodesList = update(nodes, {
+        ...node,
+        childrenStatus: 'idle',
+      });
+
+      setNodes(newNodesList);
+    }
+
+    if (loadChildrenStatus === 'fetching') {
+      const newNodesList = update(nodes, {
+        ...node,
+        childrenStatus: 'loading',
+      });
+
+      setNodes(newNodesList);
+    }
   }, [loadChildrenStatus]);
 
   return {

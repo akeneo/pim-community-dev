@@ -13,12 +13,16 @@ const moveCategory = async (movedCategory: MovedCategory): Promise<boolean> => {
     prev_sibling: movedCategory.previousCategoryId ? movedCategory.previousCategoryId.toString() : '',
   });
 
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: [['X-Requested-With', 'XMLHttpRequest']],
-  });
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: [['X-Requested-With', 'XMLHttpRequest']],
+    });
 
-  return response.ok;
+    return response.ok;
+  } catch (e) {
+    return false;
+  }
 };
 
 export {moveCategory};
