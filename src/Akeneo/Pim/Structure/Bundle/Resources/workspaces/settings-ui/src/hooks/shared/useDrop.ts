@@ -2,6 +2,8 @@ import {useCallback, useContext, useEffect, useState} from 'react';
 import {PlaceholderPosition, TreeNode} from '../../models';
 import {DropTarget, OrderableTreeContext} from '../../components/shared/providers/OrderableTreeProvider';
 import {CursorPosition} from '../../components';
+import {Simulate} from 'react-dom/test-utils';
+import drop = Simulate.drop;
 
 const useDrop = <T>(
   node: TreeNode<T> | undefined,
@@ -40,22 +42,14 @@ const useDrop = <T>(
         return;
       }
 
-      if (!dropTarget || dropTarget.identifier !== node.identifier) {
-        setDropTarget({
-          position: 'before',
-          parentId: node.parentId,
-          identifier: node.identifier,
-        });
-        return;
-      }
-
       const hoveredCategoryDimensions = target.getBoundingClientRect();
       const topTierHeight = (hoveredCategoryDimensions.bottom - hoveredCategoryDimensions.top) / 3;
       const bottomTierHeight = topTierHeight * 2;
       const cursorRelativePosition = cursorPosition.y - hoveredCategoryDimensions.top;
 
       const newDropTarget: DropTarget = {
-        ...dropTarget,
+        parentId: node.parentId,
+        identifier: node.identifier,
         position:
           cursorRelativePosition < topTierHeight
             ? 'before'
@@ -67,9 +61,6 @@ const useDrop = <T>(
       if (!dropTarget || JSON.stringify(dropTarget) != JSON.stringify(newDropTarget)) {
         setDropTarget(newDropTarget);
       }
-      setPlaceholderPosition(
-        dropTarget.position === 'after' ? 'bottom' : dropTarget.position === 'before' ? 'top' : 'middle'
-      );
     },
     [node, draggedNode, dropTarget]
   );
@@ -79,9 +70,21 @@ const useDrop = <T>(
       setPlaceholderPosition('none');
       return;
     }
-    setPlaceholderPosition(
-      dropTarget.position === 'after' ? 'bottom' : dropTarget.position === 'before' ? 'top' : 'middle'
-    );
+
+    let position: PlaceholderPosition = 'none';
+    switch (dropTarget.position) {
+      case 'after':
+        position = 'bottom';
+        break;
+      case 'before':
+        position = 'top';
+        break;
+      case 'in':
+        position = 'middle';
+        break;
+    }
+
+    setPlaceholderPosition(position);
   }, [node, dropTarget]);
 
   return {

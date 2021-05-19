@@ -27,7 +27,7 @@ const placeholderPositionStyles = css<{placeholderPosition?: PlaceholderPosition
     width: 100%;
     height: 4px;
     margin-top: -2px;
-    background: linear-gradient(to top, ${getColor('blue', 40)} 4px, ${getColor('white')} 0px);
+    background: linear-gradient(to top, ${getColor('blue40')} 4px, ${getColor('white')} 0px);
     pointer-events: none;
   }
 `;
@@ -123,6 +123,7 @@ const Tree = <T,>({
   const dragRef = useRef<HTMLDivElement>(null);
   const treeRowRef = useRef<HTMLDivElement>(null);
   const [timer, setTimer] = useState<number | null>(null);
+  const [ticking, setTicking] = useState<boolean>(false);
 
   const handleOpen = useCallback(() => {
     if (open === undefined) {
@@ -193,12 +194,21 @@ const Tree = <T,>({
         onDragOver={(event: React.DragEvent) => {
           event.stopPropagation();
           event.preventDefault();
-          if (onDragOver && treeRowRef.current) {
-            onDragOver(treeRowRef.current, {
-              x: event.clientX,
-              y: event.clientY,
+
+          const cursorPosition = {
+            x: event.clientX,
+            y: event.clientY,
+          };
+
+          if (!ticking) {
+            requestAnimationFrame(() => {
+              if (onDragOver && treeRowRef.current) {
+                onDragOver(treeRowRef.current, cursorPosition);
+              }
+              setTicking(false);
             });
           }
+          setTicking(true);
         }}
         onDragEnter={() => {
           // @fixme does not work when the user enter in a sub element of the row
@@ -217,7 +227,6 @@ const Tree = <T,>({
         onDragLeave={() => {
           // @fixme does not work when the user enter in a sub element of the row
           if (timer !== null) {
-            console.log('clear timeout', timer, label);
             clearTimeout(timer);
             setTimer(null);
           }
@@ -232,7 +241,6 @@ const Tree = <T,>({
             onDrop();
           }
           if (timer !== null) {
-            console.log('clear timeout', timer, label);
             clearTimeout(timer);
             setTimer(null);
           }
@@ -245,7 +253,6 @@ const Tree = <T,>({
             onDragEnd();
           }
           if (timer !== null) {
-            console.log('clear timeout', timer, label);
             clearTimeout(timer);
             setTimer(null);
           }

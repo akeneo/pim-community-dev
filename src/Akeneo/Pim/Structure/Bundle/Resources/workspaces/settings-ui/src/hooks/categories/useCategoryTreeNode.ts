@@ -22,8 +22,6 @@ type Move = {
 
 const useCategoryTreeNode = (id: number) => {
   const {nodes, setNodes, ...rest} = useContext(CategoryTreeContext);
-  //const [node, setNode] = useState<TreeNode<CategoryTreeModel> | undefined>(undefined);
-  //const [children, setChildren] = useState<TreeNode<CategoryTreeModel>[]>([]);
   const [move, setMove] = useState<Move | null>(null);
   const [isOpen, open, close] = useBooleanState(false);
 
