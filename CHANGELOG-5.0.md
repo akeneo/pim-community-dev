@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9839: Fix indexation issue on the 2-way associations
+
 # 5.0.25 (2021-05-19)
 
 - OB-806: Add missing migration on `pim_catalog_completeness` table
