@@ -34,53 +34,47 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
 
     public function save(int $attributeId, TableConfiguration $tableConfiguration): void
     {
+        if ($this->connection->isTransactionActive()) {
+            $this->doSave($attributeId, $tableConfiguration);
+            return;
+        }
+
+        $this->connection->transactional(fn () => $this->doSave($attributeId, $tableConfiguration));
+    }
+
+    private function doSave(int $attributeId, TableConfiguration $tableConfiguration): void
+    {
         $newColumnCodes = array_map(
             fn (array $columnDefinition): string => $columnDefinition['code'],
             $tableConfiguration->normalize()
         );
 
-        $isTransactionActive = $this->connection->isTransactionActive();
-        if (!$isTransactionActive) {
-            $this->connection->beginTransaction();
-        }
-        try {
+        $this->connection->executeQuery(
+            'DELETE FROM pim_catalog_table_column WHERE attribute_id = :attribute_id AND code NOT IN (:newColumnCodes)',
+            [
+                'attribute_id' => $attributeId,
+                'newColumnCodes' => $newColumnCodes,
+            ],
+            [
+                'newColumnCodes' => Connection::PARAM_STR_ARRAY,
+            ]
+        );
+        foreach ($tableConfiguration->normalize() as $columnOrder => $column) {
             $this->connection->executeQuery(
-                'DELETE FROM pim_catalog_table_column WHERE attribute_id = :attribute_id AND code NOT IN (:newColumnCodes)',
+                <<<SQL
+                INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels)
+                VALUES (:id, :attribute_id, :code, :data_type, :column_order, :labels)
+                ON DUPLICATE KEY UPDATE column_order = VALUES(column_order), labels = VALUES(labels)
+                SQL,
                 [
+                    'id' =>  ($column['code'] . '_' . Uuid::uuid4()->toString()),
                     'attribute_id' => $attributeId,
-                    'newColumnCodes' => $newColumnCodes,
-                ],
-                [
-                    'newColumnCodes' => Connection::PARAM_STR_ARRAY,
+                    'code' => $column['code'],
+                    'data_type' => $column['data_type'],
+                    'column_order' => $columnOrder,
+                    'labels' => \json_encode($column['labels']),
                 ]
             );
-            foreach ($tableConfiguration->normalize() as $columnOrder => $column) {
-                $this->connection->executeQuery(
-                    <<<SQL
-                    INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels)
-                    VALUES (:id, :attribute_id, :code, :data_type, :column_order, :labels)
-                    ON DUPLICATE KEY UPDATE column_order = VALUES(column_order), labels = VALUES(labels)
-                    SQL,
-                    [
-                        'id' =>  ($column['code'] . '_' . Uuid::uuid4()->toString()),
-                        'attribute_id' => $attributeId,
-                        'code' => $column['code'],
-                        'data_type' => $column['data_type'],
-                        'column_order' => $columnOrder,
-                        'labels' => \json_encode($column['labels']),
-                    ]
-                );
-            }
-
-            if (!$isTransactionActive) {
-                $this->connection->commit();
-            }
-        } catch (\Exception $e) {
-            if (!$isTransactionActive) {
-                $this->connection->rollBack();
-            }
-
-            throw $e;
         }
     }
 

@@ -40,3 +40,4 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                                           - NotNull: ~
                         missingFieldsMessage: "TODO Missing mandatory field: {{ field }}"
             - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsColumnCodeUnique: ~
+#              TODO add validation: first column cannot be changed (code and data_type)
