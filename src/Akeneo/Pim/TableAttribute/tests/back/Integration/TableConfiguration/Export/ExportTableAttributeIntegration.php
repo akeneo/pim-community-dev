@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\TableAttribute\tests\back\Integration\Export;
+namespace Akeneo\Pim\TableAttribute\tests\back\Integration\TableConfiguration\Export;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\Configuration;
