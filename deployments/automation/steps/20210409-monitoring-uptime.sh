@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eo pipefail
 
-if [ ${STEP} == "PRE_APPLY" ]; then
+if [ ${STEP} == "PRE_INIT" ]; then
     if [ -z $(yq r -j -P "${PWD}/main.tf.json" 'module.pim-monitoring') ]; then
         echo "[INFO] No monitoring resource to configure"
     else
