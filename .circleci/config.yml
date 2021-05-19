@@ -884,8 +884,8 @@ jobs:
                 name: Duplicate PROD environment
                 command: |
                     ssh-keyscan github.com >> ~/.ssh/known_hosts
-                    LIST_SOURCE_PFID=( srnt-nature-et-decouvertes srnt-invivo )
-                    RANDOM_SOURCE_PFID=$(( $RANDOM % 2 ))
+                    LIST_SOURCE_PFID=( srnt-nature-et-decouvertes srnt-invivo srnt-franklin-electric )
+                    RANDOM_SOURCE_PFID=$(( $RANDOM % 3 ))
                     SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
                     INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40)
                     INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=${CIRCLE_SHA1} INSTANCE_NAME_PREFIX=pimci-duplic ENV_NAME=dev SOURCE_PFID=${SOURCE_PFID} PIM_CONTEXT=deployment  make clone_serenity
@@ -899,6 +899,10 @@ jobs:
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
+          - run:
+                name: Remove upgraded env
+                command: IMAGE_TAG=$CIRCLE_SHA1 INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40) PIM_CONTEXT=deployment make delete
+                when: always
 
   delete_pr_environments_hourly:
       environment:
@@ -1393,7 +1397,7 @@ workflows:
                     - checkout
           - test_upgrade_from_serenity_customer_db:
                 requires:
-                    - checkout
+                    - build_prod
 
   nightly:
       triggers:
