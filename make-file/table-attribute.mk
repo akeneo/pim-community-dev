@@ -14,3 +14,11 @@ table-attribute-unit-back:
 .PHONY: table-attribute-acceptance-back
 table-attribute-acceptance-back:
 	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Pim/TableAttribute/tests/back/behat.yml --format pim --out var/tests/behat/table-attribute --format progress --out std --colors $(O)
+
+.PHONY: table-attribute-integration-back
+table-attribute-integration-back:
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite Table_Attribute_Integration $(O)
+
+.PHONY: table-attribute-end-to-end-back
+table-attribute-end-to-end-back:
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite Table_Attribute_End_To_End $(O)
