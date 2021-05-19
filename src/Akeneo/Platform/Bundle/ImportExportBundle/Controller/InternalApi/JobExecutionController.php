@@ -6,6 +6,8 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutio
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Connector\LogKey;
+use League\Flysystem\Filesystem;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -27,6 +29,7 @@ class JobExecutionController
     private NormalizerInterface $normalizer;
     private SecurityFacade $securityFacade;
     private array $jobSecurityMapping;
+    private Filesystem $logFilesystem;
 
     public function __construct(
         TranslatorInterface $translator,
@@ -35,6 +38,7 @@ class JobExecutionController
         JobExecutionRepository $jobExecutionRepo,
         NormalizerInterface $normalizer,
         SecurityFacade $securityFacade,
+        Filesystem $logFilesystem,
         array $jobSecurityMapping
     ) {
         $this->translator = $translator;
@@ -44,6 +48,7 @@ class JobExecutionController
         $this->normalizer = $normalizer;
         $this->securityFacade = $securityFacade;
         $this->jobSecurityMapping = $jobSecurityMapping;
+        $this->logFilesystem = $logFilesystem;
     }
 
     public function getAction($identifier): JsonResponse
@@ -75,7 +80,7 @@ class JobExecutionController
         $jobResponse = $this->normalizer->normalize($jobExecution, 'internal_api', $context);
 
         $jobResponse['meta'] = [
-            'logExists' => file_exists($jobExecution->getLogFile()),
+            'logExists' => !empty($jobExecution->getLogFile()) && $this->logFilesystem->has(new LogKey($jobExecution)),
             'archives' => $this->archives($jobExecution),
             'generateZipArchive' => $this->archivist->hasAtLeastTwoArchives($jobExecution),
             'id' => $identifier,
