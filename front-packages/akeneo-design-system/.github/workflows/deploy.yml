@@ -15,6 +15,10 @@ jobs:
         with:
           node-version: 13.13
 
+      - name: Install peer dependencies
+        # TODO RAC-594 Do not used fixed peer dependencies
+        run: yarn add --dev react@^16.14.0 react-dom@^16.9.12 styled-components@^5.1.1
+
       - name: Install node modules
         run: yarn install
 
