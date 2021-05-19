@@ -1,4 +1,4 @@
-import {useState, useCallback} from 'react';
+import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Dropdown} from './Dropdown';
 import {Button, Image, Badge, Link, Checkbox, Search} from '../../components';
@@ -127,31 +127,30 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
       const [isOpen, open, close] = useBooleanState(true);
       const Overlay = () => {
         const [searchValue, setSearchValue] = useState('');
-        const debouncedSearchValue = useDebounce(searchValue)
-        const [items, handleNextPage] = usePaginatedResults((page) => fakeFetcher(page, debouncedSearchValue), [debouncedSearchValue]);
-        return (<Dropdown.Overlay verticalPosition="down" onClose={close}>
-          <Dropdown.Header>
-            <Search
-              onSearchChange={setSearchValue}
-              placeholder="Search"
-              searchValue={searchValue}
-              title="Search"
-            />
-          </Dropdown.Header>
-          <Dropdown.ItemCollection onNextPage={handleNextPage}>
-            {items.map((item, index) => (
-              <Dropdown.Item key={index}>{item.text}</Dropdown.Item>
-            ))}
-          </Dropdown.ItemCollection>
-        </Dropdown.Overlay>)
-      }
+        const debouncedSearchValue = useDebounce(searchValue);
+        const [items, handleNextPage] = usePaginatedResults(page => fakeFetcher(page, debouncedSearchValue), [
+          debouncedSearchValue,
+        ]);
+        return (
+          <Dropdown.Overlay verticalPosition="down" onClose={close}>
+            <Dropdown.Header>
+              <Search onSearchChange={setSearchValue} placeholder="Search" searchValue={searchValue} title="Search" />
+            </Dropdown.Header>
+            <Dropdown.ItemCollection onNextPage={handleNextPage}>
+              {items.map((item, index) => (
+                <Dropdown.Item key={index}>{item.text}</Dropdown.Item>
+              ))}
+            </Dropdown.ItemCollection>
+          </Dropdown.Overlay>
+        );
+      };
       return (
         <SpaceContainer height={500}>
           <Dropdown>
             <Button onClick={open}>
               Simple <ArrowDownIcon />
             </Button>
-            {isOpen && (<Overlay />)}
+            {isOpen && <Overlay />}
           </Dropdown>
         </SpaceContainer>
       );
