@@ -1,0 +1,26 @@
+akeneo_data_quality_insights:
+  product_evaluation:
+    criteria:
+      consistency_textarea_uppercase_words:
+        recommendation: 대문자 문제가 있는 특성
+      consistency_textarea_lowercase_words:
+        recommendation: 소문자 문제가 있는 특성
+      consistency_spelling:
+        recommendation: 철자 문제가 있는 특성
+    axis:
+      consistency:
+        title: 일관성
+        attributes_link: 개선 가능한 모든 특성 표시
+        success: 제품 데이터가 완전히 일관됩니다. 축하합니다!
+  product_edit_form:
+    attribute_filter:
+      all_improvable_attributes: 개선 가능한 모든 특성
+    spellcheck_popover:
+      title: 수정
+      original_text_title: 원본
+      suggestions_title: 제안
+      ignore_all_suggestions_button_label: 무시
+  attribute_grid:
+    quality:
+      to_improve: 개선하려면
+      good: 우수

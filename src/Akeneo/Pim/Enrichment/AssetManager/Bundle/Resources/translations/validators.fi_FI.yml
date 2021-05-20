@@ -3,3 +3,4 @@ pim_asset_manager:
     validation:
       asset_multiple_link:
         limit_reached: 'Asettien enimmäismäärä %limit% on saavutettu. Et voi enää lisätä assetteja.'
+      assets_should_belong_to_asset_family: 'Varmista, että "%asset_code%" assetti on olemassa ja kuuluu "%asset_family_identifier%" assettiperheeseen "%attribute%" attribuutille.'

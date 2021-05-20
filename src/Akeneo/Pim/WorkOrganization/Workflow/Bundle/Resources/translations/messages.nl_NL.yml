@@ -21,10 +21,11 @@ pimee_workflow:
       can_be_partially_reviewed: U kan dit voorstel enkel gedeeltelijk nakijken, omdat sommige wijzigingen van toepassing zijn op waardes die je niet kan bewerken. Gelieve contact op te nemen met uw beheerder om uw rechten aan te passen.
       can_not_be_approved: U kan dit voorstel niet nakijken, omdat alle wijzigingen van toepassing zijn op waardes die je niet kan bewerken. Gelieve contact op te nemen met uw beheerder om uw rechten aan te passen.
       can_not_be_deleted: U kan dit voorstel niet verwijderen, omdat alle wijzigingen van toepassing zijn op waardes die je niet kan bewerken. Gelieve contact op te nemen met uw beheerder om uw rechten aan te passen.
+      in_progress: Dit voorstel is momenteel in ontwerp en is nog niet toegevoegd.
     action:
       approve: Keur alles goed
       refuse: Keur alles af
-      remove: Verwijderen
+      remove: Verwijder
       partial_approve: Voer wijzigingen door voor attribuut %attribute% van het product %product%
       partial_reject: Keur wijzigingen af voor attribuut %attribute% van het product %product%
     notification:
@@ -32,6 +33,8 @@ pimee_workflow:
       partial_approve_number: '%owner% heeft waardes geaccepteerd voor %attributes_count% attributen van het product %product%'
       partial_reject: '%owner% heeft waarde(s) afgekeurd voor %attributes% van het product %product%'
       partial_reject_number: '%owner% heeft waardes afgekeurd voor %attributes_count% attributen van het product %product%'
+      partial_remove: '%owner% heeft waarde(s) verwijderd voor %attributes% van het product %product%'
+      partial_remove_number: '%owner% heeft waardes verwijderd voor %attributes_count% attributen van het product %product%'
       approve: '%owner% heeft je voorstel geaccepteerd voor het product %product%'
       refuse: '%owner% heeft je voorstel afgekeurd voor het product %product%'
       remove: '%owner% heeft je voorstel verwijderd voor het product %product%'
@@ -41,10 +44,14 @@ pimee_workflow:
       error:
         draft_not_ready: Het voorstel is niet klaar om goedgekeurd te worden
         not_product_owner: Je bent geen beheerder van het product dat gerelateerd is aan dit voorstel
+        cannot_edit_attributes: U kunt de kenmerken gewijzigd door dit voorstel niet bewerken
+        invalid_draft: 'Het voorstel kan niet worden toegepast wegens de volgende fout: %error%'
   proposal:
     to_review: '%author.firstname% %author.lastname% heeft voorgesteld om product %product.label% na te kijken'
+    generic_import: U heeft voorstellen om te bekijken uit job import
     original_value: Origineel
     new_value: Nieuw
+    draft_in_progress: Een concept is bezig voor dit product door %author%.
   published_product:
     index: Gepubliceerde producten
     title: Gepubliceerd product
@@ -52,59 +59,100 @@ pimee_workflow:
     index: Gepubliceerde producten beheren
   product:
     permission:
-      label: Machtigingen
       own: Review / publiceren
-      edit: Bewerken
-      view: Bekijken
+      edit: Wijzig
+      view: Bekijk
   steps:
+    product_draft_processor.title: Voorstel verwerker
+    approve.title: Keur voorstel goed
     refuse.title: Keur voorstel af
   mass_edit_action:
     published:
       page_title: Gepubliceerde producten
-      title: Kies bewerking
+      title: Kies operatie
       confirm: U staat op het punt een gepubliceerd product bij te werken met de volgende informatie. Alstublieft bevestigen. |U staat op het punt %count% gepubliceerde producten bij te werken met de volgende informatie. Alstublieft bevestigen.
       steps:
         first: Kies gepubliceerde producten
-        second: Kies bewerking
-pimee_workflow_product_draft_notification_new_proposal: Nieuw voorstel
-btn.publish: Publiceren
-btn.unpublish: Depubliceer
-pimee_workflow_product_draft_notification_partial_approve: Voorstel gedeeltelijk goedgekeurd
-pimee_workflow_product_draft_notification_partial_reject: Voorstel gedeeltelijk afgekeurd
-pimee_workflow_product_draft_notification_partial_remove: Voorstel gedeeltelijk verwijderd
-pimee_workflow_product_draft_notification_approve: Voorstel goedgekeurd
-pimee_workflow_product_draft_notification_refuse: Voorstel afgekeurd
-pimee_workflow_product_draft_notification_remove: Voorstel verwijderd
+        second: Kies operatie
+        third: Configureer
+        fourth: Bevestig
+btn:
+  publish: Publiceren
+  unpublish: Depubliceer
+  save working copy: Werkversie opslaan
+  save working copy and next: Werkversie opslaan en verder
+  save working copy and finish: Werkversie opslaan en afsluiten
+  send for approval: Verzenden voor goedkeuring
+  sent for approval: Verzonden voor goedkeuring
+  editworkingcopy: Wijzig werkkopie
 flash:
   product:
     published: Het product is succesvol gepubliceerd.
+    unpublished: Het product is successful gedepubliceerd.
   product_draft:
+    updated: Concept is succesvol opgeslagen
+    approve:
+      success: Het voorstel is succesvol toegepast.
+      error: 'Het voorstel kan niet worden toegepast wegens de volgende fout: %error%'
+    refuse:
+      success: Het voorstel is afgewezen.
     remove:
       success: Het voorstel is verwijderd.
 pim_menu:
   item:
     published_product: Gepubliceerde producten
     proposal: Voorstellen
-pim_title:
-  published_product:
-    index: Gepubliceerde producten
-    view: Gepubliceerde producten %product.sku% | Bekijk
-  product:
-    dispatch: "Producten %product.sku%"
-    show: "Producten %product.sku% | Toon"
-  proposal:
-    index: Voorstellen
-btn.editworkingcopy: Wijzig werkkopie
 confirmation:
   product:
     publish: Weet u zeker dat u dit product wilt publiceren?
     unpublish: Weet u zeker dat u dit product wilt depubliceren?
 Attributes.title: Attributen
 Completeness.title: Volledigheid
+publish_product.steps.publish_product_tasklet.title: Product publiceren
+unpublish_product.steps.unpublish_product_tasklet.title: Depubliceer product
+approve_product_draft.steps.approve.title: Keur voorstel goed
+approve_product_draft.steps.refuse.title: Keur voorstel af
+job_execution.summary:
+  approved: goedgekeurd
+  refused: geweigerd
+  mass_published: Product gepubliceerd
+  mass_unpublished: Product niet gepubliceerd
+  proposal: Voorstel aangemaakt
+  proposal_deleted: verwijderd voorstel
+  proposal_updated: bijgewerkt voorstel
+  proposal_created: aangemaakt voorstel
+  proposal_skipped: overgeslagen voorstel (geen verschillen)
 published products: Gepubliceerde producten
-batch_jobs:
-  csv_published_product_export:
-    label: Gepubliceerd product exporteren in CSV
-    export.label: Gepubliceerd product exporteren
-  xlsx_published_product_export:
-    export.label: Gepubliceerd product exporteren
+pim_analytics:
+  info_type:
+    nb_published_products: Aantal gepubliceerd product
+    nb_product_drafts: Aantal productconcepten
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Voorstellen te recenseren
+      date: Datum
+      author: Auteur
+      product: Product
+      review: Beoordeel
+      empty: Geen product concepten te recenseren
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Publiceren
+      description: Publiceer de geselecteerde producten, de huidige gepubliceerde data zal overgeschreven worden door de huidige werkkopie.
+      success_flash: De geselecteerde producten zijn succesvol gepubliceerd.
+      launched_flash: De taak "publiceren van producten" is momenteel aan het lopen.
+      message:
+        info: De geselecteerde producten %nbProducts% worden gepubliceerd.
+    unpublish:
+      label: Depubliceer
+      description: De geselecteerde producten de publicatie ongedaan maken, de huidige gepubliceerde gegevens worden gewist.
+      success_flash: De geselecteerde producten zijn successful gedepubliceerd.
+      launched_flash: De job depubliceren van product(en) is momenteel actief.
+      message:
+        info: De publicatie van de geselecteerde producten %nbProducts% wordt ongedaan gemaakt.
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Voorstellen

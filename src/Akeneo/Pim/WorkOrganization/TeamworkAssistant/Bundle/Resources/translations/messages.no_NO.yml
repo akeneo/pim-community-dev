@@ -1,0 +1,7 @@
+teamwork_assistant:
+  notification:
+    project_finished:
+      show: Vis
+  datagrid:
+    contributor_in_progress: Pågående
+    contributor_done: Ferdig

@@ -1,0 +1,5 @@
+pim_asset_manager:
+  product_value:
+    validation:
+      asset_multiple_link:
+        limit_reached: '컬렉션별 %limit% 자산 제한에 도달했습니다. 더 이상 컬렉션에 자산을 추가할 수 없습니다.'

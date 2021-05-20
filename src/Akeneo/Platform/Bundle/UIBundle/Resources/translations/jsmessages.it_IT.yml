@@ -1,2 +1,6 @@
 user:
   email_notifications: Notifiche email
+pimee_enrich.entity.product:
+  duplicate:
+    title: Duplica il prodotto {{ product_identifier }}
+    button: Duplicato

@@ -4,3 +4,86 @@ pimee_enrich.acl.attribute_group.edit_permissions: Upravljanje dozvolama atribut
 pimee_importexport.acl.export_profile.edit_permissions: Upravljanje dozvolama za izvoz profila
 pimee_importexport.acl.import_profile.edit_permissions: Upravljanje dozvolama za uvoz profila
 pimee_enrich.groups.label: Vlasnik grupe
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Uredi atribute
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Dodaj vrijednost proizvoda sa dozvolom
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Ažuriraj vrijednost proizvoda sa dozvolom
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Ukloni vrijednost proizvoda sa dozvolom
+job_profile.permissions:
+  execute.label: Dopušteno izvoditi profil zadatka
+  edit.label: Dopušteno uređivati profil zadatka
+pim_title.locale:
+  edit: "Lokacije %locale.code% | Uredi"
+attribute group.permissions:
+  view.label: Dozvoljen pregled svojstava
+  view.help: Dopusti pregled proizvoda iz ove grupe atributa
+  edit.label: Dozvoljeno uređivanje atributa
+  edit.help: Dopusti uređivanje proizvoda iz ove grupe atributa
+  no_access_to_attributes: Nemate pristup za nijedan atribut ovog proizvoda. Obratite se administratoru.
+category.permissions:
+  view.label: Dozvoljen pregled proizvoda
+  view.help: Dopustiti pregled proizvoda u ovoj kategoriji
+  edit.label: Dopušteno uređivanje proizvoda
+  edit.help: Dopusti uređivanje proizvoda u ovoj kategoriji (podrazumijeva dozvolu za prikaz)
+  own.label: Dozvoljeno za vlastite proizvode
+  own.help: Dozvoljen pregled, objava, poništenje objave, klasificirati, povezati proizvode u ovoj kategoriji (podrazumijeva dozvolu za uređivanje)
+  no_access_to_products: Nemate pristup za proizvode u nijednom stablu, obratite se administratoru
+  apply_on_children.label: Primjena promjena na djecu
+  apply_on_children.help: Kopirajte dozvole promjene na svu djecu, postojeće dozvole na djecu su očuvane
+locale.permissions:
+  no_access_to_products: Nemate pristup do podataka o proizvodu u bilo kojoj aktiviranoj lokaciji, obratite se administratoru
+flash.locale.updated: Lokacija i dozvole su ažurirane
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Nemate dozvolu za uređivanje proizvoda "%identifiers%".
+      page_title: Proizvodi
+      page_subtitle: Masovno uređivanje (1 proizvod) | Masovno uređivanje (%count% proizvoda)
+      title: Odabiri operaciju
+      subtitle: Odaberi operaciju koju želiš obaviti na odabranom proizvodu| Odaberi operaciju koju želiš izvesti na %count% odabranih proizvoda
+      confirm: Spremate se ažurirati proizvod sa sljedećim podacima, molimo vas da potvrdite. | Spremate se ažurirati %count% proizvoda sa sljedećim podacima, molimo vas da potvrdite.
+      steps:
+        first: Odaberi proizvode
+        second: Odabiri operaciju
+        third: Konfiguriraj
+        fourth: Potvrdi
+    publish:
+      message:
+        error: Niste vlasnik proizvoda, ne možete ih objaviti.
+        warning: Niste vlasnik svih odabranih proizvoda, ne možete objaviti "%notGranted%".
+      not_editable: Nemate dozvolu za uređivanje proizvoda "%identifiers%".
+    unpublish:
+      message:
+        error: Niste vlasnik proizvoda, ne možete im poništiti objavljivanje.
+        warning: Niste vlasnik svih odabranih proizvoda, ne možete poništiti objavljivanje proizvoda "%notGranted%".
+        info: Za %nbProducts% odabranih proizvoda će biti poništena objava.
+      not_editable: Nemate dozvolu za uređivanje proizvoda "%identifiers%".
+    classify:
+      message:
+        error: Niste vlasnik proizvoda, ne možete ih klasificirati.
+        warning: Niste vlasnik svih odabranih proizvoda, ne možete klasificirati proizvode "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: Niste vlasnik proizvoda, ne možete ih mjenjati.
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Dozvole
+  acl.product_ownership.title: Vlasništvo
+  attributes:
+    empty: niti jedan
+  category:
+    tab:
+      permission:
+        title: Dozvole
+  groups:
+    label: vlasničke grupe
+    empty: niti jedan
+add_product_value_with_permission_and_rules:
+  steps.perform: Dodaj vrijednosti proizvoda
+update_product_value_with_permission_and_rules:
+  steps.perform: Ažuriraj vrijednosti proizvoda
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Uredi atribute
+  steps.edit_common_attributes_processor.title: Uredi atribute
+pim_enrich_attribute_form:
+  isReadOnly: Samo za čitanje

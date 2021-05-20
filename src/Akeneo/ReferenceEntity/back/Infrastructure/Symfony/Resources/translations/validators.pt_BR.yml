@@ -9,6 +9,8 @@ pim_reference_entity:
     validation:
       code:
         pattern: 'Este campo só pode conter letras, números e sublinhados.'
+      record:
+        should_not_be_used_as_product_variant_axis: 'Você não pode excluir esta entidade pois está sendo utilizada como um eixo de variante em uma de sua variante de produto'
   attribute:
     validation:
       options:

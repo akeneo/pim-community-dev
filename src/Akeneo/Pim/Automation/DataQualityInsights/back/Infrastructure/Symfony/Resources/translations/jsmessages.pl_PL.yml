@@ -1,52 +1,6 @@
 akeneo_data_quality_insights:
-  title: Wgląd w jakość danych
-  dqi_dashboard:
-    menu: Wgląd w jakość danych
-    title: Przegląd jakości danych
-    helper:
-      title: Przedstawiamy Jakość Danych w Akeneo
-      description: Dzięki pulpitowi jakości danych możesz zmierzyć jakość danych w katalogu. Możesz również skupić się na kategorii lub rodzinie.
-      help_center: Sprawdź nasze Centrum Pomocy, aby uzyskać więcej informacji.
-    no_data_title: Przepraszamy, nie mamy jeszcze wystarczającej ilości danych, aby wyświetlić przegląd jakości danych.
-    no_data_subtitle: Proszę wrócić później.
-    time_period:
-      label: Okres czasu
-      daily: Codziennie
-      weekly: Tygodniowo
-      monthly: Miesięcznie
-    legend:
-      excellent: Doskonale
-      good: Dobrze
-      average: Przeciętnie
-      below_average: Poniżej przeciętnej
-      to_improve: Do poprawy
-    average_grade: Średnia ocena
-    category_modal_filter:
-      subtitle: Filtruj według kategorii
-      message: Wybierz kategorię do przejrzenia na pulpicie
-    widgets:
-      family_modal:
-        subtitle: Dodaj rodziny
-        message: Wybierz rodziny, które chcesz dodać do pulpitu
-        max_families_msg: Przepraszamy, nie możesz dodać więcej niż {{ count }} rodzin do śledzenia na Twoim pulpicie
-      category_modal:
-        subtitle: Dodaj kategorie
-        message: Wybierz kategorie, które chcesz dodać do pulpitu
-        max_categories_msg: Przepraszamy, nie możesz dodać więcej niż {{ count }} kategorii do śledzenia na Twoim pulpicie
-      add_families: Dodaj rodziny
-      add_categories: Dodaj kategorie
-      title: Tytuł
-      no_family_helper_msg: Wybierz rodziny, dla których chcesz zmierzyć jakość danych
-      no_category_helper_msg: Wybierz kategorie, dla których chcesz zmierzyć jakość danych
-      see_in_grid: Zobacz w siatce
-    time_axis:
-      day: dzień
   product_evaluation:
     criteria:
-      completeness_of_required_attributes:
-        recommendation: Wymagane atrybuty z brakującymi wartościami
-      completeness_of_non_required_attributes:
-        recommendation: Niewymagane atrybuty z brakującymi wartościami
       consistency_textarea_uppercase_words:
         recommendation: Atrybuty z problemami wielkich liter
       consistency_textarea_lowercase_words:
@@ -54,34 +8,19 @@ akeneo_data_quality_insights:
       consistency_spelling:
         recommendation: Atrybuty z problemami z pisownią
     axis:
-      enrichment:
-        title: Wzbogacanie
-        attributes_link: Wyświetl wszystkie brakujące atrybuty
-        success: Twoje dane produktu są w pełni wzbogacone. Gratulacje!
       consistency:
         title: Spójność
         attributes_link: Wyświetl wszystkie atrybuty, które można ulepszyć
         success: Twoje dane produktu są w pełni spójne. Gratulacje!
-    messages:
-      error:
-        axis_error: Z powodu błędu, ocena nie może być w pełni obliczona. Spróbuj ponownie później.
-        criterion_error: Nie można obliczyć oceny.
-      success:
-        criterion: Wszystko OK!
-      grading_in_progress: Ocena w toku.
-      axis_grading_in_progress: Ocena w toku. Proszę wróć później.
-      too_many_attributes: Masz {{ count }} atrybutów do ulepszenia.
   product_edit_form:
     attribute_filter:
-      all_missing_attributes: Wszystkie brakujące atrybuty
       all_improvable_attributes: Wszystkie atrybuty, które można ulepszyć
     spellcheck_popover:
       title: Korekty
       original_text_title: Oryginał
       suggestions_title: Propozycje
       ignore_all_suggestions_button_label: Zignoruj
-    title_suggestion_popover:
-      title: Sugestie
-      ignore_all_suggestions_button_label: Zignoruj
-pim_title:
-  akeneo_data_quality_insights_dashboard: Wgląd w jakość danych
+  attribute_grid:
+    quality:
+      to_improve: Do poprawy
+      good: Dobrze

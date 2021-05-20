@@ -8,7 +8,7 @@ pim_reference_entity:
       records:
         should_have_no_record: 'Nie możesz usunąć tego obiektu, ponieważ istnieją rekordy dla tego obiektu'
       reference_entity_attributes:
-        should_not_be_linked: 'Nie możesz usunąć tego obiektu, ponieważ atrybuty obiektu referencyjnego są związane z tym obiektem'
+        should_not_be_linked: 'Aby usunąć ten obiekt referencyjny, najpierw sprawdź atrybuty we wszystkich swoich obiektach referencyjnych, a następnie usuń te, które są z nim powiązane'
       reference_entity_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Co najmniej jedna grupa użytkowników powinna mieć uprawnienia do edycji tego obiektu'
       product_attributes:
@@ -47,11 +47,6 @@ pim_reference_entity:
         is_not_expected: 'Ustawienie lokalizacji nie jest oczekiwane dla atrybutu "%attribute_code%", ponieważ atrybut nie ma przyjmować wartości dla poszczególnych lokalizacji.'
         is_not_activated: 'Lokalizacja "%locale_identifier%" nie jest aktywowana.'
         is_not_activated_for_channel: 'Lokalizacja "%locale_identifier%" nie jest aktywowana dla kanału "%channel_identifier%".'
-      number:
-        should_be_string: 'To pole powinno być ciągiem znaków'
-        should_be_integer: 'To pole powinno być liczbą całkowitą'
-        integer_too_long: 'Ta liczba całkowita jest zbyt duża'
-        should_be_numeric: 'To pole powinno być wartością liczbową z właściwym separatorem dziesiętnym'
   attribute:
     validation:
       options:
@@ -65,12 +60,6 @@ pim_reference_entity:
         should_be_an_integer: 'Ta wartość powinna być liczbą całkowitą.'
       max_file_size:
         should_be_a_number: 'Ta wartość powinna być liczbą.'
-      min_value:
-        should_be_a_number: 'Ta wartość powinna być liczbą z właściwym separatorem dziesiętnym.'
-        cannot_be_greater_than_max: 'Wartość minimalna nie może być większa niż wartość maksymalna.'
-      max_value:
-        should_be_a_number: 'Ta wartość powinna być liczbą z właściwym separatorem dziesiętnym.'
-        cannot_be_lower_than_min: 'Maksymalna wartość nie może być mniejsza niż wartość minimalna'
       code:
         pattern: 'To pole może zawierać tylko litery, cyfry i podkreślenia.'
         reserved_codes: 'Kod nie może być żadną z tych wartości: "{{ comma_separated_reserved_keywords }}"'
@@ -87,13 +76,3 @@ pim_reference_entity:
       record_type:
         is_required: 'Musisz określić typ obiektureferencyjnego, aby utworzyć atrybut odnośnika do obiektu referencyjnego'
         reference_entity_should_exist: 'Nie znaleziono obiektu referencyjnego "%reference_entity_code%".'
-      prefix:
-        should_not_be_empty: 'Prefiks nie może być pustym ciągiem znaków.'
-      suffix:
-        should_not_be_empty: 'Sufiks nie może być pustym ciągiem znaków.'
-      media_type:
-        not_expected: 'Podany typ mediów nie odpowiada oczekiwanym (%supported_media_types%).'
-  product_value:
-    validation:
-      record_should_exist: 'Właściwość "%attribute_code%" oczekuje poprawnego kodu rekordu. Rekord "%invalid_record%" nie istnieje'
-      records_should_exist: 'Właściwość "%attribute_code%" oczekuje poprawnych kodów rekordu. Następujące rekordy nie istnieją: "%invalid_records%"'

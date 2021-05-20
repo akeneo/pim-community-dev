@@ -1,0 +1,88 @@
+pimee_catalog_rule:
+  execution_button: Execută regulile
+  popin:
+    execute_rules:
+      confirm_title: Confirmă executarea
+  notification:
+    launched: Executarea regulilor a fost lansată. Veți fi notificat când este gata.
+  attribute:
+    list:
+      code.label: Cod
+      condition.label: Condiție
+      action.label: Acțiune
+  rule:
+    condition:
+      if.label: dacă
+    action:
+      then.label: atunci
+      set_value.label: este situat în
+      copy_value.label: este copiat în
+      set.label: este situat în
+      copy.label: este copiat în
+      add.label: este adăugat în
+      remove.label: este şters din
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Confirmă executare
+          confirm_content: Sunteți sigur că doriți să executați această regulă?
+      mass_edit_action:
+        confirm_title: Confirmă calcul
+      mass_action:
+        execute:
+          confirm_title: Confirmați executarea
+          success: Executarea regulilor a fost lansată. Veți fi notificat când este gata.
+          empty_selection: Nicio regulă selectată.
+        delete:
+          confirm_title: Confirmă executarea
+          confirm_content: Sunteți sigur că doriți să ştergeți regulile selectate?
+          success: Regulile au fost şterse.
+          empty_selection: Nicio regulă selectată.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Reguli
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Sunteți sugur că doriți să ştergeți această regulă? Această acțiune nu poate fi anulată
+flash:
+  rule:
+    executed: Executarea regulilor a fost lansată. Veți fi notificat când este gata.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Setarile regulilor
+batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Executarea regulilor
+  default_steps:
+    execute_rules: Executarea regulilor
+  rule_impacted_product_count:
+    perform.label: Numără produsele afectate
+  csv_product_import_with_rules:
+    label: Import produs în CSV cu reguli
+    import.label: Import produs
+  csv_product_model_import_with_rules:
+    label: Importă model de produs in CSV cu următoarele reguli
+  xlsx_product_import_with_rules:
+    label: Importă produs în XLSX cu reguli
+    import.label: Import produs
+  xlsx_product_model_import_with_rules:
+    label: Importă model de produs in XLSX cu următoarele reguli
+pim_notification:
+  types:
+    rule: Setările regulilor
+    execute_rules: Executarea regulilor
+pim_menu:
+  item:
+    rule: Reguli
+pim_title:
+  pimee_catalog_rule_rule_index: Reguli
+  pimee_catalog_rule_new: Reguli
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: Executarea regulilor

@@ -1,0 +1,164 @@
+pimee_workflow:
+  product_draft:
+    author: 작성자
+    source: 소스
+    created: '제안:'
+    changes: 변경 사항
+    locale: 로케일 컨텍스트
+    product:
+      label: 제품 레이블
+    attribute:
+      label: 특성
+    status:
+      label: 상태
+      working_copy: 작업 사본
+      in_progress: 진행 중
+      ready: 승인 대기 중
+      can_be_partially_reviewed: 일부 검토할 수 있음
+      can_not_be_approved: 검토할 수 없음
+      can_not_be_deleted: 삭제할 수 없음
+    status_message:
+      can_be_partially_reviewed: 일부 변경 사항에 대해 편집 권한이 없기 때문에 이 제안의 일부만 검토할 수 있습니다. 관리자에게 권한 변경을 문의하십시오.
+      can_not_be_approved: 모든 변경 사항에 대해 편집 권한이 없기 때문에 이 제안을 검토할 수 없습니다. 관리자에게 권한 변경을 문의하십시오.
+      can_not_be_deleted: 모든 변경 사항에 대해 편집 권한이 없기 때문에 이 제안을 삭제할 수 없습니다. 관리자에게 권한 변경을 문의하십시오.
+      in_progress: 이 제안이 현재 진행 중이며 아직 제출되지 않았습니다.
+    action:
+      approve: 모두 승인
+      refuse: 모두 거부
+      remove: 제거
+      partial_approve: 제품 %product%의 특성 %attribute%에 대한 변경 사항 승인
+      partial_reject: 제품 %product%의 특성 %attribute%에 대한 변경 사항 거부
+    notification:
+      partial_approve: '%owner% 님이 제품 %product%의 %attributes%에 대한 값을 수락했습니다'
+      partial_approve_number: '%owner%는 제품 %product%의 %attributes_count%의 값을 허용합니다'
+      partial_reject: '%owner% 님이 제품 %product%의 %attributes%에 대한 값을 거부했습니다'
+      partial_reject_number: '%owner% 님이 제품 %product%의 %attributes_count% 특성에 대한 값을 거부했습니다'
+      partial_remove: '%owner% 님이 제품 %product%의 %attributes%에 대한 값을 삭제했습니다'
+      partial_remove_number: '%owner% 님이 제품 %product%의 %attributes_count% 특성에 대한 값을 삭제했습니다'
+      approve: '%owner% 님이 제품 %product%에 대한 제안을 수락했습니다'
+      refuse: '%owner% 님이 제품 %product%에 대한 제안을 거부했습니다'
+      remove: '%owner% 님이 제품 %product%에 대한 제안을 삭제했습니다'
+      mass_edit_sent_for_approval: '<strong>%jobLabel%</strong> 대량 편집 완료: %readProductsCount%개 제품에서 %sentForApprovalCount% 제안 생성됨 '
+    mass_review_action:
+      approve: 선택 항목 모두 승인
+      refuse: 선택 항목 모두 거부
+      error:
+        draft_not_ready: 이 제안은 승인 준비가 되지 않았습니다
+        not_product_owner: 이 제안 관련 제품을 소유하고 있지 않습니다
+        cannot_edit_attributes: 이 제안에 의해 수정된 특성을 편집할 수 없습니다
+        invalid_draft: '다음 오류로 인해 이 제안을 적용할 수 없습니다: %error%'
+  proposal:
+    to_review: '%author.firstname% %author.lastname% 님이 제품 %product.label%에 대한 검토용 제안을 보냈습니다'
+    individual_import: '%author.firstname% %author.lastname% 님이 작업 가져오기에서 검토할 제안을 보냈습니다'
+    generic_import: 작업 가져오기에서 검토할 제안이 있습니다
+    original_value: 원래 값
+    new_value: 신규
+    no_diff: '"%value%" 값이 제안과 작업 사본 간에 동일합니다.'
+    draft_in_progress: 이 제품의 초안은 %author% 님이 진행 중입니다.
+  published_product:
+    index: 게시된 제품
+    title: 게시된 제품
+  acl.published_product:
+    index: 게시된 제품 관리
+  product:
+    permission:
+      own: 검토/게시
+      edit: 편집
+      view: 보기
+  steps:
+    product_draft_processor.title: 제안 프로세서
+    approve.title: 제안 승인
+    refuse.title: 제안 거부
+  mass_edit_action:
+    published:
+      page_title: 게시된 제품
+      page_subtitle: 대량 편집(1 게시 제품)|대량 편집(%count% 게시 제품)
+      title: 작업 선택
+      subtitle: 선택한 게시 제품에서 수행할 작업 선택|선택한 %count%개 게시 제품에서 수행할 작업 선택
+      confirm: 다음 정보로 1개 게시 제품을 업데이트하려고 합니다. 확인해주십시오.|다음 정보로 %count%개 게시 제품을 업데이트하려고 합니다. 확인해주십시오.
+      steps:
+        first: 게시된 제품 선택
+        second: 작업 선택
+        third: 구성
+        fourth: 확인
+btn:
+  publish: 게시
+  unpublish: 게시 취소
+  save working copy: 작업 사본 저장
+  save working copy and next: 작업 사본 저장 후 다음
+  save working copy and finish: 작업 사본 저장 후 완료
+  send for approval: 승인용으로 보내기
+  sent for approval: 승인용으로 보냄
+  editworkingcopy: 작업 사본 편집
+flash:
+  product:
+    updated: 제품 작업 사본이 업데이트되었습니다
+    published: 제품이 게시되었습니다.
+    unpublished: 제품이 게시 취소되었습니다.
+  product_draft:
+    updated: 초안이 저장되었습니다
+    approve:
+      success: 제안이 적용되었습니다.
+      error: '다음 오류로 인해 제안을 적용할 수 없습니다: %error%'
+    refuse:
+      success: 제안이 거부되었습니다.
+    remove:
+      success: 제안이 제거되었습니다.
+pim_menu:
+  item:
+    published_product: 게시된 제품
+    proposal: 제안
+confirmation:
+  product:
+    publish: 이 제품을 게시하시겠습니까?
+    unpublish: 이 제품을 게시 취소하시겠습니까?
+Attributes.title: 특성
+Completeness.title: 완성도
+publish_product.steps.publish_product_tasklet.title: 제품 게시
+unpublish_product.steps.unpublish_product_tasklet.title: 제품 게시 취소
+approve_product_draft.steps.approve.title: 제안 승인
+approve_product_draft.steps.refuse.title: 제안 거부
+job_execution.summary:
+  approved: 승인됨
+  refused: 거부됨
+  mass_published: 제품 게시됨
+  mass_unpublished: 제품 게시 취소됨
+  proposal: 제안 생성됨
+  proposal_deleted: 삭제된 제안
+  proposal_updated: 업데이트된 제안
+  proposal_created: 생성된 제안
+  proposal_skipped: 제안 건너뜀(차이 없음)
+published products: 게시된 제품
+pim_analytics:
+  info_type:
+    nb_published_products: 게시된 제품의 수
+    nb_product_drafts: 제품 초안 수
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: 검토할 제안
+      date: 날짜
+      author: 작성자
+      product: 제품
+      review: 검토
+      empty: 검토할 제품 초안 없음
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: 게시
+      description: 선택한 제품을 게시합니다. 현재 게시된 데이터는 현재 작업 사본에 의해 지워집니다.
+      success_flash: 선택한 제품이 게시되었습니다.
+      launched_flash: 제품을 게시하는 작업이 현재 실행되고 있습니다.
+      message:
+        info: 선택된 %nbProducts%개 제품이 게시됩니다.
+    unpublish:
+      label: 게시 취소
+      description: 선택한 제품을 게시 취소합니다. 현재 게시된 데이터가 지워집니다.
+      success_flash: 선택한 제품이 게시 취소되었습니다.
+      launched_flash: 제품을 게시 취소하는 작업이 현재 실행되고 있습니다.
+      message:
+        info: 선택된 %nbProducts%개 제품이 게시 취소됩니다.
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: 제안

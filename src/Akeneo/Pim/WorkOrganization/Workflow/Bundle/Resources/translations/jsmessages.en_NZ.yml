@@ -25,23 +25,25 @@ pimee_workflow:
       modal.title: Leave a comment (optional - 255 characters max.)
   proposal:
     overview: "]-Inf, 1]{{ count }} proposal|]1, Inf[{{ count }} proposals"
-    selected: proposals selected
     mass_action_group:
       review:
         label: Bulk Action
     partial_accept:
       modal.title: Approve partial information
       modal.label: Leave a comment (optional)
+      modal.error: An error occurred, the proposal has not been partially approved
       modal.success: The proposal has been successfully partially validated
     partial_approve:
       modal:
         title: Partially approve changes
         label: Leave a comment (optional)
+        error: An error occurred, the proposal has not been partially approved
         success: The changes have been successfully approved
     partial_reject:
       modal:
         title: Partially reject changes
         label: Leave a comment (optional)
+        error: An error occurred, the proposal has not been partially rejected
         success: The changes have been successfully rejected
 batch_jobs:
   csv_published_product_export:
@@ -108,7 +110,6 @@ pimee_enrich.entity.product:
       published: Published
       revert: Restore
     attribute:
-      can_be_updated_by_a_rule: "This attribute can be updated by a rule: {{ rule }}"
       value_updated: This value is updated by the current draft
     meta:
       published_version: Published version
@@ -195,6 +196,10 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}Unpublish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: The products will be unpublished
       warning: The {{ itemsCount }} selected products will be unpublished.
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: Cannot delete a category linked to a published product.
 pim_menu:
   navigation:
     published_products: Published products

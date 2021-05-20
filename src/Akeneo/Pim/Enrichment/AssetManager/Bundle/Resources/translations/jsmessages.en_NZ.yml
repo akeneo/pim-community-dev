@@ -1,9 +1,0 @@
-batch_jobs:
-    asset_manager_csv_asset_export:
-        label: Asset export in CSV
-        export.label: Asset export
-    asset_manager_xlsx_asset_export:
-        label: Asset export in XLSX
-        export.label: Asset export
-
-akeneo_assetmanager.export.assets.filter.asset_family: Asset family

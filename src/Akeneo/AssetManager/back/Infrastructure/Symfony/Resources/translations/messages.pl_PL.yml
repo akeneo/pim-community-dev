@@ -29,15 +29,14 @@ pim_import_export:
       job_type:
         asset_manager_compute_transformations: "Wykonaj transformację zasobów"
         asset_manager_link_assets_to_products: "Połącz zasoby z produktami"
-#pim_analytics:
-#info_type:
-#nb_asset_families: Number of asset families
-#max_number_of_assets_per_asset_family: Max number of assets per asset family
-#average_number_of_values_per_assets: Average number of values per asset on all asset families
-#average_number_of_assets_per_asset_family: Average number of assets per asset family
-#max_number_of_attributes_per_asset_family: Max number of attributes per asset family
-#average_number_of_attributes_per_asset_family: Average number of attributes per asset family
 #average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
 #average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
 #average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
 pim_catalog_asset_collection: Kolekcja zasobów
+pim_datagrid:
+  cells:
+    type:
+      asset_manager_link_assets_to_products: Połącz zasoby z produktami
+batch_jobs:
+  default_steps:
+    link_assets_to_products: Połącz zasoby z produktami

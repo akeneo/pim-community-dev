@@ -1,0 +1,161 @@
+pimee_workflow:
+  product_draft:
+    author: Autor
+    created: Propus la
+    changes: Schimbari
+    locale: Context local
+    product:
+      label: Eticheta produsului
+    attribute:
+      label: Atribut
+    status:
+      label: Stare
+      working_copy: Copie de lucru
+      in_progress: În desfășurare
+      ready: În așteptarea aprobării
+      can_be_partially_reviewed: Poate fi revizuit parţial
+      can_not_be_approved: Nu poate fi revizuit
+      can_not_be_deleted: Nu poate fi sters
+    status_message:
+      can_be_partially_reviewed: Puteţi revizui această propunere numai parţial pentru că unele modificări se aplică la valori ce nu pot fi editate. Vă rugăm să contactaţi administratorul pentru a schimba drepturile dvs.
+      can_not_be_approved: Nu puteţi revizui această propunere, deoarece toate modificările se aplică pe valori ce nu puteţi edita. Vă rugăm să contactaţi administratorul pentru a schimba drepturile dvs.
+      can_not_be_deleted: Nu puteţi sterge această propunere deoarece toate modificările se aplică la valori ce nu puteţi edita. Vă rugăm să contactaţi administratorul pentru a schimba drepturile dvs.
+      in_progress: Această propunere este în prezent în curs de desfăşurare şi încă nu a fost depusă.
+    action:
+      approve: Aprobă toate
+      refuse: Respinge toate
+      remove: Elimină
+      partial_approve: Aprobă modificări pe atributul %attribute% ale produsului %product%
+      partial_reject: Respins modificările pe atributul %attribute% ale produsului %product%
+    notification:
+      partial_approve: '%owner% a acceptat valoarea(ile) pentru %attributes% pentru produsul %product%'
+      partial_approve_number: '%owner% a acceptat valoarea pentru %attributes_count% atribute ale produsului %product%'
+      partial_reject: '%owner% a respins valoarea(ile) pentru%attributes% ale produsului %product%'
+      partial_reject_number: '%owner% a respins valoarea pentru %attributes_count% atribute ale produsului %product%'
+      partial_remove: '%owner% a şters valoarea(ile) pentru %attributes% ale produsului %product%'
+      partial_remove_number: '%owner% a şters valorile pentru %attributes_count% atribute ale produsului %product%'
+      approve: '%owner% a acceptat propunerea ta pentru produsul %product%'
+      refuse: '%owner% a respins propunerea ta pentru produsul %product%'
+      remove: '%owner% a sters propunerea ta pentru produsul %product%'
+    mass_review_action:
+      approve: Aproba cele selectate
+      refuse: Respinge cele selectate
+      error:
+        draft_not_ready: Aceasta propunere nu este pregatita pentru a fi acceptata
+        not_product_owner: Nu detii produs ce relateaza la aceasta propunere
+        cannot_edit_attributes: Nu puteţi edita atributele modificate prin această propunere
+        invalid_draft: Această propunere nu poate fi aplicată din cauza următoarei erori. %error%
+  proposal:
+    to_review: '%author.firstname%%author.lastname% a trimis o propunere de revizuire a produsului %product.label%'
+    individual_import: '%author.firstname%%author.lastname% a trimis propuneri de revizuit de la job import'
+    generic_import: Ai propuneri de revizuit de la job import
+    original_value: Original
+    new_value: Nou
+    no_diff: Valoarea%value% este aceeasi in propunere si in copia de munca.
+    draft_in_progress: Un proiect este in curs de desfasurare de catre %author% pentru acest produs.
+  published_product:
+    index: Produse publicate
+    title: Produs publicat
+  acl.published_product:
+    index: Gestioneaza produse publicate
+  product:
+    permission:
+      own: Revizuie / publica
+      edit: Editează
+      view: Vizualizează
+  steps:
+    approve.title: Aprobă propunere
+    refuse.title: Refuză propunere
+  mass_edit_action:
+    published:
+      page_title: Produse publicate
+      page_subtitle: Editare în masă (1 produs publicat) | Editare în masă (%count% produse publicate)
+      title: Alege operațiune
+      subtitle: Alege operația pe care dorești să o efectuezi pe produsul selectat publicat|Alege operația pe care dorești să o efectuezi pe %count% produse selectate publicate
+      confirm: Sunteți pe cale de a actualiza cu următoarele informații un produs publicat, vă rugăm să confirmaţi.| Sunteți pe cale să actualizați %count% produse publicate cu următoarele informații, vă rugăm să confirmați.
+      steps:
+        first: Alege produsele publicate
+        second: Alege operațiune
+        third: Configurare
+        fourth: Confirmă
+btn:
+  publish: Publică
+  unpublish: Anulează publicarea
+  save working copy: Salvează o copie de lucru
+  save working copy and next: Salvează copie de lucru si următorul
+  save working copy and finish: Salvează copie de lucru şi termină
+  send for approval: Trimite pentru aprobare
+  sent for approval: Trimis pentru aprobare
+  editworkingcopy: Editează copie de lucru
+flash:
+  product:
+    updated: Copie de lucru a produsului a fost incărcată
+    published: Produsul a fost publicat cu succes.
+    unpublished: Publicarea produsului a fost anulată cu succes.
+  product_draft:
+    updated: Schița a fost salvată cu succes
+    approve:
+      success: Propunerea a fost aplicată cu succes.
+      error: Propunerea nu poate aplicată din cauza următoarei erori. %error%
+    refuse:
+      success: Propunerea nu a fost acceptată.
+    remove:
+      success: Propunerea a fost ştearsă.
+pim_menu:
+  item:
+    published_product: Produse publicate
+    proposal: Propuneri
+confirmation:
+  product:
+    publish: Sunteți sigur că doriți sa publicați acest produs?
+    unpublish: Sunteți sigur că doriți să anulați publicarea acestui produs?
+Attributes.title: Atribute
+Completeness.title: Completitudine
+publish_product.steps.publish_product_tasklet.title: Publică produs
+unpublish_product.steps.unpublish_product_tasklet.title: Anulează publicarea produsului
+approve_product_draft.steps.approve.title: Aprobă propunerea
+approve_product_draft.steps.refuse.title: Refuză propunerea
+job_execution.summary:
+  approved: aprobat
+  refused: respins
+  mass_published: Produs publicat
+  mass_unpublished: Publicarea produsului a fost anulată
+  proposal: Propunere creata
+  proposal_deleted: propunere stearsa
+  proposal_updated: propunere actualizata
+  proposal_created: propunere creata
+  proposal_skipped: propunere de omis (fără diferențe)
+published products: Produse publicate
+pim_analytics:
+  info_type:
+    nb_published_products: Numărul de produse publicate
+    nb_product_drafts: Număr de schițe de produs
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Propuneri de revizuit
+      date: Data
+      author: Autor
+      product: Produs
+      review: Recenzie
+      empty: Nici un proiect de produs de revizuit
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Publică
+      description: Publica produsele selectate, datele actual publicate vor fi șterse de către datele actuale.
+      success_flash: Produsele selectate au fost publicat cu succes.
+      launched_flash: Sarcina de publicare de produs(e) se execută.
+      message:
+        info: Produsele selectate %nbProducts% vor fi publicate.
+    unpublish:
+      label: Anulează publicarea
+      description: Anulați publicarea produsele selectate, datele actuale publicate vor fi șterse.
+      success_flash: Publicarea produselor selectate a fost anulată cu succes.
+      launched_flash: Sarcina de anulare a publicării produsului/produselor se execută.
+      message:
+        info: Se va anula publicarea %nbProducts% produselor selectate.
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Propuneri

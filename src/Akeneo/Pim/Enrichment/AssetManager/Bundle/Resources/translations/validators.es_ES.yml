@@ -3,3 +3,4 @@ pim_asset_manager:
     validation:
       asset_multiple_link:
         limit_reached: 'Has alcanzado el límite de %limit% activos por distribución, ya no puedes añadir activos a tu colección.'
+      assets_should_belong_to_asset_family: 'Por favor, asegúrese de que el recurso "%asset_code%" existe y pertenece a la familia de activos "%asset_family_identifier%" para el atributo "%attribute%".'

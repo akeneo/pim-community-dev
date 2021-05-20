@@ -1,0 +1,37 @@
+teamwork_assistant:
+  common:
+    required: Necesar
+    warning: Nu vă faceţi griji, calculul de proiect poate dura un timp, astfel încât proiectul să nu fie vizibil imediat.
+  grid:
+    view_selector:
+      create: Crează un proiect
+      edit: Editează proiectul
+      remove: Şterge proiect-ul
+      create_from_view: Creează un proiect din această vizualizare
+      start_new_project: Începe un nou proiect
+      confirmation:
+        remove: Sunteți sigur că doriți să ştergeți acest proiect?
+      projects: Proiecte
+  project:
+    label: Nume
+    locale: Local
+    label_maxlength: Această valoare este prea lungă. Ar trebui să aibă {{ max }} caractere sau mai puțin.
+    description: Descriere
+    due_date: Data scadenței
+    due_date_past: Nu poți alege o dată din trecut.
+  edit_project_modal:
+    saved: Proiectul a fost salvat.
+    title: Editează proiectul
+  create_project_modal:
+    saved: Proiectul a fost salvat, veți fi notificat când sa terminat calcularea.
+  widget:
+    description: Descriere
+    in_progress: ÎN CURS DE DESFĂŞURARE
+    done: TERMINAT
+    all_contributors: Toți contribuitorii
+    display_products: Afișează produsele
+    placeholder:
+      project_selector: Caută proiect
+pim_datagrid:
+  view_selector:
+    project: Proiecte
