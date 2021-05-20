@@ -5,14 +5,29 @@ akeneo_data_quality_insights:
         recommendation: Atributos con problemas en mayúsculas
       consistency_textarea_lowercase_words:
         recommendation: Atributos con incidencias en minúsculas
+      consistency_spelling:
+        recommendation: Atributos con problemas de ortografía
       consistency_attribute_spelling:
         recommendation: Etiquetas de atributo con errores de ortografía
       consistency_attribute_option_spelling:
         recommendation: Opción(es) de atributo con errores tipográficos
+    axis:
+      consistency:
+        title: Consistencia
+        attributes_link: Mostrar todos los atributos mejorables
+        success: Los datos de tu producto son totalmente coherentes. ¡Felicidades!
   product_edit_form:
-    back_to_products: Volver a los productos
+    attribute_filter:
+      all_improvable_attributes: Todos los atributos mejorables
+    spellcheck_popover:
+      title: Correciones
+      original_text_title: Original
+      suggestions_title: Propuestas
+      ignore_all_suggestions_button_label: Ignorar
   attribute_grid:
     quality:
+      to_improve: Para mejorar
+      good: Bien
       in_progress: Procesando
       n_a: N/A
   attribute_edit_form:

@@ -1,0 +1,64 @@
+pimee_catalog_rule:
+  rule_definition:
+    validation:
+      locale:
+        unknown: 'De "{{ locale_code }}" taal bestaat niet of is niet geactiveerd'
+      currency:
+        unknown: 'Een geldige valuta is vereist, de{{ currency }}" valuta bestaat niet of is niet geactiveerd'
+        missing_key: 'De "{{ key }}" sleutel ontbreekt of leeg'
+        unexpected_key: 'De {{ key }} sleutel is niet relevant'
+      measurement:
+        invalid_unit: 'De "{{ unitCode }}" eenheidcode bestaat niet of behoort niet tot de meetfamilie van de "{{ attributeCode }}" attribuut'
+        invalid_attribute_type: 'De {{ key }} sleutel is niet relevant voor het {{ attributeCode }} attribuut'
+      attribute:
+        unknown: 'De "{{ code }}" attribuut bestaat niet'
+        unexpected_type: 'Het "{{ attribute_code }}" attribuut heeft een ongeldig "{{ invalid_type }}" attribuuttype. Een {{ expected_types }} attribuut is vereist'
+        missing_locale: 'Het "{{ attributeCode }}" attribuut vereist een locale'
+        unexpected_locale: 'Het "{{ attributeCode }}" attribuut heeft geen taal nodig, verwijder het alstublieft'
+        unknown_locale: 'Het "{{ attributeCode }}" attribuut vereist een bestaande en geactiveerde locatie, zorg ervoor dat uw landinstelling bestaat en geactiveerd is'
+        invalid_specific_locale: 'Het "{{ attributeCode }}" attribuut is lokaal specifiek en vereist een van de volgende locales: {{ expectedLocales }}'
+        locale_not_bound_to_channel: 'Er is geen "{{ invalidLocale }}" taal in het "{{ channelCode }}" kanaal'
+        missing_scope: 'Het "{{ attributeCode }}" attribuut vereist een kanaal'
+        unexpected_scope: 'Het attribuut{{ attributeCode }}" vereist geen kanaal, verwijder het alstublieft'
+        unknown_scope: 'Het "{{ attributeCode }}" attribuut vereist een bestaand kanaal'
+      invalid_code: 'De regelcode mag alleen letters, cijfers en liggende streepjes bevatten'
+      conditions:
+        missing_key: 'De "voorwaarden" sleutel ontbreekt of is leeg'
+        missing_value_key: 'De "waarde" sleutel ontbreekt of leeg'
+        missing_operator_key: 'De "operator" sleutel ontbreekt of is leeg'
+        existing_field: 'Het "{{ field }}" veld kan niet worden gefilterd of kan niet worden gebruikt met de "{{ operator }}" operator'
+        missing_field_key: 'De "veld" sleutel ontbreekt of is leeg'
+      actions:
+        missing_key: 'De "acties" sutel ontbreekt of is leeg'
+        add:
+          invalid_field: 'U kunt geen items toevoegen aan het "{{ field }}" veld'
+        clear:
+          invalid_field: 'U kunt de gegevens van het "{{ field }}" veld niet wissen'
+        copy:
+          invalid_fields: 'U kunt gegevens niet kopiëren van het "{{ from_field }}" veld naar het "{{ to_field }}" veld'
+          missing_from_field_key: 'De "van_field" sleutel ontbreekt of is leeg'
+          missing_to_field_key: 'De "naar_field" sleutel ontbreekt of is leeg'
+        concatenate:
+          invalid_source: 'U kunt geen gegevens van het "{{ field }}" veld samenvoegen'
+          missing_source_key: 'Een enkele sleutel van de "veld", "tekst" of "nieuwe_regel" is vereist, selecteer er één'
+          only_one_source_key_expected: 'Een enkele sleutel van het "veld", "tekst" of "nieuwe_regel" is vereist, selecteer er slechts één'
+          text_target_does_not_accept_new_line: 'De "{{ targetField }}" doelattribuut accepteert geen nieuwe regel'
+          unexpected_source_option: 'De {{ key }} sleutel is niet relevant voor het {{ attribute }} attribuut'
+          missing_from_key: 'De "van" sleutel ontbreekt of is leeg'
+          missing_to_key: 'De "naar" sleutel ontbreekt of is leeg'
+          source_count: 'Deze waarde moet ten minste 2 elementen bevatten'
+        calculate:
+          division_by_zero: 'Delingen door nul zijn niet mogelijk'
+          missing_operand_key: 'De "waarde" of "veld" sleutel is vereist, maar beide ontbreken of zijn leeg'
+          only_one_key_expected: 'De "waarde" of "veld" sleutel is vereist, kies er één'
+          unexpected_key: 'De "{{ key }}" sleutel is irrelevant'
+          invalid_operator: 'Deze waarde moet zijn of "toevoegen", "aftrekken", "vermenigvuldigen" of "splitsen"'
+        remove:
+          invalid_field: 'U kunt geen items verwijderen van het "{{ field }}" veld'
+          include_children_option: 'De "include_children" optie kan alleen worden toegepast met het "categorieën" veld'
+        set:
+          invalid_field: 'U kunt geen gegevens instellen op het "{{ field }}" veld'
+          missing_value_key: 'De "waarde" sleutel ontbreekt of leeg'
+        custom:
+          unkown_type: 'Onbekend actietype'
+          missing_type_key: 'De sleutel "type" ontbreekt of is leeg'

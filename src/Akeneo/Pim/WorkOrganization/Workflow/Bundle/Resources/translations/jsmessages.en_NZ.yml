@@ -11,6 +11,12 @@ pim_datagrid:
   no_results:
     proposal: There is no proposal to review. Try to change your search criteria.
     product_draft: There is no product draft to review. Try to change your search criteria.
+  workflow:
+    status:
+      in_progress: In progress
+      ready: Waiting for approval
+    status_message:
+      ready: Waiting for approval
 pimee_datagrid:
   cells:
     expand:
@@ -28,20 +34,20 @@ pimee_workflow:
     mass_action_group:
       review:
         label: Bulk Action
-    partial_accept:
-      modal.title: Approve partial information
-      modal.label: Leave a comment (optional)
-      modal.success: The proposal has been successfully partially validated
+    approve:
+      title: Approve proposal
+      success: The proposal has been applied successfully.
+      error: "The proposal can't be applied due to the following error: {{ error }}"
+    reject:
+      title: Reject proposal
+    remove:
+      title: Remove proposal
     partial_approve:
-      modal:
-        title: Partially approve changes
-        label: Leave a comment (optional)
-        success: The changes have been successfully approved
+      title: Approve partial information
+      success: The proposal has been successfully partially validated
     partial_reject:
-      modal:
-        title: Partially reject changes
-        label: Leave a comment (optional)
-        success: The changes have been successfully rejected
+      title: Partially reject changes
+      success: The changes have been successfully rejected
 batch_jobs:
   csv_published_product_export:
     label: Published product export in CSV
@@ -154,13 +160,6 @@ pimee_enrich.entity.published_product:
       label: Unpublish
 pimee_enrich.entity.product_draft:
   flash:
-    approve:
-      success: The proposal has been applied successfully.
-      fail: "The proposal can't be applied due to the following error: {{ error }}"
-    reject:
-      success: The proposal has been rejected.
-    remove:
-      success: The proposal has been removed.
     update:
       success: Product draft has been successfully saved
       fail: Product draft could not be updated
@@ -170,14 +169,10 @@ pimee_enrich.entity.product_draft:
       skip: Product draft hasn't been sent for approval as no value has been edited
   module:
     proposal:
-      accept: Accept proposal
-      accept_selected: Accept selected proposal(s)
-      reject: Reject proposal
-      reject_selected: Reject selected proposal(s)
-      remove: Remove proposal
-      comment_title: Comment your proposal (optional - 255 characters max.)
       comment_chars: chars.
       confirm: Send
+      accept_selected: Accept selected proposal(s)
+      reject_selected: Reject selected proposal(s)
     edit:
       discard_changes: Unsaved changes will be lost. Are you sure you want to send your draft for approval without unsaved changes?
       discard_changes_title: Are you sure you want to send this draft?
@@ -193,6 +188,10 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}Unpublish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: The products will be unpublished
       warning: The {{ itemsCount }} selected products will be unpublished.
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: Cannot delete a category linked to a published product.
 pim_menu:
   navigation:
     published_products: Published products

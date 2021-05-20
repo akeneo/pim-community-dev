@@ -14,9 +14,11 @@ teamwork_assistant:
     message: You have new products to enrich for "%project_label%". Due date is "%due_date%".
     project_finished:
       contributor: Congrats! You're 100% of done product done with %project_label%.
+      owner: 'The projet <strong>%project_label%</strong> due for the <strong>%due_date%</strong> is finished.'
       show: Show
     due_date:
       contributor: You're %percent%% of product done with %project_label%. Don't forget, to fill in the last products for the %due_date%.
+      owner: 'The projet <strong>%project_label%</strong> due for the <strong>%due_date%</strong> is not 100% done.'
       start: Start
   datagrid:
     project_completeness: Project progress
@@ -26,6 +28,10 @@ teamwork_assistant:
     owner_todo: Todo (project overview)
     owner_in_progress: In progress (project overview)
     owner_done: Done (project overview)
+  user:
+    deletion:
+      user_linked_to_project: This user is still linked to one or more project(s). Please remove the groups he is linked to in his user account.
+      user_is_project_owner: This user is still owner of one or more projects. Please delete all this user's projects.
 job_execution:
   summary:
     processed_products: Processed products

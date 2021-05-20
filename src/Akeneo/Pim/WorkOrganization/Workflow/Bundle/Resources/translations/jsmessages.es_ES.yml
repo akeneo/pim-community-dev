@@ -11,6 +11,12 @@ pim_datagrid:
   no_results:
     proposal: Ninguna propuesta a revisar. Intente cambiar los criterios de búsqueda.
     product_draft: No hay ningún proyecto de producto a revisar. Intentar cambiar tu criterio de búsqueda.
+  workflow:
+    status:
+      in_progress: En progreso
+      ready: Aguardando aprobación
+    status_message:
+      ready: Aguardando aprobación
 pimee_datagrid:
   cells:
     expand:
@@ -29,23 +35,20 @@ pimee_workflow:
     mass_action_group:
       review:
         label: Acción en masa
-    partial_accept:
-      modal.title: Aprobar información parcial
-      modal.label: Dejar un comentario (opcional)
-      modal.error: Se ha producido un error, la propuesta no ha sido parcialmente aprobada
-      modal.success: La propuesta ha sido validada parcialmente con éxito
+    approve:
+      title: Aprobar la proposición
+      success: La propuesta ha sido aplicada con éxito.
+      error: "La propuesta no puede ser aplicada debido al siguiente error: {{ error }}"
+    reject:
+      title: Rechazar propuesta
+    remove:
+      title: Suprimir propuesta
     partial_approve:
-      modal:
-        title: Aprobar los cambios parciales
-        label: Dejar un comentario (opcional)
-        error: Se ha producido un error, la propuesta no ha sido parcialmente aprobada
-        success: Los cambios han sido aprobados con éxito
+      title: Aprobar información parcial
+      success: La propuesta ha sido validada parcialmente con éxito
     partial_reject:
-      modal:
-        title: Cambios rechazados parcialmente
-        label: Dejar un comentario (opcional)
-        error: Se ha producido un error, la propuesta no ha sido parcialmente rechazada
-        success: Los cambios han sido rechazados con éxito
+      title: Cambios rechazados parcialmente
+      success: Los cambios han sido rechazados con éxito
 batch_jobs:
   csv_published_product_export:
     label: Exportar productos publicados en CSV
@@ -104,7 +107,6 @@ pimee_enrich.entity.product:
       published: Publicado
       revert: Restaurar
     attribute:
-      can_be_updated_by_a_rule: "]-Inf, 1]Este atributo puede ser actualizado por una regla:|]1, +Inf[Este atributo puede ser actualizado por las reglas:"
       value_updated: Este valor se actualizará para el proyecto actual
     meta:
       published_version: Versión publicada
@@ -152,13 +154,6 @@ pimee_enrich.entity.published_product:
       label: Remover publicación
 pimee_enrich.entity.product_draft:
   flash:
-    approve:
-      success: La propuesta ha sido aplicada con éxito.
-      fail: "La propuesta no puede ser aplicada debido al siguiente error: {{ error }}"
-    reject:
-      success: La propuesta ha sido rechazada.
-    remove:
-      success: La propuesta ha sido eliminada.
     update:
       success: El borrador del producto ha sido guardado con éxito
       fail: El borrador del producto no puede ser actualizado
@@ -168,14 +163,10 @@ pimee_enrich.entity.product_draft:
       skip: El borrador de producto no ha sido enviado para su aprobación porque no se ha editado ningún valor
   module:
     proposal:
-      accept: Aceptar propuesta
-      accept_selected: Aceptar propuesta(s) seleccionada(s)
-      reject: Rechazar propuesta
-      reject_selected: Rechazar propuesta(s) seleccionada(s)
-      remove: Suprimir propuesta
-      comment_title: Comentar su propuesta (opcional - 255 caracteres máximo)
       comment_chars: caracteres.
       confirm: Enviar
+      accept_selected: Aceptar propuesta(s) seleccionada(s)
+      reject_selected: Rechazar propuesta(s) seleccionada(s)
     edit:
       discard_changes: Las modificaciones no guardadas serán perdidas. ¿Está seguro que desea enviar el borrador sin guardar los cambios?
       discard_changes_title: '¿Está seguro que desea enviar este borrador?'

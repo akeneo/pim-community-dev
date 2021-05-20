@@ -10,8 +10,6 @@ akeneo_referenceentity:
     record:
       create: Create a record
       edit: Edit the records
-      delete: Delete a record
-      delete_all: Delete all entity records
       list_product: List linked products to record
     attribute:
       create: Add an attribute to a reference entity
