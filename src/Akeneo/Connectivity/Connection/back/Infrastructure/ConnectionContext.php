@@ -71,6 +71,26 @@ class ConnectionContext implements ConnectionContextInterface
         return $this->connection = $this->connectionRepository->findOneByCode($connectionCode);
     }
 
+    /**
+     * @throws \LogicException
+     */
+    public function getConnectionCode(): ?string
+    {
+        if (null !== $this->connection) {
+            return $this->connection->code()->__toString();
+        }
+
+        if ($this->clientId === null) {
+            throw new \LogicException('You must initialize connection client id before using this service.');
+        }
+        return $this->selectConnectionCodeByClientIdQuery->execute($this->clientId);
+    }
+
+    public function getConnectionByCode(string $connectionCode): ?Connection
+    {
+        return $this->connection = $this->connectionRepository->findOneByCode($connectionCode);
+    }
+
     public function isCollectable(): bool
     {
         if (null !== $this->collectable) {

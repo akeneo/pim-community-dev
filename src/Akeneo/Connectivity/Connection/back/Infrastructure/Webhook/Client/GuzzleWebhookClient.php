@@ -8,13 +8,9 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSend
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceeded;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
-use Akeneo\Connectivity\Connection\Domain\Webhook\ProductsSentWithSuccess;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
-use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
-use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
-use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
-use Akeneo\Platform\Component\EventQueue\EventInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
@@ -98,18 +94,17 @@ class GuzzleWebhookClient implements WebhookClient
                     $webhookRequestLog->setEndTime(microtime(true));
                     $webhookRequestLog->setResponse($response);
 
-                    $productIdentifiers = [];
-                    foreach ($webhookRequestLog->getWebhookRequest()->apiEvents() as $webhookEvent) {
-                        $event = $webhookEvent->getPimEvent();
-                        if ($event instanceof ProductRemoved ||
-                            $event instanceof ProductUpdated ||
-                            $event instanceof ProductCreated
-                        ) {
-                            $productIdentifiers[] = $event->getIdentifier();
-                        }
-                    }
+                    $pimEvents = array_map(
+                        fn(WebhookEvent $apiEvent) => $apiEvent->getPimEvent(),
+                        $webhookRequestLog->getWebhookRequest()->apiEvents()
+                    );
+                    
+                    $eventsApiRequestSucceeded = new EventsApiRequestSucceeded(
+                        $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
+                        $pimEvents
+                    );
+                    $this->eventDispatcher->dispatch($eventsApiRequestSucceeded);
 
-                    $this->eventDispatcher->dispatch(ProductsSentWithSuccess::withIdentifiers($productIdentifiers));
                     $this->debugLogger->logEventsApiRequestSucceed(
                         $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
                         $webhookRequestLog->getWebhookRequest()->apiEvents(),

@@ -24,6 +24,7 @@ use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 /**
@@ -35,13 +36,15 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 {
     public function let(
         SendApiEventRequestLogger $sendApiEventRequestLogger,
-        EventsApiRequestLogger $eventsApiRequestLogger
+        EventsApiRequestLogger $eventsApiRequestLogger,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $this->beConstructedWith(
             new Client(),
             new JsonEncoder(),
             $sendApiEventRequestLogger,
             $eventsApiRequestLogger,
+            $eventDispatcher,
             ['timeout' => 0.5, 'concurrency' => 1]
         );
     }
@@ -53,7 +56,8 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
     public function it_sends_webhook_requests_in_bulk(
         SendApiEventRequestLogger $sendApiEventRequestLogger,
-        EventsApiRequestLogger $eventsApiRequestLogger
+        EventsApiRequestLogger $eventsApiRequestLogger,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $mock = new MockHandler(
             [
@@ -72,6 +76,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             new JsonEncoder(),
             $sendApiEventRequestLogger,
             $eventsApiRequestLogger,
+            $eventDispatcher,
             ['timeout' => 0.5, 'concurrency' => 1]
         );
 
@@ -154,7 +159,8 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
     public function it_logs_a_failed_events_api_request(
         SendApiEventRequestLogger $sendApiEventRequestLogger,
-        EventsApiRequestLogger $eventsApiRequestLogger
+        EventsApiRequestLogger $eventsApiRequestLogger,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $mock = new MockHandler(
             [
@@ -172,6 +178,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             new JsonEncoder(),
             $sendApiEventRequestLogger,
             $eventsApiRequestLogger,
+            $eventDispatcher,
             ['timeout' => 0.5, 'concurrency' => 1]
         );
 
@@ -207,7 +214,8 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
     public function it_does_not_send_webhook_request_because_of_timeout(
         SendApiEventRequestLogger $sendApiEventRequestLogger,
-        EventsApiRequestLogger $debugLogger
+        EventsApiRequestLogger $debugLogger,
+        EventDispatcherInterface $eventDispatcher
     ): void {
 
         $container = [];
@@ -221,6 +229,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             new JsonEncoder(),
             $sendApiEventRequestLogger,
             $debugLogger,
+            $eventDispatcher,
             ['timeout' => 0.5, 'concurrency' => 1]
         );
 

@@ -45,13 +45,18 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
 
     public function it_saves_read_products_events(
         $connectionContext,
-        $updateDataDestinationProductEventCountHandler
+        $updateDataDestinationProductEventCountHandler,
+        Connection $connection
     ): void {
-        $connection = new Connection('ecommerce', 'ecommerce', FlowType::DATA_DESTINATION, 42, 10);
-        $connectionContext->getConnection()->willReturn($connection);
-        $connectionContext->isCollectable()->willReturn(true);
+        $readProductsEvent = new ReadProductsEvent(3);
+        $connection->hasDataDestinationFlowType()->willReturn(true)->shouldBeCalledTimes(1);
+        $connection->auditable()->willReturn(true)->shouldBeCalledTimes(1);
+        $connectionContext->getConnection()->willReturn($connection)->shouldBeCalledTimes(1);
+        $connectionContext->isCollectable()->shouldNotBeCalled();
+        $connectionContext->getConnectionCode()->willReturn('ecommerce')->shouldBeCalledTimes(1);
+        $connectionContext->areCredentialsValidCombination()->willReturn(true)->shouldBeCalledTimes(1);
 
-        $this->saveReadProducts(new ReadProductsEvent([4, 2, 6]));
+        $this->saveReadProducts($readProductsEvent);
 
         $updateDataDestinationProductEventCountHandler->handle(
             new UpdateDataDestinationProductEventCountCommand(
@@ -66,12 +71,12 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         $connectionContext,
         $updateDataDestinationProductEventCountHandler
     ): void {
+        $connectionContext->getConnectionCode()->willReturn(null);
         $connectionContext->isCollectable()->willReturn(false);
+        $updateDataDestinationProductEventCountHandler->handle()->shouldNotBeCalled();
 
-        $this->saveReadProducts(new ReadProductsEvent([4, 2, 6]));
-
-        $updateDataDestinationProductEventCountHandler->handle()
-            ->shouldNotBeCalled();
+        $this->shouldThrow(\LogicException::class)
+            ->during('saveReadProducts', [new ReadProductsEvent(3)]);
     }
 
     public function it_does_not_save_read_products_events_when_the_connection_flow_type_is_different_than_destination(
@@ -79,12 +84,14 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         $updateDataDestinationProductEventCountHandler
     ): void {
         $connection = new Connection('ecommerce', 'ecommerce', FlowType::DATA_SOURCE, 42, 10);
+        $connectionContext->getConnectionCode()->willReturn(null);
         $connectionContext->getConnection()->willReturn($connection);
         $connectionContext->isCollectable()->willReturn(true);
 
-        $this->saveReadProducts(new ReadProductsEvent([4, 2, 6]));
-
         $updateDataDestinationProductEventCountHandler->handle()
             ->shouldNotBeCalled();
+
+        $this->shouldThrow(\LogicException::class)
+            ->during('saveReadProducts', [new ReadProductsEvent(3)]);
     }
 }

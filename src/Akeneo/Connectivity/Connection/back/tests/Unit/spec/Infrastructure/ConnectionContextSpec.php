@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure;
 
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
@@ -132,5 +133,45 @@ class ConnectionContextSpec extends ObjectBehavior
         $this
             ->shouldThrow(\LogicException::class)
             ->during('areCredentialsValidCombination');
+    }
+    public function it_returns_a_connection_code_if_connection_is_defined(
+        SelectConnectionCodeByClientIdQuery $selectConnectionCode,
+        ConnectionRepository $connectionRepository,
+        Connection $connection,
+        ConnectionCode $connectionCode
+    ): void {
+        $clientId = 'client_id';
+        $connectionCodeString = 'code';
+        $this->setClientId($clientId);
+
+        $selectConnectionCode->execute($clientId)->willReturn($connectionCodeString)->shouldBeCalledTimes(1);
+        $connectionRepository->findOneByCode($connectionCodeString)->willReturn($connection);
+
+        $this->getConnection()->shouldReturn($connection);
+
+        $connection->code()->willReturn($connectionCode)->shouldBeCalledTimes(1);
+        $connectionCode->__toString()->willReturn($connectionCodeString)->shouldBeCalledTimes(1);
+
+        $this->getConnectionCode()->shouldBe('code');
+    }
+
+    public function it_returns_a_connection_code_if_connection_is_not_defined(
+        SelectConnectionCodeByClientIdQuery $selectConnectionCode
+    ): void {
+        $clientId = 'client_id';
+        $this->setClientId($clientId);
+        $selectConnectionCode->execute($clientId)->willReturn('code')->shouldBeCalledTimes(1);
+
+        $this->getConnectionCode()->shouldBe('code');
+    }
+
+    public function it_returns_a_connection_and_initialize_the_connexion_in_the_context(
+        ConnectionRepository $connectionRepository,
+        Connection $connection
+    ): void {
+        $connectionCode = 'code';
+        $connectionRepository->findOneByCode($connectionCode)->willReturn($connection)->shouldBeCalledTimes(1);
+
+        $this->getConnectionByCode($connectionCode)->shouldBe($connection);
     }
 }

@@ -7,9 +7,8 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Application\ConnectionContextInterface;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
-use Akeneo\Connectivity\Connection\Domain\Webhook\ProductsSentWithSuccess;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -27,7 +26,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 final class ReadProductsEventSubscriber implements EventSubscriberInterface
 {
     private ConnectionContextInterface $connectionContext;
-
     private UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler;
 
     public function __construct(
@@ -40,10 +38,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [
-            ReadProductsEvent::class => 'saveReadProducts',
-            ProductsSentWithSuccess::class => 'saveProductsSentToWebhook'
-        ];
+        return [ReadProductsEvent::class => 'saveReadProducts'];
     }
 
     /**
@@ -51,34 +46,52 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
      */
     public function saveReadProducts(ReadProductsEvent $event): void
     {
-        $this->saveProductsCount(count($event->productIds()));
-    }
-
-    public function saveProductsSentToWebhook(ProductsSentWithSuccess $event): void
-    {
-        $this->saveProductsCount(count($event->getIdentifiers()));
-    }
-
-    private function saveProductsCount(int $count): void
-    {
-        if (!$this->connectionContext->isCollectable()) {
+        if (0 === $event->getCount()) {
             return;
         }
-        if (0 === $count) {
-            return;
-        }
+        $connectionCode = $this->getConnectionCodeByReadProductsEvent($event);
 
-        $connection = $this->connectionContext->getConnection();
-        if (FlowType::DATA_DESTINATION !== (string) $connection->flowType()) {
-            return;
+        if (!$this->connectionIsValid($connectionCode, $event->isEventApi())) {
+            throw new \LogicException('The connection is not valid.');
         }
 
         $this->updateDataDestinationProductEventCountHandler->handle(
             new UpdateDataDestinationProductEventCountCommand(
-                (string) $connection->code(),
+                $connectionCode,
                 HourlyInterval::createFromDateTime(new \DateTimeImmutable('now', new \DateTimeZone('UTC'))),
-                $count
+                $event->getCount()
             )
         );
+    }
+
+    private function getConnectionCodeByReadProductsEvent(ReadProductsEvent $event): ?string
+    {
+        return $event->isEventApi() ? $event->getConnectionCode() : $this->connectionContext->getConnectionCode();
+    }
+
+    private function connectionIsValid(?string $connectionCode, bool $isEventApi): bool
+    {
+        if ($connectionCode === null) {
+            return false;
+        }
+
+        $connection = $isEventApi
+            ? $this->connectionContext->getConnectionByCode($connectionCode)
+            : $this->connectionContext->getConnection();
+
+        if ($connection === null) {
+            return false;
+        }
+        if (!$connection->auditable()) {
+            return false;
+        }
+        if (!$connection->hasDataDestinationFlowType()) {
+            return false;
+        }
+        if (!$isEventApi && !$this->connectionContext->areCredentialsValidCombination()) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -14,6 +14,10 @@ interface ConnectionContextInterface
 {
     public function getConnection(): ?Connection;
 
+    public function getConnectionCode(): ?string;
+    
+    public function getConnectionByCode(string $connectionCode): ?Connection;
+
     public function isCollectable(): bool;
 
     public function areCredentialsValidCombination(): bool;
