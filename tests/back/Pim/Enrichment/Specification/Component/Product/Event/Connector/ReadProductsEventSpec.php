@@ -42,6 +42,10 @@ class ReadProductsEventSpec extends ObjectBehavior
     {
         $this->beConstructedWith(5, 'code', false);
         $this->isEventApi()->shouldReturn(false);
+    }
+
+    public function it_is_not_event_api_by_default()
+    {
         $this->beConstructedWith(5);
         $this->isEventApi()->shouldReturn(false);
     }

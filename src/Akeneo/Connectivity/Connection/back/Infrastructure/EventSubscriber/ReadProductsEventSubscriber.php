@@ -67,21 +67,30 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
         );
     }
 
-    private function getConnectionCodeByReadProductsEvent(ReadProductsEvent $event): ?string
+    /**
+     * @throws \LogicException
+     */
+    private function getConnectionCodeByReadProductsEvent(ReadProductsEvent $event): string
     {
-        $connection = $this->connectionContext->getConnection();
+        if ($event->isEventApi()) {
+            $connectionCode = $event->getConnectionCode();
+            if ($connectionCode === null) {
+                throw new \LogicException('This connection code is empty on a event api.');
+            }
 
-        return $event->isEventApi()
-            ? $event->getConnectionCode()
-            : ($connection === null ? null : $connection->code()->__toString());
-    }
-
-    private function connectionIsValid(?string $connectionCode, bool $isEventApi): bool
-    {
-        if ($connectionCode === null) {
-            return false;
+            return $connectionCode;
         }
 
+        $connection = $this->connectionContext->getConnection();
+        if ($connection === null) {
+            throw new \LogicException('The connection isn\'t initialized.');
+        }
+
+        return (string) $connection->code();
+    }
+
+    private function connectionIsValid(string $connectionCode, bool $isEventApi): bool
+    {
         $connection = $isEventApi
             ? $this->connectionRepository->findOneByCode($connectionCode)
             : $this->connectionContext->getConnection();

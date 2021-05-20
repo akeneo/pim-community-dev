@@ -112,6 +112,6 @@ class Connection
 
     public function hasDataDestinationFlowType(): bool
     {
-        return FlowType::DATA_DESTINATION === $this->flowType()->__toString();
+        return FlowType::DATA_DESTINATION === (string) $this->flowType();
     }
 }

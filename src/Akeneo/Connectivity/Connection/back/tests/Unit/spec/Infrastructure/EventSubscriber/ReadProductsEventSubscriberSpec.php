@@ -9,7 +9,6 @@ use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinati
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
 use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\ReadProductsEventSubscriber;
@@ -78,14 +77,13 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         $connectionContext,
         $updateDataDestinationProductEventCountHandler,
         Connection $connection,
-        ConnectionCode $connectionCode,
         ConnectionRepository $connectionRepository
     ): void {
         $readProductsEvent = new ReadProductsEvent(3, 'ecommerce', true);
         $connection->hasDataDestinationFlowType()->willReturn(true)->shouldBeCalledTimes(1);
         $connection->auditable()->willReturn(true)->shouldBeCalledTimes(1);
         $connection->code()->shouldNotBeCalled();
-        $connectionContext->getConnection()->willReturn($connection)->shouldBeCalledTimes(1);
+        $connectionContext->getConnection()->shouldNotBeCalled();
         $connectionContext->isCollectable()->shouldNotBeCalled();
         $connectionContext->areCredentialsValidCombination()->shouldNotBeCalled();
 

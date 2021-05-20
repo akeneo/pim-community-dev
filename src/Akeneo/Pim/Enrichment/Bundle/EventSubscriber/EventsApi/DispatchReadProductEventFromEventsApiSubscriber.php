@@ -36,12 +36,13 @@ class DispatchReadProductEventFromEventsApiSubscriber implements EventSubscriber
                 $count++;
             }
         }
-        if ($count !== 0) {
-            $this->eventDispatcher->dispatch(new ReadProductsEvent(
-                $count,
-                $eventsApiRequestSucceeded->getConnectionCode(),
-                true
-            ));
+        if ($count === 0) {
+            return;
         }
+        $this->eventDispatcher->dispatch(new ReadProductsEvent(
+            $count,
+            $eventsApiRequestSucceeded->getConnectionCode(),
+            true
+        ));
     }
 }

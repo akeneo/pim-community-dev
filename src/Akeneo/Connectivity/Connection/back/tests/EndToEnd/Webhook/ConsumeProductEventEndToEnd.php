@@ -42,8 +42,6 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
     {
         parent::setUp();
 
-        // TODO use loaders
-
         $this->get('akeneo_connectivity.connection.fixtures.enrichment.category')
             ->create(['code' => 'category']);
         $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')

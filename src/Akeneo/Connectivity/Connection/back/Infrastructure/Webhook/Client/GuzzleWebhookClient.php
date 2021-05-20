@@ -99,11 +99,10 @@ class GuzzleWebhookClient implements WebhookClient
                         $webhookRequestLog->getWebhookRequest()->apiEvents()
                     );
                     
-                    $eventsApiRequestSucceeded = new EventsApiRequestSucceeded(
+                    $this->eventDispatcher->dispatch(new EventsApiRequestSucceeded(
                         $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
                         $pimEvents
-                    );
-                    $this->eventDispatcher->dispatch($eventsApiRequestSucceeded);
+                    ));
 
                     $this->debugLogger->logEventsApiRequestSucceed(
                         $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
