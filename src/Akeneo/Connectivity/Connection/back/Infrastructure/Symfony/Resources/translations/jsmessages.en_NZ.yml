@@ -2,14 +2,12 @@ pim_menu:
   item:
     connection_audit: Connection dashboard
     connection_settings: Connections
-    connection_webhook_edit: Event subscription
 pim_title:
-  akeneo_connectivity_connection_settings_index: Connections
   akeneo_connectivity_connection_audit_index: Connection dashboard
   akeneo_connectivity_connection_audit_any: Connection dashboard
   akeneo_connectivity_connection_error_management_dashboard: Connection dashboard
-  akeneo_connectivity_connection_webhook_edit: Event subscription
-  akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
+  akeneo_connectivity_connection_redirect_audit: Connection dashboard
+  akeneo_connectivity_connection_settings_redirect: Connections
 akeneo_connectivity.connection:
   connections: Connections
   secondary_actions:
@@ -75,8 +73,6 @@ akeneo_connectivity.connection:
         message: Ask your administrator to create one.
         link: Learn more about connections here...
   webhook:
-    title: Event subscription
-    event_subscription: Event subscription
     helper:
       url.test_disabled: Please, click on the Save button to be able to test the URL.
     form:

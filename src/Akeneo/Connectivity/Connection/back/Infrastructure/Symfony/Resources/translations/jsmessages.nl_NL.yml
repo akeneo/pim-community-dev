@@ -1,6 +1,4 @@
 pim_menu:
-  navigation_back:
-    connection: Terug naar verbindingen
   navigation_block:
     connection: Verbindingen navigatie
   item:
@@ -8,16 +6,19 @@ pim_menu:
     connection_settings: Verbindingen
     connection_settings_edit: Verbindingen instellingen
     connection_monitoring: Monitoring
+    connection_webhook_edit: Abonnement voor gebeurtenissen
+    connect_connection_settings: Verbindingen instellingen
 pim_title:
-  akeneo_connectivity_connection_settings_index: Verbindingen
   akeneo_connectivity_connection_settings_edit: Verbindingen instellingen
   akeneo_connectivity_connection_settings_any: Verbindingen instellingen
   akeneo_connectivity_connection_audit_index: Connectie dashboard
   akeneo_connectivity_connection_audit_any: Connectie dashboard
   akeneo_connectivity_connection_error_management_dashboard: Connectie dashboard
   akeneo_connectivity_connection_error_management_connection_monitoring: Verbindingen monitoren
-  akeneo_connectivity_connection_webhook_edit: Abonnement voor gebeurtenissen (BETA)
-  akeneo_connectivity_connection_webhook_regenerate_secret: Abonnement voor gebeurtenissen (BETA)
+  akeneo_connectivity_connection_webhook_edit: Abonnement voor gebeurtenissen
+  akeneo_connectivity_connection_webhook_regenerate_secret: Abonnement voor gebeurtenissen
+  akeneo_connectivity_connection_redirect_audit: Connectie dashboard
+  akeneo_connectivity_connection_settings_redirect: Verbindingen
 akeneo_connectivity.connection:
   connections: Verbindingen
   secondary_actions:
@@ -130,9 +131,7 @@ akeneo_connectivity.connection:
     flash:
       success: Verbinding succesvol verwijderd.
   helper:
-    title: '👋 Welkom bij de functie waarmee we je PIM-omgeving opnemen in je applicatielandschap!'
     description: Een PIM zonder integraties van derden is een soort van nutteloos, nietwaar? Dankzij de verbindingen, kunt u alle gegevensstromen inrichten die data met PIM moeten uitwisselen.
-    link: Wil je meer weten? Ontdek wat een verbinding is en hoe je hier het meeste uit kan halen!
   flow_type_helper:
     message: Vraag je je af wat een flowtype is?
     link: We kunnen je hier helpen!
@@ -147,10 +146,6 @@ akeneo_connectivity.connection:
       extension_not_allowed: Sorry, het bestand dat u probeert te uploaden heeft een extensie die niet is toegestaan.
   grid.wrong_credentials_combination_helper: Sommige van de onderstaande verbindingen gebruiken niet hun verbindingsgebruikersnamen. Ze worden geïdentificeerd door een gele waarschuwingsteken.
   dashboard:
-    helper:
-      title: '👋 Welkom op uw verbindingsdashboard!'
-      description: Hier kunt u alle connecties volgen die via uw verbindingen in uw PIM worden verzameld, evenals alle data-stromen die worden gedistribueerd vanuit PIM, via de kanalen, naar uw verbindingen.
-      link: Wil je meer weten? Kijk dan hier!
     user_survey:
       title: Wilt u meer gegevens op dit dashboard?
       content: Jouw feedback is erg waardevol voor ons. Help ons met het kiezen van de volgende widget door het beantwoorden van deze één-vraag enquête!
@@ -192,11 +187,12 @@ akeneo_connectivity.connection:
         message: Vraag uw beheerder om er één aan te maken.
         link: Leer hier meer over verbindingen...
   webhook:
-    title: Abonnement voor gebeurtenissen (BETA)
-    event_subscription: Abonnement voor gebeurtenissen (BETA)
+    title: Abonnement voor gebeurtenissen
+    event_subscription: Abonnement voor gebeurtenissen
     helper:
-      message: Je kunt op de hoogte worden gebracht van events die gebeuren in de PIM voor producten die gesynchroniseerd zijn met deze verbonden app. U hoeft alleen maar een URL en het event type te definiëren welke u wilt bijhouden.
+      message: Je kunt op de hoogte worden gebracht van events die gebeuren in de PIM voor producten die gesynchroniseerd zijn met deze app in de app. Je hoeft alleen maar een URL te definiëren.
       link: Lees meer over de configuratie van activiteiten abonnementen...
+      url.test_disabled: Klik alstublieft op Opslaan om de URL te kunnen testen.
     form:
       url: URL
       secret: Geheim
@@ -221,7 +217,13 @@ akeneo_connectivity.connection:
         error: Sorry, er is een fout opgetreden bij het opnieuw genereren van het webhook geheim.
     active_event_subscriptions_limit_reached:
       message: U kunt maximaal {{ limit }} connecties maken met de functie event abonnementen. U heeft deze limiet bereikt.
-      link: Lees meer over de configuratie van event abonnementen...
+      link: Meer informatie over de configuratie van event abonnement.
+    event_logs:
+      list:
+        search:
+          all: Alles
+        date_range_filter:
+          all: Alles
   error_management:
     connection_monitoring:
       title: Verbindingsmonitor
@@ -231,7 +233,6 @@ akeneo_connectivity.connection:
         link: Wil je leren hoe je dit kunt oplossen, bezoek dan het API-hulpcentrum.
       search_filter:
         placeholder: Zoeken in foutmeldingen
-        result_count: '{0} Geen resultaat |[1,Inf] {{ count }} resultaten'
       error_list:
         date_time_column:
           title: Dag en tijd

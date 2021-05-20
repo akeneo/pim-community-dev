@@ -68,6 +68,7 @@ pim_catalog:
     family_variant_maximum_number_of_level: La variante de la familia no puede contener mas de "%level%" niveles
     family_variant_unique_attributes_in_last_level: El atributo único "%attribute%" debe ser configurado en el nivel del producto
     product_identifier: Estos identificadores "%s" no existen.
+    duplicate_options: '{1} La siguiente opción se ha utilizado varias veces: "{{ duplicate_options }}". Por favor, compruebe su lista de opciones de nuevo. |]1, +Inf] Las siguientes opciones fueron usadas varias veces: "{{ duplicate_options }}". Por favor, compruebe su lista de opciones de nuevo.'
     0: Se ha producido un error inesperado.
     100: Valor no previsto
     101: Este campo debe contener un valor booleano.
