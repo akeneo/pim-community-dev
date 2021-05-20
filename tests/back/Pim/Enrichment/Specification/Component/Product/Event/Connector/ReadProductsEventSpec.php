@@ -13,7 +13,7 @@ class ReadProductsEventSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedWith(3, 'code');
+        $this->beConstructedWith(3, ReadProductsEvent::REST_API_TYPE, 'code');
     }
     function it_is_initializable()
     {
@@ -28,23 +28,23 @@ class ReadProductsEventSpec extends ObjectBehavior
 
     public function it_returns_a_connection_code()
     {
-        $this->beConstructedWith(5, 'code');
+        $this->beConstructedWith(5, ReadProductsEvent::REST_API_TYPE, 'code');
         $this->getConnectionCode()->shouldReturn('code');
     }
 
     public function it_returns_true_if_event_api()
     {
-        $this->beConstructedWith(5, 'code', true);
+        $this->beConstructedWith(5, ReadProductsEvent::EVENT_API_TYPE, 'code');
         $this->isEventApi()->shouldReturn(true);
     }
 
     public function it_returns_false_if_no_event_api()
     {
-        $this->beConstructedWith(5, 'code', false);
+        $this->beConstructedWith(5, ReadProductsEvent::REST_API_TYPE, 'code');
         $this->isEventApi()->shouldReturn(false);
     }
 
-    public function it_is_not_event_api_by_default()
+    public function it_is_not_an_event_api_by_default()
     {
         $this->beConstructedWith(5);
         $this->isEventApi()->shouldReturn(false);

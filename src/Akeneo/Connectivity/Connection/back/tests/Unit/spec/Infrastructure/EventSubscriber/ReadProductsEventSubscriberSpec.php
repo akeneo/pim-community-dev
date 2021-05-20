@@ -79,7 +79,7 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         Connection $connection,
         ConnectionRepository $connectionRepository
     ): void {
-        $readProductsEvent = new ReadProductsEvent(3, 'ecommerce', true);
+        $readProductsEvent = new ReadProductsEvent(3, ReadProductsEvent::EVENT_API_TYPE, 'ecommerce');
         $connection->hasDataDestinationFlowType()->willReturn(true)->shouldBeCalledTimes(1);
         $connection->auditable()->willReturn(true)->shouldBeCalledTimes(1);
         $connection->code()->shouldNotBeCalled();
