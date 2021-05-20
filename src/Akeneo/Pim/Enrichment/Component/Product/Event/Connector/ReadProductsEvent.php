@@ -17,11 +17,11 @@ final class ReadProductsEvent
 
     private bool $isEventApi;
 
-    public function __construct(int $count, ?string $connectionCode = null)
+    public function __construct(int $count, ?string $connectionCode = null, $isEventApi = false)
     {
         $this->count = $count;
         $this->connectionCode = $connectionCode;
-        $this->isEventApi = $connectionCode !==null;
+        $this->isEventApi = $isEventApi;
     }
 
     public function getCount(): int

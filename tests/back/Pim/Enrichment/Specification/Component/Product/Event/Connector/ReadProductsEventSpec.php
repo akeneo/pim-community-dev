@@ -32,14 +32,16 @@ class ReadProductsEventSpec extends ObjectBehavior
         $this->getConnectionCode()->shouldReturn('code');
     }
 
-    public function it_is_a_event_api_if_connection_code_is_defined()
+    public function it_returns_true_if_event_api()
     {
-        $this->beConstructedWith(5, 'code');
+        $this->beConstructedWith(5, 'code', true);
         $this->isEventApi()->shouldReturn(true);
     }
 
-    public function it_is_not_a_event_api_if_connection_code_is_not_defined()
+    public function it_returns_false_if_no_event_api()
     {
+        $this->beConstructedWith(5, 'code', false);
+        $this->isEventApi()->shouldReturn(false);
         $this->beConstructedWith(5);
         $this->isEventApi()->shouldReturn(false);
     }

@@ -52,6 +52,9 @@ class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
                 if($event->getConnectionCode() !== 'code') {
                     return false;
                 }
+                if($event->isEventApi() !== true) {
+                    return false;
+                }
                 
                 return true;
             })
