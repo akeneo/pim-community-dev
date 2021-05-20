@@ -1,6 +1,14 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
-import {Breadcrumb, TabBar, useTabBar} from 'akeneo-design-system';
+import {
+  Breadcrumb,
+  Dropdown,
+  IconButton,
+  MoreIcon,
+  TabBar,
+  useBooleanState,
+  useTabBar
+} from 'akeneo-design-system';
 import {
   FullScreenError,
   PageContent,
@@ -11,10 +19,12 @@ import {
   useTranslate,
   useUserContext,
   useSessionStorageState,
+  useSecurity,
 } from '@akeneo-pim-community/shared';
-import {useCategory} from '../../hooks';
+import {CategoryToDelete, useCategory, useCountProductsBeforeDeleteCategory, useDeleteCategory} from '../../hooks';
 import {Category} from '../../models';
 import {HistoryPimView, View} from './HistoryPimView';
+import {DeleteCategoryModal} from '../../components/datagrids/categories/DeleteCategoryModal';
 
 type Params = {
   categoryId: string;
@@ -34,8 +44,16 @@ const CategoryEditPage: FC = () => {
   const [tree, setTree] = useState<Category | null>(null);
   const [activeTab, setActiveTab] = useSessionStorageState(propertyTabName, 'pim_category_activeTab');
   const [isCurrent, switchTo] = useTabBar(activeTab);
+  const {isGranted} = useSecurity();
+  const [secondaryActionIsOpen, openSecondaryAction, closeSecondaryAction] = useBooleanState(false);
+  const [isDeleteCategoryModalOpen, openDeleteCategoryModal, closeDeleteCategoryModal] = useBooleanState();
+  const countProductsBeforeDeleteCategory = useCountProductsBeforeDeleteCategory(parseInt(categoryId));
+  const [categoryToDelete, setCategoryToDelete] = useState<CategoryToDelete | null>(null);
+  const {isCategoryDeletionPossible, handleDeleteCategory} = useDeleteCategory();
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
+
+  const uiLocale = userContext.get('uiLocale');
 
   const followSettingsIndex = () => router.redirect(router.generate('pim_enrich_attribute_index'));
   const followCategoriesIndex = () => router.redirect(router.generate('pim_enrich_categorytree_index'));
@@ -46,20 +64,24 @@ const CategoryEditPage: FC = () => {
     router.redirect(router.generate('pim_enrich_categorytree_tree', {id: tree.id}));
   };
 
+  const handleCloseDeleteCategoryModal = () => {
+    setCategoryToDelete(null);
+    closeDeleteCategoryModal();
+  };
+
   useEffect(() => {
     load();
   }, [categoryId]);
 
   useEffect(() => {
     const rootCategory = category && category.root ? category.root : category;
-    const uiLocale = userContext.get('uiLocale');
 
     setCategoryLabel(
       category && category.labels.hasOwnProperty(uiLocale) ? category.labels[uiLocale] : `[${categoryId}]`
     );
     setTreeLabel(
       rootCategory
-        ? rootCategory.labels[userContext.get('uiLocale')]
+        ? rootCategory.labels[uiLocale]
         : translate('pim_enrich.entity.category.content.edit.default_tree_label')
     );
     setTree(rootCategory);
@@ -94,6 +116,37 @@ const CategoryEditPage: FC = () => {
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
         </PageHeader.UserActions>
+        <PageHeader.Actions>
+          <Dropdown>
+            <IconButton
+              level="tertiary"
+              title={translate('pim_common.other_actions')}
+              icon={<MoreIcon />}
+              ghost="borderless"
+              onClick={openSecondaryAction}
+            />
+            {secondaryActionIsOpen && isGranted('pim_enrich_product_category_remove') && (
+              <Dropdown.Overlay onClose={closeSecondaryAction}>
+                <Dropdown.Header>
+                  <Dropdown.Title>{translate('pim_common.other_actions')}</Dropdown.Title>
+                </Dropdown.Header>
+                <Dropdown.ItemCollection>
+                  <Dropdown.Item onClick={() => {
+                    countProductsBeforeDeleteCategory((nbProducts: number) => {
+                      const identifier = parseInt(categoryId);
+                      if (category && isCategoryDeletionPossible(identifier, category.labels[uiLocale], nbProducts)) {
+                        setCategoryToDelete({identifier, label: category.labels[uiLocale], onDelete: followCategoryTree});
+                        openDeleteCategoryModal();
+                      }
+                    });
+                  }}>
+                    <span>{translate('pim_common.delete')}</span>
+                  </Dropdown.Item>
+                </Dropdown.ItemCollection>
+              </Dropdown.Overlay>
+            )}
+          </Dropdown>
+        </PageHeader.Actions>
         <PageHeader.Title>{categoryLabel}</PageHeader.Title>
       </PageHeader>
       <PageContent>
@@ -130,6 +183,17 @@ const CategoryEditPage: FC = () => {
           />
         )}
       </PageContent>
+      {isDeleteCategoryModalOpen && categoryToDelete !== null && (
+        <DeleteCategoryModal
+          categoryLabel={categoryToDelete.label}
+          closeModal={handleCloseDeleteCategoryModal}
+          deleteCategory={async () => {
+            await handleDeleteCategory(categoryToDelete);
+            handleCloseDeleteCategoryModal();
+          }}
+          message={'pim_enrich.entity.category.category_deletion.confirmation'}
+        />
+      )}
     </>
   );
 };
