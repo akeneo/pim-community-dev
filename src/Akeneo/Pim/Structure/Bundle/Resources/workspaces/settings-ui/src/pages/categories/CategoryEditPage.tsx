@@ -117,35 +117,37 @@ const CategoryEditPage: FC = () => {
           />
         </PageHeader.UserActions>
         <PageHeader.Actions>
-          <Dropdown>
-            <IconButton
-              level="tertiary"
-              title={translate('pim_common.other_actions')}
-              icon={<MoreIcon />}
-              ghost="borderless"
-              onClick={openSecondaryAction}
-            />
-            {secondaryActionIsOpen && isGranted('pim_enrich_product_category_remove') && (
-              <Dropdown.Overlay onClose={closeSecondaryAction}>
-                <Dropdown.Header>
-                  <Dropdown.Title>{translate('pim_common.other_actions')}</Dropdown.Title>
-                </Dropdown.Header>
-                <Dropdown.ItemCollection>
-                  <Dropdown.Item onClick={() => {
-                    countProductsBeforeDeleteCategory((nbProducts: number) => {
-                      const identifier = parseInt(categoryId);
-                      if (category && isCategoryDeletionPossible(identifier, category.labels[uiLocale], nbProducts)) {
-                        setCategoryToDelete({identifier, label: category.labels[uiLocale], onDelete: followCategoryTree});
-                        openDeleteCategoryModal();
-                      }
-                    });
-                  }}>
-                    <span>{translate('pim_common.delete')}</span>
-                  </Dropdown.Item>
-                </Dropdown.ItemCollection>
-              </Dropdown.Overlay>
-            )}
-          </Dropdown>
+          {isGranted('pim_enrich_product_category_remove') &&
+            <Dropdown>
+              <IconButton
+                level="tertiary"
+                title={translate('pim_common.other_actions')}
+                icon={<MoreIcon />}
+                ghost="borderless"
+                onClick={openSecondaryAction}
+              />
+              {secondaryActionIsOpen && (
+                <Dropdown.Overlay onClose={closeSecondaryAction}>
+                  <Dropdown.Header>
+                    <Dropdown.Title>{translate('pim_common.other_actions')}</Dropdown.Title>
+                  </Dropdown.Header>
+                  <Dropdown.ItemCollection>
+                    <Dropdown.Item onClick={() => {
+                      countProductsBeforeDeleteCategory((nbProducts: number) => {
+                        const identifier = parseInt(categoryId);
+                        if (category && isCategoryDeletionPossible(identifier, category.labels[uiLocale], nbProducts)) {
+                          setCategoryToDelete({identifier, label: category.labels[uiLocale], onDelete: followCategoryTree});
+                          openDeleteCategoryModal();
+                        }
+                      });
+                    }}>
+                      <span>{translate('pim_common.delete')}</span>
+                    </Dropdown.Item>
+                  </Dropdown.ItemCollection>
+                </Dropdown.Overlay>
+              )}
+            </Dropdown>
+          }
         </PageHeader.Actions>
         <PageHeader.Title>{categoryLabel}</PageHeader.Title>
       </PageHeader>
