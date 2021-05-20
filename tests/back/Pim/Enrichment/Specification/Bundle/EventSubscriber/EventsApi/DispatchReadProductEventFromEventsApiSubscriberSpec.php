@@ -10,7 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  */
 class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
 {
-    public function let(EventDispatcher $eventDispatcher)
+    public function let(EventDispatcherInterface $eventDispatcher)
     {
         $this->beConstructedWith($eventDispatcher);
     }
@@ -29,7 +29,7 @@ class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
     }
 
     public function it_dispatches_a_read_product_on_product_event_api_saved(
-        EventDispatcher $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher,
         EventsApiRequestSucceeded $eventsApiRequestSucceeded,
         ProductUpdated $productUpdatedEvent,
         ProductCreated $productCreatedEvent,
@@ -55,7 +55,7 @@ class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
                 if($event->isEventApi() !== true) {
                     return false;
                 }
-                
+
                 return true;
             })
         ))->shouldbeCalledTimes(1);
@@ -64,7 +64,7 @@ class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
     }
 
     public function it_doesnt_dispatch_a_read_product_on_product_event_api_saved_if_no_product_saved_event_type(
-        EventDispatcher $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher,
         EventsApiRequestSucceeded $eventsApiRequestSucceeded,
         ProductRemoved $productRemovedEvent
     ) {
@@ -72,7 +72,7 @@ class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
             ->willReturn([$productRemovedEvent])
             ->shouldBeCalledTimes(1);
 
-        $eventsApiRequestSucceeded->getConnectionCode()->willReturn('code')->shouldBeCalledTimes(1);
+        $eventsApiRequestSucceeded->getConnectionCode()->shouldNotBeCalled();
         $eventDispatcher->dispatch(Argument::any())->shouldNotBeCalled();
 
         $this->dispatchReadProductOnProductEventApiSaved($eventsApiRequestSucceeded);
