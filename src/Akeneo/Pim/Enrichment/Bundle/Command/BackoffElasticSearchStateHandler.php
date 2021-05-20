@@ -15,17 +15,32 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class BackoffElasticSearchStateHandler
 {
-    public const RETRY_COUNTER = 10;
-    public const BACKOFF_LOGARITHMIC_INCREMENT = 2;
+    const RETRY_COUNTER = 10;
+    const BACKOFF_LOGARITHMIC_INCREMENT = 2;
+
+    private int $retryCounter;
+    private int $backoffLogarithmicIncrement;
+
+    /**
+     * BackoffElasticSearchStateHandler constructor.
+     * @param int $retryCounter
+     * @param int $backoffLogarithmicIncrement
+     */
+    public function __construct(int $retryCounter=self::RETRY_COUNTER, int $backoffLogarithmicIncrement=self::BACKOFF_LOGARITHMIC_INCREMENT)
+    {
+        $this->retryCounter = $retryCounter;
+        $this->backoffLogarithmicIncrement = $backoffLogarithmicIncrement;
+    }
 
     protected function resetState(): array
     {
-        return array(false, self::RETRY_COUNTER);
+        return array(false, $this->retryCounter);
     }
 
     public function bulkExecute(array $codes, BulkEsHandlerInterface $codesEsHandler):int
     {
-        $batchSize = count($codes);
+        $initialBatchSize = count($codes);
+        $batchSize = $initialBatchSize;
         $indexed = 0;
         list($backOverheat, $retryCounter) = $this->resetState();
 
@@ -40,17 +55,18 @@ class BackoffElasticSearchStateHandler
 
                 array_splice($codes, 0, $batchSize);
                 list($backOverheat, $retryCounter) = $this->resetState();
+                $batchSize=$initialBatchSize;
                 $indexed += count($batchEsCodes);
             } catch (BadRequest400Exception $e) {
                 if ($e->getCode() == Response::HTTP_TOO_MANY_REQUESTS) {
                     $retryCounter--;
                     $backOverheat = true;
-                    $batchSize = intdiv($batchSize, self::BACKOFF_LOGARITHMIC_INCREMENT); //Heuristic: logarithmics decrement
+                    $batchSize = intdiv($batchSize, $this->backoffLogarithmicIncrement); //Heuristic: logarithmics decrement
                 } else {
                     throw $e;
                 }
             }
-        } while (($backOverheat && $retryCounter) || count($codes));
+        } while (($retryCounter > 0) && count($codes));
 
         if ($backOverheat && isset($e)) {
             throw $e;
