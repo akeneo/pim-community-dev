@@ -98,3 +98,11 @@ pim_user_management:
       module:
         create:
           button: Groep aanmaken
+  form:
+    error:
+      required: Dit veld is verplicht.
+    duplication:
+      title: 'Dupliceer "{{ username }}" gebruiker'
+      notification:
+        success: De gebruiker wordt met succes gedupliceerd
+        failure: Fout tijdens dupliceren van de gebruiker.
