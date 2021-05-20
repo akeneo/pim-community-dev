@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
@@ -13,7 +12,6 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepository;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
@@ -25,7 +23,7 @@ use Psr\Log\LoggerInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class SendBusinessEventToWebhooksHandler
+class SendBusinessEventToWebhooksHandler
 {
     private SelectActiveWebhooksQuery $selectActiveWebhooksQuery;
     private WebhookUserAuthenticator $webhookUserAuthenticator;
@@ -33,9 +31,7 @@ final class SendBusinessEventToWebhooksHandler
     private WebhookEventBuilder $builder;
     private LoggerInterface $logger;
     private EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger;
-    private EventsApiDebugRepository $eventsApiDebugRepository;
     private EventsApiRequestCountRepository $eventsApiRequestRepository;
-    private CacheClearerInterface $cacheClearer;
     private string $pimSource;
 
     public function __construct(
@@ -45,9 +41,7 @@ final class SendBusinessEventToWebhooksHandler
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
         EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
-        EventsApiDebugRepository $eventsApiDebugRepository,
         EventsApiRequestCountRepository $eventsApiRequestRepository,
-        CacheClearerInterface $cacheClearer,
         string $pimSource
     ) {
         $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
@@ -56,9 +50,7 @@ final class SendBusinessEventToWebhooksHandler
         $this->builder = $builder;
         $this->logger = $logger;
         $this->eventSubscriptionSkippedOwnEventLogger = $eventSubscriptionSkippedOwnEventLogger;
-        $this->eventsApiDebugRepository = $eventsApiDebugRepository;
         $this->eventsApiRequestRepository = $eventsApiRequestRepository;
-        $this->cacheClearer = $cacheClearer;
         $this->pimSource = $pimSource;
     }
 
@@ -114,9 +106,6 @@ final class SendBusinessEventToWebhooksHandler
         };
 
         $this->client->bulkSend($requests());
-
-        $this->cacheClearer->clear();
-        $this->eventsApiDebugRepository->flush();
     }
 
     private function filterConnectionOwnEvents(
