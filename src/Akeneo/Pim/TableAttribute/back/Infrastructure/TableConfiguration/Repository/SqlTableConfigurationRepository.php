@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
@@ -78,6 +79,9 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getByAttributeId(int $attributeId): TableConfiguration
     {
         $statement = $this->connection->executeQuery(
@@ -92,6 +96,9 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
             ]
         );
         $results = $statement->fetchAll();
+        if (0 === count($results)) {
+            throw TableConfigurationNotFoundException::forAttributeId($attributeId);
+        }
 
         return TableConfiguration::fromColumnDefinitions(
             array_map(

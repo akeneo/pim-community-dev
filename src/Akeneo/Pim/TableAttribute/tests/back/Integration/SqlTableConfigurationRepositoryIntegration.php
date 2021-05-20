@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\tests\back\Integration;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
@@ -133,6 +134,14 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                 'labels' => [],
             ]
         ], $result->normalize());
+    }
+
+    public function testItThrowsAnExceptionWhenTableConfigurationIsNotFound(): void
+    {
+        $this->expectException(TableConfigurationNotFoundException::class);
+        $this->expectExceptionMessage('Could not find table configuration for "0" attribute id');
+
+        $this->sqlTableConfigurationRepository->getByAttributeId(0);
     }
 
     protected function getConfiguration(): Configuration
