@@ -59,4 +59,19 @@ class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
 
         $this->dispatchReadProductOnProductEventApiSaved($eventsApiRequestSucceeded);
     }
+
+    public function it_doesnt_dispatch_a_read_product_on_product_event_api_saved_if_no_product_saved_event_type(
+        EventDispatcher $eventDispatcher,
+        EventsApiRequestSucceeded $eventsApiRequestSucceeded,
+        ProductRemoved $productRemovedEvent
+    ) {
+        $eventsApiRequestSucceeded->getEvents()
+            ->willReturn([$productRemovedEvent])
+            ->shouldBeCalledTimes(1);
+
+        $eventsApiRequestSucceeded->getConnectionCode()->willReturn('code')->shouldBeCalledTimes(1);
+        $eventDispatcher->dispatch(Argument::any())->shouldNotBeCalled();
+
+        $this->dispatchReadProductOnProductEventApiSaved($eventsApiRequestSucceeded);
+    }
 }
