@@ -312,6 +312,7 @@ pim_enrich.mass_edit.product:
     move_to_category:
       label: Sposta tra categorie
       description: I prodotti saranno classificati nelle seguenti categorie, la classificazione esistente sarà persa.
+      no_update: Seleziona una categoria.
     remove_from_category:
       label: Rimuovi dalle categorie
       description: I prodotti verranno rimossi dalle seguenti categorie.
