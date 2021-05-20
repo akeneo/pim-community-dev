@@ -14,48 +14,48 @@ Feature: Create a table attribute
 
   Scenario: Cannot create a table attribute without table configuration
     When I create a table attribute without table configuration
-    Then There is a violation with message: TODO error message
+    Then There is a violation with message: The table attribute configuration must be filled
 
   Scenario: Cannot create a table configuration with only one column
     When I create a table attribute with a configuration with only one column
-    Then There is a violation with message: TODO another error message
+    Then There is a violation with message: The table attribute must contain at least 2 columns
 
   Scenario: Cannot create a table configuration without column code
     When I create a table attribute with a configuration without column code
-    Then There is a violation with message: TODO Missing mandatory field: "code"
+    Then There is a violation with message: The "code" column must be filled
 
   Scenario: Cannot create a table configuration with invalid column code
     When I create a table attribute with a configuration having column code "wrong code"
-    Then There is a violation with message: TODO bad code
+    Then There is a violation with message: The column code can only contain letters, numbers and underscores
 
   Scenario: Cannot create a table configuration with blank column code
     When I create a table attribute with a configuration having column code ""
-    Then There is a violation with message: TODO code blank
+    Then There is a violation with message: The column code must be filled
 
   Scenario: Cannot create a table configuration with duplicate column code
     When I create a table attribute with a configuration having column code "ingredients"
-    Then There is a violation with message: TODO IsColumnCodeUnique message ingredients
+    Then There is a violation with message: Each column requires a unique code. "ingredients" is already used
 
   Scenario: Cannot create a table configuration with too long code
     When I create a table attribute with a configuration having column code "ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients"
-    Then There is a violation with message: TODO too long code
+    Then There is a violation with message: The column code is too long: it must be 100 characters or less
 
   Scenario: Cannot create a table configuration without type
     When I create a table attribute with a configuration without type
-    Then There is a violation with message: TODO Missing mandatory field: "type"
+    Then There is a violation with message: The "type" column must be filled
 
   Scenario: Cannot create a table configuration having unknown type
     When I create a table attribute with a configuration having unknown type
-    Then There is a violation with message: TODO unknown type
+    Then There is a violation with message: The column data type is unknown. Please choose one of the following: number, text, select, boolean
 
   Scenario: Cannot create a table configuration having invalid type
     When I create a table attribute with a configuration having invalid type
-    Then There is a violation with message: TODO invalid type format
+    Then There is a violation with message: The column data type must be a string
 
   Scenario: Cannot create a table configuration with invalid column labels format
     When I create a table attribute with a configuration having invalid column labels format
-    Then There is a violation with message: TODO invalid labels format
+    Then There is a violation with message: The column label must be a string
 
   Scenario: Cannot create a table configuration with non activated locale
     When I create a table attribute with a configuration having non activated locale
-    Then There is a violation with message: The locale "pt_DTC" is not activated
+    Then There is a violation with message: The "pt_DTC" locale doesn't exist or is not activated

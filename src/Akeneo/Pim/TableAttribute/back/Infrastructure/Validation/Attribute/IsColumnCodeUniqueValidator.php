@@ -30,7 +30,7 @@ class IsColumnCodeUniqueValidator extends ConstraintValidator
         $duplicateCodes = array_unique(array_diff_key($codes, array_unique($codes)));
         if (count($duplicateCodes) > 0) {
             $this->context->buildViolation(
-                "TODO IsColumnCodeUnique message %duplicateCodes%",
+                'pim_table_configuration.validation.table_configuration.duplicated_column_code',
                 [ '%duplicateCodes%' => join(', ', $duplicateCodes) ]
             )->addViolation();
         }

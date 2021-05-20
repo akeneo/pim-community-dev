@@ -1,0 +1,15 @@
+pim_table_configuration:
+    validation:
+        table_configuration:
+            must_be_filled: The table attribute configuration must be filled
+            must_contain_at_least_two_columns: The table attribute must contain at least 2 columns
+            missing_column: The {{ field }} column must be filled
+            column_code_must_be_filled: The column code must be filled
+            invalid_code: The column code can only contain letters, numbers and underscores
+            too_long_code: "The column code is too long: it must be 100 characters or less"
+            duplicated_column_code: Each column requires a unique code. "%duplicateCodes%" is already used
+            column_type_must_be_a_string: The column data type must be a string
+            unknown_data_type: "The column data type is unknown. Please choose one of the following: number, text, select, boolean"
+            column_label_must_be_a_string: The column label must be a string
+            label_locale_does_not_exist_or_is_not_activated: The "{{ locale_code }}" locale doesn't exist or is not activated
+            invalid_labels_format: Invalid labels format

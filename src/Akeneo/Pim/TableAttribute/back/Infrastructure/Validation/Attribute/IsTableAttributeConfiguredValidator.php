@@ -33,7 +33,8 @@ final class IsTableAttributeConfiguredValidator extends ConstraintValidator
         }
 
         if (null === $value->getRawTableConfiguration()) {
-            $this->context->buildViolation('TODO error message', [])->atPath('table_configuration')->addViolation();
+            $this->context->buildViolation('pim_table_configuration.validation.table_configuration.must_be_filled', [])
+                ->atPath('table_configuration')->addViolation();
         }
     }
 }

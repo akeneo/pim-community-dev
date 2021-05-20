@@ -56,7 +56,10 @@ class LabelCollectionValidator extends ConstraintValidator
         }
 
         if (!$this->channelExistsWithLocale->isLocaleActive($localeCode)) {
-            $this->context->addViolation(sprintf('The locale "%s" is not activated', $localeCode));
+            $this->context->addViolation(
+                'pim_table_configuration.validation.table_configuration.label_locale_does_not_exist_or_is_not_activated',
+                ['{{ locale_code }}' => $localeCode]
+            );
         }
     }
 }

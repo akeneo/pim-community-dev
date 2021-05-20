@@ -6,7 +6,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             - Type: array
             - Count:
                   min: 2
-                  minMessage: "TODO another error message"
+                  minMessage: pim_table_configuration.validation.table_configuration.must_contain_at_least_two_columns
             - All:
                   - Type: array
                   - Collection:
@@ -14,30 +14,33 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                             code:
                                 - Required:
                                     - NotBlank:
-                                          message: "TODO code blank"
+                                          message: pim_table_configuration.validation.table_configuration.column_code_must_be_filled
                                     - Regex:
                                           pattern: /^[a-zA-Z0-9_]+$/
-                                          message: "TODO bad code"
+                                          message: pim_table_configuration.validation.table_configuration.invalid_code
                                     - Length:
                                           max: 100
-                                          maxMessage: TODO too long code
+                                          maxMessage: pim_table_configuration.validation.table_configuration.too_long_code
                             type:
                                 - Required:
                                       - Type:
                                           type: string
-                                          message: "TODO invalid type format"
+                                          message: pim_table_configuration.validation.table_configuration.column_type_must_be_a_string
                                       - Choice:
                                           choices: ["text"]
-                                          message: "TODO unknown type"
+                                          message: pim_table_configuration.validation.table_configuration.unknown_data_type
                             labels:
                                 - Optional:
                                     - Type:
                                           type: array
-                                          message: "TODO invalid labels format"
+                                          message: pim_table_configuration.validation.table_configuration.invalid_labels_format
                                     - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\LabelCollection: ~
                                     - All:
-                                          - Type: string
-                                          - NotNull: ~
-                        missingFieldsMessage: "TODO Missing mandatory field: {{ field }}"
+                                          - Type:
+                                                type: string
+                                                message: pim_table_configuration.validation.table_configuration.column_label_must_be_a_string
+                                          - NotNull:
+                                                message: pim_table_configuration.validation.table_configuration.column_label_must_be_a_string
+                        missingFieldsMessage: pim_table_configuration.validation.table_configuration.missing_column
             - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsColumnCodeUnique: ~
 #              TODO add validation: first column cannot be changed (code and data_type)
