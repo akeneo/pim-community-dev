@@ -1,0 +1,33 @@
+pim_analytics:
+  system_info:
+    title: Información del sistema
+    download: Descargas
+  info_header:
+    property: Propiedades
+    information: Información
+  info_type:
+    pim_edition: Edición
+    pim_version: Versión
+    pim_storage_driver: Almacenamiento
+    pim_environment: Ambiente
+    pim_install_time: Fecha de instalación
+    registered_bundles: Paquetes registrados
+    nb_channels: Número de canales
+    nb_products: Número de productos
+    nb_product_models: Número de modelos del producto
+    nb_variant_products: Número de las Variantes de los Productos
+    nb_family_variants: Número de la Familia de las Variantes
+    nb_attributes: Número de atributos
+    nb_scopable_attributes: Número de atributos alcanzables
+    nb_localizable_attributes: Número de atributos localizables
+    nb_scopable_localizable_attributes: Número de los Atributos Localizables y Alcanzables
+    nb_useable_as_grid_filter_attributes: Número de atributos utilizables como filtro de la grilla
+    avg_percentage_scopable_attributes_per_family: Porcentaje promedio de atributos alcanzables por familia(%)
+    avg_percentage_localizable_attributes_per_family: Porcentaje promedio de atributos localizables por familia (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Porcentaje promedio de atributos localizables y alcanzables por familia (%)
+    avg_number_attributes_per_family: Promedio del número de atributos por familia
+    nb_locales: Número de locales
+    nb_families: Número de familias
+    nb_users: Número de usuarios
+    nb_categories: Número de categorías
+
