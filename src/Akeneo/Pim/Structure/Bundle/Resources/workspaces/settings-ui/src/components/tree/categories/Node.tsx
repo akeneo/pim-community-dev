@@ -50,14 +50,13 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
       selected={placeholderPosition === 'middle'}
       placeholderPosition={placeholderPosition}
       isOpen={node.type === 'root' ? true : isOpen}
-      open={open}
-      close={close}
-      onOpen={async () => {
-        if (node.childrenStatus !== 'idle') {
-          return;
+      open={() => {
+        open();
+        if (node.childrenStatus === 'idle') {
+          loadChildren();
         }
-        return loadChildren();
       }}
+      close={close}
       draggable={isDraggable}
       {...dragProps}
       {...dropProps}

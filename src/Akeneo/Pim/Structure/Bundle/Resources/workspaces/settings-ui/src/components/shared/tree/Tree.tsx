@@ -64,8 +64,6 @@ type TreeProps<T> = {
   isOpen?: boolean;
   open?: () => void;
   close?: () => void;
-  onOpen?: (value: TreeNode<T>) => void;
-  onClose?: (value: TreeNode<T>) => void;
   onChange?: (value: TreeNode<T>, checked: boolean, event: SyntheticEvent) => void;
   onClick?: (value: TreeNode<T>) => void;
   onDrop?: () => void;
@@ -92,8 +90,6 @@ const Tree = <T,>({
   open,
   close,
   onChange,
-  onOpen,
-  onClose,
   onClick,
   onDrop,
   onDragStart,
@@ -125,26 +121,6 @@ const Tree = <T,>({
   const [timer, setTimer] = useState<number | null>(null);
   const [ticking, setTicking] = useState<boolean>(false);
 
-  const handleOpen = useCallback(() => {
-    if (open === undefined) {
-      return;
-    }
-    open();
-    if (onOpen) {
-      onOpen(value);
-    }
-  }, [open, onOpen, value]);
-
-  const handleClose = useCallback(() => {
-    if (close === undefined) {
-      return;
-    }
-    close();
-    if (onClose) {
-      onClose(value);
-    }
-  }, [close, onClose, value]);
-
   const handleArrowClick = useCallback(
     event => {
       event.stopPropagation();
@@ -153,9 +129,9 @@ const Tree = <T,>({
         return;
       }
 
-      isOpen ? handleClose() : handleOpen();
+      isOpen ? close && close() : open && open();
     },
-    [isOpen, handleClose, handleOpen, isLeaf]
+    [isOpen, close, open, isLeaf]
   );
 
   const handleClick = useCallback(
@@ -212,14 +188,14 @@ const Tree = <T,>({
         }}
         onDragEnter={() => {
           // @fixme does not work when the user enter in a sub element of the row
-          if (!isLeaf && !disabled) {
+          if (!isLeaf && !disabled && open) {
             if (timer) {
               return;
             }
 
             // @ts-ignore
             const timeoutId: number = setTimeout(() => {
-              handleOpen();
+              open();
             }, 2000);
             setTimer(timeoutId);
           }
@@ -270,8 +246,8 @@ const Tree = <T,>({
                 event.dataTransfer.setDragImage(treeRowRef.current, 0, 0);
                 //event.dataTransfer.setData('text/plain', value.identifier.toString());
 
-                if (!isLeaf) {
-                  handleClose();
+                if (!isLeaf && close) {
+                  close();
                 }
 
                 if (onDragStart) {
