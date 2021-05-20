@@ -103,7 +103,7 @@ const Tab = ({children, isActive, parentRef, onVisibilityChange, ...rest}: TabPr
     return () => {
       observer.unobserve(tabElement);
     };
-  }, [onVisibilityChange, parentRef, ref]);
+  }, []);
 
   return (
     <TabContainer ref={ref} tabIndex={0} role="tab" aria-selected={isActive} isActive={isActive} {...rest}>
