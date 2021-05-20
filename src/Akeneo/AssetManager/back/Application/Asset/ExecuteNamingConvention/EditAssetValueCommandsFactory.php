@@ -31,11 +31,9 @@ use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
  */
 class EditAssetValueCommandsFactory
 {
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $findAttributesIndexedByIdentifier;
+    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
 
-    /** @var EditValueCommandFactoryRegistryInterface */
-    private $editValueCommandFactoryRegistry;
+    private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry;
 
     public function __construct(
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
@@ -132,8 +130,6 @@ class EditAssetValueCommandsFactory
 
     private function removeNonStringKeysAndEmptyValues(array $matches): array
     {
-        return array_filter($matches, function ($value, $key) {
-            return is_string($key) && '' !== $value;
-        }, ARRAY_FILTER_USE_BOTH);
+        return array_filter($matches, fn($value, $key) => is_string($key) && '' !== $value, ARRAY_FILTER_USE_BOTH);
     }
 }

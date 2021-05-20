@@ -12,17 +12,14 @@ class AttributeRegularExpression
 {
     public const EMPTY = null;
 
-    /** @var ?string */
-    private $regularExpression;
+    private ?string $regularExpression = null;
 
     private function __construct(?string $regularExpression)
     {
-        if (null !== $regularExpression) {
-            if (false === @preg_match($regularExpression, '')) {
-                throw new \InvalidArgumentException(
-                    sprintf('Expect a valid regular expression, "%s" given', $regularExpression)
-                );
-            }
+        if (null !== $regularExpression && false === @preg_match($regularExpression, '')) {
+            throw new \InvalidArgumentException(
+                sprintf('Expect a valid regular expression, "%s" given', $regularExpression)
+            );
         }
         $this->regularExpression = $regularExpression;
     }

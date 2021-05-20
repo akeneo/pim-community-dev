@@ -21,11 +21,9 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
  */
 class ExecuteAssetFamilyNamingConventionHandler
 {
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var NamingConventionLauncherInterface */
-    private $namingConventionLauncher;
+    private NamingConventionLauncherInterface $namingConventionLauncher;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,

@@ -28,11 +28,9 @@ class RawSourceValidator extends ConstraintValidator
 {
     private const ASSET_CODE_PROPERTY = 'code';
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var FindAssetFamilyAttributeAsMainMediaInterface */
-    private $findAttributeAsMainMedia;
+    private FindAssetFamilyAttributeAsMainMediaInterface $findAttributeAsMainMedia;
 
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,

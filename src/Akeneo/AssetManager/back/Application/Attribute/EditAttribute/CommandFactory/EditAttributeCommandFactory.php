@@ -10,8 +10,7 @@ namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory
  */
 class EditAttributeCommandFactory implements EditAttributeCommandFactoryInterface
 {
-    /** @var EditAttributeCommandFactoryRegistryInterface */
-    private $editAttributeCommandFactoryRegistry;
+    private EditAttributeCommandFactoryRegistryInterface $editAttributeCommandFactoryRegistry;
 
     public function __construct(EditAttributeCommandFactoryRegistryInterface $editAttributeCommandFactoryRegistry)
     {
@@ -33,11 +32,10 @@ class EditAttributeCommandFactory implements EditAttributeCommandFactoryInterfac
         foreach ($this->editAttributeCommandFactoryRegistry->getFactories($normalizedCommand) as $editCommandFactory) {
             $editCommands[] = $editCommandFactory->create($normalizedCommand);
         }
-        $command = new EditAttributeCommand(
+
+        return new EditAttributeCommand(
             $normalizedCommand['identifier'],
             $editCommands
         );
-
-        return $command;
     }
 }

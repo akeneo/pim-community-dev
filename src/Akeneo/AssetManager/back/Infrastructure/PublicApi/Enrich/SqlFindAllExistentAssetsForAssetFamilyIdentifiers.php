@@ -21,8 +21,7 @@ use Doctrine\DBAL\Connection;
  */
 final class SqlFindAllExistentAssetsForAssetFamilyIdentifiers
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {

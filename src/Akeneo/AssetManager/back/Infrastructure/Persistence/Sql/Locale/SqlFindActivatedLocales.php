@@ -24,11 +24,9 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindActivatedLocales implements FindActivatedLocalesInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var AbstractPlatform */
-    private $platform;
+    private AbstractPlatform $platform;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -52,12 +50,10 @@ SQL;
         $results = $statement->fetchAll();
 
         return array_map(function (array $row) {
-            $localesCode = Type::getType(Type::STRING)->convertToPHPValue(
+            return Type::getType(Type::STRING)->convertToPHPValue(
                 $row['locales_codes'],
                 $this->platform
             );
-
-            return $localesCode;
         }, $results ?? []);
     }
 }

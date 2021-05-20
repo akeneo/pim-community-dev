@@ -29,35 +29,25 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAttributeOptionAction
 {
-    /** @var Router */
-    private $router;
+    private Router $router;
 
-    /** @var AttributeOptionValidator */
-    private $jsonSchemaValidator;
+    private AttributeOptionValidator $jsonSchemaValidator;
 
-    /** @var ValidatorInterface */
-    private $businessRulesValidator;
+    private ValidatorInterface $businessRulesValidator;
 
-    /** @var AssetFamilyExistsInterface */
-    private $assetFamilyExists;
+    private AssetFamilyExistsInterface $assetFamilyExists;
 
-    /** @var AttributeExistsInterface */
-    private $attributeExists;
+    private AttributeExistsInterface $attributeExists;
 
-    /** @var AttributeSupportsOptions */
-    private $attributeSupportsOptions;
+    private AttributeSupportsOptions $attributeSupportsOptions;
 
-    /** @var GetAttributeIdentifierInterface */
-    private $getAttributeIdentifier;
+    private GetAttributeIdentifierInterface $getAttributeIdentifier;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var EditAttributeOptionHandler */
-    private $editAttributeOptionHandler;
+    private EditAttributeOptionHandler $editAttributeOptionHandler;
 
-    /** @var AppendAttributeOptionHandler */
-    private $appendAttributeOptionHandler;
+    private AppendAttributeOptionHandler $appendAttributeOptionHandler;
 
     public function __construct(
         Router $router,
@@ -115,13 +105,13 @@ class CreateOrUpdateAttributeOptionAction
 
         $assetFamilyExists = $this->assetFamilyExists->withIdentifier($assetFamilyIdentifier);
 
-        if (false === $assetFamilyExists) {
+        if (!$assetFamilyExists) {
             throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $assetFamilyIdentifier));
         }
 
         $attributeExists = $this->attributeExists->withAssetFamilyAndCode($assetFamilyIdentifier, $attributeCode);
 
-        if (false === $attributeExists) {
+        if (!$attributeExists) {
             throw new NotFoundHttpException(sprintf(
                 'Attribute "%s" does not exist for asset family "%s".',
                 (string) $attributeCode,
@@ -131,7 +121,7 @@ class CreateOrUpdateAttributeOptionAction
 
         $attributeSupportsOptions = $this->attributeSupportsOptions->supports($assetFamilyIdentifier, $attributeCode);
 
-        if (false === $attributeSupportsOptions) {
+        if (!$attributeSupportsOptions) {
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not support options.', $attributeCode));
         }
 
@@ -212,8 +202,6 @@ class CreateOrUpdateAttributeOptionAction
         $attributeIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode($assetFamilyIdentifier, $attributeCode);
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
 
-        $optionExists = $attribute->hasAttributeOption($optionCode);
-
-        return $optionExists;
+        return $attribute->hasAttributeOption($optionCode);
     }
 }

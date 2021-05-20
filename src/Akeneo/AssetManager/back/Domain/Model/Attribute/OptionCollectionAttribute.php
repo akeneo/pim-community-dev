@@ -20,7 +20,7 @@ class OptionCollectionAttribute extends AbstractAttribute
     private const MAX_OPTIONS = 100;
 
     /** @var AttributeOption[] */
-    private $attributeOptions = [];
+    private array $attributeOptions = [];
 
     public static function create(
         AttributeIdentifier $identifier,
@@ -99,9 +99,7 @@ class OptionCollectionAttribute extends AbstractAttribute
             parent::normalize(),
             [
                 'options' => array_map(
-                    function (AttributeOption $attributeOption) {
-                        return $attributeOption->normalize();
-                    },
+                    fn(AttributeOption $attributeOption) => $attributeOption->normalize(),
                     $this->getAttributeOptions()
                 ),
             ]

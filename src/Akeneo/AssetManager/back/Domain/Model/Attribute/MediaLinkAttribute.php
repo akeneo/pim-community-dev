@@ -27,14 +27,11 @@ class MediaLinkAttribute extends AbstractAttribute
 {
     public const ATTRIBUTE_TYPE = 'media_link';
 
-    /** @var Prefix  */
-    private $prefix;
+    private Prefix $prefix;
 
-    /** @var Suffix  */
-    private $suffix;
+    private Suffix $suffix;
 
-    /** @var MediaType  */
-    private $mediaType;
+    private MediaType $mediaType;
 
     private function __construct(
         AttributeIdentifier $identifier,

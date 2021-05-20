@@ -16,16 +16,15 @@ namespace Akeneo\AssetManager\Application\Attribute\EditAttributeOption;
 class EditAttributeOptionCommand
 {
     /**@var string */
-    public $assetFamilyIdentifier;
+    public string $assetFamilyIdentifier;
 
     /**@var string */
-    public $attributeCode;
+    public string $attributeCode;
 
     /**@var string */
-    public $optionCode;
+    public string $optionCode;
 
-    /** @var array|null */
-    public $labels;
+    public ?array $labels = null;
 
     public function __construct(
         string $assetFamilyIdentifier,

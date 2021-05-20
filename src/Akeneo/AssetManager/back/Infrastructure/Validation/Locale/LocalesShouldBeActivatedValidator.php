@@ -25,8 +25,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class LocalesShouldBeActivatedValidator extends ConstraintValidator
 {
-    /** @var FindActivatedLocalesByIdentifiersInterface */
-    private $findActivatedLocales;
+    private FindActivatedLocalesByIdentifiersInterface $findActivatedLocales;
 
     public function __construct(FindActivatedLocalesByIdentifiersInterface $findActivatedLocales)
     {

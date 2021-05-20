@@ -10,8 +10,7 @@ namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory
  */
 class EditRegularExpressionCommand extends AbstractEditAttributeCommand
 {
-    /** @var string|null */
-    public $regularExpression;
+    public ?string $regularExpression = null;
 
     public function __construct(string $identifier, ?string $regularExpression)
     {

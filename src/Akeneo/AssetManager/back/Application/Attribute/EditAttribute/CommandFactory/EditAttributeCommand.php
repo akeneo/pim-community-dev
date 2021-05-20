@@ -11,7 +11,7 @@ namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory
 class EditAttributeCommand extends AbstractEditAttributeCommand
 {
     /** @var AbstractEditAttributeCommand[] */
-    public $editCommands = [];
+    public array $editCommands = [];
 
     public function __construct(string $identifier, array $editCommands)
     {

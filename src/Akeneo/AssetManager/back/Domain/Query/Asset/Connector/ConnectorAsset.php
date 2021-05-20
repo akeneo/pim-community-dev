@@ -23,11 +23,9 @@ use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
  */
 class ConnectorAsset
 {
-    /** @var AssetCode */
-    private $code;
+    private AssetCode $code;
 
-    /** @var array */
-    private $normalizedValues;
+    private array $normalizedValues;
 
     public function __construct(AssetCode $code, array $normalizedValues)
     {
@@ -47,10 +45,8 @@ class ConnectorAsset
     {
         $filteredValues = [];
         foreach ($this->normalizedValues as $key => $normalizedValue) {
-            $filteredValue = array_values(array_filter($normalizedValue, function ($value) use ($channelIdentifier) {
-                return null === $value['channel']
-                    || $channelIdentifier->equals(ChannelIdentifier::fromCode($value['channel']));
-            }));
+            $filteredValue = array_values(array_filter($normalizedValue, fn($value) => null === $value['channel']
+                || $channelIdentifier->equals(ChannelIdentifier::fromCode($value['channel']))));
 
             if (!empty($filteredValue)) {
                 $filteredValues[$key] = $filteredValue;
@@ -64,16 +60,10 @@ class ConnectorAsset
     {
         $localeCodes = $localeIdentifiers->normalize();
 
-        $filteredValues = array_map(function ($normalizedValue) use ($localeCodes) {
-            return array_values(array_filter($normalizedValue, function ($value) use ($localeCodes) {
-                return null === $value['locale']
-                    || in_array($value['locale'], $localeCodes);
-            }));
-        }, $this->normalizedValues);
+        $filteredValues = array_map(fn($normalizedValue) => array_values(array_filter($normalizedValue, fn($value) => null === $value['locale']
+            || in_array($value['locale'], $localeCodes))), $this->normalizedValues);
 
-        $filteredValues = array_filter($filteredValues, function ($filteredValue) {
-            return !empty($filteredValue);
-        });
+        $filteredValues = array_filter($filteredValues, fn($filteredValue) => !empty($filteredValue));
 
         return new self($this->code, $filteredValues);
     }

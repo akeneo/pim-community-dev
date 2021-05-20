@@ -21,11 +21,9 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorAttributeAction
 {
-    /** @var FindConnectorAttributeByIdentifierAndCodeInterface */
-    private $findConnectorAttributeQuery;
+    private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery;
 
-    /** @var AssetFamilyExistsInterface */
-    private $assetFamilyExists;
+    private AssetFamilyExistsInterface $assetFamilyExists;
 
     public function __construct(
         FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery,
@@ -49,7 +47,7 @@ class GetConnectorAttributeAction
 
         $assetFamilyExists = $this->assetFamilyExists->withIdentifier($assetFamilyIdentifier);
 
-        if (false === $assetFamilyExists) {
+        if (!$assetFamilyExists) {
             throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $assetFamilyIdentifier));
         }
 

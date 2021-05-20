@@ -42,11 +42,9 @@ class OptionsUpdater implements AttributeUpdaterInterface
      */
     private function createOptions(EditOptionsCommand $command): array
     {
-        return array_map(function (array $attributeOption) {
-            return AttributeOption::create(
-                OptionCode::fromString($attributeOption['code']),
-                LabelCollection::fromArray($attributeOption['labels'])
-            );
-        }, $command->options);
+        return array_map(fn(array $attributeOption) => AttributeOption::create(
+            OptionCode::fromString($attributeOption['code']),
+            LabelCollection::fromArray($attributeOption['labels'])
+        ), $command->options);
     }
 }

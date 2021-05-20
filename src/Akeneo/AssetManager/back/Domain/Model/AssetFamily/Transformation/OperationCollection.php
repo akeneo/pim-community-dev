@@ -18,7 +18,7 @@ use Webmozart\Assert\Assert;
 class OperationCollection implements \IteratorAggregate
 {
     /** @var Operation[] */
-    private $operations = [];
+    private array $operations = [];
 
     private function __construct(array $operations)
     {
@@ -43,9 +43,7 @@ class OperationCollection implements \IteratorAggregate
 
     public function normalize(): array
     {
-        return array_map(function (Operation $operation) {
-            return $operation->normalize();
-        }, $this->operations);
+        return array_map(fn(Operation $operation) => $operation->normalize(), $this->operations);
     }
 
     public function equals(OperationCollection $otherOperationCollection): bool
@@ -55,6 +53,6 @@ class OperationCollection implements \IteratorAggregate
 
     public function hasOperation(string $operationType): bool
     {
-        return false !== array_search($operationType, array_column($this->normalize(), 'type'), true);
+        return in_array($operationType, array_column($this->normalize(), 'type'), true);
     }
 }

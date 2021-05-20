@@ -26,14 +26,11 @@ class ResolutionOperation implements Operation
     private const OPERATION_NAME = 'resolution';
     private const RESOLUTION_UNIT_CHOICES = ['ppc', 'ppi'];
 
-    /** @var int */
-    private $resolutionX;
+    private int $resolutionX;
 
-    /** @var int */
-    private $resolutionY;
+    private int $resolutionY;
 
-    /** @var string */
-    private $resolutionUnit;
+    private string $resolutionUnit;
 
     private function __construct(int $resolutionX, int $resolutionY, string $resolutionUnit)
     {

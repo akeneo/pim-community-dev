@@ -18,26 +18,19 @@ namespace Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily;
  */
 class EditAssetFamilyCommand
 {
-    /** @var string */
-    public $identifier;
+    public string $identifier;
 
-    /** @var array */
-    public $labels;
+    public array $labels;
 
-    /** @var array|null */
-    public $image;
+    public ?array $image = null;
 
-    /** @var string|null */
-    public $attributeAsMainMedia;
+    public ?string $attributeAsMainMedia = null;
 
-    /** @var array|null */
-    public $productLinkRules;
+    public ?array $productLinkRules = null;
 
-    /** @var array|null */
-    public $transformations;
+    public ?array $transformations = null;
 
-    /** @var array|null */
-    public $namingConvention;
+    public ?array $namingConvention = null;
 
     public function __construct(
         string $identifier,

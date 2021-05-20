@@ -18,8 +18,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class RemoveAssetFromIndexSubscriber implements EventSubscriberInterface
 {
-    /** @var AssetIndexerInterface */
-    private $assetIndexer;
+    private AssetIndexerInterface $assetIndexer;
 
     public function __construct(AssetIndexerInterface $assetIndexer)
     {

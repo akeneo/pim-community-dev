@@ -23,11 +23,9 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
  */
 class AssetFamilyQuery
 {
-    /** @var int|null */
-    private $size;
+    private ?int $size = null;
 
-    /** @var AssetFamilyIdentifier|null */
-    private $searchAfterIdentifier;
+    private ?AssetFamilyIdentifier $searchAfterIdentifier = null;
 
     private function __construct(
         int $size,

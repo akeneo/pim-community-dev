@@ -147,9 +147,7 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
                             $attributeFilter['value']
                         );
 
-                        $value = array_values(array_map(function (AssetIdentifier $assetIdentifier) {
-                            return (string) $assetIdentifier;
-                        }, $assetIdentifiers));
+                        $value = array_values(array_map(fn(AssetIdentifier $assetIdentifier) => (string) $assetIdentifier, $assetIdentifiers));
                     }
 
                     $valueKey = $this->getValueKeyForAttributeChannelAndLocale->fetch(
@@ -186,12 +184,9 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
     {
         $loweredTerms = strtolower($searchFilter['value']);
         $terms = explode(' ', $loweredTerms);
-        $wildcardTerms = array_map(function (string $term) {
-            return sprintf('*%s*', QueryString::escapeValue($term));
-        }, $terms);
-        $query = implode(' AND ', $wildcardTerms);
+        $wildcardTerms = array_map(fn(string $term) => sprintf('*%s*', QueryString::escapeValue($term)), $terms);
 
-        return $query;
+        return implode(' AND ', $wildcardTerms);
     }
 
     private function getRequiredValueKeys(
@@ -217,32 +212,28 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
             LocaleIdentifierCollection::fromNormalized($locales)
         );
         if (true === $completeFilter['value']) {
-            $clauses = array_map(function (string $requiredValueKey) {
-                return [
-                    'exists' => [
-                        'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
-                    ],
-                ];
-            }, $requiredValueKeys->normalize());
+            $clauses = array_map(fn(string $requiredValueKey) => [
+                'exists' => [
+                    'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
+                ],
+            ], $requiredValueKeys->normalize());
             $query['query']['constant_score']['filter']['bool']['filter'] = array_merge(
                 $query['query']['constant_score']['filter']['bool']['filter'],
                 $clauses
             );
         }
         if (false === $completeFilter['value']) {
-            $clauses = array_map(function (string $requiredValueKey) {
-                return [
-                    'bool' => [
-                        'must_not' => [
-                            [
-                                'exists' => [
-                                    'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
-                                ],
+            $clauses = array_map(fn(string $requiredValueKey) => [
+                'bool' => [
+                    'must_not' => [
+                        [
+                            'exists' => [
+                                'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
                             ],
                         ],
                     ],
-                ];
-            }, $requiredValueKeys->normalize());
+                ],
+            ], $requiredValueKeys->normalize());
             $query['query']['constant_score']['filter']['bool']['minimum_should_match'] = 1;
             $query['query']['constant_score']['filter']['bool']['should'] = array_merge(
                 $query['query']['constant_score']['filter']['bool']['should'] ?? [],

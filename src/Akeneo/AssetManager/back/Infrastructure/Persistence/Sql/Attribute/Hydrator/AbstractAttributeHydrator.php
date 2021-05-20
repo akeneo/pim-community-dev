@@ -16,8 +16,7 @@ use Doctrine\DBAL\Types\Type;
  */
 abstract class AbstractAttributeHydrator implements AttributeHydratorInterface
 {
-    /** @var AbstractPlatform */
-    private $platform;
+    private AbstractPlatform $platform;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -35,13 +34,12 @@ abstract class AbstractAttributeHydrator implements AttributeHydratorInterface
 
     protected function checkRowProperties(array $row): void
     {
-        $additionalKeys = array_keys($row);
-        if (in_array('additional_properties', $additionalKeys)) {
+        if (array_key_exists('additional_properties', $row)) {
             $additionalKeys = array_keys(json_decode($row['additional_properties'], true));
             unset($row['additional_properties']);
         }
 
-        $actualKeys = array_merge(array_keys($row), $additionalKeys);
+        $actualKeys = [...array_keys($row), ...$additionalKeys];
         $missingKeys = array_diff($this->getExpectedProperties(), $actualKeys);
 
         if (!empty($missingKeys)) {

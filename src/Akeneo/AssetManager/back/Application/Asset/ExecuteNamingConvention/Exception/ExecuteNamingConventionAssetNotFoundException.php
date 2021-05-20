@@ -8,8 +8,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 
 final class ExecuteNamingConventionAssetNotFoundException extends AbstractExecuteNamingConventionException
 {
-    /** @var AssetIdentifier */
-    private $assetIdentifier;
+    private AssetIdentifier $assetIdentifier;
 
     public function __construct(
         AssetIdentifier $assetIdentifier,

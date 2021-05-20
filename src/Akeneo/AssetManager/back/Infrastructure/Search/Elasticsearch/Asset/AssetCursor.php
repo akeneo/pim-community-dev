@@ -124,9 +124,7 @@ class AssetCursor implements CursorInterface
 
     private function getCodes(array $matches): array
     {
-        return array_map(function (array $hit) {
-            return $hit['_source']['code'];
-        }, $matches['hits']['hits']);
+        return array_map(fn(array $hit) => $hit['_source']['code'], $matches['hits']['hits']);
     }
 
     private function nextPage()

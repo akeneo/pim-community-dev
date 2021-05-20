@@ -19,8 +19,7 @@ namespace Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily;
  */
 class DeleteAssetFamilyCommand
 {
-    /** @var string */
-    public $identifier;
+    public string $identifier;
 
     public function __construct(string $identifier)
     {

@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
+use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -37,11 +40,11 @@ class ImageValidator extends ConstraintValidator
 
         $validator = Validation::createValidator();
         $violations = $validator->validate($image, [
-                new Constraints\Type(['type' => 'array']),
-                new Constraints\Collection(
+                new Type(['type' => 'array']),
+                new Collection(
                     [
-                        'originalFilename' => [new Constraints\NotBlank(), new Constraints\Type('string')],
-                        'filePath' => [new Constraints\NotBlank(), new Constraints\Type('string')],
+                        'originalFilename' => [new NotBlank(), new Type('string')],
+                        'filePath' => [new NotBlank(), new Type('string')],
                     ]
                 )
             ]

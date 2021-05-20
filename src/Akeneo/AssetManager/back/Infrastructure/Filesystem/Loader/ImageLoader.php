@@ -28,10 +28,7 @@ use Symfony\Component\Mime\MimeTypesInterface;
  */
 class ImageLoader implements LoaderInterface
 {
-    /**
-     * @var FilesystemInterface
-     */
-    protected $filesystem;
+    protected FilesystemInterface $filesystem;
 
     /**
      * @var MimeTypesInterface|DeprecatedExtensionGuesserInterface
@@ -59,7 +56,7 @@ class ImageLoader implements LoaderInterface
      */
     public function find($path)
     {
-        if (false === $this->filesystem->has($path)) {
+        if (!$this->filesystem->has($path)) {
             throw new NotLoadableException(sprintf('Source image "%s" not found.', $path));
         }
 

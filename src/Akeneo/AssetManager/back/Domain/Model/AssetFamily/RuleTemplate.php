@@ -33,10 +33,10 @@ class RuleTemplate
     public const ASSIGN_ASSETS_TO = 'assign_assets_to';
 
     /** @var Condition[] */
-    private $conditions;
+    private array $conditions;
 
     /** @var Action[] */
-    private $actions;
+    private array $actions;
 
     private function __construct(array $conditions, array $actions)
     {
@@ -54,13 +54,9 @@ class RuleTemplate
         Assert::keyExists($content, self::CONDITIONS);
         Assert::keyExists($content, self::ACTIONS);
 
-        $conditions = array_map(function (array $condition) {
-            return Condition::createFromNormalized($condition);
-        }, $content[self::CONDITIONS]);
+        $conditions = array_map(fn(array $condition) => Condition::createFromNormalized($condition), $content[self::CONDITIONS]);
 
-        $actions = array_map(function (array $action) {
-            return Action::createFromNormalized($action);
-        }, $content[self::ACTIONS]);
+        $actions = array_map(fn(array $action) => Action::createFromNormalized($action), $content[self::ACTIONS]);
 
         return new self($conditions, $actions);
     }
@@ -96,28 +92,18 @@ class RuleTemplate
 
     public function compile(PropertyAccessibleAsset $propertyAccessibleAsset): CompiledRule
     {
-        $compiledConditions = array_map(function (Condition $condition) use ($propertyAccessibleAsset) {
-            return $condition->compile($propertyAccessibleAsset)->normalize();
-        }, $this->conditions);
+        $compiledConditions = array_map(fn(Condition $condition) => $condition->compile($propertyAccessibleAsset)->normalize(), $this->conditions);
 
-        $compiledActions = array_map(function (Action $action) use ($propertyAccessibleAsset) {
-            return $action->compile($propertyAccessibleAsset)->normalize();
-        }, $this->actions);
+        $compiledActions = array_map(fn(Action $action) => $action->compile($propertyAccessibleAsset)->normalize(), $this->actions);
 
         return new CompiledRule($compiledConditions, $compiledActions);
     }
 
     public function normalize(): array
     {
-        $normalizedConditions = array_map(function (Condition $condition) {
-            /** @var Condition $condition */
-            return $condition->normalize();
-        }, $this->conditions);
+        $normalizedConditions = array_map(fn(Condition $condition) => $condition->normalize(), $this->conditions);
 
-        $normalizedActions = array_map(function (Action $action) {
-            /** @var Action $action */
-            return $action->normalize();
-        }, $this->actions);
+        $normalizedActions = array_map(fn(Action $action) => $action->normalize(), $this->actions);
 
         return [
             self::CONDITIONS => $normalizedConditions,
@@ -127,15 +113,11 @@ class RuleTemplate
 
     private static function createConditions(array $content): array
     {
-        return array_map(function (array $condition) {
-            return Condition::createFromProductLinkRule($condition);
-        }, $content[self::PRODUCT_SELECTIONS]);
+        return array_map(fn(array $condition) => Condition::createFromProductLinkRule($condition), $content[self::PRODUCT_SELECTIONS]);
     }
 
     private static function createActions(array $content): array
     {
-        return array_map(function (array $action) {
-            return Action::createFromProductLinkRule($action);
-        }, $content[self::ASSIGN_ASSETS_TO]);
+        return array_map(fn(array $action) => Action::createFromProductLinkRule($action), $content[self::ASSIGN_ASSETS_TO]);
     }
 }

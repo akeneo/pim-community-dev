@@ -25,11 +25,9 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindConnectorAssetFamilyByAssetFamilyIdentifier implements FindConnectorAssetFamilyByAssetFamilyIdentifierInterface
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
-    /** @var ConnectorAssetFamilyHydrator */
-    private $assetFamilyHydrator;
+    private ConnectorAssetFamilyHydrator $assetFamilyHydrator;
 
     public function __construct(
         Connection $connection,

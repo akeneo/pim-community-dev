@@ -42,38 +42,28 @@ class AssetFamilyDetails
     public const NAMING_CONVENTION = 'naming_convention';
     public const PRODUCT_LINK_RULES = 'product_link_rules';
 
-    /** @var AssetFamilyIdentifier */
-    public $identifier;
+    public AssetFamilyIdentifier $identifier;
 
-    /** @var LabelCollection */
-    public $labels;
+    public LabelCollection $labels;
 
-    /** @var Image */
-    public $image;
+    public Image $image;
 
-    /** @var int */
-    public $assetCount;
+    public int $assetCount;
 
     /** @var AttributeDetails[] */
-    public $attributes;
+    public array $attributes;
 
-    /** @var AttributeAsLabelReference */
-    public $attributeAsLabel;
+    public AttributeAsLabelReference $attributeAsLabel;
 
-    /** @var AttributeAsMainMediaReference */
-    public $attributeAsMainMedia;
+    public AttributeAsMainMediaReference $attributeAsMainMedia;
 
-    /** @var ConnectorTransformationCollection */
-    public $transformations;
+    public ConnectorTransformationCollection $transformations;
 
-    /** @var NamingConventionInterface */
-    public $namingConvention;
+    public NamingConventionInterface $namingConvention;
 
-    /** @var array */
-    public $productLinkRules;
+    public array $productLinkRules;
 
-    /** @var bool */
-    public $isAllowedToEdit = true;
+    public bool $isAllowedToEdit = true;
 
     private const EDIT_PERMISSION = 'edit';
 
@@ -84,9 +74,7 @@ class AssetFamilyDetails
             self::LABELS       => $this->labels->normalize(),
             self::IMAGE        => $this->image->normalize(),
             self::ASSET_COUNT => $this->assetCount,
-            self::ATTRIBUTES   => array_map(function (AttributeDetails $attribute) {
-                return $attribute->normalize();
-            }, $this->attributes),
+            self::ATTRIBUTES   => array_map(fn(AttributeDetails $attribute) => $attribute->normalize(), $this->attributes),
             self::PERMISSION => [
                 self::EDIT_PERMISSION => $this->isAllowedToEdit,
             ],

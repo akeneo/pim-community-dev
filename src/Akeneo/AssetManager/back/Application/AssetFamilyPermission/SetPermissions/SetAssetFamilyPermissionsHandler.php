@@ -17,8 +17,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyPermissionRepositoryInterfa
  */
 class SetAssetFamilyPermissionsHandler
 {
-    /** @var AssetFamilyPermissionRepositoryInterface */
-    private $repository;
+    private AssetFamilyPermissionRepositoryInterface $repository;
 
     public function __construct(AssetFamilyPermissionRepositoryInterface $assetFamilyPermissionRepository)
     {

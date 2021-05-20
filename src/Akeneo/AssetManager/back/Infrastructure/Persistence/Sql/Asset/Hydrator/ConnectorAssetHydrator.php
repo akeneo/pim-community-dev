@@ -28,11 +28,9 @@ use Webmozart\Assert\Assert;
  */
 class ConnectorAssetHydrator
 {
-    /** @var AbstractPlatform */
-    private $platform;
+    private AbstractPlatform $platform;
 
-    /** @var ConnectorValueTransformerRegistry */
-    private $valueTransformerRegistry;
+    private ConnectorValueTransformerRegistry $valueTransformerRegistry;
 
     public function __construct(
         Connection $connection,
@@ -60,9 +58,8 @@ class ConnectorAssetHydrator
         }
 
         $normalizedValues = $this->normalizeValues($filteredRawValues, $attributes);
-        $connectorAsset = new ConnectorAsset(AssetCode::fromString($assetCode), $normalizedValues);
 
-        return $connectorAsset;
+        return new ConnectorAsset(AssetCode::fromString($assetCode), $normalizedValues);
     }
 
     private function normalizeValues(array $rawValues, array $attributes): array

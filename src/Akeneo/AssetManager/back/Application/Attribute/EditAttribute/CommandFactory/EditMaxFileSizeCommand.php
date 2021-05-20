@@ -19,8 +19,7 @@ namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory
  */
 class EditMaxFileSizeCommand extends AbstractEditAttributeCommand
 {
-    /** @var string|null */
-    public $maxFileSize;
+    public ?string $maxFileSize = null;
 
     public function __construct(string $identifier, ?string $maxFileSize)
     {

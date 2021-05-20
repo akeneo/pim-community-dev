@@ -16,8 +16,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindUserGroupsForSecurityIdentifier implements FindUserGroupsForSecurityIdentifierInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -45,9 +44,8 @@ SQL;
             $query,
             ['security_identifier' => $securityIdentifier->stringValue()]
         );
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
-        return $results;
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     private function hydrateUserGroupIdentifiers($results): array
@@ -57,7 +55,8 @@ SQL;
         }
 
         $platform = $this->sqlConnection->getDatabasePlatform();
-        $userGroupIdentifiers = array_map(function ($normalizedUserGroupIdentifier) use ($platform) {
+
+        return array_map(function ($normalizedUserGroupIdentifier) use ($platform) {
             $identifier = Type::getType(Type::INTEGER)->convertToPhpValue(
                 $normalizedUserGroupIdentifier['group_id'],
                 $platform
@@ -65,7 +64,5 @@ SQL;
 
             return UserGroupIdentifier::fromInteger($identifier);
         }, $results);
-
-        return $userGroupIdentifiers;
     }
 }

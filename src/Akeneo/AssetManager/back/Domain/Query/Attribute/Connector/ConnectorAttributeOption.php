@@ -19,11 +19,9 @@ class ConnectorAttributeOption
     private const OPTION_CODE = 'code';
     private const LABELS = 'labels';
 
-    /** @var OptionCode */
-    private $code;
+    private OptionCode $code;
 
-    /** @var LabelCollection */
-    private $labels;
+    private LabelCollection $labels;
 
     public function __construct(OptionCode $code, LabelCollection $labels)
     {

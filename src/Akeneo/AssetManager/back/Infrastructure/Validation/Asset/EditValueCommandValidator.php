@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\IsNull;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
@@ -24,14 +27,11 @@ use Symfony\Component\Validator\Validation;
  */
 class EditValueCommandValidator extends ConstraintValidator
 {
-    /** @var ChannelExistsInterface */
-    private $channelExists;
+    private ChannelExistsInterface $channelExists;
 
-    /** @var FindActivatedLocalesPerChannelsInterface */
-    private $findActivatedLocalesPerChannels;
+    private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels;
 
-    /** @var FindActivatedLocalesByIdentifiersInterface */
-    private $findActivatedLocalesByIdentifiers;
+    private FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers;
 
     public function __construct(
         ChannelExistsInterface $channelExists,
@@ -92,37 +92,35 @@ class EditValueCommandValidator extends ConstraintValidator
     private function checkChannelType(AbstractEditValueCommand $command): ConstraintViolationListInterface
     {
         if ($command->attribute->hasValuePerChannel()) {
-            $constraintNotNull = new Constraints\NotNull();
+            $constraintNotNull = new NotNull();
             $constraintNotNull->message = EditValueCommand::CHANNEL_IS_EXPECTED;
-            $constraints = [ $constraintNotNull, new Constraints\Type('string')];
+            $constraints = [ $constraintNotNull, new Type('string')];
         } else {
-            $constraintNull = new Constraints\IsNull();
+            $constraintNull = new IsNull();
             $constraintNull->message = EditValueCommand::CHANNEL_IS_NOT_EXPECTED;
             $constraints = [$constraintNull];
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($command->channel, $constraints);
 
-        return $violations;
+        return $validator->validate($command->channel, $constraints);
     }
 
     private function checkLocaleType(AbstractEditValueCommand $command): ConstraintViolationListInterface
     {
         if ($command->attribute->hasValuePerLocale()) {
-            $constraintNotNull = new Constraints\NotNull();
+            $constraintNotNull = new NotNull();
             $constraintNotNull->message = EditValueCommand::LOCALE_IS_EXPECTED;
-            $constraints = [ $constraintNotNull, new Constraints\Type('string')];
+            $constraints = [ $constraintNotNull, new Type('string')];
         } else {
-            $constraintNull = new Constraints\IsNull();
+            $constraintNull = new IsNull();
             $constraintNull->message = EditValueCommand::LOCALE_IS_NOT_EXPECTED;
             $constraints = [$constraintNull];
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($command->locale, $constraints);
 
-        return $violations;
+        return $validator->validate($command->locale, $constraints);
     }
 
     private function checkScopableValue(AbstractEditValueCommand $command): void

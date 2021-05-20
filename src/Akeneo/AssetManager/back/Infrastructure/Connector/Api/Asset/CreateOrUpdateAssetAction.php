@@ -46,41 +46,29 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateOrUpdateAssetAction
 {
-    /** @var AssetFamilyExistsInterface */
-    private $assetFamilyExists;
+    private AssetFamilyExistsInterface $assetFamilyExists;
 
-    /** @var AssetExistsInterface */
-    private $assetExists;
+    private AssetExistsInterface $assetExists;
 
-    /** @var EditAssetCommandFactory */
-    private $editAssetCommandFactory;
+    private \Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\Connector\EditAssetCommandFactory $editAssetCommandFactory;
 
-    /** @var EditAssetHandler */
-    private $editAssetHandler;
+    private EditAssetHandler $editAssetHandler;
 
-    /** @var CreateAssetHandler */
-    private $createAssetHandler;
+    private CreateAssetHandler $createAssetHandler;
 
-    /** @var Router */
-    private $router;
+    private Router $router;
 
-    /** @var AssetValidator */
-    private $assetStructureValidator;
+    private AssetValidator $assetStructureValidator;
 
-    /** @var ValidatorInterface */
-    private $assetDataValidator;
+    private ValidatorInterface $assetDataValidator;
 
-    /** @var BatchAssetsToLink */
-    private $batchAssetsToLink;
+    private BatchAssetsToLink $batchAssetsToLink;
 
-    /** @var NamingConventionEditAssetCommandFactory */
-    private $namingConventionEditAssetCommandFactory;
+    private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory;
 
-    /** @var IndexAssetEventAggregator */
-    private $indexAssetEventAggregator;
+    private \Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface $indexAssetEventAggregator;
 
-    /** @var ComputeTransformationEventAggregatorInterface */
-    private $computeTransformationEventAggregator;
+    private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator;
 
     public function __construct(
         AssetFamilyExistsInterface $assetFamilyExists,

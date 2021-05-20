@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\LessThanOrEqual;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -34,7 +37,7 @@ class MaxFileSizeValidator extends ConstraintValidator
 
         $validator = Validation::createValidator();
         $violations = $validator->validate($maxFileSize, [
-            new Constraints\Callback(function ($value, ExecutionContextInterface $context, $payload) {
+            new Callback(function ($value, ExecutionContextInterface $context, $payload) {
                 if (null !== $value && !is_numeric($value)) {
                     $context->buildViolation(MaxFileSize::MESSAGE_SHOULD_BE_A_NUMBER)->addViolation();
                 }
@@ -43,8 +46,8 @@ class MaxFileSizeValidator extends ConstraintValidator
 
         if (null !== $maxFileSize && 0 === $violations->count()) {
             $violations->addAll($validator->validate((float) $maxFileSize, [
-                new Constraints\LessThanOrEqual(9999.99),
-                new Constraints\GreaterThan(0),
+                new LessThanOrEqual(9999.99),
+                new GreaterThan(0),
             ]));
         }
 

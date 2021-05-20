@@ -30,41 +30,30 @@ class AssetQuery
     private const PAGINATE_USING_OFFSET = 'offset';
     private const PAGINATE_USING_SEARCH_AFTER = 'search_after';
 
-    /** @var ChannelReference */
-    private $channel;
+    private ChannelReference $channel;
 
-    /** @var LocaleReference */
-    private $locale;
+    private LocaleReference $locale;
 
-    /** @var array */
-    private $filters;
+    private array $filters;
 
-    /** @var int|null */
-    private $page;
+    private ?int $page = null;
 
-    /** @var int|null */
-    private $size;
+    private ?int $size = null;
 
-    /** @var AssetCode|null */
-    private $searchAfterCode;
+    private ?AssetCode $searchAfterCode = null;
 
-    /** @var string */
-    private $paginationMethod;
+    private string $paginationMethod;
 
     /**
      * If defined, the asset values will be filtered by the given channel.
      * The values without channel will not be filtered.
-     *
-     * @var ChannelReference
      */
-    private $channelReferenceValuesFilter;
+    private ChannelReference $channelReferenceValuesFilter;
 
     /**
      * To filter the values by locales. The values without locale will not be filtered.
-     *
-     * @var LocaleIdentifierCollection
      */
-    private $localeIdentifiersValuesFilter;
+    private LocaleIdentifierCollection $localeIdentifiersValuesFilter;
 
     private function __construct(
         ChannelReference $channel,
@@ -78,9 +67,9 @@ class AssetQuery
         ?AssetCode $searchAfterCode
     ) {
         foreach ($filters as $filter) {
-            if (!(key_exists('field', $filter) &&
-                key_exists('operator', $filter) &&
-                key_exists('value', $filter))) {
+            if (!(array_key_exists('field', $filter) &&
+                array_key_exists('operator', $filter) &&
+                array_key_exists('value', $filter))) {
                 throw new \InvalidArgumentException('AssetQuery expect an array of filters with a field, value, operator and context');
             }
         }
@@ -104,11 +93,11 @@ class AssetQuery
 
     public static function createFromNormalized(array $normalizedQuery): AssetQuery
     {
-        if (!(key_exists('channel', $normalizedQuery) &&
-            key_exists('locale', $normalizedQuery) &&
-            key_exists('filters', $normalizedQuery) &&
-            key_exists('page', $normalizedQuery) &&
-            key_exists('size', $normalizedQuery))) {
+        if (!(array_key_exists('channel', $normalizedQuery) &&
+            array_key_exists('locale', $normalizedQuery) &&
+            array_key_exists('filters', $normalizedQuery) &&
+            array_key_exists('page', $normalizedQuery) &&
+            array_key_exists('size', $normalizedQuery))) {
             throw new \InvalidArgumentException('AssetQuery expect a channel, a locale, filters, a page and a size');
         }
 
@@ -221,7 +210,7 @@ class AssetQuery
         }));
 
         if (empty($filters)) {
-            throw new \InvalidArgumentException(sprintf('No filter found on values'));
+            throw new \InvalidArgumentException('No filter found on values');
         }
 
         return $filters;
@@ -229,9 +218,7 @@ class AssetQuery
 
     public function getFilter(string $field): array
     {
-        $filter = current(array_filter($this->filters, function ($filter) use ($field) {
-            return $filter['field'] === $field;
-        }));
+        $filter = current(array_filter($this->filters, fn($filter) => $filter['field'] === $field));
 
         if (false === $filter) {
             throw new \InvalidArgumentException(sprintf('The query needs to contains a filter on the "%s" field', $field));

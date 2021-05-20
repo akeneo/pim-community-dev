@@ -24,7 +24,7 @@ class RuleTemplateCollection implements \IteratorAggregate
     public const EMPTY = [];
 
     /** @var RuleTemplate[] */
-    private $ruleTemplates;
+    private array $ruleTemplates;
 
     private function __construct(array $ruleTemplates)
     {

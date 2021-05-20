@@ -19,8 +19,7 @@ namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory
  */
 class EditLabelsCommand extends AbstractEditAttributeCommand
 {
-    /** @var array */
-    public $labels;
+    public array $labels;
 
     public function __construct(string $identifier, array $labels)
     {

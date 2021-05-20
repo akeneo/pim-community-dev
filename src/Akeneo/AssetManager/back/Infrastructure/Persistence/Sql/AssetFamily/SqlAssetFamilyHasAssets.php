@@ -25,8 +25,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlAssetFamilyHasAssets implements AssetFamilyHasAssetsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -49,19 +48,17 @@ class SqlAssetFamilyHasAssets implements AssetFamilyHasAssetsInterface
             WHERE asset_family_identifier = :asset_family_identifier
         ) as has_assets
 SQL;
-        $statement = $this->sqlConnection->executeQuery($query, [
+
+        return $this->sqlConnection->executeQuery($query, [
             'asset_family_identifier' => $assetFamilyIdentifier,
         ]);
-
-        return $statement;
     }
 
     private function doesAssetFamilyHaveAssets(Statement $statement): bool
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
-        $hasAssets = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['has_assets'], $platform);
 
-        return $hasAssets;
+        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['has_assets'], $platform);
     }
 }

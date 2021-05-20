@@ -25,11 +25,9 @@ class ResizeOperation implements Operation
 
     private const OPERATION_NAME = 'resize';
 
-    /** @var int */
-    private $width;
+    private int $width;
 
-    /** @var int */
-    private $height;
+    private int $height;
 
     private function __construct(int $width, int $height)
     {

@@ -22,14 +22,11 @@ use Webmozart\Assert\Assert;
 
 class Target implements TransformationReference
 {
-    /** @var AttributeCode */
-    private $attributeCode;
+    private AttributeCode $attributeCode;
 
-    /** @var ChannelReference */
-    private $channelReference;
+    private ChannelReference $channelReference;
 
-    /** @var LocaleReference */
-    private $localeReference;
+    private LocaleReference $localeReference;
 
     private function __construct(
         AttributeCode $attributeCode,

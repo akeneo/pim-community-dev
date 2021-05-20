@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -33,8 +35,8 @@ class ValuePerLocaleValidator extends ConstraintValidator
 
         $validator = Validation::createValidator();
         $violations = $validator->validate($valuePerLocale, [
-                new Constraints\NotNull(),
-                new Constraints\Type(['type' => 'boolean'])
+                new NotNull(),
+                new Type(['type' => 'boolean'])
             ]
         );
 

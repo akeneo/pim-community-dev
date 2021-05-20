@@ -26,14 +26,11 @@ class RuleEngineValidatorACL implements RuleEngineValidatorACLInterface
 {
     private const ASSET_CODE_DUMMY = 'VALIDATION_TEST';
 
-    /** @var DenormalizerInterface */
-    private $actionDenormalizer;
+    private DenormalizerInterface $actionDenormalizer;
 
-    /** @var ValidatorInterface */
-    private $productConditionValidator;
+    private ValidatorInterface $productConditionValidator;
 
-    /** @var ValidatorInterface */
-    private $productAtionValidator;
+    private ValidatorInterface $productAtionValidator;
 
     public function __construct(
         DenormalizerInterface $actionDenormalizer,
@@ -58,9 +55,8 @@ class RuleEngineValidatorACL implements RuleEngineValidatorACLInterface
         $productAction = $this->createProductAction($normalizedProductAssignment);
 
         $ruleEngineViolations = $this->productAtionValidator->validate($productAction);
-        $result = $this->removeCannotFindAssetViolation($ruleEngineViolations);
 
-        return $result;
+        return $this->removeCannotFindAssetViolation($ruleEngineViolations);
     }
 
     private function createProductAction(array $productAssignment): ActionInterface
@@ -70,7 +66,7 @@ class RuleEngineValidatorACL implements RuleEngineValidatorACLInterface
         $productAssignment['items'] = [self::ASSET_CODE_DUMMY];
         $productAssignment['value'] = [self::ASSET_CODE_DUMMY];
         $productAssignment['scope'] = $productAssignment['channel'] ?? null;
-        $productAssignment['locale'] = $productAssignment['locale'] ?? null;
+        $productAssignment['locale'] ??= null;
 
         return $this->actionDenormalizer->denormalize($productAssignment, ActionInterface::class);
     }

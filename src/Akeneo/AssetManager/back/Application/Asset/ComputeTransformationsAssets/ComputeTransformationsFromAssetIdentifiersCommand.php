@@ -18,7 +18,7 @@ use Webmozart\Assert\Assert;
 class ComputeTransformationsFromAssetIdentifiersCommand
 {
     /** @var string[] */
-    private $assetIdentifiers;
+    private array $assetIdentifiers;
 
     public function __construct(array $assetIdentifiers)
     {

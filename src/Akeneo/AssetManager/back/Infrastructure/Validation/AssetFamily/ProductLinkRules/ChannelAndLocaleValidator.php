@@ -21,11 +21,9 @@ use Symfony\Component\Validator\Validation;
  */
 class ChannelAndLocaleValidator
 {
-    /** @var ChannelExistsInterface */
-    private $channelExists;
+    private ChannelExistsInterface $channelExists;
 
-    /** @var FindActivatedLocalesByIdentifiersInterface */
-    private $findActivatedLocalesByIdentifiers;
+    private FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers;
 
     public function __construct(
         ChannelExistsInterface $channelExists,

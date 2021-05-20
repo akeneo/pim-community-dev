@@ -34,11 +34,9 @@ class EditSuffixCommandFactory implements EditAttributeCommandFactoryInterface
             throw new \RuntimeException('Impossible to create an edit "suffix" property command.');
         }
 
-        $command = new EditSuffixCommand(
+        return new EditSuffixCommand(
             $normalizedCommand['identifier'],
             $normalizedCommand['suffix']
         );
-
-        return $command;
     }
 }

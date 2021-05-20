@@ -41,14 +41,11 @@ use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
  */
 class EditAssetCommandFactory
 {
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var EditAssetValueCommandsFactory */
-    private $editAssetValueCommandsFactory;
+    private EditAssetValueCommandsFactory $editAssetValueCommandsFactory;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,

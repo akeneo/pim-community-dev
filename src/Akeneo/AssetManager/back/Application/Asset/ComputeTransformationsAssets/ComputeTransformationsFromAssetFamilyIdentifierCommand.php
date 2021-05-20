@@ -15,8 +15,7 @@ namespace Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets;
 
 class ComputeTransformationsFromAssetFamilyIdentifierCommand
 {
-    /** @var string */
-    private $assetFamilyIdentifier;
+    private string $assetFamilyIdentifier;
 
     public function __construct(string $assetFamilyIdentifier)
     {

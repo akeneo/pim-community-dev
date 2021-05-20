@@ -20,26 +20,19 @@ namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute;
  */
 abstract class AbstractCreateAttributeCommand
 {
-    /** @var string */
-    public $assetFamilyIdentifier;
+    public string $assetFamilyIdentifier;
 
-    /** @var string */
-    public $code;
+    public string $code;
 
-    /** @var array */
-    public $labels;
+    public array $labels;
 
-    /** @var bool */
-    public $isRequired;
+    public bool $isRequired;
 
-    /** @var bool */
-    public $isReadOnly;
+    public bool $isReadOnly;
 
-    /** @var bool */
-    public $valuePerChannel;
+    public bool $valuePerChannel;
 
-    /** @var bool */
-    public $valuePerLocale;
+    public bool $valuePerLocale;
 
     public function __construct(
         string $assetFamilyIdentifier,

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Symfony\Command;
 
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Liip\ImagineBundle\Imagine\Filter\FilterConfiguration;
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -28,15 +31,9 @@ class ClearThumbnailCacheCommand extends Command
 
     const ASSET_MANAGER_CACHE_RESOLVER = 'asset_manager_flysystem_cache';
 
-    /**
-     * @var CacheManager
-     */
-    private $cacheManager;
+    private CacheManager $cacheManager;
 
-    /**
-     * @var FilterConfiguration
-     */
-    private $filterConfiguration;
+    private FilterConfiguration $filterConfiguration;
 
     public function __construct(CacheManager $cacheManager, FilterConfiguration $filterConfiguration)
     {
@@ -83,8 +80,6 @@ class ClearThumbnailCacheCommand extends Command
 
     private function getSupportedPreviewTypes(): array
     {
-        return array_keys(array_filter($this->filterConfiguration->all(), function ($filterConfiguration) {
-            return isset($filterConfiguration['cache']) && $filterConfiguration['cache'] === self::ASSET_MANAGER_CACHE_RESOLVER;
-        }));
+        return array_keys(array_filter($this->filterConfiguration->all(), fn($filterConfiguration) => isset($filterConfiguration['cache']) && $filterConfiguration['cache'] === self::ASSET_MANAGER_CACHE_RESOLVER));
     }
 }

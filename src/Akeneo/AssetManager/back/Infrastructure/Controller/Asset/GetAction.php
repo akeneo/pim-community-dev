@@ -31,14 +31,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class GetAction
 {
-    /** @var FindAssetDetailsInterface */
-    private $findAssetDetailsQuery;
+    private FindAssetDetailsInterface $findAssetDetailsQuery;
 
-    /** @var CanEditAssetFamilyQueryHandler */
-    private $canEditAssetFamilyQueryHandler;
+    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         FindAssetDetailsInterface $findAssetDetailsQuery,

@@ -26,8 +26,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AssetFamilyShouldHaveNoAssetValidator extends ConstraintValidator
 {
-    /** @var AssetFamilyHasAssetsInterface */
-    private $assetFamilyHasAssets;
+    private AssetFamilyHasAssetsInterface $assetFamilyHasAssets;
 
     public function __construct(AssetFamilyHasAssetsInterface $assetFamilyHasAssets)
     {

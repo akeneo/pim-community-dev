@@ -20,7 +20,7 @@ use Webmozart\Assert\Assert;
 class TransformationCollection implements \IteratorAggregate
 {
     /** @var Transformation[] */
-    private $transformations = [];
+    private array $transformations = [];
 
     private function __construct(array $transformations)
     {
@@ -38,9 +38,7 @@ class TransformationCollection implements \IteratorAggregate
     public function normalize(): array
     {
         return array_values(array_map(
-            function (Transformation $transformation) {
-                return $transformation->normalize();
-            },
+            fn(Transformation $transformation) => $transformation->normalize(),
             $this->transformations
         ));
     }

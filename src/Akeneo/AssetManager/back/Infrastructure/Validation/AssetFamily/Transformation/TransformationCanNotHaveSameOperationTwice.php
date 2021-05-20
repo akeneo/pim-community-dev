@@ -24,8 +24,7 @@ class TransformationCanNotHaveSameOperationTwice extends Constraint
 {
     public const ERROR_MESSAGE = 'pim_asset_manager.asset_family.validation.transformation.same_operation_twice';
 
-    /** @var AssetFamilyIdentifier */
-    private $assetFamilyIdentifier;
+    private AssetFamilyIdentifier $assetFamilyIdentifier;
 
     public function __construct(AssetFamilyIdentifier $assetFamilyIdentifier)
     {

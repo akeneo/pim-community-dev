@@ -23,8 +23,7 @@ use Doctrine\DBAL\Connection;
  */
 class SqlAssetFamilyExists implements AssetFamilyExistsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {

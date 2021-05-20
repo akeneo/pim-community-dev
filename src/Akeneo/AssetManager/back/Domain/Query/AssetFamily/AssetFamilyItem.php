@@ -31,14 +31,11 @@ class AssetFamilyItem
 
     public const IMAGE = 'image';
 
-    /** @var AssetFamilyIdentifier */
-    public $identifier;
+    public AssetFamilyIdentifier $identifier;
 
-    /** @var LabelCollection */
-    public $labels;
+    public LabelCollection $labels;
 
-    /** @var Image */
-    public $image;
+    public Image $image;
 
     public function normalize(): array
     {

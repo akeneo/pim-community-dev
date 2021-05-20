@@ -17,26 +17,19 @@ use Webmozart\Assert\Assert;
 
 class Transformation
 {
-    /** @var TransformationLabel */
-    private $label;
+    private TransformationLabel $label;
 
-    /** @var Source */
-    private $source;
+    private Source $source;
 
-    /** @var Target */
-    private $target;
+    private Target $target;
 
-    /** @var OperationCollection */
-    private $operations;
+    private OperationCollection $operations;
 
-    /** @var ?string */
-    private $filenamePrefix;
+    private ?string $filenamePrefix = null;
 
-    /** @var ?string */
-    private $filenameSuffix;
+    private ?string $filenameSuffix = null;
 
-    /** @var \DateTimeInterface */
-    private $updatedAt;
+    private \DateTimeInterface $updatedAt;
 
     private function __construct(
         TransformationLabel $label,
@@ -122,9 +115,7 @@ class Transformation
                 'filename_suffix' => $this->filenameSuffix,
                 'updated_at' => $this->updatedAt->format(\DateTimeInterface::ISO8601),
             ],
-            function ($value) {
-                return null !== $value;
-            }
+            fn($value) => null !== $value
         );
     }
 

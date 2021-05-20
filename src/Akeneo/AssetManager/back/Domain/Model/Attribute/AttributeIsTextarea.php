@@ -10,8 +10,7 @@ namespace Akeneo\AssetManager\Domain\Model\Attribute;
  */
 class AttributeIsTextarea
 {
-    /** @var bool */
-    private $isTextarea;
+    private bool $isTextarea;
 
     private function __construct(bool $isTextarea)
     {

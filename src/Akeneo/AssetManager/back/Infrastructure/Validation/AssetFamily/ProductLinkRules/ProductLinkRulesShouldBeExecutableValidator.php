@@ -17,17 +17,13 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class ProductLinkRulesShouldBeExecutableValidator extends ConstraintValidator
 {
-    /** @var RuleEngineValidatorACL */
-    private $ruleEngineValidatorACL;
+    private RuleEngineValidatorACLInterface $ruleEngineValidatorACL;
 
-    /** @var AttributeExistsInterface */
-    private $attributeExists;
+    private AttributeExistsInterface $attributeExists;
 
-    /** @var ProductSelectionsValidator */
-    private $productSelectionValidator;
+    private ProductSelectionsValidator $productSelectionValidator;
 
-    /** @var ProductAssignmentsValidator */
-    private $productAssignmentsValidator;
+    private ProductAssignmentsValidator $productAssignmentsValidator;
 
     public function __construct(
         RuleEngineValidatorACLInterface $ruleEngineValidatorACL,

@@ -58,32 +58,23 @@ class FixturesInstaller
     private const ZOOM_ON_MATERIAL_ASSET_FAMILY_IDENTIFIER = 'zoom_on_material';
     private const USER_GUIDE_ASSET_FAMILY_IDENTIFIER = 'user_guide';
 
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var FileStorerInterface */
-    private $storer;
+    private FileStorerInterface $storer;
 
-    /** @var Client */
-    private $assetClient;
+    private Client $assetClient;
 
-    /** @var CommandLauncher */
-    private $commandLauncher;
+    private CommandLauncher $commandLauncher;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var ValueHydratorInterface */
-    private $valueHydrator;
+    private ValueHydratorInterface $valueHydrator;
 
-    /** @var FixturesLoader */
-    private $fixturesLoader;
+    private FixturesLoader $fixturesLoader;
 
     public function __construct(
         Connection $sqlConnection,
@@ -1150,26 +1141,20 @@ SQL;
     private function defaultAttributeAsLabel(AssetFamilyIdentifier $atmosphereAssetFamilyIdentifier): AbstractAttribute
     {
         $attributes = $this->attributeRepository->findByAssetFamily($atmosphereAssetFamilyIdentifier);
-        $attributeAsLabel = current(array_filter(
-            $attributes,
-            function (AbstractAttribute $attribute) {
-                return $attribute->getCode()->equals(AttributeCode::fromString('label'));
-            }
-        ));
 
-        return $attributeAsLabel;
+        return current(array_filter(
+            $attributes,
+            fn(AbstractAttribute $attribute) => $attribute->getCode()->equals(AttributeCode::fromString('label'))
+        ));
     }
 
     private function defaultAttributeAsMainMedia(AssetFamilyIdentifier $atmosphereAssetFamilyIdentifier): AbstractAttribute
     {
         $attributes = $this->attributeRepository->findByAssetFamily($atmosphereAssetFamilyIdentifier);
-        $attributeAsMainMedia = current(array_filter(
-            $attributes,
-            function (AbstractAttribute $attribute) {
-                return $attribute->getCode()->equals(AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE));
-            }
-        ));
 
-        return $attributeAsMainMedia;
+        return current(array_filter(
+            $attributes,
+            fn(AbstractAttribute $attribute) => $attribute->getCode()->equals(AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE))
+        ));
     }
 }

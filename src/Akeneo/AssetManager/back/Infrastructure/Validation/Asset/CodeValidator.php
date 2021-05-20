@@ -12,6 +12,11 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -34,11 +39,11 @@ class CodeValidator extends ConstraintValidator
 
         $validator = Validation::createValidator();
         $violations = $validator->validate($code, [
-                new Constraints\NotBlank(),
-                new Constraints\NotNull(),
-                new Constraints\Type(['type' => 'string']),
-                new Constraints\Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
-                new Constraints\Regex([
+                new NotBlank(),
+                new NotNull(),
+                new Type(['type' => 'string']),
+                new Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
+                new Regex([
                         'pattern' => '/^[a-zA-Z0-9_]+$/',
                         'message' => 'pim_asset_manager.asset.validation.code.pattern',
                     ]

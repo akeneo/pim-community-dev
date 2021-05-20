@@ -22,8 +22,7 @@ use Webmozart\Assert\Assert;
  */
 class Pattern
 {
-    /** @var string */
-    private $pattern;
+    private string $pattern;
 
     private function __construct(string $pattern)
     {

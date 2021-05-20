@@ -20,8 +20,7 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindAssetFamilyAttributeAsMainMedia implements FindAssetFamilyAttributeAsMainMediaInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {

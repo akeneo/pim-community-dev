@@ -19,22 +19,17 @@ use Psr\Log\LoggerInterface;
 abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
 {
     /** The limit above which we do not try to generate a preview, in bytes */
-    private const PREVIEW_SIZE_LIMIT = 60000000;
+    private const PREVIEW_SIZE_LIMIT = 60_000_000;
 
-    /** @var DefaultImageProviderInterface */
-    protected $defaultImageProvider;
+    protected DefaultImageProviderInterface $defaultImageProvider;
 
-    /** @var DataManager */
-    protected $dataManager;
+    protected DataManager $dataManager;
 
-    /** @var CacheManager */
-    protected $cacheManager;
+    protected CacheManager $cacheManager;
 
-    /** @var FilterManager */
-    protected $filterManager;
+    protected FilterManager $filterManager;
 
-    /** @var LoggerInterface */
-    protected $logger;
+    protected LoggerInterface $logger;
 
     public function __construct(
         DataManager $dataManager,

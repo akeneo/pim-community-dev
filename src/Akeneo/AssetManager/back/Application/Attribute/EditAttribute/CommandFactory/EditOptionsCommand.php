@@ -10,8 +10,7 @@ namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory
  */
 class EditOptionsCommand extends AbstractEditAttributeCommand
 {
-    /** @var array */
-    public $options;
+    public array $options;
 
     public function __construct(string $identifier, array $options)
     {

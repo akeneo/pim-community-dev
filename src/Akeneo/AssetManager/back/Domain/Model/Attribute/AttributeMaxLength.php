@@ -26,7 +26,7 @@ class AttributeMaxLength
     private const MAX_LIMIT = 65535;
 
     /*** @var ?int */
-    private $maxLength;
+    private ?int $maxLength = null;
 
     private function __construct(?int $maxLength)
     {

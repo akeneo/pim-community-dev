@@ -12,8 +12,7 @@ use Doctrine\DBAL\Connection;
  */
 class SqlCountAssetFamilies
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -27,8 +26,7 @@ class SqlCountAssetFamilies
             FROM akeneo_asset_manager_asset_family;
 SQL;
         $result = $this->sqlConnection->query($sql)->fetch();
-        $volume = new CountVolume((int) $result['count']);
 
-        return $volume;
+        return new CountVolume((int) $result['count']);
     }
 }

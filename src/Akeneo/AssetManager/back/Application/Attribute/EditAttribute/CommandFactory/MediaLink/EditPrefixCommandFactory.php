@@ -34,11 +34,9 @@ class EditPrefixCommandFactory implements EditAttributeCommandFactoryInterface
             throw new \RuntimeException('Impossible to create an edit "prefix" property command.');
         }
 
-        $command = new EditPrefixCommand(
+        return new EditPrefixCommand(
             $normalizedCommand['identifier'],
             $normalizedCommand['prefix']
         );
-
-        return $command;
     }
 }

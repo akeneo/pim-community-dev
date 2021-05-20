@@ -31,17 +31,13 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class GetConnectorAssetFamiliesAction
 {
-    /** @var Limit */
-    private $limit;
+    private Limit $limit;
 
-    /** @var FindConnectorAssetFamilyItemsInterface */
-    private $findConnectorAssetFamilyItems;
+    private FindConnectorAssetFamilyItemsInterface $findConnectorAssetFamilyItems;
 
-    /** @var PaginatorInterface */
-    private $halPaginator;
+    private PaginatorInterface $halPaginator;
 
-    /** @var AddHalDownloadLinkToAssetFamilyImage */
-    private $addHalDownloadLinkToImage;
+    private AddHalDownloadLinkToAssetFamilyImage $addHalDownloadLinkToImage;
 
     public function __construct(
         FindConnectorAssetFamilyItemsInterface $findConnectorAssetFamilyItems,

@@ -25,8 +25,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class IndexAction
 {
-    /** @var FindAssetFamilyItemsInterface */
-    private $findAssetFamiliesQuery;
+    private FindAssetFamilyItemsInterface $findAssetFamiliesQuery;
 
     public function __construct(FindAssetFamilyItemsInterface $findAssetFamiliesQuery)
     {
@@ -56,8 +55,6 @@ class IndexAction
      */
     private function normalizeAssetFamilyItems(array $assetFamilyItems): array
     {
-        return array_map(function (AssetFamilyItem $item) {
-            return $item->normalize();
-        }, $assetFamilyItems);
+        return array_map(fn(AssetFamilyItem $item) => $item->normalize(), $assetFamilyItems);
     }
 }

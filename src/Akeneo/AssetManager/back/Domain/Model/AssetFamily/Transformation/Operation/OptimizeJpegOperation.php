@@ -26,8 +26,7 @@ class OptimizeJpegOperation implements Operation
 
     private const OPERATION_NAME = 'optimize_jpeg';
 
-    /** @var int */
-    private $quality;
+    private int $quality;
 
     private function __construct(int $quality)
     {

@@ -21,11 +21,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class FilterAssetsByCompletenessValidator extends ConstraintValidator
 {
-    /** @var FindActivatedLocalesPerChannelsInterface */
-    private $findActivatedLocalesPerChannels;
+    private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels;
 
-    /** @var null|array */
-    private $activatedLocalesPerChannels;
+    private ?array $activatedLocalesPerChannels = null;
 
     public function __construct(FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels)
     {

@@ -22,11 +22,9 @@ class UserGroupPermission
     private const USER_GROUP_IDENTIFIER = 'user_group_identifier';
     private const RIGHT_LEVEL = 'right_level';
 
-    /** @var UserGroupIdentifier */
-    private $userGroupIdentifier;
+    private UserGroupIdentifier $userGroupIdentifier;
 
-    /** @var RightLevel */
-    private $rightLevel;
+    private RightLevel $rightLevel;
 
     private function __construct(
         UserGroupIdentifier $userGroupIdentifier,

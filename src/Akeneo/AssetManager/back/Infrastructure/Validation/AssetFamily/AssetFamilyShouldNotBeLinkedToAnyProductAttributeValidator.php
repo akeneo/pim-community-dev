@@ -26,8 +26,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AssetFamilyShouldNotBeLinkedToAnyProductAttributeValidator extends ConstraintValidator
 {
-    /** @var AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface */
-    private $assetFamilyIsLinkedToProductAttributes;
+    private AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface $assetFamilyIsLinkedToProductAttributes;
 
     public function __construct(
         AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface $assetFamilyIsLinkedToProductAttributes

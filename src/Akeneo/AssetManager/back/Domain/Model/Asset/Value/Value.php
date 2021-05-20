@@ -13,17 +13,13 @@ use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
  */
 class Value
 {
-    /** @var AttributeIdentifier */
-    private $attributeIdentifier;
+    private AttributeIdentifier $attributeIdentifier;
 
-    /** @var ChannelReference */
-    private $channelReference;
+    private ChannelReference $channelReference;
 
-    /** @var LocaleReference */
-    private $localeReference;
+    private LocaleReference $localeReference;
 
-    /** @var ValueDataInterface */
-    private $data;
+    private ValueDataInterface $data;
 
     private function __construct(
         AttributeIdentifier $attributeIdentifier,

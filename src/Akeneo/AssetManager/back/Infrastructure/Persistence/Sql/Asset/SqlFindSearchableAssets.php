@@ -17,8 +17,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindSearchableAssets implements FindSearchableAssetsInterface
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -37,14 +36,14 @@ SQL;
         $statement = $this->connection->executeQuery($sqlQuery, ['asset_identifier' => (string) $assetIdentifier]);
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
 
-        return !$result ? null : $this->hydrateAssetToIndex(
+        return $result ? $this->hydrateAssetToIndex(
             $result['identifier'],
             $result['asset_family_identifier'],
             $result['code'],
             $result['updated_at'],
             ValuesDecoder::decode($result['value_collection']),
             $result['attribute_as_label']
-        );
+        ) : null;
     }
 
     public function byAssetIdentifiers(array $assetIdentifiers): \Iterator
@@ -109,7 +108,7 @@ SQL;
             return [];
         }
 
-        $labels = array_reduce(
+        return array_reduce(
             $values,
             function (array $labels, array $value) use ($attributeAsLabelIdentifier) {
                 if ($value['attribute'] === $attributeAsLabelIdentifier) {
@@ -120,7 +119,5 @@ SQL;
             },
             []
         );
-
-        return $labels;
     }
 }

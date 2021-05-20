@@ -25,11 +25,10 @@ class AssetFamilyPermission
     private const ASSET_FAMILY_IDENTIFIER = 'asset_family_identifier';
     private const PERMISSIONS = 'permissions';
 
-    /** @var AssetFamilyIdentifier */
-    private $assetFamilyIdentifier;
+    private AssetFamilyIdentifier $assetFamilyIdentifier;
 
     /** @var UserGroupPermission[] */
-    private $permissions;
+    private array $permissions;
 
     private function __construct(
         AssetFamilyIdentifier $assetFamilyIdentifier,
@@ -74,9 +73,7 @@ class AssetFamilyPermission
     {
         return [
             self::ASSET_FAMILY_IDENTIFIER => $this->assetFamilyIdentifier->normalize(),
-            self::PERMISSIONS                 => array_map(function (UserGroupPermission $userGroupPermission) {
-                return $userGroupPermission->normalize();
-            }, $this->permissions),
+            self::PERMISSIONS                 => array_map(fn(UserGroupPermission $userGroupPermission) => $userGroupPermission->normalize(), $this->permissions),
         ];
     }
 
@@ -123,7 +120,7 @@ class AssetFamilyPermission
      */
     private function findPermissionsByUserGroupIdentifiers(array $userGroupIdentifiers): array
     {
-        $permissions = array_filter(
+        return array_filter(
             $this->permissions,
             function (UserGroupPermission $userGroupPermission) use ($userGroupIdentifiers) {
                 foreach ($userGroupIdentifiers as $userGroupIdentifier) {
@@ -135,8 +132,6 @@ class AssetFamilyPermission
                 return false;
             }
         );
-
-        return $permissions;
     }
 
     /**
@@ -146,9 +141,7 @@ class AssetFamilyPermission
     {
         $editPermissions = array_filter(
             $userGroupPermissions,
-            function (UserGroupPermission $userGroupPermission) {
-                return $userGroupPermission->isAllowedToEdit();
-            }
+            fn(UserGroupPermission $userGroupPermission) => $userGroupPermission->isAllowedToEdit()
         );
 
         return !empty($editPermissions);

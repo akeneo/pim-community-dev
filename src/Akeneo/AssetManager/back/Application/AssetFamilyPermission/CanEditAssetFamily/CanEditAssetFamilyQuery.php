@@ -10,11 +10,9 @@ namespace Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFami
  */
 class CanEditAssetFamilyQuery
 {
-    /** @var string */
-    public $assetFamilyIdentifier;
+    public string $assetFamilyIdentifier;
 
-    /** @var string */
-    public $securityIdentifier;
+    public string $securityIdentifier;
 
     public function __construct(string $assetFamilyIdentifier, string $securityIdentifier)
     {

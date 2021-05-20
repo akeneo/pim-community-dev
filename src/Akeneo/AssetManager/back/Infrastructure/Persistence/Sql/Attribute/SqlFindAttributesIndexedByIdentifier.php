@@ -25,14 +25,11 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIdentifierInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var AttributeHydratorRegistry */
-    private $attributeHydratorRegistry;
+    private AttributeHydratorRegistry $attributeHydratorRegistry;
 
-    /** @var array */
-    private $cachedResults = [];
+    private array $cachedResults = [];
 
     public function __construct(Connection $sqlConnection, AttributeHydratorRegistry $attributeHydratorRegistry)
     {
@@ -84,7 +81,7 @@ SQL;
         );
         $result = $statement->fetchAll();
 
-        return !$result ? [] : $result;
+        return $result === [] ? [] : $result;
     }
 
     /**

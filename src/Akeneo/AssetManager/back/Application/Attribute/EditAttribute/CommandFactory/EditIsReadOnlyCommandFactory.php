@@ -31,11 +31,9 @@ class EditIsReadOnlyCommandFactory implements EditAttributeCommandFactoryInterfa
             throw new \RuntimeException('Impossible to create an edit read only property command.');
         }
 
-        $command = new EditIsReadOnlyCommand(
+        return new EditIsReadOnlyCommand(
             $normalizedCommand['identifier'],
             $normalizedCommand['is_read_only']
         );
-
-        return $command;
     }
 }

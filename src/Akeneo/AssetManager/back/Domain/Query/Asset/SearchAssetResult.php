@@ -28,13 +28,11 @@ class SearchAssetResult
     private const TOTAL_COUNT = 'total_count';
 
     /** @var AssetItem[] */
-    public $items;
+    public array $items;
 
-    /** @var int */
-    public $matchesCount;
+    public int $matchesCount;
 
-    /** @var int */
-    public $totalCount;
+    public int $totalCount;
 
     public function __construct(array $assetItems, int $matchesCount, int $totalCount)
     {
@@ -47,9 +45,7 @@ class SearchAssetResult
     public function normalize(): array
     {
         return [
-            self::ITEMS         => array_map(function (AssetItem $assetItem) {
-                return $assetItem->normalize();
-            }, $this->items),
+            self::ITEMS         => array_map(fn(AssetItem $assetItem) => $assetItem->normalize(), $this->items),
             self::MATCHES_COUNT => $this->matchesCount,
             self::TOTAL_COUNT => $this->totalCount,
         ];

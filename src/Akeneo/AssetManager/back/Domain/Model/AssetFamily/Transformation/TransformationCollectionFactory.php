@@ -18,8 +18,7 @@ use Webmozart\Assert\Assert;
 
 class TransformationCollectionFactory
 {
-    /** @var OperationFactory */
-    private $operationFactory;
+    private OperationFactory $operationFactory;
 
     public function __construct(OperationFactory $operationFactory)
     {
@@ -31,9 +30,7 @@ class TransformationCollectionFactory
         Assert::allIsArray($normalizedTransformations);
 
         return TransformationCollection::create(
-            array_map(function (array $normalizedTransformation): Transformation {
-                return $this->buildTransformation($normalizedTransformation);
-            }, $normalizedTransformations)
+            array_map(fn(array $normalizedTransformation): Transformation => $this->buildTransformation($normalizedTransformation), $normalizedTransformations)
         );
     }
 
@@ -82,9 +79,7 @@ class TransformationCollectionFactory
             Target::createFromNormalized($normalizedTransformation['target']),
             OperationCollection::create(
                 array_map(
-                    function (array $normalizedOperation): Operation {
-                        return $this->buildOperation($normalizedOperation);
-                    },
+                    fn(array $normalizedOperation): Operation => $this->buildOperation($normalizedOperation),
                     $normalizedTransformation['operations']
                 )
             ),

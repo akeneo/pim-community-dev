@@ -12,8 +12,7 @@ use Doctrine\DBAL\Connection;
  */
 class SqlAverageMaxNumberOfValuesPerAsset
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -29,11 +28,10 @@ class SqlAverageMaxNumberOfValuesPerAsset
             FROM akeneo_asset_manager_asset;
 SQL;
         $result = $this->sqlConnection->query($sql)->fetch();
-        $volume = new AverageMaxVolumes(
+
+        return new AverageMaxVolumes(
             (int) $result['max'],
             (int) $result['average']
         );
-
-        return $volume;
     }
 }

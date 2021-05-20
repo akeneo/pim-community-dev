@@ -37,7 +37,7 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
  */
 class MassEditAssetsTasklet implements TaskletInterface, TrackableTaskletInterface
 {
-    private ?StepExecution $stepExecution;
+    private ?StepExecution $stepExecution = null;
     private AssetQueryBuilderInterface $assetQueryBuilder;
     private Client $assetClient;
     private EditAssetHandler $editAssetsHandler;
@@ -161,12 +161,10 @@ class MassEditAssetsTasklet implements TaskletInterface, TrackableTaskletInterfa
     {
         $attributes = $this->findAttributesIndexedByIdentifier->find($assetFamilyIdentifier);
 
-        $editAssetValueCommands = array_map(function ($updater) use ($attributes) {
+        return array_map(function ($updater) use ($attributes) {
             $factory = $this->editValueCommandFactoryRegistry->getFactory($attributes[$updater['attribute']], $updater);
 
             return $factory->create($attributes[$updater['attribute']], $updater);
         }, $normalizedUpdaters);
-
-        return $editAssetValueCommands;
     }
 }

@@ -11,11 +11,9 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorAssetFamilyAction
 {
-    /** @var FindConnectorAssetFamilyByAssetFamilyIdentifierInterface */
-    private $findConnectorAssetFamily;
+    private FindConnectorAssetFamilyByAssetFamilyIdentifierInterface $findConnectorAssetFamily;
 
-    /** @var AddHalDownloadLinkToAssetFamilyImage */
-    private $addHalLinksToAssetFamilyImage;
+    private AddHalDownloadLinkToAssetFamilyImage $addHalLinksToAssetFamilyImage;
 
     public function __construct(
         FindConnectorAssetFamilyByAssetFamilyIdentifierInterface $findConnectorAssetFamily,

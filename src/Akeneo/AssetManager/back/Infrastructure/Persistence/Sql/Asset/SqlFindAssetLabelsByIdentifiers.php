@@ -23,8 +23,7 @@ use PDO;
  */
 class SqlFindAssetLabelsByIdentifiers implements FindAssetLabelsByIdentifiersInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {

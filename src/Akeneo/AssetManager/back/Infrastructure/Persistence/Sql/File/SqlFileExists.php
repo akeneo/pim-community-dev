@@ -19,8 +19,7 @@ use Doctrine\DBAL\Types\Type;
 
 class SqlFileExists implements FileExistsInterface
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {

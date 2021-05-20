@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Type;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AppendOptionCollectionValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionCollectionValueCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
@@ -81,10 +83,10 @@ class EditOptionCollectionValueCommandValidator extends ConstraintValidator
     private function validType($command): bool
     {
         $validator = Validation::createValidator();
-        $violations = $validator->validate($command->optionCodes, new Constraints\All(
+        $violations = $validator->validate($command->optionCodes, new All(
             [
                 'constraints' => [
-                    new Constraints\Type('string'),
+                    new Type('string'),
                 ],
             ]
         ));
@@ -111,9 +113,7 @@ class EditOptionCollectionValueCommandValidator extends ConstraintValidator
      */
     private function checkOptionExists($command): void
     {
-        $existingOptionCodes = array_map(function (AttributeOption $attributeOption) {
-            return (string) $attributeOption->getCode();
-        }, $command->attribute->getAttributeOptions());
+        $existingOptionCodes = array_map(fn(AttributeOption $attributeOption) => (string) $attributeOption->getCode(), $command->attribute->getAttributeOptions());
 
         $unexistingOptionCodes = array_diff($command->optionCodes, $existingOptionCodes);
 

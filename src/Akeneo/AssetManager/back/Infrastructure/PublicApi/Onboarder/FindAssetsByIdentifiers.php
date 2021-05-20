@@ -11,8 +11,7 @@ use Doctrine\DBAL\Connection;
  */
 class FindAssetsByIdentifiers
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -77,9 +76,7 @@ SQL;
                 json_decode($asset['labels'], true),
                 $asset['code'],
                 $asset['asset_family_identifier'],
-                array_filter(json_decode($asset['value_collection'], true), function (array $value) use ($asset) {
-                    return $value['attribute'] === $asset['asset_family_attribute_as_main_media'];
-                }),
+                array_filter(json_decode($asset['value_collection'], true), fn(array $value) => $value['attribute'] === $asset['asset_family_attribute_as_main_media']),
                 $asset['attribute_type'],
                 $asset['media_type']
             );

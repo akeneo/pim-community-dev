@@ -28,14 +28,11 @@ class DefaultImageProvider implements DefaultImageProviderInterface
         PreviewGeneratorRegistry::PREVIEW_TYPE          => 'am_binary_image_preview'
     ];
 
-    /** @var FilterManager */
-    protected $filterManager;
+    protected FilterManager $filterManager;
 
-    /** @var CacheManager */
-    protected $cacheManager;
+    protected CacheManager $cacheManager;
 
-    /** @var array */
-    protected $defaultImages;
+    protected ?array $defaultImages = null;
 
     /**
      * @param FilterManager $filterManager

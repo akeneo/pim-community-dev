@@ -52,9 +52,7 @@ class AssetIndexer implements AssetIndexerInterface
      */
     public function indexByAssetIdentifiers(array $assetIdentifiers)
     {
-        $normalizedSearchableAssets = array_map(function (AssetIdentifier $assetIdentifier) {
-            return $this->normalizer->normalizeAsset($assetIdentifier);
-        }, array_unique($assetIdentifiers));
+        $normalizedSearchableAssets = array_map(fn(AssetIdentifier $assetIdentifier) => $this->normalizer->normalizeAsset($assetIdentifier), array_unique($assetIdentifiers));
 
         $assetsToIndexByBatch = array_chunk($normalizedSearchableAssets, $this->batchSize);
         foreach ($assetsToIndexByBatch as $assetsToIndex) {

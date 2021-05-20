@@ -31,20 +31,15 @@ use Doctrine\DBAL\Types\Types;
  */
 class ConnectorAssetFamilyHydrator
 {
-    /** @var AbstractPlatform */
-    private $platform;
+    private AbstractPlatform $platform;
 
-    /** @var ConnectorProductLinkRulesHydrator */
-    private $productLinkRulesHydrator;
+    private ConnectorProductLinkRulesHydrator $productLinkRulesHydrator;
 
-    /** @var ConnectorTransformationCollectionHydrator */
-    private $transformationCollectionHydrator;
+    private ConnectorTransformationCollectionHydrator $transformationCollectionHydrator;
 
-    /** @var ConnectorNamingConventionHydrator */
-    private $namingConventionHydrator;
+    private ConnectorNamingConventionHydrator $namingConventionHydrator;
 
-    /** @var FindActivatedLocalesInterface  */
-    private $findActivatedLocales;
+    private FindActivatedLocalesInterface $findActivatedLocales;
 
     public function __construct(
         Connection $connection,

@@ -23,8 +23,7 @@ use Akeneo\AssetManager\Domain\Query\File\FindFileDataByFileKeyInterface;
  */
 class EditMediaFileValueCommandFactory implements EditValueCommandFactoryInterface
 {
-    /** @var FindFileDataByFileKeyInterface */
-    private $findFileData;
+    private FindFileDataByFileKeyInterface $findFileData;
 
     public function __construct(FindFileDataByFileKeyInterface $findFileData)
     {
@@ -33,7 +32,7 @@ class EditMediaFileValueCommandFactory implements EditValueCommandFactoryInterfa
 
     public function supports(AbstractAttribute $attribute, array $normalizedValue): bool
     {
-        if (!key_exists('data', $normalizedValue)) {
+        if (!array_key_exists('data', $normalizedValue)) {
             return false;
         }
 
@@ -48,8 +47,7 @@ class EditMediaFileValueCommandFactory implements EditValueCommandFactoryInterfa
         $fileKey = $normalizedValue['data']['filePath'] ?? $normalizedValue['data'];
         $mediaFile = is_string($fileKey) ? $this->findFileData->find($fileKey) : [];
         $updatedAt = $normalizedValue['data']['updatedAt'] ?? ($mediaFile['updatedAt'] ?? null);
-
-        $command = new EditMediaFileValueCommand(
+        return new EditMediaFileValueCommand(
             $attribute,
             $normalizedValue['channel'],
             $normalizedValue['locale'],
@@ -61,6 +59,5 @@ class EditMediaFileValueCommandFactory implements EditValueCommandFactoryInterfa
             // TODO Move all command factories into Infra folder and split for each adapter (UI, API, external API)
             $updatedAt ?? (new \DateTimeImmutable())->format(\DateTimeInterface::ISO8601)
         );
-        return $command;
     }
 }

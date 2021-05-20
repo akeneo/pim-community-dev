@@ -26,11 +26,9 @@ use Doctrine\DBAL\Connection;
  */
 class SqlGenerateEmptyValues implements GenerateEmptyValuesInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var AttributeHydratorRegistry */
-    private $attributeHydratorRegistry;
+    private AttributeHydratorRegistry $attributeHydratorRegistry;
 
     public function __construct(Connection $sqlConnection, AttributeHydratorRegistry $attributeHydratorRegistry)
     {

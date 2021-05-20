@@ -21,8 +21,7 @@ use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\Abstr
  */
 class EditSuffixCommand extends AbstractEditAttributeCommand
 {
-    /** @var string|null */
-    public $suffix;
+    public ?string $suffix = null;
 
     public function __construct(string $identifier, ?string $suffix)
     {

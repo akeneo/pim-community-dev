@@ -21,8 +21,7 @@ class Suffix
 {
     public const EMPTY = null;
 
-    /** @var ?string */
-    private $suffix;
+    private ?string $suffix = null;
 
     private function __construct(?string $suffix)
     {

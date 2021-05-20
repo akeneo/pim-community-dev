@@ -32,11 +32,9 @@ namespace Akeneo\AssetManager\Domain\Query\Asset;
  */
 class PropertyAccessibleAsset
 {
-    /** @var string */
-    public $code;
+    public string $code;
 
-    /** @var array */
-    public $values;
+    public array $values;
 
     private const CODE_NAME = 'code';
 
