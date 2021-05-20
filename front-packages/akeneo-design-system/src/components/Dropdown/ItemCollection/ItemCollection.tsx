@@ -28,9 +28,7 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
   ({children, onNextPage, ...rest}: ItemCollectionProps, forwardedRef) => {
     const firstItemRef = useRef<HTMLDivElement>(null);
     const lastItemRef = useRef<HTMLDivElement>(null);
-
-    const internalRef = useRef<HTMLDivElement>(null);
-    const containerRef = useCombinedRefs(internalRef, forwardedRef);
+    const containerRef = useCombinedRefs(forwardedRef);
 
     const handleKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
       if (null !== event.currentTarget) {
@@ -59,16 +57,20 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
       const containerElement = containerRef.current;
       const lastElement = lastItemRef.current;
 
-      if (undefined === onNextPage || null === containerElement || null === lastItemRef.current) return;
+      if (
+        undefined === onNextPage ||
+        null === containerElement ||
+        null === lastItemRef.current ||
+        null === lastElement
+      ) {
+        return;
+      }
 
       const options = {
         root: containerElement,
         rootMargin: '0px 0px 100% 0px',
         threshold: 1.0,
       };
-
-      /* istanbul ignore next first render */
-      if (null === lastElement) return;
 
       const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
         if (entries[0].isIntersecting) onNextPage();

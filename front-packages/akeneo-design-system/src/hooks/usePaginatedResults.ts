@@ -1,7 +1,11 @@
 import {useBooleanState, useIsMounted} from '.';
 import {DependencyList, useEffect, useState} from 'react';
 
-const usePaginatedResults = <Type>(fetcher: (page: number) => Promise<Type[]>, dependencies: DependencyList) => {
+const usePaginatedResults = <Type>(
+  fetcher: (page: number) => Promise<Type[]>,
+  dependencies: DependencyList,
+  shouldFetch = true
+) => {
   const [results, setResults] = useState<Type[] | null>(null);
   const [page, setPage] = useState<number>(0);
   const [isFetching, startFetching, stopFetching] = useBooleanState();
@@ -18,7 +22,7 @@ const usePaginatedResults = <Type>(fetcher: (page: number) => Promise<Type[]>, d
   }, dependencies);
 
   useEffect(() => {
-    if (isFetching || isLastPage) return;
+    if (isFetching || isLastPage || !shouldFetch) return;
 
     const fetchResults = async () => {
       const newResults = await fetcher(page);
@@ -37,7 +41,15 @@ const usePaginatedResults = <Type>(fetcher: (page: number) => Promise<Type[]>, d
 
     startFetching();
     void fetchResults();
-  }, [page, results]);
+  }, [page, results, shouldFetch]);
+
+  useEffect(() => {
+    if (shouldFetch) return;
+
+    setPage(0);
+    setResults(null);
+    notOnLastPage();
+  }, [shouldFetch]);
 
   const fetchNextPage = () => {
     if (isFetching || isLastPage) return;

@@ -121,38 +121,40 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 
 ## Search & pagination
 
-For search and pagination, you need to create a dedicated component for the `Dropdown.Overlay` to avoid re-fetching data even if the overlay is closed.
-
 <Canvas>
   <Story name="Search & pagination" height={500}>
     {args => {
       const [isOpen, open, close] = useBooleanState(true);
-      const Overlay = () => {
-        const [searchValue, setSearchValue] = useState('');
-        const debouncedSearchValue = useDebounce(searchValue);
-        const [items, handleNextPage] = usePaginatedResults(page => fakeFetcher(page, debouncedSearchValue), [
-          debouncedSearchValue,
-        ]);
-        return (
-          <Dropdown.Overlay verticalPosition="down" onClose={close}>
-            <Dropdown.Header>
-              <Search onSearchChange={setSearchValue} placeholder="Search" searchValue={searchValue} title="Search" />
-            </Dropdown.Header>
-            <Dropdown.ItemCollection onNextPage={handleNextPage}>
-              {items.map((item, index) => (
-                <Dropdown.Item key={index}>{item.text}</Dropdown.Item>
-              ))}
-            </Dropdown.ItemCollection>
-          </Dropdown.Overlay>
-        );
-      };
+      const [searchValue, setSearchValue] = useState('');
+      const debouncedSearchValue = useDebounce(searchValue);
+      const [items, handleNextPage] = usePaginatedResults(
+        page => fakeFetcher(page, debouncedSearchValue),
+        [debouncedSearchValue],
+        isOpen
+      );
       return (
         <SpaceContainer height={500}>
           <Dropdown>
             <Button onClick={open}>
               Simple <ArrowDownIcon />
             </Button>
-            {isOpen && <Overlay />}
+            {isOpen && (
+              <Dropdown.Overlay verticalPosition="down" onClose={close}>
+                <Dropdown.Header>
+                  <Search
+                    onSearchChange={setSearchValue}
+                    placeholder="Search"
+                    searchValue={searchValue}
+                    title="Search"
+                  />
+                </Dropdown.Header>
+                <Dropdown.ItemCollection onNextPage={handleNextPage}>
+                  {items.map((item, index) => (
+                    <Dropdown.Item key={index}>{item.text}</Dropdown.Item>
+                  ))}
+                </Dropdown.ItemCollection>
+              </Dropdown.Overlay>
+            )}
           </Dropdown>
         </SpaceContainer>
       );
@@ -222,24 +224,12 @@ For search and pagination, you need to create a dedicated component for the `Dro
                   <Dropdown.Title>Elements</Dropdown.Title>
                 </Dropdown.Header>
                 <Dropdown.ItemCollection>
-                  <Dropdown.Section>
-                    Section 1
-                  </Dropdown.Section>
-                  <Dropdown.Item>
-                    Item 1
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    Item 2
-                  </Dropdown.Item>
-                  <Dropdown.Section>
-                    Section 2
-                  </Dropdown.Section>
-                  <Dropdown.Item>
-                    Item 3
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    Item 4
-                  </Dropdown.Item>
+                  <Dropdown.Section>Section 1</Dropdown.Section>
+                  <Dropdown.Item>Item 1</Dropdown.Item>
+                  <Dropdown.Item>Item 2</Dropdown.Item>
+                  <Dropdown.Section>Section 2</Dropdown.Section>
+                  <Dropdown.Item>Item 3</Dropdown.Item>
+                  <Dropdown.Item>Item 4</Dropdown.Item>
                 </Dropdown.ItemCollection>
               </Dropdown.Overlay>
             )}

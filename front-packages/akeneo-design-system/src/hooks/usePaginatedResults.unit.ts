@@ -66,6 +66,18 @@ test('It does not update results if unmounted', async () => {
   });
 });
 
+test('It does not update results if the shouldFetch param is set to false', async () => {
+  const {result} = renderHook(() => usePaginatedResults<string>(fetcher, [], false));
+
+  await act(async () => {
+    jest.runAllTimers();
+    await flushPromises();
+    const [updatedResults] = result.current;
+    expect(updatedResults).toEqual([]);
+    expect(fetcher).not.toBeCalled();
+  });
+});
+
 test('It goes back to first page when dependencies change', async () => {
   const {result, rerender} = renderHook(
     ({searchValue}) => usePaginatedResults<string>(fetcher, [searchValue]),
