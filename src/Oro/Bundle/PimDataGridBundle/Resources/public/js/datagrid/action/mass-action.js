@@ -133,7 +133,8 @@ define(['underscore', 'oro/messenger', 'oro/translator', 'pim/dialog', 'oro/data
       if (state.parameters !== undefined && state.parameters.view !== undefined) {
         result.view = {
           columns: state.parameters.view.columns,
-        id: state.parameters.view.id,};
+          id: state.parameters.view.id,
+        };
       }
 
       return result;
