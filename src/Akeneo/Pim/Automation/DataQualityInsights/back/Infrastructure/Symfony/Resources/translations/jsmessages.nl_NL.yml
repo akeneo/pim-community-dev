@@ -1,85 +1,118 @@
 akeneo_data_quality_insights:
-  title: Datakwaliteit inzichten
-  dqi_dashboard:
-    menu: Datakwaliteit inzichten
-    title: Datakwaliteit overzicht
-    helper:
-      title: Introductie van datakwaliteit in Akeneo
-      description: Met het dashboard voor datakwaliteit kunt u de datakwaliteit van uw productdata meten. U kunt ook inzoomen op categorieën of families.
-      help_center: Kijk in ons helpcenter voor meer informatie.
-    no_data_title: Sorry, we hebben onvoldoende gegevens om datakwaliteit inzichten te tonen.
-    no_data_subtitle: Kom later terug alstublieft.
-    time_period:
-      label: Tijdsperiode
-      daily: Dagelijks
-      weekly: Wekelijks
-      monthly: Maandelijks
-    legend:
-      excellent: Uitstekend
-      good: Goed
-      average: Gemiddeld
-      below_average: Matig
-      to_improve: Te verbeteren
-    category_modal_filter:
-      subtitle: Filteren op categorie
-      message: Selecteer de categorie om op je dashboard weer te geven.
-    widgets:
-      family_modal:
-        subtitle: Families toevoegen
-        message: Selecteer de families om op het dashboard te tonen.
-        max_families_msg: Sorry, u kunt niet meer dan {{ count }} families toevoegen om te volgen op uw dashboard
-      category_modal:
-        subtitle: Categorieën toevoegen
-        message: Selecteer de categorieën om op je dashboard weer te geven.
-        max_categories_msg: Sorry, u kunt niet meer dan {{ count }} categorieën toevoegen om te volgen op uw dashboard
-      add_families: Families toevoegen
-      add_categories: Categorieën toevoegen
-      title: Titel
-      no_family_helper_msg: Selecteer de families waarvoor u de gegevenskwaliteit wilt meten
-      no_category_helper_msg: Selecteer de categorieën waarvoor je de gegevenskwaliteit wilt meten
-      see_in_grid: In kolomoverzicht weergeven
-    time_axis:
-      day: dag
   product_evaluation:
     criteria:
-      completeness_of_required_attributes:
-        recommendation: Vereiste attributen met ontbrekende waarden
-      completeness_of_non_required_attributes:
-        recommendation: Niet-vereiste attributen met ontbrekende waarden
       consistency_textarea_uppercase_words:
         recommendation: Attributen met afwijkend hoofdlettergebruik
       consistency_textarea_lowercase_words:
         recommendation: Attributen met afwijkend kleine-lettergebruik
       consistency_spelling:
         recommendation: Attributen met spellingsproblemen
+      consistency_attribute_spelling:
+        recommendation: Attribuut labels met spellingsfouten
+      consistency_attribute_option_spelling:
+        recommendation: Attribuut optie(s) met typefouten
     axis:
-      enrichment:
-        title: Verrijking
-        attributes_link: Alle ontbrekende attributen weergeven
-        success: Uw productgegevens zijn volledig verrijkt. Gefeliciteerd!
       consistency:
         title: Consistentie
         attributes_link: Alle te verrijken attributen weergeven
         success: Uw productgegevens zijn volledig consistent. Gefeliciteerd!
     messages:
-      error:
-        axis_error: Door een fout kon de kwaliteitsscore niet volledig worden berekend. Probeer het later opnieuw.
-        criterion_error: Score kon niet worden berekend.
-      success:
-        criterion: Alles is goed.
-      grading_in_progress: Kwaliteitsscore wordt berekend.
-      axis_grading_in_progress: Kwaliteitsscore wordt berekend. Kom later terug aub.
+      add_image_attribute_recommendation: Een afbeelding is duizend woorden waard. Je moet een asset collectie of een afbeelding toevoegen om de kwaliteit van de data van dit product te verbeteren.
   product_edit_form:
     attribute_filter:
-      all_missing_attributes: Alle ontbrekende attributen
       all_improvable_attributes: Alle verbeterbare attributen
     spellcheck_popover:
       title: Correcties
       original_text_title: Origineel
       suggestions_title: Voorstellen
       ignore_all_suggestions_button_label: Negeren
-    title_suggestion_popover:
-      title: Suggesties
-      ignore_all_suggestions_button_label: Negeren
-pim_title:
-  akeneo_data_quality_insights_dashboard: Datakwaliteit inzichten
+  attribute_grid:
+    quality:
+      to_improve: Te verbeteren
+      good: Goed
+      in_progress: Verwerken
+      n_a: N/B
+  attribute_edit_form:
+    quality_summary: Door dit attribuut te verbeteren verbetert u de algemene kwaliteit van {{ count }} producten.
+  spellcheck:
+    popover:
+      default_aria_label: Spelling suggesties
+      aria_label: "Spellingssuggesties voor: {{ mistake }}"
+  dqi_dashboard:
+    key_indicators:
+      attributes_to_work_on: '{1}U heeft <button>1 attribuut</button> om aan te werken.|]1, 200[Je hebt <button>{{ count }} attributen</button> om aan te werken.|[200, Inf[U heeft meer dan <button>{{ count }} attributen</button> om aan te werken.'
+      list:
+        has_image:
+          no_data: Je assetcollecties en afbeeldingskenmerken lijken leeg te zijn, je moet afbeeldingen van deze belangrijke indicator uploaden om de kwaliteit van je producten te markeren.
+        attributes_perfect_spelling:
+          title: Attributen correct gelabeld
+          no_data: Uw attribuut en opties labels lijken leeg te zijn, u moet ze verrijken met deze belangrijke indicator om de kwaliteit van uw attributen te benadrukken.
+          messages:
+            first_step:
+              message1: Je hebt het moeilijk met attribuut- en optielabels? Ga  <a href="{{ link }}" target="_blank">hier</a> terug naar de basis?
+              message2: Heb je hulp nodig met je attributen en attribuutopties? Neem  <a href="{{ link }}" target="_blank">hier<a href="{{ link }}" target="_blank"> een kijkje!
+            second_step:
+              message1: Neem een kijkje bij uw attributen en optielabels. Uw producten zullen er nadien nog beter uitzien.
+              message2: Het lijkt erop dat je onderweg ergens bent verdwaald! Sommige van je labels hebben nog aandacht nodig.
+            third_step:
+              message1: Je bent zo dichtbij! Slechts een paar laatste aanpassingen en je bent helemaal klaar.
+              message2: Sommige van uw attributen en labels hebben nog wat werk nodig, maar u bent op de goede weg.
+            perfect_score_step:
+              message1: Je catalogus is er meer klaar voor dan ooit! Je hebt geweldig werk gedaan!
+              message2: Geweldig werk aan attribuut- en optielabels!
+        values_perfect_spelling:
+          title: Producten met perfecte spelling in tekst productwaarden
+          no_data: Uw tekstgebieden lijken leeg te zijn, u moet ze verrijken voor deze belangrijke indicator om de kwaliteit van uw producten te accentueren.
+          messages:
+            first_step:
+              message1: Je producten verdienen het om goed te worden beschreven. Controleer de spelling!
+              message2: U kent uw producten het beste, bekijkt u de spelling eens nauwkeuriger.
+              message3: Je product beschrijvingen zijn de merketing van je bedrijf, laten we alle typfouten verhelpen! Eerste indrukken zijn belangrijk.
+              message4: Fouten zorgen voor een minder positieve ervaring met uw productdata. Let op dat u extra aandacht aan uw spelling schenkt.
+            second_step:
+              message1: Je hebt al geweldige producten, nu heb je alleen maar geweldige spellingen nodig!
+              message2: Een spelfout kan een klant weghouden, wees precies.
+              message3: Sommige producten hebben wat hulp nodig om perfect te zijn. Pas op voor de typfouten!
+            third_step:
+              message1: Goed spellen maakt een verschil, je bent er bijna!
+              message2: Bijna klaar, u bent zo dicht bij een perfecte spelling!
+              message3: Je bent een paar spelfouten weg van perfecte productwaarden.
+              message4: Nog wat meer inspanningen om een stralende productomschrijving te bereiken!
+            perfect_score_step:
+              message1: Perfecte spelling in uw gehele catalogus. Goed gedaan!
+              message2: "Dat is indrukwekkend: jouw producten zijn foutloos!"
+              message3: Je hebt geweldig werk gedaan om 100% van de spelfouten te verwijderen. Gefeliciteerd!
+  product_grid:
+    filter_label:
+      spelling_quality: Spellingskwaliteit
+  dictionary:
+    helper:
+      content: Het woordenboek stelt je in staat om woorden te registreren die genegeerd worden door Insights.
+      link_label: Meer informatie over ons helpcenter.
+    words: Woorden
+    searchPlaceholder: Zoek een woord
+    add_words: Voeg hier woorden toe
+    no_search_results:
+      title: Geen zoekresultaten
+      subtitle: Probeer het opnieuw met een andere zoekterm.
+    no_data:
+      title: Nog geen woorden
+      subtitle: Voeg de eerste toe, klik op "Toevoegen" of druk op Enter.
+pimee_enrich.entity.locale:
+  grid:
+    columns:
+      dictionary_words_count:
+        title: Aantal woorden
+        label: "]-Inf, 1]{{ count }} woord|]1, Inf[{{ count }} woorden"
+        not_available: Niet beschikbaar
+    add_words: Woorden toevoegen
+    items_selected: "{1}1 geselecteerd item|[2, Inf[{{ count }} items geselecteerd"
+    modal:
+      title: Woorden toevoegen aan {{ count }} locales
+      subtitle: Typ uw woorden hieronder in. Ze zullen worden toegevoegd aan alle geselecteerde locales.
+      locales_added_notification:
+        title: Woorden toegevoegd aan {{ count }} locales
+        content: De nieuwe woorden zijn toegevoegd aan de woordenboeken van geselecteerde locales.
+      no_supported_locales:
+        title: De geselecteerde locales kunnen niet worden gecontroleerd door Insights.
+        content: Raadpleeg ons <a href="{{ link }}" target="_blank">Helpcentrum</a>  voor een lijst van alle ondersteunde locales.

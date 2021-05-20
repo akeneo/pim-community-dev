@@ -31,12 +31,10 @@ teamwork_assistant:
     no_project_create: create a new project
     description: Description
     due_date: Due date
-    todo: TODO
-    in_progress: IN PROGRESS
-    done: DONE
     all_contributors: All contributors
     you: You
     display_products: Display products
+    projects: Projects
     placeholder:
       contributor_selector: Search contributor
       project_selector: Search project
@@ -66,3 +64,4 @@ pim_notification:
     project_created: A new project for you
     project_finished: Project finished
     project_calculation: Project calculation
+    project_due_date: Project due date

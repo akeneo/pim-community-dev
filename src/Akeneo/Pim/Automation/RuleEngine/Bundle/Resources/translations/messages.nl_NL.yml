@@ -2,41 +2,47 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
-        delete: Verwijderen
         execute: Voer uit
       title: Regels
       column:
-        code: Code
-        conditions: Voorwaarde
-        actions: Actie
+        label: Label
         impacted_product_count:
+          label: Getroffen producten
+          count: '{0,1}%count% heeft invloed op het product|]1,Inf[%count% beïnvloed producten'
           no_yet_calculated: Nog niet berekend
+        tags:
+          label: Acties
+        priority: Prioriteit
+        status: Status
+      mass_edit_action:
+        impacted_product_count: Bereken de getroffen producten
+        execute: Voer uit
+        delete: Verwijderen
   condition:
-    operators:
-      "STARTS WITH": begint met
-      "ENDS WITH": eindigt op
-      "CONTAINS": bevat
-      "DOES NOT CONTAIN": bevat geen
-      "EMPTY": is leeg
-      "NOT EMPTY": is niet leeg
-      "IN": in
-      "NOT IN": niet in
-      "UNCLASSIFIED": is niet-geclassificeerd
-      "IN OR UNCLASSIFIED": is niet-geclassificeerd of in
-      "BETWEEN": tussen
-      "NOT BETWEEN": niet tussen
-      "=": is gelijk aan
-      "!=": is niet gelijk aan
-      ">": groter dan
-      ">=": is gelijk aan of groter dan
-      "<": minder dan
-      "<=": is gelijk aan of minder dan
+    fields:
+      family: Familie
+      family_variant: Familie variant
+      associations: Associaties
+      groups: Groepen
+      categories: Categorieën
+      completeness: Compleetheid
+      identifier: Identifier
+      parent: Bovenliggende
+      enabled: Status
+      entity_type: Entiteittype
+      created: Aangemaakt
+      updated: Bijgewerkt
+    field_groups:
+      system: Systeem
   acl_group:
     rule: Regels
   acl:
     rule:
+      edit_permissions: Regels bewerken
       view_permissions: Regels weergeven
       delete_permissions: Verwijder regels
+      impacted_product_count_permissions: Bereken het aantal producten getroffen door de regels
+      create_permissions: Regels aanmaken
       execute_permissions: Voer regels uit
   attribute:
     tab:
@@ -46,44 +52,45 @@ pimee_catalog_rule:
     acl:
       rule.view_permissions: Regels weergeven
   product:
-    tooltip:
-      product_attribute_affected_by_a_rule.content: De waarde van deze kenmerk kan afkomstig zijn van de regel(s) <strong>%rule%</strong>. Dit betekent dat als de voorwaarde voor de regel geldig zijn, uw wijzigingen zal worden overschreven.
-      variant_attribute_affected_by_a_rule.content: Variant groep kenmerken hebben voorrang op de kenmerken van de producten. Dit betekent dat elk kenmerk van deze variant groep de overeenkomende waarde in de staande producten overschrijft. De regel(s) <strong>%rule%</strong>, zal niet worden toegepast op de producten.
-      loading.title: Laden...
     history: Toegepaste regel "%rule%"
-  product_value:
-    tooltip:
-      affected_by.title: 'Beïnvloed door regel(s):'
   steps:
-    product_rule_definition_reader.title: Product regel importeer lezer
-    rule_definition_processor.title: Product regel importeer processor
-    product_rule_definition_writer.title: Product regel importeer schrijver
+    product_rule_definition_reader.title: Product regel import lezer
+    rule_definition_processor.title: Product regel import verwerker
+    product_rule_definition_writer.title: Product regel import schrijver
     rules_execution.title: Uitvoering van regels
   notification:
-    rule:
-      executed: Uitvoering van de voltooide regel(s)
+    execute_rules:
+      success: Uitvoering van de regel(s) voltooid
+      warning: Uitvoering van de regel(s) voltooid met waarschuwing(en)
+      error: Er is een fout opgetreden tijdens het uitvoeren van de regels
+    mass_edit_rule:
+      success: Berekening van de getroffen producten door de regel(s) voltooid
+      error: Er is een fout opgetreden tijdens het berekenen van de getroffen producten door de regels
+  datetime:
+    now: ' nu'
+    relative_date:
+      minute: ']-Inf, -1[%absolute_count% minuten geleden|{-1}1 minuut geleden|{1}in 1 minuut|]1, +Inf[in %absolute_count% minuten'
+      hour: ']-Inf, -1[%absolute_count% uren geleden|{-1}1 uur geleden|{1}in 1 uur|]1, +Inf[in %absolute_count% uren'
+      day: ']-Inf, -1[%absolute_count% dagen geleden|{-1}1 dag geleden|{1}in 1 dag|]1, +Inf[in %absolute_count% dagen'
+      week: ']-Inf, -1[%absolute_count% weken geleden|{-1}1 week geleden|{1}in 1 week|]1, +Inf[in %absolute_count% weken'
+      month: ']-Inf, -1[%absolute_count% maanden geleden|{-1}1 maand geleden|{1}in 1 maand|]1, +Inf[in %absolute_count% maanden'
+      year: ']-Inf, -1[%absolute_count% jaren geleden|{-1}1 jaar geleden|{1}in 1 jaar|]1, +Inf[in %absolute_count% jaren'
+  status:
+    enabled: Ingeschakeld
+    disabled: Uitgeschakeld
 btn:
   Execute rules: Voer regels uit
-rule: Regelinstellingen
-mass_edit_rule: Regelinstellingen
-job_execution.summary.rule_calculated: Aantal regels
-batch_jobs:
-  yml_rule_import:
-    label: Regel importeren in YAML
-    import.label: Regel importeren
-  yml_rule_export:
-    label: Regel exporteren in YAML
-    export.label: Regel exporteren
-  rule_impacted_product_count:
-    execute_rules.label: Uitvoering van regels
-  csv_product_import_with_rules:
-    label: Product import in CSV met regels
-    execute_rules.label: Uitvoering van regels
-    validation.label: Bestandsvalidatie
-    import.label: Productimport
-    import_associations.label: Productassociatie import
-  xlsx_product_import_with_rules:
-    execute_rules.label: Uitvoering van regels
-    validation.label: Bestandsvalidatie
-    import.label: Productimport
-    import_associations.label: Productassociatie import
+job_execution:
+  summary:
+    rule_calculated: Aantal regels
+    read_rules: Regels lezen
+    selected_entities: geselecteerde producten / productmodellen
+    skipped_invalid: overgeslagen producten / productmodellen (ongeldig)
+    updated_entities: bijgewerkte producten / productmodellen
+    executed_rules: succesvol uitgevoerde regels
+    errored_rules: overgeslagen regels (ongeldig)
+pim_datagrid:
+  cells:
+    type:
+      mass_edit_rule: Regelinstellingen
+      execute_rules: Uitvoering van regels

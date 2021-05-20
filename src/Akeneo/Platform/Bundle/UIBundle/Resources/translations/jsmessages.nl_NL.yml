@@ -1,0 +1,9 @@
+user:
+  email_notifications: E-mailnotificaties
+pimee_enrich.entity.product:
+  duplicate:
+    title: Dupliceer het product {{ product_identifier }}
+    button: Dupliceren
+    flash:
+      success: Het product {{ product_identifier }} is met succes gedupliceerd.
+      success_with_attribute_codes: Het product {{ product_identifier }} is met succes gedupliceerd. U moet de {{ unique_attribute_codes }} verrijken met unieke waarden

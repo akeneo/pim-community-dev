@@ -1,4 +1,3 @@
 flash.version.revert.product: Met succes het product herstellen naar de vorige versie
 flash.error.revert.product: Deze versie kan niet worden hersteld. Er zijn fouten opgetreden tijdens de validatie.
-flash.error.revert.product_has_variant: Product kan niet worden hersteld, omdat het bij een variant groep hoort
 pimee_versioning.acl.product_version.revert: Product herstellen
