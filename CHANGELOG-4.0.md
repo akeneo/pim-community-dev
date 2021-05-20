@@ -1,5 +1,24 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9777: Fix error message when trying to delete an attribute linked to an entity
+
+# 4.0.110 (2021-05-14)
+
+## Bug fixes
+
+- PIM-9862: [Backport] Fix SQL sort buffer size issue when the catalog has a very large number of categories
+
+# 4.0.109 (2021-05-11)
+
+## Bug fixes
+
+- PIM-9838: fix project completeness selection filter on product grid's bulk edit and quick export
+- PIM-9859: Fix variant product repository failing when finding last created by parent
+
+# 4.0.108 (2021-05-10)
+
 # 4.0.107 (2021-05-03)
 
 ## Bug fixes

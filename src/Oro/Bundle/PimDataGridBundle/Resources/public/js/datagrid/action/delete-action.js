@@ -102,7 +102,7 @@ define([
     showErrorFlashMessage: function (response) {
       let message = '';
 
-      if (typeof response === 'string') {
+      if (typeof response === 'string' && response !== "") {
         message = response;
       } else {
         try {
