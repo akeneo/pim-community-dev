@@ -61,6 +61,15 @@ pim_common:
   properties: Properties
   name: Name
   remove: Remove
+  code: Code
+  products: Products
+  product_models: Product models
+  categories: Categories
+  enabled: Enabled
+  family: Family
+  groups: Groups
+  yes: "Yes"
+  no: "No"
 pim_enrich:
   #ACLs
   acl:
@@ -91,7 +100,6 @@ pim_enrich:
       edit_attributes: Edit attributes of a product model
       categories_view: Consult the categories of a product model
       history: View product model history
-      remove: Remove a product model
     category:
       list: List categories
       create: Create a category
@@ -154,8 +162,6 @@ pim_enrich:
       remove: Remove associations to a product
     job_tracker:
       index: View process tracker
-    api_connection:
-      manage: Manage the API connections
   acl_group:
     association_type: Association types
     attribute: Attributes
@@ -347,8 +353,6 @@ Decimals allowed: Allow decimals
 Negative allowed: Allow negative values
 Date min: Min date
 Date max: Max date
-Metric family: Metric family
-Default metric unit: Default metric unit
 Max file size: Max file size (MB)
 Allowed extensions: Allowed extensions
 None: None
@@ -373,7 +377,6 @@ pim_catalog_file: File
 pim_catalog_image: Image
 pim_catalog_boolean: "Yes/No"
 pim_catalog_date: Date
-pim_catalog_metric: Metric
 pim_reference_data_simpleselect: Reference data simple select
 pim_reference_data_multiselect: Reference data multi select
 #Locales
@@ -420,6 +423,20 @@ Updated At: Updated at
 Enabled: Enabled
 Disabled: Disabled
 Status: Status
+pim_datagrid:
+  filters:
+    entity_type:
+      label: Variant
+    family:
+      label: Family
+    groups:
+      label: Groups
+    enabled:
+      label: Status
+    completeness:
+      label: Complete
+    identifier:
+      label: Identifier
 #Versioning / history
 Change History: Change history
 Data Audit: Data audit

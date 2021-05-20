@@ -51,6 +51,7 @@ pim_analytics:
     server_version: 服务器版本
     php_extensions: PHP 扩展
     email_domains: 关联的电子邮件域
+    api_connection: API 连接
   acl:
     system_info:
       index: 系统信息

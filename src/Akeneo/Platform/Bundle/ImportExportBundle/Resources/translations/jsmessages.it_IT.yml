@@ -53,7 +53,7 @@ pim_import_export:
         show_profile.title: Visualizza profilo
         download_log.title: Scarica il log
         download_file.title: Scarica file generati
-        download_archive.title: Scarica archivi generati
+        download_archive.title: Scarica archivio generato
       summary:
         fetching: Raccolta di dati sull'esecuzione del lavoro...
         warning: Attenzione
@@ -100,8 +100,7 @@ pim_import_export:
             title: Con intestazione
             help: Stampare o no la l'intestazione della colonna
           with_media:
-            title: Esporta file e immagini
-            help: Esportare o meno i file e le immagini del prodotto
+            title: Esporta media
           lines_per_file:
             title: Numero di linee per file
             help: Definisci il numero limite di righe per file
@@ -131,6 +130,8 @@ pim_import_export:
             help: Significa che la cronologia del prodotto viene aggiornata automaticamente, può essere disattivato per migliorare le prestazioni
           family_variant_column:
             title: Colonna famiglia variante
+          with_label:
+            title: Con etichette
       file_path: Percorso del file
   widget:
     last_operations:
@@ -139,10 +140,12 @@ pim_import_export:
       profile_name: Nome profilo
       details: Dettaglio
       warning_count: Attenzione
+      username: Nome utente
       job_type:
         import: '&Import'
         export: Esportazioni
         mass_edit: Azione di massa modificata
+        mass_edit_rule: Impostazioni regole
         quick_export: Esportazione rapida
         compute_family_variant_structure_changes: Calcola le modifiche della struttura della famiglia variante
         compute_completeness_of_products_family: Calcola la completezza della famiglia di prodotti
@@ -157,6 +160,17 @@ pim_import_export:
     6: Fallito
     7: Abbandonato
     8: Sconosciuto
+  job_status:
+    COMPLETED: Completato
+    STARTING: In avvio
+    STARTED: Avviato
+    STOPPING: In fase di interruzione
+    STOPPED: Fermato
+    FAILED: Fallito
+    ABANDONED: Abbandonato
+    UNKNOWN: Sconosciuto
+  tracking:
+    not_started: "In attesa"
 confirmation:
   remove:
     import_profile: Sei sicuro di voler eliminare questo profilo di importazione?

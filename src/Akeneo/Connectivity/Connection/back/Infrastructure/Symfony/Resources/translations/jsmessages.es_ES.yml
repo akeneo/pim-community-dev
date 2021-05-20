@@ -4,17 +4,75 @@ pim_menu:
   navigation_block:
     connection: Navegación de conexión
   item:
+    connection_audit: Panel de conexión
+    connection_settings: Conexiones
     connection_settings_edit: Ajustes de conexión
     connection_monitoring: Monitoreo
 pim_title:
+  akeneo_connectivity_connection_settings_index: Conexiones
   akeneo_connectivity_connection_settings_edit: Ajustes de conexión
   akeneo_connectivity_connection_settings_any: Ajustes de conexión
+  akeneo_connectivity_connection_audit_index: Panel de conexión
+  akeneo_connectivity_connection_audit_any: Panel de conexión
+  akeneo_connectivity_connection_error_management_dashboard: Panel de conexión
   akeneo_connectivity_connection_error_management_connection_monitoring: Monitoreo de conexión
 akeneo_connectivity.connection:
+  connections: Conexiones
+  secondary_actions:
+    title: Otras acciones
   connection:
+    code: Código
+    label: Etiqueta
+    flow_type: Tipo de flujo
+    image: Imagen
     auditable: Rastrea esta conexión en el tablero
+    client_id: ID de cliente
+    secret: Secreto
+    username: Nombre de usuario
+    password: Contraseña
+    user_role_id: Rol
+    user_group_id: Grupo
+    constraint:
+      code:
+        required: Se requiere código de conexión.
+        invalid: El código de conexión sólo puede contener letras, números y guiones bajos.
+        too_short: El código de conexión es demasiado corto. Debe tener 3 caracteres o más.
+        too_long: El código de conexión es demasiado largo. Debe tener 100 caracteres o menos.
+        must_be_unique: El código de conexión debe ser único.
+      label:
+        required: Se requiere una etiqueta de conexión.
+        too_short: La etiqueta de conexión es demasiado corta. Debe tener 3 caracteres o más.
+        too_long: La etiqueta de conexión es demasiado larga. Debe tener 100 caracteres o menos.
+      flow_type:
+        invalid: El tipo de flujo de conexión sólo puede ser 'data_source', 'data_destination' u 'otro'.
+      image:
+        must_exist: No se encontró la imagen. Por favor, inténtelo de nuevo.
+  flow_type:
+    data_source: Fuente de datos | Fuentes de datos
+    data_destination: Destino de datos | Destinos de datos
+    other: Otro | Otros
+  connection_count: 'Conexión de {{ count }} | {{ count }} conexiones'
+  no_connection:
+    title: No hay conexión declarada aún.
+    message_link: pulse aquí.
+  create_connection:
+    title: Crear una conexión nueva
+    description: Puede crear hasta 50 conexiones.
+    flash:
+      success: Conexión creada correctamente.
+      error: Lo sentimos, se ha producido un error al crear la conexión.
   edit_connection:
+    subtitle: Configuración
+    flash:
+      success: Conexión actualizada correctamente.
+      error: Lo sentimos, se ha producido un error al editar la conexión.
+    image_uploader:
+      extension_not_allowed: Lo sentimos, el archivo que estás intentando subir no tiene una extensión permitida.
     credentials:
+      title: Credenciales
+      helper:
+        message: 'Aquí están las credenciales para usar en su conector {{ label }}.'
+        link: Más información aquí...
       wrong_credentials_combinations:
         single: Notamos que está utilizando el nombre de usuario {{wrong_username}} para esta conexión (último uso el {{date}} a las {{time}}). Recomendamos usar el nombre de usuario {{good_username}} en su lugar.
         link: Descubre por qué deberías usarlo.
@@ -22,13 +80,48 @@ akeneo_connectivity.connection:
         several: Notamos que no está utilizando el nombre de usuario {{good_username}} para esta conexión.
         list: 'Aquí está la lista de nombres de usuario que se utilizaron en los últimos 7 días:'
         username_date: '{{ wrong_username }} el {{ date }} a las {{ time }}'
+      password_helper:
+        message: Si olvidó su contraseña, puede generar una nueva aquí.
+        link: Más información…
+      clear_password_helper:
+        message: Asegúrate de guardar esta contraseña en algún lugar ya que no te la mostraremos dos veces.
+        link: Más información…
+      action:
+        copy: Copiar en el portapapeles
+        regenerate: Regenerar
+      flash:
+        copied: '{{ name }} copiado al portapapeles'
+    permissions:
+      title: Permisos
+      helper:
+        message: 'En esta sección, puede definir permisos para su conexión {{ label }}.'
+        link: Más información sobre los permisos de conexión...
+      user_role_helper:
+        message: El rol predeterminado `{{ role }}` no es la mejor opción para tu conexión. Le recomendamos encarecidamente que elija un rol adaptado a sus necesidades de conexión.
+        link: Más información aquí...
+  delete_connection:
+    title: Confirmar la eliminación
+  helper:
+    title: '👋 ¡Bienvenido a la característica que conectará correctamente tu PIM!'
+  flow_type_helper:
+    link: '¡Podemos ayudarte aquí mismo!'
   auditable_helper:
     message: Solo puede realizar un seguimiento de las conexiones "Origen" y "Destino".
+    link: Más información…
+  edit_image:
+    remove_helper: Eliminar la imagen
+    click_here: haz clic aquí
   grid.wrong_credentials_combination_helper: Algunas de las conexiones a continuación no utilizan sus nombres de usuario de conexión. Se identifican con una señal de alerta amarilla.
   dashboard:
+    helper:
+      title: '👋 ¡Bienvenido a su panel de conexión!'
+    user_survey:
+      button: '¡Vamos!'
     connection_selector:
       title:
+        source: Conexiones de origen
         destination: Conexiones de destino
+      all: Todo
     charts:
       inbound: Entrante
       outbound: Saliente
@@ -37,6 +130,7 @@ akeneo_connectivity.connection:
       number_of_products_sent: Productos enviados
       legend:
         during_the_last_seven_days: 'Total en los últimos 7 días:'
+        today: Hoy
     error_management:
       data_source_error_chart:
         section:
@@ -52,6 +146,16 @@ akeneo_connectivity.connection:
         data_destination: '¿Quieres ver algunos gráficos elegantes sobre tus conexiones de destino?'
       message_with_permission:
         message: Crea y comienza a rastrear tu primer
+        link: aquí. 
+      message_without_permission:
+        message: Solicite a su administrador que cree uno.
+        link: Más información sobre conexiones aquí...
+  webhook:
+    form:
+      secret: Secreto
+    regenerate_secret:
+      action:
+        regenerate: Regenerar
   error_management:
     connection_monitoring:
       title: Monitoreo

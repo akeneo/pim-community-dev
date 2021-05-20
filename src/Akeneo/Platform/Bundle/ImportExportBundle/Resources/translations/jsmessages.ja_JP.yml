@@ -53,6 +53,7 @@ pim_import_export:
         show_profile.title: プロファイルを表示
         download_log.title: ログをダウンロード
         download_file.title: 生成されたファイルをダウンロード
+        download_archive.title: 生成されたアーカイブをダウンロード
       summary:
         fetching: ジョブ実行データを収集中...
         warning: 警告
@@ -98,9 +99,6 @@ pim_import_export:
           with_header:
             title: ヘッダーあり
             help: 列名を出力するかどうか
-          with_media:
-            title: ファイルと画像をエクスポート
-            help: 商品ファイルと画像をエクスポートするかどうか
           lines_per_file:
             title: ファイルごとの行数
             help: 1ファイルあたりの行数を定義
@@ -130,6 +128,8 @@ pim_import_export:
             help: 商品履歴が自動的にアップデートされます。自動アップデートをオフにするとパフォーマンスが向上します。
           family_variant_column:
             title: ファミリーバリエーションの列
+          with_label:
+            title: ラベル付き
       file_path: ファイルのパス
   widget:
     last_operations:
@@ -138,6 +138,7 @@ pim_import_export:
       profile_name: プロファイル名
       details: 詳細
       warning_count: 警告
+      username: ユーザー名
       job_type:
         import: インポート
         export: エクスポート
@@ -157,6 +158,15 @@ pim_import_export:
     6: 失敗
     7: 破棄済
     8: 不明
+  job_status:
+    COMPLETED: 完了
+    STARTING: 開始中...
+    STARTED: 開始
+    STOPPING: 停止中
+    STOPPED: 停止
+    FAILED: 失敗
+    ABANDONED: 破棄済
+    UNKNOWN: 不明
 confirmation:
   remove:
     import_profile: このインポートプロファイルを削除してもよろしいですか。

@@ -1,0 +1,8 @@
+pim_catalog_volume:
+  axis:
+    count_products: Produse
+    count_channels: Canale
+    count_families: Familii
+    count_attributes: Atribute
+    count_categories: Categorii
+    count_category_trees: Mulțimea de categorii

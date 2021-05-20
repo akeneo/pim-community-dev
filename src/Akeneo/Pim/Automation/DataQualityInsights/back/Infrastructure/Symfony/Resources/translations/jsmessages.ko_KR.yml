@@ -1,0 +1,38 @@
+akeneo_data_quality_insights:
+  title: 데이터 품질 인사이트
+  dqi_dashboard:
+    menu: 데이터 품질 인사이트
+    helper:
+      title: Akeneo의 데이터 품질 소개
+      description: 데이터 품질 대시보드에서 카탈로그 데이터의 품질을 측정할 수 있습니다. 카테고리 또는 패밀리에 초점을 맞출 수도 있습니다.
+      help_center: 자세한 내용은 헬프 센터를 확인하십시오.
+    legend:
+      below_average: 평균 이하
+      to_improve: 개선하려면
+    average_grade: 평균 등급
+    category_modal_filter:
+      subtitle: 카테고리에서 필터링
+      message: 카테고리를 선택하여 대시보드에서 탐색
+    widgets:
+      family_modal:
+        subtitle: 패밀리 추가
+        message: 패밀리를 선택하여 대시보드에 추가
+        max_families_msg: 죄송합니다. 해당 대시보드에서 추적하기 위한 패밀리를 {{ count }}개 넘게 추가할 수 없습니다.
+      category_modal:
+        subtitle: 카테고리 추가
+        message: 카테고리를 선택하여 대시보드에 추가
+        max_categories_msg: 죄송합니다. 해당 대시보드에서 추적하기 위한 카테고리를 {{ count }}개 넘게 추가할 수 없습니다.
+      add_families: 패밀리 추가
+      add_categories: 카테고리 추가
+      title: 타이틀
+      score: 결과
+      no_family_helper_msg: 데이터 품질을 측정하려는 패밀리 선택
+      no_category_helper_msg: 데이터 품질을 측정하려는 카테고리 선택
+      see_in_grid: 그리드에서 보기
+    time_axis:
+      day: 일
+  product_evaluation:
+    messages:
+      grading_in_progress: 등급 평가 진행 중입니다.
+      axis_grading_in_progress: 등급 평가 진행 중입니다. 나중에 다시 시도하십시오.
+      too_many_attributes: 개선할 {{ count }}개 특성이 있습니다.

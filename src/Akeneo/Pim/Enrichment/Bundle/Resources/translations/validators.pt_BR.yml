@@ -13,9 +13,8 @@ Option code may contain only letters, numbers and underscores: Código da opçã
 Option code may contain only letters (at least one), numbers and underscores: O código da opção pode conter apenas letras (ao menos uma), numeros e sublinhados
 This value should not be a decimal.: Este valor não deve ser um decimal.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'A extensão do arquivo não é permitida (extensões permitidas: %extensions%).'
-"The value %value% is already set on another product for the unique attribute %attribute%": O Valor %value% já está em uso por outro produto para o atributo unico %attribute%
 The same identifier is already set on another product: O mesmo identificador já está definido em outro produto
-regex.comma_or_semicolon.message: Esse campo não deve conter vírgula ou ponto e vírgula.
+regex.comma_or_semicolon_or_surrounding_space.message: Este campo não deve conter nenhuma vírgula ou ponto e vírgula ou espaços
 file.extensions.message: 'A extensão do arquivo não é permitida (extensões permitidas: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Este tipo de valor espera a utilização de {{ decimal_separator }} para separar casas decimais.
 "This type of value expects the use of dot (.) to separate decimals.": Este tipo de valor espera a utilização de um ponto final (.) para separar casas decimais.
@@ -24,8 +23,6 @@ file.extensions.message: 'A extensão do arquivo não é permitida (extensões p
 "This type of value expects the use of the format {{ date_format }} for dates.": Este tipo de valor espera a utilização do formato {{ date_format }} para datas.
 "The category \"%category%\" has to be a root category.": A categoria "%category%" tem que ser a categoria raiz.
 "The attribute \"%attributeCode%\" does not exist.": O atributo "%attributeCode%" não existe.
-"The attribute \"%attributeCode%\" is not a metric attribute.": O atributo %attributeCode% não é um atributo métrico.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": A unidade "%unitCode%" não existe ou não pertence à família de métrica padrão do atributo "%attributeCode%".
 "The currency \"%currency%\" has to be activated.": A moeda "%currency%" tem que ser ativada.
 product_model.code.not_blank.message: O código do modelo de produto não pode estar vazio.
 product_model.code.unique.message: Esse código já foi definido para outro modelo de produto.
@@ -48,7 +45,6 @@ pim_catalog:
     family_variant_axes_unique: Eixos de variantes tem que ser únicos, "%attributes%" são usados diversas vezes nas configurações das variantes de atributos
     family_variant_axes_immutable: 'Eixos de variantes não podem ser modificados para os níveis "%level%"'
     family_variant_axes_attribute_type_unique: Os eixos de variante "%axis%" não podem ser únicos ou um identificador
-    family_variant_axes_attribute_type: Os eixos de variante "%axis%" tem que ser um booleanos, uma seleção simples, uma simples referência de dados ou métrico
     family_variant_axes_wrong_type: Os eixos de variante "%axis%" não podem ser localizáveis, nem acessíveis e não podem ser específicos por linguagem
     family_variant_axes_number_of_axes: 'Uma configuração de variante de atributo não pode ter mais de %max_axes_number% eixos'
     family_variant_no_axis: Deve haver ao menos um atributo definido como eixo para a configuração de atributo para o nível "%level%"

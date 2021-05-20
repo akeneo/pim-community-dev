@@ -61,6 +61,19 @@ pim_common:
   properties: Proprietà
   name: Nome
   remove: Rimuovere
+  code: Codice
+  quantity: Quantità
+  products: Prodotti
+  product_models: Modelli di prodotto
+  categories: Categorie
+  family_variant: Famiglia variante
+  enabled: Attivato
+  family: Famiglia
+  parent: Parente
+  groups: Gruppi
+  unit: Unità
+  yes: "Sì"
+  no: "No"
 pim_enrich:
   #ACLs
   acl:
@@ -91,7 +104,6 @@ pim_enrich:
       edit_attributes: Modifica gli attributi di modello di prodotto
       categories_view: Consulta le categorie di un modello di prodotto
       history: Visualizza la cronologia del modello di prodotto
-      remove: Rimuovi un modello di prodotto
     category:
       list: Elenco categorie
       create: Creare una categoria
@@ -154,8 +166,6 @@ pim_enrich:
       remove: Rimuovi associazioni da un prodotto
     job_tracker:
       index: Visualizza il tracker di processo
-    api_connection:
-      manage: Gestisci le connessioni API
   acl_group:
     association_type: Tipi di associazione
     attribute: Atributi
@@ -347,8 +357,6 @@ Decimals allowed: Consentire i decimali
 Negative allowed: Consentire valori negativi
 Date min: Data minima
 Date max: Data massima
-Metric family: Famiglia metrica
-Default metric unit: Unità metrica di default
 Max file size: Dimensione massima del file (MB)
 Allowed extensions: Estensioni consentite
 None: Nessuno
@@ -373,7 +381,7 @@ pim_catalog_file: File
 pim_catalog_image: Immagine
 pim_catalog_boolean: "Sì/No"
 pim_catalog_date: Data
-pim_catalog_metric: Metrico
+pim_catalog_metric: Misurazione
 pim_reference_data_simpleselect: Seleziona un singolo riferimento dati
 pim_reference_data_multiselect: Seleziona un riferimento dati multiplo
 #Locales
@@ -420,6 +428,30 @@ Updated At: Aggiornato il
 Enabled: Attivato
 Disabled: Disattivato
 Status: Stato
+pim_datagrid:
+  filters:
+    entity_type:
+      label: Variante
+    family:
+      label: Famiglia
+    groups:
+      label: Gruppi
+    enabled:
+      label: Stato
+    scope:
+      label: Ambito
+    completeness:
+      label: Completo
+    created:
+      label: Creato A
+    updated:
+      label: Aggiornato al
+    label_or_identifier:
+      label: Etichetta o identificatore
+    parent:
+      label: Parente
+    identifier:
+      label: Identificatore
 #Versioning / history
 Change History: Cambia la cronologia
 Data Audit: Revisione dei dati
@@ -505,3 +537,8 @@ job_tracker:
     title: Tracker di processo
   filter:
     started_at: Iniziato alle
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered_image_title: logo Akeneo
+    baseline: Unlocking Growth Through Product Experiences
