@@ -7,15 +7,13 @@ teamwork_assistant:
       edit: Project bewerken
       remove: Project verwijderen
       create_from_view: Project aanmaken vanuit deze weergave
-      loading: Laden...
       start_new_project: Nieuw project starten
       confirmation:
         remove: Weet je zeker dat je het project wilt verwijderen?
-        delete: Bevestig verwijderen
+      projects: Projecten
   project:
     label: Naam
     locale: Lokalisatie
-    channel: Kanaal
     label_maxlength: Deze waarde is te lang. Het moet {{ max }} karakters of minder bevatten.
     description: Beschrijving
     due_date: Inleverdatum
@@ -23,13 +21,8 @@ teamwork_assistant:
   edit_project_modal:
     saved: Het project werd opgeslagen.
     title: Project bewerken
-    confirm: Opslaan
-    cancel: Annuleren
   create_project_modal:
     saved: Het project werd opgeslagen, je wordt gewaarschuwd wanneer de berekening is uitgevoerd.
-    title: Project aanmaken
-    confirm: Opslaan
-    cancel: Annuleren
   widget:
     no_project: Je hebt geen huidig project
     description: Beschrijving
@@ -48,3 +41,16 @@ teamwork_assistant:
 pim_datagrid:
   view_selector:
     project: Projecten
+batch_jobs:
+  project_calculation:
+    project_calculation.label: Projectberekening
+    prepare_project_calculation.label: Bereid de projectberekening voor
+  refresh_project_completeness_calculation:
+    label: Vernieuw projectvolledigheid
+    refresh_project_completeness_calculation.label: Vernieuw projectvolledigheid
+pim_notification:
+  types:
+    project_created: Een nieuw project voor jou
+    project_finished: Project afgewerkt
+    project_calculation: Projectberekening
+    project_due_date: Project einddatum

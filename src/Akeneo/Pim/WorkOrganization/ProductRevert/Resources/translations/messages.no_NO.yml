@@ -1,0 +1,3 @@
+flash.version.revert.product: Gjenopprettet produktet til forrige versjon
+flash.error.revert.product: Denne versjonen kan ikke gjenopprettes. Feil oppstod under valideringen.
+pimee_versioning.acl.product_version.revert: Gjenopprett et produkt

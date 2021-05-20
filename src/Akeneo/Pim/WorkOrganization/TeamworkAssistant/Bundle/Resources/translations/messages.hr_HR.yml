@@ -1,4 +1,6 @@
 teamwork_assistant:
+  project:
+    required: Ta vrijednost ne smije biti prazana.
   notification:
     project_calculation:
       start: Početak

@@ -1,0 +1,78 @@
+pim_reference_entity:
+  reference_entity:
+    validation:
+      code:
+        pattern: 'Dit veld mag alleen letters, cijfers en een laag streepje bevatten.'
+        should_be_unique: 'Er bestaat al een referentie-entiteit met code "%reference_entity_identifier%"'
+        limit_reached: 'U kunt de referentie-entiteit "%reference_entity_label%" niet aanmaken omdat u de limiet van %limit% referentie-entiteiten hebt bereikt'
+      records:
+        should_have_no_record: 'U kunt deze entiteit niet verwijderen omdat er records bestaan voor deze entiteit'
+      reference_entity_attributes:
+        should_not_be_linked: 'Voordat u deze referentie-entiteit kunt verwijderen, dient u eerst de attributen in al uw referentie-entiteiten te controleren en vervolgens de hieraan gekoppelde attributen te verwijderen'
+      reference_entity_permissions:
+        at_least_one_user_group_should_have_edit_permission: 'Ten minste één gebruikersgroep moet de toestemming hebben om deze entiteit te bewerken'
+      product_attributes:
+        should_not_be_linked: 'Je kunt deze entiteit niet verwijderen omdat product attributen gerelateerd zijn aan deze entiteit'
+      should_exist: 'De referentie entiteit "%reference_entity_code%" is niet gevonden.'
+  record:
+    validation:
+      code:
+        pattern: 'Dit veld mag alleen letters, cijfers en een laag streepje bevatten.'
+        should_be_unique: 'De record code bestaat al voor referentieentiteit "%reference_entity_identifier%" en record code "%code%"'
+        should_exist: 'De record is niet gevonden'
+      text:
+        incompatible_with_regular_expression: 'Voer een tekst in die voldoet aan de reguliere expressie: "{{ %regular_expression%}}"'
+        invalid_email: 'Voer een e-mailadres in: xxxxx@xx.xx'
+        invalid_url: 'Vul een URL in: http(s)://xxxx.XXX'
+      file:
+        extension_not_allowed: '"%file_extension%" bestanden zijn niet toegestaan voor dit attribuut. Toegestane extensies zijn: %allowed_file_extensions%'
+        file_size_exceeded: 'Het bestand overschrijdt de maximale bestandsgrootte voor het attribuut.'
+        should_exist: 'Het bestand "%file_path%" is niet gevonden.'
+      option:
+        code_does_not_exist: 'De optie met code "%option_code%" bestaat niet voor dit attribuut'
+      option_collection:
+        codes_dont_exist: "De volgende optie codes bestaan niet voor dit attribuut : \"%option_codes%\""
+      record:
+        should_exist: 'Het record "%record_code%" is niet gevonden.'
+        should_not_be_used_as_product_variant_axis: 'U kunt deze entiteit niet verwijderen omdat deze gebruikt wordt als variant-as in één van uw productvarianten'
+      record_collection:
+        should_exist: 'De records "%record_codes%" zijn niet gevonden.'
+      limit_reached: 'Je kunt het record "%record_label%" niet aanmaken omdat u de limiet van %limit% records voor deze referentieentiteit hebt bereikt'
+      channel:
+        is_expected: 'Een kanaal wordt verwacht voor attribuut "%attribute_code%" omdat het een waarde per kanaal heeft.'
+        is_not_expected: 'Een kanaal wordt niet verwacht voor attribuut "%attribute_code%" omdat het geen waarde per kanaal heeft.'
+        should_exist: 'Het kanaal "%channel_identifier%" bestaat niet.'
+      locale:
+        is_expected: 'Een locale wordt verwacht voor attribuut "%attribute_code%" omdat het een waarde heeft per locale.'
+        is_not_expected: 'Een locale wordt niet verwacht voor attribuut "%attribute_code%" omdat het geen waarde per locale heeft.'
+        is_not_activated: 'De lokalisatie "%locale_identifier%" is niet geactiveerd.'
+        is_not_activated_for_channel: 'De lokalisatie "%locale_identifier%" is niet geactiveerd voor het kanaal "%channel_identifier%".'
+  attribute:
+    validation:
+      options:
+        should_exist: 'De optie is niet gevonden.'
+        duplicated: 'De optie "%option_code%" bestaat al'
+        too_many: 'U heeft de limiet van {{ limit }} attribuut opties per attribuut bereikt.'
+        code:
+          pattern: 'Dit veld mag alleen letters, cijfers en een laag streepje bevatten.'
+          should_not_be_blank: 'De code van de optie mag niet leeg zijn'
+      max_length:
+        should_be_an_integer: 'Deze waarde moet een geheel getal zijn.'
+      max_file_size:
+        should_be_a_number: 'Deze waarde moet een getal zijn.'
+      code:
+        pattern: 'Dit veld mag alleen letters, cijfers en een laag streepje bevatten.'
+        reserved_codes: 'De code kan geen van deze waarden zijn: "{{ comma_separated_reserved_keywords }}"'
+        should_not_exist: 'Het attribuut bestaat al voor de referentieentiteit "{{ reference_entity_identifier }}" en de attribuutcode "{{ code }}"'
+        should_exist: 'Het attribuut is niet gevonden'
+      regular_expression:
+        invalid_regular_expression: 'Deze reguliere expressie is niet geldig. Hier is een voorbeeld van een geldige reguliere expressie: "/[a-z]+[0-9]*/"'
+        should_not_be_empty: 'De reguliere expressie mag niet leeg zijn.'
+      should_be_a_textarea_to_update_is_rich_text_editor: 'Een eenvoudig tekstattribuut kan geen rijke teksteditor hebben'
+      should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'Een tekstgebied attribuut kan geen validatie regel hebben'
+      cannot_set_a_non_empty_regular_expression: 'Het attribuut mag geen reguliere expressie hebben'
+      cannot_update_the_regular_expression: 'Kan geen reguliere expressie instellen op het tekstattribuut'
+      limit_reached: 'U kunt het attribuut "%attribute_label%" niet aanmaken omdat u de limiet van %limit% attributen voor deze referentie-entiteit heeft bereikt'
+      record_type:
+        is_required: 'Je moet het referentie-entiteitstype opgeven om een Referentie Entiteit Link attribuut te maken'
+        reference_entity_should_exist: 'De referentie entiteit "%reference_entity_code%" is niet gevonden.'

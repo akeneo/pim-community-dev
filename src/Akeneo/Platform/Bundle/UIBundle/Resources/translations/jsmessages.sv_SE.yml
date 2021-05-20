@@ -1,2 +1,9 @@
 user:
   email_notifications: E-postaviseringar
+pimee_enrich.entity.product:
+  duplicate:
+    title: Duplicera produkten {{ product_identifier }}
+    button: Duplicera
+    flash:
+      success: Produkten {{ product_identifier }} har duplicerats.
+      success_with_attribute_codes: Produkten {{ product_identifier }} har duplicerats. Du måste berika {{ unique_attribute_codes }} med unika värden

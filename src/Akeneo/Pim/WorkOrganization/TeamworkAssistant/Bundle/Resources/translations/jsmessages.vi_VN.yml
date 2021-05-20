@@ -1,0 +1,8 @@
+teamwork_assistant:
+  common:
+    required: Bắt buộc
+  project:
+    label: Tên
+    description: Mô tả
+  widget:
+    description: Mô tả

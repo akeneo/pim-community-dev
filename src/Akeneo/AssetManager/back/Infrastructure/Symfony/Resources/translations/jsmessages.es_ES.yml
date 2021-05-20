@@ -15,6 +15,7 @@ pim_asset_manager:
     notification:
       product_rule: 'Esta colección puede ser actualizada por una regla de producto:'
     edit_asset: Editar recurso
+    remove_asset: Quitar un recurso
     remove_one_asset: Eliminar el recurso {{ assetName }} de la colección de recursos
     remove_all_assets: Eliminar todos los recursos
     other_actions: Otras acciones
@@ -45,18 +46,30 @@ pim_asset_manager:
     products: Productos
   app:
     image:
+      wide:
+        download: Descargar el archivo
+        upload: Arrastre y suelte aquí o haga clic aquí para subir el fichero
       small:
+        remove: Eliminar
         download: Descargar
+        upload: Arrastrar y soltar para subir
   grid:
     counter: '{{ resultCount }} resultados'
     counter_empty: '0 resultado'
   asset_family:
     validation:
+      code:
+        pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+        should_be_unique: 'Ya existe una familia de activos con el código "{{ %asset_family_identifier% }}"'
+        limit_reached: 'No puede crear la familia de recursos "{{ %asset_family_label% }}" porque ha llegado al límite de {{ %limit% }} familias de recursos'
+      transformation:
+        attribute_reference_should_exist: 'El atributo "{{ %attribute_code% }}" no existe para esta familia de recursos'
       naming_convention:
         property_should_exist: 'La propiedad "{{ %property% }}" no existe para esta familia de activos'
         not_main_media_attribute_code: 'La propiedad debe coincidir con el código del atributo definido como medio principal'
       rule_template:
         limit_reached: 'Ha alcanzado el límite de reglas de enlace de producto {{ %limit% }} para la familia de activos "{{ %asset_family_identifier% }}".'
+        extrapolated_attribute_should_exist: 'El atributo "{{ %attribute_code% }}" no existe para esta familia de recursos'
         extrapolated_attribute_type_should_be_supported: 'El atributo "{{ %attribute_code% }}" de tipo "{{ %attribute_type% }}" no es compatible, solo se soportan los siguientes tipos de atributos para este campo: {{ %supported_attribute_type% }}'
         channel_should_exist: 'El canal "{{ %channel_code% }}" no existe'
         locale_should_exist: 'El local "{{ %locale_code% }}" no está activada o no existe'
@@ -69,10 +82,16 @@ pim_asset_manager:
     button:
       save: Guardar
       save_permission: Guardar
+      create: Crear una categoría de recursos
+      edit: Editar familia
+      view: Ver familia
       execute_product_link_rules: Ejecutar reglas
     title: Recursos
+    breadcrumb: Familia de recursos
     tab:
       assets: Recursos
+      attribute: Atributos
+      properties: Propiedades
       product_link_rules: Reglas de enlace de producto
     product_link_rules:
       product_link_rules_subsection: 'Propiedades de reglas de enlace de producto'

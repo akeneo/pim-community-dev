@@ -2,61 +2,17 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
-        delete: Delete
         execute: Execute
       title: Rules
-      column:
-        code: Code
-        conditions: Condition
-        actions: Action
-        impacted_product_count:
-          label: Affected products
-          count: '{0,1}%count% affected product|]1,Inf[%count% affected products'
-          no_yet_calculated: Not yet calculated
       mass_edit_action:
-        impacted_product_count: Calculate the affected products
         execute: Execute
         delete: Delete
-  actions:
-    type:
-      "copy": Then %from_field% is copied into %to_field%
-      "copy_value": Then %from_field% is copied into %to_field%
-      "set": Then %value% is set into %field%
-      "set_value": Then %value% is set into %field%
-      "add": Then %value% is added to %field%
-      "remove": Then %value% is removed from %field%
-    options:
-      include_children: and children
-  condition:
-    label: If %field% %operator% %value%
-    operators:
-      "STARTS WITH": starts with
-      "ENDS WITH": ends with
-      "CONTAINS": contains
-      "DOES NOT CONTAIN": does not contain
-      "EMPTY": is empty
-      "NOT EMPTY": is not empty
-      "IN": in
-      "NOT IN": not in
-      "IN CHILDREN": in children
-      "NOT IN CHILDREN": not in children
-      "UNCLASSIFIED": is unclassified
-      "IN OR UNCLASSIFIED": is unclassified or in
-      "BETWEEN": between
-      "NOT BETWEEN": not between
-      "=": equals
-      "!=": not equal
-      ">": greater than
-      ">=": equals or greater than
-      "<": less than
-      "<=": equals or less than
   acl_group:
     rule: Rules
   acl:
     rule:
       view_permissions: View rules
       delete_permissions: Delete rules
-      impacted_product_count_permissions: Calculate the affected products for the rules
       execute_permissions: Execute rules
   attribute:
     tab:
@@ -66,29 +22,16 @@ pimee_catalog_rule:
     acl:
       rule.view_permissions: View rules
   product:
-    tooltip:
-      product_attribute_affected_by_a_rule.content: The value of this attribute can come from the rule(s) <strong>%rule%</strong>. That means if the conditions of the rule are valid, your modification will be overridden.
-      loading.title: Loading...
     history: Applied rule "%rule%"
-  product_value:
-    tooltip:
-      affected_by.title: 'Affected by rule(s):'
   steps:
-    product_rule_definition_reader.title: Product rule import reader
-    rule_definition_processor.title: Product rule import processor
-    product_rule_definition_writer.title: Product rule import writer
     rules_execution.title: Rules execution
-  notification:
-    rule:
-      executed: Execution of the rule(s) finished
-    mass_edit_rule:
-      success: Calculation of the affected products for the rules finished
-      error: An error as occurred during the calculation of the affected products for the rules
 btn:
   Execute rules: Execute rules
-mass_edit_rule: Rules Settings
-job_execution.summary.rule_calculated: Number of rules
+job_execution:
+  summary:
+    rule_calculated: Number of rules
 pim_datagrid:
   cells:
     type:
       mass_edit_rule: Rules Settings
+      execute_rules: Rules execution

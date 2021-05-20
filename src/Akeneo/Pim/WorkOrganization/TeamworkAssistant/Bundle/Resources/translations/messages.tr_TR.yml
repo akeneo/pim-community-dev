@@ -1,0 +1,37 @@
+teamwork_assistant:
+  project:
+    required: Bu değeri boş bırakmamalısınız.
+    label_maxlength: Bu değer çok uzun. En fazla {{ max }} karakter içermelidir.
+    project_identifier: '{{ project }} adında bir proje bulunmamaktadır.'
+    project_due_date: Geçmiş bir tarih seçemezsiniz.
+  notification:
+    project_calculation:
+      error: <strong>%project_label%</strong> için projenin hesaplanması başarısız oldu
+      warning: <strong>%project_label%</strong> için projenin hesaplanması bazı uyarılarla tamamlandı
+      success: <strong>%project_label%</strong> projesi hazır ve katkıda bulunanlar bilgilendiriliyor. Hadi başlayalım!
+      start: Başla
+    message: Yeni ürünleri zenginleştirmek için "%project_label%" gerekiyor. Son tarih "%due_date%".
+    project_finished:
+      contributor: Tebrikler! Projenin 100%`nü %project_label% ile tamamladınız.
+      show: Göster
+    due_date:
+      contributor: '%project_label% `in %percent%%`sini tamamladın. Unutma, son ürünlerin %due_date% `den önce bitmeli.'
+      start: Başla
+  datagrid:
+    project_completeness: Proje ilerlemesi
+    contributor_todo: Yapılacaklar
+    contributor_in_progress: İşleniyor
+    contributor_done: Tamam
+    owner_todo: Yapılacaklar (proje genelinde)
+    owner_in_progress: Devam etmekte (Projeye gözatın)
+    owner_done: Tamamlandı (Projeye Gözatın)
+job_execution:
+  summary:
+    processed_products: İşlenmesi bitmiş ürünler
+pim_analytics:
+  info_type:
+    nb_projects: Projenin numarası
+pim_datagrid:
+  cells:
+    type:
+      project_calculation: Proje Hesaplama

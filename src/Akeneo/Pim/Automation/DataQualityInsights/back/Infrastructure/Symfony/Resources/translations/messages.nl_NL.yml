@@ -1,6 +1,10 @@
 akeneo_data_quality_insights:
   axis:
     consistency: Consistentie
-    enrichment: Verrijking
+  attribute_grid:
+    quality_column_label: Kwaliteit     
+    to_improve_locale: Om te verbeteren in {{ locale }}
+  product_grid:
+    filter_label:
+      spelling_quality: Spellingskwaliteit
 Consistency: Consistentie
-Enrichment: Verrijking

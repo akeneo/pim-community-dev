@@ -1,0 +1,25 @@
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Gruppen <strong>{{ group }}</strong> vil <strong>være {{ permission }}</strong> i denne kategorien
+      revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke være {{ permission }}</strong> i denne kategorien
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Gruppen <strong>{{ group }}</strong> vil <strong>være {{ permission }}</strong> denne locale
+      revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke være {{ permission }}</strong> denne locale
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Gruppen <strong>{{ group }}</strong> vil <strong>være {{ permission }}</strong> i denne attributtgruppen
+      revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke være {{ permission }}</strong> i denne attributtgruppen
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      view: Tillatelse til å vise attributter
+      edit: Tillatelse til å endre attributter
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      execute: Kan kjøre jobbprofilen
+      edit: Tillatelse til å redigere jobbprofilen

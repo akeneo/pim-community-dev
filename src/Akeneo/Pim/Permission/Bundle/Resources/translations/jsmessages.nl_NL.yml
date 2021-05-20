@@ -1,0 +1,40 @@
+pimee_import_export:
+  entity:
+    job_instance:
+      flash:
+        update:
+          fail_empty_permission: U moet tenminste één rol rechten geven de taak aan te passen
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: De groep <strong>{{ group }}</strong> zal <strong>{{ permission }} worden</strong> in deze categorie
+      revoke: De groep <strong>{{ group }}</strong> zal <strong>niet {{ permission }} worden</strong> in deze categorie
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: De groep <strong>{{ group }}</strong> zal <strong>{{ permission }} worden</strong> in deze vertaling
+      revoke: De groep <strong>{{ group }}</strong> zal <strong>niet {{ permission }} worden</strong> in deze vertaling
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: De groep <strong>{{ group }}</strong> zal <strong>{{ permission }} worden</strong> in deze attribuutgroep
+      revoke: De groep <strong>{{ group }}</strong> zal <strong>niet {{ permission }} worden</strong> in deze attribuutgroep
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      view: Toegestaan om kenmerken te bekijken
+      edit: Toegestaan om attributen bewerken
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      execute: Toegestaan om profiel uit te voeren
+      edit: Toegestaan om profiel te wijzigen
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    perform.label: Voeg productwaarde toe
+  update_product_value_with_permission_and_rules:
+    perform.label: Update productwaarde
+  remove_product_value_with_permission_and_rules:
+    perform.label: Verwijder productwaarde
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Bewerk attributen

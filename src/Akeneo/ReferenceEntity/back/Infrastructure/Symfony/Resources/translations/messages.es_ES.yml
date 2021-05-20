@@ -29,3 +29,7 @@ pim_analytics:
     max_number_of_attributes_per_reference_entity: Número máximo de atributos por entidad de referencia
     average_number_of_attributes_per_reference_entity: Promedio de atributos por entidad de referencia
     average_percentage_localizable_only_attributes: Porcentaje promedio de atributos localizables por entidad de referencia
+    average_percentage_scopable_only_attributes: Porcentaje promedio de atributos scopable por entidad de referencia
+    average_percentage_scopable_and_localizable_attributes: Porcentaje promedio de atributos localizables y scopables por entidad de referencia
+akeneo_reference_entity: Enlace simple de entidad de referencia
+akeneo_reference_entity_collection: Enlace múltiple con información de referencia

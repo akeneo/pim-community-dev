@@ -1,10 +1,9 @@
 pimee_catalog_rule:
-  overview: Regels
+  overview: "]-Inf, 1]{{ count }} Regel|]1, Inf[{{ count }} regels"
   execution_button: Voer regels uit
   popin:
     execute_rules:
-      confirm_title: Bevestiging uitvoeren
-      confirm_content: Weet u zeker dat u alle regels wilt uitvoeren? (dit kan even duren)
+      confirm_title: Uitvoering van regels bevestigen
   notification:
     launched: De uitvoering van de regels is gelanceerd. U wordt op de hoogte gebracht wanneer dit is voltooid.
   attribute:
@@ -12,7 +11,6 @@ pimee_catalog_rule:
       code.label: Code
       condition.label: Voorwaarde
       action.label: Actie
-      no_rule_yet.label: Geen regel voor nu
   rule:
     condition:
       if.label: Als
@@ -28,23 +26,18 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         execute:
-          confirm_title: Bevestiging uitvoeren
+          confirm_title: Uitvoering van regels bevestigen
           confirm_content: Bent u zeker dat u deze regel wilt verwijderen?
-          confirm_ok: OK
       mass_edit_action:
-        confirm_title: Bevestiging berekening
-        confirm_ok: OK
+        confirm_title: Bevestig berekening
       mass_action:
         execute:
-          confirm_ok: OK
-          confirm_title: Bevestiging uitvoeren
-          confirm_content: Bent u zeker dat u de geselecteerde regels wilt uitvoeren?
-          success: De massa actie om de geselecteerde regels uit te voeren is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid
+          confirm_title: Uitvoering van regels bevestigen
+          success: De uitvoering van de regels is gelanceerd. U wordt op de hoogte gebracht wanneer dit is voltooid.
           error: Er deed zich een fout voor tijdens de uitvoering van de regels.
           empty_selection: Geen regels geselecteerd.
         delete:
-          confirm_ok: OK
-          confirm_title: Bevestig verwijderen
+          confirm_title: Uitvoering van regels bevestigen
           confirm_content: Bent u zeker dat u de geselecteerde regels wilt verwijderen?
           success: U verwijderde de geselecteerde regels met succes.
           error: Er deed zich een fout voor tijdens het verwijderen van de regels.
@@ -54,12 +47,46 @@ pimee_catalog_rule:
       tab:
         rules:
           title: Regels
-confirmation:
-  remove:
-    rule: Bent u zeker dat u deze regel wilt verwijderen? Het is niet mogelijk om deze actie ongedaan te maken
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Bent u zeker dat u deze regel wilt verwijderen? Het is niet mogelijk om deze actie ongedaan te maken
 flash:
   rule:
-    removed: Regel succesvol verwijderd
-    impacted_product_count: De massa actie om de beïnvloede producten te berekenen is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
-    executed: De uitvoering van de regel is gelanceerd. U wordt op de hoogte gebracht wanneer dit is voltooid.
+    executed: De uitvoering van de regels is gelanceerd. U wordt op de hoogte gebracht wanneer dit is voltooid.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regelinstellingen
+batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Uitvoering van regels
+  default_steps:
+    execute_rules: Uitvoering van regels
+  rule_impacted_product_count:
+    perform.label: Tel aantal betreffende producten
+  csv_product_import_with_rules:
+    label: Product import in CSV met regels
+    import.label: Productimport
+  csv_product_model_import_with_rules:
+    label: Product model import in CSV met regels
+  xlsx_product_import_with_rules:
+    label: Product import in XLSX met regels
+    import.label: Productimport
+  xlsx_product_model_import_with_rules:
+    label: Product model import in XLSX met regels
+pim_notification:
+  types:
+    rule: Regelinstellingen
+    mass_edit_rule: Massa bewerkregel
+    execute_rules: Uitvoering van regels
+pim_menu:
+  item:
+    rule: Regels
+pim_title:
+  pimee_catalog_rule_rule_index: Regels
+  pimee_catalog_rule_new: Regels
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: Uitvoering van regels

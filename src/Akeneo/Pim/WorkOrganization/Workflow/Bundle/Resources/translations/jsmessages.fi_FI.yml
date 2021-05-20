@@ -25,7 +25,6 @@ pimee_workflow:
       modal.title: Jätä kommentti (valinnainen - 255 merkkiä max.)
   proposal:
     overview: "]-Inf, 1]{{ count }} ehdotus|]1, Inf[{{ count }} ehdotusta"
-    selected: ehdotusta valittu
     mass_action_group:
       review:
         label: Massatoiminnot
@@ -108,7 +107,6 @@ pimee_enrich.entity.product:
       published: Julkaistu
       revert: Palauta
     attribute:
-      can_be_updated_by_a_rule: "Tämä attribuutti voidaan päivittää säännöllä: {{ rule }}"
       value_updated: Nykyinen luonnos muuttaa tätä arvoa
     meta:
       published_version: Julkaistu versio

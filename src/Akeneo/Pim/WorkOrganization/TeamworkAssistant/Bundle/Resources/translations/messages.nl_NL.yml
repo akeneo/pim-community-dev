@@ -1,4 +1,3 @@
-project_calculation: Projectberekening
 teamwork_assistant:
   project:
     required: Deze waarde mag niet leeg zijn.
@@ -8,20 +7,33 @@ teamwork_assistant:
   notification:
     project_calculation:
       start: Start
+    message: Je hebt nieuwe producten te verrijken voor "%project_label%". Gelieve dit uit te voeren voor "%due_date%".
     project_finished:
+      contributor: Proficiat! Je hebt 100% van de producten afgewerkt binnen %project_label%.
+      owner: 'Het project <strong>%project_label%</strong> gepland voor <strong>%due_date%</strong> is klaar.'
       show: Toon
     due_date:
       owner: 'Het project <strong>%project_label%</strong> gepland voor <strong>%due_date%</strong> is niet 100% klaar.'
       start: Start
   datagrid:
+    project_completeness: Projectvoortgang
+    contributor_todo: Taak
     contributor_in_progress: In uitvoering
     contributor_done: Gedaan
-batch_jobs:
-  project_calculation:
-    project_calculation:
-      label: Projectberekening
-    prepare_project_calculation:
-      label: Bereid de projectberekening voor
+    owner_todo: Taak (projectoverzicht)
+    owner_in_progress: In uitvoering (projectoverzicht)
+    owner_done: Afgewerkt (projectoverzicht)
+  user:
+    deletion:
+      user_linked_to_project: Deze gebruiker is nog gekoppeld aan een of meer projecten. Verwijder de groepen waaraan hij gekoppeld is in zijn gebruikersaccount.
+      user_is_project_owner: Deze gebruiker is nog steeds eigenaar van één of meer projecten. Verwijder alle projecten van deze gebruiker.
 job_execution:
   summary:
     processed_products: Verwerkte producten
+pim_analytics:
+  info_type:
+    nb_projects: Aantal projecten
+pim_datagrid:
+  cells:
+    type:
+      project_calculation: Projectberekening

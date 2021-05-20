@@ -1,0 +1,180 @@
+View the product: Vezi produsul
+Unpublish the product: Anulează publicarea produsului
+Approve: Aprobă
+Refuse: Refuză
+Approve selected: Aprobă selectate
+Refuse selected: Refuză selectate
+pim_datagrid:
+  no_entities:
+    proposal: Nu există nicio propunere de revizuit.
+  no_results:
+    proposal: Nu există nicio propunere de revizuit. Încearcă să îți schimbi criteriile de căutare.
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Extinde
+      collapse_text: Restrânge
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Editează copie de lucru
+    proposal:
+      modal.title: Lăsați un comentariu (opțional - maxim 255 caractere)
+  proposal:
+    mass_action_group:
+      review:
+        label: Acțiune în masă
+    partial_accept:
+      modal.title: Aprobă informații parțiale
+      modal.label: Lasă un comentariu (opțional)
+      modal.success: Propunerea a fost validată parțial
+    partial_approve:
+      modal:
+        title: Aprobă parțial schimbările
+        label: Lasă un comentariu (opțional)
+        success: Schimbările au fost aprobate
+    partial_reject:
+      modal:
+        title: Respinge parțial schimbările
+        label: Lasă un comentariu (opțional)
+        success: Schimbările au fost respinse
+batch_jobs:
+  csv_published_product_export:
+    label: Produs publicat exportati in CSV
+    export.label: Produs publicat export
+  csv_product_proposal_import:
+    label: Propunere de produs import in CSV
+    import.label: Propunere de produs import
+  approve_product_draft:
+    label: Aprobă propunere
+    perform.label: Aprobă propunere
+  refuse_product_draft:
+    label: Refuza propunere
+    perform.label: Refuza propunere
+  xlsx_published_product_export:
+    label: Produs publicat export in XLSX
+    export.label: Produs publicat export
+  xlsx_product_proposal_import:
+    label: Propunere de produs import in XLSX
+    import.label: Propunere de produs import in XLSX
+  csv_published_product_quick_export:
+    export.label: Exportare rapidă in Csv a produselor publicate
+    perform.label: Exportare rapidă in Csv a produselor publicate
+  xlsx_published_product_quick_export:
+    export.label: Exportare rapidă in Xlsx a produselor publicate
+    perform.label: Exportare rapidă in Xlsx a produselor publicate
+  publish_product:
+    perform.label: Publică produse
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: Propunere nouă
+    pimee_workflow_import_notification_new_proposals: Propuneri noi din import
+    pimee_workflow_product_draft_notification_partial_approve: Propunerea a fost aprobată in mod parțial
+    pimee_workflow_product_draft_notification_partial_reject: Propunerea a fost refuzată în mod parțial
+    pimee_workflow_product_draft_notification_partial_remove: Propunerea a fost ştearsă în mod parțial
+    pimee_workflow_product_draft_notification_approve: Propunere aprobată
+    pimee_workflow_product_draft_notification_refuse: Propunere refuzată
+    pimee_workflow_product_draft_notification_remove: Propunere ştearsă
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Data
+      author: Autor
+      product: Produs
+      review: Recenzie
+      empty: Nici o propunere de revizuit
+    header.view_all: Vezi toate
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Publicat
+      revert: Restaurează
+    meta:
+      published_version: Versiune publicată
+      owner_groups: Grupuri de proprietar
+      draft_status: Status schiță
+      draft:
+        in_progress: În desfășurare
+        sent_for_approval: În așteptarea aprobării
+        working_copy: Copie de lucru
+    revert:
+      title: Confirmare de restaurare
+      content: Ești sigur că vrei să restarurezi produsul la această versiune?
+    publish:
+      title: Publică acest produs
+      content: Sunteți sigur că doriți sa publicați acest produs?
+    unpublish:
+      title: Anulează publicarea acestui produs
+      content: Ești sigur că dorești sa anulezi publicarea acestui produs?
+    copy:
+      working_copy: Copie de lucru
+      draft: Schițele mele
+      draft_of: "Schițele lui {{ author }}"
+    approval:
+      send: Trimite pentru aprobare
+      sent: Trimis pentru aprobare
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Produsul a fost publicat cu succes
+      fail: Produsul nu a putut fi publicat
+    unpublish:
+      success: Anularea publicării produsului a fost executată cu succes
+      fail: Anularea publicării acestui produs a eșuat
+    revert:
+      success: Produsul a fost restaurat cu succes
+  module:
+    publish:
+      label: Publică
+      publish_this_version: Publică această versiune
+    unpublish:
+      label: Anulează publicarea
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: Propunerea a fost aplicată cu succes.
+      fail: "Propunerea nu poate fi adăugată din cauza următoarei eroare: {{ error }}"
+    reject:
+      success: Propunerea nu a fost acceptată.
+    remove:
+      success: Propunerea a fost ștearsă.
+    update:
+      success: Schița de produs a fost salvată cu succes
+      fail: Schița produsului nu a putut fi actualizată
+    create:
+      success: Schița produsului a fost trimisă pentru aprobare
+      fail: Nu poți trece această schiță spre aprobare
+  module:
+    proposal:
+      accept: Acceptă propunerea
+      accept_selected: Acceptă propunerile selectate
+      reject: Refuză propunerea
+      reject_selected: Respinge propunerile selectate
+      remove: Șterge propunerea
+      comment_title: Comentează propunerea ta (opțional - maxim 255 caractere)
+      comment_chars: caractere
+      confirm: Trimite
+    edit:
+      discard_changes: Modificările nesalvate se vor pierde. Sunteți sigur că doriți să vă trimiteți schița spre aprobare fără modificările nesalvate?
+      discard_changes_title: Sunteți sigur că doriți să trimiteți acestă schiță?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Publică
+      description: Produsul va fi publicat
+      warning: Cele {{ itemsCount }} produse selectate vor fi publicate.
+    unpublish:
+      label: Anulează publicarea
+      description: Se va anula publicarea produselor
+      warning: Publicarea celor {{ itemsCount }} produse selectate va fi anulată.
+pim_menu:
+  navigation:
+    published_products: Produse publicate
+  item:
+    proposal: Propuneri
+    published_product: Produse publicate
+pim_title:
+  pimee_workflow_proposal_index: Propuneri
+  pimee_workflow_published_product_index: Produse publicate
+  pimee_workflow_published_product_view: Produse publics {{ product.label }} | Vizualizează

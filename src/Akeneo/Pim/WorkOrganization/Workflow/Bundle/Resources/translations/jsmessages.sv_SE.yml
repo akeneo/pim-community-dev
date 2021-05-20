@@ -7,8 +7,10 @@ Refuse selected: Avslå valda
 pim_datagrid:
   no_entities:
     proposal: Det finns inga förslag att granska.
+    product_draft: Det finns inget produktutkast att granska.
   no_results:
     proposal: Det finns inga förslag att granska. Prova att ändra dina sökkriterier.
+    product_draft: Det finns inget produktutkast att granska. Försök att ändra dina sökkriterier.
 pimee_datagrid:
   cells:
     expand:
@@ -22,25 +24,23 @@ pimee_workflow:
     proposal:
       modal.title: Lämna en kommentar (frivilligt - 255 tecken max.)
   proposal:
+    overview: "]-Inf, 1]{{ count }} förslag|]1, Inf[{{ count }} förslag"
     mass_action_group:
       review:
         label: Massåtgärd
     partial_accept:
       modal.title: Godkänna delar av uppgifterna
       modal.label: Lägg till kommentar (frivilligt)
-      modal.error: Ett fel uppstod, förslaget har inte delvis godkänts
       modal.success: Delar av förslaget har godkännts framgångsrikt
     partial_approve:
       modal:
         title: Delvis godkända ändringar
         label: Lägg till kommentar (frivilligt)
-        error: Ett fel uppstod, förslaget har inte delvis godkänts
         success: Ändringarna har godkänts
     partial_reject:
       modal:
         title: Delvis ignorera ändringar
         label: Lägg till kommentar (frivilligt)
-        error: Ett fel uppstod, förslaget har delvis inte godkänts
         success: Ändringarna har avvisats
 batch_jobs:
   csv_published_product_export:
@@ -49,6 +49,9 @@ batch_jobs:
   csv_product_proposal_import:
     label: Produkt förslag import i CSV
     import.label: Produkt förslag import
+  csv_product_model_proposal_import:
+    label: Import av förslag till produktmodell i CSV
+    import.label: Import av förslag till produktmodell i CSV
   approve_product_draft:
     label: Godkänna förslag
     perform.label: Godkänna förslag
@@ -61,6 +64,9 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Produkt förslag import i XLSX
     import.label: Produkt förslag import i XLSX
+  xlsx_product_model_proposal_import:
+    label: Import av förslag till produktmodell i XLSX
+    import.label: Import av förslag till produktmodell i XLSX
   csv_published_product_quick_export:
     export.label: CSV publicerade produkter snabb export
     perform.label: CSV publicerade produkter snabb export
@@ -85,19 +91,23 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Förslaget godkändes
     pimee_workflow_product_draft_notification_refuse: Förslag avvisat
     pimee_workflow_product_draft_notification_remove: Förslag tas bort
+    pimee_workflow_product_draft_notification_sent: Förslag skickade
 pimee_dashboard:
   widget:
     product_drafts:
       date: Datum
-      author: Upphovsman
+      author: Författare
       product: Produkt
       review: Granska
       empty: Inga förslag att granska
+    header.view_all: Visa alla
 pimee_enrich.entity.product:
   module:
     history:
       published: Publicerad
       revert: Återställ
+    attribute:
+      value_updated: Detta värde uppdateras av det aktuella utkastet
     meta:
       published_version: Publicerade versionen
       owner_groups: Ägargrupper
@@ -105,7 +115,7 @@ pimee_enrich.entity.product:
       draft:
         in_progress: Pågående
         sent_for_approval: Väntar på godkännande
-        working_copy: Arbetar kopia
+        working_copy: Arbetskopia
     revert:
       title: Återställa bekräftelse
       content: Är du säker på att du vill återställa produkten till denna version?
@@ -116,12 +126,14 @@ pimee_enrich.entity.product:
       title: Avpublicera den här produkten
       content: Är du säker du vill Avpublicera den här produkten?
     copy:
-      working_copy: Arbetar kopia
-      draft: Mitt förslag
+      working_copy: Arbetskopia
+      draft: Mitt utkast
       draft_of: "{{ author }}'s förslag till"
     approval:
       send: Skicka för godkännande
       sent: Skickat för godkännande
+      send_and_next: Skicka och nästa
+      send_and_finish: Skicka och avsluta
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -132,6 +144,8 @@ pimee_enrich.entity.published_product:
       fail: Det gick inte att avpublicera den här produkten
     revert:
       success: Produkten har återställt
+  page_title:
+    index: "] -Inf, 1] {{ count }} publicerad produkt |] 1, Inf [{{ count }} publicerade produkter"
   module:
     publish:
       label: Publicera
@@ -142,6 +156,7 @@ pimee_enrich.entity.product_draft:
   flash:
     approve:
       success: Förslaget har tillämpats framgångsrikt.
+      fail: "Förslaget kan inte tillämpas på grund av följande fel: {{ error }}"
     reject:
       success: Förslaget har förkastats.
     remove:
@@ -152,9 +167,8 @@ pimee_enrich.entity.product_draft:
     create:
       success: Produkten utkast skickades för godkännande
       fail: Du kan inte skicka detta utkast för godkännande
+      skip: Produktutkastet har inte skickats för godkännande eftersom inget värde har redigerats
   module:
-    create:
-      label: Spara utkast
     proposal:
       accept: Acceptera förslaget
       accept_selected: Acceptera valda förslag
@@ -171,8 +185,14 @@ pimee_enrich.mass_edit.product:
   operation:
     publish:
       label: Publicera
+      label_count: "{1} Publicera <span class = \"AknFullPage-title - highlight\"> 1 produkt </span> |] 1, Inf [Publicera <span class = \"AknFullPage-title - highlight\"> {{ itemsCount }} produkter < / span>"
+      description: Produkterna kommer att publiceras
+      warning: De {{ itemsCount }} valda produkterna kommer att publiceras.
     unpublish:
       label: Avpublicera
+      label_count: "{1} Avpublicera <span class = \"AknFullPage-title - highlight\"> 1 produkt </span> |] 1, Inf [Avpublicera <span class = \"AknFullPage-title - highlight\"> {{ itemsCount }} produkter < / span>"
+      description: Produkterna kommer att avpubliceras
+      warning: De {{itemsCount}} valda produkterna kommer att avpubliceras.
 pim_menu:
   navigation:
     published_products: Publicerade produkter
@@ -182,3 +202,4 @@ pim_menu:
 pim_title:
   pimee_workflow_proposal_index: Förslag
   pimee_workflow_published_product_index: Publicerade produkter
+  pimee_workflow_published_product_view: Publicerad produkt {{ product.label }} | Visa

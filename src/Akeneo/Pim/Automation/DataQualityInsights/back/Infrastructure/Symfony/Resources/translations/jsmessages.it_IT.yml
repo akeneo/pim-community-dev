@@ -1,0 +1,22 @@
+akeneo_data_quality_insights:
+  product_evaluation:
+    criteria:
+      consistency_spelling:
+        recommendation: Attributi con problemi ortografici
+    axis:
+      consistency:
+        title: Coerenza
+        attributes_link: Visualizza tutti gli attributi migliorabili
+        success: I tuoi dati di prodotto sono completamente coerenti. Congratulazioni!
+  product_edit_form:
+    attribute_filter:
+      all_improvable_attributes: Tutti gli attributi migliorabili
+    spellcheck_popover:
+      title: Correzioni
+      original_text_title: Originale
+      suggestions_title: Proposte
+      ignore_all_suggestions_button_label: Ignora
+  attribute_grid:
+    quality:
+      to_improve: Da migliorare
+      good: Buona

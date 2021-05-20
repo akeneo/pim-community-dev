@@ -1,21 +1,20 @@
 pimee_catalog_rule:
   overview: "]-Inf, 1]{{ count }} ルール|]1, Inf[{{ count }} ルール"
   execution_button: ルールを実行
-  selected: '選択済ルール'
+  dropdown:
+    title: その他の操作
   popin:
     execute_rules:
       confirm_title: 実行を確認
-      confirm_content: ルールをすべて実行しますか？(長時間を要することがあります)
   notification:
-    fail: この操作は行えません
     launched: ルール実行が開始されています。終了後に通知されます。
   attribute:
     list:
       code.label: コード
       condition.label: 状態
       action.label: アクション
-      no_rule_yet.label: 現在ルールなし
   rule:
+    value: 値
     condition:
       if.label: '条件:'
     action:
@@ -34,12 +33,10 @@ pimee_catalog_rule:
           confirm_content: このルールを実行しますか？
       mass_edit_action:
         confirm_title: 計算を確認
-        confirm_content: ルールの影響を受ける製品を計算しますか？
       mass_action:
         execute:
           confirm_title: 実行を確認
-          confirm_content: 選択中のルールを実行しますか？
-          success: 選択されたルールの影響を受ける一括操作が開始されています。終了後に通知されます。
+          success: ルール実行が開始されています。終了後に通知されます。
           error: ルールの実行中にエラーが発生しました。
           empty_selection: ルールが選択されていません。
         delete:
@@ -59,15 +56,8 @@ pim_enrich:
       module:
         delete:
           confirm: このルールを削除してよろしいですか？このアクションは元に戻せません。
-pim_datagrid:
-  entity:
-    rule:
-      flash:
-        delete:
-          success: ルールを正常に削除しました
 flash:
   rule:
-    impacted_product_count: 選択された商品の影響を計算する一括操作が開始されています。終了後に通知されます。
     executed: ルール実行が開始されています。終了後に通知されます。
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: ルールの設定
 batch_jobs:
@@ -75,14 +65,7 @@ batch_jobs:
     execute_rules.label: ルールの実行
   default_steps:
     execute_rules: ルールの実行
-  yml_rule_import:
-    label: ルールをYAML形式でインポートする
-    import.label: ルールのインポート
-  yml_rule_export:
-    label: ルールをYAML形式でエクスポートする
-    export.label: ルールのエクスポート
   rule_impacted_product_count:
-    label: ルールの影響を受ける商品
     perform.label: 影響を受けた商品をカウント
   csv_product_import_with_rules:
     label: ルールによりCSV 形式で商品をインポート
@@ -98,8 +81,15 @@ pim_notification:
   types:
     rule: ルールの設定
     mass_edit_rule: 一括編集ルール
+    execute_rules: ルールの実行
 pim_menu:
   item:
     rule: ルール
 pim_title:
   pimee_catalog_rule_rule_index: ルール
+  pimee_catalog_rule_new: ルール
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: ルールの実行

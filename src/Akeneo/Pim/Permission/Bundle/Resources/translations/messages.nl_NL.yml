@@ -4,3 +4,70 @@ pimee_enrich.acl.attribute_group.edit_permissions: Beheer rechten attribuutgroep
 pimee_importexport.acl.export_profile.edit_permissions: Beheer rechten export profielen
 pimee_importexport.acl.import_profile.edit_permissions: Beheer rechten import profielen
 pimee_enrich.groups.label: Eigenaar groepen
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Bewerk attributen
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Productwaarde met machtigingen toevoegen
+job_profile.permissions:
+  execute.label: Toegestaan om profiel uit te voeren
+  edit.label: Toegestaan om profiel te wijzigen
+pim_title.locale:
+  edit: "Lokalisatie %locale.code% | Bewerken"
+attribute group.permissions:
+  view.label: Toegestaan om kenmerken te bekijken
+  view.help: Toestaan dat de producten in deze kenmerkgroep te weergeven
+  edit.label: Toegestaan om attributen bewerken
+  edit.help: Sta wijziging van producten in deze kenmerkgroep toe
+  no_access_to_attributes: U heeft geen toegang tot de eigenschappen van dit product. Neem contact op met uw beheerder.
+category.permissions:
+  view.label: Toegestaan om producten te bekijken
+  view.help: Toestaan dat de producten in deze categorie te weergeven
+  edit.label: Toegestaan om producten te bewerken
+  own.label: Toegestaan om producten te beheren
+  no_access_to_products: U heeft geen toegang tot producten in eender welke boom, neem contact op met uw beheerder
+  apply_on_children.label: Breng wijzigingen aan de onderliggende elementen
+  apply_on_children.help: Kopiëer de wijzigingen van de machtigingen naar alle kinderen, bestaande machtigingen van de kinderen worden bewaard
+locale.permissions:
+  no_access_to_products: U heeft geen toegang tot productdata in eender welke geactiveerde lokalisering, neem contact op met uw beheerder
+flash.locale.updated: De locale en machtigingen zijn bijgewerkt
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: U heeft geen machtiging om de producten "%identifiers%" te bewerken.
+      page_title: Producten
+      page_subtitle: Massa-wijzig (1 product)|Massa-wijzig (%count% producten)
+      title: Kies operatie
+      subtitle: Kies de bewerking die u wilt uitvoeren op het geselecteerde product|Kies de bewerking die u wilt uitvoeren op de %count% geselecteerde producten
+      confirm: U staat op het punt een product bij te werken met de volgende informatie. Gelieve dit te bevestigen. |U staat op het punt %count% producten bij te werken met de volgende informatie. Gelieve dit te bevestigen.
+      steps:
+        first: Kies producten
+        second: Kies operatie
+        third: Configureren
+        fourth: Bevestigen
+    publish:
+      message:
+        error: U bent niet de eigenaar het product, u kan het niet publiceren.
+        warning: U bent niet de eigenaar van alle geselecteerde producten. U kan de producten "%notGranted%" niet publiceren.
+      not_editable: U heeft geen machtiging om de producten "%identifiers%" te bewerken.
+    unpublish:
+      not_editable: U heeft geen machtiging om de producten "%identifiers%" te bewerken.
+To be able to convert this variant product you need to have the 'Own' permission on its categories.: "Om dit variantproduct te kunnen converteren, moet je de eigenaar rechten hebben in de geselecteerde categorieën."
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Machtigingen
+  acl.product_ownership.title: Eigendom
+  attributes:
+    empty: geen
+  category:
+    tab:
+      permission:
+        title: Machtigingen
+  groups:
+    label: eigenaar groepen
+    empty: geen
+add_product_value_with_permission_and_rules:
+  steps.perform: Voeg productwaarde toe
+update_product_value_with_permission_and_rules:
+  steps.perform: Update productwaarde
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Bewerk attributen
+  steps.edit_common_attributes_processor.title: Bewerk attributen

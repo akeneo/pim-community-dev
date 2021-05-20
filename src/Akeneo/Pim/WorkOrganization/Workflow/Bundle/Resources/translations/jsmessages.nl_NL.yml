@@ -4,17 +4,17 @@ Approve: Keur goed
 Refuse: Keur af
 Approve selected: Geselecteerde goedkeuren
 Refuse selected: Geselecteerde afkeuren
-oro:
-  datagrid:
-    noentities:
-      proposal: Er is geen voorstel om na te kijken.
-    noresults:
-      proposal: Er is geen voorstel om na te kijken. Probeer je zoekcriteria aan te passen.
+pim_datagrid:
+  no_entities:
+    proposal: Er is geen voorstel om na te kijken.
+  no_results:
+    proposal: Er is geen voorstel om na te kijken. Probeer je zoekcriteria aan te passen.
+    product_draft: Er is geen product concept om te beoordelen. Probeer te zoeken met andere criteria.
 pimee_datagrid:
-  cell:
+  cells:
     expand:
-      expandText: Uitklappen
-      collapseText: Inklappen
+      expand_text: Uitklappen
+      collapse_text: Inklappen
 pimee_workflow:
   entity:
     published_product:
@@ -23,7 +23,7 @@ pimee_workflow:
     proposal:
       modal.title: Schrijf een reactie (optioneel - 255 tekens max.)
   proposal:
-    overview: Voorstellen
+    selected: "]-Inf, 1]{{ count }} voorstel geselecteerd|]1, Inf[{{ count }} voorstelle geselecteerd"
     mass_action_group:
       review:
         label: Bulkactie
@@ -44,3 +44,117 @@ pimee_workflow:
         label: Schrijf een reactie (optioneel)
         error: Er deed zich een fout voor. Het voorstel is niet gedeeltelijk afgekeurd
         success: De wijzigingen zijn met succes afgekeurd
+batch_jobs:
+  csv_published_product_export:
+    label: Gepubliceerd product exporteren in CSV
+    export.label: Gepubliceerd product exporteren
+  approve_product_draft:
+    label: Keur voorstel goed
+    perform.label: Keur voorstel goed
+  refuse_product_draft:
+    label: Keur voorstellen af
+    perform.label: Keur voorstellen af
+  xlsx_published_product_export:
+    export.label: Gepubliceerd product exporteren
+  publish_product:
+    perform.label: Product publiceren
+  default_steps:
+    clean_attribute:
+      clean_draft: Voorstellen voor opschonen
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: Nieuw voorstel
+    pimee_workflow_product_draft_notification_partial_approve: Voorstel gedeeltelijk goedgekeurd
+    pimee_workflow_product_draft_notification_partial_reject: Voorstel gedeeltelijk afgekeurd
+    pimee_workflow_product_draft_notification_partial_remove: Voorstel gedeeltelijk verwijderd
+    pimee_workflow_product_draft_notification_approve: Voorstel goedgekeurd
+    pimee_workflow_product_draft_notification_refuse: Voorstel afgekeurd
+    pimee_workflow_product_draft_notification_remove: Voorstel verwijderd
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Datum
+      author: Auteur
+      product: Product
+      review: Beoordeel
+      empty: Geen voorstellen te beoordelen
+    header.view_all: Alles weergeven
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Gepubliceerd
+      revert: Herstel
+    attribute:
+      can_be_updated_by_a_rule: "]-Inf, 1]Dit attribuut kan worden geüpdatet door de regel:|]1, +Inf[Dit attribuut kan worden geüpdatet door de regels:"
+    meta:
+      published_version: Gepubliceerde versie
+      owner_groups: Eigenaar groepen
+      draft:
+        in_progress: In uitvoering
+        sent_for_approval: Wachtend op goedkeuring
+        working_copy: Werkkopie
+    revert:
+      title: Herstel bevestiging
+      content: Weet u zeker dat u het product wilt herstellen naar deze versie?
+    publish:
+      title: Publiceer dit product
+      content: Weet u zeker dat u dit product wilt publiceren?
+    unpublish:
+      title: Maak publicatie van dit product ongedaan
+      content: Weet u zeker dat u de publicatie van dit product ongedaan wilt maken?
+    copy:
+      working_copy: Werkkopie
+    approval:
+      send: Verzenden voor goedkeuring
+      sent: Verzonden voor goedkeuring
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Product succesvol gepubliceerd
+      fail: Publicatie van dit product mislukt
+    unpublish:
+      success: Publicatie van product succesvol ongedaan gemaakt
+      fail: Ongedaan maken van publicatie mislukt
+    revert:
+      success: Product succesvol hersteld
+  module:
+    publish:
+      label: Publiceren
+      publish_this_version: Publiceer deze versie
+    unpublish:
+      label: Depubliceer
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: Het voorstel is succesvol toegepast.
+    reject:
+      success: Het voorstel is afgewezen.
+    remove:
+      success: Het voorstel is verwijderd.
+  module:
+    proposal:
+      accept: Accepteer voorstel
+      accept_selected: Accepteer geselecteerde voorstel(len)
+      reject: Keur voorstel af
+      reject_selected: Keur geselecteerde voorstel(len) af
+      remove: Verwijder voorstel
+      confirm: Verzenden
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Publiceren
+    unpublish:
+      label: Depubliceer
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: Kan geen categorie verwijderen die gelinkt is aan een gepubliceerd product.
+pim_menu:
+  navigation:
+    published_products: Gepubliceerde producten
+  item:
+    proposal: Voorstellen
+    published_product: Gepubliceerde producten
+pim_title:
+  pimee_workflow_proposal_index: Voorstellen
+  pimee_workflow_published_product_index: Gepubliceerde producten

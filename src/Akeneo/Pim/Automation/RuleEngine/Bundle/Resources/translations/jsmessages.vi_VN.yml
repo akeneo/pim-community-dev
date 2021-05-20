@@ -1,0 +1,20 @@
+pimee_catalog_rule:
+  attribute:
+    list:
+      code.label: Mã
+      condition.label: Điều kiện
+      action.label: Hành động
+  rule:
+    condition:
+      if.label: nếu
+    action:
+      then.label: sau đó
+      set_value.label: được thiết lập vào
+      copy_value.label: được sao chép vào
+      set.label: được thiết lập vào
+      copy.label: được sao chép vào
+batch_jobs:
+  csv_product_import_with_rules:
+    import.label: Nhập sản phẩm
+  xlsx_product_import_with_rules:
+    import.label: Nhập sản phẩm

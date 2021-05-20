@@ -1,0 +1,162 @@
+pimee_workflow:
+  product_draft:
+    author: Sahibi
+    created: Önerilen
+    changes: Değişiklikler
+    locale: Yerel içerik
+    product:
+      label: Ürün etiketi
+    attribute:
+      label: Özellik
+    status:
+      label: Durum
+      working_copy: Çalışma kopyası
+      in_progress: İşleniyor
+      ready: Onaylanmayı bekliyor
+      can_be_partially_reviewed: Kısmen gözden geçirilebilir
+      can_not_be_approved: Gözden geçirilemez
+      can_not_be_deleted: Silinemez
+    status_message:
+      can_be_partially_reviewed: Bu teklifi gözden geçiremezsiniz, Çünkü değerlere yaptığınız değişiklikler üstünde düzenleme yapamazsınız. Lütfen kullanım haklarınızı değiştirmek için yöneticinize ulaşın.
+      can_not_be_approved: Bu teklifi gözden geçiremezsiniz, Çünkü değerlere yaptığınız değişiklikler üstünde düzenleme yapamazsınız. Lütfen kullanım haklarınızı değiştirmek için yöneticinize ulaşın.
+      can_not_be_deleted: Bu teklifi silemezsiniz, Çünkü değerlere yaptığınız değişiklikler üstünde düzenleme yapamazsınız. Lütfen kullanım haklarınızı değiştirmek için yöneticinize ulaşın.
+      in_progress: Bu teklif halen devam etmektedir ve henüz gönderilmedi.
+    action:
+      approve: Tümünü onayla
+      refuse: Tümünü reddet
+      remove: Kaldır
+      partial_approve: Ürünlerdeki %product% özellik %attribute% değişikliklerini onayla
+      partial_reject: Ürünlerdeki%product% özellik %attribute% değişikliklerini reddet
+    notification:
+      partial_approve: 'ürün için %owner% değer(leri) kabul etti %attributes% %product%'
+      partial_approve_number: 'Ürün özellikleri için %owner% değerleri kabul etti %attributes_count% %product%'
+      partial_reject: 'Ürün için değer(ler)''i reddetti %owner% %attributes% %product%'
+      partial_reject_number: '%owner% ürün için özellikler için değerleri reddetti. %owner% %attributes_count% %product%'
+      partial_remove: '%attributes% ürünü için %product%, %owner% değer(leri) sildi'
+      partial_remove_number: '%owner% için değerleri silindi %attributes_count% ürünün özellikleri %product%'
+      approve: '%owner%, %product% ürünü için teklifinizi kabul etti'
+      refuse: '%owner% ürününüz için yapılan teklifi reddetti %product%'
+      remove: '%owner%, %product% ürünü için teklifinizi sildi'
+    mass_review_action:
+      approve: Tüm seçilenleri onayla
+      refuse: Tüm seçilenleri reddet
+      error:
+        draft_not_ready: Bu teklif onaylanmaya hazır değil
+        not_product_owner: Bu teklifle alakalı ürüne sahip değilsiniz
+        cannot_edit_attributes: Bu teklif ile modifiye edilmiş özellikleri değiştiremezsiniz
+        invalid_draft: Teklifiniz aşşağıdaki hatadan %error% dolayı uygulanamıyor
+  proposal:
+    to_review: '%author.firstname% %author.lastname%, %product.label% ürününe incelenmek üzere bir teklif gönderdi'
+    individual_import: '%author.firstname% %author.lastname%, işe alma için incelenmek üzere bir teklif gönderdi'
+    generic_import: İşe alım için incelenecek teklifleriniz var
+    original_value: Orijinal
+    new_value: Yeni
+    no_diff: '%value% değeri, teklif ve çalışma kopyasında aynıdır.'
+    draft_in_progress: Bu ürün için, taslak %author% tarafından işlemde.
+  published_product:
+    index: Yayımlanmış Ürünler
+    title: Yayımlanmış ürün
+  acl.published_product:
+    index: Yayınlanmış ürünleri yönet
+  product:
+    permission:
+      own: İncele / yayımla
+      edit: Düzenle
+      view: Görünüm
+  steps:
+    product_draft_processor.title: Tekif işlemcisi
+    approve.title: Teklifi onayla
+    refuse.title: Teklifi reddet
+  mass_edit_action:
+    published:
+      page_title: Yayınlanmış ürünler
+      page_subtitle: Toplu Düzenleme (1 yayınlanan ürün) | Toplu Düzenleme (yayınlanan ürünler) %count%
+      title: İşlemi seçin
+      subtitle: Seçilmiş yayınlanan ürünlerde yapmak istediğiniz işlemi seçiniz | Seçilmiş yayınlanan ürünlerde yapmak istediğiniz işlemi seçiniz %count%
+      confirm: Bir ürünü şu bilgilerle güncellemek üzeresiniz, lütfen onaylayın. %count% ürünlerini sıradaki bilgilerle güncellemek üzeresiniz, lütfen onaylayın.
+      steps:
+        first: Yayınlanmış ürünleri seç
+        second: İşlemi seçin
+        third: Yapılandırma
+        fourth: Doğrula
+btn:
+  publish: Yayımla
+  unpublish: Yayımdan kaldır
+  save working copy: Çalışma kopyasını kaydet
+  save working copy and next: Çalışma kopyası kaydet ve ilerle
+  save working copy and finish: Çalışma kopyası kaydet ve bitir
+  send for approval: Onaylanması için gönder
+  sent for approval: Onaylanması için gönderildi
+  editworkingcopy: Çalışma kopyasını düzenleyin
+flash:
+  product:
+    updated: Ürünün çalışma kopyası güncellendi
+    published: Ürün başarı ile yayınlandı.
+    unpublished: Ürün başarıyla yayından kaldırıldı.
+  product_draft:
+    updated: Taslak başarılı bir şekilde kaydedildi
+    approve:
+      success: Teklif başarı ile uygulandı.
+      error: Teklifiniz aşşağıdaki hatadan %error% dolayı uygulanamıyor
+    refuse:
+      success: Teklif reddedildi.
+    remove:
+      success: Teklif kaldırıldı.
+pim_menu:
+  item:
+    published_product: Yayınlanmış ürünler
+    proposal: Teklifler
+confirmation:
+  product:
+    publish: Bu ürünü yayınlamak istediğinize emin misiniz?
+    unpublish: Bu ürünü yayımdan kaldırmak istediğinden emin misin?
+Attributes.title: Özellikler
+Completeness.title: Bütünlük
+publish_product.steps.publish_product_tasklet.title: Ürünü yayınla
+unpublish_product.steps.unpublish_product_tasklet.title: Ürünü yayından kaldır
+approve_product_draft.steps.approve.title: Teklifi onayla
+approve_product_draft.steps.refuse.title: Teklifi reddet
+job_execution.summary:
+  approved: onaylandı
+  refused: reddedildi
+  mass_published: Ürün yayımlandı
+  mass_unpublished: Ürün yayınlanmadı
+  proposal: Teklif yaratıldı
+  proposal_deleted: Silinmiş teklif
+  proposal_updated: güncellenmiş teklif
+  proposal_created: oluşturulmuş teklif
+  proposal_skipped: atlanan teklif (fark yok)
+published products: Yayınlanmış ürünler
+pim_analytics:
+  info_type:
+    nb_published_products: Yayınlanmış ürün sayısı
+    nb_product_drafts: Ürün taslaklarının sayısı
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: İncelenmesi için teklifler
+      date: Tarih
+      author: Sahibi
+      product: Ürün
+      review: İncele
+      empty: İncelenecek hiç bir ürün taslağı yok
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Yayımla
+      description: Seçilen ürünleri yayınlayın, mevcut yayınlanan veriler, geçerli çalışma kopyası tarafından silinmiş olacaktır
+      success_flash: Seçilmiş ürünler başarı ile yayınlandı.
+      launched_flash: Ürünleri yayınlama işi şu anda devam ediyor.
+      message:
+        info: Seçilen ürünler yayınlanacak. %nbProducts%
+    unpublish:
+      label: Yayımdan kaldır
+      description: Seçilen ürünleri yayından kaldır, mevcut yayınlanan veriler silinmiş olacaktır.
+      success_flash: Seçilen ürünler başarıyla yayından kaldırılmıştır.
+      launched_flash: Ürün(ler)'ü yayından kaldırma işi şuanda devam ediyor.
+      message:
+        info: '%nbProducts% seçilen ürünler yayından kaldırılacak.'
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Teklifler

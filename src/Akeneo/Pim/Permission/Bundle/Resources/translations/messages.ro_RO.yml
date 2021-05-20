@@ -1,0 +1,91 @@
+pimee_enrich.acl.locale.edit_permissions: Gestionare permisiuni locale
+pimee_enrich.acl.category.edit_permissions: Gestionare permisiuni de categorie
+pimee_enrich.acl.attribute_group.edit_permissions: Gestionare permisiuni pentru grupa de atribute
+pimee_importexport.acl.export_profile.edit_permissions: Gestionare permisiuni pentru profil de export
+pimee_importexport.acl.import_profile.edit_permissions: Gestionare permisiuni pentru profil de import
+pimee_enrich.groups.label: Grupuri de proprietar
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Editează atribute
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Adauga valoarea produsului cu permisiunea
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Actualizare valoarea produsului cu permisiunea
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Şterge valoare produs cu drepturi
+edit_common_attributes_with_permission: Editează atribute cu drepturi
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Editează atribute cu dreptul
+job_profile.permissions:
+  execute.label: Are dreptul să execute profil de muncă
+  edit.label: Are dreptul să editeze profil de muncă
+pim_title.locale:
+  edit: "Locale %locale.code% | Modifică"
+attribute group.permissions:
+  view.label: Are dreptul să vizualizeze atributele
+  view.help: Permite vizualizarea produselor din acest grup de atribute
+  edit.label: Are dreptul să editeze atributele
+  edit.help: Permite editarea produselor din acest grup de atribute
+  no_access_to_attributes: Nu ai acces la niciun atribut al acestui produs. Contactează administratorul tău.
+category.permissions:
+  view.label: Are dreptul să vizualizeze produsele
+  view.help: Permiteți vizualizarea produselor din această categorie
+  edit.label: Are dreptul să modifice produsele
+  edit.help: Permite modificarea produseleor din această categorie (implică permisiunea de a vizualiza)
+  own.label: Are dreptul să aibă produse proprii
+  own.help: Are dreptul să revizuiească, publice, să anuleze publicările, să clasifice, să asocieze produsele în această categorie (implică permisiunea de a modifica)
+  no_access_to_products: Nu ai acces la niciun produs din niciun arbore, contactează administratorul tău
+  apply_on_children.label: Aplică schimbări pe copii
+  apply_on_children.help: Copia permisiunile modificări pe toți copiii, permisiunile existente pe copiii sunt păstrate
+locale.permissions:
+  no_access_to_products: Nu ai acces la datele produsului din nici un local, contază administratorul tău
+flash.locale.updated: Local si drepturile au fost actualizate
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Nu ai permisiunile necesare pentru a edita produsele "%identifiers%".
+      page_title: Produse
+      page_subtitle: Editarea in masa (1 produs) | Editare in masă (%count% produse)
+      title: Alege operațiune
+      subtitle: Alegeți operația pe care doriți să o efectuați cu produsul selectat | Alegeți operația pe care doriți să o efectuați pe produsele %count% selectate
+      confirm: Sunteți pe cale de a actualiza un produs cu următoarele informații, vă rugăm să confirmați.|Sunteți pe cale de a actualiza %count% produse cu următoarele informații, vă rugăm să confirmați.
+      steps:
+        first: Alege produse
+        second: Alege operațiune
+        third: Configurați
+        fourth: Confirmă
+    publish:
+      message:
+        error: Nu ești proprietarul produsului, nu-l puteți publica.
+        warning: Nu ești proprietarul tuturor produselor selectate. Nu puteți publica produsele "%notGranted%".
+      not_editable: Nu aveți permisiunea de a edita produse "%identifiers%".
+    unpublish:
+      message:
+        error: Nu sunteți ptoprietarul produsului, nu puteți anula publicarea.
+        warning: Nu sunteți proprietarul tuturor produselor selectate. Nu puteți anula publicarea produselor "%notGranted%".
+        info: Se va anula publicarea %nbProducts% produselor selectate.
+      not_editable: Nu aveți drepturile necesare pentru a edita produsele "%identifiers%".
+    classify:
+      message:
+        error: Nu sunteți proprietarul produsului, nu îl puteți clasifica.
+        warning: Nu sunteți proprietarul tuturor produselor. Nu puteți clasifica produsele "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: Nu sunteți proprietarul produsului, nu îl puteți modifica.
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Drepturi
+  acl.product_ownership.title: Drept de proprietar
+  attributes:
+    empty: niciunul
+  category:
+    tab:
+      permission:
+        title: Permisiuni
+  groups:
+    label: grupuri de proprietar
+    empty: niciunul
+add_product_value_with_permission_and_rules:
+  steps.perform: Adăugați valoarea produsului
+update_product_value_with_permission_and_rules:
+  steps.perform: Actualizează valoare produs
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Editează atribute
+  steps.edit_common_attributes_processor.title: Editează atribute
+pim_enrich_attribute_form:
+  isReadOnly: Numai în citire
