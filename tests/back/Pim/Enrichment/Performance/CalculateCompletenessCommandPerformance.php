@@ -32,7 +32,7 @@ class CalculateCompletenessCommandPerformance extends KernelTestCase
         );
 
         // Original value was 35.
-        $profileConfig->assert('metrics.sql.queries.count < 45', 'SQL queries');
+        $profileConfig->assert('metrics.sql.queries.count < 48', 'SQL queries');
         // Original value: 23.1s
         $profileConfig->assert('main.wall_time < 30s', 'Total time');
         // Original value: 174MB
