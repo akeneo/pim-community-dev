@@ -97,7 +97,7 @@ pim_enrich.entity.product:
       show_products: Afficher les produits
       show_groups: Afficher les groupes
       number_of_associations: "{{ productCount }} produit(s), {{ productModelCount }} modèle(s) de produit et {{ groupCount }} groupe(s)"
-      number_of_quantified_associations: "{ productCount }} produit(s) and {{ productModelCount }} modèle(s) de produit"
+      number_of_quantified_associations: "{{ productCount }} produit(s) et {{ productModelCount }} modèle(s) de produit"
       association_type_selector: Type d'association
       target: Destination
       manage: Ajouter des associations {{ associationType }}
