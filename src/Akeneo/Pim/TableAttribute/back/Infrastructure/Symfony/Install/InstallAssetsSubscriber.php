@@ -2,26 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber;
+namespace Akeneo\Pim\TableAttribute\Infrastructure\Symfony\Install;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\AssetsInstaller;
-use Doctrine\DBAL\Driver\Connection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class InstallAssetsSubscriber implements EventSubscriberInterface
 {
-    private $assetsInstaller;
-    private $dbalConnection;
+    private AssetsInstaller $assetsInstaller;
 
-    public function __construct(AssetsInstaller $assetsInstaller, Connection $dbalConnection)
+    public function __construct(AssetsInstaller $assetsInstaller)
     {
         $this->assetsInstaller = $assetsInstaller;
-        $this->dbalConnection = $dbalConnection;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             InstallerEvents::POST_SYMFONY_ASSETS_DUMP => ['installAssets'],

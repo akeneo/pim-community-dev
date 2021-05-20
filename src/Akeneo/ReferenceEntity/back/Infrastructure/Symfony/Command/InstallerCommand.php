@@ -13,7 +13,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\Command;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer\AssetsInstaller;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\AssetsInstaller;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer\FixturesInstaller;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

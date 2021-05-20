@@ -1,0 +1,4 @@
+services:
+    Akeneo\Pim\TableAttribute\Infrastructure\Provider\TableFieldProvider:
+        tags:
+            - { name: pim_enrich.provider.field, priority: 100 }

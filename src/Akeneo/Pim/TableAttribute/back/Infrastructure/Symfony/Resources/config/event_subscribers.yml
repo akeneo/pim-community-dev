@@ -1,0 +1,13 @@
+services:
+    pim_table_attribute.event_subscriber.assets_installer:
+        class: Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\AssetsInstaller
+        arguments:
+            - '@filesystem'
+            - '%kernel.project_dir%/src/Akeneo/Pim/TableAttribute/front/src'
+            - '%kernel.project_dir%/public/bundles/akeneopimtableattribute'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Symfony\Install\InstallAssetsSubscriber:
+        arguments:
+            - '@pim_table_attribute.event_subscriber.assets_installer'
+        tags:
+            - { name: kernel.event_subscriber }

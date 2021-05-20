@@ -13,10 +13,11 @@ services:
             - '@akeneo_assetmanager.common.helper.fixtures_loader'
 
     akeneo_assetmanager.command.installer.assets_installer:
-        class: Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\AssetsInstaller
+        class: Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\AssetsInstaller
         arguments:
             - '@filesystem'
-            - '%kernel.project_dir%'
+            - '%kernel.project_dir%/src/Akeneo/AssetManager/front'
+            - '%kernel.project_dir%/public/bundles/akeneoassetmanager'
 
     akeneo_assetmanager.event_subscriber.installer:
         class: Akeneo\AssetManager\Infrastructure\Symfony\Command\InstallerCommand
