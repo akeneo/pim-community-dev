@@ -23,20 +23,18 @@ use Oro\Bundle\PimDataGridBundle\Query\ListProductGridAvailableColumns as ListPr
  */
 class ListProductGridAvailableColumns implements ListProductGridAvailableColumnsQuery
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
+    private ConfigurationProviderInterface$configurationProvider;
+    private string $gridName;
 
-    /** @var ConfigurationProviderInterface */
-    private $configurationProvider;
-
-    /**
-     * @param Connection                     $connection
-     * @param ConfigurationProviderInterface $configurationProvider
-     */
-    public function __construct(Connection $connection, ConfigurationProviderInterface $configurationProvider)
-    {
+    public function __construct(
+        Connection $connection,
+        ConfigurationProviderInterface $configurationProvider,
+        string $gridName
+    ) {
         $this->connection = $connection;
         $this->configurationProvider = $configurationProvider;
+        $this->gridName = $gridName;
     }
 
     /**
@@ -70,7 +68,7 @@ class ListProductGridAvailableColumns implements ListProductGridAvailableColumns
      */
     private function getColumnsFromProductGridConfiguration(): array
     {
-        $datagridConfiguration = $this->configurationProvider->getConfiguration('product-grid');
+        $datagridConfiguration = $this->configurationProvider->getConfiguration($this->gridName);
 
         $propertiesColumns = $datagridConfiguration->offsetGetByPath(
             sprintf('[%s]', Configuration::COLUMNS_KEY), []

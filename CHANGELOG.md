@@ -44,7 +44,8 @@
 - PIM-9825: Fix Assets not being properly reindexed after bulk edit
 - PIM-9835: Fix DQI loading in attribute edit page with a large amount of options 
 - PIM-9854: Fix message when deleting a user group used in a project
-- PIM-9853: Make the word "product" translatable 
+- PIM-9853: Make the word "product" translatable
+- PIM-9872: Fix Columns button from published product grid when catalog contains many attributes
 
 ## Improvements
 
