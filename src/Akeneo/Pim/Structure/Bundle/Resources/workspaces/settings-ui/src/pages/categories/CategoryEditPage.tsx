@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useContext, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {
   Breadcrumb,
@@ -19,12 +19,15 @@ import {
   useTranslate,
   useUserContext,
   useSessionStorageState,
+  UnsavedChanges,
   useSecurity,
 } from '@akeneo-pim-community/shared';
-import {CategoryToDelete, useCategory, useCountProductsBeforeDeleteCategory, useDeleteCategory} from '../../hooks';
+import {CategoryToDelete, useCategory, useCountProductsBeforeDeleteCategory, useDeleteCategory, useEditCategory} from '../../hooks';
 import {Category} from '../../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../../components/datagrids/categories/DeleteCategoryModal';
+import {EditCategoryForm} from "../../components/categories/EditCategoryForm";
+import {EditCategoryContext} from "../../components";
 
 type Params = {
   categoryId: string;
@@ -50,6 +53,8 @@ const CategoryEditPage: FC = () => {
   const countProductsBeforeDeleteCategory = useCountProductsBeforeDeleteCategory(parseInt(categoryId));
   const [categoryToDelete, setCategoryToDelete] = useState<CategoryToDelete | null>(null);
   const {isCategoryDeletionPossible, handleDeleteCategory} = useDeleteCategory();
+  const {setCanLeavePage} = useContext(EditCategoryContext);
+  const {editedCategory, editProperties, thereAreUnsavedChanges} = useEditCategory(category);
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
 
@@ -86,6 +91,10 @@ const CategoryEditPage: FC = () => {
     );
     setTree(rootCategory);
   }, [category]);
+
+  useEffect(() => {
+    setCanLeavePage(!thereAreUnsavedChanges);
+  }, [thereAreUnsavedChanges]);
 
   if (status === 'error') {
     return (
@@ -150,6 +159,7 @@ const CategoryEditPage: FC = () => {
           }
         </PageHeader.Actions>
         <PageHeader.Title>{categoryLabel}</PageHeader.Title>
+        <PageHeader.State>{thereAreUnsavedChanges && <UnsavedChanges/>}</PageHeader.State>
       </PageHeader>
       <PageContent>
         <TabBar moreButtonTitle={'More'}>
@@ -173,7 +183,9 @@ const CategoryEditPage: FC = () => {
           </TabBar.Tab>
         </TabBar>
 
-        {isCurrent(propertyTabName) && <div>{translate('pim_common.properties')}</div>}
+        {isCurrent(propertyTabName) && category &&
+          <EditCategoryForm category={editedCategory ?? category} editProperties={editProperties} />
+        }
         {isCurrent(historyTabName) && (
           <HistoryPimView
             viewName="pim-category-edit-form-history"

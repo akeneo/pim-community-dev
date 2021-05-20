@@ -8,6 +8,10 @@ export type Category = {
   root: Category | null;
 };
 
+export type EditableCategoryProperties = {
+  labels: LabelCollection;
+};
+
 export type BackendCategoryTree = {
   attr: {
     id: string; // format: node_([0-9]+)
