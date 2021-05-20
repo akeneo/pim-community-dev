@@ -1,6 +1,7 @@
 import BaseView = require('pimui/js/view/base');
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { TableOptionsApp } from './TableOptionsApp';
 const translate = require('oro/translator');
 
 class TableOptionsTab extends BaseView {
@@ -26,12 +27,11 @@ class TableOptionsTab extends BaseView {
     if (!this.isActive()) {
       return;
     }
-
+    const tableConfiguration = this.getFormData().table_configuration;
     ReactDOM.render(
-      <div>Prout</div>
-      /*<TableOptionsApp
-        attributeId={this.getFormData().meta.id}
-      />*/,
+      <TableOptionsApp
+        tableConfiguration={tableConfiguration}
+      />,
       this.el
     );
     return this;
