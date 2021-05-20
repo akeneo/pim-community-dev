@@ -38,7 +38,7 @@ test('Table.Body supports ...rest props', () => {
 });
 
 test('it only supports table rows', () => {
-  const mockConsole = jest.spyOn(console, 'error').mockImplementation(() => {});
+  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
 
   expect(() => {
     render(
