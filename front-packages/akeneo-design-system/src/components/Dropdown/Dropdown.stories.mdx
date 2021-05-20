@@ -204,6 +204,52 @@ For search and pagination, you need to create a dedicated component for the `Dro
   </Story>
 </Canvas>
 
+## With section
+
+<Canvas>
+  <Story name="With section" height={400}>
+    {args => {
+      const [isOpen, open, close] = useBooleanState(true);
+      return (
+        <SpaceContainer height={200}>
+          <Dropdown>
+            <Button onClick={open}>
+              With section <ArrowDownIcon />
+            </Button>
+            {isOpen && (
+              <Dropdown.Overlay verticalPosition="down" onClose={close}>
+                <Dropdown.Header>
+                  <Dropdown.Title>Elements</Dropdown.Title>
+                </Dropdown.Header>
+                <Dropdown.ItemCollection>
+                  <Dropdown.Section>
+                    Section 1
+                  </Dropdown.Section>
+                  <Dropdown.Item>
+                    Item 1
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    Item 2
+                  </Dropdown.Item>
+                  <Dropdown.Section>
+                    Section 2
+                  </Dropdown.Section>
+                  <Dropdown.Item>
+                    Item 3
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    Item 4
+                  </Dropdown.Item>
+                </Dropdown.ItemCollection>
+              </Dropdown.Overlay>
+            )}
+          </Dropdown>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
 ## Image Item
 
 <Canvas>
