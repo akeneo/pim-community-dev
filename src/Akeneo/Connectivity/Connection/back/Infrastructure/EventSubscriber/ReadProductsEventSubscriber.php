@@ -7,7 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Application\ConnectionContextInterface;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -27,13 +27,16 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
 {
     private ConnectionContextInterface $connectionContext;
     private UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler;
+    private ConnectionRepository $connectionRepository;
 
     public function __construct(
         ConnectionContextInterface $connectionContext,
-        UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler
+        UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler,
+        ConnectionRepository $connectionRepository
     ) {
         $this->connectionContext = $connectionContext;
         $this->updateDataDestinationProductEventCountHandler = $updateDataDestinationProductEventCountHandler;
+        $this->connectionRepository = $connectionRepository;
     }
 
     public static function getSubscribedEvents(): array
@@ -66,7 +69,11 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
 
     private function getConnectionCodeByReadProductsEvent(ReadProductsEvent $event): ?string
     {
-        return $event->isEventApi() ? $event->getConnectionCode() : $this->connectionContext->getConnectionCode();
+        $connection = $this->connectionContext->getConnection();
+
+        return $event->isEventApi()
+            ? $event->getConnectionCode()
+            : ($connection === null ? null : $connection->code()->__toString());
     }
 
     private function connectionIsValid(?string $connectionCode, bool $isEventApi): bool
@@ -76,7 +83,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
         }
 
         $connection = $isEventApi
-            ? $this->connectionContext->getConnectionByCode($connectionCode)
+            ? $this->connectionRepository->findOneByCode($connectionCode)
             : $this->connectionContext->getConnection();
 
         if ($connection === null) {
