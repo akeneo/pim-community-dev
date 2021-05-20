@@ -14,6 +14,7 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useCategory} from '../../hooks';
 import {Category} from '../../models';
+import {HistoryPimView, View} from './HistoryPimView';
 
 type Params = {
   categoryId: string;
@@ -97,23 +98,37 @@ const CategoryEditPage: FC = () => {
       </PageHeader>
       <PageContent>
         <TabBar moreButtonTitle={'More'}>
-          <TabBar.Tab isActive={isCurrent(propertyTabName)} onClick={() => {
-            setActiveTab(propertyTabName);
-            switchTo(propertyTabName)();
-          }}>
+          <TabBar.Tab
+            isActive={isCurrent(propertyTabName)}
+            onClick={() => {
+              setActiveTab(propertyTabName);
+              switchTo(propertyTabName)();
+            }}
+          >
             {translate('pim_common.properties')}
           </TabBar.Tab>
-          <TabBar.Tab isActive={isCurrent(historyTabName)} onClick={() => {
-            setActiveTab(historyTabName);
-            switchTo(historyTabName)();
-          }}>
+          <TabBar.Tab
+            isActive={isCurrent(historyTabName)}
+            onClick={() => {
+              setActiveTab(historyTabName);
+              switchTo(historyTabName)();
+            }}
+          >
             {translate('pim_common.history')}
           </TabBar.Tab>
         </TabBar>
 
         {isCurrent(propertyTabName) && <div>{translate('pim_common.properties')}</div>}
-        {isCurrent(historyTabName) && <div>{translate('pim_common.history')}</div>}
+        {isCurrent(historyTabName) && (
+          <HistoryPimView
+            viewName="pim-category-edit-form-history"
+            onBuild={(view: View) => {
+              view.setData({categoryId});
 
+              return Promise.resolve(view);
+            }}
+          />
+        )}
       </PageContent>
     </>
   );
