@@ -135,7 +135,6 @@ pim_enrich.entity.attribute:
     date_min: Min päivämäärä
     decimals_allowed: Desimaaliarvot sallittu
     default_metric_unit:
-      label: Metrinen oletusyksikkö
       choose: Valitse yksikkö
     group:
       label: Attribuuttiryhmä
@@ -145,7 +144,6 @@ pim_enrich.entity.attribute:
     max_characters: Maksimimerkkimäärä
     max_file_size: Suurin tiedostokoko (Mt)
     metric_family:
-      label: Metrinen perhe
       choose: Valitse perhe
     minimum_input_length: Automaattisen täydennyshaun minimimerkkimäärä
     name: Nimi
@@ -169,7 +167,6 @@ pim_enrich.entity.attribute:
       pim_catalog_image: Kuva
       pim_catalog_boolean: "Kyllä/ei"
       pim_catalog_date: Päivämäärä
-      pim_catalog_metric: Metriikka
       pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
       pim_reference_data_multiselect: Viitetiedot monivalinta
     unique: Yksilöllinen arvo

@@ -63,8 +63,6 @@ pim_enrich.entity.locale:
   label: wersja językowa
   uppercase_label: Wersja językowa
   plural_label: Ustawienia regionalne
-  page_title:
-    index: "]-Inf, 1]{{ count }} lokalizacja|]1, Inf[{{ count }} lokalizacji"
 pim_enrich.entity.currency:
   plural_label: Waluty
   page_title:
