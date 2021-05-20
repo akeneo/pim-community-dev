@@ -149,30 +149,6 @@ class CategoryRepositoryApiResourceIntegration extends TestCase
         Assert::assertEquals('women', $categories[8]->getCode());
     }
 
-    public function test_to_fail_filter_validation_with_wrong_operator_for_updated(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        $this->getRepository()->searchAfterOffset(
-            ['updated' => [['operator' => 'BadOperator', 'value' => '2019-06-09T12:00:00+00:00']]],
-            ['code' => 'ASC'],
-            10,
-            0
-        );
-    }
-
-    public function test_to_fail_filter_validation_with_wrong_date_format_for_updated(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        $this->getRepository()->searchAfterOffset(
-            ['updated' => [['operator' => '>', 'value' => '2019-06-09 12:00:00']]],
-            ['code' => 'ASC'],
-            10,
-            0
-        );
-    }
-
     public function test_to_search_categories_after_update_date(): void
     {
         $this->initFixtures();
