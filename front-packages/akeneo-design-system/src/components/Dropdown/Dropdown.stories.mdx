@@ -119,10 +119,12 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
   </Story>
 </Canvas>
 
-## With Search and pagination
+## Search & pagination
+
+For search and pagination, you need to create a dedicated component for the `Dropdown.Overlay` to avoid re-fetching data even if the overlay is closed.
 
 <Canvas>
-  <Story name="With search and pagination" height={260}>
+  <Story name="Search & pagination" height={500}>
     {args => {
       const [isOpen, open, close] = useBooleanState(true);
       const Overlay = () => {
