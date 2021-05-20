@@ -19,7 +19,7 @@ class SqlAverageMaxNumberOfValuesPerAsset
 
     private int $limit;
 
-    public function __construct(Connection $sqlConnection,int $limit)
+    public function __construct(Connection $sqlConnection, int $limit)
     {
         $this->sqlConnection = $sqlConnection;
         $this->limit = $limit;

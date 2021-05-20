@@ -16,11 +16,9 @@ class AggregatedAverageMaxNumberOfValuePerAsset implements AverageMaxQuery
 {
     private const VOLUME_NAME = 'average_max_number_of_values_per_asset';
 
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
-    /** @var int */
-    private $limit;
+    private int $limit;
 
     /**
      * @param Connection $connection
