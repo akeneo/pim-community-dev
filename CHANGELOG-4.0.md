@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9777: Fix error message when trying to delete an attribute linked to an entity
+
 # 4.0.110 (2021-05-14)
 
 ## Bug fixes
