@@ -3,11 +3,9 @@ import {PlaceholderPosition, TreeNode} from '../../models';
 import {DropTarget, OrderableTreeContext} from '../../components/shared/providers/OrderableTreeProvider';
 import {CursorPosition} from '../../components';
 
-const useDropTreeNode = <T>(
-  node: TreeNode<T> | undefined,
-  index: number,
-  reorder: (identifier: number, target: DropTarget, callback: () => void) => void
-) => {
+type ReorderOnDropHandler = (identifier: number, target: DropTarget, callback: () => void) => void;
+
+const useDropTreeNode = <T>(node: TreeNode<T> | undefined, index: number, reorder: ReorderOnDropHandler) => {
   const {dropTarget, setDropTarget, draggedNode, setDraggedNode} = useContext(OrderableTreeContext);
   const [placeholderPosition, setPlaceholderPosition] = useState<PlaceholderPosition>('none');
 
@@ -93,4 +91,5 @@ const useDropTreeNode = <T>(
   };
 };
 
+export type {ReorderOnDropHandler};
 export {useDropTreeNode};
