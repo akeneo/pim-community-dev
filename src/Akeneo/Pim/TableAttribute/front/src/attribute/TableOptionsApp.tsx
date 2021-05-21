@@ -24,6 +24,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
       (activeLocales: Locale[]) => setActiveLocales(activeLocales)
     );
   }, []);
+
   const handleLabelChange = (localeCode: string, newValue: string) => {
     selectedColumn.labels[localeCode] = newValue;
     const index = tableConfiguration.indexOf(selectedColumn);

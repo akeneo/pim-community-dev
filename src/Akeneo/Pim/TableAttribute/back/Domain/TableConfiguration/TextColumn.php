@@ -47,10 +47,12 @@ class TextColumn extends AbstractColumnDefinition
      */
     public function normalize(): array
     {
+        $labels = $this->labels->labels();
+
         return [
             'code' => $this->code->asString(),
             'data_type' => $this->dataType->asString(),
-            'labels' => $this->labels->labels(),
+            'labels' => [] === $labels ? (object) [] : $labels,
             // TODO validation rules
         ];
     }

@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import { TableOptionsApp } from './TableOptionsApp';
 import { TableConfiguration } from '../models/TableConfiguration';
 const translate = require('oro/translator');
-const propertyAccessor = require('pim/common/property');
 
 class TableOptionsTab extends BaseView {
   private config: any;
@@ -27,20 +26,20 @@ class TableOptionsTab extends BaseView {
 
   handleChange(tableConfiguration: TableConfiguration): void {
     const data = this.getFormData();
-    propertyAccessor.updateProperty(data, 'table_configuration', tableConfiguration);
-    this.setData(data);
+    data.table_configuration = tableConfiguration;
+    this.setData({...data});
   }
 
   render(): any {
     if (!this.isActive()) {
       return;
     }
-    const tableConfiguration = this.getFormData().table_configuration;
+    let initialTableConfiguration = this.getFormData().table_configuration;
 
     ReactDOM.render(
       <TableOptionsApp
-        initialTableConfiguration={tableConfiguration}
-        onChange={this.handleChange}
+        initialTableConfiguration={initialTableConfiguration}
+        onChange={this.handleChange.bind(this)}
       />,
       this.el
     );
