@@ -120,7 +120,7 @@ final class Record implements ArrayConverterInterface
         $convertedItem = ['values' => ['label' => []]];
         foreach ($item as $field => $data) {
             if ($data instanceof \DateTime) {
-                throw new BusinessArrayConversionException("Can not convert cell  {$field} with date format to attribute of type text", "pim_import_export.notification.export.warnings.xlsx_cell_date_to_text_conversion_error", [$field]);
+                throw new BusinessArrayConversionException("Can not convert cell {$field} with date format to attribute of type text", "pim_import_export.notification.export.warnings.xlsx_cell_date_to_text_conversion_error", [$field]);
             }
             $convertedItem = $this->convertField(
                 $convertedItem,
