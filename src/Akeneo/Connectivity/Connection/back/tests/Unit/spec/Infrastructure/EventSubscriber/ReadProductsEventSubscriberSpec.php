@@ -62,7 +62,7 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         $connectionContext->isCollectable()->shouldNotBeCalled();
         $connectionContext->areCredentialsValidCombination()->willReturn(true)->shouldBeCalledTimes(1);
 
-        $this->saveReadProducts($readProductsEvent);
+        $this->saveReadProducts($readProductsEvent)->shouldReturn(null);
 
         $updateDataDestinationProductEventCountHandler->handle(
             new UpdateDataDestinationProductEventCountCommand(
@@ -73,13 +73,13 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         )->shouldBeCalled();
     }
 
-    public function it_saves_read_products_events_with_an_event_api_event(
+    public function it_saves_read_products_events_with_an_events_api_event(
         $connectionContext,
         $updateDataDestinationProductEventCountHandler,
         Connection $connection,
         ConnectionRepository $connectionRepository
     ): void {
-        $readProductsEvent = new ReadProductsEvent(3, ReadProductsEvent::EVENT_API_TYPE, 'ecommerce');
+        $readProductsEvent = new ReadProductsEvent(3, ReadProductsEvent::EVENTS_API_TYPE, 'ecommerce');
         $connection->hasDataDestinationFlowType()->willReturn(true)->shouldBeCalledTimes(1);
         $connection->auditable()->willReturn(true)->shouldBeCalledTimes(1);
         $connection->code()->shouldNotBeCalled();
@@ -89,7 +89,7 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
 
         $connectionRepository->findOneByCode('ecommerce')
             ->willReturn($connection)->shouldBeCalledTimes(1);
-        $this->saveReadProducts($readProductsEvent);
+        $this->saveReadProducts($readProductsEvent)->shouldReturn(null);
 
         $updateDataDestinationProductEventCountHandler->handle(
             new UpdateDataDestinationProductEventCountCommand(
@@ -115,8 +115,7 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         $connectionContext->getConnection()->willReturn($connection)->shouldBeCalledTimes(2);
         $updateDataDestinationProductEventCountHandler->handle(Argument::any())->shouldNotBeCalled();
 
-        $this->shouldThrow(\LogicException::class)
-            ->during('saveReadProducts', [new ReadProductsEvent(3)]);
+        $this->saveReadProducts(new ReadProductsEvent(3))->shouldReturn(null);
     }
 
     public function it_does_not_save_read_products_events_when_the_connection_flow_type_is_different_than_destination(
@@ -134,8 +133,7 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         $connectionContext->getConnection()->willReturn($connection)->shouldBeCalledTimes(2);
         $updateDataDestinationProductEventCountHandler->handle(Argument::any())->shouldNotBeCalled();
 
-        $this->shouldThrow(\LogicException::class)
-            ->during('saveReadProducts', [new ReadProductsEvent(3)]);
+        $this->saveReadProducts(new ReadProductsEvent(3))->shouldReturn(null);
     }
 
     public function it_does_not_save_read_products_events_if_no_valid_credentials(
@@ -153,7 +151,6 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         $connectionContext->getConnection()->willReturn($connection)->shouldBeCalledTimes(2);
         $updateDataDestinationProductEventCountHandler->handle(Argument::any())->shouldNotBeCalled();
 
-        $this->shouldThrow(\LogicException::class)
-            ->during('saveReadProducts', [new ReadProductsEvent(3)]);
+        $this->saveReadProducts(new ReadProductsEvent(3))->shouldReturn(null);
     }
 }

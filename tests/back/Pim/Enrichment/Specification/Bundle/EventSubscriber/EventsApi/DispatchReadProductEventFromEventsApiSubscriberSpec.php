@@ -28,7 +28,7 @@ class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
         $this->shouldHaveType(DispatchReadProductEventFromEventsApiSubscriber::class);
     }
 
-    public function it_dispatches_a_read_product_on_product_event_api_saved(
+    public function it_dispatches_a_read_product_on_product_events_api_saved(
         EventDispatcherInterface $eventDispatcher,
         EventsApiRequestSucceeded $eventsApiRequestSucceeded,
         ProductUpdated $productUpdatedEvent,
@@ -52,7 +52,7 @@ class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
                 if($event->getConnectionCode() !== 'code') {
                     return false;
                 }
-                if($event->isEventApi() !== true) {
+                if($event->isEventsApi() !== true) {
                     return false;
                 }
 
@@ -60,10 +60,10 @@ class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
             })
         ))->shouldbeCalledTimes(1);
 
-        $this->dispatchReadProductOnProductEventApiSaved($eventsApiRequestSucceeded);
+        $this->dispatchReadProductOnProductEventsApiSaved($eventsApiRequestSucceeded);
     }
 
-    public function it_doesnt_dispatch_a_read_product_on_product_event_api_saved_if_no_product_saved_event_type(
+    public function it_doesnt_dispatch_a_read_product_on_product_events_api_saved_if_no_product_saved_event_type(
         EventDispatcherInterface $eventDispatcher,
         EventsApiRequestSucceeded $eventsApiRequestSucceeded,
         ProductRemoved $productRemovedEvent
@@ -75,6 +75,6 @@ class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
         $eventsApiRequestSucceeded->getConnectionCode()->shouldNotBeCalled();
         $eventDispatcher->dispatch(Argument::any())->shouldNotBeCalled();
 
-        $this->dispatchReadProductOnProductEventApiSaved($eventsApiRequestSucceeded);
+        $this->dispatchReadProductOnProductEventsApiSaved($eventsApiRequestSucceeded);
     }
 }

@@ -54,7 +54,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
         }
         $connectionCode = $this->getConnectionCodeByReadProductsEvent($event);
 
-        if (!$this->connectionIsAuditable($connectionCode, $event->isEventApi())) {
+        if (!$this->connectionIsAuditable($connectionCode, $event->isEventsApi())) {
             return;
         }
 
@@ -72,7 +72,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
      */
     private function getConnectionCodeByReadProductsEvent(ReadProductsEvent $event): string
     {
-        if ($event->isEventApi()) {
+        if ($event->isEventsApi()) {
             $connectionCode = $event->getConnectionCode();
             if ($connectionCode === null) {
                 throw new \LogicException('This connection code is empty on a event api.');
@@ -89,9 +89,9 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
         return (string) $connection->code();
     }
 
-    private function connectionIsAuditable(string $connectionCode, bool $isEventApi): bool
+    private function connectionIsAuditable(string $connectionCode, bool $isEventsApi): bool
     {
-        $connection = $isEventApi
+        $connection = $isEventsApi
             ? $this->connectionRepository->findOneByCode($connectionCode)
             : $this->connectionContext->getConnection();
 
@@ -104,7 +104,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
         if (!$connection->hasDataDestinationFlowType()) {
             return false;
         }
-        if (!$isEventApi && !$this->connectionContext->areCredentialsValidCombination()) {
+        if (!$isEventsApi && !$this->connectionContext->areCredentialsValidCombination()) {
             return false;
         }
 
