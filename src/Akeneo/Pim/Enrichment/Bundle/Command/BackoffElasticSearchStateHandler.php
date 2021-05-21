@@ -42,7 +42,7 @@ class BackoffElasticSearchStateHandler
         $initialBatchSize = count($codes);
         $batchSize = $initialBatchSize;
         $indexed = 0;
-        list($backOverheat, $retryCounter) = $this->resetState();
+        [$backOverheat, $retryCounter] = $this->resetState();
 
         do {
             $batchEsCodes = $codes;
