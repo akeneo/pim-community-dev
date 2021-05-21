@@ -54,7 +54,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
         }
         $connectionCode = $this->getConnectionCodeByReadProductsEvent($event);
 
-        if (!$this->connectionIsAuditable($connectionCode, $event->isEventsApi())) {
+        if (!$this->isAuditableConnection($connectionCode, $event->isEventsApi())) {
             return;
         }
 
@@ -89,7 +89,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
         return (string) $connection->code();
     }
 
-    private function connectionIsAuditable(string $connectionCode, bool $isEventsApi): bool
+    private function isAuditableConnection(string $connectionCode, bool $isEventsApi): bool
     {
         $connection = $isEventsApi
             ? $this->connectionRepository->findOneByCode($connectionCode)
