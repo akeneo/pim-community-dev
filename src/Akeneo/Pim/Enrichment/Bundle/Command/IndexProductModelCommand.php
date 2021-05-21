@@ -122,17 +122,27 @@ class IndexProductModelCommand extends Command
             return self::ERROR_CODE_USAGE;
         }
 
-        $numberOfIndexedProducts = $this->doIndex($chunkedProductModelCodes, new ProgressBar($output, $productModelCount),
-            function ($codes) {
-                $this->productModelDescendantAndAncestorsIndexer->indexFromProductModelCodes($codes);
-            }, $output);
+        $batchESHandler = new class($this->productModelDescendantAndAncestorsIndexer) implements BulkEsHandlerInterface {
+            private ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer;
+
+            public function __construct(ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer)
+            {
+                $this->productModelDescendantsAndAncestorsIndexer = $productModelDescendantsAndAncestorsIndexer;
+            }
+            public function bulkExecute(array $codes)
+            {
+                $this->productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes($codes);
+            }
+        };
+
+        $numberOfIndexedProducts = $this->doIndex($chunkedProductModelCodes, new ProgressBar($output, $productModelCount), $batchESHandler, $output);
 
         $output->writeln(sprintf('<info>%d product models indexed</info>', $numberOfIndexedProducts));
 
         return 0;
     }
 
-    private function doIndex(iterable $chunkedCodes, ProgressBar $progressBar, \Closure $codesEsHandler, OutputInterface $output): int
+    private function doIndex(iterable $chunkedCodes, ProgressBar $progressBar, BulkEsHandlerInterface $codesEsHandler, OutputInterface $output): int
     {
         $indexedCount = 0;
 
