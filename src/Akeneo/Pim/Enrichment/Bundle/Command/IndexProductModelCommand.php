@@ -149,7 +149,7 @@ class IndexProductModelCommand extends Command
         $progressBar->start();
         foreach ($chunkedCodes as $codes) {
             $treatedBachSize = $this->batchEsStateHandler->bulkExecute($codes, $codesEsHandler);
-            $indexedCount+=$indexedCount;
+            $indexedCount+=$treatedBachSize;
             $progressBar->advance($treatedBachSize);
         }
         $progressBar->finish();

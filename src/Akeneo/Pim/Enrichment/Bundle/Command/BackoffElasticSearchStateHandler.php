@@ -21,11 +21,6 @@ class BackoffElasticSearchStateHandler
     private int $retryCounter;
     private int $backoffLogarithmicIncrement;
 
-    /**
-     * BackoffElasticSearchStateHandler constructor.
-     * @param int $retryCounter
-     * @param int $backoffLogarithmicIncrement
-     */
     public function __construct(int $retryCounter=self::RETRY_COUNTER, int $backoffLogarithmicIncrement=self::BACKOFF_LOGARITHMIC_INCREMENT)
     {
         $this->retryCounter = $retryCounter;
