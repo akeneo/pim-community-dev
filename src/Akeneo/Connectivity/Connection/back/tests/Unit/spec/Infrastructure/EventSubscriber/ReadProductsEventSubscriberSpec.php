@@ -136,7 +136,7 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         $this->saveReadProducts(new ReadProductsEvent(3))->shouldReturn(null);
     }
 
-    public function it_does_not_save_read_products_events_if_no_valid_credentials(
+    public function it_does_not_save_read_products_events_if_credentials_are_not_valid(
         $connectionContext,
         $updateDataDestinationProductEventCountHandler,
         Connection $connection,

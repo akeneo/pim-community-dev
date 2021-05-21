@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Connectivity\Connection\Domain\Webhook\Event;
 
 use Akeneo\Platform\Component\EventQueue\EventInterface;

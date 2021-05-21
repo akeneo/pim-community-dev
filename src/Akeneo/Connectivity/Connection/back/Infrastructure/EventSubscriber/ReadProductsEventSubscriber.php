@@ -75,7 +75,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
         if ($event->isEventsApi()) {
             $connectionCode = $event->getConnectionCode();
             if ($connectionCode === null) {
-                throw new \LogicException('This connection code is empty on a event api.');
+                throw new \LogicException('You must provide a connection code through the event when using the events API.');
             }
 
             return $connectionCode;
@@ -83,7 +83,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
 
         $connection = $this->connectionContext->getConnection();
         if ($connection === null) {
-            throw new \LogicException('The connection isn\'t initialized.');
+            throw new \LogicException('You must initialize the connection before adding read products.');
         }
 
         return (string) $connection->code();

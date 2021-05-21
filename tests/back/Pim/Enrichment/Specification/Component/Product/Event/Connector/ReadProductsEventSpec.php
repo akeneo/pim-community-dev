@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Event\Connector;
 
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
@@ -20,7 +22,7 @@ class ReadProductsEventSpec extends ObjectBehavior
         $this->shouldHaveType(ReadProductsEvent::class);
     }
 
-    public function it_returns_a_counter()
+    public function it_provides_the_number_of_read_products()
     {
         $this->beConstructedWith(5);
         $this->getCount()->shouldReturn(5);
@@ -32,7 +34,7 @@ class ReadProductsEventSpec extends ObjectBehavior
         $this->getConnectionCode()->shouldReturn('code');
     }
 
-    public function it_returns_true_if_events_api_event()
+    public function it_comes_from_the_events_api()
     {
         $this->beConstructedWith(5, ReadProductsEvent::EVENTS_API_TYPE, 'code');
         $this->isEventsApi()->shouldReturn(true);

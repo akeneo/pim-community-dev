@@ -22,12 +22,12 @@ class EventsApiRequestSucceededEventSpec extends ObjectBehavior
         $this->shouldHaveType(EventsApiRequestSucceededEvent::class);
     }
 
-    public function it_should_return_the_events(EventInterface $event)
+    public function it_provides_the_events(EventInterface $event)
     {
         $this->getEvents()->shouldBe([$event]);
     }
 
-    public function it_should_return_the_connection_code()
+    public function it_provides_the_connection_code()
     {
         $this->getConnectionCode()->shouldBe('connectionCode');
     }
