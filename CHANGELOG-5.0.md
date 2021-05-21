@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.26 (2021-05-21)
+
 ## Bug fixes
 
 - PIM-9839: Fix indexation issue on the 2-way associations
