@@ -24,6 +24,8 @@ cp $EE_DIR/config/fake_credentials_gcp.json $TARGET_DIR/config
 # Install Monitoring Bundle
 cp -r $EE_DIR/src/Akeneo/Platform/Bundle/MonitoringBundle $TARGET_DIR/src/Akeneo/Platform/Bundle/
 cat $EE_DIR/growth_edition/routes.yml >> $TARGET_DIR/config/routes/routes.yml
+# To add monitoring in the firewall
+cp $EE_DIR/growth_edition/security.yml $TARGET_DIR/config/packages/security.yml
 sed -i '$ d' $TARGET_DIR/config/bundles.php
 echo " Akeneo\Platform\Bundle\MonitoringBundle\AkeneoMonitoringBundle::class => ['all' => true]," >> $TARGET_DIR/config/bundles.php
 echo "];"  >> $TARGET_DIR/config/bundles.php

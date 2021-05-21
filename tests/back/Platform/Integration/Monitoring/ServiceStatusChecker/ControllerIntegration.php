@@ -8,6 +8,7 @@ use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ElasticsearchCh
 use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\FileStorageChecker;
 use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\MysqlChecker;
 use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\SmtpChecker;
+use Akeneo\Platform\Component\Monitoring\Exception\StatusCheckException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\Assert;
@@ -90,8 +91,6 @@ final class ControllerIntegration extends KernelTestCase
             'fail_on_optional_services' => 'any_value',
         ]);
 
-        $response = $this->controller->getAction($this->request);
-
         $expectedContent = [
             'service_status' => [
                 'mysql' => [
@@ -122,8 +121,11 @@ final class ControllerIntegration extends KernelTestCase
             ],
         ];
 
-        Assert::assertSame($expectedContent, json_decode($response->getContent(), true));
-        Assert::assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
+        $this->expectException(StatusCheckException::class);
+        $this->expectExceptionCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+        $this->expectExceptionMessage(json_encode($expectedContent));
+
+        $this->controller->getAction($this->request);
     }
 
     public function test_ko_with_required_services_failures(): void
@@ -142,8 +144,6 @@ final class ControllerIntegration extends KernelTestCase
             self::$container->get('akeneo_monitoring.status_checker.pub_sub'),
             'my_auth_token'
         );
-
-        $response = $this->controller->getAction($this->request);
 
         $expectedContent = [
             'service_status' => [
@@ -175,7 +175,10 @@ final class ControllerIntegration extends KernelTestCase
             ],
         ];
 
-        Assert::assertSame($expectedContent, json_decode($response->getContent(), true));
-        Assert::assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
+        $this->expectException(StatusCheckException::class);
+        $this->expectExceptionCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+        $this->expectExceptionMessage(json_encode($expectedContent));
+
+        $response = $this->controller->getAction($this->request);
     }
 }

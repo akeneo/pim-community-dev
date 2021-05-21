@@ -1,7 +1,8 @@
 oneup_flysystem:
     adapters:
         asset_storage_adapter:
-            nulladapter: ~
+            local:
+                directory: '%kernel.project_dir%/var/file_storage/asset'
         catalog_storage_adapter:
             googlecloudstorage:
                 client: 'Google\Cloud\Storage\StorageClient'
