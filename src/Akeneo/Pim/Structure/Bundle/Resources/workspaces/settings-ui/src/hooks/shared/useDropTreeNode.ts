@@ -2,10 +2,8 @@ import {useCallback, useContext, useEffect, useState} from 'react';
 import {PlaceholderPosition, TreeNode} from '../../models';
 import {DropTarget, OrderableTreeContext} from '../../components/shared/providers/OrderableTreeProvider';
 import {CursorPosition} from '../../components';
-import {Simulate} from 'react-dom/test-utils';
-import drop = Simulate.drop;
 
-const useDrop = <T>(
+const useDropTreeNode = <T>(
   node: TreeNode<T> | undefined,
   index: number,
   reorder: (identifier: number, target: DropTarget, callback: () => void) => void
@@ -88,11 +86,11 @@ const useDrop = <T>(
   }, [node, dropTarget]);
 
   return {
-    dropTarget: dropTarget,
+    dropTarget,
     onDrop,
     onDragOver,
     placeholderPosition,
   };
 };
 
-export {useDrop};
+export {useDropTreeNode};

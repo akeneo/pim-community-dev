@@ -2,7 +2,7 @@ import {useCallback, useContext, useMemo} from 'react';
 import {OrderableTreeContext} from '../../components/shared/providers/OrderableTreeProvider';
 import {TreeNode} from '../../models';
 
-const useDrag = <T>(node: TreeNode<T> | undefined, index: number) => {
+const useDragTreeNode = <T>(node: TreeNode<T> | undefined, index: number) => {
   const {draggedNode, setDraggedNode, setDropTarget, isActive} = useContext(OrderableTreeContext);
 
   const isDraggable = useMemo(() => isActive && node && node.type !== 'root', [isActive, node]);
@@ -41,4 +41,4 @@ const useDrag = <T>(node: TreeNode<T> | undefined, index: number) => {
   };
 };
 
-export {useDrag};
+export {useDragTreeNode};

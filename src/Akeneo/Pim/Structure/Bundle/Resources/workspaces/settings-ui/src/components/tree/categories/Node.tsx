@@ -3,7 +3,12 @@ import {Button} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Tree} from '../../shared';
 import {CategoryTreeModel as CategoryTreeModel} from '../../../models';
-import {useCategoryTreeNode, useCountProductsBeforeDeleteCategory, useDrag, useDrop} from '../../../hooks';
+import {
+  useCategoryTreeNode,
+  useCountProductsBeforeDeleteCategory,
+  useDragTreeNode,
+  useDropTreeNode,
+} from '../../../hooks';
 
 type Props = {
   id: number;
@@ -28,8 +33,8 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
     open,
     close,
   } = useCategoryTreeNode(id);
-  const {isDragged, isDraggable, ...dragProps} = useDrag(node, index);
-  const {placeholderPosition, ...dropProps} = useDrop(node, index, moveTo);
+  const {isDragged, isDraggable, ...dragProps} = useDragTreeNode(node, index);
+  const {placeholderPosition, ...dropProps} = useDropTreeNode(node, index, moveTo);
 
   const translate = useTranslate();
   const countProductsBeforeDeleteCategory = useCountProductsBeforeDeleteCategory(id);
