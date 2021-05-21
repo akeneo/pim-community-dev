@@ -34,7 +34,7 @@ class BackoffElasticSearchStateHandler
 
     protected function resetState(): array
     {
-        return array(false, $this->retryCounter);
+        return [false, $this->retryCounter];
     }
 
     public function bulkExecute(array $codes, BulkEsHandlerInterface $codesEsHandler):int
