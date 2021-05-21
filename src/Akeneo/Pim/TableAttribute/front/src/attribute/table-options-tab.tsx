@@ -2,7 +2,9 @@ import BaseView = require('pimui/js/view/base');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { TableOptionsApp } from './TableOptionsApp';
+import { TableConfiguration } from '../models/TableConfiguration';
 const translate = require('oro/translator');
+const propertyAccessor = require('pim/common/property');
 
 class TableOptionsTab extends BaseView {
   private config: any;
@@ -23,14 +25,22 @@ class TableOptionsTab extends BaseView {
     return super.configure();
   }
 
+  handleChange(tableConfiguration: TableConfiguration): void {
+    const data = this.getFormData();
+    propertyAccessor.updateProperty(data, 'table_configuration', tableConfiguration);
+    this.setData(data);
+  }
+
   render(): any {
     if (!this.isActive()) {
       return;
     }
     const tableConfiguration = this.getFormData().table_configuration;
+
     ReactDOM.render(
       <TableOptionsApp
-        tableConfiguration={tableConfiguration}
+        initialTableConfiguration={tableConfiguration}
+        onChange={this.handleChange}
       />,
       this.el
     );

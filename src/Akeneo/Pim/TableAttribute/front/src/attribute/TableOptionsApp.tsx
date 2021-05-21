@@ -3,22 +3,34 @@ import { TwoColumnsLayout } from './TwoColumnsLayout';
 import { SectionTitle, pimTheme, Field, TextInput } from 'akeneo-design-system';
 import { DependenciesProvider } from '@akeneo-pim-community/legacy-bridge';
 import { ThemeProvider } from 'styled-components';
-import { TableConfiguration } from '../models/TableConfiguration';
+import { ColumnDefinition, TableConfiguration } from '../models/TableConfiguration';
 import { Table } from 'akeneo-design-system';
 import { getLabel, Locale } from '@akeneo-pim-community/shared';
 const FetcherRegistry = require('pim/fetcher-registry');
 
 type TableOptionsAppProps = {
-  tableConfiguration: TableConfiguration
+  initialTableConfiguration: TableConfiguration,
+  onChange: (tableConfiguration: TableConfiguration) => void;
 };
 
-const TableOptionsApp: React.FC<TableOptionsAppProps> = ({tableConfiguration}) => {
+const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfiguration, onChange}) => {
+  const [tableConfiguration, setTableConfiguration] = React.useState<TableConfiguration>(initialTableConfiguration);
   const [selectedColumnCode, setSelectedColumnCode] = React.useState<string>(tableConfiguration[0].code);
-  const selectedColumn = tableConfiguration.find(column => column.code === selectedColumnCode);
+
+  const selectedColumn = tableConfiguration.find(column => column.code === selectedColumnCode) as ColumnDefinition;
   const [activeLocales, setActiveLocales] = React.useState<Locale[]>([]);
   React.useEffect(() => {
-    FetcherRegistry.getFetcher('locale').fetchActivated().then((activeLocales: Locale[]) => setActiveLocales(activeLocales));
+    FetcherRegistry.getFetcher('locale').fetchActivated().then(
+      (activeLocales: Locale[]) => setActiveLocales(activeLocales)
+    );
   }, []);
+  const handleLabelChange = (localeCode: string, newValue: string) => {
+    selectedColumn.labels[localeCode] = newValue;
+    const index = tableConfiguration.indexOf(selectedColumn);
+    tableConfiguration[index] = selectedColumn;
+    setTableConfiguration([...tableConfiguration]);
+    onChange(tableConfiguration);
+  };
 
   const rightColumn = <div>
     <SectionTitle title={getLabel(selectedColumn.labels, 'en_US', selectedColumn.code)}>
@@ -33,10 +45,9 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({tableConfiguration}) =
     <SectionTitle title="TODO labels">TODO labels</SectionTitle>
     {activeLocales.map(locale =>
       <Field label={locale.label} key={locale.code}>
-        <TextInput readOnly={true} value={getLabel(selectedColumn.labels, locale.code, '')}/>
+        <TextInput onChange={(label) => handleLabelChange(locale.code, label)} value={selectedColumn.labels[locale.code] ?? ''}/>
       </Field>
     )}
-
   </div>;
   return <DependenciesProvider>
     <ThemeProvider theme={pimTheme}>
@@ -45,8 +56,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({tableConfiguration}) =
       >
         <div>
         <SectionTitle title="TODO columns">TODO COLUMNS</SectionTitle>
-        <Table isDragAndDroppable={true} onReorder={() => {
-        }}>
+        <Table>
           <Table.Body>
             {tableConfiguration.map((columnDefinition) => <Table.Row
               key={columnDefinition.code}
