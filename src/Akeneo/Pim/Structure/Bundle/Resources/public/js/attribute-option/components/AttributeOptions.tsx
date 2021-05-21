@@ -34,6 +34,7 @@ const AttributeOptions = () => {
   const dispatchAction = useDispatch();
   const attributeContext = useAttributeContext();
   const notify = useNotify();
+  const translate = useTranslate();
 
   useEffect(() => {
     if (
@@ -107,7 +108,6 @@ const AttributeOptions = () => {
     [attributeOptionCreate, setIsSaving, dispatchAction, setShowNewOptionForm, setSelectedOption]
   );
 
-  const translate = useTranslate();
   const deleteAttributeOption = useCallback(
     async (attributeOptionId: number) => {
       setIsSaving(true);
