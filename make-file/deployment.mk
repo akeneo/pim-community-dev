@@ -292,7 +292,7 @@ slack_helpdesk:
 
 .PHONY: delete_pr_environments_hourly
 delete_pr_environments_hourly:
-	bash $(PWD)/deployments/bin/remove_pr_instances.sh
+	ENV_NAME=${ENV_NAME} bash $(PWD)/deployments/bin/remove_pr_instances.sh
 
 .PHONY: clone_serenity
 clone_serenity:
