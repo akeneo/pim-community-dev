@@ -40,7 +40,7 @@ const CategoriesTreePage: FC = () => {
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_tree', {'category.label': treeLabel}));
 
-  const followSettingsIndex = () => router.redirect(router.generate('pim_enrich_attribute_index'));
+  const followSettingsIndex = () => router.redirect(router.generate('pim_settings_index'));
   const followCategoriesIndex = () => router.redirect(router.generate('pim_enrich_categorytree_index'));
   const followEditCategory = (id: number) => {
     if (!isGranted('pim_enrich_product_category_edit')) {

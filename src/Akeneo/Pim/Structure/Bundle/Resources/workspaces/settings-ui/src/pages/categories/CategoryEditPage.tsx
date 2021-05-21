@@ -55,7 +55,7 @@ const CategoryEditPage: FC = () => {
 
   const uiLocale = userContext.get('uiLocale');
 
-  const followSettingsIndex = () => router.redirect(router.generate('pim_enrich_attribute_index'));
+  const followSettingsIndex = () => router.redirect(router.generate('pim_settings_index'));
   const followCategoriesIndex = () => router.redirect(router.generate('pim_enrich_categorytree_index'));
   const followCategoryTree = () => {
     if (!tree) {
