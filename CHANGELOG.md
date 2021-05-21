@@ -71,6 +71,7 @@
 - PIM-9864: Fix 500 error when using DateTime filter with invalid value
 - PIM-9869: Fix download log in job tracker is only available when log is located in the fpm server
 - PIM-9777: Fix error message when trying to delete an attribute linked to an entity
+- PIM-9873: Fix since last n day filter in product export
 
 ## New features
 
