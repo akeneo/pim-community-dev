@@ -23,10 +23,6 @@ final class LogKey
         if (empty($jobExecution->getLogFile())) {
             throw new \InvalidArgumentException('The log file should not be empty');
         }
-
-        if (!is_file($jobExecution->getLogFile())) {
-            throw new \InvalidArgumentException('The log should exists.');
-        }
     }
 
     public function __toString(): string
