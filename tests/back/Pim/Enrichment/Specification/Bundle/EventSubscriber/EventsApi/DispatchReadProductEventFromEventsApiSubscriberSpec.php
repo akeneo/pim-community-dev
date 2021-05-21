@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EventsApi;
 
-use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceeded;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EventsApi\DispatchReadProductEventFromEventsApiSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
@@ -30,7 +30,7 @@ class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
 
     public function it_dispatches_a_read_product_on_product_events_api_saved(
         EventDispatcherInterface $eventDispatcher,
-        EventsApiRequestSucceeded $eventsApiRequestSucceeded,
+        EventsApiRequestSucceededEvent $eventsApiRequestSucceeded,
         ProductUpdated $productUpdatedEvent,
         ProductCreated $productCreatedEvent,
         ProductRemoved $productRemovedEvent
@@ -65,7 +65,7 @@ class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
 
     public function it_doesnt_dispatch_a_read_product_on_product_events_api_saved_if_no_product_saved_event_type(
         EventDispatcherInterface $eventDispatcher,
-        EventsApiRequestSucceeded $eventsApiRequestSucceeded,
+        EventsApiRequestSucceededEvent $eventsApiRequestSucceeded,
         ProductRemoved $productRemovedEvent
     ) {
         $eventsApiRequestSucceeded->getEvents()

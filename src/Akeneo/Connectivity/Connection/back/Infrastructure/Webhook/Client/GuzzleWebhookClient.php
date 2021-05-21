@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSend
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceeded;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
 use GuzzleHttp\ClientInterface;
@@ -99,7 +99,7 @@ class GuzzleWebhookClient implements WebhookClient
                         $webhookRequestLog->getWebhookRequest()->apiEvents()
                     );
                     
-                    $this->eventDispatcher->dispatch(new EventsApiRequestSucceeded(
+                    $this->eventDispatcher->dispatch(new EventsApiRequestSucceededEvent(
                         $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
                         $pimEvents
                     ));

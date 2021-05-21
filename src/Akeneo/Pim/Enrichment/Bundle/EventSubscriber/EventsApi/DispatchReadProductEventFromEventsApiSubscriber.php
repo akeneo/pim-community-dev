@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EventsApi;
 
-use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceeded;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
@@ -24,11 +24,11 @@ class DispatchReadProductEventFromEventsApiSubscriber implements EventSubscriber
 
     public static function getSubscribedEvents()
     {
-        return [EventsApiRequestSucceeded::class => 'dispatchReadProductOnProductEventsApiSaved'];
+        return [EventsApiRequestSucceededEvent::class => 'dispatchReadProductOnProductEventsApiSaved'];
     }
 
     public function dispatchReadProductOnProductEventsApiSaved(
-        EventsApiRequestSucceeded $eventsApiRequestSucceeded
+        EventsApiRequestSucceededEvent $eventsApiRequestSucceeded
     ) {
         $count = 0;
         foreach ($eventsApiRequestSucceeded->getEvents() as $event) {
