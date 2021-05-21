@@ -18,7 +18,7 @@ import {
   updateAttributeOptionAction,
 } from '../reducers';
 import {useAttributeContext} from '../contexts';
-import {NotificationLevel, useNotify} from '@akeneo-pim-community/shared';
+import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import EmptyAttributeOptionsList from './EmptyAttributeOptionsList';
 import useAttributeOptions from '../hooks/useAttributeOptions';
 
@@ -107,6 +107,7 @@ const AttributeOptions = () => {
     [attributeOptionCreate, setIsSaving, dispatchAction, setShowNewOptionForm, setSelectedOption]
   );
 
+  const translate = useTranslate();
   const deleteAttributeOption = useCallback(
     async (attributeOptionId: number) => {
       setIsSaving(true);
@@ -117,7 +118,7 @@ const AttributeOptions = () => {
           setSelectedOption(attributeOptions[0]);
         }
       } catch (error) {
-        notify(NotificationLevel.ERROR, error);
+        notify(NotificationLevel.ERROR, translate(error));
       }
       setIsSaving(false);
     },

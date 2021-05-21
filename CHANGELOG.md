@@ -69,6 +69,7 @@
 - PIM-9741: Fix choice filter mask not closing when selecting with keyboard
 - PIM-9806: Enable authentication temporary lock to protect against brute force attack
 - PIM-9864: Fix 500 error when using DateTime filter with invalid value
+- PIM-9777: Fix error message when trying to delete an attribute linked to an entity
 
 ## New features
 
