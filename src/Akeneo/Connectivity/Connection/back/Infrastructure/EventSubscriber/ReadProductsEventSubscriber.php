@@ -54,8 +54,8 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
         }
         $connectionCode = $this->getConnectionCodeByReadProductsEvent($event);
 
-        if (!$this->connectionIsValid($connectionCode, $event->isEventApi())) {
-            throw new \LogicException('The connection is not valid.');
+        if (!$this->connectionIsAuditable($connectionCode, $event->isEventApi())) {
+            return;
         }
 
         $this->updateDataDestinationProductEventCountHandler->handle(
@@ -89,7 +89,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
         return (string) $connection->code();
     }
 
-    private function connectionIsValid(string $connectionCode, bool $isEventApi): bool
+    private function connectionIsAuditable(string $connectionCode, bool $isEventApi): bool
     {
         $connection = $isEventApi
             ? $this->connectionRepository->findOneByCode($connectionCode)

@@ -200,6 +200,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $request = $container[0]['request'];
         $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
 
+        Assert::assertEquals(0, (int) $this->getEventCount('ecommerce'));
         $this->assertEquals($this->expectedProductRemovedPayload(), $requestContent);
     }
 
