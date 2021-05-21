@@ -53,7 +53,7 @@ pimee_workflow:
                 original_product: Edit working copy
         proposal:
             modal.title: Leave a comment (optional - 255 characters max.)
-
+        removing_error: Entities linked to published products cannot be removed.
     proposal:
         overview: "]-Inf, 1]{{ count }} proposal|]1, Inf[{{ count }} proposals"
         selected: "]-Inf, 1]{{ count }} proposal selected|]1, Inf[{{ count }} proposals selected"

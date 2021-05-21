@@ -65,7 +65,7 @@ Feature: Ensure that a published product is safe
     And I visit the "Options" tab
     When I remove the "Volcom" option
     And I confirm the deletion
-    Then I should see the text "Impossible to remove attribute option linked to a published product"
+    Then I should see the text "Entities linked to published products cannot be removed."
     And the Options section should contain 4 options
 
   Scenario: Successfully remove an option not linked to a published product
@@ -82,7 +82,7 @@ Feature: Ensure that a published product is safe
     And I visit the "Options" tab
     When I remove the "dry" option
     And I confirm the deletion
-    Then I should see the text "Impossible to remove attribute option linked to a published product"
+    Then I should see the text "Entities linked to published products cannot be removed."
     And the Options section should contain 5 options
 
   @jira https://akeneo.atlassian.net/browse/PIM-4600

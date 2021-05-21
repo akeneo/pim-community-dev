@@ -51,6 +51,7 @@
 - PIM-9619: Improve error message when creating a new project with a name already used 
 - PLG-45: Activate SSO authentication from a command CLI
 - RAC-509: Upgrade asset limit by asset family to 10 millions
+- PIM-9777: Fix error message when trying to delete an attribute linked to an entity
 
 ## New features
 
