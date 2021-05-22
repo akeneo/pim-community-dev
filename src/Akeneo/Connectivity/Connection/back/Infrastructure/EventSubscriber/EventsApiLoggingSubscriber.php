@@ -9,6 +9,8 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsA
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
+ * Flush the logs persisted (but not yet saved) by the repository once a Message has been fully processed.
+ *
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
