@@ -31,17 +31,16 @@ const DefaultProviders: FC<{draggedNode: DraggedNode | null}> = ({children, ...c
 
 const renderUseDropTreeNode = (
   node: TreeNode<any> | undefined,
-  index: number,
   reorder: ReorderOnDropHandler,
   draggedNode: DraggedNode | null
 ) => {
   const wrapper: FC = ({children}) => <DefaultProviders draggedNode={draggedNode}>{children}</DefaultProviders>;
 
   return renderHook(
-    ({node, index, reorder}: {node: TreeNode<any> | undefined; index: number; reorder: ReorderOnDropHandler}) =>
-      useDropTreeNode(node, index, reorder),
+    ({node, reorder}: {node: TreeNode<any> | undefined; reorder: ReorderOnDropHandler}) =>
+      useDropTreeNode(node, reorder),
     {
-      initialProps: {node, index, reorder},
+      initialProps: {node, reorder},
       wrapper,
     }
   );
@@ -51,7 +50,7 @@ describe('useDropTreeNode', () => {
   test('it returns default values', () => {
     const reorder = jest.fn();
     const node = aTreeNode('node');
-    const {result} = renderUseDropTreeNode(node, 0, reorder, null);
+    const {result} = renderUseDropTreeNode(node, reorder, null);
 
     expect(result.current.dropTarget).toBeNull();
     expect(result.current.placeholderPosition).toBe('none');
@@ -63,7 +62,7 @@ describe('useDropTreeNode', () => {
     const reorder = jest.fn();
     const node = aTreeNode('node', 1111, [], 'a_node', 1, 'node');
     const draggedNode = aDraggedNode(9999);
-    const {result} = renderUseDropTreeNode(node, 0, reorder, draggedNode);
+    const {result} = renderUseDropTreeNode(node, reorder, draggedNode);
     const anElement = document.createElement('div');
     jest.spyOn(anElement, 'getBoundingClientRect').mockImplementation(
       () =>
@@ -120,7 +119,7 @@ describe('useDropTreeNode', () => {
     const reorder = jest.fn();
     const node = aTreeNode('node', 1111, [], 'a_node', 1, 'node');
     const draggedNode = aDraggedNode(9999);
-    const {result} = renderUseDropTreeNode(node, 0, reorder, draggedNode);
+    const {result} = renderUseDropTreeNode(node, reorder, draggedNode);
     const anElement = document.createElement('div');
     jest.spyOn(anElement, 'getBoundingClientRect').mockImplementation(
       () =>

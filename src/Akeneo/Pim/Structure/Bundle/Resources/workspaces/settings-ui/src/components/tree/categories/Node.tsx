@@ -34,7 +34,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
     close,
   } = useCategoryTreeNode(id);
   const {isDragged, isDraggable, ...dragProps} = useDragTreeNode(node, index);
-  const {placeholderPosition, ...dropProps} = useDropTreeNode(node, index, moveTo);
+  const {placeholderPosition, ...dropProps} = useDropTreeNode(node, moveTo);
 
   const translate = useTranslate();
   const countProductsBeforeDeleteCategory = useCountProductsBeforeDeleteCategory(id);

@@ -5,7 +5,7 @@ import {CursorPosition} from '../../components';
 
 type ReorderOnDropHandler = (identifier: number, target: DropTarget, callback: () => void) => void;
 
-const useDropTreeNode = <T>(node: TreeNode<T> | undefined, index: number, reorder: ReorderOnDropHandler) => {
+const useDropTreeNode = <T>(node: TreeNode<T> | undefined, reorder: ReorderOnDropHandler) => {
   const {dropTarget, setDropTarget, draggedNode, setDraggedNode} = useContext(OrderableTreeContext);
   const [placeholderPosition, setPlaceholderPosition] = useState<PlaceholderPosition>('none');
 
