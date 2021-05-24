@@ -86,7 +86,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
             throw new \LogicException('You must initialize the connection before adding read products.');
         }
 
-        return (string) $connection->code();
+        return (string)$connection->code();
     }
 
     private function isAuditableConnection(string $connectionCode, bool $isEventsApi): bool
@@ -95,16 +95,10 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
             ? $this->connectionRepository->findOneByCode($connectionCode)
             : $this->connectionContext->getConnection();
 
-        if ($connection === null) {
-            return false;
-        }
-        if (!$connection->auditable()) {
-            return false;
-        }
-        if (!$connection->hasDataDestinationFlowType()) {
-            return false;
-        }
-        if (!$isEventsApi && !$this->connectionContext->areCredentialsValidCombination()) {
+        if ($connection === null
+            || $connection->auditable() === false
+            || $connection->hasDataDestinationFlowType() === false
+            || ($isEventsApi === false && $this->connectionContext->areCredentialsValidCombination() === false)) {
             return false;
         }
 
