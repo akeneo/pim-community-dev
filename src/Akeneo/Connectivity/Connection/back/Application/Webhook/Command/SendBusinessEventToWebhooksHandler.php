@@ -12,7 +12,6 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepository;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
@@ -31,7 +30,6 @@ class SendBusinessEventToWebhooksHandler
     private WebhookEventBuilder $builder;
     private LoggerInterface $logger;
     private EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger;
-    private EventsApiRequestCountRepository $eventsApiRequestRepository;
     private string $pimSource;
 
     public function __construct(
@@ -41,7 +39,6 @@ class SendBusinessEventToWebhooksHandler
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
         EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
-        EventsApiRequestCountRepository $eventsApiRequestRepository,
         string $pimSource
     ) {
         $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
@@ -50,7 +47,6 @@ class SendBusinessEventToWebhooksHandler
         $this->builder = $builder;
         $this->logger = $logger;
         $this->eventSubscriptionSkippedOwnEventLogger = $eventSubscriptionSkippedOwnEventLogger;
-        $this->eventsApiRequestRepository = $eventsApiRequestRepository;
         $this->pimSource = $pimSource;
     }
 
@@ -65,9 +61,6 @@ class SendBusinessEventToWebhooksHandler
         $pimEventBulk = $command->event();
 
         $requests = function () use ($pimEventBulk, $webhooks) {
-            $apiEventsRequestCount = 0;
-            $versions = [];
-
             foreach ($webhooks as $webhook) {
                 $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
 
@@ -94,15 +87,10 @@ class SendBusinessEventToWebhooksHandler
                         $webhook,
                         $apiEvents
                     );
-
-                    $apiEventsRequestCount++;
                 } catch (WebhookEventDataBuilderNotFoundException $dataBuilderNotFoundException) {
                     $this->logger->warning($dataBuilderNotFoundException->getMessage());
                 }
             }
-
-            $this->eventsApiRequestRepository
-                ->upsert(new \DateTimeImmutable('now', new \DateTimeZone('UTC')), $apiEventsRequestCount);
         };
 
         $this->client->bulkSend($requests());

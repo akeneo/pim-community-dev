@@ -39,7 +39,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         WebhookClient $client,
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
-        DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
         EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger
     ): void {
         $this->beConstructedWith(
@@ -49,7 +48,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $builder,
             $logger,
             $eventSubscriptionSkippedOwnEventLogger,
-            $eventsApiRequestRepository,
             'staging.akeneo.com'
         );
     }
@@ -63,8 +61,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $selectActiveWebhooksQuery,
         $webhookUserAuthenticator,
         $client,
-        $builder,
-        $eventsApiRequestRepository
+        $builder
     ): void {
         $juliaUser = new User();
         $juliaUser->setId(0);
@@ -111,8 +108,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                 ]
             );
 
-        $eventsApiRequestRepository->upsert(Argument::any(), Argument::any())->shouldBeCalled();
-
         $client
             ->bulkSend(
                 Argument::that(
@@ -154,8 +149,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $selectActiveWebhooksQuery,
         $webhookUserAuthenticator,
         $client,
-        $builder,
-        $eventsApiRequestRepository
+        $builder
     ): void {
         $erpUser = new User();
         $erpUser->setId(42);
@@ -205,8 +199,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                 ]
             );
 
-        $eventsApiRequestRepository->upsert(Argument::any(), Argument::any())->shouldBeCalled();
-
         $client
             ->bulkSend(
                 Argument::that(
@@ -249,8 +241,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $selectActiveWebhooksQuery,
         $webhookUserAuthenticator,
         $client,
-        $builder,
-        $eventsApiRequestRepository
+        $builder
     ): void {
         $user = new User();
         $user->setId(0);
@@ -278,8 +269,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             )
             ->willThrow(\Exception::class);
 
-        $eventsApiRequestRepository->upsert(Argument::any(), Argument::any())->shouldBeCalled();
-
         $client
             ->bulkSend(
                 Argument::that(
@@ -301,7 +290,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
         WebhookUserAuthenticator $webhookUserAuthenticator,
         EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
-        DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
         WebhookClient $client
     ): void {
         $user = new User();
@@ -322,9 +310,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
 
         $eventSubscriptionSkippedOwnEventLogger->logEventSubscriptionSkippedOwnEvent('erp', $pimEvent)
             ->shouldBeCalled();
-
-        $eventsApiRequestRepository->upsert(Argument::cetera())
-            ->willReturn(0);
 
         $client->bulkSend(
             Argument::that(

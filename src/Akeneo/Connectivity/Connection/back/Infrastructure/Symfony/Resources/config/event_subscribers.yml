@@ -29,6 +29,12 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiRequestsLimitIncrementSubscriber:
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.events_api_request_count'
+        tags:
+            - { name: kernel.event_subscriber }
+
     Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiClearCacheSubscriber:
         arguments:
             - '@akeneo_connectivity.connection.webhook.cache_clearer'
