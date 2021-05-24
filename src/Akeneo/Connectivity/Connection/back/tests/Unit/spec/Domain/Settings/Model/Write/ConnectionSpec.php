@@ -125,19 +125,11 @@ class ConnectionSpec extends ObjectBehavior
     {
         $this->setFlowType(new FlowType(FlowType::DATA_DESTINATION));
         $this->shouldHaveDataDestinationFlowType();
-        
-        
-        $this->setFlowType(new FlowType(FlowType::DATA_SOURCE));
-        $this->shouldNotHaveDataDestinationFlowType();
-    }
-    {
-        $this->setFlowType(new FlowType(FlowType::DATA_DESTINATION));
-        $this->hasDataDestinationFlowType()->shouldBe(true);
     }
 
-    public function it_should_return_false_if_the_flow_type_is_data_source()
+    public function it_has_not_a_data_destination_flow_type()
     {
         $this->setFlowType(new FlowType(FlowType::DATA_SOURCE));
-        $this->hasDataDestinationFlowType()->shouldBe(false);
+        $this->shouldNotHaveDataDestinationFlowType();
     }
 }

@@ -32,8 +32,8 @@ use PHPUnit\Framework\Assert;
  */
 class ConsumeProductEventEndToEnd extends ApiTestCase
 {
-    private ProductInterface $referenceProduct;
-    private ProductInterface $referenceProductB;
+    private ProductInterface $tshirtProduct;
+    private ProductInterface $pantProduct;
     private Author $referenceAuthor;
     private DbalConnection $dbalConnection;
     private ProductLoader $productLoader;
@@ -43,7 +43,9 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         parent::setUp();
 
         $this->get('akeneo_connectivity.connection.fixtures.enrichment.category')
-            ->create(['code' => 'category']);
+            ->create(['code' => 'sea']);
+        $this->get('akeneo_connectivity.connection.fixtures.enrichment.category')
+            ->create(['code' => 'fiesta']);
         $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
             ->create(['code' => 'boolean_attribute', 'type' => 'pim_catalog_boolean']);
         $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
@@ -51,18 +53,20 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
             ->create(['code' => 'another_text_attribute', 'type' => 'pim_catalog_text']);
         $this->get('akeneo_connectivity.connection.fixtures.structure.family')
-            ->create(['code' => 'family', 'attributes' => ['boolean_attribute', 'text_attribute']]);
+            ->create(['code' => 'tshirt', 'attributes' => ['boolean_attribute', 'text_attribute']]);
+        $this->get('akeneo_connectivity.connection.fixtures.structure.family')
+            ->create(['code' => 'pant', 'attributes' => ['boolean_attribute', 'text_attribute']]);
 
         $this->referenceAuthor = Author::fromNameAndType('julia', Author::TYPE_UI);
         $this->dbalConnection = self::$container->get('database_connection');
         $this->productLoader = self::$container->get('akeneo_connectivity.connection.fixtures.enrichment.product');
 
-        $this->referenceProduct = $this->productLoader->create(
-            'product',
+        $this->tshirtProduct = $this->productLoader->create(
+            'blue-t-shirt',
             [
-                'family' => 'family',
+                'family' => 'tshirt',
                 'enabled' => true,
-                'categories' => ['category'],
+                'categories' => ['sea'],
                 'groups' => [],
                 'values' => [
                     'another_text_attribute' => [
@@ -71,12 +75,12 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
                 ],
             ]
         );
-        $this->referenceProductB = $this->productLoader->create(
-            'productB',
+        $this->pantProduct = $this->productLoader->create(
+            'red-pant',
             [
-                'family' => 'family',
+                'family' => 'pant',
                 'enabled' => true,
-                'categories' => ['category'],
+                'categories' => ['fiesta'],
                 'groups' => [],
                 'values' => [
                     'another_text_attribute' => [
@@ -104,13 +108,13 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             [
                 new ProductCreated(
                     $this->referenceAuthor,
-                    ['identifier' => $this->referenceProduct->getIdentifier()],
+                    ['identifier' => $this->tshirtProduct->getIdentifier()],
                     1607094167,
                     '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
                 ),
                 new ProductCreated(
                     $this->referenceAuthor,
-                    ['identifier' => $this->referenceProductB->getIdentifier()],
+                    ['identifier' => $this->pantProduct->getIdentifier()],
                     1607094167,
                     '0d932313-8eae-4f4a-bf37-33d3a932b8c9'
                 ),
@@ -129,7 +133,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $requestContent = $this->cleanRequestContent($requestContent);
 
         Assert::assertEquals(2, (int) $this->getEventCount('ecommerce'));
-        $this->assertEquals($this->expectedProductCreatedPayload(), $requestContent);
+        $this->assertEquals($this->expectedProductCreatedPayload($this->tshirtProduct), $requestContent);
     }
 
     public function test_it_sends_a_product_updated_webhook_event()
@@ -145,7 +149,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             [
                 new ProductUpdated(
                     $this->referenceAuthor,
-                    ['identifier' => $this->referenceProduct->getIdentifier()],
+                    ['identifier' => $this->tshirtProduct->getIdentifier()],
                     1607094167,
                     '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
                 ),
@@ -164,7 +168,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $requestContent = $this->cleanRequestContent($requestContent);
 
         Assert::assertEquals(1, (int) $this->getEventCount('ecommerce'));
-        $this->assertEquals($this->expectedProductUpdatedPayload(), $requestContent);
+        $this->assertEquals($this->expectedProductUpdatedPayload($this->tshirtProduct), $requestContent);
     }
 
     public function test_it_sends_a_product_removed_webhook_event()
@@ -181,8 +185,8 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
                 new ProductRemoved(
                     $this->referenceAuthor,
                     [
-                        'identifier' => $this->referenceProduct->getIdentifier(),
-                        'category_codes' => $this->referenceProduct->getCategoryCodes(),
+                        'identifier' => $this->tshirtProduct->getIdentifier(),
+                        'category_codes' => $this->tshirtProduct->getCategoryCodes(),
                     ],
                     1607094167,
                     '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
@@ -201,7 +205,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
 
         Assert::assertEquals(0, (int) $this->getEventCount('ecommerce'));
-        $this->assertEquals($this->expectedProductRemovedPayload(), $requestContent);
+        $this->assertEquals($this->expectedProductRemovedPayload($this->tshirtProduct), $requestContent);
     }
 
     private function loadReferenceProduct(string $identifier): ProductInterface
@@ -246,7 +250,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         return $requestContent;
     }
 
-    private function expectedProductCreatedPayload(): array
+    private function expectedProductCreatedPayload(ProductInterface $productCreated): array
     {
         return [
             'action' => 'product.created',
@@ -255,11 +259,11 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             'author' => 'julia',
             'author_type' => 'ui',
             'pim_source' => 'http://localhost:8080',
-            'data' => $this->expectedData(),
+            'data' => $this->expectedData($productCreated),
         ];
     }
 
-    private function expectedProductUpdatedPayload(): array
+    private function expectedProductUpdatedPayload(ProductInterface $productUpdated): array
     {
         return [
             'action' => 'product.updated',
@@ -268,11 +272,11 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             'author' => 'julia',
             'author_type' => 'ui',
             'pim_source' => 'http://localhost:8080',
-            'data' => $this->expectedData(),
+            'data' => $this->expectedData($productUpdated),
         ];
     }
 
-    private function expectedProductRemovedPayload(): array
+    private function expectedProductRemovedPayload(ProductInterface $product): array
     {
         return [
             'action' => 'product.removed',
@@ -283,22 +287,22 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             'pim_source' => 'http://localhost:8080',
             'data' => [
                 'resource' => [
-                    'identifier' => 'product',
+                    'identifier' => $product->getIdentifier(),
                 ],
             ],
         ];
     }
 
-    private function expectedData(): array
+    private function expectedData(ProductInterface $product): array
     {
         return [
             'resource' => [
-                'identifier' => 'product',
+                'identifier' => $product->getIdentifier(),
                 'enabled' => true,
-                'family' => 'family',
+                'family' => $product->getFamily()->getCode(),
                 'groups' => [],
                 'parent' => null,
-                'categories' => ['category'],
+                'categories' => $product->getCategoryCodes(),
                 'values' => [
                     'another_text_attribute' => [
                         [

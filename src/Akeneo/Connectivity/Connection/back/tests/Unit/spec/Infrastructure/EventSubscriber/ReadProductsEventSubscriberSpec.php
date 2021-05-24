@@ -54,15 +54,12 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         ConnectionCode $connectionCode
     ): void {
         $readProductsEvent = new ReadProductsEvent(3);
-        $connection->hasDataDestinationFlowType()->willReturn(true)->shouldBeCalledTimes(1);
-        $connection->auditable()->willReturn(true)->shouldBeCalledTimes(1);
-        $connection->code()->willReturn($connectionCode)->shouldBeCalledTimes(1);
-        $connectionCode->__toString()->willReturn('ecommerce')->shouldBeCalledTimes(1);
-        $connectionContext->getConnection()->willReturn($connection)->shouldBeCalledTimes(2);
-        $connectionContext->isCollectable()->shouldNotBeCalled();
-        $connectionContext->areCredentialsValidCombination()->willReturn(true)->shouldBeCalledTimes(1);
-
-        $this->saveReadProducts($readProductsEvent)->shouldReturn(null);
+        $connection->hasDataDestinationFlowType()->willReturn(true);
+        $connection->auditable()->willReturn(true);
+        $connection->code()->willReturn($connectionCode);
+        $connectionCode->__toString()->willReturn('ecommerce');
+        $connectionContext->getConnection()->willReturn($connection);
+        $connectionContext->areCredentialsValidCombination()->willReturn(true);
 
         $updateDataDestinationProductEventCountHandler->handle(
             new UpdateDataDestinationProductEventCountCommand(
@@ -70,7 +67,9 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
                 HourlyInterval::createFromDateTime(new \DateTimeImmutable('now', new \DateTimeZone('UTC'))),
                 3
             )
-        )->shouldBeCalled();
+        )->shouldBeCalledTimes(1);
+
+        $this->saveReadProducts($readProductsEvent)->shouldReturn(null);
     }
 
     public function it_saves_read_products_events_with_an_events_api_event(
@@ -80,16 +79,8 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         ConnectionRepository $connectionRepository
     ): void {
         $readProductsEvent = new ReadProductsEvent(3, ReadProductsEvent::EVENTS_API_TYPE, 'ecommerce');
-        $connection->hasDataDestinationFlowType()->willReturn(true)->shouldBeCalledTimes(1);
-        $connection->auditable()->willReturn(true)->shouldBeCalledTimes(1);
-        $connection->code()->shouldNotBeCalled();
-        $connectionContext->getConnection()->shouldNotBeCalled();
-        $connectionContext->isCollectable()->shouldNotBeCalled();
-        $connectionContext->areCredentialsValidCombination()->shouldNotBeCalled();
-
-        $connectionRepository->findOneByCode('ecommerce')
-            ->willReturn($connection)->shouldBeCalledTimes(1);
-        $this->saveReadProducts($readProductsEvent)->shouldReturn(null);
+        $connection->hasDataDestinationFlowType()->willReturn(true);
+        $connection->auditable()->willReturn(true);
 
         $updateDataDestinationProductEventCountHandler->handle(
             new UpdateDataDestinationProductEventCountCommand(
@@ -97,7 +88,11 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
                 HourlyInterval::createFromDateTime(new \DateTimeImmutable('now', new \DateTimeZone('UTC'))),
                 3
             )
-        )->shouldBeCalled();
+        )->shouldBeCalledTimes(1);
+
+        $connectionRepository->findOneByCode('ecommerce')->willReturn($connection)->shouldBeCalledTimes(1);
+
+        $this->saveReadProducts($readProductsEvent)->shouldReturn(null);
     }
 
     public function it_does_not_save_read_products_events_for_not_auditable_connection(
@@ -106,13 +101,10 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         Connection $connection,
         ConnectionCode $connectionCode
     ): void {
-        $connection->auditable()->willReturn(false)->shouldBeCalledTimes(1);
-        $connection->code()->willReturn($connectionCode)->shouldBeCalledTimes(1);
-        $connection->hasDataDestinationFlowType()->shouldNotBeCalled();
-        $connectionCode->__toString()->willReturn('ecommerce')->shouldBeCalledTimes(1);
-        $connectionContext->areCredentialsValidCombination()->shouldNotBeCalled();
-        $connectionContext->isCollectable()->shouldNotBeCalled();
-        $connectionContext->getConnection()->willReturn($connection)->shouldBeCalledTimes(2);
+        $connection->auditable()->willReturn(false);
+        $connection->code()->willReturn($connectionCode);
+        $connectionCode->__toString()->willReturn('ecommerce');
+        $connectionContext->getConnection()->willReturn($connection);
         $updateDataDestinationProductEventCountHandler->handle(Argument::any())->shouldNotBeCalled();
 
         $this->saveReadProducts(new ReadProductsEvent(3))->shouldReturn(null);
@@ -124,13 +116,11 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         Connection $connection,
         ConnectionCode $connectionCode
     ): void {
-        $connection->auditable()->willReturn(true)->shouldBeCalledTimes(1);
-        $connection->code()->willReturn($connectionCode)->shouldBeCalledTimes(1);
-        $connection->hasDataDestinationFlowType()->willReturn(false)->shouldBeCalledTimes(1);
-        $connectionCode->__toString()->willReturn('ecommerce')->shouldBeCalledTimes(1);
-        $connectionContext->areCredentialsValidCombination()->shouldNotBeCalled();
-        $connectionContext->isCollectable()->shouldNotBeCalled();
-        $connectionContext->getConnection()->willReturn($connection)->shouldBeCalledTimes(2);
+        $connection->auditable()->willReturn(true);
+        $connection->code()->willReturn($connectionCode);
+        $connection->hasDataDestinationFlowType()->willReturn(false);
+        $connectionCode->__toString()->willReturn('ecommerce');
+        $connectionContext->getConnection()->willReturn($connection);
         $updateDataDestinationProductEventCountHandler->handle(Argument::any())->shouldNotBeCalled();
 
         $this->saveReadProducts(new ReadProductsEvent(3))->shouldReturn(null);
@@ -142,13 +132,12 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         Connection $connection,
         ConnectionCode $connectionCode
     ): void {
-        $connection->auditable()->willReturn(true)->shouldBeCalledTimes(1);
-        $connection->code()->willReturn($connectionCode)->shouldBeCalledTimes(1);
-        $connection->hasDataDestinationFlowType()->willReturn(true)->shouldBeCalledTimes(1);
-        $connectionCode->__toString()->willReturn('ecommerce')->shouldBeCalledTimes(1);
-        $connectionContext->areCredentialsValidCombination()->willReturn(false)->shouldBeCalledTimes(1);
-        $connectionContext->isCollectable()->shouldNotBeCalled();
-        $connectionContext->getConnection()->willReturn($connection)->shouldBeCalledTimes(2);
+        $connection->auditable()->willReturn(true);
+        $connection->code()->willReturn($connectionCode);
+        $connection->hasDataDestinationFlowType()->willReturn(true);
+        $connectionCode->__toString()->willReturn('ecommerce');
+        $connectionContext->areCredentialsValidCombination()->willReturn(false);
+        $connectionContext->getConnection()->willReturn($connection);
         $updateDataDestinationProductEventCountHandler->handle(Argument::any())->shouldNotBeCalled();
 
         $this->saveReadProducts(new ReadProductsEvent(3))->shouldReturn(null);

@@ -24,25 +24,22 @@ class ReadProductsEventSpec extends ObjectBehavior
 
     public function it_provides_the_number_of_read_products()
     {
-        $this->beConstructedWith(5);
-        $this->getCount()->shouldReturn(5);
+        $this->getCount()->shouldReturn(3);
     }
 
     public function it_returns_a_connection_code()
     {
-        $this->beConstructedWith(5, ReadProductsEvent::REST_API_TYPE, 'code');
         $this->getConnectionCode()->shouldReturn('code');
     }
 
     public function it_comes_from_the_events_api()
     {
         $this->beConstructedWith(5, ReadProductsEvent::EVENTS_API_TYPE, 'code');
-        $this->isEventsApi()->shouldReturn(true);
+        $this->shouldBeEventsApi();
     }
 
-    public function it_returns_false_if_no_events_api_event()
+    public function it_comes_from_the_rest_api()
     {
-        $this->beConstructedWith(5, ReadProductsEvent::REST_API_TYPE, 'code');
         $this->isEventsApi()->shouldReturn(false);
     }
 

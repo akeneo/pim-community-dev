@@ -36,16 +36,12 @@ class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
         ProductRemoved $productRemovedEvent
     ) {
         $eventsApiRequestSucceeded->getEvents()
-            ->willReturn([$productUpdatedEvent, $productCreatedEvent, $productRemovedEvent])
-            ->shouldBeCalledTimes(1);
+            ->willReturn([$productUpdatedEvent, $productCreatedEvent, $productRemovedEvent]);
 
-        $eventsApiRequestSucceeded->getConnectionCode()->willReturn('code')->shouldBeCalledTimes(1);
+        $eventsApiRequestSucceeded->getConnectionCode()->willReturn('code');
         $eventDispatcher->dispatch(Argument::allOf(
             Argument::type(ReadProductsEvent::class),
-            Argument::that(function ($event) {
-                if(!$event instanceof ReadProductsEvent) {
-                    return false;
-                }
+            Argument::that(function (ReadProductsEvent $event) {
                 if($event->getCount() !== 2) {
                     return false;
                 }
@@ -68,11 +64,7 @@ class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
         EventsApiRequestSucceededEvent $eventsApiRequestSucceeded,
         ProductRemoved $productRemovedEvent
     ) {
-        $eventsApiRequestSucceeded->getEvents()
-            ->willReturn([$productRemovedEvent])
-            ->shouldBeCalledTimes(1);
-
-        $eventsApiRequestSucceeded->getConnectionCode()->shouldNotBeCalled();
+        $eventsApiRequestSucceeded->getEvents()->willReturn([$productRemovedEvent]);
         $eventDispatcher->dispatch(Argument::any())->shouldNotBeCalled();
 
         $this->dispatchReadProductOnProductEventsApiSaved($eventsApiRequestSucceeded);
