@@ -56,6 +56,7 @@ services:
             - '@pim_enrich.repository.job_execution'
             - '@pim_internal_api_serializer'
             - '@oro_security.security_facade'
+            - '@oneup_flysystem.archivist_filesystem'
             - {'import': 'pim_importexport_import_execution_show', 'export': 'pim_importexport_export_execution_show'}
 
     pim_enrich.controller.job_tracker:

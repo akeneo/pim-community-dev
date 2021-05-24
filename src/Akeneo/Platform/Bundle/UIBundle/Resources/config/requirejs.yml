@@ -859,7 +859,6 @@ config:
     # Common
     pim/common/grid:                   pimui/js/form/common/grid
     pim/common/redirect:               pimui/js/form/common/redirect
-    pim/common/column-list-view:       pimui/js/common/column-list-view
     pim/common/breadcrumbs:            pimui/js/common/breadcrumbs
     pim/common/tab/history:            pimui/js/form/common/tab/history
     pim/common/tab:                    pimui/js/form/common/tab

@@ -41,10 +41,6 @@ pim_user:
       active: Activo
       inactive: Inactivo
     fields_errors:
-      new_password:
-        minimum_length: La contraseña de tener al menos 2 caracteres
-      new_password_repeat:
-        not_match: La contraseña no coincide
       current_password:
         wrong: Contraseña incorrecta
     tabs:
@@ -67,13 +63,11 @@ pim_user:
       username_or_email: Nombre de usuario o Email
       remember_me: Recordarme en esta computadora
       password_forgotten: '¿Olvidó su contraseña?'
-      log_in: Iniciar sesion
       forgot_password: Contraseña olvidada
       request: Petición
       password_reset: Reiniciar contraseña
       reset: Reiniciar
       password_reset_email_sent: Un correo electrónico se ha enviado al usuario. Contiene un enlace para restablecer la contraseña.
-      homepage: Ir a la página de inicio
   group:
     tab:
       general.title: General

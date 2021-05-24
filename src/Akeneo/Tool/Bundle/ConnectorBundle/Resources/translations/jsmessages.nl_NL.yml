@@ -4,6 +4,7 @@ batch_jobs:
     export: Exporteer
     validation: Bestandsvalidatie
     import_associations: Productassociatie import
+    import_model_associations: Productassociatie import
     import_root_product_model: Root productmodel import
     import_sub_product_model: Sub-productmodel export
     compute_data_related_to_family_root_product_models: Bereken root product modellen gegevens
