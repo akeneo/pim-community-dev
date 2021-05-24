@@ -7,6 +7,8 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestFailedEvent;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
@@ -24,6 +26,7 @@ use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 /**
@@ -35,13 +38,15 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 {
     public function let(
         SendApiEventRequestLogger $sendApiEventRequestLogger,
-        EventsApiRequestLogger $eventsApiRequestLogger
+        EventsApiRequestLogger $eventsApiRequestLogger,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $this->beConstructedWith(
             new Client(),
             new JsonEncoder(),
             $sendApiEventRequestLogger,
             $eventsApiRequestLogger,
+            $eventDispatcher,
             ['timeout' => 0.5, 'concurrency' => 1]
         );
     }
@@ -53,7 +58,8 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
     public function it_sends_webhook_requests_in_bulk(
         SendApiEventRequestLogger $sendApiEventRequestLogger,
-        EventsApiRequestLogger $eventsApiRequestLogger
+        EventsApiRequestLogger $eventsApiRequestLogger,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $mock = new MockHandler(
             [
@@ -72,6 +78,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             new JsonEncoder(),
             $sendApiEventRequestLogger,
             $eventsApiRequestLogger,
+            $eventDispatcher,
             ['timeout' => 0.5, 'concurrency' => 1]
         );
 
@@ -131,6 +138,8 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             Argument::any()
         )->shouldBeCalled();
 
+        $eventDispatcher->dispatch(Argument::type(EventsApiRequestSucceededEvent::class))->shouldBeCalled();
+
         // Request 2
 
         $request = $this->findRequest($container, 'http://localhost/webhook2');
@@ -150,11 +159,14 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             200,
             Argument::any()
         )->shouldBeCalled();
+
+        $eventDispatcher->dispatch(Argument::type(EventsApiRequestSucceededEvent::class))->shouldBeCalled();
     }
 
     public function it_logs_a_failed_events_api_request(
         SendApiEventRequestLogger $sendApiEventRequestLogger,
-        EventsApiRequestLogger $eventsApiRequestLogger
+        EventsApiRequestLogger $eventsApiRequestLogger,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $mock = new MockHandler(
             [
@@ -172,6 +184,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             new JsonEncoder(),
             $sendApiEventRequestLogger,
             $eventsApiRequestLogger,
+            $eventDispatcher,
             ['timeout' => 0.5, 'concurrency' => 1]
         );
 
@@ -203,11 +216,14 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             500,
             Argument::any()
         )->shouldBeCalled();
+
+        $eventDispatcher->dispatch(Argument::type(EventsApiRequestFailedEvent::class))->shouldBeCalled();
     }
 
     public function it_does_not_send_webhook_request_because_of_timeout(
         SendApiEventRequestLogger $sendApiEventRequestLogger,
-        EventsApiRequestLogger $debugLogger
+        EventsApiRequestLogger $debugLogger,
+        EventDispatcherInterface $eventDispatcher
     ): void {
 
         $container = [];
@@ -221,6 +237,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             new JsonEncoder(),
             $sendApiEventRequestLogger,
             $debugLogger,
+            $eventDispatcher,
             ['timeout' => 0.5, 'concurrency' => 1]
         );
 
@@ -249,6 +266,8 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             0.5
         )->shouldBeCalled();
 
+        $eventDispatcher->dispatch(Argument::type(EventsApiRequestFailedEvent::class))->shouldBeCalled();
+
         Assert::assertCount(1, $container);
 
         $request = $this->findRequest($container, 'http://localhost/webhook');
@@ -276,7 +295,8 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
     private function createEvent(Author $author, array $data, int $timestamp, string $uuid): EventInterface
     {
-        return new class($author, $data, $timestamp, $uuid) extends Event {
+        return new class($author, $data, $timestamp, $uuid) extends Event
+        {
             public function getName(): string
             {
                 return 'product.created';
