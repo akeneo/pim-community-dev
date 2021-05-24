@@ -11,6 +11,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsA
 use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiRequestsLimitIncrementSubscriber;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -26,6 +27,7 @@ class EventsApiRequestsLimitIncrementSubscriberSpec extends ObjectBehavior
     public function it_is_initializable(): void
     {
         $this->shouldHaveType(EventsApiRequestsLimitIncrementSubscriber::class);
+        $this->shouldImplement(EventSubscriberInterface::class);
     }
 
     public function it_subscribes_to_message_processed_event_and_events_api_request_status_events(): void
