@@ -35,6 +35,16 @@ pim_enrich:
                 delete:
                     confirm: Are you sure you want to delete this user?
 
+pim_user.profile:
+    why_is_it_needed: Why do we need this information?
+    product_manager: I manage product catalogs.
+    redactor: I enrich product data.
+    pim_integrator: I integrate Akeneo PIM into our IT ecosystem.
+    pim_administrator: I administrate Akeneo PIM.
+    asset_manager: I manage assets in the PIM.
+    translator: I translate product, asset, and/or reference entity data.
+    third_party_developer: I develop solutions connected with Akeneo PIM.
+
 pim_user_management:
     entity:
         user:
@@ -50,6 +60,7 @@ pim_user_management:
                 index: "]-Inf, 1] {{ count }} user|]1, Inf [{{ count }} users"
             properties:
                 username: Username
+                profile: What is your main mission?
                 name_prefix: Name prefix
                 first_name: First name
                 middle_name: Middle name
