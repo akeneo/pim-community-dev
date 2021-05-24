@@ -88,7 +88,7 @@ class ColumnSelector extends BaseView {
   getLocale(): string {
     const url = (<string>this.datagridCollection.url).split('?')[1];
     const urlParams = this.datagridCollection.decodeStateData(url);
-    const datagridParams = urlParams['product-grid'] || {};
+    const datagridParams = urlParams[this.config.gridName] || {};
 
     return urlParams['dataLocale'] || datagridParams['dataLocale'];
   }
@@ -476,7 +476,7 @@ class ColumnSelector extends BaseView {
       return;
     }
 
-    DatagridState.set('product-grid', 'columns', selected);
+    DatagridState.set(this.config.gridName, 'columns', selected);
     this.modal.close();
 
     var url = window.location.hash;
