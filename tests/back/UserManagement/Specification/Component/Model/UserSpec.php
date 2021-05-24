@@ -37,6 +37,13 @@ class UserSpec extends ObjectBehavior
         $this->isApiUser()->shouldReturn(true);
     }
 
+    function it_provides_a_profile()
+    {
+        $this->getProfile()->shouldReturn(null);
+        $this->setProfile('manager');
+        $this->getProfile()->shouldReturn('manager');
+    }
+
     function it_can_be_duplicated()
     {
         $duplicated = $this->duplicate();
