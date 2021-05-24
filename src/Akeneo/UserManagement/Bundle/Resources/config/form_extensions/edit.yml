@@ -145,6 +145,17 @@ extensions:
             label: pim_user_management.entity.user.properties.username
             required: true
 
+    pim-user-edit-form-profile:
+        module: pim/user/form/fields/select-profile
+        parent: pim-user-edit-form-general-tab-content
+        position: 25
+        targetZone: content
+        config:
+            fieldName: profile
+            label: pim_user_management.entity.user.properties.profile
+            templateParams:
+                linkLabel: pim_user.profile.why_is_it_needed
+
     pim-user-edit-form-name-prefix:
         module: pim/form/common/fields/text
         parent: pim-user-edit-form-general-tab-content
