@@ -86,6 +86,7 @@ endif
 unit-front: #Doc: launch all JS unit tests
 	$(YARN_RUN) unit
 	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-unit-front
+	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-unit-front
 
 ### Acceptance tests
 .PHONY: acceptance-back

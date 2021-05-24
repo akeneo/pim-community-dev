@@ -88,7 +88,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
                 ))}
               </Table.Body>
             </Table>
-            {isNewColumnModalOpen && <AddColumnModal close={closeNewColumnModal} onCreate={handleCreate}/>}
+            {isNewColumnModalOpen && <AddColumnModal close={closeNewColumnModal} onCreate={handleCreate} existingColumnCodes={tableConfiguration.map(columnDefinition => columnDefinition.code)}/>}
             <Button title={"TODO Add new column"} ghost level="secondary" onClick={openNewColumnModal}>TODO Add new column</Button>
           </div>
         </TwoColumnsLayout>

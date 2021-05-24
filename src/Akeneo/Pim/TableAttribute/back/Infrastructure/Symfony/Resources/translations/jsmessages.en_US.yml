@@ -4,3 +4,17 @@ pim_table_attribute:
             tab:
                 # TODO Right wording?
                 table_options: Table options
+            table_attribute: Table attribute
+            add_column: Add a new column
+            open: Open
+            select_type: Select your type
+            data_type: Data type
+            characters_left: ]-Inf, 1]{{ count }} character left|]1, Inf[{{ count }} characters left
+    properties:
+        data_type:
+            text: Text
+    validations:
+        column_code_must_be_filled: The code must be filled
+        column_data_type_must_be_filled: The data type must be filled
+        invalid_code: The column code can only contain letters, numbers and underscores
+        duplicated_column_code: Each column requires a unique code. {{ duplicateCode }} is already used
