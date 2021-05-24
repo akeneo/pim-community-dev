@@ -159,6 +159,8 @@ class User implements UserInterface
 
     protected $type = self::TYPE_USER;
 
+    private ?string $profile = null;
+
     public function __construct()
     {
         $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
@@ -1202,5 +1204,15 @@ class User implements UserInterface
     private function getInflector(): Inflector
     {
         return new Inflector(new NoopWordInflector(), new NoopWordInflector());
+    }
+
+    public function getProfile(): ?string
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(?string $profile): void
+    {
+        $this->profile = $profile;
     }
 }
