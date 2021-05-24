@@ -58,6 +58,7 @@ services:
         arguments:
             - '@database_connection'
             - '@oro_datagrid.configuration.provider.chain'
+            - 'product-grid'
 
     pimee_security.product_grid.query.list_available_column_groups:
         class: Akeneo\Pim\Permission\Bundle\Datagrid\Query\Sql\ListProductGridAvailableColumnGroups
