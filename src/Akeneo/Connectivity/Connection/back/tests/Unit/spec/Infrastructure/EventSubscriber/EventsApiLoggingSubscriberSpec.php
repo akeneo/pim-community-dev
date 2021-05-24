@@ -31,7 +31,7 @@ class EventsApiLoggingSubscriberSpec extends ObjectBehavior
             ->shouldReturn([MessageProcessedEvent::class => 'flushLogs']);
     }
 
-    public function it_flushs_the_logs($repository): void
+    public function it_flushes_the_logs($repository): void
     {
         $repository->flush()
             ->shouldBeCalled();

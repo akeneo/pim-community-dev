@@ -12,6 +12,7 @@ use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -29,6 +30,7 @@ class BusinessEventHandlerSpec extends ObjectBehavior
     public function it_is_initializable(): void
     {
         $this->shouldHaveType(BusinessEventHandler::class);
+        $this->shouldImplement(MessageSubscriberInterface::class);
     }
 
     public function it_handles_a_bulk_event_message(): void
