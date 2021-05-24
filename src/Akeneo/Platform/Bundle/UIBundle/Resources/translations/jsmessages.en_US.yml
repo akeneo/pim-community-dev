@@ -204,6 +204,8 @@ pim_common:
     not_available: N/A
     now: Now
     ok: OK
+    open: Open
+    no_result: No result found
     other_actions: Other actions
     permissions: Permissions
     previous: Previous
