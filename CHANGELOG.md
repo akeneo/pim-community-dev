@@ -46,12 +46,14 @@
 - PIM-9854: Fix message when deleting a user group used in a project
 - PIM-9853: Make the word "product" translatable
 - PIM-9872: Fix Columns button from published product grid when catalog contains many attributes
+- PIM-9866: Creates a warning whenever a cell contains a date in a reference entity xls import
 
 ## Improvements
 
 - PIM-9619: Improve error message when creating a new project with a name already used 
 - PLG-45: Activate SSO authentication from a command CLI
 - RAC-509: Upgrade asset limit by asset family to 10 millions
+- PIM-9777: Fix error message when trying to delete an attribute linked to an entity
 
 ## New features
 

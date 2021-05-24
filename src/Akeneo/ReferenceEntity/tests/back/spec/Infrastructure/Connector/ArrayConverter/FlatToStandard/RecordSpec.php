@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\ArrayConverter\FlatToStandard;
-
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
@@ -17,6 +16,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface
 use Akeneo\ReferenceEntity\Infrastructure\Connector\ArrayConverter\FlatToStandard\Record;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 use PhpSpec\ObjectBehavior;
 use PhpSpec\Wrapper\Subject;
@@ -93,6 +93,11 @@ class RecordSpec extends ObjectBehavior
                     'reference_entity_identifier' => 'brand',
                 ]
             );
+    }
+    function it_throws_an_exception_when_a_cell_is_formatted_as_cell() {
+        $item =  $this->anItem();
+        $item['text']=new \DateTime();
+        $this->shouldThrow(BusinessArrayConversionException::class)->during('convert', [$item, [Record::DIRECTORY_PATH_OPTION_KEY => '/tmp/job']]);
     }
 
     private function anItem(): array
