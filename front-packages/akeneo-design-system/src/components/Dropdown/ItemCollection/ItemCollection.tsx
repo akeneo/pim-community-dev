@@ -1,5 +1,5 @@
 import {Key, Override} from '../../../shared';
-import React, {ReactNode, Children, useRef, useCallback, KeyboardEvent, useEffect} from 'react';
+import React, {ReactNode, Children, useRef, useCallback, KeyboardEvent, useEffect, isValidElement, cloneElement} from 'react';
 import styled from 'styled-components';
 import {useAutoFocus, useCombinedRefs} from '../../../hooks';
 
@@ -42,10 +42,13 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
         }
       }
     }, []);
-    const decoratedChildren = React.Children.map(children, (child, index) => {
-      if (React.isValidElement(child)) {
-        return React.cloneElement(child, {
-          ref: 0 === index ? firstItemRef : index === Children.count(children) - 1 ? lastItemRef : undefined,
+
+    const childrenCount = Children.toArray(children).filter(isValidElement).length
+
+    const decoratedChildren = Children.map(children, (child, index) => {
+      if (isValidElement(child)) {
+        return cloneElement(child, {
+          ref: 0 === index ? firstItemRef : index === childrenCount - 1 ? lastItemRef : undefined,
           onKeyDown: handleKeyDown,
         });
       }
@@ -56,7 +59,6 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
     useEffect(() => {
       const containerElement = containerRef.current;
       const lastElement = lastItemRef.current;
-
       if (
         undefined === onNextPage ||
         null === containerElement ||
@@ -69,11 +71,13 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
       const options = {
         root: containerElement,
         rootMargin: '0px 0px 100% 0px',
-        threshold: 1.0,
+        threshold: 0,
       };
 
       const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
-        if (entries[0].isIntersecting) onNextPage();
+        if (entries[0].isIntersecting) {
+          onNextPage();
+        }
       }, options);
 
       observer.observe(lastElement);
