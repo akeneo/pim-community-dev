@@ -1,9 +1,11 @@
 import {Category, EditableCategoryProperties} from '../../models';
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
+import {EditCategoryContext} from "../../components";
 
 const useEditCategory = (category: Category | null) => {
   const [editedProperties, setEditedProperties] = useState<EditableCategoryProperties | null>(null);
   const [thereAreUnsavedChanges, setThereAreUnsavedChanges] = useState<boolean>(false);
+  const {setCanLeavePage} = useContext(EditCategoryContext);
 
   const havePropertiesBeenChanged = useCallback((editedProperties: EditableCategoryProperties): boolean => {
     if (category === null) {
@@ -32,9 +34,13 @@ const useEditCategory = (category: Category | null) => {
     setEditedProperties({labels: category.labels});
   }, [category]);
 
+  useEffect(() => {
+    setCanLeavePage(!thereAreUnsavedChanges);
+  }, [thereAreUnsavedChanges]);
+
   return {
     editedCategory: category === null ? null : editedProperties === null ? category : {...category, ...editedProperties},
-    editProperties,
+    setEditedProperties: editProperties,
     thereAreUnsavedChanges
   };
 };

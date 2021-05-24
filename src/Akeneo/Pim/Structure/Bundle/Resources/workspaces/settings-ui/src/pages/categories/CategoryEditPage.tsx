@@ -53,8 +53,7 @@ const CategoryEditPage: FC = () => {
   const countProductsBeforeDeleteCategory = useCountProductsBeforeDeleteCategory(parseInt(categoryId));
   const [categoryToDelete, setCategoryToDelete] = useState<CategoryToDelete | null>(null);
   const {isCategoryDeletionPossible, handleDeleteCategory} = useDeleteCategory();
-  const {setCanLeavePage} = useContext(EditCategoryContext);
-  const {editedCategory, editProperties, thereAreUnsavedChanges} = useEditCategory(category);
+  const {editedCategory, setEditedProperties, thereAreUnsavedChanges} = useEditCategory(category);
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
 
@@ -91,10 +90,6 @@ const CategoryEditPage: FC = () => {
     );
     setTree(rootCategory);
   }, [category]);
-
-  useEffect(() => {
-    setCanLeavePage(!thereAreUnsavedChanges);
-  }, [thereAreUnsavedChanges]);
 
   if (status === 'error') {
     return (
@@ -184,7 +179,7 @@ const CategoryEditPage: FC = () => {
         </TabBar>
 
         {isCurrent(propertyTabName) && category &&
-          <EditCategoryForm category={editedCategory ?? category} editProperties={editProperties} />
+          <EditCategoryForm category={editedCategory ?? category} setEditedProperties={setEditedProperties} />
         }
         {isCurrent(historyTabName) && (
           <HistoryPimView

@@ -13,10 +13,10 @@ const FormContainer = styled.form`
 
 type Props = {
   category: Category;
-  editProperties: (properties: EditableCategoryProperties) => void;
+  setEditedProperties: (properties: EditableCategoryProperties) => void;
 };
 
-const EditCategoryForm = ({category, editProperties}: Props) => {
+const EditCategoryForm = ({category, setEditedProperties}: Props) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const {locales, load: loadLocales} = useActivatedLocales();
@@ -29,7 +29,7 @@ const EditCategoryForm = ({category, editProperties}: Props) => {
 
   const onChangeLabel = (localeCode: string, label: string) => {
     const changedLabels = {...category.labels, [localeCode]: label};
-    editProperties({labels: changedLabels});
+    setEditedProperties({labels: changedLabels});
   };
 
   return (
