@@ -5,7 +5,7 @@ module.exports = {
   testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
   testPathIgnorePatterns: ['/__tests__/src/factories/'],
   transform: {'^.+\\.tsx?$': 'ts-jest'},
-  moduleDirectories: ['<rootDir>/../../../../../../node_modules/'],
+  moduleDirectories: ['<rootDir>/../../../../../node_modules/'],
   moduleNameMapper: {
     '\\.(svg|css)$': '<rootDir>/__mocks__/fileMock.ts',
   },
