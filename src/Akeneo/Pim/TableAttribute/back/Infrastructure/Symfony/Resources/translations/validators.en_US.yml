@@ -12,4 +12,4 @@ pim_table_configuration:
             unknown_data_type: "The column data type is unknown. Please choose one of the following: number, text, select, boolean"
             column_label_must_be_a_string: The column label must be a string
             label_locale_does_not_exist_or_is_not_activated: The "{{ locale_code }}" locale doesn't exist or is not activated
-            invalid_labels_format: Invalid labels format
+            invalid_labels_format: The column labels must be a key/value object

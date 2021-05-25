@@ -54,7 +54,7 @@ Feature: Create a table attribute
 
   Scenario: Cannot create a table configuration with invalid column labels format
     When I create a table attribute with a configuration having invalid column labels format
-    Then There is a violation with message: The column label must be a string
+    Then There is a violation with message: The column labels must be a key/value object
 
   Scenario: Cannot create a table configuration with non activated locale
     When I create a table attribute with a configuration having non activated locale
