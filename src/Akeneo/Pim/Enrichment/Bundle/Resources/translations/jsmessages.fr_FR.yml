@@ -97,7 +97,7 @@ pim_enrich.entity.product:
       show_products: Afficher les produits
       show_groups: Afficher les groupes
       number_of_associations: "{{ productCount }} produit(s), {{ productModelCount }} modèle(s) de produit et {{ groupCount }} groupe(s)"
-      number_of_quantified_associations: "{ productCount }} produit(s) and {{ productModelCount }} modèle(s) de produit"
+      number_of_quantified_associations: "{{ productCount }} produit(s) et {{ productModelCount }} modèle(s) de produit"
       association_type_selector: Type d'association
       target: Destination
       manage: Ajouter des associations {{ associationType }}
@@ -368,6 +368,7 @@ pim_enrich.mass_edit.product:
       description: Le parent des produits variants et des sous modèles de produits sélectionnés dans la grille va être modifié avec ce modèle de produit.
 pim_datagrid:
   no_entities: "Aucune {{ entityHint }} trouvée"
+  no_entities.product: "Aucun produit trouvé" #Custom translation for product grid
   no_results: "Désolé, il n’y a aucun(e) {{ entityHint }} pour votre recherche."
   no_results.product: "Désolé, il n’y a aucun résultat pour votre recherche." #Custom translation for product grid
   mass_action_group:

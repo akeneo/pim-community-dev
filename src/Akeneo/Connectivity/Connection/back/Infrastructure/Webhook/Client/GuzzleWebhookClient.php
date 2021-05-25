@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSend
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestFailedEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
@@ -50,6 +51,7 @@ class GuzzleWebhookClient implements WebhookClient
         $this->encoder = $encoder;
         $this->sendApiEventRequestLogger = $sendApiEventRequestLogger;
         $this->debugLogger = $debugLogger;
+        $this->eventDispatcher = $eventDispatcher;
         $this->config = $config;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -95,10 +97,10 @@ class GuzzleWebhookClient implements WebhookClient
                     $webhookRequestLog->setResponse($response);
 
                     $pimEvents = array_map(
-                        fn (WebhookEvent $apiEvent) => $apiEvent->getPimEvent(),
+                        fn(WebhookEvent $apiEvent) => $apiEvent->getPimEvent(),
                         $webhookRequestLog->getWebhookRequest()->apiEvents()
                     );
-                    
+
                     $this->eventDispatcher->dispatch(new EventsApiRequestSucceededEvent(
                         $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
                         $pimEvents
@@ -113,6 +115,8 @@ class GuzzleWebhookClient implements WebhookClient
                     );
                 },
                 'rejected' => function (RequestException $reason, int $index) use (&$logs) {
+                    $this->eventDispatcher->dispatch(new EventsApiRequestFailedEvent());
+
                     /** @var EventSubscriptionSendApiEventRequestLog $webhookRequestLog */
                     $webhookRequestLog = $logs[$index];
                     $webhookRequestLog->setMessage($reason->getMessage());
