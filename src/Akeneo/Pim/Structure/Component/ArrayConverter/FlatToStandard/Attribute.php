@@ -96,7 +96,11 @@ class Attribute implements ArrayConverterInterface
                 try {
                     $convertedItem[$field] = \json_decode($data, true, 512, JSON_THROW_ON_ERROR);
                 } catch (\JsonException $e) {
-                    throw new DataArrayConversionException('TODO invalid json string', 0, $e);
+                    throw new DataArrayConversionException(
+                        sprintf('The property "%s" could not be converted into JSON', $field),
+                        0,
+                        $e
+                    );
                 }
             }
         } elseif (in_array($field, $booleanFields, true) && '' !== $data) {
