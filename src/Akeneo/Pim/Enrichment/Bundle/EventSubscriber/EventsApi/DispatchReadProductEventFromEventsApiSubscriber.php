@@ -41,7 +41,6 @@ class DispatchReadProductEventFromEventsApiSubscriber implements EventSubscriber
         }
         $this->eventDispatcher->dispatch(new ReadProductsEvent(
             $count,
-            ReadProductsEvent::EVENTS_API_TYPE,
             $eventsApiRequestSucceeded->getConnectionCode()
         ));
     }

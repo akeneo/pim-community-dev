@@ -15,8 +15,9 @@ class ReadProductsEventSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedWith(3, ReadProductsEvent::REST_API_TYPE, 'code');
+        $this->beConstructedWith(3, 'code');
     }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(ReadProductsEvent::class);
@@ -30,22 +31,5 @@ class ReadProductsEventSpec extends ObjectBehavior
     public function it_returns_a_connection_code()
     {
         $this->getConnectionCode()->shouldReturn('code');
-    }
-
-    public function it_comes_from_the_events_api()
-    {
-        $this->beConstructedWith(5, ReadProductsEvent::EVENTS_API_TYPE, 'code');
-        $this->shouldBeEventsApi();
-    }
-
-    public function it_comes_from_the_rest_api()
-    {
-        $this->isEventsApi()->shouldReturn(false);
-    }
-
-    public function it_is_not_an_events_api_event_by_default()
-    {
-        $this->beConstructedWith(5);
-        $this->isEventsApi()->shouldReturn(false);
     }
 }

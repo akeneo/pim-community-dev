@@ -109,9 +109,4 @@ class Connection
     {
         $this->auditable = false;
     }
-
-    public function hasDataDestinationFlowType(): bool
-    {
-        return FlowType::DATA_DESTINATION === (string) $this->flowType();
-    }
 }

@@ -120,16 +120,4 @@ class ConnectionSpec extends ObjectBehavior
         $this->disableAudit();
         $this->auditable()->shouldBe(false);
     }
-    
-    public function it_has_a_data_destination_flow_type()
-    {
-        $this->setFlowType(new FlowType(FlowType::DATA_DESTINATION));
-        $this->shouldHaveDataDestinationFlowType();
-    }
-
-    public function it_has_not_a_data_destination_flow_type()
-    {
-        $this->setFlowType(new FlowType(FlowType::DATA_SOURCE));
-        $this->shouldNotHaveDataDestinationFlowType();
-    }
 }
