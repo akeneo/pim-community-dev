@@ -92,7 +92,7 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
       observer.observe(lastElement);
 
       return () => observer.unobserve(lastElement);
-    }, [onNextPage, containerRef.current, lastItemRef.current]);
+    }, [onNextPage]);
 
     useAutoFocus(firstItemRef);
 
