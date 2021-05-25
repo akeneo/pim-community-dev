@@ -48,6 +48,7 @@ pimee_workflow:
         original_product: Modifier la copie de travail
     proposal:
       modal.title: Laisser un commentaire (facultatif - 255 caractères max.)
+    removing_error: Les entités liées à des produits publiés ne peuvent pas être supprimées.
   proposal:
     overview: "]-Inf, 1]{{ count }} proposition|]1, Inf [{{ count }} propositions"
     selected: "]-Inf, 1]{{ count }} proposition sélectionnée|]1, Inf [{{ count }} propositions sélectionnées"
