@@ -17,21 +17,17 @@ final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterfa
 {
     private ManagerRegistry $registry;
 
-    /** TODO pull up master remove nullable variable */
-    private ?ProductIndexerInterface $productIndexer;
+    private ProductIndexerInterface $productIndexer;
 
-    /** TODO pull up master remove nullable variable */
-    private ?ProductModelIndexerInterface $productModelIndexer;
+    private ProductModelIndexerInterface $productModelIndexer;
 
     private array $productIdentifiersToIndex = [];
     private array $productModelCodesToIndex = [];
 
-
-    /** TODO pull up master remove null */
     public function __construct(
         ManagerRegistry $registry,
-        ProductIndexerInterface $productIndexer = null,
-        ProductModelIndexerInterface $productModelIndexer = null
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer
     ) {
         $this->registry = $registry;
         $this->productIndexer = $productIndexer;
@@ -78,11 +74,8 @@ final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterfa
 
     public function indexAssociatedEntities()
     {
-        /** TODO pullup remove this if statement */
-        if ($this->productIndexer !== null && $this->productModelIndexer !== null) {
-            $this->productIndexer->indexFromProductIdentifiers($this->productIdentifiersToIndex);
-            $this->productModelIndexer->indexFromProductModelCodes($this->productModelCodesToIndex);
-        }
+        $this->productIndexer->indexFromProductIdentifiers($this->productIdentifiersToIndex);
+        $this->productModelIndexer->indexFromProductModelCodes($this->productModelCodesToIndex);
 
         $this->productIdentifiersToIndex = [];
         $this->productModelCodesToIndex = [];
