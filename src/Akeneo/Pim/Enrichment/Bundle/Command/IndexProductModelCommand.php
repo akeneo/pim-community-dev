@@ -122,7 +122,7 @@ class IndexProductModelCommand extends Command
             return self::ERROR_CODE_USAGE;
         }
 
-        $batchESHandler = new class($this->productModelDescendantAndAncestorsIndexer) implements BulkEsHandlerInterface {
+        $bulkESHandler = new class($this->productModelDescendantAndAncestorsIndexer) implements BulkEsHandlerInterface {
             private ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer;
 
             public function __construct(ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer)
@@ -135,7 +135,7 @@ class IndexProductModelCommand extends Command
             }
         };
 
-        $numberOfIndexedProducts = $this->doIndex($chunkedProductModelCodes, new ProgressBar($output, $productModelCount), $batchESHandler, $output);
+        $numberOfIndexedProducts = $this->doIndex($chunkedProductModelCodes, new ProgressBar($output, $productModelCount), $bulkESHandler, $output);
 
         $output->writeln(sprintf('<info>%d product models indexed</info>', $numberOfIndexedProducts));
 

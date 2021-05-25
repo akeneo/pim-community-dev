@@ -15,57 +15,51 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class BackoffElasticSearchStateHandler
 {
-    const RETRY_COUNTER = 10;
+    const MAX_RETRY_COUNTER = 10;
     const BACKOFF_LOGARITHMIC_INCREMENT = 2;
 
-    private int $retryCounter;
+    private int $maxNumberRetry;
     private int $backoffLogarithmicIncrement;
 
-    public function __construct(int $retryCounter=self::RETRY_COUNTER, int $backoffLogarithmicIncrement=self::BACKOFF_LOGARITHMIC_INCREMENT)
+    public function __construct(int $retryCounter=self::MAX_RETRY_COUNTER, int $backoffLogarithmicIncrement=self::BACKOFF_LOGARITHMIC_INCREMENT)
     {
-        $this->retryCounter = $retryCounter;
+        $this->maxNumberRetry = $retryCounter;
         $this->backoffLogarithmicIncrement = $backoffLogarithmicIncrement;
     }
 
     protected function resetState(): array
     {
-        return [false, $this->retryCounter];
+        return [false, $this->maxNumberRetry];
     }
 
     public function bulkExecute(array $codes, BulkEsHandlerInterface $codesEsHandler):int
     {
-        $initialBatchSize = count($codes);
-        $batchSize = $initialBatchSize;
-        $indexed = 0;
-        [$backOverheat, $retryCounter] = $this->resetState();
+        return $this->executeAttempt([$codes], $codesEsHandler, 0);
+    }
 
-        do {
-            $batchEsCodes = $codes;
-            if ($backOverheat) {
-                $batchEsCodes = array_slice($codes, 0, $batchSize);
-            }
-
+    /**
+     * batchOfCodes is an array of array. Each sub-array represents a batch of codes to index.
+     * [
+     *     ['code_1', 'code_2'],
+     *     ['code_3', 'code_4'],
+     * ]
+     **/
+    private function executeAttempt(array $batchOfCodes, BulkEsHandlerInterface $codesEsHandler, int $numberRetry): int
+    {
+        $treated = 0;
+        foreach ($batchOfCodes as $codes) {
             try {
-                $codesEsHandler->bulkExecute($batchEsCodes);
-
-                array_splice($codes, 0, $batchSize);
-                list($backOverheat, $retryCounter) = $this->resetState();
-                $batchSize=$initialBatchSize;
-                $indexed += count($batchEsCodes);
+                $treated+=$codesEsHandler->bulkExecute($codes);
             } catch (BadRequest400Exception $e) {
-                if ($e->getCode() == Response::HTTP_TOO_MANY_REQUESTS) {
-                    $retryCounter--;
-                    $backOverheat = true;
-                    $batchSize = intdiv($batchSize, $this->backoffLogarithmicIncrement); //Heuristic: logarithmics decrement
+                if ($e->getCode() == Response::HTTP_TOO_MANY_REQUESTS  && $numberRetry < $this->maxNumberRetry) {
+                    $batchSize = intdiv(count($codes), $this->backoffLogarithmicIncrement);
+                    $smallerBatchOfCodes = array_chunk($codes, $batchSize);
+                    $treated+=$this->executeAttempt($smallerBatchOfCodes, $codesEsHandler, ++$numberRetry);
                 } else {
                     throw $e;
                 }
             }
-        } while (($retryCounter > 0) && count($codes));
-
-        if ($backOverheat && isset($e)) {
-            throw $e;
         }
-        return $indexed;
+        return $treated;
     }
 }
