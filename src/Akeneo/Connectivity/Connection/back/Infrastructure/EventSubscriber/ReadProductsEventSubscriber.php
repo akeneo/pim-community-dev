@@ -7,6 +7,8 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Application\ConnectionContextInterface;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
@@ -52,15 +54,24 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
         if (0 === $event->getCount()) {
             return;
         }
-        $connectionCode = $this->getConnectionCodeByReadProductsEvent($event);
 
-        if (!$this->isAuditableConnection($connectionCode, $event->isEventsApi())) {
+        $connection = $this->getValidConnectionBehindReadProductsEvent($event);
+
+        if (null === $connection) {
+            return;
+        }
+
+        if (false === $connection->auditable()) {
+            return;
+        }
+
+        if (FlowType::DATA_DESTINATION !== (string)$connection->flowType()) {
             return;
         }
 
         $this->updateDataDestinationProductEventCountHandler->handle(
             new UpdateDataDestinationProductEventCountCommand(
-                $connectionCode,
+                (string)$connection->code(),
                 HourlyInterval::createFromDateTime(new \DateTimeImmutable('now', new \DateTimeZone('UTC'))),
                 $event->getCount()
             )
@@ -68,40 +79,21 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @throws \LogicException
+     * If the event does not contains a connection code, check if the active connection in the context uses
+     * valid credentials, if so, fallback to it.
      */
-    private function getConnectionCodeByReadProductsEvent(ReadProductsEvent $event): string
+    private function getValidConnectionBehindReadProductsEvent(ReadProductsEvent $event): ?Connection
     {
-        if ($event->isEventsApi()) {
-            $connectionCode = $event->getConnectionCode();
-            if ($connectionCode === null) {
-                throw new \LogicException('You must provide a connection code through the event when using the events API.');
-            }
+        $connectionCode = $event->getConnectionCode();
 
-            return $connectionCode;
+        if (null !== $connectionCode) {
+            return $this->connectionRepository->findOneByCode($connectionCode);
         }
 
-        $connection = $this->connectionContext->getConnection();
-        if ($connection === null) {
-            throw new \LogicException('You must initialize the connection before adding read products.');
+        if (false === $this->connectionContext->areCredentialsValidCombination()) {
+            return null;
         }
 
-        return (string)$connection->code();
-    }
-
-    private function isAuditableConnection(string $connectionCode, bool $isEventsApi): bool
-    {
-        $connection = $isEventsApi
-            ? $this->connectionRepository->findOneByCode($connectionCode)
-            : $this->connectionContext->getConnection();
-
-        if ($connection === null
-            || $connection->auditable() === false
-            || $connection->hasDataDestinationFlowType() === false
-            || ($isEventsApi === false && $this->connectionContext->areCredentialsValidCombination() === false)) {
-            return false;
-        }
-
-        return true;
+        return $this->connectionContext->getConnection();
     }
 }

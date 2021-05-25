@@ -11,20 +11,14 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Event\Connector;
  */
 final class ReadProductsEvent
 {
-    const EVENTS_API_TYPE = 'events_api';
-    const REST_API_TYPE = 'rest_api';
-
     private int $count;
 
     private ?string $connectionCode;
 
-    private string $origin;
-
-    public function __construct(int $count, $origin = self::REST_API_TYPE, ?string $connectionCode = null)
+    public function __construct(int $count, ?string $connectionCode = null)
     {
         $this->count = $count;
         $this->connectionCode = $connectionCode;
-        $this->origin = $origin;
     }
 
     public function getCount(): int
@@ -35,10 +29,5 @@ final class ReadProductsEvent
     public function getConnectionCode(): ?string
     {
         return $this->connectionCode;
-    }
-
-    public function isEventsApi(): bool
-    {
-        return $this->origin === self::EVENTS_API_TYPE;
     }
 }

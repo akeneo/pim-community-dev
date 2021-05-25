@@ -31,30 +31,20 @@ class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
     public function it_dispatches_a_read_product_on_product_events_api_saved(
         EventDispatcherInterface $eventDispatcher,
         EventsApiRequestSucceededEvent $eventsApiRequestSucceeded,
-        ProductUpdated $productUpdatedEvent,
         ProductCreated $productCreatedEvent,
+        ProductUpdated $productUpdatedEvent,
         ProductRemoved $productRemovedEvent
     ) {
         $eventsApiRequestSucceeded->getEvents()
-            ->willReturn([$productUpdatedEvent, $productCreatedEvent, $productRemovedEvent]);
+            ->willReturn([$productCreatedEvent, $productUpdatedEvent, $productRemovedEvent]);
 
         $eventsApiRequestSucceeded->getConnectionCode()->willReturn('code');
-        $eventDispatcher->dispatch(Argument::allOf(
-            Argument::type(ReadProductsEvent::class),
-            Argument::that(function (ReadProductsEvent $event) {
-                if($event->getCount() !== 2) {
-                    return false;
-                }
-                if($event->getConnectionCode() !== 'code') {
-                    return false;
-                }
-                if($event->isEventsApi() !== true) {
-                    return false;
-                }
-
-                return true;
+        $eventDispatcher->dispatch(Argument::that(
+            function (ReadProductsEvent $event) {
+                return 2 === $event->getCount()
+                    && 'code' === $event->getConnectionCode();
             })
-        ))->shouldbeCalledTimes(1);
+        )->shouldbeCalledTimes(1);
 
         $this->dispatchReadProductOnProductEventsApiSaved($eventsApiRequestSucceeded);
     }
