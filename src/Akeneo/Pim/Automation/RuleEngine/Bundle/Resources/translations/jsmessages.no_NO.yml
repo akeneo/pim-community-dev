@@ -1,0 +1,81 @@
+pimee_catalog_rule:
+  execution_button: Aktiver regeler
+  popin:
+    execute_rules:
+      confirm_title: Bekreft handlig
+  attribute:
+    list:
+      code.label: Kode
+      condition.label: Tilstand
+      action.label: Handling
+  rule:
+    condition:
+      if.label: hvis
+    action:
+      then.label: deretter
+      set_value.label: er satt i
+      copy_value.label: kopiert til
+      set.label: er satt i
+      copy.label: kopiert til
+      add.label: legges til i
+      remove.label: Er fjernet fra
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Bekreft handlig
+      mass_edit_action:
+        confirm_title: Bekreft beregning
+      mass_action:
+        execute:
+          empty_selection: ingen regler er valgt
+        delete:
+          confirm_title: Bekreft handlig
+          confirm_content: Er du sikker på at valgte regler skal slettes?
+          success: Reglene er slettet.
+          empty_selection: ingen regler er valgt
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Regler
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Er du sikker på at du vil slette denne regelen? Det er ikke mulig å angre denne handlingen
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Innstillinger for Regler
+batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Aktiver regel
+  default_steps:
+    execute_rules: Aktiver regel
+  rule_impacted_product_count:
+    perform.label: Tell pårørte produkter
+  csv_product_import_with_rules:
+    label: Produktimport i CSV med regler
+    import.label: Produktimport
+  csv_product_model_import_with_rules:
+    label: Produktmodell import i CSV med regler
+  xlsx_product_import_with_rules:
+    label: Produktimport i XLSX med regler
+    import.label: Produktimport
+  xlsx_product_model_import_with_rules:
+    label: Produktmodel import i XSLSX med regler
+pim_notification:
+  types:
+    rule: Regelinstillinger
+    mass_edit_rule: Endre mange regler
+    execute_rules: Aktiver regel
+pim_menu:
+  item:
+    rule: Regler
+pim_title:
+  pimee_catalog_rule_rule_index: Regler
+  pimee_catalog_rule_new: Regler
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: Aktiver regel

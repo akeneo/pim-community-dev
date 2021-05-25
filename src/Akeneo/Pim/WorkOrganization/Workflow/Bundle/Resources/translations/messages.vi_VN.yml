@@ -1,0 +1,44 @@
+pimee_workflow:
+  product_draft:
+    author: Tác giả
+    created: Đề xuất ở
+    changes: Thay đổi
+    product:
+      label: Nhãn sản phẩm
+    attribute:
+      label: Thuộc tính
+    status:
+      label: Trạng thái
+      working_copy: Đang làm việc trên bản sao
+      in_progress: Đang xử lý
+      ready: Đang chờ phê duyệt
+      can_not_be_approved: Không thể xem trước
+      can_not_be_deleted: Không thể xóa bỏ
+    action:
+      approve: Chấp nhận tất cả
+      refuse: Từ chối tất cả
+      remove: Gỡ bỏ
+      partial_approve: Cho phép thay đổi thuộc tính %attribute% của sản phẩm %product%
+      partial_reject: Từ chối thay đổi thuộc tính %attribute% của sản phẩm %product%
+    notification:
+      partial_approve: '%owner% đã chấp nhận giá trị cho %attributes% cho sản phẩm %product%'
+  product:
+    permission:
+      edit: Chỉnh sửa
+      view: Xem
+  mass_edit_action:
+    published:
+      title: Chọn thao tác
+      steps:
+        second: Chọn thao tác
+        third: Cấu hình
+        fourth: Xác nhận
+Attributes.title: Thuộc tính
+Completeness.title: Hoàn thành
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Ngày tháng năm
+      author: Tác giả
+      product: Sản phẩm
+      review: Đánh giá

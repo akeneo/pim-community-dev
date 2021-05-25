@@ -1,0 +1,22 @@
+akeneo_data_quality_insights:
+  product_evaluation:
+    criteria:
+      consistency_spelling:
+        recommendation: Attribuutit, joissa kirjoitusvirheitä
+    axis:
+      consistency:
+        title: Yhtenäisyys
+        attributes_link: Näytä kaikki parannettavissa olevat attribuutit
+        success: Tuotetietosi ovat täysin yhtenäiset. Onneksi olkoon!
+  product_edit_form:
+    attribute_filter:
+      all_improvable_attributes: Kaikki parannettavissa olevat attribuutit
+    spellcheck_popover:
+      title: Korjaukset
+      original_text_title: Alkuperäinen
+      suggestions_title: Ehdotukset
+      ignore_all_suggestions_button_label: Ohita
+  attribute_grid:
+    quality:
+      to_improve: Parannettavaa
+      good: Hyvä

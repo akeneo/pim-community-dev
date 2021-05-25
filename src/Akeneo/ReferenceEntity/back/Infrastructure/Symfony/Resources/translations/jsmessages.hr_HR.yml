@@ -1,0 +1,110 @@
+pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Povucite i ispustite za upload ili kliknite ovdje
+      small:
+        remove: Ukloni
+        download: Preuzimanje
+  reference_entity:
+    button:
+      save: Spremi
+      save_permission: Spremi
+      create: Kreiraj
+    tab:
+      attribute: Atributi
+      properties: Svojstva
+      permission: Dozvole
+    properties:
+      identifier: Kod
+      label: Oznaka
+      image: Slika
+    create:
+      header:
+        title: Kreiraj
+      input:
+        label: Oznaka
+      confirm: Spremi
+    delete:
+      title: Atribut
+  record:
+    button:
+      save: Spremi
+      delete: Brisanje
+    product:
+      title: Proizvodi
+    enrich:
+      code: Kod
+      label: Oznaka
+    create:
+      header:
+        title: Kreiraj
+      input:
+        label: Oznaka
+      confirm: Spremi
+    grid:
+      filter:
+        completeness:
+          label: Kompletan
+          all: Sve
+          'yes': 'Da'
+          'no': 'Ne'
+        option:
+          all: Sve
+          operator:
+            in: U popisu
+      column:
+        code: Kod
+        image: Slika
+        label: Oznaka
+        complete: Kompletan
+        action: Akcije
+    tab:
+      enrich: Obogati
+      product: Proizvodi
+    completeness:
+      label: Kompletan
+  attribute:
+    default:
+      code: Kod
+      label: Oznaka
+      image: Slika
+    type:
+      text: Tekst
+      image: Slika
+    create:
+      header:
+        title: Kreiraj
+      input:
+        label: Oznaka
+        type: Tip atributa
+      confirm: Spremi
+    edit:
+      save: Spremi
+      cancel: Odustani
+      input:
+        label: Oznaka
+        type: Tip atributa
+        max_length: Max znakova
+        textarea: Područje teksta
+        max_file_size: Max veličina datoteke (MB)
+        allowed_extensions: Dopuštene ekstenzije
+        validation_rule: Pravilo provjere valjanosti
+        regular_expression: Regularni izraz
+        options:
+          validation_rule:
+            none: Niti jedan
+            email: Adresa e-pošte
+            regular_expression: Regularni izraz
+            url: URL
+    delete:
+      title: Atribut
+    options:
+      helper:
+        title: Prijevodi oznaka
+  modal:
+    delete:
+      subtitle: Potvrdi brisanje
+      button:
+        cancel: Odustani
+        confirm: Brisanje

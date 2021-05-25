@@ -28,19 +28,16 @@ pimee_workflow:
     partial_accept:
       modal.title: Odobri djelomične informacije
       modal.label: Ostavi komentar (opcionalno)
-      modal.error: Došlo je do pogreške, prijedlog nije djelomično odobren
       modal.success: Prijedlog je djelomično uspješno provjeren
     partial_approve:
       modal:
         title: Djelomično odobri promjene
         label: Ostavi komentar (opcionalno)
-        error: Došlo je do pogreške, prijedlog nije djelomično odobren
         success: Promjene su uspješno odobrene
     partial_reject:
       modal:
         title: Djelomično odbaci promjene
         label: Ostavi komentar (opcionalno)
-        error: Došlo je do pogreške, prijedlog nije djelomično odobren
         success: Promjene su uspješno odbijene
 batch_jobs:
   csv_published_product_export:
@@ -53,14 +50,28 @@ batch_jobs:
     label: Odobri prijedlog
     perform.label: Odobri prijedlog
   refuse_product_draft:
-    label: Odbij prijedlog
-    perform.label: Odbij prijedlog
+    label: Odbij prijedloge
+    perform.label: Odbij prijedloge
   xlsx_published_product_export:
     label: Izvoz objavljenih proizvoda u XLSX
     export.label: Izvoz objavljenih proizvoda
   xlsx_product_proposal_import:
     label: Uvoz prijedloga proizvoda iz XLSX
     import.label: Uvoz prijedloga proizvoda iz XLSX
+  csv_published_product_quick_export:
+    export.label: Brzi izvoz objavljenih proizvoda u Csv
+    perform.label: Brzi izvoz objavljenih proizvoda u Csv
+  csv_published_product_grid_context_quick_export:
+    export.label: Brzi izvoz prikaza tablice objavljenih proizvoda u Csv
+    perform.label: Brzi izvoz prikaza tablice objavljenih proizvoda u Csv
+  xlsx_published_product_quick_export:
+    export.label: Brzi izvoz objavljenih proizvoda u Xlsx
+    perform.label: Brzi izvoz objavljenih proizvoda u Xlsx
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Brzi izvoz prikaza tablice objavljenih proizvoda u Xlsx
+    perform.label: Brzi izvoz prikaza tablice objavljenih proizvoda u Xlsx
+  publish_product:
+    perform.label: Objavljivanje proizvoda
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Novi prijedlog
@@ -71,3 +82,99 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Prijedlog je odobren
     pimee_workflow_product_draft_notification_refuse: Prijedlog je odbačen
     pimee_workflow_product_draft_notification_remove: Prijedlog je izbrisan
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Datum
+      author: Autor
+      product: Proizvod
+      review: Recenzija
+      empty: Nema prijedloga za recenziju
+    header.view_all: Pogledaj sve
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Objavljeno
+      revert: Vrati
+    meta:
+      published_version: Objavljena verzija
+      owner_groups: Vlasnik grupe
+      draft_status: Status skice
+      draft:
+        in_progress: U tijeku
+        sent_for_approval: Čeka na odobrenje
+        working_copy: Radna kopija
+    revert:
+      title: Potvrda vraćanja
+      content: Jeste li sigurni da želite vratiti proizvod na ovu verziju?
+    publish:
+      title: Objavite ovaj proizvod
+      content: Jeste li sigurni da želite objaviti ovaj proizvod?
+    unpublish:
+      title: Poništite objavu ovog proizvoda
+      content: Jeste li sigurni da želite poništiti objavu ovog proizvoda?
+    copy:
+      working_copy: Radna kopija
+      draft: Moj nacrt
+      draft_of: "Nacrt od {{ author }}"
+    approval:
+      send: Slanje na odobrenje
+      sent: Poslano na odobrenje
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Proizvod uspješno objavljen
+      fail: Nije uspjela objava ovog proizvoda
+    unpublish:
+      success: Proizvodu uspješno poništena objava
+      fail: Nije uspjelo poništavanje objave ovog proizvoda
+    revert:
+      success: Proizvod je uspješno vraćen
+  module:
+    publish:
+      label: Objavi
+      publish_this_version: Objavi ovu verziju
+    unpublish:
+      label: Poništi objavu
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: Prijedlog je uspješno primijenjen.
+    reject:
+      success: Prijedlog je odbijen.
+    remove:
+      success: Prijedlog je uklonjen.
+    update:
+      success: Nacrt proizvoda je uspješno spremljen
+      fail: Nacrt proizvoda nije moguće ažurirati
+    create:
+      success: Nacrt proizvoda je poslan na odobrenje
+      fail: Ne možete poslati ovaj nacrt za odobrenje
+  module:
+    proposal:
+      accept: Prihvatiti prijedlog
+      accept_selected: Prihvatite odabrane prijedloge
+      reject: Odbaci prijedlog
+      reject_selected: Odbacite odabrane prijedloge
+      remove: Uklanjanje prijedloga
+      comment_title: Komentirajte vaš prijedlog (opcionalno - max. 255 znakova)
+      comment_chars: znakova.
+      confirm: Pošalji
+    edit:
+      discard_changes: Nespremljene promjene bit će izgubljene. Jeste li sigurni da želite poslati vaš nacrt za odobrenje bez nespremljene promjene?
+      discard_changes_title: Jeste li sigurni da želite poslati ovaj nacrt?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Objavi
+    unpublish:
+      label: Poništi objavu
+pim_menu:
+  navigation:
+    published_products: Objavljeni proizvodi
+  item:
+    proposal: Prijedlozi
+    published_product: Objavljeni proizvodi
+pim_title:
+  pimee_workflow_proposal_index: Prijedlozi
+  pimee_workflow_published_product_index: Objavljeni proizvodi

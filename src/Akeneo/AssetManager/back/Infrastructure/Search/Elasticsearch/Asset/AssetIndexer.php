@@ -6,6 +6,7 @@ namespace Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetIdentifiersByAssetFamilyInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
@@ -22,14 +23,19 @@ class AssetIndexer implements AssetIndexerInterface
     private AssetNormalizerInterface $normalizer;
     private int $batchSize;
 
+    /** @var FindAssetIdentifiersByAssetFamilyInterface */
+    private $assetIdentifiersByAssetFamily;
+
     public function __construct(
         Client $assetClient,
         AssetNormalizerInterface $normalizer,
-        int $batchSize
+        int $batchSize,
+        FindAssetIdentifiersByAssetFamilyInterface $assetIdentifiersByAssetFamily
     ) {
         $this->assetClient = $assetClient;
         $this->normalizer = $normalizer;
         $this->batchSize = $batchSize;
+        $this->assetIdentifiersByAssetFamily = $assetIdentifiersByAssetFamily;
     }
 
     /**
@@ -50,13 +56,24 @@ class AssetIndexer implements AssetIndexerInterface
             return $this->normalizer->normalizeAsset($assetIdentifier);
         }, array_unique($assetIdentifiers));
 
-        $this->bulkIndexAssets($normalizedSearchableAssets);
+        $assetsToIndexByBatch = array_chunk($normalizedSearchableAssets, $this->batchSize);
+        foreach ($assetsToIndexByBatch as $assetsToIndex) {
+            $this->assetClient->bulkIndexes($assetsToIndex, self::KEY_AS_ID, refresh::disable());
+        }
     }
 
     public function indexByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): void
     {
-        $normalizedSearchableAssets = $this->normalizer->normalizeAssetsByAssetFamily($assetFamilyIdentifier);
-        $this->bulkIndexAssets($normalizedSearchableAssets);
+        /** @TODO pull up remove if in master */
+        if ($this->assetIdentifiersByAssetFamily === null || !$this->normalizer instanceof AssetNormalizer) {
+            $normalizedSearchableAssets = $this->normalizer->normalizeAssetsByAssetFamily($assetFamilyIdentifier);
+            $this->legacyBulkIndexAssets($normalizedSearchableAssets);
+
+            return;
+        }
+
+        $assetIdentifiers = $this->assetIdentifiersByAssetFamily->find($assetFamilyIdentifier);
+        $this->bulkIndexAssets($assetFamilyIdentifier, $assetIdentifiers);
     }
 
     /**
@@ -107,20 +124,29 @@ class AssetIndexer implements AssetIndexerInterface
         $this->assetClient->refreshIndex();
     }
 
-    private function bulkIndexAssets(iterable $normalizedSearchableAssets)
+    private function bulkIndexAssets(AssetFamilyIdentifier $assetFamilyIdentifier, iterable $assetIdentifiers)
     {
-        $toIndex = [];
-        foreach ($normalizedSearchableAssets as $normalizedSearchableAsset) {
-            $toIndex[] = $normalizedSearchableAsset;
+        $assetIdentifierToNormalize = [];
+        foreach ($assetIdentifiers as $assetIdentifier) {
+            $assetIdentifierToNormalize[] = $assetIdentifier;
+            if (\count($assetIdentifierToNormalize) % $this->batchSize === 0) {
+                $normalizedSearchableAssets = $this->normalizer->normalizeAssets(
+                    $assetFamilyIdentifier,
+                    $assetIdentifierToNormalize
+                );
 
-            if (\count($toIndex) % $this->batchSize === 0) {
-                $this->assetClient->bulkindexes($toIndex, self::KEY_AS_ID, refresh::disable());
-                $toIndex = [];
+                $this->assetClient->bulkIndexes($normalizedSearchableAssets, self::KEY_AS_ID, refresh::disable());
+                $assetIdentifierToNormalize = [];
             }
         }
 
-        if (!empty($toIndex)) {
-            $this->assetClient->bulkindexes($toIndex, self::KEY_AS_ID, refresh::disable());
+        if (!empty($assetIdentifierToNormalize)) {
+            $normalizedSearchableAssets = $this->normalizer->normalizeAssets(
+                $assetFamilyIdentifier,
+                $assetIdentifierToNormalize
+            );
+
+            $this->assetClient->bulkIndexes($normalizedSearchableAssets, self::KEY_AS_ID, refresh::disable());
         }
     }
 }

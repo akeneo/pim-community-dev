@@ -1,0 +1,18 @@
+akeneo_data_quality_insights:
+  product_evaluation:
+    axis:
+      consistency:
+        title: Consistència
+        attributes_link: Mostrar tots els atributs millorables
+  product_edit_form:
+    attribute_filter:
+      all_improvable_attributes: Tots els atributs millorables
+    spellcheck_popover:
+      title: Correccions
+      original_text_title: Original
+      suggestions_title: Propostes
+      ignore_all_suggestions_button_label: Ignora
+  attribute_grid:
+    quality:
+      to_improve: A millorar
+      good: Bé

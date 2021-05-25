@@ -41,7 +41,7 @@ pim_enrich:
   mass_edit_action:
     product:
       not_editable: Du har inte behörighet att redigera produkterna "%identifiers%".
-      page_title: Products
+      page_title: Produkter
       page_subtitle: Massredigera (1 produkt) | Massredigera (%count% produkter)
       title: Välj åtgärd
       subtitle: Välj den funktion som du vill utföra på den valda produkten | Välj den funktion som du vill utföra på de valda %count% produkterna
@@ -84,11 +84,11 @@ pimee_enrich:
     label: Ägargrupper
     empty: ingen
 add_product_value_with_permission_and_rules:
-  steps.perform: Lägga till produktens värde
+  steps.perform: Lägg till produkt värde
 update_product_value_with_permission_and_rules:
   steps.perform: Uppdatera produktens värde
 edit_common_attributes_with_permission_and_rules:
   steps.perform: Redigera Attribut
   steps.edit_common_attributes_processor.title: Redigera Attribut
 pim_enrich_attribute_form:
-  isReadOnly: Endast läsning
+  isReadOnly: Endast läs

@@ -1,5 +1,46 @@
 # 4.0.x
 
+# 4.0.110 (2021-05-14)
+
+# 4.0.109 (2021-05-11)
+
+## Bug fixes
+
+- PIM-9860: Fix Asset collection attribute not being usable as default grid filter
+- PIM-9838: fix project completeness selection filter on product grid's bulk edit and quick export
+
+# 4.0.108 (2021-05-10)
+
+## Bug fixes
+
+- PIM-9849: [Backport] PIM-9226: Fix error on channel deletion after migrating from v3.2
+
+# 4.0.107 (2021-05-03)
+
+# 4.0.106 (2021-04-29)
+
+# 4.0.105 (2021-04-27)
+
+## Bug fixes
+
+- PIM-9828: Fix Record & Asset text attributes not showing < or > characters
+
+# 4.0.104 (2021-04-22)
+
+## Bug fixes
+
+- PIM-9817: Ignore datagrid filter on reference entity record when the record does not exist
+
+# 4.0.103 (2021-04-02)
+
+## Bug fixes
+
+- PIM-9787: Prevent memory load on asset indexation when indexing all assets or by asset family
+
+# 4.0.102 (2021-03-31)
+
+# 4.0.101 (2021-03-29)
+
 # 4.0.100 (2021-03-26)
 
 ## Bug fixes

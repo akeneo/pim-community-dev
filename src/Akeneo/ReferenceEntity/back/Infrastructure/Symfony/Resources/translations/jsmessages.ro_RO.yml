@@ -1,0 +1,124 @@
+pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Trageți și lasăți pentru încărcare sau apasăți aici
+      small:
+        remove: Elimină
+        download: Descarcă
+  reference_entity:
+    button:
+      save: Salvează
+      save_permission: Salvează
+      create: Creează
+    tab:
+      attribute: Atribute
+      properties: Propietati
+      permission: Permisiuni
+    properties:
+      identifier: Cod
+      label: Etichetă
+      image: Imagine
+    create:
+      header:
+        title: Creează
+      input:
+        label: Etichetă
+      confirm: Salvează
+    delete:
+      title: Atribut
+  record:
+    no_result:
+      subtitle: Incearcă din nou cu noi criterii de căutare.
+    button:
+      save: Salvează
+      create: Adaugă nou
+      delete: Şterge
+    product:
+      title: Produse
+    enrich:
+      code: Cod
+      label: Etichetă
+    create:
+      header:
+        title: Creează
+      input:
+        label: Etichetă
+      confirm: Salvează
+    grid:
+      filter:
+        completeness:
+          label: Complet
+          all: Toate
+          'yes': 'Da'
+          'no': 'Nu'
+        option:
+          all: Toate
+          operator:
+            in: În listă
+      column:
+        code: Cod
+        image: Imagine
+        label: Etichetă
+        complete: Complet
+        action: Acțiuni
+    tab:
+      enrich: Îmbogățește
+      product: Produse
+    completeness:
+      label: Complet
+  attribute:
+    default:
+      code: Cod
+      label: Etichetă
+      image: Imagine
+    type:
+      text: Text
+      image: Imagine
+    create:
+      header:
+        title: Creează
+      input:
+        label: Etichetă
+        type: Tip de atribut
+        value_per_locale: Valoare pe local
+        value_per_channel: Valoare pe canal
+      confirm: Salvează
+    edit:
+      save: Salvează
+      cancel: Anulează
+      input:
+        label: Etichetă
+        type: Tip de atribut
+        value_per_locale: Valoare pe local
+        value_per_channel: Valoare pe canal
+        max_length: Caractere maxime
+        textarea: Zonă text
+        max_file_size: Mărimea maximă a fișierului (MB)
+        allowed_extensions: Extensii permise
+        validation_rule: Regulă de validare
+        regular_expression: Expresie regulară
+        options:
+          validation_rule:
+            none: Niciunul
+            email: Adresa de e-mail
+            regular_expression: Expresie regulară
+            url: URL
+    delete:
+      title: Atribut
+    notification:
+      save:
+        success: Atributul a fost actualizat cu succes.
+      create:
+        success: Atributul a fost creat cu succes.
+      delete:
+        success: Atributul a fost șters cu succes.
+    options:
+      helper:
+        title: Traduceri de etichetă
+  modal:
+    delete:
+      subtitle: Confirmă ștergerea
+      button:
+        cancel: Anulează
+        confirm: Şterge

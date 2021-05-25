@@ -110,6 +110,13 @@ services:
         tags:
             - { name: console.command }
 
+    Akeneo\AssetManager\Infrastructure\Symfony\Command\PurgeOrphanAssetsCommand:
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+        tags:
+            - { name: console.command }
+
     pim_enrich.controller.file:
         public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController'

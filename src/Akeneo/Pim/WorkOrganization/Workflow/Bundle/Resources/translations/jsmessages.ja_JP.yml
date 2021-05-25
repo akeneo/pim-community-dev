@@ -25,7 +25,6 @@ pimee_workflow:
       modal.title: コメントを残す (オプションとして255 文字まで)
   proposal:
     overview: "]-Inf, 1]{{ count }} 提案|]1, Inf[{{ count }} 提案"
-    selected: 選択した提案
     mass_action_group:
       review:
         label: 一括アクション
@@ -111,7 +110,6 @@ pimee_enrich.entity.product:
       published: 公開済
       revert: 復元
     attribute:
-      can_be_updated_by_a_rule: "この属性は、次のルールによって更新することができます:{{ rule }}"
       value_updated: この値は現在の下書きによって更新されています
     meta:
       published_version: 公開済バージョン
@@ -198,6 +196,10 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}未公開 <span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ 未公開 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
       description: この商品は公開されません
       warning: 選択した {{ itemsCount }}商品は公開されません
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: 公開商品にリンクしたカテゴリを削除することはできません。
 pim_menu:
   navigation:
     published_products: 公開済み商品

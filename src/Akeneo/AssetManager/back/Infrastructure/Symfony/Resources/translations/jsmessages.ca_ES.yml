@@ -1,16 +1,29 @@
+pim_title:
+  akeneo_asset_manager_asset_family_index: Gestor de Recursos
+  akeneo_asset_manager_asset_family_edit: Editar una família de recursos
+  akeneo_asset_manager_asset_edit: Editar un recurs
 pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: Enllaç incrustat sospitós
+        message: Ho sentim, no podem mostrar aquest article tot i ser guardat correctament
+  result_counter: '{0} Sense resultat|{1}{{ count }} resultat|]1,Inf] {{ count }} resultats'
   asset_collection:
     add_asset: 'Afegeix actiu'
+    upload_asset: 'Penjar recurs'
+    add_asset_title: 'Obre el recol·lector de recursos per afegir recursos a la col·lecció'
     no_asset_in_collection: 'Ho sentim, no hi ha cap actiu en aquesta col·lecció.'
     helper:
-      title: 'Benvingut a la seva nova zona de gestió de recursos dels productes!'
-      text: 'No hi ha col·lecció d''actius per a la família {{ family }}! Com afegir una col·lecció de recursos?'
+      title: 'Benvingut al seu nou espai de gestió de recursos de productes!'
       link: 'Com afegir una col·lecció de recursos?'
     no_asset:
-      title: 'Ho sentim, no hi ha cap recurs per a aquest producte'
-      text: 'No hi ha col·lecció d''actius per a la família {{ family }}!'
+      title: 'Ho sentim, no hi ha recurs per a aquest producte.'
     notification:
       product_rule: 'Aquesta col·lecció pot ser actualitzada per una regla de producte:'
+      limit: 'Ha arribat al límit de {{ limit }} de recursos per col·lecció. Ja no pots afegir recursos a la seva col·lecció.'
+    edit_asset: Editar recurs
+    remove_asset: Eliminar recurs
     remove_one_asset: Eliminar recurs {{ assetName }} de la col·lecció de recursos
     remove_all_assets: Eliminar tots els recursos
     other_actions: Altres accions
@@ -18,26 +31,154 @@ pim_asset_manager:
     dismiss_other_actions: Descarta altres accions
     move_asset_to_left: Desplaça el recurs {{ assetName }} a l'esquerra
     move_asset_to_right: Desplaça el recurs {{ assetName }} a la dreta
+    legacy_helper:
+      moved_to_assets_tab: Per veure la col·lecció {{ label }}, ves a la selecció d'actius del producte.
+      is_missing_required: La col·lecció de recursos {{ label }} es requereix. Enriqueix-lo a la secció de recursos del producte.
   asset_picker:
+    title: Afegeix recursos al teu producte
+    sub_title: Escull els recursos que desitja adjuntar al seu producte {{ productLabel }} a la col·lecció {{ attributeLabel }}
     no_result:
+      title: Ho sentim, no hi ha cap actiu a la seva cerca
       sub_title: Provi amb nous criteris de cerca
     filter:
       title: Filtres de recursos
     basket:
+      title: '{{ assetCount }} actiu seleccionat|{{ assetCount }} actius seleccionats'
       empty_title: La cistella és buida
       remove_one_asset: Eliminar recurs {{ assetName }} de la selecció de recursos
       remove_all_assets: Eliminar tot
+  asset_preview:
+    previous: Recurs anterior
+    next: Següent recurs
+    other_main_media: No podem generar la vista prèvia d'aquest recurs.
+    edit_asset: Editar recurs
+    download: Baixar
+    copy_url: Copiar URL
+  close: Tancar el modal
+  breadcrumb:
+    products: Productes
+  app:
+    image:
+      wide:
+        download: Descarregui el fitxer
+        upload: Arrossegar i deixar per carrgar o feu clic aquí
+      small:
+        remove: Eliminar
+        download: Baixar
+        upload: Arrossegar i deixar anar per carregar
+  grid:
+    counter: '{{ resultCount }} resultats'
+    counter_empty: '0 resultats'
   asset_family:
+    column:
+      selector:
+        title: Families de recursos
+    validation:
+      code:
+        pattern: 'Aquest camp només pot tenir lletres, números i guions baixos.'
+        limit_reached: 'Vostè no pot crear la família d''actius "{{ %asset_family_label% }}" perquè ha arribat al límit de famílies d''actius {{ %limit% }}'
+      transformation:
+        unknown_extra_field: 'La propietat {{ {{ field }} }} no s''esperava.'
+      naming_convention:
+        property_should_exist: 'La propietat "{{ %property% }}" no existeix per a aquesta família de recursos'
+      rule_template:
+        channel_should_exist: 'El canal "{{ %channel_code% }}" no existeix'
+        locale_should_exist: 'El local "{{ %locale_code% }}" no està activat o no existeix'
+        channel_not_supported_for_field: 'No pots especificar un canal per a cada camp "{{ %product_field% }}"'
+        locale_not_supported_for_field: 'No pots especificar un local pel camp "{{ %product_field% }}"'
+        assignmement_attribute_does_not_support_this_asset_family: 'L''atribut de producte "{{ %product_attribute_code% }}" no pot contenir recursos de families de recursos "{{ %asset_family_identifier% }}"'
+    button:
+      save: Desar
+      save_permission: Desar
+      create: Crear una família de recursos
+      edit: Editar família
+      execute_product_link_rules: Executar regles
+    permission:
+      title: Permisos de la família de recursos
     title: Recursos
+    breadcrumb: Families de recursos
     tab:
       assets: Recursos
+      attribute: Atributs
+      properties: Propietats
+      permission: Permisos
+      transformations: Transformacions
+      product_link_rules: Regles d'enllaç del producte
+    product_link_rules:
+      product_link_rules_subsection: 'Propietats de les regles d''enllaç del producte'
+      execute_rules:
+        confirm_title: Confirmar l'execució
+        execute_rules: Executar regles
+        cancel: Cancelar
+    properties:
+      title: Propietats de les families de recursos
+      identifier: Codi
+      label: Etiqueta
+    attribute:
+      title: Atributs de recursos
+    index:
+      grid:
+        count: '{0} Sense família de recursos|{1}{{ count }} Família de recursos|]1,Inf] {{ count }} Families de recursos'
+        help:
+          title: 'Benvingut a les families de Recursos!'
+          description_part_one: Enriquir la informació rellevant relacionada amb els productes (per exemple, marques, fabricants, colors, materials, ingredients...).
+    create:
+      header:
+        title: Crear
+      subtitle: Families de recursos
+      input:
+        label: Etiqueta
+        code: Codi (requerit)
+      confirm: Desar
+    delete:
+      title: Atribut
+    notification:
+      create:
+        success: Família de recursos creada correctament.
+      execute_product_link_rules:
+        success: Les regles d'enllaç dels productes han sigut llençats
+        fail: S'ha produït un error al provar de llençar les regles d'enllaços de productes
+    helper:
+      title: Benvingut a Gestor de Recursos!
+    no_data:
+      no_asset:
+        title: Ho sento, això no és un recurs!
   asset:
+    no_data:
+      title: No hi ha cap recurs per {{ entityLabel }}
+    no_result:
+      title: No hi ha cap resultat de la cerca
     selector:
       no_value: Feu clic aquí per seleccionar un recurs.
+    button:
+      back: Torna a la llista
+      fullscreen: Pantalla completa
+    product:
+      attribute: Atribut de producte
+      counter: '{{ totalCount }} resultat|{{ totalCount }} resultats'
+      dropdown:
+        attribute: Atribut de producte
+      title: Productes
+      not_enough_items:
+        button: Veure tots els productes
+    enrich:
+      edit_subsection: Editar recurs
     title: Recursos
+    create:
+      input:
+        label: Etiqueta
+        create_another: Crear un altre recurs
+      confirm: Desar
     upload:
+      retry: Torna-ho a provar
       remove_all: Eliminar tot
+      add_to_product: Afegir a producte
+      upload_failure: S'ha produït un error al pujar l'arxiu.
+      cannot_retry: S'ha produït un error al intentar pujar el fitxer.
+    delete:
+      title: Recurs
     grid:
+      search: Cerca a l'etiqueta, el codi i el text dels atributs
       filter:
         completeness:
           label: Complet
@@ -51,15 +192,84 @@ pim_asset_manager:
             in: A la llista
       more_result:
         title: Això no és!
+        description: Acaba de desplaçar-se a través dels primers resultats {{ maxDisplayedAssets }} del {{ total }} dels actius. Per veure més, proveu amb criteris de cerca més específics.
       column:
+        code: Codi
+        image: Imatge
+        label: Etiqueta
         complete: Complet
+        action: Accions
+      completeness:
+        title_no_required: Cap atribut requerit
+        title_complete: Tots els atributs complets {{ required }}
+    tab:
+      enrich: Enriquir
+      product: Productes
+    notification:
+      save:
+        success: Recurs actualitzat correctament.
+        validation_error: El recurs no s'ha pogut actualitzar
+      create:
+        success: Recurs creat correctament.
     completeness:
       label: Complet
   attribute:
+    default:
+      code: Codi
+      label: Etiqueta
+    type:
+      text: Text
+      option: Única opció
+      option_collection: Múltiples opcions
+      number: Número
     is_required: necessari per la integritat
+    button:
+      add: Afegeix un atribut
+    create:
+      header:
+        title: Crear
+      input:
+        label: Etiqueta
+      confirm: Desar
+    edit:
+      input:
+        asset_type: Família de recursos relacionada (requerit)
+    delete:
+      message: Esteu segur que voleu suprimir l'atribut "{{ attributeLabel }}"?
+      title: Atribut
+    notification:
+      save:
+        success: Atribut actualitzat correctament.
+        validation_error: No s'ha pogut actualitzar l'atribut
+      create:
+        success: Atribut creat correctament.
+        validation_error: No s'ha pogut crear l'atribut
+      delete:
+        success: Atribut eliminat correctament.
+    options:
+      no_value: Feu clic aquí per seleccionar una opció.
+      sub_title: Families de recursos
+      helper:
+        title: Traduccions d'etiquetes
+  modal:
+    delete:
+      subtitle: Confirmar l'eliminació
+      button:
+        cancel: Cancel·lar
+        confirm: Suprimir
 pim_enrich:
+  confirmation:
+    discard_changes: 'Perdreu els canvis a la "{{ entity }}" entitat si sortiu de la pàgina.'
   entity:
     attribute:
       property:
+        section:
+          type_specific: Escriu els paràmetres específics
         asset_family:
+          identifier: Família de recursos relacionada (requerit)
           default_label: Si us plau trieu un recurs de família
+permission:
+  mass_action: Aplicar {{ rightLevel }} regles en tots els grups
+job_execution:
+  summary:
+    assets: Recursos

@@ -9,10 +9,12 @@ pim_reference_entity:
   reference_entity:
     button:
       save: Spara
+      save_permission: Spara
       create: Skapa
     tab:
-      attribute: Attribut
+      attribute: Attributer
       properties: Egenskaper
+      permission: Behörigheter
     properties:
       identifier: Kod
       label: Etikett
@@ -28,7 +30,10 @@ pim_reference_entity:
   record:
     button:
       save: Spara
-      delete: Ta bort
+      create: Lägg till ny
+      delete: Radera
+    product:
+      title: Produkter
     enrich:
       code: Kod
       label: Etikett
@@ -41,19 +46,25 @@ pim_reference_entity:
     grid:
       filter:
         completeness:
-          label: Klart
-          'yes': 'YES'
-          'no': 'NO'
+          label: Slutförd
+          all: Alla
+          'yes': 'Ja'
+          'no': 'Nej'
+        option:
+          all: Alla
+          operator:
+            in: I lista
       column:
         code: Kod
         image: Bild
         label: Etikett
-        complete: Klart
+        complete: Slutförd
         action: Åtgärder
     tab:
       enrich: Berika
+      product: Produkter
     completeness:
-      label: Klart
+      label: Slutförd
   attribute:
     default:
       code: Kod
@@ -67,14 +78,18 @@ pim_reference_entity:
         title: Skapa
       input:
         label: Etikett
-        type: Attribut typ
+        type: Attributtyp
+        value_per_locale: Värde per språk
+        value_per_channel: Värde per kanal
       confirm: Spara
     edit:
       save: Spara
       cancel: Avbryt
       input:
         label: Etikett
-        type: Attribut typ
+        type: Attributtyp
+        value_per_locale: Värde per språk
+        value_per_channel: Värde per kanal
         max_length: Max tecken
         textarea: Textruta
         max_file_size: Max filstorlek (MB)
@@ -83,7 +98,7 @@ pim_reference_entity:
         regular_expression: Reguljära uttryck
         options:
           validation_rule:
-            none: Ingen
+            none: Inga
             email: E-mail
             regular_expression: Reguljära uttryck
             url: URL
@@ -97,7 +112,7 @@ pim_reference_entity:
       subtitle: Bekräfta radering
       button:
         cancel: Avbryt
-        confirm: Ta bort
+        confirm: Radera
 pim_enrich:
   entity:
     attribute:

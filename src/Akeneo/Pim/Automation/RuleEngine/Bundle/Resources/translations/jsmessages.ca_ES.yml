@@ -1,20 +1,16 @@
 pimee_catalog_rule:
   overview: "]-Inf, 1]{{ count }} regla|]1, Inf[{{ count }} regles"
   execution_button: Executar regles
-  selected: 'regles seleccionades'
   popin:
     execute_rules:
       confirm_title: Confirmar l'execució
-      confirm_content: Esteu segur que voleu executar totes les regles? (podria trigar molt de temps)
   notification:
-    fail: L'acció no es pot realitzar
     launched: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
   attribute:
     list:
       code.label: Codi
       condition.label: Condició
       action.label: Acció
-      no_rule_yet.label: Cap regla de moment
   rule:
     condition:
       if.label: si
@@ -34,12 +30,10 @@ pimee_catalog_rule:
           confirm_content: Esteu segur que voleu executar la regla?
       mass_edit_action:
         confirm_title: Confirmar el càlcul
-        confirm_content: Esteu segur que voleu calcular els productes afectats per la regla?
       mass_action:
         execute:
           confirm_title: Confirmar l'execució
-          confirm_content: Esteu segur que voleu executar les regles seleccionades?
-          success: L'acció massiva per executar les regles seleccionades s'ha posat en marxa. Se li notificarà quan finalitzi
+          success: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
           error: S'ha produït un error durant l'execució de les regles.
           empty_selection: No hi ha cap regla seleccionada.
         delete:
@@ -59,15 +53,8 @@ pim_enrich:
       module:
         delete:
           confirm: Esteu segur que voleu suprimir aquesta norma? No us en podreu fer enrera
-pim_datagrid:
-  entity:
-    rule:
-      flash:
-        delete:
-          success: Rol eliminat correctament
 flash:
   rule:
-    impacted_product_count: S'ha engegat l'acció massiva per calcular els productes afectats per la regla. Se li notificarà quan finalitzi.
     executed: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Configuració de les regles
 batch_jobs:
@@ -75,14 +62,7 @@ batch_jobs:
     execute_rules.label: Execució de les regles
   default_steps:
     execute_rules: Execució de les regles
-  yml_rule_import:
-    label: Importar regla en YAML
-    import.label: Importar regla
-  yml_rule_export:
-    label: Exportar regla en YAML
-    export.label: Exportar regla
   rule_impacted_product_count:
-    label: Productes afectats per les regles
     perform.label: Comptar productes afectats
   csv_product_import_with_rules:
     label: Importació de productes amb regles a CSV
@@ -98,8 +78,15 @@ pim_notification:
   types:
     rule: Configuració de les regles
     mass_edit_rule: Editar en massa les regles
+    execute_rules: Execució de les regles
 pim_menu:
   item:
     rule: Regles
 pim_title:
   pimee_catalog_rule_rule_index: Regles
+  pimee_catalog_rule_new: Regles
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: Execució de les regles

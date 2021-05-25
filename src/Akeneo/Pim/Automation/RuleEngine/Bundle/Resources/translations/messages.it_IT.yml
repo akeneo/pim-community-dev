@@ -2,61 +2,39 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
-        delete: Elimina
         execute: Esegui
       title: Regole
       column:
-        code: Codice
-        conditions: Condizione
-        actions: Azione
+        label: Etichetta
         impacted_product_count:
-          label: Prodotti interessati
-          count: '{0,1}%count% prodotto interessato |] 1, Inf [%count% prodotti interessati'
-          no_yet_calculated: Non ancora calcolato
+          count: '{0,1}%count% prodotto impatto|]1,Inf[%count% prodotti impattati'
+        tags:
+          label: Azioni
+        priority: Priorità
+        status: Stato
       mass_edit_action:
-        impacted_product_count: Calcola i prodotti interessati
         execute: Esegui
         delete: Elimina
-  actions:
-    type:
-      "copy": Quindi %from_field% viene copiato in %to_field%
-      "copy_value": Quindi %from_field% viene copiato in %to_field%
-      "set": Quindi %field% è impostato a %value%
-      "set_value": Quindi %field% è impostato a %value%
-      "add": Quindi %value% viene aggiunto a %field%
-      "remove": Quindi %value% viene rimosso da %field%
-    options:
-      include_children: aggiungi figli
   condition:
-    label: Se %field% %operator% %value%
-    operators:
-      "STARTS WITH": inizia con
-      "ENDS WITH": finisce per
-      "CONTAINS": contiene
-      "DOES NOT CONTAIN": non contiene
-      "EMPTY": è vuoto
-      "NOT EMPTY": non è vuoto
-      "IN": in
-      "NOT IN": non in
-      "IN CHILDREN": nei figli
-      "NOT IN CHILDREN": non nei figli
-      "UNCLASSIFIED": è non classificato
-      "IN OR UNCLASSIFIED": è non classificato o in
-      "BETWEEN": tra
-      "NOT BETWEEN": non tra
-      "=": è uguale a
-      "!=": non è uguale
-      ">": più grande di
-      ">=": è uguale o maggiore di
-      "<": prima del
-      "<=": è uguale o inferiore a
+    fields:
+      family: Famiglia
+      family_variant: Famiglia variante
+      associations: Associazione
+      groups: Gruppi
+      categories: Categorie
+      completeness: Completamento
+      identifier: Identificatore
+      parent: Parente
+      enabled: Stato
+      entity_type: Tipo di entità
+      created: Creato
+      updated: Caricato
   acl_group:
     rule: Regole
   acl:
     rule:
       view_permissions: Visualizza regole
       delete_permissions: Elimina regole
-      impacted_product_count_permissions: Calcola i prodotti interessati per le regole
       execute_permissions: Esegui le regole
   attribute:
     tab:
@@ -66,29 +44,16 @@ pimee_catalog_rule:
     acl:
       rule.view_permissions: Visualizza regole
   product:
-    tooltip:
-      product_attribute_affected_by_a_rule.content: Il valore di questo attributo può venire dalla(e) regola(e) <strong>%rule%</strong>. Ciò significa che se le condizioni della regola sono valide, le tue modifiche saranno sovrascritte.
-      loading.title: Caricamento in corso...
     history: Applicata la regola "%rule%"
-  product_value:
-    tooltip:
-      affected_by.title: 'Influenzato dalla(e) regola(e):'
   steps:
-    product_rule_definition_reader.title: Lettore di importazione per le regole di prodotto
-    rule_definition_processor.title: Processore di importazione per le regole di prodotto
-    product_rule_definition_writer.title: Scrittore di importazione per le regole di prodotto
     rules_execution.title: Esecuzione regole
-  notification:
-    rule:
-      executed: Esecuzione della(e) regola(e) terminata
-    mass_edit_rule:
-      success: Il calcolo dei prodotti interessati dalle le regole è finito
-      error: Si è verificato un errore durante il calcolo dei prodotti interessati dalle regole
 btn:
   Execute rules: Esegui le regole
-mass_edit_rule: Impostazioni delle Regole
-job_execution.summary.rule_calculated: Numero di regole
+job_execution:
+  summary:
+    rule_calculated: Numero di regole
 pim_datagrid:
   cells:
     type:
       mass_edit_rule: Impostazioni Ruoli
+      execute_rules: Esecuzione regole
