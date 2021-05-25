@@ -47,6 +47,7 @@
 - PIM-9853: Make the word "product" translatable
 - PIM-9872: Fix Columns button from published product grid when catalog contains many attributes
 - PIM-9866: Creates a warning whenever a cell contains a date in a reference entity xls import
+- PIM-9871: Fix Published Product Grid takes long time to load for high number of attribute usable in grid
 
 ## Improvements
 

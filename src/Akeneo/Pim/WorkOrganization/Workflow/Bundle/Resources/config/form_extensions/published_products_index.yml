@@ -93,16 +93,16 @@ extensions:
             label: pim_datagrid.mass_action.selected.product
 
     pimee-published-product-index-filters-manage:
-        module: oro/datafilter/filters-button
+        module: oro/datafilter/filters-column
         parent: pimee-published-product-index-column-inner
         targetZone: manage-filters-button
+        config:
+            attributeFiltersRoute: pim_datagrid_productgrid_attributes_filters
 
     pimee-published-product-index-grid-filters-list:
-        module: oro/datafilter/filters-list
+        module: oro/datafilter/filters-selector
         parent: pimee-published-product-index-column-inner
         targetZone: filters
-        config:
-            displayedAsColumn: true
 
     pimee-published-product-index-actions-panel:
         module: oro/datagrid/actions-panel
