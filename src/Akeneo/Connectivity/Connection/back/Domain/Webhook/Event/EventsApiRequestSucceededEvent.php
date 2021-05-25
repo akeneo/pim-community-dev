@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Domain\Webhook\Event;
 
 use Akeneo\Platform\Component\EventQueue\EventInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -22,6 +23,8 @@ class EventsApiRequestSucceededEvent
      */
     public function __construct(string $connectionCode, array $events)
     {
+        Assert::allIsInstanceOf($events, EventInterface::class);
+
         $this->connectionCode = $connectionCode;
         $this->events = $events;
     }
