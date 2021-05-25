@@ -1,4 +1,4 @@
-import {TreeNode} from '../../../src';
+import {DraggedNode, TreeNode} from '../../../src';
 
 const aTreeNode = <T>(
   data: T,
@@ -20,4 +20,12 @@ const aTreeNode = <T>(
   };
 };
 
-export {aTreeNode};
+const aDraggedNode = (identifier: number = 1234, parentId: number = 1111, position: number = 0): DraggedNode => {
+  return {
+    parentId,
+    position,
+    identifier,
+  };
+};
+
+export {aTreeNode, aDraggedNode};

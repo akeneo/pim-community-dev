@@ -1,7 +1,6 @@
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, ArrowRightIcon, getColor} from 'akeneo-design-system';
-
-type PlaceholderPosition = 'top' | 'bottom';
+import {PlaceholderPosition} from '../../../models';
 
 type TreeRowProps = {
   $selected: boolean;
@@ -22,7 +21,7 @@ const placeholderPositionStyles = css<{placeholderPosition?: PlaceholderPosition
     width: 100%;
     height: 4px;
     margin-top: -2px;
-    background: linear-gradient(to top, ${getColor('blue', 40)} 4px, ${getColor('white')} 0px);
+    background: linear-gradient(to top, ${getColor('blue40')} 4px, ${getColor('white')} 0px);
     pointer-events: none;
 
     ${({placeholderPosition}) =>
@@ -47,6 +46,7 @@ const treeRowBackgroundStyles = css<TreeRowProps & AkeneoThemedProps>`
 
     background-color: ${getColor('white')};
     border-bottom: 1px solid ${getColor('grey60')};
+    transition: background-color 0.2s ease;
 
     ${({$disabled}) =>
       $disabled &&
@@ -66,7 +66,8 @@ const treeRowBackgroundStyles = css<TreeRowProps & AkeneoThemedProps>`
     background-color: ${({$selected}) => getColor($selected ? 'blue20' : 'grey20')};
   }
 
-  ${({placeholderPosition}) => placeholderPosition && placeholderPositionStyles}
+  ${({placeholderPosition}) =>
+    (placeholderPosition === 'bottom' || placeholderPosition === 'top') && placeholderPositionStyles}
 `;
 
 const TreeRow = styled.div<TreeRowProps & AkeneoThemedProps>`
@@ -143,9 +144,15 @@ const RowActionsContainer = styled.div`
 `;
 
 const DragInitiator = styled.div`
+  cursor: grab;
   display: flex;
   align-items: center;
+  justify-content: center;
   color: ${getColor('grey100')};
+
+  :active {
+    cursor: grabbing;
+  }
 `;
 
 export type {PlaceholderPosition};

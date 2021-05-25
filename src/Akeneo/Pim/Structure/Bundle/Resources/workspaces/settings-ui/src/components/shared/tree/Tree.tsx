@@ -10,16 +10,8 @@ import React, {
 } from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, RowIcon} from 'akeneo-design-system';
-import {TreeNode} from '../../../models';
-import {
-  ArrowButton,
-  DragInitiator,
-  PlaceholderPosition,
-  RowActionsContainer,
-  RowInnerContainer,
-  TreeArrowIcon,
-  TreeRow,
-} from './TreeRow';
+import {PlaceholderPosition, TreeNode} from '../../../models';
+import {ArrowButton, DragInitiator, RowActionsContainer, RowInnerContainer, TreeArrowIcon, TreeRow} from './TreeRow';
 import {TreeActions} from './TreeActions';
 import {TreeIcon} from './TreeIcon';
 
@@ -35,7 +27,7 @@ const placeholderPositionStyles = css<{placeholderPosition?: PlaceholderPosition
     width: 100%;
     height: 4px;
     margin-top: -2px;
-    background: linear-gradient(to top, ${getColor('blue', 40)} 4px, ${getColor('white')} 0px);
+    background: linear-gradient(to top, ${getColor('blue40')} 4px, ${getColor('white')} 0px);
     pointer-events: none;
   }
 `;
@@ -57,7 +49,7 @@ const SubTreesContainer = styled.ul`
   padding: 0;
 `;
 
-type CursorPosition = {
+export type CursorPosition = {
   x: number;
   y: number;
 };
@@ -127,6 +119,7 @@ const Tree = <T,>({
   const dragRef = useRef<HTMLDivElement>(null);
   const treeRowRef = useRef<HTMLDivElement>(null);
   const [timer, setTimer] = useState<number | null>(null);
+  const [ticking, setTicking] = useState<boolean>(false);
 
   const handleArrowClick = useCallback(
     event => {
@@ -177,12 +170,21 @@ const Tree = <T,>({
         onDragOver={(event: React.DragEvent) => {
           event.stopPropagation();
           event.preventDefault();
-          if (onDragOver && treeRowRef.current) {
-            onDragOver(treeRowRef.current, {
-              x: event.clientX,
-              y: event.clientY,
+
+          const cursorPosition = {
+            x: event.clientX,
+            y: event.clientY,
+          };
+
+          if (!ticking) {
+            requestAnimationFrame(() => {
+              if (onDragOver && treeRowRef.current) {
+                onDragOver(treeRowRef.current, cursorPosition);
+              }
+              setTicking(false);
             });
           }
+          setTicking(true);
         }}
         onDragEnter={() => {
           // @fixme does not work when the user enter in a sub element of the row
@@ -191,7 +193,8 @@ const Tree = <T,>({
               return;
             }
 
-            const timeoutId = setTimeout(() => {
+            // @ts-ignore
+            const timeoutId: number = setTimeout(() => {
               open();
             }, 2000);
             setTimer(timeoutId);
@@ -200,7 +203,6 @@ const Tree = <T,>({
         onDragLeave={() => {
           // @fixme does not work when the user enter in a sub element of the row
           if (timer !== null) {
-            console.log('clear timeout', timer, label);
             clearTimeout(timer);
             setTimer(null);
           }
@@ -215,7 +217,6 @@ const Tree = <T,>({
             onDrop();
           }
           if (timer !== null) {
-            console.log('clear timeout', timer, label);
             clearTimeout(timer);
             setTimer(null);
           }
@@ -228,7 +229,6 @@ const Tree = <T,>({
             onDragEnd();
           }
           if (timer !== null) {
-            console.log('clear timeout', timer, label);
             clearTimeout(timer);
             setTimer(null);
           }
