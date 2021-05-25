@@ -1153,7 +1153,7 @@ jobs:
           - run:
               name: Prepare infrastructure artifacts
               command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr-ge INSTANCE_NAME=pimci-pr-ge-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
-              when: on_fail
+              when: always
           - store_artifacts:
               path: ~/artifacts/infra
           - run:

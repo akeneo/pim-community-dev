@@ -3,5 +3,5 @@ includes:
 parameters:
     level: 5
     paths:
-        - %rootDir%/../../../src/Akeneo/TrialEdition/back
+        - %rootDir%/../../../src/Akeneo/FreeTrial/back
     treatPhpDocTypesAsCertain: false

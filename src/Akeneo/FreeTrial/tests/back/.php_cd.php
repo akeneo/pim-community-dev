@@ -30,7 +30,7 @@ $rules = [
             // For SSO authentication
             'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\User\UnknownUserException',
         ]
-    )->in('Akeneo\Pim\TrialEdition\Infrastructure'),
+    )->in('Akeneo\FreeTrial\Infrastructure'),
 ];
 
 return new Configuration($rules, $finder);

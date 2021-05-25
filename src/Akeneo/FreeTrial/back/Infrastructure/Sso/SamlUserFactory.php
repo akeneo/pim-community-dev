@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\TrialEdition\Infrastructure\Sso;
+namespace Akeneo\FreeTrial\Infrastructure\Sso;
 
 use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\User\UnknownUserException;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -30,7 +30,7 @@ final class SamlUserFactory implements SamlUserFactoryInterface
 {
     private SamlUserFactoryInterface $baseUserFactory;
 
-    private FeatureFlag $trialEditionFeature;
+    private FeatureFlag $freeTrialFeature;
 
     private SimpleFactoryInterface $userFactory;
 
@@ -44,7 +44,7 @@ final class SamlUserFactory implements SamlUserFactoryInterface
 
     public function __construct(
         SamlUserFactoryInterface $baseUserFactory,
-        FeatureFlag $trialEditionFeature,
+        FeatureFlag $freeTrialFeature,
         SimpleFactoryInterface $userFactory,
         SaverInterface $userSaver,
         ObjectUpdaterInterface $userUpdater,
@@ -52,7 +52,7 @@ final class SamlUserFactory implements SamlUserFactoryInterface
         LoggerInterface $logger
     ) {
         $this->baseUserFactory = $baseUserFactory;
-        $this->trialEditionFeature = $trialEditionFeature;
+        $this->freeTrialFeature = $freeTrialFeature;
         $this->userFactory = $userFactory;
         $this->userSaver = $userSaver;
         $this->userUpdater = $userUpdater;
@@ -62,18 +62,18 @@ final class SamlUserFactory implements SamlUserFactoryInterface
 
     public function createUser(SamlTokenInterface $token)
     {
-        if (!$this->trialEditionFeature->isEnabled()) {
+        if (!$this->freeTrialFeature->isEnabled()) {
             return $this->baseUserFactory->createUser($token);
         }
 
         try {
             $user = $this->createUserFromSamlToken($token);
-            $this->logger->info(sprintf("User '%s' created from Trial Edition SSO authentication.", $token->getUsername()));
+            $this->logger->info(sprintf("User '%s' created from free trial SSO authentication.", $token->getUsername()));
         } catch (\Exception $exception) {
             $this->logger->error(
-                'Unable to create user from Trial Edition SSO authentication',
+                'Unable to create user from free trial SSO authentication',
                 [
-                    'error_code' => 'unable_to_create_trial_edition_user',
+                    'error_code' => 'unable_to_create_free_trial_user',
                     'error_message' => $exception->getMessage(),
                 ]
             );
