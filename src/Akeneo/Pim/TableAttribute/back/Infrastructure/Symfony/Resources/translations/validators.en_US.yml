@@ -13,3 +13,4 @@ pim_table_configuration:
             column_label_must_be_a_string: The column label must be a string
             label_locale_does_not_exist_or_is_not_activated: The "{{ locale_code }}" locale doesn't exist or is not activated
             invalid_labels_format: The column labels must be a key/value object
+            must_not_be_filled: The type %type% does not allow table_configuration

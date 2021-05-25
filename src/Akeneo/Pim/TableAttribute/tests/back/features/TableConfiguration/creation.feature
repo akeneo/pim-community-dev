@@ -62,4 +62,4 @@ Feature: Create a table attribute
 
   Scenario: Cannot create a non table attribute with a table configuration
     When I create a text attribute with a table configuration
-    Then There is a violation with message: TODO error message non table
+    Then There is a violation with message: The type pim_catalog_text does not allow table_configuration

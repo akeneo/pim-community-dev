@@ -70,7 +70,8 @@ class IsTableAttributeConfiguredValidatorSpec extends ObjectBehavior
         $name->getType()->willReturn(AttributeTypes::TEXT);
         $name->getRawTableConfiguration()->willReturn(['configuration']);
 
-        $context->buildViolation('TODO error message non table', [])->shouldBeCalled()->willReturn($violationBuilder);
+        $context->buildViolation('pim_table_configuration.validation.table_configuration.must_not_be_filled', [])->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->setParameter('%type%', 'pim_catalog_text')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->atPath('table_configuration')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
