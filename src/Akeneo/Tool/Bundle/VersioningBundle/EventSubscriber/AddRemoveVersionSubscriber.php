@@ -64,7 +64,7 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::PRE_REMOVE => 'addRemoveVersion',
+            StorageEvents::POST_REMOVE => 'addRemoveVersion',
         ];
     }
 
