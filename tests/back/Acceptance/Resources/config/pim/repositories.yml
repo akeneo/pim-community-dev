@@ -64,5 +64,7 @@ services:
             -
                 'Akeneo\Pim\Structure\Component\Model\Attribute': '@pim_catalog.repository.attribute'
                 'Akeneo\Pim\Structure\Component\Model\AttributeGroup': '@pim_catalog.repository.attribute_group'
+                'Akeneo\Channel\Component\Model\Channel': '@pim_catalog.repository.channel'
+                'Akeneo\Channel\Component\Model\Locale': '@pim_catalog.repository.locale'
         tags:
             - { name: validator.constraint_validator, alias: doctrine.orm.validator.unique }
