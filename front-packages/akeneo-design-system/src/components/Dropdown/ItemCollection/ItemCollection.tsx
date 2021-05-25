@@ -1,5 +1,14 @@
 import {Key, Override} from '../../../shared';
-import React, {ReactNode, Children, useRef, useCallback, KeyboardEvent, useEffect, isValidElement, cloneElement} from 'react';
+import React, {
+  ReactNode,
+  Children,
+  useRef,
+  useCallback,
+  KeyboardEvent,
+  useEffect,
+  isValidElement,
+  cloneElement,
+} from 'react';
 import styled from 'styled-components';
 import {useAutoFocus, useCombinedRefs} from '../../../hooks';
 
@@ -43,7 +52,7 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
       }
     }, []);
 
-    const childrenCount = Children.toArray(children).filter(isValidElement).length
+    const childrenCount = Children.toArray(children).filter(isValidElement).length;
 
     const decoratedChildren = Children.map(children, (child, index) => {
       if (isValidElement(child)) {
@@ -82,9 +91,7 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
 
       observer.observe(lastElement);
 
-      return () => {
-        observer.unobserve(lastElement);
-      };
+      return () => observer.unobserve(lastElement);
     }, [onNextPage, containerRef.current, lastItemRef.current]);
 
     useAutoFocus(firstItemRef);

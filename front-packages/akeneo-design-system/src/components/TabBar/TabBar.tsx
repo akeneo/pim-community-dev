@@ -49,7 +49,7 @@ const TabContainer = styled.div<TabProps & AkeneoThemedProps>`
 
 const MoreDropdown = styled(Dropdown)`
   align-items: center;
-`
+`;
 
 type TabProps = {
   /**
