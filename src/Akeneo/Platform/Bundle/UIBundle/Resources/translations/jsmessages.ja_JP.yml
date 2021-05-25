@@ -154,8 +154,10 @@ pim_common:
   before: 前
   by: by
   cancel: キャンセル
+  clear_value: 値の削除
   close: 閉じる
   code: コード
+  completeness: 完全性
   confirm: 確認
   confirm_deletion: 削除を確認する
   confirm_revocation: 取消を確認
@@ -169,6 +171,8 @@ pim_common:
   from: 開始
   general_properties: プロパティ全般
   history: 履歴
+  identifier: 識別子
+  image: 画像
   label: ラベル
   label_translations: ラベルの翻訳
   Label or identifier: ラベルもしくは識別子
@@ -188,6 +192,7 @@ pim_common:
   properties: プロパティ
   remove: 削除
   required_label: (必須)
+  result_count: "{0}0 結果|{1}1 結果|]1, Inf[{{ itemsCount }} 結果"
   save: 保存
   search: 検索
   select2:
@@ -198,6 +203,7 @@ pim_common:
   to: 終了
   type: タイプ
   update: 更新
+  updated: 更新
   "yes": "はい"
   operator: オペレータ
   operators:
@@ -338,8 +344,3 @@ pim_notification:
     export: エクスポート
     quick_export: クイック エクスポート
     mass_edit: 一括編集
-akeneo_communication_channel:
-  link:
-    title: お知らせ
-  panel:
-    title: お知らせ

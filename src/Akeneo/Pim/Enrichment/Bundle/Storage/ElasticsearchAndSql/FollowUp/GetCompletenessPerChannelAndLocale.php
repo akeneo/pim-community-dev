@@ -218,7 +218,8 @@ SQL;
                                             ]
                                         ],
                                         [
-                                            'term' => ["completeness." . $categoriesCodeAndLocalesByChannel['channel_code'] . "." . $locale => 100]],
+                                            'term' => ["completeness." . $categoriesCodeAndLocalesByChannel['channel_code'] . "." . $locale => 100]
+                                        ],
                                         [
                                             'term' => ["enabled" => true]
                                         ],
@@ -264,10 +265,10 @@ SQL;
      * @return CompletenessWidget
      */
     private function generateCompletenessWidgetModel(
-            string $translationLocaleCode,
-            array $categoriesCodeAndLocalesByChannels,
-            array $totalProductsByChannel,
-            array $localesWithNbCompleteByChannel
+        string $translationLocaleCode,
+        array $categoriesCodeAndLocalesByChannels,
+        array $totalProductsByChannel,
+        array $localesWithNbCompleteByChannel
     ) {
         $channelCompletenesses = [];
         foreach ($categoriesCodeAndLocalesByChannels as $categoriesCodeAndLocalesByChannel) {

@@ -177,15 +177,16 @@ define([
 
       this.$el.html(this.template({__: __}));
 
-      $.when(fetcherRegistry.getFetcher('attribute').getIdentifierAttribute(), this.addExistingFilters()).then(
+      $.when(fetcherRegistry.getFetcher('attribute').getIdentifierAttribute(), this.addExistingFilters()).always(
         function (identifier) {
           var filtersContainer = this.$('.filters').empty();
-
           var configuredFieldCodes = _.pluck(this.config.filters, 'field');
           var savedFieldCodes = _.pluck(this.filterViews, 'filterCode').sort();
-          var fieldCodes = _.union(configuredFieldCodes, _.without(savedFieldCodes, identifier.code), [
-            identifier.code,
-          ]);
+          var fieldCodes = _.union(configuredFieldCodes, _.without(savedFieldCodes));
+
+          if (identifier) {
+            fieldCodes = _.union(configuredFieldCodes, _.without(savedFieldCodes, identifier.code), [identifier.code]);
+          }
 
           var filterViews = _.map(
             fieldCodes,

@@ -25,11 +25,11 @@ class ListOffsetProductModelEndToEnd extends AbstractProductModelTestCase
     "current_page" : 1,
     "items_count"  : 6,
     "_embedded"    : {
-		"items": [
+        "items": [
             {$standardizedProducts['sweat']},
             {$standardizedProducts['shoes']},
             {$standardizedProducts['tshirt']}
-		]
+        ]
     }
 }
 JSON;
@@ -57,11 +57,11 @@ JSON;
     "current_page" : 2,
     "items_count"  : 6,
     "_embedded"    : {
-		"items": [
+        "items": [
             {$standardizedProducts['trousers']},
             {$standardizedProducts['hat']},
             {$standardizedProducts['handbag']}
-		]
+        ]
     }
 }
 JSON;
@@ -84,7 +84,7 @@ JSON;
     "current_page" : 2,
     "items_count"  : 6,
     "_embedded"    : {
-		"items": []
+        "items": []
     }
 }
 JSON;
@@ -128,5 +128,63 @@ JSON;
 
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $client->getResponse()->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expected, $client->getResponse()->getContent());
+    }
+
+    public function testListSubProductModels()
+    {
+        $client = $this->createAuthenticatedClient();
+        $search = '{"parent":[{"operator":"NOT EMPTY","value":null}]}';
+        $client->request('GET', 'api/rest/v1/product-models?page=1&with_count=true&limit=10&search=' . $search);
+        $encodedSearch = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+        $expected = <<<JSON
+{
+    "_links": {
+        "self" : {"href" : "http://localhost/api/rest/v1/product-models?page=1&with_count=true&pagination_type=page&limit=10&search=${encodedSearch}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/product-models?page=1&with_count=true&pagination_type=page&limit=10&search=${encodedSearch}"}
+    },
+    "current_page" : 1,
+    "items_count"  : 0,
+    "_embedded"    : {
+        "items": []
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    /**
+     * @group ce
+     */
+    public function testListRootProductModels()
+    {
+        $standardizedProductModels = $this->getStandardizedProductModels();
+
+        $client = $this->createAuthenticatedClient();
+        $search = '{"parent":[{"operator":"EMPTY","value":null}]}';
+        $client->request('GET', 'api/rest/v1/product-models?page=1&with_count=true&limit=10&search=' . $search);
+        $encodedSearch = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+        $expected = <<<JSON
+{
+    "_links": {
+        "self" : {"href" : "http://localhost/api/rest/v1/product-models?page=1&with_count=true&pagination_type=page&limit=10&search=${encodedSearch}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/product-models?page=1&with_count=true&pagination_type=page&limit=10&search=${encodedSearch}"}
+    },
+    "current_page" : 1,
+    "items_count"  : 6,
+    "_embedded"    : {
+        "items": [
+            {$standardizedProductModels['sweat']},
+            {$standardizedProductModels['shoes']},
+            {$standardizedProductModels['tshirt']},
+            {$standardizedProductModels['trousers']},
+            {$standardizedProductModels['hat']},
+            {$standardizedProductModels['handbag']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 }

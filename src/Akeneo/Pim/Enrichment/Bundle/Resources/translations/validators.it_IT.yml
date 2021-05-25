@@ -1,6 +1,8 @@
 An identifier attribute already exists.: Attributo identificatore già esistente.
 Attribute code may contain only letters, numbers and underscore: Il codice attributo può contenere solo lettere, numeri e underscore
 Attribute code may contain only letters (at least one), numbers and underscores: Il codice attributo può contenere solo lettere (almeno una), numeri e underscore
+Attribute code may not contain line-feed characters: Il codice attributo non può contenere caratteri di ritorno a capo
+Attribute group code may contain only letters, numbers and underscores: Il codice del gruppo di attributi può contenere solo lettere, numeri e trattini bassi
 This attribute type can't be used as a grid filter: Questo tipo di attributo non può essere utilizzato come filtro griglia
 This code is not available: Questo codice non è disponibile
 This attribute type must be required: Questo tipo di attributo deve essere obbligatorio
@@ -13,9 +15,8 @@ Option code may contain only letters, numbers and underscores: Il codice opzione
 Option code may contain only letters (at least one), numbers and underscores: Il codice opzione può contenere solo lettere (almeno una), numeri e underscore
 This value should not be a decimal.: Questo valore non può essere un decimale.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'Questa estensione del file non è consentita (estensioni consentite: %extensions%).'
-"The value %value% is already set on another product for the unique attribute %attribute%": Il valore %value% è già impostato su un altro prodotto per l'attributo univoco "%attribute%"
 The same identifier is already set on another product: Lo stesso identificatore è già impostato su un altro prodotto
-regex.comma_or_semicolon.message: Questo campo non deve contenere virgola o punto e virgola.
+regex.comma_or_semicolon_or_surrounding_space.message: Questo campo non dovrebbe contenere alcuna virgola o punto e virgola o spazi all'inizio o alla fine.
 file.extensions.message: 'Questa estensione del file non è consentita (estensioni consentite: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Questo tipo di valore prevede l'uso di {{ decimal_separator }} per separare i decimali.
 "This type of value expects the use of dot (.) to separate decimals.": Questo tipo di valore prevede l'uso del punto (.) per separare i decimali.
@@ -24,8 +25,6 @@ file.extensions.message: 'Questa estensione del file non è consentita (estensio
 "This type of value expects the use of the format {{ date_format }} for dates.": Questo tipo di valore prevede l'uso del formato {{ date_format }} per le date.
 "The category \"%category%\" has to be a root category.": La categoria "%category%" deve essere una categoria principale.
 "The attribute \"%attributeCode%\" does not exist.": L'attributo "%attributeCode%" non esiste.
-"The attribute \"%attributeCode%\" is not a metric attribute.": L'attributo "%attributeCode%" non è un attributo di metrica.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": L'unità "%unitCode%" non esiste o non appartiene alla famiglia metrica predefinita per l'attributo specificato "%attributeCode%".
 "The currency \"%currency%\" has to be activated.": La valuta "%currency%" deve essere attivata.
 product_model.code.not_blank.message: Il modello di prodotto non deve essere vuoto.
 product_model.code.unique.message: Lo stesso codice è già usato in un altro modello di prodotto.
@@ -49,7 +48,6 @@ pim_catalog:
     family_variant_axes_unique: Gli assi varianti devono essere unici, "%attributes%" sono usati diverse volte nei set di attributi varianti
     family_variant_axes_immutable: 'Gli assi varianti non posso essere modificati per il livello %level%'
     family_variant_axes_attribute_type_unique: Gli assi varianti "%axis%" non posso essere unici o un identificatore
-    family_variant_axes_attribute_type: Gli assi varianti "%axis%" devono essere un booleano, una selezione semplice, un riferimento dati semplice o un metrico
     family_variant_axes_wrong_type: Gli assi varianti "%axis%" non possono essere localizzabili, customizzabili per canale e specific i per impostazioni locali
     family_variant_axes_number_of_axes: 'Un set di attributi variante non può avere più di %max_axes_number% assi'
     family_variant_no_axis: Dovrebbe esserci almeno un attributo definito come asse per il set di attributi per il livello "%level%"

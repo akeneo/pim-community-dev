@@ -1,0 +1,8 @@
+pim_catalog_volume:
+  axis:
+    count_products: Proizvodi
+    count_channels: Kanali
+    count_families: Obitelji
+    count_attributes: Atributi
+    count_categories: Kategorije
+    count_category_trees: Kategorija stabala

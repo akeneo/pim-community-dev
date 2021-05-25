@@ -1,0 +1,31 @@
+pim_menu.item:
+  measurements: Misurazioni
+pim_title:
+  akeneo_measurements_settings_index: Misurazioni
+  akeneo_measurements_settings_any: Misurazioni
+measurements:
+  helper:
+    link: Vuoi saperne di più? Ecco qui!
+  family:
+    tab:
+      units: Unità
+      properties: Proprietà
+  unit:
+    title: Modifica {{ unitLabel }}
+    symbol: Simbolo
+    delete:
+      button: Elimina unità
+    add: Aggiungi unità
+    add_new: Aggiungi una nuova unità
+    operation:
+      add: Aggiungi nuovo operatore
+    operator:
+      add: Aggiungi
+      sub: Sottrai
+      mul: Moltiplica
+      div: Dividi
+  list:
+    header:
+      unit_count: Numero di unità
+  title:
+    measurement: Misurazione

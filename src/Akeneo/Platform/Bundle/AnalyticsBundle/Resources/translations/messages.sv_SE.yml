@@ -50,6 +50,10 @@ pim_analytics:
     mongodb_version: MongoDB version
     server_version: Server version
     php_extensions: PHP-tillägg
+    api_connection: API-anslutningar
+    nb_media_files_in_products: Antal mediafiler i produkterna
+    nb_media_images_in_products: Antal mediabilder i produkterna
+    is_demo_catalog: Demokatalogen installerad
   acl:
     system_info:
       index: Systeminformation
