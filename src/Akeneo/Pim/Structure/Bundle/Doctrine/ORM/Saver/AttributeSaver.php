@@ -6,8 +6,8 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -20,22 +20,19 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class AttributeSaver implements SaverInterface, BulkSaverInterface
 {
-    /** @var ObjectManager */
-    protected $objectManager;
+    protected EntityManagerInterface $entityManager;
+    protected EventDispatcherInterface $eventDispatcher;
+    /** @var SaverInterface[] */
+    protected array $additionalSavers;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /**
-     * @param ObjectManager                  $objectManager
-     * @param EventDispatcherInterface       $eventDispatcher
-     */
     public function __construct(
-        ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher,
+        array $additionalSavers = []
     ) {
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
+        $this->additionalSavers = $additionalSavers;
     }
 
     /**
@@ -49,9 +46,20 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(new GenericEvent($attribute, $options), StorageEvents::PRE_SAVE);
 
-        $this->objectManager->persist($attribute);
+        $this->entityManager->getConnection()->beginTransaction();
+        try {
+            $this->entityManager->persist($attribute);
+            $this->entityManager->flush();
 
-        $this->objectManager->flush();
+            foreach ($this->additionalSavers as $additionalSaver) {
+                $additionalSaver->save($attribute, $options);
+            }
+
+            $this->entityManager->getConnection()->commit();
+        } catch (\Throwable $e) {
+            $this->entityManager->getConnection()->rollBack();
+            throw $e;
+        }
 
         $this->eventDispatcher->dispatch(new GenericEvent($attribute, $options), StorageEvents::POST_SAVE);
     }
@@ -69,15 +77,26 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(new GenericEvent($attributes, $options), StorageEvents::PRE_SAVE_ALL);
 
-        foreach ($attributes as $attribute) {
-            $this->validateAttribute($attribute);
+        $this->entityManager->getConnection()->beginTransaction();
+        try {
+            foreach ($attributes as $attribute) {
+                $this->validateAttribute($attribute);
+                $this->eventDispatcher->dispatch(new GenericEvent($attribute, $options), StorageEvents::PRE_SAVE);
 
-            $this->eventDispatcher->dispatch(new GenericEvent($attribute, $options), StorageEvents::PRE_SAVE);
+                $this->entityManager->persist($attribute);
+            }
+            $this->entityManager->flush();
+            foreach ($attributes as $attribute) {
+                foreach ($this->additionalSavers as $additionalSaver) {
+                    $additionalSaver->save($attribute, $options);
+                }
+            }
 
-            $this->objectManager->persist($attribute);
+            $this->entityManager->getConnection()->commit();
+        } catch (\Throwable $e) {
+            $this->entityManager->getConnection()->rollBack();
+            throw $e;
         }
-
-        $this->objectManager->flush();
 
         foreach ($attributes as $attribute) {
             $this->eventDispatcher->dispatch(new GenericEvent($attribute, $options), StorageEvents::POST_SAVE);

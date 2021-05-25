@@ -681,4 +681,8 @@ interface AttributeInterface extends
     public function addGuidelines(string $locale, string $localeGuidelines): void;
 
     public function removeGuidelines(string $locale): void;
+
+    public function getRawTableConfiguration(): ?array;
+
+    public function setRawTableConfiguration(?array $rawTableConfiguration): void;
 }
