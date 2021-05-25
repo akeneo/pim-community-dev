@@ -19,7 +19,7 @@ const DefaultProviders: FC<{orderable: boolean}> = ({children, orderable}) => (
 const renderUseDragTreeNode = (node: TreeNode<any> | undefined, index: number, orderable: boolean) => {
   const wrapper: FC = ({children}) => <DefaultProviders orderable={orderable}>{children}</DefaultProviders>;
 
-  return renderHook(({node, index}: {node: TreeNode<any>|undefined; index: number}) => useDragTreeNode(node, index), {
+  return renderHook(({node, index}: {node: TreeNode<any> | undefined; index: number}) => useDragTreeNode(node, index), {
     initialProps: {node, index},
     wrapper,
   });
@@ -87,9 +87,7 @@ describe('useDragTreeNode', () => {
     expect(result.current.isDragged()).toBeFalsy();
   });
 
-
   test('it does not drag when the node is undefined', () => {
-
     const {result} = renderUseDragTreeNode(undefined, 0, true);
 
     expect(result.current.isDragged()).toBeFalsy();
