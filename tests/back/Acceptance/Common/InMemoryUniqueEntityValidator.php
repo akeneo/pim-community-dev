@@ -60,7 +60,7 @@ class InMemoryUniqueEntityValidator extends ConstraintValidator
     {
         $repo = $this->repositories[$objectClass] ?? null;
         if (null === $repo) {
-            throw new \InvalidArgumentException('repo has not been injected');
+            throw new \InvalidArgumentException(sprintf('Repo has not been injected for "%s"', $objectClass));
         }
 
         return $repo->findAll();
