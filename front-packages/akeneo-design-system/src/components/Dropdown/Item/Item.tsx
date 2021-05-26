@@ -15,7 +15,7 @@ const ItemLabel = styled.span`
   line-height: 34px;
 `;
 
-const ItemContainer = styled.div<{tall: boolean; disabled: boolean} & AkeneoThemedProps>`
+const ItemContainer = styled.div<{tall: boolean; disabled: boolean; isActive: boolean} & AkeneoThemedProps>`
   background: ${getColor('white')};
   height: ${({tall}) => (tall ? 44 : 34)}px;
   line-height: ${({tall}) => (tall ? 44 : 34)}px;
@@ -54,6 +54,14 @@ const ItemContainer = styled.div<{tall: boolean; disabled: boolean} & AkeneoThem
             color: ${getColor('grey', 140)};
           }
         `}
+
+  ${({isActive}) =>
+    isActive &&
+    css`
+      color: ${getColor('brand', 100)};
+      font-style: italic;
+      font-weight: 700;
+    `}
 `;
 
 type ItemProps = Override<
@@ -65,6 +73,11 @@ type ItemProps = Override<
     disabled?: boolean;
 
     /**
+     * Define if the item is currently active.
+     */
+    isActive?: boolean;
+
+    /**
      * The content of the item.
      */
     children: ReactNode;
@@ -73,7 +86,7 @@ type ItemProps = Override<
 
 const Item = React.forwardRef<HTMLDivElement, ItemProps>(
   (
-    {children, onKeyDown, disabled = false, onClick, title, ...rest}: ItemProps,
+    {children, onKeyDown, disabled = false, isActive = false, onClick, title, ...rest}: ItemProps,
     forwardedRef: Ref<HTMLDivElement>
   ): React.ReactElement => {
     let tall = false;
@@ -160,6 +173,7 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
         onKeyDown={handleKeyDown}
         disabled={disabled}
         aria-disabled={disabled}
+        isActive={isActive}
         {...rest}
         ref={forwardedRef}
       >
