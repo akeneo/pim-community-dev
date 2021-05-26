@@ -128,7 +128,7 @@ class AssetNormalizer implements AssetNormalizerInterface
     {
         $valuesToIndex = array_intersect_key($searchableAssetItem->values, array_flip($valueKeys));
         $dataToIndex = array_map(
-            fn(array $value) => $value['data'],
+            fn (array $value) => $value['data'],
             $valuesToIndex
         );
 

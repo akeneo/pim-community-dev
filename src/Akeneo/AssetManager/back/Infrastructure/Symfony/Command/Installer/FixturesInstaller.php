@@ -1144,7 +1144,7 @@ SQL;
 
         return current(array_filter(
             $attributes,
-            fn(AbstractAttribute $attribute) => $attribute->getCode()->equals(AttributeCode::fromString('label'))
+            fn (AbstractAttribute $attribute) => $attribute->getCode()->equals(AttributeCode::fromString('label'))
         ));
     }
 
@@ -1154,7 +1154,7 @@ SQL;
 
         return current(array_filter(
             $attributes,
-            fn(AbstractAttribute $attribute) => $attribute->getCode()->equals(AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE))
+            fn (AbstractAttribute $attribute) => $attribute->getCode()->equals(AttributeCode::fromString(AssetFamily::DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE))
         ));
     }
 }

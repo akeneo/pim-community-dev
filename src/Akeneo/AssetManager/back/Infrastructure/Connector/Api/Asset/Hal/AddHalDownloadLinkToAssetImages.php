@@ -43,7 +43,7 @@ class AddHalDownloadLinkToAssetImages
     {
         $mediaFileAttributeCodes = $this->findMediaFileAttributeCodes->find($assetFamilyIdentifier);
 
-        return array_map(fn($normalizedAsset) => $this->addDownloadLinkToNormalizedAsset($normalizedAsset, $mediaFileAttributeCodes), $normalizedAssets);
+        return array_map(fn ($normalizedAsset) => $this->addDownloadLinkToNormalizedAsset($normalizedAsset, $mediaFileAttributeCodes), $normalizedAssets);
     }
 
     private function addDownloadLinkToNormalizedAsset(array $normalizedAsset, array $mediaFileAttributeCodes): array

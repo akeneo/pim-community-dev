@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
-use Symfony\Component\Validator\Constraints\Type;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionValueCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
 use Akeneo\AssetManager\Infrastructure\Validation\Asset\EditOptionValueCommand as EditOptionValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -93,7 +93,7 @@ class EditOptionValueCommandValidator extends ConstraintValidator
 
     private function checkOptionExists(EditOptionValueCommand $command): void
     {
-        $existingOptionCodes = array_map(fn(AttributeOption $attributeOption) => (string) $attributeOption->getCode(), $command->attribute->getAttributeOptions());
+        $existingOptionCodes = array_map(fn (AttributeOption $attributeOption) => (string) $attributeOption->getCode(), $command->attribute->getAttributeOptions());
 
         if (!in_array($command->optionCode, $existingOptionCodes)) {
             $this->context

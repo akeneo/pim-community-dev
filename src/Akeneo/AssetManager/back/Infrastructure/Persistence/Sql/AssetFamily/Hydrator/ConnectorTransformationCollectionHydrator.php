@@ -80,7 +80,7 @@ class ConnectorTransformationCollectionHydrator
     private function buildOperations(array $normalizedOperations): OperationCollection
     {
         return OperationCollection::create(
-            array_map(fn(array $normalizedOperation): Operation => $this->operationFactory->create(
+            array_map(fn (array $normalizedOperation): Operation => $this->operationFactory->create(
                 $normalizedOperation['type'],
                 $normalizedOperation['parameters']
             ), $normalizedOperations)

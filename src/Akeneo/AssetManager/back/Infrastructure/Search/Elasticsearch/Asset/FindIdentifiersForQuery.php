@@ -55,7 +55,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
      */
     private function getIdentifiers(array $matches): array
     {
-        return array_map(fn(array $hit) => $hit['_id'], $matches['hits']['hits']);
+        return array_map(fn (array $hit) => $hit['_id'], $matches['hits']['hits']);
     }
 
     private function getLastSortValue(array $matches): ?array

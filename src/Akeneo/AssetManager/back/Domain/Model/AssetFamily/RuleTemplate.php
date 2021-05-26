@@ -54,9 +54,9 @@ class RuleTemplate
         Assert::keyExists($content, self::CONDITIONS);
         Assert::keyExists($content, self::ACTIONS);
 
-        $conditions = array_map(fn(array $condition) => Condition::createFromNormalized($condition), $content[self::CONDITIONS]);
+        $conditions = array_map(fn (array $condition) => Condition::createFromNormalized($condition), $content[self::CONDITIONS]);
 
-        $actions = array_map(fn(array $action) => Action::createFromNormalized($action), $content[self::ACTIONS]);
+        $actions = array_map(fn (array $action) => Action::createFromNormalized($action), $content[self::ACTIONS]);
 
         return new self($conditions, $actions);
     }
@@ -92,18 +92,18 @@ class RuleTemplate
 
     public function compile(PropertyAccessibleAsset $propertyAccessibleAsset): CompiledRule
     {
-        $compiledConditions = array_map(fn(Condition $condition) => $condition->compile($propertyAccessibleAsset)->normalize(), $this->conditions);
+        $compiledConditions = array_map(fn (Condition $condition) => $condition->compile($propertyAccessibleAsset)->normalize(), $this->conditions);
 
-        $compiledActions = array_map(fn(Action $action) => $action->compile($propertyAccessibleAsset)->normalize(), $this->actions);
+        $compiledActions = array_map(fn (Action $action) => $action->compile($propertyAccessibleAsset)->normalize(), $this->actions);
 
         return new CompiledRule($compiledConditions, $compiledActions);
     }
 
     public function normalize(): array
     {
-        $normalizedConditions = array_map(fn(Condition $condition) => $condition->normalize(), $this->conditions);
+        $normalizedConditions = array_map(fn (Condition $condition) => $condition->normalize(), $this->conditions);
 
-        $normalizedActions = array_map(fn(Action $action) => $action->normalize(), $this->actions);
+        $normalizedActions = array_map(fn (Action $action) => $action->normalize(), $this->actions);
 
         return [
             self::CONDITIONS => $normalizedConditions,
@@ -113,11 +113,11 @@ class RuleTemplate
 
     private static function createConditions(array $content): array
     {
-        return array_map(fn(array $condition) => Condition::createFromProductLinkRule($condition), $content[self::PRODUCT_SELECTIONS]);
+        return array_map(fn (array $condition) => Condition::createFromProductLinkRule($condition), $content[self::PRODUCT_SELECTIONS]);
     }
 
     private static function createActions(array $content): array
     {
-        return array_map(fn(array $action) => Action::createFromProductLinkRule($action), $content[self::ASSIGN_ASSETS_TO]);
+        return array_map(fn (array $action) => Action::createFromProductLinkRule($action), $content[self::ASSIGN_ASSETS_TO]);
     }
 }

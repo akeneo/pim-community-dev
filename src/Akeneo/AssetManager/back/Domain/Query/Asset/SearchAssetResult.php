@@ -45,7 +45,7 @@ class SearchAssetResult
     public function normalize(): array
     {
         return [
-            self::ITEMS         => array_map(fn(AssetItem $assetItem) => $assetItem->normalize(), $this->items),
+            self::ITEMS         => array_map(fn (AssetItem $assetItem) => $assetItem->normalize(), $this->items),
             self::MATCHES_COUNT => $this->matchesCount,
             self::TOTAL_COUNT => $this->totalCount,
         ];

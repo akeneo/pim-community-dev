@@ -76,7 +76,7 @@ class AssetFamilyDetails
             self::LABELS       => $this->labels->normalize(),
             self::IMAGE        => $this->image->normalize(),
             self::ASSET_COUNT => $this->assetCount,
-            self::ATTRIBUTES   => array_map(fn(AttributeDetails $attribute) => $attribute->normalize(), $this->attributes),
+            self::ATTRIBUTES   => array_map(fn (AttributeDetails $attribute) => $attribute->normalize(), $this->attributes),
             self::PERMISSION => [
                 self::EDIT_PERMISSION => $this->isAllowedToEdit,
             ],

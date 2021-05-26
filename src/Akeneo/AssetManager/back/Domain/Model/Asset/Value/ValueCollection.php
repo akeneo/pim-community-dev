@@ -24,7 +24,7 @@ class ValueCollection implements \IteratorAggregate, \Countable
 
     public function normalize(): array
     {
-        return array_map(fn(Value $value) => $value->normalize(), $this->values);
+        return array_map(fn (Value $value) => $value->normalize(), $this->values);
     }
 
     public function findValue(ValueKey $valueKey): ?Value

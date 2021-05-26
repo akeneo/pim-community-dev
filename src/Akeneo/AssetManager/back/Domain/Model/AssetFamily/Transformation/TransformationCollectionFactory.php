@@ -30,7 +30,7 @@ class TransformationCollectionFactory
         Assert::allIsArray($normalizedTransformations);
 
         return TransformationCollection::create(
-            array_map(fn(array $normalizedTransformation): Transformation => $this->buildTransformation($normalizedTransformation), $normalizedTransformations)
+            array_map(fn (array $normalizedTransformation): Transformation => $this->buildTransformation($normalizedTransformation), $normalizedTransformations)
         );
     }
 
@@ -79,7 +79,7 @@ class TransformationCollectionFactory
             Target::createFromNormalized($normalizedTransformation['target']),
             OperationCollection::create(
                 array_map(
-                    fn(array $normalizedOperation): Operation => $this->buildOperation($normalizedOperation),
+                    fn (array $normalizedOperation): Operation => $this->buildOperation($normalizedOperation),
                     $normalizedTransformation['operations']
                 )
             ),

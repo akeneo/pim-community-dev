@@ -280,7 +280,7 @@ WHERE (code = :reference_code OR code = :reference_localizable_code)
 SQL;
 
         return array_map(
-            fn($row) => $row['identifier'],
+            fn ($row) => $row['identifier'],
             $this->getReadConnection()->fetchAll(
                 $sqlReferenceAttributes,
                 [

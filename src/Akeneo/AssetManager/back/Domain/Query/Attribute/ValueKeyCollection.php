@@ -55,7 +55,7 @@ class ValueKeyCollection implements \IteratorAggregate
 
     public function normalize(): array
     {
-        return array_map(fn(ValueKey $valueKey) => $valueKey->__toString(), $this->valueKeys);
+        return array_map(fn (ValueKey $valueKey) => $valueKey->__toString(), $this->valueKeys);
     }
 
     public function getIterator(): \Iterator

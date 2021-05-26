@@ -130,6 +130,6 @@ class EditAssetValueCommandsFactory
 
     private function removeNonStringKeysAndEmptyValues(array $matches): array
     {
-        return array_filter($matches, fn($value, $key) => is_string($key) && '' !== $value, ARRAY_FILTER_USE_BOTH);
+        return array_filter($matches, fn ($value, $key) => is_string($key) && '' !== $value, ARRAY_FILTER_USE_BOTH);
     }
 }

@@ -147,7 +147,7 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
                             $attributeFilter['value']
                         );
 
-                        $value = array_values(array_map(fn(AssetIdentifier $assetIdentifier) => (string) $assetIdentifier, $assetIdentifiers));
+                        $value = array_values(array_map(fn (AssetIdentifier $assetIdentifier) => (string) $assetIdentifier, $assetIdentifiers));
                     }
 
                     $valueKey = $this->getValueKeyForAttributeChannelAndLocale->fetch(
@@ -184,7 +184,7 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
     {
         $loweredTerms = strtolower($searchFilter['value']);
         $terms = explode(' ', $loweredTerms);
-        $wildcardTerms = array_map(fn(string $term) => sprintf('*%s*', QueryString::escapeValue($term)), $terms);
+        $wildcardTerms = array_map(fn (string $term) => sprintf('*%s*', QueryString::escapeValue($term)), $terms);
 
         return implode(' AND ', $wildcardTerms);
     }
@@ -212,7 +212,7 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
             LocaleIdentifierCollection::fromNormalized($locales)
         );
         if (true === $completeFilter['value']) {
-            $clauses = array_map(fn(string $requiredValueKey) => [
+            $clauses = array_map(fn (string $requiredValueKey) => [
                 'exists' => [
                     'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
                 ],
@@ -223,7 +223,7 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
             );
         }
         if (false === $completeFilter['value']) {
-            $clauses = array_map(fn(string $requiredValueKey) => [
+            $clauses = array_map(fn (string $requiredValueKey) => [
                 'bool' => [
                     'must_not' => [
                         [

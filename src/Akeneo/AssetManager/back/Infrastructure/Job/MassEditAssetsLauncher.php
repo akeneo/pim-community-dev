@@ -41,7 +41,7 @@ class MassEditAssetsLauncher implements MassEditAssetsLauncherInterface
         $token = $this->tokenStorage->getToken();
         $username = null !== $token ? $token->getUsername() : null;
 
-        $normalizedUpdaters = array_map(fn($command) => $command->normalize(), $updaters);
+        $normalizedUpdaters = array_map(fn ($command) => $command->normalize(), $updaters);
 
         $config = [
             'asset_family_identifier' => (string) $assetFamilyIdentifier,

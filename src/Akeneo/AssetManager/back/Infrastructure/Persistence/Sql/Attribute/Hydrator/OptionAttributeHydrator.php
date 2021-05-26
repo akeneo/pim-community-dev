@@ -80,7 +80,7 @@ class OptionAttributeHydrator extends AbstractAttributeHydrator
      */
     private function hydrateOptions(array $attributeOptions): array
     {
-        return array_map(fn(array $attributeOption) => AttributeOption::create(
+        return array_map(fn (array $attributeOption) => AttributeOption::create(
             OptionCode::fromString($attributeOption['code']),
             LabelCollection::fromArray($attributeOption['labels'])
         ), $attributeOptions);

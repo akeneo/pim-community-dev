@@ -74,7 +74,7 @@ class LabelCollection
     {
         $localeCodes = $localeIdentifiers->normalize();
 
-        $filteredLabels = array_filter($this->translatedLabels, fn($labelCode) => in_array($labelCode, $localeCodes), ARRAY_FILTER_USE_KEY);
+        $filteredLabels = array_filter($this->translatedLabels, fn ($labelCode) => in_array($labelCode, $localeCodes), ARRAY_FILTER_USE_KEY);
 
         return new self($filteredLabels);
     }

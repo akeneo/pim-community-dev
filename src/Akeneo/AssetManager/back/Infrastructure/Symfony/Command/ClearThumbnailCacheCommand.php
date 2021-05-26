@@ -80,6 +80,6 @@ class ClearThumbnailCacheCommand extends Command
 
     private function getSupportedPreviewTypes(): array
     {
-        return array_keys(array_filter($this->filterConfiguration->all(), fn($filterConfiguration) => isset($filterConfiguration['cache']) && $filterConfiguration['cache'] === self::ASSET_MANAGER_CACHE_RESOLVER));
+        return array_keys(array_filter($this->filterConfiguration->all(), fn ($filterConfiguration) => isset($filterConfiguration['cache']) && $filterConfiguration['cache'] === self::ASSET_MANAGER_CACHE_RESOLVER));
     }
 }

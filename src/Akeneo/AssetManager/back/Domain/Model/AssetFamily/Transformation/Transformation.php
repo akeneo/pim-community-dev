@@ -115,7 +115,7 @@ class Transformation
                 'filename_suffix' => $this->filenameSuffix,
                 'updated_at' => $this->updatedAt->format(\DateTimeInterface::ISO8601),
             ],
-            fn($value) => null !== $value
+            fn ($value) => null !== $value
         );
     }
 

@@ -81,7 +81,7 @@ class Action
     public function compile(PropertyAccessibleAsset $propertyAccessibleAsset): self
     {
         $field = ReplacePattern::replace($this->field->stringValue(), $propertyAccessibleAsset);
-        $items = array_map(fn(string $item) => ReplacePattern::replace($item, $propertyAccessibleAsset), $this->items->normalize());
+        $items = array_map(fn (string $item) => ReplacePattern::replace($item, $propertyAccessibleAsset), $this->items->normalize());
 
         $channelCompiled = $this->channel->normalize();
         if (!$this->channel->isEmpty()) {

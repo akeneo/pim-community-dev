@@ -99,7 +99,7 @@ class OptionCollectionAttribute extends AbstractAttribute
             parent::normalize(),
             [
                 'options' => array_map(
-                    fn(AttributeOption $attributeOption) => $attributeOption->normalize(),
+                    fn (AttributeOption $attributeOption) => $attributeOption->normalize(),
                     $this->getAttributeOptions()
                 ),
             ]

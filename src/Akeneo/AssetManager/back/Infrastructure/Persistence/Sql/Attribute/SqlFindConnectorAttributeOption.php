@@ -85,7 +85,7 @@ SQL;
             return null;
         }
 
-        $matchingOption = current(array_filter($options, fn($option) => $option['code'] === $optionCode));
+        $matchingOption = current(array_filter($options, fn ($option) => $option['code'] === $optionCode));
 
         if (!$matchingOption) {
             return null;

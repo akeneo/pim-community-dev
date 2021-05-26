@@ -218,7 +218,7 @@ class AssetQuery
 
     public function getFilter(string $field): array
     {
-        $filter = current(array_filter($this->filters, fn($filter) => $filter['field'] === $field));
+        $filter = current(array_filter($this->filters, fn ($filter) => $filter['field'] === $field));
 
         if (false === $filter) {
             throw new \InvalidArgumentException(sprintf('The query needs to contains a filter on the "%s" field', $field));

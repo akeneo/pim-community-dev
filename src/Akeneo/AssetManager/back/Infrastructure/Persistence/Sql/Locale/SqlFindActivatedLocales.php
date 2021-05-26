@@ -50,7 +50,7 @@ SQL;
         $results = $statement->fetchAll();
 
         return array_map(
-            fn(array $row) => Type::getType(Type::STRING)->convertToPHPValue(
+            fn (array $row) => Type::getType(Type::STRING)->convertToPHPValue(
                 $row['locales_codes'],
                 $this->platform
             ),

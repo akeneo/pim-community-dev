@@ -39,7 +39,7 @@ class ComputeTransformationFromAssetIdentifiersLauncher implements ComputeTransf
         Assert::allIsInstanceOf($assetIdentifiers, AssetIdentifier::class);
 
         $config = [
-            'asset_identifiers' => array_map(fn(AssetIdentifier $assetIdentifier) => (string) $assetIdentifier, $assetIdentifiers),
+            'asset_identifiers' => array_map(fn (AssetIdentifier $assetIdentifier) => (string) $assetIdentifier, $assetIdentifiers),
         ];
 
         $token = $this->tokenStorage->getToken();

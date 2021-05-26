@@ -152,7 +152,7 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
     {
         $imageValues = array_filter(
             $valueCollection,
-            fn(array $value) => $value['attribute'] === $attributeAsMainMedia->getIdentifier()->normalize()
+            fn (array $value) => $value['attribute'] === $attributeAsMainMedia->getIdentifier()->normalize()
         );
 
         $result = array_map(function (array $value) use ($attributeAsMainMedia) {

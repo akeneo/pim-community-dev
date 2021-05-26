@@ -44,7 +44,7 @@ class CacheFindActivatedLocalesByIdentifiers implements FindActivatedLocalesById
         }
 
         $localesInCache = array_intersect_key($this->localesCache, $requestedLocales);
-        $activatedLocales = array_values(array_filter($localesInCache, fn($localeIdentifier) => null !== $localeIdentifier));
+        $activatedLocales = array_values(array_filter($localesInCache, fn ($localeIdentifier) => null !== $localeIdentifier));
 
         return new LocaleIdentifierCollection($activatedLocales);
     }

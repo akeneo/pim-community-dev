@@ -73,7 +73,7 @@ class AssetFamilyPermission
     {
         return [
             self::ASSET_FAMILY_IDENTIFIER => $this->assetFamilyIdentifier->normalize(),
-            self::PERMISSIONS                 => array_map(fn(UserGroupPermission $userGroupPermission) => $userGroupPermission->normalize(), $this->permissions),
+            self::PERMISSIONS                 => array_map(fn (UserGroupPermission $userGroupPermission) => $userGroupPermission->normalize(), $this->permissions),
         ];
     }
 
@@ -141,7 +141,7 @@ class AssetFamilyPermission
     {
         $editPermissions = array_filter(
             $userGroupPermissions,
-            fn(UserGroupPermission $userGroupPermission) => $userGroupPermission->isAllowedToEdit()
+            fn (UserGroupPermission $userGroupPermission) => $userGroupPermission->isAllowedToEdit()
         );
 
         return !empty($editPermissions);

@@ -55,6 +55,6 @@ class IndexAction
      */
     private function normalizeAssetFamilyItems(array $assetFamilyItems): array
     {
-        return array_map(fn(AssetFamilyItem $item) => $item->normalize(), $assetFamilyItems);
+        return array_map(fn (AssetFamilyItem $item) => $item->normalize(), $assetFamilyItems);
     }
 }

@@ -63,7 +63,7 @@ class ConnectorTransformation
                 'filename_prefix' => $this->filenamePrefix,
                 'filename_suffix' => $this->filenameSuffix,
             ],
-            fn($value) => null !== $value
+            fn ($value) => null !== $value
         );
     }
 }

@@ -118,7 +118,7 @@ class GetConnectorAssetsAction
         }
 
         $result = ($this->searchConnectorAsset)($assetQuery);
-        $assets = array_map(fn(ConnectorAsset $asset) => $asset->normalize(), $result->assets());
+        $assets = array_map(fn (ConnectorAsset $asset) => $asset->normalize(), $result->assets());
 
         $assets = ($this->addHalLinksToImageValues)($assetFamilyIdentifier, $assets);
         $paginatedAssets = $this->paginateAssets($assets, $request, $assetFamilyIdentifier, $result->lastSortValue());

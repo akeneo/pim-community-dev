@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 
-use Symfony\Component\Validator\Constraints\All;
-use Symfony\Component\Validator\Constraints\Type;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AppendOptionCollectionValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionCollectionValueCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
 use Akeneo\AssetManager\Infrastructure\Validation\Asset\EditOptionCollectionValueCommand as EditOptionCollectionValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
@@ -113,7 +113,7 @@ class EditOptionCollectionValueCommandValidator extends ConstraintValidator
      */
     private function checkOptionExists($command): void
     {
-        $existingOptionCodes = array_map(fn(AttributeOption $attributeOption) => (string) $attributeOption->getCode(), $command->attribute->getAttributeOptions());
+        $existingOptionCodes = array_map(fn (AttributeOption $attributeOption) => (string) $attributeOption->getCode(), $command->attribute->getAttributeOptions());
 
         $unexistingOptionCodes = array_diff($command->optionCodes, $existingOptionCodes);
 

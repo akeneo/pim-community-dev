@@ -38,7 +38,7 @@ class TransformationCollection implements \IteratorAggregate
     public function normalize(): array
     {
         return array_values(array_map(
-            fn(Transformation $transformation) => $transformation->normalize(),
+            fn (Transformation $transformation) => $transformation->normalize(),
             $this->transformations
         ));
     }

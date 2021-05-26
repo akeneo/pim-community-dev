@@ -45,7 +45,7 @@ class OptionCollectionDataHydrator implements DataHydratorInterface
         OptionCollectionAttribute $optionCollectionAttribute
     ): array {
         $optionCodesFromModel = array_map(
-            fn(array $normalizedOption) => $normalizedOption['code'],
+            fn (array $normalizedOption) => $normalizedOption['code'],
             $optionCollectionAttribute->normalize()['options']
         );
 

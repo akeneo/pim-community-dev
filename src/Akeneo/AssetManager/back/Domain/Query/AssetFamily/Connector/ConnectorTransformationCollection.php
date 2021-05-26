@@ -33,7 +33,7 @@ class ConnectorTransformationCollection
     public function normalize(): array
     {
         return array_map(
-            fn(ConnectorTransformation $connectorTransformation) => $connectorTransformation->normalize(),
+            fn (ConnectorTransformation $connectorTransformation) => $connectorTransformation->normalize(),
             $this->connectorTransformations
         );
     }

@@ -74,6 +74,6 @@ class IndexAction
      */
     private function normalizeAttributesDetails(array $attributesDetails): array
     {
-        return array_map(fn(AttributeDetails $attributeDetails) => $attributeDetails->normalize(), $attributesDetails);
+        return array_map(fn (AttributeDetails $attributeDetails) => $attributeDetails->normalize(), $attributesDetails);
     }
 }

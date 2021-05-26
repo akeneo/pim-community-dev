@@ -42,7 +42,7 @@ class ProductLinkRuleLauncher implements ProductLinkRuleLauncherInterface
 
         $config = [
             'asset_family_identifier' => (string) $assetFamilyIdentifier,
-            'asset_codes' => array_map(fn(AssetCode $assetCode) => (string) $assetCode, $assetCodes),
+            'asset_codes' => array_map(fn (AssetCode $assetCode) => (string) $assetCode, $assetCodes),
         ];
 
         $this->publishJobToQueue->publish('asset_manager_link_assets_to_products', $config);

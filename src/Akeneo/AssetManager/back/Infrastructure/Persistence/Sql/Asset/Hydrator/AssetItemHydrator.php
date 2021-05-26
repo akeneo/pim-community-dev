@@ -141,7 +141,7 @@ class AssetItemHydrator implements AssetItemHydratorInterface
     {
         return array_values(array_filter(
             $valueCollection,
-            fn(array $value) => $value['attribute'] === $attributeAsMainMediaIdentifier
+            fn (array $value) => $value['attribute'] === $attributeAsMainMediaIdentifier
         ));
     }
 

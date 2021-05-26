@@ -109,7 +109,7 @@ class ComputeTransformations implements TaskletInterface, TrackableTaskletInterf
             $totalItems = $this->countAssets->forAssetFamily($assetFamilyIdentifier);
         } elseif ($this->stepExecution->getJobParameters()->has('asset_identifiers')) {
             $assetIdentifiers = array_map(
-                fn(string $assetIdentifier): AssetIdentifier => AssetIdentifier::fromString($assetIdentifier),
+                fn (string $assetIdentifier): AssetIdentifier => AssetIdentifier::fromString($assetIdentifier),
                 $this->stepExecution->getJobParameters()->get('asset_identifiers')
             );
 

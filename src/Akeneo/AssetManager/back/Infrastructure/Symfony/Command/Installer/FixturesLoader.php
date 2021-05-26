@@ -749,7 +749,7 @@ class FixturesLoader
             AssetFamilyIdentifier::fromString($this->loadedAssetFamilyOfAsset)
         );
         foreach ($this->loadedValues as $attributeCode => $values) {
-            $attribute = current(array_filter($attributes, fn(AbstractAttribute $attribute) => (string) $attribute->getCode() === $attributeCode));
+            $attribute = current(array_filter($attributes, fn (AbstractAttribute $attribute) => (string) $attribute->getCode() === $attributeCode));
             if (!$attribute) {
                 throw new \RuntimeException(sprintf('Impossible to load value for attribute "%s", attribute not found.', $attributeCode));
             }

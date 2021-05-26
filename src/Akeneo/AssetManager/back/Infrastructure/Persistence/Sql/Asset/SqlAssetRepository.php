@@ -204,7 +204,7 @@ SQL;
             ]
         );
 
-        $assetCodeDeleted = array_filter($assetCodes, fn($assetCode) => array_key_exists($assetCode->normalize(), $identifiers));
+        $assetCodeDeleted = array_filter($assetCodes, fn ($assetCode) => array_key_exists($assetCode->normalize(), $identifiers));
 
         $this->eventDispatcher->dispatch(
             new AssetsDeletedEvent(

@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Component\Validator\Constraints\NotNull;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
@@ -109,7 +109,7 @@ class LabelCollectionValidator extends ConstraintValidator
 
     private function validateActivatedLocales(array $labels): void
     {
-        $locales = array_filter(array_keys($labels), fn($label) => is_string($label) && '' !== $label);
+        $locales = array_filter(array_keys($labels), fn ($label) => is_string($label) && '' !== $label);
 
         if (empty($locales)) {
             return;

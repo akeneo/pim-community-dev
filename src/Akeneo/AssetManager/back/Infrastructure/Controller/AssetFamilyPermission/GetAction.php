@@ -47,6 +47,6 @@ class GetAction
      */
     private function normalizePermissionDetails(array $assetFamilyPermissionDetails): array
     {
-        return array_map(fn(PermissionDetails $permissionDetails) => $permissionDetails->normalize(), $assetFamilyPermissionDetails);
+        return array_map(fn (PermissionDetails $permissionDetails) => $permissionDetails->normalize(), $assetFamilyPermissionDetails);
     }
 }

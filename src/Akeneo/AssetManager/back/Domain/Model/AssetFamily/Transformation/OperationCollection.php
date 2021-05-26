@@ -43,7 +43,7 @@ class OperationCollection implements \IteratorAggregate
 
     public function normalize(): array
     {
-        return array_map(fn(Operation $operation) => $operation->normalize(), $this->operations);
+        return array_map(fn (Operation $operation) => $operation->normalize(), $this->operations);
     }
 
     public function equals(OperationCollection $otherOperationCollection): bool

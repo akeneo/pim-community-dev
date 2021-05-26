@@ -49,6 +49,6 @@ class OptionCollectionConnectorValueTransformer implements ConnectorValueTransfo
 
     private function filterExistingOptions(array $normalizedOptionCodes, OptionCollectionAttribute $attribute): array
     {
-        return array_values(array_filter($normalizedOptionCodes, fn($normalizedOptionCode) => $attribute->hasAttributeOption(OptionCode::fromString($normalizedOptionCode))));
+        return array_values(array_filter($normalizedOptionCodes, fn ($normalizedOptionCode) => $attribute->hasAttributeOption(OptionCode::fromString($normalizedOptionCode))));
     }
 }
