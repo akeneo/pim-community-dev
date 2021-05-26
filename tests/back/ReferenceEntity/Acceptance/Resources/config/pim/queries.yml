@@ -26,3 +26,11 @@ services:
             - '@akeneo.pim.structure.query.find_family_variants_identifiers_by_attribute_axes'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.product'
+
+    akeneo.reference_entity.infrastructure.public_api.analytics.aggregated_average_max_number_of_values_per_record:
+        class: AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryAverageMaxQuery
+        arguments:
+            - '%average_max_number_of_values_per_record_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
