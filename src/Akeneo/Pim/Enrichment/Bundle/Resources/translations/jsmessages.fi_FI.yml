@@ -1,7 +1,6 @@
 pim_notification:
   types:
     settings: Asetukset
-    mass_delete: Poistaminen
 flash:
   comment:
     create:
@@ -71,10 +70,9 @@ pim_enrich.entity.product:
       locale_unavailable: Kielikohtaista kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'
       to_fill_count: "{1}1 vaadittu attribuutti puuttuu|]1, Inf[{{ count }} vaadittua attribuuttia puuttuu"
       add_attribute_option: Lisää attribuutin vaihtoehto
-      add_option: Lisää vaihtoehto
     completeness:
       title: Valmistumisaste
-      complete: Valmis
+      complete: Valmistumisaste
       no_family: Perhettä ei ole määritelty. Määritä perhe, jotta voit laskea tuotteen valmiusasteen.
       no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden perheen valmiusasteen.
       missing_values: "{1}1 puuttuva arvo|]1, Inf[{{ count }} puuttuvaa arvoa"
@@ -84,7 +82,6 @@ pim_enrich.entity.product:
       save_and_next: Tallenna ja seuraava
       save_and_finish: Tallenna ja lopeta
     associations:
-      title: Assosiaatiot
       none_exist: Assosiaatiotyyppiä ei ole olemassa.
       show_products: Näytä tuotteet
       show_groups: Näytä ryhmät
@@ -92,7 +89,6 @@ pim_enrich.entity.product:
       association_type_selector: Assosiaatiotyyppi
       target: Kohde
       manage: Lisää {{ associationType }} assosiaatiot
-      manage_description: Valitse tuotteet, jotka haluat assosioida tähän tuotteeseen
       add_associations: Lisää assosiaatiot
     attribute_filter:
       display: Näytä
@@ -154,6 +150,7 @@ pim_enrich.entity.product_model:
       required_label: '(varianttiulottuvuus)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} tuotevariantti|]1, Inf[{{ complete }} / {{ total }} tuotevarianttia"
+      label: Variantti
     delete:
       confirm: Oletko varma, että haluat poistaa tämän tuotemallin? Kaikki lapset, tuotemallit ja variantit poistetaan myös.
       confirm_for_products_and_product_models: Oletko varma, että haluat poistaa valitut tuotteet ja tuotemallit? Kaikki tuotemallin variantit poistetaan myös.
@@ -264,7 +261,6 @@ pim_enrich.export.product:
     title: Yleiset asetukset
 pim_enrich.mass_edit.product:
   title: Tuotteiden massamuokkaus
-  confirm: "{1}Olet päivittämässä tuotetta seuraavilla tiedoilla. Olet hyvä ja vahvista.|]1, Inf[Olet päivittämässä {{ itemsCount }} tuotetta seuraavilla tiedoilla. Ole hyvä ja vahvista."
   step:
     select:
       label: Valitse tuotteet
@@ -284,54 +280,43 @@ pim_enrich.mass_edit.product:
       select_attributes: Valitse attribuutit
     change_status:
       label: Muuta tuotteen tila
-      label_count: "{1}Muuta <span class=\"AknFullPage-title--highlight\">1 tuotteen tila</span>|]1, Inf[Muuta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen tila</span>"
       description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
       field: Ottaa käyttöön
     edit_common:
       label: Muokkaa attribuuttien arvoja
-      label_count: "{1}Muokkaa <span class=\"AknFullPage-title--highlight\">1 tuotteen </span> attribuutteja|]1, Inf[Muokkaa <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen</span> attribuutteja"
       description: Vain attribuutit, jotka kuuluvat valittujen tuotteiden perheisiin muokataan seuraavilla tiedoilla ({{ locale }} / {{ scope }}).
       no_update: Valitse ainakin yksi attribuutti muokattavaksi
     add_attribute_value:
       label: Lisää attribuutin arvoja
-      label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuotteelle</span> attribuutin arvoja|]1, Inf[Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteelle attribuutin arvoja</span>"
       description: Vain moniarvoiset tuotteen perheeseen kuuluvat attribuutit muokataan seuraavilla arvoilla lokaatiolle {{ locale }} ja kanavalle {{ scope }}. Uudet attribuuttien arvot lisätään ja nykyiset arvot säilytetään.
     change_family:
       label: Muuta perhe
-      label_count: "{1}Muuta <span class=\"AknFullPage-title--highlight\">1 tuotteen perhe</span>|]1, Inf[Muuta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen perhe</span>"
       description: Valittujen tuotteiden perhe vaihdetaan valittuun tuoteperheeseen
     add_to_group:
       label: Lisää ryhmiin
-      label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> ryhmiin|]1, Inf[Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> ryhmiin"
       description: Valitse ryhmät joihin valitut tuotteet lisätään
       field: Ryhmät
       no_update: Valitse ryhmä jatkaaksesi
     add_to_category:
       label: Lisää kategorioihin
-      label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioihin|]1, Inf[Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioihin"
       description: Tuotteet liitetään seuraaviin kategorioihin. Olemassa oleva liitokset säilytetään.
     move_to_category:
       label: Siirrä kategorioihin
-      label_count: "{1}Siirrä <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioihin|]1, Inf[Siirrä <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioihin"
       description: Tuotteet liitetään seuraaviin kategorioihin. Olemassa olevat liitokset poistetaan.
     remove_from_category:
       label: Poista kategorioista
-      label_count: "{1}Poista <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioista|]1, Inf[Poista <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioista"
       description: Tuotteet poistetaan seuraavista kategorioista.
       no_update: Kategoriaa ei ole valittu poistettaville tuotteille.
     add_to_existing_product_model:
       label: Lisää olemassaolevaan tuotemalliin
-      label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> olemassa olevaan tuotemalliin|]1, Inf[Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> olemassa olevaan tuotemalliin"
       description: Valittu tuotemalli kokoaa tuotteet ja mahdollistaa niiden yhteisten attribuuttien rikastamisen.
       no_update: Valitse tuotemalli jatkaaksesi
     associate_to_product_and_product_model:
       label: Liitä
-      label_count: "{1}Liitä <span class=\"AknFullPage-title--highlight\">1 tuote</span> tuotteisiin tai tuotemalleihin|]1, Inf[Liitä <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> tuotteisiin tai tuotemalleihin"
       description: Tuoteruudukossa valittuihin tuotteisiin luodaan valitsemasi tyyppinen assosiaatio niiltä tuotteilta tai tuotemalleilta, jotka seuraavaksi valitset
       validate: Ole hyvä ja lisää assosiaatio ennen kuin siirryt seuraavaan vaiheeseen
     change_parent_product_model:
       label: Vaihda ylätason tuotemalli
-      label_count: "{1}Vaihda <span class=\"AknFullPage-title--highlight\">1 tuotteen ylätason tuotemalli</span>|]1, Inf[Vaihda <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen ylätason tuotemalli</span>"
       description: Ylätason tuotteeksi vaihdetaan valitsemasi tuotemalli niille varianteille ja alatason tuotemalleille, jotka ovat valittuna tuoteruudukossa.
 pim_datagrid:
   mass_action_group:
@@ -349,12 +334,12 @@ pim_datagrid:
       csv_grid_context: CSV (Ruudukon konteksti)
       xlsx_all: Excel (Kaikki attribuutit)
       xlsx_grid_context: Excel (Ruudukon konteksti)
+      configurator:
+        title: Valitse toiminto
+        all_attributes: Kaikki attribuutit
     mass_edit: Massamuokkaus
     sequential_edit: Peräkkäinen muokkaus
     mass_delete: Massapoisto
-    selected:
-      family: valitut perheet
-      product: valittua
   view_selector:
     view: Näkymät
   actions:
@@ -371,6 +356,20 @@ pim_datagrid:
   filters:
     label: Suodattimet
     system: Järjestelmä
+    product_typology:
+      variant: 'Variantti'
+    entity_type:
+      label: 'Variantti'
+    family:
+      label: Perhe
+    groups:
+      label: Ryhmät
+    enabled:
+      label: Status
+    completeness:
+      label: Valmis
+    identifier:
+      label: Tunniste
   search: Etsi {{ label }}
 batch_jobs:
   add_association:
@@ -430,5 +429,3 @@ batch_jobs:
     quick_export.label: Tuotteen nopea vienti XLSX-muodossa
     quick_export_product_model.label: Tuotemallin nopea vienti XLSX-muodossa
     perform.label: Tuotteen nopea vienti XLSX-muodossa
-  default_steps:
-    delete_products_and_product_models: Poista tuotteet ja tuotemallit

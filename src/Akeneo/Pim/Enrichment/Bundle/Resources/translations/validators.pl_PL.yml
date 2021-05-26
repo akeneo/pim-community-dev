@@ -15,7 +15,6 @@ Option code may contain only letters, numbers and underscores: Kod opcji może z
 Option code may contain only letters (at least one), numbers and underscores: Kod opcji może zawierać tylko litery (co najmniej jedną), cyfry i znaki podkreślenia
 This value should not be a decimal.: Ta wartość ta nie powinna być liczbą dziesiętną.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'Rozszerzenie pliku jest niedozwolone (dozwolone rozszerzenia to: %extensions%).'
-"The value %value% is already set on another product for the unique attribute %attribute%": Wartość %value% jest już ustawiona w innym produkcie dla unikatowego atrybutu %attribute%
 The same identifier is already set on another product: Taki sam identyfikator jest przypisany innemu produktowi
 regex.comma_or_semicolon_or_surrounding_space.message: To pole nie powinno zawierać żadnych przecinków ani średników, ani przestrzeni wiodących
 file.extensions.message: 'Rozszerzenie pliku jest niedozwolone (dozwolone rozszerzenia to: %extensions%).'

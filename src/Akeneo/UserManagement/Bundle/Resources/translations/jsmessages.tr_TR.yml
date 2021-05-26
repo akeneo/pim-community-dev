@@ -1,0 +1,66 @@
+pim_title:
+  pim_user_index: Kullanıcılar
+  pim_user_role_index: Roller
+  pim_user_group_index: Kullanıcı Grupları
+  oro_config_configuration_system: Yapılandırma
+  pim_user_security_login: Oturum aç
+  pim_user_reset_request: Parolamı unuttum
+confirmation:
+  remove:
+    user: Bu kullanıcıyı silmek istediğinizden emin misiniz?
+    group: Bu grubu silmek istediğinizden emin misiniz?
+pim_enrich:
+  entity:
+    user:
+      module:
+        delete:
+          confirm: Bu kullanıcıyı silmek istediğinizden emin misiniz?
+pim_user_management:
+  entity:
+    user:
+      properties:
+        username: Kullanıcı adı
+        name_prefix: Ad ön eki
+        first_name: İsim
+        middle_name: Göbek Adı
+        last_name: Soyisim
+        name_suffix: Ad son eki
+        avatar: Profil resmi
+        email: E-posta
+        catalog_locale: Yerel ayarlar kataloğu
+        catalog_scope: Katalog içeriği
+        default_tree: Varsayılan bağlantı
+        default_asset_tree: Varsayılan varlık ağacı
+        product_grid_filters: Ürün tablosu filtreleri
+        current_password: Güncel şifre
+        new_password: Yeni Şifre
+        new_password_repeat: Yeni Şifre ( Tekrar)
+        password: Parola
+        ui_locale: Kullanıcı arayüz ayarları
+        timezone: Zaman dilimi
+        default_product_grid_view: varsayılan ürün kılavuzu görünümü
+        default_published_product_grid_view: Varsayılan yayınlanmış ürün kılavuzu görünümü #EE Only
+        proposals_to_review_notification: Yeni inceleme tavsiyesi geldiğinde #EE Only
+        proposals_state_notifications: Teklif kabul edildiğinde veya reddedildiğinde #EE Only
+      module:
+        create:
+          button: Kullanıcı oluştur
+        delete:
+          confirm: Bu kullanıcıyı silmek istediğinizden emin misiniz?
+        update:
+          additional: Ek Bilgiler
+          password: Parola
+          interfaces: Arayüzler
+          notifications: Bildirimler #TODO EE Only
+    role:
+      plural_label: Roller
+      module:
+        create:
+          button: Rol yarat
+        delete:
+          confirm: Bu rolü silmek istediğinizden emin misiniz?
+    group:
+      plural_label: Kullanıcı Grupları
+      module:
+        create:
+          button: Grup oluştur

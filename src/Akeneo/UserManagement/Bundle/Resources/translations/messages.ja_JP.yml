@@ -73,7 +73,7 @@ pim_user:
       password_reset: パスワードリセット
       reset: リセット
       password_reset_email_sent: メールがユーザーに送信されました。パスワードをリセットするためのリンクが含まれています。
-      homepage: ホームページに移動
+      homepage: ホームページに戻る
   group:
     tab:
       general.title: 全般

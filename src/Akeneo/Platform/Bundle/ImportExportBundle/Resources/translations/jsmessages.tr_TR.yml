@@ -1,0 +1,187 @@
+job_execution:
+  summary:
+    display_item: Öğeyi göster
+    hide_item: Öğeyi gizle
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Seçilen kategoriler
+        title: Kategorileri seç
+    locales:
+      validation:
+        not_blank: Bir yerel ayar seçilmiş olmalı, lütfen dışa aktarmak için bir yerel ayar seçin.
+pim_import_export:
+  entity:
+    job_instance:
+      label: İş profili
+      flash:
+        update:
+          success: İş profili başarıyla güncellendi.
+          fail: İş profili güncellemedi.
+        delete:
+          success: İş örneği başarıyla kaldırıldı
+    import_profile:
+      uppercase_label: Profili içe aktar
+      flash:
+        create:
+          success: İçe aktarma profili başarıyla oluşturuldu
+      module:
+        create:
+          button: İçe aktarma profili oluştur
+    export_profile:
+      uppercase_label: Profili dışa aktar
+      flash:
+        create:
+          success: Dışa aktarım profili başarıyla oluşturuldu
+      module:
+        create:
+          button: Dışa aktarım profili oluştur
+  form:
+    job_execution:
+      title.details: Uygulama ayrıntıları
+      refreshBtn.title: Yenile
+      button:
+        show_profile.title: Profili göster
+        download_log.title: Günlüğü indir
+        download_file.title: Oluşturulan dosyayı indir
+      summary:
+        fetching: İşin yürütülmesi hakkında veri toplanıyor...
+        warning: Uyarı
+        header.step: Adım
+        header.warnings: Uyarılar
+        header.summary: Özet
+        header.start: Başla
+        header.end: Bitir
+    job_instance:
+      fail:
+        launch: İş profili başlatılamadı. Geçerli olduğundan veya erişim hakkınızın olduğundan emin olun.
+        save: İş profili kaydedilemedi. Düzenleme yetkisine sahip olduğunuzdan emin olun.
+      button:
+        export.title: Şimdi dışa aktar
+        import.launch: Şimdi içe aktar
+        import.upload: Karşıya yükle ve şimdi içe aktar
+        import.upload_file: Dosya yükle
+      meta:
+        job: İş
+        connector: Bağlayıcı
+      subsection:
+        last_executions: Son işlemler
+      tab:
+        content:
+          title: İçerik
+        properties:
+          decimal_separator:
+            title: Ondalık ayırıcı
+            help: Ondalık sayı ayırıcısını belirle
+          date_format:
+            title: Tarih biçimi
+            help: Veri alanlarının türünü belirle
+          file_path:
+            title: Dosya yolu
+            help: Oluşturulan dosyanın dosya sisteminde nereye yazılacağı
+          delimiter:
+            title: Ayraç
+            help: Alan sınırlayıcıyı ayırmak için kullanılan bir karakter
+          enclosure:
+            title: Çevreleme
+            help: Alan çevreleme için kullanılan bir karakter
+          with_header:
+            title: Başlığı ile
+            help: Sütün adını yaz ya da yazma
+          lines_per_file:
+            title: Her dosya için geçerli satır sayısı
+            help: Her dosya başına geçerli olan satır sayısının limitini belirle
+          upload_allowed:
+            title: Dosya yüklemeye izin ver
+            help: Dosyanın doğrudan yüklenmesine izin verilip verilmeyeceği
+          categories_column:
+            title: Kategorilerin sütunu
+            help: Kategori sütunlarının adı
+          escape:
+            title: Çıkış
+            help: Kaçış alanı ayarlamak için kullanılan bir karakter
+          family_column:
+            title: Aile sütunu
+            help: Aile sütununun adı
+          groups_column:
+            title: Grupların sütunu
+            help: Grup sütunlarının adı
+          enabled:
+            title: Ürünü aktif et
+            help: İçe aktarılan ürünün etkinleştirilip etkinleştirilmemesi
+          enabled_comparison:
+            title: Değerleri karşılaştır
+            help: Özgün değerler ile içe aktarılan değerleri karşılaştırmayı etkinleştir. İçe aktarılan değerler özgün değerlere çok benziyor ise içe aktarmayı hızlanlandırabilir
+          real_time_versioning:
+            title: Gerçek zamanlı tarihi güncelle
+            help: Ürün geçmişinin otomatik olarak güncellenmesi anlamında gelir, performansı artırmak için kapatılabilir
+          family_variant_column:
+            title: Aile biçimi sütunu
+      file_path: Dosya yolu
+  widget:
+    last_operations:
+      empty: İşlem bulunamadı
+      date: Tarih
+      profile_name: Profil adı
+      details: Ayrıntılar
+      warning_count: Uyarılar
+      job_type:
+        import: İçe aktar
+        export: Dışa aktar
+        mass_edit: Toplu düzenle
+        quick_export: Hızlı dışa aktar
+        compute_family_variant_structure_changes: Ailenin varyant yapısı değişikliklerini hesapla
+        compute_completeness_of_products_family: Ürün ailesinin bütünlüğünü hesapla
+      header.view_all: Tümünü Gör
+  batch_status:
+    1: Tamamlandı
+    2: Başlatılıyor
+    3: Başladı
+    4: Durduruluyor
+    5: Durduruldu
+    6: Başarısız
+    7: İptal edildi
+    8: Bilinmeyen
+  job_status:
+    COMPLETED: Tamamlandı
+    STARTING: Başlatılıyor
+    STARTED: Başladı
+    STOPPING: Durduruluyor
+    STOPPED: Durduruldu
+    FAILED: Başarısız
+    ABANDONED: İptal edildi
+    UNKNOWN: Bilinmeyen
+confirmation:
+  remove:
+    import_profile: Bu içeri aktarma profilini silmek istediğinizden emin misiniz?
+    export_profile: Bu dışarı aktarma profilini silmek istediğinizden emin misiniz?
+    job_instance: Bu iş durumunu silmek istediğinize emin misiniz?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Bu içeri aktarma profilini silmek istediğinizden emin misiniz?
+      flash:
+        delete:
+          success: İçeri aktarılan profil başarıyla kaldırıldı
+    export_profile:
+      module:
+        delete:
+          confirm: Bu dışarı aktarma profilini silmek istediğinizden emin misiniz?
+      flash:
+        delete:
+          success: Dışa aktarılan profil başarıyla kaldırıldı
+pim_title:
+  pim_importexport_export_profile_index: Profil yönetimini dışa aktar
+  pim_importexport_export_profile_edit: Dışa aktarılan profil {{ job.label }} | Düzenle
+  pim_importexport_export_profile_show: Dışa aktarılan profil {{ job.label }} | Göster
+  pim_importexport_export_execution_index: İşlem geçmişini dışa aktarın
+  pim_importexport_export_execution_show: İşlemleri dışa aktarın | Detaylar
+  pim_importexport_import_profile_index: Profillerin yönetimini içe aktarın
+  pim_importexport_import_profile_edit: İçe aktarılan profil {{ job.label }} | Düzenle
+  pim_importexport_import_profile_show: İçe aktarılan profil {{ job.label }} | Göster
+  pim_importexport_import_execution_index: İşlem geçmişini içe aktarın
+  pim_importexport_import_execution_show: İşlemleri içe aktarın | Detaylar
