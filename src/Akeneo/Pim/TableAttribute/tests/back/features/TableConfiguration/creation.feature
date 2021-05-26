@@ -42,7 +42,7 @@ Feature: Create a table attribute
 
   Scenario: Cannot create a table configuration without type
     When I create a table attribute with a configuration without type
-    Then There is a violation with message: The "type" column must be filled
+    Then There is a violation with message: The "data_type" column must be filled
 
   Scenario: Cannot create a table configuration having unknown type
     When I create a table attribute with a configuration having unknown type

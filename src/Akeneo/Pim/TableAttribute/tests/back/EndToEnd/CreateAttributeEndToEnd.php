@@ -94,7 +94,7 @@ JSON;
         "table_configuration": [
             {
                 "code": "ingredients",
-                "type": "text",
+                "data_type": "text",
                 "labels": {
                     "fr_FR":"Ingraydients",
                     "de_DE":"Zutat"
@@ -102,7 +102,7 @@ JSON;
             },
             {
                 "code": "quantity",
-                "type": "text"
+                "data_type": "text"
             }
         ]
     }
@@ -144,7 +144,7 @@ JSON;
         "table_configuration": [
             {
                 "code": "ingredients",
-                "type": "text",
+                "data_type": "text",
                 "labels": {
                     "en_US":"Ingredients",
                     "fr_FR":"Ingrédients"
@@ -152,7 +152,7 @@ JSON;
             },
             {
                 "code": "quantity",
-                "type": "text"
+                "data_type": "text"
             }
         ]
     }
