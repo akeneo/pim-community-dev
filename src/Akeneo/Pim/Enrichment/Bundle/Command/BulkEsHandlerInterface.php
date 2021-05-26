@@ -9,5 +9,5 @@ namespace Akeneo\Pim\Enrichment\Bundle\Command;
  */
 interface BulkEsHandlerInterface
 {
-    public function bulkExecute(array $codes);
+    public function bulkExecute(array $codes): int;
 }

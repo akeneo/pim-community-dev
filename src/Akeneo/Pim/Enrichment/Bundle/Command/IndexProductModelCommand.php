@@ -129,9 +129,10 @@ class IndexProductModelCommand extends Command
             {
                 $this->productModelDescendantsAndAncestorsIndexer = $productModelDescendantsAndAncestorsIndexer;
             }
-            public function bulkExecute(array $codes)
+            public function bulkExecute(array $codes): int
             {
                 $this->productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes($codes);
+                return count($codes);
             }
         };
 
