@@ -34,8 +34,8 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@akeneo.pim.automation.data_quality_insights.connector.step.consolidate_dashboard_rates'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.purge_outdated_data'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.consolidate_dashboard_rates'
             - true
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
