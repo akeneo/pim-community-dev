@@ -37,6 +37,9 @@ pim_enrich:
 
 pim_user.profile:
     why_is_it_needed: Why do we need this information?
+    selector:
+        placeholder: Choose an option
+        not_found: No result found
     product_manager: I manage product catalogs.
     redactor: I enrich product data.
     pim_integrator: I integrate Akeneo PIM into our IT ecosystem.
