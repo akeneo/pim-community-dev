@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace AkeneoEnterprise\Test\Acceptance\EventDispatcher;
 
 use Behat\Behat\Context\Context;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

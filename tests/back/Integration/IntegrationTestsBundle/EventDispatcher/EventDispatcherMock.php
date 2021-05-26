@@ -32,7 +32,26 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function dispatch($event)
     {
-        $this->dispatchedEvents[get_class($event)] = $event;
+        $eventName = null;
+        if (1 < \func_num_args()) {
+            $eventName = func_get_arg(1);
+            $this->eventDispatcher->dispatch($event, $eventName);
+        } else {
+            $this->eventDispatcher->dispatch($event);
+        }
+
+        if (\is_object($event)) {
+            $eventName = $eventName ?? \get_class($event);
+        } elseif (\is_string($event) && (null === $eventName || \is_object($eventName))) {
+            // Deprecated since symfony 4.3
+            // See https://github.com/symfony/event-dispatcher/blob/v4.3.11/EventDispatcher.php#L58
+            $swap = $event;
+            $event = $eventName;
+            $eventName = $swap;
+        }
+
+        $this->dispatchedEvents[$eventName] = $event;
+
         return $this->eventDispatcher->dispatch($event);
     }
 
