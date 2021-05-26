@@ -57,6 +57,8 @@ class AssetFamilyDetails
 
     public AttributeAsMainMediaReference $attributeAsMainMedia;
 
+    // TODO: This read model should not use Connector transformation collection
+    // @see TransformationCollection
     public ConnectorTransformationCollection $transformations;
 
     public NamingConventionInterface $namingConvention;

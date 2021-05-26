@@ -90,6 +90,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedName->isRequired = false;
         $expectedName->valuePerChannel = false;
         $expectedName->valuePerLocale = true;
+        $expectedName->isReadOnly = false;
         $expectedName->additionalProperties = [
             'max_length' => 25,
             'is_textarea' => false,
@@ -115,6 +116,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedEmail->isRequired = true;
         $expectedEmail->valuePerChannel = false;
         $expectedEmail->valuePerLocale = false;
+        $expectedEmail->isReadOnly = false;
         $expectedEmail->additionalProperties = [
             'max_length' => 155,
             'is_textarea' => false,
@@ -140,6 +142,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedRegex->isRequired = true;
         $expectedRegex->valuePerChannel = true;
         $expectedRegex->valuePerLocale = true;
+        $expectedRegex->isReadOnly = false;
         $expectedRegex->additionalProperties = [
             'max_length' => 155,
             'is_textarea' => false,
@@ -165,6 +168,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedLongDescription->isRequired = true;
         $expectedLongDescription->valuePerChannel = true;
         $expectedLongDescription->valuePerLocale = true;
+        $expectedLongDescription->isReadOnly = false;
         $expectedLongDescription->additionalProperties = [
             'max_length' => 155,
             'is_textarea' => true,

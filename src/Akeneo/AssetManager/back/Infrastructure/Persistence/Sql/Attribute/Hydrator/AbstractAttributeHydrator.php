@@ -34,6 +34,7 @@ abstract class AbstractAttributeHydrator implements AttributeHydratorInterface
 
     protected function checkRowProperties(array $row): void
     {
+        $additionalKeys = [];
         if (array_key_exists('additional_properties', $row)) {
             $additionalKeys = array_keys(json_decode($row['additional_properties'], true));
             unset($row['additional_properties']);
