@@ -2,14 +2,13 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {AddColumnModal} from '../../../src/attribute/AddColumnModal';
 import {act, screen, fireEvent} from '@testing-library/react';
-jest.mock('../../../src/fetchers/LocaleFetcher');
+jest.mock('../../../src/attribute/LocaleLabel');
 
 describe('AddColumnModal', () => {
   it('should render the component', async () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
     renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
-    expect(await screen.findByText('English')).toBeInTheDocument();
 
     expect(screen.getByText('pim_table_attribute.form.attribute.add_column')).toBeInTheDocument();
     expect(screen.getByText('pim_common.create')).toBeInTheDocument();
@@ -19,7 +18,6 @@ describe('AddColumnModal', () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
     renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
-    expect(await screen.findByText('English')).toBeInTheDocument();
 
     const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
     const labelInput = screen.getByLabelText('pim_common.label') as HTMLInputElement;
@@ -35,7 +33,6 @@ describe('AddColumnModal', () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
     renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
-    expect(await screen.findByText('English')).toBeInTheDocument();
 
     const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
     const labelInput = screen.getByLabelText('pim_common.label') as HTMLInputElement;
@@ -54,7 +51,6 @@ describe('AddColumnModal', () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
     renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
-    expect(await screen.findByText('English')).toBeInTheDocument();
 
     const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
     const labelInput = screen.getByLabelText('pim_common.label') as HTMLInputElement;
@@ -89,7 +85,6 @@ describe('AddColumnModal', () => {
     renderWithProviders(
       <AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={['quantity']} />
     );
-    expect(await screen.findByText('English')).toBeInTheDocument();
     const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
     const dataTypeInput = screen.getByLabelText('pim_table_attribute.form.attribute.data_type') as HTMLInputElement;
     const createButton = screen.getByText('pim_common.create') as HTMLButtonElement;
