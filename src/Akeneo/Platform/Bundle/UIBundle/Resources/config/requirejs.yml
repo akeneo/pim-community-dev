@@ -494,6 +494,7 @@ config:
     pim/route-matcher:                  pimui/js/route-matcher
     pim/page-title:                     pimui/js/page-title
     pim/init-translator:                pimui/js/init-translator
+    pim/onboarding:                     pimui/js/onboarding/pim-onboarding.ts
 
     pimuser/js/init-signin: pimuser/js/init-signin
     translator-lib: pimui/lib/translator
