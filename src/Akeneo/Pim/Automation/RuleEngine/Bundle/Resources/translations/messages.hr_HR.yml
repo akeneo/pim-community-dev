@@ -2,59 +2,17 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
-        delete: Obriši
         execute: Izvrši
       title: Pravila
-      column:
-        code: Kod
-        conditions: Stanje
-        actions: Akcija
-        impacted_product_count:
-          label: Zahvaćeni proizvodi
-          count: '{0,1}%count% zahvaćenih proizvoda |] 1, Inf [%count% zahvaćenih proizvoda'
-          no_yet_calculated: Nije još izračunato
       mass_edit_action:
-        impacted_product_count: Izračunaj zahvaćene proizvode
         execute: Izvrši
-        delete: Obriši
-  actions:
-    type:
-      "copy": Tada se %from_field% kopira u %to_field%
-      "copy_value": Tada se %from_field% kopira u %to_field%
-      "set": Tada se %value% postavlja u %field%
-      "set_value": Tada se %value% postavlja u %field%
-      "add": Tada se %value% dodaje u %field%
-      "remove": Tada se %value% uklanja iz %field%
-  condition:
-    label: Ako %field% %operator% %value%
-    operators:
-      "STARTS WITH": počinje sa
-      "ENDS WITH": završava sa
-      "CONTAINS": sadrži
-      "DOES NOT CONTAIN": ne sadrži
-      "EMPTY": je prazan
-      "NOT EMPTY": nije prazan
-      "IN": u
-      "NOT IN": nije u
-      "IN CHILDREN": u djeci
-      "NOT IN CHILDREN": nije u djeci
-      "UNCLASSIFIED": neraspoređeno
-      "IN OR UNCLASSIFIED": neraspoređeno ili u
-      "BETWEEN": između
-      "NOT BETWEEN": nije između
-      "=": jednako je
-      "!=": nije jednako
-      ">": veće od
-      ">=": jednako ili veće od
-      "<": manje od
-      "<=": jednako ili manje od
+        delete: Brisanje
   acl_group:
     rule: Pravila
   acl:
     rule:
       view_permissions: Prikaži pravila
       delete_permissions: Obriši pravila
-      impacted_product_count_permissions: Izračunaj zahvaćene proizvode za pravila
       execute_permissions: Izvrši pravila
   attribute:
     tab:
@@ -64,25 +22,15 @@ pimee_catalog_rule:
     acl:
       rule.view_permissions: Prikaži pravila
   product:
-    tooltip:
-      product_attribute_affected_by_a_rule.content: Vrijednost ovog atributa može doći iz pravila <strong>%rule%</strong>. To znači ako uvjeti pravila vrijede, vaša modifikacija će se poništiti.
-      loading.title: Učitavanje...
     history: Primjenjeno pravilo "%rule%"
-  product_value:
-    tooltip:
-      affected_by.title: 'Pod utjecajem pravila:'
   steps:
-    product_rule_definition_reader.title: Čitač uvoza pravila proizvoda
-    rule_definition_processor.title: Uređivač uvoza pravila proizvoda
-    product_rule_definition_writer.title: Zapisivač uvoza pravila proizvoda
     rules_execution.title: Izvođenje pravila
-  notification:
-    rule:
-      executed: Izvođenje pravila je završeno
-    mass_edit_rule:
-      success: Izračun zahvaćenih proizvoda za pravila je završeno
-      error: Došlo je do pogreške prilikom izračuna zahvaćenih proizvoda za pravila
 btn:
   Execute rules: Izvrši pravila
-mass_edit_rule: Postavke pravila
-job_execution.summary.rule_calculated: Broj pravila
+job_execution:
+  summary:
+    rule_calculated: Broj pravila
+pim_datagrid:
+  cells:
+    type:
+      execute_rules: Izvođenje pravila

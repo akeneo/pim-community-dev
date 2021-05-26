@@ -1,0 +1,48 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: Numai în citire
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Grupul <strong>{{ group }}</strong> va fi <strong>{{ permission }}</strong> în această categorie
+      revoke: Grupul <strong>{{ group }}</strong> nu va fi <strong>{{ permission }}</strong> în această categorie
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Grupul <strong>{{ group }}</strong> va <strong> fi {{ permission }}</strong> în local
+      revoke: Grupul <strong>{{ group }}</strong> nu va <strong> fi {{ permission }}</strong> în local
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Grupul <strong>{{ group }}</strong> va fi <strong>{{ permission }}</strong> în acest grup de atribute
+      revoke: Grupul <strong>{{ group }}</strong> nu va fi <strong>{{ permission }}</strong> în acest grup de atribute
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: Grupul {{ group }} va avea dreptul să {{ permission }} grupul de atribut
+      view: Are dreptul să vizualizeze atributele
+      edit: Are dreptul să editeze atributele
+      removed: Grupul {{ group }} nu va avea dreptul să {{ permission }} grup de atribut
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: Grupul {{ group }} va avea dreptul să {{ permission }} profil de job
+      execute: Are dreptul să execute profil de muncă
+      edit: Are dreptul să editeze profil de muncă
+      removed: Grupul {{ group }} nu va avea dreptul să {{ permission }} profil de muncă
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: Adaugă valoarea produs cu drepturi de verificare și reguli de aplicare
+    perform.label: Adaugă valoare produs
+  update_product_value_with_permission_and_rules:
+    label: Actualizează valoarea produsului cu drepturi de verificare și reguli de aplicare
+    perform.label: Actualizeaza valoare produs
+  remove_product_value_with_permission_and_rules:
+    label: Șterge valoarea produsului cu drepturi de verificare și reguli de aplicație
+    perform.label: Şterge valoare produs
+  edit_common_attributes_with_permission_and_rules:
+    label: Editează atributele cu drepturi de verificare si reguli de aplicare
+    perform.label: Editează atributele
+    cleaner.label: Șterge fişierele temporare

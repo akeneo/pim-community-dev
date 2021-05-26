@@ -2,51 +2,18 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
-        delete: Radera
         execute: Utför
       title: Regler
-      column:
-        code: Kod
-        conditions: Villkor
-        impacted_product_count:
-          label: Berörda produkter
-          count: '{0,1}%count% påverkas produkt |] 1 Inf [%count% påverkas produkter'
-          no_yet_calculated: Ännu inte beräknas
       mass_edit_action:
-        impacted_product_count: Beräkna de påverkade produkterna
         execute: Utför
         delete: Radera
-  actions:
-    type:
-      "copy": Sedan kopieras %from_field% till %to_field%
-      "copy_value": Sedan kopieras %from_field% till %to_field%
-      "set": Då ligger %value% i %field%
-      "set_value": Då ligger %value% i %field%
-      "add": Sedan läggs %value% till %field%
-      "remove": Sedan tas %value% bort från %field%
-  condition:
-    label: Om %field% %operator% %value%
-    operators:
-      "NOT EMPTY": är inte tom
-      "IN": in
-      "NOT IN": inte i
-      "IN CHILDREN": i element
-      "NOT IN CHILDREN": inte i element
-      "UNCLASSIFIED": är oklassificerade
-      "IN OR UNCLASSIFIED": är oklassificerade eller i
-      "=": lika med
-      "!=": inte jämnlikt
-      ">": större än
-      ">=": är lika med eller större än
-      "<=": är lika med eller mindre än
   acl_group:
     rule: Regler
   acl:
     rule:
       view_permissions: Visa regler
-      delete_permissions: Ta bort regel
-      impacted_product_count_permissions: Beräkna de påverkade produkterna för regler
-      execute_permissions: Kör regler
+      delete_permissions: Ta bort regler
+      execute_permissions: Utför regler
   attribute:
     tab:
       rule.title: Regler
@@ -55,24 +22,15 @@ pimee_catalog_rule:
     acl:
       rule.view_permissions: Visa regler
   product:
-    tooltip:
-      product_attribute_affected_by_a_rule.content: Värdet av detta attribut kan komma från regel <strong>%rule%</strong>. Det innebär att om villkoren för regeln är giltig, kommer din ändring att åsidosättas.
     history: Tillämpad regel "%rule%"
-  product_value:
-    tooltip:
-      affected_by.title: 'Påverkas av regel:'
   steps:
-    product_rule_definition_reader.title: Produkt regel importera läsare
-    rule_definition_processor.title: Produkten regel importera processor
-    product_rule_definition_writer.title: Produkten regel importera skrivare
     rules_execution.title: Regler utföranden
-  notification:
-    rule:
-      executed: Utförandet av regel klar
-    mass_edit_rule:
-      success: Beräkningen av de berörda produkterna för regler är färdig
-      error: Ett fel uppstod vid beräkningen av de berörda produkterna för regler
 btn:
-  Execute rules: Kör regler
-mass_edit_rule: Regler inställningar
-job_execution.summary.rule_calculated: Antal regler
+  Execute rules: Utför regler
+job_execution:
+  summary:
+    rule_calculated: Antal regler
+pim_datagrid:
+  cells:
+    type:
+      execute_rules: Regler utföranden

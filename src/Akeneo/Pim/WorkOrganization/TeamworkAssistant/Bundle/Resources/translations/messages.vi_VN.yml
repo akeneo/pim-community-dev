@@ -1,0 +1,4 @@
+teamwork_assistant:
+  datagrid:
+    contributor_in_progress: Đang xử lý
+    contributor_done: Xong

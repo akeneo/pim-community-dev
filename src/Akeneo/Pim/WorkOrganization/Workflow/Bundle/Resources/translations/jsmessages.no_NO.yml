@@ -1,0 +1,94 @@
+View the product: Vis produkt
+Unpublish the product: Fjern publisering av produkt
+Approve: Godkjenn
+Refuse: Avvis
+Approve selected: Godkjenne valgte
+Refuse selected: Avvis valgte
+pim_datagrid:
+  no_entities:
+    proposal: Ingen nye forslag til gjennomgang.
+  no_results:
+    proposal: Det er ingen forslag å gjennomgå. Prøv å endre søkekriteriene.
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Utvid
+      collapse_text: Skjul
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Redigere arbeidseksemplaret
+    proposal:
+      modal.title: Kommentar (valgfritt - 255 tegn maks.)
+  proposal:
+    mass_action_group:
+      review:
+        label: Massehandliner
+    partial_accept:
+      modal.title: Godkjenne delvis informasjon
+      modal.label: Kommentar (valgfritt)
+    partial_approve:
+      modal:
+        label: Kommentar (valgfritt)
+    partial_reject:
+      modal:
+        label: Kommentar (valgfritt)
+batch_jobs:
+  csv_published_product_export:
+    label: Publisert produktet eksport i CSV
+    export.label: Eksporter publiserte produkt
+  xlsx_published_product_export:
+    export.label: Eksporter publiserte produkt
+  publish_product:
+    perform.label: Publiser produkter
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Dato
+      author: Forfatter
+      product: Produkt
+      review: Gjennomgå
+      empty: Ingen forslag til gjennomgang
+    header.view_all: Vis alle
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Publisert
+      revert: Gjenopprett
+    meta:
+      owner_groups: Eiergrupperinger
+      draft:
+        in_progress: Pågående
+        sent_for_approval: Venter på godkjenning
+        working_copy: Arbeidskopi
+    copy:
+      working_copy: Arbeidskopi
+      draft: Mine utkast
+    approval:
+      send: Send til godkjenning
+      sent: Sendt til godkjenning
+pimee_enrich.entity.published_product:
+  module:
+    publish:
+      label: Publiser
+      publish_this_version: Publiser denne versjonen
+    unpublish:
+      label: Opphev publisering
+pimee_enrich.entity.product_draft:
+  module:
+    proposal:
+      accept: Godkjenn utkast
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Publiser
+    unpublish:
+      label: Opphev publisering
+pim_menu:
+  navigation:
+    published_products: Publiserte produkt
+  item:
+    published_product: Publiserte produkt
+pim_title:
+  pimee_workflow_published_product_index: Publiserte produkt

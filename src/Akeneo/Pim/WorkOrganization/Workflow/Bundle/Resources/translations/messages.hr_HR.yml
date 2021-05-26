@@ -60,7 +60,6 @@ pimee_workflow:
     index: Upravljanje objavljenih proizvoda
   product:
     permission:
-      label: Dozvole
       own: Pregled / objava
       edit: Uredi
       view: Prikaz
@@ -80,13 +79,22 @@ pimee_workflow:
         second: Odabiri operaciju
         third: Konfiguriraj
         fourth: Potvrdi
-btn.publish: Objavi
-btn.unpublish: Poništi objavu
+btn:
+  publish: Objavi
+  unpublish: Poništi objavu
+  save working copy: Spremi radnu kopiju
+  save working copy and next: Spremi radnu kopiju i kreni dalje
+  save working copy and finish: Spremi radnu kopiju i završi
+  send for approval: Slanje na odobrenje
+  sent for approval: Poslano na odobrenje
+  editworkingcopy: Uredi radnu kopiju
 flash:
   product:
+    updated: Radna kopija proizvoda je ažurirana
     published: Proizvod je uspješno objavljen.
     unpublished: Uspješno je poništena objava proizvoda.
   product_draft:
+    updated: Nacrt je uspješno spremljen
     approve:
       success: Prijedlog je uspješno primijenjen.
       error: Prijedlog nije moguće primijeniti zbog sljedeće pogreške. %error%
@@ -98,12 +106,6 @@ pim_menu:
   item:
     published_product: Objavljeni proizvodi
     proposal: Prijedlozi
-pim_title:
-  published_product:
-    index: Objavljeni proizvodi
-  proposal:
-    index: Prijedlozi
-btn.editworkingcopy: Uredi radnu kopiju
 confirmation:
   product:
     publish: Jeste li sigurni da želite objaviti ovaj proizvod ?
@@ -113,7 +115,7 @@ Completeness.title: Potpunost
 publish_product.steps.publish_product_tasklet.title: Objavi proizvod
 unpublish_product.steps.unpublish_product_tasklet.title: Poništi objavu proizvoda
 approve_product_draft.steps.approve.title: Odobri prijedlog
-approve_product_draft.steps.refuse.title: Odbiti prijedlog
+approve_product_draft.steps.refuse.title: Odbaci prijedlog
 job_execution.summary:
   approved: odobreno
   refused: odbijeno
@@ -125,3 +127,32 @@ job_execution.summary:
   proposal_created: kreirani prijedlog
   proposal_skipped: preskočeni proizvod (nema razlike)
 published products: Objavljeni proizvodi
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Prijedlog za recenziju
+      date: Datum
+      author: Autor
+      product: Proizvod
+      review: Recenzija
+      empty: Nema skice proizvoda za recenziju
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Objavi
+      description: Objavi odabrane proizvode, trenutno objavljeni podaci biti će obrisani prema trenutnoj radnoj kopiji.
+      success_flash: Odabrani proizvodi su uspješno objavljeni.
+      launched_flash: Proces objavljivanja proizvoda se trenutno izvodi.
+      message:
+        info: '%nbProducts% odabranih proizvoda će biti objavljeno.'
+    unpublish:
+      label: Poništi objavu
+      description: Poništi objavu odabranih proizvoda, trenutno objavljeni podaci će biti izbrisani.
+      success_flash: Uspješno je poništena objava odabranih proizvoda.
+      launched_flash: Trenutno se izvodi proces poništavanja obavljivanja proizvoda.
+      message:
+        info: Za %nbProducts% odabranih proizvoda će biti poništena objava.
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Prijedlozi

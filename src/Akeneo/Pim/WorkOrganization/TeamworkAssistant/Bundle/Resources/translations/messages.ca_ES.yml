@@ -13,11 +13,9 @@ teamwork_assistant:
     message: Teniu novetats per enriquir "%project_label%". La data límit és %due_date%.
     project_finished:
       contributor: Felicitats! Ha realitzat el 100% del producte en %project_label%.
-      owner: '%project_label% per al %due_date% ha finalitzat.'
       show: Mostrar
     due_date:
       contributor: Ha realitzat un %percent%% dels productes de %project_label%. No t'oblidis d'omplir els productos pendents per el %due_date%.
-      owner: '%project_label% per al %due_date% no està al 100%.'
       start: Començar
   datagrid:
     project_completeness: Progrés del projecte

@@ -1,8 +1,25 @@
 # 5.0.x
 
+# 5.0.26 (2021-05-21)
+
+# 5.0.25 (2021-05-19)
+
+## Bug fixes
+
+- PIM-9865: [Backport] PIM-9771: Export to PDF doesn't export Image
+
+# 5.0.24 (2021-05-07)
+
+## Bug fixes
+
+- PIM-9846: [Backport] PIM-9822: Asset Manager - Error 500 after deleting a filterable asset family attribute
+
+# 5.0.23 (2021-05-05)
+
 ## Bug fixes
 
 - API-1557: Published products do not produce Pim events anymore
+- PIM-9845: Ensure that filters on published products take into account the scope & the locale
 
 # 5.0.22 (2021-04-27)
 

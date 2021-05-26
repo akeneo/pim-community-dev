@@ -1,0 +1,36 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        execute: Gerçekleştirmek
+      title: Kurallar
+      mass_edit_action:
+        execute: Çalıştır
+        delete: Sil
+  acl_group:
+    rule: Kurallar
+  acl:
+    rule:
+      view_permissions: Kuralları görüntüle
+      delete_permissions: Kuralları sil
+      execute_permissions: Uygulama kuralları
+  attribute:
+    tab:
+      rule.title: Kurallar
+    grid:
+      is_smart.label: Akıllı
+    acl:
+      rule.view_permissions: Kuralları görüntüle
+  product:
+    history: Uygulanan kural "%rule%"
+  steps:
+    rules_execution.title: Kuralların uygulanması
+btn:
+  Execute rules: Kuralları gerçekleştir
+job_execution:
+  summary:
+    rule_calculated: Kural sayısı
+pim_datagrid:
+  cells:
+    type:
+      execute_rules: Kuralların uygulanması

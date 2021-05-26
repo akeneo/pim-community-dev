@@ -25,7 +25,6 @@ pimee_workflow:
       modal.title: Deixe um comentário (opcional - máximo de 255 caracteres)
   proposal:
     overview: "]-Inf, 1]{{ count }} proposta|]1, Inf[{{ count }} propostas"
-    selected: Proposta selecionada
     mass_action_group:
       review:
         label: Ação em massa
@@ -101,7 +100,6 @@ pimee_enrich.entity.product:
       published: Publicado
       revert: Restaurar
     attribute:
-      can_be_updated_by_a_rule: "Este atributo pode ser atualizado pela regra: {{ rule }}"
       value_updated: Este valor é atualizado pelo rascunho atual
     meta:
       published_version: Versão Publicada

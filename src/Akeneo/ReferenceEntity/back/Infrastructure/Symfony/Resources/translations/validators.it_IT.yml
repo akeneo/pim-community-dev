@@ -7,8 +7,6 @@ pim_reference_entity:
         limit_reached: 'Non puoi creare l''entità di riferimento "%reference_entity_label%" perché hai raggiunto il limite di %limit% entità di riferimento'
       records:
         should_have_no_record: 'Non puoi eliminare quest''entità perché esistono registri per quest''entità'
-      reference_entity_attributes:
-        should_not_be_linked: 'Non puoi eliminare quest''entità perché gli attributi dell''entità di riferimento sono correlati a quest''entità'
       reference_entity_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Almeno un gruppo utente dovrebbe avere permesso di modifica su questa entità'
       product_attributes:
@@ -21,7 +19,7 @@ pim_reference_entity:
         should_be_unique: 'Il codice di registro esiste già per l''entità di riferimento "%reference_entity_identifier%" ed il codice registro "%code%"'
         should_exist: 'Il registro non è stato trovato'
       text:
-        incompatible_with_regular_expression: 'Il testo non è compatibile con l''espressione regolare "%regular_expression%"'
+        invalid_email: 'Per favore, inserisci un indirizzo email: xxxxx@xx.xx'
       file:
         extension_not_allowed: 'I file "%file_extension%" non sono consentiti per questo attributo. Le estensioni consentite sono: %allowed_file_extensions%'
         file_size_exceeded: 'Il file eccede la dimensione massima dei file impostata per l''attributo.'

@@ -1,6 +1,7 @@
 teamwork_assistant:
   common:
     required: Obligatorisk
+    warning: Oroa dig inte, projekt beräkning kan ta en stund, så ditt projekt inte kanske syns direkt.
   grid:
     view_selector:
       create: Skapa projekt
@@ -26,6 +27,7 @@ teamwork_assistant:
     saved: Projektet har sparats, du kommer att meddelas när beräkningen är klar.
   widget:
     no_project: Du har inga aktuella projekt
+    no_project_create: skapa ett nytt projekt
     description: Beskrivning
     due_date: Förfallodatum
     todo: ATT GÖRA
@@ -37,6 +39,7 @@ teamwork_assistant:
       contributor_selector: Sök medarbetare
       project_selector: Sök projekt
     completeness:
+      to_start: PRODUKTER TILL START
       in_progress: PRODUKTER PÅGÅR
       done: PRODUKTER SOM GJORT
 pim_datagrid:
@@ -52,6 +55,12 @@ batch_jobs:
   project_calculation:
     project_calculation.label: Projekt beräkning
     prepare_project_calculation.label: Förbered projektet beräkning
+    clean_contributor_group.label: Kontrollera användare behörighet på projektets språk
+  refresh_project_completeness_calculation:
+    label: Uppdatera projektets fullständigheter
+    refresh_project_completeness_calculation.label: Uppdatera projektets fullständigheter
 pim_notification:
   types:
+    project_created: Ett nytt projekt för dig
     project_finished: Projektet klar
+    project_calculation: Projekt beräkning

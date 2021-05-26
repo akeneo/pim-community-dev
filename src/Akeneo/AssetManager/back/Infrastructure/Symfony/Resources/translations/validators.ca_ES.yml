@@ -4,17 +4,8 @@ pim_asset_manager:
       code:
         pattern: 'Aquest camp només pot tenir lletres, números i guions baixos.'
         limit_reached: 'Vostè no pot crear la família de recursos "%asset_family_identifier%" perquè ha arribat al límit de famílies de recursos %limit%'
-      assets:
-        should_have_no_asset: 'No es pot eliminar aquesta entitat perquè existeixen recursos per a aquesta entitat'
-      asset_family_attributes:
-        should_not_be_linked: 'No pots eliminar aquesta entitat perquè els recursos de la família d''atributs estan relacionades amb aquesta entitat'
-      asset_family_permissions:
-        at_least_one_user_group_should_have_edit_permission: 'Com a mínim un grup d''usuaris té que tenir permisos d''edició sobre a aquesta entitat'
-      product_attributes:
-        should_not_be_linked: 'No pots eliminar aquesta entitat perquè els atributs de producte estan relacionats amb aquesta entitat'
       should_exist: 'La família de recurs "%asset_family_code%" no s''ha trobat.'
       rule_template:
-        limit_reached: 'Vostè no pot crear la família de recursos "%asset_family_identifier%" perquè ha arribat al límit de regles d''enllaç de productes %limit%'
         product_selection_cannot_be_empty: 'Té que especificar com a mínim una selecció de productes a la regla d''enllaç de productes'
         product_assignment_cannot_be_empty: 'Té que especificar com a mínim una assignació de productes a la regla d''enllaç de productes'
         extrapolated_attribute_should_exist: 'L''atribut "%attribute_code%" no existeix per a aquesta família de recursos fixes'
@@ -25,6 +16,7 @@ pim_asset_manager:
         extrapolated_attribute_type_should_not_have_one_value_per_locale: 'L''atribut "%attribute_code%" no pot utilitzar-se per l''extrapolació perquè té un valor per local'
       transformation:
         attribute_reference_should_exist: 'L''atribut "%attribute_code%" no existeix per a aquesta família de recursos fixes'
+        unknown_extra_field: 'La propietat {{ field }} no s''esperava.'
   asset:
     validation:
       code:

@@ -1,20 +1,16 @@
 pimee_catalog_rule:
   overview: "]-Inf, 1]{{ count }} reguła|]1, Inf[{{ count }} reguł"
   execution_button: Wykonywanie reguł
-  selected: 'wybrano reguły'
   popin:
     execute_rules:
       confirm_title: Potwierdź wykonanie
-      confirm_content: Czy na pewno chcesz wykonać wszystkie reguły? (może to zająć dużo czasu)
   notification:
-    fail: Akcja nie może być wykonana
     launched: Wykonywanie reguł zostało rozpoczęte. Zostaniesz powiadomiony, kiedy zostanie zakończone.
   attribute:
     list:
       code.label: Pod Produktu
       condition.label: Stan
       action.label: Działanie
-      no_rule_yet.label: Aktualnie brak reguł
   rule:
     condition:
       if.label: jeżeli
@@ -34,12 +30,10 @@ pimee_catalog_rule:
           confirm_content: Czy na pewno chcesz wykonać regułę?
       mass_edit_action:
         confirm_title: Potwierdź obliczenie
-        confirm_content: Czy na pewno chcesz obliczyć produkty objęte tymi regułami?
       mass_action:
         execute:
           confirm_title: Potwierdź wykonanie
-          confirm_content: Czy na pewno chcesz wykonać zaznaczone reguły?
-          success: Rozpoczęto zbiorowe wykonywanie reguł. Zostaniesz powiadomiony, kiedy zostanie zakończone
+          success: Wykonywanie reguł zostało rozpoczęte. Zostaniesz powiadomiony, kiedy zostanie zakończone.
           error: Wystąpił błąd podczas wykonywania reguł.
           empty_selection: Nie wybrano reguł.
         delete:
@@ -57,17 +51,11 @@ pimee_catalog_rule:
         rules:
           title: Reguły
     creation:
-      helper: Silnik reguł może radykalnie zwiększyć wydajność PIM poprzez automatyzację działań.
       english_flag: Etykieta dla języka angielskiego
       title: Utwórz nową regułę
       notification:
         success: Reguła utworzona pomyślnie
         failed: Tworzenie reguły nie powiodło się
-      constraint:
-        code:
-          required: Wymagany jest kod reguły.
-          too_short: "Kod reguły jest zbyt krótki. Wymagane {{ characterLimit }} znaków lub więcej."
-          allowed_characters: Kod reguły może być tylko znakiem alfanumerycznym i podkreśleniem.
       cross_link: Opuść formularz tworzenia reguły
     edit:
       properties:
@@ -105,7 +93,6 @@ pimee_catalog_rule:
           "BETWEEN": pomiędzy
           "NOT BETWEEN": nie pomiędzy
           "=": równa się
-          "!=": nie równa się
           ">": większy niż
           ">=": równa lub większa niż
           "<": mniej niż
@@ -113,9 +100,7 @@ pimee_catalog_rule:
       notification:
         success: Reguła została pomyślnie zaktualizowana
         failed: Aktualizacja reguły nie powiodła się
-      discard_changes: Jeśli opuścisz stronę, stracisz zmiany reguły.
     helper:
-      add_to_category: Aby dodać wybrane produkty do jednej lub więcej kategorii, zacznij od wyboru drzew kategorii, a następnie kategorii.
       product_selection: "Musisz zdefiniować wybór produktu, aby utworzyć regułę. Jeśli nie wiesz jak to zrobić, "
       product_selection_doc_link: spójrz na ten artykuł.
     legend:
@@ -129,32 +114,16 @@ pim_enrich:
       module:
         delete:
           confirm: Czy na pewno chcesz usunąć tą regułę? Tej operacji nie można cofnąć
-pim_datagrid:
-  entity:
-    rule:
-      flash:
-        delete:
-          success: Regóła usunięta pomyślnie
 flash:
   rule:
-    impacted_product_count: Rozpoczęto zbiorowe działanie w celu obliczenia dotkniętych produktów dla reguł. Zostaniesz powiadomiony, kiedy zostanie ono zakończone.
-    executed: Wykonywanie reguły zostało uruchomione. Zostaniesz poinformowany, kiedy zostanie zakończone.
+    executed: Wykonywanie reguł zostało rozpoczęte. Zostaniesz powiadomiony, kiedy zostanie zakończone.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Ustawienia reguł
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Wykonywanie reguł
   default_steps:
-    export_rules: Eksport reguł
-    import_rules: Import reguł
     execute_rules: Wykonywanie reguł
-  yml_rule_import:
-    label: Import reguł z pliku YAML
-    import.label: Import reguł
-  yml_rule_export:
-    label: Eksportuj reguły do pliku YAML
-    export.label: Eksport reguł
   rule_impacted_product_count:
-    label: Dotknięte produkty dla zasad
     perform.label: Wpływ liczby produktów
   csv_product_import_with_rules:
     label: Import produktów in csv z zasadami
@@ -176,6 +145,7 @@ pim_menu:
     rule: Reguły
 pim_title:
   pimee_catalog_rule_rule_index: Reguły
+  pimee_catalog_rule_new: Reguły
 pim_import_export:
   widget:
     last_operations:

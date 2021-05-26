@@ -98,7 +98,6 @@ class AssetFamilyAssetFilter extends ChoiceFilter
     {
         $metadata = parent::getMetadata();
         $metadata[FilterUtility::TYPE_KEY] = 'asset-family-collection';
-        $metadata[FilterUtility::ENABLED_KEY] = false;
 
         return $metadata;
     }

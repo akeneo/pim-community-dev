@@ -1,0 +1,225 @@
+pimee_catalog_rule:
+  overview: "]-Inf, 1]{{ count }} 규칙|]1, Inf[{{ count }} 규칙"
+  execution_button: 규칙 실행
+  dropdown:
+    title: 기타 작업
+  popin:
+    execute_rules:
+      confirm_title: 실행 확인
+  notification:
+    launched: 규칙 실행이 시작되었습니다. 완료되면 알림이 전송됩니다.
+  attribute:
+    list:
+      code.label: 코드
+      condition.label: 조건
+      action.label: 작업
+  rule:
+    value: 환율
+    condition:
+      if.label: '조건:'
+    action:
+      then.label: 그런 다음
+      set_value.label: 다음으로 설정됨
+      copy_value.label: 다음으로 복사됨
+      set.label: 다음으로 설정됨
+      copy.label: 다음으로 복사됨
+      add.label: 다음에 추가됨
+      remove.label: 다음에서 제거됨
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: 실행 확인
+          confirm_content: 이 규칙을 실행하시겠습니까?
+      mass_edit_action:
+        confirm_title: 계산 확인
+      mass_action:
+        execute:
+          confirm_title: 실행 확인
+          success: 규칙 실행이 시작되었습니다. 완료되면 알림이 전송됩니다.
+          error: 규칙을 실행하는 중에 오류가 발생했습니다.
+          empty_selection: 규칙을 선택하지 않았습니다.
+        delete:
+          confirm_title: 실행 확인
+          confirm_content: 선택한 규칙을 삭제하시겠습니까?
+          success: 규칙을 삭제했습니다.
+          error: 규칙을 삭제하는 중에 오류가 발생했습니다.
+          empty_selection: 규칙을 선택하지 않았습니다.
+  form:
+    category:
+      catalog: 카탈로그
+      select: 카테고리 선택
+      folder:
+        not_selected: 폴더
+      folders:
+        not_selected: 폴더
+    tab:
+      list: 규칙 작성기 및 속성 탭
+      rule_builder: 규칙 작성기
+    attribute:
+      tab:
+        rules:
+          title: 규칙
+    creation:
+      english_flag: 영어용 레이블
+      title: 새 규칙 만들기
+      notification:
+        success: 규칙 생성 성공
+        failed: 규칙 생성 실패
+      cross_link: 규칙 생성 양식 끝내기
+    edit:
+      properties:
+        section:
+          general: 일반 매개변수
+          labels: 레이블 번역
+      priority:
+        label: 우선순위
+      status:
+        label: 상태
+        enabled: 활성화됨
+        disabled: 비활성화됨
+      add_to_category: 카테고리에 추가
+      add_conditions: 조건 추가
+      product_selection: 제품 선택
+      preview: 미리보기
+      fields:
+        family: 패밀리
+        family_variant: 패밀리 변형
+        category: 카테고리
+        identifier: 식별자
+        attribute: 특성
+        groups: 그룹
+        parent: 상위
+        measurement_unit: 측정 단위
+        currency: 통화
+        operator: 연산자
+        entity_type:
+          label: 엔터티 유형
+      actions:
+        add_action: 작업 추가
+        add_category:
+          title: 카테고리 추가
+        category:
+          category_tree: 카테고리 트리
+        set_attribute:
+          attribute_label: 특성
+        set_associations:
+          association_types: 연결 유형
+          add_group: 그룹 추가
+          add_product: 상품 추가
+          select:
+            products: 제품
+            product_models: 제품 모델
+            groups: 그룹
+        clear_attribute:
+          attribute_label: 특성
+        delete:
+          label: 작업 제거
+          description: 이 작업을 제거하시겠습니까?
+        calculate:
+          add_value: 값 추가
+          add_attribute: 속성 추가
+          operator:
+            add: 추가
+            subtract: 덜다
+            multiply: 곱하기
+            divide: 나누기
+        concatenate:
+          add_text: 텍스트 추가
+          add_attribute: 속성 추가
+          add_new_line: 줄 바꿈 추가
+          line_break: 줄바꿈
+      conditions:
+        delete:
+          label: 조건 제거
+          description: 이 조건을 제거하시겠습니까?
+        operators:
+          "STARTS WITH": 다음으로 시작
+          "ENDS WITH": 다음으로 끝남
+          "CONTAINS": 다음을 포함
+          "DOES NOT CONTAIN": 다음을 포함하지 않음
+          "EMPTY": 비어 있음
+          "NOT EMPTY": 비어 있지 않음
+          "IN": 있음
+          "NOT IN": 없음
+          "IN CHILDREN": 하위 항목에 있음
+          "NOT IN CHILDREN": 하위 항목에 없음
+          "UNCLASSIFIED": 미분류
+          "IN OR UNCLASSIFIED": 미분류 또는 있음
+          "BETWEEN": 사이
+          "NOT BETWEEN": 사이에 없음
+          "=": 같음
+          ">": 보다 큼
+          ">=": 크거나 같음
+          "<": 보다 작음
+          "<=": 작거나 같음
+      notification:
+        success: 규칙 업데이트 성공
+        failed: 규칙 업데이트 실패
+    delete:
+      description: 이 규칙을 삭제하시겠습니까? 이 작업은 실행 취소할 수 없습니다.
+      notification:
+        failed: 규칙 삭제 실패
+        success: 규칙 제거됨
+    helper:
+      product_selection: "규칙을 만들려면 제품 선택을 정의해야 합니다. 방법을 모르시는 경우,"
+      product_selection_doc_link: 이 문서를 살펴보십시오.
+    legend:
+      add_to_category: 작업 만들기
+      product_selection: 조건 만들기
+    tree:
+      item:
+        not_selected: 항목 선택
+    date:
+      operators:
+        specific_date: 특정 날짜
+      label:
+        operator: 연산자 선택
+        date: 날짜를 선택하세요
+  exceptions:
+    loading: 규칙 정의 로드 중에 오류가 발생했습니다.
+    required: 필수 기재 항목입니다
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: 이 규칙을 삭제하시겠습니까? 이 작업은 실행 취소할 수 없습니다.
+flash:
+  rule:
+    executed: 규칙 실행이 시작되었습니다. 완료되면 알림이 전송됩니다.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: 규칙 설정
+batch_jobs:
+  add_attribute_value:
+    execute_rules.label: 규칙 실행
+  default_steps:
+    execute_rules: 규칙 실행
+  rule_impacted_product_count:
+    perform.label: 영향받는 제품 카운트
+  csv_product_import_with_rules:
+    label: 규칙과 함께 CSV로 제품 가져오기
+    import.label: 제품 가져오기
+  csv_product_model_import_with_rules:
+    label: 규칙과 함께 CSV로 제품 모델 가져오기
+  xlsx_product_import_with_rules:
+    label: 규칙과 함께 XLSX로 제품 가져오기
+    import.label: 제품 가져오기
+  xlsx_product_model_import_with_rules:
+    label: 규칙과 함께 XLSX로 제품 모델 가져오기
+pim_notification:
+  types:
+    rule: 규칙 설정
+    mass_edit_rule: 규칙 대량 편집
+    execute_rules: 규칙 실행
+pim_menu:
+  item:
+    rule: 규칙
+pim_title:
+  pimee_catalog_rule_rule_index: 규칙
+  pimee_catalog_rule_edit: 규칙 수정
+  pimee_catalog_rule_new: 규칙
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: 규칙 실행

@@ -31,3 +31,5 @@ pim_analytics:
     average_percentage_localizable_only_attributes: Lokalistoitavia attribuutteja viittaustietoa kohden keskimäärin (%)
     average_percentage_scopable_only_attributes: Kanavakohtaisia attribuutteja viittaustietoa kohden keskimäärin (%)
     average_percentage_scopable_and_localizable_attributes: Lokalistoitavia ja kanavakohtaisia attribuutteja viittaustietoa kohden keskimäärin (%)
+akeneo_reference_entity: Viitetiedot yksinkertainen valinta
+akeneo_reference_entity_collection: Viitetiedot monivalinta

@@ -1,0 +1,3 @@
+batch_jobs:
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Chỉnh sửa thuộc tính

@@ -1,21 +1,24 @@
 pimee_catalog_rule:
   overview: "]-Inf, 1]{{ count }} sääntö|]1, Inf[{{ count }} sääntöä"
   execution_button: Suorita säännöt
-  selected: 'sääntöä valittu'
+  selected: "]-Inf, 1]{{ count }} sääntö valittu|]1, Inf[{{ count }} sääntöä valittu"
+  dropdown:
+    title: Muut toiminnot
   popin:
     execute_rules:
       confirm_title: Vahvista suoritus
-      confirm_content: Haluatko varmasti suorittaa kaikki säännöt? (tämä voi kestää kauan)
+      confirm_content: Oletko varma, että haluat suorittaa säännöt? (Se voi kestää jonkin verran)
   notification:
-    fail: Tätä toimintoa ei voida suorittaa
+    fail: Toimintoa ei suoritettu.
     launched: Sääntöjen suoritus on käynnistetty. Sinulle ilmoitetaan kun se on valmis.
   attribute:
     list:
       code.label: Koodi
       condition.label: Ehto
       action.label: Toiminto
-      no_rule_yet.label: Ei mitään sääntöä toistaiseksi
+      no_rule_yet.label: Ei sääntöjä toistaiseksi
   rule:
+    value: Value
     condition:
       if.label: jos
     action:
@@ -34,12 +37,10 @@ pimee_catalog_rule:
           confirm_content: Oletko varma, että haluat suorittaa säännön?
       mass_edit_action:
         confirm_title: Vahvista laskenta
-        confirm_content: Oletko varma, että haluat laskea tuotteet, joita sääntö koskee?
       mass_action:
         execute:
           confirm_title: Vahvista suoritus
-          confirm_content: Oletko varma, että haluat suorittaa valitut säännöt?
-          success: Massatoiminto valittujen sääntöjen suorittamiseksi on käynnistetty. Sinulle ilmoitetaan, kun se on valmis
+          success: Sääntöjen suoritus on käynnistetty. Sinulle ilmoitetaan kun se on valmis.
           error: Sääntöjen suorituksessa tapahtui virhe.
           empty_selection: Sääntöjä ei ole valittu.
         delete:
@@ -49,40 +50,61 @@ pimee_catalog_rule:
           error: Sääntöjen poistamisessa tapahtui virhe.
           empty_selection: Sääntöjä ei ole valittu.
   form:
+    category:
+      select: Valitse kategoria
+      open_tree: Avaa kategoriapuu
+      tree: Kategoriapuu
+      menu: Valitse kategoriapuu
+      folder:
+        selected: Kansio valittu
+        not_selected: Kansio
+      folders:
+        selected: Kansiot valittu
+        not_selected: Kansiot
+      arrow:
+        open: Avaa haarakategoria
+        close: Sulje haarakategoria
     attribute:
       tab:
         rules:
           title: Säännöt
+    creation:
+      helper: Sääntömoottori voi merkittävästi parantaa tuottavuuttasi PIM:ssä automatisoimalla toimintoja,
+      title: Luo uusi sääntö
+      notification:
+        success: Sääntö luotu onnistuneesti
+        failed: Säännön luominen epäonnistui
+      constraint:
+        code:
+          required: Säännön koodi on pakollinen.
+          too_short: "Säännön koodi on liian lyhyt. Vaaditaan vähintään {{ characterLimit }} merkkiä."
+          allowed_characters: Säännön koodi voi sisältää vain aakkosnumeerisia merkkejä ja alaviivoja.
+          unique: Tämä koodi on jo käytössä.
+      cross_link: Poistu sääntölomakkeelta
+    edit:
+      header:
+        welcome: Tervetuloa uuteen sääntömoottoriin!
+        description: Luodaksesi säännön, sinun on määriteltävä tuotteiden valintakriteerit ja lisättävä sitten yksi tai useampi toiminto.
+        documentation_link: Klikkaa tästä tutustuaksesi sääntömoottorin kyvykkyyksiin koko laajuudeltaan.
+      conditions:
+        operators:
+          "NOT EMPTY": ei tyhjä
 pim_enrich:
   entity:
     rule:
       module:
         delete:
           confirm: Oletko varma, että haluat poistaa tämän säännön? Et voi peruuttaa tätä toimintoa
-pim_datagrid:
-  entity:
-    rule:
-      flash:
-        delete:
-          success: Sääntö poistettu onnistuneesti
 flash:
   rule:
-    impacted_product_count: Massatoiminto sääntöjä koskevien tuotteiden laskemiseksi käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
-    executed: Säännön suoritus käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+    executed: Sääntöjen suoritus on käynnistetty. Sinulle ilmoitetaan kun se on valmis.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Sääntöjen asetukset
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Sääntöjen suorittaminen
   default_steps:
     execute_rules: Sääntöjen suorittaminen
-  yml_rule_import:
-    label: Sääntöjen tuonti YAML-muodossa
-    import.label: Sääntöjen tuonti
-  yml_rule_export:
-    label: Sääntöjen vienti YAML-muodossa
-    export.label: Sääntöjen vienti
   rule_impacted_product_count:
-    label: Sääntöjä koskevat tuotteet
     perform.label: Laske päivitetyt tuotteet
   csv_product_import_with_rules:
     label: Tuotteiden ja sääntöjen tuonti CSV-muodossa
@@ -98,8 +120,15 @@ pim_notification:
   types:
     rule: Sääntöjen asetukset
     mass_edit_rule: Massamuokkaa sääntöä
+    execute_rules: Sääntöjen suorittaminen
 pim_menu:
   item:
     rule: Säännöt
 pim_title:
   pimee_catalog_rule_rule_index: Säännöt
+  pimee_catalog_rule_new: Säännöt
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: Sääntöjen suorittaminen
