@@ -63,8 +63,6 @@ pim_enrich.entity.locale:
   label: ロケール
   uppercase_label: ロケール
   plural_label: ロケール
-  page_title:
-    index: "]-Inf, 1]{{ count }} ロケール|]1, Inf[{{ count }} ロケール"
 pim_enrich.entity.currency:
   plural_label: 通貨
   page_title:

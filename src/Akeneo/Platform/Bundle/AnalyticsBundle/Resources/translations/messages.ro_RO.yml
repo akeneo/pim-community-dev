@@ -1,0 +1,45 @@
+pim_analytics:
+  new_patch_available: Noi patch-uri disponibile
+  system_config:
+    group:
+      notification.title: Notificări
+      version_update.title: Actualizări versiune
+    form:
+      version_update.label: Noi versiuni notificări
+      version_update.tooltip: Trimite cerere pentru un server îndepărtate pentru a prelua informaţii despre eliberarea de noi patchs
+  system_info:
+    title: Informații despre sistem
+    download: TXT
+  info_type:
+    pim_edition: Ediție
+    pim_version: Versiune
+    pim_storage_driver: Stocare
+    pim_environment: Mediu
+    pim_install_time: Timp de instalare
+    registered_bundles: Pachete înregistrate
+    nb_channels: Număr de canale
+    nb_products: Număr de produse
+    nb_product_models: Număr de modele de produs
+    nb_variant_products: Număr de variante de produs
+    nb_family_variants: Număr de variante de familie
+    nb_attributes: Număr de atribute
+    nb_scopable_attributes: Număr de atribute localizabile
+    nb_localizable_attributes: Număr de atribute localizabile
+    nb_scopable_localizable_attributes: Număr de atribute localizabile și scopabile
+    nb_locales: Număr de locale
+    nb_families: Număr de familii
+    nb_users: Număr de utilizatori
+    pim_storage_version: Versiune de stocare
+    os_version: Versiune SO
+    php_version: Versiune PHP
+    mysql_version: Versiune MySQL
+    mariadb_version: Versiune MariaDB
+    mongodb_version: Versiune MongoDB
+    server_version: Versiune server
+    php_extensions: Extensiile PHP
+  acl:
+    system_info:
+      index: Informații despre sistem
+pim_menu:
+  item:
+    system_info: Informații despre sistem

@@ -36,13 +36,13 @@ The order of the tabs must be consistent across the entire application. Related 
       const [isCurrent, switchTo] = useTabBar('firstTab');
       return (
         <TabBar {...args}>
-          <TabBar.Tab isActive={isCurrent('firstTab')} onClick={switchTo('firstTab')}>
+          <TabBar.Tab isActive={isCurrent('firstTab')} onClick={() => switchTo('firstTab')}>
             First tab
           </TabBar.Tab>
-          <TabBar.Tab isActive={isCurrent('anotherTab')} onClick={switchTo('anotherTab')}>
+          <TabBar.Tab isActive={isCurrent('anotherTab')} onClick={() => switchTo('anotherTab')}>
             Another tab
           </TabBar.Tab>
-          <TabBar.Tab isActive={isCurrent('lastTab')} onClick={switchTo('lastTab')}>
+          <TabBar.Tab isActive={isCurrent('lastTab')} onClick={() => switchTo('lastTab')}>
             Last tab
           </TabBar.Tab>
         </TabBar>
@@ -61,13 +61,13 @@ The order of the tabs must be consistent across the entire application. Related 
       const [isCurrent, switchTo] = useTabBar('firstTab');
       return (
         <TabBar {...args}>
-          <TabBar.Tab isActive={isCurrent('firstTab')} onClick={switchTo('firstTab')}>
+          <TabBar.Tab isActive={isCurrent('firstTab')} onClick={() => switchTo('firstTab')}>
             First tab <Badge level="warning">2</Badge>
           </TabBar.Tab>
-          <TabBar.Tab isActive={isCurrent('anotherTab')} onClick={switchTo('anotherTab')}>
+          <TabBar.Tab isActive={isCurrent('anotherTab')} onClick={() => switchTo('anotherTab')}>
             Another tab
           </TabBar.Tab>
-          <TabBar.Tab isActive={isCurrent('lastTab')} onClick={switchTo('lastTab')}>
+          <TabBar.Tab isActive={isCurrent('lastTab')} onClick={() => switchTo('lastTab')}>
             Last tab <Badge level="danger">0</Badge>
           </TabBar.Tab>
         </TabBar>
@@ -84,13 +84,13 @@ The order of the tabs must be consistent across the entire application. Related 
       const [isCurrent, switchTo] = useTabBar('firstTab');
       return (
         <TabBar {...args}>
-          <TabBar.Tab isActive={isCurrent('firstTab')} onClick={switchTo('firstTab')}>
+          <TabBar.Tab isActive={isCurrent('firstTab')} onClick={() => switchTo('firstTab')}>
             First tab <Pill level="warning" />
           </TabBar.Tab>
-          <TabBar.Tab isActive={isCurrent('anotherTab')} onClick={switchTo('anotherTab')}>
+          <TabBar.Tab isActive={isCurrent('anotherTab')} onClick={() => switchTo('anotherTab')}>
             Another tab
           </TabBar.Tab>
-          <TabBar.Tab isActive={isCurrent('lastTab')} onClick={switchTo('lastTab')}>
+          <TabBar.Tab isActive={isCurrent('lastTab')} onClick={() => switchTo('lastTab')}>
             Last tab <Pill level="danger" />
           </TabBar.Tab>
         </TabBar>
@@ -108,9 +108,7 @@ The order of the tabs must be consistent across the entire application. Related 
       return (
         <TabBar {...args}>
           {[...Array(10)].map((_, index) => (
-            <TabBar.Tab key={index} isActive={isCurrent(`Tab ${index + 1}`)} onClick={switchTo(`Tab ${index + 1}`)}>
-              Tab {index + 1}
-            </TabBar.Tab>
+            <TabBar.Tab key={index} isActive={isCurrent(`Tab ${index + 1}`)} onClick={() => switchTo(`Tab ${index + 1}`)}>Tab {index + 1}</TabBar.Tab>
           ))}
         </TabBar>
       );

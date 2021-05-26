@@ -60,13 +60,11 @@ pim_user:
       username_or_email: Usuário ou Email
       remember_me: Lembrar neste computador
       password_forgotten: Esqueceu a senha?
-      log_in: Entrar
       forgot_password: Esqueci a senha
       request: Requisição
       password_reset: Redefinição de Senha
       reset: Resetar
       password_reset_email_sent: Um e-mail foi enviado para o usuário. Contém um link para redefinir a senha.
-      homepage: Ir para Página Inícial
   group:
     tab:
       general.title: Geral

@@ -1,0 +1,26 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Tham số
+      value.title: Giá trị
+      history.title: Lịch sử
+  #Group type
+  group_type:
+    tab:
+      property.title: Thuộc tính
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Các chủng loại
+      title: Chọn thao tác
+      steps:
+        second: Chọn thao tác
+        third: Cấu hình
+        fourth: Xác nhận
+pim_enrich_attribute_form:
+  code: Mã
+  unique: Giá trị duy nhất
+  availableLocales: Locale sẵn có
+  locale_specific: Locale cụ thể
+  group: Nhóm thuộc tính

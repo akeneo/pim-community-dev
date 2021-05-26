@@ -1,3 +1,4 @@
+import {arrayUnique} from 'akeneo-design-system';
 import {Locale, LocaleCode, isLocales, denormalizeLocale} from '../models';
 import {isLabelCollection, LabelCollection, getLabel} from '../models';
 
@@ -41,5 +42,11 @@ const denormalizeChannel = (channel: any): Channel => {
   return {...channel, locales};
 };
 
-export {getChannelLabel, denormalizeChannel};
+const getAllLocales = (channels: Channel[]): Locale[] =>
+  channels.reduce<Locale[]>(
+    (locales, channel) => arrayUnique([...locales, ...channel.locales], (first, second) => first.code === second.code),
+    []
+  );
+
+export {getChannelLabel, denormalizeChannel, getAllLocales};
 export type {ChannelCode, Channel, ChannelReference};

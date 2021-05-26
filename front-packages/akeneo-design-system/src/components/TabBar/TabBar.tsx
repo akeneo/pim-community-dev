@@ -47,6 +47,10 @@ const TabContainer = styled.div<TabProps & AkeneoThemedProps>`
   }
 `;
 
+const MoreDropdown = styled(Dropdown)`
+  align-items: center;
+`;
+
 type TabProps = {
   /**
    * Define if the tab is active.
@@ -155,7 +159,7 @@ const TabBar = ({moreButtonTitle, children, ...rest}: TabBarProps) => {
         {decoratedChildren}
       </TabBarContainer>
       {0 < hiddenElements.length && (
-        <Dropdown>
+        <MoreDropdown>
           <IconButton level="tertiary" ghost="borderless" icon={<MoreIcon />} title={moreButtonTitle} onClick={open} />
           {isOpen && (
             <Dropdown.Overlay verticalPosition="down" onClose={close}>
@@ -177,7 +181,7 @@ const TabBar = ({moreButtonTitle, children, ...rest}: TabBarProps) => {
               </Dropdown.ItemCollection>
             </Dropdown.Overlay>
           )}
-        </Dropdown>
+        </MoreDropdown>
       )}
     </Container>
   );

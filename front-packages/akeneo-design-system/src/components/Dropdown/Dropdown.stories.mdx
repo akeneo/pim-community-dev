@@ -1,8 +1,9 @@
+import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Dropdown} from './Dropdown';
-import {Button, Image, Badge, Link, Checkbox} from '../../components';
-import {useBooleanState} from '../../hooks';
-import {SpaceContainer, useSelection} from '../../storybook';
+import {Button, Image, Badge, Link, Checkbox, Search} from '../../components';
+import {useBooleanState, usePaginatedResults, useDebounce} from '../../hooks';
+import {SpaceContainer, useSelection, fakeFetcher} from '../../storybook';
 import {ArrowDownIcon} from '../../icons';
 import {action} from '@storybook/addon-actions';
 
@@ -118,6 +119,49 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
   </Story>
 </Canvas>
 
+## Search & pagination
+
+<Canvas>
+  <Story name="Search & pagination" height={500}>
+    {args => {
+      const [isOpen, open, close] = useBooleanState(true);
+      const [searchValue, setSearchValue] = useState('');
+      const debouncedSearchValue = useDebounce(searchValue);
+      const [items, handleNextPage] = usePaginatedResults(
+        page => fakeFetcher(page, debouncedSearchValue),
+        [debouncedSearchValue],
+        isOpen
+      );
+      return (
+        <SpaceContainer height={500}>
+          <Dropdown>
+            <Button onClick={open}>
+              Simple <ArrowDownIcon />
+            </Button>
+            {isOpen && (
+              <Dropdown.Overlay verticalPosition="down" onClose={close}>
+                <Dropdown.Header>
+                  <Search
+                    onSearchChange={setSearchValue}
+                    placeholder="Search"
+                    searchValue={searchValue}
+                    title="Search"
+                  />
+                </Dropdown.Header>
+                <Dropdown.ItemCollection onNextPage={handleNextPage}>
+                  {items.map((item, index) => (
+                    <Dropdown.Item key={index}>{item.text}</Dropdown.Item>
+                  ))}
+                </Dropdown.ItemCollection>
+              </Dropdown.Overlay>
+            )}
+          </Dropdown>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
 ## Selectable Item
 
 <Canvas>
@@ -152,6 +196,40 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                   <Dropdown.Item>
                     <Checkbox {...fourthSelection} /> Item 4
                   </Dropdown.Item>
+                </Dropdown.ItemCollection>
+              </Dropdown.Overlay>
+            )}
+          </Dropdown>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With section
+
+<Canvas>
+  <Story name="With section" height={400}>
+    {args => {
+      const [isOpen, open, close] = useBooleanState(true);
+      return (
+        <SpaceContainer height={200}>
+          <Dropdown>
+            <Button onClick={open}>
+              With section <ArrowDownIcon />
+            </Button>
+            {isOpen && (
+              <Dropdown.Overlay verticalPosition="down" onClose={close}>
+                <Dropdown.Header>
+                  <Dropdown.Title>Elements</Dropdown.Title>
+                </Dropdown.Header>
+                <Dropdown.ItemCollection>
+                  <Dropdown.Section>Section 1</Dropdown.Section>
+                  <Dropdown.Item>Item 1</Dropdown.Item>
+                  <Dropdown.Item>Item 2</Dropdown.Item>
+                  <Dropdown.Section>Section 2</Dropdown.Section>
+                  <Dropdown.Item>Item 3</Dropdown.Item>
+                  <Dropdown.Item>Item 4</Dropdown.Item>
                 </Dropdown.ItemCollection>
               </Dropdown.Overlay>
             )}

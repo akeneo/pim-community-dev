@@ -183,6 +183,14 @@ akeneo_connectivity.connection:
       message_without_permission:
         message: Poproś administratora o utworzenie.
         link: Dowiedz się więcej o połączeniach tutaj...
+  webhook:
+    form:
+      secret: Sekret
+    regenerate_secret:
+      title: Potwierdź regenerację
+      action:
+        regenerate: Wygeneruj ponownie
+      link: Oto co się stanie.
   error_management:
     connection_monitoring:
       title: Monitorowanie
@@ -193,16 +201,8 @@ akeneo_connectivity.connection:
       search_filter:
         placeholder: Szukaj w komunikatach błędów
         result_count: '{0} Brak wyniku |[1,Inf] {{ count }} wyników'
-      error_list:
-        date_time_column: Dzień i czas
-        content_column: Komunikat o błędzie
       no_error:
         title: Wspaniale! Nie znaleziono błędu!
-      not_auditable:
-        description:
-          1: To track errors on this connection,
-          2: activate monitoring
-          3: in the settings.
   runtime_error:
     error_message: Motyla noga! Mamy błąd...
     reload_helper: Proszę odświeżyć stronę i spróbować ponownie

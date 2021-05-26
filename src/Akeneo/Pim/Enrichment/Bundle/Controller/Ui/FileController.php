@@ -6,13 +6,13 @@ use Akeneo\Pim\Enrichment\Bundle\File\DefaultImageProviderInterface;
 use Akeneo\Pim\Enrichment\Bundle\File\FileTypeGuesserInterface;
 use Akeneo\Pim\Enrichment\Bundle\File\FileTypes;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Liip\ImagineBundle\Controller\ImagineController;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -24,6 +24,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class FileController
 {
     const DEFAULT_IMAGE_KEY = '__default_image__';
+    const SVG_MIME_TYPES = ['image/svg', 'image/svg+xml'];
 
     /** @var ImagineController */
     protected $imagineController;
@@ -82,23 +83,38 @@ class FileController
             return $this->renderDefaultImage(FileTypes::MISC, $filter);
         }
 
-        $fileType = $this->fileTypeGuesser->guess($fileInfo->getMimeType());
-        $result = $this->renderDefaultImage($fileType, $filter);
+        $mimeType = $this->getMimeType($filename);
+        $fileType = $this->fileTypeGuesser->guess($mimeType);
 
-        if (self::DEFAULT_IMAGE_KEY !== $filename) {
-            $fileType = $this->fileTypeGuesser->guess($this->getMimeType($filename));
-
-            $result = $this->renderDefaultImage($fileType, $filter);
-            if (FileTypes::IMAGE === $fileType) {
-                try {
-                    $result = $this->imagineController->filterAction($request, $filename, $filter);
-                } catch (NotFoundHttpException|\RuntimeException $exception) {
-                    $result = $this->renderDefaultImage(FileTypes::IMAGE, $filter);
-                }
-            }
+        if (self::DEFAULT_IMAGE_KEY === $filename || FileTypes::IMAGE !== $fileType) {
+            return $this->renderDefaultImage($fileType, $filter);
         }
 
-        return $result;
+        if (in_array($mimeType, self::SVG_MIME_TYPES)) {
+            return $this->getFileResponse($filename, 'image/svg+xml');
+        }
+
+        try {
+            return $this->imagineController->filterAction($request, $filename, $filter);
+        } catch (NotFoundHttpException | \RuntimeException $exception) {
+            return $this->renderDefaultImage(FileTypes::IMAGE, $filter);
+        }
+    }
+
+    private function getFileResponse(string $filename, string $mimeType): Response
+    {
+        foreach ($this->filesystemAliases as $alias) {
+            $fs = $this->filesystemProvider->getFilesystem($alias);
+
+            $response = new Response($fs->read($filename));
+            $response->headers->set('Content-Type', $mimeType);
+
+            return $response;
+        }
+
+        throw new NotFoundHttpException(
+            sprintf('File with key "%s" could not be found.', $filename)
+        );
     }
 
     /**

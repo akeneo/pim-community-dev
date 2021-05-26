@@ -1,4 +1,4 @@
-import {denormalizeChannel, getChannelLabel} from './channel';
+import {denormalizeChannel, getChannelLabel, getAllLocales} from './channel';
 import {denormalizeLocale} from './locale';
 
 describe('akeneo > shared > model --- channel', () => {
@@ -62,5 +62,51 @@ describe('akeneo > shared > model --- channel', () => {
     expect(() => {
       denormalizeChannel({code: 'toto', labels: {}, locales: 'locales'});
     }).toThrow('Channel expects an array as locales to be created');
+  });
+  test('I can get all locales from multiple channels', () => {
+    const ecommerce = denormalizeChannel({
+      code: 'ecommerce',
+      labels: {en_US: 'E-commerce'},
+      locales: [
+        {
+          code: 'en_US',
+          label: 'English (United States)',
+          region: 'United States',
+          language: 'English',
+        },
+      ],
+    });
+    const mobile = denormalizeChannel({
+      code: 'mobile',
+      labels: {en_US: 'Mobile'},
+      locales: [
+        {
+          code: 'en_US',
+          label: 'English (United States)',
+          region: 'United States',
+          language: 'English',
+        },
+        {
+          code: 'fr_FR',
+          label: 'French (France)',
+          region: 'France',
+          language: 'French',
+        },
+      ],
+    });
+    expect(getAllLocales([ecommerce, mobile])).toEqual([
+      {
+        code: 'en_US',
+        label: 'English (United States)',
+        region: 'United States',
+        language: 'English',
+      },
+      {
+        code: 'fr_FR',
+        label: 'French (France)',
+        region: 'France',
+        language: 'French',
+      },
+    ]);
   });
 });

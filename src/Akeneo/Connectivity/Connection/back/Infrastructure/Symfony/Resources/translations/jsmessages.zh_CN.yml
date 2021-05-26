@@ -16,6 +16,8 @@ pim_title:
   akeneo_connectivity_connection_audit_any: 连接仪表板
   akeneo_connectivity_connection_error_management_dashboard: 连接仪表板
   akeneo_connectivity_connection_error_management_connection_monitoring: 连接监测
+  akeneo_connectivity_connection_webhook_edit: 事件订阅（测试）
+  akeneo_connectivity_connection_webhook_regenerate_secret: 事件订阅（测试）
 akeneo_connectivity.connection:
   connections: 连接
   secondary_actions:
@@ -190,13 +192,26 @@ akeneo_connectivity.connection:
         message: 向您的管理员请求以创建一个连接。
         link: 在此处了解更多关于连接的信息...
   webhook:
+    title: 事件订阅（测试）
+    event_subscription: 事件订阅（测试）
+    helper:
+      link: 了解有关事件订阅配置的更多信息…
     form:
+      url: 链接
       secret: 密钥
+      enabled: 事件订阅激活
+      test: 测试
+    error:
+      wrong_url: 网址无效。
+      required: 必填项。
+      not_found: 您正在尝试更新一个不存在的连接。
     regenerate_secret:
       title: 确认重新生成
       action:
         regenerate: 重新生成
       link: 此处可查看产生的影响。
+    active_event_subscriptions_limit_reached:
+      link: 了解有关事件订阅配置的更多信息.
   error_management:
     connection_monitoring:
       title: 监测

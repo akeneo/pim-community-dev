@@ -166,6 +166,7 @@ pim_common:
   done: Gotowe
   edit: Edytuj
   entity_updated: Istnieją niezapisane zmiany.
+  export: Eksport
   from: Od
   general_properties: Właściwości ogólne
   history: Historia
