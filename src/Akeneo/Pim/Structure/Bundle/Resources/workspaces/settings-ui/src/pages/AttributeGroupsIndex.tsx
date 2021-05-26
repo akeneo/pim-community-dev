@@ -8,7 +8,7 @@ import {Breadcrumb} from 'akeneo-design-system';
 const AttributeGroupsIndex: FC = () => {
   const {groups, load, isPending} = useAttributeGroupsIndexState();
   const translate = useTranslate();
-  const settingsHomePageRoute = useRoute('pim_enrich_attribute_index');
+  const settingsHomePageRoute = `#${useRoute('pim_enrich_attribute_index')}`;
 
   useEffect(() => {
     (async () => {
