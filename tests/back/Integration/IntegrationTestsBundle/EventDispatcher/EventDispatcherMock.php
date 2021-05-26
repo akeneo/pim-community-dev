@@ -32,27 +32,20 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function dispatch($event)
     {
-        $eventName = null;
-        if (1 < \func_num_args()) {
-            $eventName = func_get_arg(1);
-            $this->eventDispatcher->dispatch($event, $eventName);
-        } else {
-            $this->eventDispatcher->dispatch($event);
-        }
+        $eventName = 1 < \func_num_args() ? func_get_arg(1) : null;
 
         if (\is_object($event)) {
             $eventName = $eventName ?? \get_class($event);
-        } elseif (\is_string($event) && (null === $eventName || \is_object($eventName))) {
-            // Deprecated since symfony 4.3
-            // See https://github.com/symfony/event-dispatcher/blob/v4.3.11/EventDispatcher.php#L58
+        } elseif (\is_string($event) && (null === $eventName || $eventName instanceof ContractsEvent || $eventName instanceof Event)) {
+            @trigger_error(sprintf('Calling the "%s::dispatch()" method with the event name as the first argument is deprecated since Symfony 4.3, pass it as the second argument and provide the event object as the first argument instead.', EventDispatcherInterface::class), \E_USER_DEPRECATED);
             $swap = $event;
-            $event = $eventName;
+            $event = $eventName ?? new Event();
             $eventName = $swap;
+        } else {
+            throw new \TypeError(sprintf('Argument 1 passed to "%s::dispatch()" must be an object, "%s" given.', EventDispatcherInterface::class, \is_object($event) ? \get_class($event) : \gettype($event)));
         }
-
         $this->dispatchedEvents[$eventName] = $event;
-
-        return $this->eventDispatcher->dispatch($event);
+        return $this->eventDispatcher->dispatch($event, $eventName);
     }
 
     public function assertEventDispatched(string $expectedEventClass): void
