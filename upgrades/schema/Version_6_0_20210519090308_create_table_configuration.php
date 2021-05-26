@@ -26,7 +26,6 @@ final class Version_6_0_20210519090308_create_table_configuration extends Abstra
         alter table pim_catalog_table_column add constraint pim_catalog_table_column_pk primary key (id);
         alter table pim_catalog_table_column add constraint pim_catalog_table_column_attribute_id_fk foreign key (attribute_id) REFERENCES pim_catalog_attribute(id) ON DELETE CASCADE ON UPDATE CASCADE;
         alter table pim_catalog_table_column add constraint pim_catalog_table_column_attribute_code_unique unique (attribute_id, code);
-        alter table pim_catalog_table_column add constraint pim_catalog_table_column_attribute_order_unique unique (attribute_id, column_order);
         SQL;
 
         $this->addSql($sql);

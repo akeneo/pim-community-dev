@@ -35,7 +35,6 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
   };
 
   const handleReorder = newIndices => {
-    // TODO Backend does not work for this use case cause of integrity of order
     const newTableConfiguration = newIndices.map(i => tableConfiguration[i]);
     setTableConfiguration(newTableConfiguration);
     onChange(newTableConfiguration);

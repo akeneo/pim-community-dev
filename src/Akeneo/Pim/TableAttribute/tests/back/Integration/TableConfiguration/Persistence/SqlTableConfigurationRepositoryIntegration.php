@@ -97,6 +97,46 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         self::assertSame('aqr', $rows[1]['code']);
     }
 
+    public function testItUpdatesATableConfigurationByChangingTheOrder(): void
+    {
+        $tableConfiguration = TableConfiguration::fromColumnDefinitions([
+            TextColumn::fromNormalized(['code' => 'ingredients']),
+            TextColumn::fromNormalized(['code' => 'quantity']),
+            TextColumn::fromNormalized(['code' => 'price']),
+        ]);
+        $this->sqlTableConfigurationRepository->save($this->tableAttributeId, $tableConfiguration);
+
+        $rows = $this->connection->executeQuery(
+            'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
+            ['attribute_id' => $this->tableAttributeId]
+        )->fetchAll();
+
+        self::assertCount(3, $rows);
+        $idIngredients = $rows[0]['id'];
+        $idQuantity = $rows[1]['id'];
+        $idPrice = $rows[2]['id'];
+
+        $tableConfiguration = TableConfiguration::fromColumnDefinitions([
+            TextColumn::fromNormalized(['code' => 'ingredients']),
+            TextColumn::fromNormalized(['code' => 'price']),
+            TextColumn::fromNormalized(['code' => 'quantity']),
+        ]);
+        $this->sqlTableConfigurationRepository->save($this->tableAttributeId, $tableConfiguration);
+
+        $rows = $this->connection->executeQuery(
+            'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
+            ['attribute_id' => $this->tableAttributeId]
+        )->fetchAll();
+
+        self::assertCount(3, $rows);
+        self::assertSame('ingredients', $rows[0]['code']);
+        self::assertSame($idIngredients, $rows[0]['id']);
+        self::assertSame('price', $rows[1]['code']);
+        self::assertSame($idPrice, $rows[1]['id']);
+        self::assertSame('quantity', $rows[2]['code']);
+        self::assertSame($idQuantity, $rows[2]['id']);
+    }
+
     public function testItLoadsATableConfiguration(): void
     {
         $sql = <<<SQL
