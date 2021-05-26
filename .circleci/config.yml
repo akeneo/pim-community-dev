@@ -1121,7 +1121,7 @@ jobs:
                     echo "This environment will be available at https://pimci-pr-${CIRCLE_PULL_REQUEST##*/}.dev.cloud.akeneo.com once deployed :) "
           - run:
                 name: Deploy PR environment
-                command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} ACTIVATE_MONITORING=true PIM_CONTEXT=deployment make deploy-serenity
+                command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make deploy-serenity
           - run:
               name: Prepare infrastructure artifacts
               command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
@@ -1149,7 +1149,7 @@ jobs:
                 echo "This environment will be available at https://pimci-pr-ge-${CIRCLE_PULL_REQUEST##*/}.dev.cloud.akeneo.com once deployed :) "
           - run:
               name: Deploy PR environment
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr-ge INSTANCE_NAME=pimci-pr-ge-${CIRCLE_PULL_REQUEST##*/} ACTIVATE_MONITORING=true PIM_CONTEXT=deployment make deploy-serenity
+              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr-ge INSTANCE_NAME=pimci-pr-ge-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make deploy-serenity
           - run:
               name: Prepare infrastructure artifacts
               command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr-ge INSTANCE_NAME=pimci-pr-ge-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
