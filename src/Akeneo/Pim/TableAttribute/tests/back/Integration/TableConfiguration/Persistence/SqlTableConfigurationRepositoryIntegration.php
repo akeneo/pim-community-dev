@@ -123,7 +123,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         $result = $this->sqlTableConfigurationRepository->getByAttributeId($this->tableAttributeId);
 
         self::assertInstanceOf(TableConfiguration::class, $result);
-        self::assertSame([
+        self::assertEquals([
             [
                 'code' => 'ingredients',
                 'data_type' => 'text',
@@ -131,7 +131,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             ], [
                 'code' => 'quantity',
                 'data_type' => 'text',
-                'labels' => [],
+                'labels' => (object) [],
             ]
         ], $result->normalize());
     }
