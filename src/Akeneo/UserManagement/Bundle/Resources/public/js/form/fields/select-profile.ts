@@ -11,6 +11,7 @@ type InterfaceNormalizedProfile = {
 };
 
 class SelectProfile extends BaseSelect {
+  // @ts-ignore
   private containerTemplate = _.template(containerTemplate);
 
   /**
