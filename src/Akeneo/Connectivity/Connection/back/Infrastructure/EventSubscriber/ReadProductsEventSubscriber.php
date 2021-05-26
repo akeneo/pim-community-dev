@@ -79,7 +79,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * If the event does not contains a connection code, check if the active connection in the context uses
+     * If the event does not contain a connection code, check if the active connection in the context uses
      * valid credentials, if so, fallback to it.
      */
     private function getValidConnectionBehindReadProductsEvent(ReadProductsEvent $event): ?Connection
