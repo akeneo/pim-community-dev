@@ -4,6 +4,7 @@ const DefaultPimOnBoarding: PimOnBoarding = {
   registerUser: () => {},
   page: () => {},
   track: () => {},
+  init: () => {},
 };
 
 export = DefaultPimOnBoarding;

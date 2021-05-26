@@ -39,7 +39,7 @@ class PimApp extends BaseView {
     return $.when(FetcherRegistry.initialize(), DateContext.initialize(), UserContext.initialize())
       .then(initTranslator.fetch)
       .then(() => {
-        PimOnBoarding.registerUser();
+        PimOnBoarding.init();
       })
       .then(() => {
         init();
