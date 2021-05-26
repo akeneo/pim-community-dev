@@ -3,12 +3,16 @@ import styled from 'styled-components';
 import {useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {Category, EditableCategoryProperties} from '../../models';
 import {Field, Helper, SectionTitle, TextInput} from 'akeneo-design-system';
-import {EditCategoryForm, ValidationErrors} from '../../hooks';
+import {EditCategoryForm} from '../../hooks';
 
 const FormContainer = styled.form`
   & > * {
     margin: 0 10px 20px 0;
   }
+`;
+
+const ErrorMessage = styled(Helper)`
+  margin: 20px 0 0 0;
 `;
 
 type Props = {
@@ -27,6 +31,9 @@ const EditPropertiesForm = ({category, formData, onChangeLabel}: Props) => {
 
   return (
     <FormContainer>
+      {formData.errors.map((errorMessage, key) => {
+        return (<ErrorMessage level="error" key={`error-${key}`}>{errorMessage}</ErrorMessage>)}
+      )}
       <SectionTitle>
         <SectionTitle.Title>{translate('pim_common.code')}</SectionTitle.Title>
       </SectionTitle>
@@ -44,7 +51,6 @@ const EditPropertiesForm = ({category, formData, onChangeLabel}: Props) => {
             onChange={changedLabel => onChangeLabel(locale, changedLabel)}
             value={labelField.value}
           />
-          {/*<Helper inline={true} level="error">{}</Helper>*/}
         </Field>
       ))}
     </FormContainer>

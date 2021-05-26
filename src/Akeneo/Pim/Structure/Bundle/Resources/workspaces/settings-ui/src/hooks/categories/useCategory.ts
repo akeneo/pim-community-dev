@@ -24,6 +24,7 @@ type EditCategoryForm = {
     own: FormChoiceField;
     apply_on_children: FormField;
   };
+  errors: string[];
 };
 
 type EditCategoryResponse = {
