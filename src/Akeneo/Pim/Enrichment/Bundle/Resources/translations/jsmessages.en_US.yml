@@ -230,6 +230,8 @@ pim_enrich.entity.category:
         edit:
             not_found: Category not found
             default_tree_label: Tree
+            success: Category successfully updated
+            fail: The category could not be updated
     new_category: New category
     category_created: The category "{{ code }}" was successfully created
     category_creation_error: The category "{{ code }}" could not be created

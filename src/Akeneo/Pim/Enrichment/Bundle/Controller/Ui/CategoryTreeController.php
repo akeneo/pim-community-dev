@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -330,6 +331,7 @@ class CategoryTreeController extends Controller
         }
 
         $category = $this->findCategory($id);
+        $responseStatus = Response::HTTP_OK;
         $form = $this->createForm($this->rawConfiguration['form_type'], $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
@@ -337,8 +339,8 @@ class CategoryTreeController extends Controller
 
             if ($form->isValid()) {
                 $this->categorySaver->save($category);
-                $message = sprintf('flash.%s.updated', $category->getParent() ? 'category' : 'tree');
-                $this->addFlash('success', $this->translator->trans($message));
+            } else {
+                $responseStatus = Response::HTTP_BAD_REQUEST;
             }
         }
 
@@ -352,8 +354,32 @@ class CategoryTreeController extends Controller
             'root' => $rootCategory === null ? null : $this->normalizer->normalize($rootCategory, 'internal_api')
         ]);
 
+        $formData = $this->formatFormView($form->createView());
+
         // @todo[PLG-94] remove unused Twig templates AkeneoPimEnrichmentBundle:CategoryTree:%s.html.twig
-        return new JsonResponse($normalizedCategory, Response::HTTP_OK);
+        return new JsonResponse(['category' => $normalizedCategory, 'form' => $formData], $responseStatus);
+    }
+
+    private function formatFormView(FormView $formView): array
+    {
+        $formData = ['label' => []];
+        if (isset($formView->children['label'])) {
+            foreach ($formView->children['label']->children as $locale => $labelForm) {
+                $formData['label'][$locale] = [
+                    'value' => $labelForm->vars['value'],
+                    'fullName' => $labelForm->vars['full_name'],
+                    'label' => $labelForm->vars['label'],
+                ];
+            }
+        }
+        if (isset($formView->children['_token'])) {
+            $formData['_token'] = [
+               'value' => $formView->children['_token']->vars['value'],
+               'fullName' => $formView->children['_token']->vars['full_name'],
+            ];
+        }
+
+        return $formData;
     }
 
     /**
