@@ -8,7 +8,7 @@ type LocaleProps = {
 };
 
 const LocaleLabel: React.FC<LocaleProps> = ({localeCode}) => {
-  const [locale, setLocale] = React.useState<Locale>();
+  const [locale, setLocale] = React.useState<Locale | null | undefined>(null);
   const isMounted = useIsMounted();
   const router = useRouter();
 
@@ -20,8 +20,12 @@ const LocaleLabel: React.FC<LocaleProps> = ({localeCode}) => {
     });
   }, []);
 
-  if (!locale) {
+  if (locale === null) {
     return <LoaderIcon />;
+  }
+
+  if (locale === undefined) {
+    return <>{localeCode}</>
   }
 
   return <LocaleWithFlag code={locale.code} languageLabel={locale.language} />;

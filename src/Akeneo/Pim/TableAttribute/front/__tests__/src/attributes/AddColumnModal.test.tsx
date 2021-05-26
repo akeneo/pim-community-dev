@@ -2,25 +2,11 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {AddColumnModal} from '../../../src/attribute/AddColumnModal';
 import {act, screen, fireEvent} from '@testing-library/react';
-import {Locale} from '@akeneo-pim-community/shared';
+import { locales } from "../factories/LocaleFactory";
 
 beforeAll(() =>
   global.fetch.mockImplementation(async (url?: string | Request) => {
     if (url === 'pim_enrich_locale_rest_index') {
-      const locales: Locale[] = [
-        {
-          code: 'en_US',
-          label: 'English (United States)',
-          region: 'United States',
-          language: 'English',
-        },
-        {
-          code: 'fr_FR',
-          label: 'French (France)',
-          region: 'France',
-          language: 'French',
-        },
-      ];
       return new Response(JSON.stringify(locales));
     }
 
