@@ -72,9 +72,8 @@ SQL;
             $query,
             ['asset_family_identifier' => (string) $assetFamilyIdentifier]
         );
-        $result = $statement->fetchAll();
 
-        return $result === [] ? [] : $result;
+        return $statement->fetchAll();
     }
 
     /**

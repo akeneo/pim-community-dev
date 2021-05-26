@@ -23,8 +23,7 @@ class AssetIndexer implements AssetIndexerInterface
     private AssetNormalizerInterface $normalizer;
     private int $batchSize;
 
-    /** @var FindAssetIdentifiersByAssetFamilyInterface */
-    private $assetIdentifiersByAssetFamily;
+    private FindAssetIdentifiersByAssetFamilyInterface $assetIdentifiersByAssetFamily;
 
     public function __construct(
         Client $assetClient,

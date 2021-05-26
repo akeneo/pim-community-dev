@@ -49,11 +49,12 @@ SQL;
         $statement = $this->sqlConnection->executeQuery($query);
         $results = $statement->fetchAll();
 
-        return array_map(function (array $row) {
-            return Type::getType(Type::STRING)->convertToPHPValue(
+        return array_map(
+            fn(array $row) => Type::getType(Type::STRING)->convertToPHPValue(
                 $row['locales_codes'],
                 $this->platform
-            );
-        }, $results ?? []);
+            ),
+            $results
+        );
     }
 }
