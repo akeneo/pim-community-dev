@@ -8,10 +8,7 @@ type EditCategoryResponse = {
   form: EditCategoryForm;
 };
 
-// @todo rename?
-// @todo define a type for "data"
-// @todo fix dependency to hooks for EditCategoryResponse
-const editCategory = async (id: number, formData: EditCategoryForm): Promise<EditCategoryResponse> => {
+const saveEditCategoryForm = async (categoryId: number, formData: EditCategoryForm): Promise<EditCategoryResponse> => {
   // @todo: find a better way to do that
   let editedFormData = {};
   editedFormData[formData._token.fullName] = formData._token.value;
@@ -19,9 +16,7 @@ const editCategory = async (id: number, formData: EditCategoryForm): Promise<Edi
     editedFormData[formData.label[locale].fullName] = changedLabel.value;
   }
 
-  console.log('edit Category', editedFormData);
-
-  const response = await fetch(Routing.generate('pim_enrich_categorytree_edit', {id}), {
+  const response = await fetch(Routing.generate('pim_enrich_categorytree_edit', {id: categoryId}), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -37,4 +32,4 @@ const editCategory = async (id: number, formData: EditCategoryForm): Promise<Edi
   };
 };
 
-export {editCategory};
+export {saveEditCategoryForm};
