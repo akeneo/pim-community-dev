@@ -1584,9 +1584,9 @@ workflows:
          - delete_pr_environments_hourly:
                requires:
                    - checkout
-         - mr_proper:
-               requires:
-                 - delete_pr_environments_hourly
+#         - mr_proper:
+#               requires:
+#                 - delete_pr_environments_hourly
 
 
 commands:
