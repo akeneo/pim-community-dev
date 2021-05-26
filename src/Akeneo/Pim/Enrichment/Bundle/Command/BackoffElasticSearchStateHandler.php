@@ -27,11 +27,6 @@ class BackoffElasticSearchStateHandler
         $this->backoffLogarithmicIncrement = $backoffLogarithmicIncrement;
     }
 
-    protected function resetState(): array
-    {
-        return [false, $this->maxNumberRetry];
-    }
-
     public function bulkExecute(array $codes, BulkEsHandlerInterface $codesEsHandler):int
     {
         return $this->executeAttempt([$codes], $codesEsHandler, 0);
