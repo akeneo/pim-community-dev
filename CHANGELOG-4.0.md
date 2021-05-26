@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9692: Standardize the thumbnail display on the product grid
+
 # 4.0.111 (2021-05-21)
 
 ## Bug fixes
