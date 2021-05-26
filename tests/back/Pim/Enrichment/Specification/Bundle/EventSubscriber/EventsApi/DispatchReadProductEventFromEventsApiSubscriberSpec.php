@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Platform\Component\EventQueue\Event;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -54,9 +55,9 @@ class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
     public function it_doesnt_dispatch_a_read_product_on_product_events_api_saved_if_no_product_saved_event_type(
         EventDispatcherInterface $eventDispatcher,
         EventsApiRequestSucceededEvent $eventsApiRequestSucceeded,
-        ProductRemoved $productRemovedEvent
+        Event $unknownEvent
     ) {
-        $eventsApiRequestSucceeded->getEvents()->willReturn([$productRemovedEvent]);
+        $eventsApiRequestSucceeded->getEvents()->willReturn([$unknownEvent]);
         $eventDispatcher->dispatch(Argument::any())->shouldNotBeCalled();
 
         $this->dispatchReadProductOnProductEventsApiSaved($eventsApiRequestSucceeded);
