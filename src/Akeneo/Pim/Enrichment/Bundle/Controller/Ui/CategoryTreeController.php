@@ -362,7 +362,8 @@ class CategoryTreeController extends Controller
 
     private function formatFormView(FormView $formView): array
     {
-        $formData = ['label' => []];
+        $formData = ['label' => [], 'errors' => []];
+
         if (isset($formView->children['label'])) {
             foreach ($formView->children['label']->children as $locale => $labelForm) {
                 $formData['label'][$locale] = [
@@ -378,6 +379,12 @@ class CategoryTreeController extends Controller
                'fullName' => $formView->children['_token']->vars['full_name'],
             ];
         }
+
+        // No error mapping for now
+        foreach ($formView->vars['errors'] as $error) {
+            $formData['errors'][] = $error->getMessage();
+        }
+        $formData['errors'] = array_unique($formData['errors']);
 
         return $formData;
     }
