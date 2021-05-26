@@ -1,4 +1,4 @@
-export interface PimOnBoarding {
+export interface PimOnboarding {
   registerUser: () => void;
   page: () => void;
   track: () => void;

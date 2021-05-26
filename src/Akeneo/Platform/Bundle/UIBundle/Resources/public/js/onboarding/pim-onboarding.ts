@@ -1,10 +1,10 @@
-import {PimOnBoarding} from './index';
+import {PimOnboarding} from './index';
 
-const DefaultPimOnBoarding: PimOnBoarding = {
+const DefaultPimOnboarding: PimOnboarding = {
   registerUser: () => {},
   page: () => {},
   track: () => {},
   init: () => {},
 };
 
-export = DefaultPimOnBoarding;
+export = DefaultPimOnboarding;
