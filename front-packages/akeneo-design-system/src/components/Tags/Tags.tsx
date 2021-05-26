@@ -50,7 +50,6 @@ const Tag = styled.li<TagProps & AkeneoThemedProps>`
   display: inline-block;
   border-radius: 2px;
   font-size: ${getFontSize('small')};
-  margin: 0 10px 10px 0;
   text-transform: uppercase;
   overflow: hidden;
   max-width: 200px;
@@ -58,12 +57,13 @@ const Tag = styled.li<TagProps & AkeneoThemedProps>`
   text-overflow: ellipsis;
 `;
 const TagsContainer = styled.ul`
-  margin-right: -10px;
-  margin-bottom: -10px;
+  display: flex;
+  flex-wrap: wrap;
   padding-inline-start: 0;
   margin-block-end: 0;
   margin-block-start: 0;
   list-style-type: none;
+  gap: 10px;
 `;
 
 type TagsProps = {
