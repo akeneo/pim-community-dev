@@ -87,6 +87,12 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.structure.query.find_category_trees:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Category\Sql\SqlFindCategoryTrees
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.normalizer.standard.translation'
+
     akeneo.pim.structure.query.get_family_translations:
         class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql\SqlGetFamilyTranslations
         arguments:
