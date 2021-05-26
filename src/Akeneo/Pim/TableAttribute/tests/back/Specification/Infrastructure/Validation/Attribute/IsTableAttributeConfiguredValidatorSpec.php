@@ -70,7 +70,9 @@ class IsTableAttributeConfiguredValidatorSpec extends ObjectBehavior
         $name->getType()->willReturn(AttributeTypes::TEXT);
         $name->getRawTableConfiguration()->willReturn(['configuration']);
 
-        $context->buildViolation('pim_table_configuration.validation.table_configuration.must_not_be_filled', [])->shouldBeCalled()->willReturn($violationBuilder);
+        $context->buildViolation('pim_table_configuration.validation.table_configuration.must_not_be_filled', [])
+            ->shouldBeCalled()
+            ->willReturn($violationBuilder);
         $violationBuilder->setParameter('%type%', 'pim_catalog_text')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->atPath('table_configuration')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
@@ -83,10 +85,12 @@ class IsTableAttributeConfiguredValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilder $violationBuilder,
         AttributeInterface $nutrition
     ) {
-        $nutrition->getType()->willReturn(AttributeTypes::TEXT);
+        $nutrition->getType()->willReturn(AttributeTypes::TABLE);
         $nutrition->getRawTableConfiguration()->willReturn(null);
 
-        $context->buildViolation('TODO error message', [])->shouldBeCalled()->willReturn($violationBuilder);
+        $context->buildViolation('pim_table_configuration.validation.table_configuration.must_be_filled', [])
+            ->shouldBeCalled()
+            ->willReturn($violationBuilder);
         $violationBuilder->atPath('table_configuration')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
