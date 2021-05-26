@@ -43,7 +43,7 @@ class DispatchReadProductEventFromEventsApiSubscriberSpec extends ObjectBehavior
         $eventsApiRequestSucceeded->getConnectionCode()->willReturn('code');
         $eventDispatcher->dispatch(Argument::that(
             function (ReadProductsEvent $event) {
-                return 2 === $event->getCount()
+                return 3 === $event->getCount()
                     && 'code' === $event->getConnectionCode();
             })
         )->shouldbeCalledTimes(1);

@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EventsApi;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -32,7 +33,9 @@ class DispatchReadProductEventFromEventsApiSubscriber implements EventSubscriber
     ) {
         $count = 0;
         foreach ($eventsApiRequestSucceeded->getEvents() as $event) {
-            if ($event instanceof ProductUpdated || $event instanceof ProductCreated) {
+            if ($event instanceof ProductUpdated
+                || $event instanceof ProductCreated
+                || $event instanceof ProductRemoved) {
                 $count++;
             }
         }
