@@ -31,4 +31,9 @@ class EventsApiRequestSucceededEventSpec extends ObjectBehavior
     {
         $this->getConnectionCode()->shouldBe('connectionCode');
     }
+
+    public function it_throws_when_events_have_an_unexpected_class()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('__construct', ['code', [new \stdClass()]]);
+    }
 }

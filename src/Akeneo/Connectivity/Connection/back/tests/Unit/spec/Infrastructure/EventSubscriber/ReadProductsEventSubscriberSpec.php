@@ -58,8 +58,7 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         $connection->auditable()->willReturn(true);
         $connection->flowType()->willReturn(new FlowType(FlowType::DATA_DESTINATION));
         $connection->code()->willReturn(new ConnectionCode('connection_code'));
-        $connectionContext->areCredentialsValidCombination()->willReturn(true)
-            ->shouldBeCalled();
+        $connectionContext->areCredentialsValidCombination()->willReturn(true);
         $connectionContext->getConnection()->willReturn($connection);
 
         $updateDataDestinationProductEventCountHandler->handle(
@@ -81,8 +80,7 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         $readProductsEvent = new ReadProductsEvent(3, 'connection_code');
 
         $connectionRepository->findOneByCode('connection_code')
-            ->willReturn($connection)
-            ->shouldBeCalledTimes(1);
+            ->willReturn($connection);
 
         $connection->auditable()->willReturn(true);
         $connection->flowType()->willReturn(new FlowType(FlowType::DATA_DESTINATION));
@@ -105,8 +103,7 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
     ): void {
         $readProductsEvent = new ReadProductsEvent(3);
 
-        $connectionContext->areCredentialsValidCombination()->willReturn(false)
-            ->shouldBeCalled();
+        $connectionContext->areCredentialsValidCombination()->willReturn(false);
 
         $updateDataDestinationProductEventCountHandler->handle(Argument::any())
             ->shouldNotBeCalled();
@@ -122,8 +119,7 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         $readProductsEvent = new ReadProductsEvent(3);
 
         $connection->auditable()->willReturn(false);
-        $connectionContext->areCredentialsValidCombination()->willReturn(true)
-            ->shouldBeCalled();
+        $connectionContext->areCredentialsValidCombination()->willReturn(true);
         $connectionContext->getConnection()->willReturn($connection);
 
         $updateDataDestinationProductEventCountHandler->handle(Argument::any())
@@ -141,8 +137,7 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
 
         $connection->flowType()->willReturn(new FlowType(FlowType::DATA_SOURCE));
         $connection->auditable()->willReturn(true);
-        $connectionContext->areCredentialsValidCombination()->willReturn(true)
-            ->shouldBeCalled();
+        $connectionContext->areCredentialsValidCombination()->willReturn(true);
         $connectionContext->getConnection()->willReturn($connection);
 
         $updateDataDestinationProductEventCountHandler->handle(Argument::any())
