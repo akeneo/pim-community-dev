@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {AkeneoThemedProps, Breadcrumb, ChannelsIllustration, getColor, getFontSize} from 'akeneo-design-system';
+import {AkeneoThemedProps, Breadcrumb, getColor, getFontSize} from 'akeneo-design-system';
 import {useTranslate} from '../../shared/translate';
 import {PageHeader} from '../../common';
 import {UserButtons} from '../../shared/user';
@@ -79,6 +79,10 @@ export const Marketplace: FC = () => {
         </Breadcrumb>
     );
 
+    const pimSource = 'pimSource';
+    const nativeAppUrl = 'http://localhost:8080/#/connect/marketplace';
+    const yellExtensionRedirectUrl = `${nativeAppUrl}?pim=${pimSource}`;
+
     useEffect(() => {
         fetchMarketplaceUrl().then(setMarketplaceUrl);
     }, [fetchMarketplaceUrl]);
@@ -90,14 +94,8 @@ export const Marketplace: FC = () => {
             </PageHeader>
 
             <PageContent>
-                <ChannelsIllustration size={256} />
-
-                <Heading>{translate('akeneo_connectivity.connection.connect.marketplace.title')}</Heading>
-
-                <Caption>{translate('akeneo_connectivity.connection.connect.marketplace.sub_title')}</Caption>
-
-                <LinkButton href={marketplaceUrl} target='_blank' role='link' tabIndex='0'>
-                    {translate('akeneo_connectivity.connection.connect.marketplace.link')}
+                <LinkButton href={yellExtensionRedirectUrl} target='_blank' role='link' tabIndex='0'>
+                    ACTIVATE YELL EXTENSION
                 </LinkButton>
             </PageContent>
         </>
