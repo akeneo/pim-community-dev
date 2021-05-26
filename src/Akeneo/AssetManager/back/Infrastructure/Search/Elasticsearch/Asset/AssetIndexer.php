@@ -64,14 +64,6 @@ class AssetIndexer implements AssetIndexerInterface
 
     public function indexByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): void
     {
-        /** @TODO pull up remove if in master */
-        if ($this->assetIdentifiersByAssetFamily === null || !$this->normalizer instanceof AssetNormalizer) {
-            $normalizedSearchableAssets = $this->normalizer->normalizeAssetsByAssetFamily($assetFamilyIdentifier);
-            $this->legacyBulkIndexAssets($normalizedSearchableAssets);
-
-            return;
-        }
-
         $assetIdentifiers = $this->assetIdentifiersByAssetFamily->find($assetFamilyIdentifier);
         $this->bulkIndexAssets($assetFamilyIdentifier, $assetIdentifiers);
     }

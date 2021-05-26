@@ -75,29 +75,6 @@ SQL;
         }
     }
 
-    /** @TODO pull up remove this function in master */
-    public function byAssetFamilyIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): \Iterator
-    {
-        $sqlQuery = <<<SQL
-        SELECT ass.identifier, ass.asset_family_identifier, ass.code, ass.value_collection, assfam.attribute_as_label, ass.updated_at
-        FROM akeneo_asset_manager_asset ass
-        INNER JOIN akeneo_asset_manager_asset_family assfam ON assfam.identifier = ass.asset_family_identifier
-        WHERE assfam.identifier = :asset_family_identifier;
-SQL;
-
-        $statement = $this->connection->executeQuery($sqlQuery, ['asset_family_identifier' => (string) $assetFamilyIdentifier]);
-        while (false !== $result = $statement->fetch(\PDO::FETCH_ASSOC)) {
-            yield $this->hydrateAssetToIndex(
-                $result['identifier'],
-                $result['asset_family_identifier'],
-                $result['code'],
-                $result['updated_at'],
-                ValuesDecoder::decode($result['value_collection']),
-                $result['attribute_as_label']
-            );
-        }
-    }
-
     private function hydrateAssetToIndex(
         string $identifier,
         string $assetFamilyIdentifier,

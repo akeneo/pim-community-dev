@@ -10,12 +10,8 @@ interface AssetNormalizerInterface
 {
     public function normalizeAsset(AssetIdentifier $assetIdentifier): array;
 
-    /** @TODO pull up remove this function in master */
-    public function normalizeAssetsByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): \Iterator;
-
     /**
-     * @TODO pull up add this function in master
      * @param AssetIdentifier[] $assetIdentifiers
      */
-    //public function normalizeAssets(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetIdentifiers): array;
+    public function normalizeAssets(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetIdentifiers): array;
 }

@@ -104,28 +104,6 @@ class AssetNormalizer implements AssetNormalizerInterface
         return $normalizedAssets;
     }
 
-    /** @TODO pull up remove this function in master */
-    public function normalizeAssetsByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): \Iterator
-    {
-        $matrixWithValueKeys = $this->findValueKeysToIndexForAllChannelsAndLocales->find($assetFamilyIdentifier);
-        $activatedLocaleCodes = $this->findActivatedLocales->findAll();
-        $searchableAssetItems = $this->findSearchableAssets->byAssetFamilyIdentifier($assetFamilyIdentifier);
-        foreach ($searchableAssetItems as $searchableAssetItem) {
-            $fullTextMatrix = $this->fillMatrix($matrixWithValueKeys, $searchableAssetItem);
-            $codeLabelMatrix = $this->createCodeLabelMatrix($searchableAssetItem, $activatedLocaleCodes);
-            $filledValueKeysMatrix = $this->generateFilledValueKeys($searchableAssetItem);
-            $valueKeysToFilterOn = $this->generateFilterableValues($searchableAssetItem);
-
-            yield $this->normalize(
-                $searchableAssetItem,
-                $fullTextMatrix,
-                $codeLabelMatrix,
-                $filledValueKeysMatrix,
-                $valueKeysToFilterOn
-            );
-        }
-    }
-
     private function createCodeLabelMatrix(SearchableAssetItem $searchableAssetItem, array $activatedLocaleCodes): array
     {
         $matrix = [];
