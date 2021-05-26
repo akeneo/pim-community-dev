@@ -28,7 +28,7 @@ import {Category} from '../../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../../components/datagrids/categories/DeleteCategoryModal';
 import {EditCategoryContext} from "../../components";
-import {EditPropertiesForm} from "../../components/categories";
+import {EditPropertiesForm, EditPermissionsForm} from "../../components/categories/";
 
 type Params = {
   categoryId: string;
@@ -59,6 +59,8 @@ const CategoryEditPage: FC = () => {
   const {
     editedFormData,
     onChangeCategoryLabel,
+    onChangePermissions,
+    onChangeApplyPermissionsOnChilren,
     thereAreUnsavedChanges,
     requestSave
   } = useEditCategory(category, formData);
@@ -187,6 +189,15 @@ const CategoryEditPage: FC = () => {
           >
             {translate('pim_common.history')}
           </TabBar.Tab>
+          <TabBar.Tab
+            isActive={isCurrent(permissionTabName)}
+            onClick={() => {
+              setActiveTab(permissionTabName);
+              switchTo(permissionTabName)();
+            }}
+          >
+            {translate('pim_common.permissions')}
+          </TabBar.Tab>
         </TabBar>
 
         {isCurrent(propertyTabName) && category &&
@@ -206,6 +217,13 @@ const CategoryEditPage: FC = () => {
             }}
           />
         )}
+        {isCurrent(permissionTabName) && formData &&
+          <EditPermissionsForm
+            formData={editedFormData}
+            onChangePermissions={onChangePermissions}
+            onChangeApplyPermissionsOnChilren={onChangeApplyPermissionsOnChilren}
+          />
+        }
       </PageContent>
       {isDeleteCategoryModalOpen && categoryToDelete !== null && (
         <DeleteCategoryModal

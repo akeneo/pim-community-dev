@@ -34,6 +34,20 @@ const useEditCategory = (category: Category | null, formData: EditCategoryForm |
     return false;
   }, [originalFormData, editedFormData]);
 
+  const havePermissionsBeenChanged = useCallback((): boolean => {
+    if (originalFormData === null || editedFormData === null || !originalFormData.permissions || !editedFormData.permissions) {
+      return false;
+    }
+
+    for (const [permissionName, changedPermission] of Object.entries(editedFormData.permissions)) {
+      if (JSON.stringify(originalFormData.permissions[permissionName].value) != JSON.stringify(changedPermission.value)) {
+        return true;
+      }
+    }
+
+    return false;
+  }, [originalFormData, editedFormData]);
+
   const onChangeCategoryLabel = (locale: string, label: string) => {
     if (editedFormData === null || !editedFormData.label.hasOwnProperty(locale)) {
       return;
@@ -42,6 +56,27 @@ const useEditCategory = (category: Category | null, formData: EditCategoryForm |
     const editedLabel = {...editedFormData.label[locale], value: label};
     setEditedFormData({...editedFormData, label: {...editedFormData.label, [locale]: editedLabel}});
   };
+
+  const onChangePermissions = (type: string, values: any) => {
+    if (editedFormData === null || !editedFormData.permissions || !editedFormData.permissions.hasOwnProperty(type)) {
+      return;
+    }
+
+    const editedPermission = {...editedFormData.permissions[type], value: values};
+    setEditedFormData({...editedFormData, permissions: {...editedFormData.permissions, [type]: editedPermission}});
+  };
+
+  const onChangeApplyPermissionsOnChilren = (value: any) => {
+    if (editedFormData === null || !editedFormData.permissions) {
+      return;
+    }
+
+    const editedApplyOnChildren = {...editedFormData.permissions.apply_on_children, value: value === true ? '1' : '0'};
+    setEditedFormData({
+      ...editedFormData,
+      permissions: {...editedFormData.permissions, apply_on_children: editedApplyOnChildren}
+    });
+  }
 
   const saveCategory = useCallback(async () => {
     if (category === null || editedFormData === null) {
@@ -55,6 +90,8 @@ const useEditCategory = (category: Category | null, formData: EditCategoryForm |
       setOriginalFormData(response.form);
     } else {
       notify(NotificationLevel.ERROR, translate('pim_enrich.entity.category.content.edit.fail'));
+      const refreshedToken = {...editedFormData._token, value: response.form._token.value};
+      setEditedFormData({...editedFormData, _token: refreshedToken});
     }
   }, [category, editedFormData]);
 
@@ -86,7 +123,7 @@ const useEditCategory = (category: Category | null, formData: EditCategoryForm |
 
   useEffect(() => {
     if (editedFormData !== null) {
-      setThereAreUnsavedChanges(haveLabelsBeenChanged());
+      setThereAreUnsavedChanges(haveLabelsBeenChanged() || havePermissionsBeenChanged());
     }
   }, [editedFormData]);
 
@@ -97,6 +134,8 @@ const useEditCategory = (category: Category | null, formData: EditCategoryForm |
   return {
     editedFormData,
     onChangeCategoryLabel,
+    onChangePermissions,
+    onChangeApplyPermissionsOnChilren,
     thereAreUnsavedChanges,
     requestSave
   };
