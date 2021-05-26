@@ -1,8 +1,8 @@
 import BaseView = require('pimui/js/view/base');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { TableOptionsApp } from './TableOptionsApp';
-import { TableConfiguration } from '../models/TableConfiguration';
+import {TableOptionsApp} from './TableOptionsApp';
+import {TableConfiguration} from '../models/TableConfiguration';
 const translate = require('oro/translator');
 
 class TableOptionsTab extends BaseView {
@@ -37,10 +37,7 @@ class TableOptionsTab extends BaseView {
     let initialTableConfiguration = this.getFormData().table_configuration;
 
     ReactDOM.render(
-      <TableOptionsApp
-        initialTableConfiguration={initialTableConfiguration}
-        onChange={this.handleChange.bind(this)}
-      />,
+      <TableOptionsApp initialTableConfiguration={initialTableConfiguration} onChange={this.handleChange.bind(this)} />,
       this.el
     );
     return this;

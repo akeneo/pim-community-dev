@@ -1,4 +1,4 @@
-import { LabelCollection } from '@akeneo-pim-community/shared';
+import {LabelCollection} from '@akeneo-pim-community/shared';
 
 export type ColumnType = 'text';
 export type ColumnDefinition = {

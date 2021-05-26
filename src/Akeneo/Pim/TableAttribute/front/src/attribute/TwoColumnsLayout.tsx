@@ -7,21 +7,20 @@ const TwoColumnsLayoutContainer = styled.div`
   grid-template-columns: 1fr 400px;
   grid-template-rows: 1fr;
   gap: 0px 40px;
-  grid-template-areas: ". .";
+  grid-template-areas: '. .';
 `;
 
 type TwoColumnsLayoutProps = {
-  rightColumn: React.ReactElement
+  rightColumn: React.ReactElement;
 };
 
-const TwoColumnsLayout: React.FC<TwoColumnsLayoutProps> = ({
- rightColumn,
- children
-}) => {
-  return <TwoColumnsLayoutContainer>
-    {children}
-    <div>{rightColumn}</div>
-  </TwoColumnsLayoutContainer>;
+const TwoColumnsLayout: React.FC<TwoColumnsLayoutProps> = ({rightColumn, children}) => {
+  return (
+    <TwoColumnsLayoutContainer>
+      {children}
+      <div>{rightColumn}</div>
+    </TwoColumnsLayoutContainer>
+  );
 };
 
-export { TwoColumnsLayout };
+export {TwoColumnsLayout};
