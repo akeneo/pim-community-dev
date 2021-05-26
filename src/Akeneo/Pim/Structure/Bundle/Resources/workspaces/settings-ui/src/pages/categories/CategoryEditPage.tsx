@@ -7,7 +7,8 @@ import {
   MoreIcon,
   TabBar,
   useBooleanState,
-  useTabBar
+  useTabBar,
+  Button,
 } from 'akeneo-design-system';
 import {
   FullScreenError,
@@ -26,8 +27,8 @@ import {CategoryToDelete, useCategory, useCountProductsBeforeDeleteCategory, use
 import {Category} from '../../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../../components/datagrids/categories/DeleteCategoryModal';
-import {EditCategoryForm} from "../../components/categories/EditCategoryForm";
 import {EditCategoryContext} from "../../components";
+import {EditPropertiesForm} from "../../components/categories";
 
 type Params = {
   categoryId: string;
@@ -35,13 +36,14 @@ type Params = {
 
 const propertyTabName = '#pim_enrich-category-tab-property';
 const historyTabName = '#pim_enrich-category-tab-history';
+const permissionTabName = '#pim_enrich-category-tab-permission';
 
 const CategoryEditPage: FC = () => {
   const {categoryId} = useParams<Params>();
   const translate = useTranslate();
   const router = useRouter();
   const userContext = useUserContext();
-  const {category, status, load} = useCategory(parseInt(categoryId));
+  const {category, formData, status, load} = useCategory(parseInt(categoryId));
   const [categoryLabel, setCategoryLabel] = useState(`[${categoryId}]`);
   const [treeLabel, setTreeLabel] = useState(translate('pim_enrich.entity.category.content.edit.default_tree_label'));
   const [tree, setTree] = useState<Category | null>(null);
@@ -53,7 +55,13 @@ const CategoryEditPage: FC = () => {
   const countProductsBeforeDeleteCategory = useCountProductsBeforeDeleteCategory(parseInt(categoryId));
   const [categoryToDelete, setCategoryToDelete] = useState<CategoryToDelete | null>(null);
   const {isCategoryDeletionPossible, handleDeleteCategory} = useDeleteCategory();
-  const {editedCategory, setEditedProperties, thereAreUnsavedChanges} = useEditCategory(category);
+  const {setCanLeavePage} = useContext(EditCategoryContext);
+  const {
+    editedFormData,
+    onChangeCategoryLabel,
+    thereAreUnsavedChanges,
+    requestSave
+  } = useEditCategory(category, formData);
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
 
@@ -152,6 +160,9 @@ const CategoryEditPage: FC = () => {
               )}
             </Dropdown>
           }
+          <Button level="primary" onClick={() => {requestSave()}} >
+            {translate('pim_common.save')}
+          </Button>
         </PageHeader.Actions>
         <PageHeader.Title>{categoryLabel}</PageHeader.Title>
         <PageHeader.State>{thereAreUnsavedChanges && <UnsavedChanges/>}</PageHeader.State>
@@ -179,7 +190,11 @@ const CategoryEditPage: FC = () => {
         </TabBar>
 
         {isCurrent(propertyTabName) && category &&
-          <EditCategoryForm category={editedCategory ?? category} setEditedProperties={setEditedProperties} />
+          <EditPropertiesForm
+            category={category}
+            formData={editedFormData}
+            onChangeLabel={onChangeCategoryLabel}
+          />
         }
         {isCurrent(historyTabName) && (
           <HistoryPimView

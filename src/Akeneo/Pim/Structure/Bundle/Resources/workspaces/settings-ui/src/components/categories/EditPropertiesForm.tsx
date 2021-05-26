@@ -2,8 +2,8 @@ import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import {useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {Category, EditableCategoryProperties} from '../../models';
-import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
-import {useActivatedLocales} from '../../hooks';
+import {Field, Helper, SectionTitle, TextInput} from 'akeneo-design-system';
+import {EditCategoryForm, ValidationErrors} from '../../hooks';
 
 const FormContainer = styled.form`
   & > * {
@@ -13,24 +13,17 @@ const FormContainer = styled.form`
 
 type Props = {
   category: Category;
-  setEditedProperties: (properties: EditableCategoryProperties) => void;
+  formData: EditCategoryForm | null;
+  onChangeLabel: (locale: string, label: string) => void;
 };
 
-const EditCategoryForm = ({category, setEditedProperties}: Props) => {
+const EditPropertiesForm = ({category, formData, onChangeLabel}: Props) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
-  const {locales, load: loadLocales} = useActivatedLocales();
 
-  useEffect(() => {
-    (async () => {
-      await loadLocales();
-    })();
-  }, []);
-
-  const onChangeLabel = (localeCode: string, label: string) => {
-    const changedLabels = {...category.labels, [localeCode]: label};
-    setEditedProperties({labels: changedLabels});
-  };
+  if (formData === null) {
+    return (<></>);
+  }
 
   return (
     <FormContainer>
@@ -43,17 +36,18 @@ const EditCategoryForm = ({category, setEditedProperties}: Props) => {
       <SectionTitle>
         <SectionTitle.Title>{translate('pim_common.label')}</SectionTitle.Title>
       </SectionTitle>
-      {locales.map(locale => (
-        <Field label={locale.label} key={locale.code}>
+      { Object.entries(formData.label).map(([locale, labelField]) => (
+        <Field label={labelField.label} key={locale}>
           <TextInput
-            name={locale.code}
+            name={labelField.fullName}
             readOnly={!isGranted('pim_enrich_product_category_edit')}
-            onChange={changedLabel => onChangeLabel(locale.code, changedLabel)}
-            value={category.labels.hasOwnProperty(locale.code) ? category.labels[locale.code] : ''}
+            onChange={changedLabel => onChangeLabel(locale, changedLabel)}
+            value={labelField.value}
           />
+          {/*<Helper inline={true} level="error">{}</Helper>*/}
         </Field>
       ))}
     </FormContainer>
   );
 };
-export {EditCategoryForm};
+export {EditPropertiesForm};

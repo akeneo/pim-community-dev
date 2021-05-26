@@ -1,1 +1,1 @@
-export * from './EditCategoryForm';
+export * from './EditPropertiesForm';
