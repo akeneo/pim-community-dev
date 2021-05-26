@@ -31,4 +31,9 @@ module.exports = {
     'no-prototype-builtins': ['warn'],
     camelcase: 'off',
   },
+  settings: {
+    react: {
+      version: 'detect'
+    }
+  }
 };

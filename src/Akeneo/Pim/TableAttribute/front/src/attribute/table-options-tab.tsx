@@ -3,14 +3,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {TableOptionsApp} from './TableOptionsApp';
 import {TableConfiguration} from '../models/TableConfiguration';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('oro/translator');
 
-class TableOptionsTab extends BaseView {
-  private config: any;
+type TableOptionsTabConfig = {
+  label: string;
+}
 
-  initialize(config: any): void {
+class TableOptionsTab extends BaseView {
+  private config: TableOptionsTabConfig;
+
+  initialize(config: { config: TableOptionsTabConfig }): void {
     this.config = config.config;
-    BaseView.prototype.initialize.apply(this, arguments);
+    BaseView.prototype.initialize.apply(this, config);
   }
 
   configure(): JQueryPromise<any> {
@@ -34,7 +39,7 @@ class TableOptionsTab extends BaseView {
     if (!this.isActive()) {
       return;
     }
-    let initialTableConfiguration = this.getFormData().table_configuration;
+    const initialTableConfiguration = this.getFormData().table_configuration;
 
     ReactDOM.render(
       <TableOptionsApp initialTableConfiguration={initialTableConfiguration} onChange={this.handleChange.bind(this)} />,
@@ -43,7 +48,7 @@ class TableOptionsTab extends BaseView {
     return this;
   }
 
-  remove() {
+  remove(): any {
     ReactDOM.unmountComponentAtNode(this.el);
 
     return super.remove();

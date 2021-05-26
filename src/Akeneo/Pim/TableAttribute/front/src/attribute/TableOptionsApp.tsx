@@ -6,6 +6,8 @@ import {ThemeProvider} from 'styled-components';
 import {ColumnDefinition, TableConfiguration} from '../models/TableConfiguration';
 import {getLabel, Locale} from '@akeneo-pim-community/shared';
 import {AddColumnModal} from './AddColumnModal';
+// TODO Remove this registry and use locale fetcher
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const FetcherRegistry = require('pim/fetcher-registry');
 
 type TableOptionsAppProps = {

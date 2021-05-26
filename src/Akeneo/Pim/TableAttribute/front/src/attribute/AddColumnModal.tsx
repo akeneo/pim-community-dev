@@ -75,7 +75,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
   const validateCode = (code: string, silent: boolean): number => {
     const validations: string[] = [];
     if (code === '') validations.push(translate('pim_table_attribute.validations.column_code_must_be_filled'));
-    if (code !== '' && !code.match(/^[a-zA-Z0-9_]+$/))
+    if (code !== '' && !(/^[a-zA-Z0-9_]+$/.exec(code)))
       validations.push(translate('pim_table_attribute.validations.invalid_code'));
     if (existingColumnCodes.includes(code))
       validations.push(translate('pim_table_attribute.validations.duplicated_column_code', {duplicateCode: code}));

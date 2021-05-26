@@ -18,14 +18,14 @@ const LocaleLabel: React.FC<LocaleProps> = ({localeCode}) => {
         setLocale(locale);
       }
     });
-  }, []);
+  }, [isMounted, localeCode, router]);
 
   if (locale === null) {
     return <LoaderIcon />;
   }
 
   if (locale === undefined) {
-    return <>{localeCode}</>
+    return <>{localeCode}</>;
   }
 
   return <LocaleWithFlag code={locale.code} languageLabel={locale.language} />;

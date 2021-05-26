@@ -11,8 +11,8 @@ module.exports = {
   },
   collectCoverage: true,
   collectCoverageFrom: [
-    "src/**/*.{js,jsx,ts,tsx}",
-    "!src/fetchers/**/*.{js,jsx,ts,tsx}",
-    "!src/attribute/table-options-tab.tsx"
-  ]
+    'src/**/*.{js,jsx,ts,tsx}',
+    '!src/fetchers/**/*.{js,jsx,ts,tsx}',
+    '!src/attribute/table-options-tab.tsx',
+  ],
 };

@@ -6,12 +6,12 @@ jest.mock('../../../src/fetchers/LocaleFetcher');
 
 describe('LocaleLabel', () => {
   it('should render a locale', async () => {
-    renderWithProviders(<LocaleLabel localeCode={'en_US'}/>);
+    renderWithProviders(<LocaleLabel localeCode={'en_US'} />);
     expect(await screen.findByText('English')).toBeInTheDocument();
   });
 
   it('should not render a locale', async () => {
-    renderWithProviders(<LocaleLabel localeCode={'pt_DTC'}/>);
+    renderWithProviders(<LocaleLabel localeCode={'pt_DTC'} />);
     expect(await screen.queryByText('English')).not.toBeInTheDocument();
     expect(await screen.findByText('pt_DTC')).toBeInTheDocument();
   });

@@ -26,3 +26,7 @@ table-attribute-end-to-end-back:
 .PHONY: rule-engine-unit-front
 table-attribute-unit-front:
 	$(YARN_RUN) run --cwd=src/Akeneo/Pim/TableAttribute/front jest --ci $(O)
+
+.PHONY: rule-engine-lint-front
+table-attribute-unit-front:
+	$(YARN_RUN) run --cwd=src/Akeneo/Pim/TableAttribute/front lint $(O)
