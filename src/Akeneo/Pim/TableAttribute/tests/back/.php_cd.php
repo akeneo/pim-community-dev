@@ -26,6 +26,7 @@ $rules = [
             'Symfony\Component\Validator',
             'Symfony\Component\Serializer',
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
+            'Symfony\Component\EventDispatcher\GenericEvent',
 
             // doctrine
             'Doctrine\Common\EventSubscriber',
@@ -38,6 +39,7 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
             'Akeneo\Channel\Component\Query\PublicApi',
             'Akeneo\Platform\Bundle\InstallerBundle\Event',
+            'Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];
