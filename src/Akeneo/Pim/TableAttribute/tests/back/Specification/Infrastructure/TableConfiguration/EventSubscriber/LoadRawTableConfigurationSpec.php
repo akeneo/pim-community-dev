@@ -73,8 +73,8 @@ class LoadRawTableConfigurationSpec extends ObjectBehavior
             )
         );
         $attribute->setRawTableConfiguration([
-            ['code' => 'ingredients', 'data_type' => 'text', 'labels' => []],
-            ['code' => 'quantity', 'data_type' => 'text', 'labels' => []],
+            ['code' => 'ingredients', 'data_type' => 'text', 'labels' => (object) []],
+            ['code' => 'quantity', 'data_type' => 'text', 'labels' => (object) []],
         ])->shouldBeCalled();
 
         $this->postLoad($event);
