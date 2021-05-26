@@ -97,7 +97,7 @@ class GuzzleWebhookClient implements WebhookClient
                     $webhookRequestLog->setResponse($response);
 
                     $pimEvents = array_map(
-                        fn(WebhookEvent $apiEvent) => $apiEvent->getPimEvent(),
+                        fn (WebhookEvent $apiEvent) => $apiEvent->getPimEvent(),
                         $webhookRequestLog->getWebhookRequest()->apiEvents()
                     );
 
