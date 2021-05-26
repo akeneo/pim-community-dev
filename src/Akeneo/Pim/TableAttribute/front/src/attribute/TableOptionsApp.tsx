@@ -34,7 +34,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
     onChange(tableConfiguration);
   };
 
-  const handleReorder = newIndices => {
+  const handleReorder = (newIndices: number[]) => {
     const newTableConfiguration = newIndices.map(i => tableConfiguration[i]);
     setTableConfiguration(newTableConfiguration);
     onChange(newTableConfiguration);
@@ -74,7 +74,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
         <TwoColumnsLayout rightColumn={rightColumn}>
           <div>
             <SectionTitle title="TODO columns">TODO COLUMNS</SectionTitle>
-            <Table>
+            <Table isDragAndDroppable={true} onReorder={handleReorder}>
               <Table.Body>
                 {tableConfiguration.map(columnDefinition => (
                   <Table.Row

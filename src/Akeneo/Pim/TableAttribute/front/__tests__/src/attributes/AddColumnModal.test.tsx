@@ -2,17 +2,7 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {AddColumnModal} from '../../../src/attribute/AddColumnModal';
 import {act, screen, fireEvent} from '@testing-library/react';
-import { locales } from "../factories/LocaleFactory";
-
-beforeAll(() =>
-  global.fetch.mockImplementation(async (url?: string | Request) => {
-    if (url === 'pim_enrich_locale_rest_index') {
-      return new Response(JSON.stringify(locales));
-    }
-
-    throw new Error(`Unknown route: "${url}"`);
-  })
-);
+jest.mock('../../../src/fetchers/LocaleFetcher');
 
 describe('AddColumnModal', () => {
   it('should render the component', async () => {
