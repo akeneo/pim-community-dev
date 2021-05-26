@@ -127,53 +127,6 @@ class SqlFindSearchableAssetsTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_null_if_it_does_not_find_by_asset_family_identifier()
-    {
-        $items = $this->findSearchableAssets->byAssetFamilyIdentifier(
-            AssetFamilyIdentifier::fromString('wrong_asset_family')
-        );
-        $count = 0;
-        foreach ($items as $searchItem) {
-            $count++;
-        }
-        Assert::assertEquals(0, $count, 'There was some searchable item found. expected 0.');
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_searchable_asset_items_by_asset_family()
-    {
-        $searchableAssets = $this->findSearchableAssets->byAssetFamilyIdentifier(
-            AssetFamilyIdentifier::fromString('designer')
-        );
-
-        $labelIdentifier = $this->getAttributeAsLabelIdentifier('designer');
-        $searchableAssets = iterator_to_array($searchableAssets);
-        Assert::assertCount(1, $searchableAssets);
-        $searchableAsset = current($searchableAssets);
-        Assert::assertEquals('stark_designer_fingerprint', $searchableAsset->identifier);
-        Assert::assertEquals('stark', $searchableAsset->code);
-        Assert::assertEquals('designer', $searchableAsset->assetFamilyIdentifier);
-        Assert::assertSame(['fr_FR' => 'Philippe Starck'], $searchableAsset->labels);
-        Assert::assertSame(
-            [
-                'name'                      => [
-                    'data'      => 'Philippe stark',
-                    'locale'    => null,
-                    'channel'   => null,
-                    'attribute' => 'name',
-                ],
-                $labelIdentifier . '_fr_FR' => [
-                    'data'      => 'Philippe Starck',
-                    'locale'    => 'fr_FR',
-                    'channel'   => null,
-                    'attribute' => $labelIdentifier,
-                ],
-            ],
-            $searchableAsset->values
-        );
-    }
 
     private function loadAssetFamilyAndAttributes(): void
     {
