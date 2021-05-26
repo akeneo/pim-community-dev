@@ -5,7 +5,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {ColumnDefinition, TableConfiguration} from '../models/TableConfiguration';
 import {getLabel, Locale} from '@akeneo-pim-community/shared';
-import { AddColumnModal } from "./AddColumnModal";
+import {AddColumnModal} from './AddColumnModal';
 const FetcherRegistry = require('pim/fetcher-registry');
 
 type TableOptionsAppProps = {
@@ -34,18 +34,18 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
     onChange(tableConfiguration);
   };
 
-  const handleReorder = (newIndices) => {
+  const handleReorder = newIndices => {
     // TODO Backend does not work for this use case cause of integrity of order
     const newTableConfiguration = newIndices.map(i => tableConfiguration[i]);
     setTableConfiguration(newTableConfiguration);
     onChange(newTableConfiguration);
-  }
+  };
 
   const handleCreate = (columnDefinition: ColumnDefinition) => {
     tableConfiguration.push(columnDefinition);
     setTableConfiguration([...tableConfiguration]);
     onChange(tableConfiguration);
-  }
+  };
 
   const rightColumn = (
     <div>
@@ -88,8 +88,16 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
                 ))}
               </Table.Body>
             </Table>
-            {isNewColumnModalOpen && <AddColumnModal close={closeNewColumnModal} onCreate={handleCreate} existingColumnCodes={tableConfiguration.map(columnDefinition => columnDefinition.code)}/>}
-            <Button title={"TODO Add new column"} ghost level="secondary" onClick={openNewColumnModal}>TODO Add new column</Button>
+            {isNewColumnModalOpen && (
+              <AddColumnModal
+                close={closeNewColumnModal}
+                onCreate={handleCreate}
+                existingColumnCodes={tableConfiguration.map(columnDefinition => columnDefinition.code)}
+              />
+            )}
+            <Button title={'TODO Add new column'} ghost level="secondary" onClick={openNewColumnModal}>
+              TODO Add new column
+            </Button>
           </div>
         </TwoColumnsLayout>
       </ThemeProvider>

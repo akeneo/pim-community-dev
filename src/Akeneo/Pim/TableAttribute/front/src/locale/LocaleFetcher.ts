@@ -1,10 +1,10 @@
-import { Locale, LocaleCode, Router } from "@akeneo-pim-community/shared";
+import {Locale, LocaleCode, Router} from '@akeneo-pim-community/shared';
 
 const fetchLocale = async (router: Router, code: LocaleCode): Promise<Locale | undefined> => {
   const url = router.generate('pim_enrich_locale_rest_index');
   const response = await fetch(url);
 
-  const result = await response.json() as Locale[];
+  const result = (await response.json()) as Locale[];
 
   return result.find(locale => locale.code === code);
 };

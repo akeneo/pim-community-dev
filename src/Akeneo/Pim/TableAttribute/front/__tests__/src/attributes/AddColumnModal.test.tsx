@@ -1,8 +1,8 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import { AddColumnModal } from "../../../src/attribute/AddColumnModal";
-import { act, screen, fireEvent } from '@testing-library/react';
-import { Locale } from "@akeneo-pim-community/shared";
+import {AddColumnModal} from '../../../src/attribute/AddColumnModal';
+import {act, screen, fireEvent} from '@testing-library/react';
+import {Locale} from '@akeneo-pim-community/shared';
 
 beforeAll(() =>
   global.fetch.mockImplementation(async (url?: string | Request) => {
@@ -19,8 +19,8 @@ beforeAll(() =>
           label: 'French (France)',
           region: 'France',
           language: 'French',
-        }
-      ]
+        },
+      ];
       return new Response(JSON.stringify(locales));
     }
 
@@ -32,7 +32,7 @@ describe('AddColumnModal', () => {
   it('should render the component', async () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
-    renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]}/>);
+    renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
     expect(await screen.findByText('English')).toBeInTheDocument();
 
     expect(screen.getByText('pim_table_attribute.form.attribute.add_column')).toBeInTheDocument();
@@ -42,7 +42,7 @@ describe('AddColumnModal', () => {
   it('should create default code', async () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
-    renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]}/>);
+    renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
     expect(await screen.findByText('English')).toBeInTheDocument();
 
     const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
@@ -58,7 +58,7 @@ describe('AddColumnModal', () => {
   it('should not update code once dirty', async () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
-    renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]}/>);
+    renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
     expect(await screen.findByText('English')).toBeInTheDocument();
 
     const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
@@ -77,7 +77,7 @@ describe('AddColumnModal', () => {
   it('should add column', async () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
-    renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]}/>);
+    renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
     expect(await screen.findByText('English')).toBeInTheDocument();
 
     const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
@@ -98,11 +98,11 @@ describe('AddColumnModal', () => {
     });
 
     expect(handleCreate).toHaveBeenCalledWith({
-      "code": "ingredients",
-      "data_type": "text",
-      "labels": {
-        "en_US": "Ingredients",
-      }
+      code: 'ingredients',
+      data_type: 'text',
+      labels: {
+        en_US: 'Ingredients',
+      },
     });
     expect(handleClose).toHaveBeenCalled();
   });
@@ -110,7 +110,9 @@ describe('AddColumnModal', () => {
   it('should display validation errors', async () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
-    renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={['quantity']}/>);
+    renderWithProviders(
+      <AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={['quantity']} />
+    );
     expect(await screen.findByText('English')).toBeInTheDocument();
     const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
     const dataTypeInput = screen.getByLabelText('pim_table_attribute.form.attribute.data_type') as HTMLInputElement;
