@@ -1,16 +1,10 @@
 import {Category, EditableCategoryProperties} from '../../models';
 import {useCallback, useContext, useEffect, useState} from "react";
 import {useBooleanState} from "akeneo-design-system";
-import {editCategory} from "../../infrastructure/savers";
+import {saveEditCategoryForm} from "../../infrastructure/savers";
 import {LabelCollection, NotificationLevel, useNotify, useTranslate} from "@akeneo-pim-community/shared";
 import {EditCategoryForm} from "./useCategory";
 import {EditCategoryContext} from "../../components";
-
-// @todo rename?
-// @todo move to a more suitable place
-export type ValidationErrors = {
-   [field: string]: string | LabelCollection;
-}
 
 const useEditCategory = (category: Category | null, formData: EditCategoryForm | null) => {
   const notify = useNotify();
@@ -54,7 +48,7 @@ const useEditCategory = (category: Category | null, formData: EditCategoryForm |
       return;
     }
 
-    const response = await editCategory(category.id, editedFormData);
+    const response = await saveEditCategoryForm(category.id, editedFormData);
 
     if (response.success) {
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
