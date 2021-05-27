@@ -7,4 +7,7 @@ export type ColumnDefinition = {
   labels: LabelCollection;
 };
 
+const dataTypes = ['text'];
+
 export type TableConfiguration = ColumnDefinition[];
+export {dataTypes};

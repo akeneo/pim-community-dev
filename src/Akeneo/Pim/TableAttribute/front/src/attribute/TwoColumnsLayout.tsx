@@ -6,7 +6,7 @@ const TwoColumnsLayoutContainer = styled.div`
   margin-top: 20px;
   grid-template-columns: 1fr 400px;
   grid-template-rows: 1fr;
-  gap: 0px 40px;
+  gap: 0 40px;
   grid-template-areas: '. .';
 `;
 

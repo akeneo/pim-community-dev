@@ -1,6 +1,6 @@
 import {AttributesIllustration, Button, Field, Modal, SelectInput, TextInput, Helper} from 'akeneo-design-system';
 import React from 'react';
-import {ColumnDefinition, ColumnType} from '../models/TableConfiguration';
+import {ColumnDefinition, ColumnType, dataTypes} from '../models/TableConfiguration';
 import {useUserContext, useTranslate} from '@akeneo-pim-community/shared';
 import {LocaleLabel} from './LocaleLabel';
 import styled from 'styled-components';
@@ -23,7 +23,7 @@ type UndefinedColumnDefinition = {
   data_type: ColumnType | null;
 };
 
-type Validations = {
+type ErrorValidations = {
   code: string[];
   data_type: string[];
 };
@@ -39,14 +39,12 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
     data_type: null,
   });
 
-  const [validations, setValidations] = React.useState<Validations>({
+  const [errorValidations, setErrorValidations] = React.useState<ErrorValidations>({
     code: [],
     data_type: [],
   });
 
   const [dirtyCode, setDirtyCode] = React.useState<boolean>(false);
-
-  const dataTypes = ['text'];
 
   const handleLabelChange = (label: string) => {
     setColumnDefinition(columnDefinition => {
@@ -85,7 +83,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
       );
 
     if (!silent) {
-      setValidations(oldValidations => {
+      setErrorValidations(oldValidations => {
         return {...oldValidations, code: validations};
       });
     }
@@ -97,7 +95,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
     if (dataType === null)
       validations.push(translate('pim_table_attribute.validations.column_data_type_must_be_filled'));
     if (!silent) {
-      setValidations(oldValidations => {
+      setErrorValidations(oldValidations => {
         return {...oldValidations, data_type: validations};
       });
     }
@@ -149,7 +147,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
               100 - columnDefinition.code.length
             )}
           />
-          {validations.code.map((validation, i) => (
+          {errorValidations.code.map((validation, i) => (
             <Helper level='error' key={i}>
               {validation}
             </Helper>
