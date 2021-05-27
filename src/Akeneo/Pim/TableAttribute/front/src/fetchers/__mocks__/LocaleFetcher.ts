@@ -1,9 +1,6 @@
 import {Locale, LocaleCode, Router} from '@akeneo-pim-community/shared';
 
-const fetchLocale = async (
-  _router: Router,
-  code: LocaleCode
-): Promise<Locale | undefined> => {
+const fetchLocale = async (_router: Router, code: LocaleCode): Promise<Locale | undefined> => {
   if (code === 'en_US') {
     return new Promise(resolve =>
       resolve({

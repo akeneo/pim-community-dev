@@ -1,11 +1,6 @@
 import React from 'react';
 import {LoaderIcon, Locale as LocaleWithFlag} from 'akeneo-design-system';
-import {
-  Locale,
-  LocaleCode,
-  useIsMounted,
-  useRouter,
-} from '@akeneo-pim-community/shared';
+import {Locale, LocaleCode, useIsMounted, useRouter} from '@akeneo-pim-community/shared';
 import {fetchLocale} from '../fetchers/LocaleFetcher';
 
 type LocaleProps = {

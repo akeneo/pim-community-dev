@@ -61,9 +61,7 @@ class TableOptionsTab extends BaseView {
   }
 
   private isActive() {
-    return this.config.activeForTypes.includes(
-      (this.getRoot() as any).getType()
-    );
+    return this.config.activeForTypes.includes((this.getRoot() as any).getType());
   }
 }
 

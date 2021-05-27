@@ -1,27 +1,10 @@
 import React from 'react';
 import {TwoColumnsLayout} from './TwoColumnsLayout';
-import {
-  SectionTitle,
-  pimTheme,
-  Field,
-  TextInput,
-  Button,
-  useBooleanState,
-  Table,
-} from 'akeneo-design-system';
+import {SectionTitle, pimTheme, Field, TextInput, Button, useBooleanState, Table} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled, {ThemeProvider} from 'styled-components';
-import {
-  ColumnDefinition,
-  TableConfiguration,
-} from '../models/TableConfiguration';
-import {
-  getLabel,
-  Locale,
-  useRouter,
-  useTranslate,
-  useUserContext,
-} from '@akeneo-pim-community/shared';
+import {ColumnDefinition, TableConfiguration} from '../models/TableConfiguration';
+import {getLabel, Locale, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AddColumnModal} from './AddColumnModal';
 import {fetchActivatedLocales} from '../fetchers/LocaleFetcher';
 
@@ -30,6 +13,10 @@ const FieldsList = styled.div`
   flex-direction: column;
   gap: 20px;
   margin: 20px 0;
+`;
+
+const EmptyTableCell = styled(Table.Cell)`
+  width: 44px;
 `;
 
 const AddNewColumnButton = styled(Button)`
@@ -41,34 +28,19 @@ type TableOptionsAppProps = {
   onChange: (tableConfiguration: TableConfiguration) => void;
 };
 
-const TableOptionsApp: React.FC<TableOptionsAppProps> = ({
-  initialTableConfiguration,
-  onChange,
-}) => {
+const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfiguration, onChange}) => {
   const translate = useTranslate();
   const router = useRouter();
   const userContext = useUserContext();
-  const [tableConfiguration, setTableConfiguration] = React.useState<
-    TableConfiguration
-  >(initialTableConfiguration);
-  const [selectedColumnCode, setSelectedColumnCode] = React.useState<string>(
-    tableConfiguration[0].code
-  );
-  const selectedColumn = tableConfiguration.find(
-    column => column.code === selectedColumnCode
-  ) as ColumnDefinition;
+  const [tableConfiguration, setTableConfiguration] = React.useState<TableConfiguration>(initialTableConfiguration);
+  const [selectedColumnCode, setSelectedColumnCode] = React.useState<string>(tableConfiguration[0].code);
+  const selectedColumn = tableConfiguration.find(column => column.code === selectedColumnCode) as ColumnDefinition;
   const [activeLocales, setActiveLocales] = React.useState<Locale[]>([]);
-  const [
-    isNewColumnModalOpen,
-    openNewColumnModal,
-    closeNewColumnModal,
-  ] = useBooleanState();
+  const [isNewColumnModalOpen, openNewColumnModal, closeNewColumnModal] = useBooleanState();
   const [firstColumnDefinition, ...otherColumnDefinitions] = tableConfiguration;
 
   React.useEffect(() => {
-    fetchActivatedLocales(router).then((activeLocales: Locale[]) =>
-      setActiveLocales(activeLocales)
-    );
+    fetchActivatedLocales(router).then((activeLocales: Locale[]) => setActiveLocales(activeLocales));
   }, [router]);
 
   const handleLabelChange = (localeCode: string, newValue: string) => {
@@ -80,10 +52,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({
   };
 
   const handleReorder = (newIndices: number[]) => {
-    const newTableConfiguration = [
-      firstColumnDefinition,
-      ...newIndices.map(i => otherColumnDefinitions[i]),
-    ];
+    const newTableConfiguration = [firstColumnDefinition, ...newIndices.map(i => otherColumnDefinitions[i])];
     setTableConfiguration(newTableConfiguration);
     onChange(newTableConfiguration);
   };
@@ -96,24 +65,13 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({
 
   const rightColumn = (
     <div>
-      <SectionTitle
-        title={getLabel(
-          selectedColumn.labels,
-          userContext.get('catalogLocale'),
-          selectedColumn.code
-        )}>
+      <SectionTitle title={getLabel(selectedColumn.labels, userContext.get('catalogLocale'), selectedColumn.code)}>
         <SectionTitle.Title>
-          {getLabel(
-            selectedColumn.labels,
-            userContext.get('catalogLocale'),
-            selectedColumn.code
-          )}
+          {getLabel(selectedColumn.labels, userContext.get('catalogLocale'), selectedColumn.code)}
         </SectionTitle.Title>
       </SectionTitle>
       <FieldsList>
-        <Field
-          label={translate('pim_common.code')}
-          requiredLabel={translate('pim_common.required_label')}>
+        <Field label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>
           <TextInput readOnly={true} value={selectedColumn.code} />
         </Field>
         <Field
@@ -122,15 +80,11 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({
           <TextInput readOnly={true} value={selectedColumn.data_type} />
         </Field>
       </FieldsList>
-      <SectionTitle
-        title={translate('pim_table_attribute.form.attribute.labels')}>
-        <SectionTitle.Title>
-          {translate('pim_table_attribute.form.attribute.labels')}
-        </SectionTitle.Title>
+      <SectionTitle title={translate('pim_table_attribute.form.attribute.labels')}>
+        <SectionTitle.Title>{translate('pim_table_attribute.form.attribute.labels')}</SectionTitle.Title>
       </SectionTitle>
       <FieldsList>
         {activeLocales.map(locale => (
-          // TODO Update Field to allow DOM on label
           <Field label={locale.label} key={locale.code} locale={locale.code}>
             <TextInput
               onChange={label => handleLabelChange(locale.code, label)}
@@ -147,24 +101,17 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({
       <ThemeProvider theme={pimTheme}>
         <TwoColumnsLayout rightColumn={rightColumn}>
           <div>
-            <SectionTitle
-              title={translate('pim_table_attribute.form.attribute.columns')}>
-              <SectionTitle.Title>
-                {translate('pim_table_attribute.form.attribute.columns')}
-              </SectionTitle.Title>
+            <SectionTitle title={translate('pim_table_attribute.form.attribute.columns')}>
+              <SectionTitle.Title>{translate('pim_table_attribute.form.attribute.columns')}</SectionTitle.Title>
             </SectionTitle>
-            {/* TODO DSM Fix first column drag & drop width */}
             <Table>
               <Table.Body>
                 <Table.Row
                   key={firstColumnDefinition.code}
-                  onClick={() =>
-                    setSelectedColumnCode(firstColumnDefinition.code)
-                  }
-                  isSelected={
-                    firstColumnDefinition.code === selectedColumnCode
-                  }>
-                  <Table.Cell>
+                  onClick={() => setSelectedColumnCode(firstColumnDefinition.code)}
+                  isSelected={firstColumnDefinition.code === selectedColumnCode}>
+                  <EmptyTableCell/>
+                  <Table.Cell rowTitle={true}>
                     {getLabel(
                       firstColumnDefinition.labels,
                       userContext.get('catalogLocale'),
@@ -181,12 +128,8 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({
                     key={columnDefinition.code}
                     onClick={() => setSelectedColumnCode(columnDefinition.code)}
                     isSelected={columnDefinition.code === selectedColumnCode}>
-                    <Table.Cell>
-                      {getLabel(
-                        columnDefinition.labels,
-                        userContext.get('catalogLocale'),
-                        columnDefinition.code
-                      )}
+                    <Table.Cell rowTitle={true}>
+                      {getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code)}
                     </Table.Cell>
                   </Table.Row>
                 ))}
@@ -196,9 +139,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({
               <AddColumnModal
                 close={closeNewColumnModal}
                 onCreate={handleCreate}
-                existingColumnCodes={tableConfiguration.map(
-                  columnDefinition => columnDefinition.code
-                )}
+                existingColumnCodes={tableConfiguration.map(columnDefinition => columnDefinition.code)}
               />
             )}
             <AddNewColumnButton
