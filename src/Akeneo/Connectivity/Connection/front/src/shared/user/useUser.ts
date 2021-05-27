@@ -4,8 +4,8 @@ import {UserContext} from './user-context';
 export const useUser = (): {locale: string; timeZone: string} => {
     const user = useContext(UserContext);
 
-    const locale = user.get('uiLocale').replace('_', '-');
-    const timeZone = user.get('timezone');
+    const locale = user.get<string>('uiLocale').replace('_', '-');
+    const timeZone = user.get<string>('timezone');
 
     return {locale, timeZone};
 };

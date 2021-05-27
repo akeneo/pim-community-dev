@@ -10,7 +10,7 @@ import {useTranslate} from '../../shared/translate';
 import {PageHeader} from '../../common';
 import {UserButtons} from '../../shared/user';
 import styled from 'styled-components';
-import {useFetchMarketingUrl} from '../hooks/use-fetch-marketing-url';
+import {useMarketplaceUrl} from '../hooks/use-fetch-marketing-url';
 import {useRouter} from '../../shared/router/use-router';
 import {UserContext} from '../../shared/user';
 import {UserProfileSelector} from '../components/UserProfileSelector';
@@ -75,13 +75,13 @@ const Caption = styled.p`
 
 export const Marketplace: FC = () => {
     const translate = useTranslate();
-    const fetchMarketplaceUrl = useFetchMarketingUrl();
+    const fetchMarketplaceUrl = useMarketplaceUrl();
     const [marketplaceUrl, setMarketplaceUrl] = useState<string>('');
+    const [userProfile, setUserProfile] = useState<string|null|undefined>(undefined);
     const generateUrl = useRouter();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
 
     const user = useContext(UserContext);
-    const userProfile = user.get('profile');
 
     const breadcrumb = (
         <Breadcrumb>
@@ -91,17 +91,19 @@ export const Marketplace: FC = () => {
     );
 
     useEffect(() => {
+        (async () => {
+            await user.refresh();
+            setUserProfile(user.get<string>('profile'));
+        })();
+    }, [user]);
+
+    useEffect(() => {
         fetchMarketplaceUrl().then(setMarketplaceUrl);
     }, [fetchMarketplaceUrl]);
 
-    const regularMarketplaceView = (
-        <>
-            <Caption>{translate('akeneo_connectivity.connection.connect.marketplace.sub_title')}</Caption>
-            <LinkButton href={marketplaceUrl} target='_blank' role='link' tabIndex='0'>
-                {translate('akeneo_connectivity.connection.connect.marketplace.link')}
-            </LinkButton>
-        </>
-    );
+    if (undefined === userProfile) {
+        return null;
+    }
 
     return (
         <>
@@ -114,7 +116,15 @@ export const Marketplace: FC = () => {
 
                 <Heading>{translate('akeneo_connectivity.connection.connect.marketplace.title')}</Heading>
 
-                { userProfile === null ? <UserProfileSelector/> : regularMarketplaceView }
+                {userProfile === null ?
+                    <UserProfileSelector/> :
+                    <>
+                        <Caption>{translate('akeneo_connectivity.connection.connect.marketplace.sub_title')}</Caption>
+                        <LinkButton href={marketplaceUrl} target='_blank' role='link' tabIndex='0'>
+                            {translate('akeneo_connectivity.connection.connect.marketplace.link')}
+                        </LinkButton>
+                    </>
+                }
             </PageContent>
         </>
     );

@@ -3,8 +3,11 @@ import {useTranslate} from '../../shared/translate';
 import {AkeneoThemedProps, Field, getColor, getFontSize, Helper, Link, SelectInput} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {useFetchUserProfiles} from '../hooks/use-fetch-user-profiles';
+import {useMarketplaceUrl} from '../hooks/use-fetch-marketing-url';
+import {UserContext} from '../../shared/user';
+import {useSaveUser} from '../hooks/use-save-user';
 
-type UserProfileEntry = {
+type UserProfile = {
     code: string;
     label: string;
 };
@@ -24,8 +27,8 @@ const Caption = styled.p`
     line-height: 1.2em;
 `;
 
-//TODO refactor ?
-const LinkButton = styled.a<AkeneoThemedProps>`
+//TODO DSM ?
+const LinkButton = styled.button<AkeneoThemedProps>`
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -58,43 +61,77 @@ const LinkButton = styled.a<AkeneoThemedProps>`
     &:focus {
         box-shadow: 0 0 0 2px ${getColor('blue', 40)};
     }
+    &:disabled {
+        background-color: ${getColor('grey', 80)};
+        cursor: not-allowed;
+    }
 `;
 
 export const UserProfileSelector: FC = () => {
     const translate = useTranslate();
-    // const [userProfileEntries, setUserProfileEntries] = useState<UserProfileEntry[]>([]);
-    const userProfileEntries = useFetchUserProfiles();
+    const [userProfiles, setUserProfiles] = useState<UserProfile[]>([]);
+    const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
+    const fetchUserProfiles = useFetchUserProfiles();
+    const marketplaceUrl = useMarketplaceUrl();
 
-    const marketplaceUrl = '#';
+    const user = useContext(UserContext);
+    const usernameMetadata = user.get<{id: string}>('meta');
+    const saveUser = useSaveUser(usernameMetadata.id);
+
+    const handleClick = () => {
+        if (null === selectedProfile) {
+            return;
+        }
+        saveUser({profile: selectedProfile}).then(toto => console.log('TODO redirect'));
+    };
+
+    const handleOnSelectChange = (selectedValue: string | null) => {
+        setSelectedProfile(selectedValue);
+    };
+
+    useEffect(() => {
+        fetchUserProfiles().then(setUserProfiles);
+    }, [fetchUserProfiles]);
+
+    //useEffect(() => {
+    //    fetchMarketplaceUrl().then(setMarketplaceUrl);
+    //}, [fetchMarketplaceUrl]);
 
     return (
         <>
             <Caption>{translate('pim_user.profile.caption')}</Caption>
 
             <UserProfileField label={translate('pim_user_management.entity.user.properties.profile')}>
-                <ProfileSelect value={null}
-                               emptyResultLabel={translate('pim_user.profile.selector.not_found')}
-                               placeholder={translate('pim_user.profile.selector.placeholder')}
-                               onChange={() => null}>
-                    {userProfileEntries.map((profileEntry: UserProfileEntry) =>
+                <ProfileSelect
+                    value={selectedProfile}
+                    emptyResultLabel={translate('pim_user.profile.selector.not_found')}
+                    placeholder={translate('pim_user.profile.selector.placeholder')}
+                    onChange={handleOnSelectChange}
+                >
+                    {userProfiles.map((profile: UserProfile) =>
                         <SelectInput.Option
-                            key={profileEntry.code}
-                            title={translate(profileEntry.label)}
-                            value={profileEntry.code}
-                        >{translate(profileEntry.label)}
+                            key={profile.code}
+                            title={translate(profile.label)}
+                            value={profile.code}
+                        >
+                            {translate(profile.label)}
                         </SelectInput.Option>
                     )}
                 </ProfileSelect>
                 <Helper level="info">
-                    {/*TODO update link*/}
-                    <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+                    <Link href="https://help.akeneo.com/pim/serenity/articles/what-is-a-user.html">
                         {translate('pim_user.profile.why_is_it_needed')}
                     </Link>
                 </Helper>
             </UserProfileField>
 
-            {/* TODO save and fetch marketplaceUrl*/}
-            <LinkButton href={marketplaceUrl} target='_blank' role='link' tabIndex='0'>
+            <LinkButton
+                target='_blank'
+                role='link'
+                tabIndex='0'
+                onClick={handleClick}
+                disabled={null === selectedProfile}
+            >
                 {translate('pim_user.profile.save_button')}
             </LinkButton>
         </>
