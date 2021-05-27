@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Structure\Integration\Category;
 
-use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Category\Sql\SqlFindCategoryTrees;
+use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Category\Sql\SqlCountTotalCategoriesPerTree;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\CategoryTree;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
 final class SqlFindCategoryTreesIntegration extends TestCase
 {
-    public SqlFindCategoryTrees $sqlFindCategoryTrees;
+    public SqlCountTotalCategoriesPerTree $sqlFindCategoryTrees;
 
     public function setUp(): void
     {
