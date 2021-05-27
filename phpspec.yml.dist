@@ -43,11 +43,11 @@ suites:
         src_path: src/Akeneo/Pim/Permission
         spec_prefix: Specification
 
-    TrialEdition:
-        namespace: Akeneo\Pim\TrialEdition
-        psr4_prefix: Akeneo\Pim\TrialEdition
-        spec_path: src/Akeneo/TrialEdition/tests/back
-        src_path: src/Akeneo/TrialEdition
+    FreeTrial:
+        namespace: Akeneo\FreeTrial
+        psr4_prefix: Akeneo\FreeTrial
+        spec_path: src/Akeneo/FreeTrial/tests/back
+        src_path: src/Akeneo/FreeTrial
         spec_prefix: Specification
 
     ## Pim extension

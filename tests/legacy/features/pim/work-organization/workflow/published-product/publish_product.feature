@@ -45,4 +45,4 @@ Feature: Publish a product
     And I visit the "Options" tab
     When I remove the "Hot" option
     And I confirm the deletion
-    Then I should see the text "Impossible to remove attribute option linked to a published product"
+    Then I should see the text "Entities linked to published products cannot be removed."

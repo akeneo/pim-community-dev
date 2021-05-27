@@ -55,3 +55,8 @@ data:
   PUBSUB_TOPIC_BUSINESS_EVENT: {{ .Values.pim.pubsub.topic_business_event }}
   PUBSUB_TOPIC_JOB_QUEUE: {{ .Values.pim.pubsub.topic_job_queue }}
   LOGGING_LEVEL: {{ .Values.pim.logging_level }}
+  {{- if .Values.free_trial.enabled }}
+  FLAG_FREE_TRIAL_ENABLED: "1"
+  {{- else }}
+  FLAG_FREE_TRIAL_ENABLED: "0"
+  {{- end }}

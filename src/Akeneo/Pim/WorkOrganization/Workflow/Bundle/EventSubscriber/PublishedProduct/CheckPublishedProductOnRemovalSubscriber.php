@@ -96,11 +96,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         $message = 'Impossible to remove a published product';
 
         if (!$subject instanceof ProductInterface) {
-            $classname = array_slice(explode('\\', ClassUtils::getClass($subject)), -1)[0];
-            $message = sprintf(
-                'Impossible to remove %s linked to a published product',
-                strtolower(preg_replace('/([a-z])([A-Z])/', '$1 $2', $classname, -1))
-            );
+            $message = 'pimee_workflow.entity.removing_error';
         }
 
         throw new PublishedProductConsistencyException($message);

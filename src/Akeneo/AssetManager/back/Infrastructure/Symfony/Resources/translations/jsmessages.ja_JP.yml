@@ -117,6 +117,7 @@ pim_asset_manager:
       edit: ファミリーを編集
       view: ファミリーを表示
       execute_product_link_rules: ルールを実行
+      execute_naming_convention: 命名規則を実行
     permission:
       title: アセットファミリーの許可
     title: アセット
@@ -146,6 +147,11 @@ pim_asset_manager:
         confirm_title: 実行を確認
         confirm_content: ルールをすべて実行しますか？(長時間を要することがあります)
         execute_rules: ルールを実行
+        cancel: キャンセル
+      execute_naming_convention:
+        confirm_title: 実行を確認する
+        confirm_content: 命名規則を実行してもよろしいですか？（時間がかかる場合があります）
+        execute_naming_convention: 命名規則を実行
         cancel: キャンセル
     properties:
       title: アセットファミリープロパティ
@@ -203,6 +209,9 @@ pim_asset_manager:
       execute_product_link_rules:
         success: 商品リンクルールが開始されました
         fail: 商品リンクルールを開始する時にエラーが発生しました
+      execute_naming_convention:
+        success: 命名規則が開始されました
+        fail: 命名規則の起動時にエラーが発生しました
     helper:
       title: アセットマネージャーへようこそ！
       no_asset:
@@ -228,6 +237,8 @@ pim_asset_manager:
       link: クリックして最初のユーザグループを追加
   asset:
     img: '「{{ label }}」の名称のアセットに関する主要メディア'
+    created_at: 作成済み
+    updated_at: 更新
     validation:
       limit_reached: 'アセット「{{%asset_label%}}」を作成できません。このアセットファミリーに対するアセットの上限{{%limit%}}に達しています。'
       code:
@@ -244,6 +255,7 @@ pim_asset_manager:
       error:
         value: 申し訳ございません。「{{ fieldName }}」フィールドのレンダリングに失敗したようです。 詳細は開発者コンソールを見てください。
     button:
+      save_and_execute_naming_convention: 命名規則を保存して実行
       save: 保存
       create: アセットを作成
       mass_upload: 一括アップロード
@@ -263,6 +275,7 @@ pim_asset_manager:
         subtitle: '商品をアセットファミリーにリンクするためには新規作成してください:'
         link: 商品属性の新規作成
       not_enough_items:
+        title: '{{ productCount }}/{{ totalCount }} 個の製品のみが表示されます。'
         subtitle:
           usable_in_grid: リンクされた商品を全て調べるには以下をクリックするだけ！
           not_usable_in_grid: リンクされた商品をすべて確認するには商品属性を「一覧表で利用可能」に設定してください。
@@ -368,6 +381,9 @@ pim_asset_manager:
       delete_all:
         success: '「{{ entityIdentifier }}」件のアセット全てが問題なく削除されました。'
         fail: この全アセットファミリーアセットの削除中にエラーが発生しました。
+      execute_naming_convention:
+        success: 命名規則が正常に実行されました
+        fail: 命名規則の実行中にエラーが発生しました
     completeness:
       label: 完了
   attribute:
@@ -479,12 +495,16 @@ pim_asset_manager:
     media_file:
       placeholder: ドラッグ＆ドロップでアップロードするか、こちらをクリック
       read_only: このメディアリンクは読み取り専用です
+      uploading: アップロード中...
   modal:
     delete:
       subtitle: 削除を確認
       button:
         cancel: キャンセル
         confirm: 削除
+  jobs:
+    asset_manager_execute_naming_convention:
+      error: 'アセット「{{ asset }}」で命名規則が失敗しました'
 pim_enrich:
   confirmation:
     discard_changes: 'このページから移動する場合は エンティティ「{{ entity }}」 に対する変更が失われます。'
@@ -516,3 +536,21 @@ pim_import_export:
       job_type:
         asset_manager_compute_transformations: "アセット変換を計算"
         asset_manager_link_assets_to_products: "アセットを商品にリンク"
+        asset_manager_execute_naming_convention: アセットファミリーの命名規則を実行する
+  form:
+    job_instance:
+      tab:
+        properties:
+          with_prefix_suffix:
+            title: プレフィックスとサフィックスのエクスポート
+            help: メディアリンクのアセット属性のプレフィックスとサフィックスをエクスポート
+pim_datagrid:
+  cells:
+    type:
+      asset_manager_execute_naming_convention: アセットファミリーの命名規則を実行する
+batch_jobs:
+  default_steps:
+    execute_naming_convention: アセットファミリーの命名規則を実行する
+job_execution:
+  summary:
+    assets: アセット

@@ -1,20 +1,16 @@
 pimee_catalog_rule:
   overview: "]-Inf, 1]{{ count }} regra|]1, Inf[{{ count }} regras"
   execution_button: Executar regras
-  selected: 'regras selecionadas'
   popin:
     execute_rules:
       confirm_title: Confirmar execução
-      confirm_content: Tem certeza que deseja executar todas as regras? (isto pode levar muito tempo)
   notification:
-    fail: A ação não pôde ser executada
     launched: A execução das regras foi iniciada. Você receberá uma notificação quando finalizar.
   attribute:
     list:
       code.label: Código
       condition.label: Condição
       action.label: Ação
-      no_rule_yet.label: Nenhuma regra existente
   rule:
     condition:
       if.label: se
@@ -34,12 +30,10 @@ pimee_catalog_rule:
           confirm_content: Tem certeza que deseja executar a regra?
       mass_edit_action:
         confirm_title: Confirmar cálculo
-        confirm_content: Tem certeza que deseja calcular os produtos afetados pelas regras?
       mass_action:
         execute:
           confirm_title: Confirmar execução
-          confirm_content: Tem certeza que deseja executar as regras selecionadas?
-          success: A ação em massa para executar as regras selecionadas foi lançada. Você receberá uma notificação quando finalizar
+          success: A execução das regras foi iniciada. Você receberá uma notificação quando finalizar.
           empty_selection: Nenhuma regra selecionada.
         delete:
           confirm_title: Confirmar execução
@@ -57,30 +51,16 @@ pim_enrich:
       module:
         delete:
           confirm: Tem certeza que deseja excluir esta regra? Não é possível desfazer esta ação
-pim_datagrid:
-  entity:
-    rule:
-      flash:
-        delete:
-          success: Regra removida com sucesso
 flash:
   rule:
-    impacted_product_count: A acção em massa para calcular os produtos afetados pelas regras foi iniciada. Você receberá uma notificação quando finalizar.
-    executed: A execução da regra foi iniciada. Você receberá uma notificação quando finalizar.
+    executed: A execução das regras foi iniciada. Você receberá uma notificação quando finalizar.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Configurações de regras
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Execução de regras
   default_steps:
     execute_rules: Execução de regras
-  yml_rule_import:
-    label: Importação regra em YAML
-    import.label: Importar Regra
-  yml_rule_export:
-    label: Exportar Regra em YAML
-    export.label: Exportar Regra
   rule_impacted_product_count:
-    label: Produtos afetados pelas regras
     perform.label: Contar produtos impactados
   csv_product_import_with_rules:
     label: Importação de produto em CSV com regras
@@ -96,8 +76,15 @@ pim_notification:
   types:
     rule: Configurações de Regras
     mass_edit_rule: Edição de regra em massa
+    execute_rules: Execução de regras
 pim_menu:
   item:
     rule: Regras
 pim_title:
   pimee_catalog_rule_rule_index: Regras
+  pimee_catalog_rule_new: Regras
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: Execução de regras

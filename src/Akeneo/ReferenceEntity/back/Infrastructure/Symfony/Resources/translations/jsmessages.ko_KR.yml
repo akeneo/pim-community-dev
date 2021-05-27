@@ -1,0 +1,339 @@
+pim_title:
+  akeneo_reference_entities_reference_entity_index: 새 엔터티 만들기
+  akeneo_reference_entities_reference_entity_edit: 참조 엔터티 편집
+  akeneo_reference_entities_record_edit: 레코드 편집
+pim_reference_entity:
+  app:
+    image:
+      wide:
+        remove: 이미지 제거
+        download: 이미지 다운로드
+        upload: 끌어다 놓아 업로드하거나 여기를 클릭
+      small:
+        remove: 제거
+        download: 다운로드
+        upload: 끌어다 놓아 업로드
+  editor:
+    embedded:
+      invalid_link:
+        title: 의심스러운 임베디드 링크
+        message: 죄송하지만 이 임베드 항목을 표시할 수 없습니다. 하지만 제대로 저장됩니다.
+  grid:
+    counter: '{{ count }} 결과|{{ count }} 결과'
+  reference_entity:
+    validation:
+      code:
+        pattern: '이 필드는 문자, 숫자 및 밑줄만 포함할 수 있습니다.'
+        should_be_unique: '이 코드는 해당 엔터티에서 이미 존재합니다.'
+        limit_reached: '{{ %limit% }} 참조 엔터티 제한에 도달했으므로 참조 엔터티 "{{ %reference_entity_label% }}"을(를) 만들 수 없습니다'
+    button:
+      save: 저장
+      save_permission: 저장
+      create: 만들기
+    permission:
+      title: 엔터티 권한
+    title: 엔터티
+    breadcrumb: 참조 엔터티
+    img: '"{{ label }}"(이)라는 참조 엔터티의 기본 이미지'
+    tab:
+      records: 레코드
+      attribute: 특성
+      properties: 속성
+      permission: 권한
+    properties:
+      title: 엔터티 속성
+      identifier: 코드
+      label: 레이블
+      image: 이미지
+    attribute:
+      title: 레코드 특성
+      attribute:
+        error:
+          render_list: '"{{ %attribute_code% }}" 특성을 렌더링하는 중에 오류가 발생했습니다'
+          render_edit: '"{{ %attribute_code% }}" 특성 추가 속성 필드를 렌더링하는 중에 오류가 발생했습니다'
+    module:
+      delete:
+        button: 엔터티 삭제
+        confirm: 이 엔터티를 삭제하시겠습니까?
+    index:
+      grid:
+        count: '{0} 참조 엔터티 없음|{1} {{ count }} 참조 엔터티|]1,Inf] {{ count }} 참조 엔터티'
+        help:
+          title: '참조 엔터티입니다!'
+          description_part_one: '제품과 관련된 정보를 보강하십시오(예: 브랜드, 제조업체, 색상, 소재, 성분...)'
+          description_part_two: 그러면 고객에게 보다 우수한 제품 경험을 제공할 수 있습니다.
+          description_part_three: '"만들기" 버튼을 클릭하여 1번째 참조 엔터티를 만들고, 해당 특성과 레코드를 설정하십시오.'
+          description_part_four: 그런 다음 제품에 링크하고, 이 참조 엔터티 관련 제품 특성 유형을 만드십시오.
+          description_part_five: 자세한 내용 확인을 위해 이 문서를 탐색할 수 있도록 초대합니다.
+    create:
+      header:
+        title: 만들기
+      subtitle: 참조 엔터티
+      title: 새 엔터티 만들기
+      input:
+        label: 레이블
+        code: 코드(필수)
+      confirm: 저장
+    delete:
+      message: '"{{ referenceEntityLabel }}" 엔터티를 삭제하시겠습니까?'
+      title: 특성
+    notification:
+      save:
+        success: 참조 엔터티가 업데이트되었습니다.
+        fail: 참조 엔터티를 저장하는 중에 오류가 발생했습니다
+      create:
+        success: 참조 엔터티가 생성되었습니다.
+        fail: 참조 엔터티를 생성하는 중에 오류가 발생했습니다
+      delete:
+        success: 참조 엔터티가 삭제되었습니다.
+        fail: 참조 엔터티를 삭제하는 중에 오류가 발생했습니다
+  permission:
+    notification:
+      save:
+        success: 참조 엔터티 권한이 업데이트되었습니다.
+        fail: 하나 이상의 사용자 그룹에 이 엔터티에 대한 편집 권한이 있어야 합니다.
+    no_data:
+      title: 사용자 그룹이 없습니다
+      subtitle: 참조 엔터티에 대한 권한을 관리하려면 하나 이상의 사용자 그룹이 있어야 합니다.
+      link: 첫 번째 사용자 그룹을 추가하려면 여기 클릭하십시오
+  record:
+    validation:
+      limit_reached: '이 참조 엔터티의 {{ %limit% }} 레코드 제한에 도달했으므로 "{{ %record_label% }}" 레코드를 만들 수 없습니다'
+      code:
+        pattern: '이 필드는 문자, 숫자 및 밑줄만 포함할 수 있습니다.'
+        should_be_unique: '이 코드는 해당 엔터티에서 이미 존재합니다.'
+      text:
+        incompatible_with_regular_expression: '정규식을 충족하는 텍스트를 입력하십시오: "{{ %regular_expression% }}"'
+        invalid_email: '이메일 주소를 입력하십시오: xxxxx@xx.xx'
+        invalid_url: 'URL을 입력하십시오: http(s)://xxxx.XXX'
+    no_data:
+      title: '{{ entityLabel }}에 대한 레코드가 없습니다'
+      subtitle: '"새로 추가" 버튼을 클릭하여 첫 번째 레코드를 만드십시오'
+    no_result:
+      title: 검색 결과가 없습니다
+      subtitle: 새 검색 조건으로 다시 시도하십시오.
+    selector:
+      no_value: 여기를 클릭하여 레코드를 선택하십시오.
+    error:
+      value: 죄송합니다. "{{ fieldName }}" 필드 렌더링이 실패한 것 같습니다. 자세한 내용은 개발자 콘솔을 참조하십시오.
+    button:
+      save: 저장
+      create: 새로 추가
+      delete: 삭제
+      delete_all: 모든 레코드 삭제
+      back: 목록으로 돌아가기
+    product:
+      attribute: 제품 특성
+      counter: '{{ totalCount }} 결과|{{ totalCount }} 결과'
+      dropdown:
+        attribute: 제품 특성
+      title: 제품
+      no_attribute:
+        title: 참조 엔터티 "{{ entityLabel }}"에 링크된 제품 특성이 없습니다
+        subtitle: "이 자산 패밀리에 대한 제품 링크 연결을 시작하기 위해 새로 만들 수 있습니다: "
+        link: 새 제품 특성 만들기
+      not_enough_items:
+        title: 여기는 약간 혼잡합니다. {{ productCount }}/{{ totalCount }}개 제품이 표시됩니다.
+        subtitle:
+          usable_in_grid: 링크된 모든 제품을 검색하려면, 아래를 클릭하십시오!
+          not_usable_in_grid: 링크된 모든 제품을 검색하려면, 제품 특성이 "그리드에서 사용 가능"으로 설정되어야 합니다.
+        button: 모든 제품 보기
+      no_product:
+        title: 제품 특성 "{{ entityLabel }}"에 대해 링크된 제품이 없습니다
+        subtitle: "여기에 표시하려면 이 특성에 대한 제품 링크 연결을 시작하십시오 "
+    enrich:
+      title: 레코드 특성
+      code: 코드
+      label: 레이블
+    title: 레코드
+    create:
+      header:
+        title: 만들기
+      subtitle: 참조 엔터티
+      title: 새 {{ entityLabel }} 추가
+      input:
+        label: 레이블
+        code: 코드(필수)
+        create_another: 다른 레코드 만들기
+      confirm: 저장
+    delete:
+      message: '"{{ recordLabel }}" 레코드를 삭제하시겠습니까? 이 레코드가 제품 또는 레코드에 링크된 경우 해당 링크가 제거됩니다.'
+      title: 레코드
+    delete_all:
+      confirm: 모든 "{{ entityIdentifier }}" 레코드를 삭제하시겠습니까? 이 레코드가 제품에 링크된 경우 해당 제품에 대한 링크가 제거됩니다.
+    grid:
+      search: 레이블, 코드 및 텍스트 특성 검색
+      filter:
+        completeness:
+          label: 완료
+          all: 모두
+          'yes': '예'
+          'no': '아니요'
+        option:
+          all: 모두
+          no_value: 필터링하려면 옵션 선택
+          operator:
+            in: 목록에 있음
+      column:
+        code: 코드
+        image: 이미지
+        label: 레이블
+        complete: 완료
+        action: 작업
+      more_result:
+        title: 끝이 아닙니다!
+        description: '{{ total }}개 레코드 중에서 처음 500개 레코드까지만 스크롤했습니다. 더 보려면 더 구체적인 검색 조건을 사용해보십시오.'
+      completeness:
+        title_no_required: 특성 필요 없음
+        title_non_complete: 0/{{ required }}개 특성 완료
+        title_ongoing: '{{ complete }}/{{ required }}개 특성 완료'
+        title_complete: '{{ required }}개 특성 모두 완료'
+    tab:
+      enrich: 보강
+      product: 제품
+    notification:
+      save:
+        success: 레코드가 업데이트되었습니다.
+        fail: 레코드를 저장하는 중에 오류가 발생했습니다
+        validation_error: 레코드를 업데이트할 수 없습니다
+      create:
+        success: 레코드가 생성되었습니다.
+        fail: 레코드를 생성하는 중에 오류가 발생했습니다
+      delete:
+        success: '"{{ code }}" 레코드가 삭제되었습니다.'
+        fail: 레코드를 삭제하는 중에 오류가 발생했습니다
+      delete_all:
+        success: 모든 "{{ entityIdentifier }}" 레코드가 삭제되었습니다.
+        fail: 이 참조 엔터티의 레코드를 모두 삭제하는 중에 오류가 발생했습니다
+    completeness:
+      label: 완료
+  attribute:
+    validation:
+      limit_reached: '이 참조 엔터티의 {{ %limit% }} 특성 제한에 도달했으므로 "{{ %attribute_label% }}" 특성을 만들 수 없습니다'
+    default:
+      code: 코드
+      label: 레이블
+      image: 이미지
+    type:
+      text: 텍스트
+      image: 이미지
+      record: 참조 엔터티 단일 링크
+      record_collection: 참조 엔터티 다중 링크
+      option: 단일 옵션
+      option_collection: 다중 옵션
+      number: 번호
+    is_required: 완성도를 위해 필요
+    no_data:
+      title: '{{ entityLabel }}에 대한 사용자 지정 특성이 없습니다'
+      subtitle: '"특성 추가" 버튼을 클릭하여 첫 번째 사용자 지정 특성을 구성하십시오'
+    button:
+      add: 특성 추가
+    create:
+      header:
+        title: 만들기
+      subtitle: 참조 엔터티
+      title: 새 레코드 특성 추가
+      description: 레이블을 제외한 다음 매개변수는 특성 생성 후 업데이트할 수 없습니다
+      input:
+        code: 코드(필수)
+        label: 레이블
+        type: 특성 유형
+        record_type: 링크할 참조 엔터티(필수)
+        value_per_locale: 로케일별 값
+        value_per_channel: 채널별 값
+      placeholder:
+        record_type: 링크된 참조 엔터티 선택
+      confirm: 저장
+    edit:
+      delete: 특성 삭제
+      title: 특성 {{ code }} 편집
+      save: 저장
+      cancel: 취소
+      input:
+        code: 코드(필수)
+        label: 레이블
+        type: 특성 유형
+        record_type: 관련 참조 엔터티(필수)
+        value_per_locale: 로케일별 값
+        value_per_channel: 채널별 값
+        is_required: 완성도를 위해 필요
+        max_length: 최대 문자수
+        textarea: 텍스트 영역
+        is_rich_text_editor: 서식 있는 텍스트 편집기
+        max_file_size: 최대 파일 크기(MB)
+        allowed_extensions: 허용된 확장
+        validation_rule: 유효성 검사 규칙
+        regular_expression: 정규식
+        min_value: 최소값
+        max_value: 최대값
+        manage_options:
+          confirmation:
+            discard_changes: 이 페이지를 나가면 옵션 목록에 대한 변경 사항이 손실됩니다.
+          quick_edit:
+            label: 옵션 관리
+          option:
+            label:
+              placeholder: 여기에서 새 옵션 레이블 작성
+        options:
+          validation_rule:
+            none: 없음
+            email: 이메일
+            regular_expression: 정규식
+            url: URL
+        decimals_allowed: 소수 값 허용됨
+    delete:
+      message: '"{{ attributeLabel }}" 특성을 삭제하시겠습니까?'
+      title: 특성
+    notification:
+      list:
+        fail: 특성 목록을 업데이트하는 중에 오류가 발생했습니다
+      save:
+        success: 특성이 업데이트되었습니다.
+        fail: 특성을 저장하는 중에 오류가 발생했습니다
+        validation_error: 특성을 업데이트할 수 없습니다
+      create:
+        success: 특성이 생성되었습니다.
+        fail: 특성을 생성하는 중에 오류가 발생했습니다
+        validation_error: 특성을 생성할 수 없습니다.
+      delete:
+        success: 특성이 삭제되었습니다.
+        fail: 특성을 삭제하는 중에 오류가 발생했습니다
+    options:
+      no_value: 여기를 클릭하여 옵션을 선택하십시오.
+      sub_title: 참조 엔터티
+      helper:
+        title: 레이블 번역
+  modal:
+    delete:
+      subtitle: 삭제 확인
+      button:
+        cancel: 취소
+        confirm: 삭제
+pim_enrich:
+  confirmation:
+    discard_changes: '이 페이지를 나가면 "{{ entity }}"에 대한 변경 사항이 손실됩니다.'
+  entity:
+    attribute:
+      property:
+        type:
+          akeneo_reference_entity_collection: 참조 엔터티 다중 링크
+          akeneo_reference_entity: 참조 엔터티 단일 링크
+        section:
+          type_specific: 유형 관련 매개변수
+        reference_entity:
+          identifier: 관련 참조 엔터티(필수)
+          default_label: 참조 엔터티를 선택하십시오
+permission:
+  mass_action: 모든 그룹에 {{ rightLevel }} 적용
+#Analytics
+pim_catalog_volume:
+  section:
+    reference_entity:
+      title: 참조 엔터티의 축
+      hint: 참조 엔터티를 사용할 경우, 해당 볼륨 모니터링에 유용한 축은 다음과 같습니다.
+  axis:
+    count_reference_entity: 참조 엔터티
+    average_max_records_per_reference_entity: 참조 엔터티별 레코드
+    average_max_attributes_per_reference_entity: 참조 엔터티별 특성
+batch_jobs:
+  reference_entity_label: 참조 엔터티

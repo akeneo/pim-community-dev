@@ -223,6 +223,10 @@ onboarder:
     maxReplicas: 10
   serviceAccount: null
 
+# Free Trial
+free_trial:
+  enabled: false
+
 mysql:
   image:
     mysql:

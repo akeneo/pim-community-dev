@@ -1,0 +1,8 @@
+pim_common:
+  branding: 브랜딩
+shared_catalog:
+  recipients:
+    email: 이메일 주소
+    invalid_email: 이 값은 유효한 이메일 주소가 아닙니다.
+  button:
+    save: 저장 및 공유

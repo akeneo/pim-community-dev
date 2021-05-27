@@ -12,6 +12,7 @@ EE_DIR=$(dirname $0)/..
 cp $EE_DIR/Dockerfile $TARGET_DIR/
 cp -r $EE_DIR/docker/*.conf $EE_DIR/docker/*.ini $TARGET_DIR/docker/
 cp -r $EE_DIR/deployments $TARGET_DIR/
+cp -r $EE_DIR/bin/wait-for-dependencies $TARGET_DIR/bin/wait-for-dependencies
 
 cp $EE_DIR/growth_edition/oneup_flysystem.yml $TARGET_DIR/config/packages/prod/
 cp $EE_DIR/config/services/prod/storage.yml $TARGET_DIR/config/services/prod/
@@ -23,6 +24,8 @@ cp $EE_DIR/config/fake_credentials_gcp.json $TARGET_DIR/config
 # Install Monitoring Bundle
 cp -r $EE_DIR/src/Akeneo/Platform/Bundle/MonitoringBundle $TARGET_DIR/src/Akeneo/Platform/Bundle/
 cat $EE_DIR/growth_edition/routes.yml >> $TARGET_DIR/config/routes/routes.yml
+# To add monitoring in the firewall
+cp $EE_DIR/growth_edition/security.yml $TARGET_DIR/config/packages/security.yml
 sed -i '$ d' $TARGET_DIR/config/bundles.php
 echo " Akeneo\Platform\Bundle\MonitoringBundle\AkeneoMonitoringBundle::class => ['all' => true]," >> $TARGET_DIR/config/bundles.php
 echo "];"  >> $TARGET_DIR/config/bundles.php

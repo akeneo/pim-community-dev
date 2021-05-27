@@ -1,21 +1,20 @@
 pimee_catalog_rule:
   overview: "]-Inf, 1]{{ count }} regola|]1, Inf[{{ count }} regole"
   execution_button: Esegui le regole
-  selected: 'regole selezionate'
+  dropdown:
+    title: Altre azioni
   popin:
     execute_rules:
       confirm_title: Conferma esecuzione
-      confirm_content: Sei sicuro di voler eseguire tutte le regole? (potrebbe richiedere molto tempo)
   notification:
-    fail: L'azione potrebbe non essere eseguita
     launched: L'esecuzione delle regole è stata lanciata. Sarai avvisato quando finisce.
   attribute:
     list:
       code.label: Codice
       condition.label: Condizione
       action.label: Azione
-      no_rule_yet.label: Nessuna regola per ora
   rule:
+    value: Valore
     condition:
       if.label: se
     action:
@@ -34,12 +33,10 @@ pimee_catalog_rule:
           confirm_content: Sei sicuro di voler eseguire la regola?
       mass_edit_action:
         confirm_title: Conferma calcolo
-        confirm_content: Sei sicuro di voler calcolare i prodotti interessati dalle regole?
       mass_action:
         execute:
           confirm_title: Conferma esecuzione
-          confirm_content: Sei sicuro di voler eseguire le regole selezionate?
-          success: L'azione di massa per eseguire le regole selezionate è stata lanciata. Sarai avvisato quando finisce
+          success: L'esecuzione delle regole è stata lanciata. Sarai avvisato quando finisce.
           error: Si è verificato un errore durante l'esecuzione delle regole.
           empty_selection: Nessuna regola selezionata.
         delete:
@@ -49,40 +46,152 @@ pimee_catalog_rule:
           error: Si è verificato un errore durante l'eliminazione delle regole.
           empty_selection: Nessuna regola selezionata.
   form:
+    category:
+      catalog: Catalogo
+      select: Seleziona una categoria
+      tree: Albero Categoria
+      folder:
+        not_selected: Cartella
+      folders:
+        not_selected: Cartelle
     attribute:
       tab:
         rules:
           title: Regole
+    creation:
+      title: Crea una nuova regola
+    edit:
+      properties:
+        section:
+          general: Parametri generali
+          labels: Traduzioni etichetta
+      add_to_category: Aggiungi a categoria
+      add_conditions: Aggiungere condizioni
+      products_count:
+        products: "]-Inf, 1]{{ count }} prodotto|]1, +Inf[{{ count }} prodotti"
+        product_models: "]-Inf, 1]{{ count }} modello di prodotto|]1, +Inf[{{ count }} modelli di prodotto"
+        products_and_product_models: "{{ products }} e {{ product_models }}"
+        pending: Calcolo dei prodotti e dei modelli di prodotto
+        error: Impossibile calcolare prodotti e modelli di prodotto
+      product_selection: Seleziona prodotto
+      preview: Anteprima
+      fields:
+        family: Famiglia
+        family_variant: Famiglia variante
+        category: Categoria
+        identifier: Identificatore
+        attribute: Attributo
+        groups: Gruppi
+        parent: Parente
+        measurement_unit: Unità di misura
+        measurement_default_unit: "Unità predefinita ({{ unit }})"
+        currency: Valuta
+        operator: operatore
+        entity_type:
+          label: Tipo di entità
+      duplicate:
+        button: Salva e duplica
+        title: Duplica la regola "{{ originalRuleCode }}"
+      actions:
+        add_action: Aggiungi azione
+        category:
+          category_tree: Struttura della categoria
+          categories_selected: "]-Inf, 1]{{ count }} categoria selezionata|]1, +Inf[{{ count }} categorie selezionate"
+        set_associations:
+          association_types: Tipi di associazione
+          add_group: Aggiungi un gruppo
+          add_product: Aggiungi un prodotto
+          add_product_model: Aggiungi un modello di prodotto
+          add_association_type: Aggiungi un tipo di associazione
+          select:
+            products: Prodotti
+            product_models: Modelli di prodotto
+            groups: Gruppi
+        calculate:
+          operator:
+            add: Aggiungi
+            subtract: Sottrarre
+            multiply: Moltiplica
+            divide: Dividi
+        concatenate:
+          add_text: Aggiungi testo
+          add_attribute: Aggiungi attributo
+          add_new_line: Aggiungi interruzione di linea
+          line_break: Interruzione di linea
+          date_format: Seleziona un formato data
+      conditions:
+        delete:
+          label: Rimuovi condizione
+          description: Sei sicuro di voler rimuovere questa condizione?
+        operators:
+          "STARTS WITH": inizia con
+          "ENDS WITH": finisce per
+          "CONTAINS": contiene
+          "DOES NOT CONTAIN": non contiene
+          "EMPTY": è vuoto
+          "NOT EMPTY": non è vuoto
+          "IN": in
+          "NOT IN": non in
+          "IN CHILDREN": nei figli
+          "NOT IN CHILDREN": non nei figli
+          "UNCLASSIFIED": è non classificato
+          "IN OR UNCLASSIFIED": è non classificato o in
+          "BETWEEN": tra
+          "NOT BETWEEN": non tra
+          "=": è uguale a
+          "!=": non è uguale
+          ">": più grande di
+          ">=": è uguale o maggiore di
+          "<": prima del
+          "<=": è uguale o inferiore a
+      notification:
+        success: Regola aggiornata correttamente
+    delete:
+      notification:
+        failed: Cancellazione della regola non riuscita
+        success: Regola eliminata con successo
+    tree:
+      item:
+        selected: Elemento selezionato
+        not_selected: Seleziona elemento
+    date:
+      operators:
+        specific_date: Data specifica
+      label:
+        date: Scegli una data
+        relative_date: Scegli una data
+        locale: Scegli una lingua
+        scope: Scegli un ambito
+        period: Scegli una unità di tempo
+        date_from: Scegli una data di inizio
+        date_to: Scegli una data di fine
+        date_past: Data nel passato
+        date_future: Data in futuro
+        date_present: Ora
+      day: "]-Inf, 1] Giorno|]1, +Inf[ Giorni"
+      week: "]-Inf, 1] Settimana|]1, +Inf[ Settimane"
+      month: "]-Inf, 1] Mese|]1, +Inf[ Mesi"
+      year: "]-Inf, 1] Anno|]1, +Inf[ Anni"
+      hour: "]-Inf, 1] Ora|]1, +Inf[ Ore"
+      minute: "]-Inf, 1] Minuto|]1, +Inf[ Minuti"
+  exceptions:
+    or: o
 pim_enrich:
   entity:
     rule:
       module:
         delete:
           confirm: Sei sicuro di voler eliminare questa regola? Non è possibile annullare questa azione
-pim_datagrid:
-  entity:
-    rule:
-      flash:
-        delete:
-          success: Regola rimossa con successo
 flash:
   rule:
-    impacted_product_count: L'azione di massa per calcolare i prodotti interessati dalle regole è stata lanciata. Sarai avvisato quando finisce.
-    executed: L'esecuzione della regola è stata lanciata. Sarai avvisato quando finisce.
+    executed: L'esecuzione delle regole è stata lanciata. Sarai avvisato quando finisce.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Impostazioni delle regole
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Esecuzione regole
   default_steps:
     execute_rules: Esecuzione regole
-  yml_rule_import:
-    label: Importazione regole in YAML
-    import.label: Importazione regole
-  yml_rule_export:
-    label: Esportazione regole in YAML
-    export.label: Esportazione regole
   rule_impacted_product_count:
-    label: Prodotti interessati dalle regole
     perform.label: Conta i prodotti interessati
   csv_product_import_with_rules:
     label: Importazione prodotti in formato CSV con regole
@@ -98,8 +207,16 @@ pim_notification:
   types:
     rule: Impostazioni delle Regole
     mass_edit_rule: Regola di modifica di massa
+    execute_rules: Esecuzione regole
 pim_menu:
   item:
     rule: Regole
 pim_title:
   pimee_catalog_rule_rule_index: Regole
+  pimee_catalog_rule_edit: Modifica regola
+  pimee_catalog_rule_new: Regole
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: Esecuzione regole

@@ -1,0 +1,100 @@
+pimee_enrich.acl.locale.edit_permissions: 로케일 권한 관리
+pimee_enrich.acl.category.edit_permissions: 카테고리 권한 관리
+pimee_enrich.acl.attribute_group.edit_permissions: 특성 그룹 권한 관리
+pimee_importexport.acl.export_profile.edit_permissions: 내보내기 프로필 권한 관리
+pimee_importexport.acl.import_profile.edit_permissions: 가져오기 프로필 권한 관리
+pimee_enrich.groups.label: 소유자 그룹
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: 특성 편집
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: 권한이 있는 제품 값 추가
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: 권한이 있는 제품 값 업데이트
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: 권한이 있는 제품 값 제거
+edit_common_attributes_with_permission: 권한이 있는 특성 편집
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: 권한이 있는 특성 편집
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: 사용자 지정 로케일 액세스 수
+    nb_custom_category_accesses: 사용자 지정 카테고리 액세스 수
+    nb_custom_attribute_group_accesses: 사용자 지정 특성 그룹 액세스 수
+job_profile.permissions:
+  execute.label: 작업 프로필을 실행하도록 허용됨
+  edit.label: 작업 프로필을 편집하도록 허용됨
+pim_title.locale:
+  edit: "로케일 %locale.code% | 편집"
+attribute group.permissions:
+  view.label: 특성을 보도록 허용됨
+  view.help: 이 특성 그룹의 제품을 보도록 허용
+  edit.label: 특성을 편집하도록 허용됨
+  edit.help: 이 특성 그룹의 제품을 편집하도록 허용
+  no_access_to_attributes: 이 제품의 특성에 액세스할 수 있는 권한이 없습니다. 관리자에게 문의하십시오.
+category.permissions:
+  view.label: 제품을 보도록 허용됨
+  view.help: 이 카테고리의 제품을 보도록 허용
+  edit.label: 제품을 편집하도록 허용됨
+  edit.help: 이 카테고리의 제품을 편집하도록 허용(보기 권한 포함)
+  own.label: 제품을 소유하도록 허용됨
+  own.help: 이 카테고리의 제품을 게시, 게시 취소, 분류, 연결하도록 허용됨(편집 권한 포함)
+  no_access_to_products: 트리의 제품에 액세스할 수 있는 권한이 없습니다. 관리자에게 문의하십시오.
+  apply_on_children.label: 하위 항목에 변경 사항 적용
+  apply_on_children.help: 모든 하위 항목의 권한 변경 사항을 복사합니다. 하위 항목의 기존 권한은 유지됩니다.
+locale.permissions:
+  view.label: 정보를 보도록 허용됨
+  view.help: 이 로케일의 정보를 보도록 허용
+  edit.label: 정보를 편집하도록 허용됨
+  edit.help: 이 로케일의 정보를 편집하도록 허용(보기 권한 포함)
+  no_access_to_products: 활성화된 로케일의 제품 데이터에 액세스할 수 있는 권한이 없습니다. 관리자에게 문의하십시오.
+flash.locale.updated: 로케일 및 권한이 업데이트되었습니다
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: '"%identifiers%" 제품을 편집할 수 있는 권한이 없습니다.'
+      page_title: 제품
+      page_subtitle: 대량 편집(1 제품)|대량 편집(%count% 제품)
+      title: 작업 선택
+      subtitle: 선택한 제품에서 수행할 작업 선택|선택한 %count%개 제품에서 수행할 작업 선택
+      confirm: 다음 정보로 1개 제품을 업데이트하려고 합니다. 확인해주십시오.|다음 정보로 %count%개 제품을 업데이트하려고 합니다. 확인해주십시오.
+      steps:
+        first: 제품 선택
+        second: 작업 선택
+        third: 구성
+        fourth: 확인
+    publish:
+      message:
+        error: 제품의 소유자가 아니므로, 게시할 수 없습니다.
+        warning: 선택한 모든 제품의 소유자가 아니므로, 제품 "%notGranted%"을(를) 게시할 수 없습니다.
+      not_editable: '"%identifiers%" 제품을 편집할 수 있는 권한이 없습니다.'
+    unpublish:
+      message:
+        error: 제품의 소유자가 아니므로, 게시 취소할 수 없습니다.
+        warning: 선택한 모든 제품의 소유자가 아니므로, 제품 "%notGranted%"을(를) 게시 취소할 수 없습니다.
+        info: 선택된 %nbProducts%개 제품이 게시 취소됩니다.
+      not_editable: '"%identifiers%" 제품을 편집할 수 있는 권한이 없습니다.'
+    classify:
+      message:
+        error: 제품의 소유자가 아니므로, 분류할 수 없습니다.
+        warning: 선택한 모든 제품의 소유자가 아니므로, 제품 "%notGranted%"을(를) 분류할 수 없습니다.
+    edit_common_attributes:
+      message:
+        error: 제품의 소유자가 아니므로, 편집할 수 없습니다.
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: 권한
+  acl.product_ownership.title: 소유권
+  attributes:
+    empty: 없음
+  category:
+    tab:
+      permission:
+        title: 권한
+  groups:
+    label: 소유자 그룹
+    empty: 없음
+add_product_value_with_permission_and_rules:
+  steps.perform: 제품 값 추가
+update_product_value_with_permission_and_rules:
+  steps.perform: 제품 값 업데이트
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: 특성 편집
+  steps.edit_common_attributes_processor.title: 특성 편집
+pim_enrich_attribute_form:
+  isReadOnly: 읽기 전용

@@ -1,0 +1,22 @@
+batch_jobs.akeneo_shared_catalog.label: Skicka till delade kataloger
+pim_common:
+  recipients: Mottagare
+  branding: Branding
+  result_count: "{0}0 resultat|{1}1 resultat|]1, Inf[{{ itemsCount }} resultat"
+  items_selected: "{0}0 objekt valda|{1}1 objekt valda|]1, Inf[{{ itemsCount }} objekt valda"
+shared_catalog:
+  recipients:
+    add: Lägg till användares e-post här
+    placeholder: betty@akeneo.com
+    email: E-postadress
+    invalid_email: Detta är inte en giltig e-postadress.
+    duplicates: Du har redan delat med denna mottagare
+    helper: "Lägg till mottagare för att ge dem tillgång till din nya delade katalog. Du kan fylla i en adresslista med separatorerna: mellanslag, kommatecken, semikolon & radbrytning."
+    no_result: Tyvärr, ingen e-post matchar din sökning
+    no_data: Ingen e-postadress angiven ännu
+  branding:
+    upload: "Ladda upp din logotyp (Max storlek: 2MB; Filformat: PNG eller JPG)"
+    invalid_extension: "Ogiltigt filtillägg, tillåtna tillägg är: {{ allowed_extensions }}"
+    filesize_too_large: Filen är för stor, maxstorleken är 2MB
+  button:
+    save: Spara och dela

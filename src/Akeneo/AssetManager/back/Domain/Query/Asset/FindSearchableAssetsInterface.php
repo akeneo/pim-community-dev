@@ -13,5 +13,9 @@ interface FindSearchableAssetsInterface
 {
     public function byAssetIdentifier(AssetIdentifier $assetIdentifier): ?SearchableAssetItem;
 
-    public function byAssetFamilyIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): \Iterator;
+    /**
+     * @param AssetIdentifier[] $assetIdentifiers
+     * @return \Iterator
+     */
+    public function byAssetIdentifiers(array $assetIdentifiers): \Iterator;
 }

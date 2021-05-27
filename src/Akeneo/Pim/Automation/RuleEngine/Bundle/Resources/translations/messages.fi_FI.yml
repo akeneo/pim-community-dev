@@ -2,61 +2,17 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
-        delete: Poista
         execute: Suorita
       title: Säännöt
-      column:
-        code: Koodi
-        conditions: Ehto
-        actions: Toiminto
-        impacted_product_count:
-          label: Päivitetyt tuotteet
-          count: '{0,1}%count% tuotteen vaikutus|]1,Inf[%count% tuotteen vaikutus'
-          no_yet_calculated: Ei vielä laskettu
       mass_edit_action:
-        impacted_product_count: Laske tuotteet, joita sääntö koskee
         execute: Suorita
         delete: Poista
-  actions:
-    type:
-      "copy": Kentän "%from_field%" arvo kopioidaan kenttään "%to_field%"
-      "copy_value": Kentän "%from_field%" arvo kopioidaan kenttään "%to_field%"
-      "set": Arvo "%value%" viedään kenttään "%field%"
-      "set_value": Arvo "%value%" viedään kenttään "%field%"
-      "add": Arvo "%value%" lisätään kenttään "%field%"
-      "remove": Arvo "%value%" poistetaan kentästä "%field%"
-    options:
-      include_children: ja alatasot
-  condition:
-    label: Jos %field% %operator% %value%
-    operators:
-      "STARTS WITH": alkaa
-      "ENDS WITH": päättyy
-      "CONTAINS": sisältää
-      "DOES NOT CONTAIN": ei sisällä
-      "EMPTY": on tyhjä
-      "NOT EMPTY": ei ole tyhjä
-      "IN": on joukossa
-      "NOT IN": ei ole joukossa
-      "IN CHILDREN": alatasoilla
-      "NOT IN CHILDREN": ei alatasoilla
-      "UNCLASSIFIED": on luokittelematon
-      "IN OR UNCLASSIFIED": on luokittelematon tai on joukossa
-      "BETWEEN": välillä
-      "NOT BETWEEN": ei välillä
-      "=": on yhtä kuin
-      "!=": eri suuri
-      ">": suurempi kuin
-      ">=": on sama tai suurempi kuin
-      "<": pienempi kuin
-      "<=": on sama tai pienempi kuin
   acl_group:
     rule: Säännöt
   acl:
     rule:
       view_permissions: Näytä säännöt
       delete_permissions: Poista säännöt
-      impacted_product_count_permissions: Laske tuotteet, joita sääntö koskee
       execute_permissions: Suorita säännöt
   attribute:
     tab:
@@ -66,29 +22,16 @@ pimee_catalog_rule:
     acl:
       rule.view_permissions: Näytä säännöt
   product:
-    tooltip:
-      product_attribute_affected_by_a_rule.content: Tämän attribuutin arvo voi tulla säännöistä <strong>%rule%</strong>. Tämä tarkoittaa, että mikäli säännön ehdot ovat päteviä, muutoksesi ohitetaan.
-      loading.title: Lataa...
     history: Otettu käyttöön sääntö "%rule%"
-  product_value:
-    tooltip:
-      affected_by.title: 'Koskee sääntöjä:'
   steps:
-    product_rule_definition_reader.title: Tuotteen sääntöjen tuonnin lukija
-    rule_definition_processor.title: Tuotteen sääntöjen tuonnin prosessori
-    product_rule_definition_writer.title: Tuotteen sääntöjen tuonnin kirjoittaja
     rules_execution.title: Sääntöjen suorittaminen
-  notification:
-    rule:
-      executed: Sääntöjen suorittaminen päättynyt
-    mass_edit_rule:
-      success: Sääntöä koskevien tuotteiden laskenta päättynyt
-      error: Tapahtui virhe laskettaessa sääntöä koskevia tuotteita
 btn:
   Execute rules: Suorita säännöt
-mass_edit_rule: Sääntöjen asetukset
-job_execution.summary.rule_calculated: Sääntöjen lukumäärä
+job_execution:
+  summary:
+    rule_calculated: Sääntöjen lukumäärä
 pim_datagrid:
   cells:
     type:
       mass_edit_rule: Sääntöjen asetukset
+      execute_rules: Sääntöjen suorittaminen

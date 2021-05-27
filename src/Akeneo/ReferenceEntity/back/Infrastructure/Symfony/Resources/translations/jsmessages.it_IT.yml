@@ -13,6 +13,11 @@ pim_reference_entity:
         remove: Rimuovere
         download: Scarica
         upload: Trascina e rilascia per caricare
+  editor:
+    embedded:
+      invalid_link:
+        title: Collegamento incorporato sospetto
+        message: Questo elemento incorporato non viene visualizzato ma sarà salvato correttamente
   grid:
     counter: '{{ count }} risultato|{{ count }} risultati'
   reference_entity:
@@ -97,6 +102,8 @@ pim_reference_entity:
       code:
         pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'
         should_be_unique: 'Questo codice è già esistente per questa entità.'
+      text:
+        invalid_email: 'Per favore, inserisci un indirizzo email: xxxxx@xx.xx'
     no_data:
       title: Non ci sono record per {{ entityLabel }}
       subtitle: Fai clic sul pulsante "Aggiungi nuovo" per creare il primo record
@@ -326,3 +333,5 @@ pim_catalog_volume:
     count_reference_entity: Entità riferimenti
     average_max_records_per_reference_entity: Registri per entità di riferimento
     average_max_attributes_per_reference_entity: Attributi per entità di riferimento
+batch_jobs:
+  reference_entity_label: Entità di riferimento

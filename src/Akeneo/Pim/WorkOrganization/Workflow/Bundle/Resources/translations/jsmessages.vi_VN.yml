@@ -1,0 +1,29 @@
+View the product: Xem sản phẩm
+Approve: Chấp thuận
+Refuse: Từ chối
+Approve selected: Chấp nhận lựa chọn
+Refuse selected: Từ chối lựa chọn
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Mở rộng
+      collapse_text: Thu lại
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Ngày tháng năm
+      author: Tác giả
+      product: Sản phẩm
+      review: Đánh giá
+    header.view_all: Xem tất cả
+pimee_enrich.entity.product:
+  module:
+    history:
+      revert: Phục hồi
+    meta:
+      draft:
+        in_progress: Đang xử lý
+        sent_for_approval: Đang chờ phê duyệt
+        working_copy: Đang làm việc trên bản sao
+    copy:
+      working_copy: Đang làm việc trên bản sao

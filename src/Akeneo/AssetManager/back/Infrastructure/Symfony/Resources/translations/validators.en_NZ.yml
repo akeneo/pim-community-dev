@@ -1,0 +1,97 @@
+pim_asset_manager:
+  asset_family:
+    validation:
+      code:
+        pattern: 'This field can only contain letters, numbers, and underscores.'
+        should_be_unique: 'An asset family already exists with code "%asset_family_identifier%"'
+        limit_reached: 'You cannot create the asset family "%asset_family_identifier%" because you have reached the limit of %limit% asset families'
+      should_exist: 'The asset family "%asset_family_code%" was not found.'
+      rule_template:
+        product_selection_cannot_be_empty: 'You must specify at least one product selection in your product link rule'
+        product_assignment_cannot_be_empty: 'You must specify at least one product assignment in your product link rule'
+        extrapolated_attribute_should_exist: 'The attribute "%attribute_code%" does not exist for this asset family'
+        channel_should_exist: 'The channel "%channel_code%" does not exist'
+        locale_should_exist: 'The locale "%locale_code%" is not activated or does not exist'
+        extrapolated_attribute_type_should_not_have_one_value_per_channel: 'The attribute "%attribute_code%" cannot be used for extrapolation because it has one value per channel'
+        extrapolated_attribute_type_should_not_have_one_value_per_locale: 'The attribute "%attribute_code%" cannot be used for extrapolation because it has one value per locale'
+        assignment_mode_not_supported: 'Invalid assignment mode "%assignment_mode%" found in a product link rule, expected to be "replace" or "add"'
+        channel_not_supported_for_field: 'You cannot specify a channel for the field "%product_field%"'
+        locale_not_supported_for_field: 'You cannot specify a locale for the field "%product_field%"'
+        assignmement_attribute_does_not_support_this_asset_family: 'The product attribute "%product_attribute_code%" cannot contain assets of asset family "%asset_family_identifier%"'
+      transformation:
+        attribute_reference_should_exist: 'The attribute "%attribute_code%" does not exist for this asset family'
+  asset:
+    validation:
+      code:
+        should_be_unique: 'An asset already exists with code "%code%"'
+        should_exist: 'The asset was not found'
+      text:
+        incompatible_with_regular_expression: 'The text is incompatible with the regular expression "%regular_expression%"'
+      file:
+        extension_not_allowed: '"%file_extension%" files are not allowed for this attribute. Allowed extensions are: %allowed_file_extensions%'
+        file_size_exceeded: 'The file exceeds the max file size set for the attribute.'
+        should_exist: 'The file "%file_path%" was not found.'
+      option:
+        code_does_not_exist: 'The option with code "%option_code%" does not exist for this attribute'
+      option_collection:
+        codes_dont_exist: "The following option codes don't exist for this attribute : \"%option_codes%\""
+      asset:
+        should_exist: 'The asset "%asset_code%" was not found.'
+      asset_collection:
+        should_exist: 'The assets "%asset_codes%" were not found.'
+      limit_reached: 'You cannot create the asset "%asset_label%" because you have reached the limit of %limit% assets for this asset family'
+      channel:
+        is_expected: 'A channel is expected for attribute "%attribute_code%" because it has a value per channel.'
+        is_not_expected: 'A channel is not expected for attribute "%attribute_code%" because it has not a value per channel.'
+        should_exist: 'The channel "%channel_identifier%" does not exist.'
+      locale:
+        is_expected: 'A locale is expected for attribute "%attribute_code%" because it has a value per locale.'
+        is_not_expected: 'A locale is not expected for attribute "%attribute_code%" because it has not a value per locale.'
+        is_not_activated: 'The locale "%locale_identifier%" is not activated.'
+        is_not_activated_for_channel: 'The locale "%locale_identifier%" is not activated for the channel "%channel_identifier%".'
+      number:
+        should_be_string: 'This field should be a string'
+        should_be_integer: 'This field should be an integer'
+        integer_too_long: 'This integer is too big'
+        should_be_numeric: 'This field should be a numeric value with the right decimal separator'
+  attribute:
+    validation:
+      options:
+        should_exist: 'The option was not found.'
+        duplicated: 'The option "%option_code%" already exists'
+        too_many: 'You have reached the limit of {{ limit }} attribute options per attribute.'
+        code:
+          pattern: 'This field may only contain letters, numbers and underscores.'
+          should_not_be_blank: 'The code of the option should not be blank'
+      max_length:
+        should_be_an_integer: 'This value should be an integer.'
+      max_file_size:
+        should_be_a_number: 'This value should be a number.'
+      min_value:
+        should_be_a_number: 'This value should be a number with the right decimal separator.'
+        cannot_be_greater_than_max: 'The min cannot be greater than the max'
+      max_value:
+        should_be_a_number: 'This value should be a number with the right decimal separator.'
+        cannot_be_lower_than_min: 'The max cannot be lower than the min'
+      code:
+        pattern: 'This field may only contain letters, numbers and underscores. "{{ value }}" given.'
+        reserved_codes: 'The code cannot be any of those values: "{{ comma_separated_reserved_keywords }}"'
+        should_not_exist: 'The attribute already exists for the asset family "{{ asset_family_identifier }}" and the attribute code "{{ code }}"'
+        should_exist: 'The attribute was not found'
+      regular_expression:
+        invalid_regular_expression: 'This regular expression is not valid. Here is an example of a valid regular expression: "/[a-z]+[0-9]*/"'
+        should_not_be_empty: 'The regular expression cannot be empty.'
+      should_be_a_textarea_to_update_is_rich_text_editor: 'A simple text attribute cannot have a rich text editor'
+      should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'A text area attribute cannot have a validation rule'
+      cannot_set_a_non_empty_regular_expression: 'The attribute should not have a regular expression'
+      cannot_update_the_regular_expression: 'Cannot set a regular expression on the text attribute'
+      limit_reached: 'You cannot create the attribute "%attribute_label%" because you have reached the limit of %limit% attributes for this asset family'
+      asset_type:
+        is_required: 'You need to specify the asset family type to create an Asset Family link attribute'
+        asset_family_should_exist: 'The asset family "%asset_family_code%" was not found.'
+      prefix:
+        should_not_be_empty: 'The prefix cannot be an empty string.'
+      suffix:
+        should_not_be_empty: 'The suffix cannot be an empty string.'
+      media_type:
+        not_expected: 'The media type given is not corresponding to the expected ones (%supported_media_types%).'

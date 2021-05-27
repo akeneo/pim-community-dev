@@ -1,0 +1,19 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      title: Regler
+      mass_edit_action:
+        delete: Slett
+  acl_group:
+    rule: Regler
+  acl:
+    rule:
+      view_permissions: Visningsregler
+      delete_permissions: Regler for sletting
+  attribute:
+    tab:
+      rule.title: Regler
+    grid:
+      is_smart.label: Smart
+    acl:
+      rule.view_permissions: Visningsregler

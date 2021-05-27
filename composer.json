@@ -21,7 +21,7 @@
             "Akeneo\\Platform\\CommunicationChannel\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
             "Akeneo\\Pim\\Automation\\DataQualityInsights\\": ["src/Akeneo/Pim/Automation/DataQualityInsights/back", "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/back"],
             "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
-            "Akeneo\\Pim\\TrialEdition\\": "src/Akeneo/TrialEdition/back"
+            "Akeneo\\FreeTrial\\": ["src/Akeneo/FreeTrial/back", "vendor/akeneo/pim-community-dev/src/Akeneo/FreeTrial/back"]
         },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
@@ -80,7 +80,7 @@
         "behat/mink-selenium2-driver": "^1.3.1",
         "behat/symfony2-extension": "2.1.5",
         "behat/transliterator": "1.3.0",
-        "blackfire/php-sdk": "^1.18",
+        "blackfire/php-sdk": "^1.25",
         "league/flysystem-memory": "^1.0",
         "league/flysystem-aws-s3-v3": "^1.0",
         "phpspec/phpspec": "~7.0.0",

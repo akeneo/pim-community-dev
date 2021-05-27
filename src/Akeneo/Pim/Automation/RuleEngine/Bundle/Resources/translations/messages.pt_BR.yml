@@ -2,61 +2,17 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
-        delete: Deletar
         execute: Executar
       title: Regras
-      column:
-        code: Código
-        conditions: Condição
-        actions: Ação
-        impacted_product_count:
-          label: Produtos afetados
-          count: '{0,1}%count% produto afetado|]1,Inf[%count% produtos afetados'
-          no_yet_calculated: Ainda não calculado
       mass_edit_action:
-        impacted_product_count: Calcular os produtos afetados
         execute: Executar
         delete: Deletar
-  actions:
-    type:
-      "copy": Então %from_field% é copiado para %to_field%
-      "copy_value": Então %from_field% é copiado para %to_field%
-      "set": Então %value% é definido para %field%
-      "set_value": Então %value% é definido para %field%
-      "add": Então %value% é adicionado em %field%
-      "remove": Então %value% é removido de %field%
-    options:
-      include_children: e filhos
-  condition:
-    label: Se %field% %operator% %value%
-    operators:
-      "STARTS WITH": começa com
-      "ENDS WITH": termina com
-      "CONTAINS": contém
-      "DOES NOT CONTAIN": não contém
-      "EMPTY": está vazio
-      "NOT EMPTY": não está vazio
-      "IN": em
-      "NOT IN": não está em
-      "IN CHILDREN": nos filhos
-      "NOT IN CHILDREN": não está nos filhos
-      "UNCLASSIFIED": não classificado
-      "IN OR UNCLASSIFIED": não classificado ou em
-      "BETWEEN": entre
-      "NOT BETWEEN": não entre
-      "=": igual a
-      "!=": diferente de
-      ">": maior que
-      ">=": igual ou maior que
-      "<": menos de
-      "<=": igual ou menor que
   acl_group:
     rule: Regras
   acl:
     rule:
       view_permissions: Visualizar regras
       delete_permissions: Excluir regras
-      impacted_product_count_permissions: Calcular os produtos afetados pelas regras
       execute_permissions: Executar regras
   attribute:
     tab:
@@ -66,25 +22,15 @@ pimee_catalog_rule:
     acl:
       rule.view_permissions: Visualizar regras
   product:
-    tooltip:
-      product_attribute_affected_by_a_rule.content: O valor deste atributo pode vir da(s) regra(s) <strong>%rule%</strong>. Isso significa que se as condições da regra são válidas, sua modificação será sobrescrita pela regra.
-      loading.title: Carregando...
     history: Regra "%rule%" aplicada
-  product_value:
-    tooltip:
-      affected_by.title: 'Afetado pela(s) regra(s):'
   steps:
-    product_rule_definition_reader.title: Leitor de importação de regra de produto
-    rule_definition_processor.title: Processador de importação de regra de produto
-    product_rule_definition_writer.title: Escritor de importação de regra de produto
     rules_execution.title: Execução de regras
-  notification:
-    rule:
-      executed: A execução da(s) regra(s) finalizou
-    mass_edit_rule:
-      success: O cálculo dos produtos afetados pelas regras finalizou
-      error: Um erro como ocorreu durante o cálculo dos produtos afetados pelas regras
 btn:
   Execute rules: Executar regras
-mass_edit_rule: Configurações de Regras
-job_execution.summary.rule_calculated: Número de regras
+job_execution:
+  summary:
+    rule_calculated: Número de regras
+pim_datagrid:
+  cells:
+    type:
+      execute_rules: Execução de regras

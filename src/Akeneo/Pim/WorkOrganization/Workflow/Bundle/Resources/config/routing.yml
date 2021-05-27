@@ -47,6 +47,11 @@ pimee_workflow_rest_author_draft:
     resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/rest/author_draft.yml'
     prefix: /draft
 
+pimee_workflow_datagrid_published_product_grid_available_columns:
+    path: /datagrid/published-product-grid/available-columns
+    defaults: { _controller: pimee_workflow.controller.published_product_grid:getAvailableColumnsAction }
+    methods: ['GET']
+
 pimee_datagrid_export:
     resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/pimee_export.yml'
     prefix: /datagrid/export

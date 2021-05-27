@@ -1,2 +1,9 @@
 user:
   email_notifications: Sähköposti-ilmoitukset
+pimee_enrich.entity.product:
+  duplicate:
+    title: Kopioi tuote {{ product_identifier }}
+    button: Kopioi
+    flash:
+      success: Tuote {{ product_identifier }} on kopioitu onnistuneesti.
+      success_with_attribute_codes: Tuote {{ product_identifier }} on kopioitu onnistuneesti. Sinun täytyy rikastaa {{ unique_attribute_codes }} yksilöllisillä arvoilla

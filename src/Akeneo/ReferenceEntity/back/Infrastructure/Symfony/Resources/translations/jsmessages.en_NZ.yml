@@ -76,14 +76,16 @@ pim_reference_entity:
       confirm: Save
     delete:
       message: Are you sure you want to delete the entity "{{ referenceEntityLabel }}"?
-      title: Attribute
     notification:
       save:
         success: Reference entity successfully updated.
+        fail: An error occurred during the save of the reference entity
       create:
         success: Reference entity successfully created.
+        fail: An error occurred during the creation of the reference entity
       delete:
         success: Reference entity successfully deleted.
+        fail: An error occurred during the deletion of the reference entity
   permission:
     notification:
       save:
@@ -94,11 +96,17 @@ pim_reference_entity:
       subtitle: To manage permission on reference entity you need to have at least one user group.
       link: Clic here to add your first user group
   record:
+    mass_delete:
+      title: Records
     validation:
       limit_reached: 'You cannot create the record "{{ %record_label% }}" because you have reached the limit of {{ %limit% }} records for this reference entity'
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
         should_be_unique: 'This code already exists for this entity.'
+      text:
+        incompatible_with_regular_expression: 'Please enter a text that satisfies the regular expression: "{{ %regular_expression% }}"'
+        invalid_email: 'Please enter an email address: xxxxx@xx.xx'
+        invalid_url: 'Please enter a URL: http(s)://xxxx.XXX'
     no_data:
       title: There are no record for {{ entityLabel }}
       subtitle: Click on the button "Add new" to create the first record
@@ -112,8 +120,6 @@ pim_reference_entity:
     button:
       save: Save
       create: Add new
-      delete: Delete
-      delete_all: Delete all records
       back: Back to list
     product:
       attribute: Product attribute
@@ -152,8 +158,6 @@ pim_reference_entity:
     delete:
       message: Are you sure you want to delete the record "{{ recordLabel }}"? If it's linked to products or records, the links will be removed.
       title: Record
-    delete_all:
-      confirm: Are you sure you want to delete all "{{ entityIdentifier }}" records? If they are linked to products, the links to the products will be removed.
     grid:
       search: Search on label, code and text attributes
       filter:
@@ -187,13 +191,14 @@ pim_reference_entity:
     notification:
       save:
         success: Record successfully updated.
+        fail: An error occurred during the save of the record
         validation_error: The record could not be updated
       create:
         success: Record successfully created.
+        fail: An error occurred during the save of the record
       delete:
         success: Record "{{ code }}" successfully deleted.
-      delete_all:
-        success: All "{{ entityIdentifier }}" records successfully deleted.
+        fail: An error occurred during the deletion of the record
     completeness:
       label: Complete
   attribute:
@@ -274,25 +279,24 @@ pim_reference_entity:
       message: Are you sure you want to delete the attribute "{{ attributeLabel }}"?
       title: Attribute
     notification:
+      list:
+        fail: An error occurred during the update of the attribute list
       save:
         success: Attribute successfully updated.
+        fail: An error occurred during the save of the attribute
         validation_error: The attribute could not be updated
       create:
         success: Attribute successfully created.
+        fail: An error occurred during the creation of the attribute
         validation_error: The attribute could not be created
       delete:
         success: Attribute successfully deleted.
+        fail: An error occurred during the deletion of the attribute
     options:
       no_value: Click here to select an option.
       sub_title: Reference Entities
       helper:
         title: Label translations
-  modal:
-    delete:
-      subtitle: Confirm deletion
-      button:
-        cancel: Cancel
-        confirm: Delete
 pim_enrich:
   confirmation:
     discard_changes: 'You will lose changes to the "{{ entity }}" entity if you leave the page.'
@@ -319,3 +323,6 @@ pim_catalog_volume:
     count_reference_entity: Reference entities
     average_max_records_per_reference_entity: Records per reference entity
     average_max_attributes_per_reference_entity: Attributes per reference entity
+job_execution:
+  summary:
+    records: Records

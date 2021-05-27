@@ -38,15 +38,14 @@ pim_reference_entity:
         should_exist: 'No se encontraron los registros "%record_codes%".'
       limit_reached: 'No puedes crear el registro "%record_label%" porque has alcanzado el límite de %limit% registros para esta entidad de referencia'
       channel:
-        is_expected: 'Se espera un canal para el atributo "%attribute_code%" porque tiene un valor por canal.'
         is_not_expected: 'No se espera que un canal sea de atributo "%attribute_code%" porque no tiene un valor por canal.'
         should_exist: 'El canal "%channel_identifier%" no existe.'
       locale:
-        is_expected: 'Se espera un local para el atributo "%attribute_code%" porque tiene un valor por local.'
         is_not_expected: 'No se espera un local para el atributo "%attribute_code%" porque no tiene un valor por local.'
         is_not_activated: 'El local "%locale_identifier%" no está activado.'
         is_not_activated_for_channel: 'El local "%locale_identifier%" no está activado para el canal "%channel_identifier%".'
       number:
+        should_be_string: 'Este campo debe ser una cadena'
         should_be_integer: 'Este campo debe ser un entero'
         integer_too_long: 'Este entero es demasiado grande'
         should_be_numeric: 'Este campo debe ser un valor numérico con el separador decimal correcto'
@@ -85,3 +84,13 @@ pim_reference_entity:
       record_type:
         is_required: 'Necesita especificar el tipo de entidad de referencia para crear un atributo de enlace de Entidad de Referencia'
         reference_entity_should_exist: 'No se encontró la entidad de referencia "%reference_entity_code%".'
+      prefix:
+        should_not_be_empty: 'El prefijo no puede ser una cadena vacía.'
+      suffix:
+        should_not_be_empty: 'El sufijo no puede ser una cadena vacía.'
+      media_type:
+        not_expected: 'El tipo de medio dado no corresponde a los esperados (%supported_media_types%).'
+  product_value:
+    validation:
+      record_should_exist: 'La propiedad "%attribute_code%" espera un código de registro válido. El registro "%invalid_record%" no existe'
+      records_should_exist: 'La propiedad "%attribute_code%" espera códigos de registro válidos. Los siguientes registros no existen: "%invalid_records%"'

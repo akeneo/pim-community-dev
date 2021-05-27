@@ -48,11 +48,11 @@ class ImportProductModelsWithApiPerformance extends AbstractApiPerformance
         // Original value: 10.9s
         $profileConfig->assert('main.wall_time < 13s', 'Total time');
         // Original value: 39.1MB
-        $profileConfig->assert('main.peak_memory < 60mb', 'Memory');
+        $profileConfig->assert('main.peak_memory < 80mb', 'Memory');
         // Ensure only 1 completeness calculation is done
         $profileConfig->assert('metrics.completeness_calculation.count == 1', 'Completeness calculation calls');
         // Ensure only 2 calls are done to ES (1 for product model, 1 for products)
-        $profileConfig->assert('metrics.http.curl.requests.count == 2', 'Queries to ES');
+        $profileConfig->assert('metrics.http.curl.requests.count == 5', 'Queries to ES');
         // Original value: 845ms
         $profileConfig->assert('metrics.completeness_calculation.wall_time < 1200ms', 'Completeness calculation time');
 

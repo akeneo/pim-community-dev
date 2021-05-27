@@ -110,6 +110,7 @@ endif
 prepare-infrastructure-artifacts: render-helm-templates
 	mkdir -p ~/artifacts/infra
 	cp -raT $(DEPLOYMENTS_INSTANCES_DIR) ~/artifacts/infra/ || true
+	cp -raT $(PIM_SRC_DIR)/deployments/terraform/pim/templates/ ~/artifacts/infra/ || true
 	rm -Rf ~/artifacts/infra/**/.terraform || true
 	rm -Rf ~/artifacts/infra/**/.kubeconfig || true
 
@@ -172,7 +173,7 @@ ifeq ($(INSTANCE_NAME),pimci-helpdesk)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled false
 endif
 ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr)
-	sed 's/^\(FLAG_.*_ENABLED\).*/  \1: "1"/g' .env | (grep "FLAG_.*_ENABLED"|grep -v "ONBOARDER" || true) >> $(PIM_SRC_DIR)/deployments/terraform/pim/templates/env-configmap.yaml
+	sed 's/^\(FLAG_.*_ENABLED\).*/  \1: "1"/g' .env | (grep "FLAG_.*_ENABLED" | grep -v "ONBOARDER" | grep -v "FREE_TRIAL" || true) >> $(PIM_SRC_DIR)/deployments/terraform/pim/templates/env-configmap.yaml
 endif
 ifeq ($(INSTANCE_NAME_PREFIX),beta)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
@@ -239,12 +240,12 @@ endif
 	MYSQL_DISK_NAME=$(PFID)-mysql \
 	MYSQL_SOURCE_SNAPSHOT=$(MYSQL_SOURCE_SNAPSHOT) \
 	MAILGUN_API_KEY=${MAILGUN_API_KEY} \
-	envsubst < $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
-	rm -rf $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp
+	envsubst < $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
+	rm -rf $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
-	echo "COMMENT THESES LINES BELOW AFTER MERGING & RELEASING BRANCH 'status-check'"
-	yq d -i $(INSTANCE_DIR)/main.tf.json 'module.pim-monitoring.monitoring_authentication_token'
-	echo "COMMENT THESES LINES AFTER MERGING & RELEASING BRANCH 'status-check' IN PRODUCTION"
+	# echo "COMMENT THESES LINES BELOW AFTER MERGING & RELEASING BRANCH"
+	# yq d -i $(INSTANCE_DIR)/main.tf.json 'module.pim-monitoring.monitoring_authentication_token'
+	# echo "COMMENT THESES LINES AFTER MERGING & RELEASING BRANCH"
 endif
 
 .PHONY: change-terraform-source-version
@@ -292,7 +293,7 @@ slack_helpdesk:
 
 .PHONY: delete_pr_environments_hourly
 delete_pr_environments_hourly:
-	bash $(PWD)/deployments/bin/remove_pr_instances.sh
+	ENV_NAME=${ENV_NAME} bash $(PWD)/deployments/bin/remove_pr_instances.sh
 
 .PHONY: clone_serenity
 clone_serenity:

@@ -212,3 +212,15 @@ services:
             - '@pim_enrich.filter.product_model_attribute_filter'
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@pim_enrich.filter.product_edit_data'
+
+    pimee_workflow.controller.published_product_grid:
+        public: true
+        class: Oro\Bundle\PimDataGridBundle\Controller\ProductGridController
+        arguments:
+            - '@pimee_security.product_grid.query.list_attributes'
+            - '@pim_datagrid.datagrid.configuration.product.filters_configurator'
+            - '@pim_datagrid.extension.filter'
+            - '@pim_user.context.user'
+            - '@pim_datagrid.manager.datagrid_view'
+            - '@pimee_security.published_product_grid.query.list_available_columns'
+            - '@pimee_security.product_grid.query.list_available_column_groups'
