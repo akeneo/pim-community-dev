@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\ApproveNotificationSubscriber;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -121,7 +122,7 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
         UserInterface $owner,
         UserInterface $author,
         EntityWithValuesDraftInterface $draft,
-        ProductInterface $product,
+        ProductModelInterface $productModel,
         ValueInterface $identifier,
         NotificationInterface $notification
     ) {
@@ -148,18 +149,16 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
         $context->getUser()->willReturn($owner);
 
         $draft->getAuthor()->willReturn('author');
-        $draft->getEntityWithValue()->willReturn($product);
+        $draft->getEntityWithValue()->willReturn($productModel);
 
-        $product->getId()->willReturn(42);
-        $product->getLabel(Argument::any())->willReturn('T-Shirt');
-
-        $identifier->getData()->willReturn('tshirt');
+        $productModel->getId()->willReturn(42);
+        $productModel->getLabel(Argument::any())->willReturn('T-Shirt');
 
         $notificationFactory->create()->willReturn($notification);
         $notification->setType('success')->willReturn($notification);
         $notification->setMessage('pimee_workflow.product_draft.notification.approve')->willReturn($notification);
         $notification->setMessageParams(['%product%' => 'T-Shirt', '%owner%' => 'John Doe'])->willReturn($notification);
-        $notification->setRoute('pim_enrich_product_edit')->willReturn($notification);
+        $notification->setRoute('pim_enrich_product_model_edit')->willReturn($notification);
         $notification->setRouteParams(['id' => 42])->willReturn($notification);
         $notification->setContext(
             [
