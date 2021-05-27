@@ -76,7 +76,8 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
         </Field>
         <Field
           label={translate('pim_table_attribute.form.attribute.data_type')}
-          requiredLabel={translate('pim_common.required_label')}>
+          requiredLabel={translate('pim_common.required_label')}
+        >
           <TextInput readOnly={true} value={selectedColumn.data_type} />
         </Field>
       </FieldsList>
@@ -109,8 +110,9 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
                 <Table.Row
                   key={firstColumnDefinition.code}
                   onClick={() => setSelectedColumnCode(firstColumnDefinition.code)}
-                  isSelected={firstColumnDefinition.code === selectedColumnCode}>
-                  <EmptyTableCell/>
+                  isSelected={firstColumnDefinition.code === selectedColumnCode}
+                >
+                  <EmptyTableCell />
                   <Table.Cell rowTitle={true}>
                     {getLabel(
                       firstColumnDefinition.labels,
@@ -127,7 +129,8 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
                   <Table.Row
                     key={columnDefinition.code}
                     onClick={() => setSelectedColumnCode(columnDefinition.code)}
-                    isSelected={columnDefinition.code === selectedColumnCode}>
+                    isSelected={columnDefinition.code === selectedColumnCode}
+                  >
                     <Table.Cell rowTitle={true}>
                       {getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code)}
                     </Table.Cell>
@@ -145,8 +148,9 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
             <AddNewColumnButton
               title={translate('pim_table_attribute.form.attribute.add_column')}
               ghost
-              level='secondary'
-              onClick={openNewColumnModal}>
+              level="secondary"
+              onClick={openNewColumnModal}
+            >
               {translate('pim_table_attribute.form.attribute.add_column')}
             </AddNewColumnButton>
           </div>

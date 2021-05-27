@@ -125,7 +125,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
 
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={close} illustration={<AttributesIllustration />}>
-      <Modal.SectionTitle color='brand'>
+      <Modal.SectionTitle color="brand">
         {translate('pim_table_attribute.form.attribute.table_attribute')}
       </Modal.SectionTitle>
       <Modal.Title>{translate('pim_table_attribute.form.attribute.add_column')}</Modal.Title>
@@ -150,14 +150,15 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
             )}
           />
           {validations.code.map((validation, i) => (
-            <Helper level='error' key={i}>
+            <Helper level="error" key={i}>
               {validation}
             </Helper>
           ))}
         </Field>
         <Field
           label={translate('pim_table_attribute.form.attribute.data_type')}
-          requiredLabel={translate('pim_common.required_label')}>
+          requiredLabel={translate('pim_common.required_label')}
+        >
           <SelectInput
             emptyResultLabel={translate('pim_common.select2.no_match')}
             onChange={(value: string | null) => {
@@ -166,12 +167,14 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
             openLabel={translate('pim_table_attribute.form.attribute.open')}
             placeholder={translate('pim_table_attribute.form.attribute.select_type')}
             value={columnDefinition.data_type as string}
-            clearable={false}>
+            clearable={false}
+          >
             {dataTypes.map(dataType => (
               <SelectInput.Option
                 key={dataType}
                 title={translate(`pim_table_attribute.properties.data_type.${dataType}`)}
-                value={dataType}>
+                value={dataType}
+              >
                 {translate(`pim_table_attribute.properties.data_type.${dataType}`)}
               </SelectInput.Option>
             ))}
@@ -179,7 +182,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
         </Field>
       </FieldsList>
       <Modal.BottomButtons>
-        <Button level='primary' onClick={handleCreate} disabled={!isValid(true)}>
+        <Button level="primary" onClick={handleCreate} disabled={!isValid(true)}>
           {translate('pim_common.create')}
         </Button>
       </Modal.BottomButtons>
