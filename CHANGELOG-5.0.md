@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9878: Fix breadcrumb link in Settings > Attribute Groups
+
 # 5.0.27 (2021-05-26)
 
 # 5.0.26 (2021-05-21)
