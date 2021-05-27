@@ -7,15 +7,13 @@ import {Tree} from '../../shared';
 
 type Props = {
   root: CategoryTreeModel | null;
-  rootLabel: string;
   sortable?: boolean; // @todo find a better name: editable?
   followCategory?: (category: CategoryTreeModel) => void;
   addCategory?: (parentCode: string, onCreate: () => void) => void;
   deleteCategory?: (identifier: number, label: string, numberOfProducts: number, onDelete: () => void) => void;
-  // @todo define onCategoryMoved action
 };
 
-const CategoryTree: FC<Props> = ({root, rootLabel, sortable = false, ...rest}) => {
+const CategoryTree: FC<Props> = ({root, sortable = false, ...rest}) => {
   if (root === null) {
     return <Tree.Skeleton />;
   }

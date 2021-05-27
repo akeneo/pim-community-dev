@@ -3,6 +3,7 @@ import {useParams} from 'react-router';
 import {Breadcrumb, SectionTitle, useBooleanState} from 'akeneo-design-system';
 import {
   FullScreenError,
+  LoadingPlaceholderContainer,
   NotificationLevel,
   PageContent,
   PageHeader,
@@ -14,7 +15,7 @@ import {
   useTranslate,
 } from '@akeneo-pim-community/shared';
 import {useCategoryTree} from '../../hooks';
-import {CategoryTree} from '../../components';
+import {BreadcrumbStepSkeleton, CategoryTree} from '../../components';
 import {NewCategoryModal} from './NewCategoryModal';
 import {DeleteCategoryModal} from '../../components/datagrids/categories/DeleteCategoryModal';
 import {deleteCategory} from '../../infrastructure/removers';
@@ -43,7 +44,7 @@ const CategoriesTreePage: FC = () => {
   const notify = useNotify();
   const {isGranted} = useSecurity();
   const {tree, status, load} = useCategoryTree(parseInt(treeId));
-  const [treeLabel, setTreeLabel] = useState(`[${treeId}]`);
+  const [treeLabel, setTreeLabel] = useState<string>('');
   const [isNewCategoryModalOpen, openNewCategoryModal, closeNewCategoryModal] = useBooleanState();
   const [categoryToCreate, setCategoryToCreate] = useState<CategoryToCreate | null>(null);
   const [isDeleteCategoryModalOpen, openDeleteCategoryModal, closeDeleteCategoryModal] = useBooleanState();
@@ -123,7 +124,7 @@ const CategoriesTreePage: FC = () => {
   }, [treeId]);
 
   useEffect(() => {
-    setTreeLabel(tree ? tree.label : `[${treeId}]`);
+    setTreeLabel(tree ? tree.label : '');
   }, [tree]);
 
   if (status === 'error') {
@@ -145,7 +146,7 @@ const CategoriesTreePage: FC = () => {
             <Breadcrumb.Step onClick={followCategoriesIndex}>
               {translate('pim_enrich.entity.category.plural_label')}
             </Breadcrumb.Step>
-            <Breadcrumb.Step>{treeLabel}</Breadcrumb.Step>
+            <Breadcrumb.Step>{treeLabel || <BreadcrumbStepSkeleton />}</Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>
@@ -154,7 +155,7 @@ const CategoriesTreePage: FC = () => {
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
         </PageHeader.UserActions>
-        <PageHeader.Title>{treeLabel}</PageHeader.Title>
+        <PageHeader.Title>{tree ? tree.label : ''}</PageHeader.Title>
       </PageHeader>
       <PageContent>
         <section>
@@ -163,7 +164,6 @@ const CategoriesTreePage: FC = () => {
           </SectionTitle>
           <CategoryTree
             root={tree}
-            rootLabel={treeLabel}
             sortable={isGranted('pim_enrich_product_category_edit')}
             followCategory={
               isGranted('pim_enrich_product_category_edit') ? cat => followEditCategory(cat.id) : undefined

@@ -13,6 +13,7 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useCategory} from '../../hooks';
 import {Category} from '../../models';
+import {BreadcrumbStepSkeleton} from '../../components';
 
 type Params = {
   categoryId: string;
@@ -24,8 +25,8 @@ const CategoryEditPage: FC = () => {
   const router = useRouter();
   const userContext = useUserContext();
   const {category, status, load} = useCategory(parseInt(categoryId));
-  const [categoryLabel, setCategoryLabel] = useState(`[${categoryId}]`);
-  const [treeLabel, setTreeLabel] = useState(translate('pim_enrich.entity.category.content.edit.default_tree_label'));
+  const [categoryLabel, setCategoryLabel] = useState(``);
+  const [treeLabel, setTreeLabel] = useState('');
   const [tree, setTree] = useState<Category | null>(null);
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
@@ -47,9 +48,7 @@ const CategoryEditPage: FC = () => {
     const rootCategory = category && category.root ? category.root : category;
     const uiLocale = userContext.get('uiLocale');
 
-    setCategoryLabel(
-      category && category.labels.hasOwnProperty(uiLocale) ? category.labels[uiLocale] : `[${categoryId}]`
-    );
+    setCategoryLabel(category && category.labels.hasOwnProperty(uiLocale) ? category.labels[uiLocale] : '');
     setTreeLabel(
       rootCategory
         ? rootCategory.labels[userContext.get('uiLocale')]
@@ -77,8 +76,8 @@ const CategoryEditPage: FC = () => {
             <Breadcrumb.Step onClick={followCategoriesIndex}>
               {translate('pim_enrich.entity.category.plural_label')}
             </Breadcrumb.Step>
-            <Breadcrumb.Step onClick={followCategoryTree}>{treeLabel}</Breadcrumb.Step>
-            <Breadcrumb.Step>{categoryLabel}</Breadcrumb.Step>
+            <Breadcrumb.Step onClick={followCategoryTree}>{treeLabel || <BreadcrumbStepSkeleton />}</Breadcrumb.Step>
+            <Breadcrumb.Step>{categoryLabel || <BreadcrumbStepSkeleton />}</Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>
