@@ -50,3 +50,8 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\MarketplaceUrlController
         arguments:
             - '@akeneo_connectivity.connection.marketplace.url_generator'
+
+    akeneo_connectivity.connection.external_api.controller.app_login:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\ExternalApi\Controller\AppLoginController
+        parent: fos_oauth_server.controller.authorize
