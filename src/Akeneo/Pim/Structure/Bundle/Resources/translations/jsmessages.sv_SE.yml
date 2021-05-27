@@ -5,7 +5,6 @@ pim_enrich.entity.family:
   flash:
     update:
       success: Familjen har uppdaterats.
-      fail: Ett fel inträffade under ändring av familj.
       cant_remove_attribute_as_label: Kan inte ta bort ett attribut som används som etikett
       cant_remove_attribute_as_image: Kan inte ta bort attributet används som huvudbild
     create:
@@ -16,7 +15,6 @@ pim_enrich.entity.family:
   property:
     attribute_as_label: Attribut används som etikett
     attribute_as_image: Attribut används som huvudbilden
-    empty_attribute_as_image: Inte markerad
   module:
     attributes:
       not_required_label: Ej obligatorisk
@@ -32,11 +30,10 @@ pim_enrich.entity.family_variant:
     create:
       label: Lägg till variant
 pim_enrich.entity.attribute_option:
-  short_uppercase_label: Inställningar
+  short_uppercase_label: Alternativ
   flash:
     create:
       success: Attributalternativ har skapats
-      fail: Ett fel uppstod när du försökte skapa attributalternativet
     update:
       fail: Kan inte spara attributalternativ
     delete:
@@ -45,7 +42,7 @@ pim_enrich.entity.attribute_option:
     edit:
       cancel_title: Avbryt ändringar
 pim_enrich.entity.association_type:
-  label: associationstyp
+  label: förbindelse typ
   flash:
     update:
       success: Associationstypen har ändrats.
@@ -79,8 +76,8 @@ pim_enrich.entity.group_type:
     delete:
       confirm: Är du säker på att du vill ta bort denna grupptyp?
 pim_enrich.entity.attribute:
-  label: attributet
-  plural_label: Attribut
+  label: attribut
+  plural_label: Attributer
   flash:
     delete:
       success: Attributet har tagits bort
@@ -91,27 +88,27 @@ pim_enrich.entity.attribute:
     available_locales: Tillgängliga språk
     date_max: Max datum
     date_min: Min datum
-    decimals_allowed: Decimala värden tillåtna
+    decimals_allowed: Tillåt decimala värden
     default_metric_unit:
-      label: Metrisk standardenhet
       choose: Välj en enhet
     group:
       label: Attributgrupp
       choose: Välj attributgrupp
     is_locale_specific: Specifik språk
+    localizable: Värde per språk
     max_characters: Max tecken
     max_file_size: Max filstorlek (MB)
     metric_family:
-      label: Metrisk familj
       choose: Välj en familj
     minimum_input_length: Minsta längd för autokomplettering
     name: Namn
-    negative_allowed: Negativa värden som är tillåtna
+    negative_allowed: Tillåt negativa värden
     number_max: Max antal
     number_min: Min antal
     reference_data_name:
       label: Referens datatyp
       choose: Välj referens datatyp
+    scopable: Värde per kanal
     type:
       choose: Välj attributtyp
       pim_catalog_identifier: Identifierare
@@ -125,7 +122,6 @@ pim_enrich.entity.attribute:
       pim_catalog_image: Bild
       pim_catalog_boolean: "Ja/Nej"
       pim_catalog_date: Datum
-      pim_catalog_metric: Metrisk
       pim_reference_data_simpleselect: Referensdata enkel Välj
       pim_reference_data_multiselect: Referens data multi Välj
     unique: Unikt värde
@@ -140,6 +136,7 @@ pim_enrich.entity.attribute:
   module:
     add_attribute:
       no_available_attributes: Det finns inga fler attribut att lägga till
+      attributes_selected: "{{ itemsCount }} attribut valda"
     edit:
       common: Allmänna parametrar
       type_specific: Specifika parametrar

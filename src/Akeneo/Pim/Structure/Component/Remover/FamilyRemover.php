@@ -56,12 +56,13 @@ class FamilyRemover implements RemoverInterface
         $this->ensureFamilyHasNoVariants($family);
         $this->ensureFamilyHasNoProducts($family);
 
-        $this->sendEvent($family, StorageEvents::PRE_REMOVE);
+        $familyId = $family->getId();
+        $this->sendEvent($family, $familyId, StorageEvents::PRE_REMOVE);
 
         $this->objectManager->remove($family);
         $this->objectManager->flush();
 
-        $this->sendEvent($family, StorageEvents::POST_REMOVE);
+        $this->sendEvent($family, $familyId, StorageEvents::POST_REMOVE);
     }
 
     private function ensureIsFamily($family): void
@@ -104,16 +105,10 @@ class FamilyRemover implements RemoverInterface
         }
     }
 
-    /**
-     * @param FamilyInterface $family
-     * @param string $event
-     *
-     * @return void
-     */
-    private function sendEvent(FamilyInterface $family, string $event): void
+    private function sendEvent(FamilyInterface $family, int $familyId, string $event): void
     {
         $this->eventDispatcher->dispatch(
-            new RemoveEvent($family, $family->getId(), ['unitary' => true]),
+            new RemoveEvent($family, $familyId, ['unitary' => true]),
             $event
         );
     }

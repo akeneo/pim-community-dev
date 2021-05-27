@@ -2,6 +2,7 @@ No products to remove: Inga produkter att ta bort
 "dot (.)": punkt (.)
 "comma (,)": kommatecken (,)
 pim_enrich:
+  #Category
   category:
     tab:
       property.title: Egenskaper
@@ -9,10 +10,11 @@ pim_enrich:
     suggest_selection: Vänligen välj en kategori till vänster
     or: eller
     create_new: Skapa ny kategori
+  #Mass edit operations
   mass_edit_action:
-    limit_exceeded: Välj mindre än %limit% poster att redigera
+    limit_exceeded: Välj mindre än %limit% objekt att redigera
     product:
-      page_title: Products
+      page_title: Produkter
       page_subtitle: Massredigera (1 produkt) | Massredigera (%count% produkter)
       title: Välj åtgärd
       subtitle: Välj den funktion som du vill utföra på den valda produkten | Välj den funktion som du vill utföra på de valda %count% produkterna
@@ -29,11 +31,11 @@ pim_enrich:
       launched_flash: Massåtgärd "ändra status" har inletts. Du meddelas när det är gjort.
     edit-common-attributes:
       label: Redigera Attribut
-      description: Valda produktens attribut kommer att redigeras med följande uppgifter för det valda språket.
+      description: Den valda produktens attribut kommer att redigeras med följande uppgifter för det valda språket.
       empty: Välj de attribut(er) som du vill redigera
       success_flash: De jobb som uppdaterar produkt(er) status körs
       message:
-        warning: Det finns inga attribut gemensamt för de valda produkterna. Vänligen ändra ditt val.
+        warning: Det finns inga gemensamma attribut för de valda produkterna. Vänligen ändra ditt val.
         invalid_attribute: Attribut med koden "attribute_code" är inte vanligt för de utvalda produkter, attribut hoppas över.
         no_valid_attribute: Ingen av valda attribut kan tillämpas på denna produkt.
     classify-add:
@@ -55,7 +57,7 @@ pim_enrich:
       launched_flash: Massåtgärd "ändra familj" har inletts. Du meddelas när det är gjort.
     add-to-groups:
       label: Lägg till i grupp
-      description: Markera de grupper som du vill lägga till valda produkter
+      description: Markera de grupper som du vill lägga till de valda produkter
       success_flash: Produkter har lagts till de valda grupperna
       launched_flash: Massåtgärd "Lägg till grupper" har inletts. Du meddelas när det är gjort.
       no_group: Ingen grupp just nu. Börja med att skapa en grupp.

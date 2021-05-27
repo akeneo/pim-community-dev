@@ -99,9 +99,6 @@ pim_import_export:
           with_header:
             title: 包含标题
             help: 是否打印列名称
-          with_media:
-            title: 导出文件和图像
-            help: 是否要导出产品文件和图像
           lines_per_file:
             title: 每个文件的行数
             help: 定义每个文件的行数限制
@@ -161,6 +158,15 @@ pim_import_export:
     6: 失败
     7: 已放弃
     8: 未知
+  job_status:
+    COMPLETED: 已完成
+    STARTING: 正在启动
+    STARTED: 已启动
+    STOPPING: 正在停止
+    STOPPED: 已停止
+    FAILED: 失败
+    ABANDONED: 已放弃
+    UNKNOWN: 未知
 confirmation:
   remove:
     import_profile: 确定要删除此导入配置文件吗？

@@ -1,0 +1,487 @@
+User: Utilizator
+Run demo: Rulează demo-ul
+Product: Produs
+Attribute list: Lista de atribute
+Attribute Group list: Lista grupurilor de atribute
+Users: Utilizatori
+Roles: Roluri
+Groups: Grupuri
+Configuration: Configurație
+Currency list: Lista de valute
+Locale list: Listă locală
+Logged in as: Autentificat ca
+Logout: Deconectează-te
+Login: Autentifică-te
+Previous: Anterior
+Next: Următorul
+Channel list: Listă canale
+Select file: Selectează fișierul
+Change file: Schimbă fişierul
+Remove file: Şterge fişierul
+Delete: Şterge
+Save: Salvează
+Get help: Obţine ajutor
+My User: Contul meu
+oro.form.choose_value: Alege o valoare...
+Read more: Citeşte mai mult
+oro.form.click_here_to_select: Apasă aici pentru a selecta...
+Add: Adaugă
+"Learn how to use this space": "Invață să foloseşti acest spaţiu"
+"How To Use Pinbar": "Cum se foloseşte Pinbar"
+Pinbar: Pinbar
+Favorites: Favorite
+Most Viewed: Cele mai vizualizate
+"Add this page to favorites": "Adaugă această pagină la lista paginelor favorite"
+"Minimize the window to the pinbar": "Minimizează fereastra pinbar-ului"
+"Loading ...": "Se încarcă..."
+"Yes": "Da"
+"No": "Nu"
+required: (necesar)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Abiliți mesaje de incărcare
+    loading_message_enabled.tooltip: Afisează mesaje prieteneoase în timp ce se aşteaptă ca o pagină să se încarce
+    loading_messages.label: Mesaje de încărcare disponibile
+    loading_messages.tooltip: Toate mesajele de încărcare disponibile separate de o linie de despărțire
+  group:
+    loading_message.title: Mesajele se incarcă
+other_actions: Alte acțiuni
+pim_common:
+  cancel: Anulează
+  save: Salvează
+  delete: Şterge
+  update: Actualizează
+  view: Vizualizează
+  edit: Modifică
+  created: Creat
+  updated: Actualizat
+  create: Creează
+  permissions: Permisiuni
+  properties: Propietati
+  name: Nume
+  remove: Elimină
+  code: Cod
+  products: Produse
+  categories: Categorii
+  enabled: Activat
+  family: Familie
+  groups: Grupuri
+  yes: "Da"
+  no: "Nu"
+pim_enrich:
+  #ACLs
+  acl:
+    locale:
+      index: Listează locale
+    currency:
+      index: Listează valutele
+      toggle: Comută valuta
+    product:
+      index: Listează produsele
+      create: Creează un produs
+      edit_attributes: Modifică atributele unui produs
+      remove: Șterge un produs
+      add_attribute: Adaugă un atribut unui produs
+      remove_attribute: Șterge un atribut de la un produs
+      categories_view: Consultă categoriile unui produs
+      associations_view: Vezi asociaţiile unui produs
+      associations_edit: Adauga asociaţii la un produs
+      change_family: Schimbă familia produsului
+      add_to_groups: Adaugă produsul în grupuri
+      mass_edit: Acțiuni de modificare în masă a produsului
+      comment: Comentează produse
+      download: Descarcă produsul ca PDF
+      history: Vezi istoricul produsului
+    product_model:
+      create: Creati un model de produs
+      edit_attributes: Editaţi atributele unui model de produs
+      categories_view: Consultă categoriile unui model de produs
+      history: Vezi istoricul modelului de produs
+    category:
+      list: Listează categoriile
+      create: Creează o categorie
+      edit: Modifică o categorie
+      remove: Șterge o categorie
+      move: Mută o categorie
+      children: Vizualizați subcategoriile
+      products: Vizualizați produsele categoriei
+      history: Vizualizați istoricul categoriei
+    channel:
+      index: Listează canalele
+      create: Creează un canal
+      edit: Modifică un canal
+      remove: Șterge un canal
+      history: Vezi istoricul canalului
+    family:
+      index: Listează familiile
+      create: Creează o familie
+      edit_properties: Modifică proprietățile unei familii
+      edit_attributes: Modifică atributele unei familii
+      remove: Șterge o familie
+      history: Vezi istoricul familiei
+    family_variant:
+      remove: Elimina o varianta a familiei
+    attribute_group:
+      index: Listeaza grupele de atribute
+      create: Creeaza un grup de atribute
+      edit: Modifică un grup de atribute
+      remove: Șterge un grup de atribute
+      sort: Sortează grupele de atribute
+      add_attribute: Adaugă un atribut la un grup
+      remove_attribute: Șterge un atribut de la un grup
+      history: Vezi istoricul grupului de atribut
+    attribute:
+      index: Listează atributele
+      create: Creeaza un atribut
+      edit: Modifică un atribut
+      remove: Șterge un atribut
+      sort: Sortează atributele din interiorul grupurilor de atribute
+      history: Vezi istoricul atributului
+    group:
+      index: Listează grupuri
+      create: Creează un grup
+      edit: Modifică un grup
+      remove: Șterge un grup
+      history: Vezi istoricul grupului
+    group_type:
+      index: Listează tipurile grupului
+      create: Creează un tip de grup
+      edit: Modifică tipul de grup
+      remove: Șterge un tip de grup
+    association_type:
+      index: Listează tipurile de asociere
+      create: Creează un tip de asociere
+      edit: Modifică un tip de asociație
+      remove: Șterge un tip de asociere
+      history: Vezi istoricul tipului de asociere
+    job_tracker:
+      index: Monitorizare procese
+  acl_group:
+    association_type: Tipurile asociației
+    attribute: Atribute
+    attribute_group: Grupuri atribute
+    category: Categorii
+    channel: Canale
+    currency: Valute
+    family: Familii
+    group: Grupuri
+    group_type: Tipuri de grup
+    locale: Locale
+    product: Produse
+  create:
+    attribute: creează atribut
+    attribute group: creează un grup de atribute
+    category: creează categorie
+    tree: creează arbore
+    channel: crează canal
+    currency: creează monedă
+    family: creează familie
+    locale: creează local
+    product: creează produs
+    group: creează grup
+    association type: creează tip de asociere
+    group type: creează tip de grup
+    drag_or_upload: Trageți și lasăți pentru încărcare sau apasăți aici
+#Confirmation messages
+confirmation:
+  delete: Confirmă ștergerea
+  leave: Ești sigur că vrei să părăsești această pagină?
+  discard changes: Veți pierde modificările din %entity% dacă părăsești pagina.
+  remove:
+    category: Ești sigur că vrei să ștergi această categorie %name%?
+    user: Ești sigur că vrei să ștergi utilizatorul %name%?
+#Flash messages
+flash:
+  entity:
+    removed: Elementul a fost şters
+  attribute:
+    identifier_not_removable: Atributul de identificare nu poate fi eliminat
+  category:
+    removed: Categorie înlăturată cu succes
+  tree:
+    removed: Arborele a fost șters cu succes
+    not removable: Arborii asociați cu canalele nu pot fi șterse.
+  currency:
+    updated: Moneda a fost actualizată cu succes
+    error.linked_to_channel: Nu poți dezactiva o monedă legată la un canal.
+  product:
+    enabled: Produsul a fost activat
+    disabled: Produsul a fost dezactivat
+  group type:
+    created: Tipul de grup a fost creat cu succes
+  user:
+    removed: Utilizatorul a fost șters cu succes
+  error occurred: Operația a eșuat. Vă rugăm reîncercați.
+#Info messages
+info:
+  updated: Există schimbări nesalvate.
+  category:
+    remove children: Toate subcategoriile vor fi șterse.
+    keep products: Produsele în aceste categorii nu vor fi șterse.
+    products limit exceeded: Categoria conține mai multe produse decât este permis pentru această operație (limita maximă de produse este de %limit%)
+  product:
+    no available attributes: Nu mai există atribute de adăugat
+    no family defined: Nicio familie definită
+    change family: Schimbă familia de produs
+    change family to: Schimbă familia la
+    merge attributes: Atributele curente vor fi fuzionate cu cele din noua familie.
+    keep attributes: Niciun atribut nu va fi șters.
+    number of associations: '%productCount% produse și %groupCount% grupuri'
+    enable: Activează
+    enabled: Activat
+    disable: Dezactivează
+    disabled: Dezactivat
+  group:
+    axis: 'Axa de variație: %attributes%'
+    select products: Vă rugăm selectați produsele care ar trebui să aparțină acestui grup.
+    selectable products: Următoarele produse selectabile au o valoare definită pentru fiecare axă.
+    no group types: Nu există niciun tip de grup, apasă aici pentru a creea unul
+    more products: 'încă %count% produse...'
+  association type:
+    show products: Afișează produsele
+    show groups: Afişează grupurile
+    remove from products: Ștergerea tipul de asociație îl va elimina din %count% produse.
+    none exist: Niciun tip de asociație nu există.
+    create one: Apasa aici pentru a crea unul
+  attribute:
+    auto option sorting: Daca sunt abilitate, optiunile vor fi sortate in mod automat dupa etichetele de localizare
+  completeness:
+    not calculated: Nu a fost încă calculat
+#Form elements
+Created: Creat
+Updated: Actualizat
+Last update: Ultima actualizare
+by: De
+N/A: Indisponibil
+Manage products: Gestionați produse
+Manage groups: Gestionați grupuri
+Code: Cod
+Name: Nume
+Type: Tip
+Scope: Canal
+Required: Necesar
+Unique: Unic
+Not required: Nu este necesar
+Translatable: Traductibil
+Localizable: Localizabil
+Unique value: Valoare unică
+Attribute group: Grup de atribut
+Other: Altul
+Remove: Elimină
+Parameters: Parametri
+System: Sistem
+Values: Valori
+General parameters: Parametrii generali
+Backend parameters: Parametrii backend
+Label: Etichetă
+Default label: Etichetă implicită
+Default value: Valoare implicită
+Attributetype: Tip de atribut
+Attribute type: Tip de atribut
+Defaultvalue: Valoare implicită
+Variant: Variantă
+Smart: Intelingent
+Useable as grid filter: Utilizabil în grilă
+Family: Familie
+Image: Imagine
+Available locales: Locale disponibile
+Locale specific: Specific local
+default: Prestabilit
+Axis: Axă
+Add attributes: Adaugă atribut
+switch_on: "Da"
+switch_off: "Nu"
+Close: Inchide
+Search: Cautare
+Choose the attribute type: Alegeți un tip de atribut
+Choose the attribute group: Alegeți un grup de atribut
+Drag and drop a file or click here: Trageți și lasăți un fișier sau apăsați aici
+Drop an image or click here: Plasați o imagine sau apăsați aici
+Automatic option sorting: Sortarea automată a opțiunilor
+save_attribute_before_manage_option: Pentru a administra opțiunile, vă rugăm să salvați atributul mai întâi
+Please select: Vă rugăm să selectați
+Active: Activ
+Inactive: Inactiv
+Do not convert: Nu converti
+Create: Creează
+Choose a family: Alegeți o familie
+Choose a unit: Alegeți o unitate
+No matches found: Nicio potrivire găsită
+Category tree: Mulțimea de categorii
+Completeness: Completitudine
+Attribute used as label: Atribut folosit ca etichetă
+#Scopes
+Global: Global
+Channel: Canal
+Expand all channels: Extinde toate canalele
+Collapse all channels: Restrânge toate canalele
+#Variants
+Always override: Scrie peste întotdeauna
+Ask: Întreabă
+#Attribute group
+General Properties: Proprietăți generale
+New group: Grup nou
+Groups overview: Privirea de ansamblu a grupurilor
+'Y-m-d h:i:s': 'A-l-z o:m:s'
+#Attribute properties
+Max characters: Caractere maxime
+Validation rule: Regulă de validare
+Wysiwyg enabled: WYSIWYG activat
+Number min: Număr minim
+Number max: Număr maxim
+Decimals allowed: Permite zecimale
+Negative allowed: Permite valori negative
+Date min: Data min
+Date max: Data max
+Max file size: Mărimea maximă a fișierului (MB)
+Allowed extensions: Extensii permise
+None: Niciunul
+E-mail: Adresa de e-mail
+URL: URL
+Regular expression: Expresie regulară
+Minimum input length: Lungime minimă de intrare
+Default: Prestabilit
+#Family
+Attributes: Atribute
+#Category
+Title: Titlu
+#Page titles
+pim_catalog_identifier: Identificator
+pim_catalog_text: Text
+pim_catalog_textarea: Zonă text
+pim_catalog_number: Număr
+pim_catalog_price_collection: Preţ
+pim_catalog_multiselect: Selecție multiplă
+pim_catalog_simpleselect: Selectaţi simplu
+pim_catalog_file: Fișier
+pim_catalog_image: Imagine
+pim_catalog_boolean: "Da/Nu"
+pim_catalog_date: Data
+pim_reference_data_simpleselect: Selectarea simplă a datei de referințe
+pim_reference_data_multiselect: Selectarea multi a datei de referință
+#Locales
+Activated: Activat
+Edit: Modifică
+Disable: Dezactivează
+To enable: A activa
+Select attributes: Selectează atributele
+Select: Selectează
+Remove this attribute: Elimină acest atribut
+Copy: Copiază
+Translate from: Tradu din
+Current tab: Fila curentă
+#Product view
+Group: Grup
+View group: Vezi grup
+Products: Produse
+#Tabs
+Properties: Propietati
+History: Istoric
+pane.accordion:
+  node_values: Valori de terminal
+  general_properties: Proprietăți generale
+  locale_values: Valori locale
+  backend_parameters: Parametrii backend
+  general_parameters: Parametrii generali
+  validation_parameters: Parametrii de validare
+  label_translations: Traduceri de etichetă
+  options: Opţiuni
+#Popin titles
+popin.create:
+  association_type.title: Creează un nou tip de asociere
+  group.title: Creează un grup nou
+  product.title: Creează un produs nou
+  option.title: Creează o opțiune nouă
+#Datagrid contents
+In group: În grup
+Attribute as label: Atribut ca etichetă
+Is associated: Este asociat
+Complete: Complet
+Created At: Creat la
+Updated At: Actualizat pe
+Enabled: Activat
+Disabled: Dezactivat
+Status: Stare
+pim_datagrid:
+  filters:
+    entity_type:
+      label: Variantă
+    family:
+      label: Familie
+    groups:
+      label: Grupuri
+    enabled:
+      label: Stare
+    completeness:
+      label: Complet
+    identifier:
+      label: Identificator
+Action: Acțiune
+Version: Versiune
+Data: Date
+Author: Autor
+Logged at: Conectat la
+Deleted: Șters
+Old values: Valorile vechi
+New values: Valorile noi
+#Configuration
+System configuration: Configurarea sistemului
+General setup: Setarea generală
+Localization: Localizare
+Locale: Local
+Location: Locație
+Format address by address country: Formatează adresele după țară
+Language: Limbă
+Timezone: Fus orar
+Currency: Monedă
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: "cartier"
+      state: "stat"
+      island: "insulă"
+      county: "județ"
+      area: "zonă"
+      prefecture: "prefectură"
+      department: "departament"
+      district: "sector"
+      province: "provincie"
+  form:
+    tooltip:
+      location: " Locația va fi folosită pentru a formata adresele atunci când opțiunea 'Formatează adresele după țară' va fi dezactivată"
+      format_address_by_address_country: "Selectarea acestei opțiuni va activa ca adresele să fie formatate după țara în care se află. Dezactivarea acestei opțiuni va cauza ca adresele să fie formatate dupa formatul adresei locației tale"
+      language: "Selectează limba sistemului pe care dorești să o folosești"
+      timezone: "Selectează fusul orar pentru afișarea datei și timpului"
+      currency: "Selectează moneda implicită"
+#Datagrid
+Selected products successfully deleted: Produsele selectate au fost șterse cu succes
+pim_mass_edit:
+  notification:
+    mass_edit:
+      error: Editarea în masă <strong>%label%</strong> a eșuat
+      warning: Editarea în masă <strong>%label%</strong> s-a terminat cu unele avertismente
+      success: Editarea în masă <strong>%label%</strong> a fost efectuată
+    quick_export:
+      error: Exportarea rapidă <strong>%label%</strong> a eșuat
+      warning: Exportarea rapidă <strong>%label%</strong> s-a finalizat cu unele avertismente
+job_execution.summary:
+  mass_edited: Modificat în masă
+  skip: Sărit
+  skipped_products: Produse sărite
+  skipped_attributes: Atributele sărite
+  skipped_families: Familii sărite
+pim_mass_edit_execution_show: Executări de editări în masă | Detalii
+edit_common_attributes.steps.edit_common_attributes_processor.title: Modifică atribute
+update_product_value.steps.update_product_value_processor.title: Actualizează valoarea produsului
+remove_product_value.steps.update_product_value_processor.title: Şterge valoare produs
+edit_common_attributes: Modifică atribute
+edit_common_attributes_clean: Curățați fișierele pentru atribute
+perform.steps.duplicated.title: Axă duplicată
+perform.steps.excluded.title: Produs exclus
+mass_edit report:
+  overview: Raporturi de editare in masă
+job_tracker:
+  tab:
+    title: Monitorizare proces
+  filter:
+    started_at: Început la

@@ -1,0 +1,59 @@
+pim_analytics:
+  new_patch_available: Yeni güncelleme hazır
+  system_config:
+    group:
+      notification.title: Bildirimler
+      version_update.title: Sürüm Güncellemeleri
+    form:
+      version_update.label: Yeni sürüm bildirimleri
+      version_update.tooltip: Yeni sürüm güncellemelerine ulaşmak için bilgi al
+  system_info:
+    title: Sistem bilgisi
+    download: TXT
+  info_type:
+    pim_edition: Baskı
+    pim_version: Sürüm
+    pim_storage_driver: Bellek
+    pim_environment: Ortam
+    pim_install_time: Kurulum zamanı
+    registered_bundles: Kayıtlı paketler
+    nb_channels: Kanal sayısı
+    nb_products: Ürünlerin sayısı
+    nb_product_models: Ürün modelleri sayısı
+    nb_variant_products: Varyant ürünlerin sayısı
+    nb_family_variants: Tür çeşidi sayısı
+    nb_attributes: Özelliklerin sayısı
+    nb_scopable_attributes: Ölçeklendirilebilir özelliklerin sayısı
+    nb_localizable_attributes: Yerelleştirilebilir özelliklerin sayısı
+    nb_scopable_localizable_attributes: Yerelleştirilebilir ve ölçeklendirilebilir özelliklerin sayısı
+    nb_useable_as_grid_filter_attributes: Değerlerin numarası ızgara olarak kullanılabilir
+    avg_percentage_scopable_attributes_per_family: Sınıf sayısına gözlemlenebilir ortalama değer ortalamasi
+    avg_percentage_localizable_attributes_per_family: Sınıf sayısına yerelleştirilebilir ortalama değer ortalamasi
+    avg_percentage_scopable_localizable_attributes_per_family: Sınıf sayısına yerelleştirilebilir ve gözlemlenebilir ortalama değer ortalamasi
+    avg_number_attributes_per_family: Sınıf sayısına ortalama değer sayısı
+    nb_locales: Yerel ayarların sayısı
+    nb_families: Sınıfların sayısı
+    nb_users: Kullanıcı sayısı
+    nb_categories: Kategori sayısı
+    nb_category_trees: Katagori ağacı numarası
+    max_category_in_one_category: Bir katogorideki maksimum kategori sayısı
+    max_category_levels: Kategori seviyesinin maksimum sayısı
+    nb_product_values: Ürün değerlerinin sayısı
+    avg_product_values_by_product: Ürün tarafından ortalama ürün numara değeri
+    avg_product_values_by_family: Sınıf tarafından ortalama potansiyel ürün değeri sayısı
+    max_product_values_by_family: Sınıf tarafından maksimum potensiyel ürün değeri sayısı
+    pim_storage_version: Depolama sürümü
+    os_version: OS Sürümü
+    php_version: PHP sürümü
+    mysql_version: MySQL versiyonu
+    mariadb_version: MariaDB versiyonu
+    mongodb_version: MongoDB sürümü
+    server_version: Sunucu sürümü
+    php_extensions: PHP uzantıları
+    email_domains: Alakalı e-mail uzantıları
+  acl:
+    system_info:
+      index: Sistem bilgisi
+pim_menu:
+  item:
+    system_info: Sistem bilgisi

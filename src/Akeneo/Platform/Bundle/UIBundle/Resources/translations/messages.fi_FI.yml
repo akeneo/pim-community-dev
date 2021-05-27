@@ -61,6 +61,14 @@ pim_common:
   name: Nimi
   remove: Poista
   code: Koodi
+  products: Tuotteet
+  product_models: Tuotemallit
+  categories: Kategoriat
+  enabled: Otettu käyttöön
+  family: Perhe
+  groups: Ryhmät
+  yes: "Kyllä"
+  no: "Ei"
 pim_enrich:
   #ACLs
   acl:
@@ -91,7 +99,6 @@ pim_enrich:
       edit_attributes: Muokkaa tuotemallin attribuutteja
       categories_view: Tarkastele tuotemallin kategorioita
       history: Näytä tuotemallin muutoshistoria
-      remove: Poista tuotemalli
     category:
       list: Listaa kategoriat
       create: Luo kategoria
@@ -345,8 +352,6 @@ Decimals allowed: Salli desimaalit
 Negative allowed: Salli negatiiviset arvot
 Date min: Min päivämäärä
 Date max: Max päivämäärä
-Metric family: Metrinen perhe
-Default metric unit: Metrinen oletusyksikkö
 Max file size: Suurin tiedostokoko (Mt)
 Allowed extensions: Sallitut laajennukset
 None: Ei yhtään
@@ -371,7 +376,6 @@ pim_catalog_file: Tiedosto
 pim_catalog_image: Kuva
 pim_catalog_boolean: "Kyllä/ei"
 pim_catalog_date: Päivämäärä
-pim_catalog_metric: Metriikka
 pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
 pim_reference_data_multiselect: Viitetiedot monivalinta
 #Locales
@@ -418,6 +422,20 @@ Updated At: Päivitysaika
 Enabled: Otettu käyttöön
 Disabled: Poistettu käytöstä
 Status: Status
+pim_datagrid:
+  filters:
+    entity_type:
+      label: Variantti
+    family:
+      label: Perhe
+    groups:
+      label: Ryhmät
+    enabled:
+      label: Status
+    completeness:
+      label: Valmis
+    identifier:
+      label: Tunniste
 #Versioning / history
 Change History: Muutoshistoria
 Data Audit: Tietojen audit

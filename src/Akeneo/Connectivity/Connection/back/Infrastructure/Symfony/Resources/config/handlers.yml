@@ -102,9 +102,6 @@ services:
             - '@akeneo_connectivity.connection.webhook.webhook_event_builder'
             - '@monolog.logger.event_api'
             - '@akeneo_connectivity.connection.webhook.events_api_debug_logger'
-            - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
-            - '@akeneo_connectivity.connection.persistence.repository.events_api_request_count'
-            - '@akeneo_connectivity.connection.webhook.cache_clearer'
             - '%env(AKENEO_PIM_URL)%'
 
     akeneo_connectivity.connection.application.webhook.handler.update_connection_webhook:

@@ -38,6 +38,8 @@ test('Table.Body supports ...rest props', () => {
 });
 
 test('it only supports table rows', () => {
+  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
+
   expect(() => {
     render(
       <Table isDragAndDroppable={true} onReorder={jest.fn}>
@@ -45,4 +47,6 @@ test('it only supports table rows', () => {
       </Table>
     );
   }).toThrowError('Children of Table.Body should be a valid react element');
+
+  mockConsole.mockRestore();
 });
