@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Structure\Integration\Category;
+namespace AkeneoTest\Pim\Enrichment\Integration\Category;
 
-use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Category\Sql\SqlCountTotalCategoriesPerTree;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\CategoryTree;
+use Akeneo\Pim\Enrichment\PublicApi\Categories\SqlCountTotalCategoriesPerTree;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
@@ -17,7 +16,7 @@ final class SqlCountTotalCategoriesPerTreeIntegration extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->countTotalCategoriesPerTree = $this->get('akeneo.pim.structure.query.count_total_categories_per_tree');
+        $this->countTotalCategoriesPerTree = $this->get('akeneo.enrichment.public_api.count_total_categories_per_tree');
 
         /**
          * master

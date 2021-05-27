@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Component\Query\PublicApi\Category;
+namespace Akeneo\Pim\Enrichment\PublicApi\Categories;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

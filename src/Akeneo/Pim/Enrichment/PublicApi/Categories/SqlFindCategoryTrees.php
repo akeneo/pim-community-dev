@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Category\Sql;
+namespace Akeneo\Pim\Enrichment\PublicApi\Categories;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\CategoryTree;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\FindCategoryTrees;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**

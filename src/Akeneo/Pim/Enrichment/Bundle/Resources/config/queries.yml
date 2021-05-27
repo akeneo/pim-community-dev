@@ -1,4 +1,15 @@
 services:
+    akeneo.enrichment.public_api.find_category_trees:
+        class: Akeneo\Pim\Enrichment\PublicApi\Categories\SqlFindCategoryTrees
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.normalizer.standard.translation'
+
+    akeneo.enrichment.public_api.count_total_categories_per_tree:
+        class: Akeneo\Pim\Enrichment\PublicApi\Categories\SqlCountTotalCategoriesPerTree
+        arguments:
+            - '@database_connection'
+
     pim_catalog.doctrine.query.find_variant_product_completeness:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\VariantProductRatio'
         arguments:

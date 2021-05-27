@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Structure\Integration\Category;
+namespace AkeneoTest\Pim\Enrichment\Integration\Category;
 
-use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Category\Sql\SqlCountTotalCategoriesPerTree;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\CategoryTree;
+use Akeneo\Pim\Enrichment\PublicApi\Categories\CategoryTree;
+use Akeneo\Pim\Enrichment\PublicApi\Categories\SqlFindCategoryTrees;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
 final class SqlFindCategoryTreesIntegration extends TestCase
 {
-    public SqlCountTotalCategoriesPerTree $sqlFindCategoryTrees;
+    public SqlFindCategoryTrees $sqlFindCategoryTrees;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->sqlFindCategoryTrees = $this->get('akeneo.pim.structure.query.find_category_trees');
+        $this->sqlFindCategoryTrees = $this->get('akeneo.enrichment.public_api.find_category_trees');
     }
 
     /** @test */
