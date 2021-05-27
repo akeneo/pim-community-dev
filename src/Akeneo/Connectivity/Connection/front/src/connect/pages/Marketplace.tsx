@@ -1,13 +1,10 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useContext, useEffect, useState} from 'react';
 import {
     AkeneoThemedProps,
     Breadcrumb,
     ChannelsIllustration,
     getColor,
     getFontSize,
-    SelectInput,
-    Field,
-    Helper, Link
 } from 'akeneo-design-system';
 import {useTranslate} from '../../shared/translate';
 import {PageHeader} from '../../common';
@@ -15,24 +12,8 @@ import {UserButtons} from '../../shared/user';
 import styled from 'styled-components';
 import {useFetchMarketingUrl} from '../hooks/use-fetch-marketing-url';
 import {useRouter} from '../../shared/router/use-router';
-
-const FetcherRegistry = require('pim/fetcher-registry');
-
-type UserProfileEntry = {
-    code: string;
-    label: string;
-};
-
-const UserProfileSelector = styled(SelectInput)`
-
-    height: 40px;
-`;
-
-const UserProfileField = styled(Field)`
-    width: 400px;
-    margin: 0 auto;
-    text-align: left;
-`;
+import {UserContext} from '../../shared/user';
+import {UserProfileSelector} from '../components/UserProfileSelector';
 
 const LinkButton = styled.a<AkeneoThemedProps>`
     display: inline-flex;
@@ -96,9 +77,11 @@ export const Marketplace: FC = () => {
     const translate = useTranslate();
     const fetchMarketplaceUrl = useFetchMarketingUrl();
     const [marketplaceUrl, setMarketplaceUrl] = useState<string>('');
-    const [userProfileEntries, setUserProfileEntries] = useState<UserProfileEntry[]>([]);
     const generateUrl = useRouter();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
+
+    const user = useContext(UserContext);
+    const userProfile = user.get('profile');
 
     const breadcrumb = (
         <Breadcrumb>
@@ -111,12 +94,14 @@ export const Marketplace: FC = () => {
         fetchMarketplaceUrl().then(setMarketplaceUrl);
     }, [fetchMarketplaceUrl]);
 
-    useEffect(() => {
-        FetcherRegistry
-            .getFetcher('user-profiles')
-            .fetchAll()
-            .then(setUserProfileEntries);
-    }, []);
+    const regularMarketplaceView = (
+        <>
+            <Caption>{translate('akeneo_connectivity.connection.connect.marketplace.sub_title')}</Caption>
+            <LinkButton href={marketplaceUrl} target='_blank' role='link' tabIndex='0'>
+                {translate('akeneo_connectivity.connection.connect.marketplace.link')}
+            </LinkButton>
+        </>
+    );
 
     return (
         <>
@@ -129,32 +114,7 @@ export const Marketplace: FC = () => {
 
                 <Heading>{translate('akeneo_connectivity.connection.connect.marketplace.title')}</Heading>
 
-                <Caption>{translate('akeneo_connectivity.connection.connect.marketplace.sub_title')}</Caption>
-
-                <UserProfileField label={translate('pim_user_management.entity.user.properties.profile')}>
-                    <UserProfileSelector value={null}
-                                         emptyResultLabel={translate('pim_user.profile.selector.not_found')}
-                                         placeholder={translate('pim_user.profile.selector.placeholder')}
-                                         onChange={() => null}>
-                        {userProfileEntries.map((profileEntry: UserProfileEntry) =>
-                            <SelectInput.Option
-                                key={profileEntry.code}
-                                title={translate(profileEntry.label)}
-                                value={profileEntry.code}
-                            >{translate(profileEntry.label)}
-                            </SelectInput.Option>
-                        )}
-                    </UserProfileSelector>
-                    <Helper level="info">
-                        <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
-                            {translate('pim_user.profile.why_is_it_needed')}
-                        </Link>
-                    </Helper>
-                </UserProfileField>
-
-                <LinkButton href={marketplaceUrl} target='_blank' role='link' tabIndex='0'>
-                    {translate('akeneo_connectivity.connection.connect.marketplace.link')}
-                </LinkButton>
+                { userProfile === null ? <UserProfileSelector/> : regularMarketplaceView }
             </PageContent>
         </>
     );
