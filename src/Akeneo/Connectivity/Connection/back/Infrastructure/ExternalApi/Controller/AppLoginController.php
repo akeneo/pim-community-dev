@@ -11,6 +11,7 @@ use OAuth2\OAuth2ServerException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)

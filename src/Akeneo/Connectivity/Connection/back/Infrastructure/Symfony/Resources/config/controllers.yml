@@ -55,3 +55,8 @@ services:
         public: true
         class: Akeneo\Connectivity\Connection\Infrastructure\ExternalApi\Controller\AppLoginController
         parent: fos_oauth_server.controller.authorize
+
+    akeneo_connectivity.connection.external_api.controller.app_token:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\ExternalApi\Controller\AppTokenController
+        parent: fos_oauth_server.controller.token

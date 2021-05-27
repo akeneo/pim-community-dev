@@ -79,8 +79,8 @@ export const Marketplace: FC = () => {
         </Breadcrumb>
     );
 
-    const pimSource = 'pimSource';
-    const nativeAppUrl = 'http://localhost:8080/#/connect/marketplace';
+    const pimSource = 'http://172.17.0.1:8080';
+    const nativeAppUrl = 'http://172.17.0.1:8081/activate';
     const yellExtensionRedirectUrl = `${nativeAppUrl}?pim=${pimSource}`;
 
     useEffect(() => {
