@@ -30,3 +30,7 @@ table-attribute-unit-front:
 .PHONY: table-attribute-lint-front
 table-attribute-lint-front:
 	$(YARN_RUN) run --cwd=src/Akeneo/Pim/TableAttribute/front lint $(O)
+
+.PHONY: table-attribute-prettier-check-front
+table-attribute-prettier-check-front:
+	$(YARN_RUN) run --cwd=src/Akeneo/Pim/TableAttribute/front prettier-check

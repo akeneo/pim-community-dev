@@ -3,17 +3,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {TableOptionsApp} from './TableOptionsApp';
 import {TableConfiguration} from '../models/TableConfiguration';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('oro/translator');
 
 type TableOptionsTabConfig = {
   label: string;
-}
+};
 
 class TableOptionsTab extends BaseView {
   private config: TableOptionsTabConfig;
 
-  initialize(config: { config: TableOptionsTabConfig }): void {
+  initialize(config: {config: TableOptionsTabConfig}): void {
     this.config = config.config;
     BaseView.prototype.initialize.apply(this, config);
   }
@@ -42,7 +43,12 @@ class TableOptionsTab extends BaseView {
     const initialTableConfiguration = this.getFormData().table_configuration;
 
     ReactDOM.render(
-      <TableOptionsApp initialTableConfiguration={initialTableConfiguration} onChange={this.handleChange.bind(this)} />,
+      <DependenciesProvider>
+        <TableOptionsApp
+          initialTableConfiguration={initialTableConfiguration}
+          onChange={this.handleChange.bind(this)}
+        />
+      </DependenciesProvider>,
       this.el
     );
     return this;
@@ -55,7 +61,9 @@ class TableOptionsTab extends BaseView {
   }
 
   private isActive() {
-    return this.config.activeForTypes.includes((this.getRoot() as any).getType());
+    return this.config.activeForTypes.includes(
+      (this.getRoot() as any).getType()
+    );
   }
 }
 

@@ -1,6 +1,6 @@
-import React from "react";
-import { LocaleCode } from "@akeneo-pim-community/shared";
-import { Locale as LocaleWithFlag } from "akeneo-design-system";
+import React from 'react';
+import {LocaleCode} from '@akeneo-pim-community/shared';
+import {Locale as LocaleWithFlag} from 'akeneo-design-system';
 
 type LocaleProps = {
   localeCode: LocaleCode;
@@ -13,7 +13,7 @@ const LocaleLabel: React.FC<LocaleProps> = ({localeCode}) => {
   if (localeCode === 'fr_FR') {
     return <LocaleWithFlag code={'fr_FR'} languageLabel={'French'} />;
   }
-  return <>{localeCode}</>
-}
+  return <>{localeCode}</>;
+};
 
-export { LocaleLabel }
+export {LocaleLabel};

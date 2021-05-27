@@ -9,6 +9,8 @@ pim_table_attribute:
             open: Open
             select_type: Select your type
             data_type: Data type
+            labels: Labels
+            columns: Columns
             characters_left: ]-Inf, 1]{{ count }} character left|]1, Inf[{{ count }} characters left
     properties:
         data_type:
