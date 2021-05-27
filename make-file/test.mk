@@ -58,6 +58,7 @@ lint-back: #Doc: launch all PHP linter tests
 lint-front: #Doc: launch all YARN linter tests
 	$(YARN_RUN) lint
 	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-lint-front rule-engine-types-check-front rule-engine-prettier-check-front
+	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-lint-front
 	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-lint-front
 
 ### Unit tests

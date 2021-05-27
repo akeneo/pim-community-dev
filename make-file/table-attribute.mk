@@ -23,10 +23,10 @@ table-attribute-integration-back:
 table-attribute-end-to-end-back:
 	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite Table_Attribute_End_To_End $(O)
 
-.PHONY: rule-engine-unit-front
+.PHONY: table-attribute-unit-front
 table-attribute-unit-front:
 	$(YARN_RUN) run --cwd=src/Akeneo/Pim/TableAttribute/front jest --ci $(O)
 
-.PHONY: rule-engine-lint-front
-table-attribute-unit-front:
+.PHONY: table-attribute-lint-front
+table-attribute-lint-front:
 	$(YARN_RUN) run --cwd=src/Akeneo/Pim/TableAttribute/front lint $(O)
