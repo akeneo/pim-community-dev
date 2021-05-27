@@ -14,6 +14,7 @@ import {PlaceholderPosition, TreeNode} from '../../../models';
 import {ArrowButton, DragInitiator, RowActionsContainer, RowInnerContainer, TreeArrowIcon, TreeRow} from './TreeRow';
 import {TreeActions} from './TreeActions';
 import {TreeIcon} from './TreeIcon';
+import {TreeSkeleton} from './TreeSkeleton';
 
 const placeholderPositionStyles = css<{placeholderPosition?: PlaceholderPosition} & AkeneoThemedProps>`
   &:after {
@@ -287,6 +288,8 @@ const Tree = <T,>({
 
 Tree.displayName = 'Tree';
 TreeActions.displayName = 'Tree.Actions';
+TreeSkeleton.displayName = 'Tree.Skeleton';
 Tree.Actions = TreeActions;
+Tree.Skeleton = TreeSkeleton;
 
 export {Tree};

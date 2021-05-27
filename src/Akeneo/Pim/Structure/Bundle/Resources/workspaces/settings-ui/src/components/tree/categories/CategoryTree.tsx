@@ -3,6 +3,7 @@ import {CategoryTreeModel} from '../../../models';
 import {Node} from './Node';
 import {CategoryTreeProvider} from '../../providers';
 import {OrderableTreeProvider} from '../../shared/providers/OrderableTreeProvider';
+import {Tree} from '../../shared';
 
 type Props = {
   root: CategoryTreeModel | null;
@@ -15,9 +16,8 @@ type Props = {
 };
 
 const CategoryTree: FC<Props> = ({root, rootLabel, sortable = false, ...rest}) => {
-  /* @todo[PLG-94] show loading feedback when tree is null? */
   if (root === null) {
-    return <>Tree {rootLabel}</>;
+    return <Tree.Skeleton />;
   }
 
   return (
