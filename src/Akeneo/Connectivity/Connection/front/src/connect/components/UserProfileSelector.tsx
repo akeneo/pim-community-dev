@@ -27,7 +27,6 @@ const Caption = styled.p`
     line-height: 1.2em;
 `;
 
-//TODO DSM ?
 const LinkButton = styled.button<AkeneoThemedProps>`
     display: inline-flex;
     align-items: center;
@@ -72,17 +71,22 @@ export const UserProfileSelector: FC = () => {
     const [userProfiles, setUserProfiles] = useState<UserProfile[]>([]);
     const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
     const fetchUserProfiles = useFetchUserProfiles();
-    const marketplaceUrl = useMarketplaceUrl();
+    const fetchMarketplaceUrl = useMarketplaceUrl();
 
-    const user = useContext(UserContext);
-    const usernameMetadata = user.get<{id: string}>('meta');
-    const saveUser = useSaveUser(usernameMetadata.id);
+    const saveUser = useSaveUser(useContext(UserContext)
+        .get<{ id: string }>('meta')
+        .id
+    );
 
     const handleClick = () => {
         if (null === selectedProfile) {
             return;
         }
-        saveUser({profile: selectedProfile}).then(toto => console.log('TODO redirect'));
+        saveUser({profile: selectedProfile}).then(() => {
+            fetchMarketplaceUrl().then((url: string) => {
+                window.open(url);
+            });
+        });
     };
 
     const handleOnSelectChange = (selectedValue: string | null) => {
@@ -92,10 +96,6 @@ export const UserProfileSelector: FC = () => {
     useEffect(() => {
         fetchUserProfiles().then(setUserProfiles);
     }, [fetchUserProfiles]);
-
-    //useEffect(() => {
-    //    fetchMarketplaceUrl().then(setMarketplaceUrl);
-    //}, [fetchMarketplaceUrl]);
 
     return (
         <>
@@ -119,14 +119,13 @@ export const UserProfileSelector: FC = () => {
                     )}
                 </ProfileSelect>
                 <Helper level="info">
-                    <Link href="https://help.akeneo.com/pim/serenity/articles/what-is-a-user.html">
+                    <Link href="https://help.akeneo.com/pim/serenity/articles/what-is-a-user.html" target='_blank'>
                         {translate('pim_user.profile.why_is_it_needed')}
                     </Link>
                 </Helper>
             </UserProfileField>
 
             <LinkButton
-                target='_blank'
                 role='link'
                 tabIndex='0'
                 onClick={handleClick}
