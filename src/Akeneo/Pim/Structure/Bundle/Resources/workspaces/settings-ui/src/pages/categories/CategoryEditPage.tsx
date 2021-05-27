@@ -55,7 +55,9 @@ const CategoryEditPage: FC = () => {
   const countProductsBeforeDeleteCategory = useCountProductsBeforeDeleteCategory(parseInt(categoryId));
   const [categoryToDelete, setCategoryToDelete] = useState<CategoryToDelete | null>(null);
   const {isCategoryDeletionPossible, handleDeleteCategory} = useDeleteCategory();
+  // To remove
   const {setCanLeavePage} = useContext(EditCategoryContext);
+
   const {
     editedFormData,
     onChangeCategoryLabel,
@@ -180,6 +182,17 @@ const CategoryEditPage: FC = () => {
           >
             {translate('pim_common.properties')}
           </TabBar.Tab>
+          {formData && formData.permissions && isGranted('pimee_enrich_category_edit_permissions') && (
+            <TabBar.Tab
+              isActive={isCurrent(permissionTabName)}
+              onClick={() => {
+                setActiveTab(permissionTabName);
+                switchTo(permissionTabName)();
+              }}
+            >
+              {translate('pim_common.permissions')}
+            </TabBar.Tab>
+          )}
           <TabBar.Tab
             isActive={isCurrent(historyTabName)}
             onClick={() => {
@@ -188,15 +201,6 @@ const CategoryEditPage: FC = () => {
             }}
           >
             {translate('pim_common.history')}
-          </TabBar.Tab>
-          <TabBar.Tab
-            isActive={isCurrent(permissionTabName)}
-            onClick={() => {
-              setActiveTab(permissionTabName);
-              switchTo(permissionTabName)();
-            }}
-          >
-            {translate('pim_common.permissions')}
           </TabBar.Tab>
         </TabBar>
 

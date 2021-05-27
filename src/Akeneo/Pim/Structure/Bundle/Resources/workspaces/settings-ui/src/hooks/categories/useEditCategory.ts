@@ -6,6 +6,8 @@ import {LabelCollection, NotificationLevel, useNotify, useTranslate} from "@aken
 import {EditCategoryForm} from "./useCategory";
 import {EditCategoryContext} from "../../components";
 
+// @todo Add unit tests
+// @todo rename to useEditCategoryForm
 const useEditCategory = (category: Category | null, formData: EditCategoryForm | null) => {
   const notify = useNotify();
   const translate = useTranslate();
@@ -14,7 +16,7 @@ const useEditCategory = (category: Category | null, formData: EditCategoryForm |
   const [thereAreUnsavedChanges, setThereAreUnsavedChanges] = useState<boolean>(false);
   const {setCanLeavePage} = useContext(EditCategoryContext);
 
-  // @todo find better names
+  // @todo remove and return saveCategory instead
   const [saveRequested, requestSave, resetRequestSave] = useBooleanState(false);
 
   const haveLabelsBeenChanged = useCallback((): boolean => {
