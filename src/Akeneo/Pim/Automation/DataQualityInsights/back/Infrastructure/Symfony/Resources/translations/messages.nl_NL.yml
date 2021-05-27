@@ -10,6 +10,5 @@ akeneo_data_quality_insights:
     filter_label:
       quality_score: Kwaliteitsscore
       enrichment_quality: Verrijkingskwaliteit
-      images_quality: Afbeeldingskwaliteit
 Enrichment: Verrijking
 Quality Score: Kwaliteitsscore

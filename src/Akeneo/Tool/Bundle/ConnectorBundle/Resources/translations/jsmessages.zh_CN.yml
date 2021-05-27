@@ -1,6 +1,7 @@
 #Job labels
 batch_jobs:
   default_steps:
+    export: 导出
     validation: 文件验证
     import_associations: 导入关联
     import_root_product_model: 导入根产品模型
@@ -10,6 +11,7 @@ batch_jobs:
     compute_data_related_to_family_products: 计算产品数据
     compute_family_variant_structure_changes: 计算品类变型结构变化
     compute_completeness_of_products_family: 计算产品品类的完成度
+    delete_products_and_product_models: 批量删除产品
   csv_product_export:
     label: 以 CSV 格式导出产品
     export.label: 导出产品

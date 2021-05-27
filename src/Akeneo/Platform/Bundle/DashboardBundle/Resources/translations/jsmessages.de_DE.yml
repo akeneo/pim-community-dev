@@ -1,6 +1,6 @@
 pim_dashboard:
   title: Aktivitäts-Dashboard
-  greetings: Hallo {{name}},
+  greetings: Hallo {{ name }}!
   welcome_sentence:
     message0: Dies wird ein großartiger Tag werden.
     message1: Es ist großartig, dich zu sehen.

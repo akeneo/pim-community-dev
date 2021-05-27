@@ -1,0 +1,28 @@
+akeneo_data_quality_insights:
+  dqi_dashboard:
+    time_period:
+      label: 时间段
+      daily: 每天
+      weekly: 每周
+      monthly: 每月
+    legend:
+      excellent: 优秀的
+      good: 棒
+    widgets:
+      category_modal:
+        subtitle: 添加类别
+        message: 选择要添加到仪表板上的类别
+      add_categories: 添加类别
+      title: 标题
+      score: 分数
+      no_category_helper_msg: 选择您希望测量数据质量的类别
+      see_in_grid: 在网格中查看
+    time_axis:
+      day: 天
+    key_indicators:
+      title: 关键指标
+      list:
+        has_image:
+          messages:
+            perfect_score_step:
+              message3: 完美。

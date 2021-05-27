@@ -1,0 +1,14 @@
+parameters:
+    env(FLAG_FREE_TRIAL_ENABLED): 'false'
+
+services:
+    akeneo.free_trial.feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        arguments:
+            - '%env(bool:FLAG_FREE_TRIAL_ENABLED)%'
+        public: true
+
+    Akeneo\FreeTrial\Infrastructure\ExternalJavascriptDependencies\ExternalDependenciesFeatureFlag:
+        arguments:
+            - '@akeneo.free_trial.feature'
+        public: true

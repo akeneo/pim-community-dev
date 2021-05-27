@@ -3,6 +3,7 @@ batch_jobs:
   default_steps:
     validation: Validación de fichero
     import_associations: Importar asociaciones
+    import_model_associations: Importar asociaciones
     import_root_product_model: Importación del modelo del producto base
     import_sub_product_model: Importación del modelo del sub producto
     compute_data_related_to_family_root_product_models: Calcular datos de modelos productos de base

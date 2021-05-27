@@ -99,9 +99,6 @@ pim_import_export:
           with_header:
             title: Con encabezado
             help: Imprimir o no el nombre de columnas
-          with_media:
-            title: Exportar archivos e imágenes
-            help: Exportar o no archivos de productos e imágenes
           lines_per_file:
             title: Número de líneas por archivo
             help: Definir la cantidad límite de líneas por archivo
@@ -134,7 +131,6 @@ pim_import_export:
       file_path: Camino del fichero
   widget:
     last_operations:
-      empty: Ninguna operacione encontrada
       date: Fecha
       profile_name: Nombre del perfil
       details: Detalles
@@ -159,6 +155,15 @@ pim_import_export:
     6: Fallido
     7: Abandonado
     8: Desconocido
+  job_status:
+    COMPLETED: Finalizado
+    STARTING: Iniciando
+    STARTED: Iniciado
+    STOPPING: Suspendiendo
+    STOPPED: Suspendido
+    FAILED: Fallido
+    ABANDONED: Abandonado
+    UNKNOWN: Desconocido
 confirmation:
   remove:
     import_profile: '¿Está seguro que desea eliminar este perfil de importación?'
