@@ -182,7 +182,6 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
 
     /**
      * @param $attributeDetails
-     *
      */
     private function assertMediaFileAttribute($attributeDetails): void
     {
@@ -196,6 +195,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedImage->labels = ['en_US' => 'Portrait'];
         $expectedImage->order = 6;
         $expectedImage->isRequired = true;
+        $expectedImage->isReadOnly = false;
         $expectedImage->valuePerChannel = true;
         $expectedImage->valuePerLocale = false;
         $expectedImage->isReadOnly = false;
