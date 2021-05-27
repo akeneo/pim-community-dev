@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM:9724: Fix duplicated log files for some job executions
+
 # 4.0.111 (2021-05-21)
 
 ## Bug fixes
