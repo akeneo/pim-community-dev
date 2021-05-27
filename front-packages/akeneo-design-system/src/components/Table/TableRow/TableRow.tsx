@@ -10,7 +10,12 @@ import {useBooleanState} from '../../../hooks';
 import {PlaceholderPosition, usePlaceholderPosition} from './usePlaceholderPosition';
 
 const RowContainer = styled.tr<
-  {isSelected: boolean; isClickable: boolean; placeholderPosition: PlaceholderPosition} & AkeneoThemedProps
+  {
+    isSelected: boolean;
+    isClickable: boolean;
+    isDragAndDroppable: boolean;
+    placeholderPosition: PlaceholderPosition;
+  } & AkeneoThemedProps
 >`
   ${({isSelected}) =>
     isSelected &&
@@ -25,6 +30,14 @@ const RowContainer = styled.tr<
     css`
       &:hover {
         cursor: pointer;
+      }
+    `}
+
+  ${({isDragAndDroppable}) =>
+    isDragAndDroppable &&
+    css`
+      & > *:first-child {
+        width: 44px;
       }
     `}
 
@@ -132,6 +145,7 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
         ref={forwardedRef}
         isClickable={undefined !== onClick}
         isSelected={!!isSelected}
+        isDragAndDroppable={isDragAndDroppable}
         onClick={onClick}
         placeholderPosition={placeholderPosition}
         draggable={isDragAndDroppable && isDragged}
