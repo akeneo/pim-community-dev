@@ -4,12 +4,13 @@ namespace AkeneoTest\Platform\EndToEnd\ImportExport\InternalApi;
 
 use AkeneoTest\Platform\EndToEnd\InternalApiTestCase;
 use Doctrine\DBAL\Connection;
+use League\Flysystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetJobExecutionEndToEnd extends InternalApiTestCase
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
+    private Filesystem $archivistFilesystem;
 
     /**
      * {@inheritdoc}
@@ -23,6 +24,7 @@ class GetJobExecutionEndToEnd extends InternalApiTestCase
     {
         parent::setUp();
 
+        $this->archivistFilesystem = $this->get('oneup_flysystem.archivist_filesystem');
         $this->sqlConnection = $this->get('database_connection');
         $this->authenticate($this->getAdminUser());
     }
@@ -52,7 +54,7 @@ class GetJobExecutionEndToEnd extends InternalApiTestCase
         $insertJobExecution = <<<SQL
 INSERT INTO `akeneo_batch_job_execution` (`job_instance_id`, `pid`, `user`, `status`, `start_time`, `end_time`, `create_time`, `updated_time`, `health_check_time`, `exit_code`, `exit_description`, `failure_exceptions`, `log_file`, `raw_parameters`)
 VALUES
-	(:job_instance_id, 86472, 'admin', 1, '2020-10-13 13:05:49', '2020-10-13 13:06:10', '2020-10-13 13:05:45', '2020-10-13 13:06:09', '2020-10-13 13:06:09', 'COMPLETED', '', 'a:0:{}', '', '{}');
+	(:job_instance_id, 86472, 'admin', 1, '2020-10-13 13:05:49', '2020-10-13 13:06:10', '2020-10-13 13:05:45', '2020-10-13 13:06:09', '2020-10-13 13:06:09', 'COMPLETED', '', 'a:0:{}', '/srv/pim/var/logs/batch/19/batch_b2b74e2d3bc04a1918954dae504009718a46a874.log', '{}');
 SQL;
         $this->sqlConnection->executeUpdate($insertJobExecution, ['job_instance_id' => $JobInstanceId]);
         $jobExecutionId = (int)$this->sqlConnection->lastInsertId();
@@ -66,6 +68,8 @@ VALUES
 ;
 SQL;
         $this->sqlConnection->executeUpdate($insertStepExecutions, ['job_execution_id' => $jobExecutionId]);
+
+        $this->archivistFilesystem->write("import/csv_product_import/$jobExecutionId/log/batch_b2b74e2d3bc04a1918954dae504009718a46a874.log", 'content');
 
         return $jobExecutionId;
     }
@@ -189,7 +193,7 @@ SQL;
                 ],
             ],
             'meta' => [
-                'logExists' => false,
+                'logExists' => true,
                 'archives' => [],
                 'generateZipArchive' => false,
                 'id' => (string)$jobExecutionId,

@@ -136,7 +136,6 @@ pim_enrich.entity.attribute:
     date_min: Min. dato
     decimals_allowed: Desimalverdier tillatt
     default_metric_unit:
-      label: Standard metrisk enhet
       choose: Velg en enhet
     group:
       label: Attributtgruppe
@@ -146,7 +145,6 @@ pim_enrich.entity.attribute:
     max_characters: Maks. tegn
     max_file_size: Maks. filstørrelse (MB)
     metric_family:
-      label: Metrisk familie
       choose: Velg en familie
     minimum_input_length: Minimumlengde for autoutfylling
     name: Navn
@@ -170,7 +168,6 @@ pim_enrich.entity.attribute:
       pim_catalog_image: Bilde
       pim_catalog_boolean: "Ja/Nei"
       pim_catalog_date: Dato
-      pim_catalog_metric: Metrisk
       pim_reference_data_simpleselect: Referansedata enkel valg
       pim_reference_data_multiselect: Referansedata multivalg
     unique: Unik verdi

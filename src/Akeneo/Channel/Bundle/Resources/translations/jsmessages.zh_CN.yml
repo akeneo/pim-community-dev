@@ -53,6 +53,7 @@ pim_enrich.entity.channel:
   property:
     category_tree: 类别树
     do_not_convert: 不转换
+    measurement: 测量设置
     label_conversion_units: 在产品导出时，为每一个测量属性选择一个换算单位。
   module:
     create:
@@ -63,8 +64,8 @@ pim_enrich.entity.locale:
   label: 区域设置
   uppercase_label: 区域设置
   plural_label: 区域设置
-  page_title:
-    index: "]-Inf, 1]{{ count }} 个区域|]1, Inf[{{ count }} 个区域"
+  grid:
+    no_search_result: 抱歉，找不到与你的搜索相符的结果
 pim_enrich.entity.currency:
   plural_label: 货币
   page_title:

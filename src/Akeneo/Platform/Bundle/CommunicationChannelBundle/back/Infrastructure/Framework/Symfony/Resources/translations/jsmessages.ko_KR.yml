@@ -1,0 +1,5 @@
+akeneo_communication_channel:
+  link:
+    title: 공지사항
+  panel:
+    title: 공지사항

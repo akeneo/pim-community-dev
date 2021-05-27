@@ -1,0 +1,234 @@
+pim_menu:
+  navigation_back:
+    connection: Torna alle connessioni
+  navigation_block:
+    connection: Navigazione di connessione
+  item:
+    connection_audit: Dashboard connessioni
+    connection_settings: Connessioni
+    connection_settings_edit: Impostazioni di connessione
+    connection_monitoring: Monitoraggio
+pim_title:
+  akeneo_connectivity_connection_settings_index: Connessioni
+  akeneo_connectivity_connection_settings_edit: Impostazioni di connessione
+  akeneo_connectivity_connection_settings_any: Impostazioni di connessione
+  akeneo_connectivity_connection_audit_index: Dashboard connessioni
+  akeneo_connectivity_connection_audit_any: Dashboard connessioni
+  akeneo_connectivity_connection_error_management_dashboard: Dashboard connessioni
+  akeneo_connectivity_connection_error_management_connection_monitoring: Monitoraggio della connessione
+  akeneo_connectivity_connection_webhook_edit: Iscrizione evento (BETA)
+  akeneo_connectivity_connection_webhook_regenerate_secret: Iscrizione evento (BETA)
+akeneo_connectivity.connection:
+  connections: Connessioni
+  secondary_actions:
+    title: Altre azioni
+  connection:
+    code: Codice
+    label: Etichetta
+    flow_type: Tipo di flusso
+    image: Immagine
+    auditable: Traccia questa connessione nel pannello di controllo
+    client_id: ID Client
+    secret: Chiave segreta
+    username: Nome utente
+    password: Password
+    user_role_id: Ruolo
+    user_group_id: Gruppo
+    constraint:
+      code:
+        required: Il codice connessione è obbligatorio.
+        invalid: Il codice connessione può contenere solo lettere, numeri e trattini bassi
+        too_short: Il codice connessione è troppo corto. Dovrebbe essere di 3 o più caratteri.
+        too_long: Il codice connessione è troppo lungo. Dovrebbe essere al massimo di 100 caratteri.
+        must_be_unique: Il codice connessione deve essere univoco.
+      label:
+        required: L'etichetta connessione è obbligatoria.
+        too_short: L'etichetta della connessione è troppo corta. Dovrebbe essere di 3 o più caratteri.
+        too_long: L'etichetta della connessione è troppo lunga. Dovrebbe essere al massimo di 100 caratteri.
+      flow_type:
+        invalid: Il tipo di flusso della connessione può essere solo 'Sorgente dati', 'Destinazione dati' o 'Altro'.
+      image:
+        must_exist: L'immagine non è stata trovata. Si prega di riprovare.
+  flow_type:
+    data_source: Sorgente dati | Sorgente dati
+    data_destination: Destinazione dati | Destinazione dati
+    other: Altro | Altri
+  connection_count: 'Connessione {{ count }} | {{ count }} connessioni'
+  no_connection:
+    title: Nessuna connessione dichiarata finora.
+    message: Aggiungi la prima cliccando sul pulsante "Crea" o
+    message_link: clicca qui.
+  create_connection:
+    title: Crea una nuova connessione
+    description: Puoi creare fino a 50 connessioni.
+    flash:
+      success: Connessione creata correttamente.
+      error: Si è verificato un errore durante la creazione della connessione.
+  edit_connection:
+    subtitle: Impostazioni
+    flash:
+      success: Connessione aggiornata correttamente.
+      error: Si è verificato un errore durante la modifica della connessione.
+    image_uploader:
+      extension_not_allowed: Il file che si sta tentando di caricare ha una estensione non consentita.
+    credentials:
+      title: Credenziali
+      helper:
+        message: 'Ecco le credenziali da usare nel tuo connettore {{ label }}.'
+        link: Maggiori informazioni qui...
+      wrong_credentials_combinations:
+        single: Abbiamo notato che stai usando il nome utente {{ wrong_username }} per questa connessione (ultimo uso il {{ date }} alle {{ time }}. Piuttosto, consigliamo di usare il nome utente {{ good_username }}.
+        link: Scopri perché dovresti usarlo.
+        link_list: Scopri perché consigliamo di usare questo nome utente.
+        several: Abbiamo notato che non sati usando il nome utente {{ good_username }} per questa connessione.
+        list: 'Ecco l''elenco dei nomi utente che sono stati usati negli ultimi 7 giorni:'
+        username_date: '{{ wrong_username }} il {{ date }} alle {{ time }}'
+      password_helper:
+        message: Se hai dimenticato la password, puoi generarne una nuova qui.
+        link: Ulteriori informazioni...
+      clear_password_helper:
+        message: Assicurati di salvare questa password da qualche parte perché non sarà più visualizzata.
+        link: Ulteriori informazioni...
+      action:
+        copy: Copia negli appunti
+        regenerate: Rigenera
+      flash:
+        copied: '{{ name }} copiato negli appunti'
+    permissions:
+      title: Permessi
+      helper:
+        message: 'In questa sezione è possibile definire i permessi per la connessione {{ label }}.'
+        link: Maggiori informazioni sui permessi delle connessioni...
+      user_role_helper:
+        message: Il ruolo predefinito `{{ role }}` non è la scelta migliore per la tua connessione. E' vivamente consigliato di scegliere un ruolo su misura per le tue necessità di connessione.
+        link: Maggiori informazioni qui...
+      user_group_helper:
+        message: E' vivamente consigliato scegliere un gruppo su misura per le tue necessità di connessione.
+        link: Maggiori informazioni qui...
+  regenerate_secret:
+    title: Conferma rigenerazione
+    description: Sei sicuro di voler rigenerare la chiave segreta della connessione? Non sei sicuro dei possibili impatti?
+    link: Ecco cosa succederà.
+    action:
+      regenerate: Rigenera
+    flash:
+      success: Chiave segreta connessione rigenerata correttamente.
+      error: Si è verificato un errore durante la rigenerazione della chiave segreta della connessione.
+  regenerate_password:
+    title: Conferma rigenerazione
+    description: Sei sicuro di voler rigenerare la password di connessione? Non sei sicuro dei possibili impatti?
+    link: Ecco cosa succederà.
+    action:
+      regenerate: Rigenera
+    flash:
+      success: Password di connessione rigenerata correttamente.
+      error: Si è verificato un errore durante la rigenerazione della password della connessione.
+  delete_connection:
+    title: Conferma eliminazione
+    description: Sei sicuro di voler eliminare la connessione? Non sei sicuro dei possibili impatti?
+    link: Ecco cosa succederà.
+    flash:
+      success: Connessione eliminata correttamente.
+  helper:
+    description: Un PIM senza integrazioni con altri servizi è abbastanza inutile, vero? Grazie alle connessioni, è possibile dichiarare tutti i flussi dati che saranno inviati ed estratti dal PIM.
+    link: Curioso di saperne di più? Scopri cos'è una connessione e come sfruttarla al massimo cliccando qui!
+  flow_type_helper:
+    message: Ti stai chiedendo cosa sia un tipo di flusso?
+    link: Possiamo aiutarti cliccando qui!
+  auditable_helper:
+    message: Puoi tracciare solo le connessioni "Sorgente" e "Destinazione".
+    link: Ulteriori informazioni...
+  edit_image:
+    upload_helper: Modifica la tua immagine, trascina e rilascia o
+    remove_helper: Rimuovi l'immagine
+    click_here: clicca qui
+    flash:
+      extension_not_allowed: Il file che si sta tentando di caricare ha una estensione non consentita.
+  grid.wrong_credentials_combination_helper: Alcune delle connessioni sotto non stanno usando i loro nomi utenti della connessione. Sono identificati da un segnale di avviso giallo.
+  dashboard:
+    helper:
+      description: Da qui sarai in grado di tracciare tutti i flussi dati che sono raccolti nel PIM tramite le tue connessioni, così come tutti i flussi dati che sono distribuiti ai canali tramite le tue connessioni.
+      link: Vuoi saperne di più? Ecco qui!
+    user_survey:
+      title: Vuoi più dati in questa dashboard?
+      content: Il tuo feedback è prezioso per noi. Aiutaci a scegliere il prossimo widget rispondendo a questo sondaggio di una sola domanda!
+      button: Vai!
+    connection_selector:
+      title:
+        source: Connessioni sorgente
+        destination: Connessioni di destinazione
+      all: Tutte
+    charts:
+      inbound: In entrata
+      outbound: In uscita
+      number_of_products_created: Prodotti creati
+      number_of_products_updated: Prodotti aggiornati
+      number_of_products_sent: Prodotti inviati
+      legend:
+        during_the_last_seven_days: 'Totale sugli ultimi 7 giorni:'
+        today: Oggi
+    error_management:
+      data_source_error_chart:
+        section:
+          title: Errori sulle connessioni sorgente
+          helper: Qui puoi vedere il numero di errori totali, inclusi quelli aziendali.
+        chart:
+          title: Conteggio errori per giorno
+      widget:
+        title: Errori aziendali per la connessione sorgente
+        over_the_last_seven_days: Sugli ultimi 7 giorni
+        business_errors: errori aziendali
+    no_connection:
+      title:
+        data_source: Vuoi vedere qualche grafico fantasioso sulle tue connessioni sorgente?
+        data_destination: Vuoi vedere qualche grafico fantasioso sulle tue connessioni di destinazione?
+      message_with_permission:
+        message: Crea e inizia a monitorare il primo
+        link: qui.
+      message_without_permission:
+        message: Chiedi all'amministratore di crearne una.
+        link: Maggiori informazioni sulle connessioni qui...
+  webhook:
+    title: Iscrizione evento (BETA)
+    event_subscription: Iscrizione evento (bêta)
+    helper:
+      message: Puoi essere notificato degli eventi che si verificano nel PIM per i prodotti sincronizzati con quest'app connessa. Devi solo definire un URL e i tipi di evento di cui vuoi tenere traccia.
+      link: Scopri di più sulla configurazione dell'iscrizione evento...
+    form:
+      url: URL
+      secret: Chiave segreta
+      enabled: Attivazione di iscrizione dell'evento
+      test: Prova
+    error:
+      wrong_url: Questo valore non è un URL valido
+      required: Questo campo è obbligatorio.
+      not_found: Stai provando ad aggiornare una connessione che non esiste.
+      limit_reached: Hai raggiunto il limite di iscrizioni all'evento attivo.
+    flash:
+      success: Iscrizione dell'evento aggiornata correttamente.
+      error: Spiacenti, si è verificato un errore modificando l'iscrizione dell'evento.
+    regenerate_secret:
+      title: Conferma rigenerazione
+      description: Sei sicuro di voler rigenerare il segreto dell'iscrizione dell'evento?
+      action:
+        regenerate: Rigenera
+      link: Ecco cosa succederà.
+    active_event_subscriptions_limit_reached:
+      link: Scopri di più sulla configurazione degli abbonamenti agli eventi.
+  error_management:
+    connection_monitoring:
+      title: Monitoraggio
+      search_filter:
+        placeholder: Cerca nei messaggi di errore
+      error_list:
+        content_column:
+          product_name: Nome del prodotto
+        details_column:
+          title: Dettaglio
+          locale: Località
+          channel: Canale
+          family: Famiglia
+  runtime_error:
+    error_message: Uffa! Si è verificato un errore...
+    reload_helper: Prova a ricaricare la pagina e a provare di nuovo.
+    reload_button: Ricarica

@@ -62,9 +62,11 @@ pim_common:
   name: 名称
   remove: 移除
   code: 代码
+  quantity: 数量
   products: 产品
   product_models: 产品模型
   categories: 类别
+  family_variant: 品类变型
   enabled: 已启用
   family: 品类
   parent: '父目录:'
@@ -439,6 +441,8 @@ pim_datagrid:
       label: 分组
     enabled:
       label: 状态
+    scope:
+      label: 范围
     completeness:
       label: 完成
     created:
@@ -536,3 +540,9 @@ job_tracker:
     title: 进程跟踪器
   filter:
     started_at: 开始于
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: 提供者
+    powered_image_title: Logo Akeneo
+    baseline: Unlocking Growth Through Product Experiences

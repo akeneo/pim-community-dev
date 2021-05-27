@@ -51,7 +51,6 @@ pim_import_export:
         show_profile.title: Exibir Perfil
         download_log.title: Baixar Log
         download_file.title: Baixar arquivo gerado
-        download_archive.title: Baixar arquivo gerado
       summary:
         fetching: Coletando dados sobre a execução do trabalho...
         warning: Aviso
@@ -96,9 +95,6 @@ pim_import_export:
           with_header:
             title: Com Cabeçalho
             help: Imprimir ou não o nome da coluna
-          with_media:
-            title: Exportação de arquivos e imagens
-            help: Se exportar ou não imagens e arquivos de produtos
           lines_per_file:
             title: Número de linhas por arquivo
             help: Definir o número limite de linhas por arquivo
@@ -154,6 +150,15 @@ pim_import_export:
     6: Falha na execução
     7: Abandonado
     8: Desconhecido
+  job_status:
+    COMPLETED: Concluído
+    STARTING: Iniciando
+    STARTED: Iniciado
+    STOPPING: Parando
+    STOPPED: Parado
+    FAILED: Falha na execução
+    ABANDONED: Abandonado
+    UNKNOWN: Desconhecido
 confirmation:
   remove:
     import_profile: Tem certeza de que deseja excluir este perfil de importação?

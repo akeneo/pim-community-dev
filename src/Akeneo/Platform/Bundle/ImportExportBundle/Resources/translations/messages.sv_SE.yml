@@ -2,6 +2,8 @@
 Job: Jobb
 Connector: Connector
 pim_import_export:
+  job: Jobb
+  connector: Connector
   ## Job status
   status:
     0: Redo
@@ -16,7 +18,6 @@ pim_import_export:
     8: Okänt
   download_archive:
     archive: hämta skapat arkiv | ladda ner skapade arkiv
-    output: hämta skapad fil | ladda ner skapade filer
     input: hämta läst fil | ladda ner lästa filer
     invalid_xlsx: hämta ogiltiga data
     invalid_csv: hämta ogiltiga data
@@ -47,7 +48,7 @@ export profile:
   title: exportprofil
   edit: redigera exportprofil
 import profile:
-  title: importprofile
+  title: importprofil
   edit: redigera importprofil
 #ACLs
 pim_importexport:
@@ -69,8 +70,8 @@ pim_importexport:
       create: Skapa en importprofil
       show: Visa en importprofil
       edit: Redigera en importprofil
-      remove: Ta bort en exportprofil
-      launch: Starta en exportprofil
+      remove: Ta bort importprofil
+      launch: Starta importprofil
       history: Visa historik för importprofiler
     export_execution:
       index: Visa lista med exportrapporter
@@ -142,7 +143,17 @@ job_execution.summary:
     title: 'Filkodning:'
     skipped: hoppades över, filändelsen i godkäntlistan
 Step: Steg
+Status: Status
+Warnings: Varningar
 Summary: Sammanfattning
 Start: Start
 End: Slut
+COMPLETED: Slutförd
+STARTING: Startar
+STARTED: Startad
+STOPPING: Stoppar
+STOPPED: Stoppad
+FAILED: Misslyckad
+ABANDONED: Övergiven
+UNKNOWN: Okänt
 warning.label: Varning

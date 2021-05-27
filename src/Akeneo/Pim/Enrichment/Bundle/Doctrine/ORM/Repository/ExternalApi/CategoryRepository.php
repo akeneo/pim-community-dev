@@ -133,6 +133,10 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                         $qb->andWhere($qb->expr()->in($field, $parameter));
                         $qb->setParameter($parameter, $criterion['value']);
                         break;
+                    case '>':
+                        $qb->andWhere($qb->expr()->gt($field, $parameter));
+                        $qb->setParameter($parameter, $criterion['value']);
+                        break;
                     default:
                         throw new \InvalidArgumentException('Invalid operator for search query.');
                 }
@@ -193,6 +197,18 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                             'message' => 'In order to search on category is_root you must send a {{ type }} value, {{ value }} given.'
                         ]),
                     ],
+                ])
+            ]),
+            'updated' => new Assert\All([
+                new Assert\Collection([
+                    'operator' => new Assert\IdenticalTo([
+                        'value' => '>',
+                        'message' => 'Searching on the "updated" property require the ">" (greater than) operator, {{ value }} given.',
+                    ]),
+                    'value' => new Assert\DateTime([
+                        'format' => \DateTimeInterface::ATOM,
+                        'message' => 'This value is not in a valid ISO 8601 standard datetime format'
+                    ]),
                 ])
             ]),
         ];

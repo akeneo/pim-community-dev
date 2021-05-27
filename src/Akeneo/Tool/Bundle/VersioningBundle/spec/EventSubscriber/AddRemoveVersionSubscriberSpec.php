@@ -37,7 +37,7 @@ class AddRemoveVersionSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_post_remove_events()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            StorageEvents::PRE_REMOVE => 'addRemoveVersion',
+            StorageEvents::POST_REMOVE => 'addRemoveVersion',
         ]);
     }
 
