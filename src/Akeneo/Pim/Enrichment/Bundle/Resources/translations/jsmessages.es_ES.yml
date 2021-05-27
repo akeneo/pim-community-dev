@@ -334,6 +334,7 @@ pim_enrich.mass_edit.product:
       label: Mover entre categorias
       label_count: "{0}Mover algunos <span class=\"AknFullPage-title--highlight\">productos</span> entre categorías|{1}Mover <span class=\"AknFullPage-title--highlight\">1 producto</span> entre categorías|]1, Inf[Mover <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> entre categorías"
       description: Los productos serán clasificados en las siguientes categorías, la clasificación actual no se mantendrá.
+      no_update: Por favor, seleccione una categoría.
     remove_from_category:
       label: Eliminar de las categorías
       label_count: "{0}Eliminar algunos <span class=\"AknFullPage-title--highlight\">productos</span> de categorías|{1}Eliminar <span class=\"AknFullPage-title--highlight\">1 producto</span> de categorías|]1, Inf[Eliminar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> de categorías"
