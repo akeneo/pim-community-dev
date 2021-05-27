@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Component\BatchQueue\Queue;
 
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
+use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -58,6 +59,10 @@ class PublishJobToQueue
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
+    /** @var BatchLogHandler */
+    private $batchLogHandler;
+
+    // TODO @merge master/6.0: make the $batchLogHandler argument mandatory
     public function __construct(
         string $jobInstanceClass,
         string $kernelEnv,
@@ -68,7 +73,8 @@ class PublishJobToQueue
         EntityManagerInterface $entityManager,
         JobParametersValidator $jobParametersValidator,
         JobExecutionQueueInterface $jobExecutionQueue,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        BatchLogHandler $batchLogHandler = null
     ) {
         $this->jobInstanceClass = $jobInstanceClass;
         $this->jobRepository = $jobRepository;
@@ -80,6 +86,7 @@ class PublishJobToQueue
         $this->jobParametersValidator = $jobParametersValidator;
         $this->jobExecutionQueue = $jobExecutionQueue;
         $this->eventDispatcher = $eventDispatcher;
+        $this->batchLogHandler = $batchLogHandler;
     }
 
     public function publish(
@@ -118,6 +125,11 @@ class PublishJobToQueue
         $jobParameters = $this->createJobParameters($jobInstance, $config);
         $this->validateJobParameters($jobInstance, $jobParameters, $jobInstanceCode);
         $jobExecution = $this->jobRepository->createJobExecution($jobInstance, $jobParameters);
+
+        // TODO @merge master/6.0: remove the null !== $this->>batchLogHandler check
+        if (null !== $this->batchLogHandler) {
+            $this->batchLogHandler->setSubDirectory((string)$jobExecution->getId());
+        }
 
         if (null !== $username) {
             $jobExecution->setUser($username);
