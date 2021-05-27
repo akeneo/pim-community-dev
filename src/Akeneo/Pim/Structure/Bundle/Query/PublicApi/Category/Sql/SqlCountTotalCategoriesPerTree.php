@@ -33,21 +33,44 @@ class SqlCountTotalCategoriesPerTree implements CountTotalCategoriesPerTree
 
         return $withChildren ?
             $this->countWithChildren($selectedCategories)
-            : $this->countWithoutChildren($selectedCategories,);
+            : $this->countWithoutChildren($selectedCategories);
     }
 
     private function countWithChildren(array $selectedCategories): array
     {
-        return [];
+        $query = <<<SQL
+SELECT c.code, COALESCE(result.selectedCount, 0)
+FROM pim_catalog_category c LEFT JOIN (
+	SELECT root.id as id, root.code as code, COUNT(*) as selectedCount
+	FROM pim_catalog_category parent
+	JOIN pim_catalog_category child ON child.lft >= parent.lft AND child.lft < parent.rgt AND child.root = parent.root
+	JOIN pim_catalog_category root ON root.id = child.root
+	WHERE parent.code IN (:selectedCategories)
+	GROUP BY root.id
+) result ON result.id = c.id
+WHERE c.parent_id IS NULL;
+SQL;
+        $stmt = $this->connection->executeQuery(
+            $query,
+            ['selectedCategories' => $selectedCategories],
+            ['selectedCategories' => Connection::PARAM_STR_ARRAY]
+        );
+
+        return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
     private function countWithoutChildren(array $selectedCategories): array
     {
         $query = <<<SQL
-SELECT r.code, COUNT(*)
-FROM pim_catalog_category c INNER JOIN pim_catalog_category r ON c.root = r.id
-WHERE c.code IN (:selectedCategories)
-GROUP BY c.root;
+SELECT c.code, COALESCE(result.selectedCount, 0)
+FROM pim_catalog_category c LEFT JOIN (
+	SELECT cr.id as id, cr.code as code, COUNT(*) as selectedCount
+	FROM pim_catalog_category c JOIN pim_catalog_category cr ON c.root = cr.id
+	WHERE
+		c.code IN (:selectedCategories)
+	GROUP BY c.root
+) result ON result.id = c.id
+WHERE c.parent_id IS NULL;
 SQL;
         $stmt = $this->connection->executeQuery(
             $query,

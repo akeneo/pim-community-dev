@@ -95,27 +95,53 @@ final class SqlCountTotalCategoriesPerTreeIntegration extends TestCase
 
     /**
      * @test
+     * @dataProvider categoryCodesToSelectWithoutChildren
      */
-    public function it_counts_the_total_selected_categories_without_counting_children_for_each_category_tree(): void
+    public function it_counts_the_total_selected_categories_without_counting_children_for_each_category_tree($categoryCodes, $expected): void
     {
-        $actual = $this->countTotalCategoriesPerTree->execute(['desk', 'clothes', 'winter'], false);
+        $actual = $this->countTotalCategoriesPerTree->execute($categoryCodes, false);
 
-        $expected = ['master' => 2, 'season' => 1];
         $this->assertEquals($expected, $actual);
+    }
+
+    public function categoryCodesToSelectWithoutChildren(): array
+    {
+        return [
+            'Select No categories' => [[], ['master' => 0, 'season' => 0]],
+            'Select root category' => [['master'], ['master' => 1, 'season' => 0]],
+            'Selection in 2 trees' => [
+                ['desk', 'clothes', 'winter'],
+                [
+                    'master' => 2, // desk = 1 + clothes = 1 + 2 children = 3
+                    'season' => 1      // winter = 1
+                ],
+            ],
+        ];
     }
 
     /**
      * @test
+     * @dataProvider categoryCodesToSelectWithChildren
      */
-    public function it_counts_the_total_selected_categories_with_children_for_each_category_tree(): void
+    public function it_counts_the_total_selected_categories_with_children_for_each_category_tree($categoryCodes, $expectedResults): void
     {
-        $actual = $this->countTotalCategoriesPerTree->execute(['desk', 'clothes', 'winter'], true);
+        $actual = $this->countTotalCategoriesPerTree->execute($categoryCodes, true);
+        $this->assertEquals($expectedResults, $actual);
+    }
 
-        $expected = [
-            'master' => 1 + 3, // desk = 1 + clothes = 1 + 2 children = 3
-            'season' => 1      // winter = 1
+    public function categoryCodesToSelectWithChildren(): array
+    {
+        return [
+            'Select No categories' => [[], ['master' => 0, 'season' => 0]],
+            'Select root category' => [['master'], ['master' => 7, 'season' => 0]],
+            'Selection in 2 trees' => [
+                ['desk', 'clothes', 'winter'],
+                [
+                    'master' => 1 + 3, // desk = 1 + clothes = 1 + 2 children = 3
+                    'season' => 1      // winter = 1
+                ],
+            ],
         ];
-        $this->assertEquals($expected, $actual);
     }
 
     private function givenCategories(array $categories): void
