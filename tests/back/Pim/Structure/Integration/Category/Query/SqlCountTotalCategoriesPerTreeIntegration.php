@@ -112,8 +112,8 @@ final class SqlCountTotalCategoriesPerTreeIntegration extends TestCase
             'Selection in 2 trees' => [
                 ['desk', 'clothes', 'winter'],
                 [
-                    'master' => 2, // desk = 1 + clothes = 1 + 2 children = 3
-                    'season' => 1      // winter = 1
+                    'master' => 2, // desk + clothes = 2
+                    'season' => 1  // winter = 1
                 ],
             ],
         ];
@@ -137,7 +137,7 @@ final class SqlCountTotalCategoriesPerTreeIntegration extends TestCase
             'Selection in 2 trees' => [
                 ['desk', 'clothes', 'winter'],
                 [
-                    'master' => 1 + 3, // desk = 1 + clothes = 1 + 2 children = 3
+                    'master' => 1 + 3, // 1 (=> desk) + 3 (clothes => 1 + 2 children)
                     'season' => 1      // winter = 1
                 ],
             ],

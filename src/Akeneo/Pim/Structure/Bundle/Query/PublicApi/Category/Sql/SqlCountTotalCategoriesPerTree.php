@@ -66,8 +66,7 @@ SELECT c.code, COALESCE(result.selectedCount, 0)
 FROM pim_catalog_category c LEFT JOIN (
 	SELECT cr.id as id, cr.code as code, COUNT(*) as selectedCount
 	FROM pim_catalog_category c JOIN pim_catalog_category cr ON c.root = cr.id
-	WHERE
-		c.code IN (:selectedCategories)
+	WHERE c.code IN (:selectedCategories)
 	GROUP BY c.root
 ) result ON result.id = c.id
 WHERE c.parent_id IS NULL;
