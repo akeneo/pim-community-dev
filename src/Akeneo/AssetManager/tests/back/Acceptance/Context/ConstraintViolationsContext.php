@@ -27,8 +27,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 final class ConstraintViolationsContext implements Context
 {
-    /** @var ConstraintViolationListInterface */
-    private $violations;
+    private ConstraintViolationList $violations;
 
     public function __construct()
     {
@@ -60,9 +59,7 @@ final class ConstraintViolationsContext implements Context
     public function thereIsNoViolationsErrors()
     {
         if (0 !== $this->violations->count()) {
-            $errorMessages = array_map(function (ConstraintViolation $violation) {
-                return $violation->getMessage();
-            }, iterator_to_array($this->violations->getIterator()));
+            $errorMessages = array_map(fn(ConstraintViolation $violation) => $violation->getMessage(), iterator_to_array($this->violations->getIterator()));
 
             throw new \RuntimeException(implode(',', $errorMessages));
         }

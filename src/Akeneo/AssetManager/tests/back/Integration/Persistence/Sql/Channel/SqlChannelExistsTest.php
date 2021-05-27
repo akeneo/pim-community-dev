@@ -19,8 +19,7 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlChannelExistsTest extends SqlIntegrationTestCase
 {
-    /** @var ChannelExistsInterface */
-    private $channelExist;
+    private ChannelExistsInterface $channelExist;
 
     public function setUp(): void
     {

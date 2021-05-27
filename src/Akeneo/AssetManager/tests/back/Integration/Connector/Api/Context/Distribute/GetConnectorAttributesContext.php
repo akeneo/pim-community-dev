@@ -48,23 +48,17 @@ class GetConnectorAttributesContext implements Context
 {
     private const REQUEST_CONTRACT_DIR = 'Attribute/Connector/Distribute/';
 
-    /** @var OauthAuthenticatedClientFactory */
-    private $clientFactory;
+    private OauthAuthenticatedClientFactory $clientFactory;
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var InMemoryFindConnectorAttributesByAssetFamilyIdentifier */
-    private $findConnectorAssetFamilyAttributes;
+    private InMemoryFindConnectorAttributesByAssetFamilyIdentifier $findConnectorAssetFamilyAttributes;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var null|Response */
-    private $attributesForAssetFamily;
+    private ?Response $attributesForAssetFamily = null;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,

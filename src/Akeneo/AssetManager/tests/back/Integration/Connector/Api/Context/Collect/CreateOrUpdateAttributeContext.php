@@ -54,29 +54,21 @@ class CreateOrUpdateAttributeContext implements Context
 {
     private const REQUEST_CONTRACT_DIR = 'Attribute/Connector/Collect/';
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var OauthAuthenticatedClientFactory */
-    private $clientFactory;
+    private OauthAuthenticatedClientFactory $clientFactory;
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var InMemoryFindActivatedLocalesByIdentifiers */
-    private $activatedLocales;
+    private InMemoryFindActivatedLocalesByIdentifiers $activatedLocales;
 
-    /** @var null|string */
-    private $requestContract;
+    private ?string $requestContract = null;
 
-    /** @var null|Response */
-    private $pimResponse;
+    private ?Response $pimResponse = null;
 
-    /** @var InMemoryFindConnectorAttributeByIdentifierAndCode */
-    private $findConnectorAttribute;
+    private InMemoryFindConnectorAttributeByIdentifierAndCode $findConnectorAttribute;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,

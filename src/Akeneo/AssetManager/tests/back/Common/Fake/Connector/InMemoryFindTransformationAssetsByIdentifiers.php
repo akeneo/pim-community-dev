@@ -19,7 +19,7 @@ use Akeneo\AssetManager\Domain\Query\Asset\FindTransformationAssetsByIdentifiers
 class InMemoryFindTransformationAssetsByIdentifiers implements FindTransformationAssetsByIdentifiersInterface
 {
     /** @var TransformationAsset[] */
-    private $transformationAssets;
+    private array $transformationAssets;
 
     public function __construct()
     {

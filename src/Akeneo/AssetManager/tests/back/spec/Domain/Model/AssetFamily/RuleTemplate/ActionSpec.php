@@ -48,7 +48,7 @@ class ActionSpec extends ObjectBehavior
             'attribute' => '{{attribute}}'
         ];
         $this->beConstructedThrough('createFromProductLinkRule', [$action]);
-        $this->shouldThrow(new \InvalidArgumentException(sprintf('The action mode allowed should be one of these : "add, replace"')))->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('The action mode allowed should be one of these : "add, replace"'))->duringInstantiation();
     }
 
     public function it_could_not_create_an_action_without_field()

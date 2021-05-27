@@ -31,9 +31,7 @@ class OptionDataHydratorSpec extends ObjectBehavior
     function it_hydrates_option_data_if_the_option_still_exists(OptionAttribute $optionAttribute)
     {
         $optionAttribute->hasAttributeOption(
-            Argument::that(function (OptionCode $code) {
-                return 'blue' === (string) $code;
-            }
+            Argument::that(fn(OptionCode $code) => 'blue' === (string) $code
             ))->willReturn(true);
         $optionCollectionData = $this->hydrate('blue', $optionAttribute);
         $optionCollectionData->shouldBeAnInstanceOf(OptionData::class);
@@ -43,9 +41,7 @@ class OptionDataHydratorSpec extends ObjectBehavior
     function it_returns_an_empty_data_if_the_options_does_not_exist_anymore(OptionAttribute $optionAttribute)
     {
         $optionAttribute->hasAttributeOption(
-            Argument::that(function (OptionCode $code) {
-                return 'red' === (string) $code;
-            })
+            Argument::that(fn(OptionCode $code) => 'red' === (string) $code)
         )->willReturn(false);
         $optionCollectionData = $this->hydrate('red', $optionAttribute);
         $optionCollectionData->shouldBeAnInstanceOf(EmptyData::class);

@@ -30,10 +30,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class InMemoryAttributeRepository implements AttributeRepositoryInterface
 {
     /** @var AbstractAttribute[] */
-    private $attributes = [];
+    private array $attributes = [];
 
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
@@ -131,15 +130,13 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
             new BeforeAttributeDeletedEvent(
                 $this->getAssetFamilyIdentifier($attributeIdentifier),
                 $attributeIdentifier
-            ),
-            BeforeAttributeDeletedEvent::class
+            )
         );
 
         unset($this->attributes[(string) $attributeIdentifier]);
 
         $this->eventDispatcher->dispatch(
-            new AttributeDeletedEvent($attribute->getAssetFamilyIdentifier(), $attributeIdentifier),
-            AttributeDeletedEvent::class
+            new AttributeDeletedEvent($attribute->getAssetFamilyIdentifier(), $attributeIdentifier)
         );
     }
 

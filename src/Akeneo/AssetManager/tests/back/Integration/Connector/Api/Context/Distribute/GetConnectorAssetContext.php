@@ -52,41 +52,30 @@ class GetConnectorAssetContext implements Context
 {
     private const REQUEST_CONTRACT_DIR = 'Asset/Connector/Distribute/';
 
-    /** @var OauthAuthenticatedClientFactory */
-    private $clientFactory;
+    private OauthAuthenticatedClientFactory $clientFactory;
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var InMemoryFindConnectorAssetByAssetFamilyAndCode */
-    private $findConnectorAsset;
+    private InMemoryFindConnectorAssetByAssetFamilyAndCode $findConnectorAsset;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var null|Response */
-    private $existentAsset;
+    private ?Response $existentAsset = null;
 
-    /** @var null|Response */
-    private $nonExistentAsset;
+    private ?Response $nonExistentAsset = null;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var InMemoryMediaFileRepository */
-    private $mediaFileRepository;
+    private InMemoryMediaFileRepository $mediaFileRepository;
 
-    /** @var InMemoryFilesystemProviderStub */
-    private $filesystemProvider;
+    private InMemoryFilesystemProviderStub $filesystemProvider;
 
-    /** @var null|StreamedResponse */
-    private $mediaFileDownloadResponse;
+    private ?Response $mediaFileDownloadResponse = null;
 
     /** @var null|string */
     private $downloadedMediaFile;
 
-    /** @var null|Response */
-    private $imageNotFoundResponse;
+    private ?Response $imageNotFoundResponse = null;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,

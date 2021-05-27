@@ -28,14 +28,11 @@ use Akeneo\Test\Acceptance\Common\NotImplementedException;
  */
 class InMemoryFindPropertyAccessibleAsset implements FindPropertyAccessibleAssetInterface
 {
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var PropertyAccessibleAssetHydrator */
-    private $propertyAccessibleAssetHydrator;
+    private PropertyAccessibleAssetHydrator $propertyAccessibleAssetHydrator;
 
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $findAttributesIndexedByIdentifier;
+    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
 
     public function __construct(
         AssetRepositoryInterface $assetRepository,

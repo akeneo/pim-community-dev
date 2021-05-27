@@ -42,14 +42,11 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
 class SqlFindConnectorAttributesByAssetFamilyIdentifierTest extends SqlIntegrationTestCase
 {
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var FindConnectorAttributesByAssetFamilyIdentifierInterface*/
-    private $findConnectorAssetFamilyAttributes;
+    private FindConnectorAttributesByAssetFamilyIdentifierInterface $findConnectorAssetFamilyAttributes;
 
     protected function setUp(): void
     {

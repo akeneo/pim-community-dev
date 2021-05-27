@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\PublicApi\Onboarder;
 
+use Akeneo\AssetManager\Infrastructure\PublicApi\Onboarder\FindAllAssets;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -57,11 +58,10 @@ use PHPUnit\Framework\Assert;
  */
 class FindAllAssetsTest extends SqlIntegrationTestCase
 {
-    /** @var Onboarder\FindAllAssets */
-    private $query;
+    private FindAllAssets $query;
 
     /** @var AssetIdentifier[] */
-    private $identifiers = [];
+    private array $identifiers = [];
 
     public function setUp(): void
     {

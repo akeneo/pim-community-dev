@@ -39,11 +39,9 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 {
     private const DELETE_ASSET_ROUTE = 'akeneo_asset_manager_asset_delete_rest';
 
-    /** @var FixturesLoader */
-    private $fixturesLoader;
+    private FixturesLoader $fixturesLoader;
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
     public function setUp(): void
     {

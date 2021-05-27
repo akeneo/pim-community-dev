@@ -22,8 +22,7 @@ use PHPUnit\Framework\TestCase;
  */
 class InMemoryFileExistsTest extends TestCase
 {
-    /** @var InMemoryFileExists */
-    private $fileExists;
+    private InMemoryFileExists $fileExists;
 
     public function setUp(): void
     {

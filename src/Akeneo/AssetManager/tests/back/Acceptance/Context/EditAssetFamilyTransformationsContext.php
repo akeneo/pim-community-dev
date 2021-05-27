@@ -79,32 +79,23 @@ class EditAssetFamilyTransformationsContext implements Context
         ],
     ];
 
-    /** @var CreateAssetFamilyHandler */
-    private $createAssetFamilyHandler;
+    private CreateAssetFamilyHandler $createAssetFamilyHandler;
 
-    /** @var EditAssetFamilyHandler */
-    private $editAssetFamilyHandler;
+    private EditAssetFamilyHandler $editAssetFamilyHandler;
 
-    /** @var CreateAttributeHandler */
-    private $createAttributeHandler;
+    private CreateAttributeHandler $createAttributeHandler;
 
-    /** @var InMemoryFindActivatedLocalesByIdentifiers */
-    private $activatedLocales;
+    private InMemoryFindActivatedLocalesByIdentifiers $activatedLocales;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var ConstraintViolationsContext */
-    private $constraintViolationsContext;
+    private ConstraintViolationsContext $constraintViolationsContext;
 
-    /** @var InMemoryChannelExists */
-    private $channelExists;
+    private InMemoryChannelExists $channelExists;
 
-    /** @var InMemoryClock */
-    private $clock;
+    private InMemoryClock $clock;
 
     public function __construct(
         CreateAssetFamilyHandler $createAssetFamilyHandler,

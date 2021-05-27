@@ -19,14 +19,11 @@ class FixturesInstallerTest extends SqlIntegrationTestCase
 {
     private const TOTAL_ASSETS = 28;
 
-    /** @var FixturesInstaller */
-    private $fixturesInstaller;
+    private FixturesInstaller $fixturesInstaller;
 
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var Client */
-    private $assetClient;
+    private Client $assetClient;
 
     public function setUp(): void
     {

@@ -87,41 +87,29 @@ class ExecuteNamingConventionContext implements Context
     private const PATTERN_WITH_LOCALIZABLE_TARGET = '/(?P<localizabletitle>[a-zA-Z0-9\s]+)_(?P<length>\d+)_(?P<link>\w+)/';
     private const ORIGINAL_FILENAME = 'title_12_the_link-useless part.png';
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var CreateAssetFamilyHandler */
-    private $createAssetFamilyHandler;
+    private CreateAssetFamilyHandler $createAssetFamilyHandler;
 
-    /** @var InMemoryFileExists */
-    private $fileExists;
+    private InMemoryFileExists $fileExists;
 
-    /** @var EditAssetCommandFactory */
-    private $editAssetCommandFactory;
+    private EditAssetCommandFactory $editAssetCommandFactory;
 
-    /** @var EditAssetHandler */
-    private $editAssetHandler;
+    private EditAssetHandler $editAssetHandler;
 
-    /** @var ExceptionContext */
-    private $exceptionContext;
+    private ExceptionContext $exceptionContext;
 
-    /** @var ConstraintViolationsContext */
-    private $violationsContext;
+    private ConstraintViolationsContext $violationsContext;
 
-    /** @var ExecuteNamingConvention */
-    private $executeNamingConvention;
+    private ExecuteNamingConvention $executeNamingConvention;
 
-    /** @var null|string */
-    private $createdAssetCode = null;
+    private ?string $createdAssetCode = null;
 
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,

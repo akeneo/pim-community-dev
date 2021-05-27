@@ -49,29 +49,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAttributeContext implements Context
 {
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var EditAttributeCommandFactoryInterface */
-    private $editAttributeCommandFactory;
+    private EditAttributeCommandFactoryInterface $editAttributeCommandFactory;
 
-    /** @var EditAttributeHandler */
-    private $handler;
+    private EditAttributeHandler $handler;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var ExceptionContext */
-    private $exceptionContext;
+    private ExceptionContext $exceptionContext;
 
-    /** @var ConstraintViolationsContext */
-    private $constraintViolationsContext;
+    private ConstraintViolationsContext $constraintViolationsContext;
 
     /** @var array AttributeIdentifier */
-    private $attributeIdentifiers = [];
+    private array $attributeIdentifiers = [];
 
-    /** @var InMemoryFindActivatedLocalesByIdentifiers */
-    private $activatedLocales;
+    private InMemoryFindActivatedLocalesByIdentifiers $activatedLocales;
 
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyRepository;
 use Akeneo\AssetManager\Common\Fake\InMemoryAssetRepository;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindIdentifiersByAssetFamilyAndCodes;
@@ -19,20 +20,15 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryFindIdentifiersByAssetFamilyAndCodesTest extends TestCase
 {
-    /** @var InMemoryAssetRepository */
-    private $assetRepository;
+    private InMemoryAssetRepository $assetRepository;
 
-    /** @var InMemoryAssetFamilyRepository */
-    private $assetFamilyRepository;
+    private InMemoryAssetFamilyRepository $assetFamilyRepository;
 
-    /** @var InMemoryFindIdentifiersByAssetFamilyAndCodes */
-    private $query;
+    private InMemoryFindIdentifiersByAssetFamilyAndCodes $query;
 
-    /** @var AssetFamilyIdentifier */
-    private $starckIdentifier;
+    private ?AssetIdentifier $starckIdentifier = null;
 
-    /** @var AssetFamilyIdentifier */
-    private $cocoIdentifier;
+    private ?AssetIdentifier $cocoIdentifier = null;
 
     public function setUp(): void
     {

@@ -27,11 +27,9 @@ use Ramsey\Uuid\Uuid;
  */
 class SqlScopableAndLocalizableTest extends SqlIntegrationTestCase
 {
-    /** @var CreateAttributesHelper */
-    protected $createAttributesHelper;
+    protected CreateAttributesHelper $createAttributesHelper;
 
-    /** @var SqlScopableOnly */
-    private $averageMaxPercentageOfScopableOnlyAttributessPerAssetFamily;
+    private SqlScopableOnly $averageMaxPercentageOfScopableOnlyAttributessPerAssetFamily;
 
     public function setUp(): void
     {

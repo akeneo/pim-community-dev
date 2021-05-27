@@ -24,8 +24,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifier
  */
 class InMemoryFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIdentifierInterface
 {
-    /** @var InMemoryAttributeRepository */
-    private $attributeRepository;
+    private InMemoryAttributeRepository $attributeRepository;
 
     public function __construct(InMemoryAttributeRepository $attributeRepository)
     {

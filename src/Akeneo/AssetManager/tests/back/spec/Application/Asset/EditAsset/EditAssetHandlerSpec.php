@@ -91,7 +91,7 @@ class EditAssetHandlerSpec extends ObjectBehavior
 
     private function getAttribute(): TextAttribute
     {
-        $textAttribute = TextAttribute::createText(
+        return TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name', 'test'),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
@@ -105,7 +105,5 @@ class EditAssetHandlerSpec extends ObjectBehavior
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty()
         );
-
-        return $textAttribute;
     }
 }

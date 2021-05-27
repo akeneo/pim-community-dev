@@ -20,8 +20,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 
 class InMemoryFindAssetFamilyAttributeAsMainMedia implements FindAssetFamilyAttributeAsMainMediaInterface
 {
-    /** @var InMemoryAssetFamilyRepository */
-    private $assetFamilyRepository;
+    private InMemoryAssetFamilyRepository $assetFamilyRepository;
 
     public function __construct(InMemoryAssetFamilyRepository $assetFamilyRepository)
     {

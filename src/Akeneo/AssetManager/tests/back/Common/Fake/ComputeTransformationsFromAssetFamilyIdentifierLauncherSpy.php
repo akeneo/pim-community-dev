@@ -19,7 +19,7 @@ use Webmozart\Assert\Assert;
 
 class ComputeTransformationsFromAssetFamilyIdentifierLauncherSpy implements ComputeTransformationFromAssetFamilyIdentifierLauncherInterface
 {
-    private $launches = [];
+    private array $launches = [];
 
     public function launch(AssetFamilyIdentifier $assetFamilyIdentifier): void
     {

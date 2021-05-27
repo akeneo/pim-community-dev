@@ -30,7 +30,7 @@ class InMemoryFindAssetIdentifiersForQuery implements FindIdentifiersForQueryInt
     private const API_REST_PREFIX_URL = '/api/rest/';
 
     /** @var string[] */
-    private $requestContracts = [
+    private array $requestContracts = [
         'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Search/city_and_color_filtered.json',
         'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Search/code_filtered.json',
         'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Search/code_filtered_with_not_in_operator.json',
@@ -47,7 +47,7 @@ class InMemoryFindAssetIdentifiersForQuery implements FindIdentifiersForQueryInt
     ];
 
     /** @var string[] */
-    private $requestContractsApi = [
+    private array $requestContractsApi = [
         'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Connector/Distribute/successful_brand_assets_for_ecommerce_channel.json',
         'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Connector/Distribute/successful_complete_brand_assets.json',
         'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Connector/Distribute/successful_brand_assets_page_1.json',
@@ -57,10 +57,7 @@ class InMemoryFindAssetIdentifiersForQuery implements FindIdentifiersForQueryInt
         'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Connector/Distribute/updated_since_brand_assets_page_1.json',
     ];
 
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private RequestStack $requestStack;
 
     public function __construct(RequestStack $requestStack)
     {
@@ -75,14 +72,10 @@ class InMemoryFindAssetIdentifiersForQuery implements FindIdentifiersForQueryInt
         if (null !== $currentRequest && self::API_REST_PREFIX_URL === substr($currentRequest->getPathInfo(), 0, 10)) {
             $queryParameters = $this->getQueryParametersFromRequest($currentRequest);
             $items = $this->getItemsForQueryParameters($queryParameters);
-            $identifiers = array_map(function ($item) {
-                return AssetIdentifier::fromString(sprintf('%s_fingerprint', $item['code']))->normalize();
-            }, $items);
+            $identifiers = array_map(fn($item) => AssetIdentifier::fromString(sprintf('%s_fingerprint', $item['code']))->normalize(), $items);
         } else {
             $items = $this->getItemsForFilters($query->getFilters());
-            $identifiers = array_map(function ($item) {
-                return $item['identifier'];
-            }, $items);
+            $identifiers = array_map(fn($item) => $item['identifier'], $items);
         }
 
         $lastItem = end($items);

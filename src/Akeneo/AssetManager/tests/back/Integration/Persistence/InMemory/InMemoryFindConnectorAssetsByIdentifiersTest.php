@@ -25,8 +25,7 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryFindConnectorAssetsByIdentifiersTest extends TestCase
 {
-    /** @var InMemoryFindConnectorAssetsByIdentifiers */
-    private $findConnectorAssetsByIdentifiers;
+    private InMemoryFindConnectorAssetsByIdentifiers $findConnectorAssetsByIdentifiers;
 
     public function setUp(): void
     {

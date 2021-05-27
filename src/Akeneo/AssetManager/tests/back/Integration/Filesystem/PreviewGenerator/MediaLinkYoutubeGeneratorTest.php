@@ -17,11 +17,9 @@ final class MediaLinkYoutubeGeneratorTest extends PreviewGeneratorIntegrationTes
 {
     protected const YOUTUBE_VIDEO_ID = 'youtube-id';
 
-    /** @var PreviewGeneratorInterface */
-    private $mediaLinkYoutubeGenerator;
+    private PreviewGeneratorInterface $mediaLinkYoutubeGenerator;
 
-    /** @var MediaLinkAttribute */
-    private $youtubeMediaLinkAttribute;
+    private MediaLinkAttribute $youtubeMediaLinkAttribute;
 
     public function setUp(): void
     {

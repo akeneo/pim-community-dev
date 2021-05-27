@@ -13,7 +13,7 @@ use PHPUnit\Framework\Assert;
  */
 class EventAggregatorStub implements EventAggregatorInterface
 {
-    private $isFlushed = false;
+    private bool $isFlushed = false;
     /**
      * {@inheritdoc}
      */

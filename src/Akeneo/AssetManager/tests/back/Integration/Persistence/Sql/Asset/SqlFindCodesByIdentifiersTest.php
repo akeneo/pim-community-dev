@@ -17,8 +17,7 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindCodesByIdentifiersTest extends SqlIntegrationTestCase
 {
-    /** @var FindCodesByIdentifiersInterface */
-    private $query;
+    private FindCodesByIdentifiersInterface $query;
 
     public function setUp(): void
     {

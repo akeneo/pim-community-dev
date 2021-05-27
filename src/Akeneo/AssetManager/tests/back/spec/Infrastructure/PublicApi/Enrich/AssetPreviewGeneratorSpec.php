@@ -84,9 +84,7 @@ class AssetPreviewGeneratorSpec extends ObjectBehavior
 
         $imagePreviewUrlGenerator->generate(
             Argument::that(
-                function ($base64EncodedData) {
-                    return '/a/b/c/d/jambon.png' === base64_decode((string) $base64EncodedData);
-                }
+                fn($base64EncodedData) => '/a/b/c/d/jambon.png' === base64_decode((string) $base64EncodedData)
             ),
             'packshot',
             'thumbnail'
@@ -139,9 +137,7 @@ class AssetPreviewGeneratorSpec extends ObjectBehavior
 
         $imagePreviewUrlGenerator->generate(
             Argument::that(
-                function ($base64EncodedData) {
-                    return 'http://www.example.org/image.png' === base64_decode((string) $base64EncodedData);
-                }
+                fn($base64EncodedData) => 'http://www.example.org/image.png' === base64_decode((string) $base64EncodedData)
             ),
             'packshot',
             'thumbnail'

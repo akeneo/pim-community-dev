@@ -25,11 +25,9 @@ use PHPUnit\Framework\Assert;
 
 class SqlFindIdentifiersByAssetFamilyTest extends SqlIntegrationTestCase
 {
-    /** @var SqlFindAssetIdentifiersByAssetFamily */
-    private $findIdentifiersByAssetFamily;
+    private SqlFindAssetIdentifiersByAssetFamily $findIdentifiersByAssetFamily;
 
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
     /**
      * @test
@@ -105,9 +103,7 @@ class SqlFindIdentifiersByAssetFamilyTest extends SqlIntegrationTestCase
         Assert::assertIsIterable($actualIdentifiers);
 
         $expectedAssetIdentifiers = array_map(
-            function (string $identifier): AssetIdentifier {
-                return AssetIdentifier::fromString($identifier);
-            },
+            fn(string $identifier): AssetIdentifier => AssetIdentifier::fromString($identifier),
             $expectedIdentifiers
         );
 

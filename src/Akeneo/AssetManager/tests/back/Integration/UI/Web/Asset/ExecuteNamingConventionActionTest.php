@@ -61,20 +61,15 @@ class ExecuteNamingConventionActionTest extends ControllerIntegrationTestCase
     private const YEAR_OF_FIRST_ALBUM_CODE = 'year_of_first_album';
     const PRODUCT_REF_CODE = 'product_ref';
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var SecurityFacadeStub */
-    private $securityFacade;
+    private SecurityFacadeStub $securityFacade;
 
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
     public function setUp(): void
     {

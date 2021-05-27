@@ -35,17 +35,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EditAttributeOptionContext implements Context
 {
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var EditAttributeOptionHandler */
-    private $editAttributeOptionHandler;
+    private EditAttributeOptionHandler $editAttributeOptionHandler;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var ConstraintViolationsContext */
-    private $constraintViolationsContext;
+    private ConstraintViolationsContext $constraintViolationsContext;
 
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,

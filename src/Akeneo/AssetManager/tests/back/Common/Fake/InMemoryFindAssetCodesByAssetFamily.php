@@ -22,8 +22,7 @@ use Akeneo\AssetManager\Domain\Query\Asset\FindAssetCodesByAssetFamilyInterface;
  */
 class InMemoryFindAssetCodesByAssetFamily implements FindAssetCodesByAssetFamilyInterface
 {
-    /** @var InMemoryAssetRepository */
-    private $assetRepository;
+    private InMemoryAssetRepository $assetRepository;
 
     public function __construct(InMemoryAssetRepository $assetRepository)
     {

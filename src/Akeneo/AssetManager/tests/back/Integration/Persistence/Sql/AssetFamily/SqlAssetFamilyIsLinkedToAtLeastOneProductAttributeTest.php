@@ -28,8 +28,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
  */
 class SqlAssetFamilyIsLinkedToAtLeastOneProductAttributeTest extends SqlIntegrationTestCase
 {
-    /** @var AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface */
-    private $query;
+    private AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface $query;
 
     public function setUp(): void
     {

@@ -46,8 +46,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 {
     private const DELETE_ATTRIBUTE_ROUTE = 'akeneo_asset_manager_attribute_delete_rest';
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
     public function setUp(): void
     {

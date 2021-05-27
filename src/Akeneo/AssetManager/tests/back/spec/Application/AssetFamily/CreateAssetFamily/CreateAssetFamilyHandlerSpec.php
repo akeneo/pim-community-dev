@@ -61,13 +61,11 @@ class CreateAssetFamilyHandlerSpec extends ObjectBehavior
             ]
         );
 
-        $assetFamilyRepository->create(Argument::that(function ($assetFamily) {
-            return $assetFamily instanceof AssetFamily
-                && 'brand' === $assetFamily->getIdentifier()->normalize()
-                && 'Intel' === $assetFamily->getLabel('en_US')
-                && 'Intel' === $assetFamily->getLabel('fr_FR')
-                && 'code' === $assetFamily->getNamingConvention()->normalize()['source']['property'];
-        }))->shouldBeCalled();
+        $assetFamilyRepository->create(Argument::that(fn($assetFamily) => $assetFamily instanceof AssetFamily
+            && 'brand' === $assetFamily->getIdentifier()->normalize()
+            && 'Intel' === $assetFamily->getLabel('en_US')
+            && 'Intel' === $assetFamily->getLabel('fr_FR')
+            && 'code' === $assetFamily->getNamingConvention()->normalize()['source']['property']))->shouldBeCalled();
 
         $this->__invoke($createAssetFamilyCommand);
     }

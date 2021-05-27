@@ -34,8 +34,7 @@ use PHPUnit\Framework\Assert;
  */
 class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
 {
-    /** @var FindIdentifiersForQueryInterface */
-    private $findIdentifiersForQuery;
+    private FindIdentifiersForQueryInterface $findIdentifiersForQuery;
 
     public function setUp(): void
     {

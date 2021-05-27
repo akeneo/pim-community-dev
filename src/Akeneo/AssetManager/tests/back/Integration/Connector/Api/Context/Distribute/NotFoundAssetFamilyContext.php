@@ -29,17 +29,13 @@ class NotFoundAssetFamilyContext implements Context
     private const DISTRIBUTE_ATTRIBUTE_REQUEST_CONTRACT_DIR = 'Attribute/Connector/Distribute/';
     private const COLLECT_ATTRIBUTE_REQUEST_CONTRACT_DIR = 'Attribute/Connector/Collect/';
 
-    /** @var OauthAuthenticatedClientFactory */
-    private $clientFactory;
+    private OauthAuthenticatedClientFactory $clientFactory;
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var null|Response */
-    private $notFoundAssetFamilyResponse;
+    private ?Response $notFoundAssetFamilyResponse = null;
 
-    /** @var null|string */
-    private $notFoundAssetFamilyRequestContract;
+    private ?string $notFoundAssetFamilyRequestContract = null;
 
     public function __construct(OauthAuthenticatedClientFactory $clientFactory, WebClientHelper $webClientHelper)
     {

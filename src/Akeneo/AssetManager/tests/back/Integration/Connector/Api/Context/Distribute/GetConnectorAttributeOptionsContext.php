@@ -46,32 +46,26 @@ class GetConnectorAttributeOptionsContext implements Context
 {
     private const REQUEST_CONTRACT_DIR = 'Attribute/Connector/Distribute/';
 
-    /** @var OauthAuthenticatedClientFactory */
-    private $clientFactory;
+    private OauthAuthenticatedClientFactory $clientFactory;
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var InMemoryFindConnectorAttributeOptions */
-    private $findConnectorAttributeOptions;
+    private InMemoryFindConnectorAttributeOptions $findConnectorAttributeOptions;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
     /** @var null|Response **/
-    private $optionsResponse;
+    private ?Response $optionsResponse = null;
 
     /** @var null|Response **/
-    private $multiOptionResponse;
+    private ?Response $multiOptionResponse = null;
 
     /** @var null|Response **/
-    private $nonExistentAttributeResponse;
+    private ?Response $nonExistentAttributeResponse = null;
 
-    /** @var null|Response */
-    private $optionsNotSupportedResponse;
+    private ?Response $optionsNotSupportedResponse = null;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
@@ -333,9 +327,7 @@ class GetConnectorAttributeOptionsContext implements Context
             AttributeIsReadOnly::fromBoolean(false),
             [
                 'options' => array_map(
-                    function (AttributeOption $attributeOption) {
-                        return $attributeOption->normalize();
-                    },
+                    fn(AttributeOption $attributeOption) => $attributeOption->normalize(),
                     $optionAttribute->getAttributeOptions()
                 )
             ]
@@ -398,9 +390,7 @@ class GetConnectorAttributeOptionsContext implements Context
             AttributeIsReadOnly::fromBoolean(false),
             [
                 'options' => array_map(
-                    function (AttributeOption $attributeOption) {
-                        return $attributeOption->normalize();
-                    },
+                    fn(AttributeOption $attributeOption) => $attributeOption->normalize(),
                     $optionAttribute->getAttributeOptions()
                 )
             ]

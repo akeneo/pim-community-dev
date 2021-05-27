@@ -27,8 +27,7 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryFindConnectorAttributesByAssetFamilyIdentifierTest extends TestCase
 {
-    /** @var InMemoryFindConnectorAttributesByAssetFamilyIdentifier */
-    private $query;
+    private InMemoryFindConnectorAttributesByAssetFamilyIdentifier $query;
 
     public function setUp(): void
     {
@@ -53,8 +52,7 @@ class InMemoryFindConnectorAttributesByAssetFamilyIdentifierTest extends TestCas
         );
 
         $result = $this->query->find(
-            AssetFamilyIdentifier::fromString('non_existent_asset_family_identifier'),
-            $connectorAttribute
+            AssetFamilyIdentifier::fromString('non_existent_asset_family_identifier')
         );
 
         Assert::assertEmpty($result);
@@ -82,8 +80,7 @@ class InMemoryFindConnectorAttributesByAssetFamilyIdentifierTest extends TestCas
         );
 
         $results = $this->query->find(
-            AssetFamilyIdentifier::fromString('existent_asset_family_identifier'),
-            $connectorAttribute
+            AssetFamilyIdentifier::fromString('existent_asset_family_identifier')
         );
 
         Assert::assertNotNull($results);

@@ -20,8 +20,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 
 class InMemoryFindAttributeNextOrder implements FindAttributeNextOrderInterface
 {
-    /** @var InMemoryAttributeRepository */
-    private $attributeRepository;
+    private InMemoryAttributeRepository $attributeRepository;
 
     public function __construct(InMemoryAttributeRepository $attributeRepository)
     {

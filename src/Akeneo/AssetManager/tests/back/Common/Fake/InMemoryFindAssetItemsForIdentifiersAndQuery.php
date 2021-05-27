@@ -28,17 +28,13 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\BulkAssetI
  */
 class InMemoryFindAssetItemsForIdentifiersAndQuery implements FindAssetItemsForIdentifiersAndQueryInterface
 {
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var AssetFamilyRepositoryInterface  */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocales */
-    private $findRequiredValueKeyCollectionForChannelAndLocales;
+    private InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredValueKeyCollectionForChannelAndLocales;
 
-    /** @var BulkAssetItemHydrator */
-    private $bulkAssetItemHydrator;
+    private BulkAssetItemHydrator $bulkAssetItemHydrator;
 
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -91,7 +87,7 @@ class InMemoryFindAssetItemsForIdentifiersAndQuery implements FindAssetItemsForI
                 return false;
             }
 
-            $normalizedAssetItem = [
+            return [
                 'identifier' => (string) $asset->getIdentifier(),
                 'asset_family_identifier' => (string) $asset->getAssetFamilyIdentifier(),
                 'code' => (string) $asset->getCode(),
@@ -99,12 +95,8 @@ class InMemoryFindAssetItemsForIdentifiersAndQuery implements FindAssetItemsForI
                 'attribute_as_main_media' => $attributeAsMainMedia->normalize(),
                 'attribute_as_label' => $attributeAsLabel->normalize()
             ];
-
-            return $normalizedAssetItem;
         }, $identifiers)));
 
-        $assetItems = $this->bulkAssetItemHydrator->hydrateAll($normalizedAssetItems, $query);
-
-        return $assetItems;
+        return $this->bulkAssetItemHydrator->hydrateAll($normalizedAssetItems, $query);
     }
 }

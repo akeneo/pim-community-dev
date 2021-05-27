@@ -30,8 +30,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
 class GetActionTest extends ControllerIntegrationTestCase
 {
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
     public function setUp(): void
     {

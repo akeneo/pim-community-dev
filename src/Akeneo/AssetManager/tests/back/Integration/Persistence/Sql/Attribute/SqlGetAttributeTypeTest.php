@@ -26,11 +26,9 @@ class SqlGetAttributeTypeTest extends SqlIntegrationTestCase
     private const EXISTING_TEXT_ATTRIBUTE_CODE = 'name';
     private const UNKNOWN_ATTRIBUTE_CODE = 'UNKNOWN_ATTRIBUTE';
 
-    /** @var GetAttributeTypeInterface */
-    private $getAttributeType;
+    private GetAttributeTypeInterface $getAttributeType;
 
-    /** @var array */
-    private $fixtures;
+    private ?array $fixtures = null;
 
     public function setUp(): void
     {

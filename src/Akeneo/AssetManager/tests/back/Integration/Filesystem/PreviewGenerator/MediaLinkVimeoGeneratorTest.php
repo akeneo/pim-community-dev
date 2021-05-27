@@ -17,11 +17,9 @@ final class MediaLinkVimeoGeneratorTest extends PreviewGeneratorIntegrationTestC
 {
     protected const VIMEO_VIDEO_ID = '543643';
 
-    /** @var PreviewGeneratorInterface */
-    private $mediaLinkVimeoGenerator;
+    private PreviewGeneratorInterface $mediaLinkVimeoGenerator;
 
-    /** @var MediaLinkAttribute */
-    private $vimeoMediaLinkAttribute;
+    private MediaLinkAttribute $vimeoMediaLinkAttribute;
 
     public function setUp(): void
     {

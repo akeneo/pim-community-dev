@@ -17,8 +17,7 @@ use Akeneo\AssetManager\Domain\Query\Channel\FindActivatedLocalesPerChannelsInte
 
 class InMemoryFindActivatedLocalesPerChannels implements FindActivatedLocalesPerChannelsInterface
 {
-    /** @var array */
-    private $activatedLocalesPerChannels = [];
+    private array $activatedLocalesPerChannels = [];
 
     /**
      * {@inheritdoc}

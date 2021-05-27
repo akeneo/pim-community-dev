@@ -10,8 +10,7 @@ use PHPUnit\Framework\Assert;
 
 class NamingConventionLauncherSpy implements NamingConventionLauncherInterface
 {
-    /** @var array */
-    private $launches = [];
+    private array $launches = [];
 
     public function launchForAllAssetFamilyAssets(AssetFamilyIdentifier $assetFamilyIdentifier): void
     {

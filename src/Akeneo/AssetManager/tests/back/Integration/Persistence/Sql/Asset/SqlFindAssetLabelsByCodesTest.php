@@ -22,8 +22,7 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindAssetLabelsByCodesTest extends SqlIntegrationTestCase
 {
-    /** @var SqlFindAssetLabelsByCodes */
-    private $findAssetLabelsByCodeQuery;
+    private SqlFindAssetLabelsByCodes $findAssetLabelsByCodeQuery;
 
     public function setUp(): void
     {

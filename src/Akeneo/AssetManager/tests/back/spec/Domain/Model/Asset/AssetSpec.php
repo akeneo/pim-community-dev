@@ -274,8 +274,8 @@ class AssetSpec extends ObjectBehavior
 
      function it_filters_values()
      {
-         $this->filterValues(function(Value $value){ return false;})->normalize()->shouldReturn([]);
-         $this->filterValues(function(Value $value){ return true;})
+         $this->filterValues(fn(Value $value) => false)->normalize()->shouldReturn([]);
+         $this->filterValues(fn(Value $value) => true)
              ->findValue(ValueKey::createFromNormalized('description_designer_fingerprint_ecommerce_fr_FR'))
              ->shouldNotBeNull();
      }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
 use PhpSpec\ObjectBehavior;
 
@@ -33,7 +34,7 @@ class ThumbnailOperationSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Operation\ThumbnailOperation::class);
+        $this->shouldHaveType(ThumbnailOperation::class);
         $this->getWidth()->shouldBe(200);
         $this->getHeight()->shouldBe(100);
     }
@@ -48,14 +49,14 @@ class ThumbnailOperationSpec extends ObjectBehavior
         $object = $this::create([
             'width' => 200,
         ]);
-        $object->beAnInstanceOf(Operation\ThumbnailOperation::class);
+        $object->beAnInstanceOf(ThumbnailOperation::class);
         $object->getWidth()->shouldBe(200);
         $object->getHeight()->shouldBeNull();
 
         $object = $this::create([
             'height' => 100,
         ]);
-        $object->beAnInstanceOf(Operation\ThumbnailOperation::class);
+        $object->beAnInstanceOf(ThumbnailOperation::class);
         $object->getWidth()->shouldBeNull();
         $object->getHeight()->shouldBe(100);
     }

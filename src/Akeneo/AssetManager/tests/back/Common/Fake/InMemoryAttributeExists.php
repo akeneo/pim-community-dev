@@ -25,8 +25,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
  */
 class InMemoryAttributeExists implements AttributeExistsInterface
 {
-    /** @var InMemoryAttributeRepository */
-    private $attributeRepository;
+    private InMemoryAttributeRepository $attributeRepository;
 
     public function __construct(InMemoryAttributeRepository $attributeRepository)
     {

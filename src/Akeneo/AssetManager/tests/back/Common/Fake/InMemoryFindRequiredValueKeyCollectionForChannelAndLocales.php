@@ -14,14 +14,13 @@ use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
 
 class InMemoryFindRequiredValueKeyCollectionForChannelAndLocales implements FindRequiredValueKeyCollectionForChannelAndLocalesInterface
 {
-    /** @var InMemoryAttributeRepository */
-    private $attributeRepository;
+    private InMemoryAttributeRepository $attributeRepository;
 
     /** @var string[] */
-    private $activatedChannelCodes;
+    private ?array $activatedChannelCodes = null;
 
     /** @var string[] */
-    private $activatedLocaleCodes;
+    private ?array $activatedLocaleCodes = null;
 
     public function __construct(InMemoryAttributeRepository $attributeRepository)
     {
@@ -83,9 +82,7 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocales implements Find
             }
         }
 
-        $valueKeys = array_map(function ($key) {
-            return ValueKey::createFromNormalized($key);
-        }, $valueKeys);
+        $valueKeys = array_map(fn($key) => ValueKey::createFromNormalized($key), $valueKeys);
 
         return ValueKeyCollection::fromValueKeys($valueKeys);
     }

@@ -53,14 +53,11 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 
 class SqlFindConnectorAssetsByIdentifiersTest extends SqlIntegrationTestCase
 {
-    /** @var AssetRepositoryInterface */
-    private $repository;
+    private AssetRepositoryInterface $repository;
 
-    /** @var FindConnectorAssetsByIdentifiersInterface */
-    private $findConnectorAssetsQuery;
+    private FindConnectorAssetsByIdentifiersInterface $findConnectorAssetsQuery;
 
-    /** @var SaverInterface */
-    private $fileInfoSaver;
+    private SaverInterface $fileInfoSaver;
 
     protected function setUp(): void
     {

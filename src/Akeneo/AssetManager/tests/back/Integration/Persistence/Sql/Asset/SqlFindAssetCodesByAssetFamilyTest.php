@@ -30,8 +30,7 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
  */
 class SqlFindAssetCodesByAssetFamilyTest extends SqlIntegrationTestCase
 {
-    /** @var SqlFindAssetCodesByAssetFamily */
-    private $findAssetCodesByAssetFamily;
+    private SqlFindAssetCodesByAssetFamily $findAssetCodesByAssetFamily;
 
     public function setUp(): void
     {

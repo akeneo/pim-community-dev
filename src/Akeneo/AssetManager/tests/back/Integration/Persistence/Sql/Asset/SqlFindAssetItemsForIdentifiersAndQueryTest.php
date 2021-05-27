@@ -33,14 +33,11 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindAssetItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCase
 {
-    /** @var FindAssetItemsForIdentifiersAndQueryInterface */
-    private $findAssetItemsForIdentifiersAndQuery;
+    private FindAssetItemsForIdentifiersAndQueryInterface $findAssetItemsForIdentifiersAndQuery;
 
-    /** @var AssetIdentifier */
-    private $starckIdentifier;
+    private AssetIdentifier $starckIdentifier;
 
-    /** @var AssetIdentifier */
-    private $cocoIdentifier;
+    private AssetIdentifier $cocoIdentifier;
 
     public function setUp(): void
     {

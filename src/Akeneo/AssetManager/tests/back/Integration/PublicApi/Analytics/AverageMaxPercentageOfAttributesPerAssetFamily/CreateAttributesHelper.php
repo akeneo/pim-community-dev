@@ -25,11 +25,9 @@ use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
  */
 class CreateAttributesHelper
 {
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var int */
-    private $attributeOrder = 2;
+    private int $attributeOrder = 2;
 
     public function __construct(AttributeRepositoryInterface $attributeRepository)
     {
@@ -41,7 +39,7 @@ class CreateAttributesHelper
         int $numberOfAttributesToCreate
     ): void {
         // By default the label is localizable only
-        $numberOfAttributesToCreate = $numberOfAttributesToCreate - 1;
+        $numberOfAttributesToCreate -= 1;
         $this->createAttributesWith($assetFamilyIdentifier, $numberOfAttributesToCreate, false, true);
     }
 

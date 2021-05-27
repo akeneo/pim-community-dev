@@ -22,8 +22,7 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryFindConnectorAssetTest extends TestCase
 {
-    /** @var InMemoryFindConnectorAssetByAssetFamilyAndCode */
-    private $query;
+    private InMemoryFindConnectorAssetByAssetFamilyAndCode $query;
 
     public function setUp(): void
     {

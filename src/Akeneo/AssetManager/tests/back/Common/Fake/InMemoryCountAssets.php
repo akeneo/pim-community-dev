@@ -10,8 +10,7 @@ use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
 
 class InMemoryCountAssets implements CountAssetsInterface
 {
-    /** @var InMemoryAssetRepository */
-    private $inMemoryAssetRepository;
+    private InMemoryAssetRepository $inMemoryAssetRepository;
 
     public function __construct(InMemoryAssetRepository $inMemoryAssetRepository)
     {

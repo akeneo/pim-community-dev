@@ -23,8 +23,7 @@ use Akeneo\AssetManager\Domain\Query\Asset\FindExistingAssetCodesInterface;
  */
 class InMemoryFindExistingAssetCodes implements FindExistingAssetCodesInterface
 {
-    /** @var InMemoryAssetRepository */
-    private $assetRepository;
+    private InMemoryAssetRepository $assetRepository;
 
     public function __construct(InMemoryAssetRepository $assetRepository)
     {
@@ -34,12 +33,8 @@ class InMemoryFindExistingAssetCodes implements FindExistingAssetCodesInterface
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): array
     {
         $existingAssets = $this->assetRepository->getByAssetFamilyAndCodes($assetFamilyIdentifier, $assetCodes);
-        $existingCodes = array_map(function (Asset $asset) {
-            return $asset->getCode();
-        }, $existingAssets);
+        $existingCodes = array_map(fn(Asset $asset) => $asset->getCode(), $existingAssets);
 
-        return array_filter($assetCodes, function ($code) use ($existingCodes) {
-            return in_array($code, $existingCodes);
-        });
+        return array_filter($assetCodes, fn($code) => in_array($code, $existingCodes));
     }
 }

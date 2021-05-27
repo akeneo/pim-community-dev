@@ -42,14 +42,11 @@ use Ramsey\Uuid\Uuid;
  */
 class SqlAverageMaxNumberOfValuesPerAssetTest extends SqlIntegrationTestCase
 {
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var SqlAverageMaxNumberOfValuesPerAsset */
-    private $averageMaxNumberOfValuesPerAssets;
+    private SqlAverageMaxNumberOfValuesPerAsset $averageMaxNumberOfValuesPerAssets;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
     public function setUp(): void
     {
@@ -120,7 +117,7 @@ class SqlAverageMaxNumberOfValuesPerAssetTest extends SqlIntegrationTestCase
      */
     private function createAttributes(int $numberOfValuesForAsset, $assetFamilyIdentifier): array
     {
-        $attributes = array_map(
+        return array_map(
             function (int $index) use ($assetFamilyIdentifier) {
                 $identifier = sprintf('%s%d', $assetFamilyIdentifier->normalize(), $index);
                 $attribute = TextAttribute::createText(
@@ -143,8 +140,6 @@ class SqlAverageMaxNumberOfValuesPerAssetTest extends SqlIntegrationTestCase
             },
             range(1, $numberOfValuesForAsset)
         );
-
-        return $attributes;
     }
 
     /**
@@ -170,17 +165,13 @@ class SqlAverageMaxNumberOfValuesPerAssetTest extends SqlIntegrationTestCase
      */
     private function generateValues(array $attributes): ValueCollection
     {
-        $valueCollection = ValueCollection::fromValues(
-            array_map(function (AbstractAttribute $attribute) {
-                return Value::create(
-                    $attribute->getIdentifier(),
-                    ChannelReference::noReference(),
-                    LocaleReference::noReference(),
-                    TextData::fromString('Some text data')
-                );
-            }, $attributes)
+        return ValueCollection::fromValues(
+            array_map(fn(AbstractAttribute $attribute) => Value::create(
+                $attribute->getIdentifier(),
+                ChannelReference::noReference(),
+                LocaleReference::noReference(),
+                TextData::fromString('Some text data')
+            ), $attributes)
         );
-
-        return $valueCollection;
     }
 }

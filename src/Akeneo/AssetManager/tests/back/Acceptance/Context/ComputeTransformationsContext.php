@@ -22,8 +22,7 @@ use Behat\Behat\Context\Context;
  */
 class ComputeTransformationsContext implements Context
 {
-    /** @var ComputeTransformationsFromAssetFamilyIdentifierLauncherSpy */
-    private $computeTransformationsLauncher;
+    private ComputeTransformationsFromAssetFamilyIdentifierLauncherSpy $computeTransformationsLauncher;
 
     public function __construct(ComputeTransformationsFromAssetFamilyIdentifierLauncherSpy $computeTransformationsLauncher)
     {

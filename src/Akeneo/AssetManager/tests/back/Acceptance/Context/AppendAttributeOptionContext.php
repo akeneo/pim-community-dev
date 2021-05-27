@@ -35,17 +35,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AppendAttributeOptionContext implements Context
 {
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var AppendAttributeOptionHandler */
-    private $appendAttributeOptionHandler;
+    private AppendAttributeOptionHandler $appendAttributeOptionHandler;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var ConstraintViolationsContext */
-    private $constraintViolationsContext;
+    private ConstraintViolationsContext $constraintViolationsContext;
 
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,

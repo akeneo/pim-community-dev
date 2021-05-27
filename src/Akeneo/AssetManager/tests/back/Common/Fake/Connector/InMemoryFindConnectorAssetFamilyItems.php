@@ -21,7 +21,7 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFam
 class InMemoryFindConnectorAssetFamilyItems implements FindConnectorAssetFamilyItemsInterface
 {
     /** @var ConnectorAssetFamily[] */
-    private $results;
+    private array $results;
 
     public function __construct()
     {
@@ -41,17 +41,11 @@ class InMemoryFindConnectorAssetFamilyItems implements FindConnectorAssetFamilyI
     public function find(AssetFamilyQuery $query): array
     {
         $searchAfterCode = $query->getSearchAfterIdentifier();
-        $assetFamilies = array_values(array_filter($this->results, function (ConnectorAssetFamily $assetFamily) use ($searchAfterCode): bool {
-            return null === $searchAfterCode
-                || strcasecmp((string) $assetFamily->getIdentifier(), $searchAfterCode) > 0;
-        }));
+        $assetFamilies = array_values(array_filter($this->results, fn(ConnectorAssetFamily $assetFamily): bool => null === $searchAfterCode
+            || strcasecmp((string) $assetFamily->getIdentifier(), $searchAfterCode) > 0));
 
-        usort($assetFamilies, function (ConnectorAssetFamily $first, ConnectorAssetFamily $second) {
-            return strcasecmp((string) $first->getIdentifier(), (string) $second->getIdentifier());
-        });
+        usort($assetFamilies, fn(ConnectorAssetFamily $first, ConnectorAssetFamily $second) => strcasecmp((string) $first->getIdentifier(), (string) $second->getIdentifier()));
 
-        $assetFamilies = array_slice($assetFamilies, 0, $query->getSize());
-
-        return $assetFamilies;
+        return array_slice($assetFamilies, 0, $query->getSize());
     }
 }

@@ -17,14 +17,11 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindIdentifiersByAssetFamilyAndCodesTest extends SqlIntegrationTestCase
 {
-    /** @var FindIdentifiersByAssetFamilyAndCodesInterface */
-    private $findIdentifiersByAssetFamilyAndCodes;
+    private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes;
 
-    /** @var AssetIdentifier */
-    private $starckIdentifier;
+    private AssetIdentifier $starckIdentifier;
 
-    /** @var AssetIdentifier */
-    private $cocoIdentifier;
+    private AssetIdentifier $cocoIdentifier;
 
     public function setUp(): void
     {
