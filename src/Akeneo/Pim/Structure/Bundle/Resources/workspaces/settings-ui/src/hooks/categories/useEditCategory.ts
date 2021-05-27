@@ -39,13 +39,10 @@ const useEditCategory = (category: Category | null, formData: EditCategoryForm |
       return false;
     }
 
-    for (const [permissionName, changedPermission] of Object.entries(editedFormData.permissions)) {
-      if (JSON.stringify(originalFormData.permissions[permissionName].value) != JSON.stringify(changedPermission.value)) {
-        return true;
-      }
-    }
+    return JSON.stringify(originalFormData.permissions.view.value) != JSON.stringify(editedFormData.permissions.view.value)
+      || JSON.stringify(originalFormData.permissions.edit.value) != JSON.stringify(editedFormData.permissions.edit.value)
+      || JSON.stringify(originalFormData.permissions.own.value) != JSON.stringify(editedFormData.permissions.own.value);
 
-    return false;
   }, [originalFormData, editedFormData]);
 
   const onChangeCategoryLabel = (locale: string, label: string) => {
@@ -87,6 +84,10 @@ const useEditCategory = (category: Category | null, formData: EditCategoryForm |
 
     if (response.success) {
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
+      // @todo @fixme the form data returned are not always up-to-date with the backend for the permissions
+      // ex:  Add a user-group in "Edit" and save. The user-group will be automatically also added in "View" backend side
+      //      But the returned form data still not contain this user-group in the "View" permissions values
+      //      Refreshing the page will display the added user-group in both "View" and "Edit"
       setOriginalFormData(response.form);
     } else {
       notify(NotificationLevel.ERROR, translate('pim_enrich.entity.category.content.edit.fail'));

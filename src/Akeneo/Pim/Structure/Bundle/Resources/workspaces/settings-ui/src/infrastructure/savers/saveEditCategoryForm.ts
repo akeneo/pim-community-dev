@@ -14,18 +14,14 @@ const saveEditCategoryForm = async (categoryId: number, formData: EditCategoryFo
   for (const [locale, changedLabel] of Object.entries(formData.label)) {
     params.append(formData.label[locale].fullName, changedLabel.value);
   }
+
   if (formData.permissions) {
-    for (const [permissionField, changedPermission] of Object.entries(formData.permissions)) {
-      // @todo Find how to handle apply_on_children when its value is "0" (unchecked)
-      if (permissionField === 'apply_on_children') {
-        // @fixme
-        if (changedPermission.value === '1') {
-          params.append(formData.permissions[permissionField].fullName, changedPermission.value);
-        }
-      } else {
-        changedPermission.value.map(value => params.append(formData.permissions[permissionField].fullName, value));
-      }
+    if (formData.permissions.apply_on_children.value === '1') {
+      params.append(formData.permissions.apply_on_children.fullName, formData.permissions.apply_on_children.value);
     }
+    formData.permissions.view.value.map(value => params.append(formData.permissions.view.fullName, value));
+    formData.permissions.edit.value.map(value => params.append(formData.permissions.edit.fullName, value));
+    formData.permissions.own.value.map(value => params.append(formData.permissions.own.fullName, value));
   }
 
   const response = await fetch(Routing.generate('pim_enrich_categorytree_edit', {id: categoryId}), {

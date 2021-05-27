@@ -8,6 +8,7 @@ type FormField = {
 };
 
 type FormChoiceField = FormField & {
+  value: string[];
   choices: {
     value: string;
     label: string;
