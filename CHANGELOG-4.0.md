@@ -2,6 +2,13 @@
 
 ## Bug fixes
 
+- PIM:9724: Fix duplicated log files for some job executions
+- PIM-9692: Standardize the thumbnail display on the product grid
+
+# 4.0.111 (2021-05-21)
+
+## Bug fixes
+
 - PIM-9777: Fix error message when trying to delete an attribute linked to an entity
 
 # 4.0.110 (2021-05-14)
