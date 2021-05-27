@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM:9724: Fix duplicated log files for some job executions
 - PIM-9692: Standardize the thumbnail display on the product grid
 
 # 4.0.111 (2021-05-21)
