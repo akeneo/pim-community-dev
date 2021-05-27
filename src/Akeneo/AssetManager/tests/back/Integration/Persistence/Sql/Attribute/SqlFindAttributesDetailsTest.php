@@ -198,6 +198,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedImage->isRequired = true;
         $expectedImage->valuePerChannel = true;
         $expectedImage->valuePerLocale = false;
+        $expectedImage->isReadOnly = false;
         $expectedImage->additionalProperties = [
             'max_file_size' => '1000',
             'allowed_extensions' => ['png'],

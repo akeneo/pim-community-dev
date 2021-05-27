@@ -64,6 +64,7 @@ class InMemoryFindAttributesDetailsTest extends TestCase
         $textAttributeDetails = new AttributeDetails();
         $textAttributeDetails->assetFamilyIdentifier = $assetFamilyIdentifier;
         $textAttributeDetails->code = $attributeCode;
+        $textAttributeDetails->labels = [];
 
         return $textAttributeDetails;
     }
