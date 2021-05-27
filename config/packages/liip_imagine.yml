@@ -29,7 +29,7 @@ liip_imagine:
             quality:          95
             format:           png
             filters:
-                thumbnail:    { size: [320, 320], mode: outbound }
+                thumbnail:    { size: [320, 320], mode: inset }
                 strip:        ~
                 auto_rotate: ~
 
@@ -38,7 +38,7 @@ liip_imagine:
             format:           png
             filters:
                 auto_rotate: ~
-                thumbnail:    { size: [280, 280], mode: outbound }
+                thumbnail:    { size: [280, 280], mode: inset }
                 strip:        ~
         dropdown_select_picture:
             quality:          95
