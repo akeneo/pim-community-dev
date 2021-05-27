@@ -132,7 +132,7 @@ class SqlFindConnectorAttributeOptionTest extends SqlIntegrationTestCase
             AttributeIsReadOnly::fromBoolean(false),
             [
                 'options' => array_map(
-                    fn(AttributeOption $attributeOption) => $attributeOption->normalize(),
+                    fn (AttributeOption $attributeOption) => $attributeOption->normalize(),
                     $optionCollectionAttribute->getAttributeOptions()
                 ),
             ]

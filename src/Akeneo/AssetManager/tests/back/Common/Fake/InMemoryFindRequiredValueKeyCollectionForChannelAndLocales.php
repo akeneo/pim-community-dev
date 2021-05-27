@@ -82,7 +82,7 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocales implements Find
             }
         }
 
-        $valueKeys = array_map(fn($key) => ValueKey::createFromNormalized($key), $valueKeys);
+        $valueKeys = array_map(fn ($key) => ValueKey::createFromNormalized($key), $valueKeys);
 
         return ValueKeyCollection::fromValueKeys($valueKeys);
     }

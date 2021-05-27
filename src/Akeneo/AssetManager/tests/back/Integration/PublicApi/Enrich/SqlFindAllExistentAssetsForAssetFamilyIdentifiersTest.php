@@ -91,7 +91,7 @@ final class SqlFindAllExistentAssetsForAssetFamilyIdentifiersTest extends SqlInt
         $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
         $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
 
-        $assetFamilyIdentifiers = array_map(fn(int $identifier) => AssetFamilyIdentifier::fromString(sprintf('asset_family_%d', $identifier)), range(1, 4));
+        $assetFamilyIdentifiers = array_map(fn (int $identifier) => AssetFamilyIdentifier::fromString(sprintf('asset_family_%d', $identifier)), range(1, 4));
 
         foreach ($assetFamilyIdentifiers as $assetFamilyIdentifier) {
             $assetFamilyRepository->create(AssetFamily::create($assetFamilyIdentifier, [], Image::createEmpty(), RuleTemplateCollection::empty()));

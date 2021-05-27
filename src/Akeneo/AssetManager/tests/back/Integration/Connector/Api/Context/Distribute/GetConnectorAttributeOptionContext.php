@@ -257,7 +257,7 @@ class GetConnectorAttributeOptionContext implements Context
             AttributeIsReadOnly::fromBoolean(false),
             [
                 'options' => array_map(
-                    fn(AttributeOption $attributeOption) => $attributeOption->normalize(),
+                    fn (AttributeOption $attributeOption) => $attributeOption->normalize(),
                     $this->singleOptionAttribute->getAttributeOptions()
                 ),
             ]
@@ -311,7 +311,7 @@ class GetConnectorAttributeOptionContext implements Context
             AttributeIsReadOnly::fromBoolean(false),
             [
                 'options' => array_map(
-                    fn(AttributeOption $attributeOption) => $attributeOption->normalize(),
+                    fn (AttributeOption $attributeOption) => $attributeOption->normalize(),
                     $this->multiOptionAttribute->getAttributeOptions()
                 ),
             ]

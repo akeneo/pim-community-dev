@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
-use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyRepository;
 use Akeneo\AssetManager\Common\Fake\InMemoryAssetRepository;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindIdentifiersByAssetFamilyAndCodes;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;

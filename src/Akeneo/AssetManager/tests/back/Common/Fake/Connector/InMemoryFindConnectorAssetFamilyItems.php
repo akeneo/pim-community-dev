@@ -41,10 +41,10 @@ class InMemoryFindConnectorAssetFamilyItems implements FindConnectorAssetFamilyI
     public function find(AssetFamilyQuery $query): array
     {
         $searchAfterCode = $query->getSearchAfterIdentifier();
-        $assetFamilies = array_values(array_filter($this->results, fn(ConnectorAssetFamily $assetFamily): bool => null === $searchAfterCode
+        $assetFamilies = array_values(array_filter($this->results, fn (ConnectorAssetFamily $assetFamily): bool => null === $searchAfterCode
             || strcasecmp((string) $assetFamily->getIdentifier(), $searchAfterCode) > 0));
 
-        usort($assetFamilies, fn(ConnectorAssetFamily $first, ConnectorAssetFamily $second) => strcasecmp((string) $first->getIdentifier(), (string) $second->getIdentifier()));
+        usort($assetFamilies, fn (ConnectorAssetFamily $first, ConnectorAssetFamily $second) => strcasecmp((string) $first->getIdentifier(), (string) $second->getIdentifier()));
 
         return array_slice($assetFamilies, 0, $query->getSize());
     }

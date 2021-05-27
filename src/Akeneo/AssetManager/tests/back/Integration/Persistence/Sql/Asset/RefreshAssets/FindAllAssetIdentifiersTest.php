@@ -86,7 +86,7 @@ class FindAllAssetIdentifiersTest extends SqlIntegrationTestCase
      */
     private function assertAssetsIdentifiers(array $expectedIdentifiers, array $actualIdentifiers): void
     {
-        $normalizedIdentifiers = array_map(fn(AssetIdentifier $identifier) => $identifier->normalize(), $actualIdentifiers);
+        $normalizedIdentifiers = array_map(fn (AssetIdentifier $identifier) => $identifier->normalize(), $actualIdentifiers);
         sort($normalizedIdentifiers);
         sort($expectedIdentifiers);
         $this->assertEquals($expectedIdentifiers, $normalizedIdentifiers);

@@ -139,7 +139,7 @@ final class ListAssetContext implements Context
     {
         $expectedAssetCodes = explode(',', $expectedAssetCodes);
         $resultCodes = array_map(
-            fn(AssetItem $assetItem): string => $assetItem->code,
+            fn (AssetItem $assetItem): string => $assetItem->code,
             $this->result->items
         );
 

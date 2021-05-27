@@ -59,7 +59,7 @@ final class ConstraintViolationsContext implements Context
     public function thereIsNoViolationsErrors()
     {
         if (0 !== $this->violations->count()) {
-            $errorMessages = array_map(fn(ConstraintViolation $violation) => $violation->getMessage(), iterator_to_array($this->violations->getIterator()));
+            $errorMessages = array_map(fn (ConstraintViolation $violation) => $violation->getMessage(), iterator_to_array($this->violations->getIterator()));
 
             throw new \RuntimeException(implode(',', $errorMessages));
         }

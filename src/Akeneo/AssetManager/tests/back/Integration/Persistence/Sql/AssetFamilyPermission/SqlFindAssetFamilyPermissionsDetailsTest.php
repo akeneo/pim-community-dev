@@ -132,7 +132,7 @@ SQL;
         array $actualPermissionsDetails
     ): void {
         $actualNormalizedPermissionDetails = array_map(
-            fn(PermissionDetails $permissionDetails) => $permissionDetails->normalize(),
+            fn (PermissionDetails $permissionDetails) => $permissionDetails->normalize(),
             $actualPermissionsDetails
         );
         $this->assertEquals($expectedNormalizedPermissionsDetails, $actualNormalizedPermissionDetails);

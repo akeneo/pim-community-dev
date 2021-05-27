@@ -194,7 +194,7 @@ class FilterAssetsTest extends SearchIntegrationTestCase
         );
 
         $attributeOptions = array_map(
-            fn(string $optionCode) => AttributeOption::create(
+            fn (string $optionCode) => AttributeOption::create(
                 OptionCode::fromString($optionCode),
                 LabelCollection::fromArray([])
             ),
@@ -223,7 +223,7 @@ class FilterAssetsTest extends SearchIntegrationTestCase
         );
 
         $attributeOptions = array_map(
-            fn(string $optionCode) => AttributeOption::create(
+            fn (string $optionCode) => AttributeOption::create(
                 OptionCode::fromString($optionCode),
                 LabelCollection::fromArray([])
             ),

@@ -33,8 +33,8 @@ class InMemoryFindExistingAssetCodes implements FindExistingAssetCodesInterface
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): array
     {
         $existingAssets = $this->assetRepository->getByAssetFamilyAndCodes($assetFamilyIdentifier, $assetCodes);
-        $existingCodes = array_map(fn(Asset $asset) => $asset->getCode(), $existingAssets);
+        $existingCodes = array_map(fn (Asset $asset) => $asset->getCode(), $existingAssets);
 
-        return array_filter($assetCodes, fn($code) => in_array($code, $existingCodes));
+        return array_filter($assetCodes, fn ($code) => in_array($code, $existingCodes));
     }
 }

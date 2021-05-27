@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\PublicApi\Onboarder;
 
-use Akeneo\AssetManager\Infrastructure\PublicApi\Onboarder\FindAllAssets;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -49,6 +48,7 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlAssetRepository;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlAssetFamilyRepository;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlAttributeRepository;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Onboarder;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Onboarder\FindAllAssets;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 

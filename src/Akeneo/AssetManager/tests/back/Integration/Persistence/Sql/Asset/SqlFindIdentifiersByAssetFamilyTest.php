@@ -103,7 +103,7 @@ class SqlFindIdentifiersByAssetFamilyTest extends SqlIntegrationTestCase
         Assert::assertIsIterable($actualIdentifiers);
 
         $expectedAssetIdentifiers = array_map(
-            fn(string $identifier): AssetIdentifier => AssetIdentifier::fromString($identifier),
+            fn (string $identifier): AssetIdentifier => AssetIdentifier::fromString($identifier),
             $expectedIdentifiers
         );
 

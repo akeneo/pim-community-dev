@@ -34,7 +34,7 @@ class InMemoryFindUserGroupsForSecurityIdentifierTest extends TestCase
         $userGroupIdentifiers = $this->query->find(SecurityIdentifier::fromString('julia'));
 
         $normalizedUserGroupIdentifiers = array_map(
-            fn(UserGroupIdentifier $userGroupIdentifier) => $userGroupIdentifier->normalize(),
+            fn (UserGroupIdentifier $userGroupIdentifier) => $userGroupIdentifier->normalize(),
             $userGroupIdentifiers
         );
 

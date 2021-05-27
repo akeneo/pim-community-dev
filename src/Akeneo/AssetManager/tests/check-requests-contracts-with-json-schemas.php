@@ -110,7 +110,7 @@ function removeEmptyLine(array $result): array
 function removeDoubleSlashes(array $paths): array
 {
     return array_map(
-        fn(string $path) => str_replace('//', '/', $path),
+        fn (string $path) => str_replace('//', '/', $path),
         $paths
     );
 }

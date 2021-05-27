@@ -166,7 +166,7 @@ class SqlAverageMaxNumberOfValuesPerAssetTest extends SqlIntegrationTestCase
     private function generateValues(array $attributes): ValueCollection
     {
         return ValueCollection::fromValues(
-            array_map(fn(AbstractAttribute $attribute) => Value::create(
+            array_map(fn (AbstractAttribute $attribute) => Value::create(
                 $attribute->getIdentifier(),
                 ChannelReference::noReference(),
                 LocaleReference::noReference(),

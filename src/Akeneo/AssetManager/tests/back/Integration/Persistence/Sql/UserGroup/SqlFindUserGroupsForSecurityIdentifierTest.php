@@ -31,7 +31,7 @@ class SqlFindUserGroupsForSecurityIdentifierTest extends SqlIntegrationTestCase
 
         $userGroupIdentifiers = $this->findUserGroupsForSecurityIdentifiers->find(SecurityIdentifier::fromString('admin'));
         $normalizedUserGroupIdentifiers = array_map(
-            fn(UserGroupIdentifier $userGroupIdentifier) => $userGroupIdentifier->normalize(),
+            fn (UserGroupIdentifier $userGroupIdentifier) => $userGroupIdentifier->normalize(),
             $userGroupIdentifiers
         );
 

@@ -259,7 +259,7 @@ HTML;
         $files = [];
 
         if (isset($request['files'])) {
-            $files = array_map(fn($requestFile) => new UploadedFile(
+            $files = array_map(fn ($requestFile) => new UploadedFile(
                 self::RESPONSES_FILE_PATH_PREFIX . $requestFile['path'],
                 $requestFile['name'],
                 $requestFile['mime_type']

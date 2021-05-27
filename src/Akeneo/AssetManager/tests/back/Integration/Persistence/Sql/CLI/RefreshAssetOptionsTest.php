@@ -215,7 +215,7 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
         $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
         $this->currentAssetIdentifier = AssetIdentifier::fromString('a_asset');
         $optionCodes = array_map(
-            fn(string $optionCode) => OptionCode::fromString($optionCode), $optionCodes
+            fn (string $optionCode) => OptionCode::fromString($optionCode), $optionCodes
         );
         $assetRepository->create(
             Asset::create(
@@ -243,7 +243,7 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
         $optionAttribute = $attributeRepository->getByIdentifier($this->currentAttributeIdentifier);
         $optionsToKeep = array_filter(
             $optionAttribute->getAttributeOptions(),
-            fn(AttributeOption $option) => $optionToRemove !== (string) $option->getCode()
+            fn (AttributeOption $option) => $optionToRemove !== (string) $option->getCode()
         );
         $optionAttribute->setOptions($optionsToKeep);
         $attributeRepository->update($optionAttribute);

@@ -2373,7 +2373,7 @@ final class EditAssetContext implements Context
         $value = current(
             array_filter(
                 $valueCollection,
-                fn(array $value) => $value['attribute'] === $attributeAsMainMedia
+                fn (array $value) => $value['attribute'] === $attributeAsMainMedia
             )
         );
 

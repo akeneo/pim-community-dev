@@ -52,7 +52,7 @@ class InMemoryFindConnectorAttributeOption implements FindConnectorAttributeOpti
 
         $options = $connectorAttribute->normalize()['options'];
 
-        $matchingOption = current(array_filter($options, fn($option) => $option['code'] === (string) $optionCode));
+        $matchingOption = current(array_filter($options, fn ($option) => $option['code'] === (string) $optionCode));
 
 
         if (!$matchingOption) {

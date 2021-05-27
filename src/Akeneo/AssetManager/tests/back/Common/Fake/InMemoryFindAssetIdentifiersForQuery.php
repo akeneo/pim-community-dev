@@ -72,10 +72,10 @@ class InMemoryFindAssetIdentifiersForQuery implements FindIdentifiersForQueryInt
         if (null !== $currentRequest && self::API_REST_PREFIX_URL === substr($currentRequest->getPathInfo(), 0, 10)) {
             $queryParameters = $this->getQueryParametersFromRequest($currentRequest);
             $items = $this->getItemsForQueryParameters($queryParameters);
-            $identifiers = array_map(fn($item) => AssetIdentifier::fromString(sprintf('%s_fingerprint', $item['code']))->normalize(), $items);
+            $identifiers = array_map(fn ($item) => AssetIdentifier::fromString(sprintf('%s_fingerprint', $item['code']))->normalize(), $items);
         } else {
             $items = $this->getItemsForFilters($query->getFilters());
-            $identifiers = array_map(fn($item) => $item['identifier'], $items);
+            $identifiers = array_map(fn ($item) => $item['identifier'], $items);
         }
 
         $lastItem = end($items);

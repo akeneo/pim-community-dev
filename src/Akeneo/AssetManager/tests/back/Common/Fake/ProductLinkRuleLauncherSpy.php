@@ -84,7 +84,7 @@ class ProductLinkRuleLauncherSpy implements ProductLinkRuleLauncherInterface
      */
     public function assertHasRunForAssetsInSameLaunch(string $assetFamilyIdentifier, array $assetCodes): void
     {
-        $fingerprintedCodes = array_map(fn($assetCode) => $this->fingerprint($assetFamilyIdentifier, $assetCode), $assetCodes);
+        $fingerprintedCodes = array_map(fn ($assetCode) => $this->fingerprint($assetFamilyIdentifier, $assetCode), $assetCodes);
 
         $allPresent = false;
 
