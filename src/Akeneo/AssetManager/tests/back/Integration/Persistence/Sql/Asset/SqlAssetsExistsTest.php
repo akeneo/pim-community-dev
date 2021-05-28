@@ -37,7 +37,7 @@ class SqlAssetsExistsTest extends SqlIntegrationTestCase
 {
     private SqlAssetsExists $query;
 
-    private string $assetIdentifier;
+    private AssetIdentifier $assetIdentifier;
 
     public function setUp(): void
     {

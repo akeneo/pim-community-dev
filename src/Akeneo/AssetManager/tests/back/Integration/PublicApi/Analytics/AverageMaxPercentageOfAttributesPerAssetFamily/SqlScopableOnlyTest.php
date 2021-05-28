@@ -17,7 +17,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
-use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerAssetFamily\SqlScopableAndLocalizable;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerAssetFamily\SqlScopableOnly;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -29,13 +29,13 @@ class SqlScopableOnlyTest extends SqlIntegrationTestCase
 {
     protected CreateAttributesHelper $createAttributesHelper;
 
-    private SqlScopableAndLocalizable $averageMaxPercentageOfScopableOnlyAttributessPerAssetFamily;
+    private SqlScopableOnly $averageMaxPercentageOfScopableOnlyAttributesPerAssetFamily;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->averageMaxPercentageOfScopableOnlyAttributessPerAssetFamily = $this->get('akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_asset_family.scopable_only');
+        $this->averageMaxPercentageOfScopableOnlyAttributesPerAssetFamily = $this->get('akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_asset_family.scopable_only');
         $this->createAttributesHelper = new CreateAttributesHelper($this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute'));
         $this->resetDB();
     }
@@ -68,7 +68,7 @@ class SqlScopableOnlyTest extends SqlIntegrationTestCase
         $this->createAttributesHelper->loadNotLocalizableNotScopableAttributesForAssetFamily($anotherAssetFamilyIdentifier,
             10);
 
-        $volume = $this->averageMaxPercentageOfScopableOnlyAttributessPerAssetFamily->fetch();
+        $volume = $this->averageMaxPercentageOfScopableOnlyAttributesPerAssetFamily->fetch();
 
         $this->assertEquals('11', $volume->getMaxVolume());
         $this->assertEquals('10', $volume->getAverageVolume());
