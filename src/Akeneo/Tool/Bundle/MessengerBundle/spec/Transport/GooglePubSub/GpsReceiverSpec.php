@@ -10,6 +10,7 @@ use Google\Cloud\Core\Exception\GoogleException;
 use Google\Cloud\PubSub\Message;
 use Google\Cloud\PubSub\Subscription;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
@@ -24,6 +25,7 @@ class GpsReceiverSpec extends ObjectBehavior
     public function let(Subscription $subscription, SerializerInterface $serializer)
     {
         $this->beConstructedWith($subscription, $serializer);
+        $subscription->info()->willReturn(['ackDeadlineSeconds' => 10]);
     }
 
     public function it_is_initializable(): void
@@ -64,9 +66,11 @@ class GpsReceiverSpec extends ObjectBehavior
             ]);
     }
 
-    public function it_gets_and_acks_message_when_mode_is_activated(Subscription $subscription, $serializer): void
-    {
-        $this->beConstructedWith($subscription, $serializer, ['ack_message_right_after_pull' => true]);
+    public function it_gets_messages_and_modify_deadline_when_alarm_is_sent(
+        Subscription $subscription,
+        SerializerInterface $serializer
+    ): void {
+        $subscription->info()->willReturn(['ackDeadlineSeconds' => 1]);
 
         $gpsMessage = new Message(
             [
@@ -89,7 +93,8 @@ class GpsReceiverSpec extends ObjectBehavior
         ])
             ->willReturn($envelope);
 
-        $subscription->acknowledge($gpsMessage)->shouldBeCalledOnce();
+        $subscription->modifyAckDeadline($gpsMessage, 1)
+            ->shouldBeCalled();
 
         $this->get()
             ->shouldBeLike([
@@ -97,6 +102,7 @@ class GpsReceiverSpec extends ObjectBehavior
                     ->with(new TransportMessageIdStamp('123'))
                     ->with(new NativeMessageStamp($gpsMessage))
             ]);
+        \posix_kill(\posix_getpid(), SIGALRM);
     }
 
     public function it_acknowledges_a_message(Subscription $subscription): void
@@ -111,20 +117,6 @@ class GpsReceiverSpec extends ObjectBehavior
 
         $subscription->acknowledge($gpsMessage)
             ->shouldBeCalled();
-
-        $this->ack($envelope);
-    }
-
-    public function it_does_not_acknowledges_a_message_when_it_was_acknowledged_after_pull(
-        Subscription $subscription,
-        SerializerInterface $serializer
-    ): void {
-        $this->beConstructedWith($subscription, $serializer, ['ack_message_right_after_pull' => true]);
-
-        $gpsMessage = new Message(['data' => 'My message!']);
-        $envelope = new Envelope((object)['message' => 'My message!'], [new NativeMessageStamp($gpsMessage)]);
-
-        $subscription->acknowledge($gpsMessage)->shouldNotBeCalled();
 
         $this->ack($envelope);
     }

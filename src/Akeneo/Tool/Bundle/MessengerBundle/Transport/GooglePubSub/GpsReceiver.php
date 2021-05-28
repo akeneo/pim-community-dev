@@ -20,18 +20,13 @@ use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
  */
 final class GpsReceiver implements ReceiverInterface
 {
-    private const ACK_MESSAGE_RIGHT_AFTER_PULL_OPTION = 'ack_message_right_after_pull';
-    public const AVAILABLE_OPTIONS = [self::ACK_MESSAGE_RIGHT_AFTER_PULL_OPTION];
-
     private SerializerInterface $serializer;
     private Subscription $subscription;
-    private array $options;
 
-    public function __construct(Subscription $subscription, SerializerInterface $serializer, array $options = [])
+    public function __construct(Subscription $subscription, SerializerInterface $serializer)
     {
         $this->subscription = $subscription;
         $this->serializer = $serializer;
-        $this->options = $options;
     }
 
     public function get(): iterable
@@ -50,14 +45,17 @@ final class GpsReceiver implements ReceiverInterface
         }
 
         $message = $messages[0];
-        if ($this->ackMessageRightAfterPullMode()) {
-            $this->ackMessage($message);
-        }
-
         $envelope = $this->serializer->decode([
             'body' => $message->data(),
             'headers' => $message->attributes(),
         ]);
+
+
+        \pcntl_async_signals(true);
+        \pcntl_signal(SIGALRM, function () use ($message) {
+            $this->modifyAckDeadline($message);
+        });
+        $this->setAlarmToModifyAckDeadline();
 
         return [
             $envelope
@@ -66,19 +64,31 @@ final class GpsReceiver implements ReceiverInterface
         ];
     }
 
-    public function ack(Envelope $envelope): void
+    private function modifyAckDeadline(Message $message): void
     {
-        if ($this->ackMessageRightAfterPullMode()) {
-            return;
-        }
+        $this->subscription->modifyAckDeadline($message, $this->getAckDeadlineInSecondsFromSubscription());
 
-        $this->ackMessage($this->getNativeMessage($envelope));
+        $this->setAlarmToModifyAckDeadline();
     }
 
-    private function ackMessage(Message $message): void
+    private function setAlarmToModifyAckDeadline(): void
     {
+        \pcntl_alarm(max($this->getAckDeadlineInSecondsFromSubscription() - 5, 1));
+    }
+
+    private function getAckDeadlineInSecondsFromSubscription(): int
+    {
+        $info = $this->subscription->info();
+
+        return $info['ackDeadlineSeconds'] ?? 10;
+    }
+
+    public function ack(Envelope $envelope): void
+    {
+        \pcntl_alarm(0);
+
         try {
-            $this->subscription->acknowledge($message);
+            $this->subscription->acknowledge($this->getNativeMessage($envelope));
         } catch (GoogleException $e) {
             throw new TransportException($e->getMessage(), 0, $e);
         }
@@ -101,10 +111,5 @@ final class GpsReceiver implements ReceiverInterface
         }
 
         return $nativeMessageStamp->getNativeMessage();
-    }
-
-    private function ackMessageRightAfterPullMode(): bool
-    {
-        return $this->options[static::ACK_MESSAGE_RIGHT_AFTER_PULL_OPTION] ?? false;
     }
 }

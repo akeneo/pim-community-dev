@@ -32,12 +32,7 @@ final class GpsTransportFactory implements TransportFactoryInterface
 
         $receiver = null;
         if (null !== $subscription = $client->getSubscription()) {
-            $receiverOptions = array_filter(
-                $options,
-                fn (string $key): bool => in_array($key, GpsReceiver::AVAILABLE_OPTIONS),
-                ARRAY_FILTER_USE_KEY
-            );
-            $receiver = new GpsReceiver($subscription, $serializer, $receiverOptions);
+            $receiver = new GpsReceiver($subscription, $serializer);
         }
 
         return new GpsTransport($client, $sender, $receiver);
