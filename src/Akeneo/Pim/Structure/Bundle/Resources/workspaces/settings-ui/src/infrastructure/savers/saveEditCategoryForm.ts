@@ -9,11 +9,19 @@ type EditCategoryResponse = {
 };
 
 const saveEditCategoryForm = async (categoryId: number, formData: EditCategoryForm): Promise<EditCategoryResponse> => {
-  // @todo: find a better way to do that
-  let editedFormData = {};
-  editedFormData[formData._token.fullName] = formData._token.value;
+  const params = new URLSearchParams();
+  params.append(formData._token.fullName, formData._token.value);
   for (const [locale, changedLabel] of Object.entries(formData.label)) {
-    editedFormData[formData.label[locale].fullName] = changedLabel.value;
+    params.append(formData.label[locale].fullName, changedLabel.value);
+  }
+
+  if (formData.permissions) {
+    if (formData.permissions.apply_on_children.value === '1') {
+      params.append(formData.permissions.apply_on_children.fullName, formData.permissions.apply_on_children.value);
+    }
+    formData.permissions.view.value.map(value => params.append(formData.permissions.view.fullName, value));
+    formData.permissions.edit.value.map(value => params.append(formData.permissions.edit.fullName, value));
+    formData.permissions.own.value.map(value => params.append(formData.permissions.own.fullName, value));
   }
 
   const response = await fetch(Routing.generate('pim_enrich_categorytree_edit', {id: categoryId}), {
@@ -21,7 +29,7 @@ const saveEditCategoryForm = async (categoryId: number, formData: EditCategoryFo
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
     },
-    body: new URLSearchParams(editedFormData),
+    body: params,
   });
 
   const responseContent = await response.json();

@@ -103,7 +103,7 @@ const Tab = ({children, isActive, parentRef, onVisibilityChange, ...rest}: TabPr
     return () => {
       observer.unobserve(tabElement);
     };
-  }, [onVisibilityChange, parentRef, ref]);
+  }, []);
 
   return (
     <TabContainer ref={ref} tabIndex={0} role="tab" aria-selected={isActive} isActive={isActive} {...rest}>
@@ -133,6 +133,10 @@ const TabBar = ({moreButtonTitle, children, ...rest}: TabBarProps) => {
   const [isOpen, open, close] = useBooleanState();
 
   const decoratedChildren = Children.map(children, (child, index) => {
+    // @todo Find and validate a better way to not throw an error if child is null or undefined
+    if (!child) {
+      return;
+    }
     if (!isValidElement<TabProps>(child)) {
       throw new Error('TabBar only accepts TabBar.Tab as children');
     }
