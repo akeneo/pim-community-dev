@@ -1,4 +1,4 @@
-import {denormalizeChannel, getChannelLabel, getAllLocales} from './channel';
+import {Channel, denormalizeChannel, getChannelLabel, getLocalesFromChannel, getAllLocalesFromChannels, getLocaleFromChannel} from './channel';
 import {denormalizeLocale} from './locale';
 
 describe('akeneo > shared > model --- channel', () => {
@@ -94,7 +94,7 @@ describe('akeneo > shared > model --- channel', () => {
         },
       ],
     });
-    expect(getAllLocales([ecommerce, mobile])).toEqual([
+    expect(getAllLocalesFromChannels([ecommerce, mobile])).toEqual([
       {
         code: 'en_US',
         label: 'English (United States)',
@@ -106,6 +106,106 @@ describe('akeneo > shared > model --- channel', () => {
         label: 'French (France)',
         region: 'France',
         language: 'French',
+      },
+    ]);
+  });
+
+  test('I can get the list of local of all channels', () => {
+    const channels: Channel[] = [
+      {
+        code: 'ecommerce',
+        locales: [
+          {
+            code: 'en_US',
+          },
+          {
+            code: 'fr_FR',
+          },
+        ],
+      },
+      {
+        code: 'mobile',
+        labels: {},
+        locales: [
+          {
+            code: 'de_DE',
+          },
+          {
+            code: 'de_BE',
+          },
+        ],
+      },
+    ];
+
+    expect(getLocalesFromChannel(channels, 'ecommerce')).toEqual([
+      {
+        code: 'en_US',
+      },
+      {
+        code: 'fr_FR',
+      },
+    ]);
+
+    expect(getLocalesFromChannel(channels, null)).toEqual([
+      {
+        code: 'en_US',
+      },
+      {
+        code: 'fr_FR',
+      },
+      {
+        code: 'de_DE',
+      },
+      {
+        code: 'de_BE',
+      },
+    ]);
+  });
+
+  test('I can search locale by code and fallback to the first locale if locale does not exist', () => {
+    const channels = [
+      {
+        code: 'ecommerce',
+        locales: [
+          {
+            code: 'en_US',
+          },
+          {
+            code: 'fr_FR',
+          },
+        ],
+      },
+    ];
+
+    expect(getLocaleFromChannel(channels, 'ecommerce', 'fr_FR')).toEqual('fr_FR');
+    expect(getLocaleFromChannel(channels, 'ecommerce', 'de_DE')).toEqual('en_US');
+  });
+
+  test('I can get the list of locales for a channel', () => {
+    expect(getLocalesFromChannel([], 'ecommerce')).toEqual([]);
+    expect(
+        getLocalesFromChannel(
+            [
+              {
+                code: 'ecommerce',
+                locales: [
+                  {
+                    code: 'en_US',
+                  },
+                  {
+                    code: 'fr_FR',
+                  },
+                ],
+              },
+            ],
+            'ecommerce'
+        )
+    ).toEqual([
+      {
+        code: 'en_US',
+      },
+      {
+        code: 'fr_FR',
       },
     ]);
   });
