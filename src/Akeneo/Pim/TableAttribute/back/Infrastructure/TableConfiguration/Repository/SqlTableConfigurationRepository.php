@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 
@@ -27,10 +27,12 @@ use Ramsey\Uuid\Uuid;
 final class SqlTableConfigurationRepository implements TableConfigurationRepository
 {
     private Connection $connection;
+    private ColumnFactory $columnFactory;
 
-    public function __construct(Connection $connection)
+    public function __construct(Connection $connection, ColumnFactory $columnFactory)
     {
         $this->connection = $connection;
+        $this->columnFactory = $columnFactory;
     }
 
     public function save(int $attributeId, TableConfiguration $tableConfiguration): void
@@ -102,8 +104,9 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
 
         return TableConfiguration::fromColumnDefinitions(
             array_map(
-                fn (array $row): ColumnDefinition => TextColumn::fromNormalized([
+                fn (array $row): ColumnDefinition => $this->columnFactory->createFromNormalized([
                     'code' => $row['code'],
+                    'data_type' => $row['data_type'],
                     'labels' => \json_decode($row['labels'], true),
                 ]),
                 $results

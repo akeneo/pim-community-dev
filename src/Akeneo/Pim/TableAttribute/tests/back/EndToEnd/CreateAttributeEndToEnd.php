@@ -36,7 +36,7 @@ final class CreateAttributeEndToEnd extends ApiTestCase
         "table_configuration": [
             {
                 "code": "ingredients",
-                "type": "text"
+                "data_type": "text"
             }
         ]
     }

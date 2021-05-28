@@ -1,0 +1,6 @@
+services:
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory:
+        arguments:
+            -
+                text: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn
+                number: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn

@@ -4,8 +4,10 @@ namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\TableConfigurat
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Saver\TableConfigurationSaver;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
@@ -13,9 +15,9 @@ use Prophecy\Argument;
 
 class TableConfigurationSaverSpec extends ObjectBehavior
 {
-    function let(TableConfigurationRepository $tableConfigurationRepository)
+    function let(TableConfigurationRepository $tableConfigurationRepository, ColumnFactory $columnFactory)
     {
-        $this->beConstructedWith($tableConfigurationRepository);
+        $this->beConstructedWith($tableConfigurationRepository, $columnFactory);
     }
 
     function it_is_initializable()
@@ -56,6 +58,7 @@ class TableConfigurationSaverSpec extends ObjectBehavior
 
     function it_saves_a_table_configuration(
         TableConfigurationRepository $tableConfigurationRepository,
+        ColumnFactory $columnFactory,
         AttributeInterface $attribute
     ) {
         $attribute->getType()->willReturn(AttributeTypes::TABLE);
@@ -64,6 +67,10 @@ class TableConfigurationSaverSpec extends ObjectBehavior
             ['data_type' => 'text', 'code' => 'quantity', 'labels' => []],
         ]);
         $attribute->getId()->willReturn(42);
+        $columnFactory->createFromNormalized(['data_type' => 'text', 'code' => 'ingredients', 'labels' => []])
+            ->willReturn(TextColumn::fromNormalized(['data_type' => 'text', 'code' => 'ingredients', 'labels' => []]));
+        $columnFactory->createFromNormalized(['data_type' => 'text', 'code' => 'quantity', 'labels' => []])
+            ->willReturn(TextColumn::fromNormalized(['data_type' => 'text', 'code' => 'quantity', 'labels' => []]));
 
         $tableConfigurationRepository->save(42, Argument::type(TableConfiguration::class))->shouldBeCalled();
         $this->save($attribute);

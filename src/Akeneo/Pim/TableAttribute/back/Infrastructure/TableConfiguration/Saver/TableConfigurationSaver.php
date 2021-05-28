@@ -16,19 +16,23 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Saver;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Webmozart\Assert\Assert;
 
 class TableConfigurationSaver implements SaverInterface
 {
     private TableConfigurationRepository $tableConfigurationRepository;
+    private ColumnFactory $columnFactory;
 
-    public function __construct(TableConfigurationRepository $tableConfigurationRepository)
-    {
+    public function __construct(
+        TableConfigurationRepository $tableConfigurationRepository,
+        ColumnFactory $columnFactory
+    ) {
         $this->tableConfigurationRepository = $tableConfigurationRepository;
+        $this->columnFactory = $columnFactory;
     }
 
     public function save($attribute, array $options = []): void
@@ -42,7 +46,9 @@ class TableConfigurationSaver implements SaverInterface
 
         $tableConfiguration = TableConfiguration::fromColumnDefinitions(
             array_map(
-                fn (array $rawColumnDefinition): ColumnDefinition => TextColumn::fromNormalized($rawColumnDefinition),
+                fn (array $rawColumnDefinition): ColumnDefinition =>  $this->columnFactory->createFromNormalized(
+                    $rawColumnDefinition
+                ),
                 $attribute->getRawTableConfiguration(),
             )
         );
