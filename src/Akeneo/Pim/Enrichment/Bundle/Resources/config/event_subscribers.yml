@@ -238,6 +238,12 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EventsApi\DispatchReadProductEventFromEventsApiSubscriber:
+        arguments:
+            - '@event_dispatcher'
+        tags:
+            - { name: kernel.event_subscriber }
+
     Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ReindexFormerAncestorsSubscriber:
         arguments:
             - '@akeneo.pim.enrichment.product.query.get_ancestor_and_descendant_product_model_codes'

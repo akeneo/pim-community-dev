@@ -124,10 +124,7 @@ final class ListProductsQueryHandler
             $queryLocales,
         );
 
-        $productIds = array_map(function (ConnectorProduct $connectorProduct) {
-            return $connectorProduct->id();
-        }, $connectorProductList->connectorProducts());
-        $this->eventDispatcher->dispatch(new ReadProductsEvent($productIds));
+        $this->eventDispatcher->dispatch(new ReadProductsEvent(count($connectorProductList->connectorProducts())));
 
         if ($query->withQualityScores()) {
             $connectorProductList = $this->getProductsWithQualityScores->fromConnectorProductList(

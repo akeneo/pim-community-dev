@@ -325,7 +325,7 @@ class ProductController
             Assert::isInstanceOf($user, UserInterface::class);
 
             $product = $connectorProductsQuery->fromProductIdentifier($code, $user->getId());
-            $this->eventDispatcher->dispatch(new ReadProductsEvent([$product->id()]));
+            $this->eventDispatcher->dispatch(new ReadProductsEvent(1));
 
             if ($request->query->getAlpha('with_quality_scores', 'false') === 'true') {
                 $product = $this->getProductsWithQualityScores->fromConnectorProduct($product);
