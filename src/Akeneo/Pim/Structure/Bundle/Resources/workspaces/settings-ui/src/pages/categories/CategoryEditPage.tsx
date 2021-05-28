@@ -23,7 +23,7 @@ import {
   UnsavedChanges,
   useSecurity,
 } from '@akeneo-pim-community/shared';
-import {CategoryToDelete, useCategory, useCountProductsBeforeDeleteCategory, useDeleteCategory, useEditCategory} from '../../hooks';
+import {CategoryToDelete, useCategory, useCountProductsBeforeDeleteCategory, useDeleteCategory, useEditCategoryForm} from '../../hooks';
 import {Category} from '../../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../../components/datagrids/categories/DeleteCategoryModal';
@@ -63,7 +63,7 @@ const CategoryEditPage: FC = () => {
     onChangeApplyPermissionsOnChilren,
     thereAreUnsavedChanges,
     requestSave
-  } = useEditCategory(parseInt(categoryId));
+  } = useEditCategoryForm(parseInt(categoryId));
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
 

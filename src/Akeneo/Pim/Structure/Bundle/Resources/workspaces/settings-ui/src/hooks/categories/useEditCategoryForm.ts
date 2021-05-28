@@ -8,7 +8,7 @@ import {EditCategoryContext} from "../../components";
 
 // @todo Add unit tests
 // @todo rename to useEditCategoryForm
-const useEditCategory = (categoryId: number) => {
+const useEditCategoryForm = (categoryId: number) => {
   const notify = useNotify();
   const translate = useTranslate();
   const {categoryData, status: categoryLoadingStatus, load: loadCategory} = useCategory(categoryId);
@@ -148,4 +148,4 @@ const useEditCategory = (categoryId: number) => {
   };
 };
 
-export {useEditCategory}
+export {useEditCategoryForm}
