@@ -31,6 +31,7 @@ pim_enrich.entity.product:
       fail: 没有属性被配置为产品标识符，或者您没有编辑的权限。
   page_title:
     index: "]-Inf, 1]{{ count }} 个结果|]1, Inf[{{ count }} 个结果"
+    product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
       subtitle: 创建产品
@@ -49,6 +50,9 @@ pim_enrich.entity.product:
       select: 选择
       all_visible: 所有可见
       copy: 复制
+    convert_variant_to_simple:
+      dialog:
+        title: 确认转换
     history:
       version: 版本
       author: 作者
@@ -166,6 +170,7 @@ pim_enrich.entity.product_model:
       required_label: '(变量轴)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} 个变型产品|]1, Inf[{{ complete }} / {{ total }} 个变型产品"
+      label: 变型
     delete:
       confirm: 确定要删除此产品模型吗？其所有的子模型、产品模型和变型产品也将被删除。
       confirm_for_products_and_product_models: 确定要删除选定的产品和产品模型吗？所有产品模型的子元素也将被删除。
@@ -368,6 +373,7 @@ pim_datagrid:
         csv: CSV
         xlsx: XLSX
         all_attributes: 全部属性
+        with_labels: 有标签
     mass_edit: 批量操作
     sequential_edit: 顺序编辑
     mass_delete: 批量删除
@@ -391,6 +397,7 @@ pim_datagrid:
     label: 筛选器
     system: 系统
     product_typology:
+      simple: '简单'
       variant: '变型'
     entity_type:
       label: '变型'

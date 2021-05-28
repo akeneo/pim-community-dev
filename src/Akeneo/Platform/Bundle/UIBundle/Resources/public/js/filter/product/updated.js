@@ -135,7 +135,10 @@ define([
         value = DateFormatter.format(value, DateContext.get('date').format, this.modelDateFormat);
       } else if ('SINCE LAST JOB' === operator) {
         value = this.getParentForm().getFormData().code;
+      } else if ('SINCE LAST N DAYS' === operator) {
+        value = parseInt(value);
       }
+
       if (_.isUndefined(value)) {
         value = '';
       }

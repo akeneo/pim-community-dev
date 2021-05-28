@@ -294,6 +294,7 @@ pim_title:
   pim_enrich_job_tracker_show: Seguimiento de procesos | Ver el trabajo
   pim_enrich_mass_edit_action: Edición en masa
   pim_analytics_system_info_index: Información del sistema
+  pim_settings_index: Configuración
 pim_menu:
   tab:
     activity: Actividad
@@ -309,7 +310,6 @@ pim_menu:
     attribute_group: Grupos de atributos
     channel: Canales
     currency: Monedas
-    dashboard: Cartelera
     family: Familias
     group: Grupos
     group_type: Tipos de grupo
@@ -330,7 +330,8 @@ pim_menu:
     activity: Actividad de navegación
     system: Sistema de navegación
     user: Navegación del gestor de usuario
-    settings: Navegación de ajustes
+    settings:
+      collapsed_label: Navegación de ajustes
     product: Navegación de productos
     product_infos: Información de producto
   user:

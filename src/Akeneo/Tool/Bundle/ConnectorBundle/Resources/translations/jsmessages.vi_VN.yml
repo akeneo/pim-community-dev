@@ -1,0 +1,140 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    validation: Xác nhận tập tin
+    import_associations: Xuất kết hợp
+    import_root_product_model: Nhập khẩu gốc dòng sản phẩm
+    import_sub_product_model: Nhập khẩu dòng sản phẩm phụ
+    compute_family_variant_structure_changes: Tính toán sự thay đổi cấu trúc của gia đình biến thể
+    compute_completeness_of_products_family: Tính toán sự đầy đủ của các sản phẩm gia đình
+  csv_product_export:
+    label: Xuất sang CSV
+    export.label: Export sản phẩm
+  csv_product_model_export:
+    label: Dòng sản phẩm xuất khẩu trong CSV
+    export.label: Dòng sản phẩm xuất khẩu
+  csv_category_export:
+    label: Xuất thể loại sang CSV
+    export.label: Export thể loại
+  csv_attribute_export:
+    label: Xuất thuộc tính sang CSV
+    export.label: Xuất thuộc tính
+  csv_attribute_option_export:
+    label: Xuất tuỳ chọn của thuộc tính sang CSV
+    export.label: Xuất tuỳ chọn của thuộc tính
+  csv_association_type_export:
+    label: Xuất kiểu kết hợp sang CSV
+    export.label: Xuất kiểu kết hợp
+  csv_group_export:
+    label: Xuất nhóm sang CSV
+    export.label: Xuất nhóm
+  csv_family_export:
+    label: Gia đình xuất khẩu trong CSV
+    export.label: Gia đình xuất khẩu
+  csv_family_variant_export:
+    label: Gia đình biến thể xuất khẩu trong CSV
+    export.label: Gia đình biến thể xuất khẩu
+  csv_product_import:
+    label: Xuất sản phẩm sang CSV
+    import.label: Nhập sản phẩm
+  csv_product_model_import:
+    label: Dòng sản phẩm nhập khẩu trong CSV
+    import_product_model_descendants.label: Tính toán dòng sản phẩm hậu duệ
+  csv_category_import:
+    label: Nhập danh mục từ CSV
+    import.label: Nhập danh mục
+  csv_attribute_import:
+    label: Nhập thuộc tính từ CSV
+    import.label: Nhập thuộc tính
+  csv_attribute_option_import:
+    label: Nhập tuỳ chọn của thuộc tính từ CSV
+    import.label: Nhập tuỳ chọn của thuộc tính
+  csv_association_type_import:
+    label: Nhập kiểu kết hợp từ file CSV
+    import.label: Nhập kiểu kết hợp
+  csv_family_import:
+    label: Nhập khẩu gia đình trong CSV
+    import.label: Gia đình nhập khẩu
+  csv_family_variant_import:
+    label: Nhập khẩu gia đình biến thể trong CSV
+    import.label: Nhập khẩu gia đình biến thể
+  csv_group_import:
+    label: Nhập nhóm từ CSV
+    import.label: Nhập nhóm
+  csv_attribute_group_export:
+    label: Xuất khẩu thuộc tính nhóm trong CSV
+    export.label: Xuất khẩu thuộc tính nhóm
+  csv_group_type_export:
+    label: Xuất khẩu loại nhóm trong CSV
+    export.label: Xuất khẩu loại nhóm
+  csv_attribute_group_import:
+    label: Nhập khẩu thuộc tính nhóm trong CSV
+    import.label: Nhập khẩu thuộc tính nhóm
+  csv_group_type_import:
+    label: Nhập khẩu loại nhóm trong CSV
+    import.label: Nhập khẩu loại nhóm
+  xlsx_category_import:
+    label: Nhập khẩu danh mục trong XLSX
+    import.label: Nhập danh mục
+  xlsx_association_type_import:
+    label: Nhập khẩu loại liên kết trong XLSX
+    import.label: Nhập kiểu kết hợp
+  xlsx_attribute_import:
+    label: Nhập khẩu thuộc tính trong XLSX
+    import.label: Nhập thuộc tính
+  xlsx_attribute_option_import:
+    label: Nhập khẩu tùy chọn thuộc tính trong XLSX
+    import.label: Nhập tuỳ chọn của thuộc tính
+  xlsx_family_import:
+    label: Nhập khẩu gia đình trong XLSX
+    import.label: Nhập khẩu gia đình
+  xlsx_family_variant_import:
+    label: Nhập khẩu gia đình biến thể trong XLSX
+    import.label: Nhập khẩu gia đình biến thể
+  xlsx_product_export:
+    label: Xuất khẩu sản phẩm trong XLSX
+    export.label: Export sản phẩm
+  xlsx_product_model_export:
+    label: Xuất khẩu dòng sản phẩm trong XLSX
+    export.label: Xuất khẩu dòng sản phẩm
+  xlsx_product_import:
+    label: Nhập khẩu sản phẩm trong XLSX
+    import.label: Nhập sản phẩm
+  xlsx_product_model_import:
+    import_product_model_descendants.label: Tính toán dòng sản phẩm hậu duệ
+  xlsx_group_export:
+    label: Xuất khẩu nhóm trong XLSX
+    export.label: Xuất nhóm
+  xlsx_group_import:
+    label: Nhập khẩu nhóm trong XLSX
+    import.label: Nhập nhóm
+  xlsx_family_export:
+    label: Xuất khẩu gia đình trong XLSX
+    export.label: Xuất khẩu gia đình
+  xlsx_family_variant_export:
+    label: Xuất khẩu gia đình biến thể trong XLSX
+    export.label: Xuất khẩu gia đình biến thể
+  xlsx_category_export:
+    label: Xuất khẩu danh mục trong XLSX
+    export.label: Export thể loại
+  xlsx_attribute_export:
+    label: Xuất khẩu thuộc tính trong XLSX
+    export.label: Xuất khẩu thuộc tính trong XLSX
+  xlsx_attribute_option_export:
+    label: Xuất khẩu tùy chọn thuộc tính trong XLSX
+    export.label: Xuất khẩu tùy chọn thuộc tính trong XLSX
+  xlsx_association_type_export:
+    label: Xuất khẩu loại thuộc tính trong XLSX
+    export.label: Xuất khẩu loại thuộc tính trong XLSX
+  xlsx_attribute_group_export:
+    label: Xuất khẩu thuộc tính nhóm trong XLSX
+    export.label: Xuất khẩu thuộc tính nhóm
+  xlsx_group_type_export:
+    label: Xuất khẩu loại nhóm trong XLSX
+    export.label: Xuất khẩu loại nhóm
+  xlsx_attribute_group_import:
+    label: Nhập khẩu thuộc tính nhóm trong XLSX
+    import.label: Nhập khẩu thuộc tính nhóm
+  xlsx_group_type_import:
+    label: Nhập khẩu loại nhóm trong XLSX
+    import.label: Nhập khẩu loại nhóm

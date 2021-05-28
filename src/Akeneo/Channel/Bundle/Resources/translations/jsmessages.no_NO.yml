@@ -53,7 +53,6 @@ pim_enrich.entity.channel:
   property:
     category_tree: Kategoritre
     do_not_convert: Ikke konverter
-    label_conversion_units: Plukke en konvertering enhet for hver metrisk attributt som skal brukes under produkteksport
   module:
     create:
       button: Opprett kanal
@@ -63,8 +62,6 @@ pim_enrich.entity.locale:
   label: språk
   uppercase_label: Språk
   plural_label: Språk
-  page_title:
-    index: "] -Inf, 1] {{ count }} land |] 1, Inf [{{ count }} språk"
 pim_enrich.entity.currency:
   plural_label: Valutaer
   page_title:

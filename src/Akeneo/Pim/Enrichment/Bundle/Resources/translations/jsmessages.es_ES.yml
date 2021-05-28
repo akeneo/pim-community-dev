@@ -73,7 +73,7 @@ pim_enrich.entity.product:
       add_option: Añadir opción
     completeness:
       title: Completitud
-      complete: Completo
+      complete: Completitud
       no_family: Ninguna familia definida. Por favor defina una familia para calcular la completitud de este producto.
       no_completeness: Usted cambió la familia del producto. Por favor guarde los cambios en primero para calcular la completitud para esta nueva familia.
       missing_values: "{1}1 valor faltante|]1, Inf[{{ count }} valores faltantes"
@@ -162,10 +162,11 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'eje variante'
       create: Añadir nuevo
-      create_label: "Añadir un nuevo {{ axes }}"
+      title_create_label: "] -Inf, 1] Agregar un nuevo {{axes}} |] 1, Inf [Agregar un nuevo {{axes}}"
       required_label: '(eje variante)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variante de producto|]1, Inf[{{ complete }} / {{ total }} variantes de productos"
+      label: Variante
     delete:
       confirm: '¿Esta seguro que desea eliminar este modelo del producto? Todos los niños, modelos del productos y productos variantes, serán también eliminados.'
       confirm_for_products_and_product_models: '¿Está seguro que desea eliminar los productos y modelos de producto? Todos los hijos de los modelos de producto serán también eliminados.'
@@ -272,6 +273,13 @@ pim_enrich.export.product:
       operators:
         BETWEEN: Entre
         NOT BETWEEN: No entre
+    quality-score:
+      title: Puntuación de calidad
+      operator_choice_title: Exportar el (los) nivel (es) de calidad para
+      empty_selection: Sin condición en el nivel de calidad
+      operators:
+        IN AT LEAST ONE LOCALE: Al menos una localidad
+        IN ALL LOCALES: Todas las Localidades Seleccionadas
   global_settings:
     title: Configuración global
 pim_enrich.mass_edit.product:
@@ -326,6 +334,7 @@ pim_enrich.mass_edit.product:
       label: Mover entre categorias
       label_count: "{0}Mover algunos <span class=\"AknFullPage-title--highlight\">productos</span> entre categorías|{1}Mover <span class=\"AknFullPage-title--highlight\">1 producto</span> entre categorías|]1, Inf[Mover <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> entre categorías"
       description: Los productos serán clasificados en las siguientes categorías, la clasificación actual no se mantendrá.
+      no_update: Por favor, seleccione una categoría.
     remove_from_category:
       label: Eliminar de las categorías
       label_count: "{0}Eliminar algunos <span class=\"AknFullPage-title--highlight\">productos</span> de categorías|{1}Eliminar <span class=\"AknFullPage-title--highlight\">1 producto</span> de categorías|]1, Inf[Eliminar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> de categorías"
@@ -401,6 +410,7 @@ pim_datagrid:
       label: Completo
     identifier:
       label: Identificador
+  search: Buscar en {{ label }}
 batch_jobs:
   add_association:
     label: Asociar

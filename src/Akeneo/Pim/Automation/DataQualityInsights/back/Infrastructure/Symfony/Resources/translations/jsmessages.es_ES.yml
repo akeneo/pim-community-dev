@@ -49,3 +49,7 @@ akeneo_data_quality_insights:
   product_edit_form:
     attribute_filter:
       all_missing_attributes: Todos los atributos que faltan
+  product_grid:
+    filter_value:
+      yes: true
+      no: false

@@ -41,10 +41,6 @@ pim_user:
       active: Actief
       inactive: Inactief
     fields_errors:
-      new_password:
-        minimum_length: Het wachtwoord moet minstens 2 karakters bevatten
-      new_password_repeat:
-        not_match: Wachtwoord komt niet overeen
       current_password:
         wrong: Verkeerd wachtwoord
     tabs:

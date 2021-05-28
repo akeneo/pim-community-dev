@@ -189,6 +189,15 @@ akeneo_connectivity.connection:
       message_without_permission:
         message: 管理者に連絡して新規作成。
         link: 接続について、こちらでさらに詳しく…
+  webhook:
+    form:
+      url: URL
+      secret: 非公開
+    regenerate_secret:
+      title: 再生成を確認
+      action:
+        regenerate: 再生成
+      link: 何が起こるかご確認ください。
   error_management:
     connection_monitoring:
       title: モニタリング

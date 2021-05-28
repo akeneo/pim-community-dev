@@ -111,7 +111,7 @@ services:
       - 'pim'
 
   blackfire:
-    image: blackfire/blackfire
+    image: 'blackfire/blackfire:2'
     environment:
       BLACKFIRE_SERVER_ID: '${BLACKFIRE_SERVER_ID:-server_id}'
       BLACKFIRE_SERVER_TOKEN: '${BLACKFIRE_SERVER_TOKEN:-server_token}'

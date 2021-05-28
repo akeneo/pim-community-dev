@@ -1,6 +1,14 @@
-import {ArrowDownIcon, ArrowRightIcon, GraphIllustration, Information, Link, Table} from 'akeneo-design-system';
+import {
+    ArrowDownIcon,
+    ArrowRightIcon,
+    GraphIllustration,
+    Information,
+    Link,
+    Table,
+    getColor,
+} from 'akeneo-design-system';
 import React, {FC, useContext, useRef, useState} from 'react';
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 import ExpandableTableRow, {IsExpanded} from '../../common/components/ExpandableTableRow';
 import FormattedJSON from '../../common/components/FormattedJSON';
 import {useTranslate} from '../../shared/translate';
@@ -16,11 +24,10 @@ import {EventLogListFilters} from './EventLogListFilters';
 import {NoEventLogs} from './NoEventLogs';
 import {NoEventLogsWithThoseFilters} from './NoEventLogsWithThoseFilters';
 
-const ExtraSmallColumnHeaderCell = styled(Table.HeaderCell)`
-    width: 125px;
-`;
-const SmallColumnHeaderCell = styled(Table.HeaderCell)`
-    width: 220px;
+const loadingBreath = keyframes`
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
 `;
 const MessageContainer = styled.span`
     padding-right: 15px;
@@ -31,6 +38,22 @@ const ContextContainer = styled.span`
     text-overflow: ellipsis;
     display: block;
     overflow: hidden;
+`;
+const LoadingRow = styled(Table.Row)`
+    border-width: 5px 0px;
+    border-color: ${getColor('white')};
+    border-style: solid;
+`;
+const LoadingCell = styled(Table.Cell)`
+    height: 65px;
+    animation: ${loadingBreath} 2s infinite;
+    content: '';
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    background: linear-gradient(270deg, #fdfdfd, #eee);
+    background-size: 400% 400%;
+    border-radius: 5px;
 `;
 
 const Arrow: FC = () => {
@@ -94,14 +117,19 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                 </Link>
             </Information>
             <EventLogListFilters filters={filters} onChange={handleFiltersChange} total={total} />
-            <Table>
+            <Table style={{tableLayout: 'fixed'}}>
+                <colgroup>
+                    <col style={{width: 220}}></col>
+                    <col style={{width: 125}}></col>
+                    <col></col>
+                </colgroup>
                 <Table.Header>
-                    <SmallColumnHeaderCell>
+                    <Table.HeaderCell>
                         {translate('akeneo_connectivity.connection.webhook.event_logs.list.headers.datetime')}
-                    </SmallColumnHeaderCell>
-                    <ExtraSmallColumnHeaderCell>
+                    </Table.HeaderCell>
+                    <Table.HeaderCell>
                         {translate('akeneo_connectivity.connection.webhook.event_logs.list.headers.level')}
-                    </ExtraSmallColumnHeaderCell>
+                    </Table.HeaderCell>
                     <Table.HeaderCell>
                         {translate('akeneo_connectivity.connection.webhook.event_logs.list.headers.message')}
                     </Table.HeaderCell>
@@ -122,6 +150,12 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
                             </Table.Cell>
                         </ExpandableTableRow>
                     ))}
+                    {isLoading &&
+                        [...Array(25)].map((_, index) => (
+                            <LoadingRow key={index}>
+                                <LoadingCell colSpan={3} />
+                            </LoadingRow>
+                        ))}
                 </Table.Body>
             </Table>
             {isSearchActive && total === 0 && <NoEventLogsWithThoseFilters />}
