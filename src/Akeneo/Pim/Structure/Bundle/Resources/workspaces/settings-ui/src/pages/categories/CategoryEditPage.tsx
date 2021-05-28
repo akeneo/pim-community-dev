@@ -43,7 +43,6 @@ const CategoryEditPage: FC = () => {
   const translate = useTranslate();
   const router = useRouter();
   const userContext = useUserContext();
-  const {category, formData, status, load} = useCategory(parseInt(categoryId));
   const [categoryLabel, setCategoryLabel] = useState(`[${categoryId}]`);
   const [treeLabel, setTreeLabel] = useState(translate('pim_enrich.entity.category.content.edit.default_tree_label'));
   const [tree, setTree] = useState<Category | null>(null);
@@ -55,17 +54,16 @@ const CategoryEditPage: FC = () => {
   const countProductsBeforeDeleteCategory = useCountProductsBeforeDeleteCategory(parseInt(categoryId));
   const [categoryToDelete, setCategoryToDelete] = useState<CategoryToDelete | null>(null);
   const {isCategoryDeletionPossible, handleDeleteCategory} = useDeleteCategory();
-  // To remove
-  const {setCanLeavePage} = useContext(EditCategoryContext);
-
   const {
-    editedFormData,
+    category,
+    categoryLoadingStatus,
+    formData,
     onChangeCategoryLabel,
     onChangePermissions,
     onChangeApplyPermissionsOnChilren,
     thereAreUnsavedChanges,
     requestSave
-  } = useEditCategory(category, formData);
+  } = useEditCategory(parseInt(categoryId));
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
 
@@ -86,10 +84,6 @@ const CategoryEditPage: FC = () => {
   };
 
   useEffect(() => {
-    load();
-  }, [categoryId]);
-
-  useEffect(() => {
     const rootCategory = category && category.root ? category.root : category;
 
     setCategoryLabel(
@@ -103,7 +97,7 @@ const CategoryEditPage: FC = () => {
     setTree(rootCategory);
   }, [category]);
 
-  if (status === 'error') {
+  if (categoryLoadingStatus === 'error') {
     return (
       <FullScreenError
         title={translate('error.exception', {status_code: '404'})}
@@ -115,7 +109,7 @@ const CategoryEditPage: FC = () => {
 
   return (
     <>
-      <PageHeader showPlaceholder={status === 'idle' || status === 'fetching'}>
+      <PageHeader showPlaceholder={categoryLoadingStatus === 'idle' || categoryLoadingStatus === 'fetching'}>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
             <Breadcrumb.Step onClick={followSettingsIndex}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
@@ -207,7 +201,7 @@ const CategoryEditPage: FC = () => {
         {isCurrent(propertyTabName) && category &&
           <EditPropertiesForm
             category={category}
-            formData={editedFormData}
+            formData={formData}
             onChangeLabel={onChangeCategoryLabel}
           />
         }
@@ -221,9 +215,9 @@ const CategoryEditPage: FC = () => {
             }}
           />
         )}
-        {isCurrent(permissionTabName) && formData &&
+        {isCurrent(permissionTabName) &&
           <EditPermissionsForm
-            formData={editedFormData}
+            formData={formData}
             onChangePermissions={onChangePermissions}
             onChangeApplyPermissionsOnChilren={onChangeApplyPermissionsOnChilren}
           />

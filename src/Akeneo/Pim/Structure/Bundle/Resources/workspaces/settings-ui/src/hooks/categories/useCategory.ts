@@ -28,7 +28,7 @@ type EditCategoryForm = {
   errors: string[];
 };
 
-type EditCategoryResponse = {
+type EditCategoryData = {
   category: Category;
   form: EditCategoryForm;
 };
@@ -38,11 +38,10 @@ const useCategory = (categoryId: number) => {
     id: categoryId.toString(),
   });
 
-  const {data, fetch, error, status} = useFetch<EditCategoryResponse>(url);
+  const {data, fetch, error, status} = useFetch<EditCategoryData>(url);
 
   return {
-    category: data ? data.category : null,
-    formData: data ? data.form : null,
+    categoryData: data,
     load: fetch,
     status,
     error,

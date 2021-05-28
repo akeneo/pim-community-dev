@@ -3,15 +3,16 @@ import {useCallback, useContext, useEffect, useState} from "react";
 import {useBooleanState} from "akeneo-design-system";
 import {saveEditCategoryForm} from "../../infrastructure/savers";
 import {LabelCollection, NotificationLevel, useNotify, useTranslate} from "@akeneo-pim-community/shared";
-import {EditCategoryForm} from "./useCategory";
+import {EditCategoryForm, useCategory} from "./useCategory";
 import {EditCategoryContext} from "../../components";
 
 // @todo Add unit tests
 // @todo rename to useEditCategoryForm
-const useEditCategory = (category: Category | null, formData: EditCategoryForm | null) => {
+const useEditCategory = (categoryId: number) => {
   const notify = useNotify();
   const translate = useTranslate();
-  const [originalFormData, setOriginalFormData] = useState<EditCategoryForm | null>(formData);
+  const {categoryData, status: categoryLoadingStatus, load: loadCategory} = useCategory(categoryId);
+  const [originalFormData, setOriginalFormData] = useState<EditCategoryForm | null>(null);
   const [editedFormData, setEditedFormData] = useState<EditCategoryForm | null>(null);
   const [thereAreUnsavedChanges, setThereAreUnsavedChanges] = useState<boolean>(false);
   const {setCanLeavePage} = useContext(EditCategoryContext);
@@ -78,40 +79,41 @@ const useEditCategory = (category: Category | null, formData: EditCategoryForm |
   }
 
   const saveCategory = useCallback(async () => {
-    if (category === null || editedFormData === null) {
+    if (categoryData === null || editedFormData === null) {
       return;
     }
 
-    const response = await saveEditCategoryForm(category.id, editedFormData);
+    const response = await saveEditCategoryForm(categoryData.category.id, editedFormData);
 
     if (response.success) {
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
-      // @todo @fixme the form data returned are not always up-to-date with the backend for the permissions
-      // ex:  Add a user-group in "Edit" and save. The user-group will be automatically also added in "View" backend side
-      //      But the returned form data still not contain this user-group in the "View" permissions values
-      //      Refreshing the page will display the added user-group in both "View" and "Edit"
       setOriginalFormData(response.form);
     } else {
       notify(NotificationLevel.ERROR, translate('pim_enrich.entity.category.content.edit.fail'));
       const refreshedToken = {...editedFormData._token, value: response.form._token.value};
       setEditedFormData({...editedFormData, _token: refreshedToken});
     }
-  }, [category, editedFormData]);
+  }, [categoryData, editedFormData]);
 
   useEffect(() => {
-    if (formData === null) {
+    loadCategory();
+  }, []);
+
+  useEffect(() => {
+    if (categoryData === null) {
       return;
     }
 
-    setOriginalFormData(formData);
+    setOriginalFormData(categoryData.form);
 
-  }, [formData]);
+  }, [categoryData]);
 
   useEffect(() => {
     if (originalFormData === null) {
       return;
     }
 
+    // @todo: Keep value of editedFormData.permissions.apply_on_children (always returned as "1" by the backend)
     setEditedFormData({...originalFormData});
 
   }, [originalFormData]);
@@ -135,7 +137,9 @@ const useEditCategory = (category: Category | null, formData: EditCategoryForm |
   }, [thereAreUnsavedChanges]);
 
   return {
-    editedFormData,
+    categoryLoadingStatus,
+    category: categoryData ? categoryData.category : null,
+    formData: editedFormData,
     onChangeCategoryLabel,
     onChangePermissions,
     onChangeApplyPermissionsOnChilren,
