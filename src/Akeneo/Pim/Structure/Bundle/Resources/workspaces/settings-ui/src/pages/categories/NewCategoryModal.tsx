@@ -1,5 +1,5 @@
-import React, {FC, useState} from 'react';
-import {Button, Field, Helper, Modal, ProductCategoryIllustration, TextInput} from 'akeneo-design-system';
+import React, {FC, useRef, useState} from 'react';
+import {Button, Field, Helper, Modal, ProductCategoryIllustration, TextInput, useAutoFocus} from 'akeneo-design-system';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {createCategory, ValidationErrors} from '../../infrastructure/savers';
@@ -15,6 +15,9 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, pare
   const [newCategoryCode, setNewCategoryCode] = useState('');
   const notify = useNotify();
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
+
+  const codeFieldRef = useRef<HTMLInputElement | null>(null);
+  useAutoFocus(codeFieldRef);
 
   const createNewCategoryTree = async () => {
     if (newCategoryCode.trim() !== '') {
@@ -60,6 +63,7 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, pare
 
       <StyledField label={translate('pim_common.code')}>
         <TextInput
+          ref={codeFieldRef}
           value={newCategoryCode}
           onChange={setNewCategoryCode}
           placeholder={translate('pim_common.code')}
