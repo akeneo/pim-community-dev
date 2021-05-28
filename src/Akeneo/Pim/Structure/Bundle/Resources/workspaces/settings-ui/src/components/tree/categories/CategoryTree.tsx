@@ -2,8 +2,7 @@ import React, {FC} from 'react';
 import {CategoryTreeModel} from '../../../models';
 import {Node} from './Node';
 import {CategoryTreeProvider} from '../../providers';
-import {OrderableTreeProvider} from '../../shared/providers/OrderableTreeProvider';
-import {Tree} from '../../shared';
+import {OrderableTreeProvider, Tree} from '../../shared';
 
 type Props = {
   root: CategoryTreeModel | null;

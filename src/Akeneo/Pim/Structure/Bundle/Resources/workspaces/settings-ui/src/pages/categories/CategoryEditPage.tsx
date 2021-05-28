@@ -2,6 +2,7 @@ import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {Breadcrumb} from 'akeneo-design-system';
 import {
+  BreadcrumbStepSkeleton,
   FullScreenError,
   PageContent,
   PageHeader,
@@ -13,7 +14,6 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useCategory} from '../../hooks';
 import {Category} from '../../models';
-import {BreadcrumbStepSkeleton} from '../../components';
 
 type Params = {
   categoryId: string;
@@ -25,7 +25,7 @@ const CategoryEditPage: FC = () => {
   const router = useRouter();
   const userContext = useUserContext();
   const {category, status, load} = useCategory(parseInt(categoryId));
-  const [categoryLabel, setCategoryLabel] = useState(``);
+  const [categoryLabel, setCategoryLabel] = useState('');
   const [treeLabel, setTreeLabel] = useState('');
   const [tree, setTree] = useState<Category | null>(null);
 
@@ -45,11 +45,24 @@ const CategoryEditPage: FC = () => {
   }, [categoryId]);
 
   useEffect(() => {
-    const rootCategory = category && category.root ? category.root : category;
-    const uiLocale = userContext.get('uiLocale');
+    if (category === null) {
+      setCategoryLabel('');
+      setTreeLabel('');
+      setTree(null);
+      return;
+    }
 
-    setCategoryLabel(category && category.labels.hasOwnProperty(uiLocale) ? category.labels[uiLocale] : '');
-    setTreeLabel(rootCategory ? rootCategory.labels[userContext.get('uiLocale')] : '');
+    const uiLocale = userContext.get('uiLocale');
+    const rootCategory = category && category.root ? category.root : category;
+
+    setCategoryLabel(
+      category && category.labels.hasOwnProperty(uiLocale) ? category.labels[uiLocale] : `[${category.code}]`
+    );
+    setTreeLabel(
+      rootCategory && rootCategory.labels.hasOwnProperty(uiLocale)
+        ? rootCategory.labels[userContext.get('uiLocale')]
+        : `[${rootCategory.code}]`
+    );
     setTree(rootCategory);
   }, [category]);
 

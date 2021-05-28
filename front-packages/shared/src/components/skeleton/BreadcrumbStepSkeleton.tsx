@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {LoadingPlaceholderContainer} from '@akeneo-pim-community/shared';
+import {LoadingPlaceholderContainer} from '../LoadingPlaceholder';
 import React, {FC} from 'react';
 
 const Container = styled(LoadingPlaceholderContainer)`

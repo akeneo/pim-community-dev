@@ -2,6 +2,7 @@ import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {Breadcrumb, SectionTitle, useBooleanState} from 'akeneo-design-system';
 import {
+  BreadcrumbStepSkeleton,
   FullScreenError,
   NotificationLevel,
   PageContent,
@@ -14,7 +15,7 @@ import {
   useTranslate,
 } from '@akeneo-pim-community/shared';
 import {useCategoryTree} from '../../hooks';
-import {BreadcrumbStepSkeleton, CategoryTree} from '../../components';
+import {CategoryTree} from '../../components';
 import {NewCategoryModal} from './NewCategoryModal';
 import {DeleteCategoryModal} from '../../components/datagrids/categories/DeleteCategoryModal';
 import {deleteCategory} from '../../infrastructure/removers';
