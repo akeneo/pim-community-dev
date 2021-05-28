@@ -62,7 +62,7 @@ const CategoryEditPage: FC = () => {
     onChangePermissions,
     onChangeApplyPermissionsOnChilren,
     thereAreUnsavedChanges,
-    requestSave
+    saveCategory
   } = useEditCategoryForm(parseInt(categoryId));
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
@@ -158,7 +158,7 @@ const CategoryEditPage: FC = () => {
               )}
             </Dropdown>
           }
-          <Button level="primary" onClick={() => {requestSave()}} >
+          <Button level="primary" onClick={saveCategory} >
             {translate('pim_common.save')}
           </Button>
         </PageHeader.Actions>

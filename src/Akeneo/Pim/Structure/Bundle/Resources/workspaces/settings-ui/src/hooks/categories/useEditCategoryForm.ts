@@ -7,7 +7,6 @@ import {EditCategoryForm, useCategory} from "./useCategory";
 import {EditCategoryContext} from "../../components";
 
 // @todo Add unit tests
-// @todo rename to useEditCategoryForm
 const useEditCategoryForm = (categoryId: number) => {
   const notify = useNotify();
   const translate = useTranslate();
@@ -16,9 +15,6 @@ const useEditCategoryForm = (categoryId: number) => {
   const [editedFormData, setEditedFormData] = useState<EditCategoryForm | null>(null);
   const [thereAreUnsavedChanges, setThereAreUnsavedChanges] = useState<boolean>(false);
   const {setCanLeavePage} = useContext(EditCategoryContext);
-
-  // @todo remove and return saveCategory instead
-  const [saveRequested, requestSave, resetRequestSave] = useBooleanState(false);
 
   const haveLabelsBeenChanged = useCallback((): boolean => {
     if (originalFormData === null || editedFormData === null) {
@@ -119,14 +115,6 @@ const useEditCategoryForm = (categoryId: number) => {
   }, [originalFormData]);
 
   useEffect(() => {
-    if (!saveRequested) {
-      return;
-    }
-    saveCategory();
-    resetRequestSave();
-  }, [saveRequested]);
-
-  useEffect(() => {
     if (editedFormData !== null) {
       setThereAreUnsavedChanges(haveLabelsBeenChanged() || havePermissionsBeenChanged());
     }
@@ -144,7 +132,7 @@ const useEditCategoryForm = (categoryId: number) => {
     onChangePermissions,
     onChangeApplyPermissionsOnChilren,
     thereAreUnsavedChanges,
-    requestSave
+    saveCategory
   };
 };
 

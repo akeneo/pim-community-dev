@@ -39,6 +39,32 @@ export type CategoryTreeModel = {
   productsNumber?: number;
 };
 
+export type FormField = {
+  value: string;
+  fullName: string;
+  label: string;
+};
+
+export type FormChoiceField = FormField & {
+  value: string[];
+  choices: {
+    value: string;
+    label: string;
+  }[];
+};
+
+export type EditCategoryForm = {
+  label: {[locale: string]: FormField};
+  _token: FormField;
+  permissions?: {
+    view: FormChoiceField;
+    edit: FormChoiceField;
+    own: FormChoiceField;
+    apply_on_children: FormField;
+  };
+  errors: string[];
+};
+
 const convertToCategoryTree = (tree: BackendCategoryTree): CategoryTreeModel => {
   return {
     id: parseInt(tree.attr.id.substring(5)), // remove the "node_" prefix and returns the number

@@ -1,32 +1,5 @@
 import {useFetch, useRoute} from '@akeneo-pim-community/shared';
-import {Category} from '../../models';
-
-type FormField = {
-  value: string;
-  fullName: string;
-  label: string;
-};
-
-type FormChoiceField = FormField & {
-  value: string[];
-  choices: {
-    value: string;
-    label: string;
-  }[];
-};
-
-// @todo move to models?
-type EditCategoryForm = {
-  label: {[locale: string]: FormField};
-  _token: FormField;
-  permissions?: {
-    view: FormChoiceField;
-    edit: FormChoiceField;
-    own: FormChoiceField;
-    apply_on_children: FormField;
-  };
-  errors: string[];
-};
+import {Category, EditCategoryForm} from '../../models';
 
 type EditCategoryData = {
   category: Category;
