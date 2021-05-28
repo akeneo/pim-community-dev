@@ -12,9 +12,7 @@ const AppcuesOnboarding: PimOnboarding = {
         return;
       }
 
-      appcues.identify(UserContext.get('username'), {
-        id: UserContext.get('meta').id,
-      });
+      appcues.identify(UserContext.get('username'));
     });
   },
   page: () => {
