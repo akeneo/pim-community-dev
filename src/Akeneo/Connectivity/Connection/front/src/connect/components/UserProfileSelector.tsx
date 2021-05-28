@@ -73,10 +73,7 @@ export const UserProfileSelector: FC = () => {
     const fetchUserProfiles = useFetchUserProfiles();
     const fetchMarketplaceUrl = useMarketplaceUrl();
 
-    const saveUser = useSaveUser(useContext(UserContext)
-        .get<{ id: string }>('meta')
-        .id
-    );
+    const saveUser = useSaveUser(useContext(UserContext).get<{id: string}>('meta').id);
 
     const handleClick = () => {
         if (null === selectedProfile) {
@@ -108,34 +105,22 @@ export const UserProfileSelector: FC = () => {
                     placeholder={translate('pim_user.profile.selector.placeholder')}
                     onChange={handleOnSelectChange}
                 >
-                    {userProfiles.map((profile: UserProfile) =>
-                        <SelectInput.Option
-                            key={profile.code}
-                            title={translate(profile.label)}
-                            value={profile.code}
-                        >
+                    {userProfiles.map((profile: UserProfile) => (
+                        <SelectInput.Option key={profile.code} title={translate(profile.label)} value={profile.code}>
                             {translate(profile.label)}
                         </SelectInput.Option>
-                    )}
+                    ))}
                 </ProfileSelect>
-                <Helper level="info">
-                    <Link href="https://help.akeneo.com/pim/serenity/articles/what-is-a-user.html" target='_blank'>
+                <Helper level='info'>
+                    <Link href='https://help.akeneo.com/pim/serenity/articles/what-is-a-user.html' target='_blank'>
                         {translate('pim_user.profile.why_is_it_needed')}
                     </Link>
                 </Helper>
             </UserProfileField>
 
-            <LinkButton
-                role='link'
-                tabIndex='0'
-                onClick={handleClick}
-                disabled={null === selectedProfile}
-            >
+            <LinkButton role='link' tabIndex='0' onClick={handleClick} disabled={null === selectedProfile}>
                 {translate('pim_user.profile.save_button')}
             </LinkButton>
         </>
-
     );
 };
-
-
