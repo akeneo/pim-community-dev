@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bbec77fa79215f8765c5010ed013f055",
+    "content-hash": "bd63a0cc1d19dad4cb189f37d0a8cbb0",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -16112,7 +16112,8 @@
         "ext-pdo": "*",
         "ext-xml": "*",
         "ext-zip": "*",
-        "ext-openssl": "*"
+        "ext-openssl": "*",
+        "ext-pcntl": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"

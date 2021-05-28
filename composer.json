@@ -52,6 +52,7 @@
         "ext-xml": "*",
         "ext-zip": "*",
         "ext-openssl": "*",
+        "ext-pcntl": "*",
         "ass/xmlsecurity": "1.1.1",
         "box/spout": "2.7.3",
         "doctrine/annotations": "1.8.0",
