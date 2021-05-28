@@ -12,6 +12,13 @@ export type EditableCategoryProperties = {
   labels: LabelCollection;
 };
 
+export type CategoryPermissions = {
+  view: number[];
+  edit: number[];
+  own: number[];
+  apply_on_children: '0' | '1';
+};
+
 export type BackendCategoryTree = {
   attr: {
     id: string; // format: node_([0-9]+)
