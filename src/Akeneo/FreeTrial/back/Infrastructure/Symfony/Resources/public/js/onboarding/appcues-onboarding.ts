@@ -12,8 +12,8 @@ const AppcuesOnboarding: PimOnboarding = {
         return;
       }
 
-      appcues.identify(UserContext.get('meta').id, {
-        username: UserContext.get('username'),
+      appcues.identify(UserContext.get('username'), {
+        id: UserContext.get('meta').id,
       });
     });
   },
