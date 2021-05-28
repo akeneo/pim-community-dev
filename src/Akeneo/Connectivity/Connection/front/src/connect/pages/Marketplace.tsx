@@ -4,7 +4,7 @@ import {useTranslate} from '../../shared/translate';
 import {PageHeader} from '../../common';
 import {UserButtons} from '../../shared/user';
 import styled from 'styled-components';
-import {useMarketplaceUrl} from '../hooks/use-fetch-marketing-url';
+import {useFetchMarketplaceUrl} from '../hooks/use-fetch-marketplace-url';
 import {useRouter} from '../../shared/router/use-router';
 import {UserContext} from '../../shared/user';
 import {UserProfileSelector} from '../components/UserProfileSelector';
@@ -69,7 +69,7 @@ const Caption = styled.p`
 
 export const Marketplace: FC = () => {
     const translate = useTranslate();
-    const fetchMarketplaceUrl = useMarketplaceUrl();
+    const fetchMarketplaceUrl = useFetchMarketplaceUrl();
     const [marketplaceUrl, setMarketplaceUrl] = useState<string>('');
     const [userProfile, setUserProfile] = useState<string | null | undefined>(undefined);
     const generateUrl = useRouter();

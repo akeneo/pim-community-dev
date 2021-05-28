@@ -3,7 +3,7 @@ import {useTranslate} from '../../shared/translate';
 import {AkeneoThemedProps, Field, getColor, getFontSize, Helper, Link, SelectInput} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {useFetchUserProfiles} from '../hooks/use-fetch-user-profiles';
-import {useMarketplaceUrl} from '../hooks/use-fetch-marketing-url';
+import {useFetchMarketplaceUrl} from '../hooks/use-fetch-marketplace-url';
 import {UserContext} from '../../shared/user';
 import {useSaveUser} from '../hooks/use-save-user';
 
@@ -71,7 +71,7 @@ export const UserProfileSelector: FC = () => {
     const [userProfiles, setUserProfiles] = useState<UserProfile[]>([]);
     const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
     const fetchUserProfiles = useFetchUserProfiles();
-    const fetchMarketplaceUrl = useMarketplaceUrl();
+    const fetchMarketplaceUrl = useFetchMarketplaceUrl();
 
     const saveUser = useSaveUser(useContext(UserContext).get<{id: string}>('meta').id);
 
