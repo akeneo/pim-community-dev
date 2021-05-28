@@ -6,6 +6,7 @@ import styled, {ThemeProvider} from 'styled-components';
 import {ColumnDefinition, TableConfiguration} from '../models/TableConfiguration';
 import {getLabel, Locale, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AddColumnModal} from './AddColumnModal';
+import {DeleteColumnModal} from './DeleteColumnModal';
 import {fetchActivatedLocales} from '../fetchers/LocaleFetcher';
 
 const FieldsList = styled.div`
@@ -37,6 +38,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
   const selectedColumn = tableConfiguration.find(column => column.code === selectedColumnCode) as ColumnDefinition;
   const [activeLocales, setActiveLocales] = React.useState<Locale[]>([]);
   const [isNewColumnModalOpen, openNewColumnModal, closeNewColumnModal] = useBooleanState();
+  const [isDeleteColumnModalOpen, openDeleteColumnModal, closeDeleteColumnModal] = useBooleanState();
   const [firstColumnDefinition, ...otherColumnDefinitions] = tableConfiguration;
 
   React.useEffect(() => {
@@ -62,6 +64,13 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
     setTableConfiguration([...tableConfiguration]);
     onChange(tableConfiguration);
   };
+
+  const handleDelete = (columnDefinition: ColumnDefinition) => {
+    tableConfiguration.push(columnDefinition);
+    setTableConfiguration([...tableConfiguration]);
+    onChange(tableConfiguration);
+  };
+
 
   const rightColumn = (
     <div>
@@ -131,10 +140,21 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
                     <Table.Cell rowTitle={true}>
                       {getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code)}
                     </Table.Cell>
+                    {/* Adding the delete button */}
+                    <Table.ActionCell>
+                      <Button onClick={()=>openDeleteColumnModal()}>Delete</Button>
+                    </Table.ActionCell>
                   </Table.Row>
                 ))}
               </Table.Body>
             </Table>
+            {isDeleteColumnModalOpen && (
+                <DeleteColumnModal
+                    close={closeDeleteColumnModal}
+                    onCreate={handleDelete}
+                    existingColumnCodes={tableConfiguration.map(columnDefinition => columnDefinition.code)}
+                />
+            )}
             {isNewColumnModalOpen && (
               <AddColumnModal
                 close={closeNewColumnModal}
