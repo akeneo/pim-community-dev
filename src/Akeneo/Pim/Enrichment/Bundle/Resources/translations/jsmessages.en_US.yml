@@ -231,9 +231,11 @@ pim_enrich.entity.category:
             not_found: Category not found
             default_tree_label: Tree
     new_category: New category
+    category_created: The category "{{ code }}" was successfully created
+    category_creation_error: The category "{{ code }}" could not be created
     category_tree_creation:
-        success: The "{{ tree }}" tree was successfully created
-        error: The "{{ tree }}" tree could not be created
+        success: The "{{ code }}" tree was successfully created
+        error: The "{{ code }}" tree could not be created
     category_tree_deletion:
         success: The "{{ tree }}" tree was successfully deleted
         error: The "{{ tree }}" tree could not be deleted
@@ -241,6 +243,13 @@ pim_enrich.entity.category:
         products_limit_exceeded:
             title: This tree cannot be deleted
             message: The "{{ tree }}" tree contains more than {{ limit }} products and therefore cannot be deleted.
+    category_deletion:
+        success: The category "{{ name }}" was successfully deleted
+        error: The category "{{ name }}" could not be deleted
+        confirmation: Are you sure you want to delete the category {{ name }}? Products in this category will not be deleted.
+        products_limit_exceeded:
+            title: This category cannot be deleted
+            message: The "{{ name }}" category contains more than {{ limit }} products and therefore cannot be deleted.
 
 
 pim_enrich.export.product:

@@ -32,10 +32,6 @@ pim_enrich_categorytree_index:
     path: /
 
 pim_enrich_categorytree_create:
-    path: /create/{parent}
-    defaults: { _controller: pim_enrich.controller.category_tree.product:createAction, parent: null }
-
-pim_enrich_categorytree_create_tree:
     path: /create
     defaults: { _controller: pim_enrich.controller.category_tree.product:createAction }
 
@@ -61,6 +57,13 @@ pim_enrich_categorytree_get_products_number:
     path: /products-number-by-category-tree
     defaults: { _controller: pim_enrich.controller.category_tree.product:getCategoryTreesProductsNumberAction }
     methods: [GET]
+
+pim_enrich_categorytree_count_category_products:
+    path: /{id}/count-products
+    defaults: { _controller: pim_enrich.controller.category_tree.product:countCategoryProducts }
+    requirements:
+        id: \d+
+    methods: [ GET ]
 
 pim_enrich_categorytree_count_children:
     path: /count-children

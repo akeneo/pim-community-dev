@@ -1,29 +1,53 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
-import {Breadcrumb, Link} from 'akeneo-design-system';
+import {Breadcrumb, SectionTitle, useBooleanState} from 'akeneo-design-system';
 import {
   FullScreenError,
+  NotificationLevel,
   PageContent,
   PageHeader,
   PimView,
+  useNotify,
   useRouter,
   useSecurity,
   useSetPageTitle,
   useTranslate,
 } from '@akeneo-pim-community/shared';
 import {useCategoryTree} from '../../hooks';
+import {CategoryTree} from '../../components';
+import {NewCategoryModal} from './NewCategoryModal';
+import {DeleteCategoryModal} from '../../components/datagrids/categories/DeleteCategoryModal';
+import {deleteCategory} from '../../infrastructure/removers';
 
 type Params = {
   treeId: string;
 };
 
+type CategoryToCreate = {
+  parentCode: string;
+  onCreate: () => void;
+};
+
+type CategoryToDelete = {
+  identifier: number;
+  label: string;
+  onDelete: () => void;
+};
+
+const MAX_NUMBER_OF_PRODUCTS_TO_ALLOW_DELETE = 100;
+
 const CategoriesTreePage: FC = () => {
   let {treeId} = useParams<Params>();
   const router = useRouter();
   const translate = useTranslate();
+  const notify = useNotify();
   const {isGranted} = useSecurity();
   const {tree, status, load} = useCategoryTree(parseInt(treeId));
   const [treeLabel, setTreeLabel] = useState(`[${treeId}]`);
+  const [isNewCategoryModalOpen, openNewCategoryModal, closeNewCategoryModal] = useBooleanState();
+  const [categoryToCreate, setCategoryToCreate] = useState<CategoryToCreate | null>(null);
+  const [isDeleteCategoryModalOpen, openDeleteCategoryModal, closeDeleteCategoryModal] = useBooleanState();
+  const [categoryToDelete, setCategoryToDelete] = useState<CategoryToDelete | null>(null);
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_tree', {'category.label': treeLabel}));
 
@@ -34,6 +58,64 @@ const CategoriesTreePage: FC = () => {
       return;
     }
     router.redirect(router.generate('pim_enrich_categorytree_edit', {id: id.toString()}));
+  };
+
+  const addCategory = (parentCode: string, onCreate: () => void) => {
+    setCategoryToCreate({parentCode, onCreate});
+    openNewCategoryModal();
+  };
+
+  const handleCloseNewCategoryModal = () => {
+    setCategoryToCreate(null);
+    closeNewCategoryModal();
+  };
+
+  const confirmDeleteCategory = async (
+    identifier: number,
+    label: string,
+    numberOfProducts: number,
+    onDelete: () => void
+  ) => {
+    if (numberOfProducts > MAX_NUMBER_OF_PRODUCTS_TO_ALLOW_DELETE) {
+      notify(
+        NotificationLevel.INFO,
+        translate('pim_enrich.entity.category.category_deletion.products_limit_exceeded.title'),
+        translate('pim_enrich.entity.category.category_deletion.products_limit_exceeded.message', {
+          name: label,
+          limit: MAX_NUMBER_OF_PRODUCTS_TO_ALLOW_DELETE,
+        })
+      );
+
+      return;
+    }
+
+    setCategoryToDelete({identifier, label, onDelete});
+    openDeleteCategoryModal();
+  };
+
+  const handleCloseDeleteCategoryModal = () => {
+    setCategoryToDelete(null);
+    closeDeleteCategoryModal();
+  };
+
+  const handleDeleteCategory = async () => {
+    if (categoryToDelete === null) {
+      return;
+    }
+
+    const success = await deleteCategory(categoryToDelete.identifier);
+    success && categoryToDelete.onDelete();
+
+    const message = success
+      ? 'pim_enrich.entity.category.category_deletion.success'
+      : 'pim_enrich.entity.category.category_deletion.error';
+
+    notify(
+      success ? NotificationLevel.SUCCESS : NotificationLevel.ERROR,
+      translate(message, {name: categoryToDelete.label})
+    );
+
+    handleCloseDeleteCategoryModal();
   };
 
   useEffect(() => {
@@ -75,37 +157,36 @@ const CategoriesTreePage: FC = () => {
         <PageHeader.Title>{treeLabel}</PageHeader.Title>
       </PageHeader>
       <PageContent>
-        {/* @todo[PLG-94] replace content by the real tree category */}
-        {tree === null ? (
-          <>Tree {treeLabel}</>
-        ) : (
-          <>
-            <div>
-              <Link
-                onClick={isGranted('pim_enrich_product_category_edit') ? () => followEditCategory(tree.id) : undefined}
-                disabled={!isGranted('pim_enrich_product_category_edit')}
-              >
-                {treeLabel}
-              </Link>
-            </div>
-            <div>
-              {tree.children &&
-                tree.children.length > 0 &&
-                tree.children.map(cat => (
-                  <div>
-                    <Link
-                      key={cat.code}
-                      onClick={
-                        isGranted('pim_enrich_product_category_edit') ? () => followEditCategory(cat.id) : undefined
-                      }
-                      disabled={!isGranted('pim_enrich_product_category_edit')}
-                    >
-                      {cat.label}
-                    </Link>
-                  </div>
-                ))}
-            </div>
-          </>
+        <section>
+          <SectionTitle>
+            <SectionTitle.Title>{translate('pim_enrich.entity.category.plural_label')}</SectionTitle.Title>
+          </SectionTitle>
+          <CategoryTree
+            root={tree}
+            rootLabel={treeLabel}
+            sortable={isGranted('pim_enrich_product_category_edit')}
+            followCategory={
+              isGranted('pim_enrich_product_category_edit') ? cat => followEditCategory(cat.id) : undefined
+            }
+            addCategory={isGranted('pim_enrich_product_category_create') ? addCategory : undefined}
+            deleteCategory={isGranted('pim_enrich_product_category_remove') ? confirmDeleteCategory : undefined}
+            // @todo define onCategoryMoved to save the move in database and request the 'pim_enrich_categorytree_movenode'
+          />
+        </section>
+        {isNewCategoryModalOpen && categoryToCreate !== null && (
+          <NewCategoryModal
+            closeModal={handleCloseNewCategoryModal}
+            onCreate={categoryToCreate.onCreate}
+            parentCode={categoryToCreate.parentCode}
+          />
+        )}
+        {isDeleteCategoryModalOpen && categoryToDelete !== null && (
+          <DeleteCategoryModal
+            categoryLabel={categoryToDelete.label}
+            closeModal={handleCloseDeleteCategoryModal}
+            deleteCategory={handleDeleteCategory}
+            message={'pim_enrich.entity.category.category_deletion.confirmation'}
+          />
         )}
       </PageContent>
     </>

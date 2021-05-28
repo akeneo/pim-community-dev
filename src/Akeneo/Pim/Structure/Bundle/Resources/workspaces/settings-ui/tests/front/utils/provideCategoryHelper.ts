@@ -1,21 +1,50 @@
-import {BackendCategoryTree, Category, CategoryTree} from '@akeneo-pim-community/settings-ui';
+import {BackendCategoryTree, Category, CategoryTreeModel} from '@akeneo-pim-community/settings-ui';
+import {LabelCollection} from '@akeneo-pim-community/shared';
 
-const aCategory = (code: string = 'a_category', label?: string, id: number = 1234): Category => ({
+const aCategory = (
+  code: string = 'a_category',
+  labels?: LabelCollection,
+  id: number = 1234,
+  root: Category | null = null
+): Category => ({
   id,
   code,
-  label: label || `Category ${code}`,
+  labels: labels || {
+    en_US: `[${code}]`,
+  },
+  root,
 });
 
 const aListOfCategories = (codes: string[]): Category[] => {
   return codes.map((code, index) => aCategory(code, undefined, index));
 };
 
-const aCategoryTree = (code: string, children: string[], isRoot: boolean = true, id: number = 1234): CategoryTree => {
-  const root = aCategory(code, `[${code}]`, id);
+const aCategoryTree = (
+  code: string,
+  children: string[],
+  isRoot: boolean = true,
+  isLeaf: boolean = false,
+  id: number = 1234,
+  productsNumber?: number
+): CategoryTreeModel => {
   return {
-    ...root,
+    id,
+    code,
+    label: `[${code}]`,
     isRoot,
-    children: children.map((child, index) => aCategoryTree(child, [], false, index)),
+    isLeaf,
+    children: children.map((child, index) =>
+      aCategoryTree(
+        child,
+        [],
+        false,
+        // even ids are leaves
+        (index + 1) % 2 === 0,
+        index + 1,
+        productsNumber !== undefined ? productsNumber % children.length : undefined
+      )
+    ),
+    productsNumber,
   };
 };
 
@@ -23,7 +52,8 @@ const aBackendCategoryTree = (
   code: string,
   children: string[],
   isRoot: boolean = true,
-  id: number = 1234
+  id: number = 1234,
+  isLeaf: boolean = false
 ): BackendCategoryTree => {
   return {
     attr: {
@@ -31,8 +61,8 @@ const aBackendCategoryTree = (
       'data-code': code,
     },
     data: `[${code}]`,
-    state: isRoot ? 'closed jstree-root' : children.length > 0 ? 'closed' : 'leaf',
-    children: children.map((child, index) => aBackendCategoryTree(child, [], false, index)),
+    state: isRoot ? 'closed jstree-root' : isLeaf ? 'leaf' : 'closed',
+    children: children.map((child, index) => aBackendCategoryTree(child, [], false, index + 1, (index + 1) % 2 === 0)),
   };
 };
 

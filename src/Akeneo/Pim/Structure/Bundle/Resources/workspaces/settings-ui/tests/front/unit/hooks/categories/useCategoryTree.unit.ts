@@ -1,5 +1,5 @@
 import {renderHookWithProviders} from '@akeneo-pim-community/shared';
-import {CategoryTree, useCategoryTree} from '@akeneo-pim-community/settings-ui';
+import {CategoryTreeModel, useCategoryTree} from '@akeneo-pim-community/settings-ui';
 import {aBackendCategoryTree, aCategoryTree} from '../../../utils/provideCategoryHelper';
 import {act} from 'react-test-renderer';
 
@@ -27,10 +27,11 @@ describe('useCategoryTree', () => {
 
   test('it loads the category tree', async () => {
     const treeId = 1234;
-    const categoryTree: CategoryTree = aCategoryTree(
+    const categoryTree: CategoryTreeModel = aCategoryTree(
       'a_root_category',
       ['a_category', 'a_second_category'],
       true,
+      false,
       treeId
     );
     const response = aBackendCategoryTree('a_root_category', ['a_category', 'a_second_category'], true, treeId);

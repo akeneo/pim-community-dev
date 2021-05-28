@@ -5,7 +5,7 @@ import {aListOfCategories} from '../../../utils/provideCategoryHelper';
 
 describe('useCategoryTreeList', () => {
   const renderUseCategoryTreeList = () => {
-    return renderHookWithProviders(useCategoryTreeList);
+    return renderHookWithProviders(() => useCategoryTreeList());
   };
 
   beforeEach(() => {

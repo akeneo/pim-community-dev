@@ -51,7 +51,7 @@ const CategoriesIndex: FC = () => {
           <CategoryTreesDataGrid trees={trees} refreshCategoryTrees={load} />
         )}
       </PageContent>
-      {isModalOpen && <NewCategoryModal closeModal={closeModal} refreshCategoryTrees={load} />}
+      {isModalOpen && <NewCategoryModal closeModal={closeModal} onCreate={load} />}
     </>
   );
 };

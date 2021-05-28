@@ -1,9 +1,9 @@
 import {useEffect, useState} from 'react';
 import {FetchStatus, useFetch, useRoute} from '@akeneo-pim-community/shared';
-import {BackendCategoryTree, CategoryTree, convertToCategoryTree} from '../../models';
+import {BackendCategoryTree, CategoryTreeModel, convertToCategoryTree} from '../../models';
 
 const useCategoryTree = (treeId: number) => {
-  const [tree, setTree] = useState<CategoryTree | null>(null);
+  const [tree, setTree] = useState<CategoryTreeModel | null>(null);
   const [status, setStatus] = useState<FetchStatus>('idle');
   const [error, setError] = useState<string | null>(null);
 
