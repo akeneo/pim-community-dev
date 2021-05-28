@@ -3,7 +3,6 @@ import {useParams} from 'react-router';
 import {Breadcrumb, SectionTitle, useBooleanState} from 'akeneo-design-system';
 import {
   FullScreenError,
-  LoadingPlaceholderContainer,
   NotificationLevel,
   PageContent,
   PageHeader,
@@ -170,7 +169,6 @@ const CategoriesTreePage: FC = () => {
             }
             addCategory={isGranted('pim_enrich_product_category_create') ? addCategory : undefined}
             deleteCategory={isGranted('pim_enrich_product_category_remove') ? confirmDeleteCategory : undefined}
-            // @todo define onCategoryMoved to save the move in database and request the 'pim_enrich_categorytree_movenode'
           />
         </section>
         {isNewCategoryModalOpen && categoryToCreate !== null && (
