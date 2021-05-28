@@ -104,6 +104,7 @@ export const UserProfileSelector: FC = () => {
                     emptyResultLabel={translate('pim_user.profile.selector.not_found')}
                     placeholder={translate('pim_user.profile.selector.placeholder')}
                     onChange={handleOnSelectChange}
+                    clearable={true}
                 >
                     {userProfiles.map((profile: UserProfile) => (
                         <SelectInput.Option key={profile.code} title={translate(profile.label)} value={profile.code}>
@@ -112,7 +113,7 @@ export const UserProfileSelector: FC = () => {
                     ))}
                 </ProfileSelect>
                 <Helper level='info'>
-                    <Link href='https://help.akeneo.com/pim/serenity/articles/what-is-a-user.html' target='_blank'>
+                    <Link href='https://help.akeneo.com/pim/serenity/articles/manage-your-account.html#your-general-information' target='_blank'>
                         {translate('pim_user.profile.why_is_it_needed')}
                     </Link>
                 </Helper>
