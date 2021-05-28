@@ -1,34 +1,38 @@
-import React, {FC, useContext, useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {
   Breadcrumb,
+  Button,
   Dropdown,
   IconButton,
   MoreIcon,
   TabBar,
   useBooleanState,
   useTabBar,
-  Button,
 } from 'akeneo-design-system';
 import {
   FullScreenError,
   PageContent,
   PageHeader,
   PimView,
+  UnsavedChanges,
   useRouter,
+  useSecurity,
+  useSessionStorageState,
   useSetPageTitle,
   useTranslate,
   useUserContext,
-  useSessionStorageState,
-  UnsavedChanges,
-  useSecurity,
 } from '@akeneo-pim-community/shared';
-import {CategoryToDelete, useCategory, useCountProductsBeforeDeleteCategory, useDeleteCategory, useEditCategoryForm} from '../../hooks';
+import {
+  CategoryToDelete,
+  useCountProductsBeforeDeleteCategory,
+  useDeleteCategory,
+  useEditCategoryForm
+} from '../../hooks';
 import {Category} from '../../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../../components/datagrids/categories/DeleteCategoryModal';
-import {EditCategoryContext} from "../../components";
-import {EditPropertiesForm, EditPermissionsForm} from "../../components/categories/";
+import {EditPermissionsForm, EditPropertiesForm} from "../../components/categories/";
 
 type Params = {
   categoryId: string;
@@ -128,37 +132,41 @@ const CategoryEditPage: FC = () => {
         </PageHeader.UserActions>
         <PageHeader.Actions>
           {isGranted('pim_enrich_product_category_remove') &&
-            <Dropdown>
-              <IconButton
-                level="tertiary"
-                title={translate('pim_common.other_actions')}
-                icon={<MoreIcon />}
-                ghost="borderless"
-                onClick={openSecondaryAction}
-              />
-              {secondaryActionIsOpen && (
-                <Dropdown.Overlay onClose={closeSecondaryAction}>
-                  <Dropdown.Header>
-                    <Dropdown.Title>{translate('pim_common.other_actions')}</Dropdown.Title>
-                  </Dropdown.Header>
-                  <Dropdown.ItemCollection>
-                    <Dropdown.Item onClick={() => {
-                      countProductsBeforeDeleteCategory((nbProducts: number) => {
-                        const identifier = parseInt(categoryId);
-                        if (category && isCategoryDeletionPossible(identifier, category.labels[uiLocale], nbProducts)) {
-                          setCategoryToDelete({identifier, label: category.labels[uiLocale], onDelete: followCategoryTree});
-                          openDeleteCategoryModal();
-                        }
-                      });
-                    }}>
-                      <span>{translate('pim_common.delete')}</span>
-                    </Dropdown.Item>
-                  </Dropdown.ItemCollection>
-                </Dropdown.Overlay>
-              )}
-            </Dropdown>
+          <Dropdown>
+            <IconButton
+              level="tertiary"
+              title={translate('pim_common.other_actions')}
+              icon={<MoreIcon/>}
+              ghost="borderless"
+              onClick={openSecondaryAction}
+            />
+            {secondaryActionIsOpen && (
+              <Dropdown.Overlay onClose={closeSecondaryAction}>
+                <Dropdown.Header>
+                  <Dropdown.Title>{translate('pim_common.other_actions')}</Dropdown.Title>
+                </Dropdown.Header>
+                <Dropdown.ItemCollection>
+                  <Dropdown.Item onClick={() => {
+                    countProductsBeforeDeleteCategory((nbProducts: number) => {
+                      const identifier = parseInt(categoryId);
+                      if (category && isCategoryDeletionPossible(category.labels[uiLocale], nbProducts)) {
+                        setCategoryToDelete({
+                          identifier,
+                          label: category.labels[uiLocale],
+                          onDelete: followCategoryTree
+                        });
+                        openDeleteCategoryModal();
+                      }
+                    });
+                  }}>
+                    <span>{translate('pim_common.delete')}</span>
+                  </Dropdown.Item>
+                </Dropdown.ItemCollection>
+              </Dropdown.Overlay>
+            )}
+          </Dropdown>
           }
-          <Button level="primary" onClick={saveCategory} >
+          <Button level="primary" onClick={saveCategory}>
             {translate('pim_common.save')}
           </Button>
         </PageHeader.Actions>
@@ -199,11 +207,11 @@ const CategoryEditPage: FC = () => {
         </TabBar>
 
         {isCurrent(propertyTabName) && category &&
-          <EditPropertiesForm
-            category={category}
-            formData={formData}
-            onChangeLabel={onChangeCategoryLabel}
-          />
+        <EditPropertiesForm
+          category={category}
+          formData={formData}
+          onChangeLabel={onChangeCategoryLabel}
+        />
         }
         {isCurrent(historyTabName) && (
           <HistoryPimView
@@ -216,11 +224,11 @@ const CategoryEditPage: FC = () => {
           />
         )}
         {isCurrent(permissionTabName) &&
-          <EditPermissionsForm
-            formData={formData}
-            onChangePermissions={onChangePermissions}
-            onChangeApplyPermissionsOnChilren={onChangeApplyPermissionsOnChilren}
-          />
+        <EditPermissionsForm
+          formData={formData}
+          onChangePermissions={onChangePermissions}
+          onChangeApplyPermissionsOnChilren={onChangeApplyPermissionsOnChilren}
+        />
         }
       </PageContent>
       {isDeleteCategoryModalOpen && categoryToDelete !== null && (

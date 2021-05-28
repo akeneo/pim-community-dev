@@ -1,9 +1,8 @@
-import React, {useEffect} from 'react';
-import {Category} from "../../models";
+import React from 'react';
 import {EditCategoryForm} from "../../hooks";
-import {useSecurity, useTranslate} from "@akeneo-pim-community/shared";
+import {useTranslate} from "@akeneo-pim-community/shared";
 import styled from "styled-components";
-import {Field, TextInput, MultiSelectInput, BooleanInput, Helper} from "akeneo-design-system";
+import {BooleanInput, Field, Helper, MultiSelectInput} from "akeneo-design-system";
 
 const FormContainer = styled.form`
   margin-top: 20px;
@@ -15,13 +14,12 @@ const FormContainer = styled.form`
 
 type Props = {
   formData: EditCategoryForm | null;
-  onChangePermissions: (type: string, values: any) => void;
-  onChangeApplyPermissionsOnChilren: (value: any) => void;
+  onChangePermissions: (type: string, values: string[]) => void;
+  onChangeApplyPermissionsOnChilren: (value: boolean) => void;
 };
 
 const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermissionsOnChilren}: Props) => {
   const translate = useTranslate();
-  const {isGranted} = useSecurity();
 
   if (formData === null || !formData.permissions) {
     return (<></>);
@@ -31,8 +29,11 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
     <FormContainer>
       <Field label={translate('category.permissions.view.label')}>
         <MultiSelectInput
+          readOnly={false}
           value={formData.permissions.view.value}
           name={formData.permissions.view.fullName}
+          removeLabel="Remove"
+          emptyResultLabel="Empty result"
           onChange={changedValues => onChangePermissions('view', changedValues)}
         >
           {Object.entries(formData.permissions.view.choices).map(([key, choice]) =>
@@ -47,6 +48,8 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
         <MultiSelectInput
           value={formData.permissions.edit.value}
           name={formData.permissions.edit.fullName}
+          removeLabel="Remove"
+          emptyResultLabel="Empty result"
           onChange={changedValues => onChangePermissions('edit', changedValues)}
         >
           {Object.entries(formData.permissions.edit.choices).map(([key, choice]) =>
@@ -61,6 +64,8 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
         <MultiSelectInput
           value={formData.permissions.own.value}
           name={formData.permissions.own.fullName}
+          removeLabel="Remove"
+          emptyResultLabel="Empty result"
           onChange={changedValues => onChangePermissions('own', changedValues)}
         >
           {Object.entries(formData.permissions.own.choices).map(([key, choice]) =>
@@ -73,6 +78,7 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
       </Field>
       <Field label={translate('category.permissions.apply_on_children.label')}>
         <BooleanInput
+          clearable={false}
           readOnly={false}
           value={formData.permissions.apply_on_children.value === '1'}
           noLabel={translate('pim_common.no')}

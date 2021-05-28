@@ -5,7 +5,7 @@ type EditCategoryState = {
 };
 
 const EditCategoryContext = createContext<EditCategoryState>({
-  setCanLeavePage: (canLeavePage: boolean) => {},
+  setCanLeavePage: () => {},
 });
 
 type Props = {

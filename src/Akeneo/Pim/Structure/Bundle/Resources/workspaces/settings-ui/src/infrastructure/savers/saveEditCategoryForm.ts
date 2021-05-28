@@ -1,5 +1,4 @@
 import {EditCategoryForm} from "../../hooks";
-import {Category} from "../../models";
 
 const Routing = require('routing');
 
@@ -16,12 +15,13 @@ const saveEditCategoryForm = async (categoryId: number, formData: EditCategoryFo
   }
 
   if (formData.permissions) {
-    if (formData.permissions.apply_on_children.value === '1') {
-      params.append(formData.permissions.apply_on_children.fullName, formData.permissions.apply_on_children.value);
+    const permissions = formData.permissions;
+    if (permissions.apply_on_children.value === '1') {
+      params.append(permissions.apply_on_children.fullName, permissions.apply_on_children.value);
     }
-    formData.permissions.view.value.map(value => params.append(formData.permissions.view.fullName, value));
-    formData.permissions.edit.value.map(value => params.append(formData.permissions.edit.fullName, value));
-    formData.permissions.own.value.map(value => params.append(formData.permissions.own.fullName, value));
+    formData.permissions.view.value.map(value => params.append(permissions.view.fullName, value));
+    formData.permissions.edit.value.map(value => params.append(permissions.edit.fullName, value));
+    formData.permissions.own.value.map(value => params.append(permissions.own.fullName, value));
   }
 
   const response = await fetch(Routing.generate('pim_enrich_categorytree_edit', {id: categoryId}), {

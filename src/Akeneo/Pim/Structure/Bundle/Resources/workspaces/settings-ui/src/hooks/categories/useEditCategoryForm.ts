@@ -1,8 +1,6 @@
-import {Category, EditableCategoryProperties} from '../../models';
 import {useCallback, useContext, useEffect, useState} from "react";
-import {useBooleanState} from "akeneo-design-system";
 import {saveEditCategoryForm} from "../../infrastructure/savers";
-import {LabelCollection, NotificationLevel, useNotify, useTranslate} from "@akeneo-pim-community/shared";
+import {NotificationLevel, useNotify, useTranslate} from "@akeneo-pim-community/shared";
 import {EditCategoryForm, useCategory} from "./useCategory";
 import {EditCategoryContext} from "../../components";
 
@@ -54,12 +52,30 @@ const useEditCategoryForm = (categoryId: number) => {
   };
 
   const onChangePermissions = (type: string, values: any) => {
-    if (editedFormData === null || !editedFormData.permissions || !editedFormData.permissions.hasOwnProperty(type)) {
+    if (editedFormData === null || !editedFormData.permissions) {
       return;
     }
 
-    const editedPermission = {...editedFormData.permissions[type], value: values};
-    setEditedFormData({...editedFormData, permissions: {...editedFormData.permissions, [type]: editedPermission}});
+    switch (type) {
+      case 'view':
+        setEditedFormData({
+          ...editedFormData,
+          permissions: {...editedFormData.permissions, view: {...editedFormData.permissions.view, value: values}}
+        });
+        break;
+      case 'edit':
+        setEditedFormData({
+          ...editedFormData,
+          permissions: {...editedFormData.permissions, edit: {...editedFormData.permissions.edit, value: values}}
+        });
+        break;
+      case 'edit':
+        setEditedFormData({
+          ...editedFormData,
+          permissions: {...editedFormData.permissions, own: {...editedFormData.permissions.own, value: values}}
+        });
+        break;
+    }
   };
 
   const onChangeApplyPermissionsOnChilren = (value: any) => {

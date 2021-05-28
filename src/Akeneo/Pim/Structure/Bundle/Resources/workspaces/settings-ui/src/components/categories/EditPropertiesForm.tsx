@@ -1,7 +1,7 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {useSecurity, useTranslate} from '@akeneo-pim-community/shared';
-import {Category, EditableCategoryProperties} from '../../models';
+import {Category} from '../../models';
 import {Field, Helper, SectionTitle, TextInput} from 'akeneo-design-system';
 import {EditCategoryForm} from '../../hooks';
 
