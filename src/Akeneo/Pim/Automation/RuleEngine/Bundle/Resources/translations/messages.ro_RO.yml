@@ -1,0 +1,36 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        execute: Execută
+      title: Reguli
+      mass_edit_action:
+        execute: Execută
+        delete: Şterge
+  acl_group:
+    rule: Reguli
+  acl:
+    rule:
+      view_permissions: Vezi reguli
+      delete_permissions: Stergeți reguli
+      execute_permissions: Execută regulile
+  attribute:
+    tab:
+      rule.title: Reguli
+    grid:
+      is_smart.label: Intelingent
+    acl:
+      rule.view_permissions: Vezi regulile
+  product:
+    history: Regula "%rule%" a fost aplicată
+  steps:
+    rules_execution.title: Executarea regulilor
+btn:
+  Execute rules: Execută regulile
+job_execution:
+  summary:
+    rule_calculated: Numărul regulilor
+pim_datagrid:
+  cells:
+    type:
+      execute_rules: Executarea regulilor

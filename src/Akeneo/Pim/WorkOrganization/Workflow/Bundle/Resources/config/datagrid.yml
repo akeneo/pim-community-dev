@@ -68,7 +68,7 @@ services:
             - '@pim_datagrid.datagrid.configuration.product.columns_configurator'
             - '@pim_datagrid.datagrid.configuration.product.filters_configurator'
             - '@pim_datagrid.datagrid.configuration.product.sorters_configurator'
-            - '@pim_datagrid.datagrid.configuration.product.all_attributes_useable_in_grid_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.selected_attributes_configurator'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.published-product-grid, method: buildBefore }
 

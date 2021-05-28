@@ -85,7 +85,7 @@ RUN apt-get update && \
     sh -c 'echo "deb http://packages.blackfire.io/debian any main" >  /etc/apt/sources.list.d/blackfire.list' &&\
     apt-get update && \
     apt-get --yes install \
-        blackfire-agent \
+        blackfire \
         blackfire-php \
         curl \
         default-mysql-client \
@@ -99,6 +99,8 @@ RUN apt-get update && \
 
 COPY docker/build/xdebug.ini /etc/php/7.4/cli/conf.d/99-akeneo-xdebug.ini
 COPY docker/build/xdebug.ini /etc/php/7.4/fpm/conf.d/99-akeneo-xdebug.ini
+COPY docker/build/blackfire.ini /etc/php/7.4/cli/conf.d/99-akeneo-blackfire.ini
+COPY docker/build/blackfire.ini /etc/php/7.4/fpm/conf.d/99-akeneo-blackfire.ini
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 RUN chmod +x /usr/local/bin/composer

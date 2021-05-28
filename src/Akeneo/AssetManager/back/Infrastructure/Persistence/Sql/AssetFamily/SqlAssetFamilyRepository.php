@@ -35,14 +35,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class SqlAssetFamilyRepository implements AssetFamilyRepositoryInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
-    /** @var TransformationCollectionFactory */
-    private $transformationCollectionFactory;
+    private TransformationCollectionFactory $transformationCollectionFactory;
 
     public function __construct(
         Connection $sqlConnection,
@@ -86,8 +83,7 @@ SQL;
         }
 
         $this->eventDispatcher->dispatch(
-            new AssetFamilyCreatedEvent($assetFamily->getIdentifier()),
-            AssetFamilyCreatedEvent::class
+            new AssetFamilyCreatedEvent($assetFamily->getIdentifier())
         );
     }
 
@@ -232,7 +228,7 @@ SQL;
         $statement = $this->sqlConnection->executeQuery($query);
         $result = $statement->fetch();
 
-        return intval($result['total']);
+        return (int) $result['total'];
     }
 
     private function hydrateAssetFamily(

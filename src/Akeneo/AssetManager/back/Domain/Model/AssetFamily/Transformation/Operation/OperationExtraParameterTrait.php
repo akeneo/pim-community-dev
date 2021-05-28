@@ -27,7 +27,7 @@ trait OperationExtraParameterTrait
                 );
             }
 
-            throw new \InvalidArgumentException(join(' ', $messages));
+            throw new \InvalidArgumentException(implode(' ', $messages));
         }
     }
 }

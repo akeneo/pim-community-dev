@@ -28,29 +28,21 @@ class AssetFamily
     public const DEFAULT_ATTRIBUTE_AS_LABEL_CODE = 'label';
     public const DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE = 'media';
 
-    /** @var AssetFamilyIdentifier */
-    private $identifier;
+    private AssetFamilyIdentifier $identifier;
 
-    /** @var LabelCollection */
-    private $labelCollection;
+    private LabelCollection $labelCollection;
 
-    /** @var Image|null */
-    private $image;
+    private Image $image;
 
-    /** @var AttributeAsLabelReference */
-    private $attributeAsLabel;
+    private AttributeAsLabelReference $attributeAsLabel;
 
-    /** @var AttributeAsMainMediaReference */
-    private $attributeAsMainMedia;
+    private AttributeAsMainMediaReference $attributeAsMainMedia;
 
-    /** @var RuleTemplateCollection  */
-    private $ruleTemplateCollection;
+    private RuleTemplateCollection $ruleTemplateCollection;
 
-    /** @var TransformationCollection */
-    private $transformationCollection;
+    private TransformationCollection $transformationCollection;
 
-    /** @var NamingConventionInterface */
-    private $namingConvention;
+    private NamingConventionInterface $namingConvention;
 
     private function __construct(
         AssetFamilyIdentifier $identifier,

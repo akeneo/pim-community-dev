@@ -13,8 +13,7 @@ namespace Akeneo\AssetManager\Infrastructure\PublicApi\Analytics;
  */
 class CountVolume
 {
-    /** @var int */
-    private $volume;
+    private int $volume;
 
     public function __construct(int $volume)
     {

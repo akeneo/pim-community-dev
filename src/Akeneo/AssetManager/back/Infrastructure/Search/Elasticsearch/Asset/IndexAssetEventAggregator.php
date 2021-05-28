@@ -22,13 +22,11 @@ class IndexAssetEventAggregator implements EventAggregatorInterface
     private const MAX_ASSET_TO_INDEX_BATCH = 200;
 
     /** @var AssetIdentifier[] */
-    private $assetsToIndex = [];
+    private array $assetsToIndex = [];
 
-    /** @var AssetIndexerInterface */
-    private $assetIndexer;
+    private AssetIndexerInterface $assetIndexer;
 
-    /** @var IndexByAssetFamilyInBackgroundInterface */
-    private $indexByAssetFamilyInBackground;
+    private IndexByAssetFamilyInBackgroundInterface $indexByAssetFamilyInBackground;
 
     public function __construct(
         AssetIndexerInterface $assetIndexer,

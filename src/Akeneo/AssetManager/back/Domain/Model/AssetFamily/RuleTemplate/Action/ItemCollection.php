@@ -21,8 +21,7 @@ use Webmozart\Assert\Assert;
  */
 class ItemCollection
 {
-    /** @var array */
-    private $items;
+    private array $items;
 
     private function __construct(array $items)
     {

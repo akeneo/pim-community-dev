@@ -22,8 +22,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
  */
 class DeleteAssetHandler
 {
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
     public function __construct(AssetRepositoryInterface $assetRepository)
     {

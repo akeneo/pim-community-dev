@@ -28,8 +28,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AssetCodeShouldBeUniqueValidator extends ConstraintValidator
 {
-    /** @var AssetExistsInterface */
-    private $assetExists;
+    private AssetExistsInterface $assetExists;
 
     public function __construct(AssetExistsInterface $assetExists)
     {

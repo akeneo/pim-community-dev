@@ -22,8 +22,7 @@ use Doctrine\DBAL\Connection;
  */
 class SqlAssetsExists
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -53,8 +52,7 @@ SQL;
                 'codes' => Connection::PARAM_STR_ARRAY
             ]
         );
-        $results = $statement->fetchAll(\PDO::FETCH_COLUMN);
 
-        return $results;
+        return $statement->fetchAll(\PDO::FETCH_COLUMN);
     }
 }

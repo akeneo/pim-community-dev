@@ -7,8 +7,6 @@ pim_reference_entity:
         limit_reached: 'Vostè no pot crear l''entitat de referència "%reference_entity_label%" perquè vostè ha arribat al límit d''entitats de referència %limit%'
       records:
         should_have_no_record: 'No es pot eliminar aquesta entitat perquè existeixen registres per a aquesta entitat'
-      reference_entity_attributes:
-        should_not_be_linked: 'No pots eliminar aquesta entitat perquè els atributs de l''entitat de referència estan relacionades amb aquesta entitat'
       reference_entity_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Com a mínim un grup d''usuaris té que tenir permís d''edició sobre l''entitat'
       product_attributes:
@@ -20,8 +18,6 @@ pim_reference_entity:
         pattern: 'Aquest camp només pot contenir lletres, números i guions baixos.'
         should_be_unique: 'El codi de registre ja existeix per l''entitat de referencia "%reference_entity_identifier%" i el codi de registre "%code%"'
         should_exist: 'El registre no s''ha trobat'
-      text:
-        incompatible_with_regular_expression: 'Text incompatible amb l''expressió regular "%regular_expression%"'
       file:
         extension_not_allowed: '"%file_extension%" no es permet per a aquest atribut. Les extensions permeses son: %allowed_file_extensions%'
         file_size_exceeded: 'L''arxiu excedeix la mida màxima establerta per l''atribut.'

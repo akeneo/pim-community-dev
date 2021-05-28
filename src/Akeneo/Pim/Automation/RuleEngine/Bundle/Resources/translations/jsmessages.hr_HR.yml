@@ -1,8 +1,5 @@
 pimee_catalog_rule:
   execution_button: Izvrši pravila
-  popin:
-    execute_rules:
-      confirm_content: Jeste li sigurni da želite izvršiti sva pravila? (to može potrajati duže vrijeme)
   notification:
     launched: Izvođenje pravila je pokrenuto. Biti ćete obaviješteni kad bude gotovo.
   attribute:
@@ -10,7 +7,6 @@ pimee_catalog_rule:
       code.label: Kod
       condition.label: Stanje
       action.label: Akcija
-      no_rule_yet.label: Nema pravila za sada
   rule:
     condition:
       if.label: ako
@@ -27,53 +23,54 @@ pimee_catalog_rule:
       actions:
         execute:
           confirm_content: Jeste li sigurni da želite izvršiti pravilo?
-      mass_edit_action:
-        confirm_content: Sigurno želite izračunati zahvaćene proizvode za pravila?
       mass_action:
         execute:
-          confirm_content: Jeste li sigurni da želite izvršiti odabrana pravila?
-          success: Pokrenuta je masovna radnja izvršenja odabranih pravila. Biti ćete obaviješteni kad bude gotovo
-          error: Došlo je do pogreške tijekom izvođenja pravila.
+          success: Izvođenje pravila je pokrenuto. Biti ćete obaviješteni kad bude gotovo.
           empty_selection: Nije odabrano niti jedno pravilo.
         delete:
           confirm_content: Jeste li sigurni da želite obrisati odabrana pravila?
           success: Uspješno ste izbrisali pravila.
-          error: Došlo je do pogreške tijekom brisanja pravila.
           empty_selection: Nije odabrano niti jedno pravilo.
   form:
     attribute:
       tab:
         rules:
           title: Pravila
-confirmation:
-  remove:
-    rule: Jeste li sigurni da želite izbrisati ovo pravilo? Nije moguće poništiti ovu akciju
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Jeste li sigurni da želite izbrisati ovo pravilo? Nije moguće poništiti ovu akciju
 flash:
   rule:
-    removed: Pravilo uspješno uklonjeno
-    impacted_product_count: Pokrenuta je masovna radnja izračuna zahvaćenih proizvoda za pravila. Biti ćete obaviješteni kad bude gotovo.
     executed: Izvođenje pravila je pokrenuto. Biti ćete obaviješteni kad bude gotovo.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Postavke pravila
 batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Izvođenje pravila
   default_steps:
     execute_rules: Izvođenje pravila
-  yml_rule_import:
-    label: Uvoz pravila iz YAML
-    import.label: Uvoz pravila
-  yml_rule_export:
-    label: Izvoz pravila u YAML
-    export.label: Izvoz pravila
   rule_impacted_product_count:
-    label: Zahvaćeni proizvodi za pravila
     perform.label: Izračunaj zahvaćene proizvode
   csv_product_import_with_rules:
     label: Uvoz proizvoda u CSV s pravilima
     import.label: Uvoz proizvoda
-    import_associations.label: Uvoz pridruživanja
   xlsx_product_import_with_rules:
     label: Uvoz proizvoda u XLSX s pravilima
     import.label: Uvoz proizvoda
-    import_associations.label: Uvoz pridruživanja
 pim_notification:
   types:
     rule: Postavke pravila
+    execute_rules: Izvođenje pravila
+pim_menu:
+  item:
+    rule: Pravila
+pim_title:
+  pimee_catalog_rule_rule_index: Pravila
+  pimee_catalog_rule_new: Pravila
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: Izvođenje pravila

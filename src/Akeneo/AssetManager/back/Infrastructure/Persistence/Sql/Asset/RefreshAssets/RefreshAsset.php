@@ -14,8 +14,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
  */
 class RefreshAsset
 {
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
     public function __construct(AssetRepositoryInterface $assetRepository)
     {

@@ -29,8 +29,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class IndexAction
 {
-    /** @var SearchAsset */
-    private $searchAsset;
+    private SearchAsset $searchAsset;
 
     public function __construct(SearchAsset $searchAsset)
     {

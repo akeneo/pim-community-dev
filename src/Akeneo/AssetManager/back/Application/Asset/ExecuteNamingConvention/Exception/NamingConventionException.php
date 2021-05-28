@@ -25,11 +25,9 @@ namespace Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Exceptio
  */
 class NamingConventionException extends \Exception
 {
-    /** @var \Exception */
-    private $embeddedException;
+    private \Exception $embeddedException;
 
-    /** @var string */
-    private $namingConventionAbortOnError;
+    private bool $namingConventionAbortOnError;
 
     public function __construct(\Exception $exception, bool $namingConventionAbortOnError)
     {

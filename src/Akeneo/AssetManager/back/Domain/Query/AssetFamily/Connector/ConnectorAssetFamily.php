@@ -25,26 +25,19 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
  */
 class ConnectorAssetFamily
 {
-    /** @var AssetFamilyIdentifier */
-    private $identifier;
+    private AssetFamilyIdentifier $identifier;
 
-    /** @var LabelCollection */
-    private $labelCollection;
+    private LabelCollection $labelCollection;
 
-    /** @var Image */
-    private $image;
+    private Image $image;
 
-    /** @var array */
-    private $productLinkRules;
+    private array $productLinkRules;
 
-    /** @var ConnectorTransformationCollection */
-    private $transformations;
+    private ConnectorTransformationCollection $transformations;
 
-    /** @var NamingConventionInterface */
-    private $namingConvention;
+    private NamingConventionInterface $namingConvention;
 
-    /** @var AttributeCode|null */
-    private $attributeAsMainMediaCode;
+    private ?AttributeCode $attributeAsMainMediaCode = null;
 
     public function __construct(
         AssetFamilyIdentifier $identifier,
@@ -67,7 +60,7 @@ class ConnectorAssetFamily
     public function normalize(): array
     {
         $normalizedLabels = $this->labelCollection->normalize();
-        $normalizedAttributeAsMainMedia = $this->attributeAsMainMediaCode ? (string) $this->attributeAsMainMediaCode : null;
+        $normalizedAttributeAsMainMedia = $this->attributeAsMainMediaCode !== null ? (string) $this->attributeAsMainMediaCode : null;
         $normalizedNamingConvention = $this->namingConvention->normalize();
 
         return [

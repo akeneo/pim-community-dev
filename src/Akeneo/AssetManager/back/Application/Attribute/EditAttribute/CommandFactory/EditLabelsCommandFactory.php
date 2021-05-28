@@ -30,11 +30,10 @@ class EditLabelsCommandFactory implements EditAttributeCommandFactoryInterface
         if (!$this->supports($normalizedCommand)) {
             throw new \RuntimeException('Impossible to create an edit labels property command.');
         }
-        $command = new EditLabelsCommand(
+
+        return new EditLabelsCommand(
             $normalizedCommand['identifier'],
             $normalizedCommand['labels']
         );
-
-        return $command;
     }
 }

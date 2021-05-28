@@ -20,23 +20,17 @@ class FileData implements ValueDataInterface
     private const EXTENSION = 'extension';
     private const UPDATED_AT = 'updatedAt';
 
-    /** @var string */
-    private $key;
+    private string $key;
 
-    /** @var string */
-    private $originalFilename;
+    private string $originalFilename;
 
-    /** @var int */
-    private $size;
+    private ?int $size = null;
 
-    /** @var string */
-    private $mimeType;
+    private ?string $mimeType = null;
 
-    /** @var string */
-    private $extension;
+    private ?string $extension = null;
 
-    /** @var \DateTimeInterface */
-    private $updatedAt;
+    private \DateTimeInterface $updatedAt;
 
     // TODO: make the optional args mandatory
     private function __construct(

@@ -28,8 +28,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlAttributeExists implements AttributeExistsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     /**
      * @param Connection $sqlConnection
@@ -55,9 +54,8 @@ SQL;
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
         $statement->closeCursor();
-        $isExisting = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
 
-        return $isExisting;
+        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }
 
     public function withAssetFamilyAndCode(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): bool
@@ -77,9 +75,8 @@ SQL;
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
         $statement->closeCursor();
-        $isExisting = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
 
-        return $isExisting;
+        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }
 
     public function withAssetFamilyIdentifierAndOrder(
@@ -101,8 +98,7 @@ SQL;
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
         $statement->closeCursor();
-        $isExisting = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
 
-        return $isExisting;
+        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }
 }

@@ -57,7 +57,7 @@ class AppendOptionCollectionUpdater implements ValueUpdaterInterface
 
         $valueKey = ValueKey::create($attributeIdentifier, $channelReference, $localeReference);
         $existingValue = $asset->findValue($valueKey);
-        $existingOptionCodes = $existingValue ? $existingValue->getData()->normalize() : [];
+        $existingOptionCodes = $existingValue !== null ? $existingValue->getData()->normalize() : [];
         $newData = array_values(array_unique(array_merge($existingOptionCodes, $command->optionCodes)));
 
         $options = OptionCollectionData::createFromNormalize($newData);

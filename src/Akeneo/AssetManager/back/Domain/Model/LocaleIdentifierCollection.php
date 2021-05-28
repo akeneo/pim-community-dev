@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
 class LocaleIdentifierCollection implements \IteratorAggregate
 {
     /** @var LocaleIdentifier[] */
-    private $localeIdentifiers;
+    private array $localeIdentifiers;
 
     /**
      * @param LocaleIdentifier[] $localeIdentifiers
@@ -51,9 +51,7 @@ class LocaleIdentifierCollection implements \IteratorAggregate
      */
     public function normalize(): array
     {
-        return array_map(function (LocaleIdentifier $localeIdentifier) {
-            return $localeIdentifier->normalize();
-        }, $this->localeIdentifiers);
+        return array_map(fn (LocaleIdentifier $localeIdentifier) => $localeIdentifier->normalize(), $this->localeIdentifiers);
     }
 
     /**
@@ -61,9 +59,7 @@ class LocaleIdentifierCollection implements \IteratorAggregate
      */
     public static function fromNormalized(array $normalizedLocaleIdentifiers): LocaleIdentifierCollection
     {
-        $localeIdentifiers = array_map(function (string $localeIdentifier) {
-            return LocaleIdentifier::fromCode($localeIdentifier);
-        }, $normalizedLocaleIdentifiers);
+        $localeIdentifiers = array_map(fn (string $localeIdentifier) => LocaleIdentifier::fromCode($localeIdentifier), $normalizedLocaleIdentifiers);
 
         return new self($localeIdentifiers);
     }

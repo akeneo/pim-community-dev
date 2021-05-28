@@ -22,13 +22,13 @@ class ExportAssetsCommand extends Command
     protected static $defaultName = 'pimee:migrate-pam-assets:export-assets';
 
     /** * @var SymfonyStyle */
-    private $io;
+    private ?SymfonyStyle $io = null;
 
     /** * @var FindAssets */
-    private $findAssets;
+    private FindAssets $findAssets;
 
     /** * @var FindVariations */
-    private $findVariations;
+    private FindVariations $findVariations;
 
     public function __construct(FindAssets $findAssets, FindVariations $findVariations)
     {

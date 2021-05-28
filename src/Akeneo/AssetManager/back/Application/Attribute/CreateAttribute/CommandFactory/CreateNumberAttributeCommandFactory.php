@@ -32,7 +32,7 @@ class CreateNumberAttributeCommandFactory extends AbstractCreateAttributeCommand
     {
         $this->checkCommonProperties($normalizedCommand);
 
-        $command = new CreateNumberAttributeCommand(
+        return new CreateNumberAttributeCommand(
             $normalizedCommand['asset_family_identifier'],
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
@@ -44,8 +44,6 @@ class CreateNumberAttributeCommandFactory extends AbstractCreateAttributeCommand
             $this->stringOrNull($normalizedCommand, 'min_value'),
             $this->stringOrNull($normalizedCommand, 'max_value')
         );
-
-        return $command;
     }
 
     private function stringOrNull(array $normalizedCommand, string $key)

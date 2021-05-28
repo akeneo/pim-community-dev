@@ -1,0 +1,48 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: Salt okunur
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Grup bu kategoride olacak. <strong> {{ group }} </strong> <strong> {{ permission }} </strong> 
+      revoke: Grup bu kategoride olmayacak <strong> {{ group }} </strong> <strong> {{ permission }} </strong> 
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Grup bu yerel ayarlarda olacak <strong> {{ group }} </strong> <strong> {{ permission }} </strong> 
+      revoke: Grup bu yerel ayarlarda olmayacak <strong> {{ group }} </strong> <strong> {{ permission }} </strong>
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Grup, bu özellik grubunun üyesi olacak <strong> {{ group }} </strong> <strong> {{ permission }} </strong>
+      revoke: Grup, bu özellik grubunun üyesi olmayacak <strong> {{ group }} </strong> <strong> {{ permission }} </strong>
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: '{{ group }} grubuna {{ permission }} özellik grubu izini verilecek'
+      view: Özellikleri görüntülemesine izin ver
+      edit: Özellikleri düzenlemesine izin ver
+      removed: '{{ group }} grubuna {{ permission }} özellik grubu izni verilmeyecek'
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: '{{ group }} grubuna {{ permission }} iş profili izni verilecek'
+      execute: İş profilinin çalıştırmasına izin ver
+      edit: İş profili düzenlemek için izin ver
+      removed: '{{ group }} grubuna {{ permission }} iş profili izni verilmeyecek'
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: İzin kontrolü ve kuralları uygulayarak ürün değerini ekleyin
+    perform.label: Ürün değeri ekle
+  update_product_value_with_permission_and_rules:
+    label: Ürün değerini izin kontrolü ve kuralları uygulamasıyla güncelleyin
+    perform.label: Ürün değerini güncelleyin
+  remove_product_value_with_permission_and_rules:
+    label: İzin değer kontrol ve kuralları uygulaması ile birlikte ürün değerini kaldırın
+    perform.label: Ürün değerini kaldırma
+  edit_common_attributes_with_permission_and_rules:
+    label: Özellikleri izin kontrolü ve kurallar uygulamasıyla düzenleyin
+    perform.label: Özellikleri düzenle
+    cleaner.label: Geçici dosyaları temizle

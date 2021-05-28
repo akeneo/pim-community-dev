@@ -23,13 +23,11 @@ class EditMediaLinkValueCommandFactory implements EditValueCommandFactoryInterfa
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
     {
-        $command = new EditMediaLinkValueCommand(
+        return new EditMediaLinkValueCommand(
             $attribute,
             $normalizedValue['channel'],
             $normalizedValue['locale'],
             $normalizedValue['data']
         );
-
-        return $command;
     }
 }

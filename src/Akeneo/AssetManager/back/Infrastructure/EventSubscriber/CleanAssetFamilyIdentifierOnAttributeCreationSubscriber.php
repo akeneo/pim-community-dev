@@ -28,8 +28,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 final class CleanAssetFamilyIdentifierOnAttributeCreationSubscriber implements EventSubscriberInterface
 {
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
     public function __construct(AssetFamilyRepositoryInterface $assetFamilyRepository)
     {

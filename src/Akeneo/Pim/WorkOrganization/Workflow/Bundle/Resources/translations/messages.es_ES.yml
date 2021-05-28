@@ -12,22 +12,6 @@ pimee_workflow:
     status:
       label: Estado
       working_copy: Versión de trabajo
-      in_progress: En progreso
-      ready: Aguardando aprobación
-      can_be_partially_reviewed: Puede ser revisado parcialmente
-      can_not_be_approved: No puede ser revisado
-      can_not_be_deleted: No puede ser borrado
-    status_message:
-      can_be_partially_reviewed: Sólo puede revisar parcialmente esta propuesta debido a que ciertos cambios se aplican a valores que usted no tiene el permiso de editar. Por favor contacte al administrador para cambiar sus permisos.
-      can_not_be_approved: No puede revisar esta propuesta debido a que todos los cambios se aplicarán en valores que usted no tiene el permiso de editar. Por favor contacte al administrador para cambiar sus permisos.
-      can_not_be_deleted: No puede eliminar esta propuesta debido a que todos los cambios se aplicarán en valores que usted no tiene el permiso de editar. Por favor contacte al administrador para cambiar sus permisos.
-      in_progress: Esta propuesta está actualmente en progreso y aún no ha sido enviada.
-    action:
-      approve: Aprobar todos
-      refuse: Rechazar todos
-      remove: Eliminar
-      partial_approve: Aprobar cambios en atributo %attribute% de el producto %product%
-      partial_reject: Rechazar cambios en atributo %attribute% del producto %product%
     notification:
       partial_approve: '%owner% ha aceptado el(los) valor(es) para el(los) %attributes% para el producto %product%'
       partial_approve_number: '%owner% ha aceptado %attributes_count% valores para los atributos para el producto %product%'
@@ -51,9 +35,6 @@ pimee_workflow:
     individual_import: '%author.firstname% %author.lastname% ha enviado propuestas a revisar desde una importación'
     generic_import: Usted tiene propuestas provenientes de una importación a revisar
     original_value: Original
-    new_value: Nuevo
-    no_diff: El valor "%value%" es el mismo entre la propuesta y la copia de trabajo.
-    draft_in_progress: Hay un borrador en curso por %author% para este producto.
   published_product:
     index: Productos publicados
     title: Producto publicado

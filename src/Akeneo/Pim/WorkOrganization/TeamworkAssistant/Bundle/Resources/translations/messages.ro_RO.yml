@@ -1,0 +1,14 @@
+teamwork_assistant:
+  project:
+    label_maxlength: Această valoare este prea lungă. Ar trebui să aibă {{ max }} caractere sau mai puțin.
+    project_due_date: Nu poți alege o dată din trecut.
+  notification:
+    project_calculation:
+      start: Începe
+    project_finished:
+      show: Afişează
+    due_date:
+      start: Începe
+  datagrid:
+    contributor_in_progress: În desfășurare
+    contributor_done: Efectuat

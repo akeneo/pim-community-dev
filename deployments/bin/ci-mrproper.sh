@@ -14,14 +14,13 @@ while read line; do
 
     #Check if tf state exists !
     if gsutil ls gs://akecld-terraform-dev/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${namespace} &>/dev/null; then
+        echo "tfstate about ${namespace} exists, need manual cleaning"
+        continue
+    else
         echo "Big clean for ${pvname}"
         gcloud --project=${GOOGLE_PROJECT_ID} compute disks delete ${gkepd} --zone=${GOOGLE_CLUSTER_ZONE} --quiet &>/dev/null || true
         kubectl delete pv ${pvname}
         kubectl delete ns ${namespace} || true
-
-    else
-        echo "tfstate about ${namespace} exists, need manual cleaning"
-        continue
     fi
 
 done </tmp/pv_list.txt
@@ -29,19 +28,19 @@ done </tmp/pv_list.txt
 echo "Try to catch and remove unattached policies and logging metrics"
 gcloud components install alpha -q
 
-gcloud beta logging metrics list --project ${GOOGLE_PROJECT_ID} --filter="name ~ srnt-pimup|srnt-pimci " --format="value(name)" >/tmp/metrics_list.txt
+gcloud beta logging metrics list --project ${GOOGLE_PROJECT_ID} --filter="name ~ srnt-pimup|srnt-pimci|grth-pimup|grth-pimci " --format="value(name)" >/tmp/metrics_list.txt
 while read line; do
     namespace=$(echo ${line%%-login-response-time-distribution})
     if gsutil ls gs://akecld-terraform-dev/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${namespace} &>/dev/null; then
+        echo "tfstate about ${namespace} exists, need manual cleaning"
+        continue
+    else
         echo "Big clean for ${line}"
         relatedAlert=$(gcloud alpha monitoring policies list --project ${GOOGLE_PROJECT_ID} --filter="displayName ~ ${namespace}" --format="value(name)")
         if [[ $relatedAlert != "" ]]; then
             gcloud alpha monitoring policies delete -q --project ${GOOGLE_PROJECT_ID} ${relatedAlert}
         fi
         gcloud beta logging metrics delete --quiet --project ${GOOGLE_PROJECT_ID} ${line}
-    else
-        echo "tfstate about ${namespace} exists, need manual cleaning"
-        continue
     fi
 
 done </tmp/metrics_list.txt

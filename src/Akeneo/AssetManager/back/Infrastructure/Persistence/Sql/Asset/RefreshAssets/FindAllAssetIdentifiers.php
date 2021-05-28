@@ -14,8 +14,7 @@ use Doctrine\DBAL\Connection;
  */
 class FindAllAssetIdentifiers implements SelectAssetIdentifiersInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {

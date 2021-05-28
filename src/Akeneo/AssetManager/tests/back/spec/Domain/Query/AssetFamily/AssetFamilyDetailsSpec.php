@@ -10,6 +10,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformationCollection;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use PhpSpec\ObjectBehavior;
 
@@ -37,7 +38,7 @@ class AssetFamilyDetailsSpec extends ObjectBehavior
         $this->attributes = [
             $name
         ];
-        $this->transformations = TransformationCollection::noTransformation();
+        $this->transformations = new ConnectorTransformationCollection([]);
         $this->isAllowedToEdit = false;
         $this->attributeAsLabel = AttributeAsLabelReference::noReference();
         $this->attributeAsMainMedia = AttributeAsMainMediaReference::noReference();

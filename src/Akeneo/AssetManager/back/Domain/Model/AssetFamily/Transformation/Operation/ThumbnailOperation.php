@@ -25,11 +25,9 @@ class ThumbnailOperation implements Operation
 
     private const OPERATION_NAME = 'thumbnail';
 
-    /** @var int|null */
-    private $width;
+    private ?int $width = null;
 
-    /** @var int|null */
-    private $height;
+    private ?int $height = null;
 
     public function __construct(?int $width, ?int $height)
     {

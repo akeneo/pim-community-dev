@@ -27,8 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DeleteAssetAction
 {
-    /** @var DeleteAssetHandler */
-    private $deleteAssetHandler;
+    private DeleteAssetHandler $deleteAssetHandler;
 
     public function __construct(DeleteAssetHandler $deleteAssetHandler)
     {

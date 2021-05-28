@@ -22,7 +22,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 class ConnectorValueTransformerRegistry
 {
     /** @var ConnectorValueTransformerInterface[] */
-    private $ConnectorValueTransformers;
+    private iterable $ConnectorValueTransformers;
 
     public function __construct(iterable $ConnectorValueTransformers)
     {

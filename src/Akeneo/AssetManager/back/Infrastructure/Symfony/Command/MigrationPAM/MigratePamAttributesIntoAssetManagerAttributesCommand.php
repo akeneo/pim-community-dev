@@ -24,11 +24,9 @@ class MigratePamAttributesIntoAssetManagerAttributesCommand extends Command
 {
     protected static $defaultName = 'pimee:assets:migrate:migrate-pam-attributes';
 
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
-    /** @var SymfonyStyle */
-    private $io;
+    private ?SymfonyStyle $io = null;
 
     /** @var string */
     private $assetFamilyCode;
@@ -61,11 +59,7 @@ class MigratePamAttributesIntoAssetManagerAttributesCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
         $this->assetFamilyCode = $input->getArgument('asset-family-code');
 
-        if (count($attributeCodes) === 0) {
-            $count = $this->updateAll();
-        } else {
-            $count = $this->updateFromAttributeCodes($attributeCodes);
-        }
+        $count = count($attributeCodes) === 0 ? $this->updateAll() : $this->updateFromAttributeCodes($attributeCodes);
 
         $this->io->success(sprintf('Success! %d former attribute(s) updated.', $count));
     }

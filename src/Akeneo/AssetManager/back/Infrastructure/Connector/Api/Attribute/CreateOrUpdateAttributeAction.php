@@ -30,44 +30,31 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAttributeAction
 {
-    /** @var CreateAttributeCommandFactoryRegistry */
-    private $createAttributeCommandFactoryRegistry;
+    private CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry;
 
-    /** @var FindAttributeNextOrderInterface */
-    private $attributeNextOrder;
+    private FindAttributeNextOrderInterface $attributeNextOrder;
 
-    /** @var AttributeExistsInterface */
-    private $attributeExists;
+    private AttributeExistsInterface $attributeExists;
 
-    /** @var CreateAttributeHandler */
-    private $createAttributeHandler;
+    private CreateAttributeHandler $createAttributeHandler;
 
-    /** @var GetAttributeIdentifierInterface */
-    private $getAttributeIdentifier;
+    private GetAttributeIdentifierInterface $getAttributeIdentifier;
 
-    /** @var EditAttributeCommandFactory */
-    private $editAttributeCommandFactory;
+    private EditAttributeCommandFactory $editAttributeCommandFactory;
 
-    /** @var EditAttributeHandler */
-    private $editAttributeHandler;
+    private EditAttributeHandler $editAttributeHandler;
 
-    /** @var Router */
-    private $router;
+    private Router $router;
 
-    /** @var AssetFamilyExistsInterface */
-    private $assetFamilyExists;
+    private AssetFamilyExistsInterface $assetFamilyExists;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var AttributeCreationValidator */
-    private $jsonSchemaCreateValidator;
+    private AttributeCreationValidator $jsonSchemaCreateValidator;
 
-    /** @var AttributeEditionValidator */
-    private $jsonSchemaEditValidator;
+    private AttributeEditionValidator $jsonSchemaEditValidator;
 
-    /** @var ValidateAttributePropertiesImmutability */
-    private $validateAttributePropertiesImmutability;
+    private ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability;
 
     public function __construct(
         CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry,
@@ -108,7 +95,7 @@ class CreateOrUpdateAttributeAction
             throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
-        if (false === $this->assetFamilyExists->withIdentifier($assetFamilyIdentifier)) {
+        if (!$this->assetFamilyExists->withIdentifier($assetFamilyIdentifier)) {
             throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $assetFamilyIdentifier));
         }
 

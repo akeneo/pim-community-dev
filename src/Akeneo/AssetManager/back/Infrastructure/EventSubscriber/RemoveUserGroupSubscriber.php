@@ -27,8 +27,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class RemoveUserGroupSubscriber implements EventSubscriberInterface
 {
-    /** @var SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight */
-    private $findAssetFamilyWhereUserGroupIsLastToHaveEditRight;
+    private SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight $findAssetFamilyWhereUserGroupIsLastToHaveEditRight;
 
     public function __construct(
         SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight $findAssetFamilyWhereUserGroupIsLastToHaveEditRight

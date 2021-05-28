@@ -1,0 +1,39 @@
+akeneo_assetmanager:
+  acl_group:
+    asset_manager: Assettien hallinta
+  acl:
+    asset_family:
+      create: Luo assettiperhe
+      edit: Muokkaa assettiperheen ominaisuuksia
+      delete: Poista assettiperhe
+      manage_permission: Hallinnoi assettiperheen käyttöoikeuksia
+      manage_transformation: Hallitse assettiperheen muutoksia
+    asset:
+      create: Luo assetti
+      edit: Muokkaa assettia
+      delete: Poista assetti
+      delete_all: Poista kaikki assetit
+      list_product: Listaa assettiin linkitetyt tuotteet
+    attribute:
+      create: Lisää attribuutti assettiperheeseen
+      edit: Muokkaa assettiperheen attribuuttia
+      delete: Poista attribuutti assettiperheestä
+    option:
+      edit: Muokkaa valintoja
+      delete: Poista valinta
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_link_assets_to_products: "Linkitä assetit tuotteisiin"
+#average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
+#average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
+#average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
+pim_catalog_asset_collection: Assetit
+pim_datagrid:
+  cells:
+    type:
+      asset_manager_link_assets_to_products: Linkitä assetit tuotteisiin
+batch_jobs:
+  default_steps:
+    link_assets_to_products: Linkitä assetit tuotteisiin

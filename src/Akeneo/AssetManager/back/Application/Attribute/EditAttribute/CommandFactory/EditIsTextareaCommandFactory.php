@@ -22,11 +22,9 @@ class EditIsTextareaCommandFactory implements EditAttributeCommandFactoryInterfa
             throw new \RuntimeException('Impossible to create an edit is text area property command.');
         }
 
-        $command = new EditIsTextareaCommand(
+        return new EditIsTextareaCommand(
             $normalizedCommand['identifier'],
             $normalizedCommand['is_textarea']
         );
-
-        return $command;
     }
 }

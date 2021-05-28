@@ -1,0 +1,43 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: Samo za čitanje
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Grupa <strong>{{ group }}</strong> će <strong>biti {{ permission }}</strong> u ovoj kategoriji
+      revoke: Grupa <strong>{{ group }}</strong> neće <strong>biti {{ permission }}</strong> u ovoj kategoriji
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Grupa <strong>{{ group }}</strong> će <strong>biti {{ permission }}</strong> u ovom lokalu
+      revoke: Grupa <strong>{{ group }}</strong> neće <strong>biti {{ permission }}</strong> u ovom lokalu
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Grupa <strong>{{ group }}</strong> će <strong>biti {{ permission }}</strong> u ovoj grupi atributa
+      revoke: Grupa <strong>{{ group }}</strong> neće <strong>biti {{ permission }}</strong> u ovoj grupi atributa
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      view: Dozvoljen pregled svojstava
+      edit: Dozvoljeno uređivanje atributa
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      execute: Dopušteno izvoditi profil zadatka
+      edit: Dopušteno uređivati profil zadatka
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: Dodaj vrijednosti proizvoda sa provjerom dozvola i pravilima aplikacije
+    perform.label: Dodaj vrijednosti proizvoda
+  update_product_value_with_permission_and_rules:
+    label: Ažuriraj vrijednosti proizvoda sa provjerom dozvola i pravilima aplikacije
+    perform.label: Ažuriraj vrijednosti proizvoda
+  remove_product_value_with_permission_and_rules:
+    label: Ukloni vrijednosti proizvoda sa provjerom dozvola i pravilima aplikacije
+    perform.label: Uklanjanje vrijednosti proizvoda
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Uredi atribute
+    cleaner.label: Očisti privremene datoteke

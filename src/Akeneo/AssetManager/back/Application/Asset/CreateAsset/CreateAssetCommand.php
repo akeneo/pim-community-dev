@@ -20,14 +20,11 @@ namespace Akeneo\AssetManager\Application\Asset\CreateAsset;
  */
 class CreateAssetCommand
 {
-    /** @var string */
-    public $assetFamilyIdentifier;
+    public string $assetFamilyIdentifier;
 
-    /** @var string */
-    public $code;
+    public string $code;
 
-    /** @var array */
-    public $labels;
+    public array $labels;
 
     public function __construct(string $assetFamilyIdentifier, string $code, array $labels)
     {

@@ -32,20 +32,15 @@ class Action
     private const ITEM_PATTERN = '{{code}}';
     public const ALLOWED_MODES = [self::ADD_MODE, self::REPLACE_MODE];
 
-    /** @var Field */
-    private $field;
+    private Field $field;
 
-    /** @var Type */
-    private $type;
+    private Type $type;
 
-    /** @var ItemCollection */
-    private $items;
+    private ItemCollection $items;
 
-    /** @var ChannelReference */
-    private $channel;
+    private ChannelReference $channel;
 
-    /** @var LocaleReference */
-    private $locale;
+    private LocaleReference $locale;
 
     private function __construct(Field $field, Type $type, ItemCollection $items, ChannelReference $channel, LocaleReference $locale)
     {
@@ -86,9 +81,7 @@ class Action
     public function compile(PropertyAccessibleAsset $propertyAccessibleAsset): self
     {
         $field = ReplacePattern::replace($this->field->stringValue(), $propertyAccessibleAsset);
-        $items = array_map(function (string $item) use ($propertyAccessibleAsset) {
-            return ReplacePattern::replace($item, $propertyAccessibleAsset);
-        }, $this->items->normalize());
+        $items = array_map(fn (string $item) => ReplacePattern::replace($item, $propertyAccessibleAsset), $this->items->normalize());
 
         $channelCompiled = $this->channel->normalize();
         if (!$this->channel->isEmpty()) {

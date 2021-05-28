@@ -13,8 +13,7 @@ use Webmozart\Assert\Assert;
  */
 class MediaLinkData implements ValueDataInterface
 {
-    /** @var string */
-    private $text;
+    private string $text;
 
     private function __construct(string $text)
     {

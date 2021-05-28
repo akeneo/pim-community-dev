@@ -33,17 +33,13 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class DeleteAction
 {
-    /** @var DeleteAssetHandler */
-    private $deleteAssetHandler;
+    private DeleteAssetHandler $deleteAssetHandler;
 
-    /** @var SecurityFacade */
-    private $securityFacade;
+    private SecurityFacade $securityFacade;
 
-    /** @var CanEditAssetFamilyQueryHandler */
-    private $canEditAssetFamilyQueryHandler;
+    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         DeleteAssetHandler $deleteAssetHandler,

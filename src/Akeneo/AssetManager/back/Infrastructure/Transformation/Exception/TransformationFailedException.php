@@ -24,6 +24,6 @@ class TransformationFailedException extends \RuntimeException
             $errorMessages[] = $violation->getMessage();
         }
 
-        return new self(join(', ', $errorMessages));
+        return new self(implode(', ', $errorMessages));
     }
 }

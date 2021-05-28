@@ -2,69 +2,16 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
-        delete: Skasuj
         execute: Wykonaj
       title: Reguły
       column:
         label: Etykieta
-        conditions: Stan
-        actions: Działanie
-        impacted_product_count:
-          label: Dotyczy produktów
-          count: 'Dotyczy {0,1}%count%  produktu|]1,Inf[Dotyczy %count% produktów '
-          no_yet_calculated: Jeszcze nie przeliczone
         tags:
           label: Akcje
       mass_edit_action:
-        impacted_product_count: Oblicz produkty, których dotyczy problem
         execute: Wykonaj
         delete: Skasuj
-  actions:
-    type:
-      "copy": Następnie %from_field% jest kopiowane do %to_field%
-      "copy_value": Następnie %from_field% jest kopiowane do %to_field%
-      "set": Następnie %value% jest umieszczona w %field%
-      "set_value": Następnie %value% jest umieszczona w %field%
-      "add": Następnie %value% jest dodawana do %field%
-      "remove": Następnie %value% jest usuwana z %field%
-      "concatenate": Wtedy %fields% są połączone z %to_field%
-      clear: Wtedy %field% jest wyczyszczone
-      calculate: Wtedy %field% jest obliczone %operation_details%
-      calculate_first_operation:
-        add: przez dodanie %operand% do %source%
-        subtract: odejmowanie %operand% od %source%
-        multiply: mnożąc %source% przez %operand%
-        divide: dzieląc %source% przez %operand%
-      calculate_other_operation:
-        add: ', następnie przez dodanie %operand%'
-        subtract: ', następnie przez odjęcie %operand%'
-        divide: ', następnie dzieląc przez %operand%'
-        multiply: ', następnie mnożąc przez %operand%'
-    options:
-      include_children: i dzieci
   condition:
-    label: Jeżeli %field% %operator% %value%
-    operators:
-      "STARTS WITH": zaczyna się od
-      "ENDS WITH": kończy się na
-      "CONTAINS": zawiera
-      "DOES NOT CONTAIN": nie zawiera
-      "EMPTY": jest pusty
-      "NOT EMPTY": nie jest pusty
-      "IN": w
-      "NOT IN": nie w
-      "IN CHILDREN": u dzieci
-      "NOT IN CHILDREN": nie u dzieci
-      "UNCLASSIFIED": jest niesklasyfikowany
-      "IN OR UNCLASSIFIED": jest niesklasyfikowany lub w
-      "BETWEEN": pomiędzy
-      "NOT BETWEEN": nie pomiędzy
-      "=": jest równe
-      "!=": nie równe
-      ">": większy niż
-      ">=": równy lub mniejszy niż
-      "<": mniej niż
-      "<=": równy lub mniejszy niż
     fields:
       family: Rodzina
     field_groups:
@@ -75,7 +22,6 @@ pimee_catalog_rule:
     rule:
       view_permissions: Zobacz reguły
       delete_permissions: Usuwanie reguł
-      impacted_product_count_permissions: Oblicz produkty, których dotyczy problem dla reguł
       execute_permissions: Wykonywanie reguł
   attribute:
     tab:
@@ -85,24 +31,9 @@ pimee_catalog_rule:
     acl:
       rule.view_permissions: Zobacz reguły
   product:
-    tooltip:
-      product_attribute_affected_by_a_rule.content: Wartość tego atrybutu może pochodzić z reguły <strong>%rule%</strong>. Oznacza to, że jeśli warunki reguły są prawidłowe, modyfikacja zostanie nadpisana.
-      loading.title: Ładuję...
     history: Zastosowano regułę "%rule%"
-  product_value:
-    tooltip:
-      affected_by.title: 'Wpływ na zasadę(y):'
   steps:
-    product_rule_definition_reader.title: Czytnik importu reguły produktu
-    rule_definition_processor.title: Proces importu reguły produktu
-    product_rule_definition_writer.title: Pisarz importu reguły produktu
     rules_execution.title: Wykonywanie reguł
-  notification:
-    execute_rules:
-      success: Wykonywanie reguł gotowe
-    mass_edit_rule:
-      success: Obliczanie produktów, których dotyczy problem dla reguł zakończone
-      error: Wystąpił błąd podczas obliczania dotkniętych produktów dla reguł
 btn:
   Execute rules: Wykonywanie reguł
 job_execution:

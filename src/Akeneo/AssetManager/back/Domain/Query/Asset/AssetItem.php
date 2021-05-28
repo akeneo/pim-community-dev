@@ -29,26 +29,20 @@ class AssetItem
     private const VALUES = 'values';
     private const COMPLETENESS = 'completeness';
 
-    /** @var string */
-    public $identifier;
+    public string $identifier;
 
-    /** @var string */
-    public $assetFamilyIdentifier;
+    public string $assetFamilyIdentifier;
 
-    /** @var string */
-    public $code;
+    public string $code;
 
-    /** @var array */
-    public $labels;
+    public array $labels;
 
-    /** @var array */
-    public $image;
+    public array $image;
 
     /** @var []|null */
     public $values;
 
-    /** @var array */
-    public $completeness;
+    public array $completeness;
 
     public function normalize(): array
     {

@@ -26,8 +26,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
  */
 class AttributeAsMainMediaReference
 {
-    /** @var AttributeIdentifier|null */
-    private $identifier;
+    private ?AttributeIdentifier $identifier = null;
 
     private function __construct(?AttributeIdentifier $attributeIdentifier)
     {

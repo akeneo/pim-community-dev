@@ -30,38 +30,27 @@ class AttributeDetails
     public const VALUE_PER_CHANNEL = 'value_per_channel';
     public const TYPE = 'type';
 
-    /** @var string */
-    public $type;
+    public string $type;
 
-    /** @var string */
-    public $identifier;
+    public string $identifier;
 
-    /** @var string */
-    public $assetFamilyIdentifier;
+    public string $assetFamilyIdentifier;
 
-    /** @var string */
-    public $code;
+    public string $code;
 
-    /** @var array */
-    public $labels;
+    public array $labels;
 
-    /** @var int */
-    public $order;
+    public int $order;
 
-    /** @var bool */
-    public $isRequired;
+    public bool $isRequired;
 
-    /** @var bool */
-    public $isReadOnly;
+    public bool $isReadOnly;
 
-    /** @var bool */
-    public $valuePerChannel;
+    public bool $valuePerChannel;
 
-    /** @var bool */
-    public $valuePerLocale;
+    public bool $valuePerLocale;
 
-    /** @var array */
-    public $additionalProperties;
+    public array $additionalProperties;
 
     public function normalize(): array
     {

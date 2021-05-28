@@ -14,8 +14,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class CountAssets implements CountAssetsInterface
 {
-    /** @var Client */
-    private $assetClient;
+    private Client $assetClient;
 
     public function __construct(Client $assetClient)
     {

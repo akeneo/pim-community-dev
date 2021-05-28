@@ -35,13 +35,11 @@ class EditOptionCollectionValueCommandFactory implements EditValueCommandFactory
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
     {
-        $command = new EditOptionCollectionValueCommand(
+        return new EditOptionCollectionValueCommand(
             $attribute,
             $normalizedValue['channel'],
             $normalizedValue['locale'],
             $normalizedValue['data']
         );
-
-        return $command;
     }
 }

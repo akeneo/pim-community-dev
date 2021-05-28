@@ -18,20 +18,15 @@ namespace Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily;
  */
 class CreateAssetFamilyCommand
 {
-    /** @var string */
-    public $identifier;
+    public string $identifier;
 
-    /** @var array */
-    public $labels;
+    public array $labels;
 
-    /** @var array */
-    public $productLinkRules;
+    public array $productLinkRules;
 
-    /** @var array */
-    public $transformations;
+    public array $transformations;
 
-    /** @var array */
-    public $namingConvention;
+    public array $namingConvention;
 
     public function __construct(
         string $identifier,

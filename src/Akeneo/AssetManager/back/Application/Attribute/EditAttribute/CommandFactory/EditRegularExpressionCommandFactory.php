@@ -22,11 +22,9 @@ class EditRegularExpressionCommandFactory implements EditAttributeCommandFactory
             throw new \RuntimeException('Impossible to create an edit regular expression property command.');
         }
 
-        $command = new EditRegularExpressionCommand(
+        return new EditRegularExpressionCommand(
             $normalizedCommand['identifier'],
             $normalizedCommand['regular_expression']
         );
-
-        return $command;
     }
 }

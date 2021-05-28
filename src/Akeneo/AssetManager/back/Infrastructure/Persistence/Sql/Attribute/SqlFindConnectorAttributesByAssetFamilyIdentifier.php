@@ -16,14 +16,11 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindConnectorAttributesByAssetFamilyIdentifier implements FindConnectorAttributesByAssetFamilyIdentifierInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var AttributeHydratorRegistry */
-    private $attributeHydratorRegistry;
+    private AttributeHydratorRegistry $attributeHydratorRegistry;
 
-    /** @var InactiveLabelFilter */
-    private $inactiveLabelFilter;
+    private InactiveLabelFilter $inactiveLabelFilter;
 
     public function __construct(
         Connection $sqlConnection,
@@ -68,9 +65,8 @@ SQL;
             $query,
             ['asset_family_identifier' => $assetFamilyIdentifier->normalize()]
         );
-        $result = $statement->fetchAll();
 
-        return !$result ? [] : $result;
+        return $statement->fetchAll();
     }
 
     /**

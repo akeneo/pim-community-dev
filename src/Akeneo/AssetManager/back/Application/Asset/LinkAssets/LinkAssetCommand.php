@@ -10,9 +10,7 @@ namespace Akeneo\AssetManager\Application\Asset\LinkAssets;
  */
 class LinkAssetCommand
 {
-    /** @var string */
-    public $assetCode;
+    public string $assetCode;
 
-    /** @var string */
-    public $assetFamilyIdentifier;
+    public string $assetFamilyIdentifier;
 }

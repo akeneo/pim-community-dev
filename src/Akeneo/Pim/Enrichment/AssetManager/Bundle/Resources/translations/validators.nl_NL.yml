@@ -1,0 +1,4 @@
+pim_asset_manager:
+  product_value:
+    validation:
+      assets_should_belong_to_asset_family: 'Zorg ervoor dat de "%asset_code%" asset bestaat en behoort tot de "%asset_family_identifier%" asset familie voor het "%attribute%" attribuut.'

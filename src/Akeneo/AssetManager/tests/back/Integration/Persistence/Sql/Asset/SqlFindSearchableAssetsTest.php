@@ -78,29 +78,24 @@ class SqlFindSearchableAssetsTest extends SqlIntegrationTestCase
         ], $searchableAsset->values);
     }
 
+
     /**
      * @test
      */
-    public function it_returns_null_if_it_does_not_find_by_asset_family_identifier()
+    public function it_returns_empty_array_if_it_does_not_find_by_asset_identifiers()
     {
-        $items = $this->findSearchableAssets->byAssetFamilyIdentifier(
-            AssetFamilyIdentifier::fromString('wrong_asset_family')
-        );
-        $count = 0;
-        foreach ($items as $searchItem) {
-            $count++;
-        }
-        Assert::assertEquals(0, $count, 'There was some searchable item found. expected 0.');
+        $searchableAssets = $this->findSearchableAssets->byAssetIdentifiers([AssetIdentifier::fromString('wrong_identifier')]);
+        Assert::assertEquals(0, iterator_count($searchableAssets));
     }
 
     /**
      * @test
      */
-    public function it_returns_searchable_asset_items_by_asset_family()
+    public function it_returns_searchable_asset_items_by_asset_identifiers()
     {
-        $searchableAssets = $this->findSearchableAssets->byAssetFamilyIdentifier(
-            AssetFamilyIdentifier::fromString('designer')
-        );
+        $searchableAssets = $this->findSearchableAssets->byAssetIdentifiers([
+            AssetIdentifier::fromString('stark_designer_fingerprint')
+        ]);
 
         $labelIdentifier = $this->getAttributeAsLabelIdentifier('designer');
         $searchableAssets = iterator_to_array($searchableAssets);
@@ -128,6 +123,10 @@ class SqlFindSearchableAssetsTest extends SqlIntegrationTestCase
             $searchableAsset->values
         );
     }
+
+    /**
+     * @test
+     */
 
     private function loadAssetFamilyAndAttributes(): void
     {

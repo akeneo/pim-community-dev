@@ -16,8 +16,7 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetLabelsB
  */
 class FindAssetLabelTranslation
 {
-    /** @var SqlFindAssetLabelsByCodes */
-    private $sqlFindAssetLabelsByCodes;
+    private FindAssetLabelsByCodesInterface $sqlFindAssetLabelsByCodes;
 
     public function __construct(FindAssetLabelsByCodesInterface $sqlFindAssetLabelsByCodes)
     {

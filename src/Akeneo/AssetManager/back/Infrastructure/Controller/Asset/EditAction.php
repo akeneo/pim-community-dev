@@ -48,8 +48,7 @@ class EditAction
     private TokenStorageInterface $tokenStorage;
     private EventAggregatorInterface $indexAssetEventAggregator;
 
-    /** @var ComputeTransformationEventAggregatorInterface */
-    private $computeTransformationEventAggregator;
+    private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator;
 
     public function __construct(
         EditAssetCommandFactory $editAssetCommandFactory,
@@ -129,8 +128,7 @@ class EditAction
     private function getEditCommand(Request $request): EditAssetCommand
     {
         $normalizedCommand = json_decode($request->getContent(), true);
-        $command = $this->editAssetCommandFactory->create($normalizedCommand);
 
-        return $command;
+        return $this->editAssetCommandFactory->create($normalizedCommand);
     }
 }

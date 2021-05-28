@@ -46,7 +46,7 @@ class ComputeTransformations implements TaskletInterface, TrackableTaskletInterf
         'image/psd',
     ];
 
-    private ?StepExecution $stepExecution;
+    private ?StepExecution $stepExecution = null;
     private FindAssetIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily;
     private GetTransformations $getTransformations;
     private AssetRepositoryInterface $assetRepository;
@@ -59,7 +59,7 @@ class ComputeTransformations implements TaskletInterface, TrackableTaskletInterf
     private int $batchSize;
 
     /** @var TransformationCollection[] */
-    private $cachedTransformationsPerAssetFamily = [];
+    private array $cachedTransformationsPerAssetFamily = [];
 
     public function __construct(
         FindAssetIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily,
@@ -109,9 +109,7 @@ class ComputeTransformations implements TaskletInterface, TrackableTaskletInterf
             $totalItems = $this->countAssets->forAssetFamily($assetFamilyIdentifier);
         } elseif ($this->stepExecution->getJobParameters()->has('asset_identifiers')) {
             $assetIdentifiers = array_map(
-                function (string $assetIdentifier): AssetIdentifier {
-                    return AssetIdentifier::fromString($assetIdentifier);
-                },
+                fn (string $assetIdentifier): AssetIdentifier => AssetIdentifier::fromString($assetIdentifier),
                 $this->stepExecution->getJobParameters()->get('asset_identifiers')
             );
 
@@ -241,7 +239,7 @@ class ComputeTransformations implements TaskletInterface, TrackableTaskletInterf
         }
     }
 
-    private function getTransformations(AssetFamilyidentifier $assetFamilyidentifier): TransformationCollection
+    private function getTransformations(AssetFamilyIdentifier $assetFamilyidentifier): TransformationCollection
     {
         if (!isset($this->cachedTransformationsPerAssetFamily[(string)$assetFamilyidentifier])) {
             $this->cachedTransformationsPerAssetFamily[(string)$assetFamilyidentifier] = $this->getTransformations->fromAssetFamilyIdentifier(

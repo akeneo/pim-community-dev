@@ -35,23 +35,17 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
  */
 class EditAssetFamilyHandler
 {
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var FileStorerInterface */
-    private $storer;
+    private FileStorerInterface $storer;
 
-    /** @var FileExistsInterface */
-    private $fileExists;
+    private FileExistsInterface $fileExists;
 
-    /** @var GetAttributeIdentifierInterface */
-    private $getAttributeIdentifier;
+    private GetAttributeIdentifierInterface $getAttributeIdentifier;
 
-    /** @var TransformationCollectionFactory */
-    private $transformationCollectionFactory;
+    private TransformationCollectionFactory $transformationCollectionFactory;
 
-    /** @var ClockInterface */
-    private $clock;
+    private ClockInterface $clock;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
@@ -126,7 +120,7 @@ class EditAssetFamilyHandler
     {
         $fileExists = $this->fileExists->exists($imageData['filePath']);
 
-        if (true === $fileExists) {
+        if ($fileExists) {
             $mediaFile = (new FileInfo())
                 ->setKey($imageData['filePath'])
                 ->setOriginalFilename($imageData['originalFilename']);
@@ -135,9 +129,7 @@ class EditAssetFamilyHandler
             $mediaFile = $this->storer->store($rawFile, Storage::FILE_STORAGE_ALIAS);
         }
 
-        $storedImage = Image::fromFileInfo($mediaFile);
-
-        return $storedImage;
+        return Image::fromFileInfo($mediaFile);
     }
 
     private function computeUpdatedTransformationCollection(array $normalizedTransformations): TransformationCollection

@@ -1,0 +1,8 @@
+batch_jobs:
+  asset_manager_csv_asset_export:
+    label: Assettien vienti CSV-muodossa
+    export.label: Assettien vienti
+  asset_manager_xlsx_asset_export:
+    label: Assettien vienti XLSX-muodossa
+    export.label: Assettien vienti
+akeneo_assetmanager.export.assets.filter.asset_family: Assettiperhe

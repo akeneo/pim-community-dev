@@ -25,14 +25,11 @@ class NumberAttribute extends AbstractAttribute
 {
     public const ATTRIBUTE_TYPE = 'number';
 
-    /** @var AttributeDecimalsAllowed */
-    private $decimalsAllowed;
+    private AttributeDecimalsAllowed $decimalsAllowed;
 
-    /** @var AttributeLimit */
-    private $minValue;
+    private AttributeLimit $minValue;
 
-    /** @var AttributeLimit */
-    private $maxValue;
+    private AttributeLimit $maxValue;
 
     private function __construct(
         AttributeIdentifier $identifier,

@@ -53,8 +53,7 @@ class RegisterAttributeUpdaterPass implements CompilerPassInterface
         }
 
         krsort($sortedUpdatersByPriority);
-        $sortedUpdatersByPriority = call_user_func_array('array_merge', $sortedUpdatersByPriority);
 
-        return $sortedUpdatersByPriority;
+        return call_user_func_array('array_merge', $sortedUpdatersByPriority);
     }
 }

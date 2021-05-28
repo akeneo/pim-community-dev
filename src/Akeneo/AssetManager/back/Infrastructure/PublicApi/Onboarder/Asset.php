@@ -9,26 +9,19 @@ namespace Akeneo\AssetManager\Infrastructure\PublicApi\Onboarder;
  */
 final class Asset
 {
-    /** @var string */
-    private $identifier;
+    private string $identifier;
 
-    /** @var array */
-    private $labels;
+    private array $labels;
 
-    /** @var string */
-    private $code;
+    private string $code;
 
-    /** @var string */
-    private $assetFamilyIdentifier;
+    private string $assetFamilyIdentifier;
 
-    /** @var array */
-    private $media;
+    private array $media;
 
-    /** @var string */
-    private $attributeType;
+    private string $attributeType;
 
-    /** @var string */
-    private $mediaType;
+    private string $mediaType;
 
     public function __construct(
         string $identifier,

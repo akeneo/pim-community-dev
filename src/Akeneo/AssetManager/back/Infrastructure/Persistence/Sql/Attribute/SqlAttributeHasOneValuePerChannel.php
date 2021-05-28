@@ -30,8 +30,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlAttributeHasOneValuePerChannel implements AttributeHasOneValuePerChannelInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     /**
      * @param Connection $sqlConnection
@@ -59,8 +58,6 @@ SQL;
             throw AttributeNotFoundException::withAssetFamilyAndAttributeCode($assetFamilyIdentifier, $attributeCode);
         }
 
-        $hasOneValuePerChannel = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['value_per_channel'], $platform);
-
-        return $hasOneValuePerChannel;
+        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['value_per_channel'], $platform);
     }
 }

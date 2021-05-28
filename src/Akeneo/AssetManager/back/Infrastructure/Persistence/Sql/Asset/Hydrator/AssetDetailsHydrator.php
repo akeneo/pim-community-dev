@@ -36,14 +36,11 @@ use Doctrine\DBAL\Types\Types;
  */
 class AssetDetailsHydrator implements AssetDetailsHydratorInterface
 {
-    /** @var AbstractPlatform */
-    private $platform;
+    private AbstractPlatform $platform;
 
-    /** @var FindValueKeysByAttributeTypeInterface */
-    private $findValueKeysByAttributeType;
+    private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
 
-    /** @var ValueHydratorInterface */
-    private $valueHydrator;
+    private ValueHydratorInterface $valueHydrator;
 
     public function __construct(
         Connection $connection,
@@ -85,7 +82,7 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
         $labels = $this->getLabelsFromValues($valueCollection, $attributeAsLabel);
         $assetImage = $this->getImage($valueCollection, $attributes[$attributeAsMainMedia]);
 
-        $assetDetails = new AssetDetails(
+        return new AssetDetails(
             AssetIdentifier::fromString($assetIdentifier),
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeIdentifier::fromString($attributeAsMainMedia),
@@ -97,8 +94,6 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
             $allValues,
             true
         );
-
-        return $assetDetails;
     }
 
     private function createEmptyValues(array $emptyValues, array $valueCollection): array
@@ -157,9 +152,7 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
     {
         $imageValues = array_filter(
             $valueCollection,
-            function (array $value) use ($attributeAsMainMedia) {
-                return $value['attribute'] === $attributeAsMainMedia->getIdentifier()->normalize();
-            }
+            fn (array $value) => $value['attribute'] === $attributeAsMainMedia->getIdentifier()->normalize()
         );
 
         $result = array_map(function (array $value) use ($attributeAsMainMedia) {

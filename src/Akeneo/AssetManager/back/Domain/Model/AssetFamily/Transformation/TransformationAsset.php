@@ -22,17 +22,13 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
  */
 class TransformationAsset
 {
-    /** @var AssetIdentifier */
-    private $identifier;
+    private AssetIdentifier $identifier;
 
-    /** @var AssetCode */
-    private $code;
+    private AssetCode $code;
 
-    /** @var AssetFamilyIdentifier */
-    private $assetFamilyIdentifier;
+    private AssetFamilyIdentifier $assetFamilyIdentifier;
 
-    /** @var array */
-    private $rawValueCollection;
+    private array $rawValueCollection;
 
     public function __construct(
         AssetIdentifier $identifier,

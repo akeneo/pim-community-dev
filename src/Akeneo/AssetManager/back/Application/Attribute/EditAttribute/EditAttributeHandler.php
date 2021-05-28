@@ -16,11 +16,9 @@ use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
  */
 class EditAttributeHandler
 {
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var AttributeUpdaterRegistryInterface */
-    private $AttributeUpdaterRegistry;
+    private AttributeUpdaterRegistryInterface $AttributeUpdaterRegistry;
 
     public function __construct(
         AttributeUpdaterRegistryInterface $attributeUpdaterRegistry,

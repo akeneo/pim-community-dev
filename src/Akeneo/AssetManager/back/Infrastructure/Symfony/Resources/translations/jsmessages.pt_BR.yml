@@ -1,0 +1,141 @@
+pim_asset_manager:
+  asset_collection:
+    remove_asset: Remover mídia
+  asset_preview:
+    empty_main_media: Esta mídia não possui arquivos.
+  app:
+    image:
+      wide:
+        remove: Remover o arquivo
+        download: Baixar o arquivo
+        upload: Arraste e solte para fazer o envio ou clique aqui
+      small:
+        remove: Remover
+        upload: Arraste e solte aqui para fazer o upload
+  asset_family:
+    column:
+      title: Navegação em mídias
+      selector:
+        no_data: Nenhuma família de mídia disponível
+    validation:
+      code:
+        limit_reached: 'Você não pode criar a família de mídia "{{ %reference_entity_label% }}", porque você chegou ao limite de {{ %limit% }} famílias de mídia'
+    product_link_rules:
+      execute_naming_convention:
+        cancel: Cancelar
+    properties:
+      media_file: Arquivo de mídia
+  asset:
+    button:
+      delete: Deletar
+      fullscreen: Tela cheia
+    product:
+      attribute: Atributo de produto
+      dropdown:
+        attribute: Atributo de produto
+      no_attribute:
+        link: Criar um novo atributo de produto
+      not_enough_items:
+        button: Ver todos os produtos
+    enrich:
+      code: Código
+      label: Rótulo
+    create:
+      header:
+        title: Criar
+      input:
+        label: Rótulo
+        code: Código (obrigatório)
+        create_another: Criar uma nova mídia
+      confirm: Salvar
+    upload:
+      lines: Arquivos
+      remove: Remover
+      confirm: Criar
+      list:
+        filename: Nome do arquivo
+        code: Código (obrigatório)
+        locale: Localidade (obrigatório)
+      status:
+        upload_in_progress: em progresso
+        uploaded: Upload concluído
+        valid: Pronto para criar
+        invalid: erro
+        created: criado
+    grid:
+      column:
+        image: Imagem
+        label: Rótulo
+        action: Ações
+      completeness:
+        title_no_required: Nenhum atributo obrigatório
+        title_non_complete: 0 de {{ required }} atributos concluídos
+        title_ongoing: '{{ complete }} de {{ required }} atributos concluídos'
+  attribute:
+    create:
+      subtitle: Família de Mídia
+      title: Adicionar novo atributo de mídia
+      description: Os seguintes parâmetros, exceto o rótulo, não podem ser atualizados após a criação do atributo
+      input:
+        code: Código (obrigatório)
+        label: Rótulo
+        type: Tipo de atributo
+        asset_type: Família de Mídia para vincular (obrigatório)
+        value_per_locale: Valor por localidade
+        value_per_channel: Valor por canal
+      placeholder:
+        asset_type: Selecione sua família de mídias vinculada
+      confirm: Salvar
+    edit:
+      delete: Excluir o atributo
+      title: Editar atributo {{ code }}
+      save: Salvar
+      cancel: Cancelar
+      input:
+        code: Código (obrigatório)
+        label: Rótulo
+        type: Tipo de atributo
+        value_per_locale: Valor por localidade
+        value_per_channel: Valor por canal
+        is_required: Necessário para completude
+        is_read_only: Somente leitura na interface
+        max_length: Limite máximo de caracteres
+        textarea: Área de texto
+        is_rich_text_editor: Editor de Texto Rico
+        max_file_size: Tamanho máximo do arquivo (MB)
+        allowed_extensions: Extensões permitidas
+        validation_rule: Regra de validação
+        regular_expression: Expressão Regular
+        min_value: Valor mínimo
+        max_value: Valor máximo
+        manage_options:
+          confirmation:
+            discard_changes: Você perderá as alterações feitas na lista de opções se você sair da página
+          quick_edit:
+            label: Gerenciar opções
+          option:
+            label:
+              placeholder: Escreva a nova opção de rótulo aqui
+        options:
+          validation_rule:
+            none: Nenhum
+            email: E-mail
+            regular_expression: Expressão regular
+            url: URL
+        decimals_allowed: Valores decimais permitidos
+        prefix: Prefixo
+        suffix: Sufixo
+        media_type: Tipo de mídia
+    delete:
+      message: Tem certeza que deseja excluir o atributo "{{ attributeLabel }}"?
+      title: Atributo
+    notification:
+      list:
+        fail: Ocorreu um erro ao atualizar a lista de atributos
+      save:
+        success: Atributo atualizado com sucesso.
+        fail: Ocorreu um erro ao salvar o atributo
+        validation_error: O atributo não pôde ser atualizado
+      create:
+        success: Atributo criado com sucesso.
+        fail: Ocorreu um erro ao criar o atributo

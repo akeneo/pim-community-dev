@@ -44,13 +44,19 @@
 - PIM-9825: Fix Assets not being properly reindexed after bulk edit
 - PIM-9835: Fix DQI loading in attribute edit page with a large amount of options 
 - PIM-9854: Fix message when deleting a user group used in a project
-- PIM-9853: Make the word "product" translatable 
+- PIM-9853: Make the word "product" translatable
+- PIM-9872: Fix Columns button from published product grid when catalog contains many attributes
+- PIM-9866: Creates a warning whenever a cell contains a date in a reference entity xls import
+- PIM-9871: Fix Published Product Grid takes long time to load for high number of attribute usable in grid
+- PIM-9874: Fix slow SQL query when many assets are linked to products when getting products through API
+- PIM-9879: Fix notification link when a proposal on a product model was accepted or rejected 
 
 ## Improvements
 
 - PIM-9619: Improve error message when creating a new project with a name already used 
 - PLG-45: Activate SSO authentication from a command CLI
 - RAC-509: Upgrade asset limit by asset family to 10 millions
+- PIM-9777: Fix error message when trying to delete an attribute linked to an entity
 
 ## New features
 

@@ -1,0 +1,3 @@
+flash.version.revert.product: Produsul a fost restaurat la o versiune anterioară
+flash.error.revert.product: Versiunea nu poate fi restaurată. Au apărut unele erori în timpul validării.
+pimee_versioning.acl.product_version.revert: Restaurează un produs

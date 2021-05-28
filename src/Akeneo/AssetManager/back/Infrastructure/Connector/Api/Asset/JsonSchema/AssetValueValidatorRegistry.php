@@ -22,7 +22,7 @@ namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema;
 class AssetValueValidatorRegistry
 {
     /** @var AssetValueValidatorInterface[] */
-    private $validators = [];
+    private array $validators = [];
 
     public function __construct(iterable $validators)
     {

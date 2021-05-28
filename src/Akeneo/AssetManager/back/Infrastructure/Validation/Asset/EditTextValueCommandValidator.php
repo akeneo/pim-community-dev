@@ -17,6 +17,11 @@ use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValue
 use Akeneo\AssetManager\Infrastructure\Validation\Asset\EditTextValueCommand as EditTextValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -86,23 +91,21 @@ class EditTextValueCommandValidator extends ConstraintValidator
     private function checkType(EditTextValueCommand $command):ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
-        $violations = $validator->validate($command->text, new Constraints\Type('string'));
 
-        return $violations;
+        return $validator->validate($command->text, new Type('string'));
     }
 
     private function checkTextLength(EditTextValueCommand $command)
     : ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
-        $violations = $validator->validate($command->text, [
-            new Constraints\Length([
+
+        return $validator->validate($command->text, [
+            new Length([
                 'min' => 0,
                 'max' => $command->attribute->getMaxLength()->intValue(),
             ]),
         ]);
-
-        return $violations;
     }
 
     private function checkValidationRule(EditTextValueCommand $command)
@@ -116,7 +119,7 @@ class EditTextValueCommandValidator extends ConstraintValidator
         if ($command->attribute->isValidationRuleSetToRegularExpression()) {
             $attribute = $command->attribute;
             return $validator->validate($command->text, [
-                new Constraints\Callback(function ($value, ExecutionContextInterface $context, $payload) use ($attribute) {
+                new Callback(function ($value, ExecutionContextInterface $context, $payload) use ($attribute) {
                     if (!preg_match_all((string) $attribute->getRegularExpression(), $value)) {
                         return $this->context
                             ->buildViolation(EditTextValueCommandConstraint::TEXT_INCOMPATIBLE_WITH_REGULAR_EXPRESSION)
@@ -129,11 +132,11 @@ class EditTextValueCommandValidator extends ConstraintValidator
         }
 
         if ($command->attribute->isValidationRuleSetToUrl()) {
-            return $validator->validate($command->text, [new Constraints\Url()]);
+            return $validator->validate($command->text, [new Url()]);
         }
 
         if ($command->attribute->isValidationRuleSetToEmail()) {
-            return $validator->validate($command->text, [new Constraints\Email()]);
+            return $validator->validate($command->text, [new Email()]);
         }
 
         return new ConstraintViolationList();

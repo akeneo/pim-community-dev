@@ -21,8 +21,7 @@ use Webmozart\Assert\Assert;
  */
 class Field
 {
-    /** @var string */
-    private $value;
+    private string $value;
 
     private function __construct(string $value)
     {

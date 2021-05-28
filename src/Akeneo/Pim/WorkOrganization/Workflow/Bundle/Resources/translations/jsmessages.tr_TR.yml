@@ -1,0 +1,186 @@
+View the product: Ürünü göster
+Unpublish the product: Ürünü yayımdan kaldır
+Approve: Onayla
+Refuse: Reddet
+Approve selected: Onaylama seçildi
+Refuse selected: Reddet seçildi
+pim_datagrid:
+  no_entities:
+    proposal: Gözden geçirmek için hiçbir öneri yok.
+  no_results:
+    proposal: Değerlendirilecek bir teklif yok. Arama kriterlerinizi değiştirmeyi deneyiniz.
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Genişlet
+      collapse_text: Daralt
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Çalışma kopyasını düzenleyin
+    proposal:
+      modal.title: Bir yorum bırakın ( isteğe bağlı - en fazla 255 karakter)
+  proposal:
+    mass_action_group:
+      review:
+        label: Toplu Eylem
+    partial_accept:
+      modal.title: Kısmi bilgileri onayla
+      modal.label: Yorum yaz (isteğe bağlı)
+      modal.success: Teklif başarıyla kısmen doğrulandı
+    partial_approve:
+      modal:
+        title: Değişiklikleri kısmen onayla
+        label: Yorum yaz (isteğe bağlı)
+        success: Değişiklikler başarı ile onaylandı
+    partial_reject:
+      modal:
+        title: Değişiklikleri kısmen reddet
+        label: Yorum yaz (isteğe bağlı)
+        success: Değişiklikler başarıyla reddedildi
+batch_jobs:
+  csv_published_product_export:
+    label: Yayımlanmış ürünü CSV'de dışa aktar
+    export.label: Yayımlanmış ürünü dışa aktar
+  csv_product_proposal_import:
+    label: CSV'de ürün teklifi içe aktarma
+    import.label: Ürün teklifini içe aktar
+  approve_product_draft:
+    label: Teklifi onayla
+    perform.label: Teklifi onayla
+  refuse_product_draft:
+    label: Teklifi reddet
+    perform.label: Teklifi reddet
+  xlsx_published_product_export:
+    label: XLSX'te yayınlanan ürünü dışa aktarma
+    export.label: Yayımlanmış ürünü dışa aktar
+  xlsx_product_proposal_import:
+    label: XLSX'de ürün teklifni içe aktarma
+    import.label: XLSX'de ürün teklifni içe aktarma
+  csv_published_product_quick_export:
+    export.label: Yayınlanan CSV ürünlerini hızlı bir şekilde dışa aktar
+    perform.label: Yayınlanan CSV ürünlerini hızlı bir şekilde dışa aktar
+  csv_published_product_grid_context_quick_export:
+    export.label: Yayınlanan CSV ürünler kılavuz bağlamını hızlıca dışa aktar
+    perform.label: Yayınlanan CSV ürünler kılavuz bağlamını hızlıca dışa aktar
+  xlsx_published_product_quick_export:
+    export.label: Yayınlanan Xlsx ürünlerini hızlıca dışa aktar
+    perform.label: Yayınlanan Xlsx ürünlerini hızlıca dışa aktar
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Yayınlanan Xlsx ürünler kılavuz bağlamını hızlıca dışa aktar
+    perform.label: Yayınlanan Xlsx ürünler kılavuz bağlamını hızlıca dışa aktar
+  publish_product:
+    perform.label: Ürünleri yayınla
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: Yeni öneri
+    pimee_workflow_import_notification_new_proposals: İçe aktarmak için yeni öneriler
+    pimee_workflow_product_draft_notification_partial_approve: Teklif kısmen onaylandı
+    pimee_workflow_product_draft_notification_partial_reject: Teklif kısmen reddedildi
+    pimee_workflow_product_draft_notification_partial_remove: Özellik kısmen silindi
+    pimee_workflow_product_draft_notification_approve: Teklif onaylandı
+    pimee_workflow_product_draft_notification_refuse: Teklif reddedildi
+    pimee_workflow_product_draft_notification_remove: Teklif silindi
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Tarih
+      author: Sahibi
+      product: Ürün
+      review: İncele
+      empty: Görüntülenecek hiç bir teklif yok
+    header.view_all: Tümünü Gör
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Yayımlandı
+      revert: Geri yükle
+    meta:
+      published_version: Yayımlanan sürüm
+      owner_groups: Grupların sahibi
+      draft_status: Taslak durumu
+      draft:
+        in_progress: İşleniyor
+        sent_for_approval: Onaylanmayı bekliyor
+        working_copy: Çalışma kopyası
+    revert:
+      title: Onayı geri getir
+      content: Ürünü bu sürümünden geri getirmek istediğinizden eminmisiniz?
+    publish:
+      title: Bu ürünü yayımla
+      content: Bu ürünü yayınlamak istediğinize emin misiniz?
+    unpublish:
+      title: Bu ürünü yayımdan kaldır
+      content: Bu ürünü yayından kaldırmak istediğinize emin misiniz?
+    copy:
+      working_copy: Çalışma kopyası
+      draft: Taslaklarım
+      draft_of: "{{ author }}'ın taslağı"
+    approval:
+      send: Onaylanması için gönder
+      sent: Onaylanması için gönderildi
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Ürün başarıyla yayımladı
+      fail: Bu ürün yayımlanamadı
+    unpublish:
+      success: Ürün başarıyla yayından kaldırıldı
+      fail: Bu ürün yayımdan kaldırmak başarısız oldu
+    revert:
+      success: Ürün başarı ile güncellendi
+  module:
+    publish:
+      label: Yayımla
+      publish_this_version: Bu sürümü yayımla
+    unpublish:
+      label: Yayımdan kaldır
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: Teklif başarı ile uygulandı.
+      fail: "Teklif aşağıdaki hatadan dolayı uygulanamıyor: {{ error }}"
+    reject:
+      success: Teklif reddedildi.
+    remove:
+      success: Teklif kaldırıldı.
+    update:
+      success: Ürün taslağı başarı ile kaydedildi
+      fail: Ürün taslağı güncelleştirilemedi
+    create:
+      success: Ürün taslağı onay için gönderildi
+      fail: Bu taslağı onay alması için gönderemezsiniz
+  module:
+    proposal:
+      accept: Teklifi kabul et
+      accept_selected: Seçili teklif(leri) kabul et
+      reject: Teklifi reddet
+      reject_selected: Seçili teklif(leri) reddet
+      remove: Teklifi kaldır
+      comment_title: Teklifinize yorum yapın ( isteğe bağlı - en fazla 255 karakter)
+      comment_chars: karakter.
+      confirm: Gönder
+    edit:
+      discard_changes: Kaydedilmemiş değişiklikler kaybedilecek. Taslağınızı kaydedilmemiş değişiklikler olmadan onaylamaya göndermek istediğinizden emin misiniz?
+      discard_changes_title: Bu taslağı göndermek istediğinizden emin misiniz?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Yayımla
+      description: Ürünler yayından kaldırılacak
+      warning: Seçili {{ itemsCount }} ürün yayından kaldırılacak.
+    unpublish:
+      label: Yayımdan kaldır
+      description: Ürünler yayından kaldıralacak
+      warning: Seçili {{ itemsCount }} ürün yayından kaldırılacak.
+pim_menu:
+  navigation:
+    published_products: Yayınlanmış ürünler
+  item:
+    proposal: Teklifler
+    published_product: Yayınlanmış ürünler
+pim_title:
+  pimee_workflow_proposal_index: Teklifler
+  pimee_workflow_published_product_index: Yayınlanmış ürünler
+  pimee_workflow_published_product_view: Yayınlanan ürün {{ product.label }} | Görüntüle

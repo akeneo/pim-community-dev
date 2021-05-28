@@ -48,11 +48,11 @@ class ImportNonVariantProductsWithApiPerformance extends AbstractApiPerformance
         // Original value: 7.8s
         $profileConfig->assert('main.wall_time < 10s', 'Total time');
         // Original value: 31.2MB
-        $profileConfig->assert('main.peak_memory < 45mb', 'Memory');
+        $profileConfig->assert('main.peak_memory < 75mb', 'Memory');
         // Ensure only 1 completeness calculation is done
         $profileConfig->assert('metrics.completeness_calculation.count == 1', 'Completeness calculation calls');
         // Ensure only 1 call is done to ES
-        $profileConfig->assert('metrics.http.curl.requests.count == 1', 'Queries to ES');
+        $profileConfig->assert('metrics.http.curl.requests.count == 4', 'Queries to ES');
         // Original value: 354ms
         $profileConfig->assert('metrics.completeness_calculation.wall_time < 500ms', 'Completeness calculation time');
 

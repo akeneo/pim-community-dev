@@ -1,0 +1,97 @@
+pimee_workflow:
+  product_draft:
+    author: Forfatter
+    source: Kilde
+    created: Forslag til
+    changes: Endringer
+    locale: Nasjonal kontekst
+    product:
+      label: Produktetikett
+    attribute:
+      label: Egenskaper
+    status:
+      label: Status
+      working_copy: Arbeidskopi
+      in_progress: Pågående
+      ready: Venter på godkjenning
+      can_be_partially_reviewed: Kan delvis gjennomgås
+      can_not_be_approved: Kan ikke gjennomgås
+      can_not_be_deleted: Kan ikke slettes
+    status_message:
+      can_be_partially_reviewed: Du delvis gjennomgå dette forslaget fordi det inneholder verdier du ikke kan redigere. Kontakt systemansvarlig for å endre dine rettigheter.
+      can_not_be_approved: Du ikke gjennomgå dette forslaget fordi alle endringer inneholder verdier du ikke kan redigere. Kontakt systemansvarlig for å endre dine rettigheter.
+      in_progress: Dette forslaget pågår og er ikke sendt ennå.
+    action:
+      remove: Fjern
+  published_product:
+    index: Publiserte produkter
+    title: Publisert produkt
+  acl.published_product:
+    index: Administrer publiserte produkter
+  product:
+    permission:
+      own: Gjennomgå / publiser
+      edit: Rediger
+      view: Vis
+  mass_edit_action:
+    published:
+      page_title: Publiserte produkt
+      page_subtitle: Masse redigere (1 publisert produkt) | Masse redigere (%count% publisert produkter)
+      title: Velg operasjon
+      subtitle: Velg operasjonen du vil utføre på den valgte publisert produkt| Velg operasjonen du vil utføre på den valgte %count% publiserte produkter
+      confirm: Du er ferd med å oppdatere et publisert produkt med følgende informasjon, vennligst bekreft. | Du er ferd med å oppdatere %count% publiserte produkter med følgende informasjon, vennligst bekreft.
+      steps:
+        first: Velg publiserte produkter
+        second: Velg operasjon
+        third: Konfigurer
+        fourth: Bekreft
+btn:
+  publish: Publiser
+  unpublish: Opphev publisering
+  save working copy: Lagre arbeidseksemplaret
+  send for approval: Send til godkjenning
+  sent for approval: Sendt til godkjenning
+  editworkingcopy: Redigere arbeidseksemplaret
+flash:
+  product:
+    updated: Produktets arbeidseksemplar er oppdatert
+    published: Produktet er publisert.
+    unpublished: Produktet har blitt vellykket avpubliserte.
+  product_draft:
+    updated: Utkastet er lagret
+pim_menu:
+  item:
+    published_product: Publiserte produkt
+confirmation:
+  product:
+    publish: Er du sikker du vil publisere dette produktet?
+    unpublish: Er du sikker på at du oppheve publiseringen av dette produktet?
+Attributes.title: Attributter
+Completeness.title: Fullstendighet
+job_execution.summary:
+  approved: godkjent
+  refused: avvist
+published products: Publiserte produkt
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Forslag til gjennomgang
+      date: Dato
+      author: Forfatter
+      product: Produkt
+      review: Gjennomgå
+      empty: Ingen produkt utkast å gjennomgå
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Publiser
+      description: Publisere utvalgte produkter, gjeldende publiserte data slettes av gjeldende arbeidseksemplar.
+      success_flash: Utvalgte produkter har blitt publisert.
+      message:
+        info: '%nbProducts% valgte produkt vil bli publisert.'
+    unpublish:
+      label: Opphev publisering
+      description: Avpublisering av de valgte produktene, gjeldende publiserte data slettes.
+      success_flash: Utvalgte produkter har blitt avpublisert.
+      message:
+        info: '%nbProducts% valgte produkt vil bli avpublisert.'

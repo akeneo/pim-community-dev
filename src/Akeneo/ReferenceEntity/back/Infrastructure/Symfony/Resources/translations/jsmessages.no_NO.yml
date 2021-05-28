@@ -1,0 +1,88 @@
+pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Dra og slipp til å laste opp eller klikk her
+      small:
+        remove: Fjern
+        download: Last ned
+  reference_entity:
+    button:
+      save: Lagre
+      save_permission: Lagre
+      create: Opprette
+    tab:
+      attribute: Attributter
+      properties: Egenskaper
+      permission: Rettigheter
+    properties:
+      identifier: Kode
+      label: Etikett
+    create:
+      header:
+        title: Opprette
+      input:
+        label: Etikett
+      confirm: Lagre
+    delete:
+      title: Egenskaper
+  record:
+    button:
+      save: Lagre
+      delete: Slett
+    product:
+      title: Produkter
+    enrich:
+      code: Kode
+      label: Etikett
+    create:
+      header:
+        title: Opprette
+      input:
+        label: Etikett
+      confirm: Lagre
+    grid:
+      filter:
+        completeness:
+          all: Alle
+          'yes': 'Ja'
+          'no': 'Nei'
+        option:
+          all: Alle
+          operator:
+            in: I listen
+      column:
+        code: Kode
+        label: Etikett
+        action: Handlinger
+    tab:
+      product: Produkter
+  attribute:
+    default:
+      code: Kode
+      label: Etikett
+    create:
+      header:
+        title: Opprette
+      input:
+        label: Etikett
+      confirm: Lagre
+    edit:
+      save: Lagre
+      cancel: Avbryt
+      input:
+        label: Etikett
+        options:
+          validation_rule:
+            none: Ingen
+            email: Epost
+    delete:
+      title: Egenskaper
+    options:
+      helper:
+        title: Etikett oversetting
+  modal:
+    delete:
+      button:
+        cancel: Avbryt
+        confirm: Slett

@@ -14,6 +14,10 @@ use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeTypeInterface;
 use Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -25,17 +29,13 @@ use Symfony\Component\Validator\Validation;
  */
 class ExtrapolatedAttributeValidator
 {
-    /** @var AttributeExistsInterface */
-    private $attributeExists;
+    private AttributeExistsInterface $attributeExists;
 
-    /** @var GetAttributeTypeInterface */
-    private $getAttributeType;
+    private GetAttributeTypeInterface $getAttributeType;
 
-    /** @var AttributeHasOneValuePerChannelInterface */
-    private $attributeHasOneValuePerChannel;
+    private AttributeHasOneValuePerChannelInterface $attributeHasOneValuePerChannel;
 
-    /** @var AttributeHasOneValuePerLocaleInterface */
-    private $attributeHasOneValuePerLocale;
+    private AttributeHasOneValuePerLocaleInterface $attributeHasOneValuePerLocale;
 
     public function __construct(
         AttributeExistsInterface $attributeExists,
@@ -162,7 +162,8 @@ class ExtrapolatedAttributeValidator
             AttributeCode::fromString($attributeCode)
         );
         $validator = Validation::createValidator();
-        $result = $validator->validate(
+
+        return $validator->validate(
             $hasOneValuePerChannel,
             new Callback(function ($hasOneValuePerChannel, ExecutionContextInterface $context) use ($attributeCode) {
                 if ($hasOneValuePerChannel) {
@@ -175,8 +176,6 @@ class ExtrapolatedAttributeValidator
                 }
             })
         );
-
-        return $result;
     }
 
     private function checkHasNotOneValuePerLocale(
@@ -188,7 +187,8 @@ class ExtrapolatedAttributeValidator
             AttributeCode::fromString($attributeCode)
         );
         $validator = Validation::createValidator();
-        $result = $validator->validate(
+
+        return $validator->validate(
             $hasOneValuePerLocale,
             new Callback(function ($hasOneValuePerLocale, ExecutionContextInterface $context) use ($attributeCode) {
                 if ($hasOneValuePerLocale) {
@@ -201,27 +201,24 @@ class ExtrapolatedAttributeValidator
                 }
             })
         );
-
-        return $result;
     }
 
     private function validateAttributeCode(string $attributeCode): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
-        $attributeCodeViolations = $validator->validate(
+
+        return $validator->validate(
             $attributeCode,
             [
-                new Constraints\NotBlank(),
-                new Constraints\Type(['type' => 'string']),
-                new Constraints\Length(['max' => AttributeCode::MAX_LENGTH, 'min' => 1]),
-                new Constraints\Regex([
+                new NotBlank(),
+                new Type(['type' => 'string']),
+                new Length(['max' => AttributeCode::MAX_LENGTH, 'min' => 1]),
+                new Regex([
                         'pattern' => '/^[a-zA-Z0-9_]+$/',
                         'message' => Code::MESSAGE_WRONG_PATTERN,
                     ]
                 ),
             ]
         );
-
-        return $attributeCodeViolations;
     }
 }

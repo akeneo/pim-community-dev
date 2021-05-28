@@ -29,17 +29,13 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\
  */
 class AssetPreviewGenerator
 {
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var ImagePreviewUrlGenerator */
-    private $imagePreviewUrlGenerator;
+    private ImagePreviewUrlGenerator $imagePreviewUrlGenerator;
 
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -87,11 +83,7 @@ class AssetPreviewGenerator
             $rawData = '';
         } else {
             $data = $value->getData()->normalize();
-            if (is_array($data)) {
-                $rawData = $data['filePath'];
-            } else {
-                $rawData = $data;
-            }
+            $rawData = is_array($data) ? $data['filePath'] : $data;
         }
 
         return $this->imagePreviewUrlGenerator->generate(

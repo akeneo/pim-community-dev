@@ -28,11 +28,9 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class DownloadMediaFileAction
 {
-    /** @var MediaFileRepositoryInterface */
-    private $mediaFileRepository;
+    private MediaFileRepositoryInterface $mediaFileRepository;
 
-    /** @var FilesystemProvider */
-    private $filesystemProvider;
+    private FilesystemProvider $filesystemProvider;
 
     public function __construct(
         MediaFileRepositoryInterface $mediaFileRepository,

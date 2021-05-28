@@ -27,14 +27,11 @@ use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysByAttributeTypeInter
  */
 class BulkAssetItemHydrator
 {
-    /** @var AssetItemHydratorInterface */
-    private $assetItemHydrator;
+    private AssetItemHydratorInterface $assetItemHydrator;
 
-    /** @var FindValueKeysByAttributeTypeInterface */
-    private $findValueKeysByAttributeType;
+    private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
 
-    /** @var FindAssetLabelsByIdentifiersInterface */
-    private $findAssetLabelsByIdentifiers;
+    private FindAssetLabelsByIdentifiersInterface $findAssetLabelsByIdentifiers;
 
     public function __construct(
         AssetItemHydratorInterface $assetItemHydrator,
@@ -81,8 +78,6 @@ class BulkAssetItemHydrator
             }
         }
 
-        $labelsIndexedByAssetIdentifier = $this->findAssetLabelsByIdentifiers->find($assetIdentifiers);
-
-        return $labelsIndexedByAssetIdentifier;
+        return $this->findAssetLabelsByIdentifiers->find($assetIdentifiers);
     }
 }

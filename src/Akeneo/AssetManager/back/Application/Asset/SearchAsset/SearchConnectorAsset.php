@@ -26,11 +26,9 @@ use Akeneo\AssetManager\Domain\Query\Asset\FindIdentifiersForQueryInterface;
  */
 class SearchConnectorAsset
 {
-    /** @var FindIdentifiersForQueryInterface */
-    private $findIdentifiersForQuery;
+    private FindIdentifiersForQueryInterface $findIdentifiersForQuery;
 
-    /** @var FindConnectorAssetsByIdentifiersInterface */
-    private $findConnectorAssetsByIdentifiers;
+    private FindConnectorAssetsByIdentifiersInterface $findConnectorAssetsByIdentifiers;
 
     public function __construct(
         FindIdentifiersForQueryInterface $findIdentifiersForQuery,

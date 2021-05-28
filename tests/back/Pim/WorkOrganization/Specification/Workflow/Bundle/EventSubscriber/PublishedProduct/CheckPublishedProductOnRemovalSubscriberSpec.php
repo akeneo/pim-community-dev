@@ -101,7 +101,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new PublishedProductConsistencyException('Impossible to remove family linked to a published product')
+                new PublishedProductConsistencyException('pimee_workflow.entity.removing_error')
             )
             ->duringPreRemove($event);
     }
@@ -143,7 +143,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new PublishedProductConsistencyException('Impossible to remove attribute linked to a published product')
+                new PublishedProductConsistencyException('pimee_workflow.entity.removing_error')
             )
             ->duringPreRemove($event);
     }
@@ -194,7 +194,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new PublishedProductConsistencyException('Impossible to remove attribute linked to a published product')
+                new PublishedProductConsistencyException('pimee_workflow.entity.removing_error')
             )
             ->duringPreRemove($event);
     }
@@ -231,7 +231,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new PublishedProductConsistencyException('Impossible to remove attribute linked to a published product')
+                new PublishedProductConsistencyException('pimee_workflow.entity.removing_error')
             )
             ->duringPreRemove($event);
     }
@@ -271,7 +271,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new PublishedProductConsistencyException('Impossible to remove category linked to a published product')
+                new PublishedProductConsistencyException('pimee_workflow.entity.removing_error')
             )
             ->duringPreRemove($event);
     }
@@ -311,7 +311,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new PublishedProductConsistencyException('Impossible to remove group linked to a published product')
+                new PublishedProductConsistencyException('pimee_workflow.entity.removing_error')
             )
             ->duringPreRemove($event);
     }
@@ -338,7 +338,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $this
             ->shouldThrow(
                 new PublishedProductConsistencyException(
-                    'Impossible to remove association type linked to a published product'
+                    'pimee_workflow.entity.removing_error'
                 )
             )
             ->duringPreRemove($event);
@@ -366,7 +366,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $this
             ->shouldThrow(
                 new PublishedProductConsistencyException(
-                    'Impossible to remove product model linked to a published product'
+                    'pimee_workflow.entity.removing_error'
                 )
             )
             ->duringPreRemove($event);

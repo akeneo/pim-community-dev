@@ -10,14 +10,11 @@ namespace Akeneo\AssetManager\Domain\Query\AssetFamilyPermission;
  */
 class PermissionDetails
 {
-    /** @var int */
-    public $userGroupIdentifier;
+    public int $userGroupIdentifier;
 
-    /** @var string */
-    public $userGroupName;
+    public string $userGroupName;
 
-    /** @var string */
-    public $rightLevel;
+    public string $rightLevel;
 
     public function normalize()
     {

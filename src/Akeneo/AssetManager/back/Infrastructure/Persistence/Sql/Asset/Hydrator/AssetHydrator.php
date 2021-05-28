@@ -30,11 +30,9 @@ use Doctrine\DBAL\Types\Types;
  */
 class AssetHydrator implements AssetHydratorInterface
 {
-    /** @var ValueHydratorInterface */
-    private $valueHydrator;
+    private ValueHydratorInterface $valueHydrator;
 
-    /** @var AbstractPlatform */
-    private $platform;
+    private AbstractPlatform $platform;
 
     public function __construct(Connection $connection, ValueHydratorInterface $valueHydrator)
     {
@@ -57,7 +55,7 @@ class AssetHydrator implements AssetHydratorInterface
         $createdAt = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($row['created_at'], $this->platform);
         $updatedAt = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($row['updated_at'], $this->platform);
 
-        $asset = Asset::fromState(
+        return Asset::fromState(
             AssetIdentifier::fromString($assetIdentifier),
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AssetCode::fromString($assetCode),
@@ -65,8 +63,6 @@ class AssetHydrator implements AssetHydratorInterface
             $createdAt,
             $updatedAt
         );
-
-        return $asset;
     }
 
     private function hydrateValues(ValueKeyCollection $valueKeyCollection, array $attributes, $valueCollection): array

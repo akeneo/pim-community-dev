@@ -27,11 +27,9 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindMediaFileAttributeCodes implements FindMediaFileAttributeCodesInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var AbstractPlatform */
-    private $platform;
+    private AbstractPlatform $platform;
 
     /**
      * @param Connection $sqlConnection

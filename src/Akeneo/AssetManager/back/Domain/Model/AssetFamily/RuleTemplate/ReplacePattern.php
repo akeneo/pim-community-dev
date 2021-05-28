@@ -79,14 +79,12 @@ class ReplacePattern
         $valueForPatterns = [];
         foreach ($patterns as $pattern) {
             $assetValue = self::value($propertyAccessibleAsset, $pattern);
-            if (is_array($assetValue)) {
-                if (1 < count($patterns)) {
-                    throw new \InvalidArgumentException(
-                        sprintf('The asset property "%s" could not be replaced as his value is an array',
-                            trim($pattern)
-                        )
-                    );
-                }
+            if (is_array($assetValue) && 1 < count($patterns)) {
+                throw new \InvalidArgumentException(
+                    sprintf('The asset property "%s" could not be replaced as his value is an array',
+                        trim($pattern)
+                    )
+                );
             }
             $valueForPatterns[$pattern] = $assetValue;
         }
@@ -99,9 +97,8 @@ class ReplacePattern
         if (!$propertyAccessibleAsset->hasValue(trim($pattern))) {
             throw new \InvalidArgumentException(sprintf('The asset property "%s" does not exist', trim($pattern)));
         }
-        $assetValue = $propertyAccessibleAsset->getValue(trim($pattern));
 
-        return $assetValue;
+        return $propertyAccessibleAsset->getValue(trim($pattern));
     }
 
     /**
@@ -119,12 +116,10 @@ class ReplacePattern
                     $replacedValue[] = self::replacePatterns($value, $valueForPatterns);
                 }
                 $result = $replacedValue;
+            } elseif (is_array($assetValue)) {
+                $result = $assetValue;
             } else {
-                if (is_array($assetValue)) {
-                    $result = $assetValue;
-                } else {
-                    $result = str_replace(sprintf('{{%s}}', $pattern), $assetValue, $result);
-                }
+                $result = str_replace(sprintf('{{%s}}', $pattern), $assetValue, $result);
             }
         }
 

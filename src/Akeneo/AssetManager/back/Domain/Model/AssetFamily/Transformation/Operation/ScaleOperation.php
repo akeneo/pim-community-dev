@@ -28,14 +28,11 @@ class ScaleOperation implements Operation
 
     private const OPERATION_NAME = 'scale';
 
-    /** @var int|null */
-    private $width;
+    private ?int $width = null;
 
-    /** @var int|null */
-    private $height;
+    private ?int $height = null;
 
-    /** @var integer|null */
-    private $ratioPercent;
+    private ?int $ratioPercent = null;
 
     private function __construct(?int $width, ?int $height, ?int $ratioPercent)
     {

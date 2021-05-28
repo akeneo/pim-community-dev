@@ -28,17 +28,13 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 class TransformationExecutor
 {
-    /** @var FileDownloader */
-    private $fileDownloader;
+    private FileDownloader $fileDownloader;
 
-    /** @var FileTransformer */
-    private $fileTransformer;
+    private FileTransformer $fileTransformer;
 
-    /** @var FileStorerInterface */
-    private $fileStorer;
+    private FileStorerInterface $fileStorer;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
     public function __construct(
         FileDownloader $fileDownloader,

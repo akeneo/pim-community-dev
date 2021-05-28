@@ -30,7 +30,7 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
  */
 class NamingConventionTasklet implements TaskletInterface, TrackableTaskletInterface
 {
-    private ?StepExecution $stepExecution;
+    private ?StepExecution $stepExecution = null;
     private ExecuteNamingConvention $executeNamingConvention;
     private FindAssetIdentifiersByAssetFamilyInterface $findAssetIdentifiersByAssetFamily;
     private CountAssetsInterface $countAssets;

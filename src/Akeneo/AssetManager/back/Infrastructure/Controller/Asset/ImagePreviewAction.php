@@ -48,17 +48,13 @@ class ImagePreviewAction
      */
     private const ROOT_FLAG = '__root__';
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var PreviewGeneratorInterface */
-    private $previewGenerator;
+    private PreviewGeneratorInterface $previewGenerator;
 
-    /** @var DefaultImageProviderInterface */
-    private $defaultImageProvider;
+    private DefaultImageProviderInterface $defaultImageProvider;
 
-    /** @var LoaderInterface */
-    private $imageLoader;
+    private LoaderInterface $imageLoader;
 
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,

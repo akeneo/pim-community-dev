@@ -62,8 +62,9 @@ class InMemoryFindAttributesDetailsTest extends TestCase
     private function createAssetFamilyDetails(string $assetFamilyIdentifier, string $attributeCode): AttributeDetails
     {
         $textAttributeDetails = new AttributeDetails();
-        $textAttributeDetails->assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
-        $textAttributeDetails->code = AttributeCode::fromString($attributeCode);
+        $textAttributeDetails->assetFamilyIdentifier = $assetFamilyIdentifier;
+        $textAttributeDetails->code = $attributeCode;
+        $textAttributeDetails->labels = [];
 
         return $textAttributeDetails;
     }

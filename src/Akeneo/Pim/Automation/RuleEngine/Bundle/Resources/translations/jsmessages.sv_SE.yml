@@ -1,8 +1,5 @@
 pimee_catalog_rule:
-  execution_button: Kör regler
-  popin:
-    execute_rules:
-      confirm_content: Är du säker på att du vill köra alla regler? (detta kan ta lång tid)
+  execution_button: Utför regler
   notification:
     launched: Regelkörning har lanserats. Du meddelas när det är gjort.
   attribute:
@@ -10,7 +7,6 @@ pimee_catalog_rule:
       code.label: Kod
       condition.label: Villkor
       action.label: Åtgärd
-      no_rule_yet.label: Ingen regel för nu
   rule:
     condition:
       if.label: om
@@ -27,51 +23,35 @@ pimee_catalog_rule:
       actions:
         execute:
           confirm_content: Är du säker på att du vill köra regeln?
-      mass_edit_action:
-        confirm_content: Är du säker på att du vill beräkna de påverkade produkterna för regler?
       mass_action:
         execute:
-          confirm_content: Är du säker du vill köra de valda reglerna?
-          success: Bulk åtgärden för att verkställa de valda reglerna har lanserats. Du meddelas när det är gjort
-          error: Ett fel uppstod under körningen av reglerna.
-          empty_selection: Inga regler som valts.
+          success: Regelkörning har lanserats. Du meddelas när det är gjort.
+          empty_selection: Inga regler har valts.
         delete:
           confirm_content: Är du säker på att du vill ta bort de valda reglerna?
           success: Du lyckades ta bort reglerna.
-          error: Ett fel uppstod vid borttagning av reglerna.
-          empty_selection: Inga regler som valts.
+          empty_selection: Inga regler har valts.
   form:
     attribute:
       tab:
         rules:
           title: Regler
-confirmation:
-  remove:
-    rule: Är du säker du vill ta bort denna regel? Det går inte att ångra åtgärden
-pim_datagrid:
+pim_enrich:
   entity:
     rule:
-      flash:
+      module:
         delete:
-          success: Rollen har tagits bort
+          confirm: Är du säker du vill ta bort denna regel? Det går inte att ångra åtgärden
 flash:
   rule:
-    impacted_product_count: Massåtgärd för att beräkna de påverkade produkterna för regler har lanserats. Du meddelas när det är gjort.
     executed: Regelkörning har lanserats. Du meddelas när det är gjort.
-pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regler inställningar
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regelinställningar
 batch_jobs:
   add_attribute_value:
-    execute_rules.label: Regler utförande
+    execute_rules.label: Regler utföranden
   default_steps:
-    execute_rules: Regler utförande
-  yml_rule_import:
-    label: Regel import i YAML
-    import.label: Regel import
-  yml_rule_export:
-    label: Regel export i YAML
-    export.label: Regel export
+    execute_rules: Regler utföranden
   rule_impacted_product_count:
-    label: Berörda produkter för regler
     perform.label: Räkna påverkade produkter
   csv_product_import_with_rules:
     label: Produkt import i CSV-filen med reglerna
@@ -81,9 +61,16 @@ batch_jobs:
     import.label: Importera produkter
 pim_notification:
   types:
-    rule: Regler inställningar
+    rule: Regelinställningar
+    execute_rules: Regler utföranden
 pim_menu:
   item:
     rule: Regler
 pim_title:
   pimee_catalog_rule_rule_index: Regler
+  pimee_catalog_rule_new: Regler
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: Regler utföranden

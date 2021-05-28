@@ -28,11 +28,9 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindAssetItemsForIdentifiersAndQuery implements FindAssetItemsForIdentifiersAndQueryInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var BulkAssetItemHydrator */
-    private $bulkAssetItemHydrator;
+    private BulkAssetItemHydrator $bulkAssetItemHydrator;
 
     public function __construct(
         Connection $sqlConnection,
@@ -45,9 +43,8 @@ class SqlFindAssetItemsForIdentifiersAndQuery implements FindAssetItemsForIdenti
     public function find(array $identifiers, AssetQuery $query): array
     {
         $normalizedAssetItems = $this->fetchAll($identifiers);
-        $assetItems = $this->bulkAssetItemHydrator->hydrateAll($normalizedAssetItems, $query);
 
-        return $assetItems;
+        return $this->bulkAssetItemHydrator->hydrateAll($normalizedAssetItems, $query);
     }
 
     private function fetchAll(array $identifiers): array
@@ -70,8 +67,7 @@ SQL;
         $statement = $this->sqlConnection->executeQuery($sqlQuery, [
             'identifiers' => $identifiers,
         ], ['identifiers' => Connection::PARAM_STR_ARRAY]);
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
-        return $results;
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

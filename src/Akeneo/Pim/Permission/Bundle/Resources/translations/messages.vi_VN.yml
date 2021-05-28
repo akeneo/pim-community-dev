@@ -1,0 +1,22 @@
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Chỉnh sửa thuộc tính
+pim_enrich:
+  mass_edit_action:
+    product:
+      page_title: Sản phẩm
+      page_subtitle: Chỉnh sửa hàng loạt (1 sản phẩm)|Chỉnh sửa hàng loạt (%count% sản phẩm)
+      title: Chọn thao tác
+      subtitle: Chọn thao tác bạn muốn thực hiện trên sản phẩm|Chọn thao tác bạn muốn thực hiện trên %count% sản phẩm đã chọn
+      confirm: Bạn đang cập nhật một sản phẩm với những thông tin sau, hãy xác nhận|Bạn đang cập nhật %count% sản phẩm với những thôgn tin sau, hãy xác nhận.
+      steps:
+        first: Chọn sản phẩm
+        second: Chọn thao tác
+        third: Cấu hình
+        fourth: Xác nhận
+pimee_enrich:
+  attributes:
+    empty: không
+  groups:
+    empty: không
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Chỉnh sửa thuộc tính
+  steps.edit_common_attributes_processor.title: Chỉnh sửa thuộc tính

@@ -19,8 +19,7 @@ namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory
  */
 class EditIsReadOnlyCommand extends AbstractEditAttributeCommand
 {
-    /** @var bool */
-    public $isReadOnly;
+    public bool $isReadOnly;
 
     public function __construct(string $identifier, bool $isReadOnly)
     {

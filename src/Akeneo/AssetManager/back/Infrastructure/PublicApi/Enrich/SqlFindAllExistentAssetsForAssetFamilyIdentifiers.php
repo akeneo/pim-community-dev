@@ -21,8 +21,7 @@ use Doctrine\DBAL\Connection;
  */
 final class SqlFindAllExistentAssetsForAssetFamilyIdentifiers
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -52,7 +51,7 @@ final class SqlFindAllExistentAssetsForAssetFamilyIdentifiers
         }
 
         $query = <<<SQL
-SELECT asset_family_identifier as asset_family_identifier, JSON_ARRAYAGG(code) as asset_code
+SELECT /*+ SET_VAR( range_optimizer_max_mem_size = 50000000) */ asset_family_identifier as asset_family_identifier, JSON_ARRAYAGG(code) as asset_code
 FROM akeneo_asset_manager_asset
 WHERE (asset_family_identifier, code) IN (%s)
 GROUP BY asset_family_identifier;

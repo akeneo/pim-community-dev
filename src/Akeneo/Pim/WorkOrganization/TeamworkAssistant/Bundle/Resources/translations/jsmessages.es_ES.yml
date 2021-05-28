@@ -31,12 +31,10 @@ teamwork_assistant:
     no_project_create: crear un nuevo proyecto
     description: Descripción
     due_date: Vencimiento
-    todo: PENDIENTES
-    in_progress: EN PROGRESO
-    done: HECHO
     all_contributors: Todos los colaboradores
     you: Usted
     display_products: Mostrar productos
+    projects: Proyectos
     placeholder:
       contributor_selector: Buscar colaborador
       project_selector: Buscar proyecto
@@ -66,3 +64,4 @@ pim_notification:
     project_created: Un nuevo proyecto para usted
     project_finished: Proyecto finalizado
     project_calculation: Cálculo del proyecto
+    project_due_date: Fecha de finalización del proyecto

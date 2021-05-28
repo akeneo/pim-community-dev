@@ -22,8 +22,7 @@ use Webmozart\Assert\Assert;
 
 class ThereShouldBeLessTransformationThanLimitValidator extends ConstraintValidator
 {
-    /** @var int */
-    private $maxTransformationByAssetFamilyLimit;
+    private int $maxTransformationByAssetFamilyLimit;
 
     public function __construct(int $maxTransformationByAssetFamilyLimit)
     {

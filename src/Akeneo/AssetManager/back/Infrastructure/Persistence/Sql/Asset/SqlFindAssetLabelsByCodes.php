@@ -26,11 +26,9 @@ use PDO;
  */
 class SqlFindAssetLabelsByCodes implements FindAssetLabelsByCodesInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var SqlFindAssetFamilyAttributeAsLabel */
-    private $findAssetFamilyAttributeAsLabel;
+    private SqlFindAssetFamilyAttributeAsLabel $findAssetFamilyAttributeAsLabel;
 
     public function __construct(
         Connection $sqlConnection,

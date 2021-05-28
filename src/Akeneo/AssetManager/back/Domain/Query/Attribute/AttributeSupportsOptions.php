@@ -10,11 +10,9 @@ use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 
 class AttributeSupportsOptions
 {
-    /** @var GetAttributeIdentifierInterface */
-    private $getAttributeIdentifier;
+    private GetAttributeIdentifierInterface $getAttributeIdentifier;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
     public function __construct(
         GetAttributeIdentifierInterface $getAttributeIdentifier,

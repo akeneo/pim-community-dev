@@ -1,0 +1,68 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        execute: 실행
+      title: 규칙
+      column:
+        label: 레이블
+        tags:
+          label: 작업
+        priority: 우선순위
+        status: 상태
+      mass_edit_action:
+        execute: 실행
+        delete: 삭제
+  condition:
+    fields:
+      family: 패밀리
+      family_variant: 패밀리 변형
+      associations: 연결
+      groups: 그룹
+      categories: 카테고리
+      completeness: 완성도
+      identifier: 식별자
+      parent: 상위
+      enabled: 상태
+      entity_type: 엔터티 유형
+      created: 생성됨
+      updated: 업데이트됨
+    field_groups:
+      system: 시스템
+  acl_group:
+    rule: 규칙
+  acl:
+    rule:
+      edit_permissions: 규칙 수정
+      view_permissions: 규칙 보기
+      delete_permissions: 규칙 삭제
+      execute_permissions: 규칙 실행
+  attribute:
+    tab:
+      rule.title: 규칙
+    grid:
+      is_smart.label: 스마트
+    acl:
+      rule.view_permissions: 규칙 보기
+  product:
+    history: 규칙 "%rule%" 적용됨
+  steps:
+    rules_execution.title: 규칙 실행
+  notification:
+    execute_rules:
+      error: 규칙을 실행하는 중에 오류가 발생했습니다
+  datetime:
+    now: 지금
+  status:
+    enabled: 활성화됨
+    disabled: 비활성화됨
+btn:
+  Execute rules: 규칙 실행
+job_execution:
+  summary:
+    rule_calculated: 규칙 수
+pim_datagrid:
+  cells:
+    type:
+      mass_edit_rule: 규칙 설정
+      execute_rules: 규칙 실행

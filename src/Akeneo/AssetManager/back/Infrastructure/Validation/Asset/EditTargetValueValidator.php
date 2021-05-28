@@ -21,8 +21,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class EditTargetValueValidator extends ConstraintValidator
 {
-    /** @var CheckIfTransformationTarget */
-    private $checkIfTransformationTarget;
+    private CheckIfTransformationTarget $checkIfTransformationTarget;
 
     public function __construct(CheckIfTransformationTarget $checkIfTransformationTarget)
     {
