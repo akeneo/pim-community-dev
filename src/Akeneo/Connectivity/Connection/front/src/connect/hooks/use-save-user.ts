@@ -1,8 +1,8 @@
 import {useRoute} from '../../shared/router';
 import {useCallback} from 'react';
 
-export const useSaveUser = (username: string) => {
-    const url = useRoute('pim_user_user_rest_post', {identifier: username});
+export const useSaveUserProfile = (username: string) => {
+    const url = useRoute('pim_user_user_rest_profile', {identifier: username});
 
     return useCallback(
         async (data: {profile: string}) => {
