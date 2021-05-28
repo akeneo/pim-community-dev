@@ -1,11 +1,5 @@
 import React, {FC, useContext, useEffect, useState} from 'react';
-import {
-    AkeneoThemedProps,
-    Breadcrumb,
-    ChannelsIllustration,
-    getColor,
-    getFontSize,
-} from 'akeneo-design-system';
+import {AkeneoThemedProps, Breadcrumb, ChannelsIllustration, getColor, getFontSize} from 'akeneo-design-system';
 import {useTranslate} from '../../shared/translate';
 import {PageHeader} from '../../common';
 import {UserButtons} from '../../shared/user';
@@ -77,7 +71,7 @@ export const Marketplace: FC = () => {
     const translate = useTranslate();
     const fetchMarketplaceUrl = useMarketplaceUrl();
     const [marketplaceUrl, setMarketplaceUrl] = useState<string>('');
-    const [userProfile, setUserProfile] = useState<string|null|undefined>(undefined);
+    const [userProfile, setUserProfile] = useState<string | null | undefined>(undefined);
     const generateUrl = useRouter();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
 
@@ -116,15 +110,16 @@ export const Marketplace: FC = () => {
 
                 <Heading>{translate('akeneo_connectivity.connection.connect.marketplace.title')}</Heading>
 
-                {userProfile === null ?
-                    <UserProfileSelector/> :
+                {userProfile === null ? (
+                    <UserProfileSelector />
+                ) : (
                     <>
                         <Caption>{translate('akeneo_connectivity.connection.connect.marketplace.sub_title')}</Caption>
                         <LinkButton href={marketplaceUrl} target='_blank' role='link' tabIndex='0'>
                             {translate('akeneo_connectivity.connection.connect.marketplace.link')}
                         </LinkButton>
                     </>
-                }
+                )}
             </PageContent>
         </>
     );
