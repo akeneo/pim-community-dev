@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import {useFetchUserProfiles} from '../hooks/use-fetch-user-profiles';
 import {useFetchMarketplaceUrl} from '../hooks/use-fetch-marketplace-url';
 import {UserContext} from '../../shared/user';
-import {useSaveUser} from '../hooks/use-save-user';
+import {useSaveUserProfile} from '../hooks/use-save-user';
 
 type UserProfile = {
     code: string;
@@ -73,7 +73,7 @@ export const UserProfileSelector: FC = () => {
     const fetchUserProfiles = useFetchUserProfiles();
     const fetchMarketplaceUrl = useFetchMarketplaceUrl();
 
-    const saveUser = useSaveUser(useContext(UserContext).get<{id: string}>('meta').id);
+    const saveUser = useSaveUserProfile(useContext(UserContext).get<{id: string}>('meta').id);
 
     const handleClick = () => {
         if (null === selectedProfile) {
