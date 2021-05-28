@@ -109,8 +109,15 @@ const useEditCategoryForm = (categoryId: number) => {
       return;
     }
 
-    // @todo: Keep value of editedFormData.permissions.apply_on_children (always returned as "1" by the backend)
-    setEditedFormData({...originalFormData});
+    // Because the value of "apply_on_children" is always returned as "1" by the backend, it should only be defined at the first load
+    if (originalFormData.permissions && editedFormData !== null && editedFormData.permissions) {
+      setEditedFormData({
+        ...originalFormData,
+        permissions: {...originalFormData.permissions, apply_on_children: editedFormData.permissions.apply_on_children}
+      });
+    } else {
+      setEditedFormData({...originalFormData});
+    }
 
   }, [originalFormData]);
 
