@@ -49,11 +49,7 @@ const CategoryEditPage: FC = () => {
     const uiLocale = userContext.get('uiLocale');
 
     setCategoryLabel(category && category.labels.hasOwnProperty(uiLocale) ? category.labels[uiLocale] : '');
-    setTreeLabel(
-      rootCategory
-        ? rootCategory.labels[userContext.get('uiLocale')]
-        : translate('pim_enrich.entity.category.content.edit.default_tree_label')
-    );
+    setTreeLabel(rootCategory ? rootCategory.labels[userContext.get('uiLocale')] : '');
     setTree(rootCategory);
   }, [category]);
 

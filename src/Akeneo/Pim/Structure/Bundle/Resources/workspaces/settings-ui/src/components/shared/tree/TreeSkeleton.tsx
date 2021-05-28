@@ -4,10 +4,10 @@ import React, {FC} from 'react';
 
 const Container = styled(LoadingPlaceholderContainer)`
   display: grid;
-  grid-row-gap: 4px;
+  grid-row-gap: 10px;
 
   > div {
-    height: 50px;
+    height: 54px;
   }
 `;
 
