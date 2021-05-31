@@ -25,6 +25,7 @@ export * from './SectionTitle/SectionTitle';
 export * from './SwitcherButton/SwitcherButton';
 export * from './TabBar/TabBar';
 export * from './Table/Table';
+export * from './Tags/Tags';
 export * from './Toolbar/Toolbar';
 export * from './Tree/Tree';
 export * from './Pill/Pill';
