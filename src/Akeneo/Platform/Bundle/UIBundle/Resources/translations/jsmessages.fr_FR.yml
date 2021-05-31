@@ -345,6 +345,7 @@ pim_menu:
     settings:
       product: Paramètres produit
       catalog: Paramètres du catalogue
+      collapsed_label: Navigation paramètres
     product: Navigation produit
     product_infos: Infos produit
   user:

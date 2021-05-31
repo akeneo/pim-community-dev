@@ -7,7 +7,9 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -16,6 +18,7 @@ use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use Doctrine\DBAL\Connection as DbalConnection;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -29,15 +32,64 @@ use PHPUnit\Framework\Assert;
  */
 class ConsumeProductEventEndToEnd extends ApiTestCase
 {
-    private ProductInterface $referenceProduct;
+    private ProductInterface $tshirtProduct;
+    private ProductInterface $pantProduct;
     private Author $referenceAuthor;
+    private DbalConnection $dbalConnection;
+    private ProductLoader $productLoader;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->referenceProduct = $this->loadReferenceProduct();
+        $this->get('akeneo_connectivity.connection.fixtures.enrichment.category')
+            ->create(['code' => 'sea']);
+        $this->get('akeneo_connectivity.connection.fixtures.enrichment.category')
+            ->create(['code' => 'fiesta']);
+        $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
+            ->create(['code' => 'boolean_attribute', 'type' => 'pim_catalog_boolean']);
+        $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
+            ->create(['code' => 'text_attribute', 'type' => 'pim_catalog_text']);
+        $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
+            ->create(['code' => 'another_text_attribute', 'type' => 'pim_catalog_text']);
+        $this->get('akeneo_connectivity.connection.fixtures.structure.family')
+            ->create(['code' => 'tshirt', 'attributes' => ['boolean_attribute', 'text_attribute']]);
+        $this->get('akeneo_connectivity.connection.fixtures.structure.family')
+            ->create(['code' => 'pant', 'attributes' => ['boolean_attribute', 'text_attribute']]);
+
         $this->referenceAuthor = Author::fromNameAndType('julia', Author::TYPE_UI);
+        $this->dbalConnection = self::$container->get('database_connection');
+        $this->productLoader = self::$container->get('akeneo_connectivity.connection.fixtures.enrichment.product');
+
+        $this->tshirtProduct = $this->productLoader->create(
+            'blue-t-shirt',
+            [
+                'family' => 'tshirt',
+                'enabled' => true,
+                'categories' => ['sea'],
+                'groups' => [],
+                'values' => [
+                    'another_text_attribute' => [
+                        ['data' => 'text attribute', 'locale' => null, 'scope' => null],
+                    ],
+                ],
+            ]
+        );
+        $this->pantProduct = $this->productLoader->create(
+            'red-pant',
+            [
+                'family' => 'pant',
+                'enabled' => true,
+                'categories' => ['fiesta'],
+                'groups' => [],
+                'values' => [
+                    'another_text_attribute' => [
+                        ['data' => 'text attribute', 'locale' => null, 'scope' => null],
+                    ],
+                ],
+            ]
+        );
+
         $connection = $this->loadConnection();
 
         $this->get('akeneo_connectivity.connection.fixtures.webhook_loader')->initWebhook($connection->code());
@@ -56,9 +108,15 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             [
                 new ProductCreated(
                     $this->referenceAuthor,
-                    ['identifier' => $this->referenceProduct->getIdentifier()],
+                    ['identifier' => $this->tshirtProduct->getIdentifier()],
                     1607094167,
                     '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
+                ),
+                new ProductCreated(
+                    $this->referenceAuthor,
+                    ['identifier' => $this->pantProduct->getIdentifier()],
+                    1607094167,
+                    '0d932313-8eae-4f4a-bf37-33d3a932b8c9'
                 ),
             ]
         );
@@ -74,7 +132,8 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
 
-        $this->assertEquals($this->expectedProductCreatedPayload(), $requestContent);
+        Assert::assertEquals(2, (int) $this->getEventCount('ecommerce'));
+        $this->assertEquals($this->expectedProductCreatedPayload($this->tshirtProduct), $requestContent);
     }
 
     public function test_it_sends_a_product_updated_webhook_event()
@@ -90,7 +149,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             [
                 new ProductUpdated(
                     $this->referenceAuthor,
-                    ['identifier' => $this->referenceProduct->getIdentifier()],
+                    ['identifier' => $this->tshirtProduct->getIdentifier()],
                     1607094167,
                     '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
                 ),
@@ -108,7 +167,8 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
 
-        $this->assertEquals($this->expectedProductUpdatedPayload(), $requestContent);
+        Assert::assertEquals(1, (int) $this->getEventCount('ecommerce'));
+        $this->assertEquals($this->expectedProductUpdatedPayload($this->tshirtProduct), $requestContent);
     }
 
     public function test_it_sends_a_product_removed_webhook_event()
@@ -125,8 +185,8 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
                 new ProductRemoved(
                     $this->referenceAuthor,
                     [
-                        'identifier' => $this->referenceProduct->getIdentifier(),
-                        'category_codes' => $this->referenceProduct->getCategoryCodes(),
+                        'identifier' => $this->tshirtProduct->getIdentifier(),
+                        'category_codes' => $this->tshirtProduct->getCategoryCodes(),
                     ],
                     1607094167,
                     '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
@@ -144,35 +204,15 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $request = $container[0]['request'];
         $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
 
-        $this->assertEquals($this->expectedProductRemovedPayload(), $requestContent);
+        Assert::assertEquals(1, (int) $this->getEventCount('ecommerce'));
+        $this->assertEquals($this->expectedProductRemovedPayload($this->tshirtProduct), $requestContent);
     }
 
-    private function loadReferenceProduct(): ProductInterface
+    private function loadReferenceProduct(string $identifier): ProductInterface
     {
-        $this->get('akeneo_connectivity.connection.fixtures.enrichment.category')
-            ->create(['code' => 'category']);
-        $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
-            ->create(['code' => 'boolean_attribute', 'type' => 'pim_catalog_boolean']);
-        $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
-            ->create(['code' => 'text_attribute', 'type' => 'pim_catalog_text']);
-        $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
-            ->create(['code' => 'another_text_attribute', 'type' => 'pim_catalog_text']);
-        $this->get('akeneo_connectivity.connection.fixtures.structure.family')
-            ->create(['code' => 'family', 'attributes' => ['boolean_attribute', 'text_attribute']]);
-
         return $this->get('akeneo_connectivity.connection.fixtures.enrichment.product')->create(
-            'product',
-            [
-                'family' => 'family',
-                'enabled' => true,
-                'categories' => ['category'],
-                'groups' => [],
-                'values' => [
-                    'another_text_attribute' => [
-                        ['data' => 'text attribute', 'locale' => null, 'scope' => null],
-                    ],
-                ],
-            ]
+            $identifier,
+
         );
     }
 
@@ -183,7 +223,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
                 'ecommerce',
                 'Ecommerce',
                 FlowType::DATA_DESTINATION,
-                false
+                true
             );
         $this->get('akeneo_connectivity.connection.fixtures.connection_loader')->update(
             $connection->code(),
@@ -210,7 +250,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         return $requestContent;
     }
 
-    private function expectedProductCreatedPayload(): array
+    private function expectedProductCreatedPayload(ProductInterface $productCreated): array
     {
         return [
             'action' => 'product.created',
@@ -219,11 +259,11 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             'author' => 'julia',
             'author_type' => 'ui',
             'pim_source' => 'http://localhost:8080',
-            'data' => $this->expectedData(),
+            'data' => $this->expectedData($productCreated),
         ];
     }
 
-    private function expectedProductUpdatedPayload(): array
+    private function expectedProductUpdatedPayload(ProductInterface $productUpdated): array
     {
         return [
             'action' => 'product.updated',
@@ -232,11 +272,11 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             'author' => 'julia',
             'author_type' => 'ui',
             'pim_source' => 'http://localhost:8080',
-            'data' => $this->expectedData(),
+            'data' => $this->expectedData($productUpdated),
         ];
     }
 
-    private function expectedProductRemovedPayload(): array
+    private function expectedProductRemovedPayload(ProductInterface $product): array
     {
         return [
             'action' => 'product.removed',
@@ -247,22 +287,22 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             'pim_source' => 'http://localhost:8080',
             'data' => [
                 'resource' => [
-                    'identifier' => 'product',
+                    'identifier' => $product->getIdentifier(),
                 ],
             ],
         ];
     }
 
-    private function expectedData(): array
+    private function expectedData(ProductInterface $product): array
     {
         return [
             'resource' => [
-                'identifier' => 'product',
+                'identifier' => $product->getIdentifier(),
                 'enabled' => true,
-                'family' => 'family',
+                'family' => $product->getFamily()->getCode(),
                 'groups' => [],
                 'parent' => null,
-                'categories' => ['category'],
+                'categories' => $product->getCategoryCodes(),
                 'values' => [
                     'another_text_attribute' => [
                         [
@@ -299,6 +339,20 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
                 'quantified_associations' => [],
             ],
         ];
+    }
+
+    private function getEventCount(string $connectionCode)
+    {
+        $sql = <<<SQL
+SELECT event_count
+FROM akeneo_connectivity_connection_audit_product
+WHERE connection_code = :connection_code
+AND event_type = 'product_read'
+SQL;
+
+        return $this->dbalConnection->fetchColumn($sql, [
+            'connection_code' => $connectionCode,
+        ]);
     }
 
     protected function getConfiguration(): Configuration

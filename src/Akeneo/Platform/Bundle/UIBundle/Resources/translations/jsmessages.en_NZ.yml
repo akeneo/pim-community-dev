@@ -323,6 +323,8 @@ pim_menu:
     activity: Activity navigation
     system: System navigation
     user: Users management navigation
+    settings:
+      collapsed_label: Settings navigation
     product: Product navigation
     product_infos: Product infos
   user:
