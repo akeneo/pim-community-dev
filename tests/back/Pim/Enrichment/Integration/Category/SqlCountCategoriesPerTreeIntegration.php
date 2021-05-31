@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Category;
 
-use Akeneo\Pim\Enrichment\PublicApi\Categories\SqlCountCategoriesPerTree;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\SqlCountCategoriesPerTree;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;

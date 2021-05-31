@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Category;
 
-use Akeneo\Pim\Enrichment\PublicApi\Categories\CategoryTree;
-use Akeneo\Pim\Enrichment\PublicApi\Categories\SqlFindCategoryTrees;
+use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\SqlFindCategoryTrees;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 

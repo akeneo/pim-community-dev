@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\PublicApi\Categories;
+namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category;
 
+use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CountCategoriesPerTree;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
