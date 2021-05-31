@@ -6,11 +6,11 @@ namespace Pim\Upgrade\Schema\Tests;
 
 use Akeneo\Test\Integration\TestCase;
 
-final class Version_6_0_20210527144217_dqi_recompute_products_scores_Integration extends TestCase
+final class Version_6_0_20210527144217_dqi_init_recompute_products_scores_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
-    const MIGRATION_LABEL = '_6_0_20210527144217_dqi_recompute_products_scores';
+    const MIGRATION_LABEL = '_6_0_20210527144217_dqi_init_recompute_products_scores';
 
     protected function getConfiguration()
     {

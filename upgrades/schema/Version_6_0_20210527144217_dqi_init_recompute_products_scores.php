@@ -7,7 +7,7 @@ use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-final class Version_6_0_20210527144217_dqi_recompute_products_scores extends AbstractMigration implements ContainerAwareInterface
+final class Version_6_0_20210527144217_dqi_init_recompute_products_scores extends AbstractMigration implements ContainerAwareInterface
 {
     private ContainerInterface $container;
 
@@ -16,8 +16,6 @@ final class Version_6_0_20210527144217_dqi_recompute_products_scores extends Abs
         $this->truncateProductsScoresTable();
 
         $this->createRecomputeJobInstance();
-
-        $this->launchRecomputeJob();
     }
 
     private function truncateProductsScoresTable(): void
@@ -46,16 +44,11 @@ SQL;
         $this->container->get('database_connection')->executeQuery($sql);
     }
 
-    private function launchRecomputeJob()
-    {
-        $this->container->get('pim_catalog.command_launcher')->executeForeground(
-            'pim:data-quality-insights:recompute-product-scores'
-        );
-    }
-
     public function setContainer(ContainerInterface $container = null)
     {
-        $this->container = $container;
+        if ($container !== null) {
+            $this->container = $container;
+        }
     }
 
     public function down(Schema $schema) : void
