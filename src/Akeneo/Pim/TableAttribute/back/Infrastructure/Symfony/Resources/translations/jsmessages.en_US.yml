@@ -12,6 +12,8 @@ pim_table_attribute:
             labels: Labels
             columns: Columns
             characters_left: ]-Inf, 1]{{ count }} character left|]1, Inf[{{ count }} characters left
+            please_type: Please type "{{ columnDefinitionCode }}"
+            confirm_delete: Are you sure you want to delete this column?
     properties:
         data_type:
             text: Text
