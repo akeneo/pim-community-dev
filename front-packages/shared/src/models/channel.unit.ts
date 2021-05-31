@@ -18,15 +18,15 @@ const baseChannel = {
     form: '',
     id: 1,
     updated: '',
-  }
-}
+  },
+};
 
 const baseLocale = {
   code: '',
   label: '',
   region: '',
-  language: ''
-}
+  language: '',
+};
 
 describe('akeneo > shared > model --- channel', () => {
   test('I can create a new channel from a normalized one', () => {
