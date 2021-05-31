@@ -1,8 +1,8 @@
 import React from 'react';
-import {EditCategoryForm} from "../../hooks";
-import {useTranslate} from "@akeneo-pim-community/shared";
-import styled from "styled-components";
-import {BooleanInput, Field, Helper, MultiSelectInput} from "akeneo-design-system";
+import {EditCategoryForm} from '../../hooks';
+import {useTranslate} from '@akeneo-pim-community/shared';
+import styled from 'styled-components';
+import {BooleanInput, Field, Helper, MultiSelectInput} from 'akeneo-design-system';
 
 const FormContainer = styled.form`
   margin-top: 20px;
@@ -22,7 +22,7 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
   const translate = useTranslate();
 
   if (formData === null || !formData.permissions) {
-    return (<></>);
+    return <></>;
   }
 
   return (
@@ -36,11 +36,11 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
           emptyResultLabel="Empty result"
           onChange={changedValues => onChangePermissions('view', changedValues)}
         >
-          {Object.entries(formData.permissions.view.choices).map(([key, choice]) =>
+          {Object.entries(formData.permissions.view.choices).map(([key, choice]) => (
             <MultiSelectInput.Option value={choice.value} key={`view-${key}`}>
               {choice.label}
             </MultiSelectInput.Option>
-          )}
+          ))}
         </MultiSelectInput>
         <Helper level="info">{translate('category.permissions.view.help')}</Helper>
       </Field>
@@ -52,11 +52,11 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
           emptyResultLabel="Empty result"
           onChange={changedValues => onChangePermissions('edit', changedValues)}
         >
-          {Object.entries(formData.permissions.edit.choices).map(([key, choice]) =>
+          {Object.entries(formData.permissions.edit.choices).map(([key, choice]) => (
             <MultiSelectInput.Option value={choice.value} key={`edit-${key}`}>
               {choice.label}
             </MultiSelectInput.Option>
-          )}
+          ))}
         </MultiSelectInput>
         <Helper level="info">{translate('category.permissions.edit.help')}</Helper>
       </Field>
@@ -68,11 +68,11 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
           emptyResultLabel="Empty result"
           onChange={changedValues => onChangePermissions('own', changedValues)}
         >
-          {Object.entries(formData.permissions.own.choices).map(([key, choice]) =>
+          {Object.entries(formData.permissions.own.choices).map(([key, choice]) => (
             <MultiSelectInput.Option value={choice.value} key={`own-${key}`}>
               {choice.label}
             </MultiSelectInput.Option>
-          )}
+          ))}
         </MultiSelectInput>
         <Helper level="info">{translate('category.permissions.own.help')}</Helper>
       </Field>

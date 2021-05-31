@@ -70,7 +70,7 @@ const CategoriesTreePage: FC = () => {
       setCategoryToDelete({identifier, label, onDelete});
       openDeleteCategoryModal();
     }
-  }
+  };
 
   const handleCloseDeleteCategoryModal = () => {
     setCategoryToDelete(null);

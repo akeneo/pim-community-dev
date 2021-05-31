@@ -26,14 +26,18 @@ const EditPropertiesForm = ({category, formData, onChangeLabel}: Props) => {
   const {isGranted} = useSecurity();
 
   if (formData === null) {
-    return (<></>);
+    return <></>;
   }
 
   return (
     <FormContainer>
       {formData.errors.map((errorMessage, key) => {
-        return (<ErrorMessage level="error" key={`error-${key}`}>{errorMessage}</ErrorMessage>)}
-      )}
+        return (
+          <ErrorMessage level="error" key={`error-${key}`}>
+            {errorMessage}
+          </ErrorMessage>
+        );
+      })}
       <SectionTitle>
         <SectionTitle.Title>{translate('pim_common.code')}</SectionTitle.Title>
       </SectionTitle>
@@ -43,7 +47,7 @@ const EditPropertiesForm = ({category, formData, onChangeLabel}: Props) => {
       <SectionTitle>
         <SectionTitle.Title>{translate('pim_common.label')}</SectionTitle.Title>
       </SectionTitle>
-      { Object.entries(formData.label).map(([locale, labelField]) => (
+      {Object.entries(formData.label).map(([locale, labelField]) => (
         <Field label={labelField.label} key={locale}>
           <TextInput
             name={labelField.fullName}
