@@ -56,15 +56,12 @@ const HiddenTabsDropdown = styled(Dropdown)<{isActive: boolean} & AkeneoThemedPr
   margin-bottom: -1px;
   height: 44px;
   box-sizing: border-box;
+  align-items: center;
 
   &:hover {
     color: ${getColor('brand', 100)};
     border-bottom: 3px solid ${getColor('brand', 100)};
   }
-`;
-
-const MoreDropdown = styled(Dropdown)`
-  align-items: center;
 `;
 
 type TabProps = {
