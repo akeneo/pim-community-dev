@@ -9,3 +9,4 @@ export * from './page';
 export * from './PimView';
 export * from './SearchBar';
 export * from './TextField';
+export * from './UnsavedChanges';

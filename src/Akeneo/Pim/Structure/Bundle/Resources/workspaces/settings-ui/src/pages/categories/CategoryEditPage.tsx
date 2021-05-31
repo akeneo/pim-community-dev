@@ -2,29 +2,37 @@ import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {
   Breadcrumb,
+  Button,
   Dropdown,
   IconButton,
   MoreIcon,
   TabBar,
   useBooleanState,
-  useTabBar
+  useTabBar,
 } from 'akeneo-design-system';
 import {
   FullScreenError,
   PageContent,
   PageHeader,
   PimView,
+  UnsavedChanges,
   useRouter,
+  useSecurity,
+  useSessionStorageState,
   useSetPageTitle,
   useTranslate,
   useUserContext,
-  useSessionStorageState,
-  useSecurity,
 } from '@akeneo-pim-community/shared';
-import {CategoryToDelete, useCategory, useCountProductsBeforeDeleteCategory, useDeleteCategory} from '../../hooks';
+import {
+  CategoryToDelete,
+  useCountProductsBeforeDeleteCategory,
+  useDeleteCategory,
+  useEditCategoryForm
+} from '../../hooks';
 import {Category} from '../../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../../components/datagrids/categories/DeleteCategoryModal';
+import {EditPermissionsForm, EditPropertiesForm} from "../../components/categories/";
 
 type Params = {
   categoryId: string;
@@ -32,13 +40,13 @@ type Params = {
 
 const propertyTabName = '#pim_enrich-category-tab-property';
 const historyTabName = '#pim_enrich-category-tab-history';
+const permissionTabName = '#pim_enrich-category-tab-permission';
 
 const CategoryEditPage: FC = () => {
   const {categoryId} = useParams<Params>();
   const translate = useTranslate();
   const router = useRouter();
   const userContext = useUserContext();
-  const {category, status, load} = useCategory(parseInt(categoryId));
   const [categoryLabel, setCategoryLabel] = useState(`[${categoryId}]`);
   const [treeLabel, setTreeLabel] = useState(translate('pim_enrich.entity.category.content.edit.default_tree_label'));
   const [tree, setTree] = useState<Category | null>(null);
@@ -50,6 +58,16 @@ const CategoryEditPage: FC = () => {
   const countProductsBeforeDeleteCategory = useCountProductsBeforeDeleteCategory(parseInt(categoryId));
   const [categoryToDelete, setCategoryToDelete] = useState<CategoryToDelete | null>(null);
   const {isCategoryDeletionPossible, handleDeleteCategory} = useDeleteCategory();
+  const {
+    category,
+    categoryLoadingStatus,
+    formData,
+    onChangeCategoryLabel,
+    onChangePermissions,
+    onChangeApplyPermissionsOnChilren,
+    thereAreUnsavedChanges,
+    saveCategory
+  } = useEditCategoryForm(parseInt(categoryId));
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
 
@@ -70,10 +88,6 @@ const CategoryEditPage: FC = () => {
   };
 
   useEffect(() => {
-    load();
-  }, [categoryId]);
-
-  useEffect(() => {
     const rootCategory = category && category.root ? category.root : category;
 
     setCategoryLabel(
@@ -87,7 +101,7 @@ const CategoryEditPage: FC = () => {
     setTree(rootCategory);
   }, [category]);
 
-  if (status === 'error') {
+  if (categoryLoadingStatus === 'error') {
     return (
       <FullScreenError
         title={translate('error.exception', {status_code: '404'})}
@@ -99,7 +113,7 @@ const CategoryEditPage: FC = () => {
 
   return (
     <>
-      <PageHeader showPlaceholder={status === 'idle' || status === 'fetching'}>
+      <PageHeader showPlaceholder={categoryLoadingStatus === 'idle' || categoryLoadingStatus === 'fetching'}>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
             <Breadcrumb.Step onClick={followSettingsIndex}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
@@ -118,38 +132,46 @@ const CategoryEditPage: FC = () => {
         </PageHeader.UserActions>
         <PageHeader.Actions>
           {isGranted('pim_enrich_product_category_remove') &&
-            <Dropdown>
-              <IconButton
-                level="tertiary"
-                title={translate('pim_common.other_actions')}
-                icon={<MoreIcon />}
-                ghost="borderless"
-                onClick={openSecondaryAction}
-              />
-              {secondaryActionIsOpen && (
-                <Dropdown.Overlay onClose={closeSecondaryAction}>
-                  <Dropdown.Header>
-                    <Dropdown.Title>{translate('pim_common.other_actions')}</Dropdown.Title>
-                  </Dropdown.Header>
-                  <Dropdown.ItemCollection>
-                    <Dropdown.Item onClick={() => {
-                      countProductsBeforeDeleteCategory((nbProducts: number) => {
-                        const identifier = parseInt(categoryId);
-                        if (category && isCategoryDeletionPossible(identifier, category.labels[uiLocale], nbProducts)) {
-                          setCategoryToDelete({identifier, label: category.labels[uiLocale], onDelete: followCategoryTree});
-                          openDeleteCategoryModal();
-                        }
-                      });
-                    }}>
-                      <span>{translate('pim_common.delete')}</span>
-                    </Dropdown.Item>
-                  </Dropdown.ItemCollection>
-                </Dropdown.Overlay>
-              )}
-            </Dropdown>
+          <Dropdown>
+            <IconButton
+              level="tertiary"
+              title={translate('pim_common.other_actions')}
+              icon={<MoreIcon/>}
+              ghost="borderless"
+              onClick={openSecondaryAction}
+            />
+            {secondaryActionIsOpen && (
+              <Dropdown.Overlay onClose={closeSecondaryAction}>
+                <Dropdown.Header>
+                  <Dropdown.Title>{translate('pim_common.other_actions')}</Dropdown.Title>
+                </Dropdown.Header>
+                <Dropdown.ItemCollection>
+                  <Dropdown.Item onClick={() => {
+                    countProductsBeforeDeleteCategory((nbProducts: number) => {
+                      const identifier = parseInt(categoryId);
+                      if (category && isCategoryDeletionPossible(category.labels[uiLocale], nbProducts)) {
+                        setCategoryToDelete({
+                          identifier,
+                          label: category.labels[uiLocale],
+                          onDelete: followCategoryTree
+                        });
+                        openDeleteCategoryModal();
+                      }
+                    });
+                  }}>
+                    <span>{translate('pim_common.delete')}</span>
+                  </Dropdown.Item>
+                </Dropdown.ItemCollection>
+              </Dropdown.Overlay>
+            )}
+          </Dropdown>
           }
+          <Button level="primary" onClick={saveCategory}>
+            {translate('pim_common.save')}
+          </Button>
         </PageHeader.Actions>
         <PageHeader.Title>{categoryLabel}</PageHeader.Title>
+        <PageHeader.State>{thereAreUnsavedChanges && <UnsavedChanges/>}</PageHeader.State>
       </PageHeader>
       <PageContent>
         <TabBar moreButtonTitle={'More'}>
@@ -162,6 +184,17 @@ const CategoryEditPage: FC = () => {
           >
             {translate('pim_common.properties')}
           </TabBar.Tab>
+          {formData && formData.permissions && isGranted('pimee_enrich_category_edit_permissions') && (
+            <TabBar.Tab
+              isActive={isCurrent(permissionTabName)}
+              onClick={() => {
+                setActiveTab(permissionTabName);
+                switchTo(permissionTabName)();
+              }}
+            >
+              {translate('pim_common.permissions')}
+            </TabBar.Tab>
+          )}
           <TabBar.Tab
             isActive={isCurrent(historyTabName)}
             onClick={() => {
@@ -173,7 +206,13 @@ const CategoryEditPage: FC = () => {
           </TabBar.Tab>
         </TabBar>
 
-        {isCurrent(propertyTabName) && <div>{translate('pim_common.properties')}</div>}
+        {isCurrent(propertyTabName) && category &&
+        <EditPropertiesForm
+          category={category}
+          formData={formData}
+          onChangeLabel={onChangeCategoryLabel}
+        />
+        }
         {isCurrent(historyTabName) && (
           <HistoryPimView
             viewName="pim-category-edit-form-history"
@@ -184,6 +223,13 @@ const CategoryEditPage: FC = () => {
             }}
           />
         )}
+        {isCurrent(permissionTabName) &&
+        <EditPermissionsForm
+          formData={formData}
+          onChangePermissions={onChangePermissions}
+          onChangeApplyPermissionsOnChilren={onChangeApplyPermissionsOnChilren}
+        />
+        }
       </PageContent>
       {isDeleteCategoryModalOpen && categoryToDelete !== null && (
         <DeleteCategoryModal
