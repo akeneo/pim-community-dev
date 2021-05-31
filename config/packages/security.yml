@@ -38,6 +38,10 @@ security:
             pattern:                        ^/api/oauth/v1/token
             security:                       false
 
+        apps_token:
+            pattern:                        ^/apps/oauth/v2/token
+            security:                       false
+
         api_index:
             pattern:                        ^/api/rest/v1$
             security:                       false

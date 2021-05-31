@@ -7,3 +7,9 @@ Akeneo\Tool\Bundle\ApiBundle\Entity\AuthCode:
             id: true
             generator:
                 strategy: AUTO
+    manyToOne:
+        client:
+            targetEntity: Akeneo\Tool\Bundle\ApiBundle\Entity\Client
+            joinColumns:
+                client_id:
+                    referencedColumnName: id
