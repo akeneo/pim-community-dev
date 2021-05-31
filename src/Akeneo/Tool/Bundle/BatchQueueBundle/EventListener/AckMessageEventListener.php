@@ -42,12 +42,7 @@ final class AckMessageEventListener implements EventSubscriberInterface
             return;
         }
 
-        try {
-            $receiver = $this->receiverLocator->get($event->getReceiverName());
-        } catch (NotFoundExceptionInterface $e) {
-            return;
-        }
-
+        $receiver = $this->receiverLocator->get($event->getReceiverName());
         $receiver->ack($envelope);
     }
 }
